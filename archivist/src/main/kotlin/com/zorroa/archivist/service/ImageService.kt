@@ -29,21 +29,23 @@ import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import javax.annotation.PostConstruct
 import javax.imageio.ImageIO
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Created by chambers on 7/8/16.
  */
 interface ImageService {
-    @Throws(IOException::class)
-    fun serveImage(file: File): ResponseEntity<InputStreamResource>
 
     @Throws(IOException::class)
-    fun serveImage(proxy: Proxy): ResponseEntity<InputStreamResource>
+    fun serveImage(req: HttpServletRequest, file: File): ResponseEntity<InputStreamResource>
 
     @Throws(IOException::class)
-    fun watermark(file: File, format: String): ByteArrayOutputStream
+    fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource>
 
-    fun watermark(src: BufferedImage): BufferedImage
+    @Throws(IOException::class)
+    fun watermark(req: HttpServletRequest, file: File, format: String): ByteArrayOutputStream
+
+    fun watermark(req: HttpServletRequest, src: BufferedImage): BufferedImage
 }
 
 /**
@@ -69,14 +71,14 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
-    override fun serveImage(file: File): ResponseEntity<InputStreamResource> {
+    override fun serveImage(req: HttpServletRequest, file: File): ResponseEntity<InputStreamResource> {
         if (file == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
 
         val ext = com.zorroa.sdk.util.FileUtils.extension(file)
         return if (watermarkEnabled) {
-            val output = watermark(file, ext)
+            val output = watermark(req, file, ext)
             ResponseEntity.ok()
                     .contentType(PROXY_MEDIA_TYPES[ext])
                     .contentLength(output.size().toLong())
@@ -92,13 +94,13 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
-    override fun serveImage(proxy: Proxy): ResponseEntity<InputStreamResource> {
-        return serveImage(objectFileSystem.get(proxy.id).file)
+    override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
+        return serveImage(req, objectFileSystem.get(proxy.id).file)
     }
 
     @Throws(IOException::class)
-    override fun watermark(file: File, format: String): ByteArrayOutputStream {
-        val image = watermark(ImageIO.read(file))
+    override fun watermark(req: HttpServletRequest, file: File, format: String): ByteArrayOutputStream {
+        val image = watermark(req, ImageIO.read(file))
         val output = object : ByteArrayOutputStream() {
             @Synchronized override fun toByteArray(): ByteArray {
                 return this.buf
@@ -108,19 +110,25 @@ class ImageServiceImpl @Autowired constructor(
         return output
     }
 
-    override fun watermark(src: BufferedImage): BufferedImage {
+    override fun watermark(req: HttpServletRequest, src: BufferedImage): BufferedImage {
         if (src.width <= watermarkMinProxySize && src.height <= watermarkMinProxySize) {
             return src
         }
 
-        val replacements = ImmutableMap.of(
-                "USER", getUsername(),
-                "DATE", SimpleDateFormat("MM/dd/yyyy").format(Date()))
+        val replacements = mapOf(
+                "USER" to getUsername(),
+                "DATE" to SimpleDateFormat("MM/dd/yyyy").format(Date()),
+                "IP" to req.remoteAddr,
+                "HOST" to req.remoteHost)
 
         val sb = StringBuffer(watermarkTemplate.length * 2)
         val m = PATTERN.matcher(watermarkTemplate)
         while (m.find()) {
-            m.appendReplacement(sb, replacements[m.group(1)])
+            try {
+                m.appendReplacement(sb, replacements[m.group(1)])
+            } catch (ignore: Exception) {
+                //
+            }
         }
         m.appendTail(sb)
         val text = sb.toString()

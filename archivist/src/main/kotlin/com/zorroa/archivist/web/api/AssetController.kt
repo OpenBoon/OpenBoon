@@ -195,13 +195,14 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{width:\\d+}x{height:\\d+}"])
     @Throws(IOException::class)
-    fun getClosestProxy(response: HttpServletResponse,
+    fun getClosestProxy(req: HttpServletRequest,
+                        rsp: HttpServletResponse,
                         @PathVariable id: String,
                         @PathVariable width: Int,
                         @PathVariable height: Int): ResponseEntity<InputStreamResource> {
         return try {
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            imageService.serveImage(proxyLookupCache.get("closest:$id:$width:$height"))
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("closest:$id:$width:$height"))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
@@ -209,10 +210,13 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/atLeast/{size:\\d+}"])
     @Throws(IOException::class)
-    fun getAtLeast(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
+    fun getAtLeast(req: HttpServletRequest,
+                   rsp: HttpServletResponse,
+                   @PathVariable id: String,
+                   @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
         return try {
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            imageService.serveImage(proxyLookupCache.get("atLeast:$id:$size"))
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("atLeast:$id:$size"))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
@@ -220,22 +224,25 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
     @Throws(IOException::class)
-    fun getLargestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
+    fun getLargestProxy(req: HttpServletRequest,
+                        rsp: HttpServletResponse,
+                        @PathVariable id: String): ResponseEntity<InputStreamResource> {
         return try {
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            imageService.serveImage(proxyLookupCache.get("largest:$id"))
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("largest:$id"))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
-
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/smallest"])
     @Throws(IOException::class)
-    fun getSmallestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
+    fun getSmallestProxy(req: HttpServletRequest,
+                         rsp: HttpServletResponse,
+                         @PathVariable id: String): ResponseEntity<InputStreamResource> {
         return try {
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            imageService.serveImage(proxyLookupCache.get("smallest:$id"))
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("smallest:$id"))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
