@@ -20,8 +20,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.endpoint.InfoEndpoint
 import org.springframework.boot.actuate.info.InfoContributor
-import org.springframework.boot.autoconfigure.AutoConfigureAfter
-import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -32,10 +30,15 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
+import java.awt.SystemColor.info
 import java.io.File
 import java.io.IOException
 import java.net.InetAddress
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.*
+import java.util.stream.Stream
 import javax.sql.DataSource
 
 @Configuration
@@ -82,9 +85,16 @@ class ArchivistConfiguration {
             } catch (e: IOException) {
                 logger.warn("Can't find info version properties")
             }
+
+            builder.withDetail("archivist-plugins",
+                    File("lib/ext").walkTopDown()
+                    .map { it.toString() }
+                    .filter { it.endsWith(".jar")}
+                    .map { FileUtils.basename(it) }
+                    .toList())
         }
 
-        return InfoEndpoint(ImmutableList.of<InfoContributor>(info))
+        return InfoEndpoint(ImmutableList.of(info))
     }
 
     @Bean
