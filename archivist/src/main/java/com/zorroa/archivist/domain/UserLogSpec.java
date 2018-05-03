@@ -77,7 +77,7 @@ public class UserLogSpec {
 
     public static final UserLogSpec build(String action, UserId target) {
         return new UserLogSpec()
-                .setUser(getUserOrNull())
+                .setUser(target)
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
