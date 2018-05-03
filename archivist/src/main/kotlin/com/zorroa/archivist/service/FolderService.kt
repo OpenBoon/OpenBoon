@@ -8,6 +8,7 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Queues
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
+import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
@@ -779,13 +780,16 @@ class FolderServiceImpl @Autowired constructor(
         // This folder can be created before the user is actually fully
         // authenticated in the case of external auth systems.
         val adminUser = userDao.get("admin")
+        val everyone = permissionDao.get(Groups.EVERYONE)
 
         val rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true)
         val folder = folderDao.create(FolderSpec()
                 .setName(username)
                 .setParentId(rootFolder.id)
                 .setUserId(adminUser.id))
-        folderDao.setAcl(folder.id, Acl().addEntry(perm, Access.Read, Access.Write), true)
+        folderDao.setAcl(folder.id, Acl()
+                .addEntry(perm, Access.Read, Access.Write)
+                .addEntry(everyone, Access.Read.value), true)
         return folder
     }
 
