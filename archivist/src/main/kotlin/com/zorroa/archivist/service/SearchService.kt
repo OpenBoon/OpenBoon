@@ -393,7 +393,6 @@ class SearchServiceImpl @Autowired constructor(
     private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
 
         val permsQuery = getPermissionsFilter(search.access)
-        logger.info("{}", permsQuery);
         if (search == null) {
             return permsQuery ?: QueryBuilders.matchAllQuery()
         }
