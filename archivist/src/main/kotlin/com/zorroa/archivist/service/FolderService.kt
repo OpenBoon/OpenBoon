@@ -14,6 +14,7 @@ import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
 import com.zorroa.sdk.client.exception.ArchivistWriteException
+import com.zorroa.sdk.domain.Access
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException

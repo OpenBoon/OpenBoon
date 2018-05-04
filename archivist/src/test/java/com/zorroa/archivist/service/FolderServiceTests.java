@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;

@@ -3,6 +3,7 @@ package com.zorroa.archivist.web.api
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.service.BlobService
+import com.zorroa.sdk.domain.Access
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 

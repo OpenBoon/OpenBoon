@@ -63,9 +63,6 @@ class ExportServiceImpl @Autowired constructor(
      */
     private inner class ExportParams(var search: AssetSearch) {
 
-        internal var pages = false
-
-        internal var frames = false
     }
 
     /*
@@ -81,14 +78,6 @@ class ExportServiceImpl @Autowired constructor(
         val maxAssets = properties.getInt("archivist.export.maxAssetCount").toLong()
         for (asset in searchService.scanAndScroll(search, maxAssets, clamp=true)) {
             ids.add(asset.id)
-
-            // Temp stuff
-            if (asset.attrExists("source.clip.page")) {
-                params.pages = true
-            }
-            if (asset.attrExists("source.clip.frame")) {
-                params.frames = true
-            }
         }
 
         if (ids.isEmpty()) {

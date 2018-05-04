@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.sdk.security.Groups;
+import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;

@@ -8,10 +8,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FieldDao;
 import com.zorroa.archivist.sdk.security.Groups;
-import com.zorroa.sdk.domain.AssetIndexSpec;
-import com.zorroa.sdk.domain.Document;
-import com.zorroa.sdk.domain.PagedList;
-import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
@@ -33,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.zorroa.archivist.security.UtilsKt.getPermissionsFilter;
 import static org.junit.Assert.*;
 
 /**
@@ -74,9 +72,62 @@ public class SearchServiceTests extends AbstractTest {
         searchService.scanAndScroll(search, 2, false);
     }
 
+    @Test
+    public void testSearchExportPermissionsMiss() throws IOException {
+
+        authenticate("user");
+        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addToPermissions(perm.getAuthority(), 1);
+        Document doc = assetService.index(source);
+
+        refreshIndex();
+
+        AssetSearch search = new AssetSearch().setQuery("beer").setAccess(Access.Export);
+        assertEquals(0, searchService.search(search).getHits().getTotalHits());
+    }
+
+    /**
+     * A user with zorroa::export can export anything.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testSearchExportPermissionOverrideHit() throws IOException {
+        User user = userService.get("user");
+        userService.addPermissions(user, ImmutableList.of(
+                permissionService.getPermission("zorroa::export")));
+        authenticate("user");
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        assetService.index(source);
+        refreshIndex();
+        AssetSearch search = new AssetSearch().setQuery("source.filename:beer").setAccess(Access.Export);
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+        assertNull(getPermissionsFilter(search.getAccess()));
+    }
 
     @Test
-    public void testSearchPermissionsMiss() throws IOException {
+    public void testSearchPermissionsExportHit() throws IOException {
+        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
+        User user = userService.get("user");
+        userService.addPermissions(user, ImmutableList.of(perm));
+        authenticate("user");
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addToPermissions(perm.getAuthority(), Access.Export.value);
+        assetService.index(source);
+        refreshIndex();
+
+        AssetSearch search = new AssetSearch()
+                .setAccess(Access.Export)
+                .setQuery("source.filename:beer");
+        assertNotNull(getPermissionsFilter(search.getAccess()));
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+
+    }
+
+    @Test
+    public void testSearchPermissionsReadMiss() throws IOException {
 
         authenticate("user");
         Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
@@ -91,7 +142,7 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testSearchPermissionsHit() throws IOException {
+    public void testSearchPermissionsReadHit() throws IOException {
         authenticate("user");
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addToKeywords("media", "captain");

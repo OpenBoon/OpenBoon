@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.Lists;
+import com.zorroa.sdk.domain.Access;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class Acl extends ForwardingList<AclEntry> {
         return this;
     }
 
-    public Acl addEntry(Permission perm, Access ... access) {
+    public Acl addEntry(Permission perm, Access... access) {
         this.delegate.add(new AclEntry(perm.getId(), access));
         return this;
     }
@@ -67,7 +68,7 @@ public class Acl extends ForwardingList<AclEntry> {
         }
         for (AclEntry entry: delegate) {
             if (Objects.equals(entry.getPermissionId(), perm) &&
-                    (access.getValue() & entry.getAccess()) == access.getValue()) {
+                    (access.value & entry.getAccess()) == access.value) {
                 return true;
             }
         }

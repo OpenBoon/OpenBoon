@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.PermissionService;
+import com.zorroa.sdk.domain.Access;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
