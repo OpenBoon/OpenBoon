@@ -150,7 +150,7 @@ class EmailServiceImpl @Autowired constructor(
         } else {
             name = user.username
         }
-        val url = networkEnv.publicUri.toString() + "?folderId=" + req.folderId
+        val url = networkEnv.publicUri.toString() + "/folder/" + req.folderId
         val folderPath = folderService.getPath(folderService.get(req.folderId))
         val folderName = folderPath.split("/").last()
         val toEmail = properties.getString("archivist.requests.managerEmail")
