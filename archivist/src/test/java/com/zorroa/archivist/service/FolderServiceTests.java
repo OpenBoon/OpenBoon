@@ -627,7 +627,9 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testCreateUserFolder() {
-        Folder f = folderService.createUserFolder("gandalf", permissionService.getPermission("user::user"));
+        PermissionSpec spec = new PermissionSpec("group::wizards");
+        Permission perm =  permissionService.createPermission(spec);
+        Folder f = folderService.createUserFolder("gandalf", perm);
         assertTrue(f.getAcl().hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read));
     }
 }
