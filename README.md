@@ -83,4 +83,7 @@ You can access the server at the link below. You will need a username and passwo
 If you are using IDEA for development there are built-in tools for running the servers that all for adding breakpoints throughout the code as well as a myriad other useful tools. Instructions for setup can be found [here](https://wiki.zorroa.com/display/TECH/Intellij+IDEA+Debug+Server+Setup).
 
 
+```
+http://localhost:8066
+```
 
