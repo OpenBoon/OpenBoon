@@ -645,8 +645,10 @@ public class AssetControllerTests extends MockMvcTest {
         refreshIndex();
 
         PagedList<Document> assets = assetService.getAll(Pager.first());
+        logger.info("Checking preferred format: {}", assets.get(0).getAttr("source.path", String.class));
         AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "m4v",
                 false, false);
+
         assertNotNull(file);
         assertEquals("video/x-m4v", file.getMimeType());
 

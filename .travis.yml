@@ -1,10 +1,20 @@
 language: java
 
-jdk:
-  - oraclejdk8
+services:
+  - docker
+
+before_install:
+  - docker build -t unit-test-server . 
 
 install:
+  - ./travis/travis-install-test-data.sh
   - ./travis/travis-install-zorroa-plugin-sdk.sh
+
+script:
+  - pushd ..
+  - docker run -it -v $(pwd)/zorroa-server:/zorroa-server -v $(pwd)/zorroa-plugin-sdk:/zorroa-plugin-sdk -v $(pwd)/zorroa-test-data:/zorroa-test-data unit-test-server
+  - popd
 
 notifications:
   slack: zorroa:U0489fQGuSPls5EZZfSUoGsL
+ 
