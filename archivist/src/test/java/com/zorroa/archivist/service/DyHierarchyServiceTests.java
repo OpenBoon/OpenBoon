@@ -123,7 +123,6 @@ public class DyHierarchyServiceTests extends AbstractTest {
         Folder folder1 = folderService.get("/foo/" + base + "_video");
         Folder folder2 = folderService.get("/foo/" + base + "_office");
         Folder folder3 = folderService.get("/foo/" + base + "_images_set01");
-        assertEquals(1, searchService.count(folder1.getSearch()));
         assertEquals(3, searchService.count(folder1.getSearch()));
     }
 
