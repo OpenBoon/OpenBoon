@@ -2,12 +2,12 @@ package com.zorroa.archivist.security
 
 import com.google.common.collect.Sets
 import com.google.common.collect.Sets.intersection
-import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.sdk.client.exception.ArchivistWriteException
+import com.zorroa.sdk.domain.Access
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.processor.Source
 import com.zorroa.sdk.schema.PermissionSchema
@@ -131,10 +131,34 @@ fun getPermissionIds(): Set<UUID> {
     return result
 }
 
-fun getPermissionsFilter(): QueryBuilder? {
-    return if (hasPermission(Groups.ADMIN)) {
-        null
-    } else QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
+fun getPermissionsFilter(access: Access?): QueryBuilder? {
+    if (hasPermission(Groups.ADMIN)) {
+        return null
+    } else {
+        if (access == null || access == Access.Read) {
+            return if (hasPermission(Groups.READ)) {
+                null
+            } else {
+                QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
+            }
+        }
+        else if (access == Access.Write) {
+            return if (hasPermission(Groups.WRITE)) {
+                null
+            } else {
+                QueryBuilders.termsQuery("zorroa.permissions.write", getPermissionIds())
+            }
+        }
+        else if (access == Access.Export) {
+            return if (hasPermission(Groups.EXPORT)) {
+                null
+            } else {
+                QueryBuilders.termsQuery("zorroa.permissions.export", getPermissionIds())
+            }
+        }
+    }
+
+    return QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
 }
 
 fun setWritePermissions(source: Source, perms: Collection<Permission>) {

@@ -196,6 +196,30 @@ class UserServiceTests : AbstractTest() {
     }
 
     @Test
+    fun updateUsername() {
+        val builder = UserSpec()
+        builder.username = "bilbob"
+        builder.password = "123password"
+        builder.email = "test@test.com"
+        builder.firstName = "Bilbo"
+        builder.lastName = "Baggings"
+        val user = userService.create(builder)
+
+        val update = UserProfileUpdate("gandalf",
+                "gandalf@zorroa.com",
+                "Bilbo","Baggins");
+
+        assertTrue(folderService.exists("/Users/bilbob"))
+        assertTrue(permissionService.permissionExists("user::bilbob"))
+        assertTrue(userService.update(user, update))
+        assertFalse(folderService.exists("/Users/bilbob"))
+        assertFalse(permissionService.permissionExists("user::bilbob"))
+        assertTrue(folderService.exists("/Users/gandalf"))
+        assertTrue(permissionService.permissionExists("user::gandalf"))
+
+    }
+
+    @Test
     fun testImmutablePermissions() {
         val builder = UserSpec()
         builder.permissionIds = arrayOf(permissionService.getPermission(Groups.ADMIN).id)

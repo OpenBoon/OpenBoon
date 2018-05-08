@@ -3,6 +3,8 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.sdk.security.UserId
+import org.hibernate.validator.constraints.Email
+import org.hibernate.validator.constraints.NotEmpty
 import java.util.*
 
 /**
@@ -52,5 +54,12 @@ data class User (
                 .toString()
     }
 }
+
+data class UserProfileUpdate (
+        @NotEmpty var username: String = "",
+        @NotEmpty @Email var email: String = "",
+        var firstName : String? = "",
+        var lastName: String? = "")
+
 
 

@@ -36,6 +36,6 @@ public class LandingController {
 
 	@RequestMapping(value = "/landing", method = {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView landing(ModelMap model) {
-		return new ModelAndView("redirect:/", model);
+		return new ModelAndView("redirect:/signin", model);
 	}
 }

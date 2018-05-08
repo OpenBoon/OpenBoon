@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.PermissionService;
+import com.zorroa.sdk.domain.Access;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -147,6 +148,7 @@ public class FolderDaoTests extends AbstractTest {
         assertFalse(UtilsKt.hasPermission(Groups.ADMIN));
 
         Folder pub = folderDao.get(Folder.ROOT_ID, "Users", false);
+        int startCount =  folderDao.getChildren(pub.getId()).size();
         Folder f1 = folderDao.create(new FolderSpec("level1", pub));
         Folder f2 = folderDao.create(new FolderSpec("level2", pub));
         Folder f3 = folderDao.create(new FolderSpec("level3", pub));
@@ -155,7 +157,7 @@ public class FolderDaoTests extends AbstractTest {
 
         assertFalse(folderDao.hasAccess(f3, Access.Read));
         assertEquals(6, folderDao.getChildrenInsecure(pub.getId()).size());
-        assertEquals(3, folderDao.getChildren(pub.getId()).size());
+        assertEquals(startCount+2, folderDao.getChildren(pub.getId()).size());
     }
 
     @Test

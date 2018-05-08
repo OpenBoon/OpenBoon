@@ -8,11 +8,13 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Queues
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
+import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
 import com.zorroa.sdk.client.exception.ArchivistWriteException
+import com.zorroa.sdk.domain.Access
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -159,6 +161,8 @@ interface FolderService {
     fun trashCount(): Int
 
     fun isDescendantOf(target: Folder, moving: Folder): Boolean
+
+    fun renameUserFolder(user:User, newName: String): Boolean
 }
 
 @Service
@@ -327,6 +331,17 @@ class FolderServiceImpl @Autowired constructor(
 
     override fun getChildren(folder: Folder): List<Folder> {
         return folderDao.getChildren(folder)
+    }
+
+    override fun renameUserFolder(user:User, newName: String): Boolean {
+        if (folderDao.renameUserFolder(user, newName)) {
+            transactionEventManager.afterCommit(true) {
+                val folder = get(user.homeFolderId)
+                invalidate(folder, folder.parentId)
+            }
+            return true
+        }
+        return false
     }
 
     override fun update(folderId : UUID, updated: Folder): Boolean {
@@ -766,13 +781,16 @@ class FolderServiceImpl @Autowired constructor(
         // This folder can be created before the user is actually fully
         // authenticated in the case of external auth systems.
         val adminUser = userDao.get("admin")
+        val everyone = permissionDao.get(Groups.EVERYONE)
 
         val rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true)
         val folder = folderDao.create(FolderSpec()
                 .setName(username)
                 .setParentId(rootFolder.id)
                 .setUserId(adminUser.id))
-        folderDao.setAcl(folder.id, Acl().addEntry(perm, Access.Read, Access.Write), true)
+        folderDao.setAcl(folder.id, Acl()
+                .addEntry(perm, Access.Read, Access.Write)
+                .addEntry(everyone, Access.Read.value), true)
         return folder
     }
 

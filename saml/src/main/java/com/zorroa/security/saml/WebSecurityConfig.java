@@ -20,6 +20,7 @@ import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -185,9 +186,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         String defaultKey = properties.getString("archivist.security.saml.keystore.alias");
         String keyPass = properties.getString("archivist.security.saml.keystore.keyPassword");
 
-        DefaultResourceLoader loader = new DefaultResourceLoader();
-        Resource storeFile = loader
-                .getResource(keystorePath);
+        Resource storeFile = new FileSystemResource(new File(keystorePath));
 
         Map<String, String> passwords = new HashMap<String, String>();
         passwords.put(defaultKey, keyPass);
@@ -340,11 +339,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
         successRedirectHandler.setDefaultTargetUrl("/landing");
+        successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
-
-    // Handler deciding where to redirect user after failed login
-
 
     @Bean
     public SimpleUrlAuthenticationFailureHandler authenticationFailureHandler() {

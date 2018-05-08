@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 interface UserDaoCache {
     fun getUser(id: UUID): UserBase
     fun getUser(username: String): UserBase
+    fun invalidate(id: UUID)
 
 }
 
@@ -27,6 +28,10 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
                     return jdbc.queryForObject(GET_BY_ID, MAPPER, key)
                 }
             })
+
+    override fun invalidate(id: UUID) {
+        return cache.invalidate(id)
+    }
 
     override fun getUser(id: UUID): UserBase {
         return cache.get(id)

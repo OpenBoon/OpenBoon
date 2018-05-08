@@ -262,6 +262,7 @@ class SettingsServiceImpl @Autowired constructor(
          * A whitelist of property names that can be set via the API.
          */
         private val WHITELIST = ImmutableMap.builder<String, SettingValidator>()
+                .put("archivist.watermark.font-name", SettingValidator(null))
                 .put("archivist.search.keywords.boost",
                         SettingValidator(Regex("([\\w\\.]+:[\\d\\.]+)(,[\\w\\.]+:[\\d\\.]+)*")))
                 .put("archivist.export.maxAssetCount",

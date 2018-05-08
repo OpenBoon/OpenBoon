@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
+import com.zorroa.sdk.domain.Access;
 
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class AclEntry {
         }
 
         for (Access a: access) {
-            this.access = this.access + a.getValue();
+            this.access = this.access + a.value;
         }
     }
     public UUID getPermissionId() {

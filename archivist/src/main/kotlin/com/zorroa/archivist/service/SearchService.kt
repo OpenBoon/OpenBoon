@@ -28,7 +28,6 @@ import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
-import org.elasticsearch.index.query.support.QueryInnerHitBuilder
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptService
 import org.elasticsearch.search.sort.SortOrder
@@ -344,7 +343,7 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (search.fields != null) {
-            request.setFetchSource(search.fields, arrayOf("content"))
+            request.setFetchSource(search.fields, arrayOf("media.content", "analysis"))
         }
 
         if (search.scroll != null) {
@@ -391,10 +390,9 @@ class SearchServiceImpl @Autowired constructor(
         return getQuery(search, Sets.newHashSet(), true, false)
     }
 
-    private fun getQuery(search: AssetSearch?, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
+    private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
 
-        val permsQuery = getPermissionsFilter()
-
+        val permsQuery = getPermissionsFilter(search.access)
         if (search == null) {
             return permsQuery ?: QueryBuilders.matchAllQuery()
         }
@@ -415,16 +413,6 @@ class SearchServiceImpl @Autowired constructor(
         var filter: AssetFilter? = search.filter
         if (filter != null) {
             applyFilterToQuery(filter, assetBool, linkedFolders)
-        }
-
-        val elementFilter = search.elementFilter
-        if (elementFilter != null) {
-            val elementBool = QueryBuilders.boolQuery()
-            applyFilterToQuery(elementFilter, elementBool, mutableSetOf())
-            query.should(QueryBuilders.hasChildQuery("element", elementBool)
-                    .scoreMode("max")
-                    .maxChildren(1)
-                    .innerHit(QueryInnerHitBuilder().setSize(1)))
         }
 
         // Folders apply their post filter, but the main search// applies the post filter in the SearchRequest.

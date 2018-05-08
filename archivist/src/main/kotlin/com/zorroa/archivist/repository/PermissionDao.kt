@@ -3,10 +3,7 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
-import com.zorroa.archivist.domain.Acl
-import com.zorroa.archivist.domain.Permission
-import com.zorroa.archivist.domain.PermissionFilter
-import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
 import com.zorroa.sdk.domain.PagedList
@@ -25,7 +22,7 @@ interface PermissionDao {
 
     fun update(permission: Permission): Permission
 
-    fun updateUserPermission(oldName: String, newName: String): Boolean
+    fun renameUserPermission(user:User, newName: String): Boolean
 
     fun get(id: UUID): Permission
 
@@ -93,9 +90,9 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         return get(permission.id)
     }
 
-    override fun updateUserPermission(oldName: String, newName: String): Boolean {
-        return jdbc.update("UPDATE permission SET str_name=? WHERE str_type='user' AND str_name=? AND bool_immutable=?",
-                newName, oldName, true) == 1
+    override fun renameUserPermission(user: User, newName: String): Boolean {
+        return jdbc.update("UPDATE permission SET str_name=?, str_authority=? WHERE pk_permission=?",
+                newName, "user::$newName", user.permissionId) == 1
     }
 
     override operator fun get(id: UUID): Permission {

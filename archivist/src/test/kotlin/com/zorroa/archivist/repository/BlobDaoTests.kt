@@ -2,8 +2,12 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.Blob
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.sdk.security.Groups
+import com.zorroa.sdk.domain.Access
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

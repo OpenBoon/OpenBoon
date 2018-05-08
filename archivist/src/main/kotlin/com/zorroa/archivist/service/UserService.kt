@@ -7,6 +7,7 @@ import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
+import com.zorroa.archivist.repository.UserDaoCache
 import com.zorroa.archivist.repository.UserDaoImpl.Companion.SOURCE_LOCAL
 import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
@@ -174,6 +175,7 @@ class UserRegistryServiceImpl @Autowired constructor(
 @Transactional
 class UserServiceImpl @Autowired constructor(
         private val userDao: UserDao,
+        private val userDaoCache: UserDaoCache,
         private val permissionDao: PermissionDao,
         private val userPresetDao: UserPresetDao,
         private val tx: TransactionEventManager,
@@ -306,10 +308,24 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {
+
+        val updatePermsAndFolders = user.username != form.username
+        if (!userDao.exists(user.username, SOURCE_LOCAL)
+                && (updatePermsAndFolders
+                || user.email != form.email)) {
+            throw IllegalStateException("Users from external sources cannot change their username or email address.")
+        }
+
         val result = userDao.update(user, form)
         if (result) {
-            tx.afterCommit(true,
-                    { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
+            if (updatePermsAndFolders) {
+                permissionDao.renameUserPermission(user, form.username)
+                folderService.renameUserFolder(user, form.username)
+            }
+            tx.afterCommit(false, {
+                userDaoCache.invalidate(user.id)
+                logService.logAsync(UserLogSpec.build(LogAction.Update, user))
+            })
         }
         return result
     }
@@ -329,7 +345,10 @@ class UserServiceImpl @Autowired constructor(
                 logger.warn("Failed to delete home folder for {}", user)
             }
 
-            tx.afterCommit(true,  { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
+            tx.afterCommit(false,  {
+                userDaoCache.invalidate(user.id)
+                logService.logAsync(UserLogSpec.build(LogAction.Update, user))
+            })
         }
         return result
     }
@@ -337,7 +356,7 @@ class UserServiceImpl @Autowired constructor(
     override fun updateSettings(user: User, settings: UserSettings): Boolean {
         val result = userDao.setSettings(user, settings)
         if (result) {
-            tx.afterCommit(true, { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
+            tx.afterCommit(false, { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
         }
         return result
     }
@@ -347,7 +366,7 @@ class UserServiceImpl @Autowired constructor(
 
         if (result) {
             if (result) {
-                tx.afterCommit(true, {
+                tx.afterCommit(false, {
                     logService.logAsync(UserLogSpec.build(if (value) "enable" else "disable", user)) })
             }
         }
@@ -407,7 +426,7 @@ class UserServiceImpl @Autowired constructor(
             }
             userDao.removePermission(user, p)
         }
-        tx.afterCommit(true, {
+        tx.afterCommit(false, {
             logService.logAsync(UserLogSpec.build("remove_permission", user)
                     .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
         })

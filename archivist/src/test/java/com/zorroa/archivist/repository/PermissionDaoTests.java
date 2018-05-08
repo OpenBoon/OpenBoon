@@ -88,8 +88,8 @@ public class PermissionDaoTests extends AbstractTest {
     }
 
     @Test
-    public void testUpdateUserPermission() {
-        assertTrue(permissionDao.updateUserPermission("test", "rambo"));
+    public void testRenameUserPermission() {
+        assertTrue(permissionDao.renameUserPermission(user, "rambo"));
         assertFalse(userDao.hasPermission(user, "user", "test"));
         assertTrue(userDao.hasPermission(user, "user", "rambo"));
     }

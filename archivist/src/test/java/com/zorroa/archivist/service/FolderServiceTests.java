@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -279,6 +280,15 @@ public class FolderServiceTests extends AbstractTest {
         folderDao.setAcl(folder.getId(),
                 new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write));
         folderService.update(folder.getId(), folder.setName("biblo"));
+    }
+
+    @Test
+    public void testRenameUserFolder() {
+        authenticate("librarian");
+        User user = userService.get("librarian");
+        assertFalse(folderService.exists("/Users/foo"));
+        assertTrue(folderService.renameUserFolder(user, "foo"));
+        assertTrue(folderService.exists("/Users/foo"));
     }
 
     @Test
@@ -606,7 +616,6 @@ public class FolderServiceTests extends AbstractTest {
         List<Folder> folders = folderService.getAllAncestors(folder3, true, false);
         logger.info("{}", folders);
         // TODO an assertiion
-
     }
 
     @Test
@@ -614,5 +623,11 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder1 = folderService.create(new FolderSpec("  f1  "));
         Folder folder2 = folderService.get("/  f1  ");
         assertEquals(folder1, folder2);
+    }
+
+    @Test
+    public void testCreateUserFolder() {
+        Folder f = folderService.createUserFolder("gandalf", permissionService.getPermission("user::user"));
+        assertTrue(f.getAcl().hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read));
     }
 }
