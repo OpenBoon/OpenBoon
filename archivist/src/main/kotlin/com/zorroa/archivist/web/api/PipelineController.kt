@@ -70,9 +70,7 @@ class PipelineController @Autowired constructor(
     }
 
     companion object {
-
-        private val logger = LoggerFactory.getLogger(PipelineController::class.java)
-
+        
         fun checkValid(valid: BindingResult) {
             if (valid.hasErrors()) {
                 throw InvalidObjectException("Failed to create pipeline", valid)
