@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
         <groupId>com.zorroa</groupId>
         <artifactId>zorroa-server</artifactId>
-        <version>0.40.0</version>
+        <version>0.39.1</version>
     </parent>
 
     <dependencies>
@@ -29,7 +29,6 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>server-sdk</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

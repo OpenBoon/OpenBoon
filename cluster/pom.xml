@@ -5,7 +5,7 @@
     <parent>
         <artifactId>zorroa-server</artifactId>
         <groupId>com.zorroa</groupId>
-        <version>0.40.0</version>
+        <version>0.39.1</version>
     </parent>
 
     <groupId>com.zorroa</groupId>
