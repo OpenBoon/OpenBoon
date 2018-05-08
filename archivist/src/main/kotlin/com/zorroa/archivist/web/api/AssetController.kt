@@ -1,12 +1,15 @@
 package com.zorroa.archivist.web.api
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.canExport
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
@@ -18,7 +21,6 @@ import com.zorroa.sdk.schema.ProxySchema
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.search.AssetSuggestBuilder
 import org.apache.tika.Tika
-import org.elasticsearch.ResourceNotFoundException
 import org.elasticsearch.client.Client
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.*
 import java.io.File
 import java.io.IOException
 import java.nio.file.Paths
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
@@ -43,12 +46,13 @@ import javax.validation.Valid
 class AssetController @Autowired constructor(
         private val client: Client,
         private val assetService: AssetService,
-        private val noteService: NoteService,
         private val searchService: SearchService,
+        private val folderService: FolderService,
         private val logService: EventLogService,
         private val imageService: ImageService,
         private val ofs: ObjectFileSystem,
-        private val commandService: CommandService
+        private val commandService: CommandService,
+        private val fieldService: FieldService
 ){
 
     /**
@@ -63,13 +67,8 @@ class AssetController @Autowired constructor(
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
         response.setHeader("Cache-Control", CacheControl.maxAge(
                 30, TimeUnit.SECONDS).cachePrivate().headerValue)
-        return searchService.getFields("asset")
+        return fieldService.getFields("asset")
     }
-
-    val elementFields: Map<String, Set<String>>
-        @GetMapping(value = ["/api/v1/elements/_fields"])
-        @Throws(IOException::class)
-        get() = searchService.getFields("element")
 
     val mapping: Map<String, Any>
         @GetMapping(value = ["/api/v1/assets/_mapping"])
@@ -83,10 +82,7 @@ class AssetController @Autowired constructor(
         /**
          * Zorroa types get handled special.
          */
-        if (mediaType.startsWith("zorroa/")) {
-            return StreamFile("", mediaType, false)
-        }
-        else if (streamProxy) {
+        if (streamProxy) {
             return getProxyStream(asset)
         } else {
             val checkFiles = Lists.newArrayList<StreamFile>()
@@ -102,9 +98,7 @@ class AssetController @Autowired constructor(
                 val preferMediaType = tika.detect(path)
                 checkFiles.add(StreamFile(preferPath, preferMediaType, false))
 
-                val proxies = asset.getAttr("proxies." + type, object : TypeReference<List<Proxy>>() {
-
-                })
+                val proxies = asset.getAttr("proxies.$type", object : TypeReference<List<Proxy>>() {})
                 if (proxies != null) {
                     for (proxy in proxies) {
                         if (preferExt == proxy.format) {
@@ -158,13 +152,11 @@ class AssetController @Autowired constructor(
                     @PathVariable id: String, request: HttpServletRequest, response: HttpServletResponse) {
 
         val asset = assetService.get(id)
-        val canExport = SecurityUtils.canExport(asset)
+        val canExport = canExport(asset)
         val format = getPreferredFormat(asset, ext, fallback, !canExport)
 
         if (format == null) {
             response.status = 404
-        } else if (format.mimeType.endsWith("x-flipbook")) {
-            FlipbookSender(id, searchService).serveResource(response)
         } else {
             try {
                 MultipartFileSender.fromPath(Paths.get(format.path))
@@ -182,65 +174,78 @@ class AssetController @Autowired constructor(
         }
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/notes"])
-    @Throws(IOException::class)
-    fun getNotes(@PathVariable id: String): List<Note> {
-        return noteService.getAll(id)
-    }
+    private val proxyLookupCache = CacheBuilder.newBuilder()
+            .maximumSize(10000)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build(object : CacheLoader<String, Proxy>() {
+                @Throws(Exception::class)
+                override fun load(slug: String): Proxy {
+                    val e = slug.split(":")
+                    val proxies = assetService.getProxies(e[1])
 
-    @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}"])
+                    return when {
+                        e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
+                        e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt())
+                        e[0] == "smallest" -> proxies.smallest
+                        e[0] == "largest" -> proxies.largest
+                        else -> proxies.largest
+                    }
+                }
+            })
+
+    @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{width:\\d+}x{height:\\d+}"])
     @Throws(IOException::class)
-    fun getClosestProxy(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = false) size: String): ResponseEntity<InputStreamResource> {
-        try {
-            val wh = size.split("x".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1])) ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+    fun getClosestProxy(req: HttpServletRequest,
+                        rsp: HttpServletResponse,
+                        @PathVariable id: String,
+                        @PathVariable width: Int,
+                        @PathVariable height: Int): ResponseEntity<InputStreamResource> {
+        return try {
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("closest:$id:$width:$height"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/atLeast/{size:\\d+}"])
     @Throws(IOException::class)
-    fun getAtLeast(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
-        try {
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.atLeastThisSize(size) ?: proxies.largest
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+    fun getAtLeast(req: HttpServletRequest,
+                   rsp: HttpServletResponse,
+                   @PathVariable id: String,
+                   @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
+        return try {
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("atLeast:$id:$size"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
     @Throws(IOException::class)
-    fun getLargestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
-        try {
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.largest ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+    fun getLargestProxy(req: HttpServletRequest,
+                        rsp: HttpServletResponse,
+                        @PathVariable id: String): ResponseEntity<InputStreamResource> {
+        return try {
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("largest:$id"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
-
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/smallest"])
     @Throws(IOException::class)
-    fun getSmallestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
-        try {
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.smallest ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
-            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+    fun getSmallestProxy(req: HttpServletRequest,
+                         rsp: HttpServletResponse,
+                         @PathVariable id: String): ResponseEntity<InputStreamResource> {
+        return try {
+            rsp.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            imageService.serveImage(req, proxyLookupCache.get("smallest:$id"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
-
     }
 
     @PostMapping(value = ["/api/v2/assets/_search"])
@@ -267,14 +272,14 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun unhideField(@RequestBody update: HideField): Any {
         return HttpUtils.status("field", "hide",
-                searchService.updateField(update.setHide(true).setManual(true)))
+                fieldService.updateField(update.setHide(true).setManual(true)))
     }
 
     @DeleteMapping(value = ["/api/v1/assets/_fields/hide"])
     @Throws(IOException::class)
     fun hideField(@RequestBody update: HideField): Any {
         return HttpUtils.status("field", "unhide",
-                searchService.updateField(update.setHide(false)))
+                fieldService.updateField(update.setHide(false)))
     }
 
     @PostMapping(value = ["/api/v2/assets/_count"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -287,13 +292,6 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun exists(@PathVariable id: String): Any {
         return HttpUtils.exists(id, assetService.exists(id))
-    }
-
-    @PostMapping(value = ["/api/v2/assets/_suggest"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    @Throws(IOException::class)
-    fun suggestV2(@RequestBody builder: AssetSuggestBuilder): String {
-        val response = searchService.suggest(builder.text)
-        return response.toString()
     }
 
     @PostMapping(value = ["/api/v3/assets/_suggest"])
@@ -319,18 +317,11 @@ class AssetController @Autowired constructor(
         return path["path"]?.let { assetService.get(Paths.get(it)) }
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/_elements"])
-    fun getElements(@PathVariable id: String,
-                    @RequestParam(value = "from", required = false) from: Int?,
-                    @RequestParam(value = "count", required = false) count: Int?): PagedList<Document> {
-        return assetService.getElements(id, Pager(from, count))
-    }
-
     @DeleteMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun delete(@PathVariable id: String): Any {
         val asset = assetService.get(id)
-        if (!SecurityUtils.hasPermission("write", asset)) {
+        if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("delete access denied")
         }
 
@@ -342,7 +333,7 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
         val asset = assetService.get(id)
-        if (!SecurityUtils.hasPermission("write", asset)) {
+        if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("update access denied")
         }
 
@@ -357,10 +348,34 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.get(id))
     }
 
-    @RequestMapping(value = ["/api/v1/assets/_index"], method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
+    @Throws(IOException::class)
+    fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {
+        FlipbookSender(id, searchService).serveResource(rsp)
+    }
+
+    @PostMapping(value = ["/api/v1/assets/_index"], produces = [(MediaType.APPLICATION_JSON_VALUE)])
     @Throws(IOException::class)
     fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
         return assetService.index(spec)
+    }
+
+    class SetFoldersRequest {
+        var folders: List<UUID>? = null
+    }
+
+    /**
+     * Reset all folders for a given asset.  Currently only used for syncing.
+     */
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
+    @Throws(Exception::class)
+    fun setFolders(@PathVariable id: String, @RequestBody req: SetFoldersRequest): Any {
+        req?.folders?.let {
+            folderService.setFoldersForAsset(id, it)
+            return HttpUtils.updated("asset", id, true)
+        }
+        return HttpUtils.updated("asset", id, false)
     }
 
     class SetPermissionsRequest {
@@ -369,7 +384,7 @@ class AssetController @Autowired constructor(
 
     }
 
-    @PreAuthorize("hasAuthority('group::share') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).SHARE) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/assets/_permissions"])
     @Throws(Exception::class)
     fun setPermissions(

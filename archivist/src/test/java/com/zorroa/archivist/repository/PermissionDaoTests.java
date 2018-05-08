@@ -5,8 +5,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -85,8 +88,8 @@ public class PermissionDaoTests extends AbstractTest {
     }
 
     @Test
-    public void testUpdateUserPermission() {
-        assertTrue(permissionDao.updateUserPermission("test", "rambo"));
+    public void testRenameUserPermission() {
+        assertTrue(permissionDao.renameUserPermission(user, "rambo"));
         assertFalse(userDao.hasPermission(user, "user", "test"));
         assertTrue(userDao.hasPermission(user, "user", "rambo"));
     }
@@ -134,7 +137,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testGetAllByNames() {
-        List<Permission> perms = permissionDao.getAll(ImmutableList.of("user::admin", "group::everyone"));
+        List<Permission> perms = permissionDao.getAll(ImmutableList.of("user::admin", Groups.EVERYONE));
         assertEquals(2, perms.size());
     }
 
@@ -186,6 +189,7 @@ public class PermissionDaoTests extends AbstractTest {
     @Test
     public void testGetAllByType() {
         List<Permission> perms = permissionDao.getAll("user");
+        logger.info(Json.prettyString(perms));
         /*
          * There are 3 active users in this test: admin, user, and test.
          */
@@ -195,7 +199,7 @@ public class PermissionDaoTests extends AbstractTest {
     @Test
     public void testGetAllByIds() {
         List<Permission> perms1 = permissionDao.getAll();
-        List<Permission> perms2 = permissionDao.getAll(new Integer[] {
+        List<Permission> perms2 = permissionDao.getAll(new UUID[] {
             perms1.get(0).getId(), perms1.get(1).getId()
         });
         assertEquals(2, perms2.size());
@@ -208,7 +212,7 @@ public class PermissionDaoTests extends AbstractTest {
         /*
          * Internally managed permissions cannot be deleted in this way.
          */
-        assertFalse(permissionDao.delete(permissionDao.get("group::manager")));
+        assertFalse(permissionDao.delete(permissionDao.get(Groups.MANAGER)));
         assertTrue(permissionDao.delete(permissionDao.get("project::avatar")));
     }
 
@@ -245,20 +249,28 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void resolveAcl() {
-        Acl acl = new Acl().addEntry("group::everyone", 1);
+        Acl acl = new Acl().addEntry(Groups.EVERYONE, 1);
         acl = permissionDao.resolveAcl(acl, false);
         assertNotNull(acl.get(0).permissionId);
     }
 
+    @Test
+    public void resolveAclDuplicates() {
+        Acl acl = new Acl().addEntry(Groups.EVERYONE, 1);
+        acl.addEntry(Groups.EVERYONE, 3);
+        acl = permissionDao.resolveAcl(acl, false);
+        assertEquals(1, acl.size());
+    }
+
     @Test(expected=EmptyResultDataAccessException.class)
     public void resolveAclFailure() {
-        Acl acl = new Acl().addEntry("group::shizzle", 1);
+        Acl acl = new Acl().addEntry("zorroa::shizzle", 1);
         acl = permissionDao.resolveAcl(acl, false);
     }
 
     @Test
     public void resolveAclAutoCreate() {
-        Acl acl = new Acl().addEntry("group::shizzle", 1);
+        Acl acl = new Acl().addEntry("zorroa::shizzle", 1);
         acl = permissionDao.resolveAcl(acl, true);
         assertNotNull(acl.get(0).permissionId);
     }

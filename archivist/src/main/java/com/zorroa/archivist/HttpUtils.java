@@ -86,6 +86,10 @@ public class HttpUtils {
         return ImmutableMap.of("type", type, "id", id, "op", "update", "success", success, "object", object);
     }
 
+    public static Map<String, Object> updated(String type, Object id, boolean success) {
+        return ImmutableMap.of("type", type, "id", id, "op", "update", "success", success);
+    }
+
     public static String getBindingErrorString(BindingResult binding) {
         StringBuilder sb = new StringBuilder(1024);
         for (FieldError err: binding.getFieldErrors()) {

@@ -85,7 +85,7 @@ public class ImportControllerTests extends MockMvcTest {
                 .andReturn();
 
         Job job = deserialize(result, Job.class);
-        assertEquals((int) job.getJobId(), job.getId());
+        assertEquals(job.getJobId(), job.getId());
     }
 
     @Test

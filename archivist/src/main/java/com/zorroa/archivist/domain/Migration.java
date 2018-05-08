@@ -3,24 +3,25 @@ package com.zorroa.archivist.domain;
 import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A Migration is some aspect of the Archivist can change from one version to the next.
  */
 public class Migration {
 
-    private int id;
+    private UUID id;
     private MigrationType type;
     private String name;
     private String path;
     private int version;
     private int patch;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Migration setId(int id) {
+    public Migration setId(UUID id) {
         this.id = id;
         return this;
     }

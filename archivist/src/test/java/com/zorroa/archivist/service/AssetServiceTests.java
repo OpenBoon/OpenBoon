@@ -3,12 +3,15 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
+import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +54,11 @@ public class AssetServiceTests extends AbstractTest {
     @Test
     public void testIndexWithLink() throws InterruptedException {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToLinks("foo", 1);
+        builder.addToLinks("foo", "abc123");
 
         Document asset1 = assetService.index(builder);
-        assertEquals(ImmutableList.of(1),
-                asset1.getAttr("links.foo"));
+        assertEquals(ImmutableList.of("abc123"),
+                asset1.getAttr("zorroa.links.foo"));
     }
 
     @Test
@@ -63,88 +66,90 @@ public class AssetServiceTests extends AbstractTest {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset1 = assetService.index(builder);
 
-        assertNotNull(asset1.getAttr("origin.timeCreated"));
-        assertNotNull(asset1.getAttr("origin.timeModified"));
-        assertEquals(asset1.getAttr("origin.timeCreated", String.class),
-                asset1.getAttr("origin.timeModified", String.class));
+        logger.info("{}", Json.prettyString(asset1.getDocument()));
 
-        refreshIndex();
+        assertNotNull(asset1.getAttr("zorroa.timeCreated"));
+        assertNotNull(asset1.getAttr("zorroa.timeModified"));
+        assertEquals(asset1.getAttr("zorroa.timeCreated", String.class),
+                asset1.getAttr("zorroa.timeModified", String.class));
+
+        refreshIndex(1000);
         Source builder2 = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset2 = assetService.index(builder2);
-        assertNotEquals(asset2.getAttr("origin.timeCreated", String.class),
-                asset2.getAttr("origin.timeModified", String.class));
+        assertNotEquals(asset2.getAttr("zorroa.timeCreated", String.class),
+                asset2.getAttr("zorroa.timeModified", String.class));
     }
 
     @Test
     public void testIndexWithPermission() throws InterruptedException {
-        Permission p = permissionService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission(Groups.EVERYONE);
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 7);
+        builder.addToPermissions(Groups.EVERYONE, 7);
 
         Document asset1 = assetService.index(builder);
-        assertEquals(ImmutableList.of(p.getId()),
-                asset1.getAttr("permissions.read"));
+        assertEquals(ImmutableList.of(p.getId().toString()),
+                asset1.getAttr("zorroa.permissions.read"));
 
-        assertEquals(ImmutableList.of(p.getId()),
-                asset1.getAttr("permissions.write"));
+        assertEquals(ImmutableList.of(p.getId().toString()),
+                asset1.getAttr("zorroa.permissions.write"));
 
-        assertEquals(ImmutableList.of(p.getId()),
-                asset1.getAttr("permissions.export"));
+        assertEquals(ImmutableList.of(p.getId().toString()),
+                asset1.getAttr("zorroa.permissions.export"));
     }
 
     @Test
     public void testIndexWithReadOnlyPermission() throws InterruptedException {
-        Permission p = permissionService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission(Groups.EVERYONE);
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 1);
+        builder.addToPermissions(Groups.EVERYONE, 1);
 
         Document asset1 = assetService.index(builder);
-        assertEquals(ImmutableList.of(p.getId()),
-                asset1.getAttr("permissions.read"));
+        assertEquals(ImmutableList.of(p.getId().toString()),
+                asset1.getAttr("zorroa.permissions.read"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
-                asset1.getAttr("permissions.write"));
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
+                asset1.getAttr("zorroa.permissions.write"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
-                asset1.getAttr("permissions.export"));
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
+                asset1.getAttr("zorroa..export"));
     }
 
     @Test
     public void testIndexRemovePermissions() throws InterruptedException {
-        Permission p = permissionService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission(Groups.EVERYONE);
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 7);
+        builder.addToPermissions(Groups.EVERYONE, 7);
         Document asset1 = assetService.index(builder);
         refreshIndex();
 
         Source builder2 = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 1);
+        builder.addToPermissions(Groups.EVERYONE, 1);
         Document asset2 = assetService.index(builder);
 
         // Should only end up with read.
-        assertEquals(ImmutableList.of(p.getId()),
-                asset2.getAttr("permissions.read"));
+        assertEquals(ImmutableList.of(p.getId().toString()),
+                asset2.getAttr("zorroa.permissions.read"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
-                asset2.getAttr("permissions.write"));
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
+                asset2.getAttr("zorroa.permissions.write"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
-                asset2.getAttr("permissions.export"));
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
+                asset2.getAttr("zorroa.permissions.export"));
 
         Document asset3 = assetService.get(asset2.getId());
 
         // Should only end up with read.
-        assertEquals(ImmutableList.of(p.getId()),
-                asset3.getAttr("permissions.read"));
+        assertEquals(ImmutableList.of(p.getId().toString()),
+                asset3.getAttr("zorroa.permissions.read"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
-                asset3.getAttr("permissions.write"));
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
+                asset3.getAttr("zorroa.permissions.write"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
-                asset3.getAttr("permissions.export"));
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
+                asset3.getAttr("zorroa.permissions.export"));
     }
 
     @Test
@@ -177,12 +182,12 @@ public class AssetServiceTests extends AbstractTest {
         PagedList<Document> assets = assetService.getAll(Pager.first());
         assertEquals(2, assets.size());
 
-        PermissionSchema schema = assets.get(0).getAttr("permissions", PermissionSchema.class);
+        PermissionSchema schema = assets.get(0).getAttr("zorroa.permissions", PermissionSchema.class);
         assertTrue(schema.getRead().contains(p.getId()));
         assertFalse(schema.getWrite().contains(p.getId()));
         assertFalse(schema.getExport().contains(p.getId()));
 
-        schema = assets.get(1).getAttr("permissions", PermissionSchema.class);
+        schema = assets.get(1).getAttr("zorroa.permissions", PermissionSchema.class);
         assertTrue(schema.getRead().contains(p.getId()));
         assertFalse(schema.getWrite().contains(p.getId()));
         assertFalse(schema.getExport().contains(p.getId()));

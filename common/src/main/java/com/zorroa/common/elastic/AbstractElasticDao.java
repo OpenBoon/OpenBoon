@@ -1,6 +1,6 @@
 package com.zorroa.common.elastic;
 
-import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

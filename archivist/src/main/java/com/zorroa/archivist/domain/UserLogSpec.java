@@ -3,12 +3,14 @@ package com.zorroa.archivist.domain;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.sdk.security.UserId;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.zorroa.archivist.security.UtilsKt.getUserOrNull;
 
 /**
  * LogSpec defines log entry properties.
@@ -61,35 +63,50 @@ public class UserLogSpec {
 
     public static final UserLogSpec build(LogAction action, AssetSearch search) {
         return new UserLogSpec()
-                .setUser(SecurityUtils.getUserOrNull())
+                .setUser(getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setSearch(search);
     }
 
     public static final UserLogSpec build(String action, Loggable target) {
         return new UserLogSpec()
-                .setUser(SecurityUtils.getUserOrNull())
+                .setUser(getUserOrNull())
+                .setAction(action.toString().toLowerCase())
+                .setTarget(target);
+    }
+
+    public static final UserLogSpec build(String action, UserId target) {
+        return new UserLogSpec()
+                .setUser(target)
+                .setAction(action.toString().toLowerCase())
+                .setTarget(target);
+    }
+
+    public static final UserLogSpec build(LogAction action, UserId target) {
+        return new UserLogSpec()
+                .setUser(getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
 
     public static final UserLogSpec build(LogAction action, Loggable target) {
         return new UserLogSpec()
-                .setUser(SecurityUtils.getUserOrNull())
+                .setUser(getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
+
     public static final UserLogSpec build(LogAction action, String type, Object ... id) {
         return new UserLogSpec()
-                .setUser(SecurityUtils.getUserOrNull())
+                .setUser(getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(ImmutableMap.of(type, new Object[] {id}));
     }
 
-    public UserLogSpec setUser(UserBase user) {
+    public UserLogSpec setUser(UserId user) {
         if (user != null) {
             this.user = ImmutableMap.of(
-                    "username", user.getUsername(),
+                    "username", user.getName(),
                     "id", user.getId());
         }
         return this;
@@ -100,6 +117,12 @@ public class UserLogSpec {
                 target.getTargetType(), new Object[] {target.getTargetId() });
         return this;
     }
+
+    public UserLogSpec setTarget(UserId target) {
+        this.target = ImmutableMap.of("user", new Object[] { target.getId() });
+        return this;
+    }
+
 
     public String getAction() {
         return action;

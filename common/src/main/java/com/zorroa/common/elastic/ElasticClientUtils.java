@@ -84,9 +84,10 @@ public class ElasticClientUtils {
     }
 
     private static final String REMOVE_SCRIPT =
-            "if (ctx._source.links == null) { return; }; "+
-            "if (ctx._source.links[type] == null) { return; }; "+
-            "ctx._source.links[type].removeIf({i-> i==id});";
+            "if (ctx._source.zorroa == null) { return; }; "+
+            "if (ctx._source.zorroa['links'] == null) { return; }; "+
+            "if (ctx._source.zorroa['links'][type] == null) { return; }; "+
+            "ctx._source.zorroa['links'][type].removeIf({i-> i==id});";
 
     public static void createRemoveLinkScript(Client client) {
         Map<String, Object> script = ImmutableMap.of(
@@ -101,10 +102,11 @@ public class ElasticClientUtils {
     }
 
     private static final String APPEND_SCRIPT =
-            "if (ctx._source.links == null) { ctx._source.links = [:]; };  " +
-            "if (ctx._source.links[type] == null) { ctx._source.links[type] = []; };" +
-            "ctx._source.links[type] += id; "+
-            "ctx._source.links[type] = ctx._source.links[type].unique();";
+            "if (ctx._source.zorroa == null) { ctx._source.zorroa = [:]; };  " +
+            "if (ctx._source.zorroa['links'] == null) { ctx._source.zorroa['links'] = [:]; };  " +
+            "if (ctx._source.zorroa['links'][type] == null) { ctx._source.zorroa['links'][type] = []; };" +
+            "ctx._source.zorroa['links'][type] += id; "+
+            "ctx._source.zorroa['links'][type] = ctx._source.zorroa['links'][type].unique();";
 
     public static void createAppendLinkScript(Client client) {
         Map<String, Object> script = ImmutableMap.of(

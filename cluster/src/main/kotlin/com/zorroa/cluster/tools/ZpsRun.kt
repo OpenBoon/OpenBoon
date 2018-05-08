@@ -28,7 +28,7 @@ class Args {
 }
 
 fun main(args: Array<String>) {
-    
+
     Args().let {
         JCommander(it, *args)
 
@@ -41,7 +41,7 @@ fun main(args: Array<String>) {
 
             val result = AtomicReference(TaskResultT())
 
-            if (zpsTask.id == 0) {
+            if (zpsTask.id == null) {
                 if (reaction.response != null) {
                     result.get().setResult(Json.serialize(reaction.response))
                 } else if (reaction.error != null) {
@@ -59,7 +59,7 @@ fun main(args: Array<String>) {
 private fun handleZpsReaction(client: MasterServerClient, zpsTask: ZpsTask, sharedData: SharedData, reaction: Reaction) {
 
     if (reaction.error != null) {
-        client.reportTaskErrors(zpsTask.id, ImmutableList.of(
+        client.reportTaskErrors(zpsTask.id.toString(), ImmutableList.of(
                 newTaskError(reaction.error)))
     }
 
@@ -69,12 +69,12 @@ private fun handleZpsReaction(client: MasterServerClient, zpsTask: ZpsTask, shar
         val expand = ExpandT()
         expand.setScript(Json.serialize(script))
         expand.setName(script.name)
-        client.expand(zpsTask.id, expand)
+        client.expand(zpsTask.id.toString(), expand)
     }
 
     if (reaction.stats != null) {
         val stats = reaction.stats
-        client.reportTaskStats(zpsTask.id, TaskStatsT()
+        client.reportTaskStats(zpsTask.id.toString(), TaskStatsT()
                 .setErrorCount(stats.errorCount)
                 .setSuccessCount(stats.successCount)
                 .setWarningCount(stats.warningCount))
@@ -95,12 +95,9 @@ private fun newTaskError(zpsError: ZpsError): TaskErrorT {
             .setLineNumber(zpsError.lineNumber)
             .setMethod(zpsError.method)))
 
-    if (zpsError.origin != null) {
-        error.setId(zpsError.id)
-        error.setOriginService(zpsError.origin.service)
-        error.setOriginPath(zpsError.origin.path)
-        error.setPath(zpsError.path)
-    }
+    error.setId(zpsError.id)
+    error.setPath(zpsError.path)
+
     return error
 }
 

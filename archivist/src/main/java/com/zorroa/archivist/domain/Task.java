@@ -4,6 +4,8 @@ import com.google.common.base.MoreObjects;
 import com.zorroa.common.domain.TaskState;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
+import java.util.UUID;
+
 /**
  * Created by chambers on 7/13/16.
  */
@@ -12,9 +14,9 @@ public class Task implements TaskId {
     public static final int ORDER_DEFAULT = 10;
     public static final int ORDER_INTERACTIVE = -1;
 
-    private Integer taskId;
-    private Integer parentId;
-    private Integer jobId;
+    private UUID taskId;
+    private UUID parentId;
+    private UUID jobId;
     private String name;
     private String host;
     private TaskState state;
@@ -29,22 +31,22 @@ public class Task implements TaskId {
 
     private AssetStats stats;
 
-    public int getId() {
+    public UUID getId() {
         return taskId;
     }
 
     @Override
-    public Integer getTaskId() {
+    public UUID getTaskId() {
         return taskId;
     }
 
     @Override
-    public Integer getParentTaskId() {
+    public UUID getParentTaskId() {
         return parentId;
     }
 
     @Override
-    public Integer getJobId() {
+    public UUID getJobId() {
         return jobId;
     }
 
@@ -57,12 +59,12 @@ public class Task implements TaskId {
         return this;
     }
 
-    public Task setTaskId(Integer taskId) {
+    public Task setTaskId(UUID taskId) {
         this.taskId = taskId;
         return this;
     }
 
-    public Task setJobId(Integer jobId) {
+    public Task setJobId(UUID jobId) {
         this.jobId = jobId;
         return this;
     }
@@ -130,11 +132,11 @@ public class Task implements TaskId {
         return this;
     }
 
-    public Integer getParentId() {
+    public UUID getParentId() {
         return parentId;
     }
 
-    public Task setParentId(Integer parentId) {
+    public Task setParentId(UUID parentId) {
         this.parentId = parentId;
         return this;
     }

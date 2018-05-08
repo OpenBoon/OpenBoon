@@ -82,6 +82,8 @@ interface AssetDao {
 
     fun appendLink(type: String, value: Any, assets: List<String>): Map<String, List<Any>>
 
+    fun setLinks(assetId: String, type:String, ids: Collection<Any>)
+
     fun update(assetId: String, attrs: Map<String, Any>): Long
 
     fun <T> getFieldValue(id: String, field: String): T
@@ -96,8 +98,6 @@ interface AssetDao {
     fun index(sources: List<Document>): AssetIndexResult
 
     fun index(sources: List<Document>, refresh: Boolean): AssetIndexResult
-
-    fun getElements(assetId: String, page: Pager): PagedList<Document>
 }
 
 @Repository
@@ -120,7 +120,8 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         val d = Document(
                 client.prepareGet("archivist", "asset", id)
                         .get().source)
-        return d.getAttr(field)
+        // field values never have .raw since they come from source
+        return d.getAttr(field.removeSuffix(".raw"))
     }
 
     override fun index(source: Document): Document {
@@ -233,7 +234,8 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         for (pattern in RECOVERABLE_BULK_ERRORS) {
             val matcher = pattern.matcher(error)
             if (matcher.find()) {
-                logger.warn("Removing broken field from {}: {}, {}", asset.id, matcher.group(1), error)
+                logger.warn("Removing broken field from {}: {}={}, {}", asset.id, matcher.group(1),
+                        asset.getAttr(matcher.group(1)), error)
                 return asset.removeAttr(matcher.group(1))
             }
         }
@@ -245,7 +247,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
 
-        val link = ImmutableMap.of("type", type, "id", value)
+        val link = ImmutableMap.of("type", type, "id", value.toString())
         val bulkRequest = client.prepareBulk()
         for (id in assets) {
             val updateBuilder = client.prepareUpdate(index, getType(), id)
@@ -275,7 +277,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         if (type.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
-        val link = ImmutableMap.of("type", type, "id", value)
+        val link = ImmutableMap.of("type", type, "id", value.toString())
 
         val bulkRequest = client.prepareBulk()
         for (id in assets) {
@@ -303,6 +305,17 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
 
         return result
     }
+
+    override fun setLinks(assetId: String, type:String, ids: Collection<Any>) {
+        if (type.contains(".")) {
+            throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
+        }
+        val doc = mapOf("zorroa" to mapOf("links" to mapOf(type to ids)))
+        client.prepareUpdate(index, getType(), assetId)
+                .setDoc(doc)
+                .get()
+    }
+
 
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
         val asset = get(assetId)
@@ -353,7 +366,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
              * fields.
              */
             val result = client.prepareGet(index, type, id)
-                    .setFetchSource(arrayOf("permissions", "links", "origin"), arrayOf())
+                    .setFetchSource(arrayOf("zorroa"), arrayOf())
                     .get().source
             result ?: mutableMapOf() // result has to be mutable.
         } catch (e: ArrayIndexOutOfBoundsException) {
@@ -406,14 +419,6 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), page, MAPPER)
 
-    }
-
-    override fun getElements(assetId: String, page: Pager): PagedList<Document> {
-        return elastic.page(client.prepareSearch(index)
-                .setTypes("element")
-                .setQuery(QueryBuilders.hasParentQuery("asset",
-                        QueryBuilders.termQuery("_id", assetId)))
-                .setVersion(true), page, MAPPER)
     }
 
     override fun getMapping(): Map<String, Any> {

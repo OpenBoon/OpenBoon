@@ -12,8 +12,10 @@ import com.zorroa.archivist.domain.Setting
 import com.zorroa.archivist.domain.SettingsFilter
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.repository.SettingsDao
-import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.sdk.security.Groups
+import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.client.exception.EntityNotFoundException
 import org.slf4j.LoggerFactory
@@ -97,8 +99,7 @@ class SettingsServiceImpl @Autowired constructor(
     }
 
     override fun getAll(filter: SettingsFilter): List<Setting> {
-        if (!SecurityUtils.hasPermission("group::administrator",
-                "group::developer")) {
+        if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
             filter.isLiveOnly = true
         }
         try {
@@ -120,13 +121,13 @@ class SettingsServiceImpl @Autowired constructor(
         val filter = SettingsFilter()
         filter.count = 1
         filter.names = ImmutableSet.of(key)
-        if (!SecurityUtils.hasPermission("group::administrator", "group::developer")) {
+        if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
             filter.isLiveOnly = true
         }
         try {
             return getAll(filter)[0]
         } catch (e: IndexOutOfBoundsException) {
-            throw EntityNotFoundException("Setting not found: " + key, e)
+            throw EntityNotFoundException("Setting not found: $key", e)
         }
 
     }
@@ -160,7 +161,7 @@ class SettingsServiceImpl @Autowired constructor(
     fun set(key: String, value: String?, invalidate: Boolean): Boolean {
         val validator = checkValid(key, value)
 
-        logger.info("{} changed to {} by {}", key, value, SecurityUtils.getUsername())
+        logger.info("{} changed to {} by {}", key, value, getUsername())
 
         val result: Boolean
         if (value == null) {
@@ -261,14 +262,11 @@ class SettingsServiceImpl @Autowired constructor(
          * A whitelist of property names that can be set via the API.
          */
         private val WHITELIST = ImmutableMap.builder<String, SettingValidator>()
-                .put("archivist.search.keywords.static.fields",
+                .put("archivist.watermark.font-name", SettingValidator(null))
+                .put("archivist.search.keywords.boost",
                         SettingValidator(Regex("([\\w\\.]+:[\\d\\.]+)(,[\\w\\.]+:[\\d\\.]+)*")))
-                .put("archivist.search.keywords.auto.fields",
-                        SettingValidator(Regex("([\\w\\.]+)(,[\\w\\.]+)*")))
-                .put("archivist.search.keywords.auto.enabled",
-                        SettingValidator(booleanValue))
-                .put("archivist.export.dragTemplate",
-                        SettingValidator(null))
+                .put("archivist.export.maxAssetCount",
+                        SettingValidator(Regex("[\\d]+"), allowNull = true))
                 .put("archivist.export.videoStreamExtensionFallbackOrder",
                         SettingValidator(null))
                 .put("archivist.search.sortFields",
@@ -280,8 +278,12 @@ class SettingsServiceImpl @Autowired constructor(
                         SettingValidator(numericValue, emit=watermarkSettingsChanged))
                 .put("archivist.watermark.font-size",
                         SettingValidator(numericValue, emit=watermarkSettingsChanged))
+                .put("curator.thumbnails.drag-template",
+                        SettingValidator(null))
+                .put("curator.lightbox.zoom-min",
+                        SettingValidator(Regex("[\\d]+"), allowNull = true))
+                .put("curator.lightbox.zoom-max",
+                        SettingValidator(Regex("[\\d]+"), allowNull = true))
                 .build()
     }
-
-
 }

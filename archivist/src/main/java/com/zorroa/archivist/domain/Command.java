@@ -4,13 +4,14 @@ import com.google.common.base.MoreObjects;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Command object.  Note: progress field is dynamic.
  */
 public class Command {
 
-    private int id;
+    private UUID id;
     private UserBase user;
     private CommandType type;
     private List<Object> args;
@@ -23,11 +24,11 @@ public class Command {
 
     private Long duration;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Command setId(int id) {
+    public Command setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -134,8 +135,8 @@ public class Command {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Command command = (Command) o;
-        return getId() == command.getId();
+        Command that = (Command) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override

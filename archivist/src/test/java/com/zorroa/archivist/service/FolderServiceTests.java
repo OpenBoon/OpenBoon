@@ -6,7 +6,9 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -20,6 +22,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -39,6 +42,27 @@ public class FolderServiceTests extends AbstractTest {
     public void init() {
         addTestAssets("set04/standard");
         refreshIndex();
+    }
+
+    @Test
+    public void testSetAssets() {
+
+        List<UUID> folders = Lists.newArrayList();
+        for (int i=0; i<10; i++) {
+            FolderSpec builder = new FolderSpec("Folder" + i);
+            Folder folder = folderService.create(builder);
+            folders.add(folder.getId());
+        }
+
+        List<Document> assets = assetService.getAll(Pager.first(1)).getList();
+        assertEquals(1, assets.size());
+        Document doc = assets.get(0);
+
+        folderService.setFoldersForAsset(doc.getId(), folders);
+        refreshIndex();
+
+        doc = assetService.get(doc.getId());
+        assertEquals(10, doc.getAttr("zorroa.links.folder", List.class).size());
     }
 
     @Test
@@ -63,6 +87,8 @@ public class FolderServiceTests extends AbstractTest {
         folderService.addAssets(folder, assetService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
+        refreshIndex();
+
         folderService.addAssets(folder, assetService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
@@ -70,7 +96,8 @@ public class FolderServiceTests extends AbstractTest {
 
         PagedList<Document> assets = assetService.getAll(Pager.first());
         for (Document a: assets) {
-            assertEquals(1, ((List) a.getAttr("links.folder")).size());
+            logger.info("{}", a.getAttr("zorroa.links.folder", List.class));
+            assertEquals(1, ((List) a.getAttr("zorroa.links.folder")).size());
         }
     }
 
@@ -120,8 +147,8 @@ public class FolderServiceTests extends AbstractTest {
         refreshIndex(2000);
 
         assertEquals(2, searchService.search(new AssetSearch(
-                new AssetFilter().addToTerms("links.folder", folder.getId()))).getHits().getTotalHits());
-        searchService.invalidateFields();
+                new AssetFilter().addToTerms("zorroa.links.folder", folder.getId()))).getHits().getTotalHits());
+        fieldService.invalidateFields();
         assertEquals(2, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
 
         assertTrue(results.get("failed").isEmpty());
@@ -134,7 +161,7 @@ public class FolderServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(0, searchService.search(new AssetSearch(
-                new AssetFilter().addToTerms("links.folder", folder.getId()))).getHits().getTotalHits());
+                new AssetFilter().addToTerms("zorroa.links.folder", folder.getId()))).getHits().getTotalHits());
         assertEquals(0, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
 
     }
@@ -157,14 +184,14 @@ public class FolderServiceTests extends AbstractTest {
         folderService.get(folder.getId());
 
         folderService.setAcl(folder, new Acl().addEntry(
-                permissionService.getPermission("group::manager"),
+                permissionService.getPermission(Groups.MANAGER),
                 Access.Read, Access.Write, Access.Export), false, false);
         folderService.get(folder.getId());
     }
 
     @Test(expected=ArchivistWriteException.class)
     public void testSetAclFailure() {
-        authenticate("manager");
+        authenticate("librarian");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
@@ -174,14 +201,14 @@ public class FolderServiceTests extends AbstractTest {
          * are taking away write/export permissions from ourself.
          */
         folderService.setAcl(folder, new Acl().addEntry(
-                permissionService.getPermission("group::manager"),
+                permissionService.getPermission(Groups.LIBRARIAN),
                 Access.Read), false, false);
         folderService.get(folder.getId());
     }
 
     @Test(expected=ArchivistWriteException.class)
     public void testSetAclFailureDoesntHavePermission() {
-        authenticate("manager");
+        authenticate("librarian");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
@@ -191,41 +218,42 @@ public class FolderServiceTests extends AbstractTest {
          * are taking away write/export permissions from ourself.
          */
         folderService.setAcl(folder, new Acl().addEntry(
-                permissionService.getPermission("group::administrator"),
+                permissionService.getPermission(Groups.ADMIN),
                 Access.Read), false, false);
         folderService.get(folder.getId());
     }
 
-    @Test(expected=EmptyResultDataAccessException.class)
+    @Test(expected=ArchivistWriteException.class)
     public void testGetFolderWithoutAcl() {
-        authenticate("manager");
+        authenticate("librarian");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
 
         // use the DAO so don't fail the remove access from self check.
         folderDao.setAcl(folder.getId(), new Acl().addEntry(
-                permissionService.getPermission("group::administrator"), Access.Read));
+                permissionService.getPermission(Groups.ADMIN), Access.Read));
         folderService.invalidate(folder);
         folderService.get(folder.getId());
     }
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testCreateWithReadAcl() {
-        authenticate("manager");
-        FolderSpec builder = new FolderSpec("Folder");
+        authenticate("librarian");
+        FolderSpec builder = new FolderSpec("Folder", folderService.get("/Library"));
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),
-                new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Read));
+                new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Read));
+        folderService.invalidate(folder);
         folderService.get(folder.getId());
     }
 
     @Test(expected=ArchivistWriteException.class)
     public void testAddAssetsWithWriteAcl() {
-        authenticate("manager");
-        FolderSpec builder = new FolderSpec("Folder");
+        authenticate("librarian");
+        FolderSpec builder = new FolderSpec("Folder", folderService.get("/Library"));
         Folder folder = folderService.create(builder);
-        Acl acl = new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Write);
+        Acl acl = new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write);
         folderDao.setAcl(folder.getId(), acl);
         folder.setAcl(acl);
 
@@ -235,10 +263,10 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testDeleteFolderWithWriteAcl() {
-        authenticate("manager");
-        FolderSpec builder = new FolderSpec("Folder");
+        authenticate("librarian");
+        FolderSpec builder = new FolderSpec("Folder", folderService.get("/Library"));
         Folder folder = folderService.create(builder);
-        Acl acl = new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Write);
+        Acl acl = new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write);
         folder.setAcl(acl);
         folderDao.setAcl(folder.getId(), acl);
         folderService.delete(folder);
@@ -246,12 +274,21 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testUpdateFolderWithWriteAcl() {
-        authenticate("manager");
-        FolderSpec builder = new FolderSpec("Folder");
+        authenticate("librarian");
+        FolderSpec builder = new FolderSpec("Folder", folderService.get("/Library"));
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),
-                new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Write));
+                new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write));
         folderService.update(folder.getId(), folder.setName("biblo"));
+    }
+
+    @Test
+    public void testRenameUserFolder() {
+        authenticate("librarian");
+        User user = userService.get("librarian");
+        assertFalse(folderService.exists("/Users/foo"));
+        assertTrue(folderService.renameUserFolder(user, "foo"));
+        assertTrue(folderService.exists("/Users/foo"));
     }
 
     @Test
@@ -316,7 +353,7 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder1c = folderService.create(new FolderSpec("test1c", folder1b));
 
         Folder folder = folderService.get("/test1/test1a/test1b/test1c");
-        assertEquals(folder1b.getId(), folder.getParentId().intValue());
+        assertEquals(folder1b.getId(), folder.getParentId());
         assertEquals(folder1c.getName(), folder.getName());
     }
 
@@ -360,7 +397,7 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(ok);
 
         Folder revised = folderService.get(folder2.getId());
-        assertEquals(folder1.getId(), revised.getParentId().intValue());
+        assertEquals(folder1.getId(), revised.getParentId());
 
         List<Folder> folders = folderService.getAllDescendants(Lists.newArrayList(folder1), false, false);
         assertTrue(folders.contains(folder2));
@@ -401,8 +438,8 @@ public class FolderServiceTests extends AbstractTest {
         Folder library = folderService.get("/Library");
         Folder orig = folderService.create(new FolderSpec("orig", library));
 
-        assertTrue(orig.getAcl().hasAccess(permissionService.getPermission("group::manager"), Access.Write));
-        assertTrue(orig.getAcl().hasAccess(permissionService.getPermission("group::everyone"), Access.Read));
+        assertTrue(orig.getAcl().hasAccess(permissionService.getPermission(Groups.LIBRARIAN), Access.Write));
+        assertTrue(orig.getAcl().hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read));
         assertEquals(2, orig.getAcl().size());
     }
 
@@ -410,7 +447,6 @@ public class FolderServiceTests extends AbstractTest {
     public void testMoveFolderWithPermmissionChange() {
 
         Folder library = folderService.get("/Library");
-
         Folder admin = folderService.get("/Users/admin");
         Folder moving = folderService.create(new FolderSpec("folder_to_move", admin));
 
@@ -422,9 +458,9 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(folderService.update(moving.getId(), moving.setParentId(library.getId())));
         Acl acl = folderDao.getAcl(moving.getId());
 
-        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("group::manager"), Access.Write));
-        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("group::everyone"), Access.Read));
-        assertEquals(2, moving.getAcl().size());
+        assertTrue(acl.hasAccess(permissionService.getPermission(Groups.LIBRARIAN), Access.Write));
+        assertTrue(acl.hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read));
+        assertEquals(2, acl.size());
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -566,7 +602,7 @@ public class FolderServiceTests extends AbstractTest {
 
         assertTrue(folderService.isDescendantOf(folder3, folder1));
         assertFalse(folderService.isDescendantOf(folder1, folder3));
-        assertTrue(folderService.isDescendantOf(folder3, folderService.get(0)));
+        assertTrue(folderService.isDescendantOf(folder3, folderService.get(Folder.ROOT_ID)));
 
     }
 
@@ -579,6 +615,19 @@ public class FolderServiceTests extends AbstractTest {
 
         List<Folder> folders = folderService.getAllAncestors(folder3, true, false);
         logger.info("{}", folders);
+        // TODO an assertiion
+    }
 
+    @Test
+    public void getFolderByPathWithSpaces() {
+        Folder folder1 = folderService.create(new FolderSpec("  f1  "));
+        Folder folder2 = folderService.get("/  f1  ");
+        assertEquals(folder1, folder2);
+    }
+
+    @Test
+    public void testCreateUserFolder() {
+        Folder f = folderService.createUserFolder("gandalf", permissionService.getPermission("user::user"));
+        assertTrue(f.getAcl().hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read));
     }
 }

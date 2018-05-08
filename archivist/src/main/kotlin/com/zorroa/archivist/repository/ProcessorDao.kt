@@ -15,8 +15,8 @@ import com.zorroa.sdk.processor.ProcessorType
 import com.zorroa.sdk.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface ProcessorDao {
 
@@ -27,7 +27,7 @@ interface ProcessorDao {
 
     fun get(name: String): Processor
 
-    fun get(id: Int): Processor
+    fun get(id: UUID): Processor
 
     fun refresh(`object`: Processor): Processor
 
@@ -37,9 +37,9 @@ interface ProcessorDao {
 
     fun getAll(page: Pager): PagedList<Processor>
 
-    fun update(id: Int, spec: Processor): Boolean
+    fun update(id: UUID, spec: Processor): Boolean
 
-    fun delete(id: Int): Boolean
+    fun delete(id: UUID): Boolean
 
     fun deleteAll(plugin: Plugin): Boolean
 
@@ -82,32 +82,36 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
         val module = spec.className.substring(0, spec.className.lastIndexOf('.'))
 
         val time = System.currentTimeMillis()
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_processor"))
-            ps.setInt(1, plugin.id)
-            ps.setString(2, spec.className)
-            ps.setString(3, shortName)
-            ps.setString(4, module)
-            ps.setInt(5, spec.type.ordinal)
-            ps.setString(6, if (spec.description == null) shortName else spec.description)
-            ps.setString(7, Json.serializeToString(spec.display, "[]"))
-            ps.setString(8, Json.serializeToString(spec.filters, "[]"))
-            ps.setString(9, Json.serializeToString(spec.fileTypes, "[]"))
-            ps.setLong(10, time)
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, plugin.id)
+            ps.setString(3, spec.className)
+            ps.setString(4, shortName)
+            ps.setString(5, module)
+            ps.setInt(6, spec.type.ordinal)
+            ps.setString(7, if (spec.description == null) shortName else spec.description)
+            ps.setObject(8, Json.serializeToString(spec.display, "[]"))
+            ps.setObject(9, Json.serializeToString(spec.filters, "[]"))
+            ps.setObject(10, Json.serializeToString(spec.fileTypes, "[]"))
             ps.setLong(11, time)
+            ps.setLong(12, time)
             ps
-        }, keyHolder)
-        val id = keyHolder.key.toInt()
+        })
         return get(id)
     }
 
     override operator fun get(name: String): Processor {
-        return jdbc.queryForObject<Processor>(GET + " WHERE processor.str_name=?", MAPPER, name)
+        try {
+            return jdbc.queryForObject<Processor>("$GET WHERE processor.str_name=?", MAPPER, name)
+        } catch (e:EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("Unable to find processor $name", 1);
+        }
     }
 
-    override operator fun get(id: Int): Processor {
-        return jdbc.queryForObject<Processor>(GET + " WHERE processor.pk_processor=?", MAPPER, id)
+    override operator fun get(id: UUID): Processor {
+        return jdbc.queryForObject<Processor>("$GET WHERE processor.pk_processor=?", MAPPER, id)
     }
 
     override fun refresh(`object`: Processor): Processor {
@@ -115,7 +119,7 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
     }
 
     override fun getAll(): List<Processor> {
-        return jdbc.query(GET + " ORDER BY processor.str_short_name", MAPPER)
+        return jdbc.query("$GET ORDER BY processor.str_short_name", MAPPER)
     }
 
     override fun getAll(filter: ProcessorFilter): List<Processor> {
@@ -138,11 +142,11 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
                         page.size, page.from))
     }
 
-    override fun update(id: Int, spec: Processor): Boolean {
+    override fun update(id: UUID, spec: Processor): Boolean {
         return false
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         return jdbc.update("DELETE FROM processor WHERE processor.pk_processor=?", id) > 0
     }
 
@@ -167,6 +171,7 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("processor",
+                "pk_processor",
                 "pk_plugin",
                 "str_name",
                 "str_short_name",
@@ -181,7 +186,7 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
 
         private val MAPPER = RowMapper<Processor> { rs, _ ->
             val p = Processor()
-            p.id = rs.getInt("pk_processor")
+            p.id = rs.getObject("pk_processor") as UUID
             p.name = rs.getString("str_name")
             p.shortName = rs.getString("str_short_name")
             p.module = rs.getString("str_module")
@@ -192,7 +197,7 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
             })
             p.filters = Json.deserialize<List<String>>(rs.getString("json_filters"), Json.LIST_OF_STRINGS)
             p.fileTypes = Json.deserialize<Set<String>>(rs.getString("json_file_types"), Json.SET_OF_STRINGS)
-            p.pluginId = rs.getInt("pk_plugin")
+            p.pluginId = rs.getObject("pk_plugin") as UUID
             p.pluginLanguage = rs.getString("plugin_lang")
             p.pluginVersion = rs.getString("plugin_ver")
             p.pluginName = rs.getString("plugin_name")

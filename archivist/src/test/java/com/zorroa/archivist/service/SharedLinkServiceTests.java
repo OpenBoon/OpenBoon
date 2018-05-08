@@ -8,6 +8,8 @@ import com.zorroa.archivist.domain.SharedLinkSpec;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.zorroa.archivist.security.UtilsKt.getUserId;
+
 /**
  * Created by chambers on 7/11/17.
  */
@@ -26,7 +28,7 @@ public class SharedLinkServiceTests extends AbstractTest {
         SharedLinkSpec spec = new SharedLinkSpec();
         spec.setSendEmail(true);
         spec.setState(ImmutableMap.of("foo", "bar"));
-        spec.setUserIds(ImmutableSet.of(1));
+        spec.setUserIds(ImmutableSet.of(getUserId()));
         spec.setExpireTimeMs(1L);
         SharedLink link = sharedLinkService.create(spec);
 

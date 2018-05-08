@@ -11,10 +11,9 @@ class RequestServiceTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = RequestSpec()
-        spec.folderId = folderService.get("/Library")!!.id
-        spec.comment = "foo"
-        spec.type = RequestType.Export
+        val spec = RequestSpec(folderService.get("/Library")!!.id,
+                RequestType.Export,
+                "foo")
 
         val req = requestService.create(spec)
         assertEquals(spec.folderId, req.folderId)

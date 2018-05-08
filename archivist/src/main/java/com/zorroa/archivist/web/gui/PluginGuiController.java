@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.UUID;
+
 /**
  * Created by chambers on 8/17/16.
  */
@@ -31,7 +33,7 @@ public class PluginGuiController {
     }
 
     @RequestMapping("/admin/gui/plugins/{id}")
-    public String plugins(Model model, @PathVariable int id) {
+    public String plugins(Model model, @PathVariable UUID id) {
         Plugin plugin = pluginService.getPlugin(id);
         standardModel(model);
         model.addAttribute("plugin", plugin);
@@ -40,7 +42,7 @@ public class PluginGuiController {
     }
 
     @RequestMapping("/admin/gui/plugins/{pid}/processors/{id}")
-    public String plugins(Model model, @PathVariable int pid, @PathVariable int id) {
+    public String plugins(Model model, @PathVariable UUID pid, @PathVariable UUID id) {
         standardModel(model);
         Plugin plugin = pluginService.getPlugin(pid);
 

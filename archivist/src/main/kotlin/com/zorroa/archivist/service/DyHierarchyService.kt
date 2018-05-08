@@ -6,7 +6,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.domain.Tuple
 import com.zorroa.sdk.search.AssetScript
@@ -29,7 +29,7 @@ import java.util.*
 
 interface DyHierarchyService {
 
-    fun update(id: Int, spec: DyHierarchy): Boolean
+    fun update(id: UUID, spec: DyHierarchy): Boolean
 
     fun delete(dyhi: DyHierarchy): Boolean
 
@@ -47,7 +47,7 @@ interface DyHierarchyService {
      */
     fun generate(dyhi: DyHierarchy): Int
 
-    fun get(id: Int): DyHierarchy
+    fun get(id: UUID): DyHierarchy
 
     fun get(folder: Folder): DyHierarchy
 
@@ -96,7 +96,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
     internal var FORCE_RAW_TYPES: Set<DyHierarchyLevelType> = EnumSet.of(DyHierarchyLevelType.Attr)
 
     @Transactional
-    override fun update(id: Int, spec: DyHierarchy): Boolean {
+    override fun update(id: UUID, spec: DyHierarchy): Boolean {
         val current = dyHierarchyDao.get(id)
 
         if (!dyHierarchyDao.update(id, spec)) {
@@ -184,7 +184,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         return dyhi
     }
 
-    override fun get(id: Int): DyHierarchy {
+    override fun get(id: UUID): DyHierarchy {
         return dyHierarchyDao.get(id)
     }
 
@@ -200,17 +200,17 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
     override fun submitGenerateAll(refresh: Boolean) {
         folderTaskExecutor.execute(
-                UniqueRunnable("dyhi_run_all", SecureRunnable({
+                UniqueRunnable("dyhi_run_all", SecureRunnable(SecurityContextHolder.getContext(), {
                     if (refresh) {
                         ElasticClientUtils.refreshIndex(client)
                     }
                     generateAll()
-                }, SecurityContextHolder.getContext())))
+                })))
     }
 
     override fun submitGenerate(dyhi: DyHierarchy) {
         folderTaskExecutor.execute(UniqueRunnable("dyhi_run_" + dyhi.id,
-                SecureRunnable({ generate(dyhi) }, SecurityContextHolder.getContext())))
+                SecureRunnable(SecurityContextHolder.getContext(), { generate(dyhi) })))
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -275,7 +275,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 logger.warn("Failed to delete unused folders: {}, {}", unusedFolders, e)
             }
 
-            logger.info("{} created by {}, {} folders", dyhi, SecurityUtils.getUsername(), folders.count)
+            logger.info("{} created by {}, {} folders", dyhi, getUsername(), folders.count)
             return folders.count
         } catch (e: Exception) {
             logger.warn("Failed to generate dynamic hierarchy,", e)
@@ -413,7 +413,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         private val stack = Stack<Folder>()
         private val stash = Stack<Folder>()
         var count = 0
-        val folderIds: MutableSet<Int> = Sets.newHashSetWithExpectedSize(50)
+        val folderIds: MutableSet<UUID> = Sets.newHashSetWithExpectedSize(50)
 
         init {
             this.stack.push(root)

@@ -7,11 +7,8 @@ import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FieldDao;
-import com.zorroa.sdk.domain.AssetIndexSpec;
-import com.zorroa.sdk.domain.Document;
-import com.zorroa.sdk.domain.PagedList;
-import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.processor.Element;
+import com.zorroa.archivist.sdk.security.Groups;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
@@ -29,8 +26,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import static com.zorroa.archivist.security.UtilsKt.getPermissionsFilter;
 import static org.junit.Assert.*;
 
 /**
@@ -44,17 +44,96 @@ public class SearchServiceTests extends AbstractTest {
     @Before
     public void init() {
         cleanElastic();
-        searchService.invalidateFields();
+
+        fieldService.invalidateFields();
+    }
+
+    public void testScanAndScrollClamp() throws IOException {
+
+        addTestAssets("set04");
+        refreshIndex();
+
+        int count = 0;
+        AssetSearch search = new AssetSearch();
+        for (Document doc: searchService.scanAndScroll(search, 2, true)) {
+            count++;
+        }
+        assertEquals(2, count);
+    }
+
+    @Test(expected = java.lang.IllegalArgumentException.class)
+    public void testScanAndScrollError() throws IOException {
+
+        addTestAssets("set04");
+        refreshIndex();
+
+        int count = 0;
+        AssetSearch search = new AssetSearch();
+        searchService.scanAndScroll(search, 2, false);
     }
 
     @Test
-    public void testSearchPermissionsMiss() throws IOException {
+    public void testSearchExportPermissionsMiss() throws IOException {
 
         authenticate("user");
         Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addToPermissions("group:test", 1);
+        source.addToPermissions(perm.getAuthority(), 1);
+        Document doc = assetService.index(source);
+
+        refreshIndex();
+
+        AssetSearch search = new AssetSearch().setQuery("beer").setAccess(Access.Export);
+        assertEquals(0, searchService.search(search).getHits().getTotalHits());
+    }
+
+    /**
+     * A user with zorroa::export can export anything.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testSearchExportPermissionOverrideHit() throws IOException {
+        User user = userService.get("user");
+        userService.addPermissions(user, ImmutableList.of(
+                permissionService.getPermission("zorroa::export")));
+        authenticate("user");
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         assetService.index(source);
+        refreshIndex();
+        AssetSearch search = new AssetSearch().setQuery("source.filename:beer").setAccess(Access.Export);
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+        assertNull(getPermissionsFilter(search.getAccess()));
+    }
+
+    @Test
+    public void testSearchPermissionsExportHit() throws IOException {
+        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
+        User user = userService.get("user");
+        userService.addPermissions(user, ImmutableList.of(perm));
+        authenticate("user");
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addToPermissions(perm.getAuthority(), Access.Export.value);
+        assetService.index(source);
+        refreshIndex();
+
+        AssetSearch search = new AssetSearch()
+                .setAccess(Access.Export)
+                .setQuery("source.filename:beer");
+        assertNotNull(getPermissionsFilter(search.getAccess()));
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+
+    }
+
+    @Test
+    public void testSearchPermissionsReadMiss() throws IOException {
+
+        authenticate("user");
+        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addToPermissions(perm.getAuthority(), 1);
+        Document doc = assetService.index(source);
 
         refreshIndex();
 
@@ -63,17 +142,15 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testSearchPermissionsHit() throws IOException {
+    public void testSearchPermissionsReadHit() throws IOException {
         authenticate("user");
-
-        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", "captain");
-        source.addToPermissions("group::everyone", 1);
+        source.addToKeywords("media", "captain");
+        source.addToPermissions(Groups.EVERYONE, 1);
         assetService.index(source);
         refreshIndex();
 
-        AssetSearch search = new AssetSearch();
+        AssetSearch search = new AssetSearch().setQuery("captain");
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
@@ -84,7 +161,7 @@ public class SearchServiceTests extends AbstractTest {
         Folder folder1 = folderService.create(builder);
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", source.getAttr("source.filename", String.class));
+       source.addToKeywords("media", source.getAttr("source.filename", String.class));
         Document asset1 = assetService.index(source);
         refreshIndex(100);
 
@@ -103,7 +180,7 @@ public class SearchServiceTests extends AbstractTest {
         Folder folder1 = folderService.create(builder);
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", source.getAttr("source.filename", String.class));
+       source.addToKeywords("media", source.getAttr("source.filename", String.class));
         Document asset1 = assetService.index(source);
         refreshIndex(100);
 
@@ -151,10 +228,10 @@ public class SearchServiceTests extends AbstractTest {
         Folder folder3 = folderService.create(builder);
 
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source1.addKeywords("source", source1.getAttr("source", SourceSchema.class).getFilename());
+        source1.addToKeywords("media", source1.getAttr("source", SourceSchema.class).getFilename());
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
-        source2.addKeywords("source", source2.getAttr("source", SourceSchema.class).getFilename());
+        source2.addToKeywords("media", source2.getAttr("source", SourceSchema.class).getFilename());
 
         Document asset1 = assetService.index(source1);
         Document asset2 = assetService.index(source2);
@@ -188,7 +265,7 @@ public class SearchServiceTests extends AbstractTest {
         Files.touch(new File(filepath));
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", "captain");
+       source.addToKeywords("media", "captain");
 
         Document a = assetService.index(source);
         refreshIndex();
@@ -202,14 +279,15 @@ public class SearchServiceTests extends AbstractTest {
     public void testTermSearch() throws IOException {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", "captain", "america");
+        source.addToKeywords("media","captain", "america");
 
         assetService.index(source);
+        logger.info(Json.prettyString(source));
         refreshIndex();
 
         int count = 0;
         for (Document a: searchService.search(Pager.first(), new AssetSearch().setFilter(
-                new AssetFilter().addToTerms("keywords.source", "captain")))) {
+                new AssetFilter().addToTerms("media.keywords", "captain")))) {
             count++;
         }
         assertTrue(count > 0);
@@ -229,10 +307,10 @@ public class SearchServiceTests extends AbstractTest {
         Folder folder3 = folderService.create(builder);
 
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source1.addKeywords("source", "captain");
+        source1.addToKeywords("media", "captain");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
-        source2.addKeywords("source", source2.getAttr("source", SourceSchema.class).getFilename());
+        source2.addToKeywords("media", source2.getAttr("source", SourceSchema.class).getFilename());
 
         assetService.index(source1);
         assetService.index(source2);
@@ -260,7 +338,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", source.getAttr("source", SourceSchema.class).getFilename());
+        source.addToKeywords("media", source.getAttr("source", SourceSchema.class).getFilename());
 
         assetService.index(source);
         refreshIndex();
@@ -296,9 +374,9 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testHighConfidenceSearch() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zipzoom");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+       source.addToKeywords("media", "zipzoom");
+        assetService.index(source);
         refreshIndex();
 
         /*
@@ -315,9 +393,9 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testNoConfidenceSearch() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source","zipzoom");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+       source.addToKeywords("media","zipzoom");
+        assetService.index(source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -328,42 +406,46 @@ public class SearchServiceTests extends AbstractTest {
     public void testSearchResponseFields() throws IOException {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", "zoolander");
-        source.addToLinks("folder", 123);
-        source.addToLinks("folder", 456);
+        source.addToKeywords("media", "zoolander");
+        source.addToLinks("folder", "abc123");
+        source.addToLinks("folder", "abc456");
         assetService.index(source);
         refreshIndex();
 
         SearchResponse response = searchService.search(new AssetSearch("zoolander"));
         assertEquals(1, response.getHits().getTotalHits());
         Map<String, Object> doc = response.getHits().getAt(0).getSource();
-        ArrayList<Integer> folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
+        Document _doc = new Document(doc);
+
+        List<String> folders = _doc.getAttr("zorroa.links.folder", List.class);
         assertEquals(2, folders.size());
 
         response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"keywords*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
-        assertNull(doc.get("links"));
+        assertNull(doc.get("zorroa.links"));
 
-        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"links.folder"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"zorroa.links.folder"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
-        folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
+        _doc = new Document(doc);
+        folders = folders = _doc.getAttr("zorroa.links.folder", List.class);
         assertEquals(2, folders.size());
 
-        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"links*"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"zorroa.links*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
-        folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
+        _doc = new Document(doc);
+        folders = folders = _doc.getAttr("zorroa.links.folder", List.class);
         assertEquals(2, folders.size());
     }
 
     @Test
     public void testQueryWildcard() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.setAttr("media.keywords", ImmutableList.of("source", "zoolander"));
+        assetService.index(source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -425,9 +507,9 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testQueryMinusTerm() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander", "beer");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+       source.addToKeywords("media", "zoolander", "beer");
+        assetService.index(source);
         refreshIndex();
 
         assertEquals(0, searchService.search(
@@ -437,9 +519,9 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testQueryPlusTerm() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander", "beer");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+       source.addToKeywords("media", "zoolander", "beer");
+        assetService.index(source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -449,9 +531,9 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testQueryExactTerm() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addToKeywords("media", "zoolander");
+        assetService.index(source);
         refreshIndex();
 
         assertEquals(0, searchService.search(
@@ -462,23 +544,24 @@ public class SearchServiceTests extends AbstractTest {
 
     @Test
     public void testQueryFuzzyTerm() throws IOException {
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+       source.addToKeywords("media", "zooland");
+        assetService.index(source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar~")).getHits().getTotalHits());
+                new AssetSearch("zoolind~")).getHits().getTotalHits());
     }
 
     @Test
-    public void testStaticFields() {
-        settingsService.set("archivist.search.keywords.static.fields", "foo:1,bar:2");
-        searchService.invalidateFields();
+    public void testBoostFields() {
+        settingsService.set("archivist.search.keywords.boost", "foo:1,bar:2");
+        fieldService.invalidateFields();
 
-        Map<String, Set<String>> fields = searchService.getFieldMap("asset");
-        assertTrue(fields.get("keywords").contains("foo"));
-        assertTrue(fields.get("keywords").contains("bar"));
+        Map<String, Set<String>> fields = fieldService.getFields("asset");
+        logger.info(Json.prettyString(fields));
+        assertTrue(fields.get("keywords-boost").contains("foo:1"));
+        assertTrue(fields.get("keywords-boost").contains("bar:2"));
     }
 
     @Test
@@ -487,18 +570,19 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
-        source.setAttr("foo.byte", "AAFFGG");
+        source.setAttr("foo.shash", "AAFFGG");
+        source.setAttr("media.clip.parent", "abc123");
 
         assetService.index(source);
         refreshIndex();
 
-        Map<String, Set<String>> fields = searchService.getFields("asset");
+        Map<String, Set<String>> fields = fieldService.getFields("asset");
         assertTrue(fields.get("date").size() > 0);
         assertTrue(fields.get("string").size() > 0);
-        assertTrue(fields.get("integer").size() > 0);
         assertTrue(fields.get("point").size() > 0);
-        assertTrue(fields.get("hash").size() > 0);
-        assertTrue(fields.get("keywords-auto").contains("foo.keywords"));
+        assertTrue(fields.get("similarity").size() > 0);
+        assertTrue(fields.get("id").size() > 0);
+        assertTrue(fields.get("keywords").contains("foo.keywords"));
     }
 
     @Test
@@ -507,14 +591,14 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
-        source.setAttr("foo.byte", "AAFFGG");
+        source.setAttr("foo.shash", "AAFFGG");
 
         assetService.index(source);
         refreshIndex();
-        searchService.updateField(new HideField("foo.keywords", true));
+        fieldService.updateField(new HideField("foo.keywords", true));
 
-        Map<String, Set<String>> fields = searchService.getFields("asset");
-        assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
+        Map<String, Set<String>> fields = fieldService.getFields("asset");
+        assertFalse(fields.get("keywords-boost").contains("foo.keywords"));
         assertFalse(fields.get("string").contains("foo.keywords"));
     }
 
@@ -524,14 +608,14 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
-        source.setAttr("foo.byte", "AAFFGG");
+        source.setAttr("foo.shash", "AAFFGG");
 
         assetService.index(source);
         refreshIndex();
-        searchService.updateField(new HideField("foo.", true));
+        fieldService.updateField(new HideField("foo.", true));
 
-        Map<String, Set<String>> fields = searchService.getFields("asset");
-        assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
+        Map<String, Set<String>> fields = fieldService.getFields("asset");
+        assertFalse(fields.get("keywords-boost").contains("foo.keywords"));
         assertFalse(fields.get("string").contains("foo.keywords"));
     }
 
@@ -639,7 +723,7 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testHammingDistanceFilterWithWrongMapping() throws IOException, InterruptedException {
+    public void testHammingDistanceFilterWithRaw() throws IOException, InterruptedException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
         source1.setAttr("test.hash1.jimbo", "AFAFAFAF");
@@ -654,7 +738,7 @@ public class SearchServiceTests extends AbstractTest {
         AssetSearch search;
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity("test.hash1.jimbo",
+                new AssetFilter().addToSimilarity("test.hash1.jimbo.raw",
                         new SimilarityFilter("AFAFAFAF", 100)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -663,11 +747,11 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilter() throws IOException, InterruptedException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1.byte", "AFAFAFAF");
+        source1.setAttr("test.hash1.shash", "AFAFAFAF");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1.byte", "ADADADAD");
+        source2.setAttr("test.hash1.shash", "ADADADAD");
 
         assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
@@ -675,17 +759,17 @@ public class SearchServiceTests extends AbstractTest {
         AssetSearch search;
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                new AssetFilter().addToSimilarity( "test.hash1.shash",
                         new SimilarityFilter("AFAFAFAF", 100)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                new AssetFilter().addToSimilarity( "test.hash1.shash",
                         new SimilarityFilter("AFAFAFAF", 50)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                new AssetFilter().addToSimilarity( "test.hash1.shash",
                         new SimilarityFilter("APAPAPAP", 20)));
 
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
@@ -696,19 +780,19 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilterWithQuery() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1.byte", "afafafaf");
-        source1.addKeywords("foo", "bar");
+        source1.setAttr("test.hash1.shash", "afafafaf");
+        source1.addToKeywords("foo", "bar");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1.byte", "adadadad");
-        source1.addKeywords("foo", "bing");
+        source2.setAttr("test.hash1.shash", "adadadad");
+        source1.addToKeywords("foo", "bing");
 
         assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search = new AssetSearch("bar");
-        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.byte",
+        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.shash",
                 new SimilarityFilter("afafafaf", 8)));
 
         /**
@@ -723,19 +807,19 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilterWithAssetId() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1.byte", "afafafaf");
-        source1.addKeywords("foo", "bar");
+        source1.setAttr("test.hash1.shash", "afafafaf");
+        source1.addToKeywords("foo", "bar");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1.byte", "adadadad");
-        source1.addKeywords("foo", "bing");
+        source2.setAttr("test.hash1.shash", "adadadad");
+        source1.addToKeywords("foo", "bing");
 
         assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search = new AssetSearch("bar");
-        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.byte",
+        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.shash",
                 new SimilarityFilter(source1.getId(), 8)));
 
         /**
@@ -762,9 +846,9 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testQueryIsAnalyzed() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addToKeywords("media", "zoolander");
+        assetService.index(source);
         refreshIndex();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -778,53 +862,10 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testSuggest() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addSuggestKeywords("source", "zoolander");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+       source.addToKeywords("media", "zoolander");
+        assetService.index(source);
         refreshIndex();
         assertEquals(ImmutableList.of("zoolander"), searchService.getSuggestTerms("zoo"));
-    }
-
-    @Test
-    public void testElementTermFilter() throws IOException {
-
-        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addSuggestKeywords("source", "zoolander");
-        assetService.index(source);
-
-        Element e = new Element("proxy", source);
-        e.setAttr("foo.bar", "bing");
-        e.setId(UUID.randomUUID().toString());
-        assetService.index(e);
-
-        refreshIndex();
-
-        AssetFilter filter = new AssetFilter().addToTerms("foo.bar", "bing");
-        AssetSearch search = new AssetSearch().setElementFilter(filter);
-
-        PagedList<Document> result = searchService.search(Pager.first(), search);
-        assertEquals(1, result.size());
-        assertEquals(1, result.get(0).getElements().size());
-
-    }
-
-    @Test
-    public void testElementTermAndKeyword() throws IOException {
-
-        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.setAttr("test.keywords", "zoo-lander");
-        assetService.index(source);
-
-        Element e = new Element("proxy", source);
-        e.setAttr("foo.bar", "bing");
-        e.setId(UUID.randomUUID().toString());
-        assetService.index(e);
-
-        refreshIndex();
-
-        AssetFilter filter = new AssetFilter().addToTerms("foo.bar", "bing");
-        AssetSearch search = new AssetSearch("zoo-lander").setElementFilter(filter);
-
-        assertEquals(1, searchService.search(search).getHits().totalHits());
     }
 }

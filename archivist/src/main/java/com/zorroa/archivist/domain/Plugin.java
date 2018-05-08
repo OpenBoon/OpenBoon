@@ -3,13 +3,14 @@ package com.zorroa.archivist.domain;
 import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by chambers on 8/16/16.
  */
 public class Plugin {
 
-    private int id;
+    private UUID id;
     private String name;
     private String description;
     private String version;
@@ -17,11 +18,11 @@ public class Plugin {
     private String language;
     private String md5;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Plugin setId(int id) {
+    public Plugin setId(UUID id) {
         this.id = id;
         return this;
     }

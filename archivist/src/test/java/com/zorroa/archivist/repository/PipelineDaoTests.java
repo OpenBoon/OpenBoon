@@ -11,6 +11,7 @@ import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import static org.junit.Assert.*;
 
@@ -32,8 +33,7 @@ public class PipelineDaoTests extends AbstractTest {
         spec.setProcessors(Lists.newArrayList());
         spec.setName("Zorroa Test");
         spec.setDescription("A test pipeline");
-        spec.setStandard(true);
-        pipeline = pipelineDao.create(spec);
+        pipeline = pipelineService.create(spec);
     }
 
     @Test
@@ -46,7 +46,11 @@ public class PipelineDaoTests extends AbstractTest {
     @Test
     public void testDelete() {
         // cant' delete the standard
-        assertFalse(pipelineService.delete(pipeline.getId()));
+        try {
+            assertFalse(pipelineService.delete(pipelineService.getStandard(pipeline.getType()).getId()));
+        } catch (EmptyResultDataAccessException e) {
+            // ignore
+        }
         // Add new standard
         PipelineSpecV spec = new PipelineSpecV();
         spec.setType(PipelineType.Import);
@@ -54,7 +58,7 @@ public class PipelineDaoTests extends AbstractTest {
         spec.setName("ZorroaStandard");
         spec.setDescription("A test pipeline");
         spec.setStandard(true);
-        pipelineDao.create(spec);
+        pipelineService.create(spec);
         assertTrue(pipelineService.delete(pipeline.getId()));
         assertFalse(pipelineService.delete(pipeline.getId()));
     }
@@ -71,25 +75,6 @@ public class PipelineDaoTests extends AbstractTest {
         pipeline = pipelineDao.refresh(pipeline);
         assertEquals(update.getProcessors(), pipeline.getProcessors());
         assertEquals(update.getName(), pipeline.getName());
-    }
-
-    @Test
-    public void testUpdateVersionUp() {
-        Pipeline update = new Pipeline();
-        update.setName("foo");
-        update.setDescription("foo bar");
-        update.setType(PipelineType.Batch);
-        update.setProcessors(Lists.newArrayList(new ProcessorRef().setClassName("bar.Bing")));
-        update.setVersionUp(true);
-
-        assertTrue(pipelineDao.update(pipeline.getId(), update));
-
-        pipeline = pipelineDao.refresh(pipeline);
-        assertEquals(2, pipeline.getVersion());
-
-        assertTrue(pipelineDao.update(pipeline.getId(), update));
-        pipeline = pipelineDao.refresh(pipeline);
-        assertEquals(3, pipeline.getVersion());
     }
 
     @Test
@@ -130,6 +115,6 @@ public class PipelineDaoTests extends AbstractTest {
     @Test
     public void testGetStandard() {
         Pipeline p = pipelineDao.getStandard(PipelineType.Import);
-        assertEquals("Zorroa Test", p.getName());
+        assertTrue(p.isStandard());
     }
 }

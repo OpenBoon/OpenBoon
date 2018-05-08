@@ -4,8 +4,9 @@ import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.CommandDao
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.search.AssetSearch
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 import javax.annotation.PostConstruct
@@ -24,7 +26,7 @@ interface CommandService {
 
     fun submit(spec: CommandSpec): Command
 
-    fun get(id: Int): Command
+    fun get(id: UUID): Command
 
     fun refresh(cmd: Command): Command
 
@@ -49,7 +51,7 @@ class CommandServiceImpl @Autowired constructor (
     private lateinit var assetService: AssetService
 
     @Autowired
-    private lateinit var userService: UserService
+    private lateinit var userRegistryService: UserRegistryService
 
     internal var runningCommand = AtomicReference<Command>()
 
@@ -86,7 +88,7 @@ class CommandServiceImpl @Autowired constructor (
         return commandDao.create(spec)
     }
 
-    override operator fun get(id: Int): Command {
+    override operator fun get(id: UUID): Command {
         return commandDao.get(id)
     }
 
@@ -110,7 +112,7 @@ class CommandServiceImpl @Autowired constructor (
         if (currentCommand != null && currentCommand.id == cmd.id) {
             if (currentCommand.state != JobState.Cancelled) {
                 currentCommand.state = JobState.Cancelled
-                logger.info("{} canceled running {}", SecurityUtils.getUsername(), currentCommand)
+                logger.info("{} canceled running {}", getUsername(), currentCommand)
                 if (ArchivistConfiguration.Companion.unittest) {
                     runningCommand.set(null)
                 }
@@ -124,7 +126,7 @@ class CommandServiceImpl @Autowired constructor (
     }
 
     override fun cancel(cmd: Command): Boolean {
-        if (commandDao.cancel(cmd, "Command canceled by " + SecurityUtils.getUsername())) {
+        if (commandDao.cancel(cmd, "Command canceled by " + getUsername())) {
             cancelRunningCommand(cmd)
             return true
         }
@@ -140,9 +142,8 @@ class CommandServiceImpl @Autowired constructor (
             /**
              * Switch thread to user who made the request.
              */
-            val user = userService.get(cmd.user.id)
-            SecurityContextHolder.getContext().authentication = InternalAuthentication(user,
-                    userService.getPermissions(user))
+            val user = userRegistryService.getUser(cmd.user.username)
+            SecurityContextHolder.getContext().authentication = InternalAuthentication(user)
 
             started = commandDao.start(cmd)
             if (started) {

@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
@@ -14,15 +15,12 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
-import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetScript;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.RangeQuery;
-import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +49,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Before
     public void init() {
-        searchService.invalidateFields();
+        fieldService.invalidateFields();
     }
 
     @Test
@@ -70,32 +68,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Set<String>>>() {});
         assertTrue(fields.get("date").size() > 0);
         assertTrue(fields.get("string").size() > 0);
-        assertTrue(fields.get("integer").size() > 0);
-    }
-
-    @Test
-    public void testGetElementFields() throws Exception {
-
-        MockHttpSession session = admin();
-        Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        Document asset1 = assetDao.index(builder);
-        refreshIndex();
-
-        Element e = new Element("test", asset1);
-        e.setAttr("foo.bar", "bing");
-        e.setId(UUID.randomUUID().toString());
-        assetService.index(e);
-        refreshIndex();
-
-        MvcResult result = mvc.perform(get("/api/v1/elements/_fields")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Set<String>> fields = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Set<String>>>() {});
-        assertTrue(fields.get("string").size() > 0);
+        assertTrue(fields.containsKey("integer"));
     }
 
     @Test
@@ -115,8 +88,8 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        searchService.invalidateFields();
-        Map<String,Set<String>> fields = searchService.getFields("asset");
+        fieldService.invalidateFields();
+        Map<String,Set<String>> fields = fieldService.getFields("asset");
         for (String field: fields.get("string")) {
             assertFalse(field.startsWith("source"));
         }
@@ -132,7 +105,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        Map<String,Set<String>> stringFields = searchService.getFields("asset");
+        Map<String,Set<String>> stringFields = fieldService.getFields("asset");
         assertNotEquals(fields, stringFields);
     }
 
@@ -194,41 +167,18 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testSuggestV2() throws Exception {
-
-        MockHttpSession session = admin();
-        List<Source> sources = getTestAssets("set04/canyon");
-        for (Source source: sources) {
-            AssetUtils.addSuggestKeywords(source, "source", "reflection");
-        }
-        addTestAssets(sources);
-
-        MvcResult result = mvc.perform(post("/api/v2/assets/_suggest")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"text\": \"re\" }".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-
-        Map<String, Object> suggestions = (Map<String, Object>) ((ArrayList<Object>)json.get("completions")).get(0);
-        ArrayList<Object> options = (ArrayList<Object>) suggestions.get("options");
-        Map<String, Object> suggestion = (Map<String, Object>) options.get(0);
-        String text = (String)suggestion.get("text");
-        assertTrue(text.equals("reflection"));
-    }
-
-    @Test
     public void testSuggestV3() throws Exception {
         MockHttpSession session = admin();
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
-            AssetUtils.addSuggestKeywords(source, "source", "reflection");
+            source.addToKeywords("media", "reflection");
+            logger.info(Json.prettyString(source));
         }
         addTestAssets(sources);
+
         refreshIndex();
+        logger.info(Json.prettyString(fieldService.getFields("asset")));
+
 
         MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
@@ -249,7 +199,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
-            AssetUtils.addSuggestKeywords(source, "source", "reflection");
+            source.addToKeywords("media","reflection");
             source.setAttr("thing.suggest", "resume");
         }
         addTestAssets(sources);
@@ -290,34 +240,6 @@ public class AssetControllerTests extends MockMvcTest {
             assertEquals(asset.getId(), json.get("_id"));
         }
     }
-
-    @Test
-    public void testGetElements() throws Exception {
-
-        MockHttpSession session = admin();
-        Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        Document asset1 = assetDao.index(builder);
-        refreshIndex();
-
-        Element e = new Element("test", asset1);
-        e.setAttr("foo.bar", "bing");
-        e.setId(UUID.randomUUID().toString());
-        assetService.index(e);
-        refreshIndex();
-
-        MvcResult result = mvc.perform(get("/api/v1/assets/" + asset1.getId() + "/_elements")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        PagedList<Document> docs = Json.Mapper.readValue(
-                result.getResponse().getContentAsString(),
-                new TypeReference<PagedList<Document>>() {});
-
-        assertEquals(1, docs.size());
-    }
-
 
     @Test
     public void testDelete() throws Exception {
@@ -383,6 +305,36 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void tesSetFolders() throws Exception {
+        authenticate("admin");
+        addTestAssets("set04/canyon");
+
+        List<UUID> folders = Lists.newArrayList();
+        for (int i=0; i<10; i++) {
+            FolderSpec builder = new FolderSpec("Folder" + i);
+            Folder folder = folderService.create(builder);
+            folders.add(folder.getId());
+        }
+
+        List<Document> assets = assetService.getAll(Pager.first(1)).getList();
+        assertEquals(1, assets.size());
+        Document doc = assets.get(0);
+
+        MockHttpSession session = admin();
+        mvc.perform(put("/api/v1/assets/" + doc.getId() + "/_setFolders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ImmutableMap.of("folders", folders))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        refreshIndex();
+        doc = assetService.get(doc.getId());
+        assertEquals(10, doc.getAttr("zorroa.links.folder", List.class).size());
+
+    }
+
+    @Test
     public void testFolderAssign() throws Exception {
         MockHttpSession session = admin();
 
@@ -407,11 +359,11 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Pager.first());
         for (Document asset: assets) {
-            List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
+            List<String> links = asset.getAttr("zorroa.links.folder", new TypeReference<List<String>>() {});
             assertEquals(2, links.size());
             assertTrue(
-                    links.get(0).equals(folder1.getId()) ||
-                    links.get(1).equals(folder1.getId()));
+                    links.get(0).equals(folder1.getId().toString()) ||
+                    links.get(1).equals(folder1.getId().toString()));
         }
     }
 
@@ -569,26 +521,34 @@ public class AssetControllerTests extends MockMvcTest {
 
         addTestAssets("set04/standard");
 
-        DateTime dateTime = new DateTime();
-        int year = dateTime.getYear();
-
         RangeQuery range = new RangeQuery();
-        range.setFrom(String.format("%d-01-01", year-1));
-        range.setTo(String.format("%d-01-01", year+1));
+        range.setFrom(100);
+        range.setTo(2400000);
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addRange("source.date", range));
+        AssetSearch search = new AssetSearch();
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(search)))
                 .andExpect(status().isOk())
                 .andReturn();
-
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        logger.info(Json.serializeToString(json));
+
+        search = new AssetSearch(new AssetFilter().addRange("source.fileSize", range));
+        result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(search)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
-        assertEquals(2, count);
+        assertEquals(1, count);
     }
 
     @Test

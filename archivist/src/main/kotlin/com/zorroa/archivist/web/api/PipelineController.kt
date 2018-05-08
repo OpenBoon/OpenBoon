@@ -8,16 +8,15 @@ import com.zorroa.archivist.web.InvalidObjectException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
-import com.zorroa.sdk.util.StringUtils
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
 
-@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
+@PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
 @RestController
 class PipelineController @Autowired constructor(
         private val pipelineService: PipelineService
@@ -33,21 +32,13 @@ class PipelineController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/pipelines/{id}"])
     operator fun get(@PathVariable id: String): Pipeline {
-        return if (StringUtils.isNumeric(id)) {
-            pipelineService.get(Integer.parseInt(id))
-        } else {
-            pipelineService.get(id)
-        }
+        return getPipeline(id)
     }
 
     @GetMapping(value = ["/api/v1/pipelines/{id}/_export"], produces = ["application/octet-stream"])
     fun export(@PathVariable id: String, rsp: HttpServletResponse): ByteArray {
 
-        val export: Pipeline = if (StringUtils.isNumeric(id)) {
-            pipelineService.get(Integer.parseInt(id))
-        } else {
-            pipelineService.get(id)
-        }
+        val export: Pipeline = getPipeline(id)
         export.id = null
         rsp.setHeader("Content-disposition", "attachment; filename=\"" + export.name + ".json\"")
         return Json.prettyString(export).toByteArray()
@@ -60,16 +51,22 @@ class PipelineController @Autowired constructor(
     }
 
     @PutMapping(value = ["/api/v1/pipelines/{id}"])
-    fun update(@PathVariable id: Int, @Valid @RequestBody spec: Pipeline, valid: BindingResult): Any {
+    fun update(@PathVariable id: UUID, @Valid @RequestBody spec: Pipeline, valid: BindingResult): Any {
         checkValid(valid)
         return HttpUtils.updated("pipelines", id, pipelineService.update(id, spec), pipelineService.get(id))
     }
 
     @DeleteMapping(value = ["/api/v1/pipelines/{id}"])
-    fun delete(@PathVariable id: Int): Any {
-        logger.info("pipeline id: {}", id)
-        val result = pipelineService.delete(id)
-        return HttpUtils.deleted("pipelines", id, result)
+    fun delete(@PathVariable id: UUID): Any {
+        return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
+    }
+
+    fun getPipeline(nameOrId : String) : Pipeline {
+        return try {
+            pipelineService.get(UUID.fromString(nameOrId))
+        } catch (e:IllegalArgumentException) {
+            pipelineService.get(nameOrId)
+        }
     }
 
     companion object {

@@ -33,11 +33,6 @@
       "args" : { },
       "language" : "java",
       "filters" : [ ]
-    }, {
-      "className" : "com.zorroa.core.processor.FilePathIngestor",
-      "args" : { },
-      "language" : "java",
-      "filters" : [ ]
     }],
     "targetType" : "pipeline"
   }

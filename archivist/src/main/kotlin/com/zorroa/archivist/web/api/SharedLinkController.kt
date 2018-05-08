@@ -7,6 +7,7 @@ import com.zorroa.archivist.web.InvalidObjectException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import javax.validation.Valid
 
 @RestController
@@ -23,7 +24,7 @@ class SharedLinkController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/shared_link/{id}"])
-    fun get(@PathVariable id: Int): SharedLink {
+    fun get(@PathVariable id: UUID): SharedLink {
         return sharedLinkService[id]
     }
 }

@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:class="${job.stats.assetErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:each="job: ${imports}" th:id="${'imports-' + job.id}" th:attr="data-href=${'/admin/gui/imports/' + job.id}">
+            <tr th:class="${job.stats.assetErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:each="job: ${imports}" th:id="${'imports_' + job.id}" th:attr="data-href=${'/admin/gui/imports/' + job.id}">
                 <td class="vert-align">
                     <div th:include="fragments/job :: state_label"/>
                 </td>

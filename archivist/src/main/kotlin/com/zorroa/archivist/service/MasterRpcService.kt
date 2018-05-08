@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskStatsAdder
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.cluster.thrift.*
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
+import java.util.*
 import java.util.concurrent.Executors
 import javax.annotation.PreDestroy
 
@@ -58,7 +60,7 @@ class MasterRpcServiceImpl @Autowired constructor(
             spec.updatedTime = System.currentTimeMillis()
             spec.threadCount = node.getThreadCount()
             spec.state = AnalystState.UP
-            spec.taskIds = node.getTaskIds()
+            spec.taskIds = node.getTaskIds().map { UUID.fromString(it) }
             spec.loadAvg = node.getLoadAvg()
             spec.url = node.getUrl()
             spec.queueSize = node.getQueueSize()
@@ -77,12 +79,12 @@ class MasterRpcServiceImpl @Autowired constructor(
     }
 
     @Throws(CusterExceptionT::class, TException::class)
-    override fun reportTaskStarted(id: Int) {
-        if (id < 1) {
+    override fun reportTaskStarted(id: String) {
+        if (id == null) {
             return
         }
         try {
-            val t = taskDao.get(id)
+            val t = getTask(id)
             jobService.setTaskRunning(t)
         } catch (e: Exception) {
             /**
@@ -94,13 +96,13 @@ class MasterRpcServiceImpl @Autowired constructor(
     }
 
     @Throws(CusterExceptionT::class, TException::class)
-    override fun reportTaskStopped(id: Int, result: TaskStopT) {
-        if (id < 1) {
+    override fun reportTaskStopped(id: String, result: TaskStopT) {
+        if (id == null) {
             return
         }
         try {
-            val t = taskDao.get(id)
-            jobService.setTaskCompleted(t, result.getExitStatus())
+            val t = getTask(id)
+            jobService.setTaskCompleted(t, result.exitStatus, result.isKilled)
         } catch (e: Exception) {
             /**
              * Don't let this bubble out back to analyst.
@@ -111,12 +113,12 @@ class MasterRpcServiceImpl @Autowired constructor(
     }
 
     @Throws(CusterExceptionT::class, TException::class)
-    override fun reportTaskRejected(id: Int, reason: String) {
-        if (id < 1) {
+    override fun reportTaskRejected(id: String, reason: String) {
+        if (id == null) {
             return
         }
         try {
-            val t = taskDao.get(id)
+            val t = getTask(id)
             jobService.setTaskState(t, TaskState.Waiting, TaskState.Queued)
         } catch (e: Exception) {
             /**
@@ -128,13 +130,13 @@ class MasterRpcServiceImpl @Autowired constructor(
     }
 
     @Throws(CusterExceptionT::class, TException::class)
-    override fun reportTaskStats(id: Int, stats: TaskStatsT) {
-        if (id < 1) {
+    override fun reportTaskStats(id: String, stats: TaskStatsT) {
+        if (id == null) {
             return
         }
         val adder = TaskStatsAdder(stats)
         try {
-            val t = taskDao.get(id)
+            val t = getTask(id)
             jobService.incrementStats(t, adder)
         } catch (e: Exception) {
             /**
@@ -146,9 +148,9 @@ class MasterRpcServiceImpl @Autowired constructor(
     }
 
     @Throws(CusterExceptionT::class, TException::class)
-    override fun reportTaskErrors(id: Int, errors: List<TaskErrorT>) {
+    override fun reportTaskErrors(id: String, errors: List<TaskErrorT>) {
         try {
-            val t = taskDao.get(id)
+            val t = getTask(id)
             eventLogService.logAsync(t, errors)
         } catch (e: Exception) {
             /**
@@ -161,19 +163,19 @@ class MasterRpcServiceImpl @Autowired constructor(
 
     @Throws(CusterExceptionT::class, TException::class)
     override fun queuePendingTasks(url: String, count: Int): List<TaskStartT> {
-        try {
-            return jobExecutorService.queueWaitingTasks(url, count).get()
+        return try {
+            jobExecutorService.queueWaitingTasks(url, count).get()
         } catch (e: Exception) {
             logger.warn("Unable to queue pending tasks,", e)
-            return Lists.newArrayList()
+            Lists.newArrayList()
         }
 
     }
 
     @Throws(CusterExceptionT::class, TException::class)
-    override fun expand(id: Int, expand: ExpandT) {
+    override fun expand(id: String, expand: ExpandT) {
         try {
-            val t = taskDao.get(id)
+            val t = getTask(id)
             jobService.expand(t, expand)
         } catch (e: Exception) {
             /**
@@ -198,9 +200,13 @@ class MasterRpcServiceImpl @Autowired constructor(
             thread.execute { server!!.serve() }
 
         } catch (e: TTransportException) {
-            throw RuntimeException("Unable to start thrift server " + e, e)
+            throw RuntimeException("Unable to start thrift server $e", e)
         }
 
+    }
+
+    private fun getTask(id: String) : Task {
+        return taskDao.get(UUID.fromString(id))
     }
 
     companion object {

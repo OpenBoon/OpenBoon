@@ -2,10 +2,12 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
+import com.zorroa.archivist.domain.OnlineFileCheckRequest;
 import com.zorroa.archivist.service.LocalFileSystem;
 import com.zorroa.archivist.web.api.FileSystemController;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
@@ -18,8 +20,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -79,5 +83,26 @@ public class FileSystemControllerTests extends MockMvcTest {
         assertTrue(paths.contains("toucan.jpg"));
         assertTrue(paths.contains("visa.jpg"));
         assertTrue(paths.contains("visa12.jpg"));
+    }
+
+    @Test
+    public void testCheckOnline() throws Exception {
+        MockHttpSession session = admin();
+
+        addTestAssets("set04");
+        refreshIndex();
+
+        OnlineFileCheckRequest req = new OnlineFileCheckRequest(new AssetSearch());
+        MvcResult result = mvc.perform(post("/api/v1/lfs/_online")
+                .session(session)
+                .content(Json.serializeToString(req))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> rsp = deserialize(result, Map.class);
+        assertEquals(6, rsp.get("total"));
+        assertEquals(6, rsp.get("totalOnline"));
+        assertEquals(0, rsp.get("totalOffline"));
     }
 }

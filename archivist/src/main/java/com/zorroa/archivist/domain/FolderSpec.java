@@ -8,16 +8,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class FolderSpec {
 
     @NotNull
-    private Integer parentId;
+    private UUID parentId;
 
     @NotEmpty
     private String name;
 
-    private Integer dyhiId;
+    private UUID dyhiId;
 
     private AssetSearch search;
 
@@ -31,7 +32,7 @@ public class FolderSpec {
      * Only used locally, don't accept over the wire.
      */
     @JsonIgnore
-    private Integer userId;
+    private UUID userId;
 
     /**
      * A smart folder search recurses into all child folders.
@@ -53,7 +54,7 @@ public class FolderSpec {
         this.name = name;
     }
 
-    public FolderSpec(String name, int parentId) {
+    public FolderSpec(String name, UUID parentId) {
         this.name = name;
         this.parentId = parentId;
     }
@@ -63,11 +64,11 @@ public class FolderSpec {
         this.parentId = parent.getId();
     }
 
-    public Integer getParentId() {
+    public UUID getParentId() {
         return parentId;
     }
 
-    public FolderSpec setParentId(Integer parentId) {
+    public FolderSpec setParentId(UUID parentId) {
         this.parentId = parentId;
         return this;
     }
@@ -108,15 +109,6 @@ public class FolderSpec {
         return this;
     }
 
-    public Integer getDyhiId() {
-        return dyhiId;
-    }
-
-    public FolderSpec setDyhiId(Integer dyhiId) {
-        this.dyhiId = dyhiId;
-        return this;
-    }
-
     public Map<String, Object> getAttrs() {
         return attrs;
     }
@@ -126,11 +118,20 @@ public class FolderSpec {
         return this;
     }
 
-    public Integer getUserId() {
+    public UUID getDyhiId() {
+        return dyhiId;
+    }
+
+    public FolderSpec setDyhiId(UUID dyhiId) {
+        this.dyhiId = dyhiId;
+        return this;
+    }
+
+    public UUID getUserId() {
         return userId;
     }
 
-    public FolderSpec setUserId(Integer userId) {
+    public FolderSpec setUserId(UUID userId) {
         this.userId = userId;
         return this;
     }

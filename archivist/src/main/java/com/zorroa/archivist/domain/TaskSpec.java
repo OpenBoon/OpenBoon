@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 
+import java.util.UUID;
+
 /**
  * Created by chambers on 8/22/16.
  */
 public class TaskSpec implements JobId {
 
     private String name;
-    private Integer jobId;
-    private Integer parentTaskId;
+    private UUID jobId;
+    private UUID parentTaskId;
     private String script;
     private int assetCount = 0;
     private int order = Task.ORDER_DEFAULT;
@@ -19,16 +21,16 @@ public class TaskSpec implements JobId {
     public TaskSpec() {
     }
 
-    public TaskSpec(int jobId, String name) {
+    public TaskSpec(UUID jobId, String name) {
         this.jobId = jobId;
         this.name = name;
     }
 
-    public Integer getJobId() {
+    public UUID getJobId() {
         return jobId;
     }
 
-    public TaskSpec setJobId(Integer jobId) {
+    public TaskSpec setJobId(UUID jobId) {
         this.jobId = jobId;
         return this;
     }
@@ -57,11 +59,11 @@ public class TaskSpec implements JobId {
         return this;
     }
 
-    public Integer getParentTaskId() {
+    public UUID getParentTaskId() {
         return parentTaskId;
     }
 
-    public TaskSpec setParentTaskId(Integer parentTaskId) {
+    public TaskSpec setParentTaskId(UUID parentTaskId) {
         this.parentTaskId = parentTaskId;
         return this;
     }

@@ -22,6 +22,8 @@ import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 /**
@@ -103,7 +105,7 @@ public class JobExecutorServiceTests extends AbstractTest {
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(1, dependCount);
 
-        jobService.setTaskCompleted(task1, 0);
+        jobService.setTaskCompleted(task1, 0, false);
 
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
@@ -140,7 +142,7 @@ public class JobExecutorServiceTests extends AbstractTest {
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(2, dependCount);
 
-        jobService.setTaskCompleted(task1, 0);
+        jobService.setTaskCompleted(task1, 0, false);
 
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
@@ -148,7 +150,7 @@ public class JobExecutorServiceTests extends AbstractTest {
 
         jobService.setTaskState(task3, TaskState.Running, TaskState.Waiting);
 
-        jobService.setTaskCompleted(task3, 0);
+        jobService.setTaskCompleted(task3, 0,false);
 
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
@@ -183,7 +185,7 @@ public class JobExecutorServiceTests extends AbstractTest {
             logger.debug("{}", Json.prettyString(task));
             logger.debug("SCHEDULE");
 
-            Task t = taskDao.get(task.id);
+            Task t = taskDao.get(UUID.fromString(task.id));
             if (!jobService.setTaskState(t, TaskState.Queued, TaskState.Waiting)) {
                 throw new RuntimeException("Failed to queue task");
             }

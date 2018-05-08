@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
+import java.util.*
 
 @RestController
 class ImportController @Autowired constructor(
@@ -32,7 +33,7 @@ class ImportController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/imports/{id}"])
     @Throws(IOException::class)
-    operator fun get(@PathVariable id: Int?): Any {
-        return jobService[id!!]
+    operator fun get(@PathVariable id: UUID): Any {
+        return jobService[id]
     }
 }

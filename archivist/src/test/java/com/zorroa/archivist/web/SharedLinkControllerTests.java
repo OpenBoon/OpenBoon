@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static com.zorroa.archivist.security.UtilsKt.getUserId;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,7 +33,7 @@ public class SharedLinkControllerTests extends MockMvcTest {
         SharedLinkSpec spec = new SharedLinkSpec();
         spec.setSendEmail(false);
         spec.setState(ImmutableMap.of("foo", "bar"));
-        spec.setUserIds(ImmutableSet.of(1));
+        spec.setUserIds(ImmutableSet.of(getUserId()));
         spec.setExpireTimeMs(1L);
 
         MvcResult result = mvc.perform(post("/api/v1/shared_link")
@@ -53,7 +54,7 @@ public class SharedLinkControllerTests extends MockMvcTest {
         SharedLinkSpec spec = new SharedLinkSpec();
         spec.setSendEmail(false);
         spec.setState(ImmutableMap.of("foo", "bar"));
-        spec.setUserIds(ImmutableSet.of(1));
+        spec.setUserIds(ImmutableSet.of(getUserId()));
         spec.setExpireTimeMs(1L);
         SharedLink link = sharedLinkService.create(spec);
 

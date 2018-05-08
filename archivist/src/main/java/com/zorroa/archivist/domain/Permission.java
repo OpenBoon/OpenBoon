@@ -6,15 +6,16 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by chambers on 10/27/15.
  */
-public class Permission implements Loggable<Integer>, Serializable, GrantedAuthority {
+public class Permission implements Loggable<UUID>, Serializable, GrantedAuthority {
 
     public static final String JOIN = "::";
 
-    private int id;
+    private UUID id;
     private String name;
     private String type;
     private String description;
@@ -24,12 +25,13 @@ public class Permission implements Loggable<Integer>, Serializable, GrantedAutho
         return type.concat(JOIN).concat(name);
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public Permission setId(UUID id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
@@ -76,13 +78,11 @@ public class Permission implements Loggable<Integer>, Serializable, GrantedAutho
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == null) {  return false; }
-        try {
-            return Objects.equals(id, ((Permission) other).getId());
-        } catch (ClassCastException e) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Permission that = (Permission) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Permission implements Loggable<Integer>, Serializable, GrantedAutho
     }
 
     @Override
-    public Integer getTargetId() {
+    public UUID getTargetId() {
         return id;
     }
 }

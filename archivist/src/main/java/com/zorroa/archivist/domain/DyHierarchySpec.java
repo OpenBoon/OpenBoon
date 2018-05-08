@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/14/16.
@@ -11,7 +12,7 @@ import java.util.List;
 public class DyHierarchySpec {
 
     @NotNull
-    private Integer folderId;
+    private UUID folderId;
 
     @NotEmpty
     private List<DyHierarchyLevel> levels;
@@ -25,11 +26,11 @@ public class DyHierarchySpec {
         return this;
     }
 
-    public Integer getFolderId() {
+    public UUID getFolderId() {
         return folderId;
     }
 
-    public DyHierarchySpec setFolderId(Integer folderId) {
+    public DyHierarchySpec setFolderId(UUID folderId) {
         this.folderId = folderId;
         return this;
     }

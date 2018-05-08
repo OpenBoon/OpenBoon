@@ -15,7 +15,6 @@ import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
@@ -31,13 +30,13 @@ interface TaskDao {
 
     fun setExitStatus(task: TaskId, exitStatus: Int): Boolean
 
-    fun incrementStats(id: Int, addr: TaskStatsAdder): Boolean
+    fun incrementStats(id: UUID, addr: TaskStatsAdder): Boolean
 
-    fun clearStats(id: Int): Boolean
+    fun clearStats(id: UUID): Boolean
 
     fun getState(task: TaskId, forUpdate: Boolean): TaskState
 
-    fun getExecutableTask(id: Int): TaskStartT
+    fun getExecutableTask(id: UUID): TaskStartT
 
     fun setState(task: TaskId, value: TaskState, vararg expect: TaskState): Boolean
 
@@ -51,23 +50,23 @@ interface TaskDao {
 
     fun getOrphanTasks(limit: Int, duration: Long, unit: TimeUnit): List<Task>
 
-    fun getAll(job: Int, page: Pager): PagedList<Task>
+    fun getAll(job: UUID, page: Pager): PagedList<Task>
 
-    fun getAll(job: Int, pager: Pager, filter: TaskFilter): PagedList<Task>
+    fun getAll(job: UUID, pager: Pager, filter: TaskFilter): PagedList<Task>
 
-    fun getAll(job: Int, state: TaskState): List<Task>
+    fun getAll(job: UUID, state: TaskState): List<Task>
 
-    fun getAll(job: Int, filter: TaskFilter): List<Task>
+    fun getAll(job: UUID, filter: TaskFilter): List<Task>
 
-    fun get(id: Int): Task
+    fun get(id: UUID): Task
 
-    fun countByJob(job: Int): Long
+    fun countByJob(job: UUID): Long
 
     /**
      * Update's a tasks ping time.
      * @param taskIds
      */
-    fun updatePingTime(taskIds: List<Int>): Int
+    fun updatePingTime(taskIds: List<UUID>): Int
 
     companion object {
 
@@ -86,13 +85,13 @@ interface TaskDao {
  * Created by chambers on 7/11/16.
  */
 @Repository
-open class TaskDaoImpl : AbstractDao(), TaskDao {
+class TaskDaoImpl : AbstractDao(), TaskDao {
 
     @Autowired
-    internal var shared: SharedData? = null
+    internal lateinit var shared: SharedData
 
     @Autowired
-    internal var networkEnv: NetworkEnvironment? = null
+    internal lateinit var networkEnv: NetworkEnvironment
 
     private var sharedPath: String? = null
 
@@ -104,25 +103,30 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
         val workDir = rs.getString("str_root_path")
 
         val t = TaskStartT()
-        t.setId(rs.getInt("pk_task"))
-        t.setJobId(rs.getInt("pk_job"))
+        t.setId(rs.getString("pk_task"))
+        t.setJobId(rs.getString("pk_job"))
         t.setName(rs.getString("str_name"))
-        if (rs.getObject("pk_parent") != null) {
-            t.setParent(rs.getInt("pk_parent"))
+        if (rs.getString("pk_parent") != null) {
+            t.setParent(rs.getString("pk_parent"))
         }
 
         t.setEnv(Json.deserialize(rs.getString("json_env"), Json.STRING_MAP))
-        t.getEnv().put("ZORROA_JOB_ID", t.getJobId().toString())
-        t.getEnv().put("ZORROA_TASK_ID", t.getId().toString())
-        t.getEnv().put("ZORROA_USER", rs.getString("str_username"))
-        t.getEnv().put("ZORROA_HMAC_KEY", rs.getString("hmac_key"))
-        t.getEnv().put("ZORROA_WORK_DIR", workDir)
+        t.getEnv()["ZORROA_JOB_ID"] = t.getJobId().toString()
+        t.getEnv()["ZORROA_TASK_ID"] = t.getId().toString()
+        t.getEnv()["ZORROA_USER"] = rs.getString("str_username")
+        t.getEnv()["ZORROA_WORK_DIR"] = workDir
+        t.getEnv()["ZORROA_ARCHIVIST_URL"] = networkEnv.privateUri.toString()
+
+        val hmacKey : String? = rs.getString("hmac_key")
+        if (hmacKey != null) {
+            t.getEnv()["ZORROA_HMAC_KEY"] = hmacKey
+        }
 
         t.setArgMap(rs.getString("json_args").toByteArray())
 
         t.setWorkDir(workDir)
         t.setSharedDir(sharedPath)
-        t.setMasterHost(networkEnv!!.clusterAddr)
+        t.setMasterHost(networkEnv.clusterAddr)
         t.setScriptPath(scriptPath(workDir, t.getName(), t.getId()))
         t.setLogPath(logPath(workDir, t.getName(), t.getId()))
         t.setOrder(rs.getInt("int_order"))
@@ -131,31 +135,32 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
 
     @PostConstruct
     fun init() {
-        sharedPath = shared!!.root.toString()
+        sharedPath = shared.root.toString()
     }
 
     override fun create(spec: TaskSpec): Task {
         val time = System.currentTimeMillis()
+        val id = uuid1.generate()
         /**
          * TODO: because we insert to get the ID, the ID stored on the script
          * is inaccurate.  Currently we just handle this in the mapper
          * but we could manually query the sequence
          */
         Preconditions.checkNotNull(spec.jobId)
-        val keyHolder = GeneratedKeyHolder()
+
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_task"))
-            ps.setInt(1, spec.jobId!!)
-            ps.setObject(2, spec.parentTaskId)
-            ps.setString(3, if (spec.name == null) "subtask" else spec.name)
-            ps.setInt(4, TaskState.Waiting.ordinal)
-            ps.setInt(5, spec.order)
-            ps.setLong(6, time)
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, spec.jobId)
+            ps.setObject(3, spec.parentTaskId)
+            ps.setString(4, if (spec.name == null) "subtask" else spec.name)
+            ps.setInt(5, TaskState.Waiting.ordinal)
+            ps.setInt(6, spec.order)
             ps.setLong(7, time)
             ps.setLong(8, time)
+            ps.setLong(9, time)
             ps
-        }, keyHolder)
-        val id = keyHolder.key.toInt()
+        })
 
         jdbc.update("INSERT INTO task_stat (pk_task, pk_job, int_asset_total_count) VALUES (?, ?, ?)",
                 id, spec.jobId, spec.assetCount)
@@ -171,24 +176,24 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
                 exitStatus, task.taskId) == 1
     }
 
-    override fun incrementStats(id: Int, addr: TaskStatsAdder): Boolean {
+    override fun incrementStats(id: UUID, addr: TaskStatsAdder): Boolean {
         return jdbc.update(INC_STATS, addr.create, addr.update, addr.warning, addr.error, addr.replace, id) == 1
     }
 
-    override fun clearStats(id: Int): Boolean {
+    override fun clearStats(id: UUID): Boolean {
         return jdbc.update(CLEAR_STATS, id) == 1
     }
 
     override fun getState(task: TaskId, forUpdate: Boolean): TaskState {
-        val q = "SELECT int_state FROM TASK WHERE pk_task=?"
+        var q = "SELECT int_state FROM TASK WHERE pk_task=?"
         if (forUpdate) {
-            q + " FOR UPDATE"
+            q = "$q FOR UPDATE"
         }
         return TaskState.values()[jdbc.queryForObject(q, Int::class.java, task.taskId)]
     }
 
-    override fun getExecutableTask(id: Int): TaskStartT {
-        return jdbc.queryForObject<TaskStartT>(GET_TASK_TO_EXECUTE + " AND task.pk_task=?", EXECUTE_TASK_MAPPER, id)
+    override fun getExecutableTask(id: UUID): TaskStartT {
+        return jdbc.queryForObject<TaskStartT>("$GET_TASK_TO_EXECUTE AND task.pk_task=?", EXECUTE_TASK_MAPPER, id)
     }
 
     override fun setState(task: TaskId, value: TaskState, vararg expect: TaskState): Boolean {
@@ -265,17 +270,21 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun getOrphanTasks(limit: Int, duration: Long, unit: TimeUnit): List<Task> {
-        return jdbc.query<Task>(GET_QUEUED, MAPPER,
-                System.currentTimeMillis() - unit.toMillis(duration), limit)
+        return jdbc.query<Task>(GET_ORPHAN, MAPPER,
+                TaskState.Running.ordinal,
+                System.currentTimeMillis() - unit.toMillis(duration),
+                TaskState.Queued.ordinal,
+                System.currentTimeMillis() - (1000 * 120),
+                limit)
     }
 
-    override fun getAll(job: Int, page: Pager): PagedList<Task> {
+    override fun getAll(job: UUID, page: Pager): PagedList<Task> {
         return PagedList(page.setTotalCount(countByJob(job)),
                 jdbc.query<Task>(GET_TASKS + "WHERE task.pk_job=? ORDER BY pk_task LIMIT ? OFFSET ?",
                         MAPPER, job, page.size, page.from))
     }
 
-    override fun getAll(job: Int, pager: Pager, filter: TaskFilter): PagedList<Task> {
+    override fun getAll(job: UUID, pager: Pager, filter: TaskFilter): PagedList<Task> {
         filter.setJobId(job)
         val q = filter.getCountQuery("SELECT COUNT(1) FROM task ")
         val count = jdbc.queryForObject(q, Long::class.java, *filter.getValues())
@@ -285,27 +294,27 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
                         MAPPER, *filter.getValues(pager)))
     }
 
-    override fun getAll(job: Int, state: TaskState): List<Task> {
+    override fun getAll(job: UUID, state: TaskState): List<Task> {
         return jdbc.query<Task>(GET_TASKS + "WHERE task.pk_job=? AND task.int_state=?",
                 MAPPER, job, state.ordinal)
     }
 
-    override fun getAll(job: Int, filter: TaskFilter): List<Task> {
+    override fun getAll(job: UUID, filter: TaskFilter): List<Task> {
         filter.setJobId(job)
 
         return jdbc.query<Task>(filter.getQuery(GET_TASKS, null),
                 MAPPER, *filter.getValues())
     }
 
-    override fun get(id: Int): Task {
+    override fun get(id: UUID): Task {
         return jdbc.queryForObject<Task>(GET_TASKS + "WHERE task.pk_task=?", MAPPER, id)
     }
 
-    override fun countByJob(job: Int): Long {
+    override fun countByJob(job: UUID): Long {
         return jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE task.pk_job=?", Long::class.java, job)
     }
 
-    override fun updatePingTime(taskIds: List<Int>): Int {
+    override fun updatePingTime(taskIds: List<UUID>): Int {
         if (taskIds.isEmpty()) {
             return 0
         }
@@ -316,7 +325,7 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
             @Throws(SQLException::class)
             override fun setValues(ps: PreparedStatement, i: Int) {
                 ps.setLong(1, time)
-                ps.setInt(2, taskIds[i])
+                ps.setObject(2, taskIds[i])
             }
 
             override fun getBatchSize(): Int {
@@ -328,6 +337,7 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("task",
+                "pk_task",
                 "pk_job",
                 "pk_parent",
                 "str_name",
@@ -404,7 +414,7 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
                 "WHERE " +
                 "task.pk_job = job.pk_job " +
                 "AND " +
-                "job.int_user_created = u.pk_user "
+                "job.pk_user_created = u.pk_user "
 
         private val GET_WAITING = GET_TASK_TO_EXECUTE +
                 "AND " +
@@ -445,18 +455,19 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
                 "JOIN job ON task.pk_job = job.pk_job "
 
 
-        private val GET_QUEUED = GET_TASKS +
+        private val GET_ORPHAN = GET_TASKS +
                 "WHERE " +
-                "task.int_state IN (" + TaskState.Running.ordinal + "," + TaskState.Queued.ordinal + ") " +
+                "(task.int_state = ? "+
                 "AND " +
-                "task.time_ping < ? " +
+                "task.time_ping < ?)" +
+                "OR (task.int_state=? AND task.time_ping < ?)" +
                 "LIMIT ? "
 
         private val MAPPER = RowMapper<Task> { rs, _ ->
             val task = Task()
-            task.taskId = rs.getInt("pk_task")
-            task.jobId = rs.getInt("pk_job")
-            task.parentId = rs.getInt("pk_parent")
+            task.taskId = rs.getObject("pk_task") as UUID
+            task.jobId = rs.getObject("pk_job") as UUID
+            task.parentId = rs.getObject("pk_parent") as? UUID
             task.name = rs.getString("str_name")
             task.exitStatus = rs.getInt("int_exit_status")
             task.host = rs.getString("str_host")
@@ -468,8 +479,8 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
             task.order = rs.getInt("int_order")
 
             val workDir = rs.getString("str_root_path")
-            task.scriptPath = scriptPath(workDir, task.name, task.id)
-            task.logPath = logPath(workDir, task.name, task.id)
+            task.scriptPath = scriptPath(workDir, task.name, task.id.toString())
+            task.logPath = logPath(workDir, task.name, task.id.toString())
 
             val s = AssetStats()
             s.assetTotalCount = rs.getInt("int_asset_total_count")
@@ -482,15 +493,15 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
             task
         }
 
-        private val UPDATE_PING = "UPDATE task SET time_ping=? WHERE pk_task=?"
+        private const val UPDATE_PING = "UPDATE task SET time_ping=? WHERE pk_task=?"
 
-        fun scriptPath(root: String, name: String, id: Int): String {
-            return String.format("%s/scripts/%s.%04d.json",
+        fun scriptPath(root: String, name: String, id: String): String {
+            return String.format("%s/scripts/%s.%s.json",
                     root, name.replace("[\\s\\.\\/\\\\]+".toRegex(), "_"), id)
         }
 
-        fun logPath(root: String, name: String, id: Int): String {
-            return String.format("%s/logs/%s.%04d.log",
+        fun logPath(root: String, name: String, id: String): String {
+            return String.format("%s/logs/%s.%s.log",
                     root, name.replace("[\\s\\.\\/\\\\]+".toRegex(), "_"), id)
         }
     }

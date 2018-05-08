@@ -6,15 +6,15 @@ import com.zorroa.archivist.domain.Command
 import com.zorroa.archivist.domain.CommandSpec
 import com.zorroa.archivist.domain.CommandType
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface CommandDao : GenericDao<Command, CommandSpec> {
 
@@ -38,14 +38,14 @@ class CommandDaoImpl : AbstractDao(), CommandDao {
 
     private val MAPPER = RowMapper<Command>  { rs, _ ->
         val c = Command()
-        c.id = rs.getInt("pk_command")
+        c.id = rs.getObject("pk_command") as UUID
         c.type = CommandType.values()[rs.getInt("int_type")]
         c.args = Json.deserialize<List<Any>>(rs.getString("json_args"),
                 object : TypeReference<List<Any>>() {
 
                 })
         c.state = JobState.values()[rs.getInt("int_state")]
-        c.user = userDaoCache!!.getUser(rs.getInt("pk_user"))
+        c.user = userDaoCache!!.getUser(rs.getObject("pk_user_created") as UUID)
         c.totalCount = rs.getLong("int_total_count")
         c.successCount = rs.getLong("int_success_count")
         c.errorCount = rs.getLong("int_error_count")
@@ -63,28 +63,28 @@ class CommandDaoImpl : AbstractDao(), CommandDao {
     }
 
     override fun create(spec: CommandSpec): Command {
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_command"))
-            ps.setInt(1, SecurityUtils.getUser().id)
-            ps.setLong(2, System.currentTimeMillis())
-            ps.setInt(3, spec.type.ordinal)
-            ps.setInt(4, JobState.Waiting.ordinal)
-            ps.setString(5, Json.serializeToString(spec.args, "[]"))
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, getUserId())
+            ps.setLong(3, System.currentTimeMillis())
+            ps.setInt(4, spec.type.ordinal)
+            ps.setInt(5, JobState.Waiting.ordinal)
+            ps.setString(6, Json.serializeToString(spec.args, "[]"))
             ps
-        }, keyHolder)
+        })
 
-        val id = keyHolder.key.toInt()
         return get(id)
     }
 
-    override fun get(id: Int): Command {
+    override fun get(id: UUID): Command {
         return jdbc.queryForObject<Command>(GET + "WHERE pk_command=?", MAPPER, id)
     }
 
     override fun getPendingByUser(): List<Command> {
-        return jdbc.query<Command>(GET + "WHERE pk_user=? AND int_state IN (?,?) ORDER BY int_state, pk_command", MAPPER,
-                SecurityUtils.getUser().id, JobState.Active.ordinal, JobState.Waiting.ordinal)
+        return jdbc.query<Command>(GET + "WHERE pk_user_created=? AND int_state IN (?,?) ORDER BY int_state, pk_command", MAPPER,
+                getUserId(), JobState.Active.ordinal, JobState.Waiting.ordinal)
     }
 
     override fun refresh(obj: Command): Command {
@@ -99,11 +99,11 @@ class CommandDaoImpl : AbstractDao(), CommandDao {
         return PagedList()
     }
 
-    override fun update(id: Int, spec: Command): Boolean {
+    override fun update(id: UUID, spec: Command): Boolean {
         return false
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         return false
     }
 
@@ -145,7 +145,8 @@ class CommandDaoImpl : AbstractDao(), CommandDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("command",
-                "pk_user",
+                "pk_command",
+                "pk_user_created",
                 "time_created",
                 "int_type",
                 "int_state",

@@ -9,12 +9,12 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.cluster.client.WorkerNodeClient
 import com.zorroa.cluster.thrift.TaskKillT
 import com.zorroa.cluster.thrift.TaskResultT
 import com.zorroa.cluster.thrift.TaskStartT
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.client.exception.ArchivistWriteException
@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.SynchronousQueue
@@ -73,7 +74,7 @@ class JobExecutorServiceImpl @Autowired constructor(
     private val returnQueue = CacheBuilder.newBuilder()
             .maximumSize(100)
             .expireAfterWrite(60, TimeUnit.SECONDS)
-            .build<Int, SynchronousQueue<Any>>()
+            .build<UUID, SynchronousQueue<Any>>()
 
     override fun onApplicationEvent(contextRefreshedEvent: ContextRefreshedEvent) {
         if (!ArchivistConfiguration.unittest) {
@@ -100,6 +101,7 @@ class JobExecutorServiceImpl @Autowired constructor(
         return commandQueue.submit<List<TaskStartT>> { getWaitingTasks(url, count) }
     }
 
+    @Synchronized
     override fun getWaitingTasks(url: String?, count: Int): List<TaskStartT> {
         if (url == null) {
             throw ArchivistWriteException("Failed to query for tasks, return URL is null. " + "Analyst may be badly configured")
@@ -114,6 +116,7 @@ class JobExecutorServiceImpl @Autowired constructor(
                 result.add(task)
             }
         }
+
         if (!result.isEmpty()) {
             val taskIds = result
                     .stream()
@@ -228,9 +231,9 @@ class JobExecutorServiceImpl @Autowired constructor(
         val client = WorkerNodeClient(task.host)
         try {
             logger.info("Killing runinng task: {}", task)
-            client.killTask(TaskKillT().setId(task.taskId)
-                    .setReason("Manually killed  by " + SecurityUtils.getUsername())
-                    .setUser(SecurityUtils.getUsername()))
+            client.killTask(TaskKillT().setId(task.taskId.toString())
+                    .setReason("Manually killed  by " + getUsername())
+                    .setUser(getUsername()))
         } catch (e: Exception) {
             logger.warn("Failed to kill running task an analyst {}", task.host, e)
         }

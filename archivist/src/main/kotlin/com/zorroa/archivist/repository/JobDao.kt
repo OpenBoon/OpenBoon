@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.sdk.security.Groups
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -13,6 +15,7 @@ import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface JobDao {
 
@@ -20,7 +23,7 @@ interface JobDao {
 
     fun create(spec: JobSpec): Job
 
-    fun get(id: Int): Job
+    fun get(id: UUID): Job
 
     fun get(job: JobId): Job
 
@@ -30,35 +33,35 @@ interface JobDao {
 
     fun count(): Long
 
-    fun incrementStats(id: Int, adder: TaskStatsAdder): Boolean
+    fun incrementStats(id: UUID, adder: TaskStatsAdder): Boolean
 
-    fun decrementStats(id: Int, stats: AssetStats): Boolean
+    fun decrementStats(id: UUID, stats: AssetStats): Boolean
 
     fun incrementWaitingTaskCount(job: JobId)
 
     fun setState(job: JobId, newState: JobState, expect: JobState?): Boolean
 
-    fun getState(id: Int): JobState
+    fun getState(id: UUID): JobState
 
-    fun getRootPath(id: Int): String
+    fun getRootPath(id: UUID): String
 
     fun updateTaskStateCounts(task: TaskId, newState: TaskState, expect: TaskState)
 }
 
 @Repository
-open class JobDaoImpl : AbstractDao(), JobDao {
+class JobDaoImpl : AbstractDao(), JobDao {
 
     @Autowired
-    private var userDaoCache: UserDaoCache? = null
+    private lateinit var userDaoCache: UserDaoCache
 
     private val MAPPER = RowMapper<Job> { rs, _ ->
         val job = Job()
-        job.id = rs.getInt("pk_job")
+        job.id = rs.getObject("pk_job") as UUID
         job.name = rs.getString("str_name")
         job.timeStarted = rs.getLong("time_started")
         job.timeUpdated = rs.getLong("time_updated")
         job.type = PipelineType.fromObject(rs.getInt("int_type"))
-        job.user = userDaoCache!!.getUser(rs.getInt("int_user_created"))
+        job.user = userDaoCache.getUser(rs.getObject("pk_user_created") as UUID)
         job.args = Json.deserialize<Map<String, Any>>(rs.getString("json_args"), Json.GENERIC_MAP)
         job.rootPath = rs.getString("str_root_path")
 
@@ -82,8 +85,14 @@ open class JobDaoImpl : AbstractDao(), JobDao {
         t.tasksSkipped = rs.getInt("int_task_state_skipped_count")
         job.counts = t
 
-        val state = JobState.values()[rs.getInt("int_state")]
-        job.state = state
+        if (t.tasksTotal == t.tasksFailure) {
+            job.state = JobState.Failed
+        }
+        else {
+            val state = JobState.values()[rs.getInt("int_state")]
+            job.state = state
+        }
+
         job
     }
 
@@ -93,15 +102,14 @@ open class JobDaoImpl : AbstractDao(), JobDao {
         Preconditions.checkNotNull(spec.type, "The job type cannot be null")
 
         val time = System.currentTimeMillis()
-
         nextId(spec)
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
-            ps.setInt(1, spec.jobId!!)
+            ps.setObject(1, spec.id)
             ps.setString(2, spec.name)
             ps.setInt(3, spec.type.ordinal)
-            ps.setInt(4, SecurityUtils.getUser().id)
+            ps.setObject(4, getUserId())
             ps.setLong(5, time)
             ps.setString(6, Json.serializeToString(spec.args, "{}"))
             ps.setString(7, Json.serializeToString(spec.env, "{}"))
@@ -110,28 +118,24 @@ open class JobDaoImpl : AbstractDao(), JobDao {
         }
 
         // insert supporting tables.
-        jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", spec.jobId)
-        jdbc.update("INSERT INTO job_count (pk_job, time_updated) VALUES (?, ?)", spec.jobId, time)
-        return get(spec.jobId!!)
+        jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", spec.id)
+        jdbc.update("INSERT INTO job_count (pk_job, time_updated) VALUES (?, ?)", spec.id, time)
+        return get(spec.id)
     }
 
     override fun nextId(spec: JobSpec): JobSpec {
-        if (spec.jobId == null) {
-            if (isDbVendor("postgresql")) {
-                spec.jobId = jdbc.queryForObject("SELECT nextval('zorroa.job_pk_job_seq')", Int::class.java)
-            } else {
-                spec.jobId = jdbc.queryForObject("SELECT JOB_SEQ.nextval FROM dual", Int::class.java)
-            }
+        if (spec.id == null) {
+            spec.id = uuid1.generate()
         }
         return spec
     }
 
-    override fun get(id: Int): Job {
-        return jdbc.queryForObject<Job>(GET + "AND job.pk_job=?", MAPPER, id)
+    override fun get(id: UUID): Job {
+        return jdbc.queryForObject<Job>("$GET AND job.pk_job=?", MAPPER, id)
     }
 
     override fun get(job: JobId): Job {
-        return get(job.jobId!!)
+        return get(job.jobId)
     }
 
     override fun getAll(page: Pager, filter: JobFilter?): PagedList<Job> {
@@ -139,6 +143,11 @@ open class JobDaoImpl : AbstractDao(), JobDao {
         if (filter == null) {
             filter = JobFilter()
         }
+
+        if (!hasPermission(Groups.ADMIN)) {
+            filter.userId = getUserId()
+        }
+
         val query = filter.getQuery(GET, page)
         return PagedList(page.setTotalCount(count(filter)),
                 jdbc.query<Job>(query.left, MAPPER, *query.right.toTypedArray()))
@@ -153,12 +162,12 @@ open class JobDaoImpl : AbstractDao(), JobDao {
         return jdbc.queryForObject(COUNT, Long::class.java)
     }
 
-    override fun incrementStats(id: Int, adder: TaskStatsAdder): Boolean {
+    override fun incrementStats(id: UUID, adder: TaskStatsAdder): Boolean {
         return jdbc.update(INC_STATS, adder.create, adder.update,
                 adder.warning, adder.error, adder.replace, adder.total, id) == 1
     }
 
-    override fun decrementStats(id: Int, stats: AssetStats): Boolean {
+    override fun decrementStats(id: UUID, stats: AssetStats): Boolean {
         return jdbc.update(DEC_STATS,
                 stats.assetCreatedCount,
                 stats.assetUpdatedCount,
@@ -190,7 +199,7 @@ open class JobDaoImpl : AbstractDao(), JobDao {
         return jdbc.update(sb.toString(), *values.toTypedArray()) == 1
     }
 
-    override fun getState(id: Int): JobState {
+    override fun getState(id: UUID): JobState {
         return if (jdbc.queryForObject("SELECT int_task_total_count - (int_task_state_success_count + int_task_state_skipped_count) AS c FROM job_count WHERE pk_job=?",
                 Int::class.java, id) == 0) {
             JobState.Finished
@@ -199,7 +208,7 @@ open class JobDaoImpl : AbstractDao(), JobDao {
         }
     }
 
-    override fun getRootPath(id: Int): String {
+    override fun getRootPath(id: UUID): String {
         return jdbc.queryForObject("SELECT str_root_path FROM job WHERE pk_job=?", String::class.java, id)
     }
 
@@ -233,7 +242,7 @@ open class JobDaoImpl : AbstractDao(), JobDao {
                 "pk_job",
                 "str_name",
                 "int_type",
-                "int_user_created",
+                "pk_user_created",
                 "time_started",
                 "json_args",
                 "json_env",
@@ -246,7 +255,7 @@ open class JobDaoImpl : AbstractDao(), JobDao {
                 "job.time_started," +
                 "job.int_type," +
                 "job.json_args," +
-                "job.int_user_created," +
+                "job.pk_user_created," +
                 "job.str_root_path," +
                 "job_stat.int_asset_total_count," +
                 "job_stat.int_asset_create_count," +

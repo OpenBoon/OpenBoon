@@ -5,13 +5,14 @@ import com.zorroa.sdk.processor.PipelineType;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * An internal class for creating a new batch job.
  */
 public class JobSpec {
 
-    private Integer jobId;
+    private UUID id;
     private Map<String, Object> args;
     private Map<String, String> env;
     private String name;
@@ -78,12 +79,12 @@ public class JobSpec {
         return this;
     }
 
-    public Integer getJobId() {
-        return jobId;
+    public UUID getId() {
+        return id;
     }
 
-    public JobSpec setJobId(Integer jobId) {
-        this.jobId = jobId;
+    public JobSpec setId(UUID id) {
+        this.id = id;
         return this;
     }
 

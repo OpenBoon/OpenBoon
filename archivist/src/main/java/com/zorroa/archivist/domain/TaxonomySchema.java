@@ -2,14 +2,15 @@ package com.zorroa.archivist.domain;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class TaxonomySchema {
 
     private List<String> keywords;
     private List<String> suggest;
     private long updatedTime;
-    private int folderId;
-    private int taxId;
+    private UUID folderId;
+    private UUID taxId;
 
     public List<String> getKeywords() {
         return keywords;
@@ -38,20 +39,20 @@ public class TaxonomySchema {
         return this;
     }
 
-    public int getFolderId() {
+    public UUID getFolderId() {
         return folderId;
     }
 
-    public TaxonomySchema setFolderId(int folderId) {
+    public TaxonomySchema setFolderId(UUID folderId) {
         this.folderId = folderId;
         return this;
     }
 
-    public int getTaxId() {
+    public UUID getTaxId() {
         return taxId;
     }
 
-    public TaxonomySchema setTaxId(int taxId) {
+    public TaxonomySchema setTaxId(UUID taxId) {
         this.taxId = taxId;
         return this;
     }

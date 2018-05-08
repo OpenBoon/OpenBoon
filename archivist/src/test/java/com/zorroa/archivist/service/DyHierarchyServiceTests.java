@@ -124,6 +124,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
         Folder folder2 = folderService.get("/foo/" + base + "_office");
         Folder folder3 = folderService.get("/foo/" + base + "_images_set01");
         assertEquals(1, searchService.count(folder1.getSearch()));
+        assertEquals(3, searchService.count(folder1.getSearch()));
     }
 
     @Test
@@ -144,14 +145,14 @@ public class DyHierarchyServiceTests extends AbstractTest {
         assertEquals(1, folder.getSearch().getFilter().getTerms().get("source.directory").size());
 
         folder = folderService.get("/foo/video" + testDataPath + "/video");
-        assertEquals(1, searchService.count(folder.getSearch()));
+        assertEquals(3, searchService.count(folder.getSearch()));
 
         folder = folderService.get("/foo/video" + testDataPath);
         logger.info("{}", Json.serializeToString(folder.getSearch()));
-        assertEquals(1, searchService.count(folder.getSearch()));
+        assertEquals(3, searchService.count(folder.getSearch()));
 
         folder = folderService.get("/foo/video");
-        assertEquals(1, searchService.count(folder.getSearch()));
+        assertEquals(3, searchService.count(folder.getSearch()));
     }
 
     @Test
@@ -176,10 +177,10 @@ public class DyHierarchyServiceTests extends AbstractTest {
         agg.setLevels(
                 ImmutableList.of(
                         new DyHierarchyLevel("source.extension.raw")
-                                .setAcl(new Acl().addEntry("group::foo", 3))));
+                                .setAcl(new Acl().addEntry("zorroa::foo", 3))));
 
         dyhiService.generate(agg);
-        assertEquals("group::foo",
+        assertEquals("zorroa::foo",
                 folderService.get("/foo/jpg").getAcl().get(0).permission);
         assertEquals(1,
                 folderService.get("/foo/jpg").getAcl().size());
@@ -193,10 +194,10 @@ public class DyHierarchyServiceTests extends AbstractTest {
         agg.setLevels(
                 ImmutableList.of(
                         new DyHierarchyLevel("source.extension.raw")
-                                .setAcl(new Acl().addEntry("group::%{name}", 3))));
+                                .setAcl(new Acl().addEntry("zorroa::%{name}", 3))));
 
         dyhiService.generate(agg);
-        assertEquals("group::jpg",
+        assertEquals("zorroa::jpg",
                 folderService.get("/foo/jpg").getAcl().get(0).permission);
         assertEquals(1,
                 folderService.get("/foo/jpg").getAcl().size());

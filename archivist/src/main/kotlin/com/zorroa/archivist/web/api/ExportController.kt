@@ -2,7 +2,8 @@ package com.zorroa.archivist.web.api
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.ExportService
 import com.zorroa.archivist.service.JobService
@@ -10,13 +11,16 @@ import com.zorroa.archivist.service.SearchService
 import com.zorroa.sdk.search.AssetFilter
 import com.zorroa.sdk.search.AssetSearch
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.FileSystemResource
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.io.BufferedInputStream
+import java.io.FileInputStream
 import java.nio.file.Paths
+import java.util.*
 
 @RestController
 class ExportController @Autowired constructor(
@@ -32,24 +36,24 @@ class ExportController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}"])
-    operator fun get(@PathVariable id: Int): Any {
+    operator fun get(@PathVariable id: UUID): Any {
         return jobService[id]
     }
 
     @PostMapping(value = ["/api/v1/exports/{id}/_files"])
-    fun createExportFile(@PathVariable id: Int, @RequestBody spec: ExportFileSpec): Any {
+    fun createExportFile(@PathVariable id: UUID, @RequestBody spec: ExportFileSpec): Any {
         val job = jobService[id]
         return exportService.createExportFile(job, spec)
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}/_files"])
-    fun getExportFiles(@PathVariable id: Int): Any {
+    fun getExportFiles(@PathVariable id: UUID): Any {
         val job = jobService[id]
         return exportService.getAllExportFiles(job)
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}/_files/{fileId}/_stream"])
-    fun streamExportfile(@PathVariable id: Int, @PathVariable fileId: Long): ResponseEntity<FileSystemResource> {
+    fun streamExportfile(@PathVariable id: UUID, @PathVariable fileId: UUID): ResponseEntity<InputStreamResource> {
         val file = exportService.getExportFile(fileId)
         val job = jobService[id]
 
@@ -62,8 +66,8 @@ class ExportController @Autowired constructor(
             throw IllegalArgumentException("Invalid export file")
         }
         */
-        if (job.user.id != SecurityUtils.getUser().id) {
-            throw IllegalArgumentException("Invalid export for " + SecurityUtils.getUsername())
+        if (job.user.id != getUserId()) {
+            throw IllegalArgumentException("Invalid export for " + getUsername())
         }
         if (job.state != JobState.Finished) {
             throw IllegalArgumentException("Export is not complete.")
@@ -77,10 +81,12 @@ class ExportController @Autowired constructor(
         headers.add("content-disposition", "attachment; filename=" + file.name)
         headers.contentType = MediaType.valueOf(file.mimeType)
         headers.contentLength = file.size
-        return ResponseEntity(FileSystemResource(path.toFile()), headers, HttpStatus.OK)
+
+        val isr = InputStreamResource(BufferedInputStream(FileInputStream(path.toFile())))
+        return ResponseEntity(isr, headers, HttpStatus.OK)
     }
 
-    private fun logExportDownload(id: Int) {
+    private fun logExportDownload(id: UUID) {
         val ids = Lists.newArrayList<String>()
         val search = AssetSearch()
                 .setFields(arrayOf())

@@ -222,13 +222,10 @@ public class MultipartFileSender {
         // Send requested file (part(s)) to client ------------------------------------------------
 
         // Prepare streams.
-        try (ServletOutputStream output = response.getOutputStream();
-             RandomAccessFile inputFile = new RandomAccessFile(filepath.toFile(), "r")) {
+        try (final ServletOutputStream output = response.getOutputStream();
+             final RandomAccessFile inputFile = new RandomAccessFile(filepath.toFile(), "r")) {
 
             if (ranges.isEmpty() || ranges.get(0) == full) {
-
-                // Return full file.
-                logger.debug("Return full file");
                 response.setContentType(contentType);
                 response.setHeader("Content-Range", "bytes " + full.start + "-" + full.end + "/" + full.total);
                 response.setHeader("Content-Length", String.valueOf(full.length));
@@ -300,9 +297,9 @@ public class MultipartFileSender {
         private static void copy2(RandomAccessFile input, ServletOutputStream output, long start, long length)
                 throws IOException
         {
-            FileChannel channel = input.getChannel();
-            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-            ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+            final FileChannel channel = input.getChannel();
+            final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+            final ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
 
             int read;
             if (input.length() == length) {

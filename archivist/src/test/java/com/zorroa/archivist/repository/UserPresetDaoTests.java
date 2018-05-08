@@ -6,6 +6,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.UserPreset;
 import com.zorroa.archivist.domain.UserPresetSpec;
 import com.zorroa.archivist.domain.UserSettings;
+import com.zorroa.archivist.sdk.security.Groups;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class UserPresetDaoTests extends AbstractTest {
         spec = new UserPresetSpec();
         spec.setName("defaults");
         spec.setSettings(new UserSettings().setSearch(ImmutableMap.of("foo", 1.0f)));
-        spec.setPermissionIds(ImmutableList.of(permissionService.getPermission("group::administrator").getId()));
+        spec.setPermissionIds(ImmutableList.of(permissionService.getPermission(Groups.ADMIN).getId()));
         preset = userPresetDao.create(spec);
     }
 
@@ -49,7 +50,7 @@ public class UserPresetDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        preset.setPermissionIds(ImmutableList.of(permissionService.getPermission("group::manager").getId()));
+        preset.setPermissionIds(ImmutableList.of(permissionService.getPermission(Groups.MANAGER).getId()));
         spec.setSettings(new UserSettings().setSearch(ImmutableMap.of("foo", 1.0f)));
         preset.setName("bilbo");
         assertTrue(userPresetDao.update(preset.getPresetId(), preset));

@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.repository.UserDao
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -144,13 +144,15 @@ class EmailServiceImpl @Autowired constructor(
 
     override fun sendExportRequestEmail(user: User, req: Request)  {
 
-        val name = if (user.firstName == null) user.username else user.firstName
-        val url = networkEnv.publicUri.toString() + "/folder?id=" + req.folderId
+        val name = user.firstName ?: user.username
+        val url = networkEnv.publicUri.toString() + "?folderId=" + req.folderId
         val folderPath = folderService.getPath(folderService.get(req.folderId))
         val toEmail = properties.getString("archivist.requests.managerEmail")
 
         val allCC = req.emailCC.toMutableList()
         allCC.add(user.email)
+
+        logger.info("Sending request email cc: $allCC to: $toEmail")
 
         val text = StringBuilder(1024)
         text.append("Hello !\n\n")
@@ -189,7 +191,7 @@ class EmailServiceImpl @Autowired constructor(
         val mimeMessage = mailSender.createMimeMessage()
         val helper = MimeMessageHelper(mimeMessage, true, "utf-8")
         helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>")
-        helper.setReplyTo("Zorroa Account Bot <noreply@zorroa.com>")
+        helper.setReplyTo("Zorroa Account Bot <support@zorroa.com>")
         helper.setSubject(subject)
         helper.setCc(cc.toTypedArray())
 

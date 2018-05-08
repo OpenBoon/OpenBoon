@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
+@PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
 @RestController
 class AnalystController @Autowired constructor(
         private val analystService: AnalystService

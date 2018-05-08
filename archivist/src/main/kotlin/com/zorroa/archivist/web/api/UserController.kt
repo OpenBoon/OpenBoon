@@ -4,20 +4,33 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.sdk.security.Groups
+import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import java.util.stream.Collectors
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
+
+
+
+
 
 @RestController
 class UserController @Autowired constructor(
@@ -29,35 +42,35 @@ class UserController @Autowired constructor(
     @RequestMapping(value = ["/api/v1/api-key"])
     fun getApiKey(): String {
         return try {
-            userService.getHmacKey(SecurityUtils.getUsername())
+            userService.getHmacKey(getUsername())
         } catch (e: Exception) {
             ""
         }
     }
 
-    @GetMapping("/user")
-    fun getMe() : Any {
-        return SecurityUtils.getAuthentication()
-    }
-
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
 
     @RequestMapping(value = ["/api/v1/who"])
-    fun getCurrent(): User {
-        return userService.get(SecurityUtils.getUser().id)
+    fun getCurrent(): ResponseEntity<Any> {
+        return if (getUserOrNull() != null) {
+            ResponseEntity(userService.get(getUserId()), HttpStatus.OK)
+        }
+        else {
+            ResponseEntity(mapOf("message" to "No authenticated user"), HttpStatus.UNAUTHORIZED)
+        }
     }
 
     @Deprecated("")
     @PostMapping(value = ["/api/v1/generate_api_key"])
     fun generate_api_key_V1(): String {
-        return userService.generateHmacKey(SecurityUtils.getUsername())
+        return userService.generateHmacKey(getUsername())
     }
 
     @PostMapping(value = ["/api/v1/api-key"])
     fun generate_api_key(): String {
-        return userService.generateHmacKey(SecurityUtils.getUsername())
+        return userService.generateHmacKey(getUsername())
     }
 
     /**
@@ -67,7 +80,7 @@ class UserController @Autowired constructor(
      */
     @PostMapping(value = ["/api/v1/login"])
     fun login(): User {
-        return userService.get(SecurityUtils.getUser().id)
+        return userService.get(getUserId())
     }
 
     /**
@@ -76,9 +89,20 @@ class UserController @Autowired constructor(
      * @return
      */
     @RequestMapping(value = ["/api/v1/logout"], method=[RequestMethod.POST, RequestMethod.GET])
-    @Throws(ServletException::class)
-    fun logout(req: HttpServletRequest) {
-        req.logout()
+    fun logout(req: HttpServletRequest, rsp: HttpServletResponse) : Any {
+        val auth = getAuthentication()
+        val cookieClearingLogoutHandler = CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
+        val securityContextLogoutHandler = SecurityContextLogoutHandler()
+        cookieClearingLogoutHandler.logout(req, rsp, auth)
+        securityContextLogoutHandler.logout(req, rsp, auth)
+        SecurityContextHolder.clearContext()
+
+        return if (auth == null) {
+            mapOf("success" to false)
+        }
+        else {
+            mapOf("success" to true)
+        }
     }
 
     /**
@@ -90,7 +114,7 @@ class UserController @Autowired constructor(
     @PostMapping(value = ["/api/v1/reset-password"])
     @Throws(ServletException::class)
     fun resetPasswordAndLogin(): User {
-        return userService.get(SecurityUtils.getUser().id)
+        return userService.get(getUserId())
     }
 
     class SendForgotPasswordEmailRequest {
@@ -100,7 +124,7 @@ class UserController @Autowired constructor(
     @PostMapping(value = ["/api/v1/send-password-reset-email"])
     @Throws(ServletException::class)
     fun sendPasswordRecoveryEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
-        val user = userService.getByEmail(req.email!!)
+        val user = userService.get(req.email!!)
         emailService.sendPasswordResetEmail(user)
         return HttpUtils.status("send-password-reset-email", "update", true)
     }
@@ -108,12 +132,12 @@ class UserController @Autowired constructor(
     @PostMapping(value = ["/api/v1/send-onboard-email"])
     @Throws(ServletException::class)
     fun sendOnboardEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
-        val user = userService.getByEmail(req.email!!)
+        val user = userService.get(req.email!!)
         emailService.sendOnboardEmail(user)
         return HttpUtils.status("send-onboard-email", "update", true)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/users"])
     fun create(@Valid @RequestBody builder: UserSpec, bindingResult: BindingResult): User {
         if (bindingResult.hasErrors()) {
@@ -123,33 +147,33 @@ class UserController @Autowired constructor(
     }
 
     @RequestMapping(value = ["/api/v1/users/{id}"])
-    operator fun get(@PathVariable id: Int): User {
+    operator fun get(@PathVariable id: UUID): User {
         validatePermissions(id)
         return userService.get(id)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users/{username}/_exists"])
     operator fun get(@PathVariable username: String): Map<*, *> {
-        return ImmutableMap.of("result", userService.exists(username))
+        return ImmutableMap.of("result", userService.exists(username, null))
     }
 
     @PutMapping(value = ["/api/v1/users/{id}/_profile"])
-    fun updateProfile(@RequestBody form: UserProfileUpdate, @PathVariable id: Int): Any {
+    fun updateProfile(@RequestBody form: UserProfileUpdate, @PathVariable id: UUID): Any {
         validatePermissions(id)
         val user = userService.get(id)
         return HttpUtils.updated("users", id, userService.update(user, form), userService.get(id))
     }
 
     @PutMapping(value = ["/api/v1/users/{id}/_password"])
-    fun updatePassword(@RequestBody form: UserPasswordUpdate, @PathVariable id: Int): Any {
+    fun updatePassword(@RequestBody form: UserPasswordUpdate, @PathVariable id: UUID): Any {
         validatePermissions(id)
 
         /**
          * If the Ids match, then the user is the current user, so validate the existing password.
          */
-        if (id == SecurityUtils.getUser().id) {
-            val storedPassword = userService.getPassword(SecurityUtils.getUsername())
+        if (id == getUserId()) {
+            val storedPassword = userService.getPassword(getUsername())
             if (!BCrypt.checkpw(form.oldPassword, storedPassword)) {
                 throw IllegalArgumentException("Existing password invalid")
             }
@@ -162,17 +186,17 @@ class UserController @Autowired constructor(
     }
 
     @PutMapping(value = ["/api/v1/users/{id}/_settings"])
-    fun updateSettings(@RequestBody settings: UserSettings, @PathVariable id: Int): Any {
+    fun updateSettings(@RequestBody settings: UserSettings, @PathVariable id: UUID): Any {
         validatePermissions(id)
         val user = userService.get(id)
         return HttpUtils.updated("users", id, userService.updateSettings(user, settings), userService.get(id))
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/_enabled"])
-    fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: Int): Any {
+    fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: UUID): Any {
         val user = userService.get(id)
-        if (id == SecurityUtils.getUser().id) {
+        if (id == getUserId()) {
             throw IllegalArgumentException("You cannot disable yourself")
         }
 
@@ -191,7 +215,7 @@ class UserController @Autowired constructor(
      * @return
      */
     @GetMapping(value = ["/api/v1/users/{id}/permissions"])
-    fun getPermissions(@PathVariable id: Int): List<Permission> {
+    fun getPermissions(@PathVariable id: UUID): List<Permission> {
         validatePermissions(id)
         val user = userService.get(id)
         return userService.getPermissions(user)
@@ -206,18 +230,18 @@ class UserController @Autowired constructor(
      * @param id
      * @return
      */
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions"])
-    fun setPermissions(@RequestBody pids: List<Int>, @PathVariable id: Int): List<Permission> {
+    fun setPermissions(@RequestBody pids: List<UUID>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
         val perms = pids.stream().map { i -> permissionService.getPermission(i) }.collect(Collectors.toList())
         userService.setPermissions(user, perms)
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_add"])
-    fun addPermissions(@RequestBody pids: List<String>, @PathVariable id: Int): List<Permission> {
+    fun addPermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
         val resolved = Sets.newHashSetWithExpectedSize<Permission>(pids.size)
         pids.mapTo(resolved) { permissionService.getPermission(it) }
@@ -225,9 +249,9 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_remove"])
-    fun removePermissions(@RequestBody pids: List<String>, @PathVariable id: Int): List<Permission> {
+    fun removePermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
         val resolved = Sets.newHashSetWithExpectedSize<Permission>(pids.size)
         pids.mapTo(resolved) { permissionService.getPermission(it) }
@@ -235,8 +259,8 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    private fun validatePermissions(id: Int) {
-        if (SecurityUtils.getUser().id != id && !SecurityUtils.hasPermission("group::manager")) {
+    private fun validatePermissions(id: UUID) {
+        if (!Objects.equals(getUserId(),id) && !hasPermission(Groups.MANAGER, Groups.ADMIN)) {
             throw SecurityException("Access denied.")
         }
     }

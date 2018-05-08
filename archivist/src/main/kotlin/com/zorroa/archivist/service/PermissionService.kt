@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 
@@ -26,7 +27,7 @@ interface PermissionService {
 
      fun getObjAssignablePermissions(page: Pager): PagedList<Permission>
 
-     fun getPermission(id: Int): Permission
+     fun getPermission(id: UUID): Permission
 
      fun createPermission(builder: PermissionSpec): Permission
 
@@ -60,7 +61,7 @@ class PermissionServiceImpl @Autowired constructor(
                     return if (key.contains(Permission.JOIN)) {
                         permissionDao.get(key)
                     } else {
-                        permissionDao.get(Integer.valueOf(key))
+                        permissionDao.get(UUID.fromString(key))
                     }
                 }
             })
@@ -110,7 +111,7 @@ class PermissionServiceImpl @Autowired constructor(
     }
 
     // CACHE
-    override fun getPermission(id: Int): Permission {
+    override fun getPermission(id: UUID): Permission {
         return permissionDao.get(id)
     }
 

@@ -7,6 +7,7 @@ import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.TaxonomyService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 class TaxonomyController @Autowired constructor(
@@ -22,20 +23,20 @@ class TaxonomyController @Autowired constructor(
 
     @ResponseBody
     @GetMapping(value = ["/api/v1/taxonomy/{id}"])
-    operator fun get(@PathVariable id: Int): Taxonomy {
+    operator fun get(@PathVariable id: UUID): Taxonomy {
         return taxonomyService.get(id)
     }
 
     @ResponseBody
     @GetMapping(value = ["/api/v1/taxonomy/_folder/{id}"])
-    fun getByFolder(@PathVariable id: Int): Taxonomy {
+    fun getByFolder(@PathVariable id: UUID): Taxonomy {
         val folder = folderService.get(id)
         return taxonomyService.get(folder)
     }
 
     @ResponseBody
     @GetMapping(value = ["/api/v1/taxonomy/{id}/_retag"])
-    fun execute(@PathVariable id: Int): Any {
+    fun execute(@PathVariable id: UUID): Any {
         val tax = taxonomyService.get(id)
         taxonomyService.tagTaxonomyAsync(tax, null, true)
         return HttpUtils.status("taxonomy", "retag", true)
@@ -43,7 +44,7 @@ class TaxonomyController @Autowired constructor(
 
     @ResponseBody
     @DeleteMapping(value = ["/api/v1/taxonomy/{id}"])
-    fun delete(@PathVariable id: Int): Any {
+    fun delete(@PathVariable id: UUID): Any {
         val tax = taxonomyService.get(id)
         return HttpUtils.deleted("taxonomy", id, taxonomyService.delete(tax, true))
     }

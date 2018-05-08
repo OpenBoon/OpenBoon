@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.JobState
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.io.File
+import java.util.*
 
 interface MaintenanceDao {
 
@@ -20,7 +21,7 @@ class MaintenanceDaoImpl : AbstractDao(), MaintenanceDao {
 
     private val JOB_MAPPER = RowMapper<ExpiredJob> { rs, _ ->
         val job = ExpiredJob()
-        job.id = rs.getInt("pk_job")
+        job.id = rs.getObject("pk_job") as UUID
         job.rootPath = rs.getString("str_root_path")
         job
     }

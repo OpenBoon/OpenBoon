@@ -5,22 +5,23 @@ import com.google.common.base.MoreObjects;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/10/17.
  */
 public class SharedLink {
 
-    private int id;
+    private UUID id;
     private Map<String, Object> state;
     private Set<Integer> userIds;
     private long expireTime;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public SharedLink setId(int id) {
+    public SharedLink setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -67,7 +68,7 @@ public class SharedLink {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SharedLink that = (SharedLink) o;
-        return getId() == that.getId();
+        return Objects.equals(getId(),that.getId());
     }
 
     @Override

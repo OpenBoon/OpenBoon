@@ -50,22 +50,24 @@ public abstract class AbtractThriftClient implements Closeable {
     }
 
     public TProtocol connect() throws TException {
-        if (!connected.get()) {
-            socket = new TSocket(host, port);
-
-            if (connectTimeout > 0) {
-                socket.setConnectTimeout(connectTimeout);
-            }
-
-            if (socketTimeout > 0) {
-                socket.setSocketTimeout(socketTimeout);
-            }
-
-            transport = new TFramedTransport(socket);
-            protocol = new TCompactProtocol(transport);
-            transport.open();
-            connected.set(true);
+        if (socket != null) {
+            socket.close();
+            connected.set(false);
         }
+        connected.set(false);
+        socket = new TSocket(host, port);
+        if (connectTimeout > 0) {
+            socket.setConnectTimeout(connectTimeout);
+        }
+
+        if (socketTimeout > 0) {
+            socket.setSocketTimeout(socketTimeout);
+        }
+
+        transport = new TFramedTransport(socket);
+        protocol = new TCompactProtocol(transport);
+        transport.open();
+        connected.set(true);
         return protocol;
     }
 
@@ -161,10 +163,9 @@ public abstract class AbtractThriftClient implements Closeable {
                 } catch (TTransportException e) {
 
                     if (connected.compareAndSet(true, false)) {
-                        if (maxRetries > 0) {
-                            logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",
-                                    getClass(), host, port, maxRetries);
-                        }
+                        logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",
+                                getClass(), host, port, maxRetries);
+
                     }
 
                     if (tryCount >= maxRetries && maxRetries >= 0) {
@@ -174,8 +175,10 @@ public abstract class AbtractThriftClient implements Closeable {
                     backoff(Math.min(tryCount, 10) * backOffms);
                     tryCount++;
                 } catch (ClusterException e) {
+                    logger.warn("thrift cluster", e);
                     throw e;
                 } catch (Exception e) {
+                    logger.warn("thrift e", e);
                     throw new ClusterException(e);
                 }
             }

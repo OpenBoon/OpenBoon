@@ -17,6 +17,7 @@ import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorType;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,6 +73,7 @@ public class PluginServiceTests extends AbstractTest {
     }
 
     @Test
+    @Ignore
     public void testInstallPlugin() throws IOException {
         try {
             Plugin p = pluginService.getPlugin("zorroa-test");

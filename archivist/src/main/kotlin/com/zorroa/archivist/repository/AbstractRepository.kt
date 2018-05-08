@@ -1,9 +1,14 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.uuid.EthernetAddress
+import com.fasterxml.uuid.NoArgGenerator
+import com.fasterxml.uuid.TimestampSynchronizer
+import com.fasterxml.uuid.UUIDTimer
+import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import org.slf4j.Logger
@@ -11,6 +16,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import java.util.*
+import java.util.concurrent.atomic.AtomicLong
 import javax.sql.DataSource
 
 interface GenericDao<T, in S> {
@@ -19,15 +25,15 @@ interface GenericDao<T, in S> {
 
     fun create(spec: S): T
 
-    fun get(id: Int): T
+    fun get(id: UUID): T
 
     fun refresh(obj: T): T
 
     fun getAll(paging: Pager): PagedList<T>
 
-    fun update(id: Int, spec: T): Boolean
+    fun update(id: UUID, spec: T): Boolean
 
-    fun delete(id: Int): Boolean
+    fun delete(id: UUID): Boolean
 
     fun count(): Long
 }
@@ -39,9 +45,38 @@ interface GenericNamedDao<T, S> : GenericDao<T, S> {
     fun exists(name: String): Boolean
 }
 
+/**
+ * Lifted from M. Chamber's FXP project.
+ *
+ * Used to ensure a UUID generator does not generate colliding UUIDs.
+ *
+ * Apache II
+ */
+class UUIDSyncMechanism : TimestampSynchronizer() {
+
+    val timer : AtomicLong = AtomicLong()
+
+    override fun update(p0:Long) : Long {
+        timer.set(p0)
+        return p0 + 1
+    }
+
+    override fun deactivate() {}
+
+    override fun initialize(): Long {
+        timer.set(System.nanoTime())
+        return timer.toLong()
+    }
+}
+
+
 open class AbstractDao {
 
     val logger : Logger = LoggerFactory.getLogger(javaClass)
+
+    protected val uuid1 : NoArgGenerator =
+            TimeBasedGenerator(EthernetAddress.fromInterface(),
+                    UUIDTimer(Random(), UUIDSyncMechanism()))
 
     protected lateinit var jdbc: JdbcTemplate
 

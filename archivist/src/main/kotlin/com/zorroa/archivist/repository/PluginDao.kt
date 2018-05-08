@@ -9,8 +9,8 @@ import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.plugins.PluginSpec
 import org.apache.commons.lang3.NotImplementedException
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface PluginDao : GenericNamedDao<Plugin, PluginSpec> {
 
@@ -22,11 +22,11 @@ interface PluginDao : GenericNamedDao<Plugin, PluginSpec> {
      */
     fun getInstalledVersions(): Map<String, String>
 
-    fun update(id: Int, spec: PluginSpec): Boolean
+    fun update(id: UUID, spec: PluginSpec): Boolean
 }
 
 @Repository
-open class PluginDaoImpl : AbstractDao(), PluginDao {
+class PluginDaoImpl : AbstractDao(), PluginDao {
 
     override fun exists(name: String): Boolean {
         return jdbc.queryForObject("SELECT COUNT(1) FROM plugin WHERE str_name=?", Int::class.java, name) > 0
@@ -40,29 +40,29 @@ open class PluginDaoImpl : AbstractDao(), PluginDao {
         Preconditions.checkNotNull(spec.md5, "Plugin md5 is null: " + spec.name)
 
         val time = System.currentTimeMillis()
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_plugin"))
-            ps.setString(1, spec.name)
-            ps.setString(2, spec.version)
-            ps.setString(3, spec.language)
-            ps.setString(4, spec.description)
-            ps.setString(5, spec.publisher)
-            ps.setLong(6, time)
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setString(2, spec.name)
+            ps.setString(3, spec.version)
+            ps.setString(4, spec.language)
+            ps.setString(5, spec.description)
+            ps.setString(6, spec.publisher)
             ps.setLong(7, time)
-            ps.setString(8, spec.md5)
+            ps.setLong(8, time)
+            ps.setString(9, spec.md5)
             ps
-        }, keyHolder)
-        val id = keyHolder.key.toInt()
+        })
         return get(id)
     }
 
-    override fun get(id: Int): Plugin {
-        return jdbc.queryForObject<Plugin>(GET + " WHERE pk_plugin=?", MAPPER, id)
+    override fun get(id: UUID): Plugin {
+        return jdbc.queryForObject<Plugin>("$GET WHERE pk_plugin=?", MAPPER, id)
     }
 
     override fun get(name: String): Plugin {
-        return jdbc.queryForObject<Plugin>(GET + " WHERE str_name=?", MAPPER, name)
+        return jdbc.queryForObject<Plugin>("$GET WHERE str_name=?", MAPPER, name)
     }
 
     override fun refresh(obj: Plugin): Plugin {
@@ -89,15 +89,15 @@ open class PluginDaoImpl : AbstractDao(), PluginDao {
                         paging.size, paging.from))
     }
 
-    override fun update(id: Int, spec: Plugin): Boolean {
+    override fun update(id: UUID, spec: Plugin): Boolean {
         throw NotImplementedException("Not implemented, try 'boolean update(int id, PluginSpec spec)'")
     }
 
-    override fun update(id: Int, spec: PluginSpec): Boolean {
+    override fun update(id: UUID, spec: PluginSpec): Boolean {
         return jdbc.update(UPDATE, spec.version, System.currentTimeMillis(), spec.md5, id) == 1
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         return jdbc.update("DELETE FROM plugin WHERE pk_plugin=?", id) == 1
     }
 
@@ -108,6 +108,7 @@ open class PluginDaoImpl : AbstractDao(), PluginDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("plugin",
+                "pk_plugin",
                 "str_name",
                 "str_version",
                 "str_lang",
@@ -119,7 +120,7 @@ open class PluginDaoImpl : AbstractDao(), PluginDao {
 
         private val MAPPER = RowMapper<Plugin> { rs, _ ->
             val result = Plugin()
-            result.id = rs.getInt("pk_plugin")
+            result.id = rs.getObject("pk_plugin") as UUID
             result.name = rs.getString("str_name")
             result.description = rs.getString("str_description")
             result.language = rs.getString("str_lang")
@@ -129,7 +130,7 @@ open class PluginDaoImpl : AbstractDao(), PluginDao {
             result
         }
 
-        private val GET = "SELECT " +
+        private const val GET = "SELECT " +
                 "pk_plugin," +
                 "str_name," +
                 "str_version," +

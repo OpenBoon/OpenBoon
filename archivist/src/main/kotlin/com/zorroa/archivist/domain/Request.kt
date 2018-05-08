@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain
 
+import java.util.*
+
 /**
  * The type of request.  Only export is supported currently.
  */
@@ -20,16 +22,16 @@ enum class RequestState {
     Denied
 }
 
-class RequestSpec {
-    var folderId: Int? = null
-    var type : RequestType? = null
-    var comment : String = ""
-    var emailCC : List<String> = listOf()
-}
+data class RequestSpec (
+        val folderId: UUID,
+        val type : RequestType,
+        val comment : String = "",
+        val emailCC : List<String> = listOf()
+)
 
 data class Request (
-        val id : Int,
-        val folderId: Int,
+        val id : UUID,
+        val folderId: UUID,
         val type : RequestType,
         val userCreated : UserBase,
         val timeCreated : Long,

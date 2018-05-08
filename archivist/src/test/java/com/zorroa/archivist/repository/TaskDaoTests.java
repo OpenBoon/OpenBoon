@@ -191,7 +191,6 @@ public class TaskDaoTests extends AbstractTest {
 
         PagedList<Task> tasks = taskDao.getAll(job.getJobId(), Pager.first(2), filter);
         assertEquals(2, tasks.size());
-        assertTrue(tasks.get(0).getId() > tasks.get(1).getId());
     }
 
 
@@ -210,10 +209,6 @@ public class TaskDaoTests extends AbstractTest {
 
         updateState(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(20), TaskState.Failure);
         tasks = taskDao.getOrphanTasks(100, 10, TimeUnit.MINUTES);
-        assertEquals(0, tasks.size());
-
-        updateState(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(20), TaskState.Queued);
-        tasks = taskDao.getOrphanTasks(100, 21, TimeUnit.MINUTES);
         assertEquals(0, tasks.size());
     }
 
@@ -257,7 +252,7 @@ public class TaskDaoTests extends AbstractTest {
             ps.setLong(1, time);
             ps.setLong(2, time);
             ps.setInt(3, state.ordinal());
-            ps.setInt(4, task.getTaskId());
+            ps.setObject(4, task.getTaskId());
             return ps;
         });
     }

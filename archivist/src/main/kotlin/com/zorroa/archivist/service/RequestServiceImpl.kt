@@ -4,14 +4,15 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.repository.RequestDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 interface RequestService {
     fun create(spec: RequestSpec) : Request
-    fun get(id:Int) : Request
+    fun get(id: UUID) : Request
 }
 
 @Service
@@ -26,6 +27,10 @@ class RequestServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var folderService: FolderService
 
+    @Autowired
+    internal lateinit var userService: UserService
+
+
     override fun create(spec: RequestSpec) : Request {
         Preconditions.checkNotNull(spec.folderId, "The folderId for a request cannot be null")
         Preconditions.checkNotNull(spec.type, "The type for a request cannot be null")
@@ -35,12 +40,13 @@ class RequestServiceImpl @Autowired constructor(
 
         val req = requestDao.create(spec)
         tx.afterCommit(false, {
-            emailService.sendExportRequestEmail(SecurityUtils.getUser(), req)
+            val user = userService.get(getUserId())
+            emailService.sendExportRequestEmail(user, req)
         })
         return req
     }
 
-    override fun get(id:Int) : Request {
+    override fun get(id:UUID) : Request {
         return requestDao.get(id)
     }
 }

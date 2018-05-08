@@ -3,18 +3,20 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.SharedLinkSpec
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.util.Json
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 interface SharedLinkDao {
 
     fun create(spec: SharedLinkSpec): SharedLink
 
-    fun get(id: Int): SharedLink
+    fun get(id: UUID): SharedLink
 
     fun deleteExpired(olderThan: Long): Int
 }
@@ -22,9 +24,12 @@ interface SharedLinkDao {
 @Repository
 class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
 
+    @Autowired
+    internal lateinit var userDaoCache: UserDaoCache
+
     private val MAPPER = RowMapper<SharedLink> { rs, _ ->
         val link = SharedLink()
-        link.id = rs.getInt("pk_shared_link")
+        link.id = rs.getObject("pk_shared_link") as UUID
         link.state = Json.deserialize<Map<String, Any>>(rs.getString("json_state"),
                 Json.GENERIC_MAP)
         link.expireTime = rs.getLong("time_expired")
@@ -43,21 +48,22 @@ class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
         }
 
         val key = GeneratedKeyHolder()
+        val id = uuid1.generate()
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_shared_link"))
-            ps.setInt(1, SecurityUtils.getUser().id)
-            ps.setLong(2, System.currentTimeMillis())
-            ps.setLong(3, expireTime)
-            ps.setString(4, Json.serializeToString(spec.state, "{}"))
-            ps.setString(5, Json.serializeToString(spec.userIds, "[]"))
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, getUserId())
+            ps.setLong(3, System.currentTimeMillis())
+            ps.setLong(4, expireTime)
+            ps.setString(5, Json.serializeToString(spec.state, "{}"))
+            ps.setString(6, Json.serializeToString(spec.userIds, "[]"))
             ps
         }, key)
 
-        val id = key.key.toInt()
         return get(id)
     }
 
-    override operator fun get(id: Int): SharedLink {
+    override operator fun get(id: UUID): SharedLink {
         return jdbc.queryForObject("SELECT * FROM shared_link WHERE pk_shared_link=?",
                 MAPPER, id)
     }
@@ -69,7 +75,8 @@ class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("shared_link",
-                "pk_user",
+                "pk_shared_link",
+                "pk_user_created",
                 "time_created",
                 "time_expired",
                 "json_state",

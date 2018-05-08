@@ -2,8 +2,11 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.LfsRequest
-import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.domain.OnlineFileCheckRequest
+import com.zorroa.archivist.domain.OnlineFileCheckResponse
+import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.client.exception.EntityNotFoundException
 import com.zorroa.sdk.util.FileUtils
 import org.slf4j.LoggerFactory
@@ -12,7 +15,8 @@ import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 import javax.annotation.PostConstruct
 
@@ -20,17 +24,22 @@ import javax.annotation.PostConstruct
 interface LocalFileSystem {
     fun listFiles(req: LfsRequest): Map<String, List<String>>
 
-    fun exists(req: LfsRequest): Boolean?
+    fun exists(req: LfsRequest): Boolean
 
     fun suggest(req: LfsRequest): List<String>
 
     fun isLocalPathAllowed(path: String?): Boolean
+
+    fun onlineFileCheck(req: OnlineFileCheckRequest): OnlineFileCheckResponse
 }
 
 @Service
 class LocalFileSystemImpl @Autowired constructor(
         private val properties: ApplicationProperties
 ): LocalFileSystem {
+
+    @Autowired
+    private lateinit var searchService: SearchService
 
     internal var pathSuggestFilter: MutableList<String> = Lists.newArrayList()
 
@@ -47,32 +56,60 @@ class LocalFileSystemImpl @Autowired constructor(
     }
 
     override fun listFiles(req: LfsRequest): Map<String, List<String>> {
-        if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
+        if (!hasPermission(properties.getList("archivist.lfs.permissions"))) {
             throw EntityNotFoundException("The path does not exist")
         }
-        return _listFiles(req)
+        return insecureListFiles(req)
     }
 
-    override fun exists(req: LfsRequest): Boolean? {
+    override fun exists(req: LfsRequest): Boolean {
         permissionCheck()
         val path = FileUtils.normalize(req.path)
-        return if (!isLocalPathAllowed(FileUtils.normalize(path))) {
+        return if (!isLocalPathAllowed(path)) {
             false
         } else Files.exists(Paths.get(path))
     }
 
-    override fun suggest(req: LfsRequest): List<String> {
-        permissionCheck()
-        val files = _listFiles(req)
-        val result = mutableListOf<String>()
+    override fun onlineFileCheck(req: OnlineFileCheckRequest): OnlineFileCheckResponse  {
+        val max = properties.getInt("archivist.export.maxAssetCount")
+        val search = req.search
+        search.fields = arrayOf("source")
 
-        result.addAll(files["dirs"]!!.stream().map { f -> f + "/" }.collect(Collectors.toList()))
-        result.addAll(files["files"]!!)
-        Collections.sort(result)
+        val threads =  Executors.newFixedThreadPool(4)
+        val result = OnlineFileCheckResponse()
+        for (doc in searchService.scanAndScroll(search, max.toLong(), clamp=true)) {
+            threads.execute({
+                val path = Paths.get(doc.getAttr("source.path", String::class.java))
+                if (path != null) {
+                    when {
+                        Files.exists(path) -> result.totalOnline.increment()
+                        else -> {
+                            result.totalOffline.increment()
+                            result.offlineAssetIds.offer(doc.id)
+                        }
+                    }
+                    result.total.increment()
+                }
+            })
+        }
+        threads.shutdown()
+        threads.awaitTermination(1, TimeUnit.MINUTES)
         return result
     }
 
-    fun _listFiles(req: LfsRequest): Map<String, List<String>> {
+    override fun suggest(req: LfsRequest): List<String> {
+        permissionCheck()
+        val files = insecureListFiles(req)
+        val result = mutableListOf<String>()
+
+        result.addAll(files.getValue("dirs").stream().map { f -> "$f/" }.collect(Collectors.toList()))
+        result.addAll(files.getValue("files"))
+        result.sort()
+
+        return result
+    }
+
+    fun insecureListFiles(req: LfsRequest): Map<String, List<String>> {
         val result = mapOf<String, MutableList<String>>(
                 "dirs" to mutableListOf(),
                 "files" to  mutableListOf())
@@ -83,7 +120,7 @@ class LocalFileSystemImpl @Autowired constructor(
         val path = FileUtils.normalize(req.path)
         if (!isLocalPathAllowed(path)) {
             logger.warn("User {} attempted to list files in: {}",
-                    SecurityUtils.getUsername(), path)
+                    getUsername(), path)
             return result
         }
 
@@ -112,14 +149,14 @@ class LocalFileSystemImpl @Autowired constructor(
             return result
         }
 
-        result["dirs"]!!.sort()
-        result["files"]!!.sort()
+        result.getValue("dirs").sort()
+        result.getValue("files").sort()
         return result
     }
 
     override fun isLocalPathAllowed(path: String?): Boolean {
-        if (pathSuggestFilter.isEmpty()) {
-            return false
+        return if (pathSuggestFilter.isEmpty()) {
+            false
         } else {
             var matched = false
             for (filter in pathSuggestFilter) {
@@ -128,12 +165,12 @@ class LocalFileSystemImpl @Autowired constructor(
                     break
                 }
             }
-            return matched
+            matched
         }
     }
 
     fun permissionCheck() {
-        if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
+        if (!hasPermission(properties.getList("archivist.lfs.permissions"))) {
             throw EntityNotFoundException("The path does not exist")
         }
 

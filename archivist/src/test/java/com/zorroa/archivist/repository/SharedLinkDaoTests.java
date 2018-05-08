@@ -9,6 +9,7 @@ import com.zorroa.archivist.service.TransactionEventManager;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.zorroa.archivist.security.UtilsKt.getUserId;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
@@ -28,7 +29,7 @@ public class SharedLinkDaoTests extends AbstractTest {
         SharedLinkSpec spec = new SharedLinkSpec();
         spec.setSendEmail(true);
         spec.setState(ImmutableMap.of("foo", "bar"));
-        spec.setUserIds(ImmutableSet.of(1));
+        spec.setUserIds(ImmutableSet.of(getUserId()));
         spec.setExpireTimeMs(1L);
         SharedLink link = sharedLinkDao.create(spec);
         assertEquals(spec.getState(), link.getState());
@@ -40,7 +41,7 @@ public class SharedLinkDaoTests extends AbstractTest {
         SharedLinkSpec spec = new SharedLinkSpec();
         spec.setSendEmail(true);
         spec.setState(ImmutableMap.of("foo", "bar"));
-        spec.setUserIds(ImmutableSet.of(1));
+        spec.setUserIds(ImmutableSet.of(getUserId()));
         spec.setExpireTimeMs(1L);
         SharedLink link1 = sharedLinkDao.create(spec);
         SharedLink link2 = sharedLinkDao.get(link1.getId());
@@ -52,7 +53,7 @@ public class SharedLinkDaoTests extends AbstractTest {
         SharedLinkSpec spec = new SharedLinkSpec();
         spec.setSendEmail(true);
         spec.setState(ImmutableMap.of("foo", "bar"));
-        spec.setUserIds(ImmutableSet.of(1));
+        spec.setUserIds(ImmutableSet.of(getUserId()));
         spec.setExpireTimeMs(86400 * 1000L);
         SharedLink link = sharedLinkDao.create(spec);
 
@@ -65,7 +66,7 @@ public class SharedLinkDaoTests extends AbstractTest {
         SharedLinkSpec spec = new SharedLinkSpec();
         spec.setSendEmail(true);
         spec.setState(ImmutableMap.of("foo", "bar"));
-        spec.setUserIds(ImmutableSet.of(1));
+        spec.setUserIds(ImmutableSet.of(getUserId()));
         spec.setExpireTimeMs(1L);
         SharedLink link = sharedLinkDao.create(spec);
 

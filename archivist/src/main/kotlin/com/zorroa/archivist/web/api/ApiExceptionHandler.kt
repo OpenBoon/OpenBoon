@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web.api
 
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.web.InvalidObjectException
 import com.zorroa.sdk.client.exception.*
 import org.slf4j.LoggerFactory
@@ -56,7 +56,7 @@ class ApiExceptionHandler {
 
         sb.append("User: ")
         try {
-            sb.append(SecurityUtils.getUsername())
+            sb.append(getUsername())
         }
         catch (e: Exception) {
             sb.append("Unknown/Unauthorized")

@@ -1,11 +1,9 @@
 package com.zorroa.archivist.web.api
 
 import com.zorroa.archivist.HttpUtils
-import com.zorroa.archivist.domain.Access
-import com.zorroa.archivist.domain.Acl
-import com.zorroa.archivist.domain.Blob
-import com.zorroa.archivist.domain.SetPermissions
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.service.BlobService
+import com.zorroa.sdk.domain.Access
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -15,8 +13,13 @@ class BlobController @Autowired constructor(
 ) {
 
     @PostMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}"])
-    operator fun set(@RequestBody data: Any, @PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Blob {
+    fun set(@RequestBody data: Any, @PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Blob {
         return blobService.set(app, feature, name, data)
+    }
+
+    @PostMapping(value = ["/api/v2/blobs/{app}/{feature}/{name}"])
+    fun setV2(@RequestBody spec: BlobSpec, @PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Blob {
+        return blobService.set(app, feature, name, spec)
     }
 
     @GetMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}"])
@@ -40,7 +43,7 @@ class BlobController @Autowired constructor(
      */
     @GetMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}/_raw"])
     fun getRaw(@PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Any? {
-        return blobService.get(app, feature, name).getData()
+        return blobService.get(app, feature, name).data
     }
 
     @GetMapping(value = ["/api/v1/blobs/{app}/{feature}"])

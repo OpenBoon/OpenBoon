@@ -1,16 +1,17 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.PipelineType
 import com.zorroa.sdk.processor.ProcessorRef
+import com.zorroa.sdk.processor.SharedData
 import com.zorroa.sdk.zps.ZpsScript
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -20,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 /**
  * Created by chambers on 7/11/16.
@@ -38,14 +38,16 @@ interface ImportService {
      * @return
      */
     fun create(spec: ImportSpec): Job
+
+    fun createFileUploadPath(job: Job): Path
 }
 
 @Service
 @Transactional
 class ImportServiceImpl @Autowired constructor(
-        val transactionEventManager: TransactionEventManager,
-        val properties: ApplicationProperties
-) : ImportService {
+        private val transactionEventManager: TransactionEventManager,
+        private val sharedData: SharedData
+        ) : ImportService {
 
     @Autowired
     private lateinit var jobService: JobService
@@ -77,7 +79,8 @@ class ImportServiceImpl @Autowired constructor(
         // Setup generator
         val generators = Lists.newArrayList<ProcessorRef>()
         try {
-            val importPath = copyUploadedFiles(job, files)
+            val importPath = createFileUploadPath(job)
+            copyUploadedFiles(importPath, files)
             generators.add(ProcessorRef()
                     .setClassName("com.zorroa.core.generator.FileSystemGenerator")
                     .setLanguage("java")
@@ -89,15 +92,12 @@ class ImportServiceImpl @Autowired constructor(
         }
 
         // Setup execute
-        val execute = Lists.newArrayList<ProcessorRef>()
+        val execute = mutableListOf<ProcessorRef>()
 
         /*
          * The first node is an expand collector which allows us to execute in parallel.
          */
-        execute.add(
-                ProcessorRef()
-                        .setClassName("com.zorroa.core.collector.ExpandCollector")
-                        .setLanguage("java"))
+        execute.add(pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector"))
 
 
         val pipeline = Lists.newArrayList<ProcessorRef>()
@@ -106,11 +106,8 @@ class ImportServiceImpl @Autowired constructor(
         /*
          * Append the index document collector to add stuff to the DB.
          */
-        pipeline.add(
-                ProcessorRef()
-                        .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
-                        .setLanguage("java")
-                        .setArgs(ImmutableMap.of<String, Any>("importId", job.jobId)))
+        pipeline.add(pluginService.getProcessorRef("com.zorroa.core.collector.IndexCollector",
+                mapOf("importId" to job.jobId)))
 
         /*
          * Set the pipeline as the sub execute to the expand node.
@@ -146,19 +143,18 @@ class ImportServiceImpl @Autowired constructor(
         val job = jobService.launch(jspec)
 
 
-        val expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector")
+        val expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector",
+                mapOf("batchSize" to spec.batchSize))
+
         val execute = Lists.newArrayList(expand)
         expand.execute = pipelineService.mungePipelines(
-                PipelineType.Import, spec.getProcessors())
+                PipelineType.Import, spec.processors)
 
         /**
-         * At the end we add an IndexDocumentCollector to index the results of our job.
+         * At the end we add an IndexCollector to index the results of our job.
          */
-        expand.addToExecute(
-                ProcessorRef()
-                        .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
-                        .setLanguage("java")
-                        .setArgs(ImmutableMap.of<String, Any>("importId", job.jobId)))
+        expand.addToExecute(pluginService.getProcessorRef("com.zorroa.core.collector.IndexCollector",
+                mapOf("importId" to job.jobId)))
 
         /**
          * Now attach the pipeline to each generator, be sure to validate each processor
@@ -190,20 +186,28 @@ class ImportServiceImpl @Autowired constructor(
         return job
     }
 
-    @Throws(IOException::class)
-    private fun copyUploadedFiles(job: Job, files: Array<MultipartFile>): Path {
-        val importPath = Paths.get(job.rootPath).resolve("assets")
-
-        for (file in files) {
-            if (!importPath.resolve(file.originalFilename).toFile().exists()) {
-                Files.copy(file.inputStream, importPath.resolve(file.originalFilename))
-            }
-        }
+    override fun createFileUploadPath(job: Job): Path {
+        val basePath = sharedData.resolve("uploads")
+        val time = DateTime()
+        val formatter = DateTimeFormat.forPattern("YYYY/MM")
+        val importPath = basePath
+                .resolve(formatter.print(time))
+                .resolve(getUsername())
+                .resolve(job.id.toString())
+                .toAbsolutePath()
+        importPath.toFile().mkdirs()
         return importPath
     }
 
+    @Throws(IOException::class)
+    private fun copyUploadedFiles(path: Path, files: Array<MultipartFile>) {
+        for (file in files) {
+            Files.copy(file.inputStream, path.resolve(file.originalFilename))
+        }
+    }
+
     private fun determineJobName(name: String?): String {
-        return name ?: String.format("import by %s", SecurityUtils.getUsername())
+        return name ?: String.format("import by %s", getUsername())
     }
 
     companion object {

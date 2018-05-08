@@ -1,16 +1,19 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.google.common.hash.Hashing
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.repository.PermissionDaoImpl.Companion.GET_ALL
+import com.zorroa.archivist.sdk.security.UserId
+import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -20,11 +23,9 @@ interface UserDao {
 
     fun getCount(): Long
 
-    fun get(id: Int): User
+    fun get(id: UUID): User
 
     fun get(username: String): User
-
-    fun getByEmail(email: String): User
 
     fun getByToken(token: String): User
 
@@ -38,11 +39,11 @@ interface UserDao {
 
     fun setSettings(user: User, settings: UserSettings): Boolean
 
-    fun getSettings(id: Int): UserSettings
+    fun getSettings(id: UUID): UserSettings
 
     fun setPassword(user: User, password: String): Boolean
 
-    fun exists(name: String): Boolean
+    fun exists(name: String, source:String?): Boolean
 
     fun setEnablePasswordRecovery(user: User): String
 
@@ -56,35 +57,41 @@ interface UserDao {
 
     fun create(builder: UserSpec): User
 
-    fun create(builder: UserSpec, source: String): User
+    fun hasPermission(user: UserId, permission: Permission): Boolean
 
-    fun hasPermission(user: User, permission: Permission): Boolean
+    fun hasPermission(user: UserId, type: String, name: String): Boolean
 
-    fun hasPermission(user: User, type: String, name: String): Boolean
+    fun setPermissions(user: UserId, perms: Collection<Permission>,source:String="local") : Int
 
-    fun setPermissions(user: User, perms: Collection<Permission>): Int
+    fun addPermission(user: UserId, perm: Permission, immutable: Boolean): Boolean
 
-    fun addPermission(user: User, perm: Permission, immutable: Boolean): Boolean
+    fun removePermission(user: UserId, perm: Permission): Boolean
 
-    fun removePermission(user: User, perm: Permission): Boolean
-
-    fun incrementLoginCounter(user: User)
+    fun incrementLoginCounter(user: UserId)
 }
 
 @Repository
 class UserDaoImpl : AbstractDao(), UserDao {
 
-    override fun get(id: Int): User {
+    @Value("\${archivist.organization.domain}")
+    private lateinit var domain: String
+
+    private val hashFunc = Hashing.sha256()
+
+    private fun generateKey() : String {
+        return hashFunc.newHasher()
+                .putString(UUID.randomUUID().toString(), Charsets.UTF_8)
+                .putLong(System.nanoTime())
+                .hash().toString()
+    }
+
+    override fun get(id: UUID): User {
         return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?", MAPPER, id)
     }
 
     override fun get(username: String): User {
-        return jdbc.queryForObject<User>("SELECT * FROM users WHERE str_username=? OR str_email=?",
+        return jdbc.queryForObject<User>("SELECT * FROM users WHERE (str_username=? OR str_email=?)",
                 MAPPER, username, username)
-    }
-
-    override fun getByEmail(email: String): User {
-        return jdbc.queryForObject<User>("SELECT * FROM users WHERE str_email=?", MAPPER, email)
     }
 
     override fun getByToken(token: String): User {
@@ -105,42 +112,51 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>(GET_ALL + " LIMIT ? OFFSET ?",
+                jdbc.query<User>("$GET_ALL LIMIT ? OFFSET ?",
                         MAPPER, paging.size, paging.from))
     }
 
-    override fun create(builder: UserSpec, source: String): User {
+    override fun create(builder: UserSpec): User {
         Preconditions.checkNotNull(builder.username, "The Username cannot be null")
         Preconditions.checkNotNull(builder.password, "The Password cannot be null")
-        builder.password = SecurityUtils.createPasswordHash(builder.password)
+        builder.password = createPasswordHash(builder.password)
 
-        val keyHolder = GeneratedKeyHolder()
+        if (builder.source == null) {
+            builder.source = SOURCE_LOCAL
+        }
+
+        val id = uuid1.generate()
+
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_user"))
-            ps.setString(1, builder.username)
-            ps.setString(2, builder.password)
-            ps.setString(3, builder.email)
-            ps.setString(4, builder.firstName)
-            ps.setString(5, builder.lastName)
-            ps.setBoolean(6, true)
-            ps.setObject(7, UUID.randomUUID())
-            ps.setString(8, "{}")
-            ps.setString(9, source)
-            ps.setInt(10, builder.userPermissionId)
-            ps.setInt(11, builder.homeFolderId)
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setString(2, builder.username)
+            ps.setString(3, builder.password)
+            ps.setString(4, builder.email)
+            ps.setString(5, builder.firstName)
+            ps.setString(6, builder.lastName)
+            ps.setBoolean(7, true)
+            ps.setObject(8, generateKey())
+            ps.setString(9, "{}")
+            ps.setString(10, builder.source)
+            ps.setObject(11, builder.userPermissionId)
+            ps.setObject(12, builder.homeFolderId)
             ps
-        }, keyHolder)
-        val id = keyHolder.key.toInt()
+        })
         return get(id)
     }
 
-    override fun create(builder: UserSpec): User {
-        return create(builder, "local")
-    }
+    override fun exists(name: String, source:String?): Boolean {
+        var append = ""
+        var args = mutableListOf<Any>(name, name)
 
-    override fun exists(name: String): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM users WHERE str_username=? OR str_email=?",
-                Boolean::class.java, name, name)
+        if (source != null) {
+            append = " AND str_source=?"
+            args.add(source)
+        }
+        return jdbc.queryForObject("SELECT COUNT(1) FROM users " +
+                "WHERE (str_username=? OR str_email=?)$append",
+                Boolean::class.java, *args.toTypedArray())
     }
 
     override fun setSettings(user: User, settings: UserSettings): Boolean {
@@ -149,7 +165,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 Json.serializeToString(settings, "{}"), user.id) == 1
     }
 
-    override fun getSettings(id: Int): UserSettings {
+    override fun getSettings(id: UUID): UserSettings {
         return Json.deserialize(
                 jdbc.queryForObject("SELECT json_settings FROM users WHERE pk_user=?",
                         String::class.java, id), UserSettings::class.java)
@@ -158,7 +174,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun setPassword(user: User, password: String): Boolean {
         return jdbc.update(
                 "UPDATE users SET str_password=? WHERE pk_user=?",
-                SecurityUtils.createPasswordHash(password), user.id) == 1
+                createPasswordHash(password), user.id) == 1
     }
 
     override fun setEnablePasswordRecovery(user: User): String {
@@ -170,7 +186,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun resetPassword(user: User, token: String, password: String): Boolean {
-        return jdbc.update(RESET_PASSWORD, SecurityUtils.createPasswordHash(password),
+        return jdbc.update(RESET_PASSWORD, createPasswordHash(password),
                 user.id, token) == 1
     }
 
@@ -181,11 +197,11 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun update(user: User, update: UserProfileUpdate): Boolean {
-        return jdbc.update(UPDATE, update.email, update.firstName,
+        return jdbc.update(UPDATE, update.username, update.email, update.firstName,
                 update.lastName, user.id) == 1
     }
 
-    override fun incrementLoginCounter(user: User) {
+    override fun incrementLoginCounter(user: UserId) {
         jdbc.update("UPDATE users SET int_login_count=int_login_count+1, time_last_login=? WHERE pk_user=?",
                 System.currentTimeMillis(), user.id)
     }
@@ -200,14 +216,19 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getHmacKey(username: String): String {
-        return jdbc.queryForObject("SELECT hmac_key FROM users WHERE str_username=? AND bool_enabled=?",
-                String::class.java, username, true)
+        val result =  jdbc.queryForObject("SELECT hmac_key FROM users WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
+                String::class.java, username, username, true)
+        if (result == null) {
+            return ""
+        }
+        else {
+            return result
+        }
     }
 
     override fun generateHmacKey(username: String): Boolean {
-        val key = UUID.randomUUID()
-        return jdbc.update("UPDATE users SET hmac_key=? WHERE str_username=? AND bool_enabled=?",
-                key, username, true) == 1
+        return jdbc.update("UPDATE users SET hmac_key=? WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
+                generateKey(), username, username, true) == 1
     }
 
     override fun getCount(): Long {
@@ -215,74 +236,73 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
 
-    override fun hasPermission(user: User, permission: Permission): Boolean {
+    override fun hasPermission(user: UserId, permission: Permission): Boolean {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",
                 Int::class.java, user.id, permission.id) == 1
     }
 
-    override fun hasPermission(user: User, type: String, name: String): Boolean {
+    override fun hasPermission(user: UserId, type: String, name: String): Boolean {
         return jdbc.queryForObject(HAS_PERM, Int::class.java, user.id, name, type) == 1
     }
 
-    private fun clearPermissions(user: User) {
+    private fun clearPermissions(user: UserId, source:String="local") : Int {
         /*
          * Ensure the user's immutable permissions cannot be removed.
          */
-        jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=?",
-                user.id, false)
+        return jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=? AND str_source=?",
+                user.id, false, source)
     }
 
-    override fun setPermissions(user: User, perms: Collection<Permission>): Int {
-        /*
-         * Does not remove immutable permissions.
-         */
-        clearPermissions(user)
+    override fun setPermissions(user: UserId, perms: Collection<Permission>, source:String): Int {
+
+        clearPermissions(user, source)
 
         var result = 0
         for (p in perms) {
             if (hasPermission(user, p)) {
                 continue
             }
-            jdbc.update("INSERT INTO user_permission (pk_permission, pk_user) VALUES (?,?)",
-                    p.id, user.id)
+            jdbc.update("INSERT INTO user_permission (pk_permission, pk_user, str_source) VALUES (?,?,?)",
+                    p.id, user.id, source)
             result++
         }
         return result
     }
 
-    override fun addPermission(user: User, perm: Permission, immutable: Boolean): Boolean {
+    override fun addPermission(user: UserId, perm: Permission, immutable: Boolean): Boolean {
         return if (hasPermission(user, perm)) {
             false
         } else jdbc.update("INSERT INTO user_permission (pk_permission, pk_user, bool_immutable) VALUES (?,?,?)",
                 perm.id, user.id, immutable) == 1
     }
 
-    override fun removePermission(user: User, perm: Permission): Boolean {
+    override fun removePermission(user: UserId, perm: Permission): Boolean {
         return jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND pk_permission=? AND bool_immutable=0",
                 user.id, perm.id) == 1
     }
 
     companion object {
 
+        const val SOURCE_LOCAL = "local"
+
         private val MAPPER = RowMapper<User> { rs, _ ->
-            val user = User()
-            user.id = rs.getInt("pk_user")
-            user.username = rs.getString("str_username")
-            user.email = rs.getString("str_email")
-            user.firstName = rs.getString("str_firstname")
-            user.lastName = rs.getString("str_lastname")
-            user.enabled = rs.getBoolean("bool_enabled")
-            user.settings = Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java)
-            user.permissionId = rs.getInt("pk_permission")
-            user.homeFolderId = rs.getInt("pk_folder")
-            user.timeLastLogin = rs.getLong("time_last_login");
-            user.loginCount = rs.getInt("int_login_count");
-            user
+            User(rs.getObject("pk_user") as UUID,
+                    rs.getString("str_username"),
+                    rs.getString("str_email"),
+                    rs.getObject("pk_permission") as UUID,
+                    rs.getObject("pk_folder") as UUID,
+                    rs.getString("str_firstname"),
+                    rs.getString("str_lastname"),
+                    rs.getBoolean("bool_enabled"),
+                    Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java),
+                    rs.getInt("int_login_count"),
+                    rs.getLong("time_last_login"))
         }
 
         private const val GET_ALL = "SELECT * FROM users ORDER BY str_username"
 
         private val INSERT = JdbcUtils.insert("users",
+                "pk_user",
                 "str_username",
                 "str_password",
                 "str_email",
@@ -306,11 +326,12 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "str_reset_pass_token=?"
 
         private val UPDATE = JdbcUtils.update("users", "pk_user",
+                "str_username",
                 "str_email",
                 "str_firstname",
                 "str_lastname")
 
-        private val HAS_PERM = "SELECT " +
+        private const val HAS_PERM = "SELECT " +
                 "COUNT(1) " +
                 "FROM " +
                 "permission p," +

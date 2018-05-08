@@ -8,8 +8,8 @@ import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 
 /**
@@ -21,23 +21,23 @@ interface UserPresetDao : GenericNamedDao<UserPreset, UserPresetSpec>
  * Created by chambers on 10/17/16.
  */
 @Repository
-open class UserPresetDaoImpl : AbstractDao(), UserPresetDao {
+class UserPresetDaoImpl : AbstractDao(), UserPresetDao {
 
     private val MAPPER = RowMapper<UserPreset> { rs, _ ->
         val p = UserPreset()
-        p.presetId = rs.getInt("pk_preset")
+        p.presetId = rs.getObject("pk_preset") as UUID
         p.name = rs.getString("str_name")
-        p.permissionIds = getPermissons(rs.getInt("pk_preset"))
+        p.permissionIds = getPermissons(rs.getObject("pk_preset") as UUID)
         p.settings = Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java)
         p
     }
 
-    private fun getPermissons(id: Int): List<Int> {
+    private fun getPermissons(id: UUID): List<UUID> {
         return jdbc.queryForList("SELECT pk_permission FROM preset_permission  WHERE pk_preset=?",
-                Int::class.java, id)
+                UUID::class.java, id)
     }
 
-    private fun setPermissions(presetId: Int, permissionIds: List<Int>?) {
+    private fun setPermissions(presetId: UUID, permissionIds: List<UUID>?) {
         jdbc.update("DELETE FROM preset_permission WHERE pk_preset=?", presetId)
         if (permissionIds == null) {
             return
@@ -63,20 +63,19 @@ open class UserPresetDaoImpl : AbstractDao(), UserPresetDao {
     }
 
     override fun create(spec: UserPresetSpec): UserPreset {
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_preset"))
-            ps.setString(1, spec.name)
-            ps.setString(2, Json.serializeToString(spec.settings, "{}"))
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setString(2, spec.name)
+            ps.setString(3, Json.serializeToString(spec.settings, "{}"))
             ps
-        }, keyHolder)
-        val id = keyHolder.key.toInt()
+        })
         setPermissions(id, spec.permissionIds)
-
         return get(id)
     }
 
-    override fun get(id: Int): UserPreset {
+    override fun get(id: UUID): UserPreset {
         return jdbc.queryForObject<UserPreset>(GET + "WHERE pk_preset=?", MAPPER, id)
     }
 
@@ -94,7 +93,7 @@ open class UserPresetDaoImpl : AbstractDao(), UserPresetDao {
                         paging.size, paging.from))
     }
 
-    override fun update(id: Int, spec: UserPreset): Boolean {
+    override fun update(id: UUID, spec: UserPreset): Boolean {
         if (jdbc.update(UPDATE, spec.name, Json.serializeToString(spec.settings, "{}"), id) > 0) {
             setPermissions(id, spec.permissionIds)
             return true
@@ -102,7 +101,7 @@ open class UserPresetDaoImpl : AbstractDao(), UserPresetDao {
         return false
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         return jdbc.update("DELETE FROM preset WHERE pk_preset=?", id) == 1
     }
 
@@ -113,6 +112,7 @@ open class UserPresetDaoImpl : AbstractDao(), UserPresetDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("preset",
+                "pk_preset",
                 "str_name",
                 "json_settings")
 

@@ -4,17 +4,19 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.service.PluginService
+import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.util.*
 
 /**
  * Created by chambers on 6/29/16.
  */
 
-@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
+@PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
 @RestController
 class PluginController @Autowired constructor(
         private val pluginService: PluginService
@@ -40,11 +42,21 @@ class PluginController @Autowired constructor(
     }
 
     @RequestMapping(value = ["/api/v1/processors"], method = [RequestMethod.GET, RequestMethod.POST])
-    fun processors(@RequestBody(required = false) filter: ProcessorFilter?): List<Processor> {
+    fun getProcessors(@RequestBody(required = false) filter: ProcessorFilter?): List<Processor> {
         return if (filter == null) {
             pluginService.getAllProcessors()
         } else {
             pluginService.getAllProcessors(filter)
+        }
+    }
+
+    @GetMapping(value = "/api/v1/processors/{id:.+}")
+    fun getProcessor(@PathVariable id: String): Processor {
+        return if (UUID_REGEXP.matches(id)) {
+            pluginService.getProcessor(UUID.fromString(id))
+        }
+        else {
+            pluginService.getProcessor(id)
         }
     }
 }

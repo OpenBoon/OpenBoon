@@ -7,6 +7,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.TaxonomyDao
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.InternalRunnable
 import com.zorroa.common.elastic.CountingBulkListener
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import java.util.concurrent.atomic.LongAdder
 import java.util.function.Predicate
 import java.util.stream.Collectors
@@ -39,7 +41,7 @@ interface TaxonomyService {
 
     fun create(spec: TaxonomySpec): Taxonomy
 
-    fun get(id: Int): Taxonomy
+    fun get(id: UUID): Taxonomy
 
     fun get(folder: Folder): Taxonomy
 
@@ -84,7 +86,10 @@ class TaxonomyServiceImpl @Autowired constructor(
     internal lateinit var searchService: SearchService
 
     @Autowired
-    internal lateinit var userService: UserService
+    internal lateinit var fieldService: FieldService
+
+    @Autowired
+    internal lateinit var userRegistryService: UserRegistryService
 
     @Value("\${zorroa.cluster.index.alias}")
     private val alias: String? = null
@@ -93,8 +98,8 @@ class TaxonomyServiceImpl @Autowired constructor(
 
     private val auth: Authentication
         get() {
-            val user = userService.get("admin")
-            return InternalAuthentication(user, userService.getPermissions(user))
+            val user = userRegistryService.getUser("admin")
+            return InternalAuthentication(user)
         }
 
     override fun delete(tax: Taxonomy?, untag: Boolean): Boolean {
@@ -130,7 +135,7 @@ class TaxonomyServiceImpl @Autowired constructor(
             throw ArchivistWriteException("The root folder cannot be a taxonomy.")
         }
 
-        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == 0) {
+        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == Folder.ROOT_ID) {
             throw ArchivistWriteException("This folder cannot hold a taxonomy.")
         }
 
@@ -148,7 +153,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         }
     }
 
-    override fun get(id: Int): Taxonomy {
+    override fun get(id: UUID): Taxonomy {
         return taxonomyDao.get(id)
     }
 
@@ -233,7 +238,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 var search: AssetSearch? = folder.search
                 if (search == null) {
                     search = AssetSearch(AssetFilter()
-                            .addToTerms("links.folder", folder.id)
+                            .addToTerms("zorroa.links.folder", folder.id)
                             .setRecursive(false))
                 }
 
@@ -255,7 +260,6 @@ class TaxonomyServiceImpl @Autowired constructor(
                         .setTaxId(tax.taxonomyId)
                         .setUpdatedTime(updateTime)
                         .setKeywords(keywords)
-                        .setSuggest(keywords)
 
                 var batchCounter = 1
                 try {
@@ -300,7 +304,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 tax.folderId, assetTotal.toLong(), folderTotal.toInt())
 
         if (assetTotal.toLong() > 0) {
-            searchService.invalidateFields()
+            fieldService.invalidateFields()
         }
 
         return ImmutableMap.of(

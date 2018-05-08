@@ -2,6 +2,7 @@ package com.zorroa.common.domain;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by chambers on 6/16/16.
@@ -14,7 +15,7 @@ public class AnalystSpec {
     private int threadCount;
     private String arch;
     private String os;
-    private List<Integer> taskIds;
+    private List<UUID> taskIds;
     private String url;
     private String version;
 
@@ -81,11 +82,11 @@ public class AnalystSpec {
         return this;
     }
 
-    public List<Integer> getTaskIds() {
+    public List<UUID> getTaskIds() {
         return taskIds;
     }
 
-    public AnalystSpec setTaskIds(List<Integer> taskIds) {
+    public AnalystSpec setTaskIds(List<UUID> taskIds) {
         this.taskIds = taskIds;
         return this;
     }

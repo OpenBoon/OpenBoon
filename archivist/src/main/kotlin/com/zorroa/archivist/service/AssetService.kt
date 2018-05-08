@@ -8,8 +8,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.CommandDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.*
 import com.zorroa.sdk.filesystem.ObjectFileSystem
@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.LongAdder
@@ -64,8 +65,6 @@ interface AssetService {
 
     fun index(spec: AssetIndexSpec): AssetIndexResult
 
-    fun getElements(assetId: String, page: Pager): PagedList<Document>
-
     fun index(doc: Document): Document
 
     fun removeFields(id: String, fields: MutableSet<String>)
@@ -94,17 +93,17 @@ interface AssetService {
 
 @Component
 class AssetServiceImpl  @Autowired  constructor (
-    private val assetDao: AssetDao,
-    private val commandDao: CommandDao,
-    private val permissionDao: PermissionDao,
-    private val dyHierarchyService: DyHierarchyService,
-    private val taxonomyService: TaxonomyService,
-    private val logService: EventLogService,
-    private val searchService: SearchService,
-    private val properties: ApplicationProperties,
-    private val jobService: JobService,
-    private val client: Client,
-    private val ofs: ObjectFileSystem
+        private val assetDao: AssetDao,
+        private val commandDao: CommandDao,
+        private val permissionDao: PermissionDao,
+        private val dyHierarchyService: DyHierarchyService,
+        private val taxonomyService: TaxonomyService,
+        private val logService: EventLogService,
+        private val searchService: SearchService,
+        private val properties: ApplicationProperties,
+        private val jobService: JobService,
+        private val client: Client,
+        private val ofs: ObjectFileSystem
 
 ) : AssetService, ApplicationListener<ContextRefreshedEvent> {
 
@@ -135,9 +134,9 @@ class AssetServiceImpl  @Autowired  constructor (
         } else {
 
             for (hit in searchService.search(Pager.first(1), AssetSearch(AssetFilter()
-                    .addToTerms("source.clip.parent", id))
+                    .addToTerms("media.clip.parent", id))
                     .setFields(arrayOf("proxies"))
-                    .setOrder(ImmutableList.of(AssetSearchOrder("origin.timeCreated"))))) {
+                    .setOrder(ImmutableList.of(AssetSearchOrder("_id"))))) {
                 return hit.getAttr("proxies", ProxySchema::class.java)
             }
 
@@ -147,10 +146,6 @@ class AssetServiceImpl  @Autowired  constructor (
 
     override fun getAll(page: Pager): PagedList<Document> {
         return assetDao.getAll(page)
-    }
-
-    override fun getElements(assetId: String, page: Pager): PagedList<Document> {
-        return assetDao.getElements(assetId, page)
     }
 
     override fun index(doc: Document): Document {
@@ -187,10 +182,11 @@ class AssetServiceImpl  @Autowired  constructor (
              */
             NS_PROTECTED_API.forEach { n -> source.removeAttr(n) }
 
-            val managedValues = assetDao.getManagedFields(source.id)
-
-            val perms = Json.Mapper.convertValue(
-                    (managedValues as MutableMap<String, Any>).getOrDefault("permissions", ImmutableMap.of<Any, Any>()), PermissionSchema::class.java)
+            val managedValues = Document(assetDao.getManagedFields(source.id))
+            var perms = managedValues.getAttr("zorroa.permissions", PermissionSchema::class.java)
+            if (perms == null) {
+                perms = PermissionSchema()
+            }
 
             if (source.permissions != null) {
                 for ((key, value) in source.permissions) {
@@ -218,7 +214,7 @@ class AssetServiceImpl  @Autowired  constructor (
                     }
 
                 }
-                source.setAttr("permissions", perms)
+                source.setAttr("zorroa.permissions", perms)
             } else if (perms.isEmpty) {
                 /**
                  * If the source didn't come with any permissions and the current perms
@@ -226,29 +222,28 @@ class AssetServiceImpl  @Autowired  constructor (
                  *
                  * If there is no permissions.
                  */
-                source.setAttr("permissions", defaultPerms)
+                source.setAttr("zorroa.permissions", defaultPerms)
             }
 
             if (source.links != null) {
-                val links = Json.Mapper.convertValue(
-                        managedValues.getOrDefault("links", mapOf<Any, Any>()), LinkSchema::class.java)
+                var links = managedValues.getAttr("zorroa.links", LinkSchema::class.java)
+                if (links == null) {
+                    links = LinkSchema()
+                }
                 for (link in source.links) {
                     links.addLink(link.left, link.right)
                 }
-                source.setAttr("links", links)
+                source.setAttr("zorroa.links", links)
             }
 
-            /**
-             * Only allow the origin to be written once
-             */
-            val time = System.currentTimeMillis()
-            if (managedValues.containsKey("origin") && !source.isReplace) {
-                source.removeAttr("origin")
-                source.setAttr("origin.timeModified", time)
+            val time = Date()
+
+            if (managedValues.attrExists("zorroa.timeCreated") && !source.isReplace) {
+                source.setAttr("zorroa.timeModified", time)
             }
             else {
-                source.setAttr("origin.timeModified", time)
-                source.setAttr("origin.timeCreated", time)
+                source.setAttr("zorroa.timeModified", time)
+                source.setAttr("zorroa.timeCreated", time)
             }
         }
 
@@ -257,15 +252,15 @@ class AssetServiceImpl  @Autowired  constructor (
 
         if (spec.taskId != null && spec.jobId != null) {
             jobService.incrementStats(object : TaskId {
-                override fun getJobId(): Int? {
+                override fun getJobId(): UUID? {
                     return spec.jobId
                 }
 
-                override fun getTaskId(): Int? {
+                override fun getTaskId(): UUID? {
                     return spec.taskId
                 }
 
-                override fun getParentTaskId(): Int? {
+                override fun getParentTaskId(): UUID? {
                     return null
                 }
             }, addr)
@@ -307,9 +302,9 @@ class AssetServiceImpl  @Autowired  constructor (
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
 
         val asset = assetDao[assetId]
-        val write = asset.getAttr("permissions.write", Json.SET_OF_INTS)
+        val write = asset.getAttr("zorroa.permissions.write", Json.SET_OF_UUIDS)
 
-        if (!SecurityUtils.hasPermission(write)) {
+        if (!hasPermission(write)) {
             throw ArchivistWriteException("You cannot make changes to this asset.")
         }
 
@@ -420,7 +415,7 @@ class AssetServiceImpl  @Autowired  constructor (
                 .build()
 
         for (asset in searchService.scanAndScroll(
-                search.setFields(arrayOf("permissions")), 0)) {
+                search.setFields(arrayOf("zorroa")), 0)) {
 
             if (command.state == JobState.Cancelled) {
                 logger.warn("setPermissions was canceled")
@@ -433,7 +428,7 @@ class AssetServiceImpl  @Autowired  constructor (
             }
 
             val update = client.prepareUpdate("archivist", "asset", asset.id)
-            var current: PermissionSchema? = asset.getAttr("permissions", PermissionSchema::class.java)
+            var current: PermissionSchema? = asset.getAttr("zorroa.permissions", PermissionSchema::class.java)
             if (current == null) {
                 current = PermissionSchema()
             }
@@ -452,7 +447,8 @@ class AssetServiceImpl  @Autowired  constructor (
             current.write.removeAll(remove.write)
             current.export.removeAll(remove.export)
 
-            update.setDoc(Json.serializeToString(ImmutableMap.of("permissions", current)))
+            update.setDoc(Json.serializeToString(ImmutableMap.of("zorroa",
+                    ImmutableMap.of("permissions", current))))
             bulkProcessor.add(update.request())
         }
 
@@ -463,7 +459,7 @@ class AssetServiceImpl  @Autowired  constructor (
                     .setUser(command.user)
                     .setMessage("Bulk permission change complete.")
                     .setAction(LogAction.BulkUpdate)
-                    .setAttrs(ImmutableMap.of<String, Any>("permissions", add)))
+                    .setAttrs(ImmutableMap.of<String, Any>("zorroa.permissions", add)))
         } catch (e: InterruptedException) {
             logService.log(UserLogSpec()
                     .setUser(command.user)
@@ -506,7 +502,7 @@ class AssetServiceImpl  @Autowired  constructor (
          * wrong via the asset API then it would corrupt the asset.
          */
         private val NS_PROTECTED_API = ImmutableSet.of(
-                "permissions", "zorroa", "links", "tmp")
+                "zorroa", "tmp")
     }
 
 }

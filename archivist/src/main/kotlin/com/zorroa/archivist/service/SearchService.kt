@@ -6,10 +6,9 @@ import com.google.common.collect.*
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
-import com.zorroa.archivist.repository.FieldDao
-import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.common.config.ApplicationProperties
-import com.zorroa.sdk.client.exception.ArchivistException
+import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.security.getPermissionsFilter
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -29,7 +28,6 @@ import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
-import org.elasticsearch.index.query.support.QueryInnerHitBuilder
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptService
 import org.elasticsearch.search.sort.SortOrder
@@ -49,18 +47,18 @@ import java.util.stream.Collectors
 
 interface SearchService {
 
-    fun getQueryFields(): Map<String, Float>
     fun search(builder: AssetSearch): SearchResponse
     fun count(builder: AssetSearch): Long
 
-    fun count(ids: List<Int>, search: AssetSearch?): List<Long>
+    fun count(ids: List<UUID>, search: AssetSearch?): List<Long>
 
     fun count(folder: Folder): Long
 
     fun suggest(text: String): SuggestResponse
+
     fun getSuggestTerms(text: String): List<String>
 
-    fun scanAndScroll(search: AssetSearch, maxResults: Int): Iterable<Document>
+    fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean=false): Iterable<Document>
 
     /**
      * Execute the AssetSearch with the given Paging object.
@@ -88,20 +86,12 @@ interface SearchService {
 
     fun buildSearch(search: AssetSearch, type: String): SearchRequestBuilder
 
-    fun updateField(value: HideField): Boolean
-
-    fun getFields(type: String): Map<String, Set<String>>
-
-    fun getFieldMap(type: String): Map<String, Set<String>>
-
-    fun invalidateFields()
-
     fun getQuery(search: AssetSearch): QueryBuilder
 
     fun analyzeQuery(search: AssetSearch): List<String>
 }
 
-class SearchContext(val linkedFolders: MutableSet<Int>,
+class SearchContext(val linkedFolders: MutableSet<UUID>,
                     val perms: Boolean,
                     val postFilter: Boolean,
                     var score: Boolean=false)
@@ -110,8 +100,7 @@ class SearchContext(val linkedFolders: MutableSet<Int>,
 class SearchServiceImpl @Autowired constructor(
         val assetDao: AssetDao,
         val client: Client,
-        val properties: ApplicationProperties,
-        val fieldDao: FieldDao
+        val properties: ApplicationProperties
 
 ): SearchService {
     @Autowired
@@ -119,6 +108,9 @@ class SearchServiceImpl @Autowired constructor(
 
     @Autowired
     internal lateinit var logService: EventLogService
+
+    @Autowired
+    internal lateinit var fieldService: FieldService
 
     @Value("\${zorroa.cluster.index.alias}")
     private lateinit var alias: String
@@ -131,7 +123,7 @@ class SearchServiceImpl @Autowired constructor(
             .build(object : CacheLoader<String, Map<String, Set<String>>>() {
                 @Throws(Exception::class)
                 override fun load(key: String): Map<String, Set<String>> {
-                    return getFieldMap(key)
+                    return fieldService.getFieldMap(key)
                 }
             })
 
@@ -145,7 +137,7 @@ class SearchServiceImpl @Autowired constructor(
         return buildSearch(builder, "asset").setSize(0).get().hits.totalHits
     }
 
-    override fun count(ids: List<Int>, search: AssetSearch?): List<Long> {
+    override fun count(ids: List<UUID>, search: AssetSearch?): List<Long> {
         val counts = Lists.newArrayListWithCapacity<Long>(ids.size)
         if (search != null) {
             // Replace any existing folders with each folder to get count.
@@ -194,15 +186,12 @@ class SearchServiceImpl @Autowired constructor(
 
     override fun getSuggestTerms(text: String): List<String> {
         val builder = client.prepareSuggest(alias)
-        val fields = getFields("asset")["completion"]
-        if (!JdbcUtils.isValid(fields)) {
-            return mutableListOf()
-        }
+        val fields = fieldService.getFields("asset")["keywords"] ?: return mutableListOf()
 
-        for (field in fields!!) {
+        for (field in fields) {
             val completion = CompletionSuggestionBuilder(field)
                     .text(text)
-                    .field(field)
+                    .field("$field.suggest")
             builder.addSuggestion(completion)
         }
 
@@ -233,17 +222,18 @@ class SearchServiceImpl @Autowired constructor(
         return builder.get()
     }
 
-    override fun scanAndScroll(search: AssetSearch, maxResults: Int): Iterable<Document> {
+    override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
         val rsp = client.prepareSearch(alias)
                 .setScroll(TimeValue(60000))
                 .addSort("_doc", SortOrder.ASC)
                 .setQuery(getQuery(search))
                 .setSize(100).execute().actionGet()
 
-        if (maxResults > 0 && rsp.hits.totalHits > maxResults) {
+        if (!clamp && maxResults > 0 && rsp.hits.totalHits > maxResults) {
             throw IllegalArgumentException("Asset search has returned more than $maxResults results.")
         }
-        return ScanAndScrollAssetIterator(client, rsp)
+
+        return ScanAndScrollAssetIterator(client, rsp, maxResults)
     }
 
     private fun isSearchLogged(page: Pager, search: AssetSearch): Boolean {
@@ -332,7 +322,7 @@ class SearchServiceImpl @Autowired constructor(
                 // This search type provides stable sorting but seems to ignore
                 // the result si
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setPreference(SecurityUtils.getUsername())
+                .setPreference(getUsername())
                 .setQuery(getQuery(search))
 
         if (search.aggs != null) {
@@ -353,14 +343,14 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (search.fields != null) {
-            request.setFetchSource(search.fields, arrayOf("content"))
+            request.setFetchSource(search.fields, arrayOf("media.content", "analysis"))
         }
 
         if (search.scroll != null) {
             request.addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
         } else {
             if (search.order != null) {
-                val fields = getFields("asset")
+                val fields = fieldService.getFields("asset")
                 for (searchOrder in search.order) {
                     val sortOrder = if (searchOrder.ascending) SortOrder.ASC else SortOrder.DESC
                     // Make sure to use .raw for strings
@@ -378,6 +368,9 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
+        if (properties.getBoolean("archivist.debug-mode.enabled")) {
+            logger.info("SEARCH: {}", request)
+        }
         return request
     }
 
@@ -397,18 +390,20 @@ class SearchServiceImpl @Autowired constructor(
         return getQuery(search, Sets.newHashSet(), true, false)
     }
 
-    private fun getQuery(search: AssetSearch?, linkedFolders: MutableSet<Int>, perms: Boolean, postFilter: Boolean): QueryBuilder {
+    private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
 
-        val permsQuery = SecurityUtils.getPermissionsFilter()
+        val permsQuery = getPermissionsFilter(search.access)
         if (search == null) {
             return permsQuery ?: QueryBuilders.matchAllQuery()
         }
 
         val query = QueryBuilders.boolQuery()
+        query.minimumNumberShouldMatch(1)
+
         val assetBool = QueryBuilders.boolQuery()
 
         if (perms && permsQuery != null) {
-            query.must(permsQuery)
+            query.filter(permsQuery)
         }
 
         if (search.isQuerySet) {
@@ -418,16 +413,6 @@ class SearchServiceImpl @Autowired constructor(
         var filter: AssetFilter? = search.filter
         if (filter != null) {
             applyFilterToQuery(filter, assetBool, linkedFolders)
-        }
-
-        val elementFilter = search.elementFilter
-        if (elementFilter != null) {
-            val elementBool = QueryBuilders.boolQuery()
-            applyFilterToQuery(elementFilter, elementBool, mutableSetOf())
-            query.should(QueryBuilders.hasChildQuery("element", elementBool)
-                    .scoreMode("max")
-                    .maxChildren(1)
-                    .innerHit(QueryInnerHitBuilder().setSize(1)))
         }
 
         // Folders apply their post filter, but the main search// applies the post filter in the SearchRequest.
@@ -444,14 +429,10 @@ class SearchServiceImpl @Autowired constructor(
             query.should(assetBool)
         }
 
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            logger.info("SEARCH: {}", query)
-        }
-
         return query
     }
 
-    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<Int>) {
+    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<UUID>) {
 
         val staticBool = QueryBuilders.boolQuery()
 
@@ -460,7 +441,7 @@ class SearchServiceImpl @Autowired constructor(
             if (key == "folder") {
                 continue
             }
-            staticBool.should(QueryBuilders.termsQuery("links." + key, value))
+            staticBool.should(QueryBuilders.termsQuery("zorroa.links.$key", value))
         }
 
         /*
@@ -470,14 +451,14 @@ class SearchServiceImpl @Autowired constructor(
 
             val folders = links["folder"]!!
                     .stream()
-                    .map { f -> Integer.valueOf(f.toString()) }
+                    .map { f -> UUID.fromString(f.toString()) }
                     .filter { f -> !linkedFolders.contains(f) }
                     .collect(Collectors.toSet())
 
             val recursive = if (filter.recursive == null) true else filter.recursive
 
             if (recursive) {
-                val childFolders = Sets.newHashSetWithExpectedSize<Int>(64)
+                val childFolders = Sets.newHashSetWithExpectedSize<UUID>(32)
 
                 for (folder in folderService.getAllDescendants(
                         folderService.getAll(folders), true, true)) {
@@ -508,10 +489,10 @@ class SearchServiceImpl @Autowired constructor(
                 }
 
                 if (!childFolders.isEmpty()) {
-                    staticBool.should(QueryBuilders.termsQuery("links.folder", childFolders))
+                    staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", childFolders))
                 }
             } else {
-                staticBool.should(QueryBuilders.termsQuery("links.folder", folders))
+                staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", folders))
             }
         }
 
@@ -522,7 +503,7 @@ class SearchServiceImpl @Autowired constructor(
         val queryFields = if (JdbcUtils.isValid(search.queryFields)) {
             search.queryFields
         } else {
-            getQueryFields()
+            fieldService.getQueryFields()
         }
 
         val qstring = QueryBuilders.queryStringQuery(search.query)
@@ -542,7 +523,7 @@ class SearchServiceImpl @Autowired constructor(
      * @param query;
      * @return
      */
-    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<Int>) {
+    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<UUID>) {
 
         if (filter.links != null) {
             linkQuery(query, filter, linkedFolders)
@@ -579,7 +560,7 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
-                val termsQuery = QueryBuilders.termsQuery(key, value)
+                val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), value)
                 query.must(termsQuery)
             }
         }
@@ -677,6 +658,7 @@ class SearchServiceImpl @Autowired constructor(
 
             for (hash in filter.hashes) {
                 var hashValue: String = hash.hash
+                logger.warn("hash value: {}", hashValue)
                 if (JdbcUtils.isUUID(hashValue)) {
                     hashValue = assetDao.getFieldValue(hashValue, field)
                 }
@@ -684,6 +666,9 @@ class SearchServiceImpl @Autowired constructor(
                 if (hashValue != null) {
                     hashes.add(hashValue)
                     weights.add(if (hash.weight == null) 1.0f else hash.weight)
+                }
+                else {
+                    logger.warn("could not find value at: {} {}", hashValue, field)
                 }
             }
 
@@ -702,151 +687,6 @@ class SearchServiceImpl @Autowired constructor(
             fsqb.scoreMode("multiply")
             hammingBool.should(fsqb)
         }
-    }
-
-    override fun getFieldMap(type: String): Map<String, Set<String>> {
-        val hiddenFields = fieldDao.getHiddenFields()
-        val result = mutableMapOf<String, MutableSet<String>>()
-        result["string"] = mutableSetOf()
-        result["date"] = mutableSetOf()
-        result["integer"] = mutableSetOf()
-        result["long"] = mutableSetOf()
-        result["point"] = mutableSetOf()
-        result["keywords-auto"] = mutableSetOf()
-        result["keywords"] = mutableSetOf()
-
-        val autoKeywords = properties.getBoolean("archivist.search.keywords.auto.enabled")
-        val autoKeywordFields = if (autoKeywords) {
-            properties.getList("archivist.search.keywords.auto.fields").toSet()
-        }
-        else {
-            setOf()
-        }
-
-        result.getValue("keywords")
-                .addAll(properties.getString(PROP_STATIC_KEYWORD_FIELD)
-                    .splitToSequence(",")
-                    .filter { it.isNotEmpty() }
-                    .map { it.split(":", limit = 2) }
-                    .map { it[0] }
-                )
-
-        val cs = client.admin().cluster()
-                .prepareState()
-                .setIndices(alias)
-                .execute().actionGet().state
-
-        cs.metaData.concreteAllOpenIndices()
-            .map { cs.metaData.index(it) }
-            .map { it.mapping(type) }
-            .forEach {
-                try {
-                    getList(result, "", it.sourceAsMap, autoKeywordFields, hiddenFields)
-                } catch (e: IOException) {
-                    throw ArchivistException(e)
-                }
-            }
-        return result
-    }
-
-    /*
-     * TODO: Move all field stuff to asset service.
-     */
-
-    override fun invalidateFields() {
-        fieldMapCache.invalidateAll()
-    }
-
-    override fun updateField(value: HideField): Boolean {
-        try {
-            return if (value.isHide) {
-                fieldDao.hideField(value.field, value.isManual)
-            } else {
-                fieldDao.unhideField(value.field)
-            }
-        } finally {
-            invalidateFields()
-        }
-    }
-
-    override fun getFields(type: String): Map<String, Set<String>> {
-        return try {
-            fieldMapCache.get(type)
-        } catch (e: Exception) {
-            logger.warn("Failed to get fields: ", e)
-            ImmutableMap.of()
-        }
-
-    }
-
-    /**
-     * Builds a list of field names, recursively walking each object.
-     */
-    private fun getList(result: MutableMap<String, MutableSet<String>>,
-                        fieldName: String,
-                        mapProperties: Map<String, Any>,
-                        autoKeywordFieldNames: Set<String>,
-                        hiddenFieldNames: Set<String>) {
-
-        val map = mapProperties["properties"] as Map<String, Any>
-        for (key in map.keys) {
-            val item = map[key] as Map<String, Any>
-
-            if (!fieldName.isEmpty()) {
-                if (hiddenFieldNames.contains(fieldName)) {
-                    continue
-                }
-            }
-
-            if (item.containsKey("type")) {
-                var type = item["type"] as String
-                type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
-
-                var fields: MutableSet<String>? = result[type]
-                if (fields == null) {
-                    fields = TreeSet()
-                    result[type] = fields
-                }
-                val fqfn = arrayOf(fieldName, key).joinToString("")
-                if (hiddenFieldNames.contains(fqfn)) {
-                    continue
-                }
-
-                fields.add(fqfn)
-
-                /*
-                 * If the last part of the field is set as an auto-keywords field
-                 * then it gets added to the keywords-auto list.
-                 */
-                if (autoKeywordFieldNames.contains(key.toLowerCase()) || autoKeywordFieldNames.contains(fqfn)) {
-                    result.getValue("keywords-auto").add(fqfn)
-                }
-
-
-            } else {
-                getList(result, arrayOf(fieldName, key, ".").joinToString(""),
-                        item, autoKeywordFieldNames, hiddenFieldNames)
-            }
-        }
-    }
-
-    override fun getQueryFields(): Map<String, Float> {
-        val staticFields = properties.getString(PROP_STATIC_KEYWORD_FIELD)
-        val result = mutableMapOf<String, Float>()
-
-        try {
-            staticFields.splitToSequence(",")
-                    .filter { it.isNotEmpty() }
-                    .map { it.split(":", limit = 2) }
-                    .forEach { result[it[0].trim()] = it[1].toFloat() }
-
-        } catch (e: NumberFormatException) {
-            logger.warn("Static keyword map in wrong format, $staticFields")
-        }
-
-        val autoFields = getFields("asset").getValue("keywords-auto")
-        autoFields.forEach { v -> result[v] = 1.0f }
-        return result
     }
 
     fun getDefaultSort() : Map<String, SortOrder> {
@@ -878,29 +718,6 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     companion object {
-
         private val logger = LoggerFactory.getLogger(SearchServiceImpl::class.java)
-
-        private val NAME_TYPE_OVERRRIDES = ImmutableMap.of(
-                "point", "point",
-                "byte", "hash",
-                "hash", "hash")
-
-        /**
-         * The properties prefix used to define keywords fields.
-         */
-        private const val PROP_STATIC_KEYWORD_FIELD = "archivist.search.keywords.static.fields"
-
-        /**
-         * If a field doesn't end with .raw, concat .raw
-         *
-         * @param field
-         * @return
-         */
-        private fun dotRawMe(field: String): String {
-            return if (field.endsWith(".raw")) {
-                field
-            } else field + ".raw"
-        }
     }
 }

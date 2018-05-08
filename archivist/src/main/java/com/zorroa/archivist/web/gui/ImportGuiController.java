@@ -3,13 +3,13 @@ package com.zorroa.archivist.web.gui;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.ImportSpec;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.ImportService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.archivist.web.gui.forms.SearchImportForm;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
+
+import static com.zorroa.archivist.security.UtilsKt.getUsername;
 
 /**
  * Created by chambers on 7/28/16.
@@ -47,7 +50,7 @@ public class ImportGuiController {
     PluginService pluginService;
 
     @RequestMapping("/admin/gui/imports/{id}")
-    public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
+    public String getImport(Model model, @PathVariable UUID id, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         Pager paging = new Pager(page);
         model.addAttribute("page", paging);
@@ -55,7 +58,7 @@ public class ImportGuiController {
         model.addAttribute("tasks", jobService.getAllTasks(id, paging));
         model.addAttribute("serverImportForm", new ServerImportForm());
         model.addAttribute("searchImportForm", new SearchImportForm());
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
         return "import";
     }
 
@@ -65,7 +68,7 @@ public class ImportGuiController {
         Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
         model.addAttribute("serverImportForm", new ServerImportForm());
         model.addAttribute("searchImportForm", new SearchImportForm());
         return "imports";
@@ -79,7 +82,7 @@ public class ImportGuiController {
         Pager paging = new Pager(1);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
         model.addAttribute("searchImportForm", new SearchImportForm());
         model.addAttribute("serverImportForm", new ServerImportForm());
 
@@ -90,7 +93,7 @@ public class ImportGuiController {
 
         ImportSpec spec = new ImportSpec();
         spec.setName(serverImportForm.getName());
-        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(serverImportForm.getPipelineId())));
+        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(serverImportForm.getPipelineId().toString())));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         /**
@@ -128,7 +131,7 @@ public class ImportGuiController {
         Pager paging = new Pager(1);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("search_errors", true);
@@ -136,8 +139,8 @@ public class ImportGuiController {
         }
 
         ImportSpec spec = new ImportSpec();
-        spec.setName("search import by " + SecurityUtils.getUsername());
-        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(searchImportForm.getPipelineId())));
+        spec.setName("search import by " + getUsername());
+        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(searchImportForm.getPipelineId().toString())));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         String searchJson = searchImportForm.getSearch();

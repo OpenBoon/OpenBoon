@@ -1,24 +1,28 @@
 package com.zorroa.archivist;
 
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.MigrationType;
-import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.repository.AnalystDao;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
+import com.zorroa.archivist.sdk.security.UserAuthed;
+import com.zorroa.archivist.sdk.security.UserRegistryService;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.ProxySchema;
-import com.zorroa.sdk.util.AssetUtils;
+import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.util.FileUtils;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -32,6 +36,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -47,6 +52,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -76,6 +82,9 @@ public abstract class AbstractTest {
     protected FolderService folderService;
 
     @Autowired
+    protected JobService jobService;
+
+    @Autowired
     protected ExportService exportService;
 
     @Autowired
@@ -83,6 +92,9 @@ public abstract class AbstractTest {
 
     @Autowired
     protected SearchService searchService;
+
+    @Autowired
+    protected FieldService fieldService;
 
     @Autowired
     protected PluginService pluginService;
@@ -104,6 +116,9 @@ public abstract class AbstractTest {
 
     @Autowired
     protected RequestService requestService;
+
+    @Autowired
+    protected UserRegistryService userRegistryService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -157,10 +172,6 @@ public abstract class AbstractTest {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
                 jdbc.update("DELETE FROM folder WHERE time_created !=1450709321000");
-
-                /**
-                 * Register plugins within this transaction so each test doesn't reinstall them.
-                 */
                 pluginService.installAndRegisterAllPlugins();
             }
         });
@@ -194,17 +205,19 @@ public abstract class AbstractTest {
         userService.create(userBuilder);
 
         UserSpec managerBuilder = new UserSpec();
-        managerBuilder.setEmail("manager@zorroa.com");
+        managerBuilder.setEmail("librarian@zorroa.com");
         managerBuilder.setFirstName("Bob");
-        managerBuilder.setLastName("Manager");
-        managerBuilder.setUsername("manager");
+        managerBuilder.setLastName("Librarian");
+        managerBuilder.setUsername("librarian");
         managerBuilder.setPassword("manager");
         User manager = userService.create(managerBuilder);
         userService.addPermissions(manager, Lists.newArrayList(
-                permissionService.getPermission("group::manager")));
+                permissionService.getPermission("zorroa::librarian")));
 
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
+
+        Json.Mapper.registerModule(new KotlinModule());
     }
 
     public void cleanElastic() {
@@ -237,15 +250,17 @@ public abstract class AbstractTest {
     }
 
     public void authenticate(String username, boolean superUser) {
-        User user = userService.get(username);
-        List<Permission> perms = userService.getPermissions(user);
+        UserAuthed authed = userRegistryService.getUser(username);
+        Collection<GrantedAuthority> authorities = Lists.newArrayList(
+                authed.getAuthorities());
+
         if (superUser) {
-            perms.add(permissionService.getPermission("group::administrator"));
+            authorities.add(
+                    permissionService.getPermission("zorroa::administrator"));
         }
 
         SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new UnitTestAuthentication(user,
-                        perms)));
+                authenticationManager.authenticate(new UnitTestAuthentication(authed, authorities)));
     }
 
     public void logout() {
@@ -282,7 +297,6 @@ public abstract class AbstractTest {
                     logger.info("adding test file: {}", f);
                     Source b = new Source(f);
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
-                    AssetUtils.addKeywords(b, "source", b.getAttr("source.filename", String.class));
 
                     String id = UUID.randomUUID().toString();
 
@@ -314,10 +328,14 @@ public abstract class AbstractTest {
     }
 
     public void addTestAssets(List<Source> builders) {
-        for (Source builder: builders) {
-            logger.info("Adding test asset: {}", builder.getPath());
-            AssetUtils.addKeywords(builder, "source", builder.getAttr("source.filename", String.class));
-            assetService.index(builder);
+        for (Source source: builders) {
+            SourceSchema schema = source.getSourceSchema();
+
+            logger.info("Adding test asset: {}", source.getPath().toString());
+            source.addToKeywords("source", ImmutableList.of(
+                    source.getSourceSchema().getFilename(),
+                    source.getSourceSchema().getExtension()));
+            assetService.index(source);
         }
         refreshIndex();
     }

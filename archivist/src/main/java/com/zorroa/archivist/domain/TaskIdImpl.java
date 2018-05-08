@@ -1,31 +1,34 @@
 package com.zorroa.archivist.domain;
 
 import com.zorroa.cluster.thrift.TaskStartT;
+import com.zorroa.sdk.util.StringUtils;
+
+import java.util.UUID;
 
 public class TaskIdImpl implements TaskId {
 
-    private Integer taskId;
-    private Integer parentId;
-    private Integer jobId;
+    private UUID taskId;
+    private UUID parentId;
+    private UUID jobId;
 
     public TaskIdImpl(TaskStartT taskT) {
-        this.taskId = taskT.id;
-        this.jobId = taskT.jobId;
-        this.parentId = taskT.parent;
+        this.taskId = UUID.fromString(taskT.id);
+        this.jobId = UUID.fromString(taskT.jobId);
+        this.parentId = StringUtils.uuid(taskT.parent);
     }
 
     @Override
-    public Integer getTaskId() {
+    public UUID getTaskId() {
         return taskId;
     }
 
     @Override
-    public Integer getParentTaskId() {
+    public UUID getParentTaskId() {
         return parentId;
     }
 
     @Override
-    public Integer getJobId() {
+    public UUID getJobId() {
         return jobId;
     }
 }

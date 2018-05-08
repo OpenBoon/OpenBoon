@@ -4,14 +4,17 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.sdk.security.Groups;
+import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.PermissionService;
+import com.zorroa.sdk.domain.Access;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -142,18 +145,19 @@ public class FolderDaoTests extends AbstractTest {
     @Test
     public void testGetChildrenInsecure() {
         authenticate("user");
-        assertFalse(SecurityUtils.hasPermission("group::administrator"));
+        assertFalse(UtilsKt.hasPermission(Groups.ADMIN));
 
         Folder pub = folderDao.get(Folder.ROOT_ID, "Users", false);
+        int startCount =  folderDao.getChildren(pub.getId()).size();
         Folder f1 = folderDao.create(new FolderSpec("level1", pub));
         Folder f2 = folderDao.create(new FolderSpec("level2", pub));
         Folder f3 = folderDao.create(new FolderSpec("level3", pub));
         folderDao.setAcl(f3.getId(), new Acl().addEntry(
-                permissionService.getPermission("group::administrator")));
+                permissionService.getPermission(Groups.ADMIN)));
 
         assertFalse(folderDao.hasAccess(f3, Access.Read));
         assertEquals(6, folderDao.getChildrenInsecure(pub.getId()).size());
-        assertEquals(3, folderDao.getChildren(pub.getId()).size());
+        assertEquals(startCount+2, folderDao.getChildren(pub.getId()).size());
     }
 
     @Test
@@ -303,7 +307,7 @@ public class FolderDaoTests extends AbstractTest {
 
         FolderSpec spec2 = new FolderSpec("bar").setDyhiId(dyhi.getId());
         Folder folder2 = folderDao.create(spec2);
-        List<Integer> ids = folderDao.getAllIds(dyhi);
+        List<UUID> ids = folderDao.getAllIds(dyhi);
         assertTrue(ids.contains(folder2.getId()));
     }
 

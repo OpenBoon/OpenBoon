@@ -4,10 +4,8 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.security.UserDetailsPluginWrapper
-import com.zorroa.archivist.security.UserDetailsPopulator
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.common.config.NetworkEnvironmentUtils
 import com.zorroa.common.config.SpringApplicationProperties
@@ -16,8 +14,6 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem
 import com.zorroa.sdk.filesystem.UUIDFileSystem
 import com.zorroa.sdk.processor.SharedData
 import com.zorroa.sdk.util.FileUtils
-import com.zorroa.security.UserDetailsPlugin
-import org.apache.commons.lang3.StringUtils
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.settings.Settings
 import org.slf4j.LoggerFactory
@@ -34,10 +30,15 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
+import java.awt.SystemColor.info
 import java.io.File
 import java.io.IOException
 import java.net.InetAddress
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.*
+import java.util.stream.Stream
 import javax.sql.DataSource
 
 @Configuration
@@ -84,9 +85,16 @@ class ArchivistConfiguration {
             } catch (e: IOException) {
                 logger.warn("Can't find info version properties")
             }
+
+            builder.withDetail("archivist-plugins",
+                    File("lib/ext").walkTopDown()
+                    .map { it.toString() }
+                    .filter { it.endsWith(".jar")}
+                    .map { FileUtils.basename(it) }
+                    .toList())
         }
 
-        return InfoEndpoint(ImmutableList.of<InfoContributor>(info))
+        return InfoEndpoint(ImmutableList.of(info))
     }
 
     @Bean
@@ -108,27 +116,6 @@ class ArchivistConfiguration {
     @Bean
     fun sharedData(): SharedData {
         return SharedData(properties().getString("archivist.path.shared"))
-    }
-
-    /**
-     * Handles conversion of LDAP properties to a UserAuthed object
-     * as well as permission loading.
-     * @return
-     */
-    @Bean
-    fun userDetailsPopulator(): UserDetailsPopulator {
-        return UserDetailsPopulator()
-    }
-
-    @Bean
-    fun userDetailsPluginWrapper(): UserDetailsPluginWrapper {
-        val pluginClassName = properties().getString("archivist.security.ldap.userDetailsPlugin").trim { it <= ' ' }
-
-        var plugin: UserDetailsPlugin? = null
-        if (!StringUtils.isBlank(pluginClassName)) {
-            plugin = instantiate(pluginClassName, UserDetailsPlugin::class.java)
-        }
-        return UserDetailsPluginWrapper(plugin)
     }
 
     @Bean
@@ -180,7 +167,6 @@ class ElasticConfig {
         builder
                 .put("path.data", properties.getString("archivist.path.index"))
                 .put("path.home", properties.getString("archivist.path.home"))
-                .put("index.number_of_replicas", properties.getInt("archivist.index.replicas"))
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
                 .put("transport.tcp.port", properties.getInt("zorroa.cluster.index.port"))
@@ -224,7 +210,7 @@ class ElasticConfig {
 
     companion object {
 
-        private val logger = LoggerFactory.getLogger(StaticResourceConfiguration::class.java)
+        private val logger = LoggerFactory.getLogger(ArchivistConfiguration::class.java)
     }
 
 }

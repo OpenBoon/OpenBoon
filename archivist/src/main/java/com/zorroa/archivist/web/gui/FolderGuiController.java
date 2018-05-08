@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by chambers on 8/10/16.
@@ -37,7 +38,7 @@ public class FolderGuiController {
     }
 
     @RequestMapping("/admin/gui/folders/{id}")
-    public String folders(Model model, @PathVariable int id) {
+    public String folders(Model model, @PathVariable UUID id) {
         standardModel(model);
         folderModel(model, folderService.get(id));
         model.addAttribute("folderSpec", new FolderSpec());
@@ -49,7 +50,7 @@ public class FolderGuiController {
     }
 
     @RequestMapping(value="/admin/gui/folders/{id}", method= RequestMethod.POST)
-    public String createFolder(Model model, @PathVariable int id,
+    public String createFolder(Model model, @PathVariable UUID id,
                                @Valid @ModelAttribute("folderSpec") FolderSpec folderSpec,
                                BindingResult bindingResult) {
         standardModel(model);

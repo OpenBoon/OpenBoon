@@ -14,11 +14,9 @@ class RequestDaoTests : AbstractTest() {
 
     @Test
     fun testCreateAndGet() {
-        val spec = RequestSpec()
-        spec.folderId = folderService.get("/Library")!!.id
-        spec.comment = "foo"
-        spec.type = RequestType.Export
-
+        val spec = RequestSpec(folderService.get("/Library")!!.id,
+                RequestType.Export,
+                "foo")
         val req = requestDao.create(spec)
 
         assertEquals(spec.type, req.type)

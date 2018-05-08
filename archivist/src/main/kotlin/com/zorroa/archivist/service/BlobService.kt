@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.BlobDao
 import com.zorroa.archivist.repository.PermissionDao
+import com.zorroa.sdk.domain.Access
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional
 interface BlobService {
 
     fun set(app: String, feature: String, name: String, blob: Any): Blob
+
+    fun set(app: String, feature: String, name: String, spec: BlobSpec): Blob
 
     fun get(app: String, feature: String, name: String): Blob
 
@@ -28,7 +31,7 @@ interface BlobService {
 
 @Service
 @Transactional
-open class BlobServiceImpl
+class BlobServiceImpl
     @Autowired constructor (
             private val blobDao: BlobDao,
             private val permissionDao: PermissionDao) : BlobService {
@@ -41,6 +44,26 @@ open class BlobServiceImpl
         } catch (e: EmptyResultDataAccessException) {
             blobDao.create(app, feature, name, blob)
         }
+    }
+
+    override fun set(app: String, feature: String, name: String, spec: BlobSpec): Blob {
+        var created = false
+        val blob = try {
+            val id = blobDao.getId(app, feature, name, Access.Write)
+            blobDao.update(id, spec.data)
+            blobDao[app, feature, name]
+        } catch (e: EmptyResultDataAccessException) {
+            created = true
+            blobDao.create(app, feature, name, spec.data)
+        }
+
+        if (created) {
+            if (spec.acl != null) {
+                permissionDao.resolveAcl(spec.acl, false)
+                blobDao.setPermissions(blob, SetPermissions(spec.acl, true))
+            }
+        }
+        return blob
     }
 
     override fun get(app: String, feature: String, name: String): Blob {

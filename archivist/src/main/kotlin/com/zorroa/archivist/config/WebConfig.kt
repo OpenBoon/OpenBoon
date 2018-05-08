@@ -1,13 +1,9 @@
 package com.zorroa.archivist.config
 
-import com.google.common.collect.ImmutableSet
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.sdk.util.FileUtils
-import org.h2.server.web.WebServlet
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.web.servlet.ServletRegistrationBean
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
@@ -38,7 +34,7 @@ class SinglePageAppConfig : WebMvcConfigurerAdapter() {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController("/").setViewName("forward:/index.html")
         // put in front of the thymeleaf resolver
-        registry.setOrder(-1)
+        registry.setOrder(-100)
     }
 
     private inner class PushStateResourceResolver : ResourceResolver {
@@ -56,7 +52,7 @@ class SinglePageAppConfig : WebMvcConfigurerAdapter() {
         /**
          * These are basically endpoints on the server we can't use in react.
          */
-        private val ignoredPaths = setOf("api", "admin", "health", "login", "logout", "docs")
+        private val ignoredPaths = setOf("api", "admin", "health", "metrics", "docs")
 
         init {
             index = FileSystemResource(properties.getString("archivist.path.home") + "/web/curator/index.html")

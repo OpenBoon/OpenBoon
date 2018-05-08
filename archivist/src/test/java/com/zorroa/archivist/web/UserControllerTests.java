@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -69,7 +71,7 @@ public class UserControllerTests extends MockMvcTest {
 
         User user2 = Json.deserialize(
                 result.getResponse().getContentAsByteArray(), User.class);
-        assertEquals(user, user2);
+        assertEquals(user.getId(), user2.getId());
     }
 
     @Test
@@ -163,8 +165,8 @@ public class UserControllerTests extends MockMvcTest {
     public void testSetPermissions() throws Exception {
 
         User user = userService.get("user");
-        List<Integer> perms = permissionService.getPermissions().stream().mapToInt(
-                p->p.getId()).boxed().collect(Collectors.toList());
+        List<UUID> perms = permissionService.getPermissions().stream().map(
+                p->p.getId()).collect(Collectors.toList());
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId() + "/permissions")
@@ -186,8 +188,8 @@ public class UserControllerTests extends MockMvcTest {
         List<Permission> perms = userService.getPermissions(user);
         assertTrue(perms.size() > 0);
 
-        userService.setPermissions(user, Lists.newArrayList(permissionService.getPermission("group::administrator")));
-        perms.add(permissionService.getPermission("group::administrator"));
+        userService.setPermissions(user, Lists.newArrayList(permissionService.getPermission(Groups.ADMIN)));
+        perms.add(permissionService.getPermission(Groups.ADMIN));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/users/" + user.getId() + "/permissions")

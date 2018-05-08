@@ -9,6 +9,7 @@ import com.zorroa.archivist.service.FolderServiceImpl
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 class TrashFolderController @Autowired constructor(
@@ -29,7 +30,7 @@ class TrashFolderController @Autowired constructor(
      * @return
      */
     @PostMapping(value = ["/api/v1/trash/_restore"])
-    fun restore(@RequestBody ids: List<Int>): Any {
+    fun restore(@RequestBody ids: List<UUID>): Any {
         val restoreOps = Lists.newArrayList<TrashedFolderOp>()
         for (id in ids) {
             try {
@@ -45,7 +46,7 @@ class TrashFolderController @Autowired constructor(
     }
 
     @DeleteMapping(value = ["/api/v1/trash"])
-    fun empty(@RequestBody(required = false) ids: List<Int>?): Any {
+    fun empty(@RequestBody(required = false) ids: List<UUID>?): Any {
         return if (ids == null) {
             val result = folderService.emptyTrash()
             HttpUtils.deleted("TrashedFolder", result, !result.isEmpty())

@@ -4,12 +4,13 @@ import com.google.common.collect.Maps;
 import com.zorroa.sdk.util.FileUtils;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by chambers on 3/23/17.
  */
 public class ZpsTask {
-    private Integer id;
+    private UUID id;
     private Map<String, String> env;
     private Map<String, Object> args;
     private String scriptPath;
@@ -71,11 +72,11 @@ public class ZpsTask {
         return this;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public ZpsTask setId(Integer id) {
+    public ZpsTask setId(UUID id) {
         this.id = id;
         return this;
     }

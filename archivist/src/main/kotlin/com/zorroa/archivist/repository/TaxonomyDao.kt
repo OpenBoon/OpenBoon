@@ -9,6 +9,7 @@ import com.zorroa.sdk.domain.Pager
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface TaxonomyDao : GenericDao<Taxonomy, TaxonomySpec> {
 
@@ -18,19 +19,22 @@ interface TaxonomyDao : GenericDao<Taxonomy, TaxonomySpec> {
 }
 
 @Repository
-open class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
+class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
 
     override fun create(spec: TaxonomySpec): Taxonomy {
         val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
+
         jdbc.update({ connection ->
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_taxonomy"))
-            ps.setInt(1, spec.folderId!!)
+            ps.setObject(1, id)
+            ps.setObject(2, spec.folderId)
             ps
         }, keyHolder)
-        return get(keyHolder.key.toInt())
+        return get(id)
     }
 
-    override fun get(id: Int): Taxonomy {
+    override fun get(id: UUID): Taxonomy {
         return jdbc.queryForObject<Taxonomy>(GET + "WHERE pk_taxonomy=?", MAPPER, id)
     }
 
@@ -50,7 +54,7 @@ open class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
         return PagedList()
     }
 
-    override fun update(id: Int, spec: Taxonomy): Boolean {
+    override fun update(id: UUID, spec: Taxonomy): Boolean {
         return false
     }
 
@@ -64,7 +68,7 @@ open class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
         }
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         return jdbc.update("DELETE FROM taxonomy WHERE pk_taxonomy=?", id) == 1
     }
 
@@ -76,6 +80,7 @@ open class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
 
 
         private val INSERT = JdbcUtils.insert("taxonomy",
+                "pk_taxonomy",
                 "pk_folder")
 
         private val GET = "SELECT " +
@@ -89,8 +94,8 @@ open class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
 
         private val MAPPER = RowMapper<Taxonomy> { rs, _ ->
             val tax = Taxonomy()
-            tax.folderId = rs.getInt("pk_folder")
-            tax.taxonomyId = rs.getInt("pk_taxonomy")
+            tax.folderId = rs.getObject("pk_folder") as UUID
+            tax.taxonomyId = rs.getObject("pk_taxonomy") as UUID
             tax.isActive = rs.getBoolean("bool_active")
             tax.timeStarted = rs.getLong("time_started")
             tax.timeStopped = rs.getLong("time_stopped")

@@ -7,22 +7,23 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/14/16.
  */
-public class DyHierarchy implements Loggable<Integer> {
+public class DyHierarchy implements Loggable<UUID> {
 
     /**
      * Id of the aggregation.
      */
-    private int id;
+    private UUID id;
 
     /**
      * The folder the agg is on.
      */
     @NotNull
-    private Integer folderId;
+    private UUID folderId;
 
     /**
      * The user that created the dyhi.
@@ -39,11 +40,11 @@ public class DyHierarchy implements Loggable<Integer> {
 
     private boolean working;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public DyHierarchy setId(int id) {
+    public DyHierarchy setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -66,11 +67,11 @@ public class DyHierarchy implements Loggable<Integer> {
         return this;
     }
 
-    public int getFolderId() {
+    public UUID getFolderId() {
         return folderId;
     }
 
-    public DyHierarchy setFolderId(int folderId) {
+    public DyHierarchy setFolderId(UUID folderId) {
         this.folderId = folderId;
         return this;
     }
@@ -103,7 +104,7 @@ public class DyHierarchy implements Loggable<Integer> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DyHierarchy that = (DyHierarchy) o;
-        return getId() == that.getId();
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
@@ -120,7 +121,7 @@ public class DyHierarchy implements Loggable<Integer> {
     }
 
     @Override
-    public Integer getTargetId() {
+    public UUID getTargetId() {
         return id;
     }
 }

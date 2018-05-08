@@ -3,85 +3,38 @@ package com.zorroa.archivist.domain
 import java.util.*
 
 interface BlobId {
-    fun getBlobId(): Int
+    fun getBlobId(): UUID
 }
 
-class Blob : BlobId {
+data class BlobSpec (
+        val data: Any,
+        val acl: Acl?
+)
 
-    private var blobId: Int = 0
-    private var version: Long = 0
+class Blob (
+    private val blobId: UUID,
+    val version: Long,
+    val app: String,
+    val feature: String,
+    val name: String,
+    val data: Any) : BlobId {
 
-    private var app: String? = null
-    private var feature: String? = null
-    private var name: String? = null
-
-    private var data: Any? = null
-
-    val path: String
-        get() = arrayOf(getApp(), getFeature(), getName()).joinToString("/")
-
-    fun getApp(): String? {
-        return app
-    }
-
-    fun setApp(app: String): Blob {
-        this.app = app
-        return this
-    }
-
-    fun getFeature(): String? {
-        return feature
-    }
-
-    fun setFeature(feature: String): Blob {
-        this.feature = feature
-        return this
-    }
-
-    fun getName(): String? {
-        return name
-    }
-
-    fun setName(name: String): Blob {
-        this.name = name
-        return this
-    }
-
-    fun getData(): Any? {
-        return data
-    }
-
-    fun setData(data: Any): Blob {
-        this.data = data
-        return this
-    }
-
-    override fun getBlobId(): Int {
+    override fun getBlobId(): UUID {
         return blobId
     }
 
-    fun setBlobId(blobId: Int): Blob {
-        this.blobId = blobId
-        return this
-    }
-
-    fun getVersion(): Long {
-        return version
-    }
-
-    fun setVersion(version: Long): Blob {
-        this.version = version
-        return this
-    }
+    val path: String
+        get() = arrayOf(app, feature, name).joinToString("/")
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val blob = other as Blob?
-        return getBlobId() == blob!!.getBlobId()
+        if (javaClass != other?.javaClass) return false
+        other as Blob
+        return Objects.equals(blobId, other.blobId)
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(getBlobId())
+        return blobId.hashCode()
     }
+
 }

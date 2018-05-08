@@ -20,19 +20,19 @@ public class SettingsServiceTests extends AbstractTest {
     @Test
     public void testSetAll() {
         settingsService.setAll(ImmutableMap.of(
-                "archivist.export.dragTemplate",
+                "curator.thumbnails.drag-template",
                 "bar"));
-        assertEquals("bar", settingsService.get("archivist.export.dragTemplate")
+        assertEquals("bar", settingsService.get("curator.thumbnails.drag-template")
                 .getCurrentValue());
-        settingsService.set("archivist.export.dragTemplate", null);
+        settingsService.set("curator.thumbnails.drag-template", null);
     }
 
     @Test
     public void testSet() {
-        settingsService.set("archivist.export.dragTemplate", "foo.bar:1.5");
+        settingsService.set("curator.thumbnails.drag-template", "foo.bar:1.5");
         assertEquals("foo.bar:1.5",
-                settingsService.get("archivist.export.dragTemplate").getCurrentValue());
-        settingsService.set("archivist.export.dragTemplate", null);
+                settingsService.get("curator.thumbnails.drag-template").getCurrentValue());
+        settingsService.set("curator.thumbnails.drag-template", null);
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -42,10 +42,23 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testSetRegexFailure() {
-        assertEquals("true",
-                settingsService.get("archivist.search.keywords.auto.enabled").getCurrentValue());
         settingsService.setAll(ImmutableMap.of(
-                "archivist.search.keywords.auto.enabled", "Boing!"));
+                "archivist.search.keywords.boost", "Boing!"));
+    }
+
+    @Test(expected=ArchivistWriteException.class)
+    public void testIntRegexValidationError() {
+        settingsService.setAll(ImmutableMap.of(
+                "curator.lightbox.zoom-min", "bong!"));
+    }
+
+    @Test
+    public void testIntRegexValidation() {
+        settingsService.setAll(ImmutableMap.of(
+                "curator.lightbox.zoom-min", "100"));
+        Setting value = settingsService.get("curator.lightbox.zoom-min");
+        assertEquals("100", value.getCurrentValue());
+
     }
 
     @Test
@@ -59,20 +72,20 @@ public class SettingsServiceTests extends AbstractTest {
         List<Setting> settings = settingsService.getAll(new SettingsFilter().setStartsWith(
                 ImmutableSet.of("server")
         ));
-        assertEquals(12, settings.size());
+        assertEquals(16, settings.size());
     }
 
     @Test
     public void testGet() {
-        String name = "archivist.search.keywords.auto.enabled";
+        String name = "archivist.search.sortFields";
         Setting setting = settingsService.get(name);
         assertEquals(name, setting.getName());
         assertEquals("Search Settings", setting.getCategory());
-        assertEquals("Automatically detect and utilize fields in keyword searches.",
+        assertEquals("The default sort fields in the format of field:direction,field:direction. Score is always first.",
                 setting.getDescription());
         assertTrue(setting.isLive());
-        assertEquals("true", setting.getCurrentValue());
-        assertEquals("true", setting.getDefaultValue());
+        assertEquals("zorroa.timeCreated:DESC", setting.getCurrentValue());
+        assertEquals("zorroa.timeCreated:DESC", setting.getDefaultValue());
         assertTrue(setting.isDefault());
     }
 

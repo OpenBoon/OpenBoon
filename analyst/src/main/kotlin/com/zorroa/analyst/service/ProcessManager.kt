@@ -11,17 +11,18 @@ import com.spotify.docker.client.messages.ContainerConfig
 import com.spotify.docker.client.messages.HostConfig
 import com.zorroa.analyst.cluster.ClusterProcess
 import com.zorroa.analyst.isUnitTest
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.cluster.client.ClusterConnectionException
 import com.zorroa.cluster.client.ClusterException
 import com.zorroa.cluster.client.MasterServerClient
 import com.zorroa.cluster.thrift.*
 import com.zorroa.cluster.zps.MetaZpsExecutor
 import com.zorroa.cluster.zps.ZpsTask
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.sdk.processor.Reaction
 import com.zorroa.sdk.processor.SharedData
 import com.zorroa.sdk.util.Json
+import com.zorroa.sdk.util.StringUtils
 import com.zorroa.sdk.zps.ZpsError
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,7 +48,7 @@ import javax.annotation.PreDestroy
 
 interface ProcessManagerService {
 
-    fun getTaskIds(): List<Int>
+    fun getTaskIds(): List<String>
 
     fun queueClusterTask(task: TaskStartT): ClusterProcess
 
@@ -64,10 +65,10 @@ interface ProcessManagerService {
  */
 @Component
 class ProcessManagerServiceImpl @Autowired constructor(
-    private val properties: ApplicationProperties,
-    private val analyzeExecutor: ExecutorService,
-    private val networkEnvironment: NetworkEnvironment,
-    private val appContext: ApplicationContext
+        private val properties: ApplicationProperties,
+        private val analyzeExecutor: ExecutorService,
+        private val networkEnvironment: NetworkEnvironment,
+        private val appContext: ApplicationContext
 ): AbstractScheduledService(), ApplicationListener<ContextRefreshedEvent>, ProcessManagerService {
 
     @Value("\${analyst.executor.idleMinutesShutdown}")
@@ -88,17 +89,16 @@ class ProcessManagerServiceImpl @Autowired constructor(
     @Value("\${analyst.executor.enabled}")
     private var executeEnabled: Boolean = false
 
-    private val processMap = Maps.newConcurrentMap<Int, ClusterProcess>()
+    private val processMap = Maps.newConcurrentMap<String, ClusterProcess>()
 
     private var hostList: List<String>? = null
 
     private var hostListLoadedTime: Long = 0
 
     private val connectioncCache = CacheBuilder.newBuilder()
-            .maximumSize(1000)
             .initialCapacity(100)
             .concurrencyLevel(1)
-            .expireAfterWrite(1, TimeUnit.HOURS)
+            .expireAfterWrite(1, TimeUnit.DAYS)
             .build(object : CacheLoader<String, Connection>() {
                 @Throws(Exception::class)
                 override fun load(addr: String): Connection {
@@ -111,13 +111,13 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 }
             })
 
-    override fun getTaskIds(): List<Int> {
+    override fun getTaskIds(): List<String> {
         return ImmutableList.copyOf(processMap.keys)
     }
 
     override fun queueClusterTask(task: TaskStartT): ClusterProcess {
         val process = ClusterProcess(task)
-        if ((processMap as java.util.Map<Int, ClusterProcess>).putIfAbsent(task.getId(), process) != null) {
+        if ((processMap as java.util.Map<String, ClusterProcess>).putIfAbsent(task.getId(), process) != null) {
             logger.warn("The task {} is already queued or executing.", task)
             throw ClusterException("The task is already queued or executing.")
         }
@@ -157,6 +157,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 val mze = p.zpsExecutor
                 mze?.let {
                     if (mze.cancel()) {
+                        p.setKilled(true)
                         logger.info("The task {} was killed by:{}, reason: {}",
                                 kill.getId(), kill.getUser(), kill.getReason())
 
@@ -165,7 +166,6 @@ class ProcessManagerServiceImpl @Autowired constructor(
                                     StandardOpenOption.APPEND)
                         } catch (e: IOException) {
                             logger.warn("Failed to kill process: {}", p.id, e)
-                            e.printStackTrace()
                         }
                     }
                 }
@@ -196,14 +196,14 @@ class ProcessManagerServiceImpl @Autowired constructor(
             createLogDirectory(task)
 
             val zpsTask = ZpsTask()
-            zpsTask.id = task.getId()
+            zpsTask.id = StringUtils.uuid(proc.id)
             zpsTask.args = Json.deserialize(task.getArgMap(), Json.GENERIC_MAP)
             zpsTask.env = task.getEnv()
             zpsTask.logPath = task.getLogPath()
             zpsTask.workPath = task.getWorkDir()
             zpsTask.scriptPath = task.getScriptPath()
 
-            if (task.getId() > 0) {
+            if (task.getId() == null) {
                 proc.client.reportTaskStarted(task.getId())
             }
 
@@ -213,12 +213,15 @@ class ProcessManagerServiceImpl @Autowired constructor(
             if (tmpScript != null) {
                 tmpScript.delete()
             }
-            // interactive tasks are not in the process map.
-            if (processMap.remove(task.getId()) != null && task.getId() > 0) {
-                val stop = TaskStopT()
-                stop.setExitStatus(exitStatus)
-                proc.client.reportTaskStopped(task.getId(), stop)
-                proc.client.close()
+
+            if (proc.id != null) {
+                // interactive tasks are not in the process map.
+                if (processMap.remove(task.getId()) != null && task.getId() != null) {
+                    val stop = TaskStopT()
+                    stop.setExitStatus(exitStatus)
+                    proc.client.reportTaskStopped(task.getId(), stop)
+                    proc.client.close()
+                }
             }
         }
 
@@ -309,7 +312,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
             createLogDirectory(task)
 
             val zpsTask = ZpsTask()
-            zpsTask.id = task.getId()
+            zpsTask.id = StringUtils.uuid(task.getId())
             zpsTask.args = Json.deserialize(task.getArgMap(), Json.GENERIC_MAP)
             zpsTask.env = task.getEnv()
             zpsTask.logPath = task.getLogPath()
@@ -323,7 +326,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
                  * If the task is interactive, then response and errors
                  * are handled here.
                  */
-                if (task.getId() == 0) {
+                if (task.getId() == null) {
                     if (reaction.response != null) {
                         result.get().setResult(Json.serialize(reaction.response))
                     } else if (reaction.error != null) {
@@ -339,22 +342,29 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 return null
             }
 
-            if (task.getId() > 0) {
+            if (task.getId() != null) {
                 proc.client.reportTaskStarted(task.getId())
             }
             exitStatus = zps.execute()
             proc.exitStatus = exitStatus
 
+        } catch (e:Exception) {
+            logger.warn("Failed to start task: {}", proc.id, e)
+            throw IOException("Failed to start task " + proc.id, e)
+
         } finally {
             if (tmpScript != null) {
                 tmpScript.delete()
             }
-            // interactive tasks are not in the process map.
-            if (processMap.remove(task.getId()) != null && task.getId() > 0) {
-                val stop = TaskStopT()
-                stop.setExitStatus(exitStatus)
-                proc.client.reportTaskStopped(task.getId(), stop)
-                proc.client.close()
+            if (proc.id != null) {
+                // interactive tasks are not in the process map.
+                if (processMap.remove(task.getId()) != null && task.getId() != null) {
+                    val stop = TaskStopT()
+                    stop.setExitStatus(exitStatus)
+                    stop.setKilled(proc.killed)
+                    proc.client.reportTaskStopped(task.getId(), stop)
+                    proc.client.close()
+                }
             }
         }
 
@@ -376,7 +386,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
     }
 
     private fun handleZpsReaction(zpsTask: ZpsTask, sharedData: SharedData, reaction: Reaction) {
-        val process = processMap[zpsTask.id]
+        val process = processMap[zpsTask.id.toString()]
         process?.let {
             val client = process.client
 
@@ -388,7 +398,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
              * TODO: queue up a bunch here.
              */
             if (reaction.error != null) {
-                client.reportTaskErrors(zpsTask.id, ImmutableList.of(
+                client.reportTaskErrors(zpsTask.id.toString(), ImmutableList.of(
                         newTaskError(reaction.error)))
             }
 
@@ -399,7 +409,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 expand.setScript(Json.serialize(script))
                 expand.setName(script.name)
                 if (!isUnitTest) {
-                    client.expand(process.id, expand)
+                    client.expand(process.id.toString(), expand)
                 } else {
                     logger.info("Reacted with expand: {}", reaction.expand)
                 }
@@ -478,12 +488,6 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 .setLineNumber(zpsError.lineNumber)
                 .setMethod(zpsError.method)))
 
-        if (zpsError.origin != null) {
-            error.setId(zpsError.id)
-            error.setOriginService(zpsError.origin.service)
-            error.setOriginPath(zpsError.origin.path)
-            error.setPath(zpsError.path)
-        }
         return error
     }
 

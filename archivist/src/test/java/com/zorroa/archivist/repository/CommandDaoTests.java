@@ -2,7 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.archivist.service.PermissionService;
+import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
@@ -32,7 +34,7 @@ public class CommandDaoTests extends AbstractTest {
         spec.setType(CommandType.UpdateAssetPermissions);
         spec.setArgs(new Object[] {
                 new AssetSearch().setQuery("foo"),
-                new Acl().addEntry(permissionService.getPermission("group::manager"), Access.Read)
+                new Acl().addEntry(permissionService.getPermission(Groups.MANAGER), Access.Read)
         });
         command = commandDao.create(spec);
     }
@@ -48,7 +50,8 @@ public class CommandDaoTests extends AbstractTest {
 
         assertEquals("foo", search.getQuery());
         assertEquals(1, acl.size());
-        assertTrue(acl.hasAccess(permissionService.getPermission("group::manager").getId(),
+
+        assertTrue(acl.hasAccess(permissionService.getPermission(Groups.MANAGER).getId(),
                 Access.Read));
     }
 
@@ -96,7 +99,7 @@ public class CommandDaoTests extends AbstractTest {
         spec.setType(CommandType.UpdateAssetPermissions);
         spec.setArgs(new Object[] {
                 new AssetSearch().setQuery("foo"),
-                new Acl().addEntry(permissionService.getPermission("group::manager"), Access.Read)
+                new Acl().addEntry(permissionService.getPermission(Groups.MANAGER), Access.Read)
         });
         Command cmd = commandDao.create(spec);
 
