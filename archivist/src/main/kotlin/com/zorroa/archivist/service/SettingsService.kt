@@ -254,6 +254,7 @@ class SettingsServiceImpl @Autowired constructor(
         private val logger = LoggerFactory.getLogger(SettingsServiceImpl::class.java)
 
         private val numericValue = Regex("\\d+")
+        private val decimalValue = Regex("\\d*[.]\\d+")
         private val booleanValue = Regex("true|false")
 
         private val watermarkSettingsChanged = WatermarkSettingsChanged()
@@ -276,8 +277,8 @@ class SettingsServiceImpl @Autowired constructor(
                 .put("archivist.watermark.template", SettingValidator(emit=watermarkSettingsChanged))
                 .put("archivist.watermark.min-proxy-size",
                         SettingValidator(numericValue, emit=watermarkSettingsChanged))
-                .put("archivist.watermark.font-size",
-                        SettingValidator(numericValue, emit=watermarkSettingsChanged))
+                .put("archivist.watermark.scale",
+                        SettingValidator(decimalValue, emit=watermarkSettingsChanged))
                 .put("curator.thumbnails.drag-template",
                         SettingValidator(null))
                 .put("curator.lightbox.zoom-min",
