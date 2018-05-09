@@ -1,1 +1,0 @@
-ALTER TABLE user ADD COLUMN str_source VARCHAR(16) NOT NULL DEFAULT 'local';
