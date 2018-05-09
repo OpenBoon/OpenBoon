@@ -1,7 +1,6 @@
 package com.zorroa.common.elastic;
 
 import com.google.common.collect.Lists;
-import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.script.AbstractDoubleSearchScript;
 import org.slf4j.Logger;
@@ -24,14 +23,14 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     private final List<String> charHashes;
     private final List<Float> weights;
     private int length = 0;
-    private double minScore = 0;
+    private double minScore;
     private int resolution;
     private final boolean header;
     private final char version;
     private final int dataPos;
     private final int numHashes;
-    private final double possibleScore;
     private final double singleScore;
+    private double possibleScore;
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
@@ -76,7 +75,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
          * If there are no valid hashes left, initialize to defaults
          */
         if (charHashes.isEmpty()) {
-            singleScore = possibleScore = numHashes = dataPos = version = 0;
+            singleScore = numHashes = dataPos = version = 0;
             header = false;
             return;
         }
@@ -129,58 +128,68 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public double runAsDouble() {
         ScriptDocValues.Strings strings;
 
+        if (singleScore == 0) {
+            logger.info("no single score");
+            return NO_SCORE;
+        }
+
         if (doc().containsKey(field)) {
             strings = docFieldStrings(field);
         }
         else {
+            logger.info("no field");
             return NO_SCORE;
         }
 
-        double score = charHashesComparison(strings.getBytesValue());
+        final List<String> values = strings.getValues();
+        if (values.size() == 0) {
+            logger.info("no size");
+            return NO_SCORE;
+        }
+        double score = charHashesComparison(strings.getValues());
+        logger.info("score: {} minScor: {}", score, minScore);
         return score >= minScore ? score : NO_SCORE;
     }
 
-    public final double charHashesComparison(BytesRef fieldValue) {
-        double score = 0;
-        if (possibleScore == 0) {
-            return NO_SCORE;
-        }
+    public final double charHashesComparison(List<String> values) {
+        double highestScore = 0.0;
 
-        if (fieldValue == null || fieldValue.length == 0) {
-            return NO_SCORE;
-        }
-
-        byte ver = fieldValue.bytes[1];
         for (int i = 0; i < numHashes; ++i) {
-            String hash = charHashes.get(i);
-            if (hash == null) {
-                continue;
-            }
-            if (header) {
-                if (ver != hash.charAt(1)) {
+            for (String fieldValue: values) {
+                byte ver = fieldValue.getBytes()[1];
+                String hash = charHashes.get(i);
+                if (hash == null) {
                     continue;
                 }
-            }
-            else {
-                if (fieldValue.length != hash.length()) {
-                    continue;
+                if (header) {
+                    if (ver != hash.charAt(1)) {
+                        continue;
+                    }
+                } else {
+                    if (fieldValue.length() != hash.length()) {
+                        continue;
+                    }
+                }
+                double score = (weights.get(i) * hammingDistance(fieldValue, hash));
+                if (score > highestScore) {
+                    highestScore = score;
                 }
             }
-            score += (weights.get(i) * hammingDistance(fieldValue, hash));
         }
-        score = normalize(score);
-        return score;
+        logger.info("total score: {} {}", highestScore, possibleScore);
+        return normalize(highestScore);
     }
 
     public final double normalize(double score) {
+        if (possibleScore == 0) {  return 0; }
         score = (score / possibleScore);
         return score;
     }
 
-    public final double hammingDistance(final BytesRef lhs, final String rhs) {
+    public final double hammingDistance(final String lhs, final String rhs) {
         double score = singleScore;
         for (int i = dataPos; i < length; i++) {
-            score -= Math.abs(lhs.bytes[i] - rhs.charAt(i));
+            score -= Math.abs(lhs.charAt(i) - rhs.charAt(i));
         }
         return score;
     }

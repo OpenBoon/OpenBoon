@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
 import org.apache.lucene.index.SortedNumericDocValues;
-import org.apache.lucene.util.BytesRef;
 import org.junit.Test;
 
 import java.util.Map;
@@ -17,6 +16,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class HammingDistanceScriptTests extends AbstractTest {
 
+
     @Test
     public void testCharHammingIdenticalMatch() {
         Map<String, Object> map = Maps.newHashMap();
@@ -24,7 +24,7 @@ public class HammingDistanceScriptTests extends AbstractTest {
         map.put("hashes", ImmutableList.of("AAAA"));
 
         HammingDistanceScript script = new HammingDistanceScript(map);
-        double score = script.charHashesComparison(new BytesRef("AAAA".getBytes()));
+        double score = script.charHashesComparison(Lists.newArrayList("AAAA"));
         assertEquals(1, score, 0);
     }
 
@@ -45,7 +45,7 @@ public class HammingDistanceScriptTests extends AbstractTest {
         map.put("hashes", Lists.newArrayList(null, null, null));
 
         HammingDistanceScript script = new HammingDistanceScript(map);
-        double score = script.charHashesComparison(new BytesRef("AAAA".getBytes()));
+        double score = script.charHashesComparison(Lists.newArrayList("AAAA"));
         assertEquals(0, score, 0);
     }
 
@@ -56,7 +56,7 @@ public class HammingDistanceScriptTests extends AbstractTest {
         map.put("hashes", ImmutableList.of("AAAA"));
 
         HammingDistanceScript script = new HammingDistanceScript(map);
-        double score = script.charHashesComparison(new BytesRef("AAPP".getBytes()));
+        double score = script.charHashesComparison(Lists.newArrayList("AAPP"));
         assertEquals(.5, score, 0);
     }
 
@@ -69,7 +69,7 @@ public class HammingDistanceScriptTests extends AbstractTest {
         HammingDistanceScript script = new HammingDistanceScript(map);
         assertEquals(15, script.getResolution());
 
-        double score = script.charHashesComparison(new BytesRef("#0060FAAPP".getBytes()));
+        double score = script.charHashesComparison(Lists.newArrayList("#0060FAAPP"));
         assertEquals(.5, score, 0);
     }
 

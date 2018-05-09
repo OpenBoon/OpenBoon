@@ -18,6 +18,7 @@ import com.zorroa.sdk.search.Scroll;
 import com.zorroa.sdk.search.SimilarityFilter;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHits;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -773,6 +774,33 @@ public class SearchServiceTests extends AbstractTest {
                         new SimilarityFilter("APAPAPAP", 20)));
 
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
+
+    }
+
+    @Test
+    public void testHammingDistanceFilterArray() throws IOException, InterruptedException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+        source1.setAttr("test.hash1.shash", ImmutableList.of("AFAFAFAF", "AFAFAFA1"));
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+        source2.setAttr("test.hash1.shash",  ImmutableList.of("ADADADAD"));
+
+        assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
+        refreshIndex();
+
+        AssetSearch search;
+
+        search = new AssetSearch(
+                new AssetFilter().addToSimilarity( "test.hash1.shash",
+                        new SimilarityFilter("AFAFAFAF",    100)));
+        SearchHits hits = searchService.search(search).getHits();
+        assertEquals(1, hits.getTotalHits());
+        Document doc = new Document(hits.getAt(0).getSource());
+        assertEquals(ImmutableList.of("AFAFAFAF", "AFAFAFA1"), doc.getAttr("test.hash1.shash"));
+
+
 
     }
 
