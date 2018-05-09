@@ -16,10 +16,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.awt.AlphaComposite
-import java.awt.Color
-import java.awt.Font
-import java.awt.RenderingHints
+import java.awt.*
 import java.awt.image.BufferedImage
 import java.io.*
 import java.nio.file.Files
@@ -30,6 +27,7 @@ import java.util.regex.Pattern
 import javax.annotation.PostConstruct
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
+import kotlin.math.roundToInt
 
 /**
  * Created by chambers on 7/8/16.
@@ -62,7 +60,7 @@ class ImageServiceImpl @Autowired constructor(
     private var watermarkEnabled: Boolean = false
     private var watermarkMinProxySize: Int = 0
     private var watermarkTemplate: String = ""
-    private var watermarkFont: Font? = null
+    private var watermarkScale: Double = 1.0
 
     @PostConstruct
     fun init() {
@@ -110,6 +108,21 @@ class ImageServiceImpl @Autowired constructor(
         return output
     }
 
+    fun getWatermarkFontSize(width: Int, height: Int, characterLength: Int): Int {
+        /*
+        Calculates the correct font size for the watermark based on the width and height of the image and the number of
+        characters in the text.
+         */
+        var fontSize = (width * 1.5 / characterLength * watermarkScale).roundToInt()
+        if (fontSize > 96) {
+            fontSize = 96
+        }
+        if (fontSize > height) {
+            fontSize = height
+        }
+        return fontSize
+    }
+
     override fun watermark(req: HttpServletRequest, src: BufferedImage): BufferedImage {
         if (src.width <= watermarkMinProxySize && src.height <= watermarkMinProxySize) {
             return src
@@ -132,6 +145,9 @@ class ImageServiceImpl @Autowired constructor(
         }
         m.appendTail(sb)
         val text = sb.toString()
+        val fontName = properties.getString("archivist.watermark.font-name")
+        val fontSize = getWatermarkFontSize(src.width, src.height, text.length)
+        val watermarkFont = Font(fontName, Font.PLAIN, fontSize)
 
         // FIXME: Wrap strings that are too long
         val g2d = src.createGraphics()
@@ -139,11 +155,18 @@ class ImageServiceImpl @Autowired constructor(
             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
             val c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)
             g2d.composite = c
-            g2d.paint = Color.white
+
             g2d.font = watermarkFont
             val x = ((src.width - g2d.getFontMetrics(watermarkFont).stringWidth(text)) / 2).toFloat()
-            val y = 1.1f * g2d.getFontMetrics(watermarkFont).height
-            g2d.drawString(text, x, src.height - y)
+            val y = src.height - (1.1f * g2d.getFontMetrics(watermarkFont).height)
+            g2d.paint = Color.black
+            g2d.drawString(text, x - 1, y + 1)
+            g2d.drawString(text, x - 1, y - 1)
+            g2d.drawString(text, x + 1, y + 1)
+            g2d.drawString(text, x + 1, y -1)
+            g2d.paint = Color.white
+            g2d.drawString(text, x, y)
+
         } finally {
             g2d.dispose()
         }
@@ -156,10 +179,7 @@ class ImageServiceImpl @Autowired constructor(
         watermarkEnabled = properties.getBoolean("archivist.watermark.enabled")
         watermarkTemplate = properties.getString("archivist.watermark.template")
         watermarkMinProxySize = properties.getInt("archivist.watermark.min-proxy-size")
-
-        val fontName = properties.getString("archivist.watermark.font-name")
-        val fontSize = properties.getInt("archivist.watermark.font-size")
-        watermarkFont = Font(fontName, Font.PLAIN, fontSize)
+        watermarkScale = properties.getDouble("archivist.watermark.scale")
     }
 
     companion object {
