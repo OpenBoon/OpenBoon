@@ -289,6 +289,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             User(rs.getObject("pk_user") as UUID,
                     rs.getString("str_username"),
                     rs.getString("str_email"),
+                    rs.getString("str_source"),
                     rs.getObject("pk_permission") as UUID,
                     rs.getObject("pk_folder") as UUID,
                     rs.getString("str_firstname"),

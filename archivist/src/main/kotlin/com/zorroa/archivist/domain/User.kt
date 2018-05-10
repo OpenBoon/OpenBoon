@@ -35,6 +35,7 @@ data class User (
         override val id: UUID,
         val username: String,
         val email: String,
+        val source: String,
         val permissionId: UUID,
         val homeFolderId: UUID,
         val firstName: String?,
