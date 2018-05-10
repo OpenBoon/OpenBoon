@@ -5,11 +5,8 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.repository.UserDao
-import com.zorroa.archivist.repository.UserDaoCache
+import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.repository.UserDaoImpl.Companion.SOURCE_LOCAL
-import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.*
 import com.zorroa.sdk.client.exception.DuplicateEntityException
@@ -114,11 +111,11 @@ class UserRegistryServiceImpl @Autowired constructor(
      */
     override fun registerUser(username: String, source: AuthSource, groups: List<String>?): UserAuthed {
         val user = if (!userService.exists(username, null)) {
-            val spec = UserSpec()
-            spec.username = username
-            spec.password = UUID.randomUUID().toString() + UUID.randomUUID().toString()
-            spec.email = username
-            spec.source = source.authSourceId
+            val spec = UserSpec(
+                    username,
+                    UUID.randomUUID().toString() + UUID.randomUUID().toString(),
+                    username,
+                    source.authSourceId)
             userService.create(spec)
         } else {
             userService.get(username)
@@ -130,14 +127,14 @@ class UserRegistryServiceImpl @Autowired constructor(
         }
 
         val perms = userService.getPermissions(user)
-        return UserAuthed(user.id, user.username, perms.toSet())
+        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
     }
 
     @Transactional(readOnly = true)
     override fun getUser(username: String): UserAuthed {
         val user = userService.get(username)
         val perms = userService.getPermissions(user)
-        return UserAuthed(user.id, user.username, perms.toSet())
+        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
     }
 
     fun importAndAssignPermissions(user: UserId, source: AuthSource, groups: List<String>) {
@@ -163,12 +160,6 @@ class UserRegistryServiceImpl @Autowired constructor(
 
         userService.setPermissions(user, perms, source.authSourceId)
     }
-
-    companion object {
-
-        private val logger = LoggerFactory.getLogger(UserRegistryServiceImpl::class.java)
-
-    }
 }
 
 @Service
@@ -177,6 +168,7 @@ class UserServiceImpl @Autowired constructor(
         private val userDao: UserDao,
         private val userDaoCache: UserDaoCache,
         private val permissionDao: PermissionDao,
+        private val organizationDao: OrganizationDao,
         private val userPresetDao: UserPresetDao,
         private val tx: TransactionEventManager,
         private val properties: ApplicationProperties
@@ -205,6 +197,16 @@ class UserServiceImpl @Autowired constructor(
 
     override fun create(builder: UserSpec): User {
 
+        /**
+         * TODO:
+         * Look into how and where this gets set in the cloud.
+         * Probably needs to be set.
+         */
+        if (builder.organizationId == null &&
+                properties.getBoolean("archivist.organization.single-org-mode")) {
+            builder.organizationId = organizationDao.getOnlyOne().id
+        }
+
         if (builder.source == null) {
             builder.source = SOURCE_LOCAL
         }
@@ -226,23 +228,10 @@ class UserServiceImpl @Autowired constructor(
         val user = userDao.create(builder)
 
         /*
-         * Grab the preset, if any.
-         */
-        var preset: UserPreset? = null
-        if (builder.userPresetId != null) {
-            preset = userPresetDao.get(builder.userPresetId)
-            userDao.setSettings(user, preset.settings)
-        }
-
-        /*
          * Get the permissions specified with the builder and add our
          * user permission to the list.q
          */
         val perms = Sets.newHashSet(permissionDao.getAll(builder.permissionIds))
-        if (preset != null && preset.permissionIds != null) {
-            perms.addAll(permissionDao.getAll(preset.permissionIds.toTypedArray()))
-        }
-
         if (!perms.isEmpty()) {
             setPermissions(user, perms)
         }

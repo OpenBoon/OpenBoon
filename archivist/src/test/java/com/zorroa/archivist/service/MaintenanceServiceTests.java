@@ -77,7 +77,6 @@ public class MaintenanceServiceTests extends AbstractTest {
             assertEquals(1, maintenanceService.removeExpiredBackups(0));
             assertFalse(backup.exists());
         } catch (Exception e) {
-            logger.warn("Failed to remove expired backups", e);
             assertTrue(false);
         }
     }

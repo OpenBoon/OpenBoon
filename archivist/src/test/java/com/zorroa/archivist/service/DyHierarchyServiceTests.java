@@ -12,7 +12,6 @@ import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
-import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 7/14/16.
@@ -85,7 +82,6 @@ public class DyHierarchyServiceTests extends AbstractTest {
         int result = dyhiService.generate(agg);
 
         Folder folder = folderService.get("/foo/foo/bar");
-        logger.info("{}", Json.serializeToString(folder.getSearch()));
         assertEquals(5, searchService.count(folder.getSearch()));
 
         folder = folderService.get("/foo/bing/bang");
@@ -114,10 +110,6 @@ public class DyHierarchyServiceTests extends AbstractTest {
                         new DyHierarchyLevel("source.directory.raw")));
         int result = dyhiService.generate(agg);
         assertTrue(result > 0);
-
-        for (Folder child: folderService.getChildren(f)) {
-            logger.info("Generated Folder: {}", child.getName());
-        }
 
         String base = testDataPath.replace('/', '_');
         Folder folder1 = folderService.get("/foo/" + base + "_video");
@@ -250,9 +242,11 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
     @Test
     public void testGenerateDateHierarchyWithSmartFolder() {
-        Folder f = folderService.create(new FolderSpec("foo").setSearch(
-                new AssetSearch().setFilter(new AssetFilter().addToTerms("tree.path",
-                        Lists.newArrayList("/foo/bar")))), false);
+        FolderSpec spec =new FolderSpec("foo");
+        spec.setSearch(new AssetSearch().setFilter(new AssetFilter().addToTerms("tree.path",
+                Lists.newArrayList("/foo/bar"))));
+        Folder f = folderService.create(spec, false);
+
 
         DyHierarchy agg = new DyHierarchy();
         agg.setFolderId(f.getId());
@@ -370,7 +364,8 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
     @Test
     public void testUpdateWithSmartQuery() {
-        FolderSpec fspec = new FolderSpec("foo").setSearch(new AssetSearch("beer"));
+        FolderSpec fspec = new FolderSpec("foo");
+        fspec.setSearch(new AssetSearch("beer"));
         Folder folder = folderService.create(fspec, false);
         DyHierarchySpec spec = new DyHierarchySpec();
         spec.setFolderId(folder.getId());

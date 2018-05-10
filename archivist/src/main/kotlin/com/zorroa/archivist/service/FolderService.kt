@@ -37,9 +37,11 @@ interface FolderService {
      */
     fun getTrashedFolders(): List<TrashedFolder>
 
-    fun get(id: UUID): Folder
+    fun get(folder: Folder): Folder
 
-    fun get(parent: UUID, name: String): Folder
+    fun get(id: UUID?): Folder
+
+    fun get(parent: UUID?, name: String): Folder
 
     fun exists(path: String): Boolean
 
@@ -69,7 +71,7 @@ interface FolderService {
      */
     fun getAllDescendants(startFolders: Collection<Folder>, includeStartFolders: Boolean, forSearch: Boolean): List<Folder>
 
-    fun invalidate(folder: Folder?, vararg additional: UUID)
+    fun invalidate(folder: Folder?, vararg additional: UUID?)
 
     fun isInTaxonomy(folder: Folder): Boolean
 
@@ -86,7 +88,7 @@ interface FolderService {
      */
     fun getAllDescendants(folder: Folder, forSearch: Boolean): List<Folder>
 
-    fun update(folderId: UUID, updated: Folder): Boolean
+    fun update(folderId: UUID, updated: FolderUpdate): Boolean
 
     fun deleteAll(ids: Collection<UUID>): Int
 
@@ -217,7 +219,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun setDyHierarchyRoot(folder: Folder, attribute: String): Boolean {
-        if (folder.id == Folder.ROOT_ID) {
+        if (folder.id == ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
         val result = folderDao.setDyHierarchyRoot(folder, attribute)
@@ -242,8 +244,8 @@ class FolderServiceImpl @Autowired constructor(
 
         transactionEventManager.afterCommit(true) {
             invalidate(folder)
-            logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
-                    .setMessage("permissions set"))
+            //logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
+            //        .setMessage("permissions set"))
         }
     }
 
@@ -259,12 +261,16 @@ class FolderServiceImpl @Autowired constructor(
 
         transactionEventManager.afterCommit(true) {
             invalidate(folder)
-            logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
-                    .setMessage("permissions updated"))
+            //logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
+            //        .setMessage("permissions updated"))
         }
     }
 
-    override fun get(id: UUID): Folder {
+    override fun get(folder: Folder): Folder {
+        return get(folder.id)
+    }
+
+    override fun get(id: UUID?): Folder {
         val f: Folder
         try {
             f = folderCache.get(id)
@@ -278,16 +284,16 @@ class FolderServiceImpl @Autowired constructor(
         }
     }
 
-    override fun get(parent: UUID, name: String): Folder {
+    override fun get(parent: UUID?, name: String): Folder {
         return folderDao.get(parent, name, false)
     }
 
     override fun get(path: String): Folder? {
-        var parentId = Folder.ROOT_ID
+        var parentId = ROOT_ID
         var current: Folder? = null
 
         if ("/" == path) {
-            return folderDao.get(Folder.ROOT_ID)
+            return folderDao.get(ROOT_ID)
         }
 
         // Just throw the exception to the caller,don't return null
@@ -318,7 +324,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun getAll(): List<Folder> {
-        return folderDao.getChildren(Folder.ROOT_ID)
+        return folderDao.getChildren(ROOT_ID)
     }
 
     override fun getAll(ids: Collection<UUID>): List<Folder> {
@@ -344,16 +350,16 @@ class FolderServiceImpl @Autowired constructor(
         return false
     }
 
-    override fun update(folderId : UUID, updated: Folder): Boolean {
+    override fun update(folderId : UUID, updated: FolderUpdate): Boolean {
         if (!hasPermission(folderDao.getAcl(folderId), Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (folderId == Folder.ROOT_ID || updated.id == Folder.ROOT_ID) {
+        if (folderId == ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
 
-        val current = folderDao.get(folderId)
+        var current = folderDao.get(folderId)
         val parentSwap = !Objects.equals(current.parentId, updated.parentId);
 
         if (parentSwap) {
@@ -362,12 +368,13 @@ class FolderServiceImpl @Autowired constructor(
                 throw ArchivistWriteException("You cannot move a folder into one of its descendants.")
             }
 
-            if (updated.dyhiId != null) {
+            if (current.dyhiId != null) {
                 throw ArchivistWriteException("You cannot move a DyHi folder")
             }
         }
 
         val result = folderDao.update(folderId, updated)
+        current = folderDao.get(folderId)
 
         /**
          * If there is a parent swap then the folder gets perms from the new parent.
@@ -375,9 +382,9 @@ class FolderServiceImpl @Autowired constructor(
          */
         if (result && parentSwap) {
             val targetFolder = folderDao.get(updated.parentId)
-            setAcl(updated, targetFolder.acl, true, false)
+            setAcl(current, targetFolder.acl, true, false)
 
-            for (child in getAllDescendants(updated, false)) {
+            for (child in getAllDescendants(current, false)) {
                 setAcl(child, targetFolder.acl, true, false)
             }
         }
@@ -385,9 +392,9 @@ class FolderServiceImpl @Autowired constructor(
         if (result) {
             transactionEventManager.afterCommit(true, {
                 invalidate(current, current.parentId)
-                logService.logAsync(UserLogSpec.build(LogAction.Update, updated))
+                //logService.logAsync(UserLogSpec.build(LogAction.Update, updated))
 
-                val folder = get(updated.id)
+                val folder = get(folderId)
                 val tax = getParentTaxonomy(folder)
                 if (tax != null) {
                     /**
@@ -414,7 +421,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You don't have the permissions to delete this folder")
         }
 
-        if (folder.id == Folder.ROOT_ID) {
+        if (folder.id == ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
         /**
@@ -424,7 +431,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("Cannot deleted dynamic hierarchy folder.")
         }
 
-        if (folder.isDyhiRoot) {
+        if (folder.dyhiRoot) {
             removeDyHierarchyRoot(folder)
         }
 
@@ -451,13 +458,13 @@ class FolderServiceImpl @Autowired constructor(
                 trashFolderDao.create(child, op, false, order)
                 transactionEventManager.afterCommit(false, {
                     invalidate(child)
-                    logService.logAsync(UserLogSpec.build(LogAction.Delete, child))
+                    //logService.logAsync(UserLogSpec.build(LogAction.Delete, child))
                 })
             }
         }
 
         val tax = getParentTaxonomy(folder)
-        if (folder.isTaxonomyRoot) {
+        if (folder.taxonomyRoot) {
             taxonomyService.delete(tax, false)
         }
 
@@ -466,12 +473,12 @@ class FolderServiceImpl @Autowired constructor(
         if (result) {
             transactionEventManager.afterCommit(true, {
                 invalidate(folder)
-                logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
+                //logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
             })
 
             if (tax != null) {
                 transactionEventManager.afterCommit(false, {
-                    if (folder.isTaxonomyRoot) {
+                    if (folder.taxonomyRoot) {
                         taxonomyService.untagTaxonomyAsync(tax, 0)
                     } else {
                         taxonomyService.untagTaxonomyFoldersAsync(tax, children)
@@ -508,11 +515,11 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (folder.id == Folder.ROOT_ID) {
+        if (folder.id == ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
 
-        if (folder.isDyhiRoot) {
+        if (folder.dyhiRoot) {
             dyHierarchyService.delete(dyHierarchyService.get(folder))
         }
 
@@ -525,7 +532,7 @@ class FolderServiceImpl @Autowired constructor(
             if (folderDao.delete(children[i])) {
                 transactionEventManager.afterCommit(true, {
                     invalidate(folder)
-                    logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
+                    //logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
                 })
             }
         }
@@ -534,7 +541,7 @@ class FolderServiceImpl @Autowired constructor(
         if (result) {
             transactionEventManager.afterCommit(true, {
                 invalidate(folder)
-                logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
+                //logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
             })
         }
         return result
@@ -558,7 +565,7 @@ class FolderServiceImpl @Autowired constructor(
 
         val result = assetDao.appendLink("folder", folder.id, assetIds)
         invalidate(folder)
-        logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("count", assetIds.size))
+        //logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("count", assetIds.size))
 
         val tax = getParentTaxonomy(folder)
         if (tax != null) {
@@ -576,7 +583,7 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         val result = assetDao.removeLink("folder", folder.id, assetIds)
-        logService.logAsync(UserLogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds))
+        //logService.logAsync(UserLogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds))
         invalidate(folder)
 
         val tax = getParentTaxonomy(folder)
@@ -587,7 +594,7 @@ class FolderServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun invalidate(folder: Folder?, vararg additional: UUID) {
+    override fun invalidate(folder: Folder?, vararg additional: UUID?) {
         if (folder != null) {
             if (folder.parentId != null) {
                 childCache.invalidate(folder.parentId)
@@ -598,20 +605,22 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         for (id in additional) {
-            childCache.invalidate(id)
-            folderCache.invalidate(id)
+            if (id != null) {
+                childCache.invalidate(id)
+                folderCache.invalidate(id)
+            }
         }
     }
 
     override fun isInTaxonomy(folder: Folder): Boolean {
         var current = folder
 
-        if (folder.isTaxonomyRoot) {
+        if (folder.taxonomyRoot) {
             return true
         }
-        while (current.parentId != Folder.ROOT_ID) {
+        while (current.parentId != ROOT_ID) {
             current = get(folder.parentId)
-            if (current.isTaxonomyRoot) {
+            if (current.taxonomyRoot) {
                 return true
             }
         }
@@ -620,12 +629,12 @@ class FolderServiceImpl @Autowired constructor(
 
     override fun getParentTaxonomy(folder: Folder): Taxonomy? {
         var current = folder
-        if (current.isTaxonomyRoot) {
+        if (current.taxonomyRoot) {
             return taxonomyService.get(folder)
         }
-        while (current.parentId != Folder.ROOT_ID) {
+        while (current.parentId != ROOT_ID) {
             current = get(current.parentId)
-            if (current.isTaxonomyRoot) {
+            if (current.taxonomyRoot) {
                 return taxonomyService.get(current)
             }
         }
@@ -638,10 +647,10 @@ class FolderServiceImpl @Autowired constructor(
             result.add(folder)
         }
         var start = folder
-        while (start.parentId != Folder.ROOT_ID) {
+        while (start.parentId != ROOT_ID) {
             start = get(start.parentId)
             result.add(start)
-            if (start.isTaxonomyRoot && taxOnly) {
+            if (start.taxonomyRoot && taxOnly) {
                 break
             }
         }
@@ -686,7 +695,7 @@ class FolderServiceImpl @Autowired constructor(
 
         while (true) {
             val current = toQuery.poll() ?: return
-            if (Folder.isRoot(current)) {
+            if (isRootFolder(current)) {
                 continue
             }
 
@@ -696,7 +705,7 @@ class FolderServiceImpl @Autowired constructor(
              * for all assets that have an export ID, then there is no need to traverse all the sub
              * folders.
              */
-            if (!current.isRecursive && forSearch) {
+            if (!current.recursive && forSearch) {
                 continue
             }
             try {
@@ -732,14 +741,14 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (spec.name.contains("/", true)) {
+        if (spec.name!!.contains("/", true)) {
             throw ArchivistWriteException("You cannot have slashes in folder names")
         }
 
         var result: Folder
 
         try {
-            result = get(spec.parentId, spec.name)
+            result = get(spec.parentId, spec.name as String)
         } catch (e: EmptyResultDataAccessException) {
             spec.acl.whenNullOrEmpty {
                 spec.acl = parent.acl
@@ -757,7 +766,7 @@ class FolderServiceImpl @Autowired constructor(
     private fun emitFolderCreated(folder: Folder) {
         transactionEventManager.afterCommit(true, {
             invalidate(null, folder.parentId)
-            logService.logAsync(UserLogSpec.build(LogAction.Create, folder))
+            //logService.logAsync(UserLogSpec.build(LogAction.Create, folder))
 
             if (folder.dyhiId == null && folder.search != null) {
                 val tax = getParentTaxonomy(folder)
@@ -783,11 +792,12 @@ class FolderServiceImpl @Autowired constructor(
         val adminUser = userDao.get("admin")
         val everyone = permissionDao.get(Groups.EVERYONE)
 
-        val rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true)
-        val folder = folderDao.create(FolderSpec()
-                .setName(username)
-                .setParentId(rootFolder.id)
-                .setUserId(adminUser.id))
+        val rootFolder = folderDao.get(ROOT_ID, "Users", true)
+        val spec = FolderSpec(
+                username,
+                rootFolder.id)
+        spec.userId = adminUser.id
+        val folder = folderDao.create(spec)
         folderDao.setAcl(folder.id, Acl()
                 .addEntry(perm, Access.Read, Access.Write)
                 .addEntry(everyone, Access.Read.value), true)

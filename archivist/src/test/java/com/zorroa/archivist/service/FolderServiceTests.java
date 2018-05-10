@@ -14,7 +14,6 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.zorroa.archivist.domain.FolderKt.getRootFolderId;
 import static org.junit.Assert.*;
 
 public class FolderServiceTests extends AbstractTest {
@@ -96,7 +96,6 @@ public class FolderServiceTests extends AbstractTest {
 
         PagedList<Document> assets = assetService.getAll(Pager.first());
         for (Document a: assets) {
-            logger.info("{}", a.getAttr("zorroa.links.folder", List.class));
             assertEquals(1, ((List) a.getAttr("zorroa.links.folder")).size());
         }
     }
@@ -169,12 +168,16 @@ public class FolderServiceTests extends AbstractTest {
     @Test
     public void testCountAssetSmartFolder() {
         FolderSpec builder = new FolderSpec("Folder");
+        builder.setSearch(new AssetSearch("jpg"));
+
         Folder folder = folderService.create(builder);
-        folderService.update(folder.getId(), folder.setSearch(new AssetSearch("jpg")));
         assertEquals(2, searchService.count(folderService.get(folder.getId())));
 
-        folderService.update(folder.getId(), folder.setSearch(new AssetSearch("wdsdsdsdsds")));
-        assertEquals(0, searchService.count(folderService.get(folder.getId())));
+        FolderSpec builder2 = new FolderSpec("Folder2");
+        builder2.setSearch(new AssetSearch("wdsdsdsdsds"));
+        Folder folder2 = folderService.create(builder2);
+
+        assertEquals(0, searchService.count(folderService.get(folder2.getId())));
     }
 
     @Test
@@ -254,10 +257,8 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Folder", folderService.get("/Library"));
         Folder folder = folderService.create(builder);
         Acl acl = new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write);
-        folderDao.setAcl(folder.getId(), acl);
-        folder.setAcl(acl);
-
-        folderService.addAssets(folder, assetService.getAll(
+        folderService.setAcl(folder, acl, false, false);
+        folderService.addAssets(folderService.get(folder), assetService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
     }
 
@@ -267,9 +268,8 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Folder", folderService.get("/Library"));
         Folder folder = folderService.create(builder);
         Acl acl = new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write);
-        folder.setAcl(acl);
-        folderDao.setAcl(folder.getId(), acl);
-        folderService.delete(folder);
+        folderService.setAcl(folder, acl, false, false);
+        folderService.delete(folderService.get(folder));
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -279,7 +279,9 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),
                 new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write));
-        folderService.update(folder.getId(), folder.setName("biblo"));
+        FolderUpdate up = new FolderUpdate(folder);
+        up.setName("bilbo");
+        folderService.update(folder.getId(), up);
     }
 
     @Test
@@ -303,10 +305,10 @@ public class FolderServiceTests extends AbstractTest {
     @Test
     public void testDescendants() {
         Folder grandpa = folderService.create(new FolderSpec("grandpa"));
-        Folder dad = folderService.create(new FolderSpec("dad", grandpa.getId()));
-        Folder uncle = folderService.create(new FolderSpec("uncle", grandpa.getId()));
-        folderService.create(new FolderSpec("child", dad.getId()));
-        folderService.create(new FolderSpec("cousin", uncle.getId()));
+        Folder dad = folderService.create(new FolderSpec("dad", grandpa));
+        Folder uncle = folderService.create(new FolderSpec("uncle", grandpa));
+        folderService.create(new FolderSpec("child", dad));
+        folderService.create(new FolderSpec("cousin", uncle));
         List<Folder> descendents = folderService.getAllDescendants(grandpa, false);
         assertEquals(4, descendents.size());
     }
@@ -314,15 +316,12 @@ public class FolderServiceTests extends AbstractTest {
     @Test
     public void testGetAllDescendants() {
         Folder grandpa = folderService.create(new FolderSpec("grandpa"));
-        Folder dad = folderService.create(new FolderSpec("dad", grandpa.getId()));
-        Folder uncle = folderService.create(new FolderSpec("uncle", grandpa.getId()));
-        folderService.create(new FolderSpec("child", dad.getId()));
-        folderService.create(new FolderSpec("cousin", uncle.getId()));
+        Folder dad = folderService.create(new FolderSpec("dad", grandpa));
+        Folder uncle = folderService.create(new FolderSpec("uncle", grandpa));
+        folderService.create(new FolderSpec("child", dad));
+        folderService.create(new FolderSpec("cousin", uncle));
         assertEquals(5, folderService.getAllDescendants(Lists.newArrayList(grandpa), true, true).size());
         assertEquals(4, folderService.getAllDescendants(Lists.newArrayList(grandpa), false, true).size());
-
-        logger.info("{}", folderService.getAllDescendants(
-                Lists.newArrayList(grandpa, dad, uncle), true, true));
 
         assertEquals(5, ImmutableSet.copyOf(folderService.getAllDescendants(
                 Lists.newArrayList(grandpa, dad, uncle), true, true)).size());
@@ -379,7 +378,9 @@ public class FolderServiceTests extends AbstractTest {
     @Test
     public void testUpdate() {
         Folder folder = folderService.create(new FolderSpec("orig"));
-        boolean ok = folderService.update(folder.getId(), folder.setName("new"));
+        FolderUpdate up = new FolderUpdate(folder);
+        up.setName("new");
+        boolean ok = folderService.update(folder.getId(), up);
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
         assertEquals("new", revised.getName());
@@ -393,7 +394,9 @@ public class FolderServiceTests extends AbstractTest {
 
         Folder folder1 = folderService.create(fs1);
         Folder folder2 = folderService.create(fs2);
-        boolean ok = folderService.update(folder2.getId(), folder2.setParentId(folder1.getId()));
+        FolderUpdate up = new FolderUpdate(folder2);
+        up.setParentId(folder1.getId());
+        boolean ok = folderService.update(folder2.getId(), up);
         assertTrue(ok);
 
         Folder revised = folderService.get(folder2.getId());
@@ -425,8 +428,10 @@ public class FolderServiceTests extends AbstractTest {
 
         assertEquals(0, searchService.count(new AssetSearch().setQuery("bilbo")));
 
-        folder2.setParentId(folder1.getId());
-        folderService.update(folder2.getId(), folder2);
+        FolderUpdate update = new FolderUpdate(folder2);
+        update.setParentId(folder1.getId());
+
+        folderService.update(folder2.getId(), update);
         refreshIndex(1000);
 
         assertEquals(2, searchService.count(new AssetSearch().setQuery("bilbo")));
@@ -454,8 +459,11 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("user::admin"), Access.Write));
         assertEquals(1, moving.getAcl().size());
 
+        FolderUpdate up = new FolderUpdate(moving);
+        up.setParentId(library.getId());
+
         // Move the folder into the library
-        assertTrue(folderService.update(moving.getId(), moving.setParentId(library.getId())));
+        assertTrue(folderService.update(moving.getId(), up));
         Acl acl = folderDao.getAcl(moving.getId());
 
         assertTrue(acl.hasAccess(permissionService.getPermission(Groups.LIBRARIAN), Access.Write));
@@ -469,7 +477,11 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder1a = folderService.create(new FolderSpec("test3a", folder1));
         Folder folder1b = folderService.create(new FolderSpec("test3b", folder1a));
         Folder folder1c = folderService.create(new FolderSpec("test3c", folder1b));
-        folderService.update(folder1.getId(), folder1.setParentId(folder1c.getId()));
+
+        FolderUpdate up = new FolderUpdate(folder1);
+        up.setParentId(folder1c.getId());
+
+        folderService.update(folder1.getId(), up);
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -478,17 +490,21 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder1a = folderService.create(new FolderSpec("test2a", folder1));
         Folder folder1b = folderService.create(new FolderSpec("test2b", folder1a));
         Folder folder1c = folderService.create(new FolderSpec("test2c", folder1b));
-        folderService.update(folder1.getId(), folder1.setParentId(folder1.getId()));
+        FolderUpdate up = new FolderUpdate(folder1);
+        up.setParentId(folder1.getId());
+        folderService.update(folder1.getId(), up);
     }
 
     @Test
     public void testUpdateRecursive() {
         Folder folder = folderService.create(new FolderSpec("orig"));
-        assertTrue(folder.isRecursive());
-        boolean ok = folderService.update(folder.getId(), folder.setRecursive(false));
+        assertTrue(folder.getRecursive());
+        FolderUpdate updated = new FolderUpdate(folder);
+        updated.setRecursive(false);
+        boolean ok = folderService.update(folder.getId(),updated);
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
-        assertFalse(revised.isRecursive());
+        assertFalse(revised.getRecursive());
     }
 
     @Test
@@ -522,7 +538,7 @@ public class FolderServiceTests extends AbstractTest {
 
         folder = folderService.get(folder.getId());
         assertTrue(folder.getSearch().getFilter().getExists().contains("source.file"));
-        assertTrue(folder.isDyhiRoot());
+        assertTrue(folder.getDyhiRoot());
     }
 
     @Test
@@ -536,7 +552,7 @@ public class FolderServiceTests extends AbstractTest {
         folderService.removeDyHierarchyRoot(folder);
         folder = folderService.get(folder.getId());
         assertNull(folder.getSearch());
-        assertFalse(folder.isDyhiRoot());
+        assertFalse(folder.getDyhiRoot());
     }
 
     @Test
@@ -544,7 +560,7 @@ public class FolderServiceTests extends AbstractTest {
         int count = folderService.count();
 
         Folder folder1 = folderService.create(new FolderSpec("folder1"));
-        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1));
         assertEquals(count+2, folderService.count());
 
         TrashedFolderOp result = folderService.trash(folder1);
@@ -560,15 +576,14 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder1 = folderService.create(new FolderSpec("folder1"));
         TrashedFolderOp result = folderService.trash(folder1);
         TrashedFolder tf = folderService.getTrashedFolder(result.getTrashFolderId());
-        logger.info(Json.serializeToString(tf));
     }
 
     @Test
     public void restoreFolder() {
 
         Folder folder1 = folderService.create(new FolderSpec("folder1"));
-        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2));
         TrashedFolderOp result = folderService.trash(folder1);
 
         // Deleted 2 folders
@@ -582,8 +597,8 @@ public class FolderServiceTests extends AbstractTest {
     public void emptyTrash() {
 
         Folder folder1 = folderService.create(new FolderSpec("folder1"));
-        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2));
         TrashedFolderOp result = folderService.trash(folder1);
 
         // Deleted 2 folders
@@ -597,12 +612,12 @@ public class FolderServiceTests extends AbstractTest {
     public void isDescendantOf() {
 
         Folder folder1 = folderService.create(new FolderSpec("folder1"));
-        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2));
 
         assertTrue(folderService.isDescendantOf(folder3, folder1));
         assertFalse(folderService.isDescendantOf(folder1, folder3));
-        assertTrue(folderService.isDescendantOf(folder3, folderService.get(Folder.ROOT_ID)));
+        assertTrue(folderService.isDescendantOf(folder3, folderService.get(getRootFolderId())));
 
     }
 
@@ -610,12 +625,10 @@ public class FolderServiceTests extends AbstractTest {
     public void getAnscestors() {
 
         Folder folder1 = folderService.create(new FolderSpec("f1"));
-        Folder folder2 = folderService.create(new FolderSpec("f2", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("f3", folder2.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("f2", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("f3", folder2));
 
         List<Folder> folders = folderService.getAllAncestors(folder3, true, false);
-        logger.info("{}", folders);
-        // TODO an assertiion
     }
 
     @Test

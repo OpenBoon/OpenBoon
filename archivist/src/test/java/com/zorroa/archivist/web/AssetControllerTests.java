@@ -144,7 +144,6 @@ public class AssetControllerTests extends MockMvcTest {
 
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
-        logger.info("{}", json);
     }
 
     @Test
@@ -172,13 +171,10 @@ public class AssetControllerTests extends MockMvcTest {
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
             source.addToKeywords("media", "reflection");
-            logger.info(Json.prettyString(source));
         }
         addTestAssets(sources);
 
         refreshIndex();
-        logger.info(Json.prettyString(fieldService.getFields("asset")));
-
 
         MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
@@ -534,7 +530,6 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
-        logger.info(Json.serializeToString(json));
 
         search = new AssetSearch(new AssetFilter().addRange("source.fileSize", range));
         result = mvc.perform(post("/api/v2/assets/_search")
@@ -645,7 +640,6 @@ public class AssetControllerTests extends MockMvcTest {
         refreshIndex();
 
         PagedList<Document> assets = assetService.getAll(Pager.first());
-        logger.info("Checking preferred format: {}", assets.get(0).getAttr("source.path", String.class));
         AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "m4v",
                 false, false);
 
@@ -678,6 +672,5 @@ public class AssetControllerTests extends MockMvcTest {
         AssetController.StreamFile file = assetController.getPreferredFormat(asset,
                 "webm", false, false);
         assertNotNull(file);
-        logger.info("{}", Json.prettyString(asset.getDocument()));
     }
 }

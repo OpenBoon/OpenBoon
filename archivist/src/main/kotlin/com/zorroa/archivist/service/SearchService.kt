@@ -480,7 +480,7 @@ class SearchServiceImpl @Autowired constructor(
                     /**
                      * We don't allow dyhi folders to have manual entries.
                      */
-                    if (folder.dyhiId == null && !folder.isDyhiRoot) {
+                    if (folder.dyhiId == null && !folder.dyhiRoot) {
                         childFolders.add(folder.id)
                         if (childFolders.size >= 1024) {
                             break

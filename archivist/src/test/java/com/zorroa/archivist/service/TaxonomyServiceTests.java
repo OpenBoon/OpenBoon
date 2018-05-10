@@ -8,7 +8,6 @@ import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.util.Json;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,9 @@ public class TaxonomyServiceTests extends AbstractTest {
     public void testCreateAndRun() throws InterruptedException {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
-        Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("borg", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1));
+        Folder folder4 = folderService.create(new FolderSpec("federation", folder1));
 
         Source d = new Source();
         d.setId("abc123");
@@ -48,7 +47,6 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Document doc = new Document(
                 searchService.search(new AssetSearch()).getHits().getHits()[0].getSource());
-        logger.info(Json.prettyString(doc.getDocument()));
 
         assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("zorroa.taxonomy",
                 new TypeReference<List<TaxonomySchema>>() {
@@ -63,9 +61,9 @@ public class TaxonomyServiceTests extends AbstractTest {
     public void testCreateFailureDuplicate() {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
-        Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("borg", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1));
+        Folder folder4 = folderService.create(new FolderSpec("federation", folder1));
 
         taxonomyService.create(new TaxonomySpec(folder1));
         taxonomyService.create(new TaxonomySpec(folder1));
@@ -76,9 +74,9 @@ public class TaxonomyServiceTests extends AbstractTest {
     public void testCreateFailureNested() {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
-        Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("borg", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1));
+        Folder folder4 = folderService.create(new FolderSpec("federation", folder1));
 
         taxonomyService.create(new TaxonomySpec(folder1));
         taxonomyService.create(new TaxonomySpec(folder3));
@@ -113,7 +111,6 @@ public class TaxonomyServiceTests extends AbstractTest {
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
-        logger.info("tag taxonomy");
         taxonomyService.tagTaxonomy(tax1, folder1,true);
         refreshIndex(1000);
 
@@ -176,7 +173,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         assertTrue(taxonomyService.delete(tax1, true));
         assertFalse(taxonomyService.delete(tax1, true));
-        assertFalse(folderService.get(folder1.getId()).isTaxonomyRoot());
+        assertFalse(folderService.get(folder1.getId()).getTaxonomyRoot());
 
         refreshIndex();
         assertEquals(0, searchService.search(

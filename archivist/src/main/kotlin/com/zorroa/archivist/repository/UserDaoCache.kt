@@ -43,18 +43,19 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
 
     companion object {
 
-        private const val GET_BY_ID = "SELECT pk_user,str_username,str_email,pk_permission,pk_folder " +
-                "FROM users WHERE pk_user=?"
+        private const val GET = "SELECT pk_user,str_username,str_email,pk_permission,pk_folder,pk_organization " +
+                "FROM users"
+        private const val GET_BY_ID = "$GET WHERE pk_user=?"
 
-        private const val GET_BY_NAME = "SELECT pk_user,str_username,str_email,pk_permission,pk_folder " +
-                "FROM users WHERE (str_username=? OR str_email=?)"
+        private const val GET_BY_NAME = "$GET WHERE (str_username=? OR str_email=?)"
 
         private val MAPPER = RowMapper<UserBase> { rs, _ ->
             UserBase(rs.getObject("pk_user") as UUID,
                     rs.getString("str_username"),
                     rs.getString("str_email"),
                     rs.getObject("pk_permission") as UUID,
-                    rs.getObject("pk_folder") as UUID)
+                    rs.getObject("pk_folder") as UUID,
+                    rs.getObject("pk_organization") as UUID)
         }
 
     }

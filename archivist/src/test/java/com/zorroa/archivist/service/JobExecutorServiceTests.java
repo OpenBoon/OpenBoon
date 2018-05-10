@@ -181,17 +181,12 @@ public class JobExecutorServiceTests extends AbstractTest {
      */
     public void unittestSchedule() {
         for (TaskStartT task: taskDao.getWaiting(10)) {
-            logger.debug("SCHEDULE");
-            logger.debug("{}", Json.prettyString(task));
-            logger.debug("SCHEDULE");
-
             Task t = taskDao.get(UUID.fromString(task.id));
             if (!jobService.setTaskState(t, TaskState.Queued, TaskState.Waiting)) {
                 throw new RuntimeException("Failed to queue task");
             }
 
             if (!jobService.setTaskState(t, TaskState.Running, TaskState.Queued)) {
-                logger.warn("Failed to set task running: {}", task);
                 throw new RuntimeException("Failed to run task");
             }
         }

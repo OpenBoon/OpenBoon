@@ -124,7 +124,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val folder = folderService.get(spec.folderId)
         val ancestors = folderService.getAllAncestors(folder, true, true)
         for (an in ancestors) {
-            if (an.isTaxonomyRoot) {
+            if (an.taxonomyRoot) {
                 throw ArchivistWriteException("The folder is already in a taxonomy")
             }
         }
@@ -135,14 +135,14 @@ class TaxonomyServiceImpl @Autowired constructor(
             throw ArchivistWriteException("The root folder cannot be a taxonomy.")
         }
 
-        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == Folder.ROOT_ID) {
+        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == ROOT_ID) {
             throw ArchivistWriteException("This folder cannot hold a taxonomy.")
         }
 
         val result = folderDao.setTaxonomyRoot(folder, true)
         if (result) {
             folderService.invalidate(folder)
-            folder.isTaxonomyRoot = true
+            folder.taxonomyRoot = true
 
             // force is false because there won't be folders with this tax id.
             tagTaxonomyAsync(tax, folder, false)
@@ -208,10 +208,10 @@ class TaxonomyServiceImpl @Autowired constructor(
                 val keywords = Lists.newArrayList<String>()
 
                 var foundRoot = false
-                if (!folder.isTaxonomyRoot) {
+                if (!folder.taxonomyRoot) {
                     for (f in ancestors) {
                         keywords.add(f.name)
-                        if (f.isTaxonomyRoot) {
+                        if (f.taxonomyRoot) {
                             foundRoot = true
                             break
                         }

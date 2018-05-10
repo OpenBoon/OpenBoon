@@ -116,7 +116,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             ps.setString(5, folder.name)
             ps.setString(6, Json.serializeToString(folder.search, null))
             ps.setString(7, Json.serializeToString(folder.acl, null))
-            ps.setBoolean(8, folder.isRecursive)
+            ps.setBoolean(8, folder.recursive)
             ps.setObject(9, folder.user.id)
             ps.setLong(10, folder.timeCreated)
             ps.setLong(11, folder.timeModified)

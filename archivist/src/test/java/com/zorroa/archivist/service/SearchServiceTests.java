@@ -222,7 +222,8 @@ public class SearchServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Avengers");
         Folder folder1 = folderService.create(builder);
 
-        builder = new FolderSpec("Age Of Ultron", folder1).setRecursive(false);
+        builder = new FolderSpec("Age Of Ultron", folder1);
+        builder.setRecursive(false);
         Folder folder2 = folderService.create(builder);
 
         builder = new FolderSpec("Characters", folder2);
@@ -266,7 +267,7 @@ public class SearchServiceTests extends AbstractTest {
         Files.touch(new File(filepath));
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-       source.addToKeywords("media", "captain");
+        source.addToKeywords("media", "captain");
 
         Document a = assetService.index(source);
         refreshIndex();
@@ -283,7 +284,6 @@ public class SearchServiceTests extends AbstractTest {
         source.addToKeywords("media","captain", "america");
 
         assetService.index(source);
-        logger.info(Json.prettyString(source));
         refreshIndex();
 
         int count = 0;
@@ -560,7 +560,6 @@ public class SearchServiceTests extends AbstractTest {
         fieldService.invalidateFields();
 
         Map<String, Set<String>> fields = fieldService.getFields("asset");
-        logger.info(Json.prettyString(fields));
         assertTrue(fields.get("keywords-boost").contains("foo:1"));
         assertTrue(fields.get("keywords-boost").contains("bar:2"));
     }

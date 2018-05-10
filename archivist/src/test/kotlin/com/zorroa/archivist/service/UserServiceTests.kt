@@ -1,9 +1,10 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.sdk.client.exception.DuplicateEntityException
 import org.junit.Before
@@ -18,25 +19,25 @@ class UserServiceTests : AbstractTest() {
 
     @Before
     fun init() {
-        val builder = UserSpec()
-        builder.username = "billybob"
-        builder.password = "123password!"
-        builder.email = "testing@zorroa.com"
-        builder.firstName = "BillyBob"
-        builder.lastName = "Rodriquez"
+        val builder = UserSpec("billybob",
+                "123password!",
+                "testing@zorroa.com",
+                firstName="BillyBob",
+                lastName = "Rodriquez")
         testUser = userService.create(builder)
     }
 
     @Test
     fun createUser() {
-        val builder = UserSpec()
-        builder.username = "test"
-        builder.password = "123password"
-        builder.email = "test@test.com"
-        builder.firstName = "Bilbo"
-        builder.lastName = "Baggings"
-        builder.setPermissions(
-                permissionService.getPermission(Groups.MANAGER))
+        val builder = UserSpec("test",
+                "123password",
+                "test@test.com",
+                firstName="Bilbo",
+                lastName = "Baggins")
+
+        builder.permissionIds =
+                listOf(permissionService.getPermission(Groups.MANAGER).id)
+
         val user = userService.create(builder)
 
         /*
@@ -64,72 +65,41 @@ class UserServiceTests : AbstractTest() {
 
     @Test(expected = DuplicateEntityException::class)
     fun createDuplicateUser() {
-        val builder = UserSpec()
-        builder.username = "test"
-        builder.password = "123password"
-        builder.email = "test@test.com"
-        builder.firstName = "Bilbo"
-        builder.lastName = "Baggings"
-        builder.setPermissions(
-                permissionService.getPermission(Groups.MANAGER))
+        val builder = UserSpec("test",
+                "123password",
+                "test@test.com",
+                firstName="Bilbo",
+                lastName = "Baggins")
         userService.create(builder)
         userService.create(builder)
-    }
-
-    @Test
-    fun createUserWithPresets() {
-        val presets = userService.createUserPreset(UserPresetSpec()
-                .setName("defaults")
-                .setPermissionIds(Lists.newArrayList(permissionService.getPermission(Groups.MANAGER).id))
-                .setSettings(UserSettings().setSearch(ImmutableMap.of<String, Any>("foo", "bar"))))
-
-        val builder = UserSpec()
-        builder.username = "bilbo"
-        builder.password = "123password"
-        builder.email = "bilbo@test.com"
-        builder.firstName = "Bilbo"
-        builder.lastName = "Baggings"
-        builder.userPresetId = presets.presetId
-
-        val user = userService.create(builder)
-        assertTrue(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)))
-
-        val settings = user.settings
-        assertEquals("bar", settings.search["foo"])
     }
 
     @Test
     fun testSetEnabled() {
-        val builder = UserSpec()
-        builder.username = "test"
-        builder.password = "123password"
-        builder.email = "test@test.com"
-        builder.firstName = "Bilbo"
-        builder.lastName = "Baggings"
-        builder.setPermissions(
-                permissionService.getPermission(Groups.MANAGER))
+        val builder = UserSpec("test",
+                "123password",
+                "test@test.com",
+                firstName="Bilbo",
+                lastName="Baggins")
         val user = userService.create(builder)
-
         assertTrue(userService.setEnabled(user, false))
     }
 
     @Test
     fun setPermissions() {
-        val builder = UserSpec()
-        builder.username = "bilbob"
-        builder.password = "123password"
-        builder.email = "test@test.com"
-        builder.firstName = "Bilbo"
-        builder.lastName = "Baggings"
-        builder.setPermissions(permissionService.getPermission(Groups.MANAGER))
-        val user = userService.create(builder)
+        val builder = UserSpec("bilbob",
+                "123password",
+                "test@test.com",
+                firstName="Bilbo",
+                lastName="Baggins")
+        builder.permissionIds = listOf(permissionService.getPermission(Groups.MANAGER).id)
 
+        val user = userService.create(builder)
         val dev = permissionService.getPermission(Groups.DEV)
         assertTrue(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)))
         assertFalse(userService.hasPermission(user, dev))
 
         userService.setPermissions(user, Lists.newArrayList(dev))
-
         assertFalse(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)))
         assertTrue(userService.hasPermission(user, dev))
     }
@@ -175,12 +145,11 @@ class UserServiceTests : AbstractTest() {
 
     @Test
     fun updateUser() {
-        val builder = UserSpec()
-        builder.username = "bilbob"
-        builder.password = "123password"
-        builder.email = "test@test.com"
-        builder.firstName = "Bilbo"
-        builder.lastName = "Baggings"
+        val builder = UserSpec("test",
+                "123password",
+                "test@test.com",
+                firstName="Bilbo",
+                lastName = "Baggins")
         val user = userService.create(builder)
 
         val update = UserProfileUpdate()
@@ -189,7 +158,7 @@ class UserServiceTests : AbstractTest() {
         update.email = "test@test.com"
 
         assertTrue(userService.update(user, update))
-        val (_, _, email, _, _, firstName, lastName) = userService.get(user.id)
+        val (_, _, email, _, _, _, firstName, lastName) = userService.get(user.id)
         assertEquals(update.email, email)
         assertEquals(update.firstName, firstName)
         assertEquals(update.lastName, lastName)
@@ -197,17 +166,16 @@ class UserServiceTests : AbstractTest() {
 
     @Test
     fun updateUsername() {
-        val builder = UserSpec()
-        builder.username = "bilbob"
-        builder.password = "123password"
-        builder.email = "test@test.com"
-        builder.firstName = "Bilbo"
-        builder.lastName = "Baggings"
+        val builder = UserSpec("bilbob",
+                "123password",
+                "test@test.com",
+                firstName="Bilbo",
+                lastName = "Baggins")
         val user = userService.create(builder)
 
         val update = UserProfileUpdate("gandalf",
                 "gandalf@zorroa.com",
-                "Bilbo","Baggins");
+                "Bilbo","Baggins")
 
         assertTrue(folderService.exists("/Users/bilbob"))
         assertTrue(permissionService.permissionExists("user::bilbob"))
@@ -221,9 +189,12 @@ class UserServiceTests : AbstractTest() {
 
     @Test
     fun testImmutablePermissions() {
-        val builder = UserSpec()
-        builder.permissionIds = arrayOf(permissionService.getPermission(Groups.ADMIN).id)
-
+        val builder = UserSpec("test",
+                "123password",
+                "test@test.com",
+                firstName="Bilbo",
+                lastName = "Baggins")
+        builder.permissionIds = listOf(permissionService.getPermission(Groups.ADMIN).id)
         val sup = permissionService.getPermission(Groups.ADMIN)
 
         val admin = userService.get("admin")

@@ -193,7 +193,11 @@ fun setExportPermissions(source: Source, perms: Collection<Permission>) {
  * @param newAcl
  * @param oldAcl
  */
-fun canSetAclOnFolder(newAcl: Acl, oldAcl: Acl, created: Boolean) {
+fun canSetAclOnFolder(newAcl: Acl?, oldAcl: Acl?, created: Boolean) {
+    if (newAcl == null || oldAcl == null) {
+        throw IllegalArgumentException("Cannot determine new folder ACL, neither new or old can be null")
+    }
+
     if (hasPermission(Groups.ADMIN)) {
         return
     }

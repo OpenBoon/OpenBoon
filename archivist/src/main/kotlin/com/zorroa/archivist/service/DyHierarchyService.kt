@@ -462,10 +462,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
              */
             if (searchParent != null) {
                 if (searchParent.search != null) {
-                    search.filter.merge(searchParent.search.filter)
+                    search.filter.merge(searchParent.search?.filter)
                 }
             } else if (parent.search != null) {
-                search.filter.merge(parent.search.filter)
+                search.filter.merge(parent.search?.filter)
             }
 
             val name = getFolderName(value, level)
@@ -473,12 +473,11 @@ class DyHierarchyServiceImpl @Autowired constructor (
             /*
              * Create a non-recursive
              */
-            val spec = FolderSpec()
-                    .setName(name)
-                    .setParentId(parent.id)
-                    .setRecursive(false)
-                    .setDyhiId(dyhi.id)
-                    .setSearch(search)
+
+            val spec = FolderSpec(name, parent.id)
+            spec.recursive = false
+            spec.dyhiId = dyhi.id
+            spec.search = search
 
             val folder = folderService.create(spec, true)
             if (level.acl != null && spec.created) {

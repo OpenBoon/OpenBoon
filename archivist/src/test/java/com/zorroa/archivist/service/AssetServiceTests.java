@@ -11,7 +11,6 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +64,6 @@ public class AssetServiceTests extends AbstractTest {
     public void testIndexCheckOrigin() throws InterruptedException {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset1 = assetService.index(builder);
-
-        logger.info("{}", Json.prettyString(asset1.getDocument()));
 
         assertNotNull(asset1.getAttr("zorroa.timeCreated"));
         assertNotNull(asset1.getAttr("zorroa.timeModified"));
@@ -173,7 +170,6 @@ public class AssetServiceTests extends AbstractTest {
             Thread.sleep(200);
             cmd = commandService.refresh(cmd);
             if (cmd.getState().equals(JobState.Finished)) {
-                logger.info("Command {} finished", cmd);
                 break;
             }
         }

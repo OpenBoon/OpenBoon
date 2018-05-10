@@ -56,8 +56,6 @@ public class JobServiceTests extends AbstractTest {
         c.setTasksRunning(2);
         c.setTasksSuccess(1);
         job.setCounts(c);
-
-        logger.info("{}", job.getProgress());
     }
 
     @Test
