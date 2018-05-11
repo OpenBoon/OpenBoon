@@ -82,8 +82,10 @@ class SettingsServiceImpl @Autowired constructor(
          */
         val settings = settingsDao.getAll()
         for ((key, value) in settings) {
+            logger.info("Overriding settings key: {}={}", key, value)
             System.setProperty(key, value)
         }
+        eventBus.post(watermarkSettingsChanged)
     }
 
     override fun setAll(values: Map<String, String?>): Int {
