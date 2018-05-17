@@ -57,7 +57,7 @@ data class User (
 }
 
 data class UserProfileUpdate (
-        @NotEmpty var username: String = "",
+        @NotEmpty var updatedUsername: String = "",
         @NotEmpty @Email var email: String = "",
         var firstName : String? = "",
         var lastName: String? = "")

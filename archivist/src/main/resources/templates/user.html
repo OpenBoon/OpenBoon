@@ -24,7 +24,13 @@
                     <strong>Profile Updated</strong>
                 </div>
 
-                <form id="userProfileForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/users/__${user.id}__}" th:object="${userProfileForm}" method="post">
+                <form th:autocomplete="off" id="userProfileForm" action="#" role="form" th:action="@{/admin/gui/users/__${user.id}__}" th:object="${userProfileForm}" method="post">
+
+                    <div class="form-group">
+                        <label for="updatedUsername">Username</label>
+                        <input th:autocomplete="off" id="updatedUsername" type="text" class="form-control" th:value="${user.username}" th:name="updatedUsername"/>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('updatedUsername')}" th:errors="*{updatedUsername}"></div>
+                    </div>
 
                     <div class="form-group">
                         <label for="firstName">First Name:</label>

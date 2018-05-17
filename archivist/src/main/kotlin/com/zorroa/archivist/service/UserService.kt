@@ -209,6 +209,10 @@ class UserServiceImpl @Autowired constructor(
             builder.source = SOURCE_LOCAL
         }
 
+        if (builder.username.length < MIN_USERNAME_SIZE) {
+            throw IllegalArgumentException("User names must be at least $MIN_USERNAME_SIZE characters")
+        }
+
         if (userDao.exists(builder.username, null)) {
             throw DuplicateEntityException("The user '" +
                     builder.username + "' already exists.")
@@ -309,15 +313,15 @@ class UserServiceImpl @Autowired constructor(
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {
 
-        if (form.username.isBlank()) {
-            form.username = user.username
+        if (form.updatedUsername.isBlank()) {
+            form.updatedUsername = user.username
         }
 
-        if (form.username.length < 3) {
-            throw IllegalArgumentException("User names must be at least 3 characters")
+        if (form.updatedUsername.length < MIN_USERNAME_SIZE) {
+            throw IllegalArgumentException("User names must be at least $MIN_USERNAME_SIZE characters")
         }
 
-        val updatePermsAndFolders = user.username != form.username
+        val updatePermsAndFolders = user.username != form.updatedUsername
         if (!userDao.exists(user.username, SOURCE_LOCAL)
                 && (updatePermsAndFolders
                 || user.email != form.email)) {
@@ -327,8 +331,8 @@ class UserServiceImpl @Autowired constructor(
         val result = userDao.update(user, form)
         if (result) {
             if (updatePermsAndFolders) {
-                permissionDao.renameUserPermission(user, form.username)
-                folderService.renameUserFolder(user, form.username)
+                permissionDao.renameUserPermission(user, form.updatedUsername)
+                folderService.renameUserFolder(user, form.updatedUsername)
             }
             tx.afterCommit(false, {
                 userDaoCache.invalidate(user.id)
@@ -528,6 +532,7 @@ class UserServiceImpl @Autowired constructor(
         internal val PERMANENT_TYPES: Set<String> = ImmutableSet.of("user", "internal")
         private val PASS_HAS_NUMBER = Pattern.compile("\\d")
         private val PASS_HAS_UPPER = Pattern.compile("[A-Z]")
+        private const val MIN_USERNAME_SIZE = 1
     }
 }
 

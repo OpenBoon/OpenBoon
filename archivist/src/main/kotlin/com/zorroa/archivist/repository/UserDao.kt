@@ -5,7 +5,6 @@ import com.google.common.hash.Hashing
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.PermissionDaoImpl.Companion.GET_ALL
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.sdk.domain.PagedList
@@ -197,7 +196,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun update(user: User, update: UserProfileUpdate): Boolean {
-        return jdbc.update(UPDATE, update.username, update.email, update.firstName,
+        return jdbc.update(UPDATE, update.updatedUsername, update.email, update.firstName,
                 update.lastName, user.id) == 1
     }
 
