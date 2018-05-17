@@ -313,15 +313,15 @@ class UserServiceImpl @Autowired constructor(
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {
 
-        if (form.updatedUsername.isBlank()) {
-            form.updatedUsername = user.username
+        if (form.username.isBlank()) {
+            form.username = user.username
         }
 
-        if (form.updatedUsername.length < MIN_USERNAME_SIZE) {
+        if (form.username.length < MIN_USERNAME_SIZE) {
             throw IllegalArgumentException("User names must be at least $MIN_USERNAME_SIZE characters")
         }
 
-        val updatePermsAndFolders = user.username != form.updatedUsername
+        val updatePermsAndFolders = user.username != form.username
         if (!userDao.exists(user.username, SOURCE_LOCAL)
                 && (updatePermsAndFolders
                 || user.email != form.email)) {
@@ -331,8 +331,8 @@ class UserServiceImpl @Autowired constructor(
         val result = userDao.update(user, form)
         if (result) {
             if (updatePermsAndFolders) {
-                permissionDao.renameUserPermission(user, form.updatedUsername)
-                folderService.renameUserFolder(user, form.updatedUsername)
+                permissionDao.renameUserPermission(user, form.username)
+                folderService.renameUserFolder(user, form.username)
             }
             tx.afterCommit(false, {
                 userDaoCache.invalidate(user.id)

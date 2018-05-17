@@ -196,7 +196,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun update(user: User, update: UserProfileUpdate): Boolean {
-        return jdbc.update(UPDATE, update.updatedUsername, update.email, update.firstName,
+        return jdbc.update(UPDATE, update.username, update.email, update.firstName,
                 update.lastName, user.id) == 1
     }
 
