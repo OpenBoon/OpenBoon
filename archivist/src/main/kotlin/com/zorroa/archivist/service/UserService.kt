@@ -309,6 +309,14 @@ class UserServiceImpl @Autowired constructor(
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {
 
+        if (form.username.isBlank()) {
+            form.username = user.username
+        }
+
+        if (form.username.length < 3) {
+            throw IllegalArgumentException("User names must be at least 3 characters")
+        }
+
         val updatePermsAndFolders = user.username != form.username
         if (!userDao.exists(user.username, SOURCE_LOCAL)
                 && (updatePermsAndFolders

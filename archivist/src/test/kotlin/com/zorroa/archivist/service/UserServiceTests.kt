@@ -189,10 +189,10 @@ class UserServiceTests : AbstractTest() {
         update.email = "test@test.com"
 
         assertTrue(userService.update(user, update))
-        val (_, _, email, _, _, firstName, lastName) = userService.get(user.id)
-        assertEquals(update.email, email)
-        assertEquals(update.firstName, firstName)
-        assertEquals(update.lastName, lastName)
+        val user2 = userService.get(user.id)
+        assertEquals(update.email, user2.email)
+        assertEquals(update.firstName, user2.firstName)
+        assertEquals(update.lastName, user2.lastName)
     }
 
     @Test
@@ -216,7 +216,19 @@ class UserServiceTests : AbstractTest() {
         assertFalse(permissionService.permissionExists("user::bilbob"))
         assertTrue(folderService.exists("/Users/gandalf"))
         assertTrue(permissionService.permissionExists("user::gandalf"))
+    }
 
+    @Test
+    fun updateUsernameWithBlankUsername() {
+
+        val update = UserProfileUpdate("",
+                "gandalf@zorroa.com",
+                "Bilbo","Baggins")
+
+        assertTrue(userService.update(testUser, update))
+        assertEquals(testUser.username, userService.get(testUser.id).username)
+        assertTrue(folderService.exists("/Users/billybob"))
+        assertTrue(permissionService.permissionExists("user::billybob"))
     }
 
     @Test
