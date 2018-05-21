@@ -5,6 +5,12 @@
     "patch": 0
   },
   "settings": {
+    "index": {
+      "mapping": {
+        "coerce": false,
+        "ignore_malformed": false
+      }
+    },
     "analysis": {
       "analyzer": {
         "default": {
@@ -72,19 +78,16 @@
         "yyyy-MM-dd HH:mm:ss",
         "yyyy-MM-dd",
         "MM/dd/yyyy",
-        "MM-dd-yyyy"
+        "MM-dd-yyyy",
+        "date_time"
       ],
-      "_timestamp": {
-        "enabled": false
-      },
       "properties": {
         "media": {
           "properties": {
             "clip": {
               "properties": {
                 "parent": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 },
                 "start": {
                   "type": "double"
@@ -103,54 +106,46 @@
           "properties": {
             "timeCreated": {
               "type": "date",
-              "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
+              "format": "date_time"
             },
             "timeModified": {
               "type": "date",
-              "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
+              "format": "date_time"
             },
             "links": {
               "properties": {
                 "import": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 },
                 "export": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 },
                 "folder": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 }
               }
             },
             "taxonomy": {
               "properties": {
                 "folderId": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 },
                 "taxId": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 }
               }
             },
             "permissions": {
               "properties": {
-                "read": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                },
-                "export": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                },
-                "write": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
+                  "read": {
+                    "type": "keyword"
+                  },
+                  "export": {
+                    "type": "keyword"
+                  },
+                  "write": {
+                    "type": "keyword"
+                  }
               }
             }
           }
@@ -163,11 +158,10 @@
             "match_mapping_type": "string",
             "match": "keywords",
             "mapping": {
-              "type": "string",
+              "type": "text",
               "fields": {
                 "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 },
                 "suggest": {
                   "type": "completion"
@@ -190,8 +184,7 @@
             "path_match": "zorroa.links.*",
             "match_mapping_type": "string",
             "mapping": {
-              "type": "string",
-              "index": "not_analyzed"
+              "type": "keyword"
             }
           }
         },
@@ -219,15 +212,14 @@
             "match_mapping_type": "string",
             "match": "^*.+Path|^path$|^directory$|^tree$",
             "mapping": {
-              "type": "string",
+              "type": "text",
               "analyzer": "path_analyzer",
               "fields": {
                 "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 },
-                "analyzed": {
-                  "type": "string",
+                "keywords": {
+                  "type": "text",
                   "analyzer": "default"
                 }
               }
@@ -240,7 +232,7 @@
             "match": "content",
             "mapping": {
               "analyzer": "content",
-              "type": "string"
+              "type": "text"
             }
           }
         },
@@ -249,8 +241,7 @@
             "match_mapping_type": "string",
             "match": "shash",
             "mapping": {
-              "index": "not_analyzed",
-              "type": "string"
+              "type": "keyword"
             }
           }
         },
@@ -259,8 +250,7 @@
             "match_mapping_type": "string",
             "match": "id",
             "mapping": {
-              "index": "not_analyzed",
-              "type": "string"
+              "type": "keyword"
             }
           }
         },
@@ -271,7 +261,7 @@
             "mapping": {
               "type": "date",
               "index": "not_analyzed",
-              "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
+              "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy||date_time||epoch_millis"
             }
           }
         },
@@ -280,11 +270,11 @@
             "match": "*",
             "match_mapping_type": "string",
             "mapping": {
-              "type": "string",
+              "type": "text",
+              "coerce": false,
               "fields": {
                 "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
+                  "type": "keyword"
                 }
               }
             }
