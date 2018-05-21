@@ -40,7 +40,7 @@ class AnalystServiceImpl
     }
 
     override operator fun get(url: String): Analyst {
-        return analystDao[url]
+        return analystDao.get(url)
     }
 
     override fun getCount(): Int {

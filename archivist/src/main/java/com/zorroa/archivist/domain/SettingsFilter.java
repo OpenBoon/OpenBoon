@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
-import com.amazonaws.util.CollectionUtils;
 import com.google.common.collect.ImmutableSet;
+import com.zorroa.archivist.JdbcUtils;
 
 import java.util.Set;
 
@@ -49,12 +49,12 @@ public class SettingsFilter {
     }
 
     public boolean matches(Setting setting) {
-        if (!CollectionUtils.isNullOrEmpty(names)) {
+        if (!JdbcUtils.isValid((names))) {
             if (!names.contains(setting.getName())) {
                 return false;
             }
         }
-        if (!CollectionUtils.isNullOrEmpty(startsWith)) {
+        if (!JdbcUtils.isValid(startsWith)) {
             boolean match = false;
             for (String prefix: startsWith) {
                 if (setting.getName().startsWith(prefix)) {

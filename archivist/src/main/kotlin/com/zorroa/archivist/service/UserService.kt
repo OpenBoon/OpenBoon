@@ -288,12 +288,14 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {
-
+        if (form.username.length < 2) {
+            throw IllegalArgumentException("User names must be at least 3 characters")
+        }
         val updatePermsAndFolders = user.username != form.username
         if (!userDao.exists(user.username, SOURCE_LOCAL)
                 && (updatePermsAndFolders
                 || user.email != form.email)) {
-            throw IllegalStateException("Users from external sources cannot change their username or email address.")
+            throw IllegalArgumentException("Users from external sources cannot change their username or email address.")
         }
 
         val result = userDao.update(user, form)

@@ -1,12 +1,15 @@
 package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.elastic.SearchBuilder;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.junit.Before;
@@ -77,9 +80,9 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetAllBySearchRequest() {
-        SearchRequestBuilder builder = client.prepareSearch("archivist");
-        builder.setQuery(QueryBuilders.matchAllQuery());
-        PagedList<Document> assets = assetDao.getAll(Pager.first(10), builder);
+        SearchBuilder sb = new SearchBuilder();
+        sb.getSource().query(QueryBuilders.matchAllQuery());
+        PagedList<Document> assets = assetDao.getAll(Pager.first(10), sb);
         assertEquals(1, assets.getList().size());
     }
 
@@ -89,10 +92,11 @@ public class AssetDaoTests extends AbstractTest {
         refreshIndex();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-        SearchRequestBuilder builder = client.prepareSearch("archivist");
-        builder.setQuery(QueryBuilders.matchAllQuery());
-        builder.addAggregation(AggregationBuilders.terms("path").field("source.path"));
-        assetDao.getAll(Pager.first(10), builder, stream, ImmutableMap.of());
+        SearchBuilder sb = new SearchBuilder();
+        sb.getSource().query(QueryBuilders.matchAllQuery());
+        sb.getSource().aggregation(AggregationBuilders.terms("path").field("source.path"));
+
+        assetDao.getAll(Pager.first(10), sb, stream);
         PagedList<Asset> result = Json.deserialize(stream.toString(), new TypeReference<PagedList<Asset>>() {});
         assertEquals(2, result.getList().size());
     }
@@ -106,11 +110,11 @@ public class AssetDaoTests extends AbstractTest {
         assetDao.index(new Source(getTestImagePath("set01/standard/visa12.jpg")));
         refreshIndex();
 
-        SearchRequestBuilder req = client.prepareSearch("archivist")
-            .setQuery(ImmutableMap.of("match_all", ImmutableMap.of()))
-            .setScroll("1m");
+        SearchBuilder sb = new SearchBuilder();
+        sb.getSource().query(QueryBuilders.matchAllQuery());
+        sb.getRequest().scroll("1m");
 
-        PagedList<Document> assets = assetDao.getAll(Pager.first(1), req);
+        PagedList<Document> assets = assetDao.getAll(Pager.first(1), sb);
         assertEquals(1, assets.getList().size());
         assertEquals(6, (long) assets.getPage().getTotalCount());
         assertNotNull(assets.getScroll());

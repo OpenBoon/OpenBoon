@@ -1,9 +1,7 @@
 package com.zorroa.analyst;
 
 import com.zorroa.archivist.sdk.config.ApplicationProperties;
-import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.util.FileUtils;
-import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,9 +33,6 @@ public abstract class AbstractTest {
     @Autowired
     protected ApplicationProperties applicationProperties;
 
-    @Autowired
-    protected Client client;
-
     protected Path resources;
 
     public AbstractTest() {
@@ -50,10 +45,6 @@ public abstract class AbstractTest {
          * Setup path to the test resources
          */
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
-    }
-
-    public void refreshIndex() {
-        ElasticClientUtils.refreshIndex(client);
     }
 
     public static boolean deleteRecursive(File path) throws FileNotFoundException {

@@ -1,7 +1,5 @@
-package com.zorroa.common.elastic;
+package com.zorroa.archivist.elastic
 
-
-import org.elasticsearch.search.SearchHit;
 
 /**
  * An interface used by ElasticTemplate for mapping documents from an Elastic search result
@@ -11,9 +9,10 @@ import org.elasticsearch.search.SearchHit;
  * @author chambers
  *
  * @param <T>
- */
-public interface SearchHitRowMapper<T> {
+</T> */
+interface SearchHitRowMapper<T> {
 
-     T mapRow(SearchHit hit) throws Exception;
+    @Throws(Exception::class)
+    fun mapRow(hit: SingleHit): T
 
 }

@@ -4,14 +4,14 @@ import com.google.common.base.Splitter
 import com.google.common.collect.*
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.domain.Tuple
 import com.zorroa.sdk.search.AssetScript
 import com.zorroa.sdk.search.AssetSearch
-import org.elasticsearch.client.Client
+import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -76,7 +76,7 @@ interface DyHierarchyService {
 @Service
 class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
-    val client: Client,
+    val client: RestHighLevelClient,
     val transactionEventManager: TransactionEventManager,
     val folderTaskExecutor: UniqueTaskExecutor
 ) : DyHierarchyService {
@@ -202,7 +202,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         folderTaskExecutor.execute(
                 UniqueRunnable("dyhi_run_all", SecureRunnable(SecurityContextHolder.getContext(), {
                     if (refresh) {
-                        ElasticClientUtils.refreshIndex(client)
+
                     }
                     generateAll()
                 })))
@@ -232,12 +232,13 @@ class DyHierarchyServiceImpl @Autowired constructor (
          * want to agg for the last 24 hours.
          */
         try {
-            val srb = client.prepareSearch()
-                    .setQuery(if (rf.search == null)
-                        QueryBuilders.matchAllQuery()
-                    else
-                        searchService.getQuery(rf.search))
-                    .setSize(0)
+            val sr = SearchBuilder()
+            sr.source.query(if (rf.search != null){
+                QueryBuilders.matchAllQuery()
+            }
+            else {
+                searchService.getQuery(rf.search!!)
+            })
 
             /**
              * Fix the field name to take into account raw.
@@ -249,8 +250,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
             /**
              * Build a nested list of Elastic aggregations.
              */
-            var terms: AggregationBuilder<*>? = elasticAggregationBuilder(dyhi.levels[0], 0)
-            srb.addAggregation(terms)
+            var terms: AggregationBuilder? = elasticAggregationBuilder(dyhi.levels[0], 0)
+            sr.source.aggregation(terms)
             for (i in 1 until dyhi.levels.size) {
                 val sub = elasticAggregationBuilder(dyhi.getLevel(i), i)
                 terms!!.subAggregation(sub)
@@ -262,7 +263,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
              */
             val folders = FolderStack(folderService.get(dyhi.folderId), dyhi)
             val queue = Queues.newArrayDeque<Tuple<Aggregations, Int>>()
-            queue.add(Tuple(srb.get().aggregations, 0))
+            queue.add(Tuple(client.search(sr.request).aggregations, 0))
             createDynamicHierarchy(queue, folders)
 
             /**
@@ -296,7 +297,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         return 0
     }
 
-    private fun elasticAggregationBuilder(level: DyHierarchyLevel, idx: Int): AggregationBuilder<*>? {
+    private fun elasticAggregationBuilder(level: DyHierarchyLevel, idx: Int): AggregationBuilder? {
         when (level.type) {
             DyHierarchyLevelType.Attr, null -> {
                 val terms = AggregationBuilders.terms(idx.toString())
@@ -307,7 +308,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             DyHierarchyLevelType.Year -> {
                 val year = AggregationBuilders.dateHistogram(idx.toString())
                 year.field(level.field)
-                year.interval(DateHistogramInterval("1y"))
+                year.dateHistogramInterval(DateHistogramInterval("1y"))
                 year.format("yyyy")
                 year.minDocCount(1)
                 return year
@@ -315,7 +316,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             DyHierarchyLevelType.Month -> {
                 val month = AggregationBuilders.dateHistogram(idx.toString())
                 month.field(level.field)
-                month.interval(DateHistogramInterval("1M"))
+                month.dateHistogramInterval(DateHistogramInterval("1M"))
                 month.format("M")
                 month.minDocCount(1)
                 return month
@@ -323,7 +324,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             DyHierarchyLevelType.Day -> {
                 val day = AggregationBuilders.dateHistogram(idx.toString())
                 day.field(level.field)
-                day.interval(DateHistogramInterval("1d"))
+                day.dateHistogramInterval(DateHistogramInterval("1d"))
                 day.format("d")
                 day.minDocCount(1)
                 return day
@@ -549,13 +550,14 @@ class DyHierarchyServiceImpl @Autowired constructor (
         if (level.field.endsWith(".raw") || !FORCE_RAW_TYPES.contains(level.type)) {
             return
         }
-
-        val type = ElasticClientUtils.getFieldType(client, "archivist", "asset", level.field)
+        val type = "string"
+        //val type = ElasticClientUtils.getFieldType(client, "archivist", "asset", level.field)
         if (type != "string") {
             return
         }
 
         level.field = level.field + ".raw"
+
     }
 
     companion object {

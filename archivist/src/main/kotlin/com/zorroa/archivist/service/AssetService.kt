@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.elastic.ESUtils
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.CommandDao
 import com.zorroa.archivist.repository.PermissionDao
@@ -23,7 +24,8 @@ import com.zorroa.sdk.util.Json
 import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
-import org.elasticsearch.client.Client
+import org.elasticsearch.action.update.UpdateRequest
+import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -102,7 +104,7 @@ class AssetServiceImpl  @Autowired  constructor (
         private val searchService: SearchService,
         private val properties: ApplicationProperties,
         private val jobService: JobService,
-        private val client: Client,
+        private val client: RestHighLevelClient,
         private val ofs: ObjectFileSystem
 
 ) : AssetService, ApplicationListener<ContextRefreshedEvent> {
@@ -150,18 +152,7 @@ class AssetServiceImpl  @Autowired  constructor (
 
     override fun index(doc: Document): Document {
         val result = index(AssetIndexSpec(doc))
-        return if (result.getAssetIds().size == 1) {
-            if (doc.type == "asset") {
-                assetDao[result.getAssetIds()[0]]
-            } else {
-                /**
-                 * Child types require the parent ID to get them.
-                 */
-                assetDao[result.getAssetIds()[0], doc.type, doc.parentId]
-            }
-        } else {
-            throw ArchivistWriteException("Failed to index asset." + Json.serializeToString(result.getLogs()))
-        }
+        return assetDao[result.getAssetIds()[0]]
     }
 
     override fun index(spec: AssetIndexSpec): AssetIndexResult {
@@ -377,42 +368,39 @@ class AssetServiceImpl  @Autowired  constructor (
         val totalFailed = LongAdder()
         val error = AtomicBoolean(false)
 
-        val bulkProcessor = BulkProcessor.builder(
-                client,
-                object : BulkProcessor.Listener {
-                    override fun beforeBulk(executionId: Long,
-                                            request: BulkRequest) {
+        val bulkListener = object : BulkProcessor.Listener {
+            override fun afterBulk(executionId: Long, request: BulkRequest?, response: BulkResponse?) {
+                var failureCount = 0
+                var successCount = 0
+                for (bir in response!!.items) {
+                    if (bir.isFailed) {
+                        logger.warn("update permissions bulk failed: {}", bir.failureMessage)
+                        failureCount++
+                    } else {
+                        successCount++
                     }
+                }
+                commandDao.updateProgress(command, totalCount, successCount.toLong(), failureCount.toLong())
+                totalSuccess.add(successCount.toLong())
+                totalFailed.add(failureCount.toLong())
+            }
 
-                    override fun afterBulk(executionId: Long,
-                                           request: BulkRequest,
-                                           response: BulkResponse) {
+            override fun afterBulk(executionId: Long, request: BulkRequest?, failure: Throwable?) {
+                error.set(true)
+                logger.warn("Failed to set permissions, ", failure)
+            }
 
-                        var failureCount = 0
-                        var successCount = 0
-                        for (bir in response.items) {
-                            if (bir.isFailed) {
-                                logger.warn("update permissions bulk failed: {}", bir.failureMessage)
-                                failureCount++
-                            } else {
-                                successCount++
-                            }
-                        }
-                        commandDao.updateProgress(command, totalCount, successCount.toLong(), failureCount.toLong())
-                        totalSuccess.add(successCount.toLong())
-                        totalFailed.add(failureCount.toLong())
-                    }
+            override fun beforeBulk(executionId: Long, request: BulkRequest?) {
 
-                    override fun afterBulk(executionId: Long,
-                                           request: BulkRequest,
-                                           thrown: Throwable) {
-                        error.set(true)
-                        logger.warn("Failed to set permissions, ", thrown)
-                    }
-                })
+            }
+
+        }
+
+        val bulkProcessor = ESUtils.create(client, bulkListener)
                 .setBulkActions(250)
                 .setConcurrentRequests(0)
                 .build()
+
 
         for (asset in searchService.scanAndScroll(
                 search.setFields(arrayOf("zorroa")), 0)) {
@@ -427,7 +415,8 @@ class AssetServiceImpl  @Autowired  constructor (
                 break
             }
 
-            val update = client.prepareUpdate("archivist", "asset", asset.id)
+
+            val update = UpdateRequest("archivist", "asset", asset.id)
             var current: PermissionSchema? = asset.getAttr("zorroa.permissions", PermissionSchema::class.java)
             if (current == null) {
                 current = PermissionSchema()
@@ -447,9 +436,9 @@ class AssetServiceImpl  @Autowired  constructor (
             current.write.removeAll(remove.write)
             current.export.removeAll(remove.export)
 
-            update.setDoc(Json.serializeToString(ImmutableMap.of("zorroa",
+            update.doc(Json.serializeToString(ImmutableMap.of("zorroa",
                     ImmutableMap.of("permissions", current))))
-            bulkProcessor.add(update.request())
+            bulkProcessor.add(update)
         }
 
         try {

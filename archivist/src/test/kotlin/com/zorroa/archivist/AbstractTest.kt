@@ -7,6 +7,7 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.MigrationType
 import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.elastic.ElasticClientUtils
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.UserRegistryService
@@ -14,13 +15,13 @@ import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.service.*
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.domain.Proxy
 import com.zorroa.sdk.processor.Source
 import com.zorroa.sdk.schema.ProxySchema
 import com.zorroa.sdk.util.FileUtils
 import com.zorroa.sdk.util.Json
 import org.elasticsearch.client.Client
+import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
@@ -31,7 +32,6 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
@@ -57,16 +57,13 @@ open abstract class AbstractTest {
     val logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
-    protected lateinit var client: Client
+    protected lateinit var client: RestHighLevelClient
 
     @Autowired
     protected lateinit var userService: UserService
 
     @Autowired
     protected lateinit var permissionService: PermissionService
-
-    @Autowired
-    protected lateinit var migrationService: MigrationService
 
     @Autowired
     protected lateinit var folderService: FolderService
@@ -121,9 +118,6 @@ open abstract class AbstractTest {
 
     @Autowired
     internal lateinit var archivistRepositorySetup: ArchivistRepositorySetup
-
-    @Autowired
-    internal lateinit var analystDao: AnalystDao
 
     @Value("\${zorroa.cluster.index.alias}")
     protected lateinit var alias: String
@@ -223,8 +217,9 @@ open abstract class AbstractTest {
          * so each test has a clean index.  Once this is done we can call setupDataSources()
          * which adds some standard data to both databases.
          */
-        client.admin().indices().prepareDelete("_all").get()
-        migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true)
+        //client.admin().indices().prepareDelete("_all").get()
+        //migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true)
+
         try {
             archivistRepositorySetup.setupDataSources()
             refreshIndex()
@@ -336,17 +331,17 @@ open abstract class AbstractTest {
     }
 
     fun refreshIndex() {
-        ElasticClientUtils.refreshIndex(client, 10)
+        //ElasticClientUtils.refreshIndex(client, 10)
     }
 
     fun refreshIndex(sleep: Long) {
-        ElasticClientUtils.refreshIndex(client, sleep)
+        //ElasticClientUtils.refreshIndex(client, sleep)
     }
 
     fun sendAnalystPing(): AnalystSpec {
         val ab = getAnalystBuilder()
         ab.id = "ab"
-        analystDao.register(ab)
+        //analystDao.register(ab)
         refreshIndex()
         return ab
     }

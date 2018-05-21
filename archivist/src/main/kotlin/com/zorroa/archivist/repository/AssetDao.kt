@@ -3,24 +3,32 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
-import com.zorroa.common.elastic.AbstractElasticDao
-import com.zorroa.common.elastic.SearchHitRowMapper
-import com.zorroa.sdk.client.exception.ArchivistException
+import com.zorroa.archivist.elastic.AbstractElasticDao
+import com.zorroa.archivist.elastic.SearchBuilder
+import com.zorroa.archivist.elastic.SearchHitRowMapper
+import com.zorroa.archivist.elastic.SingleHit
 import com.zorroa.sdk.domain.AssetIndexResult
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
+import org.elasticsearch.action.DocWriteRequest
+import org.elasticsearch.action.DocWriteResponse
+import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.delete.DeleteRequest
+import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
-import org.elasticsearch.action.index.IndexRequestBuilder
 import org.elasticsearch.action.index.IndexResponse
-import org.elasticsearch.action.search.SearchRequestBuilder
+import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchType
-import org.elasticsearch.action.update.UpdateRequestBuilder
+import org.elasticsearch.action.support.WriteRequest
+import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.action.update.UpdateResponse
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
-import org.elasticsearch.script.ScriptService
+import org.elasticsearch.script.ScriptType
+import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Repository
 import java.io.IOException
@@ -55,10 +63,10 @@ interface AssetDao {
      * @param search
      * @return
      */
-    fun getAll(page: Pager, search: SearchRequestBuilder): PagedList<Document>
+    fun getAll(page: Pager, search: SearchBuilder): PagedList<Document>
 
     @Throws(IOException::class)
-    fun getAll(page: Pager, search: SearchRequestBuilder, stream: OutputStream, attrs: Map<String, Any>)
+    fun getAll(page: Pager, search: SearchBuilder, stream: OutputStream)
 
     /**
      * Get all assets by page.
@@ -67,8 +75,6 @@ interface AssetDao {
      * @return
      */
     fun getAll(page: Pager): PagedList<Document>
-
-    operator fun get(id: String, type: String, parent: String): Document
 
     fun getManagedFields(id: String): Map<String, Any>
 
@@ -107,19 +113,12 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
      * Allows us to flush the first batch.
      */
     private val flushTime = AtomicLong(0)
-
-    override fun getType(): String {
-        return "asset"
-    }
-
-    override fun getIndex(): String {
-        return "archivist"
-    }
+    override val type = "asset"
+    override val index = "archivist"
 
     override fun <T> getFieldValue(id: String, field: String): T {
-        val d = Document(
-                client.prepareGet("archivist", "asset", id)
-                        .get().source)
+        val req = GetRequest(index, type, id).fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
+        val d = Document(client.get(req).source)
         // field values never have .raw since they come from source
         return d.getAttr(field.removeSuffix(".raw"))
     }
@@ -140,14 +139,14 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         }
 
         val retries = Lists.newArrayList<Document>()
-        val bulkRequest = client.prepareBulk()
+        val bulkRequest = BulkRequest()
 
         /**
          * Force a refresh if we haven't for a while.
          */
         val time = System.currentTimeMillis()
         if (refresh || time - flushTime.getAndSet(time) > 30000) {
-            bulkRequest.setRefresh(true)
+            bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
         }
 
         for (source in sources) {
@@ -158,7 +157,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             }
         }
 
-        val bulk = bulkRequest.get()
+        val bulk = client.bulk(bulkRequest)
 
         for ((index, response) in bulk.withIndex()) {
             if (response.isFailed) {
@@ -175,18 +174,18 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
                 }
             } else {
                 when (response.opType) {
-                    "update" -> {
+                    DocWriteRequest.OpType.UPDATE -> {
                         val update = response.getResponse<UpdateResponse>()
-                        if (update.isCreated) {
+                        if (update.result == DocWriteResponse.Result.CREATED) {
                             result.created++
                         } else {
                             result.updated++
                         }
                         result.addToAssetIds(update.id)
                     }
-                    "index" -> {
+                    DocWriteRequest.OpType.INDEX -> {
                         val idxr = response.getResponse<IndexResponse>()
-                        if (idxr.isCreated) {
+                        if (idxr.result == DocWriteResponse.Result.CREATED) {
                             result.created++
                         } else {
                             result.replaced++
@@ -207,25 +206,27 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return result
     }
 
-    private fun prepareUpsert(source: Document): UpdateRequestBuilder {
+    private fun prepareUpsert(source: Document): UpdateRequest {
         val doc = Json.serialize(source.document)
 
-        val upd = client.prepareUpdate(index, source.type, source.id)
-                .setDoc(doc)
-                .setUpsert(doc)
+
+        val upd = UpdateRequest(index, source.type, source.id)
+                .doc(doc)
+                .upsert(doc)
         if (source.parentId != null) {
-            upd.setParent(source.parentId)
+            upd.parent(source.parentId)
         }
         return upd
     }
 
-    private fun prepareInsert(source: Document): IndexRequestBuilder {
+    private fun prepareInsert(source: Document): IndexRequest {
         val doc = Json.serialize(source.document)
-        val idx = client.prepareIndex(index, source.type, source.id)
-                .setOpType(IndexRequest.OpType.INDEX)
-                .setSource(doc)
+
+        val idx = IndexRequest(index, source.type, source.id)
+                .opType( DocWriteRequest.OpType.INDEX)
+                .source(doc)
         if (source.parentId != null) {
-            idx.setParent(source.parentId)
+            idx.parent(source.parentId)
         }
         return idx
     }
@@ -247,21 +248,23 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
 
-        val link = ImmutableMap.of("type", type, "id", value.toString())
-        val bulkRequest = client.prepareBulk()
+        val link = mapOf<String,Any>("type" to type, "id" to value.toString())
+        val bulkRequest = BulkRequest()
         for (id in assets) {
-            val updateBuilder = client.prepareUpdate(index, getType(), id)
-            updateBuilder.setScript(Script("remove_link",
-                    ScriptService.ScriptType.INDEXED, "groovy",
-                    link))
+            //fun Script(type: ScriptType, lang: String, idOrCode: String, params: Map<String, Any>): ???
+
+            val updateBuilder = UpdateRequest(index, type, id)
+            updateBuilder.script(Script(ScriptType.INLINE,
+                    "painless", REMOVE_LINK_SCRIPT, link))
             bulkRequest.add(updateBuilder)
         }
 
         val result = mutableMapOf<String, MutableList<Any>>()
-        result.put("success", mutableListOf())
-        result.put("failed", mutableListOf())
+        result["success"] = mutableListOf()
+        result["failed"] = mutableListOf()
 
-        val bulk = bulkRequest.setRefresh(true).get()
+        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+        val bulk = client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
@@ -277,23 +280,20 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         if (type.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
-        val link = ImmutableMap.of("type", type, "id", value.toString())
+        val link = mapOf<String,Any>("type" to type, "id" to value.toString())
 
-        val bulkRequest = client.prepareBulk()
+        val bulkRequest = BulkRequest()
         for (id in assets) {
-            val updateBuilder = client.prepareUpdate(index, getType(), id)
-
-            updateBuilder.setScript(Script("append_link",
-                    ScriptService.ScriptType.INDEXED, "groovy",
-                    link))
-
-            bulkRequest.add(updateBuilder)
+            val update = UpdateRequest(index, type, id)
+            update.script(Script(ScriptType.INLINE,
+                    "painless", APPEND_LINK_SCRIPT, link))
+            bulkRequest.add(update)
         }
 
         val result = mutableMapOf<String, MutableList<Any>>(
                 "success" to mutableListOf(), "failed" to mutableListOf())
 
-        val bulk = bulkRequest.setRefresh(true).get()
+        val bulk = client.bulk(bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE))
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
@@ -311,9 +311,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
         val doc = mapOf("zorroa" to mapOf("links" to mapOf(type to ids)))
-        client.prepareUpdate(index, getType(), assetId)
-                .setDoc(doc)
-                .get()
+        client.update(UpdateRequest(index, type, assetId))
     }
 
 
@@ -323,12 +321,10 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             asset.setAttr(key, value)
         }
 
-        val updateBuilder = client.prepareUpdate(index, type, assetId)
-                .setDoc(Json.serializeToString(asset.document))
-                .setRefresh(true)
-
-        val response = updateBuilder.get()
-        return response.version
+        val rsp = client.update(UpdateRequest(index, type, assetId)
+                .doc(Json.serializeToString(asset.document))
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).getResult
+        return rsp.version
     }
 
     override fun removeFields(assetId: String, fields: Set<String>, refresh: Boolean) {
@@ -339,23 +335,18 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
 
         // Replaces entire asset
         // Can't edit elements so no need for parent handling.
-        val idx = client.prepareIndex(index, asset.type, asset.id)
-                .setOpType(IndexRequest.OpType.INDEX)
-                .setSource(asset.document)
-                .setRefresh(true)
-        idx.get()
+        client.index(IndexRequest(index, asset.type, asset.id)
+                .opType(DocWriteRequest.OpType.INDEX)
+                .source(asset.document)
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE))
     }
 
     override fun delete(id: String): Boolean {
-        return client.prepareDelete(index, type, id).get().isFound
+        return client.delete(DeleteRequest(index, type, id)).result == DocWriteResponse.Result.DELETED
     }
 
     override fun get(id: String): Document {
-        return elastic.queryForObject(id, MAPPER)
-    }
-
-    override fun get(id: String, type: String, parent: String): Document {
-        return elastic.queryForObject(id, type, parent, MAPPER)
+        return elastic.queryForObject(id, null, MAPPER)
     }
 
     override fun getManagedFields(id: String): Map<String, Any> {
@@ -365,9 +356,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
              * with fields will fail if the asset doesn't have the
              * fields.
              */
-            val result = client.prepareGet(index, type, id)
-                    .setFetchSource(arrayOf("zorroa"), arrayOf())
-                    .get().source
+            val result = client.get(GetRequest(index, type, id)).source
             result ?: mutableMapOf() // result has to be mutable.
         } catch (e: ArrayIndexOutOfBoundsException) {
             mutableMapOf()
@@ -376,22 +365,27 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
     }
 
     override fun exists(path: Path): Boolean {
-        return client.prepareSearch(index)
-                .setFetchSource(false)
-                .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString()))
-                .setSize(0)
-                .get().hits.totalHits > 0
+        val req = SearchRequest(index)
+        val source = SearchSourceBuilder()
+        source.query(QueryBuilders.termQuery("source.path.raw", path.toString()))
+        source.size(0)
+        req.source(source)
+
+        return client.search(req).hits.totalHits > 0
     }
 
     override fun exists(id: String): Boolean {
-        return client.prepareGet(index, "asset", id).setFetchSource(false).get().isExists
+        return client.get(GetRequest(index, "asset", id)
+                .fetchSourceContext(FetchSourceContext.DO_NOT_FETCH_SOURCE)).isExists
     }
 
     override fun get(path: Path): Document {
-        val assets = elastic.query(client.prepareSearch(index)
-                .setTypes(type)
-                .setSize(1)
-                .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString())), MAPPER)
+
+        val req = SearchBuilder(index)
+        req.source.query(QueryBuilders.termQuery("source.path.raw", path.toString()))
+        req.source.size(1)
+
+        val assets = elastic.query(req, MAPPER)
 
         if (assets.isEmpty()) {
             throw EmptyResultDataAccessException("Asset $path does not exist", 1);
@@ -403,71 +397,55 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return elastic.scroll(scrollId, timeout, MAPPER)
     }
 
-    override fun getAll(page: Pager, search: SearchRequestBuilder): PagedList<Document> {
+    override fun getAll(page: Pager, search: SearchBuilder): PagedList<Document> {
         return elastic.page(search, page, MAPPER)
     }
 
     @Throws(IOException::class)
-    override fun getAll(page: Pager, search: SearchRequestBuilder, stream: OutputStream, attrs: Map<String, Any>) {
-        elastic.page(search, page, stream, attrs)
+    override fun getAll(page: Pager, search: SearchBuilder, stream: OutputStream) {
+        elastic.page(search, page, stream)
     }
 
     override fun getAll(page: Pager): PagedList<Document> {
-        return elastic.page(client.prepareSearch(index)
-                .setTypes(type)
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.matchAllQuery())
-                .setVersion(true), page, MAPPER)
+        val req = SearchBuilder(index)
+        req.request.apply {
+            types(type)
+            searchType(SearchType.DFS_QUERY_THEN_FETCH)
+        }
+        req.source.apply {
+            version(true)
+            query(QueryBuilders.matchAllQuery())
+        }
 
+        return elastic.page(req, page, MAPPER)
     }
 
     override fun getMapping(): Map<String, Any> {
-        val cs = client.admin().cluster().prepareState().setIndices(
-                index).execute().actionGet().state
-        // Should only be one concrete index.
-        for (index in cs.metaData.concreteAllOpenIndices()) {
-            val imd = cs.metaData.index(index)
-            val mdd = imd.mapping("asset")
-            try {
-                return mdd.sourceAsMap
-            } catch (e: IOException) {
-                throw ArchivistException(e)
-            }
-
-        }
         return mapOf()
     }
 
     companion object {
 
+         private const val REMOVE_LINK_SCRIPT = "if (ctx._source.zorroa == null) { return; }; " +
+         "if (ctx._source.zorroa['links'] == null) { return; }; " +
+         "if (ctx._source.zorroa['links'][type] == null) { return; }; " +
+         "ctx._source.zorroa['links'][type].removeIf({i-> i==id});"
 
-        private val MAPPER = SearchHitRowMapper<Document> { hit ->
-            val doc = Document()
-            doc.document = hit.source
-            doc.id = hit.id
-            doc.score = hit.score
-            doc.type = hit.type
-            if (hit.field("_parent") != null) {
-                doc.parentId = hit.field("_parent").value()
-            }
+          private const val APPEND_LINK_SCRIPT = "if (ctx._source.zorroa == null) { ctx._source.zorroa = [:]; };  " +
+          "if (ctx._source.zorroa['links'] == null) { ctx._source.zorroa['links'] = [:]; };  " +
+          "if (ctx._source.zorroa['links'][type] == null) { ctx._source.zorroa['links'][type] = []; };" +
+          "ctx._source.zorroa['links'][type] += id; " +
+          "ctx._source.zorroa['links'][type] = ctx._source.zorroa['links'][type].unique();"
 
-            hit.innerHits?.let {
-                doc.elements = mutableListOf()
-                for (ehit in hit.innerHits["element"]!!) {
-                    doc.elements.add(( SearchHitRowMapper<Document> {
-                        val edoc = Document()
-                        edoc.document = hit.getSource()
-                        edoc.id = hit.getId()
-                        edoc.score = hit.getScore()
-                        edoc.type = hit.getType()
-                        if (ehit.field("_parent") != null) {
-                            edoc.parentId = ehit.field("_parent").value()
-                        }
-                        edoc
-                    }.mapRow(ehit)))
-                }
+        private val MAPPER = object : SearchHitRowMapper<Document> {
+            override fun mapRow(hit: SingleHit): Document {
+                val doc = Document()
+                doc.document = hit.source
+                doc.id = hit.id
+                doc.score = hit.score
+                doc.type = hit.type
+                return doc
             }
-            doc
         }
 
         private val RECOVERABLE_BULK_ERRORS = arrayOf(

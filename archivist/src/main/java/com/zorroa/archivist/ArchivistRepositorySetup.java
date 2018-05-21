@@ -1,11 +1,8 @@
 package com.zorroa.archivist;
 
 import com.zorroa.archivist.config.ArchivistConfiguration;
-import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
-import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.processor.SharedData;
-import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +24,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     PluginService pluginService;
 
     @Autowired
-    Client client;
-
-    @Autowired
-    MigrationService migrationService;
-
-    @Autowired
     SharedData sharedData;
 
     @Value("${zorroa.cluster.index.alias}")
@@ -50,8 +41,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
              */
             SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 
-            migrationService.processAll();
-
             try {
                 setupDataSources();
             } catch (IOException e) {
@@ -66,8 +55,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     public void setupDataSources() throws IOException {
         logger.info("Setting up data sources");
-        ElasticClientUtils.createIndexedScripts(client);
-        ElasticClientUtils.createEventLogTemplate(client);
+        //ElasticClientUtils.createIndexedScripts(client);
+        //ElasticClientUtils.createEventLogTemplate(client);
         createSharedPaths();
         refreshIndex();
     }
@@ -79,6 +68,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     public void refreshIndex() {
         logger.info("Refreshing Elastic Indexes");
-        ElasticClientUtils.refreshIndex(client);
+        //ElasticClientUtils.refreshIndex(client);
     }
 }

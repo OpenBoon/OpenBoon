@@ -6,13 +6,11 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.sdk.client.exception.ArchivistException
-import org.elasticsearch.client.Client
+import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +31,7 @@ interface FieldService {
 
 @Service
 class FieldServiceImpl @Autowired constructor(
-        val client: Client,
+        val client: RestHighLevelClient,
         val properties: ApplicationProperties,
         val fieldDao: FieldDao
 
@@ -75,10 +73,14 @@ class FieldServiceImpl @Autowired constructor(
                         .filter { it.isNotEmpty() }
                         .map { it }
                 )
+
+        // move to low level client
+        /*
         val cs = client.admin().cluster()
                 .prepareState()
                 .setIndices(alias)
                 .execute().actionGet().state
+
 
         cs.metaData.concreteAllOpenIndices()
                 .map { cs.metaData.index(it) }
@@ -90,6 +92,7 @@ class FieldServiceImpl @Autowired constructor(
                         throw ArchivistException(e)
                     }
                 }
+                */
         return result
     }
 

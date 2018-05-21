@@ -46,7 +46,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         refreshIndex(1000);
 
         Document doc = new Document(
-                searchService.search(new AssetSearch()).getHits().getHits()[0].getSource());
+                searchService.search(new AssetSearch()).getHits().getHits()[0].getSourceAsMap());
 
         assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("zorroa.taxonomy",
                 new TypeReference<List<TaxonomySchema>>() {

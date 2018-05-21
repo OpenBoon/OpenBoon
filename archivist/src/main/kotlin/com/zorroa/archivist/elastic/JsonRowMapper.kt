@@ -1,5 +1,4 @@
-package com.zorroa.common.elastic;
-
+package com.zorroa.archivist.elastic
 
 
 /**
@@ -10,9 +9,10 @@ package com.zorroa.common.elastic;
  * @author chambers
  *
  * @param <T>
- */
-public interface JsonRowMapper<T> {
+</T> */
+interface JsonRowMapper<T> {
 
-     T mapRow(String id, long version, float score, byte[] sourceO) throws Exception;
+    @Throws(Exception::class)
+    fun mapRow(id: String, version: Long, score: Float, sourceO: ByteArray): T
 
 }

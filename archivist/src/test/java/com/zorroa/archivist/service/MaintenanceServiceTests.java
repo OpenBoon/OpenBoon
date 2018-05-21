@@ -36,52 +36,6 @@ public class MaintenanceServiceTests extends AbstractTest {
     AnalystDao analystDao;
 
     @Test
-    public void testBackup() throws IOException {
-        File tmpFile = Files.createTempFile("backup", "zorroa").toFile();
-        maintenanceService.backup(tmpFile);
-        assertTrue(tmpFile.exists());
-        Files.deleteIfExists(tmpFile.toPath());
-        assertFalse(tmpFile.exists());
-    }
-
-    @Test
-    public void testAutomaticBackup() throws IOException {
-        String vendor = properties.getString("archivist.datasource.primary.vendor");
-        if (!vendor.equals("h2")) { return; }
-
-        File file = maintenanceService.getNextAutomaticBackupFile();
-        if (file.exists()) {
-            Files.delete(file.toPath());
-        }
-        File backup = maintenanceService.automaticBackup();
-        assertTrue(backup.exists());
-        Files.deleteIfExists(backup.toPath());
-    }
-
-    @Test
-    public void testRemoveExpiredBackups() throws IOException {
-        String vendor = properties.getString("archivist.datasource.primary.vendor");
-        if (!vendor.equals("h2")) { return; }
-
-        try {
-            maintenanceService.removeExpiredBackups(0);
-            File file = maintenanceService.getNextAutomaticBackupFile();
-            if (file != null) {
-                if (file.exists()) {
-                    Files.delete(file.toPath());
-                }
-            }
-
-            File backup = maintenanceService.automaticBackup();
-            assertTrue(backup.exists());
-            assertEquals(1, maintenanceService.removeExpiredBackups(0));
-            assertFalse(backup.exists());
-        } catch (Exception e) {
-            assertTrue(false);
-        }
-    }
-
-    @Test
     public void testRemoveExpiredJobData() {
         JobSpec jspec = new JobSpec();
         jspec.setType(PipelineType.Import);

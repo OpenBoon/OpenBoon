@@ -415,7 +415,7 @@ public class SearchServiceTests extends AbstractTest {
 
         SearchResponse response = searchService.search(new AssetSearch("zoolander"));
         assertEquals(1, response.getHits().getTotalHits());
-        Map<String, Object> doc = response.getHits().getAt(0).getSource();
+        Map<String, Object> doc = response.getHits().getAt(0).getSourceAsMap();
         Document _doc = new Document(doc);
 
         List<String> folders = _doc.getAttr("zorroa.links.folder", List.class);
@@ -423,19 +423,19 @@ public class SearchServiceTests extends AbstractTest {
 
         response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"keywords*"}));
         assertEquals(1, response.getHits().getTotalHits());
-        doc = response.getHits().getAt(0).getSource();
+        doc = response.getHits().getAt(0).getSourceAsMap();
         assertNull(doc.get("zorroa.links"));
 
         response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"zorroa.links.folder"}));
         assertEquals(1, response.getHits().getTotalHits());
-        doc = response.getHits().getAt(0).getSource();
+        doc = response.getHits().getAt(0).getSourceAsMap();
         _doc = new Document(doc);
         folders = folders = _doc.getAttr("zorroa.links.folder", List.class);
         assertEquals(2, folders.size());
 
         response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"zorroa.links*"}));
         assertEquals(1, response.getHits().getTotalHits());
-        doc = response.getHits().getAt(0).getSource();
+        doc = response.getHits().getAt(0).getSourceAsMap();
         _doc = new Document(doc);
         folders = folders = _doc.getAttr("zorroa.links.folder", List.class);
         assertEquals(2, folders.size());
@@ -796,7 +796,7 @@ public class SearchServiceTests extends AbstractTest {
                         new SimilarityFilter("AFAFAFAF",    100)));
         SearchHits hits = searchService.search(search).getHits();
         assertEquals(1, hits.getTotalHits());
-        Document doc = new Document(hits.getAt(0).getSource());
+        Document doc = new Document(hits.getAt(0).getSourceAsMap());
         assertEquals(ImmutableList.of("AFAFAFAF", "AFAFAFA1"), doc.getAttr("test.hash1.shash"));
 
 
@@ -826,7 +826,7 @@ public class SearchServiceTests extends AbstractTest {
          * The score from the hamming distance is combined with the query
          * score, to result in a score higher than the hamming score.
          */
-        float score = searchService.search(search).getHits().hits()[0].getScore();
+        float score = searchService.search(search).getHits().getAt(0).getScore();
         assertTrue(score >= .5);
     }
 
@@ -853,21 +853,8 @@ public class SearchServiceTests extends AbstractTest {
          * The score from the hamming distance is combined with the query
          * score, to result in a score higher than the hamming score.
          */
-        float score = searchService.search(search).getHits().hits()[0].getScore();
+        float score = searchService.search(search).getHits().getAt(0).getScore();
         assertTrue(score >= .5);
-    }
-
-    @Test
-    public void testAnalyzeFilenameAsQueryString() throws IOException {
-        assertEquals(ImmutableList.of("ironman17314.jpg", "iron", "man", "17314", "jpg"),
-                searchService.analyzeQuery(new AssetSearch("ironMan17314.jpg")));
-    }
-
-
-    @Test
-    public void testAnalyze() {
-        List<String> terms = searchService.analyzeQuery(new AssetSearch("cats dogs"));
-        assertTrue(terms != null);
     }
 
     @Test

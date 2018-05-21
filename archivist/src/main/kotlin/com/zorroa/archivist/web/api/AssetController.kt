@@ -13,7 +13,6 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
-import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.*
 import com.zorroa.sdk.filesystem.ObjectFileSystem
@@ -21,7 +20,6 @@ import com.zorroa.sdk.schema.ProxySchema
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.search.AssetSuggestBuilder
 import org.apache.tika.Tika
-import org.elasticsearch.client.Client
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -44,7 +42,6 @@ import javax.validation.Valid
 
 @RestController
 class AssetController @Autowired constructor(
-        private val client: Client,
         private val assetService: AssetService,
         private val searchService: SearchService,
         private val folderService: FolderService,
@@ -248,14 +245,6 @@ class AssetController @Autowired constructor(
         }
     }
 
-    @PostMapping(value = ["/api/v2/assets/_search"])
-    @Throws(IOException::class)
-    fun searchV2(@RequestBody search: AssetSearch, httpResponse: HttpServletResponse) {
-        httpResponse.contentType = MediaType.APPLICATION_JSON_VALUE
-        val response = searchService.search(search)
-        HttpUtils.writeElasticResponse(response, httpResponse)
-    }
-
     @PostMapping(value = ["/api/v3/assets/_search"])
     @Throws(IOException::class)
     fun searchV3(@RequestBody search: AssetSearch): PagedList<Document> {
@@ -298,13 +287,6 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun suggestV3(@RequestBody suggest: AssetSuggestBuilder): Any {
         return searchService.getSuggestTerms(suggest.text)
-    }
-
-    @GetMapping(value = ["/api/v1/assets/{id}"])
-    @Throws(IOException::class)
-    operator fun get(@PathVariable id: String, httpResponse: HttpServletResponse) {
-        val response = client.prepareGet(alias, "asset", id).get()
-        HttpUtils.writeElasticResponse(response, httpResponse)
     }
 
     @GetMapping(value = ["/api/v2/assets/{id}"])
@@ -397,7 +379,7 @@ class AssetController @Autowired constructor(
 
     @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {
-        ElasticClientUtils.refreshIndex(client, 0)
+        logger.warn("Refresh called.")
     }
 
     companion object {

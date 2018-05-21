@@ -12,7 +12,9 @@
     <description>Zorroa Platform Application Server</description>
 
     <properties>
+        <junit.version>4.12</junit.version>
         <java.version>1.8</java.version>
+        <elasticsearch.version>6.2.4</elasticsearch.version>
         <zorroa-server.version>0.40.0-SNAPSHOT</zorroa-server.version>
         <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
         <kotlin.version>1.2.41</kotlin.version>
@@ -26,6 +28,7 @@
         <module>analyst</module>
         <module>ldap</module>
         <module>saml</module>
+        <module>es-similarity</module>
     </modules>
 
     <dependencyManagement>
@@ -51,39 +54,15 @@
             </dependency>
 
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
-                <version>2.4.6</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.elasticsearch.module</groupId>
-                <artifactId>lang-groovy</artifactId>
-                <version>2.4.4</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.elasticsearch.module</groupId>
-                <artifactId>lang-expression</artifactId>
-                <version>2.4.4</version>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
-                <version>2.4.4</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.vividsolutions</groupId>
-                <artifactId>jts</artifactId>
-                <version>1.13</version>
-            </dependency>
-
-            <dependency>
-                <groupId>net.java.dev.jna</groupId>
-                <artifactId>jna</artifactId>
-                <version>4.2.2</version>
+                <version>${elasticsearch.version}</version>
             </dependency>
 
             <dependency>
@@ -126,6 +105,13 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>1.1.11</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- ALSO CHANGE IN zorroa-plugin-sdk root POM-->

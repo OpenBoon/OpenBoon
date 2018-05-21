@@ -1,22 +1,11 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.Lists
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.elastic.AbstractElasticDao
-import com.zorroa.common.elastic.SearchHitRowMapper
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.util.Json
-import org.elasticsearch.action.index.IndexRequest
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.search.aggregations.AggregationBuilders
-import org.elasticsearch.search.aggregations.bucket.terms.Terms
-import org.elasticsearch.search.sort.SortOrder
 import org.springframework.stereotype.Repository
-import java.util.*
 
 interface AnalystDao {
 
@@ -26,7 +15,7 @@ interface AnalystDao {
 
     fun setState(id: String, state: AnalystState)
 
-    operator fun get(id: String): Analyst
+    fun get(id: String): Analyst
 
     fun count(): Long
 
@@ -52,129 +41,53 @@ interface AnalystDao {
 }
 
 @Repository
-class AnalystDaoImpl : AbstractElasticDao(), AnalystDao {
+class AnalystDaoImpl : AnalystDao {
 
-    override fun getType(): String {
-        return "analyst"
-    }
-
-    override fun getIndex(): String {
-        return "analyst"
+    override fun getRunningTaskIds(): List<Int> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun register(spec: AnalystSpec): String {
-        val doc = Json.serialize(spec)
-        return elastic.index(client.prepareIndex(index, type, spec.id)
-                .setSource(doc)
-                .setOpType(IndexRequest.OpType.INDEX))
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun setState(id: String, state: AnalystState) {
-        client.prepareUpdate(index, type, id)
-                .setDoc(ImmutableMap.of("state", state.ordinal))
-                .setRefresh(true)
-                .setRetryOnConflict(5)
-                .get()
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun get(id: String): Analyst {
-        return if (id.contains(":")) {
-            elastic.queryForObject(client.prepareSearch(index)
-                    .setTypes(type)
-                    .setQuery(QueryBuilders.termQuery("url", id)), MAPPER)
-        } else {
-            elastic.queryForObject(id, MAPPER)
-        }
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun count(): Long {
-        return elastic.count(client.prepareSearch(index)
-                .setTypes(type)
-                .setQuery(QueryBuilders.matchAllQuery()))
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun delete(a: Analyst): Boolean {
-        return client.prepareDelete(index, type, a.id).get().isFound
-    }
-
-    override fun getRunningTaskIds(): List<Int> {
-        val sr = client.prepareSearch(index)
-                .setTypes(type)
-                .setSize(0)
-                .setQuery(QueryBuilders.matchAllQuery())
-                .addAggregation(AggregationBuilders.terms("tasks").field("taskIds"))
-                .get()
-
-        val result = Lists.newArrayList<Int>()
-
-        val tasks = sr.aggregations.get<Terms>("tasks")
-        tasks.buckets.mapTo(result) { (it.key as Long).toInt() }
-        Collections.sort(result)
-        return result
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getAll(paging: Pager): PagedList<Analyst> {
-        return elastic.page(client.prepareSearch(index)
-                .setTypes(type)
-                .setSize(paging.size)
-                .setFrom(paging.from)
-                .setQuery(QueryBuilders.matchAllQuery()), paging, MAPPER)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getExpired(limit: Int, duration: Long): List<Analyst> {
-        val query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("state", AnalystState.DOWN.ordinal))
-                .must(QueryBuilders.rangeQuery("updatedTime").lt(System.currentTimeMillis() - duration))
-
-        return elastic.query(client.prepareSearch(index)
-                .setTypes(type)
-                .setSize(limit)
-                .setFrom(0)
-                .setQuery(query), MAPPER)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getUnresponsive(limit: Int, duration: Long): List<Analyst> {
-        val query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal))
-                .must(QueryBuilders.rangeQuery("updatedTime").lt(System.currentTimeMillis() - duration))
-
-        return elastic.query(client.prepareSearch(index)
-                .setTypes(type)
-                .setSize(limit)
-                .setFrom(0)
-                .setQuery(query), MAPPER)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getActive(paging: Pager): List<Analyst> {
-        val query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal))
-
-        return elastic.query(client.prepareSearch(index)
-                .setTypes(type)
-                .setSize(paging.size)
-                .setFrom(paging.from)
-                .addSort("loadAvg", SortOrder.ASC)
-                .setQuery(query), MAPPER)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getReady(paging: Pager): List<Analyst> {
-        val query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal))
-                .must(QueryBuilders.rangeQuery("remainingCapacity").gt(0))
-
-        return elastic.query(client.prepareSearch(index)
-                .setTypes(type)
-                .setSize(paging.size)
-                .setFrom(paging.from)
-                .addSort("queueSize", SortOrder.ASC)
-                .setQuery(query), MAPPER)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    companion object {
-
-        private val MAPPER = SearchHitRowMapper<Analyst> {
-            hit -> Json.Mapper.convertValue(hit.source, Analyst::class.java).setId(hit.id) }
-    }
 }
+
 
 
