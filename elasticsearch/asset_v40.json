@@ -106,11 +106,14 @@
           "properties": {
             "timeCreated": {
               "type": "date",
-              "format": "date_time"
+              "format": "date_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
             },
             "timeModified": {
               "type": "date",
-              "format": "date_time"
+              "format": "date_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
+            },
+            "organizationId": {
+              "type": "keyword"
             },
             "links": {
               "properties": {
@@ -164,18 +167,14 @@
                   "type": "keyword"
                 },
                 "suggest": {
-                  "type": "completion"
+                  "type": "completion",
+                  "contexts": {
+                    "name": "organization",
+                    "type": "category",
+                    "path": "zorroa.organizationId"
+                  }
                 }
               }
-            }
-          }
-        },
-        {
-          "suggest_template": {
-            "match_mapping_type": "string",
-            "match": "suggest",
-            "mapping": {
-              "type": "completion"
             }
           }
         },
@@ -260,7 +259,6 @@
             "match_mapping_type": "date",
             "mapping": {
               "type": "date",
-              "index": "not_analyzed",
               "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy||date_time||epoch_millis"
             }
           }
