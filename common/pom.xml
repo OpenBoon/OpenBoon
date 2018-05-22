@@ -16,11 +16,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>server-sdk</artifactId>
         </dependency>
@@ -29,11 +24,6 @@
             <groupId>com.zorroa</groupId>
             <artifactId>sdk</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
         </dependency>
 
         <dependency>
