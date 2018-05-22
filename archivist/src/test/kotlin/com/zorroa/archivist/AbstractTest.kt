@@ -5,22 +5,19 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.MigrationType
+import com.zorroa.archivist.config.PluginSetup
 import com.zorroa.archivist.domain.UserSpec
-import com.zorroa.archivist.elastic.ElasticClientUtils
-import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.service.*
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.AnalystState
 import com.zorroa.sdk.domain.Proxy
 import com.zorroa.sdk.processor.Source
 import com.zorroa.sdk.schema.ProxySchema
 import com.zorroa.sdk.util.FileUtils
 import com.zorroa.sdk.util.Json
-import org.elasticsearch.client.Client
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -41,6 +38,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionCallbackWithoutResult
 import org.springframework.transaction.support.TransactionTemplate
+import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -90,9 +88,6 @@ open abstract class AbstractTest {
     protected lateinit var assetService: AssetService
 
     @Autowired
-    protected lateinit var analystService: AnalystService
-
-    @Autowired
     protected lateinit var properties: ApplicationProperties
 
     @Autowired
@@ -117,7 +112,7 @@ open abstract class AbstractTest {
     internal lateinit var transactionManager: DataSourceTransactionManager
 
     @Autowired
-    internal lateinit var archivistRepositorySetup: ArchivistRepositorySetup
+    internal lateinit var archivistRepositorySetup: PluginSetup
 
     @Value("\${zorroa.cluster.index.alias}")
     protected lateinit var alias: String
@@ -217,16 +212,19 @@ open abstract class AbstractTest {
          * so each test has a clean index.  Once this is done we can call setupDataSources()
          * which adds some standard data to both databases.
          */
-        //client.admin().indices().prepareDelete("_all").get()
-        //migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true)
 
-        try {
-            archivistRepositorySetup.setupDataSources()
-            refreshIndex()
-        } catch (e: IOException) {
-            throw RuntimeException(e)
-        }
 
+        val reqDel = DeleteIndexRequest("_all")
+        logger.info("Deleting all ES indexes: {}",
+                client.indices().delete(reqDel).isAcknowledged)
+
+        val mapping = Json.Mapper.readValue<Map<String,Any>>(
+                File("../elasticsearch/asset.json"), Json.GENERIC_MAP)
+
+        logger.info("Creating ES index")
+        val reqCreate = CreateIndexRequest("archivist")
+        reqCreate.source(mapping)
+        client.indices().create(reqCreate)
     }
 
     /**
@@ -331,29 +329,10 @@ open abstract class AbstractTest {
     }
 
     fun refreshIndex() {
-        //ElasticClientUtils.refreshIndex(client, 10)
+        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
     }
 
     fun refreshIndex(sleep: Long) {
-        //ElasticClientUtils.refreshIndex(client, sleep)
-    }
-
-    fun sendAnalystPing(): AnalystSpec {
-        val ab = getAnalystBuilder()
-        ab.id = "ab"
-        //analystDao.register(ab)
-        refreshIndex()
-        return ab
-    }
-
-    fun getAnalystBuilder(): AnalystSpec {
-        val ping = AnalystSpec()
-        ping.url = "https://192.168.100.100:8080"
-        ping.isData = false
-        ping.state = AnalystState.UP
-        ping.os = "test"
-        ping.arch = "test_x86-64"
-        ping.threadCount = 2
-        return ping
+        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
     }
 }
