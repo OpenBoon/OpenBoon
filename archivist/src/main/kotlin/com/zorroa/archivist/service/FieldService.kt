@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.sdk.domain.Document
+import com.zorroa.sdk.util.Json
 import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -74,25 +76,13 @@ class FieldServiceImpl @Autowired constructor(
                         .map { it }
                 )
 
-        // move to low level client
-        /*
-        val cs = client.admin().cluster()
-                .prepareState()
-                .setIndices(alias)
-                .execute().actionGet().state
+        val stream = client.lowLevelClient.performRequest("GET", "/archivist").entity.content
+        val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
 
 
-        cs.metaData.concreteAllOpenIndices()
-                .map { cs.metaData.index(it) }
-                .map { it.mapping(type) }
-                .forEach {
-                    try {
-                        getList(result, "", it.sourceAsMap, hiddenFields)
-                    } catch (e: IOException) {
-                        throw ArchivistException(e)
-                    }
-                }
-                */
+
+        getList(result, "", Document(map).getAttr("archivist.mappings.asset"), hiddenFields)
+        logger.info("{}", result);
         return result
     }
 
@@ -161,11 +151,13 @@ class FieldServiceImpl @Autowired constructor(
 
             if (item.containsKey("type")) {
                 var type = item["type"] as String
-                val index = item["index"] as String?
                 val analyzer = item["analyzer"] as String?
 
                 type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
-                if (type == "string" && key != "raw" && index == "not_analyzed") {
+                if (type == "text") {
+                    type = "string"
+                }
+                if (type == "keyword") {
                     type = "id"
                 }
 

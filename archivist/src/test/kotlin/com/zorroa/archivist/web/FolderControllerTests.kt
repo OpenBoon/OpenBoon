@@ -342,7 +342,7 @@ class FolderControllerTests : MockMvcTest() {
         authenticate()
 
         addTestAssets("set04/standard")
-        var assets = assetDao!!.getAll(Pager.first())
+        var assets = assetDao.getAll(Pager.first())
 
         val (id) = folderService.create(FolderSpec("foo"))
 
@@ -356,7 +356,7 @@ class FolderControllerTests : MockMvcTest() {
 
         refreshIndex()
 
-        assets = assetDao!!.getAll(Pager.first())
+        assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
             val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<Any>>() {
 
@@ -371,7 +371,7 @@ class FolderControllerTests : MockMvcTest() {
         authenticate()
 
         addTestAssets("set04/standard")
-        var assets = assetDao!!.getAll(Pager.first())
+        var assets = assetDao.getAll(Pager.first())
 
         val folder1 = folderService.create(FolderSpec("foo"))
         folderService.addAssets(folder1, assets.stream().map( { it.id }).collect(Collectors.toList()))
@@ -386,7 +386,7 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
 
         refreshIndex()
-        assets = assetDao!!.getAll(Pager.first())
+        assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
             val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<Any>>() {
 

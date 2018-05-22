@@ -153,15 +153,17 @@ class UserServiceTests : AbstractTest() {
         val user = userService.create(builder)
 
         val update = UserProfileUpdate()
+        update.username = "bilbo"
         update.firstName = "foo"
         update.lastName = "bar"
         update.email = "test@test.com"
 
         assertTrue(userService.update(user, update))
-        val (_, _, email, _, _, _, firstName, lastName) = userService.get(user.id)
-        assertEquals(update.email, email)
-        assertEquals(update.firstName, firstName)
-        assertEquals(update.lastName, lastName)
+        val updated = userService.get(user.id)
+        assertEquals(update.username, updated.username)
+        assertEquals(update.email, updated.email)
+        assertEquals(update.firstName, updated.firstName)
+        assertEquals(update.lastName, updated.lastName)
     }
 
     @Test

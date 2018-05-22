@@ -80,6 +80,7 @@ public class UserControllerTests extends MockMvcTest {
         User user = userService.get("user");
 
         UserProfileUpdate builder = new UserProfileUpdate();
+        builder.setUsername("foo");
         builder.setEmail("test@test.com");
         builder.setFirstName("test123");
         builder.setLastName("456test");
@@ -97,6 +98,7 @@ public class UserControllerTests extends MockMvcTest {
         User updated = sr.object;
 
         assertEquals(user.getId(), updated.getId());
+        assertEquals(builder.getUsername(), updated.getUsername());
         assertEquals(builder.getEmail(), updated.getEmail());
         assertEquals(builder.getFirstName(), updated.getFirstName());
         assertEquals(builder.getLastName(), updated.getLastName());

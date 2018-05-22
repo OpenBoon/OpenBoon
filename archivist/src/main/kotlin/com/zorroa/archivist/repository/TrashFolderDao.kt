@@ -112,19 +112,20 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             ps.setObject(1, id)
             ps.setObject(2, folder.id)
             ps.setObject(3, folder.parentId)
-            ps.setString(4, opId)
-            ps.setString(5, folder.name)
-            ps.setString(6, Json.serializeToString(folder.search, null))
-            ps.setString(7, Json.serializeToString(folder.acl, null))
-            ps.setBoolean(8, folder.recursive)
-            ps.setObject(9, folder.user.id)
-            ps.setLong(10, folder.timeCreated)
-            ps.setLong(11, folder.timeModified)
-            ps.setObject(12, user)
-            ps.setLong(13, time)
-            ps.setBoolean(14, primary)
-            ps.setInt(15, order)
-            ps.setString(16, Json.serializeToString(folder.attrs, "{}"))
+            ps.setObject(4, folder.organizationId)
+            ps.setString(5, opId)
+            ps.setString(6, folder.name)
+            ps.setString(7, Json.serializeToString(folder.search, null))
+            ps.setString(8, Json.serializeToString(folder.acl, null))
+            ps.setBoolean(9, folder.recursive)
+            ps.setObject(10, folder.user.id)
+            ps.setLong(11, folder.timeCreated)
+            ps.setLong(12, folder.timeModified)
+            ps.setObject(13, user)
+            ps.setLong(14, time)
+            ps.setBoolean(15, primary)
+            ps.setInt(16, order)
+            ps.setString(17, Json.serializeToString(folder.attrs, "{}"))
             ps
         })
         return id
@@ -210,6 +211,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
                 "pk_folder_trash",
                 "pk_folder",
                 "pk_parent",
+                "pk_organization",
                 "str_opid",
                 "str_name",
                 "json_search",

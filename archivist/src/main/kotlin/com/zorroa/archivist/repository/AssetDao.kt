@@ -24,6 +24,7 @@ import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.action.update.UpdateResponse
+import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
@@ -84,9 +85,9 @@ interface AssetDao {
 
     operator fun get(path: Path): Document
 
-    fun removeLink(type: String, value: Any, assets: List<String>): Map<String, List<Any>>
+    fun removeLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>>
 
-    fun appendLink(type: String, value: Any, assets: List<String>): Map<String, List<Any>>
+    fun appendLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>>
 
     fun setLinks(assetId: String, type:String, ids: Collection<Any>)
 
@@ -207,12 +208,9 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
     }
 
     private fun prepareUpsert(source: Document): UpdateRequest {
-        val doc = Json.serialize(source.document)
-
-
         val upd = UpdateRequest(index, source.type, source.id)
-                .doc(doc)
-                .upsert(doc)
+                .docAsUpsert(true)
+                .doc(Json.serialize(source.document), XContentType.JSON)
         if (source.parentId != null) {
             upd.parent(source.parentId)
         }
@@ -220,11 +218,10 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
     }
 
     private fun prepareInsert(source: Document): IndexRequest {
-        val doc = Json.serialize(source.document)
 
         val idx = IndexRequest(index, source.type, source.id)
                 .opType( DocWriteRequest.OpType.INDEX)
-                .source(doc)
+                .source(Json.serialize(source.document), XContentType.JSON)
         if (source.parentId != null) {
             idx.parent(source.parentId)
         }
@@ -233,6 +230,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
 
     private fun removeBrokenField(asset: Document, error: String): Boolean {
         for (pattern in RECOVERABLE_BULK_ERRORS) {
+            logger.info("checking pattern: {}", pattern)
             val matcher = pattern.matcher(error)
             if (matcher.find()) {
                 logger.warn("Removing broken field from {}: {}={}, {}", asset.id, matcher.group(1),
@@ -243,15 +241,14 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return false
     }
 
-    override fun removeLink(type: String, value: Any, assets: List<String>): Map<String, List<Any>> {
-        if (type.contains(".")) {
+    override fun removeLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>> {
+        if (typeOfLink.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
 
-        val link = mapOf<String,Any>("type" to type, "id" to value.toString())
+        val link = mapOf<String,Any>("type" to typeOfLink, "id" to value.toString())
         val bulkRequest = BulkRequest()
         for (id in assets) {
-            //fun Script(type: ScriptType, lang: String, idOrCode: String, params: Map<String, Any>): ???
 
             val updateBuilder = UpdateRequest(index, type, id)
             updateBuilder.script(Script(ScriptType.INLINE,
@@ -276,24 +273,23 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return result
     }
 
-    override fun appendLink(type: String, value: Any, assets: List<String>): Map<String, List<Any>> {
-        if (type.contains(".")) {
+    override fun appendLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>> {
+        if (typeOfLink.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
-        val link = mapOf<String,Any>("type" to type, "id" to value.toString())
+        val link = mapOf<String,Any>("type" to typeOfLink, "id" to value.toString())
 
         val bulkRequest = BulkRequest()
         for (id in assets) {
-            val update = UpdateRequest(index, type, id)
-            update.script(Script(ScriptType.INLINE,
-                    "painless", APPEND_LINK_SCRIPT, link))
+            val update = UpdateRequest(index, "asset", id)
+            update.script(Script(ScriptType.INLINE, "painless", APPEND_LINK_SCRIPT, link))
             bulkRequest.add(update)
         }
 
         val result = mutableMapOf<String, MutableList<Any>>(
                 "success" to mutableListOf(), "failed" to mutableListOf())
 
-        val bulk = client.bulk(bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE))
+        val bulk = client.bulk(bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.NONE))
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
@@ -306,12 +302,13 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return result
     }
 
-    override fun setLinks(assetId: String, type:String, ids: Collection<Any>) {
+    override fun setLinks(assetId: String, typeOfLink:String, ids: Collection<Any>) {
         if (type.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
-        val doc = mapOf("zorroa" to mapOf("links" to mapOf(type to ids)))
-        client.update(UpdateRequest(index, type, assetId))
+        val doc = mapOf("zorroa" to mapOf("links" to mapOf(typeOfLink to ids)))
+        client.update(UpdateRequest(index, type, assetId).
+                doc(Json.serializeToString(doc), XContentType.JSON))
     }
 
 
@@ -321,10 +318,9 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             asset.setAttr(key, value)
         }
 
-        val rsp = client.update(UpdateRequest(index, type, assetId)
-                .doc(Json.serializeToString(asset.document))
-                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).getResult
-        return rsp.version
+        return client.update(UpdateRequest(index, type, assetId)
+                .doc(Json.serializeToString(asset.document), XContentType.JSON)
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
     }
 
     override fun removeFields(assetId: String, fields: Set<String>, refresh: Boolean) {
@@ -346,7 +342,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
     }
 
     override fun get(id: String): Document {
-        return elastic.queryForObject(id, null, MAPPER)
+        return elastic.queryForObject(id, type, MAPPER)
     }
 
     override fun getManagedFields(id: String): Map<String, Any> {
@@ -426,16 +422,18 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
 
     companion object {
 
-         private const val REMOVE_LINK_SCRIPT = "if (ctx._source.zorroa == null) { return; }; " +
-         "if (ctx._source.zorroa['links'] == null) { return; }; " +
-         "if (ctx._source.zorroa['links'][type] == null) { return; }; " +
-         "ctx._source.zorroa['links'][type].removeIf({i-> i==id});"
+        private const val REMOVE_LINK_SCRIPT =
+                "if (ctx._source.zorroa == null) { return; } " +
+                "if (ctx._source.zorroa.links == null) { return; } " +
+                "if (ctx._source.zorroa.links[params.type] == null) { return; } " +
+                "ctx._source.zorroa.links[params.type].removeIf({i-> i==params.id})"
 
-          private const val APPEND_LINK_SCRIPT = "if (ctx._source.zorroa == null) { ctx._source.zorroa = [:]; };  " +
-          "if (ctx._source.zorroa['links'] == null) { ctx._source.zorroa['links'] = [:]; };  " +
-          "if (ctx._source.zorroa['links'][type] == null) { ctx._source.zorroa['links'][type] = []; };" +
-          "ctx._source.zorroa['links'][type] += id; " +
-          "ctx._source.zorroa['links'][type] = ctx._source.zorroa['links'][type].unique();"
+        private const val APPEND_LINK_SCRIPT =
+                "if (ctx._source.zorroa == null) { ctx._source.zorroa = new HashMap(); } " +
+                "if (ctx._source.zorroa.links == null) { ctx._source.zorroa.links = new HashMap() }  " +
+                "if (ctx._source.zorroa.links[params.type] == null) { ctx._source.zorroa.links[params.type] = new ArrayList(); }" +
+                "ctx._source.zorroa.links[params.type].add(params.id); "+
+                "ctx._source.zorroa.links[params.type] = new HashSet(ctx._source.zorroa.links[params.type]);"
 
         private val MAPPER = object : SearchHitRowMapper<Document> {
             override fun mapRow(hit: SingleHit): Document {
@@ -449,7 +447,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         }
 
         private val RECOVERABLE_BULK_ERRORS = arrayOf(
-                Pattern.compile("^MapperParsingException\\[failed to parse \\[(.*?)\\]\\];"),
+                Pattern.compile("reason=failed to parse \\[(.*?)\\]"),
                 Pattern.compile("\"term in field=\"(.*?)\"\""),
                 Pattern.compile("mapper \\[(.*?)\\] of different type"))
     }

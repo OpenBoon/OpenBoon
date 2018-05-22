@@ -10,6 +10,7 @@ import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.CommandDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.*
@@ -166,12 +167,19 @@ class AssetServiceImpl  @Autowired  constructor (
          * and if they do exist we'll remove them so they don't overwrite
          * the proper value.
          */
+        val organizationId = getUser().organizationId
+
         for (source in spec.sources) {
 
             /**
              * Remove parts protected by API.
              */
             NS_PROTECTED_API.forEach { n -> source.removeAttr(n) }
+
+            /**
+             * Re-add the organization
+             */
+            source.setAttr("zorroa.organizationId", organizationId)
 
             val managedValues = Document(assetDao.getManagedFields(source.id))
             var perms = managedValues.getAttr("zorroa.permissions", PermissionSchema::class.java)
@@ -205,7 +213,7 @@ class AssetServiceImpl  @Autowired  constructor (
                     }
 
                 }
-                source.setAttr("zorroa.permissions", perms)
+                source.setAttr("zorroa.permissions", Json.Mapper.convertValue(perms, Json.GENERIC_MAP))
             } else if (perms.isEmpty) {
                 /**
                  * If the source didn't come with any permissions and the current perms
@@ -213,7 +221,8 @@ class AssetServiceImpl  @Autowired  constructor (
                  *
                  * If there is no permissions.
                  */
-                source.setAttr("zorroa.permissions", defaultPerms)
+                source.setAttr("zorroa.permissions",
+                        Json.Mapper.convertValue(defaultPerms, Json.GENERIC_MAP))
             }
 
             if (source.links != null) {
@@ -238,6 +247,7 @@ class AssetServiceImpl  @Autowired  constructor (
             }
         }
 
+        logger.info("{}", Json.prettyString(spec.sources))
         val result = assetDao.index(spec.sources)
         val addr = TaskStatsAdder(result)
 

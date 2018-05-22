@@ -11,7 +11,8 @@ import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getPermissionsFilter
-import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -26,10 +27,13 @@ import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.unit.TimeValue
+import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.RangeQueryBuilder
+import org.elasticsearch.script.Script
+import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
 import org.elasticsearch.search.sort.SortOrder
@@ -37,6 +41,7 @@ import org.elasticsearch.search.suggest.Suggest
 import org.elasticsearch.search.suggest.SuggestBuilder
 import org.elasticsearch.search.suggest.SuggestBuilders
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion
+import org.elasticsearch.search.suggest.completion.context.CategoryQueryContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -177,19 +182,27 @@ class SearchServiceImpl @Autowired constructor(
         val suggestBuilder = SuggestBuilder()
         val req = SearchRequest()
         req.source(builder)
+        builder.suggest(suggestBuilder)
+
+        val ctx = mapOf("organization" to
+                listOf<ToXContent>(CategoryQueryContext.builder()
+                        .setCategory(getUser().organizationId.toString())
+                        .setBoost(1)
+                        .setPrefix(false).build()))
 
         val fields = fieldService.getFields("asset")["keywords"] ?: return mutableListOf()
 
         for ((idx, field) in fields.withIndex()) {
             val completion = SuggestBuilders.completionSuggestion("$field.suggest")
-                    .text(text)
+                    .text(text).contexts(ctx)
             suggestBuilder.addSuggestion("suggest$idx", completion)
         }
 
         val unique = Sets.newTreeSet<String>()
         val suggest = client.search(req).suggest
-        for (field in fields) {
-            val comp : CompletionSuggestion = suggest.getSuggestion(field) ?: continue
+
+        for ((idx, _) in fields.withIndex()) {
+            val comp : CompletionSuggestion = suggest.getSuggestion("suggest$idx") ?: continue
             for (e in comp) {
                 for (o in e.options) {
                     val opt = o as Suggest.Suggestion.Entry.Option
@@ -296,9 +309,10 @@ class SearchServiceImpl @Autowired constructor(
         ssb.query(getQuery(search))
 
         val req = SearchRequest()
+        req.indices("archivist")
         req.types(type)
         req.searchType(SearchType.DFS_QUERY_THEN_FETCH)
-        req.preference(getUsername())
+        req.preference(getUserId().toString())
         req.source(ssb)
 
         if (search.aggs != null) {
@@ -345,7 +359,7 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            logger.info("SEARCH: {}", ssb)
+            logger.info("SEARCH: {}", Json.prettyString(ssb.query()))
         }
         return SearchBuilder(req, ssb)
     }
@@ -561,13 +575,12 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (filter.scripts != null) {
-            /*
+
             for (script in filter.scripts) {
-                val scriptFilterBuilder = QueryBuilders.scriptQuery(Script(
-                        script.script, ScriptService.ScriptType.INLINE, script.type, script.params))
+                val scriptFilterBuilder = QueryBuilders.scriptQuery(  Script(ScriptType.INLINE,
+                        "painless", script.script, script.params))
                 query.must(scriptFilterBuilder)
             }
-            */
         }
 
         // backwards compatible hamming.
@@ -636,7 +649,6 @@ class SearchServiceImpl @Autowired constructor(
 
             for (hash in filter.hashes) {
                 var hashValue: String = hash.hash
-                logger.warn("hash value: {}", hashValue)
                 if (JdbcUtils.isUUID(hashValue)) {
                     hashValue = assetDao.getFieldValue(hashValue, field)
                 }

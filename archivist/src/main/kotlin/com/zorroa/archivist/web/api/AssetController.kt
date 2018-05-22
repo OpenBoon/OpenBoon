@@ -271,7 +271,7 @@ class AssetController @Autowired constructor(
                 fieldService.updateField(update.setHide(false)))
     }
 
-    @PostMapping(value = ["/api/v2/assets/_count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/api/v2/assets/_count"])
     @Throws(IOException::class)
     fun count(@RequestBody search: AssetSearch): Any {
         return HttpUtils.count(searchService.count(search))
@@ -353,6 +353,7 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
     @Throws(Exception::class)
     fun setFolders(@PathVariable id: String, @RequestBody req: SetFoldersRequest): Any {
+        logger.info("{}", req)
         req?.folders?.let {
             folderService.setFoldersForAsset(id, it)
             return HttpUtils.updated("asset", id, true)

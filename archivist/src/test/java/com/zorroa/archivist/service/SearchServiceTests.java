@@ -12,21 +12,16 @@ import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
-import com.zorroa.sdk.search.AssetFilter;
-import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.search.Scroll;
-import com.zorroa.sdk.search.SimilarityFilter;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.sdk.search.*;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHits;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +40,6 @@ public class SearchServiceTests extends AbstractTest {
     @Before
     public void init() {
         cleanElastic();
-
         fieldService.invalidateFields();
     }
 
@@ -858,28 +852,83 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testQueryIsAnalyzed() throws IOException {
-
+    public void testSuggest() {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addToKeywords("media", "zoolander");
-        assetService.index(source);
-        refreshIndex();
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        searchService.search(Pager.first(), new AssetSearch("dog cat"), stream);
-
-        Map<String, Object> result = Json.Mapper.readValue(new ByteArrayInputStream(stream.toByteArray()),
-                Json.GENERIC_MAP);
-        assertTrue(result.get("queryTerms") != null);
-    }
-
-    @Test
-    public void testSuggest() throws IOException {
-
-        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-       source.addToKeywords("media", "zoolander");
         assetService.index(source);
         refreshIndex();
         assertEquals(ImmutableList.of("zoolander"), searchService.getSuggestTerms("zoo"));
     }
+
+    @Test
+    public void testEmptySearch() {
+        addTestAssets("set01");
+        refreshIndex();
+        assertEquals(5, searchService.search(Pager.first(), new AssetSearch()).size());
+    }
+
+    @Test
+    public void testFromSize() {
+        addTestAssets("set01");
+        refreshIndex();
+        assertEquals(2,
+                searchService.search(new Pager(2, 2), new AssetSearch()).size());
+    }
+
+    @Test
+    public void testFilterExists() {
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        assetService.index(source);
+        refreshIndex();
+
+        AssetSearch asb = new AssetSearch(new AssetFilter().addToExists("source.path"));
+        PagedList result = searchService.search(Pager.first(), asb);
+        assertEquals(1, result.size());
+
+        asb = new AssetSearch(new AssetFilter().addToExists("source.dsdsdsds"));
+       result = searchService.search(Pager.first(), asb);
+        assertEquals(0, result.size());
+
+    }
+
+    @Test
+    public void testFilterMissing() {
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        assetService.index(source);
+        refreshIndex();
+
+        AssetSearch asb = new AssetSearch(new AssetFilter().addToMissing("source.path"));
+        PagedList result = searchService.search(Pager.first(), asb);
+        assertEquals(0, result.size());
+
+        asb = new AssetSearch(new AssetFilter().addToMissing("source.dsdsdsds"));
+        result = searchService.search(Pager.first(), asb);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void testFilterRange() {
+        addTestAssets("set01");
+        AssetSearch asb = new AssetSearch(new AssetFilter()
+                .addRange("source.fileSize", new RangeQuery().setGt(100000)));
+        PagedList result = searchService.search(Pager.first(), asb);
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testFilterScript()  {
+        addTestAssets("set01");
+
+        String text = "doc['source.fileSize'].value == params.size";
+        AssetScript script = new AssetScript(text,
+                ImmutableMap.of("size", 113333));
+
+        List<AssetScript> scripts = new ArrayList<>();
+        scripts.add(script);
+        AssetSearch asb = new AssetSearch(new AssetFilter().setScripts(scripts));
+        PagedList result = searchService.search(Pager.first(), asb);
+        assertEquals(1, result.size());
+    }
+
 }

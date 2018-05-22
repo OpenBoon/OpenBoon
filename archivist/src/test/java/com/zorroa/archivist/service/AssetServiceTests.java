@@ -51,7 +51,7 @@ public class AssetServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testIndexWithLink() throws InterruptedException {
+    public void testIndexWithLink() {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         builder.addToLinks("foo", "abc123");
 
@@ -61,7 +61,7 @@ public class AssetServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testIndexCheckOrigin() throws InterruptedException {
+    public void testIndexCheckOrigin() {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset1 = assetService.index(builder);
 
