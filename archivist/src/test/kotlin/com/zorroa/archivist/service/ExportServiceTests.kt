@@ -6,7 +6,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
 import com.zorroa.archivist.domain.PipelineSpecV
-import com.zorroa.common.domain.TaskState
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.processor.PipelineType
 import com.zorroa.sdk.processor.ProcessorRef

@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.MaintenanceDao
 import com.zorroa.archivist.repository.SharedLinkDao
@@ -37,8 +36,6 @@ interface MaintenanceService {
      */
     fun removeExpiredJobData(olderThan: Long): Int
 
-    fun removeExpiredAnalysts(): Int
-
     fun removeExpiredSharedLinks(): Int
 }
 
@@ -47,7 +44,6 @@ class MaintenanceServiceImpl @Autowired constructor(
         private val properties: ApplicationProperties,
         private val maintenanceDao: MaintenanceDao,
         private val jobDao: JobDao,
-        private val analystDao: AnalystDao,
         private val sharedLinkDao: SharedLinkDao
 ) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
 
@@ -97,19 +93,6 @@ class MaintenanceServiceImpl @Autowired constructor(
         return jobs.size
     }
 
-    override fun removeExpiredAnalysts(): Int {
-        var result = 0
-        val expireTimeMillis = TimeUnit.HOURS.toMillis(
-                properties.getInt("archivist.maintenance.analyst.expireHours").toLong())
-
-        for (a in analystDao.getExpired(10, expireTimeMillis)) {
-            if (analystDao.delete(a)) {
-                result++
-            }
-        }
-        return result
-    }
-
     override fun removeExpiredSharedLinks(): Int {
         val result = sharedLinkDao.deleteExpired(System.currentTimeMillis())
         if (result > 0) {
@@ -125,11 +108,6 @@ class MaintenanceServiceImpl @Autowired constructor(
          * Remove old job data
          */
         removeExpiredJobData()
-
-        /**
-         * Remove expired analysts
-         */
-        removeExpiredAnalysts()
 
         /**
          * Remove expired shared links.

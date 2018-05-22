@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.PipelineType;

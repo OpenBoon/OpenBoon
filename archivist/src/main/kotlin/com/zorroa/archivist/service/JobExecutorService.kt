@@ -7,7 +7,6 @@ import com.google.common.collect.Lists
 import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
@@ -15,8 +14,6 @@ import com.zorroa.cluster.client.WorkerNodeClient
 import com.zorroa.cluster.thrift.TaskKillT
 import com.zorroa.cluster.thrift.TaskResultT
 import com.zorroa.cluster.thrift.TaskStartT
-import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -61,7 +58,6 @@ interface JobExecutorService {
 
 @Component
 class JobExecutorServiceImpl @Autowired constructor(
-        val analystDao: AnalystDao,
         val taskDao: TaskDao,
         val properties: ApplicationProperties
 ): AbstractScheduledService(), JobExecutorService, ApplicationListener<ContextRefreshedEvent> {
@@ -89,7 +85,6 @@ class JobExecutorServiceImpl @Autowired constructor(
          * so just in case we're not letting anything bubble up from here.
          */
         try {
-            checkForUnresponsiveAnalysts()
             checkForExpiredTasks()
         } catch (e: Exception) {
             logger.warn("Job executor failed to schedule tasks, ", e)
@@ -149,19 +144,6 @@ class JobExecutorServiceImpl @Autowired constructor(
             return returnQueue.asMap()[job.id]!!.poll(30, TimeUnit.SECONDS)
         } catch (e: InterruptedException) {
             throw IllegalStateException("Failed waiting on response, ", e)
-        }
-    }
-
-    /**
-     * Look for analysts that we have not heard from in some time
-     *
-     * TODO: may need to verify with analyst that its still around.
-     */
-    fun checkForUnresponsiveAnalysts() {
-        val timeout = properties.getInt("archivist.maintenance.analyst.inactiveTimeoutSeconds") * 1000L
-        for (a in analystDao.getUnresponsive(25, timeout)) {
-            logger.warn("Setting analyst {}/{} to DOWN state", a.url, a.id)
-            analystDao.setState(a.id, AnalystState.DOWN)
         }
     }
 

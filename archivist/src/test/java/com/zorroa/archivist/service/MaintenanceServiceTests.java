@@ -1,20 +1,14 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.Maps;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.MaintenanceDao;
-import com.zorroa.common.domain.AnalystSpec;
-import com.zorroa.common.domain.AnalystState;
 import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 import static org.junit.Assert.*;
 
@@ -31,9 +25,6 @@ public class MaintenanceServiceTests extends AbstractTest {
 
     @Autowired
     JobService jobService;
-
-    @Autowired
-    AnalystDao analystDao;
 
     @Test
     public void testRemoveExpiredJobData() {
@@ -70,23 +61,4 @@ public class MaintenanceServiceTests extends AbstractTest {
         assertEquals(JobState.Expired, updateJob.getState());
 
     }
-
-    @Test
-    public void testRemoveExpiredAnalysts() {
-        assertEquals(0, maintenanceService.removeExpiredAnalysts());
-
-        AnalystSpec spec = new AnalystSpec();
-        spec.setId("bilbo");
-        spec.setState(AnalystState.DOWN);
-        spec.setUrl("http://127.0.0.2:8099");
-        spec.setQueueSize(1);
-        spec.setMetrics(Maps.newHashMap());
-        spec.setArch("osx");
-        spec.setUpdatedTime(1);
-        String id = analystDao.register(spec);
-        refreshIndex();
-
-        assertEquals(1, maintenanceService.removeExpiredAnalysts());
-    }
-
 }
