@@ -6,7 +6,7 @@
 
     <groupId>com.zorroa.security</groupId>
     <artifactId>saml</artifactId>
-    <version>1.0.0</version>
+    <version>0.39.2</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>server-sdk</artifactId>
-            <version>0.39.1</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
 
