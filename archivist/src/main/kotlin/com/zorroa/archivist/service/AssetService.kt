@@ -247,7 +247,6 @@ class AssetServiceImpl  @Autowired  constructor (
             }
         }
 
-        logger.info("{}", Json.prettyString(spec.sources))
         val result = assetDao.index(spec.sources)
         val addr = TaskStatsAdder(result)
 
