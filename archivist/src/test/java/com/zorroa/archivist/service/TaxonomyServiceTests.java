@@ -42,12 +42,12 @@ public class TaxonomyServiceTests extends AbstractTest {
         refreshIndex();
 
         folderService.addAssets(folder4, Lists.newArrayList(d.getId()));
-        Taxonomy t = taxonomyService.create(new TaxonomySpec(folder1));
-        refreshIndex(1000);
+        refreshIndex();
+        taxonomyService.create(new TaxonomySpec(folder1));
+        refreshIndex();
 
         Document doc = new Document(
                 searchService.search(new AssetSearch()).getHits().getHits()[0].getSourceAsMap());
-
         assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("zorroa.taxonomy",
                 new TypeReference<List<TaxonomySchema>>() {
                 }).get(0).getKeywords());
@@ -111,8 +111,9 @@ public class TaxonomyServiceTests extends AbstractTest {
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
+        refreshIndex();
         taxonomyService.tagTaxonomy(tax1, folder1,true);
-        refreshIndex(1000);
+        refreshIndex();
 
         Map<String, Long> result = taxonomyService.untagTaxonomy(tax1, 1000);
         assertEquals(1, result.get("assetCount").longValue());
@@ -138,6 +139,7 @@ public class TaxonomyServiceTests extends AbstractTest {
                 new AssetSearch("ships")).getHits().getTotalHits());
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
+        refreshIndex();
         taxonomyService.tagTaxonomy(tax1, folder1, false);
         refreshIndex();
 
@@ -167,7 +169,8 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
         refreshIndex();
-
+        taxonomyService.tagTaxonomy(tax1, folder1, false);
+        refreshIndex();
         assertEquals(1, searchService.search(
                 new AssetSearch("ships")).getHits().getTotalHits());
 
@@ -193,6 +196,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         // stuff should get untagged
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
+        refreshIndex();
 
         fieldService.invalidateFields();
         assertTrue(fieldService.getFields("asset").get(

@@ -5,6 +5,9 @@ import com.google.common.base.Stopwatch
 import com.google.common.collect.*
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.elastic.CountingBulkListener
+import com.zorroa.archivist.elastic.ESUtils
+import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.TaxonomyDao
 import com.zorroa.archivist.sdk.security.UserRegistryService
@@ -17,12 +20,14 @@ import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkProcessor
-import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.unit.TimeValue
+import org.elasticsearch.common.xcontent.XContentType
+import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
+import org.elasticsearch.search.sort.SortOrder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -190,11 +195,18 @@ class TaxonomyServiceImpl @Autowired constructor(
             start = folderService.get(tax.folderId)
         }
         val updateTime = System.currentTimeMillis()
-
         val folderTotal = LongAdder()
         val assetTotal = LongAdder()
 
+        val cbl = CountingBulkListener()
+        val bulkProcessor = ESUtils.create(client, cbl)
+                .setBulkActions(BULK_SIZE)
+                .setConcurrentRequests(0)
+                .build()
+
+
         taxonomyDao.setActive(tax, true)
+
         try {
             for (folder in folderService.getAllDescendants(Lists.newArrayList(start), true, false)) {
                 folderTotal.increment()
@@ -224,9 +236,6 @@ class TaxonomyServiceImpl @Autowired constructor(
                     logger.warn("Unable to find taxonomy root for folder: {}", folder)
                     break
                 }
-
-                val bulkRequest = BulkRequest()
-
 
                 var search: AssetSearch? = folder.search
                 if (search == null) {
@@ -267,9 +276,10 @@ class TaxonomyServiceImpl @Autowired constructor(
                             }
                             taxies!!.add(taxy)
                             doc.setAttr(ROOT_FIELD, taxies)
-                            bulkRequest.add(IndexRequest(alias, "asset", hit.id)
+
+                            bulkProcessor.add(IndexRequest(alias, "asset", hit.id)
                                     .opType(DocWriteRequest.OpType.INDEX)
-                                    .source(Json.serialize(doc.document)))
+                                    .source(Json.serialize(doc.document), XContentType.JSON))
                         }
 
                         val scroll = SearchScrollRequest()
@@ -277,10 +287,10 @@ class TaxonomyServiceImpl @Autowired constructor(
                         scroll.scroll(TimeValue(60000))
                         rsp = client.searchScroll(scroll)
                         batchCounter++
+
                         logger.info("tagging {} batch {} : {}", tax, batchCounter, timer)
 
-
-                    } while (rsp.hits.hits.size != 0)
+                    } while (rsp.hits.hits.isNotEmpty())
                 } catch (e: Exception) {
                     logger.warn("Failed to tag taxonomy assets: {}", tax)
                 } finally {
@@ -292,6 +302,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 untagTaxonomyAsync(tax, updateTime)
             }
         } finally {
+            bulkProcessor.close()
             taxonomyDao.setActive(tax, false)
         }
 
@@ -336,10 +347,8 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomyFolders(tax: Taxonomy, folder: Folder, assets: List<String>) {
         logger.warn("Untagging {} on {} assets {}", tax, folder, assets)
 
-        /*
         val cbl = CountingBulkListener()
-        val bulkProcessor = BulkProcessor.builder(
-                client::bulkAsync, cbl)
+        val bulkProcessor = ESUtils.create(client, cbl)
                 .setBulkActions(BULK_SIZE)
                 .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
@@ -350,21 +359,18 @@ class TaxonomyServiceImpl @Autowired constructor(
                 .addToTerms("_id", assets)
                 .addToTerms("zorroa.taxonomy.folderId", folder.id)
 
-        val rsp = client.prepareSearch("archivist")
-                .setScroll(TimeValue(60000))
-                .setFetchSource(true)
-                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                .setQuery(searchService.getQuery(search))
-                .setSize(PAGE_SIZE).execute().actionGet()
+        val sb = SearchBuilder("archivist")
+        sb.request.scroll(TimeValue(60000))
+        sb.source.query(searchService.getQuery(search))
+        sb.source.fetchSource(true)
+        sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+        sb.source.size(PAGE_SIZE)
 
+        val rsp = client.search(sb.request)
         processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
-
         bulkProcessor.close()
         logger.info("Untagged: {} success:{} errors: {}", tax,
-                cbl.successCount, cbl.errorCount)
-                        */
-
-
+                cbl.getSuccessCount(), cbl.getErrorCount())
     }
 
     /**
@@ -378,12 +384,11 @@ class TaxonomyServiceImpl @Autowired constructor(
         logger.warn("Untagging {} on {} folders", tax, folders.size)
 
         val folderIds = folders.stream().map { f -> f.id }.collect(Collectors.toList())
-        /*
+
         for (list in Lists.partition(folderIds, 500)) {
 
             val cbl = CountingBulkListener()
-            val bulkProcessor = BulkProcessor.builder(
-                    client, cbl)
+            val bulkProcessor = ESUtils.create(client, cbl)
                     .setBulkActions(BULK_SIZE)
                     .setFlushInterval(TimeValue.timeValueSeconds(10))
                     .setConcurrentRequests(0)
@@ -393,20 +398,21 @@ class TaxonomyServiceImpl @Autowired constructor(
             search.filter = AssetFilter()
                     .addToTerms("zorroa.taxonomy.folderId", list as MutableList<Any>)
 
-            val rsp = client.prepareSearch("archivist")
-                    .setScroll(TimeValue(60000))
-                    .setFetchSource(false)
-                    .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                    .setQuery(searchService.getQuery(search))
-                    .setSize(PAGE_SIZE).execute().actionGet()
+            val sb = SearchBuilder("archivist")
+            sb.request.scroll(TimeValue(60000))
+            sb.source.query(searchService.getQuery(search))
+            sb.source.fetchSource(true)
+            sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+            sb.source.size(PAGE_SIZE)
 
+            val rsp = client.search(sb.request)
             processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
 
             bulkProcessor.close()
             logger.info("Untagged: {} success:{} errors: {}", tax,
-                    cbl.successCount, cbl.errorCount)
+                    cbl.getSuccessCount(), cbl.getErrorCount())
         }
-         */
+
     }
 
     /**
@@ -417,10 +423,9 @@ class TaxonomyServiceImpl @Autowired constructor(
      */
     override fun untagTaxonomy(tax: Taxonomy): Map<String, Long> {
         logger.info("Untagging entire taxonomy {}", tax)
-        /*
+
         val cbl = CountingBulkListener()
-        val bulkProcessor = BulkProcessor.builder(
-                client, cbl)
+        val bulkProcessor = ESUtils.create(client, cbl)
                 .setBulkActions(BULK_SIZE)
                 .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
@@ -430,22 +435,22 @@ class TaxonomyServiceImpl @Autowired constructor(
         search.filter = AssetFilter()
                 .addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
 
-        val rsp = client.prepareSearch("archivist")
-                .setScroll(TimeValue(60000))
-                .setFetchSource(true)
-                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                .setQuery(searchService.getQuery(search))
-                .setSize(PAGE_SIZE).execute().actionGet()
-
+        val sb = SearchBuilder("archivist")
+        sb.request.scroll(TimeValue(60000))
+        sb.source.query(searchService.getQuery(search))
+        sb.source.fetchSource(true)
+        sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+        sb.source.size(PAGE_SIZE)
+        val rsp = client.search(sb.request)
         processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
 
         logger.info("Untagged: {} success:{} errors: {}", tax,
-                cbl.successCount, cbl.errorCount)
+                cbl.getErrorCount(), cbl.getErrorCount())
 
         return ImmutableMap.of(
-                "assetCount", cbl.successCount,
-                "errorCount", cbl.errorCount)
-                */
+                "assetCount", cbl.getSuccessCount(),
+                "errorCount", cbl.getErrorCount())
+
         return mapOf()
     }
 
@@ -460,10 +465,9 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy, timestamp: Long): Map<String, Long> {
 
         logger.info("Untagging assets no longer tagged tagged: {} {}", tax, timestamp)
-        /*
+
         val cbl = CountingBulkListener()
-        val bulkProcessor = BulkProcessor.builder(
-                client, cbl)
+        val bulkProcessor = ESUtils.create(client, cbl)
                 .setBulkActions(BULK_SIZE)
                 .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
@@ -475,46 +479,51 @@ class TaxonomyServiceImpl @Autowired constructor(
         val search = AssetSearch()
         search.filter = AssetFilter().addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
 
-        val rsp = client.prepareSearch("archivist")
-                .setScroll(TimeValue(60000))
-                .setFetchSource(true)
-                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                .setQuery(searchService.getQuery(search))
-                .setSize(PAGE_SIZE).execute().actionGet()
+        val sb = SearchBuilder("archivist")
+        sb.request.scroll(TimeValue(60000))
+        sb.source.query(searchService.getQuery(search))
+        sb.source.fetchSource(true)
+        sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+        sb.source.size(PAGE_SIZE)
 
+        val rsp = client.search(sb.request)
         processBulk(bulkProcessor, rsp,
                 Predicate { ts -> ts.taxId == tax.taxonomyId && ts.updatedTime != timestamp })
 
         logger.info("Untagged: {} success:{} errors: {}", tax,
-                cbl.successCount, cbl.errorCount)
+                cbl.getSuccessCount(), cbl.getErrorCount())
 
         return ImmutableMap.of(
-                "assetCount", cbl.successCount,
-                "errorCount", cbl.errorCount,
+                "assetCount", cbl.getSuccessCount(),
+                "errorCount", cbl.getErrorCount(),
                 "timestamp", timestamp)
-         */
+
         return mapOf()
     }
 
     private fun processBulk(bulkProcessor: BulkProcessor, rsp: SearchResponse, pred: Predicate<TaxonomySchema>) {
         var rsp = rsp
-        /*
+
         try {
             do {
                 for (hit in rsp.hits.hits) {
-                    val doc = Document(hit.source)
+                    val doc = Document(hit.sourceAsMap)
                     val taxies = doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
+
                     if (taxies != null) {
                         if (taxies.removeIf(pred)) {
                             doc.setAttr(ROOT_FIELD, taxies)
-                            bulkProcessor.add(client.prepareIndex("archivist", "asset", hit.id)
-                                    .setOpType(IndexRequest.OpType.INDEX)
-                                    .setSource(Json.serialize(doc.document)).request())
+                            val indexReq = IndexRequest("archivist", "asset", hit.id)
+                            indexReq.opType(DocWriteRequest.OpType.INDEX)
+                            indexReq.source(Json.serialize(doc.document), XContentType.JSON)
+                            bulkProcessor.add(indexReq)
                         }
                     }
                 }
-                rsp = client.prepareSearchScroll(rsp.scrollId).setScroll(
-                        TimeValue(60000)).execute().actionGet()
+                val scrollReq = SearchScrollRequest()
+                scrollReq.scrollId(rsp.scrollId)
+                scrollReq.scroll(TimeValue(60000))
+                rsp = client.searchScroll(scrollReq)
 
             } while (rsp.hits.hits.isNotEmpty())
 
@@ -524,7 +533,6 @@ class TaxonomyServiceImpl @Autowired constructor(
         } finally {
             bulkProcessor.close()
         }
-        */
     }
 
     companion object {
