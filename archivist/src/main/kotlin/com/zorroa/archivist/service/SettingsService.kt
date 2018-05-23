@@ -14,7 +14,6 @@ import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.repository.SettingsDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.Groups
-import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.client.exception.EntityNotFoundException
@@ -100,7 +99,8 @@ class SettingsServiceImpl @Autowired constructor(
 
     override fun getAll(filter: SettingsFilter): List<Setting> {
         if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
-            filter.isLiveOnly = true
+            logger.info("adding live only filter")
+            filter.liveOnly = true
         }
         try {
             return settingsCache.get(0).stream()
@@ -122,7 +122,7 @@ class SettingsServiceImpl @Autowired constructor(
         filter.count = 1
         filter.names = ImmutableSet.of(key)
         if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
-            filter.isLiveOnly = true
+            filter.liveOnly = true
         }
         try {
             return getAll(filter)[0]
@@ -160,8 +160,6 @@ class SettingsServiceImpl @Autowired constructor(
 
     fun set(key: String, value: String?, invalidate: Boolean): Boolean {
         val validator = checkValid(key, value)
-
-        logger.info("{} changed to {} by {}", key, value, getUsername())
 
         val result: Boolean
         if (value == null) {
