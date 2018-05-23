@@ -260,7 +260,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         result["success"] = mutableListOf()
         result["failed"] = mutableListOf()
 
-        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.NONE
         val bulk = client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
@@ -423,14 +423,14 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
     companion object {
 
         private const val REMOVE_LINK_SCRIPT =
-                "if (ctx._source.zorroa == null) { return; } " +
-                "if (ctx._source.zorroa.links == null) { return; } " +
-                "if (ctx._source.zorroa.links[params.type] == null) { return; } " +
-                "ctx._source.zorroa.links[params.type].removeIf({i-> i==params.id})"
+                "if (ctx._source.zorroa != null) {  "+
+                "if (ctx._source.zorroa.links != null) { " +
+                "if (ctx._source.zorroa.links[params.type] != null) { " +
+                "ctx._source.zorroa.links[params.type].removeIf(i-> i==params.id); }}}"
 
         private const val APPEND_LINK_SCRIPT =
                 "if (ctx._source.zorroa == null) { ctx._source.zorroa = new HashMap(); } " +
-                "if (ctx._source.zorroa.links == null) { ctx._source.zorroa.links = new HashMap() }  " +
+                "if (ctx._source.zorroa.links == null) { ctx._source.zorroa.links = new HashMap(); }  " +
                 "if (ctx._source.zorroa.links[params.type] == null) { ctx._source.zorroa.links[params.type] = new ArrayList(); }" +
                 "ctx._source.zorroa.links[params.type].add(params.id); "+
                 "ctx._source.zorroa.links[params.type] = new HashSet(ctx._source.zorroa.links[params.type]);"

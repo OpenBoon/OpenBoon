@@ -31,6 +31,8 @@ class AssetDaoTests : AbstractTest() {
     @Before
     fun init() {
         val builder = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
+        builder.setAttr("bar.str", "dog")
+        builder.setAttr("bar.int", 100)
         asset1 = assetDao.index(builder)
         logger.info("Creating asset: {}", asset1.id)
         refreshIndex()
@@ -39,8 +41,8 @@ class AssetDaoTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testGetFieldValue() {
-        assertEquals("ass", assetDao.getFieldValue(asset1.id, "foo.str"))
-        assertEquals(155, (assetDao.getFieldValue<Any>(asset1.id, "foo.int") as Int).toLong())
+        assertEquals("dog", assetDao.getFieldValue(asset1.id, "bar.str"))
+        assertEquals(100, (assetDao.getFieldValue<Any>(asset1.id, "bar.int") as Int).toLong())
     }
 
     @Test
@@ -91,7 +93,7 @@ class AssetDaoTests : AbstractTest() {
 
         val sb = SearchBuilder()
         sb.source.query(QueryBuilders.matchAllQuery())
-        sb.source.aggregation(AggregationBuilders.terms("path").field("source.path"))
+        sb.source.aggregation(AggregationBuilders.terms("path").field("source.path.raw"))
 
         assetDao.getAll(Pager.first(10), sb, stream)
         val result = Json.deserialize(stream.toString(), object : TypeReference<PagedList<Asset>>() {
