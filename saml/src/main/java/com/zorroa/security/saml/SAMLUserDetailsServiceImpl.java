@@ -53,7 +53,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 			ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(issuer);
 			AuthSource source = new AuthSource(
 					zd.getProp("label"),
-					zd.getProp("authSourceId"),
+					zd.getProp("authSourceId") + "-saml",
 					zd.getProp("permissionType"));
 
             /**
