@@ -29,6 +29,8 @@ interface FieldService {
     fun updateField(value: HideField): Boolean
 
     fun dotRaw(field: String): String
+
+    fun getFieldType(field: String): String?
 }
 
 @Service
@@ -78,11 +80,7 @@ class FieldServiceImpl @Autowired constructor(
 
         val stream = client.lowLevelClient.performRequest("GET", "/archivist").entity.content
         val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
-
-
-
         getList(result, "", Document(map).getAttr("archivist.mappings.asset"), hiddenFields)
-        logger.info("{}", result);
         return result
     }
 
@@ -104,6 +102,16 @@ class FieldServiceImpl @Autowired constructor(
         } finally {
             invalidateFields()
         }
+    }
+
+    override fun getFieldType(field: String): String? {
+        val fields = getFields("asset")
+        for ((k,v) in fields.entries) {
+            if (field in v) {
+                return k
+            }
+        }
+        return null
     }
 
     override fun getFields(type: String): Map<String, Set<String>> {
@@ -157,12 +165,15 @@ class FieldServiceImpl @Autowired constructor(
                 if (type == "text") {
                     type = "string"
                 }
-                if (type == "keyword") {
+                else if (type == "keyword") {
                     type = "id"
                 }
 
-                if (type == "string" && key != "raw" && analyzer == "path_analyzer") {
-                    type = "path"
+                if (item.containsKey("fields")) {
+                    val subFields = item["fields"] as Map<String, Any>
+                    if (subFields.containsKey("paths")) {
+                        type = "path"
+                    }
                 }
 
                 var fields: MutableSet<String>? = result[type]
@@ -202,7 +213,7 @@ class FieldServiceImpl @Autowired constructor(
 
     companion object {
 
-        private val logger = LoggerFactory.getLogger(SearchServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(FieldServiceImpl::class.java)
 
         private val NAME_TYPE_OVERRRIDES = ImmutableMap.of(
                 "point", "point",

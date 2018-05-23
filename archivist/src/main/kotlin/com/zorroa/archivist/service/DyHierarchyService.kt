@@ -90,10 +90,11 @@ class DyHierarchyServiceImpl @Autowired constructor (
     @Autowired
     private lateinit var searchService: SearchService
 
+    @Autowired
+    private lateinit var fieldService: FieldService
+
     @Value("\${archivist.dyhi.maxFoldersPerLevel}")
     private val maxFoldersPerLevel: Int? = null
-
-    internal var FORCE_RAW_TYPES: Set<DyHierarchyLevelType> = EnumSet.of(DyHierarchyLevelType.Attr)
 
     @Transactional
     override fun update(id: UUID, spec: DyHierarchy): Boolean {
@@ -233,19 +234,16 @@ class DyHierarchyServiceImpl @Autowired constructor (
          */
         try {
             val sr = SearchBuilder()
-            sr.source.query(if (rf.search != null){
-                QueryBuilders.matchAllQuery()
+            if (rf.search != null) {
+                sr.source.query(searchService.getQuery(rf.search))
             }
             else {
-                searchService.getQuery(rf.search!!)
-            })
-
+                sr.source.query(QueryBuilders.matchAllQuery())
+            }
             /**
              * Fix the field name to take into account raw.
              */
-            for (level in dyhi.levels) {
-                resolveFieldName(level)
-            }
+            dyhi.levels.forEach({ resolveFieldName(it)})
 
             /**
              * Build a nested list of Elastic aggregations.
@@ -528,13 +526,13 @@ class DyHierarchyServiceImpl @Autowired constructor (
             when (level.type) {
                 DyHierarchyLevelType.Attr, null -> search.addToFilter().addToTerms(level.field, Lists.newArrayList<Any>(value))
                 DyHierarchyLevelType.Year -> search.addToFilter().addToScripts(AssetScript(
-                        String.format("doc['%s'].getYear() == value", level.field),
+                        String.format("doc['%s'].value.year == params.value", level.field),
                         ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
                 DyHierarchyLevelType.Month -> search.addToFilter().addToScripts(AssetScript(
-                        String.format("doc['%s'].getMonth() == value", level.field),
-                        ImmutableMap.of<String, Any>("value", Integer.valueOf(value) - 1)))
+                        String.format("doc['%s'].value.monthOfYear == params.value;", level.field),
+                        ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
                 DyHierarchyLevelType.Day -> search.addToFilter().addToScripts(AssetScript(
-                        String.format("doc['%s'].getDayOfMonth() == value", level.field),
+                        String.format("doc['%s'].value.dayOfMonth == params.value;", level.field),
                         ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
                 DyHierarchyLevelType.Path -> {
                     // chop off trailing /
@@ -547,17 +545,15 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     private fun resolveFieldName(level: DyHierarchyLevel) {
-        if (level.field.endsWith(".raw") || !FORCE_RAW_TYPES.contains(level.type)) {
-            return
+        val type = fieldService.getFieldType(level.field)
+        if (type == "path") {
+            level.field = level.field + ".paths"
         }
-        val type = "string"
-        //val type = ElasticClientUtils.getFieldType(client, "archivist", "asset", level.field)
-        if (type != "string") {
-            return
+        else if (type ==  "string") {
+            if (!level.field.endsWith(".raw")) {
+                level.field = level.field + ".raw"
+            }
         }
-
-        level.field = level.field + ".raw"
-
     }
 
     companion object {

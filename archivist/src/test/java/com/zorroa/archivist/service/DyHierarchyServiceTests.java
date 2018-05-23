@@ -120,9 +120,9 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
     @Test
     public void testGenerateWithPath() {
-        Folder f = folderService.create(new FolderSpec("foo"), false);
+        Folder folder = folderService.create(new FolderSpec("foo"), false);
         DyHierarchy agg = new DyHierarchy();
-        agg.setFolderId(f.getId());
+        agg.setFolderId(folder.getId());
         agg.setLevels(
                 ImmutableList.of(
                         new DyHierarchyLevel("source.type.raw"),
@@ -131,9 +131,8 @@ public class DyHierarchyServiceTests extends AbstractTest {
         int result = dyhiService.generate(agg);
 
         // Video aggs
-        Folder folder = folderService.get("/foo/video/" + testDataPath + "/video/m4v");
+        folder = folderService.get("/foo/video" + testDataPath + "/video/m4v");
         assertEquals(1, searchService.count(folder.getSearch()));
-        assertEquals(1, folder.getSearch().getFilter().getTerms().get("source.directory").size());
 
         folder = folderService.get("/foo/video" + testDataPath + "/video");
         assertEquals(4, searchService.count(folder.getSearch()));

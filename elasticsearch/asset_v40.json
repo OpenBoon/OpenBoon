@@ -212,14 +212,15 @@
             "match": "^*.+Path|^path$|^directory$|^tree$",
             "mapping": {
               "type": "text",
-              "analyzer": "path_analyzer",
+              "analyzer": "default",
               "fields": {
                 "raw": {
                   "type": "keyword"
                 },
-                "keywords": {
+                "paths": {
                   "type": "text",
-                  "analyzer": "default"
+                  "analyzer": "path_analyzer",
+                  "fielddata": true
                 }
               }
             }
