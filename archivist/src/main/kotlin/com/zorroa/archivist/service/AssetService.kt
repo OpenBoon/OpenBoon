@@ -27,6 +27,7 @@ import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -171,6 +172,8 @@ class AssetServiceImpl  @Autowired  constructor (
 
         for (source in spec.sources) {
 
+            val managedValues = Document(assetDao.getManagedFields(source.id))
+
             /**
              * Remove parts protected by API.
              */
@@ -181,7 +184,25 @@ class AssetServiceImpl  @Autowired  constructor (
              */
             source.setAttr("zorroa.organizationId", organizationId)
 
-            val managedValues = Document(assetDao.getManagedFields(source.id))
+            /**
+             * Update created and modified times.
+             */
+            val time = Date()
+
+            if (managedValues.attrExists("zorroa.timeCreated")) {
+                source.setAttr("zorroa.timeModified", time)
+                /**
+                 * If the document is being replaced, maintain the created time.
+                 */
+                if (source.isReplace) {
+                    source.setAttr("zorroa.timeCreated", managedValues.getAttr("zorroa.timeCreated"))
+                }
+            }
+            else {
+                source.setAttr("zorroa.timeModified", time)
+                source.setAttr("zorroa.timeCreated", time)
+            }
+
             var perms = managedValues.getAttr("zorroa.permissions", PermissionSchema::class.java)
             if (perms == null) {
                 perms = PermissionSchema()
@@ -234,16 +255,6 @@ class AssetServiceImpl  @Autowired  constructor (
                     links.addLink(link.left, link.right)
                 }
                 source.setAttr("zorroa.links", links)
-            }
-
-            val time = Date()
-
-            if (managedValues.attrExists("zorroa.timeCreated") && !source.isReplace) {
-                source.setAttr("zorroa.timeModified", time)
-            }
-            else {
-                source.setAttr("zorroa.timeModified", time)
-                source.setAttr("zorroa.timeCreated", time)
             }
         }
 
@@ -446,7 +457,7 @@ class AssetServiceImpl  @Autowired  constructor (
             current.export.removeAll(remove.export)
 
             update.doc(Json.serializeToString(ImmutableMap.of("zorroa",
-                    ImmutableMap.of("permissions", current))))
+                    ImmutableMap.of("permissions", current))), XContentType.JSON)
             bulkProcessor.add(update)
         }
 
