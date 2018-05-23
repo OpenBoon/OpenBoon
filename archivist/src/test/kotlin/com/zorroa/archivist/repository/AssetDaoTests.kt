@@ -96,10 +96,9 @@ class AssetDaoTests : AbstractTest() {
         sb.source.aggregation(AggregationBuilders.terms("path").field("source.path.raw"))
 
         assetDao.getAll(Pager.first(10), sb, stream)
-        val result = Json.deserialize(stream.toString(), object : TypeReference<PagedList<Asset>>() {
-
-        })
+        val result = Json.deserialize(stream.toString(), object : TypeReference<PagedList<Asset>>() {})
         assertEquals(2, result.list.size.toLong())
+        assertEquals(1, result.aggregations.entries.size)
     }
 
     @Test

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.elastic
 
-import com.fasterxml.jackson.core.JsonFactory
 import com.google.common.collect.Lists
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -163,48 +162,39 @@ class ElasticTemplate(private val client: RestHighLevelClient, private val index
     fun page(builder: SearchBuilder, paging: Pager, out: OutputStream) {
         builder.source.size(paging.size)
         builder.source.from(paging.from)
+
         val r = client.search(builder.request)
 
-        val factory = JsonFactory()
-        val generator = factory.createGenerator(out)
-
-        generator.codec = Json.Mapper
-        generator.writeStartObject()
-
-        generator.writeArrayFieldStart("list")
-
-        for (hit in r.hits.hits) {
-            generator.writeStartObject()
-            generator.writeStringField("id", hit.id)
-            generator.writeStringField("type", hit.type)
-            generator.writeNumberField("score", hit.score)
-            generator.writeObjectField("document", hit.sourceAsMap)
-            generator.writeEndObject()
-        }
-        generator.writeEndArray()
-
-        paging.totalCount = r.hits.totalHits
-        generator.writeObjectField("page", paging)
-
-        if (r.aggregations != null) {
-            try {
-                val aggregations = r.aggregations as InternalAggregations
-                val jsonBuilder = XContentFactory.jsonBuilder()
-                jsonBuilder.startObject()
-                aggregations.toXContent(jsonBuilder, ToXContent.EMPTY_PARAMS)
-                val json = jsonBuilder.string()
-                generator.writeObjectField("aggregations",
-                        Json.deserialize(json, Map::class.java)["aggregations"])
-
-
-            } catch (e: IOException) {
-                logger.warn("Failed to deserialize aggregations.", e)
+        XContentFactory.jsonBuilder(out).use { builder ->
+            builder.startObject()
+            builder.startArray("list")
+            for (hit in r.hits.hits) {
+                builder.startObject()
+                builder.field("id", hit.id)
+                builder.field("type", hit.type)
+                builder.field("score", hit.score)
+                builder.field("document", hit.sourceAsMap)
+                builder.endObject()
             }
+            builder.endArray()
 
+            builder.startObject("page")
+            builder.field("from", paging.from)
+            builder.field("size", paging.size)
+            builder.field("totalCount", r.hits.totalHits)
+            builder.endObject()
+
+            if (r.aggregations != null) {
+                try {
+                    builder.startObject("aggregations")
+                    r.aggregations.toXContent(builder, ToXContent.EMPTY_PARAMS)
+                    builder.endObject()
+                } catch (e: Exception) {
+                    logger.warn("Failed to deserialize aggregations.", e)
+                }
+            }
+            builder.endObject()
         }
-
-        generator.writeEndObject()
-        generator.close()
     }
 
     /**
