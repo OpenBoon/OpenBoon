@@ -34,3 +34,11 @@ ALTER TABLE request ALTER COLUMN pk_organization SET NOT NULL;
 ALTER TABLE jblob ADD COLUMN pk_organization UUID;
 UPDATE jblob SET pk_organization='00000000-9998-8888-7777-666666666666';
 ALTER TABLE jblob ALTER COLUMN pk_organization SET NOT NULL;
+
+ALTER TABLE taxonomy ADD COLUMN pk_organization UUID;
+UPDATE taxonomy SET pk_organization='00000000-9998-8888-7777-666666666666';
+ALTER TABLE taxonomy ALTER COLUMN pk_organization SET NOT NULL;
+
+ALTER TABLE dyhi ADD COLUMN pk_organization UUID;
+UPDATE dyhi SET pk_organization='00000000-9998-8888-7777-666666666666';
+ALTER TABLE dyhi ALTER COLUMN pk_organization SET NOT NULL;
