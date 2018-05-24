@@ -17,7 +17,7 @@ private const val NORM = 100.0
 
 private const val NO_SCORE = 0.0
 
-private class SimilarityPlugin: Plugin(), ScriptEngine {
+class SimilarityPlugin: Plugin(), ScriptEngine {
 
     override fun <T : Any?> compile(scriptName: String, source: String, ctx: ScriptContext<T>, params: MutableMap<String, String>): T {
 
