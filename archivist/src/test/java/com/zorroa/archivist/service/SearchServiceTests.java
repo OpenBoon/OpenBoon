@@ -639,7 +639,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         PagedList<Document> page = searchService.search(Pager.first(1),
-                new AssetSearch().addToAggs("date",
+                new AssetSearch().addToAggs("foo",
                         ImmutableMap.of("max",
                                 ImmutableMap.of("field", "source.fileSize"))));
         assertEquals(1, page.getAggregations().size());

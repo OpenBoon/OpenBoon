@@ -26,14 +26,19 @@ import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
+import org.elasticsearch.common.xcontent.NamedXContentRegistry
 import org.elasticsearch.common.xcontent.ToXContent
+import org.elasticsearch.common.xcontent.XContentFactory
+import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
+import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
 import org.elasticsearch.search.sort.SortOrder
@@ -316,7 +321,22 @@ class SearchServiceImpl @Autowired constructor(
         req.source(ssb)
 
         if (search.aggs != null) {
+            logger.info(Json.prettyString(search.aggs))
+            val result = mutableMapOf<String, Any>()
+            for ((key, value) in search.aggs) {
+                result[key] = value
+            }
 
+            val map = mutableMapOf("aggs" to search.aggs)
+            val json = Json.serializeToString(map)
+
+            val searchModule = SearchModule(Settings.EMPTY, false, Collections.emptyList());
+            val parser = XContentFactory.xContent(XContentType.JSON).createParser(
+                     NamedXContentRegistry(searchModule
+                            .namedXContents), json)
+
+            val ssb2 = SearchSourceBuilder.fromXContent(parser)
+            ssb2.aggregations().aggregatorFactories.forEach( { ssb.aggregation(it)})
         }
 
         if (search.postFilter != null) {
@@ -359,7 +379,10 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            logger.info("SEARCH: {}", Json.prettyString(ssb.query()))
+            XContentFactory.jsonBuilder().use { builder->
+                ssb.query().toXContent(builder, ToXContent.EMPTY_PARAMS)
+                logger.info("SEARCH: {}", builder.string())
+            }
         }
         return SearchBuilder(req, ssb)
     }
@@ -577,7 +600,7 @@ class SearchServiceImpl @Autowired constructor(
         if (filter.scripts != null) {
 
             for (script in filter.scripts) {
-                val scriptFilterBuilder = QueryBuilders.scriptQuery(  Script(ScriptType.INLINE,
+                val scriptFilterBuilder = QueryBuilders.scriptQuery(Script(ScriptType.INLINE,
                         "painless", script.script, script.params))
                 query.must(scriptFilterBuilder)
             }

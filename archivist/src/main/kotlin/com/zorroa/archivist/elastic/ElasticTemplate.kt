@@ -13,7 +13,6 @@ import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
-import org.elasticsearch.search.aggregations.InternalAggregations
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
 import org.slf4j.LoggerFactory
@@ -143,16 +142,16 @@ class ElasticTemplate(private val client: RestHighLevelClient, private val index
 
         if (r.aggregations != null) {
             try {
-                val aggregations = r.aggregations as InternalAggregations
-                val jsonBuilder = XContentFactory.jsonBuilder()
-                jsonBuilder.startObject()
-                aggregations.toXContent(jsonBuilder, ToXContent.EMPTY_PARAMS)
-                jsonBuilder.endObject()
-                result.aggregations = Json.Mapper.readValue(jsonBuilder.string(), Json.GENERIC_MAP)
+                val aggregations = r.aggregations
+                val json = XContentFactory.jsonBuilder().use { builder ->
+                    builder.startObject()
+                    aggregations.toXContent(builder, ToXContent.EMPTY_PARAMS)
+                    builder.endObject()
+                }.string()
+                result.aggregations = Json.Mapper.readValue(json, Json.GENERIC_MAP)
             } catch (e: IOException) {
                 logger.warn("Failed to deserialize aggregations.", e)
             }
-
         }
 
         return result
