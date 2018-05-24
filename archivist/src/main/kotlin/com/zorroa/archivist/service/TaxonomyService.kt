@@ -35,6 +35,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.LongAdder
 import java.util.function.Predicate
 import java.util.stream.Collectors
@@ -250,15 +251,13 @@ class TaxonomyServiceImpl @Autowired constructor(
                             AssetFilter().addToTerms("$ROOT_FIELD.taxId", tax.taxonomyId))
                 }
 
-                val timer = Stopwatch.createStarted()
                 var req = searchService.buildSearch(search, "asset")
+                req.request.indices("archivist")
                 req.request.scroll(TimeValue(60000))
                 req.source.fetchSource(true)
                 req.source.size(PAGE_SIZE)
 
                 var rsp = client.search(req.request)
-                logger.info("tagging taxonomy {} batch 1 : {}", tax, timer)
-
                 val taxy = TaxonomySchema()
                         .setFolderId(folder.id)
                         .setTaxId(tax.taxonomyId)
@@ -268,7 +267,12 @@ class TaxonomyServiceImpl @Autowired constructor(
                 var batchCounter = 1
                 try {
                     do {
+                        val timer = Stopwatch.createStarted()
+                        logger.info("tagging {} batch {} : {} hits: {}",
+                                tax, batchCounter, timer, rsp.hits.totalHits)
+
                         for (hit in rsp.hits.hits) {
+
                             val doc = Document(hit.sourceAsMap)
                             var taxies: MutableSet<TaxonomySchema>? = doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
                             if (taxies == null) {
@@ -288,13 +292,10 @@ class TaxonomyServiceImpl @Autowired constructor(
                         rsp = client.searchScroll(scroll)
                         batchCounter++
 
-                        logger.info("tagging {} batch {} : {}", tax, batchCounter, timer)
 
                     } while (rsp.hits.hits.isNotEmpty())
                 } catch (e: Exception) {
                     logger.warn("Failed to tag taxonomy assets: {}", tax)
-                } finally {
-
                 }
             }
 
@@ -302,20 +303,19 @@ class TaxonomyServiceImpl @Autowired constructor(
                 untagTaxonomyAsync(tax, updateTime)
             }
         } finally {
-            bulkProcessor.close()
+            bulkProcessor.awaitClose(1000, TimeUnit.HOURS)
             taxonomyDao.setActive(tax, false)
         }
 
-
         logger.info("Taxonomy {} executed, {} assets updated in {} folders",
-                tax.folderId, assetTotal.toLong(), folderTotal.toInt())
+                tax.folderId, cbl.getSuccessCount(), folderTotal.toInt())
 
         if (assetTotal.toLong() > 0) {
             fieldService.invalidateFields()
         }
 
         return ImmutableMap.of(
-                "assetCount", assetTotal.toLong(),
+                "assetCount", cbl.getSuccessCount(),
                 "folderCount", folderTotal.toLong(),
                 "timestamp", updateTime)
     }
@@ -350,7 +350,6 @@ class TaxonomyServiceImpl @Autowired constructor(
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(client, cbl)
                 .setBulkActions(BULK_SIZE)
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build()
 
@@ -360,7 +359,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 .addToTerms("zorroa.taxonomy.folderId", folder.id)
 
         val sb = SearchBuilder("archivist")
-        sb.request.scroll(TimeValue(60000))
+        sb.request.scroll(SCROLL_TIME)
         sb.source.query(searchService.getQuery(search))
         sb.source.fetchSource(true)
         sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
@@ -368,7 +367,7 @@ class TaxonomyServiceImpl @Autowired constructor(
 
         val rsp = client.search(sb.request)
         processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
-        bulkProcessor.close()
+
         logger.info("Untagged: {} success:{} errors: {}", tax,
                 cbl.getSuccessCount(), cbl.getErrorCount())
     }
@@ -390,7 +389,6 @@ class TaxonomyServiceImpl @Autowired constructor(
             val cbl = CountingBulkListener()
             val bulkProcessor = ESUtils.create(client, cbl)
                     .setBulkActions(BULK_SIZE)
-                    .setFlushInterval(TimeValue.timeValueSeconds(10))
                     .setConcurrentRequests(0)
                     .build()
 
@@ -399,7 +397,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                     .addToTerms("zorroa.taxonomy.folderId", list as MutableList<Any>)
 
             val sb = SearchBuilder("archivist")
-            sb.request.scroll(TimeValue(60000))
+            sb.request.scroll(SCROLL_TIME)
             sb.source.query(searchService.getQuery(search))
             sb.source.fetchSource(true)
             sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
@@ -408,7 +406,6 @@ class TaxonomyServiceImpl @Autowired constructor(
             val rsp = client.search(sb.request)
             processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
 
-            bulkProcessor.close()
             logger.info("Untagged: {} success:{} errors: {}", tax,
                     cbl.getSuccessCount(), cbl.getErrorCount())
         }
@@ -427,7 +424,6 @@ class TaxonomyServiceImpl @Autowired constructor(
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(client, cbl)
                 .setBulkActions(BULK_SIZE)
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build()
 
@@ -436,7 +432,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 .addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
 
         val sb = SearchBuilder("archivist")
-        sb.request.scroll(TimeValue(60000))
+        sb.request.scroll(SCROLL_TIME)
         sb.source.query(searchService.getQuery(search))
         sb.source.fetchSource(true)
         sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
@@ -469,7 +465,6 @@ class TaxonomyServiceImpl @Autowired constructor(
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(client, cbl)
                 .setBulkActions(BULK_SIZE)
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build()
 
@@ -480,7 +475,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         search.filter = AssetFilter().addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
 
         val sb = SearchBuilder("archivist")
-        sb.request.scroll(TimeValue(60000))
+        sb.request.scroll(SCROLL_TIME)
         sb.source.query(searchService.getQuery(search))
         sb.source.fetchSource(true)
         sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
@@ -509,9 +504,11 @@ class TaxonomyServiceImpl @Autowired constructor(
                 for (hit in rsp.hits.hits) {
                     val doc = Document(hit.sourceAsMap)
                     val taxies = doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
-
+                    logger.info("Taxies: {}", taxies);
                     if (taxies != null) {
+                        logger.info("Taxies: {}", taxies);
                         if (taxies.removeIf(pred)) {
+                            logger.info("removed: {}", taxies);
                             doc.setAttr(ROOT_FIELD, taxies)
                             val indexReq = IndexRequest("archivist", "asset", hit.id)
                             indexReq.opType(DocWriteRequest.OpType.INDEX)
@@ -522,7 +519,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 }
                 val scrollReq = SearchScrollRequest()
                 scrollReq.scrollId(rsp.scrollId)
-                scrollReq.scroll(TimeValue(60000))
+                scrollReq.scroll(SCROLL_TIME)
                 rsp = client.searchScroll(scrollReq)
 
             } while (rsp.hits.hits.isNotEmpty())
@@ -538,6 +535,9 @@ class TaxonomyServiceImpl @Autowired constructor(
     companion object {
 
         private val logger = LoggerFactory.getLogger(TaxonomyServiceImpl::class.java)
+
+        private val SCROLL_TIME = TimeValue.timeValueSeconds(60)
+
         /**
          * Number of entries to write at one time.
          */

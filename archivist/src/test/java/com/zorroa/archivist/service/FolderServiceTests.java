@@ -143,11 +143,12 @@ public class FolderServiceTests extends AbstractTest {
 
         Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
-        refreshIndex(2000);
+        refreshIndex();
 
         assertEquals(2, searchService.search(new AssetSearch(
                 new AssetFilter().addToTerms("zorroa.links.folder", folder.getId()))).getHits().getTotalHits());
         fieldService.invalidateFields();
+        refreshIndex();
         assertEquals(2, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
 
         assertTrue(results.get("failed").isEmpty());

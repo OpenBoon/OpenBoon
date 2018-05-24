@@ -242,10 +242,9 @@ public class DyHierarchyServiceTests extends AbstractTest {
     @Test
     public void testGenerateDateHierarchyWithSmartFolder() {
         FolderSpec spec =new FolderSpec("foo");
-        spec.setSearch(new AssetSearch().setFilter(new AssetFilter().addToTerms("tree.path",
+        spec.setSearch(new AssetSearch().setFilter(new AssetFilter().addToTerms("tree.path.paths",
                 Lists.newArrayList("/foo/bar"))));
         Folder f = folderService.create(spec, false);
-
 
         DyHierarchy agg = new DyHierarchy();
         agg.setFolderId(f.getId());

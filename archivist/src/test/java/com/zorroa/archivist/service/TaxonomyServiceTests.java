@@ -194,15 +194,17 @@ public class TaxonomyServiceTests extends AbstractTest {
         assetService.index(d);
         refreshIndex();
 
-        // stuff should get untagged
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
+        fieldService.invalidateFields();
         refreshIndex();
 
-        fieldService.invalidateFields();
+        assertEquals(1, searchService.search(
+                new AssetSearch("ships")).getHits().getTotalHits());
         assertTrue(fieldService.getFields("asset").get(
                 "string").contains("zorroa.taxonomy.keywords"));
 
         folderService.trash(folder1);
+
         refreshIndex();
         assertEquals(0, searchService.search(
                 new AssetSearch("ships")).getHits().getTotalHits());

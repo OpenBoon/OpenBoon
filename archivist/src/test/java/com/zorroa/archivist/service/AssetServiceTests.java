@@ -61,7 +61,7 @@ public class AssetServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testIndexCheckOrigin() {
+    public void testIndexCheckOrigin() throws InterruptedException {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset1 = assetService.index(builder);
 
@@ -70,9 +70,12 @@ public class AssetServiceTests extends AbstractTest {
         assertEquals(asset1.getAttr("zorroa.timeCreated", String.class),
                 asset1.getAttr("zorroa.timeModified", String.class));
 
-        refreshIndex(1000);
+        refreshIndex();
+        Thread.sleep(1000);
         Source builder2 = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset2 = assetService.index(builder2);
+
+        refreshIndex();
         assertNotEquals(asset2.getAttr("zorroa.timeCreated", String.class),
                 asset2.getAttr("zorroa.timeModified", String.class));
     }

@@ -260,7 +260,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         result["success"] = mutableListOf()
         result["failed"] = mutableListOf()
 
-        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.NONE
+        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
         val bulk = client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
@@ -280,6 +280,8 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         val link = mapOf<String,Any>("type" to typeOfLink, "id" to value.toString())
 
         val bulkRequest = BulkRequest()
+        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
         for (id in assets) {
             val update = UpdateRequest(index, "asset", id)
             update.script(Script(ScriptType.INLINE, "painless", APPEND_LINK_SCRIPT, link))
@@ -289,7 +291,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         val result = mutableMapOf<String, MutableList<Any>>(
                 "success" to mutableListOf(), "failed" to mutableListOf())
 
-        val bulk = client.bulk(bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.NONE))
+        val bulk = client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
