@@ -26,6 +26,8 @@ import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.lucene.search.function.CombineFunction
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.common.xcontent.NamedXContentRegistry
@@ -36,6 +38,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.RangeQueryBuilder
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.SearchModule
@@ -687,21 +690,21 @@ class SearchServiceImpl @Autowired constructor(
 
             val args = Maps.newHashMap<String, Any>()
             args["field"] = field
-            args["hashes"] = hashes
-            args["weights"] = weights
+            args["hashes"] = hashes.joinToString(",")
+            args["weights"] = weights.joinToString(",")
             args["minScore"] = filter.minScore
 
-            /*
-            val fsqb = QueryBuilders.functionScoreQuery(
-                    ScoreFunctionBuilders.scriptFunction(Script(
-                            "hammingDistance", ScriptService.ScriptType.INLINE, "native", args)))
 
-            fsqb.setMinScore(filter.minScore / 100.0f)
-            fsqb.boostMode("replace")
-            fsqb.scoreMode("multiply")
+            val fsqb = QueryBuilders.functionScoreQuery(
+                    ScoreFunctionBuilders.scriptFunction(Script(ScriptType.INLINE,
+                            "zorroa-similarity", "similarity", args)))
+
+            fsqb.minScore = filter.minScore / 100.0f
+            fsqb.boostMode(CombineFunction.REPLACE)
+            fsqb.scoreMode(FunctionScoreQuery.ScoreMode.MULTIPLY)
 
             hammingBool.should(fsqb)
-                        */
+
         }
     }
 
