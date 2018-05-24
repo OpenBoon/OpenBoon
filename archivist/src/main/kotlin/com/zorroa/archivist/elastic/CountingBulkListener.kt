@@ -3,7 +3,7 @@ package com.zorroa.archivist.elastic
 import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
-
+import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.LongAdder
 
 /**
@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.LongAdder
  */
 class CountingBulkListener : BulkProcessor.Listener {
 
-    private val successCount = LongAdder()
-    private val errorCount = LongAdder()
+    val successCount = LongAdder()
+    val errorCount = LongAdder()
 
     override fun beforeBulk(l: Long, bulkRequest: BulkRequest) {
 
@@ -24,6 +24,7 @@ class CountingBulkListener : BulkProcessor.Listener {
 
     override fun afterBulk(l: Long, bulkRequest: BulkRequest, throwable: Throwable) {
         errorCount.increment()
+        logger.warn("Failed to process bulk request: ", throwable)
     }
 
     fun getSuccessCount(): Long {
@@ -32,5 +33,10 @@ class CountingBulkListener : BulkProcessor.Listener {
 
     fun getErrorCount(): Long {
         return errorCount.toLong()
+    }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(CountingBulkListener::class.java)
     }
 }
