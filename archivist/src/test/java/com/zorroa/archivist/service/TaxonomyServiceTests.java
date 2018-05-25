@@ -38,7 +38,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder4, Lists.newArrayList(d.getId()));
@@ -107,7 +107,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         Source d = new Source();
         d.setId("abc123");
         d.setAttr("foo.keywords", "ships");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
@@ -120,7 +120,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         assertEquals(0, result.get("errorCount").longValue());
         refreshIndex();
 
-        Document a = assetService.get(d.getId());
+        Document a = indexService.get(d.getId());
         assertEquals(0, a.getAttr("zorroa.taxonomy", List.class).size());
     }
 
@@ -132,7 +132,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         assertEquals(0, searchService.search(
@@ -164,7 +164,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
@@ -191,7 +191,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));

@@ -42,7 +42,7 @@ import javax.validation.Valid
 
 @RestController
 class AssetController @Autowired constructor(
-        private val assetService: AssetService,
+        private val indexService: IndexService,
         private val searchService: SearchService,
         private val folderService: FolderService,
         private val logService: EventLogService,
@@ -51,7 +51,6 @@ class AssetController @Autowired constructor(
         private val commandService: CommandService,
         private val fieldService: FieldService
 ){
-
     /**
      * Describes a file to stream.
      */
@@ -70,7 +69,7 @@ class AssetController @Autowired constructor(
     val mapping: Map<String, Any>
         @GetMapping(value = ["/api/v1/assets/_mapping"])
         @Throws(IOException::class)
-        get() = assetService.getMapping()
+        get() = indexService.getMapping()
 
     fun getPreferredFormat(asset: Document, preferExt: String?, fallback: Boolean, streamProxy: Boolean): StreamFile? {
 
@@ -148,7 +147,7 @@ class AssetController @Autowired constructor(
                     @RequestParam(value = "ext", required = false) ext: String?,
                     @PathVariable id: String, request: HttpServletRequest, response: HttpServletResponse) {
 
-        val asset = assetService.get(id)
+        val asset = indexService.get(id)
         val canExport = canExport(asset)
         val format = getPreferredFormat(asset, ext, fallback, !canExport)
 
@@ -178,7 +177,7 @@ class AssetController @Autowired constructor(
                 @Throws(Exception::class)
                 override fun load(slug: String): Proxy {
                     val e = slug.split(":")
-                    val proxies = assetService.getProxies(e[1])
+                    val proxies = indexService.getProxies(e[1])
 
                     return when {
                         e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
@@ -280,7 +279,7 @@ class AssetController @Autowired constructor(
     @GetMapping(value = ["/api/v1/assets/{id}/_exists"])
     @Throws(IOException::class)
     fun exists(@PathVariable id: String): Any {
-        return HttpUtils.exists(id, assetService.exists(id))
+        return HttpUtils.exists(id, indexService.exists(id))
     }
 
     @PostMapping(value = ["/api/v3/assets/_suggest"])
@@ -291,43 +290,43 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v2/assets/{id}"])
     fun getV2(@PathVariable id: String): Any {
-        return assetService.get(id)
+        return indexService.get(id)
     }
 
     @GetMapping(value = ["/api/v1/assets/_path"])
     fun getByPath(@RequestBody path: Map<String, String>): Document? {
-        return path["path"]?.let { assetService.get(Paths.get(it)) }
+        return path["path"]?.let { indexService.get(Paths.get(it)) }
     }
 
     @DeleteMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun delete(@PathVariable id: String): Any {
-        val asset = assetService.get(id)
+        val asset = indexService.get(id)
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("delete access denied")
         }
 
-        val result = assetService.delete(id)
+        val result = indexService.delete(id)
         return HttpUtils.deleted("asset", id, result)
     }
 
     @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
-        val asset = assetService.get(id)
+        val asset = indexService.get(id)
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("update access denied")
         }
 
-        assetService.update(id, attrs)
-        return HttpUtils.updated("asset", id, true, assetService.get(id))
+        indexService.update(id, attrs)
+        return HttpUtils.updated("asset", id, true, indexService.get(id))
     }
 
     @DeleteMapping(value = ["/api/v1/assets/{id}/_fields"])
     @Throws(IOException::class)
     fun removeFields(@RequestBody fields: MutableSet<String>, @PathVariable id: String): Any {
-        assetService.removeFields(id, fields)
-        return HttpUtils.updated("asset", id, true, assetService.get(id))
+        indexService.removeFields(id, fields)
+        return HttpUtils.updated("asset", id, true, indexService.get(id))
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
@@ -339,7 +338,7 @@ class AssetController @Autowired constructor(
     @PostMapping(value = ["/api/v1/assets/_index"], produces = [(MediaType.APPLICATION_JSON_VALUE)])
     @Throws(IOException::class)
     fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
-        return assetService.index(spec)
+        return indexService.index(spec)
     }
 
     class SetFoldersRequest {

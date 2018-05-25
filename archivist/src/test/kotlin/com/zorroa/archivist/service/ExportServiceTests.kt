@@ -28,7 +28,7 @@ class ExportServiceTests : AbstractTest() {
     fun init() {
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
         source.addToKeywords("media", "cats")
-        asset = assetService.index(source)
+        asset = indexService.index(source)
         refreshIndex()
     }
 

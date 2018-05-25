@@ -54,14 +54,14 @@ public class FolderServiceTests extends AbstractTest {
             folders.add(folder.getId());
         }
 
-        List<Document> assets = assetService.getAll(Pager.first(1)).getList();
+        List<Document> assets = indexService.getAll(Pager.first(1)).getList();
         assertEquals(1, assets.size());
         Document doc = assets.get(0);
 
         folderService.setFoldersForAsset(doc.getId(), folders);
         refreshIndex();
 
-        doc = assetService.get(doc.getId());
+        doc = indexService.get(doc.getId());
         assertEquals(10, doc.getAttr("zorroa.links.folder", List.class).size());
     }
 
@@ -71,7 +71,7 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
 
-        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+        Map<String, List<Object>> results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         assertTrue(results.get("failed").isEmpty());
@@ -84,17 +84,17 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
 
-        folderService.addAssets(folder, assetService.getAll(
+        folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         refreshIndex();
 
-        folderService.addAssets(folder, assetService.getAll(
+        folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
         for (Document a: assets) {
             assertEquals(1, ((List) a.getAttr("zorroa.links.folder")).size());
         }
@@ -106,13 +106,13 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
 
-        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+        Map<String, List<Object>> results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
 
-        results = folderService.removeAssets(folder, assetService.getAll(
+        results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
@@ -126,7 +126,7 @@ public class FolderServiceTests extends AbstractTest {
         taxonomyService.create(new TaxonomySpec(folder));
         folder = folderService.get(folder.getId());
 
-        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+        Map<String, List<Object>> results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
         refreshIndex(2000);
 
@@ -141,7 +141,7 @@ public class FolderServiceTests extends AbstractTest {
         taxonomyService.create(new TaxonomySpec(folder));
         folder = folderService.get(folder.getId());
 
-        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+        Map<String, List<Object>> results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
         refreshIndex();
 
@@ -154,7 +154,7 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
 
-        results = folderService.removeAssets(folder, assetService.getAll(
+        results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
@@ -259,7 +259,7 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder = folderService.create(builder);
         Acl acl = new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write);
         folderService.setAcl(folder, acl, false, false);
-        folderService.addAssets(folderService.get(folder), assetService.getAll(
+        folderService.addAssets(folderService.get(folder), indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
     }
 
@@ -423,7 +423,7 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder2 = new FolderSpec("baggins");
         Folder folder2 = folderService.create(builder2);
 
-        Map<String, List<Object>> results = folderService.addAssets(folder2, assetService.getAll(
+        Map<String, List<Object>> results = folderService.addAssets(folder2, indexService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
         refreshIndex(1000);
 

@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.LongAdder
 
-interface AssetService {
+interface IndexService {
 
     fun getMapping(): Map<String, Any>
 
@@ -96,7 +96,7 @@ interface AssetService {
 }
 
 @Component
-class AssetServiceImpl  @Autowired  constructor (
+class IndexServiceImpl  @Autowired  constructor (
         private val assetDao: AssetDao,
         private val commandDao: CommandDao,
         private val permissionDao: PermissionDao,
@@ -109,7 +109,7 @@ class AssetServiceImpl  @Autowired  constructor (
         private val client: RestHighLevelClient,
         private val ofs: ObjectFileSystem
 
-) : AssetService, ApplicationListener<ContextRefreshedEvent> {
+) : IndexService, ApplicationListener<ContextRefreshedEvent> {
 
     private var defaultPerms = PermissionSchema()
 
@@ -504,7 +504,7 @@ class AssetServiceImpl  @Autowired  constructor (
 
     companion object {
 
-        private val logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(IndexServiceImpl::class.java)
 
         /**
          * Namespaces that are only populated via the API.  IF people manipulate these

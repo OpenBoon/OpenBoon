@@ -271,7 +271,7 @@ public class AssetControllerTests extends MockMvcTest {
             folders.add(folder.getId());
         }
 
-        List<Document> assets = assetService.getAll(Pager.first(1)).getList();
+        List<Document> assets = indexService.getAll(Pager.first(1)).getList();
         assertEquals(1, assets.size());
         Document doc = assets.get(0);
 
@@ -284,7 +284,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
 
         refreshIndex();
-        doc = assetService.get(doc.getId());
+        doc = indexService.get(doc.getId());
         assertEquals(10, doc.getAttr("zorroa.links.folder", List.class).size());
 
     }
@@ -331,7 +331,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
 
         String url = String.format("/api/v1/assets/%s/_stream", assets.get(0).getId());
         mvc.perform(get(url)
@@ -348,7 +348,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
 
         String url = String.format("/api/v1/assets/%s/_stream?ext=foo", assets.get(0).getId());
         MvcResult result = mvc.perform(get(url)
@@ -364,7 +364,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("/video");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
         AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "m4v",
                 false, false);
 
@@ -382,18 +382,18 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("/video");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
         Document asset = assets.get(0);
 
         ObjectFile f = ofs.prepare("asset", assets.get(0).getAttr("source.path"), "webm");
         f.store(new FileInputStream(asset.getAttr("source.path", String.class)));
 
-        assetService.update(asset.getId(), ImmutableMap.of("proxies",
+        indexService.update(asset.getId(), ImmutableMap.of("proxies",
             ImmutableMap.of("video", ImmutableList.of(new Proxy()
                     .setId(f.getId()).setFormat("webm")))));
         refreshIndex();
 
-        asset = assetService.get(asset.getId());
+        asset = indexService.get(asset.getId());
         AssetController.StreamFile file = assetController.getPreferredFormat(asset,
                 "webm", false, false);
         assertNotNull(file);

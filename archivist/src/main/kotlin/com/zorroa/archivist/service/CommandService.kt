@@ -48,7 +48,7 @@ class CommandServiceImpl @Autowired constructor (
 ): AbstractScheduledService(), CommandService {
 
     @Autowired
-    private lateinit var assetService: AssetService
+    private lateinit var assetService: IndexService
 
     @Autowired
     private lateinit var userRegistryService: UserRegistryService

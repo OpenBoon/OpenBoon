@@ -177,7 +177,7 @@ class JobServiceImpl @Autowired constructor(
     private lateinit var pluginService : PluginService
 
     @Autowired
-    private lateinit var assetService : AssetService
+    private lateinit var indexService : IndexService
 
 
     /**
@@ -314,7 +314,7 @@ class JobServiceImpl @Autowired constructor(
                 if (exframe.processors.isEmpty()) {
                     logger.info("The expand frame has empty proc list, indexing directly.")
                     try {
-                        assetService.index(exframe.document)
+                        indexService.index(exframe.document)
                     } catch (e:Exception) {
                         logger.warn("Failed to direct index {}", e);
                     }

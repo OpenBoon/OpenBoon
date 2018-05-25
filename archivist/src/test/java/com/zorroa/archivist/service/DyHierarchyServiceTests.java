@@ -48,7 +48,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"));
             ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"));
-            assetService.index(ab);
+            indexService.index(ab);
         }
         for (File f: getTestPath("office").toFile().listFiles()) {
             if (!f.isFile() || f.isHidden()) {
@@ -57,7 +57,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             Source ab = new Source(f);
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("03-05-2013 09:11:14"));
-            assetService.index(ab);
+            indexService.index(ab);
         }
         for (File f: getTestPath("video").toFile().listFiles()) {
             if (!f.isFile() || f.isHidden()) {
@@ -66,7 +66,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             Source ab = new Source(f);
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("11-12-2015 06:14:10"));
-            assetService.index(ab);
+            indexService.index(ab);
         }
         refreshIndex();
     }
@@ -204,9 +204,9 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
         dyhiService.generate(agg);
 
-        PagedList<Document> assets = assetService.getAll(Pager.first(100));
+        PagedList<Document> assets = indexService.getAll(Pager.first(100));
         for (Document asset: assets) {
-            assetService.update(asset.getId(), ImmutableMap.of("source",
+            indexService.update(asset.getId(), ImmutableMap.of("source",
                     ImmutableMap.of("extension", "abc")));
         }
         refreshIndex();
@@ -288,7 +288,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
                 continue;
             }
             Source ab = new Source(f);
-            assetService.index(ab);
+            indexService.index(ab);
         }
 
         for (File f: getTestImagePath("set03").toFile().listFiles()) {
@@ -296,7 +296,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
                 continue;
             }
             Source ab = new Source(f);
-            assetService.index(ab);
+            indexService.index(ab);
         }
 
         refreshIndex();

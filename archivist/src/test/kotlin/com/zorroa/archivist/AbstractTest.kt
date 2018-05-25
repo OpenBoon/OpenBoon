@@ -85,7 +85,7 @@ open abstract class AbstractTest {
     protected lateinit var pluginService: PluginService
 
     @Autowired
-    protected lateinit var assetService: AssetService
+    protected lateinit var indexService: IndexService
 
     @Autowired
     protected lateinit var properties: ApplicationProperties
@@ -323,7 +323,7 @@ open abstract class AbstractTest {
             source.addToKeywords("source", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-            assetService.index(source)
+            indexService.index(source)
         }
         refreshIndex()
     }
