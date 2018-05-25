@@ -2,8 +2,8 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.ExportDao
+import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
@@ -48,7 +48,7 @@ class ExportServiceImpl @Autowired constructor(
         val pipelineService: PipelineService,
         val pluginService: PluginService,
         val searchService: SearchService,
-        val assetDao: AssetDao,
+        val indexDao: IndexDao,
         val properties: ApplicationProperties,
         val transactionEventManager: TransactionEventManager,
         val logService: EventLogService
@@ -84,7 +84,7 @@ class ExportServiceImpl @Autowired constructor(
             throw ArchivistWriteException("Unable to start export, search returns no assets")
         }
 
-        assetDao.appendLink("export", exportId.toString(), ids)
+        indexDao.appendLink("export", exportId.toString(), ids)
         params.search = AssetSearch().setFilter(
                 AssetFilter().addToLinks("export", exportId.toString()))
         return params

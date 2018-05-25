@@ -172,7 +172,7 @@ interface FolderService {
 class FolderServiceImpl @Autowired constructor(
         val folderDao: FolderDao,
         val trashFolderDao: TrashFolderDao,
-        val assetDao: AssetDao,
+        val indexDao: IndexDao,
         val userDao: UserDao,
         val permissionDao: PermissionDao,
         val transactionEventManager: TransactionEventManager
@@ -549,7 +549,7 @@ class FolderServiceImpl @Autowired constructor(
 
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun setFoldersForAsset(assetId: String, folders: List<UUID>) {
-        assetDao.setLinks(assetId, "folder", folders)
+        indexDao.setLinks(assetId, "folder", folders)
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -563,7 +563,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("Cannot add assets to a smart folder.  Remove the search first.")
         }
 
-        val result = assetDao.appendLink("folder", folder.id, assetIds)
+        val result = indexDao.appendLink("folder", folder.id, assetIds)
         invalidate(folder)
         //logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("count", assetIds.size))
 
@@ -582,7 +582,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        val result = assetDao.removeLink("folder", folder.id, assetIds)
+        val result = indexDao.removeLink("folder", folder.id, assetIds)
         //logService.logAsync(UserLogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds))
         invalidate(folder)
 

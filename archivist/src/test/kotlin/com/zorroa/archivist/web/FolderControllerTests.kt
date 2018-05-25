@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.FolderUpdate
 import com.zorroa.archivist.domain.getRootFolderId
-import com.zorroa.archivist.repository.AssetDao
+import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.web.api.FolderController
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
@@ -28,7 +28,7 @@ class FolderControllerTests : MockMvcTest() {
     internal lateinit var folderController: FolderController
 
     @Autowired
-    internal lateinit var assetDao: AssetDao
+    internal lateinit var assetDao: IndexDao
 
     internal lateinit var folder: Folder
 

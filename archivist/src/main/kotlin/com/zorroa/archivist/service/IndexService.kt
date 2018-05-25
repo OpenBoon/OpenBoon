@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.ESUtils
-import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.CommandDao
+import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUser
@@ -97,7 +97,7 @@ interface IndexService {
 
 @Component
 class IndexServiceImpl  @Autowired  constructor (
-        private val assetDao: AssetDao,
+        private val indexDao: IndexDao,
         private val commandDao: CommandDao,
         private val permissionDao: PermissionDao,
         private val dyHierarchyService: DyHierarchyService,
@@ -121,12 +121,12 @@ class IndexServiceImpl  @Autowired  constructor (
         return if (id.startsWith("/")) {
             get(Paths.get(id))
         } else {
-            assetDao[id]
+            indexDao[id]
         }
     }
 
     override fun get(path: Path): Document {
-        return assetDao[path]
+        return indexDao[path]
     }
 
     override fun getProxies(id: String): ProxySchema {
@@ -149,12 +149,12 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun getAll(page: Pager): PagedList<Document> {
-        return assetDao.getAll(page)
+        return indexDao.getAll(page)
     }
 
     override fun index(doc: Document): Document {
         val result = index(AssetIndexSpec(doc))
-        return assetDao[result.getAssetIds()[0]]
+        return indexDao[result.getAssetIds()[0]]
     }
 
     override fun index(spec: AssetIndexSpec): AssetIndexResult {
@@ -172,7 +172,7 @@ class IndexServiceImpl  @Autowired  constructor (
 
         for (source in spec.sources) {
 
-            val managedValues = Document(assetDao.getManagedFields(source.id))
+            val managedValues = Document(indexDao.getManagedFields(source.id))
 
             /**
              * Remove parts protected by API.
@@ -258,7 +258,7 @@ class IndexServiceImpl  @Autowired  constructor (
             }
         }
 
-        val result = assetDao.index(spec.sources)
+        val result = indexDao.index(spec.sources)
         val addr = TaskStatsAdder(result)
 
         if (spec.taskId != null && spec.jobId != null) {
@@ -291,28 +291,28 @@ class IndexServiceImpl  @Autowired  constructor (
     override fun removeFields(id: String, fields: MutableSet<String>) {
         // remove fields from list the can't remove.
         fields.removeAll(NS_PROTECTED_API)
-        assetDao.removeFields(id, fields, false)
+        indexDao.removeFields(id, fields, false)
     }
 
     override fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>> {
-        return assetDao.removeLink(type, value, assets)
+        return indexDao.removeLink(type, value, assets)
     }
 
     override fun appendLink(type: String, value: String, assets: List<String>): Map<String, List<Any>> {
-        return assetDao.appendLink(type, value, assets)
+        return indexDao.appendLink(type, value, assets)
     }
 
     override fun exists(path: Path): Boolean {
-        return assetDao.exists(path)
+        return indexDao.exists(path)
     }
 
     override fun exists(id: String): Boolean {
-        return assetDao.exists(id)
+        return indexDao.exists(id)
     }
 
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
 
-        val asset = assetDao[assetId]
+        val asset = indexDao[assetId]
         val write = asset.getAttr("zorroa.permissions.write", Json.SET_OF_UUIDS)
 
         if (!hasPermission(write)) {
@@ -325,13 +325,13 @@ class IndexServiceImpl  @Autowired  constructor (
          */
         NS_PROTECTED_API.forEach { n -> copy.remove(n) }
 
-        val version = assetDao.update(assetId, copy)
+        val version = indexDao.update(assetId, copy)
         logService.logAsync(UserLogSpec.build(LogAction.Update, "asset", assetId))
         return version
     }
 
     override fun delete(assetId: String): Boolean {
-        val doc = assetDao[assetId]
+        val doc = indexDao[assetId]
         val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
         if (proxySchema != null) {
             for (proxy in proxySchema.proxies) {
@@ -344,7 +344,7 @@ class IndexServiceImpl  @Autowired  constructor (
                 }
             }
         }
-        return assetDao.delete(assetId)
+        return indexDao.delete(assetId)
     }
 
     override fun setPermissions(command: Command, search: AssetSearch, acl: Acl) {
@@ -481,7 +481,7 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun getMapping(): Map<String, Any> {
-        return assetDao.getMapping()
+        return indexDao.getMapping()
     }
 
     private fun setDefaultPermissions() {

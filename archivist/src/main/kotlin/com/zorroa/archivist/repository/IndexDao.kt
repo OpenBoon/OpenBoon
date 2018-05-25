@@ -38,7 +38,7 @@ import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicLong
 import java.util.regex.Pattern
 
-interface AssetDao {
+interface IndexDao {
 
     fun getMapping(): Map<String, Any>
 
@@ -108,7 +108,7 @@ interface AssetDao {
 }
 
 @Repository
-class AssetDaoImpl : AbstractElasticDao(), AssetDao {
+class IndexDaoImpl : AbstractElasticDao(), IndexDao {
 
     /**
      * Allows us to flush the first batch.

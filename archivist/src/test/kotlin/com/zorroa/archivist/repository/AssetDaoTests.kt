@@ -25,7 +25,7 @@ import java.io.IOException
 class AssetDaoTests : AbstractTest() {
 
     @Autowired
-    internal lateinit var assetDao: AssetDao
+    internal lateinit var assetDao: IndexDao
     internal lateinit var asset1: Document
 
     @Before

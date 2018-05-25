@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.repository.IndexDao;
 import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AssetControllerTests extends MockMvcTest {
 
     @Autowired
-    AssetDao assetDao;
+    IndexDao indexDao;
 
     @Autowired
     AssetController assetController;
@@ -203,7 +203,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
             MvcResult result = mvc.perform(delete("/api/v1/assets/" + asset.getId())
                     .session(session)
@@ -224,7 +224,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
             MvcResult result = mvc.perform(get("/api/v2/assets/" + asset.getId())
                     .session(session)
@@ -244,7 +244,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
             String url = "/api/v1/assets/_path";
             MvcResult result = mvc.perform(get(url)
@@ -294,7 +294,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         addTestAssets("set04/canyon");
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         Folder folder2 = folderService.create(new FolderSpec("bar"));
@@ -313,7 +313,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
 
         refreshIndex();
-        assets = assetDao.getAll(Pager.first());
+        assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
             getLogger().info("{}", asset.getDocument());
             List<String> links = asset.getAttr("zorroa.links.folder", new TypeReference<List<String>>() {});

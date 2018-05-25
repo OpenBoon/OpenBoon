@@ -8,7 +8,7 @@ import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.SearchBuilder
-import com.zorroa.archivist.repository.AssetDao
+import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.archivist.security.getUser
@@ -106,7 +106,7 @@ class SearchContext(val linkedFolders: MutableSet<UUID>,
 
 @Service
 class SearchServiceImpl @Autowired constructor(
-        val assetDao: AssetDao,
+        val indexDao: IndexDao,
         val client: RestHighLevelClient,
         val properties: ApplicationProperties
 
@@ -272,7 +272,7 @@ class SearchServiceImpl @Autowired constructor(
         if (search.scroll != null) {
             val scroll = search.scroll
             if (scroll.id != null) {
-                val result = assetDao.getAll(scroll.id, scroll.timeout)
+                val result = indexDao.getAll(scroll.id, scroll.timeout)
                 if (result.size() == 0) {
                     val req = ClearScrollRequest()
                     req.addScrollId(scroll.id)
@@ -282,7 +282,7 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
-        return assetDao.getAll(page, buildSearch(search, "asset"))
+        return indexDao.getAll(page, buildSearch(search, "asset"))
     }
 
     @Throws(IOException::class)
@@ -295,7 +295,7 @@ class SearchServiceImpl @Autowired constructor(
             logService.logAsync(UserLogSpec.build(LogAction.Search, search))
         }
 
-        assetDao.getAll(page, buildSearch(search, "asset"), stream)
+        indexDao.getAll(page, buildSearch(search, "asset"), stream)
     }
 
     override fun scroll(id: String, timeout: String): PagedList<Document> {
@@ -303,7 +303,7 @@ class SearchServiceImpl @Autowired constructor(
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        val result = assetDao.getAll(id, timeout)
+        val result = indexDao.getAll(id, timeout)
         if (result.size() == 0) {
             val req = ClearScrollRequest()
             req.addScrollId(id)
@@ -676,7 +676,7 @@ class SearchServiceImpl @Autowired constructor(
             for (hash in filter.hashes) {
                 var hashValue: String = hash.hash
                 if (JdbcUtils.isUUID(hashValue)) {
-                    hashValue = assetDao.getFieldValue(hashValue, field)
+                    hashValue = indexDao.getFieldValue(hashValue, field)
                 }
 
                 if (hashValue != null) {
