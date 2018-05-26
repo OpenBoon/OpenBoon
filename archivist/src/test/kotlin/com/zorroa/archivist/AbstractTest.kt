@@ -151,7 +151,6 @@ open abstract class AbstractTest {
         tmpl.execute(object : TransactionCallbackWithoutResult() {
             override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
                 jdbc.update("DELETE FROM folder WHERE time_created !=1450709321000")
-                pluginService.installAndRegisterAllPlugins()
             }
         })
 
