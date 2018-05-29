@@ -43,7 +43,7 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>server-sdk</artifactId>
-            <version>0.40.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
 

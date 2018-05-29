@@ -74,25 +74,25 @@
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>cluster</artifactId>
-                <version>${zorroa-server.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>server-sdk</artifactId>
-                <version>${zorroa-server.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>sdk</artifactId>
-                <version>${zorroa-server.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>common</artifactId>
-                <version>${zorroa-server.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
