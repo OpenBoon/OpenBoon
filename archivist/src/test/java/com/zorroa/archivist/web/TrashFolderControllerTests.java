@@ -38,8 +38,8 @@ public class TrashFolderControllerTests extends MockMvcTest {
     @Before
     public void init() {
         folder1 = folderService.create(new FolderSpec("test1"));
-        Folder folder2 = folderService.create(new FolderSpec("test2", folder1.getId()));
-        folderService.create(new FolderSpec("test3", folder2.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("test2", folder1));
+        folderService.create(new FolderSpec("test3", folder2));
         deleteOp = folderService.trash(folder1);
     }
 
@@ -50,7 +50,6 @@ public class TrashFolderControllerTests extends MockMvcTest {
 
         String content = Json.serializeToString(
                 ImmutableList.of(deleteOp.getTrashFolderId().toString()));
-        logger.info("content: {}", content);
         MvcResult result = mvc.perform(post("/api/v1/trash/_restore")
                 .session(admin())
                 .content(content)
@@ -58,7 +57,6 @@ public class TrashFolderControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         Map<String, Object> data = deserialize(result, Map.class);
-        logger.info("{}", data);
         assertTrue((Boolean) data.get("success"));
     }
 
@@ -121,7 +119,6 @@ public class TrashFolderControllerTests extends MockMvcTest {
                 .andReturn();
 
         Map data = deserialize(result, Map.class);
-        logger.info("{}", data);
         assertEquals(1, data.get("count"));
     }
 }

@@ -32,7 +32,7 @@ public class DyhierarchyControllerTests  extends MockMvcTest {
             }
             Source ab = new Source(f);
             ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"));
-            assetService.index(ab);
+            indexService.index(ab);
         }
         refreshIndex();
     }
@@ -50,7 +50,7 @@ public class DyhierarchyControllerTests  extends MockMvcTest {
                         new DyHierarchyLevel("source.type.raw"),
                         new DyHierarchyLevel("source.extension.raw"),
                         new DyHierarchyLevel("source.filename.raw")));
-        
+
         MvcResult result = mvc.perform(post("/api/v1/dyhi")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

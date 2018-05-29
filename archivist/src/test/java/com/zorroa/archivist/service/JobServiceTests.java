@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.PipelineType;
@@ -56,8 +55,6 @@ public class JobServiceTests extends AbstractTest {
         c.setTasksRunning(2);
         c.setTasksSuccess(1);
         job.setCounts(c);
-
-        logger.info("{}", job.getProgress());
     }
 
     @Test

@@ -7,7 +7,6 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.cluster.thrift.TaskStartT
 import com.zorroa.common.config.NetworkEnvironment
-import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.SharedData

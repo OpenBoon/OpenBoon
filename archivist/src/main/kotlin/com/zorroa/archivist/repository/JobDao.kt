@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.PipelineType

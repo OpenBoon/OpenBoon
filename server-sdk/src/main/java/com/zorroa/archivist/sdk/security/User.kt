@@ -7,12 +7,12 @@ import java.util.*
 
 interface UserId {
     val id : UUID
-
     fun getName() : String
 }
 
 class UserAuthed(
         override val id: UUID,
+        val organizationId: UUID,
         username: String,
         permissions: Set<out GrantedAuthority>) : UserId, UserDetails, Serializable {
 

@@ -1,2 +1,0 @@
-
-ALTER TABLE room ALTER COLUMN json_search DROP NOT NULL;

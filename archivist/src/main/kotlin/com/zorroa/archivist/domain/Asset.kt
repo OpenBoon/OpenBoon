@@ -2,12 +2,15 @@ package com.zorroa.archivist.domain
 
 import com.zorroa.sdk.domain.Asset
 import com.zorroa.sdk.domain.Document
+import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
-import org.elasticsearch.client.Client
+import org.elasticsearch.action.search.SearchScrollRequest
+
+import org.elasticsearch.client.RestHighLevelClient
 import java.util.*
 import java.util.function.Consumer
 
-class ScanAndScrollAssetIterator(private val client: Client,
+class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
                                  private val rsp: SearchResponse,
                                  private var maxResults: Long) : Iterable<Document> {
 
@@ -26,14 +29,18 @@ class ScanAndScrollAssetIterator(private val client: Client,
 
             override fun hasNext(): Boolean {
                 if (index >= hits.size) {
-                    hits = client.prepareSearchScroll(rsp.scrollId).setScroll("1m")
-                            .get().hits.hits
+                    val sr = SearchScrollRequest()
+                    sr.scrollId(rsp.scrollId)
+                    sr.scroll("1m")
+                    hits = client.searchScroll(sr).hits.hits
                     index = 0
                 }
 
                 val hasMore = index < hits.size && count < maxResults
                 if (!hasMore) {
-                    client.prepareClearScroll().addScrollId(rsp.scrollId).execute()
+                    var csr = ClearScrollRequest()
+                    csr.addScrollId(rsp.scrollId)
+                    client.clearScroll(csr)
                 }
                 return hasMore
             }
@@ -42,7 +49,7 @@ class ScanAndScrollAssetIterator(private val client: Client,
                 val asset = Asset()
                 val hit = hits[index++]
 
-                asset.document = hit.source
+                asset.document = hit.sourceAsMap
                 asset.id = hit.id
 
                 count++

@@ -13,7 +13,6 @@ import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.cluster.thrift.ExpandT
 import com.zorroa.common.config.NetworkEnvironment
-import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.Document
@@ -178,7 +177,7 @@ class JobServiceImpl @Autowired constructor(
     private lateinit var pluginService : PluginService
 
     @Autowired
-    private lateinit var assetService : AssetService
+    private lateinit var indexService : IndexService
 
 
     /**
@@ -315,7 +314,7 @@ class JobServiceImpl @Autowired constructor(
                 if (exframe.processors.isEmpty()) {
                     logger.info("The expand frame has empty proc list, indexing directly.")
                     try {
-                        assetService.index(exframe.document)
+                        indexService.index(exframe.document)
                     } catch (e:Exception) {
                         logger.warn("Failed to direct index {}", e);
                     }

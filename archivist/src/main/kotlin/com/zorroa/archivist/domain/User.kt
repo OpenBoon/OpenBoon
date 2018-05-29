@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.sdk.security.UserId
+import com.zorroa.archivist.security.createPasswordHash
 import org.hibernate.validator.constraints.Email
 import org.hibernate.validator.constraints.NotEmpty
 import java.util.*
@@ -15,7 +16,8 @@ data class UserBase (
         val username: String,
         val email: String,
         val permissionId: UUID,
-        val homeFolderId: UUID) : UserId {
+        val homeFolderId: UUID,
+        val organizationId: UUID) : UserId {
 
     @JsonIgnore
     override fun getName(): String = username
@@ -38,6 +40,7 @@ data class User (
         val source: String,
         val permissionId: UUID,
         val homeFolderId: UUID,
+        val organizationId: UUID,
         val firstName: String?,
         val lastName: String?,
         val enabled: Boolean,
@@ -62,5 +65,22 @@ data class UserProfileUpdate (
         var firstName : String? = "",
         var lastName: String? = "")
 
+
+data class UserSpec (
+        val username: String,
+        val password: String,
+        val email: String,
+        var source : String = "local",
+        var organizationId: UUID? = null,
+        var firstName: String? = null,
+        var lastName: String? = null,
+        var permissionIds: List<UUID>? = null,
+        var homeFolderId: UUID? = null,
+        var userPermissionId: UUID? = null) {
+
+    fun hashedPassword(): String {
+        return createPasswordHash(password)
+    }
+}
 
 

@@ -32,7 +32,6 @@ public class MaintenanceDaoTests extends AbstractTest {
 
     @After
     public void after() throws IOException {
-        logger.info("removing test file");
         Files.deleteIfExists(file.toPath());
     }
 

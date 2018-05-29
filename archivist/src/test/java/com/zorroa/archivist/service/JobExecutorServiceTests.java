@@ -3,14 +3,10 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobSpec;
-import com.zorroa.archivist.domain.Task;
-import com.zorroa.archivist.domain.TaskSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.cluster.thrift.ExpandT;
 import com.zorroa.cluster.thrift.TaskStartT;
-import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Expand;
@@ -181,17 +177,12 @@ public class JobExecutorServiceTests extends AbstractTest {
      */
     public void unittestSchedule() {
         for (TaskStartT task: taskDao.getWaiting(10)) {
-            logger.debug("SCHEDULE");
-            logger.debug("{}", Json.prettyString(task));
-            logger.debug("SCHEDULE");
-
             Task t = taskDao.get(UUID.fromString(task.id));
             if (!jobService.setTaskState(t, TaskState.Queued, TaskState.Waiting)) {
                 throw new RuntimeException("Failed to queue task");
             }
 
             if (!jobService.setTaskState(t, TaskState.Running, TaskState.Queued)) {
-                logger.warn("Failed to set task running: {}", task);
                 throw new RuntimeException("Failed to run task");
             }
         }

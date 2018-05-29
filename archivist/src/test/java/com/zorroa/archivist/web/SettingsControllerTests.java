@@ -42,10 +42,11 @@ public class SettingsControllerTests extends MockMvcTest {
     @Test
     public void testGetAllFilter() throws Exception {
         MockHttpSession session = admin();
-
+        SettingsFilter filter = new SettingsFilter();
+        filter.setCount(5);
         MvcResult result = mvc.perform(get("/api/v1/settings")
                 .session(session)
-                .content(Json.serialize(new SettingsFilter().setCount(5)))
+                .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();

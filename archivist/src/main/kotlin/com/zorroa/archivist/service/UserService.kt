@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserDaoCache
 import com.zorroa.archivist.repository.UserDaoImpl.Companion.SOURCE_LOCAL
-import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.*
 import com.zorroa.sdk.client.exception.DuplicateEntityException
@@ -36,9 +36,6 @@ interface UserService {
     fun getAll(): List<User>
 
     fun getCount(): Long
-
-    // Presets
-    fun getUserPresets(): List<UserPreset>
 
     fun create(builder: UserSpec): User
 
@@ -80,14 +77,6 @@ interface UserService {
 
     fun hasPermission(user: User, permission: Permission): Boolean
 
-    fun getUserPreset(id: UUID): UserPreset
-
-    fun updateUserPreset(id: UUID, preset: UserPreset): Boolean
-
-    fun createUserPreset(preset: UserPresetSpec): UserPreset
-
-    fun deleteUserPreset(preset: UserPreset): Boolean
-
     fun checkPassword(user: String, supplied: String)
 
     fun resetPassword(user: User, password: String)
@@ -114,11 +103,11 @@ class UserRegistryServiceImpl @Autowired constructor(
      */
     override fun registerUser(username: String, source: AuthSource, groups: List<String>?): UserAuthed {
         val user = if (!userService.exists(username, null)) {
-            val spec = UserSpec()
-            spec.username = username
-            spec.password = UUID.randomUUID().toString() + UUID.randomUUID().toString()
-            spec.email = username
-            spec.source = source.authSourceId
+            val spec = UserSpec(
+                    username,
+                    UUID.randomUUID().toString() + UUID.randomUUID().toString(),
+                    username,
+                    source.authSourceId)
             userService.create(spec)
         } else {
             userService.get(username)
@@ -130,14 +119,14 @@ class UserRegistryServiceImpl @Autowired constructor(
         }
 
         val perms = userService.getPermissions(user)
-        return UserAuthed(user.id, user.username, perms.toSet())
+        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
     }
 
     @Transactional(readOnly = true)
     override fun getUser(username: String): UserAuthed {
         val user = userService.get(username)
         val perms = userService.getPermissions(user)
-        return UserAuthed(user.id, user.username, perms.toSet())
+        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
     }
 
     fun importAndAssignPermissions(user: UserId, source: AuthSource, groups: List<String>) {
@@ -163,12 +152,6 @@ class UserRegistryServiceImpl @Autowired constructor(
 
         userService.setPermissions(user, perms, source.authSourceId)
     }
-
-    companion object {
-
-        private val logger = LoggerFactory.getLogger(UserRegistryServiceImpl::class.java)
-
-    }
 }
 
 @Service
@@ -177,7 +160,7 @@ class UserServiceImpl @Autowired constructor(
         private val userDao: UserDao,
         private val userDaoCache: UserDaoCache,
         private val permissionDao: PermissionDao,
-        private val userPresetDao: UserPresetDao,
+        private val organizationDao: OrganizationDao,
         private val tx: TransactionEventManager,
         private val properties: ApplicationProperties
 ): UserService, ApplicationListener<ContextRefreshedEvent> {
@@ -205,6 +188,16 @@ class UserServiceImpl @Autowired constructor(
 
     override fun create(builder: UserSpec): User {
 
+        /**
+         * TODO:
+         * Look into how and where this gets set in the cloud.
+         * Probably needs to be set.
+         */
+        if (builder.organizationId == null &&
+                properties.getBoolean("archivist.organization.single-org-mode")) {
+            builder.organizationId = organizationDao.getOnlyOne().id
+        }
+
         if (builder.source == null) {
             builder.source = SOURCE_LOCAL
         }
@@ -230,23 +223,10 @@ class UserServiceImpl @Autowired constructor(
         val user = userDao.create(builder)
 
         /*
-         * Grab the preset, if any.
-         */
-        var preset: UserPreset? = null
-        if (builder.userPresetId != null) {
-            preset = userPresetDao.get(builder.userPresetId)
-            userDao.setSettings(user, preset.settings)
-        }
-
-        /*
          * Get the permissions specified with the builder and add our
          * user permission to the list.q
          */
         val perms = Sets.newHashSet(permissionDao.getAll(builder.permissionIds))
-        if (preset != null && preset.permissionIds != null) {
-            perms.addAll(permissionDao.getAll(preset.permissionIds.toTypedArray()))
-        }
-
         if (!perms.isEmpty()) {
             setPermissions(user, perms)
         }
@@ -325,7 +305,7 @@ class UserServiceImpl @Autowired constructor(
         if (!userDao.exists(user.username, SOURCE_LOCAL)
                 && (updatePermsAndFolders
                 || user.email != form.email)) {
-            throw IllegalStateException("Users from external sources cannot change their username or email address.")
+            throw IllegalArgumentException("Users from external sources cannot change their username or email address.")
         }
 
         val result = userDao.update(user, form)
@@ -450,26 +430,6 @@ class UserServiceImpl @Autowired constructor(
 
     override fun hasPermission(user: User, permission: Permission): Boolean {
         return userDao.hasPermission(user, permission)
-    }
-
-    override fun getUserPresets(): List<UserPreset> {
-        return userPresetDao.getAll()
-    }
-
-    override fun getUserPreset(id: UUID): UserPreset {
-        return userPresetDao.get(id)
-    }
-
-    override fun updateUserPreset(id: UUID, preset: UserPreset): Boolean {
-        return userPresetDao.update(id, preset)
-    }
-
-    override fun createUserPreset(preset: UserPresetSpec): UserPreset {
-        return userPresetDao.create(preset)
-    }
-
-    override fun deleteUserPreset(preset: UserPreset): Boolean {
-        return userPresetDao.delete(preset.presetId)
     }
 
     override fun checkPassword(username: String, supplied: String) {

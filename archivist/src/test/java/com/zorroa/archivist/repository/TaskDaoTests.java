@@ -7,7 +7,6 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.cluster.thrift.TaskStartT;
-import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.PipelineType;

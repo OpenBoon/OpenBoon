@@ -1,7 +1,5 @@
 package com.zorroa.common.config;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,16 +41,8 @@ public class NetworkEnvironmentUtils {
     }
 
     public static String getLocation(ApplicationProperties properties) {
-        if (properties.getBoolean("server.aws.check-location", true)) {
-            Region region = Regions.getCurrentRegion();
-            if (region == null) {
-                return ON_PREM;
-            } else {
-                return region.getName();
-            }
-        } else {
-            return ON_PREM;
-        }
+        return ON_PREM;
+
     }
 
     public static final String getPrivateHostname(ApplicationProperties properties) {

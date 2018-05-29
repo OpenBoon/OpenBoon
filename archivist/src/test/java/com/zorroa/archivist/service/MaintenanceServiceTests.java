@@ -1,20 +1,14 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.Maps;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.MaintenanceDao;
-import com.zorroa.common.domain.AnalystSpec;
-import com.zorroa.common.domain.AnalystState;
 import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 import static org.junit.Assert.*;
 
@@ -31,56 +25,6 @@ public class MaintenanceServiceTests extends AbstractTest {
 
     @Autowired
     JobService jobService;
-
-    @Autowired
-    AnalystDao analystDao;
-
-    @Test
-    public void testBackup() throws IOException {
-        File tmpFile = Files.createTempFile("backup", "zorroa").toFile();
-        maintenanceService.backup(tmpFile);
-        assertTrue(tmpFile.exists());
-        Files.deleteIfExists(tmpFile.toPath());
-        assertFalse(tmpFile.exists());
-    }
-
-    @Test
-    public void testAutomaticBackup() throws IOException {
-        String vendor = properties.getString("archivist.datasource.primary.vendor");
-        if (!vendor.equals("h2")) { return; }
-
-        File file = maintenanceService.getNextAutomaticBackupFile();
-        if (file.exists()) {
-            Files.delete(file.toPath());
-        }
-        File backup = maintenanceService.automaticBackup();
-        assertTrue(backup.exists());
-        Files.deleteIfExists(backup.toPath());
-    }
-
-    @Test
-    public void testRemoveExpiredBackups() throws IOException {
-        String vendor = properties.getString("archivist.datasource.primary.vendor");
-        if (!vendor.equals("h2")) { return; }
-
-        try {
-            maintenanceService.removeExpiredBackups(0);
-            File file = maintenanceService.getNextAutomaticBackupFile();
-            if (file != null) {
-                if (file.exists()) {
-                    Files.delete(file.toPath());
-                }
-            }
-
-            File backup = maintenanceService.automaticBackup();
-            assertTrue(backup.exists());
-            assertEquals(1, maintenanceService.removeExpiredBackups(0));
-            assertFalse(backup.exists());
-        } catch (Exception e) {
-            logger.warn("Failed to remove expired backups", e);
-            assertTrue(false);
-        }
-    }
 
     @Test
     public void testRemoveExpiredJobData() {
@@ -117,23 +61,4 @@ public class MaintenanceServiceTests extends AbstractTest {
         assertEquals(JobState.Expired, updateJob.getState());
 
     }
-
-    @Test
-    public void testRemoveExpiredAnalysts() {
-        assertEquals(0, maintenanceService.removeExpiredAnalysts());
-
-        AnalystSpec spec = new AnalystSpec();
-        spec.setId("bilbo");
-        spec.setState(AnalystState.DOWN);
-        spec.setUrl("http://127.0.0.2:8099");
-        spec.setQueueSize(1);
-        spec.setMetrics(Maps.newHashMap());
-        spec.setArch("osx");
-        spec.setUpdatedTime(1);
-        String id = analystDao.register(spec);
-        refreshIndex();
-
-        assertEquals(1, maintenanceService.removeExpiredAnalysts());
-    }
-
 }
