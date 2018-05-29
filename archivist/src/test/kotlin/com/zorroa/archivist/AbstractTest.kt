@@ -67,12 +67,6 @@ open abstract class AbstractTest {
     protected lateinit var folderService: FolderService
 
     @Autowired
-    protected lateinit var jobService: JobService
-
-    @Autowired
-    protected lateinit var exportService: ExportService
-
-    @Autowired
     protected lateinit var pipelineService: PipelineService
 
     @Autowired

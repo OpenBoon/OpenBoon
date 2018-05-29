@@ -105,7 +105,6 @@ class IndexServiceImpl  @Autowired  constructor (
         private val logService: EventLogService,
         private val searchService: SearchService,
         private val properties: ApplicationProperties,
-        private val jobService: JobService,
         private val client: RestHighLevelClient,
         private val ofs: ObjectFileSystem
 
@@ -259,24 +258,6 @@ class IndexServiceImpl  @Autowired  constructor (
         }
 
         val result = indexDao.index(spec.sources)
-        val addr = TaskStatsAdder(result)
-
-        if (spec.taskId != null && spec.jobId != null) {
-            jobService.incrementStats(object : TaskId {
-                override fun getJobId(): UUID? {
-                    return spec.jobId
-                }
-
-                override fun getTaskId(): UUID? {
-                    return spec.taskId
-                }
-
-                override fun getParentTaskId(): UUID? {
-                    return null
-                }
-            }, addr)
-        }
-
         if (result.created + result.updated + result.replaced > 0) {
 
             /**

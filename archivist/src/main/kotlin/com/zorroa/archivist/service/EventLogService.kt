@@ -32,9 +32,6 @@ class EventLogServiceImpl @Autowired constructor(
 
 ) : EventLogService {
 
-    @Autowired
-    private lateinit var jobService: JobService
-
     private val executor = SecureSingleThreadExecutor.singleThreadExecutor()
 
     override fun log(spec: UserLogSpec) {
