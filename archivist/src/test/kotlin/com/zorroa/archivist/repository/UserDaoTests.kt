@@ -112,10 +112,10 @@ class UserDaoTests : AbstractTest() {
         builder.email = "test@test.com"
 
         assertTrue(userDao.update(user, builder))
-        val (_, _, email, _, _, _, firstName, lastName) = userDao.get(user.id)
-        assertEquals(builder.email, email)
-        assertEquals(builder.firstName, firstName)
-        assertEquals(builder.lastName, lastName)
+        val t = userDao.get(user.id)
+        assertEquals(builder.email, t.email)
+        assertEquals(builder.firstName, t.firstName)
+        assertEquals(builder.lastName, t.lastName)
     }
 
     @Test
@@ -191,9 +191,9 @@ class UserDaoTests : AbstractTest() {
     @Test
     fun testIncrementLoginCount() {
         userDao.incrementLoginCounter(user)
-        val (_, _, _, _, _, _, _, _, _, _, loginCount, timeLastLogin) = userDao.get(user.id)
-        assertTrue(timeLastLogin > 0)
-        assertEquals(1, loginCount.toLong())
+        val t = userDao.get(user.id)
+        assertTrue(t.timeLastLogin > 0)
+        assertEquals(1, t.loginCount.toLong())
 
     }
 }
