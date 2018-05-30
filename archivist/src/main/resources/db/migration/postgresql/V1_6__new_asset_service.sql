@@ -13,11 +13,9 @@ CREATE TABLE asset (
   pk_user_modified UUID NOT NULL,
   str_filename TEXT NOT NULL,
   str_location TEXT,
-  int_state SMALLINT NOT NULL DEFAULT 0,
   bool_direct BOOLEAN NOT NULL,
   time_created BIGINT NOT NULL,
-  time_modified BIGINT NOT NULL,
-  int_task_count INTEGER NOT NULL DEFAULT 0
+  time_modified BIGINT NOT NULL
 );
 
 CREATE INDEX asset_pk_organization_idx ON asset (pk_organization);
