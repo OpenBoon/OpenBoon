@@ -10,14 +10,6 @@ import java.util.*
 import java.util.function.Consumer
 
 
-enum class AssetState {
-    PENDING_FILE,
-    PENDING,
-    RUNNING,
-    STORED,
-    INDEXED
-}
-
 data class AssetSpec(
     var filename: String? = null,
     val location: String? = null,
@@ -28,10 +20,8 @@ data class AssetSpec(
 
 data class AssetId(
     val id: UUID,
-    val organizationId: UUID,
-    val state: AssetState
+    val organizationId: UUID
 )
-
 
 class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
                                  private val rsp: SearchResponse,
