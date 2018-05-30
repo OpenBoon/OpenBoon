@@ -1,11 +1,9 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.Files;
 import com.zorroa.archivist.domain.OnlineFileCheckRequest;
 import com.zorroa.archivist.service.LocalFileSystem;
 import com.zorroa.archivist.web.api.FileSystemController;
-import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
@@ -21,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -49,20 +46,6 @@ public class FileSystemControllerTests extends MockMvcTest {
         String uri = "a/b/c/1/2/3/bogus.jpg";
          mvc.perform(get("/api/v1/ofs/proxies/" + uri))
                 .andExpect(status().is4xxClientError())
-                .andReturn();
-    }
-
-    @Test
-    public void testGetFile() throws Exception {
-        MockHttpSession session = admin();
-
-        ObjectFile f = ofs.prepare("bing", UUID.randomUUID().toString(), "jpg");
-        Files.copy(resources.resolve("images/set01/faces.jpg").toFile(), f.getFile());
-
-        String url = "/api/v1/ofs/" + f.getId();
-        mvc.perform(get(url)
-                .session(session))
-                .andExpect(status().is(200))
                 .andReturn();
     }
 
