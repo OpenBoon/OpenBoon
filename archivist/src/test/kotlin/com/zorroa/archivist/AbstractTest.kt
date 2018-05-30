@@ -61,6 +61,9 @@ open abstract class AbstractTest {
     protected lateinit var userService: UserService
 
     @Autowired
+    protected lateinit var assetService: AssetService
+
+    @Autowired
     protected lateinit var permissionService: PermissionService
 
     @Autowired

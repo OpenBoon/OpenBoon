@@ -5,10 +5,33 @@ import com.zorroa.sdk.domain.Document
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
-
 import org.elasticsearch.client.RestHighLevelClient
 import java.util.*
 import java.util.function.Consumer
+
+
+enum class AssetState {
+    PENDING_FILE,
+    PENDING,
+    RUNNING,
+    STORED,
+    INDEXED
+}
+
+data class AssetSpec(
+    var filename: String? = null,
+    val location: String? = null,
+    val document: Map<String, Any>? = null,
+    var pipelineIds: List<String>? = null,
+    var directAccess: Boolean = false
+)
+
+data class AssetId(
+    val id: UUID,
+    val organizationId: UUID,
+    val state: AssetState
+)
+
 
 class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
                                  private val rsp: SearchResponse,
