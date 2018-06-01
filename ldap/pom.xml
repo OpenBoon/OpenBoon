@@ -3,9 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>1.5.9.RELEASE</version>
+        <relativePath>../pom.xml</relativePath>
+        <groupId>com.zorroa</groupId>
+        <artifactId>zorroa-server</artifactId>
+        <version>0.40.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -25,7 +26,7 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>server-sdk</artifactId>
-            <version>0.40.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -56,6 +57,7 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
