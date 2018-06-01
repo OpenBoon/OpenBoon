@@ -105,11 +105,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     override fun runOneIteration() {
 
         /**
-         * Remove old job data
-         */
-        removeExpiredJobData()
-
-        /**
          * Remove expired shared links.
          */
         removeExpiredSharedLinks()

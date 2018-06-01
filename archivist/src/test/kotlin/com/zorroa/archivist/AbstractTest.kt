@@ -112,10 +112,7 @@ open abstract class AbstractTest {
 
     @Autowired
     internal lateinit var transactionManager: DataSourceTransactionManager
-
-    @Autowired
-    internal lateinit var archivistRepositorySetup: PluginSetup
-
+    
     @Value("\${zorroa.cluster.index.alias}")
     protected lateinit var alias: String
 
