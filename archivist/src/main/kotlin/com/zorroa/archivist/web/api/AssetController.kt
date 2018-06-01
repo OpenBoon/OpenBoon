@@ -8,6 +8,9 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.services.AssetService
+import com.zorroa.archivist.sdk.services.AssetSpec
+import com.zorroa.archivist.sdk.services.StorageService
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
@@ -43,10 +46,12 @@ import javax.validation.Valid
 @RestController
 class AssetController @Autowired constructor(
         private val indexService: IndexService,
+        private val assetService: AssetService,
         private val searchService: SearchService,
         private val folderService: FolderService,
         private val logService: EventLogService,
         private val imageService: ImageService,
+        private val storageService: StorageService,
         private val ofs: ObjectFileSystem,
         private val commandService: CommandService,
         private val fieldService: FieldService
@@ -352,7 +357,6 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
     @Throws(Exception::class)
     fun setFolders(@PathVariable id: String, @RequestBody req: SetFoldersRequest): Any {
-        logger.info("{}", req)
         req?.folders?.let {
             folderService.setFoldersForAsset(id, it)
             return HttpUtils.updated("asset", id, true)
@@ -380,6 +384,12 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {
         logger.warn("Refresh called.")
+    }
+
+    @PostMapping(value = ["/api/v1/assets"])
+    @ResponseBody
+    fun create(@RequestBody spec: AssetSpec): Any {
+        return assetService.create(spec)
     }
 
     companion object {

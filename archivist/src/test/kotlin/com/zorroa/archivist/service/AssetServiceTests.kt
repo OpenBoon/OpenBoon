@@ -1,18 +1,15 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.PipelineSpecV
+import com.zorroa.archivist.sdk.services.AssetSpec
 import com.zorroa.sdk.processor.PipelineType
 import com.zorroa.sdk.processor.ProcessorRef
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.assertEquals
 
 class AssetServiceTests : AbstractTest() {
-
-    //lateinit var pipeline : Pipeline
 
     @Before
     fun init() {
@@ -27,19 +24,11 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testAnalyze() {
-        val spec = AssetSpec("bilbo.png", pipelineIds = listOf("test1"))
-        val asset = assetService.analyze(spec)
-        assertFalse(jdbc.queryForObject("SELECT bool_direct FROM asset WHERE pk_asset=?",
-                Boolean::class.java, asset.id))
-    }
-
-    @Test
-    fun testAnalyzeWithFile() {
-        val spec = AssetSpec(location=getTestPath("images/set01/toucan.jpg").toString(),
-                pipelineIds = listOf("test1"))
-        val asset = assetService.analyze(spec)
-        assertTrue(jdbc.queryForObject("SELECT bool_direct FROM asset WHERE pk_asset=?",
-                Boolean::class.java, asset.id))
+    fun testCreate() {
+        val spec = AssetSpec("bilbo.png",
+                document = mapOf("foo" to "bar"), pipelines = listOf("test1"))
+        val asset = assetService.create(spec)
+        val metadata = storageService.getMetadata(asset)
+        assertEquals(spec.document, metadata)
     }
 }

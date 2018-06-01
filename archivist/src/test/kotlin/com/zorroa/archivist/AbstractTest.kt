@@ -7,6 +7,8 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.config.PluginSetup
 import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.sdk.services.AssetService
+import com.zorroa.archivist.sdk.services.StorageService
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
@@ -62,6 +64,9 @@ open abstract class AbstractTest {
 
     @Autowired
     protected lateinit var assetService: AssetService
+
+    @Autowired
+    protected lateinit var storageService: StorageService
 
     @Autowired
     protected lateinit var permissionService: PermissionService
@@ -211,13 +216,11 @@ open abstract class AbstractTest {
 
 
         val reqDel = DeleteIndexRequest("_all")
-        logger.info("Deleting all ES indexes: {}",
-                client.indices().delete(reqDel).isAcknowledged)
+        client.indices().delete(reqDel)
 
         val mapping = Json.Mapper.readValue<Map<String,Any>>(
                 File("../elasticsearch/asset.json"), Json.GENERIC_MAP)
 
-        logger.info("Creating ES index")
         val reqCreate = CreateIndexRequest("archivist")
         reqCreate.source(mapping)
         client.indices().create(reqCreate)

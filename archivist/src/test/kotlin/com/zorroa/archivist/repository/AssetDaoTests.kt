@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.sdk.services.AssetSpec
 import com.zorroa.archivist.security.getUser
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,31 +14,14 @@ class AssetDaoTests : AbstractTest() {
     private lateinit var assetDao : AssetDao
 
     val assetSpec = AssetSpec(
-            "visa.jpg",
-            location = "../zorroa-test-data/images/set01/visa.jpg",
-            directAccess = true)
+            "visa.jpg")
 
     @Test
-    fun testCreateNoLocation() {
+    fun testCreate() {
         val spec = AssetSpec("bilbo.png")
         val asset = assetDao.create(spec)
         assertNotNull(asset.id)
         assertEquals(getUser().organizationId, asset.organizationId)
-    }
-
-    @Test
-    fun testCreateDirectAccessFile() {
-        val asset = assetDao.create(assetSpec)
-        assertNotNull(asset.id)
-        assertEquals(getUser().organizationId, asset.organizationId)
-    }
-
-    @Test
-    fun testGetIdByLocation() {
-        val asset1 = assetDao.create(assetSpec)
-        val asset2 = assetDao.getId(assetSpec.location!!)
-        assertEquals(asset1.id, asset2.id)
-        assertEquals(asset1.organizationId, asset2.organizationId)
     }
 
     @Test

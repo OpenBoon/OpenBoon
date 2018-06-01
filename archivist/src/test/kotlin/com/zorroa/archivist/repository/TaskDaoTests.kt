@@ -1,9 +1,9 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AssetId
-import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.sdk.services.AssetId
+import com.zorroa.archivist.sdk.services.AssetSpec
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +18,7 @@ class TaskDaoTests : AbstractTest() {
 
     @Before
     fun init() {
-        asset = assetService.analyze(AssetSpec("dog.png"))
+        asset = assetService.create(AssetSpec("dog.png"))
     }
 
     @Test

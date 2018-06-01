@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.JdbcUtils
-import com.zorroa.archivist.domain.AssetId
-import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.sdk.services.AssetId
+import com.zorroa.archivist.sdk.services.AssetSpec
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import org.springframework.jdbc.core.RowMapper
@@ -11,47 +11,21 @@ import java.util.*
 
 interface AssetDao {
     fun create(spec: AssetSpec) : AssetId
-    fun exists(location: String?) : Boolean
-    fun getId(location: String) : AssetId
     fun getId(id: UUID) : AssetId
 }
 
 @Repository
 class AssetDaoPostgresImpl : AbstractDao(), AssetDao {
 
-    override fun getId(location: String) : AssetId {
-        return jdbc.queryForObject("SELECT pk_asset, pk_organization FROM asset WHERE pk_organization=? AND str_location=?",
-                MAPPER_ASSET_ID, getUser().organizationId, location)
-    }
-
     override fun getId(id: UUID) : AssetId {
-        return jdbc.queryForObject("SELECT pk_asset, pk_organization FROM asset WHERE pk_organization=? AND pk_asset=?",
+        return jdbc.queryForObject("$GET_ID WHERE pk_organization=? AND pk_asset=?",
                 MAPPER_ASSET_ID, getUser().organizationId, id)
     }
-
-    override fun exists(location: String?) : Boolean {
-        return if (location == null) {
-            false
-        }
-        else {
-            jdbc.queryForObject("SELECT COUNT(1) FROM asset WHERE pk_organization=? AND str_location=?",
-                    Int::class.java, getUser().organizationId, location) == 1
-        }
-    }
-
-
-
 
     override fun create(spec: AssetSpec): AssetId {
         val time = System.currentTimeMillis()
 
-        val id = if (spec.location != null) {
-            uuid3.generate(spec.location)
-        }
-        else {
-            uuid1.generate()
-        }
-
+        val id = uuid1.generate()
         val userid = getUserId()
 
         jdbc.update({ connection ->
@@ -59,39 +33,35 @@ class AssetDaoPostgresImpl : AbstractDao(), AssetDao {
             ps.setObject(1, id)
             ps.setObject(2, getUser().organizationId)
             ps.setString(3, spec.filename)
-            ps.setString(4, spec.location)
-            ps.setBoolean(5, spec.directAccess)
-            ps.setLong(6, time)
-            ps.setLong(7, time)
-            ps.setObject(8, userid)
-            ps.setObject(9, userid)
+            ps.setLong(4, time)
+            ps.setLong(5, time)
+            ps.setObject(6, userid)
+            ps.setObject(7, userid)
             ps
         })
 
-        return AssetId(id, getUser().organizationId)
+        return AssetId(id, getUser().organizationId, spec.filename)
     }
-
 
     companion object {
 
         private val MAPPER_ASSET_ID= RowMapper<AssetId> { rs, _ ->
             AssetId(rs.getObject("pk_asset") as UUID,
-                    rs.getObject("pk_organization") as UUID)
+                    rs.getObject("pk_organization") as UUID,
+                    rs.getString("str_filename"))
         }
+
+        private const val GET_ID = "SELECT pk_asset, pk_organization,str_filename FROM asset"
 
         private val INSERT = JdbcUtils.insert("asset",
                 "pk_asset",
                 "pk_organization",
                 "str_filename",
-                "str_location",
-                "bool_direct",
                 "time_created",
                 "time_modified",
                 "pk_user_created",
                 "pk_user_modified")
-
     }
-
 }
 
 

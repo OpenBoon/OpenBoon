@@ -9,19 +9,10 @@ import org.elasticsearch.client.RestHighLevelClient
 import java.util.*
 import java.util.function.Consumer
 
+/**
+ * Defines the fields needed for an online-asset.
+ */
 
-data class AssetSpec(
-    var filename: String? = null,
-    val location: String? = null,
-    val document: Map<String, Any>? = null,
-    var pipelineIds: List<String>? = null,
-    var directAccess: Boolean = false
-)
-
-data class AssetId(
-    val id: UUID,
-    val organizationId: UUID
-)
 
 class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
                                  private val rsp: SearchResponse,
