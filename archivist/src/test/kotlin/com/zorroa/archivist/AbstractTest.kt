@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.config.PluginSetup
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.services.AssetService
 import com.zorroa.archivist.sdk.services.StorageService
@@ -112,7 +111,7 @@ open abstract class AbstractTest {
 
     @Autowired
     internal lateinit var transactionManager: DataSourceTransactionManager
-    
+
     @Value("\${zorroa.cluster.index.alias}")
     protected lateinit var alias: String
 
