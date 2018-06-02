@@ -87,7 +87,9 @@ class ArchivistConfiguration {
                                 .addUrlPattern("/*"))
                         .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
                         .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
-                        .setConfidentialPortManager(ConfidentialPortManager {8066})
+                        .setConfidentialPortManager(ConfidentialPortManager {
+                            properties().getInt("server.port", 8066)
+                        })
             })
         }
         return factory
