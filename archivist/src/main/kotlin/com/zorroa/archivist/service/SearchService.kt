@@ -343,7 +343,7 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (search.fields != null) {
-            request.setFetchSource(search.fields, arrayOf("media.content", "analysis"))
+            request.setFetchSource(search.fields, arrayOf("media.content"))
         }
 
         if (search.scroll != null) {
