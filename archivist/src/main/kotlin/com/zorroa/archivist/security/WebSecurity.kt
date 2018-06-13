@@ -44,11 +44,6 @@ class MultipleWebSecurityConfig {
         @Autowired
         internal lateinit var properties: ApplicationProperties
 
-        @Bean
-        fun resetPasswordSecurityFilter(): ResetPasswordSecurityFilter {
-            return ResetPasswordSecurityFilter()
-        }
-
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
