@@ -39,6 +39,38 @@ class MultipleWebSecurityConfig {
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @EnableGlobalMethodSecurity(prePostEnabled = true)
+    class LoginSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Autowired
+        internal lateinit var properties: ApplicationProperties
+
+        @Bean
+        fun resetPasswordSecurityFilter(): ResetPasswordSecurityFilter {
+            return ResetPasswordSecurityFilter()
+        }
+
+        @Throws(Exception::class)
+        override fun configure(http: HttpSecurity) {
+            http
+                    .antMatcher("/api/**/login")
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and().headers().frameOptions().disable()
+                    .and().sessionManagement()
+                    .and().httpBasic()
+                    .and().csrf().disable()
+
+            if (properties.getBoolean("archivist.debug-mode.enabled")) {
+                http.authorizeRequests()
+                        .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
+                        .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
+            }
+        }
+    }
+
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
     class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
@@ -65,12 +97,8 @@ class MultipleWebSecurityConfig {
                     .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .sessionManagement()
-                    .and()
-                    .csrf().disable()
+                    .and().sessionManagement()
+                    .and().csrf().disable()
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
@@ -81,7 +109,7 @@ class MultipleWebSecurityConfig {
     }
 
     @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
     class AdminSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Throws(Exception::class)
@@ -105,7 +133,7 @@ class MultipleWebSecurityConfig {
     }
 
     @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 3)
     class FormSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Throws(Exception::class)
