@@ -76,14 +76,33 @@ cd ~/zorroa/zorroa-server/analyst
 
 You can access the server at the link below. You will need a username and password to access the API endpoints. A default superuser will have been pre-populated in database, please ask your neighbor for the credentials. 
 
-[http://localhost:8066/api/v1/settings]()
+[http://localhost:8080/api/v1/settings]()
+
+## Enable HTTPS (Optional)
+
+You can enable https and also force https.
+
+1. Run the following from the root of your repo.
+```
+keytool -genkey -alias undertow -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+```
+
+1. Add the following to your local properties file - zorroa-server/archivist/dist/build/local/config/application.properties
+```
+server.ssl.enabled = true
+server.ssl.key-store = <PATH_TO_REPO>/keystore.p12
+server.ssl.key-store-password: zorroa
+server.ssl.keyStoreType: PKCS12
+server.ssl.keyAlias: undertow
+```
+
+1. Optional: To force a redirect from http to https and not allow http also add the following property.
+```
+security.require_ssl = true
+```
 
 ## Intellij IDEA Debug Server Setup (Optional)
 
 If you are using IDEA for development there are built-in tools for running the servers that all for adding breakpoints throughout the code as well as a myriad other useful tools. Instructions for setup can be found [here](https://wiki.zorroa.com/display/TECH/Intellij+IDEA+Debug+Server+Setup).
 
-
-```
-http://localhost:8066
-```
 

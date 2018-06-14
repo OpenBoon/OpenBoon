@@ -13,11 +13,15 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem
 import com.zorroa.sdk.filesystem.UUIDFileSystem
 import com.zorroa.sdk.processor.SharedData
 import com.zorroa.sdk.util.FileUtils
+import io.undertow.servlet.api.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.endpoint.InfoEndpoint
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder
+import org.springframework.boot.context.embedded.undertow.UndertowBuilderCustomizer
+import org.springframework.boot.context.embedded.undertow.UndertowDeploymentInfoCustomizer
+import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -58,6 +62,27 @@ class ArchivistConfiguration {
     @Bean
     fun transactionEventManager(): TransactionEventManager {
         return TransactionEventManager()
+    }
+
+    @Bean
+    fun servletWebServerFactory() : UndertowEmbeddedServletContainerFactory {
+        val factory =  UndertowEmbeddedServletContainerFactory()
+        factory.addBuilderCustomizers( UndertowBuilderCustomizer {
+            it.addHttpListener(properties().getInt("server.http_port", 8080), "0.0.0.0")
+        })
+        if (properties().getBoolean("security.require_ssl", false)) {
+            factory.addDeploymentInfoCustomizers(UndertowDeploymentInfoCustomizer {
+                it.addSecurityConstraint(SecurityConstraint()
+                        .addWebResourceCollection(WebResourceCollection()
+                                .addUrlPattern("/*"))
+                        .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
+                        .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
+                        .setConfidentialPortManager(ConfidentialPortManager {
+                            properties().getInt("server.port", 8066)
+                        })
+            })
+        }
+        return factory
     }
 
     @Bean
