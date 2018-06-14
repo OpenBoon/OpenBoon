@@ -4,10 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.repository.IndexDao;
 import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
@@ -16,10 +15,7 @@ import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.processor.Source;
-import com.zorroa.sdk.search.AssetFilter;
-import com.zorroa.sdk.search.AssetScript;
 import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.search.RangeQuery;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +25,10 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.FileInputStream;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -39,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AssetControllerTests extends MockMvcTest {
 
     @Autowired
-    AssetDao assetDao;
+    IndexDao indexDao;
 
     @Autowired
     AssetController assetController;
@@ -110,26 +109,6 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testSearchV2() throws Exception {
-
-        MockHttpSession session = admin();
-        addTestAssets("set04/standard");
-
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(new AssetSearch("beer"))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-    }
-
-    @Test
     public void testSearchV3() throws Exception {
 
         MockHttpSession session = admin();
@@ -144,7 +123,6 @@ public class AssetControllerTests extends MockMvcTest {
 
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
-        logger.info("{}", json);
     }
 
     @Test
@@ -172,13 +150,10 @@ public class AssetControllerTests extends MockMvcTest {
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
             source.addToKeywords("media", "reflection");
-            logger.info(Json.prettyString(source));
         }
         addTestAssets(sources);
 
         refreshIndex();
-        logger.info(Json.prettyString(fieldService.getFields("asset")));
-
 
         MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
@@ -222,33 +197,13 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testGet() throws Exception {
-
-        MockHttpSession session = admin();
-        addTestAssets("set04/standard");
-        refreshIndex();
-
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
-        for (Document asset: assets) {
-            MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
-                    .session(session)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(status().isOk())
-                    .andReturn();
-            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                    new TypeReference<Map<String, Object>>() {});
-            assertEquals(asset.getId(), json.get("_id"));
-        }
-    }
-
-    @Test
     public void testDelete() throws Exception {
 
         MockHttpSession session = admin();
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
             MvcResult result = mvc.perform(delete("/api/v1/assets/" + asset.getId())
                     .session(session)
@@ -269,7 +224,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
             MvcResult result = mvc.perform(get("/api/v2/assets/" + asset.getId())
                     .session(session)
@@ -289,7 +244,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
             String url = "/api/v1/assets/_path";
             MvcResult result = mvc.perform(get(url)
@@ -305,7 +260,7 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void tesSetFolders() throws Exception {
+    public void testSetFolders() throws Exception {
         authenticate("admin");
         addTestAssets("set04/canyon");
 
@@ -316,7 +271,7 @@ public class AssetControllerTests extends MockMvcTest {
             folders.add(folder.getId());
         }
 
-        List<Document> assets = assetService.getAll(Pager.first(1)).getList();
+        List<Document> assets = indexService.getAll(Pager.first(1)).getList();
         assertEquals(1, assets.size());
         Document doc = assets.get(0);
 
@@ -329,7 +284,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
 
         refreshIndex();
-        doc = assetService.get(doc.getId());
+        doc = indexService.get(doc.getId());
         assertEquals(10, doc.getAttr("zorroa.links.folder", List.class).size());
 
     }
@@ -339,7 +294,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         addTestAssets("set04/canyon");
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = indexDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         Folder folder2 = folderService.create(new FolderSpec("bar"));
@@ -357,8 +312,10 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assets = assetDao.getAll(Pager.first());
+        refreshIndex();
+        assets = indexDao.getAll(Pager.first());
         for (Document asset: assets) {
+            getLogger().info("{}", asset.getDocument());
             List<String> links = asset.getAttr("zorroa.links.folder", new TypeReference<List<String>>() {});
             assertEquals(2, links.size());
             assertTrue(
@@ -367,243 +324,6 @@ public class AssetControllerTests extends MockMvcTest {
         }
     }
 
-    @Test
-    public void testFilteredSearch() throws Exception {
-        MockHttpSession session = admin();
-
-        addTestAssets("set04/standard");
-
-        AssetSearch search = new AssetSearch(new AssetFilter().addToTerms("source.filename.raw", "beer_kettle_01.jpg"));
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-
-
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-    }
-
-    @Test
-    public void testFolderSearchFilter() throws Exception {
-        MockHttpSession session = admin();
-
-        addTestAssets("set04/standard");
-
-        MvcResult result = mvc.perform(post("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec("TestSearchFolder"))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Folder folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Folder>() {});
-
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
-
-        Document asset = assets.get(0);
-        mvc.perform(post("/api/v1/folders/" + folder.getId() + "/assets")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(ImmutableList.of(asset.getId()))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        AssetSearch search = new AssetSearch(new AssetFilter().addToLinks("folder", folder.getId()));
-
-        result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        TestSearchResult searchResult = Json.Mapper.readValue(
-                result.getResponse().getContentAsString(), TestSearchResult.class);
-        assertEquals(1, searchResult.getHits().getTotal());
-    }
-
-    @Test
-    public void testEmptySearch() throws Exception {
-        MockHttpSession session = admin();
-
-        addTestAssets("set04/standard");
-
-        AssetSearch search = new AssetSearch("");
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(2, count);     // Total count is 2, even though we only get 1 asset in array below
-    }
-
-    @Test
-    public void testFromSize() throws Exception {
-        MockHttpSession session = admin();
-
-        addTestAssets("set04/standard");
-
-        AssetSearch search = new AssetSearch().setPageAndSize(1, 1);
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(2, count);     // Total count is 2, even though we only get 1 asset in array below
-        ArrayList<Object> assets = (ArrayList<Object>) hits.get("hits");
-        assertEquals(1, assets.size());
-    }
-
-    @Test
-    public void testFilterExists() throws Exception {
-        MockHttpSession session = admin();
-        addTestAssets("set04/canyon");
-
-        AssetSearch search = new AssetSearch(new AssetFilter().addToExists("source.path"));
-
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-    }
-
-    @Test
-    public void testFilterMissing() throws Exception {
-        MockHttpSession session = admin();
-        addTestAssets("set04/canyon");
-
-        AssetSearch search = new AssetSearch(new AssetFilter().addToMissing("unknown"));
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-    }
-
-    @Test
-    public void testFilterRange() throws Exception {
-        MockHttpSession session = admin();
-
-        addTestAssets("set04/standard");
-
-        RangeQuery range = new RangeQuery();
-        range.setFrom(100);
-        range.setTo(2400000);
-
-        AssetSearch search = new AssetSearch();
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        logger.info(Json.serializeToString(json));
-
-        search = new AssetSearch(new AssetFilter().addRange("source.fileSize", range));
-        result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-    }
-
-    @Test
-    public void testFilterScript() throws Exception {
-        MockHttpSession session = admin();
-        addTestAssets("set01");
-
-        String text = "doc['source.fileSize'].value == size";
-        AssetScript script = new AssetScript(text,
-                ImmutableMap.of("size", 113333));
-
-        List<AssetScript> scripts = new ArrayList<>();
-        scripts.add(script);
-        AssetSearch asb = new AssetSearch(new AssetFilter().setScripts(scripts));
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(asb)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-    }
-
-    @Test
-    public void testFilterAsset() throws Exception {
-        MockHttpSession session = admin();
-
-        addTestAssets("set04/standard");
-
-        ArrayList<String> assetIds = new ArrayList<>();
-        PagedList<Document> assets = assetDao.getAll(Pager.first());
-        Document asset = assets.get(0);
-        assetIds.add(asset.getId());
-        AssetSearch asb = new AssetSearch(new AssetFilter().addToTerms("_id", assetIds));
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(asb)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-        ArrayList<Map<String, Object>> hitAssets = (ArrayList<Map<String, Object>>)hits.get("hits");
-        Map<String, Object> doc = (Map<String, Object>)hitAssets.get(0);
-        assertEquals(asset.getId(), doc.get("_id"));
-    }
 
     @Test
     public void testStream() throws Exception {
@@ -611,7 +331,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
 
         String url = String.format("/api/v1/assets/%s/_stream", assets.get(0).getId());
         mvc.perform(get(url)
@@ -628,7 +348,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
 
         String url = String.format("/api/v1/assets/%s/_stream?ext=foo", assets.get(0).getId());
         MvcResult result = mvc.perform(get(url)
@@ -644,8 +364,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("/video");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
-        logger.info("Checking preferred format: {}", assets.get(0).getAttr("source.path", String.class));
+        PagedList<Document> assets = indexService.getAll(Pager.first());
         AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "m4v",
                 false, false);
 
@@ -663,21 +382,20 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("/video");
         refreshIndex();
 
-        PagedList<Document> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = indexService.getAll(Pager.first());
         Document asset = assets.get(0);
 
         ObjectFile f = ofs.prepare("asset", assets.get(0).getAttr("source.path"), "webm");
         f.store(new FileInputStream(asset.getAttr("source.path", String.class)));
 
-        assetService.update(asset.getId(), ImmutableMap.of("proxies",
+        indexService.update(asset.getId(), ImmutableMap.of("proxies",
             ImmutableMap.of("video", ImmutableList.of(new Proxy()
                     .setId(f.getId()).setFormat("webm")))));
         refreshIndex();
 
-        asset = assetService.get(asset.getId());
+        asset = indexService.get(asset.getId());
         AssetController.StreamFile file = assetController.getPreferredFormat(asset,
                 "webm", false, false);
         assertNotNull(file);
-        logger.info("{}", Json.prettyString(asset.getDocument()));
     }
 }

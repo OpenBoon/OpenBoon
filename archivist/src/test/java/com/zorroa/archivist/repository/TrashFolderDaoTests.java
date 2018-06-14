@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static com.zorroa.archivist.domain.FolderKt.getRootFolderId;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -49,7 +50,7 @@ public class TrashFolderDaoTests extends AbstractTest {
     @Test
     public void testGetAllByOpWithChildren() {
         Folder folder1 = folderService.create(new FolderSpec("test1"));
-        Folder folder2 = folderService.create(new FolderSpec("test2", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("test2", folder1));
 
         trashFolderDao.create(folder1, "a", true, 0);
         trashFolderDao.create(folder2, "a", false, 1);
@@ -65,7 +66,7 @@ public class TrashFolderDaoTests extends AbstractTest {
         trashFolderDao.create(folder1, "a", true, 1);
         trashFolderDao.create(folder2, "a", false, 2);
 
-        List<TrashedFolder> folders = trashFolderDao.getAll(folderService.get(Folder.ROOT_ID),
+        List<TrashedFolder> folders = trashFolderDao.getAll(folderService.get(getRootFolderId()),
                 UtilsKt.getUserId());
         assertEquals(1, folders.size());
 

@@ -2,15 +2,11 @@ package com.zorroa.common;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.FileUtils;
-import org.elasticsearch.client.Client;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,7 +15,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -37,9 +32,6 @@ import java.util.Set;
 public abstract class AbstractTest {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    protected Client client;
 
     public AbstractTest() {
         System.setProperty("zorroa.unittest", "true");
@@ -78,23 +70,6 @@ public abstract class AbstractTest {
         }
 
         return result;
-    }
-
-    @Before
-    public void __init() throws IOException, ClassNotFoundException {
-        /**
-         * For analyst, this is only done for unit tests.  In production, the
-         * archivist handles creating the index and the mapping.
-         */
-        ElasticClientUtils.deleteAllIndexes(client);
-        ElasticClientUtils.createLatestMapping(client, "archivist");
-        ElasticClientUtils.createLatestMapping(client, "analyst");
-        ElasticClientUtils.createIndexedScripts(client);
-        ElasticClientUtils.createEventLogTemplate(client);
-    }
-
-    public void refreshIndex() {
-        ElasticClientUtils.refreshIndex(client);
     }
 
     public static boolean deleteRecursive(File path) throws FileNotFoundException {

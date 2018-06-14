@@ -1,7 +1,5 @@
 package com.zorroa.archivist;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.common.xcontent.ToXContent;
@@ -123,12 +121,6 @@ public class HttpUtils {
     }
 
     public static String getLocation() {
-        Region region = Regions.getCurrentRegion();
-        if (region == null) {
-            return ON_PREM;
-        }
-        else {
-            return region.getName();
-        }
+        return ON_PREM;
     }
 }

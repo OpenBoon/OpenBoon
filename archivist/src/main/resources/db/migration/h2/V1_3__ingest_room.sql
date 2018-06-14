@@ -1,2 +1,0 @@
-ALTER TABLE ingest
-ADD pk_room BIGINT NOT NULL DEFAULT(0)

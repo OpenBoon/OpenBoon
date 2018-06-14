@@ -7,7 +7,7 @@ package com.zorroa.archivist.web.api
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.PermissionSpec
-import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PermissionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class PermissionController @Autowired constructor(
         val permissionService: PermissionService,
-        val assetService: AssetService
+        val indexService: IndexService
 ){
     /**
      * Return all available permissions.

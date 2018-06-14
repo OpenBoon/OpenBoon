@@ -2,13 +2,17 @@ package com.zorroa.archivist.service
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.google.common.collect.*
+import com.google.common.collect.Lists
+import com.google.common.collect.Maps
+import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.AssetDao
+import com.zorroa.archivist.elastic.SearchBuilder
+import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getPermissionsFilter
-import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -17,27 +21,37 @@ import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.search.RangeQuery
 import com.zorroa.sdk.search.SimilarityFilter
 import com.zorroa.sdk.util.Json
-import org.elasticsearch.action.search.SearchRequestBuilder
+import org.elasticsearch.action.search.ClearScrollRequest
+import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
-import org.elasticsearch.action.suggest.SuggestResponse
-import org.elasticsearch.client.Client
+import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.lucene.search.function.CombineFunction
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
+import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
+import org.elasticsearch.common.xcontent.NamedXContentRegistry
+import org.elasticsearch.common.xcontent.ToXContent
+import org.elasticsearch.common.xcontent.XContentFactory
+import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
-import org.elasticsearch.script.ScriptService
+import org.elasticsearch.script.ScriptType
+import org.elasticsearch.search.SearchModule
+import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
 import org.elasticsearch.search.sort.SortOrder
-import org.elasticsearch.search.sort.SortParseElement
 import org.elasticsearch.search.suggest.Suggest
+import org.elasticsearch.search.suggest.SuggestBuilder
+import org.elasticsearch.search.suggest.SuggestBuilders
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion
-import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder
+import org.elasticsearch.search.suggest.completion.context.CategoryQueryContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.io.IOException
 import java.io.OutputStream
@@ -47,14 +61,11 @@ import java.util.stream.Collectors
 
 interface SearchService {
 
-    fun search(builder: AssetSearch): SearchResponse
     fun count(builder: AssetSearch): Long
 
     fun count(ids: List<UUID>, search: AssetSearch?): List<Long>
 
     fun count(folder: Folder): Long
-
-    fun suggest(text: String): SuggestResponse
 
     fun getSuggestTerms(text: String): List<String>
 
@@ -69,11 +80,10 @@ interface SearchService {
      */
     fun search(page: Pager, search: AssetSearch): PagedList<Document>
 
-    @Throws(IOException::class)
-    fun search(page: Pager, search: AssetSearch, stream: OutputStream)
+    fun search(search: AssetSearch): SearchResponse
 
     @Throws(IOException::class)
-    fun searchElements(page: Pager, search: AssetSearch, stream: OutputStream)
+    fun search(page: Pager, search: AssetSearch, stream: OutputStream)
 
     /**
      * Return the next page of an asset scroll.
@@ -84,11 +94,9 @@ interface SearchService {
      */
     fun scroll(id: String, timeout: String): PagedList<Document>
 
-    fun buildSearch(search: AssetSearch, type: String): SearchRequestBuilder
+    fun buildSearch(search: AssetSearch, type: String): SearchBuilder
 
     fun getQuery(search: AssetSearch): QueryBuilder
-
-    fun analyzeQuery(search: AssetSearch): List<String>
 }
 
 class SearchContext(val linkedFolders: MutableSet<UUID>,
@@ -98,8 +106,8 @@ class SearchContext(val linkedFolders: MutableSet<UUID>,
 
 @Service
 class SearchServiceImpl @Autowired constructor(
-        val assetDao: AssetDao,
-        val client: Client,
+        val indexDao: IndexDao,
+        val client: RestHighLevelClient,
         val properties: ApplicationProperties
 
 ): SearchService {
@@ -112,8 +120,6 @@ class SearchServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var fieldService: FieldService
 
-    @Value("\${zorroa.cluster.index.alias}")
-    private lateinit var alias: String
 
     private val fieldMapCache = CacheBuilder.newBuilder()
             .maximumSize(2)
@@ -127,14 +133,8 @@ class SearchServiceImpl @Autowired constructor(
                 }
             })
 
-    override fun search(search: AssetSearch): SearchResponse {
-        return buildSearch(search, "asset")
-                .setFrom(if (search.from == null) 0 else search.from)
-                .setSize(if (search.size == null) 10 else search.size).get()
-    }
-
     override fun count(builder: AssetSearch): Long {
-        return buildSearch(builder, "asset").setSize(0).get().hits.totalHits
+        return client.search(buildSearch(builder, "asset").request).hits.totalHits
     }
 
     override fun count(ids: List<UUID>, search: AssetSearch?): List<Long> {
@@ -185,21 +185,33 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getSuggestTerms(text: String): List<String> {
-        val builder = client.prepareSuggest(alias)
+
+        val builder = SearchSourceBuilder()
+        val suggestBuilder = SuggestBuilder()
+        val req = SearchRequest()
+        req.source(builder)
+        builder.suggest(suggestBuilder)
+
+        val ctx = mapOf("organization" to
+                listOf<ToXContent>(CategoryQueryContext.builder()
+                        .setCategory(getUser().organizationId.toString())
+                        .setBoost(1)
+                        .setPrefix(false).build()))
+
         val fields = fieldService.getFields("asset")["keywords"] ?: return mutableListOf()
 
-        for (field in fields) {
-            val completion = CompletionSuggestionBuilder(field)
-                    .text(text)
-                    .field("$field.suggest")
-            builder.addSuggestion(completion)
+        for ((idx, field) in fields.withIndex()) {
+            val completion = SuggestBuilders.completionSuggestion("$field.suggest")
+                    .text(text).contexts(ctx)
+            suggestBuilder.addSuggestion("suggest$idx", completion)
         }
 
         val unique = Sets.newTreeSet<String>()
-        val suggest = builder.get().suggest
-        for (field in fields) {
-            val comp = suggest.getSuggestion<CompletionSuggestion>(field) ?: continue
-            for (e in comp.entries) {
+        val suggest = client.search(req).suggest
+
+        for ((idx, _) in fields.withIndex()) {
+            val comp : CompletionSuggestion = suggest.getSuggestion("suggest$idx") ?: continue
+            for (e in comp) {
                 for (o in e.options) {
                     val opt = o as Suggest.Suggestion.Entry.Option
                     unique.add(opt.text.toString())
@@ -207,27 +219,21 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
-        val result = Lists.newArrayList(unique)
-        Collections.sort(result)
+        val result = unique.toList()
+        result.sorted()
         return result
     }
 
-    override fun suggest(text: String): SuggestResponse {
-        val builder = client.prepareSuggest(alias)
-
-        val completion = CompletionSuggestionBuilder("completions")
-                .text(text)
-                .field("keywords.suggest")
-        builder.addSuggestion(completion)
-        return builder.get()
-    }
-
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
-        val rsp = client.prepareSearch(alias)
-                .setScroll(TimeValue(60000))
-                .addSort("_doc", SortOrder.ASC)
-                .setQuery(getQuery(search))
-                .setSize(100).execute().actionGet()
+        val req = SearchRequest()
+        val ssb = SearchSourceBuilder()
+        ssb.query(getQuery(search))
+        ssb.size(100)
+
+        req.source(ssb)
+        req.scroll(TimeValue(60000))
+
+        val rsp = client.search(req)
 
         if (!clamp && maxResults > 0 && rsp.hits.totalHits > maxResults) {
             throw IllegalArgumentException("Asset search has returned more than $maxResults results.")
@@ -250,6 +256,10 @@ class SearchServiceImpl @Autowired constructor(
         return false
     }
 
+    override fun search(search: AssetSearch): SearchResponse {
+        return client.search(buildSearch(search, "asset").request)
+    }
+
     override fun search(page: Pager, search: AssetSearch): PagedList<Document> {
         /**
          * If the search is not empty (its a valid search) and the page
@@ -262,15 +272,17 @@ class SearchServiceImpl @Autowired constructor(
         if (search.scroll != null) {
             val scroll = search.scroll
             if (scroll.id != null) {
-                val result = assetDao.getAll(scroll.id, scroll.timeout)
+                val result = indexDao.getAll(scroll.id, scroll.timeout)
                 if (result.size() == 0) {
-                    client.prepareClearScroll().addScrollId(scroll.id)
+                    val req = ClearScrollRequest()
+                    req.addScrollId(scroll.id)
+                    client.clearScroll(req)
                 }
                 return result
             }
         }
 
-        return assetDao.getAll(page, buildSearch(search, "asset"))
+        return indexDao.getAll(page, buildSearch(search, "asset"))
     }
 
     @Throws(IOException::class)
@@ -283,25 +295,7 @@ class SearchServiceImpl @Autowired constructor(
             logService.logAsync(UserLogSpec.build(LogAction.Search, search))
         }
 
-        /**
-         * If a query is set, analyze it.
-         */
-        val terms = analyzeQuery(search)
-
-        assetDao.getAll(page, buildSearch(search, "asset"), stream, ImmutableMap.of("queryTerms", terms))
-    }
-
-    @Throws(IOException::class)
-    override fun searchElements(page: Pager, search: AssetSearch, stream: OutputStream) {
-        /**
-         * If the search is not empty (its a valid search) and the page
-         * number is 1, then log the search.
-         */
-        if (isSearchLogged(page, search)) {
-            logService.logAsync(UserLogSpec.build(LogAction.Search, search))
-        }
-
-        assetDao.getAll(page, buildSearch(search, "element"), stream, ImmutableMap.of())
+        indexDao.getAll(page, buildSearch(search, "asset"), stream)
     }
 
     override fun scroll(id: String, timeout: String): PagedList<Document> {
@@ -309,45 +303,64 @@ class SearchServiceImpl @Autowired constructor(
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        val result = assetDao.getAll(id, timeout)
+        val result = indexDao.getAll(id, timeout)
         if (result.size() == 0) {
-            client.prepareClearScroll().addScrollId(id)
+            val req = ClearScrollRequest()
+            req.addScrollId(id)
+            client.clearScroll(req)
         }
         return result
     }
 
-    override fun buildSearch(search: AssetSearch, type: String): SearchRequestBuilder {
-        val request = client.prepareSearch(alias)
-                .setTypes(type)
-                // This search type provides stable sorting but seems to ignore
-                // the result si
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setPreference(getUsername())
-                .setQuery(getQuery(search))
+    override fun buildSearch(search: AssetSearch, type: String): SearchBuilder {
+        val ssb = SearchSourceBuilder()
+        ssb.query(getQuery(search))
+
+        val req = SearchRequest()
+        req.indices("archivist")
+        req.types(type)
+        req.searchType(SearchType.DFS_QUERY_THEN_FETCH)
+        req.preference(getUserId().toString())
+        req.source(ssb)
 
         if (search.aggs != null) {
-            request.setAggregations(getAggregations(search))
+            logger.info(Json.prettyString(search.aggs))
+            val result = mutableMapOf<String, Any>()
+            for ((key, value) in search.aggs) {
+                result[key] = value
+            }
+
+            val map = mutableMapOf("aggs" to search.aggs)
+            val json = Json.serializeToString(map)
+
+            val searchModule = SearchModule(Settings.EMPTY, false, Collections.emptyList());
+            val parser = XContentFactory.xContent(XContentType.JSON).createParser(
+                     NamedXContentRegistry(searchModule
+                            .namedXContents), json)
+
+            val ssb2 = SearchSourceBuilder.fromXContent(parser)
+            ssb2.aggregations().aggregatorFactories.forEach( { ssb.aggregation(it)})
         }
 
         if (search.postFilter != null) {
             val query = QueryBuilders.boolQuery()
             applyFilterToQuery(search.postFilter, query, mutableSetOf())
-            request.setPostFilter(query)
+            ssb.postFilter(query)
         }
 
         if (search.scroll != null) {
-            request.setSearchType(SearchType.QUERY_THEN_FETCH)
+            req.searchType(SearchType.QUERY_THEN_FETCH)
             if (search.scroll.timeout != null) {
-                request.setScroll(search.scroll.timeout)
+                req.scroll(search.scroll.timeout)
             }
         }
 
         if (search.fields != null) {
-            request.setFetchSource(search.fields, arrayOf("media.content"))
+            ssb.fetchSource(search.fields, arrayOf("media.content", "analysis"))
         }
 
         if (search.scroll != null) {
-            request.addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
+            ssb.sort(DOC_FIELD_NAME, SortOrder.ASC)
         } else {
             if (search.order != null) {
                 val fields = fieldService.getFields("asset")
@@ -358,20 +371,23 @@ class SearchServiceImpl @Autowired constructor(
                             fields.getValue("string").contains(searchOrder.field)) {
                         searchOrder.field = searchOrder.field + ".raw"
                     }
-                    request.addSort(searchOrder.field, sortOrder)
+                    ssb.sort(searchOrder.field, sortOrder)
                 }
             } else {
-                request.addSort(SortParseElement.SCORE_FIELD_NAME, SortOrder.DESC)
+                ssb.sort("_score", SortOrder.DESC)
                 getDefaultSort().forEach { t, u ->
-                    request.addSort(t, u)
+                    ssb.sort(t, u)
                 }
             }
         }
 
         if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            logger.info("SEARCH: {}", request)
+            XContentFactory.jsonBuilder().use { builder->
+                ssb.query().toXContent(builder, ToXContent.EMPTY_PARAMS)
+                logger.info("SEARCH: {}", builder.string())
+            }
         }
-        return request
+        return SearchBuilder(req, ssb)
     }
 
     private fun getAggregations(search: AssetSearch): Map<String, Any>? {
@@ -398,7 +414,7 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         val query = QueryBuilders.boolQuery()
-        query.minimumNumberShouldMatch(1)
+        query.minimumShouldMatch(1)
 
         val assetBool = QueryBuilders.boolQuery()
 
@@ -480,7 +496,7 @@ class SearchServiceImpl @Autowired constructor(
                     /**
                      * We don't allow dyhi folders to have manual entries.
                      */
-                    if (folder.dyhiId == null && !folder.isDyhiRoot) {
+                    if (folder.dyhiId == null && !folder.dyhiRoot) {
                         childFolders.add(folder.id)
                         if (childFolders.size >= 1024) {
                             break
@@ -553,8 +569,8 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.missing != null) {
             for (term in filter.missing) {
-                val missingFilter = QueryBuilders.missingQuery(term)
-                query.must(missingFilter)
+                val existsFilter = QueryBuilders.existsQuery(term)
+                query.mustNot(existsFilter)
             }
         }
 
@@ -585,9 +601,10 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (filter.scripts != null) {
+
             for (script in filter.scripts) {
-                val scriptFilterBuilder = QueryBuilders.scriptQuery(Script(
-                        script.script, ScriptService.ScriptType.INLINE, script.type, script.params))
+                val scriptFilterBuilder = QueryBuilders.scriptQuery(Script(ScriptType.INLINE,
+                        "painless", script.script, script.params))
                 query.must(scriptFilterBuilder)
             }
         }
@@ -658,9 +675,8 @@ class SearchServiceImpl @Autowired constructor(
 
             for (hash in filter.hashes) {
                 var hashValue: String = hash.hash
-                logger.warn("hash value: {}", hashValue)
                 if (JdbcUtils.isUUID(hashValue)) {
-                    hashValue = assetDao.getFieldValue(hashValue, field)
+                    hashValue = indexDao.getFieldValue(hashValue, field)
                 }
 
                 if (hashValue != null) {
@@ -674,18 +690,21 @@ class SearchServiceImpl @Autowired constructor(
 
             val args = Maps.newHashMap<String, Any>()
             args["field"] = field
-            args["hashes"] = hashes
-            args["weights"] = weights
+            args["hashes"] = hashes.joinToString(",")
+            args["weights"] = weights.joinToString(",")
             args["minScore"] = filter.minScore
 
-            val fsqb = QueryBuilders.functionScoreQuery(
-                    ScoreFunctionBuilders.scriptFunction(Script(
-                            "hammingDistance", ScriptService.ScriptType.INLINE, "native", args)))
 
-            fsqb.setMinScore(filter.minScore / 100.0f)
-            fsqb.boostMode("replace")
-            fsqb.scoreMode("multiply")
+            val fsqb = QueryBuilders.functionScoreQuery(
+                    ScoreFunctionBuilders.scriptFunction(Script(ScriptType.INLINE,
+                            "zorroa-similarity", "similarity", args)))
+
+            fsqb.minScore = filter.minScore / 100.0f
+            fsqb.boostMode(CombineFunction.REPLACE)
+            fsqb.scoreMode(FunctionScoreQuery.ScoreMode.MULTIPLY)
+
             hammingBool.should(fsqb)
+
         }
     }
 
@@ -705,16 +724,6 @@ class SearchServiceImpl @Autowired constructor(
                 }
 
         return result
-    }
-
-    override fun analyzeQuery(search: AssetSearch): List<String> {
-        return if (search.query == null || search.query.isEmpty()) {
-            ImmutableList.of()
-        } else client.admin().indices().prepareAnalyze(
-                search.query)
-                .setIndex("archivist")
-                .get().tokens.stream().map { e -> e.term }.collect(Collectors.toList())
-
     }
 
     companion object {

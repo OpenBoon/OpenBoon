@@ -6,16 +6,17 @@
 
     <groupId>com.zorroa.security</groupId>
     <artifactId>saml</artifactId>
-    <version>1.0.0</version>
+    <version>0.40.0-SNAPSHOT</version>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>1.5.9.RELEASE</version>
+        <relativePath>../pom.xml</relativePath>
+        <groupId>com.zorroa</groupId>
+        <artifactId>zorroa-server</artifactId>
+        <version>0.40.0-SNAPSHOT</version>
     </parent>
 
     <properties>
-        <kotlin.version>1.2.30</kotlin.version>
+        <kotlin.version>1.2.41</kotlin.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
@@ -43,7 +44,7 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>server-sdk</artifactId>
-            <version>0.39.3</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
 

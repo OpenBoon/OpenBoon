@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
+import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineSpecV
@@ -66,7 +67,9 @@ class PipelineServiceImpl @Autowired constructor(
         /**
          * Each processor needs to be validated.
          */
-        spec.processors = validateProcessors(spec.type, spec.processors)
+        // Disable validation until we can find out how to validate
+        // in multi-tenant environment
+        //spec.processors = validateProcessors(spec.type, spec.processors)
 
         /*
          * If there are no pipelines, then this one is the standard.
@@ -95,7 +98,12 @@ class PipelineServiceImpl @Autowired constructor(
     }
 
     override fun get(name: String): Pipeline {
-        return pipelineDao.get(name)
+        return if (JdbcUtils.isUUID(name)) {
+            pipelineDao.get(UUID.fromString(name))
+        }
+        else {
+            pipelineDao.get(name)
+        }
     }
 
     override fun getStandard(type: PipelineType): Pipeline {
@@ -121,8 +129,10 @@ class PipelineServiceImpl @Autowired constructor(
     override fun update(id: UUID, spec: Pipeline): Boolean {
         val pl = pipelineDao.get(id)
 
-        val validated = validateProcessors(pl.type, spec.processors)
-        spec.processors = validated
+        // Disable validation until we can find out how to validate
+        // in multi-tenant environment
+        //val validated = validateProcessors(pl.type, spec.processors)
+        //spec.processors = validated
 
         if (spec.isStandard && !pl.isStandard) {
             pipelineDao.clearStandard(pl.type)

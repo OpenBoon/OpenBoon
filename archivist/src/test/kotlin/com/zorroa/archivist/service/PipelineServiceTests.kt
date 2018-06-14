@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineSpecV
 import com.zorroa.sdk.processor.PipelineType
 import com.zorroa.sdk.processor.ProcessorRef
-import com.zorroa.sdk.processor.ProcessorType
 import org.junit.Before
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
@@ -28,42 +27,6 @@ class PipelineServiceTests : AbstractTest() {
         spec.name = "test"
         spec.type = PipelineType.Import
         pipeline = pipelineService.create(spec)
-    }
-
-    @Test
-    fun testCreateNestedGenerate() {
-
-        val ref = ProcessorRef("com.zorroa.core.generator.FileListGenerator")
-        ref.execute = Lists.newArrayList(ProcessorRef("com.zorroa.core.common.GroupProcessor"))
-
-        spec = PipelineSpecV()
-        spec.processors = Lists.newArrayList(ref)
-        spec.description = "A NoOp"
-        spec.name = "foo"
-        spec.type = PipelineType.Generate
-        val pl = pipelineService.create(spec)
-
-        assertEquals(PipelineType.Generate, pl.getType())
-
-        val gen = pl.getProcessors().get(0)
-        assertEquals(ProcessorType.Generate, gen.getType())
-
-        val exec = gen.getExecute().get(0)
-        assertEquals(ProcessorType.Common, exec.getType())
-    }
-
-    @Test(expected = IllegalStateException::class)
-    fun testCreateNestedGenerateFailure() {
-
-        val ref = ProcessorRef("com.zorroa.core.generator.FileListGenerator")
-        ref.execute = Lists.newArrayList(ProcessorRef("com.zorroa.core.generator.FileListGenerator"))
-
-        spec = PipelineSpecV()
-        spec.processors = Lists.newArrayList(ref)
-        spec.description = "A NoOp"
-        spec.name = "foo"
-        spec.type = PipelineType.Generate
-        pipelineService.create(spec)
     }
 
     @Test

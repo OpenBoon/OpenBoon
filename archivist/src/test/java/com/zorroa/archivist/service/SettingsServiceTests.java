@@ -69,9 +69,9 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test
     public void testGetAllPrefixFilter() {
-        List<Setting> settings = settingsService.getAll(new SettingsFilter().setStartsWith(
-                ImmutableSet.of("server")
-        ));
+        SettingsFilter filter = new SettingsFilter();
+        filter.setStartsWith(ImmutableSet.of("server"));
+        List<Setting> settings = settingsService.getAll(filter);
         assertEquals(16, settings.size());
     }
 
@@ -91,10 +91,10 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test
     public void testGetAllWithLimit() {
-        List<Setting> settings = settingsService.getAll(
-                new SettingsFilter()
-                        .setStartsWith(ImmutableSet.of("server."))
-                        .setCount(2));
+        SettingsFilter filter = new SettingsFilter();
+        filter.setStartsWith(ImmutableSet.of("server."));
+        filter.setCount(2);
+        List<Setting> settings = settingsService.getAll(filter);
         assertEquals(2, settings.size());
     }
 

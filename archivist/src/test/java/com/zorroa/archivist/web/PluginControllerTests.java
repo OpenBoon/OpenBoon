@@ -41,7 +41,7 @@ public class PluginControllerTests  extends MockMvcTest {
 
         Plugin p = Json.deserialize(result.getResponse().getContentAsByteArray(), Plugin.class);
         assertEquals("zorroa-test", p.getName());
-        FileUtils.deleteRecursive(Paths.get("../unittest/shared/plugins/zorroa-test"), logger);
+        FileUtils.deleteRecursive(Paths.get("../unittest/shared/plugins/zorroa-test"), null);
     }
 
 

@@ -81,7 +81,6 @@ public class PluginServiceTests extends AbstractTest {
         }
         catch (Exception e) {
             // This is ok.
-            logger.warn("Failed to delete plugin: ",e);
         }
 
         int size = pluginService.getAllPlugins().size();

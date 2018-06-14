@@ -5,6 +5,7 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.getPermissionIds
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.domain.Access
@@ -52,6 +53,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
             ps.setObject(7, getUserId())
             ps.setLong(8, time)
             ps.setLong(9, time)
+            ps.setObject(10, getUser().organizationId)
             ps
         })
 
@@ -197,7 +199,8 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                 "pk_user_created",
                 "pk_user_modified",
                 "time_created",
-                "time_modified")
+                "time_modified",
+                "pk_organization")
 
         private val UPDATE = "UPDATE " +
                 "jblob " +

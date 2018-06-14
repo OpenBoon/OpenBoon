@@ -1,10 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.uuid.EthernetAddress
-import com.fasterxml.uuid.NoArgGenerator
-import com.fasterxml.uuid.TimestampSynchronizer
-import com.fasterxml.uuid.UUIDTimer
+import com.fasterxml.uuid.*
+import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
@@ -77,6 +75,9 @@ open class AbstractDao {
     protected val uuid1 : NoArgGenerator =
             TimeBasedGenerator(EthernetAddress.fromInterface(),
                     UUIDTimer(Random(), UUIDSyncMechanism()))
+
+    protected val uuid3 =
+            Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
     protected lateinit var jdbc: JdbcTemplate
 
