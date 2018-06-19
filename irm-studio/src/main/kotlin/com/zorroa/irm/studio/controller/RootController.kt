@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 class RootController {
 
     @GetMapping("/")
-    fun getRoot() : Map<String, Any> {
-        return mapOf("1+1=" to "3")
+    fun getRoot() : String {
+        return "Welcome!"
     }
 }
