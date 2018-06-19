@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.services.AssetId
@@ -18,23 +17,11 @@ import java.util.*
 class AssetServiceInternalImpl @Autowired constructor (
         val assetDao: AssetDao,
         val storageService : StorageService,
-        val pipelineService: PipelineService,
         val properties: ApplicationProperties,
         val tx: TransactionEventManager) : AssetService {
 
-    @Autowired
-    private lateinit var taskService: TaskService
-
     override fun create(spec: AssetSpec) : AssetId {
-
         val asset = assetDao.create(spec)
-        spec.pipelines?.forEach {
-            val pipeline = pipelineService.get(it)
-            val taskSpec = TaskSpec(asset.id, pipeline.id,
-                    "pipeline ${pipeline.name} running on ${spec.filename}")
-            taskService.create(taskSpec)
-        }
-
         tx.afterCommit {
             storageService.createBucket(asset)
             storageService.storeMetadata(asset, spec.document)
