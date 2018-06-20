@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.1.4</version>
+            <version>42.2.2</version>
         </dependency>
 
         <dependency>
@@ -196,6 +196,12 @@
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>4.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.cloud.sql</groupId>
+            <artifactId>postgres-socket-factory</artifactId>
+            <version>1.0.8</version>
         </dependency>
 
         <dependency>

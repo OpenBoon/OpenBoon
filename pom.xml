@@ -23,7 +23,6 @@
     <modules>
         <module>server-sdk</module>
         <module>common</module>
-        <module>cluster</module>
         <module>archivist</module>
         <module>analyst</module>
         <module>ldap</module>
