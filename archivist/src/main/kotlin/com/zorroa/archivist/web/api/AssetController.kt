@@ -8,14 +8,12 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.sdk.services.AssetService
-import com.zorroa.archivist.sdk.services.AssetSpec
-import com.zorroa.archivist.sdk.services.StorageService
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
+import com.zorroa.common.domain.AssetSpec
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.*
 import com.zorroa.sdk.filesystem.ObjectFileSystem

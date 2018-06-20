@@ -1,14 +1,9 @@
 package com.zorroa.archivist.config
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.Lists
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.common.config.NetworkEnvironment
-import com.zorroa.common.config.NetworkEnvironmentUtils
-import com.zorroa.common.config.SpringApplicationProperties
 import com.zorroa.sdk.filesystem.ObjectFileSystem
 import com.zorroa.sdk.filesystem.UUIDFileSystem
 import com.zorroa.sdk.processor.SharedData
@@ -42,10 +37,6 @@ class ArchivistConfiguration {
 
     @Bean
     fun properties() : ApplicationProperties = SpringApplicationProperties()
-
-    @Bean
-    fun getNetworkEnvironment() : NetworkEnvironment =
-            NetworkEnvironmentUtils.getNetworkEnvironment("archivist", properties())
 
     @Bean
     @ConfigurationProperties(prefix = "archivist.datasource.primary")
@@ -116,7 +107,7 @@ class ArchivistConfiguration {
     @Bean
     fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
         val adapter = RequestMappingHandlerAdapter()
-        adapter.messageConverters = Lists.newArrayList<HttpMessageConverter<*>>(
+        adapter.messageConverters = listOf<HttpMessageConverter<*>>(
                 MappingJackson2HttpMessageConverter()
         )
         return adapter

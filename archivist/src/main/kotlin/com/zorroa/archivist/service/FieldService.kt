@@ -3,9 +3,9 @@ package com.zorroa.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.util.Json
 import org.elasticsearch.client.RestHighLevelClient

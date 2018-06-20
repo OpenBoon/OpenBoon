@@ -9,7 +9,6 @@ import com.zorroa.irm.studio.repository.JobDao
 import com.zorroa.studio.sdk.ProcessorRef
 import com.zorroa.studio.sdk.ZpsScript
 import io.fabric8.kubernetes.api.model.Container
-import io.fabric8.kubernetes.api.model.Job as KJob
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
 import io.fabric8.kubernetes.client.ConfigBuilder
 import io.fabric8.kubernetes.client.DefaultKubernetesClient
@@ -22,6 +21,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 import java.util.*
+import io.fabric8.kubernetes.api.model.Job as KJob
 
 
 interface JobService {

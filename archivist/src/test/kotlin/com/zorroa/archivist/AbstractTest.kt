@@ -4,11 +4,9 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.UserSpec
-import com.zorroa.archivist.sdk.services.AssetService
-import com.zorroa.archivist.sdk.services.StorageService
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.service.*

@@ -18,8 +18,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import static com.zorroa.common.config.NetworkEnvironment.ON_PREM;
-
 /**
  * Utility functions for any shared HTTP based code.
  */
@@ -118,9 +116,5 @@ public class HttpUtils {
             buf[i] = SYMBOLS[random.nextInt(SYMBOLS.length)];
         }
         return new String(buf);
-    }
-
-    public static String getLocation() {
-        return ON_PREM;
     }
 }

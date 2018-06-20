@@ -2,11 +2,11 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.archivist.service.PermissionService;
 import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
+import com.zorroa.security.Groups;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

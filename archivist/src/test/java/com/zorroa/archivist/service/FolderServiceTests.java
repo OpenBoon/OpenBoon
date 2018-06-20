@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
-import com.zorroa.archivist.sdk.security.Groups;
+import com.zorroa.security.Groups;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Document;

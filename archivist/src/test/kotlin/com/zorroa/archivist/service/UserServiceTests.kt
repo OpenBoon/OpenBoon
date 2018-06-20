@@ -5,8 +5,8 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSpec
-import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.sdk.client.exception.DuplicateEntityException
+import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals

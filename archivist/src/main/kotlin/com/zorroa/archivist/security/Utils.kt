@@ -4,7 +4,6 @@ import com.google.common.collect.Sets
 import com.google.common.collect.Sets.intersection
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Permission
-import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.Access
@@ -12,6 +11,7 @@ import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.processor.Source
 import com.zorroa.sdk.schema.PermissionSchema
 import com.zorroa.sdk.util.Json
+import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException

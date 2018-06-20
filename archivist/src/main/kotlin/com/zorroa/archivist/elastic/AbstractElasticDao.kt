@@ -1,6 +1,6 @@
 package com.zorroa.archivist.elastic
 
-import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.config.ApplicationProperties
 import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

@@ -48,22 +48,17 @@
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>sdk</artifactId>
+            <artifactId>lib-common</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>lib-security</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>cluster</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zorroa</groupId>
-            <artifactId>server-sdk</artifactId>
         </dependency>
 
         <dependency>

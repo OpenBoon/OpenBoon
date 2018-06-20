@@ -3,8 +3,8 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableMap
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.domain.Proxy
 import com.zorroa.sdk.filesystem.ObjectFileSystem
@@ -16,7 +16,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.awt.*
+import java.awt.AlphaComposite
+import java.awt.Color
+import java.awt.Font
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.*
 import java.nio.file.Files

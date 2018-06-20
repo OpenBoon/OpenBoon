@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.sdk.security.Groups;
+import com.zorroa.security.Groups;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;

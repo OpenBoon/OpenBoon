@@ -12,7 +12,6 @@ import com.zorroa.sdk.processor.ProcessorRef
 import com.zorroa.sdk.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import java.util.*
 

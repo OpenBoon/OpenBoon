@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.sdk.security.Groups;
+import com.zorroa.security.Groups;
 import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.UserService;
 import com.zorroa.sdk.domain.Access;

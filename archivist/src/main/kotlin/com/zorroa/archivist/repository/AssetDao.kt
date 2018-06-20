@@ -1,10 +1,10 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.JdbcUtils
-import com.zorroa.archivist.sdk.services.AssetId
-import com.zorroa.archivist.sdk.services.AssetSpec
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
+import com.zorroa.common.domain.AssetId
+import com.zorroa.common.domain.AssetSpec
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*

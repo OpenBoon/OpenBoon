@@ -1,11 +1,11 @@
 package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.MaintenanceDao
 import com.zorroa.archivist.repository.SharedLinkDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

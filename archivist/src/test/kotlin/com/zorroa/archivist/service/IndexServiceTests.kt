@@ -3,7 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.sdk.security.Groups
+import com.zorroa.security.Groups
 import com.zorroa.sdk.domain.Access
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.Source

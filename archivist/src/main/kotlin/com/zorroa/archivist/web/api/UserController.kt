@@ -4,11 +4,11 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

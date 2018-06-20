@@ -6,10 +6,10 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId

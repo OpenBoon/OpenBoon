@@ -21,10 +21,9 @@
     </properties>
 
     <modules>
-        <module>server-sdk</module>
-        <module>common</module>
+        <module>lib-common</module>
+        <module>lib-security</module>
         <module>archivist</module>
-        <module>analyst</module>
         <module>ldap</module>
         <module>saml</module>
         <module>es-similarity</module>
@@ -79,19 +78,19 @@
 
             <dependency>
                 <groupId>com.zorroa</groupId>
-                <artifactId>server-sdk</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.zorroa</groupId>
                 <artifactId>sdk</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zorroa</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>lib-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zorroa</groupId>
+                <artifactId>lib-security</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

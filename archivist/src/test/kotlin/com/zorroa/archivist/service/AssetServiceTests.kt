@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.sdk.services.AssetSpec
+import com.zorroa.common.domain.AssetSpec
 import org.junit.Test
 import kotlin.test.assertEquals
 

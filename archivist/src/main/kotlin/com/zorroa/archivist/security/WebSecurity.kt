@@ -1,13 +1,13 @@
 package com.zorroa.archivist.security
 
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
-import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean

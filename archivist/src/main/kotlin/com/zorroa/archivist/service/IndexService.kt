@@ -4,12 +4,12 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.ESUtils
 import com.zorroa.archivist.repository.CommandDao
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.client.exception.ArchivistWriteException
