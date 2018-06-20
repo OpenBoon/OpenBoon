@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  # Unique key of the Job instance
+  name: example-job
+spec:
+  template:
+    metadata:
+      name: example-job
+    spec:
+      containers:
+      - name: pi
+        image: image
+        command: []
+        args: []
+      # Do not restart containers after they exit
+      restartPolicy: Never
