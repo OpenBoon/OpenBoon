@@ -17,7 +17,7 @@
         <elasticsearch.version>6.2.4</elasticsearch.version>
         <zorroa-server.version>0.40.0-SNAPSHOT</zorroa-server.version>
         <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
-        <kotlin.version>1.2.41</kotlin.version>
+        <kotlin.version>1.2.50</kotlin.version>
     </properties>
 
     <modules>
