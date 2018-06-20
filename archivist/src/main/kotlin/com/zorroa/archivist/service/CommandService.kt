@@ -57,10 +57,12 @@ class CommandServiceImpl @Autowired constructor (
 
     @PostConstruct
     fun init() {
+        // Not starting command service, not app-engine compatible currently.
+        /*
         // Not started for unit tests
         if (!ArchivistConfiguration.Companion.unittest) {
             this.startAsync()
-        }
+        }*/
     }
 
     override fun submit(spec: CommandSpec): Command {
