@@ -32,11 +32,15 @@ git clone git@github.com:Zorroa/zorroa-server.git
 
 ### Build Plugin SDK
 
-Build the Zorroa plugin SDK.
+In theory one would build and test the Zorroa plugin SDK like this:
 
 ```
 cd ~/zorroa/zorroa-plugin-sdk
 mvn clean install
+```
+But since there are unit test failures even in stabilized release branches, one must skip testing in order for the build to run to completion. This is achieved by passing an additional flag like this:
+```
+mvn clean install -Dmaven.test.skip=true
 ```
 
 ### Build the Server
