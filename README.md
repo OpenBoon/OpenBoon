@@ -51,6 +51,10 @@ Build the Zorroa server.
 cd ~/zorroa/zorroa-server
 mvn clean install
 ```
+As with the plugin-sdk, there are server test failures. For a successful build tests must be disabled:
+```
+mvn clean install -Dmaven.test.skip=true
+```
 
 ### Run Servers
 
