@@ -39,7 +39,7 @@ cd ~/zorroa/zorroa-plugin-sdk
 mvn clean install
 ```
 
-### Build Plugin SDK
+### Build the Server
 
 Build the Zorroa server.
 
