@@ -16,16 +16,16 @@
         <java.version>1.8</java.version>
         <elasticsearch.version>6.2.4</elasticsearch.version>
         <zorroa-server.version>0.40.0-SNAPSHOT</zorroa-server.version>
-        <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
+        <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
         <kotlin.version>1.2.50</kotlin.version>
     </properties>
 
     <modules>
         <module>lib-common</module>
         <module>lib-security</module>
-        <module>archivist</module>
         <module>ldap</module>
         <module>saml</module>
+        <module>archivist</module>
         <module>es-similarity</module>
         <module>irm-studio</module>
     </modules>
@@ -59,6 +59,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.9.6</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
                 <version>${elasticsearch.version}</version>
@@ -71,17 +77,17 @@
             </dependency>
 
             <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.2.2</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>23.0</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.zorroa</groupId>
-                <artifactId>cluster</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>lib-common</artifactId>

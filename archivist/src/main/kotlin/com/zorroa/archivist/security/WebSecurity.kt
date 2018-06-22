@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationEventPublisher
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -48,6 +49,12 @@ class MultipleWebSecurityConfig {
 
         @Autowired
         internal lateinit var properties: ApplicationProperties
+
+        @Bean
+        @Throws(Exception::class)
+        fun customAuthenticationManager(): AuthenticationManager {
+            return authenticationManager()
+        }
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {

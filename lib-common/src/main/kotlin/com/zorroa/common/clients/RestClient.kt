@@ -82,7 +82,7 @@ class RestClient {
     private fun initHost(): HttpHost {
         var host: String? = (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_ARCHIVIST_URL", System.getProperty("zorroa.archivist.url"))
         if (host == null) {
-            host = "http://archivist:8066"
+            host = "http://localhost:8066"
         }
         val uri = URI.create(host)
         return HttpHost(uri.host, uri.port, uri.scheme)
