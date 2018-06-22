@@ -14,8 +14,8 @@ import com.zorroa.archivist.domain.SettingsFilter
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.repository.SettingsDao
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.client.exception.EntityNotFoundException
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.EntityNotFoundException
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

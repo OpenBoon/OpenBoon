@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.Blob
 import com.zorroa.archivist.domain.BlobSpec
 import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.service.BlobService
-import com.zorroa.sdk.domain.Access
+import com.zorroa.common.domain.Access
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain
 
-import com.zorroa.sdk.processor.ProcessorRef
-import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.common.domain.ProcessorRef
+import com.zorroa.common.search.AssetSearch
 import java.util.*
 
 class Export

@@ -1,6 +1,6 @@
 package com.zorroa.irm.studio.controller
 
-import com.zorroa.irm.studio.domain.Document
+import com.zorroa.common.domain.Document
 import com.zorroa.irm.studio.service.JobService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable

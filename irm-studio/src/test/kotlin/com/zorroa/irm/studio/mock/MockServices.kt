@@ -1,6 +1,6 @@
 package com.zorroa.irm.studio.mock
 
-import com.zorroa.irm.studio.domain.IndexRoute
+import com.zorroa.common.domain.IndexRoute
 import com.zorroa.irm.studio.rest.IndexRouteClient
 import com.zorroa.irm.studio.service.EventService
 import com.zorroa.irm.studio.service.PipelineServiceImpl

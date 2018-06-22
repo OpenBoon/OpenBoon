@@ -8,9 +8,9 @@ import com.zorroa.archivist.security.getPermissionIds
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.sdk.domain.Access
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.Access
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException

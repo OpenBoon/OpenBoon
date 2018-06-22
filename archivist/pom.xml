@@ -18,6 +18,7 @@
     </parent>
 
     <properties>
+        <kotlin.version>1.2.50</kotlin.version>
         <rest-api.version>1.0.0</rest-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.zorroa.archivist.Application</start-class>
@@ -46,6 +47,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.16</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>lib-common</artifactId>
         </dependency>
@@ -53,11 +60,6 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>lib-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zorroa</groupId>
-            <artifactId>cluster</artifactId>
         </dependency>
 
         <dependency>

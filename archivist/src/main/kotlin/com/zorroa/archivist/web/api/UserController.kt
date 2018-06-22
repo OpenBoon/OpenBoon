@@ -48,7 +48,7 @@ class UserController @Autowired constructor(
         }
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
 
@@ -137,7 +137,7 @@ class UserController @Autowired constructor(
         return HttpUtils.status("send-onboard-email", "update", true)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/users"])
     fun create(@Valid @RequestBody builder: UserSpec, bindingResult: BindingResult): User {
         if (bindingResult.hasErrors()) {
@@ -152,7 +152,7 @@ class UserController @Autowired constructor(
         return userService.get(id)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users/{username}/_exists"])
     operator fun get(@PathVariable username: String): Map<*, *> {
         return ImmutableMap.of("result", userService.exists(username, null))
@@ -192,7 +192,7 @@ class UserController @Autowired constructor(
         return HttpUtils.updated("users", id, userService.updateSettings(user, settings), userService.get(id))
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/_enabled"])
     fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: UUID): Any {
         val user = userService.get(id)
@@ -230,7 +230,7 @@ class UserController @Autowired constructor(
      * @param id
      * @return
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions"])
     fun setPermissions(@RequestBody pids: List<UUID>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
@@ -239,7 +239,7 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_add"])
     fun addPermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
@@ -249,7 +249,7 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_remove"])
     fun removePermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)

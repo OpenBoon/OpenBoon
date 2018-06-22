@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.Setting;
 import com.zorroa.archivist.domain.SettingsFilter;
 import com.zorroa.archivist.service.SettingsService;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -44,7 +44,7 @@ public class SettingsControllerTests extends MockMvcTest {
         filter.setCount(5);
         MvcResult result = mvc.perform(get("/api/v1/settings")
                 .session(session)
-                .content(Json.serialize(filter))
+                .content(Json.INSTANCE.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -62,13 +62,13 @@ public class SettingsControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(put("/api/v1/settings/")
                 .session(session)
-                .content(Json.serialize(settings))
+                .content(Json.INSTANCE.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
 
-        Map<String, Object> map = deserialize(result, Json.GENERIC_MAP);
+        Map<String, Object> map = deserialize(result, Json.INSTANCE.getGENERIC_MAP());
         assertTrue((boolean) map.get("success"));
     }
 }

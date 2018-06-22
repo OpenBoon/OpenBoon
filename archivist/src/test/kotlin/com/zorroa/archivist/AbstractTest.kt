@@ -10,11 +10,12 @@ import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.service.*
-import com.zorroa.sdk.domain.Proxy
-import com.zorroa.sdk.processor.Source
-import com.zorroa.sdk.schema.ProxySchema
-import com.zorroa.sdk.util.FileUtils
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.Document
+import com.zorroa.common.domain.Source
+import com.zorroa.common.schema.Proxy
+import com.zorroa.common.schema.ProxySchema
+import com.zorroa.common.util.FileUtils
+import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RestHighLevelClient
@@ -263,7 +264,7 @@ open abstract class AbstractTest {
             "jpg", "pdf", "m4v", "gif", "tif")
 
     fun getTestAssets(subdir: String): List<Source> {
-        val result = Lists.newArrayList<Source>()
+        val result = mutableListOf<Source>()
         val tip = getTestImagePath(subdir)
         for (f in tip.toFile().listFiles()!!) {
 
@@ -276,9 +277,9 @@ open abstract class AbstractTest {
                     val id = UUID.randomUUID().toString()
 
                     val proxies = Lists.newArrayList<Proxy>()
-                    proxies.add(Proxy().setHeight(100).setWidth(100).setId("proxy/" + id + "_foo.jpg"))
-                    proxies.add(Proxy().setHeight(200).setWidth(200).setId("proxy/" + id + "_bar.jpg"))
-                    proxies.add(Proxy().setHeight(300).setWidth(300).setId("proxy/" + id + "_bing.jpg"))
+                    proxies.add(Proxy(width=100, height=100, id="proxy/" + id + "_foo.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=200, height=200, id="proxy/" + id + "_bar.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=300, height=300, id="proxy/" + id + "_bing.jpg", mimeType = "image/jpeg"))
 
                     val p = ProxySchema()
                     p.proxies = proxies
@@ -307,7 +308,7 @@ open abstract class AbstractTest {
             val schema = source.sourceSchema
 
             logger.info("Adding test asset: {}", source.path.toString())
-            source.addToKeywords("source", ImmutableList.of(
+            source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
             indexService.index(source)

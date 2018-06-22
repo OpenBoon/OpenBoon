@@ -6,8 +6,8 @@ import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.security.Groups
-import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

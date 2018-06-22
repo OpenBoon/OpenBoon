@@ -1,11 +1,12 @@
 package com.zorroa.irm.studio.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.irm.studio.Json
-import com.zorroa.irm.studio.domain.Pipeline
-import com.zorroa.irm.studio.domain.PipelineSpec
+import com.zorroa.common.domain.Pipeline
+import com.zorroa.common.domain.PipelineSpec
+import com.zorroa.common.domain.ProcessorRef
+import com.zorroa.common.util.Json
+
 import com.zorroa.irm.studio.repository.PipelineDao
-import com.zorroa.studio.sdk.ProcessorRef
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties

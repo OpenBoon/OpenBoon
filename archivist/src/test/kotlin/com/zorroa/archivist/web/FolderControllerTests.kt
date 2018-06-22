@@ -8,8 +8,8 @@ import com.zorroa.archivist.domain.FolderUpdate
 import com.zorroa.archivist.domain.getRootFolderId
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.web.api.FolderController
-import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -374,7 +374,7 @@ class FolderControllerTests : MockMvcTest() {
         var assets = assetDao.getAll(Pager.first())
 
         val folder1 = folderService.create(FolderSpec("foo"))
-        folderService.addAssets(folder1, assets.stream().map( { it.id }).collect(Collectors.toList()))
+        folderService.addAssets(folder1, assets.stream().map( { it.id.toString() }).collect(Collectors.toList()))
         refreshIndex()
 
         val session = admin()

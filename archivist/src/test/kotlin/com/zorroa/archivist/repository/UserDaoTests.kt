@@ -5,8 +5,8 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ROOT_ID
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.common.domain.Pager
 import com.zorroa.security.Groups
-import com.zorroa.sdk.domain.Pager
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Setting;
 import com.zorroa.archivist.domain.SettingsFilter;
-import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.common.domain.ArchivistWriteException;
 import org.junit.Test;
 
 import java.util.List;
@@ -72,7 +72,7 @@ public class SettingsServiceTests extends AbstractTest {
         SettingsFilter filter = new SettingsFilter();
         filter.setStartsWith(ImmutableSet.of("server"));
         List<Setting> settings = settingsService.getAll(filter);
-        assertEquals(17, settings.size());
+        assertEquals(18, settings.size());
     }
 
     @Test

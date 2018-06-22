@@ -1,13 +1,8 @@
 package com.zorroa.irm.studio.service
 
-import com.zorroa.irm.studio.Json
-import com.zorroa.irm.studio.domain.Document
-import com.zorroa.irm.studio.domain.Job
-import com.zorroa.irm.studio.domain.JobSpec
-import com.zorroa.irm.studio.domain.JobState
+import com.zorroa.common.domain.*
+import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.repository.JobDao
-import com.zorroa.studio.sdk.ProcessorRef
-import com.zorroa.studio.sdk.ZpsScript
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
 import io.fabric8.kubernetes.client.ConfigBuilder
@@ -25,10 +20,10 @@ import io.fabric8.kubernetes.api.model.Job as KJob
 
 
 interface JobService {
-    fun start(job: com.zorroa.irm.studio.domain.Job) : Any
+    fun start(job: com.zorroa.common.domain.Job) : Any
     fun finish(id: UUID, doc: Document)
-    fun create(spec: JobSpec) : com.zorroa.irm.studio.domain.Job
-    fun get(id: UUID) : com.zorroa.irm.studio.domain.Job
+    fun create(spec: JobSpec) : com.zorroa.common.domain.Job
+    fun get(id: UUID) : com.zorroa.common.domain.Job
 }
 
 @Configuration
@@ -135,7 +130,7 @@ class K8JobServiceImpl @Autowired constructor(
                 execute=processors)
     }
 
-    fun generateK8JobSpec(job: com.zorroa.irm.studio.domain.Job) : String {
+    fun generateK8JobSpec(job: Job) : String {
 
         val zps = generateZpsScript(job)
         val url = storageService.storeSignedBlob(

@@ -1,8 +1,8 @@
 package com.zorroa.irm.studio.service
 
+import com.zorroa.common.domain.PipelineSpec
+import com.zorroa.common.domain.ProcessorRef
 import com.zorroa.irm.studio.AbstractTest
-import com.zorroa.irm.studio.domain.PipelineSpec
-import com.zorroa.studio.sdk.ProcessorRef
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

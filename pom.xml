@@ -53,6 +53,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-kotlin</artifactId>
+                <version>2.9.4.1</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
                 <version>${elasticsearch.version}</version>
@@ -75,13 +81,7 @@
                 <artifactId>cluster</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>com.zorroa</groupId>
-                <artifactId>sdk</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
+            
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>lib-common</artifactId>

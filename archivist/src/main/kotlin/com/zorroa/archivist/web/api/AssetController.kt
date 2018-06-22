@@ -8,18 +8,19 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
 import com.zorroa.common.domain.AssetSpec
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.domain.*
-import com.zorroa.sdk.filesystem.ObjectFileSystem
-import com.zorroa.sdk.schema.ProxySchema
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.search.AssetSuggestBuilder
+import com.zorroa.common.domain.*
+import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.common.schema.Proxy
+import com.zorroa.common.schema.ProxySchema
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.search.AssetSuggestBuilder
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,9 +50,7 @@ class AssetController @Autowired constructor(
         private val folderService: FolderService,
         private val logService: EventLogService,
         private val imageService: ImageService,
-        private val storageService: StorageService,
         private val ofs: ObjectFileSystem,
-        private val commandService: CommandService,
         private val fieldService: FieldService
 ){
     /**
@@ -132,7 +131,7 @@ class AssetController @Autowired constructor(
         // If the file doesn't have a proxy this will throw.
         val proxies = asset.getAttr("proxies", ProxySchema::class.java)
         if (proxies != null) {
-            val largest = proxies.largest
+            val largest = proxies.getLargest()
             if (largest != null) {
                 return StreamFile(
                         ofs.get(largest.id).file.toString(),
@@ -178,16 +177,16 @@ class AssetController @Autowired constructor(
             .expireAfterWrite(1, TimeUnit.HOURS)
             .build(object : CacheLoader<String, Proxy>() {
                 @Throws(Exception::class)
-                override fun load(slug: String): Proxy {
+                override fun load(slug: String): Proxy? {
                     val e = slug.split(":")
                     val proxies = indexService.getProxies(e[1])
 
                     return when {
                         e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
                         e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt())
-                        e[0] == "smallest" -> proxies.smallest
-                        e[0] == "largest" -> proxies.largest
-                        else -> proxies.largest
+                        e[0] == "smallest" -> proxies.getSmallest()
+                        e[0] == "largest" -> proxies.getLargest()
+                        else -> proxies.getLargest()
                     }
                 }
             })
@@ -351,7 +350,7 @@ class AssetController @Autowired constructor(
     /**
      * Reset all folders for a given asset.  Currently only used for syncing.
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
     @Throws(Exception::class)
     fun setFolders(@PathVariable id: String, @RequestBody req: SetFoldersRequest): Any {
@@ -368,7 +367,8 @@ class AssetController @Autowired constructor(
 
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).SHARE) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    /*
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SHARE) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/assets/_permissions"])
     @Throws(Exception::class)
     fun setPermissions(
@@ -378,6 +378,7 @@ class AssetController @Autowired constructor(
         spec.args = arrayOf(req.search, req.acl)
         return commandService.submit(spec)
     }
+    */
 
     @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {

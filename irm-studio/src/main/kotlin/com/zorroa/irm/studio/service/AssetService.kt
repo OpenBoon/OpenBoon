@@ -1,7 +1,7 @@
 package com.zorroa.irm.studio.service
 
-import com.zorroa.irm.studio.domain.Asset
-import com.zorroa.irm.studio.domain.Document
+import com.zorroa.common.domain.Asset
+import com.zorroa.common.domain.Document
 import com.zorroa.irm.studio.repository.AssetDao
 import com.zorroa.irm.studio.repository.CDVAssetSpec
 import com.zorroa.irm.studio.repository.IndexDao

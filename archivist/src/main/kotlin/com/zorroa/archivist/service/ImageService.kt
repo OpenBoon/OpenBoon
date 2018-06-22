@@ -6,8 +6,8 @@ import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.sdk.domain.Proxy
-import com.zorroa.sdk.filesystem.ObjectFileSystem
+import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -77,7 +77,7 @@ class ImageServiceImpl @Autowired constructor(
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
 
-        val ext = com.zorroa.sdk.util.FileUtils.extension(file)
+        val ext = com.zorroa.common.util.FileUtils.extension(file)
         return if (watermarkEnabled) {
             val output = watermark(req, file, ext)
             ResponseEntity.ok()

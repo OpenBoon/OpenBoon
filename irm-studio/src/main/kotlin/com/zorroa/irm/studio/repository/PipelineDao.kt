@@ -1,10 +1,10 @@
 package com.zorroa.irm.studio.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.irm.studio.Json
-import com.zorroa.irm.studio.Json.LIST_OF_PREFS
-import com.zorroa.irm.studio.domain.Pipeline
-import com.zorroa.irm.studio.domain.PipelineSpec
+import com.zorroa.common.domain.Pipeline
+import com.zorroa.common.domain.PipelineSpec
+import com.zorroa.common.util.Json
+import com.zorroa.common.util.Json.LIST_OF_PREFS
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository

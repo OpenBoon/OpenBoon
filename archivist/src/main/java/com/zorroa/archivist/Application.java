@@ -1,7 +1,5 @@
 package com.zorroa.archivist;
 
-import com.fasterxml.jackson.module.kotlin.KotlinModule;
-import com.zorroa.sdk.util.Json;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,8 +22,6 @@ public class Application {
         if (ps.getProperty("pidfile") != null) {
             app.addListeners(new ApplicationPidFileWriter((String) ps.getProperty("pidfile")));
         }
-
-        Json.Mapper.registerModule(new KotlinModule());
         app.run(args);
     }
 }

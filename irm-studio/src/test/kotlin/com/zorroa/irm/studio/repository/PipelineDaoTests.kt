@@ -1,7 +1,7 @@
 package com.zorroa.irm.studio.repository
 
+import com.zorroa.common.domain.PipelineSpec
 import com.zorroa.irm.studio.AbstractTest
-import com.zorroa.irm.studio.domain.PipelineSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals

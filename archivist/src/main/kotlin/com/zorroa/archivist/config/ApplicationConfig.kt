@@ -4,10 +4,9 @@ import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
 import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.sdk.filesystem.ObjectFileSystem
-import com.zorroa.sdk.filesystem.UUIDFileSystem
-import com.zorroa.sdk.processor.SharedData
-import com.zorroa.sdk.util.FileUtils
+import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.common.filesystem.UUIDFileSystem
+import com.zorroa.common.util.FileUtils
 import io.undertow.servlet.api.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -118,11 +117,6 @@ class ArchivistConfiguration {
         val ufs = UUIDFileSystem(File(properties().getString("archivist.path.ofs")))
         ufs.init()
         return ufs
-    }
-
-    @Bean
-    fun sharedData(): SharedData {
-        return SharedData(properties().getString("archivist.path.shared"))
     }
 
     @Bean

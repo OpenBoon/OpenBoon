@@ -28,7 +28,7 @@ class SettingsController @Autowired constructor(
         return settingsService.get(name)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).DEV) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = "/api/v1/settings")
     fun set(@RequestBody settings: Map<String, String>): Any {
         val count = settingsService.setAll(settings)

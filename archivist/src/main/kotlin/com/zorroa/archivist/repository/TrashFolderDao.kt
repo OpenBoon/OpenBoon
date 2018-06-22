@@ -6,8 +6,8 @@ import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.TrashedFolder
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper

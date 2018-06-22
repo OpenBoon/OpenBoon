@@ -1,7 +1,7 @@
 package com.zorroa.irm.studio.repository
 
-import com.zorroa.irm.studio.Json
-import com.zorroa.irm.studio.domain.Document
+import com.zorroa.common.domain.Document
+import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.rest.EsRestClient
 import com.zorroa.irm.studio.rest.EsRestClientCache
 import org.elasticsearch.action.ActionListener

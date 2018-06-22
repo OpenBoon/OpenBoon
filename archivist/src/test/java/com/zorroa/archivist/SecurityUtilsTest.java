@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.Permission;
 import com.zorroa.security.Groups;
 import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.UserService;
-import com.zorroa.sdk.domain.Access;
+import com.zorroa.common.domain.Access;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

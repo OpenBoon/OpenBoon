@@ -2,7 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.common.domain.AssetId
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.util.Json
 import io.minio.MinioClient
 import io.minio.errors.MinioException
 import org.apache.commons.io.IOUtils

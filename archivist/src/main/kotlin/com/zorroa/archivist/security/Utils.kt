@@ -5,12 +5,11 @@ import com.google.common.collect.Sets.intersection
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.domain.Access
-import com.zorroa.sdk.domain.Document
-import com.zorroa.sdk.processor.Source
-import com.zorroa.sdk.schema.PermissionSchema
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.Access
+import com.zorroa.common.domain.Document
+import com.zorroa.common.schema.PermissionSchema
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -161,7 +160,7 @@ fun getPermissionsFilter(access: Access?): QueryBuilder? {
     return QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
 }
 
-fun setWritePermissions(source: Source, perms: Collection<Permission>) {
+fun setWritePermissions(source: Document, perms: Collection<Permission>) {
     var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
@@ -173,7 +172,7 @@ fun setWritePermissions(source: Source, perms: Collection<Permission>) {
     source.setAttr("zorroa.permissions", ps)
 }
 
-fun setExportPermissions(source: Source, perms: Collection<Permission>) {
+fun setExportPermissions(source: Document, perms: Collection<Permission>) {
     var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
