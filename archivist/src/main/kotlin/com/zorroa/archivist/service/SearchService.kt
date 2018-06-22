@@ -6,21 +6,21 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.domain.Document
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.search.AssetFilter
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.search.RangeQuery
-import com.zorroa.sdk.search.SimilarityFilter
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.Document
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.search.AssetFilter
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.search.RangeQuery
+import com.zorroa.common.search.SimilarityFilter
+import com.zorroa.common.util.Json
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
@@ -674,9 +674,9 @@ class SearchServiceImpl @Autowired constructor(
             val weights = Lists.newArrayList<Float>()
 
             for (hash in filter.hashes) {
-                var hashValue: String = hash.hash
+                var hashValue: String? = hash.hash
                 if (JdbcUtils.isUUID(hashValue)) {
-                    hashValue = indexDao.getFieldValue(hashValue, field)
+                    hashValue = indexDao.getFieldValue(hashValue as String, field)
                 }
 
                 if (hashValue != null) {

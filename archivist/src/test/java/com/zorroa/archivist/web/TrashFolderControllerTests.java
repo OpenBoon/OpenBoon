@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.TrashedFolder;
 import com.zorroa.archivist.domain.TrashedFolderOp;
 import com.zorroa.archivist.repository.TrashFolderDao;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class TrashFolderControllerTests extends MockMvcTest {
         int exists = jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE str_name='test1'", Integer.class);
         assertEquals(0, exists);
 
-        String content = Json.serializeToString(
+        String content = Json.INSTANCE.serializeToString(
                 ImmutableList.of(deleteOp.getTrashFolderId().toString()));
         MvcResult result = mvc.perform(post("/api/v1/trash/_restore")
                 .session(admin())
@@ -85,7 +85,7 @@ public class TrashFolderControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(delete("/api/v1/trash")
                 .session(admin())
-                .content(Json.serializeToString(Lists.newArrayList(folder1.getId())))
+                .content(Json.INSTANCE.serializeToString(Lists.newArrayList(folder1.getId())))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();

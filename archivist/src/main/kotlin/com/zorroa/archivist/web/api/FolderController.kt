@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.FolderUpdate
 import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.SearchService
-import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.common.search.AssetSearch
 import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

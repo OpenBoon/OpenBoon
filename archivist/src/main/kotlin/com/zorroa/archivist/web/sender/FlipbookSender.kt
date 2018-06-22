@@ -1,14 +1,14 @@
 package com.zorroa.archivist.web.sender
 
 import com.zorroa.archivist.service.SearchService
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
 import javax.servlet.http.HttpServletResponse
 
 data class Frame(
-        val id: String,
-        val frame: Int,
-        val filename: String)
+        val id: String?,
+        val frame: Int?,
+        val filename: String?)
 
 class FlipBook {
     val frames : MutableList<Frame> = mutableListOf()

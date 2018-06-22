@@ -1,8 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.sdk.services.AssetId
-import com.zorroa.archivist.sdk.services.StorageWriteException
+import com.zorroa.common.domain.AssetId
 import org.apache.commons.io.FileUtils
 import org.junit.Before
 import org.junit.Test

@@ -3,7 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.repository.DaoFilter
-import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.common.search.AssetSearch
 import java.util.*
 
 class FolderFilter : DaoFilter() {

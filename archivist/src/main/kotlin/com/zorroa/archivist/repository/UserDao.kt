@@ -7,9 +7,9 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper

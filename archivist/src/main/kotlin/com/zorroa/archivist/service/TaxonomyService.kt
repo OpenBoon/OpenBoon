@@ -13,11 +13,11 @@ import com.zorroa.archivist.repository.TaxonomyDao
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.InternalRunnable
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.domain.Document
-import com.zorroa.sdk.search.AssetFilter
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.Document
+import com.zorroa.common.search.AssetFilter
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.index.IndexRequest
@@ -96,7 +96,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var userRegistryService: UserRegistryService
 
-    @Value("\${zorroa.cluster.index.alias}")
+    @Value("\${archivist.organization.single-org-index}")
     private val alias: String? = null
 
     internal var EXCLUDE_FOLDERS: Set<String> = ImmutableSet.of("Library", "Users")

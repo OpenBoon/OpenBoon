@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.SharedLinkSpec
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder

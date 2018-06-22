@@ -3,11 +3,11 @@ package com.zorroa.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.sdk.domain.Document
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.Document
+import com.zorroa.common.util.Json
 import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,7 +41,7 @@ class FieldServiceImpl @Autowired constructor(
 
 ): FieldService {
 
-    @Value("\${zorroa.cluster.index.alias}")
+    @Value("\${archivist.organization.single-org-index}")
     private lateinit var alias: String
 
     private val fieldMapCache = CacheBuilder.newBuilder()
@@ -80,7 +80,7 @@ class FieldServiceImpl @Autowired constructor(
 
         val stream = client.lowLevelClient.performRequest("GET", "/archivist").entity.content
         val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
-        getList(result, "", Document(map).getAttr("archivist.mappings.asset"), hiddenFields)
+        getList(result, "", Document(map).getAttr("archivist.mappings.asset")!!, hiddenFields)
         return result
     }
 
@@ -143,10 +143,11 @@ class FieldServiceImpl @Autowired constructor(
      * Builds a list of field names, recursively walking each object.
      */
     private fun getList(result: MutableMap<String, MutableSet<String>>,
-                        fieldName: String,
+                        fieldName: String?,
                         mapProperties: Map<String, Any>,
                         hiddenFieldNames: Set<String>) {
 
+        if (fieldName == null) {  return }
         val map = mapProperties["properties"] as Map<String, Any>
         for (key in map.keys) {
             val item = map[key] as Map<String, Any>
