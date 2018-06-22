@@ -105,7 +105,7 @@ open abstract class AbstractTest {
     @Autowired
     internal lateinit var transactionManager: DataSourceTransactionManager
 
-    @Value("\${zorroa.cluster.index.alias}")
+    @Value("\${archivist.organization.single-org-index}")
     protected lateinit var alias: String
 
     protected lateinit var jdbc: JdbcTemplate

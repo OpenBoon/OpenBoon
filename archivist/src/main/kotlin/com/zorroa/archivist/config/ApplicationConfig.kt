@@ -7,9 +7,13 @@ import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
 import com.zorroa.common.util.FileUtils
+import io.undertow.servlet.api.*
 import org.slf4j.LoggerFactory
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
+import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer
+import org.springframework.boot.web.embedded.undertow.UndertowDeploymentInfoCustomizer
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
@@ -62,6 +66,27 @@ class ArchivistConfiguration {
     }
 
     @Bean
+    fun servletWebServerFactory() : UndertowServletWebServerFactory {
+        val factory =  UndertowServletWebServerFactory()
+        factory.addBuilderCustomizers( UndertowBuilderCustomizer {
+            it.addHttpListener(properties().getInt("server.http_port", 8080), "0.0.0.0")
+        })
+        if (properties().getBoolean("security.require_ssl", false)) {
+            factory.addDeploymentInfoCustomizers(UndertowDeploymentInfoCustomizer {
+                it.addSecurityConstraint(SecurityConstraint()
+                        .addWebResourceCollection(WebResourceCollection()
+                                .addUrlPattern("/*"))
+                        .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
+                        .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
+                        .setConfidentialPortManager(ConfidentialPortManager {
+                            properties().getInt("server.port", 8066)
+                        })
+            })
+        }
+        return factory
+    }
+
+    @Bean
     fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
         val adapter = RequestMappingHandlerAdapter()
         adapter.messageConverters = listOf<HttpMessageConverter<*>>(
@@ -72,7 +97,7 @@ class ArchivistConfiguration {
 
     @Bean
     fun ofs(): ObjectFileSystem {
-        val ufs = UUIDFileSystem(File(properties().getString("archivist.path.ofs")))
+        val ufs = UUIDFileSystem(File(properties().getString("archivivst.storage.ofs.path")))
         ufs.init()
         return ufs
     }

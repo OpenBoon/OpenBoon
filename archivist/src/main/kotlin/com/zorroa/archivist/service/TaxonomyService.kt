@@ -96,7 +96,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var userRegistryService: UserRegistryService
 
-    @Value("\${zorroa.cluster.index.alias}")
+    @Value("\${archivist.organization.single-org-index}")
     private val alias: String? = null
 
     internal var EXCLUDE_FOLDERS: Set<String> = ImmutableSet.of("Library", "Users")

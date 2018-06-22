@@ -7,14 +7,16 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.HideField
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
-import com.zorroa.common.domain.AssetSpec
 import com.zorroa.common.domain.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
@@ -24,7 +26,6 @@ import com.zorroa.common.search.AssetSuggestBuilder
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
@@ -40,7 +41,6 @@ import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import javax.validation.Valid
 
 @RestController
 class AssetController @Autowired constructor(
@@ -57,10 +57,7 @@ class AssetController @Autowired constructor(
      * Describes a file to stream.
      */
     class StreamFile(var path: String, var mimeType: String, var proxy: Boolean)
-
-    @Value("\${zorroa.cluster.index.alias}")
-    private lateinit var alias: String
-
+    
     @GetMapping(value = ["/api/v1/assets/_fields"])
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
         response.setHeader("Cache-Control", CacheControl.maxAge(

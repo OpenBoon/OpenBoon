@@ -41,7 +41,7 @@ class FieldServiceImpl @Autowired constructor(
 
 ): FieldService {
 
-    @Value("\${zorroa.cluster.index.alias}")
+    @Value("\${archivist.organization.single-org-index}")
     private lateinit var alias: String
 
     private val fieldMapCache = CacheBuilder.newBuilder()
