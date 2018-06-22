@@ -3,7 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -29,12 +29,12 @@ public class PermissionContollerTests extends MockMvcTest {
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(post("/api/v1/permissions")
                 .session(session)
-                .content(Json.serialize(b))
+                .content(Json.INSTANCE.serialize(b))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Permission p = Json.deserialize(result.getResponse().getContentAsByteArray(), Permission.class);
+        Permission p = Json.INSTANCE.deserialize(result.getResponse().getContentAsByteArray(), Permission.class);
         assertEquals(b.getDescription(), p.getDescription());
         assertEquals(b.getName(), p.getName());
     }
@@ -49,7 +49,7 @@ public class PermissionContollerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Permission> perms1 = Json.Mapper.readValue(result.getResponse().getContentAsByteArray(),
+        List<Permission> perms1 = Json.INSTANCE.getMapper().readValue(result.getResponse().getContentAsByteArray(),
                 new TypeReference<List<Permission>>() {
                 });
         List<Permission> perms2 = permissionService.getPermissions();
@@ -71,7 +71,7 @@ public class PermissionContollerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Permission perm1 = Json.deserialize(result.getResponse().getContentAsByteArray(), Permission.class);
+        Permission perm1 = Json.INSTANCE.deserialize(result.getResponse().getContentAsByteArray(), Permission.class);
         assertEquals(perm, perm1);
     }
 
@@ -89,7 +89,7 @@ public class PermissionContollerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Permission perm1 = Json.deserialize(result.getResponse().getContentAsByteArray(), Permission.class);
+        Permission perm1 = Json.INSTANCE.deserialize(result.getResponse().getContentAsByteArray(), Permission.class);
         assertEquals(perm, perm1);
     }
 }

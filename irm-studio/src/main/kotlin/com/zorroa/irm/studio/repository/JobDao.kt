@@ -1,9 +1,9 @@
 package com.zorroa.irm.studio.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.irm.studio.domain.Job
-import com.zorroa.irm.studio.domain.JobSpec
-import com.zorroa.irm.studio.domain.JobState
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*

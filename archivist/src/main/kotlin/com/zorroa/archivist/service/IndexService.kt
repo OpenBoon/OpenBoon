@@ -1,33 +1,28 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
-import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.elastic.ESUtils
-import com.zorroa.archivist.repository.CommandDao
+import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.UserLogSpec
+import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.domain.*
-import com.zorroa.sdk.filesystem.ObjectFileSystem
-import com.zorroa.sdk.schema.LinkSchema
-import com.zorroa.sdk.schema.PermissionSchema
-import com.zorroa.sdk.schema.ProxySchema
-import com.zorroa.sdk.search.AssetFilter
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.search.AssetSearchOrder
-import com.zorroa.sdk.util.Json
-import org.elasticsearch.action.bulk.BulkProcessor
-import org.elasticsearch.action.bulk.BulkRequest
-import org.elasticsearch.action.bulk.BulkResponse
-import org.elasticsearch.action.update.UpdateRequest
-import org.elasticsearch.client.RestHighLevelClient
-import org.elasticsearch.common.xcontent.XContentType
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.Document
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.common.schema.LinkSchema
+import com.zorroa.common.schema.PermissionSchema
+import com.zorroa.common.schema.ProxySchema
+import com.zorroa.common.search.AssetFilter
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.search.AssetSearchOrder
+import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -37,9 +32,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.LongAdder
+
 
 interface IndexService {
 
@@ -91,21 +84,17 @@ interface IndexService {
     fun update(assetId: String, attrs: Map<String, Any>): Long
 
     fun delete(assetId: String): Boolean
-
-    fun setPermissions(command: Command, search: AssetSearch, acl: Acl)
 }
 
 @Component
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
-        private val commandDao: CommandDao,
         private val permissionDao: PermissionDao,
         private val dyHierarchyService: DyHierarchyService,
         private val taxonomyService: TaxonomyService,
         private val logService: EventLogService,
         private val searchService: SearchService,
         private val properties: ApplicationProperties,
-        private val client: RestHighLevelClient,
         private val ofs: ObjectFileSystem
 
 ) : IndexService, ApplicationListener<ContextRefreshedEvent> {
@@ -152,8 +141,8 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun index(doc: Document): Document {
-        val result = index(AssetIndexSpec(doc))
-        return indexDao[result.getAssetIds()[0]]
+        val result = index(AssetIndexSpec(listOf(doc)))
+        return indexDao.get(result.assetIds[0])
     }
 
     override fun index(spec: AssetIndexSpec): AssetIndexResult {
@@ -169,9 +158,9 @@ class IndexServiceImpl  @Autowired  constructor (
          */
         val organizationId = getUser().organizationId
 
-        for (source in spec.sources) {
+        for (source in spec.sources!!) {
 
-            val managedValues = Document(indexDao.getManagedFields(source.id))
+            val managedValues = Document(indexDao.getManagedFields(source.id!!))
 
             /**
              * Remove parts protected by API.
@@ -193,9 +182,9 @@ class IndexServiceImpl  @Autowired  constructor (
                 /**
                  * If the document is being replaced, maintain the created time.
                  */
-                if (source.isReplace) {
-                    source.setAttr("zorroa.timeCreated", managedValues.getAttr("zorroa.timeCreated"))
-                }
+                //if (source.replace) {
+                //    source.setAttr("zorroa.timeCreated", managedValues.getAttr("zorroa.timeCreated"))
+                //}
             }
             else {
                 source.setAttr("zorroa.timeModified", time)
@@ -208,7 +197,7 @@ class IndexServiceImpl  @Autowired  constructor (
             }
 
             if (source.permissions != null) {
-                for ((key, value) in source.permissions) {
+                for ((key, value) in source.permissions!!) {
                     try {
                         val perm = permissionDao.get(key)
                         if (value and 1 == 1) {
@@ -233,7 +222,7 @@ class IndexServiceImpl  @Autowired  constructor (
                     }
 
                 }
-                source.setAttr("zorroa.permissions", Json.Mapper.convertValue(perms, Json.GENERIC_MAP))
+                source.setAttr("zorroa.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
             } else if (perms.isEmpty) {
                 /**
                  * If the source didn't come with any permissions and the current perms
@@ -242,7 +231,7 @@ class IndexServiceImpl  @Autowired  constructor (
                  * If there is no permissions.
                  */
                 source.setAttr("zorroa.permissions",
-                        Json.Mapper.convertValue(defaultPerms, Json.GENERIC_MAP))
+                        Json.Mapper.convertValue<Map<String,Any>>(defaultPerms, Json.GENERIC_MAP))
             }
 
             if (source.links != null) {
@@ -250,14 +239,14 @@ class IndexServiceImpl  @Autowired  constructor (
                 if (links == null) {
                     links = LinkSchema()
                 }
-                for (link in source.links) {
+                for (link in source.links!!) {
                     links.addLink(link.left, link.right)
                 }
                 source.setAttr("zorroa.links", links)
             }
         }
 
-        val result = indexDao.index(spec.sources)
+        val result = indexDao.index(spec.sources!!)
         if (result.created + result.updated + result.replaced > 0) {
 
             /**
@@ -315,7 +304,7 @@ class IndexServiceImpl  @Autowired  constructor (
         val doc = indexDao[assetId]
         val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
         if (proxySchema != null) {
-            for (proxy in proxySchema.proxies) {
+            for (proxy in proxySchema.proxies!!) {
                 try {
                     if (!Files.deleteIfExists(ofs.get(proxy.id).file.toPath())) {
                         logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
@@ -328,138 +317,6 @@ class IndexServiceImpl  @Autowired  constructor (
         return indexDao.delete(assetId)
     }
 
-    override fun setPermissions(command: Command, search: AssetSearch, acl: Acl) {
-
-        val totalCount = searchService.count(search)
-        if (totalCount == 0L) {
-            return
-        }
-
-        val add = PermissionSchema()
-        val remove = PermissionSchema()
-
-        /**
-         * Convert the ACL to a PermissionSchema.
-         */
-        for (entry in permissionDao.resolveAcl(acl, false)) {
-
-            if (entry.getAccess() and 1 != 0) {
-                add.addToRead(entry.getPermissionId())
-            } else {
-                remove.addToRead(entry.getPermissionId())
-            }
-
-            if (entry.getAccess() and 2 != 0) {
-                add.addToWrite(entry.getPermissionId())
-            } else {
-                remove.addToWrite(entry.getPermissionId())
-            }
-
-            if (entry.getAccess() and 4 != 0) {
-                add.addToExport(entry.getPermissionId())
-            } else {
-                remove.addToExport(entry.getPermissionId())
-            }
-        }
-
-        logger.info("Adding permissions: {}", Json.serializeToString(add))
-        logger.info("Removing permissions: {}", Json.serializeToString(remove))
-
-        val totalSuccess = LongAdder()
-        val totalFailed = LongAdder()
-        val error = AtomicBoolean(false)
-
-        val bulkListener = object : BulkProcessor.Listener {
-            override fun afterBulk(executionId: Long, request: BulkRequest?, response: BulkResponse?) {
-                var failureCount = 0
-                var successCount = 0
-                for (bir in response!!.items) {
-                    if (bir.isFailed) {
-                        logger.warn("update permissions bulk failed: {}", bir.failureMessage)
-                        failureCount++
-                    } else {
-                        successCount++
-                    }
-                }
-                commandDao.updateProgress(command, totalCount, successCount.toLong(), failureCount.toLong())
-                totalSuccess.add(successCount.toLong())
-                totalFailed.add(failureCount.toLong())
-            }
-
-            override fun afterBulk(executionId: Long, request: BulkRequest?, failure: Throwable?) {
-                error.set(true)
-                logger.warn("Failed to set permissions, ", failure)
-            }
-
-            override fun beforeBulk(executionId: Long, request: BulkRequest?) {
-
-            }
-
-        }
-
-        val bulkProcessor = ESUtils.create(client, bulkListener)
-                .setBulkActions(250)
-                .setConcurrentRequests(0)
-                .build()
-
-
-        for (asset in searchService.scanAndScroll(
-                search.setFields(arrayOf("zorroa")), 0)) {
-
-            if (command.state == JobState.Cancelled) {
-                logger.warn("setPermissions was canceled")
-                break
-            }
-
-            if (error.get()) {
-                logger.warn("Encountered error while setting permissions, exiting")
-                break
-            }
-
-
-            val update = UpdateRequest("archivist", "asset", asset.id)
-            var current: PermissionSchema? = asset.getAttr("zorroa.permissions", PermissionSchema::class.java)
-            if (current == null) {
-                current = PermissionSchema()
-            }
-
-            /**
-             * Add all permissions specified by ACL
-             */
-            current.read.addAll(add.read)
-            current.write.addAll(add.write)
-            current.export.addAll(add.export)
-
-            /**
-             * Remove all permissions set to 0 in ACL.
-             */
-            current.read.removeAll(remove.read)
-            current.write.removeAll(remove.write)
-            current.export.removeAll(remove.export)
-
-            update.doc(Json.serializeToString(ImmutableMap.of("zorroa",
-                    ImmutableMap.of("permissions", current))), XContentType.JSON)
-            bulkProcessor.add(update)
-        }
-
-        try {
-            logger.info("Waiting for bulk permission change to complete on {} assets.", totalCount)
-            bulkProcessor.awaitClose(java.lang.Long.MAX_VALUE, TimeUnit.NANOSECONDS)
-            logService.log(UserLogSpec()
-                    .setUser(command.user)
-                    .setMessage("Bulk permission change complete.")
-                    .setAction(LogAction.BulkUpdate)
-                    .setAttrs(ImmutableMap.of<String, Any>("zorroa.permissions", add)))
-        } catch (e: InterruptedException) {
-            logService.log(UserLogSpec()
-                    .setUser(command.user)
-                    .setMessage("Bulk update failure setting permissions on assets, interrupted.")
-                    .setAction(LogAction.BulkUpdate))
-        }
-
-        logger.info("Bulk permission change complete, total: {} success: {} failed: {}",
-                totalCount, totalSuccess.toLong(), totalFailed.toLong())
-    }
 
     override fun getMapping(): Map<String, Any> {
         return indexDao.getMapping()
@@ -495,4 +352,30 @@ class IndexServiceImpl  @Autowired  constructor (
                 "zorroa", "tmp")
     }
 
+}
+
+class AssetIndexSpec {
+
+    var sources: List<Document>? = null
+    var jobId: UUID? = null
+    var taskId: UUID? = null
+
+    constructor(sources: List<Document>) {
+        this.sources = ImmutableList.copyOf(sources)
+    }
+
+    fun setJobId(jobId: UUID): AssetIndexSpec {
+        this.jobId = jobId
+        return this
+    }
+
+    fun setTaskId(taskId: UUID): AssetIndexSpec {
+        this.taskId = taskId
+        return this
+    }
+
+    fun setSources(sources: List<Document>): AssetIndexSpec {
+        this.sources = sources
+        return this
+    }
 }

@@ -1,8 +1,8 @@
 package com.zorroa.irm.studio.controller
 
+import com.zorroa.common.domain.IndexRoute
+import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.AbstractTest
-import com.zorroa.irm.studio.Json
-import com.zorroa.irm.studio.domain.IndexRoute
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

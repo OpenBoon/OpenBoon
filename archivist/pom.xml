@@ -18,7 +18,7 @@
     </parent>
 
     <properties>
-        <kotlin.version>1.2.41</kotlin.version>
+        <kotlin.version>1.2.50</kotlin.version>
         <rest-api.version>1.0.0</rest-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.zorroa.archivist.Application</start-class>
@@ -47,23 +47,19 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zorroa</groupId>
-            <artifactId>sdk</artifactId>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.16</version>
         </dependency>
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>lib-common</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>cluster</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zorroa</groupId>
-            <artifactId>server-sdk</artifactId>
+            <artifactId>lib-security</artifactId>
         </dependency>
 
         <dependency>
@@ -121,7 +117,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.2</version>
         </dependency>
 
         <dependency>
@@ -165,7 +160,6 @@
          <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>${elasticsearch.version}</version>
         </dependency>
 
         <!-- 2.5x faster at loading jpegs in watermark case -->
@@ -182,14 +176,9 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
+            <version>6.0.10.Final</version>
         </dependency>
 
         <dependency>

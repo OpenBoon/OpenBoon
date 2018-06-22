@@ -1,7 +1,7 @@
 package com.zorroa.irm.studio.repository
 
+import com.zorroa.common.domain.Document
 import com.zorroa.irm.studio.AbstractTest
-import com.zorroa.irm.studio.domain.Document
 import com.zorroa.irm.studio.rest.EsRestClientCache
 import com.zorroa.irm.studio.rest.IndexRouteClient
 import org.elasticsearch.action.get.GetRequest

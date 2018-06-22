@@ -1,5 +1,6 @@
 package com.zorroa.irm.studio
 
+import com.zorroa.common.util.Json
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 

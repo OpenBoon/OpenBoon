@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.security.UserAuthed;
 import com.zorroa.archivist.security.UnitTestAuthentication;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
@@ -45,11 +45,11 @@ public abstract class MockMvcTest extends AbstractTest {
     }
 
     protected <T> T deserialize(MvcResult result, Class<T> type) {
-        return Json.deserialize(result.getResponse().getContentAsByteArray(), type);
+        return Json.INSTANCE.deserialize(result.getResponse().getContentAsByteArray(), type);
     }
 
     protected <T> T deserialize(MvcResult result, TypeReference<T> type) {
-        return Json.deserialize(result.getResponse().getContentAsByteArray(), type);
+        return Json.INSTANCE.deserialize(result.getResponse().getContentAsByteArray(), type);
     }
 
 

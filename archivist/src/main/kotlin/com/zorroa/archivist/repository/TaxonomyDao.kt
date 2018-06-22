@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.Taxonomy
 import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.security.getUser
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository

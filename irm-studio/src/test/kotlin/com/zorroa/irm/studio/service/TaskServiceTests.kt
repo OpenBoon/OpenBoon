@@ -1,9 +1,9 @@
 package com.zorroa.irm.studio.service
 
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
 import com.zorroa.irm.studio.AbstractTest
-import com.zorroa.irm.studio.domain.Job
-import com.zorroa.irm.studio.domain.JobSpec
-import com.zorroa.irm.studio.domain.JobState
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.web.WebAppConfiguration

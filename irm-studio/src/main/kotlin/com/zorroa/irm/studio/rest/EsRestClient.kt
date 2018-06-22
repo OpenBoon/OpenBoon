@@ -1,6 +1,6 @@
 package com.zorroa.irm.studio.rest
 
-import com.zorroa.irm.studio.domain.IndexRoute
+import com.zorroa.common.domain.IndexRoute
 import org.apache.http.HttpHost
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
@@ -18,7 +18,7 @@ interface IndexRouteClient {
 @Component
 class ESIndexRouteClient : IndexRouteClient {
 
-    val client =  RestClient("http://localhost:8080")
+    val client =  com.zorroa.common.clients.RestClient("http://localhost:8080")
 
     override fun getIndexRoute(orgId: UUID) : IndexRoute {
         return client.get("/api/v1/index-routes/$orgId", IndexRoute::class.java)

@@ -7,8 +7,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper

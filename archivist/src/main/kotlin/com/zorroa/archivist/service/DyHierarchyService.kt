@@ -8,9 +8,9 @@ import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.sdk.domain.Tuple
-import com.zorroa.sdk.search.AssetScript
-import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.common.domain.Tuple
+import com.zorroa.common.search.AssetScript
+import com.zorroa.common.search.AssetSearch
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder

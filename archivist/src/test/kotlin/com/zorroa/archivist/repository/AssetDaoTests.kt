@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.sdk.services.AssetSpec
 import com.zorroa.archivist.security.getUser
+import com.zorroa.common.domain.AssetSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals

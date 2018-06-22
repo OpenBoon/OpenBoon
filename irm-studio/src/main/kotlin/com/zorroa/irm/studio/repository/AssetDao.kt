@@ -1,10 +1,10 @@
 package com.zorroa.irm.studio.repository
 
-import com.zorroa.irm.studio.Json
-import com.zorroa.irm.studio.domain.Asset
-import com.zorroa.irm.studio.domain.Document
+import com.zorroa.common.clients.RestClient
+import com.zorroa.common.domain.Asset
+import com.zorroa.common.domain.Document
+import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.rest.IndexRouteClient
-import com.zorroa.irm.studio.rest.RestClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties

@@ -3,8 +3,8 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.sdk.processor.Source;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.domain.Source;
+import com.zorroa.common.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -54,11 +54,11 @@ public class DyhierarchyControllerTests  extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/dyhi")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(spec)))
+                .content(Json.INSTANCE.serialize(spec)))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        DyHierarchy dh = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+        DyHierarchy dh = Json.INSTANCE.getMapper().readValue(result.getResponse().getContentAsString(),
                 new TypeReference<DyHierarchy>() {});
         assertEquals(4, dh.getLevels().size());
     }

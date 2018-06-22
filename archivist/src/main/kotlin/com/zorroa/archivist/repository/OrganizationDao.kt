@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*

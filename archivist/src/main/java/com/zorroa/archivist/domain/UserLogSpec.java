@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.security.UserId;
-import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.common.search.AssetSearch;
 
 import java.util.List;
 import java.util.Map;
