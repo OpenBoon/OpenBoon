@@ -14,7 +14,7 @@
         <relativePath>../pom.xml</relativePath>
         <groupId>com.zorroa</groupId>
         <artifactId>zorroa-server</artifactId>
-        <version>0.39.3</version>
+        <version>0.39.4</version>
     </parent>
 
     <properties>
