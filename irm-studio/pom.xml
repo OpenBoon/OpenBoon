@@ -9,6 +9,7 @@
         <version>0.40.0-SNAPSHOT</version>
     </parent>
 
+    <name>zorroa-studio</name>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>irm-studio</artifactId>
     <packaging>jar</packaging>
@@ -80,6 +81,11 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.cloud.sql</groupId>
+            <artifactId>postgres-socket-factory</artifactId>
+            <version>1.0.8</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -157,8 +163,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <finalName>irm-studio</finalName>
                     <mainClass>com.zorroa.irm.studio.ApplicationKt</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
@@ -174,11 +188,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>zorroa/irm-studio</repository>
+                    <repository>zorroa/zorroa-studio</repository>
                     <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>
