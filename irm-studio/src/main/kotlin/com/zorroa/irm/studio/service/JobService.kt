@@ -4,6 +4,8 @@ import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.repository.JobDao
 import io.fabric8.kubernetes.api.model.Container
+import io.fabric8.kubernetes.api.model.EnvVar
+import io.fabric8.kubernetes.api.model.EnvVarSource
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
 import io.fabric8.kubernetes.client.ConfigBuilder
 import io.fabric8.kubernetes.client.DefaultKubernetesClient
@@ -11,6 +13,7 @@ import io.fabric8.kubernetes.client.KubernetesClient
 import io.fabric8.kubernetes.client.internal.SerializationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -35,6 +38,7 @@ class K8JobServiceSettings {
     var password: String? = null
     var namespace: String = "default"
     var image: String? = null
+    var talkBackUrl : String? = null
 }
 
 @Configuration
@@ -79,6 +83,9 @@ class K8JobServiceImpl @Autowired constructor(
     @Autowired
     lateinit var k8settings : K8JobServiceSettings
 
+    @Value("\${irm.cdv.url}")
+    lateinit var cdvUrl : String
+
     override fun start(job: Job) : Job {
         val yaml = generateK8JobSpec(job)
         val kjob = kubernetesClient.extensions().jobs().load(
@@ -108,9 +115,10 @@ class K8JobServiceImpl @Autowired constructor(
          */
         logger.info("Building job with pipelines: {}", job.pipelines)
 
-        val endpoint = "http://35.231.205.98/api/v1/jobs/${job.id}/result"
+        val endpoint = "${k8settings.talkBackUrl}/api/v1/jobs/${job.id}/result"
 
-        val processors = pipelineService.buildProcessorList(job.pipelines)
+        val processors =
+                pipelineService.buildProcessorList(job.pipelines)
         processors.add(ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
                 args=mapOf("serializer" to "core_data_vault", "endpoint" to endpoint)))
         /*
@@ -147,6 +155,13 @@ class K8JobServiceImpl @Autowired constructor(
         container.name = job.name
         container.image = k8settings.image
         container.args = listOf(url.toString())
+        container.env = mutableListOf(
+                EnvVar("OFS_CLASS", "cdv", null),
+                EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
+                EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
+                EnvVar("CDV_DOCUMENT_GUID", job.assetId.toString(),null),
+                EnvVar("CDV_API_BASE_URL", cdvUrl, null),
+                EnvVar("IGC_API_BASE_URL", k8settings.talkBackUrl, null))
 
         val spec = builder.withNewSpec()
         val template = spec.editOrNewTemplate()
@@ -170,6 +185,4 @@ class K8JobServiceImpl @Autowired constructor(
         private val logger = LoggerFactory.getLogger(K8JobServiceImpl::class.java)
 
     }
-
-
 }
