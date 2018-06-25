@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -34,6 +35,8 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
             ps.setLong(6, time)
             ps.setLong(7, time)
             ps.setArray(8, connection.createArrayOf("text", spec.pipelines.toTypedArray()))
+            ps.setString(9, Json.serializeToString(spec.attrs, "{}"))
+            ps.setString(10, Json.serializeToString(spec.env, "{}"))
             ps
         })
         return get(id)
@@ -67,7 +70,9 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
                     JobState.values()[rs.getInt("int_state")],
-                    (rs.getArray("list_pipelines").array as Array<String>).toList())
+                    (rs.getArray("list_pipelines").array as Array<String>).toList(),
+                    Json.deserialize(rs.getString("json_attrs"), Json.GENERIC_MAP),
+                    Json.deserialize(rs.getString("json_env"), Json.STRING_MAP))
         }
 
         private const val GET = "SELECT * FROM job"
@@ -80,7 +85,9 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
                     "int_state",
                     "time_created",
                     "time_modified",
-                    "list_pipelines")
+                    "list_pipelines",
+                    "json_attrs",
+                    "json_env")
     }
 }
 

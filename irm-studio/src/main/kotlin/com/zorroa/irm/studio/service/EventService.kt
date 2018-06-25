@@ -69,6 +69,7 @@ class GcpEventServiceImpl : EventService {
 
             val type= payload.get("type") as String
             val assetId = payload.get("key") as String
+            val companyId = payload.get("companyId") as Int
 
             if (type == "CREATE") {
                 try {
@@ -76,7 +77,8 @@ class GcpEventServiceImpl : EventService {
                     val spec = JobSpec(jobName,
                             UUID.fromString(assetId),
                             UUID.fromString("00000000-9998-8888-7777-666666666666"),
-                            pipelineService.getDefaultPipelineList())
+                            pipelineService.getDefaultPipelineList(),
+                            attrs=mapOf("companyId" to companyId))
 
                     val job = jobService.create(spec)
                     logger.info("Created job {} {}", job.id, job.pipelines)

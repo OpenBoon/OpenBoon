@@ -21,12 +21,17 @@ class JobDaoTests : AbstractTest() {
         val spec = JobSpec("run_some_stuff",
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                listOf("standard"))
+                listOf("standard"),
+                mapOf("foo" to 1),
+                mapOf("foo" to "bar"))
+
         val t1 = jobDao.create(spec)
         assertEquals(spec.name, t1.name)
         assertEquals(spec.assetId, t1.assetId)
         assertEquals(spec.pipelines, t1.pipelines)
         assertEquals(1, t1.pipelines.size)
+        assertEquals(1, t1.attrs.get("foo"))
+        assertEquals("bar", t1.env.get("foo"))
     }
 
     @Test
