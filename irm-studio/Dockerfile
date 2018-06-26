@@ -2,7 +2,7 @@ FROM openjdk:8-jre-slim
 VOLUME /tmp
 MAINTAINER Zorroa <support@zorroa.com>
 RUN mkdir /service
-COPY target/irm-studio.jar  /service/app.jar
+COPY target/zorroa-studio.jar  /service/app.jar
 COPY keys /keys
 
 EXPOSE 8080
