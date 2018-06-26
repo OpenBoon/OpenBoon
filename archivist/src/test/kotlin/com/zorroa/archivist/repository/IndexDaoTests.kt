@@ -39,13 +39,13 @@ class IndexDaoTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testGetFieldValue() {
-        assertEquals("dog", indexDao.getFieldValue(asset1.id!!, "bar.str"))
-        assertEquals(100, (indexDao.getFieldValue<Any>(asset1.id!!, "bar.int") as Int).toLong())
+        assertEquals("dog", indexDao.getFieldValue(asset1.id, "bar.str"))
+        assertEquals(100, (indexDao.getFieldValue<Any>(asset1.id, "bar.int") as Int).toLong())
     }
 
     @Test
     fun testGetById() {
-        val asset2 = indexDao[asset1.id!!]
+        val asset2 = indexDao[asset1.id]
         assertEquals(asset1.id, asset2.id)
     }
 
@@ -64,7 +64,7 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testExistsById() {
-        assertTrue(indexDao.exists(asset1.id!!))
+        assertTrue(indexDao.exists(asset1.id))
         assertFalse(indexDao.exists("abc"))
     }
 
@@ -141,11 +141,11 @@ class IndexDaoTests : AbstractTest() {
     @Test
     fun testAppendLink() {
         assertTrue(indexDao.appendLink("folder", "100",
-                ImmutableList.of(asset1.id!!))["success"]!!.contains(asset1.id!!))
+                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
         assertTrue(indexDao.appendLink("parent", "foo",
-                ImmutableList.of(asset1.id!!))["success"]!!.contains(asset1.id!!))
+                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        val a = indexDao[asset1.id!!]
+        val a = indexDao[asset1.id]
         val folder_links = a.getAttr<Collection<Any>>("zorroa.links.folder")
         val parent_links = a.getAttr<Collection<Any>>("zorroa.links.parent")
 
@@ -158,16 +158,16 @@ class IndexDaoTests : AbstractTest() {
     @Test
     fun testRemoveLink() {
         assertTrue(indexDao.appendLink("folder", "100",
-                ImmutableList.of(asset1.id!!))["success"]!!.contains(asset1.id!!))
+                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        var a = indexDao[asset1.id!!]
+        var a = indexDao[asset1.id]
         var links = a.getAttr<Collection<Any>>("zorroa.links.folder")
         assertEquals(1, links!!.size.toLong())
 
         assertTrue(indexDao.removeLink("folder", "100",
-                ImmutableList.of(asset1.id!!))["success"]!!.contains(asset1.id!!))
+                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        a = indexDao[asset1.id!!]
+        a = indexDao[asset1.id]
         links = a.getAttr("zorroa.links.folder")
         assertEquals(0, links!!.size.toLong())
     }
@@ -177,30 +177,30 @@ class IndexDaoTests : AbstractTest() {
         val attrs = Maps.newHashMap<String, Any>()
         attrs["foo.bar"] = 100
 
-        indexDao.update(asset1.id!!, attrs)
-        val asset2 = indexDao[asset1.id!!]
+        indexDao.update(asset1.id, attrs)
+        val asset2 = indexDao[asset1.id]
         assertEquals(100, (asset2.getAttr<Any>("foo.bar") as Int).toLong())
     }
 
     @Test
     fun testDelete() {
-        assertTrue(indexDao.delete(asset1.id!!))
+        assertTrue(indexDao.delete(asset1.id))
         refreshIndex()
-        assertFalse(indexDao.delete(asset1.id!!))
+        assertFalse(indexDao.delete(asset1.id))
     }
 
     @Test
     fun testGetProtectedFields() {
         var v = indexDao.getManagedFields("a")
         assertNotNull(v)
-        v = indexDao.getManagedFields(asset1.id!!)
+        v = indexDao.getManagedFields(asset1.id)
         assertNotNull(v)
     }
 
     @Test
     fun testRemoveFields() {
-        indexDao.removeFields(asset1.id!!, Sets.newHashSet("source"), true)
-        val a = indexDao[asset1.id!!]
+        indexDao.removeFields(asset1.id, Sets.newHashSet("source"), true)
+        val a = indexDao[asset1.id]
         assertFalse(a.attrExists("source"))
     }
 
