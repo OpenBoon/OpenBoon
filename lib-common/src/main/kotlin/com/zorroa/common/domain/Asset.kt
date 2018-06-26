@@ -68,6 +68,11 @@ open class Document {
 
     constructor(id: String, doc: Map<String, Any>) {
         this.id = id
+        this.document = doc
+    }
+
+    constructor(id: String) {
+        this.id = id
         this.document = mutableMapOf()
     }
 
@@ -274,6 +279,10 @@ open class Document {
             throw IllegalArgumentException("Invalid attribute: $key parent: $parent")
         }
         return result
+    }
+
+    override fun toString(): String {
+        return "<Document $id - $document>"
     }
 
     companion object {
