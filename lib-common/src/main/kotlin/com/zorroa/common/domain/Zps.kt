@@ -32,5 +32,6 @@ data class ProcessorRef(
         var args: Map<String, Any>? = mutableMapOf(),
         var execute: List<ProcessorRef>? = mutableListOf(),
         var filters: List<ProcessorFilter>? = mutableListOf(),
-        var fileTypes: Set<String>? = mutableSetOf()
+        var fileTypes: Set<String>? = mutableSetOf(),
+        val language : String = "python"
 )
