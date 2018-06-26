@@ -139,6 +139,16 @@ class RestClient {
         return checkResponse(response, resultType)
     }
 
+    fun <T> put(url: String, body: Any?, type: TypeReference<T>): T {
+        val post = HttpPut(url)
+        if (body != null) {
+            post.setHeader("Content-Type", "application/json")
+            post.entity = ByteArrayEntity(Json.serialize(body))
+        }
+        val response = checkStatus(post)
+        return checkResponse(response, type)
+    }
+
     fun <T> post(url: String, body: Any?, type: TypeReference<T>): T {
         val post = HttpPost(url)
         if (body != null) {
