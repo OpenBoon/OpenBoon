@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.annotation.PostConstruct
@@ -64,16 +65,26 @@ class GcpEventServiceImpl : EventService {
 
     inner class GcpDataMessageReceiver : MessageReceiver {
         override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
-            val string = String(message.data.toByteArray())
-            val payload : Map<String, Any> = Json.Mapper.readValue(string)
+            val payload : Map<String, Any> = try {
+                Json.Mapper.readValue(message.data.toByteArray())
+            } catch (e: Exception) {
+                consumer.ack()
+                logger.warn("Failed to parse GPubSub payload: {}", String(message.data.toByteArray()))
+                return
+            }
 
-            val type= payload.get("type") as String
-            val assetId = payload.get("key") as String
-            val companyId = payload.get("companyId") as Int
-
+            val type= payload["type"] as String?
             if (type == "CREATE") {
+
+                val assetId = payload["key"] as String
+                val companyId = payload["companyId"] as Int
+                val jobName = "$assetId-$type".toLowerCase()
+
+                /**
+                 * If the same event comes in for a given job we'll attempt to run
+                 * it again, assuming its not alrady running.
+                 */
                 try {
-                    val jobName = "$assetId-$type".toLowerCase()
                     val spec = JobSpec(jobName,
                             UUID.fromString(assetId),
                             UUID.fromString("00000000-9998-8888-7777-666666666666"),
@@ -83,8 +94,13 @@ class GcpEventServiceImpl : EventService {
                     val job = jobService.create(spec)
                     logger.info("Created job {} {}", job.id, job.pipelines)
                     jobService.start(job)
-                } catch (e: Exception) {
-                    logger.warn("Error launching job:", e)
+                } catch (e: DuplicateKeyException) {
+                    val job = jobService.get(jobName)
+                    jobService.start(job)
+                }
+                catch (e: Exception) {
+                    logger.warn("Error launching job: {}, asset: {} company: {}",
+                            e.message, assetId, companyId)
                 }
             }
             consumer.ack()

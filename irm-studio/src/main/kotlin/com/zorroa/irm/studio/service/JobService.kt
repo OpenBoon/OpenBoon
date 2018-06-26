@@ -23,10 +23,11 @@ import io.fabric8.kubernetes.api.model.Job as KJob
 
 
 interface JobService {
-    fun start(job: com.zorroa.common.domain.Job) : Any
-    fun finish(id: UUID, doc: Document)
-    fun create(spec: JobSpec) : com.zorroa.common.domain.Job
-    fun get(id: UUID) : com.zorroa.common.domain.Job
+    fun start(job: Job) : Boolean
+    fun finish(job: Job, doc: Document) : Boolean
+    fun create(spec: JobSpec) : Job
+    fun get(id: UUID) : Job
+    fun get(name: String) : Job
 }
 
 @Configuration
@@ -86,27 +87,22 @@ class K8JobServiceImpl @Autowired constructor(
     @Value("\${irm.cdv.url}")
     lateinit var cdvUrl : String
 
-    override fun start(job: Job) : Job {
+    override fun start(job: Job) : Boolean {
+        val started =jobDao.setState(job, JobState.RUNNING, JobState.WAITING)
+        logger.info("Job {} WAITING->RUNNING: {}", job.name, started)
+        if (!started) {
+            return false
+        }
         val yaml = generateK8JobSpec(job)
         val kjob = kubernetesClient.extensions().jobs().load(
                 yaml.byteInputStream(Charsets.UTF_8)).create()
-        return job
+        return true
     }
 
-    override fun finish(id: UUID, doc: Document) {
-        try {
-
-            val job = jobDao.get(id)
-            if (jobDao.setState(job, JobState.SUCCESS, JobState.RUNNING)) {
-                assetService.storeAndReindex(job.organizationId, doc)
-            }
-            else {
-                logger.warn("Failed to set job state: {} to {}", job.id, JobState.RUNNING)
-            }
-
-        } finally {
-            logger.warn("Failed to set job to success [$id]", doc)
-        }
+    override fun finish(job: Job, doc: Document) : Boolean {
+        val result = jobDao.setState(job, JobState.SUCCESS, JobState.RUNNING)
+        logger.info("Job {} RUNNING->SUCCESS: {}", job.name, result)
+        return result
     }
 
     fun generateZpsScript(job: Job) : ZpsScript {
@@ -175,6 +171,10 @@ class K8JobServiceImpl @Autowired constructor(
 
     override fun get(id: UUID) : Job {
         return jobDao.get(id)
+    }
+
+    override fun get(name: String) : Job {
+        return jobDao.get(name)
     }
 
     override fun create(spec: JobSpec) : Job {

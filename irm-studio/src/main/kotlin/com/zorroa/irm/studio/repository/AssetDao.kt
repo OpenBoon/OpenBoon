@@ -17,8 +17,8 @@ interface AssetDao<S> {
     fun create(spec: S) : Asset
     fun get(orgId: UUID, id: UUID) : Asset
 
-    fun updateDocument(orgId: UUID, id: UUID, asset: Document) : Any
-    fun updateDocument(orgId: UUID, id: String, asset: Document) : Any
+    fun updateDocument(orgId: UUID, id: UUID, doc: Document) : Any
+    fun updateDocument(orgId: UUID, id: String, doc: Document) : Any
 
     fun getDocument(orgId: UUID, id: UUID) : Document
     fun getDocument(orgId: UUID, id: String) : Document
@@ -69,23 +69,22 @@ class CoreDataVaultAssetRepositoryImpl : AssetDao<CDVAssetSpec> {
         return Asset(asset.documentGUID, asset.companyId.toString(), asset.fileName)
     }
 
+    override fun updateDocument(orgId: UUID, id: UUID, doc: Document) : Any {
+        return updateDocument(orgId, id.toString(), doc)
+    }
+
+    override fun updateDocument(orgId: UUID, id: String, doc: Document) : Any {
+        val companyId = convertToCompanyId(orgId)
+        return cdvClient.put("/companies/$companyId/assets/$id/metadata/es", doc, Json.GENERIC_MAP)
+    }
+
     override fun getDocument(orgId: UUID, id: UUID) : Document {
         return getDocument(orgId, id.toString())
     }
 
-    override fun updateDocument(orgId: UUID, id: UUID, asset: Document) : Any {
-        return updateDocument(orgId, id.toString(), asset)
-    }
-
-    override fun updateDocument(orgId: UUID, id: String, asset: Document) : Any {
-        val companyId = convertToCompanyId(orgId)
-        return cdvClient.put("/companies/$companyId/assets/$id/metadata/es", asset.document, String::class.java)
-    }
-
     override fun getDocument(orgId: UUID, id: String) : Document {
         val companyId = convertToCompanyId(orgId)
-        val data = cdvClient.get("/companies/$companyId/assets/$id/metadata/es", Json.GENERIC_MAP)
-        return Document(id, data)
+        return cdvClient.get("/companies/$companyId/assets/$id/metadata/es", Document::class.java)
     }
 
     private fun convertToCompanyId(orgId: UUID) : Long {
