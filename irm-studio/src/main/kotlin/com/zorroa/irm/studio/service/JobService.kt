@@ -7,6 +7,7 @@ import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
 import io.fabric8.kubernetes.api.model.EnvVarSource
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
+import io.fabric8.kubernetes.api.model.extensions.DeploymentSpec
 import io.fabric8.kubernetes.client.ConfigBuilder
 import io.fabric8.kubernetes.client.DefaultKubernetesClient
 import io.fabric8.kubernetes.client.KubernetesClient
@@ -88,7 +89,7 @@ class K8JobServiceImpl @Autowired constructor(
     lateinit var cdvUrl : String
 
     override fun start(job: Job) : Boolean {
-        val started =jobDao.setState(job, JobState.RUNNING, JobState.WAITING)
+        val started= jobDao.setState(job, JobState.RUNNING, JobState.WAITING)
         logger.info("Job {} WAITING->RUNNING: {}", job.name, started)
         if (!started) {
             return false
@@ -110,12 +111,11 @@ class K8JobServiceImpl @Autowired constructor(
          * Resolve the list of processors and append one to talk back
          */
         logger.info("Building job with pipelines: {}", job.pipelines)
-
         val endpoint = "${k8settings.talkBackUrl}/api/v1/jobs/${job.id}/result"
-
         val processors =
                 pipelineService.buildProcessorList(job.pipelines)
-        processors.add(ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
+        processors.add(
+                ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
                 args=mapOf("serializer" to "core_data_vault", "endpoint" to endpoint)))
         /*
         * Pull the current state of the asset
@@ -142,10 +142,21 @@ class K8JobServiceImpl @Autowired constructor(
                 "application/json",
                 Json.serialize(zps))
 
+        val labels = mapOf(
+                "assetId" to job.assetId.toString(),
+                "companyId" to job.attrs["companyId"].toString(),
+                "organizationId" to job.organizationId.toString(),
+                "jobId" to job.id.toString(),
+                "type" to "ingest",
+                "script" to  "zps")
+
         val builder = DeploymentBuilder()
                 .withApiVersion("batch/v1")
                 .withKind("Job")
-        builder.editOrNewMetadata().withName(job.name).endMetadata()
+                .withNewMetadata()
+                .withName(job.name)
+                .withLabels(labels)
+                .endMetadata()
 
         val container = Container()
         container.name = job.name
@@ -157,11 +168,16 @@ class K8JobServiceImpl @Autowired constructor(
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
                 EnvVar("CDV_DOCUMENT_GUID", job.assetId.toString(),null),
                 EnvVar("CDV_API_BASE_URL", cdvUrl, null),
-                EnvVar("IGC_API_BASE_URL", k8settings.talkBackUrl, null))
+                EnvVar("ZORROA_STUIDO_BASE_URL", k8settings.talkBackUrl, null))
 
-        val spec = builder.withNewSpec()
+        val dspec = DeploymentSpec()
+        dspec.setAdditionalProperty("backOffLimit", 1)
+        val spec = builder.withNewSpecLike(dspec)
         val template = spec.editOrNewTemplate()
-        template.editOrNewMetadata().withName(job.name).endMetadata()
+        template.editOrNewMetadata()
+                .withName(job.name)
+                .withLabels(labels)
+                .endMetadata()
         template.editOrNewSpec()
                 .withRestartPolicy("Never")
                 .addAllToContainers(listOf(container)).endSpec()
