@@ -74,15 +74,15 @@ class GcpEventServiceImpl : EventService {
             }
 
             val type= payload["type"] as String?
-            if (type == "CREATE") {
 
+            if (type == "UPDATE") {
                 val assetId = payload["key"] as String
                 val companyId = payload["companyId"] as Int
                 val jobName = "$assetId-$type".toLowerCase()
 
                 /**
                  * If the same event comes in for a given job we'll attempt to run
-                 * it again, assuming its not alrady running.
+                 * it again, assuming its not already running.
                  */
                 try {
                     val spec = JobSpec(jobName,
