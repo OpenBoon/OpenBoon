@@ -56,6 +56,8 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**/login")
+                    .addFilterBefore(HmacSecurityFilter(
+                            properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
