@@ -1,5 +1,6 @@
 package com.zorroa.irm.studio.repository
 
+import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.rest.EsRestClient
@@ -15,10 +16,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.lang.Exception
-import java.util.*
 
 interface IndexDao {
-    fun indexDocument(orgId: UUID, doc: Document)
+    fun indexDocument(assetId: Asset, doc: Document)
 }
 
 @Repository
@@ -26,8 +26,8 @@ class ElasticSearchIndexDao @Autowired constructor(
         val esClientFactory: EsRestClientCache
 ): IndexDao {
 
-    override fun indexDocument(orgId: UUID, doc: Document) {
-        val esClient = esClientFactory.getClient(orgId)
+    override fun indexDocument(assetId: Asset, doc: Document) {
+        val esClient = esClientFactory.getClient(assetId.organizationId)
         if (doc.replace) {
             replaceDocument(esClient, doc)
         }
@@ -51,7 +51,7 @@ class ElasticSearchIndexDao @Autowired constructor(
             }
 
             override fun onResponse(rsp: IndexResponse?) {
-                logger.info("indexed")
+                logger.info("indexed : {}", rsp?.id)
             }
         })
     }
@@ -68,7 +68,7 @@ class ElasticSearchIndexDao @Autowired constructor(
                 logger.warn("Failed to update asset: {}", doc.id, e)
             }
             override fun onResponse(rsp: UpdateResponse?) {
-                logger.info("indexed")
+                logger.info("indexed : {}", rsp?.id)
             }
         })
     }

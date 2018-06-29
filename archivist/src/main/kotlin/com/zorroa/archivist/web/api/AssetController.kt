@@ -17,7 +17,10 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.Document
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
@@ -45,7 +48,6 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 class AssetController @Autowired constructor(
         private val indexService: IndexService,
-        private val assetService: AssetService,
         private val searchService: SearchService,
         private val folderService: FolderService,
         private val logService: EventLogService,
@@ -57,7 +59,7 @@ class AssetController @Autowired constructor(
      * Describes a file to stream.
      */
     class StreamFile(var path: String, var mimeType: String, var proxy: Boolean)
-    
+
     @GetMapping(value = ["/api/v1/assets/_fields"])
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
         response.setHeader("Cache-Control", CacheControl.maxAge(
@@ -381,13 +383,6 @@ class AssetController @Autowired constructor(
     fun refresh() {
         logger.warn("Refresh called.")
     }
-
-    @PostMapping(value = ["/api/v1/assets"])
-    @ResponseBody
-    fun create(@RequestBody spec: AssetSpec): Any {
-        return assetService.create(spec)
-    }
-
     companion object {
 
         private val logger = LoggerFactory.getLogger(AssetController::class.java)

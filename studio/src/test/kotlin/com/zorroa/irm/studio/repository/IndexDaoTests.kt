@@ -1,5 +1,6 @@
 package com.zorroa.irm.studio.repository
 
+import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
 import com.zorroa.irm.studio.AbstractTest
 import com.zorroa.irm.studio.rest.EsRestClientCache
@@ -23,9 +24,9 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testIndexDocument() {
-        val id= UUID.randomUUID()
-        val doc = Document(id.toString(), mapOf("foo" to "bar"))
-        indexDao.indexDocument(id, doc)
+        val asset = Asset(UUID.randomUUID(),UUID.randomUUID(), mapOf())
+        val doc = Document(asset.id.toString(), mapOf("foo" to "bar"))
+        indexDao.indexDocument(asset, doc)
         Thread.sleep(2000)
 
         // Doesn't matter what ID we send here.

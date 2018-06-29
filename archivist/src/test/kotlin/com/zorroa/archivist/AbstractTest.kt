@@ -9,8 +9,9 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
-import com.zorroa.common.domain.Document
+import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.Source
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
@@ -55,13 +56,10 @@ open abstract class AbstractTest {
     val logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
-    protected lateinit var client: RestHighLevelClient
+    protected lateinit var estClientCache: EsClientCache
 
     @Autowired
     protected lateinit var userService: UserService
-
-    @Autowired
-    protected lateinit var assetService: AssetService
 
     @Autowired
     protected lateinit var storageService: StorageService
@@ -153,14 +151,14 @@ open abstract class AbstractTest {
         transactionEventManager.isImmediateMode = true
 
         /**
-         * Elastic must be created and cleaned before authentication.
-         */
-        cleanElastic()
-
-        /**
          * Before we can do anything reliably we need a logged in user.
          */
         authenticate()
+
+        /**
+         * We need to be authed to clean elastic.
+         */
+        cleanElastic()
 
         val spec1 = UserSpec(
                 "user",
@@ -203,16 +201,17 @@ open abstract class AbstractTest {
          * which adds some standard data to both databases.
          */
 
+        val rest = estClientCache[getOrgId()]
 
         val reqDel = DeleteIndexRequest("_all")
-        client.indices().delete(reqDel)
+        rest.client.indices().delete(reqDel)
 
         val mapping = Json.Mapper.readValue<Map<String,Any>>(
                 File("../elasticsearch/asset.json"), Json.GENERIC_MAP)
 
-        val reqCreate = CreateIndexRequest("archivist")
+        val reqCreate = CreateIndexRequest(rest.route.indexName)
         reqCreate.source(mapping)
-        client.indices().create(reqCreate)
+        rest.client.indices().create(reqCreate)
     }
 
     /**
@@ -317,10 +316,12 @@ open abstract class AbstractTest {
     }
 
     fun refreshIndex() {
-        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
+        val rest = estClientCache[UUID.randomUUID()]
+        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 
     fun refreshIndex(sleep: Long) {
-        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
+        val rest = estClientCache[UUID.randomUUID()]
+        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 }

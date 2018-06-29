@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.common.domain.AssetId
+import com.zorroa.common.domain.Asset
 import org.apache.commons.io.FileUtils
 import org.junit.Before
 import org.junit.Test
@@ -14,11 +14,11 @@ import kotlin.test.assertTrue
 
 class StorageServiceTests : AbstractTest() {
 
-    lateinit var asset: AssetId
+    lateinit var asset: Asset
 
     @Before
     fun init() {
-        asset = AssetId(UUID.randomUUID(), UUID.randomUUID(), "foo.bar")
+        asset = Asset(UUID.randomUUID(), UUID.randomUUID())
     }
 
     @Test(expected = StorageWriteException::class)

@@ -2,35 +2,28 @@ package com.zorroa.irm.studio.service
 
 import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
-import com.zorroa.irm.studio.repository.AssetDao
-import com.zorroa.irm.studio.repository.CDVAssetSpec
+import com.zorroa.common.service.CoreDataVaultService
 import com.zorroa.irm.studio.repository.IndexDao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 
 interface AssetService {
-    fun get(orgId: UUID, id: UUID) : Asset
-    fun getDocument(orgId: UUID, id: UUID) : Document
-    fun storeAndReindex(orgId: UUID,  doc: Document)
+    fun getDocument(assetId: Asset) : Document
+    fun storeAndReindex(assetId: Asset, doc: Document)
 }
 
 @Service
 class AssetServiceImpl @Autowired constructor(
-        val assetDao: AssetDao<CDVAssetSpec>,
+        val coreDataVault: CoreDataVaultService,
         val indexDao: IndexDao): AssetService {
 
-    override fun getDocument(orgId: UUID, id: UUID): Document {
-        return assetDao.getDocument(orgId, id)
+    override fun getDocument(assetId: Asset): Document {
+        return coreDataVault.getIndexedMetadata(assetId)
     }
 
-    override fun get(orgId: UUID, id: UUID) : Asset {
-        return assetDao.get(orgId, id)
-    }
-
-    override fun storeAndReindex(orgId: UUID, doc: Document) {
-        assetDao.updateDocument(orgId, UUID.fromString(doc.id), doc)
-        indexDao.indexDocument(orgId, doc)
+    override fun storeAndReindex(assetId: Asset, doc: Document) {
+        coreDataVault.updateIndexedMetadata(assetId, doc)
+        indexDao.indexDocument(assetId, doc)
     }
 }

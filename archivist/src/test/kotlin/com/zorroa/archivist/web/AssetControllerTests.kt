@@ -8,7 +8,6 @@ import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.web.api.AssetController
 import com.zorroa.common.domain.Pager
-import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.junit.Assert.*
@@ -24,13 +23,10 @@ import java.util.stream.Collectors
 class AssetControllerTests : MockMvcTest() {
 
     @Autowired
-    internal var indexDao: IndexDao? = null
+    lateinit var indexDao: IndexDao
 
     @Autowired
-    internal var assetController: AssetController? = null
-
-    @Autowired
-    internal var ofs: ObjectFileSystem? = null
+    lateinit var assetController: AssetController
 
     @Before
     fun init() {
@@ -54,15 +50,14 @@ class AssetControllerTests : MockMvcTest() {
                 object : TypeReference<Map<String, Set<String>>>() {
 
                 })
-        assertTrue(fields["date"]!!.size > 0)
-        assertTrue(fields["string"]!!.size > 0)
+        assertTrue(fields["date"]!!.isNotEmpty())
+        assertTrue(fields["string"]!!.isNotEmpty())
         assertTrue(fields.containsKey("integer"))
     }
 
     @Test
     @Throws(Exception::class)
     fun testHideAndUnhideField() {
-
         val session = admin()
         addTestAssets("set04/standard")
 
@@ -79,6 +74,7 @@ class AssetControllerTests : MockMvcTest() {
                 })
         assertTrue(status["success"] as Boolean)
 
+        authenticate("admin")
         fieldService.invalidateFields()
         val fields = fieldService.getFields("asset")
         for (field in fields["string"]!!) {
@@ -98,6 +94,7 @@ class AssetControllerTests : MockMvcTest() {
                 })
         assertTrue(status["success"] as Boolean)
 
+        authenticate("admin")
         val stringFields = fieldService.getFields("asset")
         assertNotEquals(fields, stringFields)
     }
@@ -206,7 +203,7 @@ class AssetControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         refreshIndex()
 
-        val assets = indexDao!!.getAll(Pager.first())
+        val assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
             val result = mvc.perform(delete("/api/v1/assets/" + asset.id)
                     .session(session)
@@ -230,7 +227,7 @@ class AssetControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         refreshIndex()
 
-        val assets = indexDao!!.getAll(Pager.first())
+        val assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
             val result = mvc.perform(get("/api/v2/assets/" + asset.id)
                     .session(session)
@@ -253,7 +250,7 @@ class AssetControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         refreshIndex()
 
-        val assets = indexDao!!.getAll(Pager.first())
+        val assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
             val url = "/api/v1/assets/_path"
             val result = mvc.perform(get(url)
@@ -296,6 +293,7 @@ class AssetControllerTests : MockMvcTest() {
                 .andReturn()
 
         refreshIndex()
+        authenticate("admin")
         doc = indexService.get(doc.id)
         assertEquals(10, doc.getAttr("zorroa.links.folder", List::class.java).size.toLong())
 
@@ -307,7 +305,7 @@ class AssetControllerTests : MockMvcTest() {
         val session = admin()
 
         addTestAssets("set04/canyon")
-        var assets = indexDao!!.getAll(Pager.first())
+        var assets = indexDao.getAll(Pager.first())
 
         val (id) = folderService.create(FolderSpec("foo"))
         val (id1) = folderService.create(FolderSpec("bar"))
@@ -328,7 +326,8 @@ class AssetControllerTests : MockMvcTest() {
         }
 
         refreshIndex()
-        assets = indexDao!!.getAll(Pager.first())
+        authenticate("admin")
+        assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
             logger.info("{}", asset.document)
             val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<String>>() {
