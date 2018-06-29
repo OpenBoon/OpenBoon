@@ -5,7 +5,7 @@ import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.repository.JobDao
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
-import io.fabric8.kubernetes.api.model.EnvVarSource
+import io.fabric8.kubernetes.api.model.VolumeMount
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
 import io.fabric8.kubernetes.api.model.extensions.DeploymentSpec
 import io.fabric8.kubernetes.client.ConfigBuilder
@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.api.model.Job as KJob
 
 interface JobService {
     fun start(job: Job) : Boolean
-    fun finish(job: Job, doc: Document) : Boolean
+    fun finish(job: Job) : Boolean
     fun create(spec: JobSpec) : Job
     fun get(id: UUID) : Job
     fun get(name: String) : Job
@@ -85,7 +85,7 @@ class K8JobServiceImpl @Autowired constructor(
     @Autowired
     lateinit var k8settings : K8JobServiceSettings
 
-    @Value("\${irm.cdv.url}")
+    @Value("\${cdv.url}")
     lateinit var cdvUrl : String
 
     override fun start(job: Job) : Boolean {
@@ -95,12 +95,14 @@ class K8JobServiceImpl @Autowired constructor(
             return false
         }
         val yaml = generateK8JobSpec(job)
+        logger.info("JOB: {}", job.id)
+        logger.info("YAML {}", yaml)
         val kjob = kubernetesClient.extensions().jobs().load(
                 yaml.byteInputStream(Charsets.UTF_8)).create()
         return true
     }
 
-    override fun finish(job: Job, doc: Document) : Boolean {
+    override fun finish(job: Job) : Boolean {
         val result = jobDao.setState(job, JobState.SUCCESS, JobState.RUNNING)
         logger.info("Job {} RUNNING->SUCCESS: {}", job.name, result)
         return result
@@ -116,27 +118,35 @@ class K8JobServiceImpl @Autowired constructor(
                 pipelineService.buildProcessorList(job.pipelines)
         processors.add(
                 ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
-                args=mapOf("serializer" to "core_data_vault", "endpoint" to endpoint)))
+                args=mapOf("endpoint" to endpoint)))
         /*
         * Pull the current state of the asset
         */
-        val asset = try {
-            assetService.getDocument(job.organizationId, job.assetId)
+        val asset = Asset(job.assetId, job.organizationId, job.attrs)
+        val doc = try {
+            //assetService.getDocument(asset)
+            Document(job.assetId.toString())
         }
         catch (e : Exception) {
-            Document(job.assetId.toString(), mapOf())
+            Document(job.assetId.toString())
         }
+
+        // make sure this is et.
+        doc.setAttr("irm.companyId", job.attrs["companyId"])
+
         /*
          * Setup ZPS script
          */
         return ZpsScript(job.name,
-                over=listOf(asset),
+                over=listOf(doc),
                 execute=processors)
     }
 
     fun generateK8JobSpec(job: Job) : String {
 
         val zps = generateZpsScript(job)
+        logger.info("ZPS: {}", Json.serializeToString(zps))
+
         val url = storageService.storeSignedBlob(
                 "zorroa/jobs/${job.id}.zps",
                 "application/json",
@@ -158,7 +168,12 @@ class K8JobServiceImpl @Autowired constructor(
                 .withLabels(labels)
                 .endMetadata()
 
+        val mount = VolumeMount()
+        mount.name = "google-cloud-key"
+        mount.mountPath = "/var/secrets/google"
+
         val container = Container()
+        container.volumeMounts = listOf(mount)
         container.name = job.name
         container.image = k8settings.image
         container.args = listOf(url.toString())
@@ -168,7 +183,8 @@ class K8JobServiceImpl @Autowired constructor(
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
                 EnvVar("CDV_DOCUMENT_GUID", job.assetId.toString(),null),
                 EnvVar("CDV_API_BASE_URL", cdvUrl, null),
-                EnvVar("ZORROA_STUIDO_BASE_URL", k8settings.talkBackUrl, null))
+                EnvVar("ZORROA_STUIDO_BASE_URL", k8settings.talkBackUrl, null),
+                EnvVar("GOOGLE_APPLICATION_CREDENTIALS", " /var/secrets/google/key.json", null))
 
         val dspec = DeploymentSpec()
         dspec.setAdditionalProperty("backOffLimit", 1)
@@ -179,6 +195,12 @@ class K8JobServiceImpl @Autowired constructor(
                 .withLabels(labels)
                 .endMetadata()
         template.editOrNewSpec()
+                .addNewVolume()
+                    .withName("google-cloud-key")
+                    .withNewSecret()
+                        .withSecretName("zorroa-workers-key")
+                    .endSecret()
+                .endVolume()
                 .withRestartPolicy("Never")
                 .addAllToContainers(listOf(container)).endSpec()
         template.endTemplate().endSpec()
