@@ -3,6 +3,7 @@ package com.zorroa.common.clients
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.common.util.Json
 import org.apache.commons.codec.binary.Hex
+import org.apache.http.HttpEntity
 import org.apache.http.HttpHost
 import org.apache.http.HttpRequest
 import org.apache.http.HttpResponse
@@ -167,6 +168,12 @@ class RestClient {
         }
         val response = checkStatus(post)
         return checkResponse(response, resultType)
+    }
+
+    fun download(url: String): HttpEntity {
+        val get = HttpGetWithEntity(url)
+        val rsp = checkStatus(get)
+        return rsp.entity
     }
 
     fun post(url: String, files: List<File>): Any {

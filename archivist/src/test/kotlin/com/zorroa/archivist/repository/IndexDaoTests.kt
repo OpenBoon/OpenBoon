@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.elastic.SearchBuilder
+import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager

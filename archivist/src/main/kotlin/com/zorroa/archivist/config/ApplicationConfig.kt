@@ -4,11 +4,17 @@ import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
 import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.clients.FakeIndexRoutingServiceImpl
+import com.zorroa.common.clients.IndexRoutingService
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
+import com.zorroa.common.service.CoreDataVaultService
+import com.zorroa.common.service.IrmCoreDataVaultServiceImpl
 import com.zorroa.common.util.FileUtils
 import io.undertow.servlet.api.*
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer
@@ -110,6 +116,22 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus() : EventBus {
         return EventBus()
+    }
+
+    @Bean
+    fun coreDataVault() : CoreDataVaultService {
+        return IrmCoreDataVaultServiceImpl(properties().getString("cdv.url"))
+    }
+
+    @Bean
+    fun routingService() : IndexRoutingService {
+        return FakeIndexRoutingServiceImpl(properties().getString("routing.url"))
+    }
+
+    @Autowired
+    @Bean
+    fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
+        return EsClientCache(routingService)
     }
 
     companion object {

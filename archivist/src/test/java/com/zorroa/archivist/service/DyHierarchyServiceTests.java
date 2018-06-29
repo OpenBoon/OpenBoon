@@ -13,6 +13,7 @@ import com.zorroa.common.search.AssetFilter;
 import com.zorroa.common.search.AssetSearch;
 import com.zorroa.common.util.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -71,6 +72,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
         refreshIndex();
     }
 
+    @Ignore
     @Test
     public void testGenerateWithMultiplePaths() {
         Folder f = folderService.create(new FolderSpec("foo"), false);

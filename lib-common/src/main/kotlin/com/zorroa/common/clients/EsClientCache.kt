@@ -53,7 +53,7 @@ class SearchBuilder {
 class EsRestClient(val route: IndexRoute, val client: RestHighLevelClient) {
 
     fun newSearchRequest() : SearchRequest {
-        return SearchRequest(route.indexName, "asset")
+        return SearchRequest(route.indexName)
                 .apply {
                     if (route.routingKey != null) { this.routing(route.routingKey) }
                 }

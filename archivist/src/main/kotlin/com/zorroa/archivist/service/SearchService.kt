@@ -1,18 +1,18 @@
 package com.zorroa.archivist.service
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
@@ -22,10 +22,8 @@ import com.zorroa.common.search.RangeQuery
 import com.zorroa.common.search.SimilarityFilter
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.search.ClearScrollRequest
-import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
-import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
@@ -56,7 +54,6 @@ import org.springframework.stereotype.Service
 import java.io.IOException
 import java.io.OutputStream
 import java.util.*
-import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 
 interface SearchService {
@@ -107,7 +104,7 @@ class SearchContext(val linkedFolders: MutableSet<UUID>,
 @Service
 class SearchServiceImpl @Autowired constructor(
         val indexDao: IndexDao,
-        val client: RestHighLevelClient,
+        val esClientCache: EsClientCache,
         val properties: ApplicationProperties
 
 ): SearchService {
@@ -120,21 +117,9 @@ class SearchServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var fieldService: FieldService
 
-
-    private val fieldMapCache = CacheBuilder.newBuilder()
-            .maximumSize(2)
-            .initialCapacity(3)
-            .concurrencyLevel(1)
-            .expireAfterWrite(60, TimeUnit.SECONDS)
-            .build(object : CacheLoader<String, Map<String, Set<String>>>() {
-                @Throws(Exception::class)
-                override fun load(key: String): Map<String, Set<String>> {
-                    return fieldService.getFieldMap(key)
-                }
-            })
-
     override fun count(builder: AssetSearch): Long {
-        return client.search(buildSearch(builder, "asset").request).hits.totalHits
+        val rest = esClientCache[getOrgId()]
+        return rest.client.search(buildSearch(builder, "asset").request).hits.totalHits
     }
 
     override fun count(ids: List<UUID>, search: AssetSearch?): List<Long> {
@@ -185,10 +170,10 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getSuggestTerms(text: String): List<String> {
-
+        val rest = esClientCache[getOrgId()]
         val builder = SearchSourceBuilder()
         val suggestBuilder = SuggestBuilder()
-        val req = SearchRequest()
+        val req = rest.newSearchRequest()
         req.source(builder)
         builder.suggest(suggestBuilder)
 
@@ -207,7 +192,7 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         val unique = Sets.newTreeSet<String>()
-        val suggest = client.search(req).suggest
+        val suggest = rest.client.search(req).suggest
 
         for ((idx, _) in fields.withIndex()) {
             val comp : CompletionSuggestion = suggest.getSuggestion("suggest$idx") ?: continue
@@ -225,21 +210,19 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
-        val req = SearchRequest()
-        val ssb = SearchSourceBuilder()
-        ssb.query(getQuery(search))
-        ssb.size(100)
+        val rest = esClientCache[getOrgId()]
+        val builder = rest.newSearchBuilder()
+        builder.source.query(getQuery(search))
+        builder.source.size(100)
+        builder.request.scroll(TimeValue(60000))
 
-        req.source(ssb)
-        req.scroll(TimeValue(60000))
-
-        val rsp = client.search(req)
+        val rsp = rest.client.search(builder.request)
 
         if (!clamp && maxResults > 0 && rsp.hits.totalHits > maxResults) {
             throw IllegalArgumentException("Asset search has returned more than $maxResults results.")
         }
 
-        return ScanAndScrollAssetIterator(client, rsp, maxResults)
+        return ScanAndScrollAssetIterator(rest.client, rsp, maxResults)
     }
 
     private fun isSearchLogged(page: Pager, search: AssetSearch): Boolean {
@@ -257,7 +240,8 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun search(search: AssetSearch): SearchResponse {
-        return client.search(buildSearch(search, "asset").request)
+        val rest = esClientCache[getOrgId()]
+        return rest.client.search(buildSearch(search, "asset").request)
     }
 
     override fun search(page: Pager, search: AssetSearch): PagedList<Document> {
@@ -269,6 +253,7 @@ class SearchServiceImpl @Autowired constructor(
             logService.logAsync(UserLogSpec.build(LogAction.Search, search))
         }
 
+        val rest = esClientCache[getOrgId()]
         if (search.scroll != null) {
             val scroll = search.scroll
             if (scroll.id != null) {
@@ -276,7 +261,7 @@ class SearchServiceImpl @Autowired constructor(
                 if (result.size() == 0) {
                     val req = ClearScrollRequest()
                     req.addScrollId(scroll.id)
-                    client.clearScroll(req)
+                    rest.client.clearScroll(req)
                 }
                 return result
             }
@@ -303,20 +288,23 @@ class SearchServiceImpl @Autowired constructor(
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
+        val rest = esClientCache[getOrgId()]
         val result = indexDao.getAll(id, timeout)
         if (result.size() == 0) {
             val req = ClearScrollRequest()
             req.addScrollId(id)
-            client.clearScroll(req)
+            rest.client.clearScroll(req)
         }
         return result
     }
 
     override fun buildSearch(search: AssetSearch, type: String): SearchBuilder {
+        val rest = esClientCache[getOrgId()]
+
         val ssb = SearchSourceBuilder()
         ssb.query(getQuery(search))
 
-        val req = SearchRequest()
+        val req = rest.newSearchRequest()
         req.indices("archivist")
         req.types(type)
         req.searchType(SearchType.DFS_QUERY_THEN_FETCH)
@@ -387,7 +375,7 @@ class SearchServiceImpl @Autowired constructor(
                 logger.info("SEARCH: {}", builder.string())
             }
         }
-        return SearchBuilder(req, ssb)
+        return rest.newSearchBuilder(req, ssb)
     }
 
     private fun getAggregations(search: AssetSearch): Map<String, Any>? {

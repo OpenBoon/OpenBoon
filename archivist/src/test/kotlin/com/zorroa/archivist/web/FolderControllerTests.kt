@@ -339,7 +339,7 @@ class FolderControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testAddAsset() {
-        authenticate()
+        authenticate("admin")
 
         addTestAssets("set04/standard")
         var assets = assetDao.getAll(Pager.first())
@@ -355,7 +355,7 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
 
         refreshIndex()
-
+        authenticate("admin")
         assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
             val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<Any>>() {
@@ -386,6 +386,7 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
 
         refreshIndex()
+        authenticate("admin")
         assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
             val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<Any>>() {

@@ -1,19 +1,18 @@
 package com.zorroa.archivist.elastic
 
 import com.google.common.collect.Lists
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.search.Scroll
 import com.zorroa.common.util.Json
-import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequestBuilder
-import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchScrollRequest
-import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
-import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DataRetrievalFailureException
@@ -21,44 +20,14 @@ import org.springframework.dao.EmptyResultDataAccessException
 import java.io.IOException
 import java.io.OutputStream
 
-class SearchBuilder {
-
-    val request: SearchRequest
-    val source: SearchSourceBuilder
-
-    constructor() {
-        this.request = SearchRequest()
-        this.source = SearchSourceBuilder()
-        this.request.source(source)
-    }
-
-    constructor(index: String) {
-        this.request = SearchRequest(index)
-        this.source = SearchSourceBuilder()
-        this.request.source(source)
-    }
-
-    constructor(request: SearchRequest) {
-        this.request = request
-        this.source = SearchSourceBuilder()
-        this.request.source(source)
-    }
-
-    constructor(request: SearchRequest, source: SearchSourceBuilder) {
-        this.request = request
-        this.source = source
-        this.request.source(source)
-    }
-}
-
-
-
-
-class ElasticTemplate(private val client: RestHighLevelClient, private val index: String, private val type: String) {
+class ElasticTemplate(private val esClientCache: EsClientCache) {
 
     fun <T> queryForObject(id: String, type: String?, mapper: SearchHitRowMapper<T>): T {
-        val req = GetRequest(index, type, id).fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
-        val rsp = client.get(req)
+        val rest = esClientCache[getOrgId()]
+        val req = rest.newGetRequest(id)
+                .fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
+
+        val rsp = rest.client.get(req)
         if (!rsp.isExists) {
             throw EmptyResultDataAccessException(
                     "Expected 1 '$type' of id '$id'", 0)
@@ -72,7 +41,10 @@ class ElasticTemplate(private val client: RestHighLevelClient, private val index
     }
 
     fun <T> queryForObject(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): T {
-        val r = client.search(builder.request)
+        val rest = esClientCache[getOrgId()]
+        rest.routeSearchRequest(builder.request)
+
+        val r = rest.client.search(builder.request)
         if (r.hits.totalHits == 0L) {
             throw EmptyResultDataAccessException("Expected 1 result from " + builder.toString() + ", got: ", 0)
         }
@@ -86,8 +58,10 @@ class ElasticTemplate(private val client: RestHighLevelClient, private val index
     }
 
     fun <T> scroll(id: String, timeout: String, mapper: SearchHitRowMapper<T>): PagedList<T> {
+        val rest = esClientCache[getOrgId()]
+        // already routed
         val req = SearchScrollRequest(id).scroll(timeout)
-        val rsp = client.searchScroll(req)
+        val rsp = rest.client.searchScroll(req)
 
         val list = mutableListOf<T>()
         for (hit in rsp.hits.hits) {
@@ -106,7 +80,10 @@ class ElasticTemplate(private val client: RestHighLevelClient, private val index
     }
 
     fun <T> query(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): List<T> {
-        val r = client.search(builder.request)
+        val rest = esClientCache[getOrgId()]
+        rest.routeSearchRequest(builder.request)
+
+        val r = rest.client.search(builder.request)
         val result = Lists.newArrayListWithCapacity<T>(r.hits.totalHits.toInt())
 
         for (hit in r.hits) {
@@ -122,10 +99,12 @@ class ElasticTemplate(private val client: RestHighLevelClient, private val index
     }
 
     fun <T> page(builder: SearchBuilder, paging: Pager, mapper: SearchHitRowMapper<T>): PagedList<T> {
+        val rest = esClientCache[getOrgId()]
+        rest.routeSearchRequest(builder.request)
         builder.source.size(paging.size)
         builder.source.from(paging.from)
 
-        val r = client.search(builder.request)
+        val r = rest.client.search(builder.request)
         val list = Lists.newArrayListWithCapacity<T>(r.hits.hits.size)
         for (hit in r.hits.hits) {
             try {
@@ -159,10 +138,12 @@ class ElasticTemplate(private val client: RestHighLevelClient, private val index
 
     @Throws(IOException::class)
     fun page(builder: SearchBuilder, paging: Pager, out: OutputStream) {
+        val rest = esClientCache[getOrgId()]
+        rest.routeSearchRequest(builder.request)
         builder.source.size(paging.size)
         builder.source.from(paging.from)
 
-        val r = client.search(builder.request)
+        val r = rest.client.search(builder.request)
 
         XContentFactory.jsonBuilder(out).use { builder ->
             builder.startObject()

@@ -6,9 +6,10 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
-import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -35,7 +36,7 @@ interface FieldService {
 
 @Service
 class FieldServiceImpl @Autowired constructor(
-        val client: RestHighLevelClient,
+        val esClientCache: EsClientCache,
         val properties: ApplicationProperties,
         val fieldDao: FieldDao
 
@@ -78,9 +79,10 @@ class FieldServiceImpl @Autowired constructor(
                         .map { it }
                 )
 
-        val stream = client.lowLevelClient.performRequest("GET", "/archivist").entity.content
+        val rest = esClientCache[getOrgId()]
+        val stream = rest.client.lowLevelClient.performRequest("GET", "/${rest.route.indexName}").entity.content
         val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
-        getList(result, "", Document(map).getAttr("archivist.mappings.asset")!!, hiddenFields)
+        getList(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!, hiddenFields)
         return result
     }
 

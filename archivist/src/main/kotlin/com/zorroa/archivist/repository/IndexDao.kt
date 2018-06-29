@@ -5,9 +5,9 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.elastic.AbstractElasticDao
-import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
+import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
@@ -15,11 +15,8 @@ import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.DocWriteResponse
 import org.elasticsearch.action.bulk.BulkRequest
-import org.elasticsearch.action.delete.DeleteRequest
-import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.index.IndexResponse
-import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.action.update.UpdateRequest
@@ -28,7 +25,6 @@ import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
-import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.dao.EmptyResultDataAccessException
@@ -211,12 +207,13 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
      * Allows us to flush the first batch.
      */
     private val flushTime = AtomicLong(0)
-    override val type = "asset"
-    override val index = "archivist"
+
 
     override fun <T> getFieldValue(id: String, field: String): T? {
-        val req = GetRequest(index, type, id).fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
-        val d = Document(client.get(req).source)
+        val rest = getClient()
+        val req = rest.newGetRequest(id)
+                .fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
+        val d = Document(rest.client.get(req).source)
         // field values never have .raw since they come from source
         return d.getAttr(field.removeSuffix(".raw"))
     }
@@ -255,13 +252,12 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
             }
         }
 
-        val bulk = client.bulk(bulkRequest)
+        val rest = getClient()
+        val bulk = rest.client.bulk(bulkRequest)
 
-        logger.info("bulk items size: {}", bulk.items.size)
         var index = -1
         for (response in bulk.items) {
             index++
-            logger.info("index: {} sources size: {}", index, sources.size)
             if (response.isFailed) {
                 val message = response.failure.message
                 val asset = sources[index]
@@ -309,15 +305,16 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
     }
 
     private fun prepareUpsert(source: Document): UpdateRequest {
-        val upd = UpdateRequest(index, source.type, source.id)
+        val rest = getClient()
+        val upd = rest.newUpdateRequest(source.id)
                 .docAsUpsert(true)
                 .doc(Json.serialize(source.document), XContentType.JSON)
         return upd
     }
 
     private fun prepareInsert(source: Document): IndexRequest {
-
-        val idx = IndexRequest(index, source.type, source.id)
+        val rest = getClient()
+        val idx = rest.newIndexRequest(source.id)
                 .opType( DocWriteRequest.OpType.INDEX)
                 .source(Json.serialize(source.document), XContentType.JSON)
         return idx
@@ -325,7 +322,6 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
 
     private fun removeBrokenField(asset: Document, error: String): Boolean {
         for (pattern in RECOVERABLE_BULK_ERRORS) {
-            logger.info("checking pattern: {}", pattern)
             val matcher = pattern.matcher(error)
             if (matcher.find()) {
                 logger.warn("Removing broken field from {}: {}={}, {}", asset.id, matcher.group(1),
@@ -341,11 +337,12 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
 
+        val rest = getClient()
         val link = mapOf<String,Any>("type" to typeOfLink, "id" to value.toString())
         val bulkRequest = BulkRequest()
         for (id in assets) {
 
-            val updateBuilder = UpdateRequest(index, type, id)
+            val updateBuilder = rest.newUpdateRequest(id)
             updateBuilder.script(Script(ScriptType.INLINE,
                     "painless", REMOVE_LINK_SCRIPT, link))
             bulkRequest.add(updateBuilder)
@@ -356,7 +353,7 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
         result["failed"] = mutableListOf()
 
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
-        val bulk = client.bulk(bulkRequest)
+        val bulk = rest.client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
@@ -374,11 +371,12 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
         }
         val link = mapOf<String,Any>("type" to typeOfLink, "id" to value.toString())
 
+        val rest = getClient()
         val bulkRequest = BulkRequest()
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
         for (id in assets) {
-            val update = UpdateRequest(index, "asset", id)
+            val update = rest.newUpdateRequest(id)
             update.script(Script(ScriptType.INLINE, "painless", APPEND_LINK_SCRIPT, link))
             bulkRequest.add(update)
         }
@@ -386,7 +384,7 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
         val result = mutableMapOf<String, MutableList<Any>>(
                 "success" to mutableListOf(), "failed" to mutableListOf())
 
-        val bulk = client.bulk(bulkRequest)
+        val bulk = rest.client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
@@ -400,12 +398,13 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
     }
 
     override fun setLinks(assetId: String, typeOfLink:String, ids: Collection<Any>) {
-        if (type.contains(".")) {
+        if (typeOfLink.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
         val doc = mapOf("zorroa" to mapOf("links" to mapOf(typeOfLink to ids)))
-        client.update(UpdateRequest(index, type, assetId).
-                doc(Json.serializeToString(doc), XContentType.JSON))
+        val rest = getClient()
+        rest.client.update(rest.newUpdateRequest(assetId)
+                .doc(Json.serializeToString(doc), XContentType.JSON))
     }
 
 
@@ -414,8 +413,8 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
         for ((key, value) in attrs) {
             asset.setAttr(key, value)
         }
-
-        return client.update(UpdateRequest(index, type, assetId)
+        val rest = getClient()
+        return rest.client.update(rest.newUpdateRequest(assetId)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
     }
@@ -428,18 +427,20 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
 
         // Replaces entire asset
         // Can't edit elements so no need for parent handling.
-        client.index(IndexRequest(index, asset.type, asset.id)
+        val rest = getClient()
+        rest.client.index(rest.newIndexRequest(asset.id)
                 .opType(DocWriteRequest.OpType.INDEX)
                 .source(asset.document)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE))
     }
 
     override fun delete(id: String): Boolean {
-        return client.delete(DeleteRequest(index, type, id)).result == DocWriteResponse.Result.DELETED
+        val rest = getClient()
+        return rest.client.delete(rest.newDeleteRequest(id)).result == DocWriteResponse.Result.DELETED
     }
 
     override fun get(id: String): Document {
-        return elastic.queryForObject(id, type, MAPPER)
+        return elastic.queryForObject(id, "asset", MAPPER)
     }
 
     override fun getManagedFields(id: String): Map<String, Any> {
@@ -449,7 +450,9 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
              * with fields will fail if the asset doesn't have the
              * fields.
              */
-            val result = client.get(GetRequest(index, type, id)).source
+            val rest = getClient()
+            val result = rest.client.get(
+                    rest.newGetRequest(id)).source
             result ?: mutableMapOf() // result has to be mutable.
         } catch (e: ArrayIndexOutOfBoundsException) {
             mutableMapOf()
@@ -458,23 +461,24 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
     }
 
     override fun exists(path: Path): Boolean {
-        val req = SearchRequest(index)
-        val source = SearchSourceBuilder()
+        val rest = getClient()
+        val req = rest.newSearchBuilder()
+        val source = req.source
         source.query(QueryBuilders.termQuery("source.path.raw", path.toString()))
         source.size(0)
-        req.source(source)
 
-        return client.search(req).hits.totalHits > 0
+        return rest.client.search(req.request).hits.totalHits > 0
     }
 
     override fun exists(id: String): Boolean {
-        return client.get(GetRequest(index, "asset", id)
+        val rest = getClient()
+        return rest.client.get(rest.newGetRequest(id)
                 .fetchSourceContext(FetchSourceContext.DO_NOT_FETCH_SOURCE)).isExists
     }
 
     override fun get(path: Path): Document {
-
-        val req = SearchBuilder(index)
+        val rest = getClient()
+        val req = rest.newSearchBuilder()
         req.source.query(QueryBuilders.termQuery("source.path.raw", path.toString()))
         req.source.size(1)
 
@@ -500,9 +504,11 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
     }
 
     override fun getAll(page: Pager): PagedList<Document> {
-        val req = SearchBuilder(index)
+        val rest = getClient()
+        val req = rest.newSearchBuilder()
+        rest.routeSearchRequest(req.request)
+
         req.request.apply {
-            types(type)
             searchType(SearchType.DFS_QUERY_THEN_FETCH)
         }
         req.source.apply {
