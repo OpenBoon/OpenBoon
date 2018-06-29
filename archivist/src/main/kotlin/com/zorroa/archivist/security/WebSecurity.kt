@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.UserService
-import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -16,7 +15,6 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationEventPublisher
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -25,8 +23,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
@@ -42,6 +40,7 @@ class MultipleWebSecurityConfig {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL)
     }
 
+
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -50,11 +49,8 @@ class MultipleWebSecurityConfig {
         @Autowired
         internal lateinit var properties: ApplicationProperties
 
-        @Bean
-        @Throws(Exception::class)
-        fun customAuthenticationManager(): AuthenticationManager {
-            return authenticationManager()
-        }
+        @Autowired
+        lateinit var zorroaAuthProvider: ZorroaAuthenticationProvider
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -72,6 +68,25 @@ class MultipleWebSecurityConfig {
                         .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                         .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
             }
+        }
+
+        @Throws(Exception::class)
+        override fun configure(auth: AuthenticationManagerBuilder) {
+
+            auth.authenticationProvider(zorroaAuthProvider)
+
+            /**
+             * If its a unit test we add our rubber stamp authenticator.
+             */
+            if (ArchivistConfiguration.unittest) {
+                auth.authenticationProvider(UnitTestAuthenticationProvider())
+            }
+        }
+
+        @Bean
+        @Throws(Exception::class)
+        fun customAuthenticationManager(): AuthenticationManager {
+            return authenticationManager()
         }
     }
 
@@ -92,9 +107,6 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**")
-                    .addFilterBefore(HmacSecurityFilter(
-                            properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
-                    .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
                     .antMatchers("/api/v1/who").permitAll()
@@ -116,112 +128,15 @@ class MultipleWebSecurityConfig {
     }
 
     @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
-    class AdminSecurityConfig : WebSecurityConfigurerAdapter() {
-
-        @Throws(Exception::class)
-        override fun configure(http: HttpSecurity) {
-            http.antMatcher("/admin/**")
-                    .exceptionHandling()
-                    .and()
-                    .authorizeRequests()
-                    .antMatchers("/admin/**").hasAuthority(Groups.ADMIN)
-                    .and()
-                    .sessionManagement()
-                    .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(
-                            LoginUrlAuthenticationEntryPoint("/"))
-                    // Everything below here necessary for console
-                    .and().headers().frameOptions().disable()
-                    .and()
-                    .csrf().disable()
-        }
-    }
-
-    @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE + 3)
-    class FormSecurityConfig : WebSecurityConfigurerAdapter() {
+    class RootSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/")
                     .csrf().disable()
-                    .sessionManagement()
-                    .invalidSessionUrl("/")
         }
-    }
-
-    @Autowired
-    @Throws(Exception::class)
-    fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService, logService: EventLogService) {
-
-        if (properties.getBoolean("archivist.security.hmac.enabled")) {
-            auth.authenticationProvider(hmacAuthenticationProvider())
-        }
-        auth
-                .authenticationProvider(authenticationProvider())
-                .authenticationEventPublisher(authenticationEventPublisher(userService, logService))
-
-        /**
-         * If its a unit test we add our rubber stamp authenticator.
-         */
-        if (ArchivistConfiguration.unittest) {
-            auth.authenticationProvider(UnitTestAuthenticationProvider())
-        }
-    }
-
-    @Bean
-    @Autowired
-    fun authenticationEventPublisher(userService: UserService, logService: EventLogService): AuthenticationEventPublisher {
-
-        return object : AuthenticationEventPublisher {
-
-            private val logger = LoggerFactory.getLogger(FormSecurityConfig::class.java)
-
-            override fun publishAuthenticationSuccess(
-                    authentication: Authentication) {
-                try {
-                    val user = authentication.principal as UserAuthed
-                    userService.incrementLoginCounter(user)
-                    logService.logAsync(UserLogSpec()
-                            .setAction(LogAction.Login)
-                            .setUser(user))
-                } catch (e: Exception) {
-                    // If we throw here, the authentication fails, so if we can't log
-                    // it then nobody can login.  Sorry L337 hackers
-                    logger.warn("Failed to log user authentication", e)
-                    throw SecurityException(e)
-                }
-
-            }
-
-            override fun publishAuthenticationFailure(
-                    exception: AuthenticationException,
-                    authentication: Authentication) {
-                logger.info("Failed to authenticate: {}", authentication)
-                logService.logAsync(UserLogSpec()
-                        .setAction(LogAction.LoginFailure)
-                        .setMessage(authentication.principal.toString() + " failed to login, reason "
-                                + exception.message))
-            }
-        }
-    }
-
-    @Bean
-    fun authenticationProvider(): AuthenticationProvider {
-        return ZorroaAuthenticationProvider()
-    }
-
-    /**
-     * Handles python/java client authentication.
-     *
-     * @return
-     */
-    @Bean
-    fun hmacAuthenticationProvider(): AuthenticationProvider {
-        return HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"))
     }
 
     companion object {

@@ -5,8 +5,8 @@ import com.google.common.collect.Sets.intersection
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Access
+import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Document
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
@@ -34,10 +34,12 @@ fun getUser(): UserAuthed {
         try {
             SecurityContextHolder.getContext().authentication.principal as UserAuthed
         } catch (e1: ClassCastException) {
+            println("Authed " + SecurityContextHolder.getContext().authentication.isAuthenticated)
+            println("Invalid principal class " +  SecurityContextHolder.getContext().authentication.principal)
             try {
                 SecurityContextHolder.getContext().authentication.details as UserAuthed
             } catch (e2: ClassCastException) {
-                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed not found")
+                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed not found ", e2);
             }
 
         }
@@ -60,6 +62,10 @@ fun getUsername(): String {
 
 fun getUserId(): UUID {
     return getUser().id
+}
+
+fun getOrgId(): UUID {
+    return getUser().organizationId
 }
 
 fun hasPermission(permIds: Set<UUID>?): Boolean {
