@@ -34,12 +34,10 @@ fun getUser(): UserAuthed {
         try {
             SecurityContextHolder.getContext().authentication.principal as UserAuthed
         } catch (e1: ClassCastException) {
-            println("Authed " + SecurityContextHolder.getContext().authentication.isAuthenticated)
-            println("Invalid principal class " +  SecurityContextHolder.getContext().authentication.principal)
             try {
                 SecurityContextHolder.getContext().authentication.details as UserAuthed
             } catch (e2: ClassCastException) {
-                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed not found ", e2);
+                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed object not found")
             }
 
         }
