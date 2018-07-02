@@ -3,14 +3,14 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
+import com.zorroa.archivist.service.GcpStorageService
+import com.zorroa.archivist.service.StorageService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.FakeIndexRoutingServiceImpl
 import com.zorroa.common.clients.IndexRoutingService
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
-import com.zorroa.common.service.CoreDataVaultService
-import com.zorroa.common.service.IrmCoreDataVaultServiceImpl
 import com.zorroa.common.util.FileUtils
 import io.undertow.servlet.api.*
 import org.slf4j.LoggerFactory
@@ -108,6 +108,15 @@ class ArchivistConfiguration {
         return ufs
     }
 
+    /**
+     * Just hard coding this for now.  In the future we'll check a configuration
+     * option or load a plugin.
+     */
+    @Bean
+    fun storageService() : StorageService {
+        return GcpStorageService()
+    }
+
     @Bean
     fun folderTaskExecutor(): UniqueTaskExecutor {
         return UniqueTaskExecutor(unittest)
@@ -116,11 +125,6 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus() : EventBus {
         return EventBus()
-    }
-
-    @Bean
-    fun coreDataVault() : CoreDataVaultService {
-        return IrmCoreDataVaultServiceImpl(properties().getString("cdv.url"))
     }
 
     @Bean

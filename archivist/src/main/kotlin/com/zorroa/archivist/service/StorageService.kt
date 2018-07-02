@@ -1,5 +1,9 @@
 package com.zorroa.archivist.service
 
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.common.domain.Asset
 import com.zorroa.common.util.Json
@@ -8,11 +12,21 @@ import io.minio.errors.MinioException
 import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
+import java.io.FileInputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.URL
+import java.nio.channels.Channels
+import javax.annotation.PostConstruct
 
+/**
+ * StorageService is a WIP attempt to handle both GCP, AWS, and possibly OFS.
+ * For now there is an AWS version, and stubs for a GCP version.
+ *
+ * It's not clear all of these methods are going to be used or if any of this
+ * code moves forward after MVP.
+ */
 
 fun getBucketName(asset: Asset) : String {
     return "${asset.organizationId}"
@@ -27,6 +41,9 @@ fun getFileName(asset: Asset, name:String?=null) : String {
     }
 }
 
+/**
+ * Most methods in here are deprecated or not needed by the Archivist.
+ */
 interface StorageService {
 
     fun createBucket(asset: Asset)
@@ -42,18 +59,100 @@ interface StorageService {
     fun storeFile(asset: Asset, name: String, stream: InputStream)
     fun getFile(asset: Asset, name: String): InputStream
     fun streamFile(asset: Asset, name: String, output: OutputStream)
+
+    fun getObjectStream(url: URL): ObjectStream
 }
 
-data class Bucket (val name: String)
+data class ObjectStream (
+        val steam: InputStream,
+        val size: Long,
+        val type: String?)
 
-open class StorageException(e: Exception) : RuntimeException(e)
-class StorageWriteException (e: Exception) : StorageException(e)
-class StorageReadException (e: Exception) : StorageException(e)
+
+open class ZorroaStorageException(e: Exception) : RuntimeException(e)
+class StorageWriteException (e: Exception) : ZorroaStorageException(e)
+class StorageReadException (e: Exception) : ZorroaStorageException(e)
 
 
-@Service
+class GcpStorageService : StorageService {
+
+    lateinit var storage: Storage
+
+    @PostConstruct
+    fun setup() {
+        storage = StorageOptions.newBuilder().setCredentials(
+                GoogleCredentials.fromStream(FileInputStream("keys/rmaas-dit1.json"))).build().service
+    }
+    override fun createBucket(asset: Asset) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun removeBucket(asset: Asset) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun bucketExists(asset: Asset): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun storeMetadata(asset: Asset, metadata: Map<String, Any>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun storeSourceFile(asset: Asset, stream: InputStream) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getSourceFile(asset: Asset): InputStream {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun streamSourceFile(asset: Asset, output: OutputStream) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getMetadata(asset: Asset): Map<String, Any> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun storeFile(asset: Asset, name: String, stream: InputStream) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getFile(asset: Asset, name: String): InputStream {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun streamFile(asset: Asset, name: String, output: OutputStream) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getObjectStream(url: URL): ObjectStream {
+        var path = url.path
+        path = path.replace("rmaas-us-dit1/", "")
+        val blobId = BlobId.of("rmaas-us-dit1", path.substring(1))
+        val storage =  storage.get(blobId)
+
+        return ObjectStream(
+                Channels.newInputStream(storage.reader()),
+                storage.size,
+                storage.contentType)
+    }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(GcpStorageService::class.java)
+
+    }
+}
+
+
 class MinioStorageImpl @Autowired constructor (
         val properties: ApplicationProperties) : StorageService {
+
+    override fun getObjectStream(url: URL): ObjectStream {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val client: MinioClient = MinioClient(
             properties.getString("archivist.storage.minio.endpoint"),

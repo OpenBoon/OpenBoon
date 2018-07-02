@@ -4,14 +4,21 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.common.domain.Asset
 import org.apache.commons.io.FileUtils
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import java.io.File
 import java.io.FileInputStream
+import java.net.URL
 import java.nio.file.Files
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+/**
+ * Ignoring all these for now, most GCP methods are not enabled and actually
+ * can probably be deleted.
+ */
+@Ignore
 class StorageServiceTests : AbstractTest() {
 
     lateinit var asset: Asset
@@ -19,6 +26,13 @@ class StorageServiceTests : AbstractTest() {
     @Before
     fun init() {
         asset = Asset(UUID.randomUUID(), UUID.randomUUID())
+    }
+
+    @Test
+    fun testGetObjectStream() {
+        val bs = storageService.getObjectStream(
+                URL("https://storage.cloud.google.com/rmaas-us-dit1/100/ef0ca910-5c67-4b03-bb8e-c92e2d7e7283/file/proxy_ef0ca910-5c67-4b03-bb8e-c92e2d7e7283_197x256.jpg"))
+        logger.info(bs.type)
     }
 
     @Test(expected = StorageWriteException::class)
