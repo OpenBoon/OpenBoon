@@ -22,6 +22,7 @@ import java.awt.Font
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.*
+import java.net.URL
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,6 +45,9 @@ interface ImageService {
     fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource>
 
     @Throws(IOException::class)
+    fun serveImage(req: HttpServletRequest, url: URL): ResponseEntity<InputStreamResource>
+
+    @Throws(IOException::class)
     fun watermark(req: HttpServletRequest, file: File, format: String): ByteArrayOutputStream
 
     fun watermark(req: HttpServletRequest, src: BufferedImage): BufferedImage
@@ -55,6 +59,7 @@ interface ImageService {
 @Service
 class ImageServiceImpl @Autowired constructor(
         private val objectFileSystem: ObjectFileSystem,
+        private val storageService: StorageService,
         private val properties: ApplicationProperties,
         private val eventBus: EventBus
 
@@ -95,8 +100,27 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
+    override fun serveImage(req: HttpServletRequest, url: URL): ResponseEntity<InputStreamResource> {
+        if (url == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+
+        val bstream = storageService.getObjectStream(url)
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .contentLength(bstream.size)
+                .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
+                .body(InputStreamResource(bstream.steam))
+    }
+
+    @Throws(IOException::class)
     override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
-        return serveImage(req, objectFileSystem.get(proxy.id).file)
+        return if (proxy.stream != null ) {
+            serveImage(req, URL(proxy.stream))
+        }
+        else {
+            serveImage(req, objectFileSystem.get(proxy.id).file)
+        }
     }
 
     @Throws(IOException::class)
