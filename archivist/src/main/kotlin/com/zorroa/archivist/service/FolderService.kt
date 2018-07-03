@@ -740,6 +740,9 @@ class FolderServiceImpl @Autowired constructor(
 
         try {
             result = get(spec.parentId, spec.name)
+            if (!mightExist) {
+                throw ArchivistWriteException("A folder with the same name already exists. Please choose a different name.")
+            }
         } catch (e: EmptyResultDataAccessException) {
             spec.acl.whenNullOrEmpty {
                 spec.acl = parent.acl

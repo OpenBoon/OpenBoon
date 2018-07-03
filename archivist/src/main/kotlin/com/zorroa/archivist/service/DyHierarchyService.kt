@@ -8,6 +8,7 @@ import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.elastic.ElasticClientUtils
+import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.Tuple
 import com.zorroa.sdk.search.AssetScript
 import com.zorroa.sdk.search.AssetSearch
@@ -165,6 +166,9 @@ class DyHierarchyServiceImpl @Autowired constructor (
     override fun create(spec: DyHierarchySpec): DyHierarchy {
 
         val folder = folderService.get(spec.folderId)
+        if (folder.attrs.getOrDefault("launchpad", false) as Boolean) {
+            throw ArchivistWriteException("A Launchpad with the same name already exists. Please choose a different name.")
+        }
         val dyhi = dyHierarchyDao.create(spec)
         folderService.setDyHierarchyRoot(folder, spec.levels[0].field)
 
