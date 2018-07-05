@@ -114,7 +114,7 @@ class ArchivistConfiguration {
      */
     @Bean
     fun storageService() : StorageService {
-        return GcpStorageService()
+        return GcpStorageService(properties())
     }
 
     @Bean

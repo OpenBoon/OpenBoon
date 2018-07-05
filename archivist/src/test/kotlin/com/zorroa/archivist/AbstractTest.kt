@@ -31,6 +31,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.web.WebAppConfiguration
@@ -48,7 +49,7 @@ import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource("/test.properties")
+@ActiveProfiles("test")
 @WebAppConfiguration
 @Transactional
 open abstract class AbstractTest {

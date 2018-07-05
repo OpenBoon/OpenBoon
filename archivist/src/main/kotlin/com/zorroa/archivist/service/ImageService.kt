@@ -105,12 +105,12 @@ class ImageServiceImpl @Autowired constructor(
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
 
-        val bstream = storageService.getObjectStream(url)
+        val bstream = storageService.getObjectFile(url)
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .contentLength(bstream.size)
                 .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                .body(InputStreamResource(bstream.steam))
+                .body(InputStreamResource(bstream.stream))
     }
 
     @Throws(IOException::class)
