@@ -1,8 +1,6 @@
 runtime: custom
 env: flex
 service: zorroa-archivist
-env_variables:
-     SPRING_PROFILES_ACTIVE: "dit1"
 automatic_scaling:
     max_num_instances: 1
 
