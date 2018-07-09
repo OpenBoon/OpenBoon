@@ -12,11 +12,14 @@ import org.elasticsearch.script.SearchScript;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class SimilarityPlugin extends Plugin implements ScriptPlugin {
 
     private static final double NO_SCORE = 0;
+
+    private static final Logger logger = Logger.getLogger(SimilarityPlugin.class.getCanonicalName());
 
     @Override
     public ScriptEngine getScriptEngine(Settings settings, Collection<ScriptContext<?>> ctx) {
@@ -36,7 +39,6 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                 throw new IllegalArgumentException(getType() + " scripts cannot be used for context [" + context.name + "]");
             }
 
-            System.out.println("Code: " + code);
             if ("similarity".equals(code)) {
                 SearchScript.Factory factory = (p, lookup) -> new SearchScript.LeafFactory() {
 
@@ -56,15 +58,14 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                     private final double singleScore;
 
                     {
-                        field = params.get("field");
-                        minScore =  Double.valueOf(params.getOrDefault("minScore", "1")) / NORM;
+                        field = p.get("field").toString();
+                        minScore =  Double.valueOf(p.getOrDefault("minScore", "1").toString()) / NORM;
                         resolution = 15;
 
-                        List<String> _hashes = Arrays.asList(params.get("hashes").split(","));
-                        List<Float> _weights = Arrays.asList(params.get("weights").split(",")).stream()
-                                .map(e-> Float.valueOf(e)).collect(Collectors.toList());
+                        List<String> _hashes = Arrays.asList(p.get("hashes").toString().split(","));
+                        List<Float> _weights = Arrays.asList(p.get("weights").toString().split(",")).stream()
+                                .map(e-> Float.valueOf(e.toString())).collect(Collectors.toList());
 
-                        System.out.println("Step1");
                         if (_hashes == null) {
                             throw new IllegalArgumentException(
                                     "Hashes cannot be null");
@@ -79,7 +80,6 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                                     "HammingDistanceScript weights must align with hashes");
                         }
 
-                        System.out.println("Step2");
                         /**
                          * Go through all the values and remove the null
                          * values and populate the charHashes and
@@ -96,7 +96,6 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                             weights.add(_weights.get(i));
                         }
 
-                        System.out.println("Step3");
                         /**
                          * If there are no valid hashes left, initialize to defaults
                          */
@@ -141,8 +140,6 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                             singleScore = resolution * (length - dataPos);
                             possibleScore = singleScore * numHashes;
                         }
-
-                        System.out.println("Step4");
                     }
 
                     @Override
@@ -155,9 +152,7 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                                 ScriptDocValues.Strings strings;
 
                                 if (getDoc().containsKey(field)) {
-                                    System.out.println("field  " + field);
                                     strings = (ScriptDocValues.Strings) getDoc().get(field);
-                                    System.out.println("strings 2  " + field);
                                 }
                                 else {
                                     return NO_SCORE;
