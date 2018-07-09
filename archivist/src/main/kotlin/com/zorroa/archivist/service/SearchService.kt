@@ -5,7 +5,10 @@ import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.ScanAndScrollAssetIterator
+import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getPermissionsFilter
@@ -597,27 +600,7 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
-        // backwards compatible hamming.
-        if (filter.hamming != null) {
-            val hdf = Json.Mapper.convertValue<HammingDistanceFilter>(filter.hamming,
-                    HammingDistanceFilter::class.java)
-
-            val simFilter = SimilarityFilter()
-            simFilter.hashes = mutableListOf()
-
-            for ((index, value) in hdf.hashes.withIndex()) {
-                val shash = SimilarityFilter.SimilarityHash()
-                value?.let {
-                    shash.hash = it.toString()
-                    shash.order = index
-                    shash.weight = hdf.weights.elementAtOrElse(index, { 1.0f })
-                    simFilter.hashes.add(shash)
-                }
-            }
-
-            handleHammingFilter(mapOf(hdf.field to simFilter), query)
-        }
-        else if (filter.similarity != null) {
+        if (filter.similarity != null) {
             handleHammingFilter(filter.similarity, query)
         }
 
