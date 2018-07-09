@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
 import com.zorroa.archivist.service.GcpStorageService
+import com.zorroa.archivist.service.MinioStorageImpl
 import com.zorroa.archivist.service.StorageService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.common.clients.EsClientCache
@@ -114,7 +115,11 @@ class ArchivistConfiguration {
      */
     @Bean
     fun storageService() : StorageService {
-        return GcpStorageService(properties())
+        val properties = properties()
+        return when (properties.getString("archivist.storage.type")) {
+            "gcp"->GcpStorageService(properties)
+            else->MinioStorageImpl(properties)
+        }
     }
 
     @Bean
