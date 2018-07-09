@@ -179,7 +179,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public KeyManager keyManager() {
         Map<String,String> keystore = properties.keystore;
-
         Resource storeFile = new FileSystemResource(new File(keystore.get("path")));
         Map<String, String> passwords = new HashMap<String, String>();
         passwords.put(keystore.get("alias"), keystore.get("keyPassword"));
@@ -332,7 +331,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl("/landing");
+        successRedirectHandler.setDefaultTargetUrl(properties.landingPage);
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
