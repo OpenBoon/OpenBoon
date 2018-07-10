@@ -42,7 +42,7 @@ def push_to_gcp(project, node_type):
 
 def build_docker_image(project, node_type):
     print "Building docker image: %s:zorroa-elasticsearch-%s" % (project, node_type)
-    cmd = ["docker", "build", "-t", get_image_name(project, node_type), "."]
+    cmd = ["docker", "build", "-t", get_image_name(project, node_type),  "--build-arg", "node_type=%s" % node_type, "."]
     print cmd
     subprocess.call(cmd, shell=False)
 
