@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
 COPY es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 WORKDIR /usr/share/elasticsearch/plugins
 RUN unzip es-similarity.zip

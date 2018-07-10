@@ -5,32 +5,51 @@ import yaml
 import json
 import shutil
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(prog="estool")
     parser.add_argument("project", help="The project to build for.")
-    parser.add_argument("-b", "--build", action="store_true", help="Recompile jar file")
+    parser.add_argument("-b", "--build", action="store_true", help="Recompile es plugins")
+    parser.add_argument("-p", "--push", action="store_true", help="Push to container registry")
     parser.add_argument("-t", "--type", help="Node type", choices=["single", "data", "client", "master"], default="single")
 
     args = parser.parse_args()
     project = args.project
     node_type = args.type
 
-    copy_plugins()
+    if args.build:
+        copile_es_plugin()
+    copy_plugin()
     build_docker_image(project, node_type)
 
+    if args.push:
+        push_to_gcp(project, args.type)
+
+def copile_es_plugin():
+    pom_file = os.path.join(os.path.dirname(__file__) + "/../es-similarity/pom.xml")
+    cmd =["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s" % pom_file]
+    print cmd
+    subprocess.call(cmd, shell=False)
+
+def push_to_gcp(project, node_type):
+    image = get_image_name(project, node_type)
+    cmd = ["docker", "push", image]
+    print cmd
+    subprocess.call(cmd, shell=False)
+
 def build_docker_image(project, node_type):
-    print "Building docker image: %s:elasticsearch-%s" % (project, node_type)
-    cmd = ["docker", "build", "-t", get_image_name(project, node_type), "--build-arg", "project=%s" %project, "."]
+    print "Building docker image: %s:zorroa-elasticsearch-%s" % (project, node_type)
+    cmd = ["docker", "build", "-t", get_image_name(project, node_type), "."]
     print cmd
     subprocess.call(cmd, shell=False)
 
 def get_image_name(project, node_type):
-    return "gcr.io/%s/elasticsearch-%s:latest" % (project, node_type)
+    return "gcr.io/%s/zorroa-elasticsearch-%s:latest" % (project, node_type)
 
-def copy_plugins():
+def copy_plugin():
     src_file = "../es-similarity/target/releases/es-similarity.zip"
     dst_file = "."
     logger.info("copy: %s -> %s" % (src_file, dst_file))
