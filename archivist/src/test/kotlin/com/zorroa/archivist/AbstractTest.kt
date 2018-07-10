@@ -104,9 +104,6 @@ open abstract class AbstractTest {
     @Autowired
     internal lateinit var transactionManager: DataSourceTransactionManager
 
-    @Value("\${archivist.organization.single-org-index}")
-    protected lateinit var alias: String
-
     protected lateinit var jdbc: JdbcTemplate
 
     protected lateinit var resources: Path
@@ -203,6 +200,8 @@ open abstract class AbstractTest {
          */
 
         val rest = estClientCache[getOrgId()]
+        logger.info(rest.route.clusterUrl)
+
 
         val reqDel = DeleteIndexRequest("_all")
         rest.client.indices().delete(reqDel)

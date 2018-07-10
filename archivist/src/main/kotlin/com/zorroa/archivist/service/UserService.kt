@@ -195,11 +195,9 @@ class UserServiceImpl @Autowired constructor(
         /**
          * TODO:
          * Look into how and where this gets set in the cloud.
-         * Probably needs to be set.
-         */
-        if (builder.organizationId == null &&
-                properties.getBoolean("archivist.organization.single-org-mode")) {
-            builder.organizationId = organizationDao.getOnlyOne().id
+        */
+        if (builder.organizationId == null) {
+            builder.organizationId = UUID.fromString("00000000-9998-8888-7777-666666666666")
         }
 
         if (builder.source == null) {
