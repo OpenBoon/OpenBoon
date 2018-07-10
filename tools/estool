@@ -21,14 +21,14 @@ def main():
     node_type = args.type
 
     if args.build:
-        copile_es_plugin()
+        compile_es_plugin()
     copy_plugin()
     build_docker_image(project, node_type)
 
     if args.push:
         push_to_gcp(project, args.type)
 
-def copile_es_plugin():
+def compile_es_plugin():
     pom_file = os.path.join(os.path.dirname(__file__) + "/../es-similarity/pom.xml")
     cmd =["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s" % pom_file]
     print cmd
