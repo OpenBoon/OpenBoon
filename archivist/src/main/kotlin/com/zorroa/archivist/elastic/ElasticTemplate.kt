@@ -13,6 +13,7 @@ import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
+import org.elasticsearch.rest.action.search.RestSearchAction
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DataRetrievalFailureException
@@ -120,13 +121,18 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
         result.scroll = Scroll(r.scrollId)
 
         if (r.aggregations != null) {
+            /**
+             * Due to a bug in the ES client, The 'xContentParams' option ignore and the
+             * agg names are prefixed with the type.  For now, we just strip the type
+             * back out.
+             */
             try {
                 val aggregations = r.aggregations
-                val json = XContentFactory.jsonBuilder().use { builder ->
-                    builder.startObject()
-                    aggregations.toXContent(builder, ToXContent.EMPTY_PARAMS)
-                    builder.endObject()
-                }.string()
+                val json = XContentFactory.jsonBuilder().use { jb ->
+                    jb.startObject()
+                    aggregations.toXContent(jb, xContentParams)
+                    jb.endObject()
+                }.string().replace(Regex("\"\\w+#(\\w+)\":"), "\"$1\":")
                 result.aggregations = Json.Mapper.readValue(json, Json.GENERIC_MAP)
             } catch (e: IOException) {
                 logger.warn("Failed to deserialize aggregations.", e)
@@ -167,7 +173,7 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
             if (r.aggregations != null) {
                 try {
                     builder.startObject("aggregations")
-                    r.aggregations.toXContent(builder, ToXContent.EMPTY_PARAMS)
+                    r.aggregations.toXContent(builder, xContentParams)
                     builder.endObject()
                 } catch (e: Exception) {
                     logger.warn("Failed to deserialize aggregations.", e)
@@ -201,5 +207,11 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
     companion object {
 
         private val logger = LoggerFactory.getLogger(ElasticTemplate::class.java)
+
+        /**
+         * Instructs Agg system to not prefx agg names with the agg type.
+         */
+        private val xContentParams = ToXContent.MapParams(mapOf(RestSearchAction.TYPED_KEYS_PARAM to "false"))
+
     }
 }

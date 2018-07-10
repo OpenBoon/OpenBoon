@@ -315,19 +315,28 @@ class SearchServiceImpl @Autowired constructor(
         req.source(ssb)
 
         if (search.aggs != null) {
-            logger.info(Json.prettyString(search.aggs))
             val result = mutableMapOf<String, Any>()
-            for ((key, value) in search.aggs) {
-                result[key] = value
+            for ((name, agg) in search.aggs) {
+                if (agg.containsKey("filter")) {
+                    /**
+                     * ES no longer supports empty filter aggs, so if curator
+                     * submits one, it gets replaced with a match_all query.
+                     */
+                    val filter = agg["filter"] as Map<String,Any>
+                    if (filter.isEmpty()) {
+                        agg["filter"] = mapOf<String,Map<String,Object>>("match_all" to mapOf())
+                    }
+                }
+
+                result[name] = agg
             }
 
             val map = mutableMapOf("aggs" to search.aggs)
             val json = Json.serializeToString(map)
 
-            val searchModule = SearchModule(Settings.EMPTY, false, Collections.emptyList());
+            val searchModule = SearchModule(Settings.EMPTY, false, Collections.emptyList())
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-                     NamedXContentRegistry(searchModule
-                            .namedXContents), json)
+                     NamedXContentRegistry(searchModule.namedXContents), json)
 
             val ssb2 = SearchSourceBuilder.fromXContent(parser)
             ssb2.aggregations().aggregatorFactories.forEach( { ssb.aggregation(it)})
@@ -664,7 +673,6 @@ class SearchServiceImpl @Autowired constructor(
             args["hashes"] = hashes.joinToString(",")
             args["weights"] = weights.joinToString(",")
             args["minScore"] = filter.minScore
-
 
             val fsqb = QueryBuilders.functionScoreQuery(
                     ScoreFunctionBuilders.scriptFunction(Script(ScriptType.INLINE,

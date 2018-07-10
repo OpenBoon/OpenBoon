@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
@@ -16,6 +17,7 @@ import com.zorroa.security.Groups;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHits;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -644,6 +646,22 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testAggregationSearchEmptyFilter() throws IOException {
+        indexService.index(new Source(getTestImagePath().resolve("beer_kettle_01.jpg")));
+        indexService.index(new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg")));
+        refreshIndex();
+
+        Map<String,Object> req = Maps.newHashMap();
+        req.put("filter",  ImmutableMap.of());
+        req.put("aggs", ImmutableMap.of("foo", ImmutableMap.of("terms",
+                ImmutableMap.of("field", "source.fileSize"))));
+
+        PagedList<Document> page = searchService.search(Pager.first(1),
+                new AssetSearch().addToAggs("facet", req));
+        assertEquals(1, page.getAggregations().size());
+    }
+
+    @Test
     public void testMustSearch() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
@@ -768,6 +786,13 @@ public class SearchServiceTests extends AbstractTest {
 
     }
 
+    /**
+     * The array handling code needs to be updated in es-similarity.
+     *
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Ignore
     @Test
     public void testHammingDistanceFilterArray() throws IOException, InterruptedException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
@@ -791,13 +816,12 @@ public class SearchServiceTests extends AbstractTest {
         Document doc = new Document(hits.getAt(0).getSourceAsMap());
         assertEquals(ImmutableList.of("AFAFAFAF", "AFAFAFA1"), doc.getAttr("test.hash1.shash"));
 
-
-
     }
 
     @Test
     public void testHammingDistanceFilterWithQuery() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.addToKeywords("source", "beer_kettle_01.jpg");
         source1.setAttr("superhero", "captain");
         source1.setAttr("test.hash1.shash", "afafafaf");
         source1.addToKeywords("foo", "bar");
@@ -810,9 +834,9 @@ public class SearchServiceTests extends AbstractTest {
         indexService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
-        AssetSearch search = new AssetSearch("bar");
+        AssetSearch search = new AssetSearch("beer");
         search.setFilter(new AssetFilter().addToSimilarity("test.hash1.shash",
-                new SimilarityFilter("afafafaf", 8)));
+                new SimilarityFilter("afafafaf", 1)));
 
         /**
          * The score from the hamming distance is combined with the query
@@ -825,6 +849,7 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testHammingDistanceFilterWithAssetId() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.addToKeywords("source", "beer");
         source1.setAttr("superhero", "captain");
         source1.setAttr("test.hash1.shash", "afafafaf");
         source1.addToKeywords("foo", "bar");
@@ -837,7 +862,7 @@ public class SearchServiceTests extends AbstractTest {
         indexService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
-        AssetSearch search = new AssetSearch("bar");
+        AssetSearch search = new AssetSearch("beer");
         search.setFilter(new AssetFilter().addToSimilarity("test.hash1.shash",
                 new SimilarityFilter(source1.getId(), 8)));
 
