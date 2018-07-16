@@ -356,7 +356,7 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (search.fields != null) {
-            ssb.fetchSource(search.fields, arrayOf("media.content", "analysis"))
+            ssb.fetchSource(search.fields, arrayOf("media.content"))
         }
 
         if (search.scroll != null) {
