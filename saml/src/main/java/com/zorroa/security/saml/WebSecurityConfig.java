@@ -28,6 +28,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
+import org.springframework.security.saml.key.EmptyKeyManager;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -175,7 +176,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SingleLogoutProfileImpl();
     }
 
-    // Central storage of cryptographic keys
+    /**
     @Bean
     public KeyManager keyManager() {
         Map<String,String> keystore = properties.keystore;
@@ -186,6 +187,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JKSKeyManager(storeFile, keystore.get("password"),
                 passwords, keystore.get("alias"));
     }
+    **/
 
     // Setup TLS Socket Factory
     @Bean
@@ -195,7 +197,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ProtocolSocketFactory socketFactory() {
-        return new TLSProtocolSocketFactory(keyManager(), null, "default");
+        return new TLSProtocolSocketFactory(
+                new EmptyKeyManager(), null, "default");
     }
 
     @Bean
@@ -314,8 +317,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         metadataGenerator.setEntityId(baseURL + "/saml/metadata");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
         metadataGenerator.setIncludeDiscoveryExtension(false);
-        metadataGenerator.setKeyManager(keyManager());
         metadataGenerator.setEntityBaseURL(baseURL);
+        metadataGenerator.setWantAssertionSigned(false);
         return metadataGenerator;
     }
 
@@ -331,7 +334,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl(properties.landingPage);
+        successRedirectHandler.setDefaultTargetUrl("/curator");
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
@@ -520,6 +523,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/error").permitAll()
+                .antMatchers("/curator").permitAll()
                 .antMatchers("/saml/**").permitAll();
 
         http
