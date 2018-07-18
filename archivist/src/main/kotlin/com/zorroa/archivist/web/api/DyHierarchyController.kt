@@ -25,6 +25,7 @@ class DyHierarchyController @Autowired constructor(
     }
 
     @PostMapping(value = ["/api/v1/dyhi"])
+    @Throws(Exception::class)
     fun create(@RequestBody spec: DyHierarchySpec): DyHierarchy {
         return dyHierarchyService.create(spec)
     }
