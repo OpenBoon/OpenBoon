@@ -1,8 +1,8 @@
 runtime: custom
 env: flex
 service: zorroa-studio
-env_variables:
-     SPRING_PROFILES_ACTIVE: "dit1"
+automatic_scaling:
+    max_num_instances: 1
 resources:
      memory_gb: 2.0
 
