@@ -1,2 +1,0 @@
-
-ALTER TABLE task ADD time_ping BIGINT NOT NULL DEFAULT 0;

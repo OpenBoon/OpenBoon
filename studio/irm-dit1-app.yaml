@@ -1,0 +1,8 @@
+runtime: custom
+env: flex
+service: zorroa-studio
+env_variables:
+     SPRING_PROFILES_ACTIVE: "dit1"
+resources:
+     memory_gb: 2.0
+

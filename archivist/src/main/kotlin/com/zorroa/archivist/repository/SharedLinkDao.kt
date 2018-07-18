@@ -3,8 +3,9 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.SharedLinkSpec
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
@@ -53,10 +54,11 @@ class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, getUserId())
-            ps.setLong(3, System.currentTimeMillis())
-            ps.setLong(4, expireTime)
-            ps.setString(5, Json.serializeToString(spec.state, "{}"))
-            ps.setString(6, Json.serializeToString(spec.userIds, "[]"))
+            ps.setObject(3, getUser().organizationId)
+            ps.setLong(4, System.currentTimeMillis())
+            ps.setLong(5, expireTime)
+            ps.setString(6, Json.serializeToString(spec.state, "{}"))
+            ps.setString(7, Json.serializeToString(spec.userIds, "[]"))
             ps
         }, key)
 
@@ -77,6 +79,7 @@ class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
         private val INSERT = JdbcUtils.insert("shared_link",
                 "pk_shared_link",
                 "pk_user_created",
+                "pk_organization",
                 "time_created",
                 "time_expired",
                 "json_state",

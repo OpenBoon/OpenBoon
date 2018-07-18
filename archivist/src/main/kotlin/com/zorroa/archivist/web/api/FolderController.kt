@@ -3,10 +3,11 @@ package com.zorroa.archivist.web.api
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.FolderUpdate
 import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.SearchService
-import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.common.search.AssetSearch
 import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,9 +81,9 @@ class FolderController @Autowired constructor(
     }
 
     @PutMapping(value = ["/api/v1/folders/{id}"])
-    fun update(@RequestBody folder: Folder, @PathVariable id: UUID): Folder {
+    fun update(@RequestBody folder: FolderUpdate, @PathVariable id: UUID): Folder {
         folderService.update(id, folder)
-        return folderService.get(folder.id)
+        return folderService.get(id)
     }
 
     @DeleteMapping(value = ["/api/v1/folders/{id}"])

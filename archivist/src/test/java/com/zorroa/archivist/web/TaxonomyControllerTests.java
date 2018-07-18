@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Taxonomy;
 import com.zorroa.archivist.domain.TaxonomySpec;
 import com.zorroa.archivist.service.TaxonomyService;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,12 +32,12 @@ public class TaxonomyControllerTests extends MockMvcTest {
     public void testCreate() throws Exception {
         MockHttpSession session = admin();
 
-        Folder f = folderService.create(new FolderSpec().setName("bob").setParentId(Folder.ROOT_ID));
+        Folder f = folderService.create(new FolderSpec("bob"));
         TaxonomySpec spec = new TaxonomySpec(f);
 
         MvcResult result = mvc.perform(post("/api/v1/taxonomy")
                 .session(session)
-                .content(Json.serialize(spec))
+                .content(Json.INSTANCE.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -50,13 +50,13 @@ public class TaxonomyControllerTests extends MockMvcTest {
     public void testDelete() throws Exception {
         MockHttpSession session = admin();
 
-        Folder f = folderService.create(new FolderSpec().setName("bob").setParentId(Folder.ROOT_ID));
+        Folder f = folderService.create(new FolderSpec("bob"));
         TaxonomySpec spec = new TaxonomySpec(f);
         Taxonomy tax = taxonomyService.create(spec);
 
         MvcResult result = mvc.perform(delete("/api/v1/taxonomy/" + tax.getTaxonomyId())
                 .session(session)
-                .content(Json.serialize(spec))
+                .content(Json.INSTANCE.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();

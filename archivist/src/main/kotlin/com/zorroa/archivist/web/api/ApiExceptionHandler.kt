@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.api
 
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.web.InvalidObjectException
-import com.zorroa.sdk.client.exception.*
+import com.zorroa.common.domain.*
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException

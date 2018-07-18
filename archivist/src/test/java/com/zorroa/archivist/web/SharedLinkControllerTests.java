@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.SharedLink;
 import com.zorroa.archivist.domain.SharedLinkSpec;
 import com.zorroa.archivist.service.SharedLinkService;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,7 +38,7 @@ public class SharedLinkControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(post("/api/v1/shared_link")
                 .session(session)
-                .content(Json.serialize(spec))
+                .content(Json.INSTANCE.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -60,7 +60,7 @@ public class SharedLinkControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(get("/api/v1/shared_link/" + link.getId())
                 .session(session)
-                .content(Json.serialize(spec))
+                .content(Json.INSTANCE.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();

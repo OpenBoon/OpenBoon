@@ -4,8 +4,9 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.Taxonomy
 import com.zorroa.archivist.domain.TaxonomySpec
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.archivist.security.getUser
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
@@ -29,6 +30,7 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_taxonomy"))
             ps.setObject(1, id)
             ps.setObject(2, spec.folderId)
+            ps.setObject(3, getUser().organizationId)
             ps
         }, keyHolder)
         return get(id)
@@ -81,7 +83,8 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
 
         private val INSERT = JdbcUtils.insert("taxonomy",
                 "pk_taxonomy",
-                "pk_folder")
+                "pk_folder",
+                "pk_organization")
 
         private val GET = "SELECT " +
                 "pk_taxonomy," +

@@ -3,7 +3,7 @@ package com.zorroa.archivist.security
 import com.google.common.collect.ImmutableSet
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.service.UserService
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationProvider
@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.BufferedReader
 import java.io.IOException

@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.Setting;
 import com.zorroa.archivist.domain.SettingsFilter;
 import com.zorroa.archivist.service.SettingsService;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -13,9 +13,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,10 +40,11 @@ public class SettingsControllerTests extends MockMvcTest {
     @Test
     public void testGetAllFilter() throws Exception {
         MockHttpSession session = admin();
-
+        SettingsFilter filter = new SettingsFilter();
+        filter.setCount(5);
         MvcResult result = mvc.perform(get("/api/v1/settings")
                 .session(session)
-                .content(Json.serialize(new SettingsFilter().setCount(5)))
+                .content(Json.INSTANCE.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -63,13 +62,13 @@ public class SettingsControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(put("/api/v1/settings/")
                 .session(session)
-                .content(Json.serialize(settings))
+                .content(Json.INSTANCE.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
 
-        Map<String, Object> map = deserialize(result, Json.GENERIC_MAP);
+        Map<String, Object> map = deserialize(result, Json.INSTANCE.getGENERIC_MAP());
         assertTrue((boolean) map.get("success"));
     }
 }

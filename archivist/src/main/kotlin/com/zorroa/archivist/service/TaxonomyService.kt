@@ -5,32 +5,35 @@ import com.google.common.base.Stopwatch
 import com.google.common.collect.*
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.elastic.CountingBulkListener
+import com.zorroa.archivist.elastic.ESUtils
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.TaxonomyDao
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.InternalRunnable
-import com.zorroa.common.elastic.CountingBulkListener
-import com.zorroa.common.elastic.ElasticClientUtils
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.domain.Document
-import com.zorroa.sdk.search.AssetFilter
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.Document
+import com.zorroa.common.search.AssetFilter
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
+import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkProcessor
-import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchResponse
-import org.elasticsearch.client.Client
+import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.common.unit.TimeValue
+import org.elasticsearch.common.xcontent.XContentType
+import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
 import org.elasticsearch.search.sort.SortOrder
-import org.elasticsearch.search.sort.SortParseElement
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.LongAdder
 import java.util.function.Predicate
 import java.util.stream.Collectors
@@ -75,7 +78,7 @@ interface TaxonomyService {
 class TaxonomyServiceImpl @Autowired constructor(
         private val taxonomyDao: TaxonomyDao,
         private val folderDao: FolderDao,
-        private val client: Client,
+        private val esClientCache: EsClientCache,
         private val folderTaskExecutor: UniqueTaskExecutor
 ): TaxonomyService {
 
@@ -90,9 +93,6 @@ class TaxonomyServiceImpl @Autowired constructor(
 
     @Autowired
     internal lateinit var userRegistryService: UserRegistryService
-
-    @Value("\${zorroa.cluster.index.alias}")
-    private val alias: String? = null
 
     internal var EXCLUDE_FOLDERS: Set<String> = ImmutableSet.of("Library", "Users")
 
@@ -124,7 +124,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val folder = folderService.get(spec.folderId)
         val ancestors = folderService.getAllAncestors(folder, true, true)
         for (an in ancestors) {
-            if (an.isTaxonomyRoot) {
+            if (an.taxonomyRoot) {
                 throw ArchivistWriteException("The folder is already in a taxonomy")
             }
         }
@@ -135,14 +135,14 @@ class TaxonomyServiceImpl @Autowired constructor(
             throw ArchivistWriteException("The root folder cannot be a taxonomy.")
         }
 
-        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == Folder.ROOT_ID) {
+        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == ROOT_ID) {
             throw ArchivistWriteException("This folder cannot hold a taxonomy.")
         }
 
         val result = folderDao.setTaxonomyRoot(folder, true)
         if (result) {
             folderService.invalidate(folder)
-            folder.isTaxonomyRoot = true
+            folder.taxonomyRoot = true
 
             // force is false because there won't be folders with this tax id.
             tagTaxonomyAsync(tax, folder, false)
@@ -191,11 +191,19 @@ class TaxonomyServiceImpl @Autowired constructor(
             start = folderService.get(tax.folderId)
         }
         val updateTime = System.currentTimeMillis()
-
         val folderTotal = LongAdder()
         val assetTotal = LongAdder()
 
+        val rest = esClientCache[getOrgId()]
+        val cbl = CountingBulkListener()
+        val bulkProcessor = ESUtils.create(rest.client, cbl)
+                .setBulkActions(BULK_SIZE)
+                .setConcurrentRequests(0)
+                .build()
+
+
         taxonomyDao.setActive(tax, true)
+
         try {
             for (folder in folderService.getAllDescendants(Lists.newArrayList(start), true, false)) {
                 folderTotal.increment()
@@ -208,10 +216,10 @@ class TaxonomyServiceImpl @Autowired constructor(
                 val keywords = Lists.newArrayList<String>()
 
                 var foundRoot = false
-                if (!folder.isTaxonomyRoot) {
+                if (!folder.taxonomyRoot) {
                     for (f in ancestors) {
                         keywords.add(f.name)
-                        if (f.isTaxonomyRoot) {
+                        if (f.taxonomyRoot) {
                             foundRoot = true
                             break
                         }
@@ -226,15 +234,6 @@ class TaxonomyServiceImpl @Autowired constructor(
                     break
                 }
 
-                val cbl = CountingBulkListener()
-                val bulkProcessor = BulkProcessor.builder(
-                        client, cbl)
-                        .setBulkActions(BULK_SIZE)
-                        .setFlushInterval(TimeValue.timeValueSeconds(10))
-                        .setConcurrentRequests(0)
-                        .build()
-
-
                 var search: AssetSearch? = folder.search
                 if (search == null) {
                     search = AssetSearch(AssetFilter()
@@ -245,16 +244,16 @@ class TaxonomyServiceImpl @Autowired constructor(
                 // If it is not a force, then skip over fields already written.
                 if (!force) {
                     search.filter.mustNot = ImmutableList.of(
-                            AssetFilter().addToTerms(ROOT_FIELD + ".taxId", tax.taxonomyId))
+                            AssetFilter().addToTerms("$ROOT_FIELD.taxId", tax.taxonomyId))
                 }
 
-                val timer = Stopwatch.createStarted()
-                var rsp = searchService.buildSearch(search, "asset")
-                        .setScroll(TimeValue(60000))
-                        .setFetchSource(true)
-                        .setSize(PAGE_SIZE).execute().actionGet()
-                logger.info("tagging taxonomy {} batch 1 : {}", tax, timer)
+                var req = searchService.buildSearch(search, "asset")
+                rest.routeSearchRequest(req.request)
+                req.request.scroll(TimeValue(60000))
+                req.source.fetchSource(true)
+                req.source.size(PAGE_SIZE)
 
+                var rsp = rest.client.search(req.request)
                 val taxy = TaxonomySchema()
                         .setFolderId(folder.id)
                         .setTaxId(tax.taxonomyId)
@@ -264,51 +263,55 @@ class TaxonomyServiceImpl @Autowired constructor(
                 var batchCounter = 1
                 try {
                     do {
+                        val timer = Stopwatch.createStarted()
+                        logger.info("tagging {} batch {} : {} hits: {}",
+                                tax, batchCounter, timer, rsp.hits.totalHits)
+
                         for (hit in rsp.hits.hits) {
-                            val doc = Document(hit.source)
+
+                            val doc = Document(hit.sourceAsMap)
                             var taxies: MutableSet<TaxonomySchema>? = doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
                             if (taxies == null) {
                                 taxies = Sets.newHashSet()
                             }
                             taxies!!.add(taxy)
                             doc.setAttr(ROOT_FIELD, taxies)
-                            bulkProcessor.add(client.prepareIndex(alias, "asset", hit.id)
-                                    .setOpType(IndexRequest.OpType.INDEX)
-                                    .setSource(Json.serialize(doc.document)).request())
+
+                            bulkProcessor.add(rest.newIndexRequest(hit.id)
+                                    .opType(DocWriteRequest.OpType.INDEX)
+                                    .source(Json.serialize(doc.document), XContentType.JSON))
                         }
 
-                        rsp = client.prepareSearchScroll(rsp.scrollId).setScroll(
-                                TimeValue(60000)).execute().actionGet()
+                        val scroll = SearchScrollRequest()
+                        scroll.scrollId(rsp.scrollId)
+                        scroll.scroll(TimeValue(60000))
+                        rsp = rest.client.searchScroll(scroll)
                         batchCounter++
-                        logger.info("tagging {} batch {} : {}", tax, batchCounter, timer)
 
 
-                    } while (rsp.hits.hits.size != 0)
+                    } while (rsp.hits.hits.isNotEmpty())
                 } catch (e: Exception) {
                     logger.warn("Failed to tag taxonomy assets: {}", tax)
-                } finally {
-                    bulkProcessor.close()
                 }
-                assetTotal.add(cbl.successCount)
             }
 
             if (force) {
                 untagTaxonomyAsync(tax, updateTime)
             }
         } finally {
+            bulkProcessor.awaitClose(1000, TimeUnit.HOURS)
             taxonomyDao.setActive(tax, false)
         }
 
-
         logger.info("Taxonomy {} executed, {} assets updated in {} folders",
-                tax.folderId, assetTotal.toLong(), folderTotal.toInt())
+                tax.folderId, cbl.getSuccessCount(), folderTotal.toInt())
 
         if (assetTotal.toLong() > 0) {
             fieldService.invalidateFields()
         }
 
         return ImmutableMap.of(
-                "assetCount", assetTotal.toLong(),
+                "assetCount", cbl.getSuccessCount(),
                 "folderCount", folderTotal.toLong(),
                 "timestamp", updateTime)
     }
@@ -340,11 +343,10 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomyFolders(tax: Taxonomy, folder: Folder, assets: List<String>) {
         logger.warn("Untagging {} on {} assets {}", tax, folder, assets)
 
+        val rest = esClientCache[getOrgId()]
         val cbl = CountingBulkListener()
-        val bulkProcessor = BulkProcessor.builder(
-                client, cbl)
+        val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build()
 
@@ -353,19 +355,18 @@ class TaxonomyServiceImpl @Autowired constructor(
                 .addToTerms("_id", assets)
                 .addToTerms("zorroa.taxonomy.folderId", folder.id)
 
-        val rsp = client.prepareSearch("archivist")
-                .setScroll(TimeValue(60000))
-                .setFetchSource(true)
-                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                .setQuery(searchService.getQuery(search))
-                .setSize(PAGE_SIZE).execute().actionGet()
+        val sb = rest.newSearchBuilder()
+        sb.request.scroll(SCROLL_TIME)
+        sb.source.query(searchService.getQuery(search))
+        sb.source.fetchSource(true)
+        sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+        sb.source.size(PAGE_SIZE)
 
+        val rsp = rest.client.search(rest.routeSearchRequest(sb.request))
         processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
 
-        bulkProcessor.close()
         logger.info("Untagged: {} success:{} errors: {}", tax,
-                cbl.successCount, cbl.errorCount)
-
+                cbl.getSuccessCount(), cbl.getErrorCount())
     }
 
     /**
@@ -378,16 +379,13 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomyFolders(tax: Taxonomy, folders: List<Folder>) {
         logger.warn("Untagging {} on {} folders", tax, folders.size)
 
+        val rest = esClientCache[getOrgId()]
         val folderIds = folders.stream().map { f -> f.id }.collect(Collectors.toList())
-
-        ElasticClientUtils.refreshIndex(client, 1)
         for (list in Lists.partition(folderIds, 500)) {
 
             val cbl = CountingBulkListener()
-            val bulkProcessor = BulkProcessor.builder(
-                    client, cbl)
+            val bulkProcessor = ESUtils.create(rest.client, cbl)
                     .setBulkActions(BULK_SIZE)
-                    .setFlushInterval(TimeValue.timeValueSeconds(10))
                     .setConcurrentRequests(0)
                     .build()
 
@@ -395,19 +393,20 @@ class TaxonomyServiceImpl @Autowired constructor(
             search.filter = AssetFilter()
                     .addToTerms("zorroa.taxonomy.folderId", list as MutableList<Any>)
 
-            val rsp = client.prepareSearch("archivist")
-                    .setScroll(TimeValue(60000))
-                    .setFetchSource(false)
-                    .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                    .setQuery(searchService.getQuery(search))
-                    .setSize(PAGE_SIZE).execute().actionGet()
+            val sb = rest.newSearchBuilder()
+            sb.request.scroll(SCROLL_TIME)
+            sb.source.query(searchService.getQuery(search))
+            sb.source.fetchSource(true)
+            sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+            sb.source.size(PAGE_SIZE)
 
+            val rsp = rest.client.search(rest.routeSearchRequest(sb.request))
             processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
 
-            bulkProcessor.close()
             logger.info("Untagged: {} success:{} errors: {}", tax,
-                    cbl.successCount, cbl.errorCount)
+                    cbl.getSuccessCount(), cbl.getErrorCount())
         }
+
     }
 
     /**
@@ -418,11 +417,11 @@ class TaxonomyServiceImpl @Autowired constructor(
      */
     override fun untagTaxonomy(tax: Taxonomy): Map<String, Long> {
         logger.info("Untagging entire taxonomy {}", tax)
+
+        val rest = esClientCache[getOrgId()]
         val cbl = CountingBulkListener()
-        val bulkProcessor = BulkProcessor.builder(
-                client, cbl)
+        val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build()
 
@@ -430,21 +429,23 @@ class TaxonomyServiceImpl @Autowired constructor(
         search.filter = AssetFilter()
                 .addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
 
-        val rsp = client.prepareSearch("archivist")
-                .setScroll(TimeValue(60000))
-                .setFetchSource(true)
-                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                .setQuery(searchService.getQuery(search))
-                .setSize(PAGE_SIZE).execute().actionGet()
-
+        val sb = rest.newSearchBuilder()
+        sb.request.scroll(SCROLL_TIME)
+        sb.source.query(searchService.getQuery(search))
+        sb.source.fetchSource(true)
+        sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+        sb.source.size(PAGE_SIZE)
+        val rsp = rest.client.search(sb.request)
         processBulk(bulkProcessor, rsp, Predicate { ts -> ts.taxId == tax.taxonomyId })
 
         logger.info("Untagged: {} success:{} errors: {}", tax,
-                cbl.successCount, cbl.errorCount)
+                cbl.getErrorCount(), cbl.getErrorCount())
 
         return ImmutableMap.of(
-                "assetCount", cbl.successCount,
-                "errorCount", cbl.errorCount)
+                "assetCount", cbl.getSuccessCount(),
+                "errorCount", cbl.getErrorCount())
+
+        return mapOf()
     }
 
     /**
@@ -458,13 +459,10 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy, timestamp: Long): Map<String, Long> {
 
         logger.info("Untagging assets no longer tagged tagged: {} {}", tax, timestamp)
-        ElasticClientUtils.refreshIndex(client, 1)
-
+        val rest = esClientCache[getOrgId()]
         val cbl = CountingBulkListener()
-        val bulkProcessor = BulkProcessor.builder(
-                client, cbl)
+        val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build()
 
@@ -474,43 +472,51 @@ class TaxonomyServiceImpl @Autowired constructor(
         val search = AssetSearch()
         search.filter = AssetFilter().addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
 
-        val rsp = client.prepareSearch("archivist")
-                .setScroll(TimeValue(60000))
-                .setFetchSource(true)
-                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
-                .setQuery(searchService.getQuery(search))
-                .setSize(PAGE_SIZE).execute().actionGet()
+        val sb = rest.newSearchBuilder()
+        sb.request.scroll(SCROLL_TIME)
+        sb.source.query(searchService.getQuery(search))
+        sb.source.fetchSource(true)
+        sb.source.sort(DOC_FIELD_NAME, SortOrder.ASC)
+        sb.source.size(PAGE_SIZE)
 
+        val rsp = rest.client.search(sb.request)
         processBulk(bulkProcessor, rsp,
                 Predicate { ts -> ts.taxId == tax.taxonomyId && ts.updatedTime != timestamp })
 
         logger.info("Untagged: {} success:{} errors: {}", tax,
-                cbl.successCount, cbl.errorCount)
+                cbl.getSuccessCount(), cbl.getErrorCount())
 
         return ImmutableMap.of(
-                "assetCount", cbl.successCount,
-                "errorCount", cbl.errorCount,
+                "assetCount", cbl.getSuccessCount(),
+                "errorCount", cbl.getErrorCount(),
                 "timestamp", timestamp)
+
+        return mapOf()
     }
 
     private fun processBulk(bulkProcessor: BulkProcessor, rsp: SearchResponse, pred: Predicate<TaxonomySchema>) {
         var rsp = rsp
+        val rest = esClientCache[getOrgId()]
         try {
             do {
                 for (hit in rsp.hits.hits) {
-                    val doc = Document(hit.source)
-                    val taxies = doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
+                    val doc = Document(hit.sourceAsMap)
+                    val taxies =
+                            doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
                     if (taxies != null) {
                         if (taxies.removeIf(pred)) {
                             doc.setAttr(ROOT_FIELD, taxies)
-                            bulkProcessor.add(client.prepareIndex("archivist", "asset", hit.id)
-                                    .setOpType(IndexRequest.OpType.INDEX)
-                                    .setSource(Json.serialize(doc.document)).request())
+                            val indexReq = rest.newIndexRequest(hit.id)
+                            indexReq.opType(DocWriteRequest.OpType.INDEX)
+                            indexReq.source(Json.serialize(doc.document), XContentType.JSON)
+                            bulkProcessor.add(indexReq)
                         }
                     }
                 }
-                rsp = client.prepareSearchScroll(rsp.scrollId).setScroll(
-                        TimeValue(60000)).execute().actionGet()
+                val scrollReq = SearchScrollRequest()
+                scrollReq.scrollId(rsp.scrollId)
+                scrollReq.scroll(SCROLL_TIME)
+                rsp = rest.client.searchScroll(scrollReq)
 
             } while (rsp.hits.hits.isNotEmpty())
 
@@ -525,6 +531,9 @@ class TaxonomyServiceImpl @Autowired constructor(
     companion object {
 
         private val logger = LoggerFactory.getLogger(TaxonomyServiceImpl::class.java)
+
+        private val SCROLL_TIME = TimeValue.timeValueSeconds(60)
+
         /**
          * Number of entries to write at one time.
          */

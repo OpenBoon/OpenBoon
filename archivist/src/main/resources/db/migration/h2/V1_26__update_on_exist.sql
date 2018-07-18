@@ -1,2 +1,0 @@
-ALTER TABLE ingest
-DROP COLUMN bool_update_on_exist

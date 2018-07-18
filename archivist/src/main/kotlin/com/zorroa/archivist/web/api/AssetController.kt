@@ -7,24 +7,28 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.HideField
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.UserLogSpec
+import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
-import com.zorroa.common.elastic.ElasticClientUtils
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.domain.*
-import com.zorroa.sdk.filesystem.ObjectFileSystem
-import com.zorroa.sdk.schema.ProxySchema
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.search.AssetSuggestBuilder
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.Document
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.common.schema.Proxy
+import com.zorroa.common.schema.ProxySchema
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.search.AssetSuggestBuilder
 import org.apache.tika.Tika
-import org.elasticsearch.client.Client
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
@@ -40,28 +44,21 @@ import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import javax.validation.Valid
 
 @RestController
 class AssetController @Autowired constructor(
-        private val client: Client,
-        private val assetService: AssetService,
+        private val indexService: IndexService,
         private val searchService: SearchService,
         private val folderService: FolderService,
         private val logService: EventLogService,
         private val imageService: ImageService,
         private val ofs: ObjectFileSystem,
-        private val commandService: CommandService,
         private val fieldService: FieldService
 ){
-
     /**
      * Describes a file to stream.
      */
     class StreamFile(var path: String, var mimeType: String, var proxy: Boolean)
-
-    @Value("\${zorroa.cluster.index.alias}")
-    private lateinit var alias: String
 
     @GetMapping(value = ["/api/v1/assets/_fields"])
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
@@ -73,7 +70,7 @@ class AssetController @Autowired constructor(
     val mapping: Map<String, Any>
         @GetMapping(value = ["/api/v1/assets/_mapping"])
         @Throws(IOException::class)
-        get() = assetService.getMapping()
+        get() = indexService.getMapping()
 
     fun getPreferredFormat(asset: Document, preferExt: String?, fallback: Boolean, streamProxy: Boolean): StreamFile? {
 
@@ -133,7 +130,7 @@ class AssetController @Autowired constructor(
         // If the file doesn't have a proxy this will throw.
         val proxies = asset.getAttr("proxies", ProxySchema::class.java)
         if (proxies != null) {
-            val largest = proxies.largest
+            val largest = proxies.getLargest()
             if (largest != null) {
                 return StreamFile(
                         ofs.get(largest.id).file.toString(),
@@ -151,7 +148,7 @@ class AssetController @Autowired constructor(
                     @RequestParam(value = "ext", required = false) ext: String?,
                     @PathVariable id: String, request: HttpServletRequest, response: HttpServletResponse) {
 
-        val asset = assetService.get(id)
+        val asset = indexService.get(id)
         val canExport = canExport(asset)
         val format = getPreferredFormat(asset, ext, fallback, !canExport)
 
@@ -179,16 +176,16 @@ class AssetController @Autowired constructor(
             .expireAfterWrite(1, TimeUnit.HOURS)
             .build(object : CacheLoader<String, Proxy>() {
                 @Throws(Exception::class)
-                override fun load(slug: String): Proxy {
+                override fun load(slug: String): Proxy? {
                     val e = slug.split(":")
-                    val proxies = assetService.getProxies(e[1])
+                    val proxies = indexService.getProxies(e[1])
 
                     return when {
                         e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
                         e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt())
-                        e[0] == "smallest" -> proxies.smallest
-                        e[0] == "largest" -> proxies.largest
-                        else -> proxies.largest
+                        e[0] == "smallest" -> proxies.getSmallest()
+                        e[0] == "largest" -> proxies.getLargest()
+                        else -> proxies.getLargest()
                     }
                 }
             })
@@ -248,14 +245,6 @@ class AssetController @Autowired constructor(
         }
     }
 
-    @PostMapping(value = ["/api/v2/assets/_search"])
-    @Throws(IOException::class)
-    fun searchV2(@RequestBody search: AssetSearch, httpResponse: HttpServletResponse) {
-        httpResponse.contentType = MediaType.APPLICATION_JSON_VALUE
-        val response = searchService.search(search)
-        HttpUtils.writeElasticResponse(response, httpResponse)
-    }
-
     @PostMapping(value = ["/api/v3/assets/_search"])
     @Throws(IOException::class)
     fun searchV3(@RequestBody search: AssetSearch): PagedList<Document> {
@@ -282,7 +271,7 @@ class AssetController @Autowired constructor(
                 fieldService.updateField(update.setHide(false)))
     }
 
-    @PostMapping(value = ["/api/v2/assets/_count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/api/v2/assets/_count"])
     @Throws(IOException::class)
     fun count(@RequestBody search: AssetSearch): Any {
         return HttpUtils.count(searchService.count(search))
@@ -291,7 +280,7 @@ class AssetController @Autowired constructor(
     @GetMapping(value = ["/api/v1/assets/{id}/_exists"])
     @Throws(IOException::class)
     fun exists(@PathVariable id: String): Any {
-        return HttpUtils.exists(id, assetService.exists(id))
+        return HttpUtils.exists(id, indexService.exists(id))
     }
 
     @PostMapping(value = ["/api/v3/assets/_suggest"])
@@ -300,52 +289,45 @@ class AssetController @Autowired constructor(
         return searchService.getSuggestTerms(suggest.text)
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}"])
-    @Throws(IOException::class)
-    operator fun get(@PathVariable id: String, httpResponse: HttpServletResponse) {
-        val response = client.prepareGet(alias, "asset", id).get()
-        HttpUtils.writeElasticResponse(response, httpResponse)
-    }
-
     @GetMapping(value = ["/api/v2/assets/{id}"])
     fun getV2(@PathVariable id: String): Any {
-        return assetService.get(id)
+        return indexService.get(id)
     }
 
     @GetMapping(value = ["/api/v1/assets/_path"])
     fun getByPath(@RequestBody path: Map<String, String>): Document? {
-        return path["path"]?.let { assetService.get(Paths.get(it)) }
+        return path["path"]?.let { indexService.get(Paths.get(it)) }
     }
 
     @DeleteMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun delete(@PathVariable id: String): Any {
-        val asset = assetService.get(id)
+        val asset = indexService.get(id)
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("delete access denied")
         }
 
-        val result = assetService.delete(id)
+        val result = indexService.delete(id)
         return HttpUtils.deleted("asset", id, result)
     }
 
     @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
-        val asset = assetService.get(id)
+        val asset = indexService.get(id)
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("update access denied")
         }
 
-        assetService.update(id, attrs)
-        return HttpUtils.updated("asset", id, true, assetService.get(id))
+        indexService.update(id, attrs)
+        return HttpUtils.updated("asset", id, true, indexService.get(id))
     }
 
     @DeleteMapping(value = ["/api/v1/assets/{id}/_fields"])
     @Throws(IOException::class)
     fun removeFields(@RequestBody fields: MutableSet<String>, @PathVariable id: String): Any {
-        assetService.removeFields(id, fields)
-        return HttpUtils.updated("asset", id, true, assetService.get(id))
+        indexService.removeFields(id, fields)
+        return HttpUtils.updated("asset", id, true, indexService.get(id))
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
@@ -357,7 +339,7 @@ class AssetController @Autowired constructor(
     @PostMapping(value = ["/api/v1/assets/_index"], produces = [(MediaType.APPLICATION_JSON_VALUE)])
     @Throws(IOException::class)
     fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
-        return assetService.index(spec)
+        return indexService.index(spec)
     }
 
     class SetFoldersRequest {
@@ -367,7 +349,7 @@ class AssetController @Autowired constructor(
     /**
      * Reset all folders for a given asset.  Currently only used for syncing.
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
     @Throws(Exception::class)
     fun setFolders(@PathVariable id: String, @RequestBody req: SetFoldersRequest): Any {
@@ -384,7 +366,8 @@ class AssetController @Autowired constructor(
 
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).SHARE) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    /*
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SHARE) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/assets/_permissions"])
     @Throws(Exception::class)
     fun setPermissions(
@@ -394,12 +377,12 @@ class AssetController @Autowired constructor(
         spec.args = arrayOf(req.search, req.acl)
         return commandService.submit(spec)
     }
+    */
 
     @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {
-        ElasticClientUtils.refreshIndex(client, 0)
+        logger.warn("Refresh called.")
     }
-
     companion object {
 
         private val logger = LoggerFactory.getLogger(AssetController::class.java)

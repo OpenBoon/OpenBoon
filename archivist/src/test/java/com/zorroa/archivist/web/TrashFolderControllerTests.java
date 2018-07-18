@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.TrashedFolder;
 import com.zorroa.archivist.domain.TrashedFolderOp;
 import com.zorroa.archivist.repository.TrashFolderDao;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +38,8 @@ public class TrashFolderControllerTests extends MockMvcTest {
     @Before
     public void init() {
         folder1 = folderService.create(new FolderSpec("test1"));
-        Folder folder2 = folderService.create(new FolderSpec("test2", folder1.getId()));
-        folderService.create(new FolderSpec("test3", folder2.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("test2", folder1));
+        folderService.create(new FolderSpec("test3", folder2));
         deleteOp = folderService.trash(folder1);
     }
 
@@ -48,9 +48,8 @@ public class TrashFolderControllerTests extends MockMvcTest {
         int exists = jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE str_name='test1'", Integer.class);
         assertEquals(0, exists);
 
-        String content = Json.serializeToString(
+        String content = Json.INSTANCE.serializeToString(
                 ImmutableList.of(deleteOp.getTrashFolderId().toString()));
-        logger.info("content: {}", content);
         MvcResult result = mvc.perform(post("/api/v1/trash/_restore")
                 .session(admin())
                 .content(content)
@@ -58,7 +57,6 @@ public class TrashFolderControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         Map<String, Object> data = deserialize(result, Map.class);
-        logger.info("{}", data);
         assertTrue((Boolean) data.get("success"));
     }
 
@@ -87,7 +85,7 @@ public class TrashFolderControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(delete("/api/v1/trash")
                 .session(admin())
-                .content(Json.serializeToString(Lists.newArrayList(folder1.getId())))
+                .content(Json.INSTANCE.serializeToString(Lists.newArrayList(folder1.getId())))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -121,7 +119,6 @@ public class TrashFolderControllerTests extends MockMvcTest {
                 .andReturn();
 
         Map data = deserialize(result, Map.class);
-        logger.info("{}", data);
         assertEquals(1, data.get("count"));
     }
 }

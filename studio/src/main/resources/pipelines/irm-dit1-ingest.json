@@ -1,0 +1,26 @@
+{
+  "name": "dit1-ingest",
+  "version": 1,
+  "processors": [
+    {
+      "className": "zplugins.cdv.processors.CDVAssetProcessor",
+      "language": "python",
+      "args": {}
+    },
+    {
+      "className": "zplugins.pdf.processors.PdfIngestor",
+      "language": "python",
+      "args": {}
+    },
+    {
+      "className": "zplugins.proxies.processors.ProxyIngestor",
+      "language": "python",
+      "args": {}
+    },
+    {
+      "className": "zplugins.mxnet.mx.MxNetHash",
+      "language": "python",
+      "args": {}
+    }
+  ]
+}

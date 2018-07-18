@@ -3,16 +3,16 @@ package com.zorroa.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.sdk.client.exception.ArchivistException
-import org.elasticsearch.client.Client
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.domain.Document
+import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -29,18 +29,17 @@ interface FieldService {
     fun updateField(value: HideField): Boolean
 
     fun dotRaw(field: String): String
+
+    fun getFieldType(field: String): String?
 }
 
 @Service
 class FieldServiceImpl @Autowired constructor(
-        val client: Client,
+        val esClientCache: EsClientCache,
         val properties: ApplicationProperties,
         val fieldDao: FieldDao
 
 ): FieldService {
-
-    @Value("\${zorroa.cluster.index.alias}")
-    private lateinit var alias: String
 
     private val fieldMapCache = CacheBuilder.newBuilder()
             .maximumSize(2)
@@ -75,21 +74,11 @@ class FieldServiceImpl @Autowired constructor(
                         .filter { it.isNotEmpty() }
                         .map { it }
                 )
-        val cs = client.admin().cluster()
-                .prepareState()
-                .setIndices(alias)
-                .execute().actionGet().state
 
-        cs.metaData.concreteAllOpenIndices()
-                .map { cs.metaData.index(it) }
-                .map { it.mapping(type) }
-                .forEach {
-                    try {
-                        getList(result, "", it.sourceAsMap, hiddenFields)
-                    } catch (e: IOException) {
-                        throw ArchivistException(e)
-                    }
-                }
+        val rest = esClientCache[getOrgId()]
+        val stream = rest.client.lowLevelClient.performRequest("GET", "/${rest.route.indexName}").entity.content
+        val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
+        getList(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!, hiddenFields)
         return result
     }
 
@@ -111,6 +100,16 @@ class FieldServiceImpl @Autowired constructor(
         } finally {
             invalidateFields()
         }
+    }
+
+    override fun getFieldType(field: String): String? {
+        val fields = getFields("asset")
+        for ((k,v) in fields.entries) {
+            if (field in v) {
+                return k
+            }
+        }
+        return null
     }
 
     override fun getFields(type: String): Map<String, Set<String>> {
@@ -142,10 +141,11 @@ class FieldServiceImpl @Autowired constructor(
      * Builds a list of field names, recursively walking each object.
      */
     private fun getList(result: MutableMap<String, MutableSet<String>>,
-                        fieldName: String,
+                        fieldName: String?,
                         mapProperties: Map<String, Any>,
                         hiddenFieldNames: Set<String>) {
 
+        if (fieldName == null) {  return }
         val map = mapProperties["properties"] as Map<String, Any>
         for (key in map.keys) {
             val item = map[key] as Map<String, Any>
@@ -158,16 +158,21 @@ class FieldServiceImpl @Autowired constructor(
 
             if (item.containsKey("type")) {
                 var type = item["type"] as String
-                val index = item["index"] as String?
                 val analyzer = item["analyzer"] as String?
 
                 type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
-                if (type == "string" && key != "raw" && index == "not_analyzed") {
+                if (type == "text") {
+                    type = "string"
+                }
+                else if (type == "keyword") {
                     type = "id"
                 }
 
-                if (type == "string" && key != "raw" && analyzer == "path_analyzer") {
-                    type = "path"
+                if (item.containsKey("fields")) {
+                    val subFields = item["fields"] as Map<String, Any>
+                    if (subFields.containsKey("paths")) {
+                        type = "path"
+                    }
                 }
 
                 var fields: MutableSet<String>? = result[type]
@@ -207,7 +212,7 @@ class FieldServiceImpl @Autowired constructor(
 
     companion object {
 
-        private val logger = LoggerFactory.getLogger(SearchServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(FieldServiceImpl::class.java)
 
         private val NAME_TYPE_OVERRRIDES = ImmutableMap.of(
                 "point", "point",

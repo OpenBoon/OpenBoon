@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.sdk.domain.Access;
+import com.zorroa.common.domain.Access;
 
 import java.util.UUID;
 

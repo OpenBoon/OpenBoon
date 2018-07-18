@@ -5,8 +5,8 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service

@@ -5,8 +5,9 @@ import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.domain.RequestState
 import com.zorroa.archivist.domain.RequestType
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -54,6 +55,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
             ps.setInt(7, spec.type!!.ordinal)
             ps.setString(8, spec.comment)
             ps.setString(9, Json.serializeToString(spec.emailCC, "[]"))
+            ps.setObject(10, getUser().organizationId)
             ps
         })
 
@@ -89,6 +91,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
                 "pk_folder",
                 "int_type",
                 "str_comment",
-                "json_cc")
+                "json_cc",
+                "pk_organization")
     }
 }

@@ -7,7 +7,7 @@ package com.zorroa.archivist.web.api
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.PermissionSpec
-import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PermissionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class PermissionController @Autowired constructor(
         val permissionService: PermissionService,
-        val assetService: AssetService
+        val indexService: IndexService
 ){
     /**
      * Return all available permissions.
@@ -49,7 +49,7 @@ class PermissionController @Autowired constructor(
     /**
      * Create a new permission.
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/permissions"])
     fun create(@RequestBody builder: PermissionSpec): Permission {
         return permissionService.createPermission(builder)
@@ -58,7 +58,7 @@ class PermissionController @Autowired constructor(
     /**
      * Delete a permission.
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @DeleteMapping(value = ["/api/v1/permissions/{id}"])
     fun delete(@PathVariable id: String): Any {
         val p = permissionService.getPermission(id)

@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Setting;
 import com.zorroa.archivist.domain.SettingsFilter;
-import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.common.domain.ArchivistWriteException;
 import org.junit.Test;
 
 import java.util.List;
@@ -69,10 +69,10 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test
     public void testGetAllPrefixFilter() {
-        List<Setting> settings = settingsService.getAll(new SettingsFilter().setStartsWith(
-                ImmutableSet.of("server")
-        ));
-        assertEquals(16, settings.size());
+        SettingsFilter filter = new SettingsFilter();
+        filter.setStartsWith(ImmutableSet.of("server"));
+        List<Setting> settings = settingsService.getAll(filter);
+        assertEquals(9, settings.size());
     }
 
     @Test
@@ -91,10 +91,10 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test
     public void testGetAllWithLimit() {
-        List<Setting> settings = settingsService.getAll(
-                new SettingsFilter()
-                        .setStartsWith(ImmutableSet.of("server."))
-                        .setCount(2));
+        SettingsFilter filter = new SettingsFilter();
+        filter.setStartsWith(ImmutableSet.of("server."));
+        filter.setCount(2);
+        List<Setting> settings = settingsService.getAll(filter);
         assertEquals(2, settings.size());
     }
 

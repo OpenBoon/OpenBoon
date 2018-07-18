@@ -7,10 +7,11 @@ import com.zorroa.archivist.domain.DyHierarchy
 import com.zorroa.archivist.domain.DyHierarchyLevel
 import com.zorroa.archivist.domain.DyHierarchySpec
 import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -60,6 +61,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
             ps.setLong(4, System.currentTimeMillis())
             ps.setInt(5, spec.levels.size)
             ps.setString(6, Json.serializeToString(spec.levels, "[]"))
+            ps.setObject(7, getUser().organizationId)
             ps
         })
         return get(id)
@@ -120,7 +122,8 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
                 "pk_user_created",
                 "time_created",
                 "int_levels",
-                "json_levels")
+                "json_levels",
+                "pk_organization")
 
         private val GET = "SELECT " +
                 "pk_dyhi," +

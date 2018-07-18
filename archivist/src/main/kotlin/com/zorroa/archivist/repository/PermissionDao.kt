@@ -5,9 +5,10 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -48,7 +49,7 @@ interface PermissionDao {
 
     fun get(type: String, name: String): Permission
 
-    fun getAll(ids: Array<UUID>?): List<Permission>
+    fun getAll(ids: Collection<UUID>?): List<Permission>
 
     fun getAll(names: List<String>?): List<Permission>
 
@@ -65,15 +66,16 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
             jdbc.update({ connection ->
                 val ps = connection.prepareStatement(INSERT)
                 ps.setObject(1, id)
-                ps.setString(2, builder.name)
-                ps.setString(3, builder.type)
-                ps.setString(4, builder.type + "::" + builder.name)
-                ps.setString(5, if (builder.description == null)
+                ps.setObject(2, getUser().organizationId)
+                ps.setString(3, builder.name)
+                ps.setString(4, builder.type)
+                ps.setString(5, builder.type + "::" + builder.name)
+                ps.setString(6, if (builder.description == null)
                     String.format("%s permission", builder.name)
                 else
                     builder.description)
-                ps.setString(6, builder.source)
-                ps.setBoolean(7, immutable)
+                ps.setString(7, builder.source)
+                ps.setBoolean(8, immutable)
                 ps
             })
         } catch (e: DuplicateKeyException) {
@@ -198,10 +200,10 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         return jdbc.queryForObject("SELECT * FROM permission WHERE str_name=? AND str_type=?", MAPPER, name, type)
     }
 
-    override fun getAll(ids: Array<UUID>?): List<Permission> {
+    override fun getAll(ids: Collection<UUID>?): List<Permission> {
         return if (ids == null || ids.isEmpty()) {
             Lists.newArrayListWithCapacity(1)
-        } else jdbc.query("SELECT * FROM permission WHERE " + JdbcUtils.`in`("pk_permission", ids.size), MAPPER, *ids)
+        } else jdbc.query("SELECT * FROM permission WHERE " + JdbcUtils.`in`("pk_permission", ids.size), MAPPER, *ids.toTypedArray())
     }
 
     override fun getAll(names: List<String>?): List<Permission> {
@@ -223,6 +225,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
 
         private val INSERT = JdbcUtils.insert("permission",
                 "pk_permission",
+                "pk_organization",
                 "str_name",
                 "str_type",
                 "str_authority",

@@ -6,6 +6,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.client.exception.ArchivistWriteException
@@ -13,6 +14,10 @@ import com.zorroa.sdk.domain.Tuple
 import com.zorroa.sdk.search.AssetScript
 import com.zorroa.sdk.search.AssetSearch
 import org.elasticsearch.client.Client
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.domain.Tuple
+import com.zorroa.common.search.AssetScript
+import com.zorroa.common.search.AssetSearch
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -77,7 +82,7 @@ interface DyHierarchyService {
 @Service
 class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
-    val client: Client,
+    val esClientCache: EsClientCache,
     val transactionEventManager: TransactionEventManager,
     val folderTaskExecutor: UniqueTaskExecutor
 ) : DyHierarchyService {
@@ -91,10 +96,11 @@ class DyHierarchyServiceImpl @Autowired constructor (
     @Autowired
     private lateinit var searchService: SearchService
 
+    @Autowired
+    private lateinit var fieldService: FieldService
+
     @Value("\${archivist.dyhi.maxFoldersPerLevel}")
     private val maxFoldersPerLevel: Int? = null
-
-    internal var FORCE_RAW_TYPES: Set<DyHierarchyLevelType> = EnumSet.of(DyHierarchyLevelType.Attr)
 
     @Transactional
     override fun update(id: UUID, spec: DyHierarchy): Boolean {
@@ -206,7 +212,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         folderTaskExecutor.execute(
                 UniqueRunnable("dyhi_run_all", SecureRunnable(SecurityContextHolder.getContext(), {
                     if (refresh) {
-                        ElasticClientUtils.refreshIndex(client)
+
                     }
                     generateAll()
                 })))
@@ -229,32 +235,30 @@ class DyHierarchyServiceImpl @Autowired constructor (
         }
 
         val rf = folderService.get(dyhi.folderId)
-
+        val rest = esClientCache[getOrgId()]
 
         /**
          * TODO: allow some custom search options here, for example, maybe you
          * want to agg for the last 24 hours.
          */
         try {
-            val srb = client.prepareSearch()
-                    .setQuery(if (rf.search == null)
-                        QueryBuilders.matchAllQuery()
-                    else
-                        searchService.getQuery(rf.search))
-                    .setSize(0)
-
+            val sr = rest.newSearchBuilder()
+            if (rf.search != null) {
+                sr.source.query(searchService.getQuery(rf.search))
+            }
+            else {
+                sr.source.query(QueryBuilders.matchAllQuery())
+            }
             /**
              * Fix the field name to take into account raw.
              */
-            for (level in dyhi.levels) {
-                resolveFieldName(level)
-            }
+            dyhi.levels.forEach({ resolveFieldName(it)})
 
             /**
              * Build a nested list of Elastic aggregations.
              */
-            var terms: AggregationBuilder<*>? = elasticAggregationBuilder(dyhi.levels[0], 0)
-            srb.addAggregation(terms)
+            var terms: AggregationBuilder? = elasticAggregationBuilder(dyhi.levels[0], 0)
+            sr.source.aggregation(terms)
             for (i in 1 until dyhi.levels.size) {
                 val sub = elasticAggregationBuilder(dyhi.getLevel(i), i)
                 terms!!.subAggregation(sub)
@@ -266,7 +270,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
              */
             val folders = FolderStack(folderService.get(dyhi.folderId), dyhi)
             val queue = Queues.newArrayDeque<Tuple<Aggregations, Int>>()
-            queue.add(Tuple(srb.get().aggregations, 0))
+            queue.add(Tuple(rest.client.search(sr.request).aggregations, 0))
             createDynamicHierarchy(queue, folders)
 
             /**
@@ -300,7 +304,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         return 0
     }
 
-    private fun elasticAggregationBuilder(level: DyHierarchyLevel, idx: Int): AggregationBuilder<*>? {
+    private fun elasticAggregationBuilder(level: DyHierarchyLevel, idx: Int): AggregationBuilder? {
         when (level.type) {
             DyHierarchyLevelType.Attr, null -> {
                 val terms = AggregationBuilders.terms(idx.toString())
@@ -311,7 +315,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             DyHierarchyLevelType.Year -> {
                 val year = AggregationBuilders.dateHistogram(idx.toString())
                 year.field(level.field)
-                year.interval(DateHistogramInterval("1y"))
+                year.dateHistogramInterval(DateHistogramInterval("1y"))
                 year.format("yyyy")
                 year.minDocCount(1)
                 return year
@@ -319,7 +323,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             DyHierarchyLevelType.Month -> {
                 val month = AggregationBuilders.dateHistogram(idx.toString())
                 month.field(level.field)
-                month.interval(DateHistogramInterval("1M"))
+                month.dateHistogramInterval(DateHistogramInterval("1M"))
                 month.format("M")
                 month.minDocCount(1)
                 return month
@@ -327,7 +331,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             DyHierarchyLevelType.Day -> {
                 val day = AggregationBuilders.dateHistogram(idx.toString())
                 day.field(level.field)
-                day.interval(DateHistogramInterval("1d"))
+                day.dateHistogramInterval(DateHistogramInterval("1d"))
                 day.format("d")
                 day.minDocCount(1)
                 return day
@@ -466,10 +470,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
              */
             if (searchParent != null) {
                 if (searchParent.search != null) {
-                    search.filter.merge(searchParent.search.filter)
+                    search.filter.merge(searchParent.search?.filter)
                 }
             } else if (parent.search != null) {
-                search.filter.merge(parent.search.filter)
+                search.filter.merge(parent.search?.filter)
             }
 
             val name = getFolderName(value, level)
@@ -477,12 +481,11 @@ class DyHierarchyServiceImpl @Autowired constructor (
             /*
              * Create a non-recursive
              */
-            val spec = FolderSpec()
-                    .setName(name)
-                    .setParentId(parent.id)
-                    .setRecursive(false)
-                    .setDyhiId(dyhi.id)
-                    .setSearch(search)
+
+            val spec = FolderSpec(name, parent.id)
+            spec.recursive = false
+            spec.dyhiId = dyhi.id
+            spec.search = search
 
             val folder = folderService.create(spec, true)
             if (level.acl != null && spec.created) {
@@ -532,13 +535,13 @@ class DyHierarchyServiceImpl @Autowired constructor (
             when (level.type) {
                 DyHierarchyLevelType.Attr, null -> search.addToFilter().addToTerms(level.field, Lists.newArrayList<Any>(value))
                 DyHierarchyLevelType.Year -> search.addToFilter().addToScripts(AssetScript(
-                        String.format("doc['%s'].getYear() == value", level.field),
+                        String.format("doc['%s'].value.year == params.value", level.field),
                         ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
                 DyHierarchyLevelType.Month -> search.addToFilter().addToScripts(AssetScript(
-                        String.format("doc['%s'].getMonth() == value", level.field),
-                        ImmutableMap.of<String, Any>("value", Integer.valueOf(value) - 1)))
+                        String.format("doc['%s'].value.monthOfYear == params.value;", level.field),
+                        ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
                 DyHierarchyLevelType.Day -> search.addToFilter().addToScripts(AssetScript(
-                        String.format("doc['%s'].getDayOfMonth() == value", level.field),
+                        String.format("doc['%s'].value.dayOfMonth == params.value;", level.field),
                         ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
                 DyHierarchyLevelType.Path -> {
                     // chop off trailing /
@@ -551,16 +554,15 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     private fun resolveFieldName(level: DyHierarchyLevel) {
-        if (level.field.endsWith(".raw") || !FORCE_RAW_TYPES.contains(level.type)) {
-            return
+        val type = fieldService.getFieldType(level.field)
+        if (type == "path") {
+            level.field = level.field + ".paths"
         }
-
-        val type = ElasticClientUtils.getFieldType(client, "archivist", "asset", level.field)
-        if (type != "string") {
-            return
+        else if (type ==  "string") {
+            if (!level.field.endsWith(".raw")) {
+                level.field = level.field + ".raw"
+            }
         }
-
-        level.field = level.field + ".raw"
     }
 
     companion object {

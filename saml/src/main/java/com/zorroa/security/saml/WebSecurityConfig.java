@@ -1,6 +1,5 @@
 package com.zorroa.security.saml;
 
-import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.protocol.Protocol;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +28,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
+import org.springframework.security.saml.key.EmptyKeyManager;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -51,7 +50,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -59,9 +57,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+
 
 @Configuration
 @EnableWebSecurity
@@ -72,6 +70,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Timer backgroundTaskTimer;
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
+
+    @Autowired
+    private SamlProperties properties;
 
     @PostConstruct
     public void init() {
@@ -85,9 +86,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.backgroundTaskTimer.cancel();
         this.multiThreadedHttpConnectionManager.shutdown();
     }
-
-    @Autowired
-    private ApplicationProperties properties;
 
     @Autowired
     private SAMLUserDetailsServiceImpl samlUserDetailsServiceImpl;
@@ -178,21 +176,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SingleLogoutProfileImpl();
     }
 
-    // Central storage of cryptographic keys
+    /**
     @Bean
     public KeyManager keyManager() {
-        String keystorePath = properties.getString("archivist.security.saml.keystore.path");
-        String storePass = properties.getString("archivist.security.saml.keystore.password");
-        String defaultKey = properties.getString("archivist.security.saml.keystore.alias");
-        String keyPass = properties.getString("archivist.security.saml.keystore.keyPassword");
-
-        Resource storeFile = new FileSystemResource(new File(keystorePath));
-
+        Map<String,String> keystore = properties.keystore;
+        Resource storeFile = new FileSystemResource(new File(keystore.get("path")));
         Map<String, String> passwords = new HashMap<String, String>();
-        passwords.put(defaultKey, keyPass);
+        passwords.put(keystore.get("alias"), keystore.get("keyPassword"));
 
-        return new JKSKeyManager(storeFile, storePass, passwords, defaultKey);
+        return new JKSKeyManager(storeFile, keystore.get("password"),
+                passwords, keystore.get("alias"));
     }
+    **/
 
     // Setup TLS Socket Factory
     @Bean
@@ -202,7 +197,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ProtocolSocketFactory socketFactory() {
-        return new TLSProtocolSocketFactory(keyManager(), null, "default");
+        return new TLSProtocolSocketFactory(
+                new EmptyKeyManager(), null, "default");
     }
 
     @Bean
@@ -239,7 +235,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Setup advanced info about metadata
     @Bean
     public ExtendedMetadata extendedMetadata() {
-        boolean discovery = properties.getBoolean("archivist.security.saml.discovery");
+        boolean discovery = properties.discovery;
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setIdpDiscoveryEnabled(discovery);
         extendedMetadata.setSignMetadata(false);
@@ -262,7 +258,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Qualifier("metadata")
     public CachingMetadataManager metadata() throws MetadataProviderException, IOException {
-        boolean discovery = properties.getBoolean("archivist.security.saml.discovery");
+        boolean discovery = properties.discovery;
 
         List<MetadataProvider> providers = new ArrayList();
         Files.list(Paths.get("config/saml"))
@@ -316,13 +312,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Filter automatically generates default SP metadata
     @Bean
     public MetadataGenerator metadataGenerator() {
-        String baseURL = properties.getString("archivist.security.saml.baseUrl");
+        String baseURL = properties.baseUrl;
         MetadataGenerator metadataGenerator = new MetadataGenerator();
         metadataGenerator.setEntityId(baseURL + "/saml/metadata");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
         metadataGenerator.setIncludeDiscoveryExtension(false);
-        metadataGenerator.setKeyManager(keyManager());
         metadataGenerator.setEntityBaseURL(baseURL);
+        metadataGenerator.setWantAssertionSigned(false);
         return metadataGenerator;
     }
 
@@ -338,7 +334,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl("/landing");
+        successRedirectHandler.setDefaultTargetUrl("/curator");
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
@@ -510,7 +506,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        boolean discovery = properties.getBoolean("archivist.security.saml.discovery");
+        boolean discovery = properties.discovery;
 
         http
                 .httpBasic()
@@ -527,6 +523,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/error").permitAll()
+                .antMatchers("/curator").permitAll()
                 .antMatchers("/saml/**").permitAll();
 
         http

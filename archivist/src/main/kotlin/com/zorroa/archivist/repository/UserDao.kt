@@ -7,9 +7,9 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -118,7 +118,6 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun create(builder: UserSpec): User {
         Preconditions.checkNotNull(builder.username, "The Username cannot be null")
         Preconditions.checkNotNull(builder.password, "The Password cannot be null")
-        builder.password = createPasswordHash(builder.password)
 
         if (builder.source == null) {
             builder.source = SOURCE_LOCAL
@@ -130,7 +129,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setString(2, builder.username)
-            ps.setString(3, builder.password)
+            ps.setString(3, builder.hashedPassword())
             ps.setString(4, builder.email)
             ps.setString(5, builder.firstName)
             ps.setString(6, builder.lastName)
@@ -140,6 +139,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setString(10, builder.source)
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
+            ps.setObject(13, builder.organizationId)
             ps
         })
         return get(id)
@@ -291,6 +291,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     rs.getString("str_source"),
                     rs.getObject("pk_permission") as UUID,
                     rs.getObject("pk_folder") as UUID,
+                    rs.getObject("pk_organization") as UUID,
                     rs.getString("str_firstname"),
                     rs.getString("str_lastname"),
                     rs.getBoolean("bool_enabled"),
@@ -313,7 +314,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "json_settings",
                 "str_source",
                 "pk_permission",
-                "pk_folder")
+                "pk_folder",
+                "pk_organization")
 
         private val RESET_PASSWORD = "UPDATE " +
                 "users " +

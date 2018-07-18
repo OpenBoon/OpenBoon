@@ -4,11 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.sdk.client.exception.ArchivistWriteException;
-import com.zorroa.sdk.domain.Document;
-import com.zorroa.sdk.processor.Source;
-import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.domain.ArchivistWriteException;
+import com.zorroa.common.domain.Document;
+import com.zorroa.common.domain.Source;
+import com.zorroa.common.search.AssetSearch;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +32,22 @@ public class TaxonomyServiceTests extends AbstractTest {
     public void testCreateAndRun() throws InterruptedException {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
-        Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("borg", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1));
+        Folder folder4 = folderService.create(new FolderSpec("federation", folder1));
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder4, Lists.newArrayList(d.getId()));
-        Taxonomy t = taxonomyService.create(new TaxonomySpec(folder1));
-        refreshIndex(1000);
+        refreshIndex();
+        taxonomyService.create(new TaxonomySpec(folder1));
+        refreshIndex();
 
         Document doc = new Document(
-                searchService.search(new AssetSearch()).getHits().getHits()[0].getSource());
-        logger.info(Json.prettyString(doc.getDocument()));
-
+                searchService.search(new AssetSearch()).getHits().getHits()[0].getSourceAsMap());
         assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("zorroa.taxonomy",
                 new TypeReference<List<TaxonomySchema>>() {
                 }).get(0).getKeywords());
@@ -63,9 +61,9 @@ public class TaxonomyServiceTests extends AbstractTest {
     public void testCreateFailureDuplicate() {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
-        Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("borg", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1));
+        Folder folder4 = folderService.create(new FolderSpec("federation", folder1));
 
         taxonomyService.create(new TaxonomySpec(folder1));
         taxonomyService.create(new TaxonomySpec(folder1));
@@ -76,9 +74,9 @@ public class TaxonomyServiceTests extends AbstractTest {
     public void testCreateFailureNested() {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
-        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
-        Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
+        Folder folder2 = folderService.create(new FolderSpec("borg", folder1));
+        Folder folder3 = folderService.create(new FolderSpec("klingon", folder1));
+        Folder folder4 = folderService.create(new FolderSpec("federation", folder1));
 
         taxonomyService.create(new TaxonomySpec(folder1));
         taxonomyService.create(new TaxonomySpec(folder3));
@@ -109,20 +107,20 @@ public class TaxonomyServiceTests extends AbstractTest {
         Source d = new Source();
         d.setId("abc123");
         d.setAttr("foo.keywords", "ships");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
-        logger.info("tag taxonomy");
+        refreshIndex();
         taxonomyService.tagTaxonomy(tax1, folder1,true);
-        refreshIndex(1000);
+        refreshIndex();
 
         Map<String, Long> result = taxonomyService.untagTaxonomy(tax1, 1000);
         assertEquals(1, result.get("assetCount").longValue());
         assertEquals(0, result.get("errorCount").longValue());
         refreshIndex();
 
-        Document a = assetService.get(d.getId());
+        Document a = indexService.get(d.getId());
         assertEquals(0, a.getAttr("zorroa.taxonomy", List.class).size());
     }
 
@@ -134,13 +132,14 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         assertEquals(0, searchService.search(
                 new AssetSearch("ships")).getHits().getTotalHits());
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
+        refreshIndex();
         taxonomyService.tagTaxonomy(tax1, folder1, false);
         refreshIndex();
 
@@ -165,18 +164,19 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
         refreshIndex();
-
+        taxonomyService.tagTaxonomy(tax1, folder1, false);
+        refreshIndex();
         assertEquals(1, searchService.search(
                 new AssetSearch("ships")).getHits().getTotalHits());
 
         assertTrue(taxonomyService.delete(tax1, true));
         assertFalse(taxonomyService.delete(tax1, true));
-        assertFalse(folderService.get(folder1.getId()).isTaxonomyRoot());
+        assertFalse(folderService.get(folder1.getId()).getTaxonomyRoot());
 
         refreshIndex();
         assertEquals(0, searchService.search(
@@ -191,17 +191,20 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(d);
+        indexService.index(d);
         refreshIndex();
 
-        // stuff should get untagged
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
-
         fieldService.invalidateFields();
+        refreshIndex();
+
+        assertEquals(1, searchService.search(
+                new AssetSearch("ships")).getHits().getTotalHits());
         assertTrue(fieldService.getFields("asset").get(
                 "string").contains("zorroa.taxonomy.keywords"));
 
         folderService.trash(folder1);
+
         refreshIndex();
         assertEquals(0, searchService.search(
                 new AssetSearch("ships")).getHits().getTotalHits());
