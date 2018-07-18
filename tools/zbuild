@@ -9,6 +9,7 @@ import os
 def main():
     parser = argparse.ArgumentParser(prog="zbuild")
     parser.add_argument("project", help="The project to build")
+    parser.add_argument("-g", "--gcs_config", help="gs:// location of a configuration directory to use for this build.")
     parser.add_argument("-p", "--push", action="store_true", help="push to GCP container registry")
     parser.add_argument("-d", "--deploy", action="store_true", help="Deploy latest version")
     parser.add_argument("-b", "--build", action="store_true", help="Recompile jar file")
@@ -19,7 +20,7 @@ def main():
     if args.build:
         rebuild_jar_file()
 
-    build_docker_image(args.project, app)
+    build_docker_image(args.project, app, args.gcs_config)
 
     if args.push:
         push_to_gcp(args.project, app)
@@ -28,7 +29,7 @@ def main():
         deploy_to_app_engine(args.project, app)
 
 
-def build_docker_image(project, app):
+def build_docker_image(project, app, gcs_config):
     ext_file = "deploy/%s/config/ext.json" % project
     if os.path.exists(ext_file):
         exts = json.load(open(ext_file))
@@ -39,7 +40,10 @@ def build_docker_image(project, app):
             shutil.copy(src_file, dst_file)
 
     print "Building docker image: %s:%s" % (project, app["service"])
-    cmd = ["docker", "build", "-t", get_image_name(project, app), "--build-arg", "project=%s" %project, "."]
+    cmd = ["docker", "build", "-t", get_image_name(project, app), "--build-arg", "project=%s" %project]
+    if gcs_config:
+        cmd.extend(["--build-arg", "gcs_config=%s" % gcs_config,])
+    cmd.append(".")
     print cmd
     subprocess.call(cmd, shell=False)
 
