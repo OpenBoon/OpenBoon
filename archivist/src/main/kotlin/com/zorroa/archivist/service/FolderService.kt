@@ -134,7 +134,7 @@ interface FolderService {
 
     fun create(spec: FolderSpec, mightExist: Boolean): Folder
 
-    fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean): Folder
+    fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean, errorIfExists: Boolean = true): Folder
 
     fun createUserFolder(username: String, perm: Permission): Folder
 
@@ -727,7 +727,7 @@ class FolderServiceImpl @Autowired constructor(
         return folderExecutor.submit<Folder> { create(parent, spec, mightExist) }
     }
 
-    override fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean): Folder {
+    override fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean, errorIfExists: Boolean): Folder {
         if (!hasPermission(parent.acl, Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
@@ -740,7 +740,7 @@ class FolderServiceImpl @Autowired constructor(
 
         try {
             result = get(spec.parentId, spec.name)
-            if (!mightExist) {
+            if (errorIfExists) {
                 throw ArchivistWriteException("A folder with the same name already exists. Please choose a different name.")
             }
         } catch (e: EmptyResultDataAccessException) {
