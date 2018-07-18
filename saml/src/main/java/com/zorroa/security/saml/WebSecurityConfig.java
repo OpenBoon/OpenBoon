@@ -28,6 +28,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
+import org.springframework.security.saml.key.EmptyKeyManager;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -180,7 +181,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public KeyManager keyManager() {
         Map<String,String> keystore = properties.keystore;
         Resource storeFile = new FileSystemResource(new File(keystore.get("path")));
-        Map<String, String> passwords = new HashMap<String, String>();
+        Map<String, String> passwords = new HashMap<>();
         passwords.put(keystore.get("alias"), keystore.get("keyPassword"));
 
         return new JKSKeyManager(storeFile, keystore.get("password"),
@@ -235,7 +236,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         boolean discovery = properties.discovery;
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setIdpDiscoveryEnabled(discovery);
-        extendedMetadata.setSignMetadata(false);
+        extendedMetadata.setSignMetadata(true);
         extendedMetadata.setEcpEnabled(true);
         return extendedMetadata;
     }
@@ -270,9 +271,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                         ZorroaExtendedMetadata extendedMetadata = new ZorroaExtendedMetadata();
                         extendedMetadata.setIdpDiscoveryEnabled(discovery);
-                        extendedMetadata.setSignMetadata(false);
+                        extendedMetadata.setSignMetadata(true);
                         extendedMetadata.setEcpEnabled(true);
                         extendedMetadata.setProps(props);
+                        /*
+                         * To support multiple IDPs, we use the key with the same name
+                         * as the authSourceId, which we should not ever change.
+                         */
+                        extendedMetadata.setSigningKey(props.getProperty("authSourceId"));
 
                         if (uri.startsWith("http")) {
                             HTTPMetadataProvider httpMetadataProvider = new HTTPMetadataProvider(
@@ -280,7 +286,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             httpMetadataProvider.setParserPool(parserPool());
                             ExtendedMetadataDelegate emd =
                                     new ExtendedMetadataDelegate(httpMetadataProvider, extendedMetadata);
-                            emd.setMetadataTrustCheck(false);
+                            emd.setMetadataTrustCheck(true);
                             emd.setMetadataRequireSignature(false);
                             backgroundTaskTimer.purge();
                             providers.add(emd);
@@ -291,7 +297,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             provider.setParserPool(parserPool());
                             ExtendedMetadataDelegate emd =
                                     new ExtendedMetadataDelegate(provider, extendedMetadata);
-                            emd.setMetadataTrustCheck(false);
+                            emd.setMetadataTrustCheck(true);
                             emd.setMetadataRequireSignature(false);
                             providers.add(emd);
                         }
@@ -313,7 +319,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         MetadataGenerator metadataGenerator = new MetadataGenerator();
         metadataGenerator.setEntityId(baseURL + "/saml/metadata");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
-        metadataGenerator.setIncludeDiscoveryExtension(false);
         metadataGenerator.setKeyManager(keyManager());
         metadataGenerator.setEntityBaseURL(baseURL);
         return metadataGenerator;
@@ -331,7 +336,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl(properties.landingPage);
+        successRedirectHandler.setDefaultTargetUrl("/curator");
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
@@ -520,6 +525,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/error").permitAll()
+                .antMatchers("/curator").permitAll()
                 .antMatchers("/saml/**").permitAll();
 
         http

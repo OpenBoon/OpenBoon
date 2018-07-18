@@ -3,6 +3,7 @@ package com.zorroa.irm.studio.service
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import com.zorroa.irm.studio.repository.JobDao
+import com.sun.org.apache.xerces.internal.parsers.SecurityConfiguration
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
 import io.fabric8.kubernetes.api.model.VolumeMount
@@ -56,7 +57,7 @@ class K8ClientConfiguration {
             k8settings.username?.let { withUsername(k8settings.username) }
             k8settings.password?.let { withPassword(k8settings.password) }
             withNamespace(k8settings.namespace)
-            withCaCertFile("/keys/dit1.cert")
+            withCaCertFile("/config/k8.cert")
         }.build()
         return DefaultKubernetesClient(k8Config)
     }
@@ -75,9 +76,6 @@ class K8JobServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var pipelineService: PipelineService
-
-    @Autowired
-    lateinit var assetService: AssetService
 
     @Autowired
     lateinit var kubernetesClient : KubernetesClient
@@ -178,12 +176,12 @@ class K8JobServiceImpl @Autowired constructor(
         container.image = k8settings.image
         container.args = listOf(url.toString())
         container.env = mutableListOf(
+                EnvVar("ZORROA_STUDIO_BASE_URL", k8settings.talkBackUrl, null),
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
                 EnvVar("CDV_DOCUMENT_GUID", job.assetId.toString(),null),
                 EnvVar("CDV_API_BASE_URL", cdvUrl, null),
-                EnvVar("ZORROA_STUIDO_BASE_URL", k8settings.talkBackUrl, null),
                 EnvVar("GOOGLE_APPLICATION_CREDENTIALS", " /var/secrets/google/key.json", null))
 
         val dspec = DeploymentSpec()

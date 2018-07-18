@@ -40,7 +40,7 @@ class GcpStorageServiceImpl : StorageService {
     @PostConstruct
     fun setup() {
         storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream("keys/rmaas-dit1.json"))).build().service
+                GoogleCredentials.fromStream(FileInputStream("config/credentials.json"))).build().service
     }
 
     override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray) : URL {

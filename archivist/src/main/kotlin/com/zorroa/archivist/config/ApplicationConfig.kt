@@ -134,7 +134,7 @@ class ArchivistConfiguration {
 
     @Bean
     fun routingService() : IndexRoutingService {
-        return FakeIndexRoutingServiceImpl(properties().getString("routing.url"))
+        return FakeIndexRoutingServiceImpl(properties().getString("es-routing-service.url"))
     }
 
     @Autowired

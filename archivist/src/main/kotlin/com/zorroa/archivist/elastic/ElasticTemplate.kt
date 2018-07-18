@@ -132,7 +132,7 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
                     jb.startObject()
                     aggregations.toXContent(jb, xContentParams)
                     jb.endObject()
-                }.string().replace(Regex("\"\\w+#(\\w+)\":"), "\"$1\":")
+                }.string().replace(Regex("\"[\\w+.]+#([\\w+.]+)\":"), "\"$1\":")
                 result.aggregations = Json.Mapper.readValue(json, Json.GENERIC_MAP)
             } catch (e: IOException) {
                 logger.warn("Failed to deserialize aggregations.", e)

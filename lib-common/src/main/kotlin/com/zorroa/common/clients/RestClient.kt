@@ -214,7 +214,6 @@ class RestClient {
     private fun <T> checkResponse(response: HttpResponse, resultType: Class<T>): T {
         try {
             val text = response.entity.content.bufferedReader().use { it.readText() }
-            println(text)
             return Json.Mapper.readValue(text, resultType)
         } catch (e: Exception) {
             throw RestClientException("Failed to deserialize response", e)
@@ -224,7 +223,6 @@ class RestClient {
     private fun <T> checkResponse(response: HttpResponse, type: TypeReference<T>): T {
         try {
             val text = response.entity.content.bufferedReader().use { it.readText() }
-            println(text)
             return Json.Mapper.readValue(text, type)
         } catch (e: Exception) {
             throw RestClientException("Failed to deserialize response", e)

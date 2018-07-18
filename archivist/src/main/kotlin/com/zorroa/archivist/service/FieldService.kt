@@ -12,7 +12,6 @@ import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -41,9 +40,6 @@ class FieldServiceImpl @Autowired constructor(
         val fieldDao: FieldDao
 
 ): FieldService {
-
-    @Value("\${archivist.organization.single-org-index}")
-    private lateinit var alias: String
 
     private val fieldMapCache = CacheBuilder.newBuilder()
             .maximumSize(2)

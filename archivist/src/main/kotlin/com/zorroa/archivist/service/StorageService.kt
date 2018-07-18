@@ -57,7 +57,7 @@ class GcpStorageService @Autowired constructor (
 
     @PostConstruct
     fun setup() {
-        val credentials = properties.getString("archivist.storage.gcs.credentials")
+        val credentials = properties.getString("archivist.storage.gcp.credentials")
         storage = StorageOptions.newBuilder().setCredentials(
                 GoogleCredentials.fromStream(FileInputStream(credentials))).build().service
     }
