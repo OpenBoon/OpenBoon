@@ -26,7 +26,7 @@
         <module>ldap</module>
         <module>saml</module>
         <module>archivist</module>
-        <module>studio</module>
+        <module>analyst</module>
         <module>es-similarity</module>
     </modules>
 

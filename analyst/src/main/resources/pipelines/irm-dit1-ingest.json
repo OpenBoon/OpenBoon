@@ -3,7 +3,7 @@
   "version": 1,
   "processors": [
     {
-      "className": "zplugins.cdv.processors.CDVAssetProcessor",
+      "className": "zplugins.irm.processors.CDVAssetProcessor",
       "language": "python",
       "args": {}
     },
