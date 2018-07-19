@@ -90,7 +90,6 @@ class PipelineDaoImpl : AbstractJdbcDao(), PipelineDao {
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
-            print(rs.getString("json_processors"))
             Pipeline(rs.getObject("pk_pipeline") as UUID,
                     rs.getString("str_name"),
                     rs.getLong("int_version"),
