@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Service
 import java.io.FileInputStream
 import java.net.URL
 import java.util.concurrent.TimeUnit
@@ -18,18 +17,23 @@ interface StorageService {
 }
 
 @Configuration
-@ConfigurationProperties("gcp.storage")
+@ConfigurationProperties("analyst.storage")
 class StorageConfiguration {
 
-    var bucket: String? = null
-    var credentialsFile: String? = null
+    var type: String? = null
+    var gcp: Map<String, String>? = null
+}
+
+class LocalStorageServiceImpl : StorageService {
+    override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray): URL {
+        return URL("http://localhost")
+    }
 }
 
 /**
  * A GCP implemention of the StorageService which may be replaced with a CDV
  * implementation.
  */
-@Service
 class GcpStorageServiceImpl : StorageService {
 
     @Autowired
@@ -37,15 +41,22 @@ class GcpStorageServiceImpl : StorageService {
 
     lateinit var storage: Storage
 
+    lateinit var bucket : String
+
     @PostConstruct
     fun setup() {
+        bucket = settings.gcp!!.getValue("bucket")
+
+        val creds= settings.gcp!!["credentials"]
         storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream("config/credentials.json"))).build().service
+                GoogleCredentials.fromStream(FileInputStream(creds))).build().service
     }
 
     override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray) : URL {
-        logger.info("Storing in bucket: {} {}", settings.bucket, path)
-        val blobId = BlobId.of(settings.bucket, path)
+
+
+        logger.info("Storing in bucket: {} {}", bucket, path)
+        val blobId = BlobId.of(bucket, path)
         val blobInfo = BlobInfo.newBuilder(blobId).setContentType(mediaType).build()
         val blob = storage.create(blobInfo, bytes)
 
