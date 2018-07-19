@@ -172,8 +172,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>zorroa-studio</finalName>
-                    <mainClass>com.zorroa.irm.studio.ApplicationKt</mainClass>
+                    <finalName>analyst</finalName>
+                    <mainClass>com.zorroa.analyst.ApplicationKt</mainClass>
                 </configuration>
                 <executions>
                     <execution>
