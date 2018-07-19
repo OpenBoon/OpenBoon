@@ -1,9 +1,9 @@
 package com.zorroa.analyst.controller
 
-import com.zorroa.common.domain.Asset
-import com.zorroa.common.domain.Document
 import com.zorroa.analyst.service.AssetService
 import com.zorroa.analyst.service.JobService
+import com.zorroa.common.domain.Asset
+import com.zorroa.common.domain.Document
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,7 +27,6 @@ class JobController @Autowired constructor(
             assetService.storeAndReindex(asset, doc)
         }
     }
-
 
     companion object {
         private val logger = LoggerFactory.getLogger(JobController::class.java)

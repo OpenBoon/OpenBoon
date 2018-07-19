@@ -39,6 +39,9 @@ class GcpEventServiceImpl : EventService {
     lateinit var settings: GooglePubSubSettings
 
     @Autowired
+    private lateinit var schedulerService: SchedulerService
+
+    @Autowired
     private lateinit var jobService: JobService
 
     @Autowired
@@ -93,10 +96,8 @@ class GcpEventServiceImpl : EventService {
 
                     val job = jobService.create(spec)
                     logger.info("Created job {} {}", job.id, job.pipelines)
-                    jobService.start(job)
                 } catch (e: DuplicateKeyException) {
                     val job = jobService.get(jobName)
-                    jobService.start(job)
                 }
                 catch (e: Exception) {
                     logger.warn("Error launching job: {}, asset: {} company: {}",
