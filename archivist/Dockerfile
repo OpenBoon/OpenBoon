@@ -11,7 +11,7 @@ RUN mkdir /service
 RUN mkdir /service/ext
 
 COPY target/archivist.jar /service/app.jar
-COPY deploy/${project}/ext service/ext
+COPY deploy/${project}/ext /service/ext
 COPY run_server.sh run_server.sh
 
 EXPOSE 8080

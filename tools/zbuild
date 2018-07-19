@@ -19,8 +19,7 @@ def main():
 
     if args.build:
         rebuild_jar_file()
-
-    build_docker_image(args.project, app, args.gcs_config)
+        build_docker_image(args.project, app, args.gcs_config)
 
     if args.push:
         push_to_gcp(args.project, app)
