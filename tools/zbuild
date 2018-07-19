@@ -40,10 +40,13 @@ def build_docker_image(project, app, gcs_config):
             shutil.copy(src_file, dst_file)
 
     print "Building docker image: %s:%s" % (project, app["service"])
-    cmd = ["docker", "build", "-t", get_image_name(project, app), "--build-arg", "project=%s" %project]
-    if gcs_config:
-        cmd.extend(["--build-arg", "gcs_config=%s" % gcs_config,])
-    cmd.append(".")
+    if not gcs_config:
+        gcs_config = 'gs://%s-zorroa-configuration/%s-config' % (project, app)
+    cmd = ["docker", "build",
+           "-t", get_image_name(project, app),
+           "--build-arg", "gcs_config=%s" % gcs_config,
+           "--build-arg", "project=%s" % project,
+           "."]
     print cmd
     subprocess.call(cmd, shell=False)
 

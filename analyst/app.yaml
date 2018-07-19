@@ -1,6 +1,6 @@
 runtime: custom
 env: flex
-service: zorroa-studio
+service: zorroa-analyst
 automatic_scaling:
     max_num_instances: 1
 resources:
