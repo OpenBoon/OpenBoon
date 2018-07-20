@@ -35,7 +35,7 @@ interface SchedulerService {
 @Configuration
 @ConfigurationProperties("analyst.scheduler")
 class SchedulerProperties {
-    var type: String? = "k8"
+    var type: String? = "local"
     var k8 : Map<String, Any>? = null
 }
 
