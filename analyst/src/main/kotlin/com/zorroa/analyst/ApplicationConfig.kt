@@ -2,6 +2,9 @@ package com.zorroa.analyst
 
 import com.google.common.collect.Lists
 import com.zorroa.analyst.service.*
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.clients.FakeIndexRoutingServiceImpl
+import com.zorroa.common.clients.IndexRoutingService
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.service.CoreDataVaultService
 import com.zorroa.common.service.IrmCoreDataVaultServiceImpl
@@ -56,12 +59,15 @@ class ApplicationConfig {
         return adapter
     }
 
-    /**
-     * The Organization service currently talks to a fake service
-     */
     @Bean
-    fun indexRoutingService() : RestClient {
-        return RestClient("http://localhost:8080")
+    fun routingService() : IndexRoutingService {
+        return IndexRoutingServiceImpl()
+    }
+
+    @Autowired
+    @Bean
+    fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
+        return EsClientCache(routingService)
     }
 
     @Bean

@@ -1,7 +1,5 @@
 package com.zorroa.analyst.mock
 
-import com.zorroa.common.domain.IndexRoute
-import com.zorroa.analyst.rest.IndexRouteClient
 import com.zorroa.analyst.service.EventService
 import com.zorroa.analyst.service.PipelineServiceImpl
 import com.zorroa.analyst.service.StorageService
@@ -14,7 +12,6 @@ import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
 import org.springframework.core.annotation.Order
 import java.net.URL
-import java.util.*
 
 class MockStorageService: StorageService {
     override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray): URL {
@@ -25,20 +22,6 @@ class MockStorageService: StorageService {
 class MockEventService: EventService {
 
 }
-
-
-class MockIndexRouteClient : IndexRouteClient {
-
-    override fun getIndexRoute(orgId: UUID) : IndexRoute {
-        return IndexRoute(UUID.fromString("00000000-9998-8888-7777-666666666666"),
-                "100",
-                "http://localhost:9200",
-                "zorroa_v10",
-                null)
-    }
-}
-
-
 
 @Profile("test")
 @Configuration
@@ -65,12 +48,6 @@ class MockServiceConfiguration {
     fun mockEventService() : EventService {
         logger.info("creating mock event service")
         return MockEventService()
-    }
-
-    @Bean
-    @Primary
-    fun mockIndexRouteClient(): IndexRouteClient{
-        return MockIndexRouteClient()
     }
 
     companion object {

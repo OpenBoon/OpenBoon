@@ -1,10 +1,10 @@
 package com.zorroa.analyst.repository
 
+import com.zorroa.analyst.AbstractTest
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.clients.IndexRoutingService
 import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
-import com.zorroa.analyst.AbstractTest
-import com.zorroa.analyst.rest.EsRestClientCache
-import com.zorroa.analyst.rest.IndexRouteClient
 import org.elasticsearch.action.get.GetRequest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,10 +17,10 @@ class IndexDaoTests : AbstractTest() {
     lateinit var indexDao: IndexDao
 
     @Autowired
-    lateinit var restClient: EsRestClientCache
+    lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
-    lateinit var indexRouteClient: IndexRouteClient
+    lateinit var esClientCache : EsClientCache
 
     @Test
     fun testIndexDocument() {
@@ -30,10 +30,10 @@ class IndexDaoTests : AbstractTest() {
         Thread.sleep(2000)
 
         // Doesn't matter what ID we send here.
-        var route = indexRouteClient.getIndexRoute(UUID.randomUUID())
+        var route = indexRoutingService.getIndexRoute(UUID.randomUUID())
 
         val indexed =
-                restClient.getClient(route).client.get(GetRequest(route.indexName, "asset", doc.id))
+                esClientCache.get(route).client.get(GetRequest(route.indexName, "asset", doc.id))
         assertEquals(indexed.id, doc.id)
     }
 }

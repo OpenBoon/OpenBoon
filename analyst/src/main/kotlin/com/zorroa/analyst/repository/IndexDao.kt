@@ -1,10 +1,10 @@
 package com.zorroa.analyst.repository
 
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.clients.EsRestClient
 import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
-import com.zorroa.analyst.rest.EsRestClient
-import com.zorroa.analyst.rest.EsRestClientCache
 import org.elasticsearch.action.ActionListener
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.index.IndexRequest
@@ -23,11 +23,11 @@ interface IndexDao {
 
 @Repository
 class ElasticSearchIndexDao @Autowired constructor(
-        val esClientFactory: EsRestClientCache
+        val esClientCache: EsClientCache
 ): IndexDao {
 
     override fun indexDocument(assetId: Asset, doc: Document) {
-        val esClient = esClientFactory.getClient(assetId.organizationId)
+        val esClient = esClientCache.get(assetId.organizationId)
         if (doc.replace) {
             replaceDocument(esClient, doc)
         }
@@ -37,11 +37,11 @@ class ElasticSearchIndexDao @Autowired constructor(
     }
 
     private fun replaceDocument(esClient: EsRestClient, doc: Document) {
-        val req = IndexRequest(esClient.org.indexName, doc.type, doc.id)
+        val req = IndexRequest(esClient.route.indexName, doc.type, doc.id)
                 .opType( DocWriteRequest.OpType.INDEX)
                 .source(Json.serialize(doc.document), XContentType.JSON)
-        if (esClient.org.routingKey != null) {
-            req.routing(esClient.org.routingKey)
+        if (esClient.route.routingKey != null) {
+            req.routing(esClient.route.routingKey)
         }
 
         esClient.client.indexAsync(req, object: ActionListener<IndexResponse> {
@@ -57,11 +57,11 @@ class ElasticSearchIndexDao @Autowired constructor(
     }
 
     private fun upsertDocument(esClient: EsRestClient, doc: Document) {
-        val req = UpdateRequest(esClient.org.indexName, doc.type, doc.id)
+        val req = UpdateRequest(esClient.route.indexName, doc.type, doc.id)
                 .docAsUpsert(true)
                 .doc(Json.serialize(doc.document), XContentType.JSON)
-        if (esClient.org.routingKey != null) {
-            req.routing(esClient.org.routingKey)
+        if (esClient.route.routingKey != null) {
+            req.routing(esClient.route.routingKey)
         }
         esClient.client.updateAsync(req, object: ActionListener<UpdateResponse> {
             override fun onFailure(e: Exception?) {
