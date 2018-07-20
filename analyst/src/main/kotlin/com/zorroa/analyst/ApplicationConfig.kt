@@ -27,13 +27,6 @@ class ApplicationConfig {
     @Autowired
     lateinit var schedulerProperties: SchedulerProperties
 
-    init {
-
-        for (prop in System.getenv()) {
-            logger.info("ENV {}={}", prop.key, prop.value)
-        }
-    }
-
     @Bean
     fun storageService() : StorageService {
         return when (storageProperties.type) {
