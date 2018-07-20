@@ -23,7 +23,7 @@ class JobController @Autowired constructor(
         val job = jobService.get(id)
         val asset = Asset(job.assetId, job.organizationId, job.attrs)
 
-        if(jobService.finish(job)) {
+        if(jobService.stop(job)) {
             assetService.storeAndReindex(asset, doc)
         }
     }
