@@ -18,7 +18,7 @@ interface StorageService {
 
 @Configuration
 @ConfigurationProperties("analyst.storage")
-class StorageConfiguration {
+class StorageProperties {
 
     var type: String? = null
     var gcp: Map<String, String>? = null
@@ -37,7 +37,7 @@ class LocalStorageServiceImpl : StorageService {
 class GcpStorageServiceImpl : StorageService {
 
     @Autowired
-    lateinit var settings : StorageConfiguration
+    lateinit var settings : StorageProperties
 
     lateinit var storage: Storage
 
@@ -53,8 +53,6 @@ class GcpStorageServiceImpl : StorageService {
     }
 
     override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray) : URL {
-
-
         logger.info("Storing in bucket: {} {}", bucket, path)
         val blobId = BlobId.of(bucket, path)
         val blobInfo = BlobInfo.newBuilder(blobId).setContentType(mediaType).build()

@@ -2,8 +2,10 @@ package com.zorroa.analyst.service
 
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
+import com.zorroa.common.util.getPublicUrl
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
+import io.fabric8.kubernetes.api.model.Quantity
 import io.fabric8.kubernetes.api.model.VolumeMount
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
 import io.fabric8.kubernetes.api.model.extensions.DeploymentSpec
@@ -15,57 +17,62 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.concurrent.timer
+import javax.annotation.PostConstruct
+import kotlin.concurrent.fixedRateTimer
 import io.fabric8.kubernetes.api.model.Job as KJob
-import io.fabric8.kubernetes.api.model.Quantity
 
 interface SchedulerService {
     fun startJob(job: Job) : Boolean
     fun pause(): Boolean
     fun resume() : Boolean
+    fun schedule()
 }
 
-@Configuration
-@ConfigurationProperties("gcp.k8")
-class K8SchedulerServiceSettings {
 
+@Configuration
+@ConfigurationProperties("analyst.scheduler")
+class SchedulerProperties {
+    var type: String? = "k8"
+    var k8 : Map<String, Any>? = null
+}
+
+class K8SchedulerProperties {
     var url: String? = null
     var username: String? = null
     var password: String? = null
     var namespace: String = "default"
     var image: String? = null
-    var talkBackUrl : String? = null
 }
 
-@Configuration
-class K8ClientConfiguration {
+/**
+ * This will eventually replicate the old Analyst behavior.
+ */
+class LocalSchedulerServiceImpl: SchedulerService {
+    override fun schedule() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
-    @Autowired
-    lateinit var k8settings : K8SchedulerServiceSettings
+    override fun startJob(job: Job): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
-    @Bean
-    fun kubernetesClient() : KubernetesClient {
-        val k8Config = ConfigBuilder().apply {
-            k8settings.url?.let { withMasterUrl(k8settings.url) }
-            k8settings.username?.let { withUsername(k8settings.username) }
-            k8settings.password?.let { withPassword(k8settings.password) }
-            withNamespace(k8settings.namespace)
-            withCaCertFile("/config/k8.cert")
-        }.build()
-        return DefaultKubernetesClient(k8Config)
+    override fun pause(): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun resume(): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 
 /**
  * A service for launching jobs for data processing to Kubernetes
  */
-@Service
-class K8SchedulerServiceImpl: SchedulerService {
+
+class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : SchedulerService {
 
     @Autowired
     lateinit var jobService: JobService
@@ -76,24 +83,44 @@ class K8SchedulerServiceImpl: SchedulerService {
     @Autowired
     lateinit var pipelineService: PipelineService
 
-    @Autowired
-    lateinit var kubernetesClient : KubernetesClient
-
-    @Autowired
-    lateinit var k8settings : K8SchedulerServiceSettings
-
     @Value("\${cdv.url}")
     lateinit var cdvUrl : String
 
-    val timer : Timer
-    val paused = AtomicBoolean(false)
+    private val kubernetesClient : KubernetesClient
+
+    /**
+     * A fixedRateTimer
+     */
+    private var timer : Timer? = null
+
+    /**
+     * Determines if the scheduler is paused or not
+     */
+    private val paused = AtomicBoolean(false)
 
     init {
-        timer = timer("scheduler", true, 15000, 5000,  {
+        val k8Config = ConfigBuilder().apply {
+            k8Props.url?.let { withMasterUrl(k8Props.url) }
+            k8Props.username?.let { withUsername(k8Props.username) }
+            k8Props.password?.let { withPassword(k8Props.password) }
+            withNamespace(k8Props.namespace)
+            withCaCertFile("/config/k8.cert")
+        }.build()
+        kubernetesClient = DefaultKubernetesClient(k8Config)
+    }
+
+    @PostConstruct
+    fun start() {
+        timer = fixedRateTimer("scheduler",
+                daemon = true, initialDelay = 60000, period = 60000) {
             if (!paused.get()) {
-                schedule()
+                try {
+                    schedule()
+                } catch (e: Exception) {
+                    logger.warn("Scheduler failed to run: {}", e)
+                }
             }
-        })
+        }
     }
 
     override fun startJob(job: Job) : Boolean {
@@ -102,7 +129,8 @@ class K8SchedulerServiceImpl: SchedulerService {
             return false
         }
         try {
-            val yaml = generateK8JobSpec(job)
+            val selfUrl = getPublicUrl()
+            val yaml = generateK8JobSpec(job, selfUrl)
             logger.info("JOB: {}", job.id)
             logger.info("YAML {}", yaml)
             kubernetesClient.extensions().jobs().load(
@@ -115,12 +143,13 @@ class K8SchedulerServiceImpl: SchedulerService {
         return true
     }
 
-    fun generateZpsScript(job: Job) : ZpsScript {
+    fun generateZpsScript(job: Job, selfUrl: String) : ZpsScript {
+
         /*
          * Resolve the list of processors and append one to talk back
          */
         logger.info("Building job with pipelines: {}", job.pipelines)
-        val endpoint = "${k8settings.talkBackUrl}/api/v1/assets/${job.assetId}?job=${job.id}"
+        val endpoint = "$selfUrl/api/v1/assets/${job.assetId}?job=${job.id}"
         val processors =
                 pipelineService.buildProcessorList(job.pipelines)
         processors.add(
@@ -146,9 +175,9 @@ class K8SchedulerServiceImpl: SchedulerService {
                 execute=processors)
     }
 
-    fun generateK8JobSpec(job: Job) : String {
+    fun generateK8JobSpec(job: Job, selfUrl: String) : String {
 
-        val zps = generateZpsScript(job)
+        val zps = generateZpsScript(job, selfUrl)
         logger.info("ZPS: {}", Json.serializeToString(zps))
 
         val url = storageService.storeSignedBlob(
@@ -182,10 +211,10 @@ class K8SchedulerServiceImpl: SchedulerService {
         container.args = listOf("-cpus", "1")
         container.volumeMounts = listOf(mount)
         container.name = job.name
-        container.image = k8settings.image
+        container.image = k8Props.image
         container.args = listOf(url.toString())
         container.env = mutableListOf(
-                EnvVar("ZORROA_STUDIO_BASE_URL", k8settings.talkBackUrl, null),
+                EnvVar("ZORROA_ANALYST_BASE_URL", selfUrl, null),
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
@@ -217,34 +246,48 @@ class K8SchedulerServiceImpl: SchedulerService {
     override fun pause() : Boolean = paused.compareAndSet(false, true)
     override fun resume() : Boolean = paused.compareAndSet(true, false)
 
-    fun schedule() {
-        logger.info("Running scheduler")
-        val jobs = jobService.getWaiting(10)
+    override fun schedule() {
+        val runningJobs = jobService.getRunning()
+        logger.info("Analyst has {} running jobs", runningJobs)
+        validateRunning(runningJobs)
 
-        for (job in jobs) {
-            startJob(job)
+        if (runningJobs.size < 10) {
+            val jobs = jobService.getWaiting(10 - runningJobs.size)
+            logger.info("Found {} waiting jobs", jobs.size)
+
+            for (job in jobs) {
+                startJob(job)
+            }
         }
-
-        validateRunning()
     }
 
-    fun validateRunning() {
-        val jobs = jobService.getRunning()
-        logger.info("Kubernetes has N running jobs")
+    private fun validateRunning(jobs:List<Job>) {
+        var orphanJobs = 0
         for (job in jobs) {
-            val kjob = kubernetesClient.extensions().jobs().withName(job.name).get()
-            logger.info("{}", kjob.status)
-            if (kjob.status.succeeded >= 1) {
-                jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
-            }
-            else {
-                for (cond in kjob.status.conditions) {
-                    if (cond.type == "Failed") {
-                        jobService.setState(job, JobState.FAIL, JobState.RUNNING)
-                        break
+            val kjob: io.fabric8.kubernetes.api.model.Job? = kubernetesClient.extensions().jobs().withName(job.name).get()
+            if (kjob != null) {
+                // Remove this later
+                logger.info("{}", Json.prettyString(kjob.status))
+                if (kjob.status.succeeded >= 1) {
+                    jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
+                    kubernetesClient.extensions().jobs().delete(kjob)
+                }
+                else {
+                    for (cond in kjob.status.conditions) {
+                        if (cond.type == "Failed") {
+                            jobService.setState(job, JobState.FAIL, JobState.RUNNING)
+                            break
+                        }
                     }
                 }
             }
+            else {
+                orphanJobs++
+                // Have to decide what to do here
+            }
+        }
+        if (orphanJobs > 0) {
+            logger.warn("Analyst had {} orphan jobs", orphanJobs)
         }
     }
 
