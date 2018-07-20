@@ -8,7 +8,6 @@ ARG gcs_config
 ENV GCS_CONFIG ${gcs_config}
 
 RUN mkdir /service
-RUN mkdir /service/ext
 
 COPY target/analyst.jar  /service/app.jar
 COPY run_server.sh run_server.sh
