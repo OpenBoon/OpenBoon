@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.config.ApplicationProperties
@@ -11,6 +12,7 @@ import java.io.FileInputStream
 import java.io.InputStream
 import java.net.URL
 import java.nio.channels.Channels
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 /**
@@ -36,6 +38,11 @@ interface StorageService {
      * Return true of the Object exists.
      */
     fun objectExists(url: URL): Boolean
+
+    /**
+     * Take a GCS HTTP URL and return a signed URL
+     */
+    fun getSignedUrl(url: URL): URL
 }
 
 data class ObjectFile (
@@ -60,6 +67,13 @@ class GcpStorageService @Autowired constructor (
         val credentials = properties.getString("archivist.storage.gcp.credentials")
         storage = StorageOptions.newBuilder().setCredentials(
                 GoogleCredentials.fromStream(FileInputStream(credentials))).build().service
+    }
+
+    override fun getSignedUrl(url: URL): URL {
+        var (bucket, path) =  splitGcpUrl(url)
+        val blobId = BlobId.of(bucket, path)
+        return storage.get(blobId).signUrl(60, TimeUnit.MINUTES,
+                Storage.SignUrlOption.httpMethod(HttpMethod.GET))
     }
 
     override fun objectExists(url: URL): Boolean {
@@ -93,6 +107,10 @@ class GcpStorageService @Autowired constructor (
 
 class MinioStorageImpl @Autowired constructor (
         val properties: ApplicationProperties) : StorageService {
+    override fun getSignedUrl(url: URL): URL {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun objectExists(url: URL): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

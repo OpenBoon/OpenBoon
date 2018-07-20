@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.web.api.AssetController
 import com.zorroa.common.domain.Pager
+import com.zorroa.common.domain.Source
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.junit.Assert.*
@@ -16,6 +17,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 import java.util.stream.Collectors
@@ -339,6 +341,23 @@ class AssetControllerTests : MockMvcTest() {
         }
     }
 
+    @Test
+    @Throws(Exception::class)
+    fun testStreamHeadRequest() {
+        val session = admin()
+        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        source.setAttr("source.stream", "https://foo/bar")
+        indexService.index(source)
+        refreshIndex()
+
+        val url = String.format("/api/v1/assets/%s/_stream", source.id)
+        mvc.perform(head(url)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andExpect(header().string("X-Zorroa-Signed-URL", "https://foo/bar?key=bar"))
+                .andReturn()
+    }
 
     @Test
     @Throws(Exception::class)
