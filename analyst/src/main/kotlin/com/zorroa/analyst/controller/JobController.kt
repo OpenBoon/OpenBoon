@@ -1,6 +1,7 @@
 package com.zorroa.analyst.controller
 
 import com.zorroa.analyst.service.JobService
+import com.zorroa.common.domain.JobState
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
@@ -16,7 +17,7 @@ class JobController @Autowired constructor(
     @PutMapping("/api/v1/jobs/{id}/_stop")
     fun stop(@PathVariable id: UUID) {
         val job = jobService.get(id)
-        jobService.stop(job)
+        jobService.stop(job, JobState.SUCCESS)
     }
 
     companion object {

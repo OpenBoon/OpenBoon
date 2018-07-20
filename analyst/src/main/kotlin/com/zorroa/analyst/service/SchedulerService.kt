@@ -5,7 +5,6 @@ import com.zorroa.common.util.Json
 import com.zorroa.common.util.getPublicUrl
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
-import io.fabric8.kubernetes.api.model.Quantity
 import io.fabric8.kubernetes.api.model.VolumeMount
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
 import io.fabric8.kubernetes.api.model.extensions.DeploymentSpec
@@ -35,7 +34,7 @@ interface SchedulerService {
 @Configuration
 @ConfigurationProperties("analyst.scheduler")
 class SchedulerProperties {
-    var type: String? = "k8"
+    var type: String? = "local"
     var k8 : Map<String, Any>? = null
 }
 
@@ -126,6 +125,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     override fun startJob(job: Job) : Boolean {
         val started= jobService.start(job)
         if (!started) {
+            logger.warn("The job {} was not in the Waiting state", job.name)
             return false
         }
         try {
@@ -136,7 +136,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             kubernetesClient.extensions().jobs().load(
                     yaml.byteInputStream(Charsets.UTF_8)).create()
         } catch (e: Exception) {
-            jobService.setState(job, JobState.RUNNING, JobState.FAIL)
+            logger.warn("Failed to start job {}", job.name, e)
+            jobService.stop(job, JobState.FAIL)
             return false
         }
 
@@ -206,8 +207,6 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         mount.mountPath = "/var/secrets/google"
 
         val container = Container()
-        container.resources.limits = mapOf("cpu" to Quantity("1"))
-        container.resources.requests = mapOf("cpu" to Quantity("1"))
         container.args = listOf("-cpus", "1")
         container.volumeMounts = listOf(mount)
         container.name = job.name
@@ -246,13 +245,19 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     override fun pause() : Boolean = paused.compareAndSet(false, true)
     override fun resume() : Boolean = paused.compareAndSet(true, false)
 
+    val maxJobs = 3
+
     override fun schedule() {
         val runningJobs = jobService.getRunning()
         logger.info("Analyst has {} running jobs", runningJobs)
-        validateRunning(runningJobs)
+        try {
+            validateRunning(runningJobs)
+        } catch (e: Exception) {
+            logger.warn("failed to validate running jobs", e)
+        }
 
-        if (runningJobs.size < 10) {
-            val jobs = jobService.getWaiting(10 - runningJobs.size)
+        if (runningJobs.size < maxJobs) {
+            val jobs = jobService.getWaiting(maxJobs - runningJobs.size)
             logger.info("Found {} waiting jobs", jobs.size)
 
             for (job in jobs) {
@@ -264,21 +269,29 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     private fun validateRunning(jobs:List<Job>) {
         var orphanJobs = 0
         for (job in jobs) {
-            val kjob: io.fabric8.kubernetes.api.model.Job? = kubernetesClient.extensions().jobs().withName(job.name).get()
+            val kjob: io.fabric8.kubernetes.api.model.Job? =
+                    kubernetesClient.extensions().jobs().withName(job.name).get()
             if (kjob != null) {
-                // Remove this later
-                logger.info("{}", Json.prettyString(kjob.status))
-                if (kjob.status.succeeded >= 1) {
-                    jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
-                    kubernetesClient.extensions().jobs().delete(kjob)
-                }
-                else {
-                    for (cond in kjob.status.conditions) {
-                        if (cond.type == "Failed") {
-                            jobService.setState(job, JobState.FAIL, JobState.RUNNING)
-                            break
+                if (kjob.status != null) {
+                    if (kjob.status.succeeded != null) {
+                        if (kjob.status.succeeded >= 1) {
+                            jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
+                            logger.info("deleting job: {}", job.name)
+                            kubernetesClient.extensions().jobs().delete(kjob)
                         }
                     }
+                    else if (kjob.status.conditions != null) {
+                        for (cond in kjob.status.conditions) {
+                            if (cond.type == "Failed") {
+                                jobService.stop(job, JobState.FAIL)
+                                break
+                            }
+                        }
+                    }
+                }
+                else {
+                    logger.warn("Job has no status data: {}", job.name)
+                    logger.warn(Json.prettyString(kjob))
                 }
             }
             else {
