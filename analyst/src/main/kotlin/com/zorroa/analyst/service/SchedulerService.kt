@@ -2,7 +2,6 @@ package com.zorroa.analyst.service
 
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
-import com.zorroa.analyst.repository.JobDao
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
 import io.fabric8.kubernetes.api.model.VolumeMount
@@ -20,11 +19,15 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.concurrent.timer
 import io.fabric8.kubernetes.api.model.Job as KJob
-
+import io.fabric8.kubernetes.api.model.Quantity
 
 interface SchedulerService {
-    fun start(job: Job) : Boolean
+    fun startJob(job: Job) : Boolean
+    fun pause(): Boolean
+    fun resume() : Boolean
 }
 
 @Configuration
@@ -62,9 +65,10 @@ class K8ClientConfiguration {
  * A service for launching jobs for data processing to Kubernetes
  */
 @Service
-class K8SchedulerServiceImpl @Autowired constructor(
-        val jobDao: JobDao
-): SchedulerService {
+class K8SchedulerServiceImpl: SchedulerService {
+
+    @Autowired
+    lateinit var jobService: JobService
 
     @Autowired
     lateinit var storageService: StorageService
@@ -81,17 +85,33 @@ class K8SchedulerServiceImpl @Autowired constructor(
     @Value("\${cdv.url}")
     lateinit var cdvUrl : String
 
-    override fun start(job: Job) : Boolean {
-        val started= jobDao.setState(job, JobState.RUNNING, JobState.WAITING)
-        logger.info("Job {} WAITING->RUNNING: {}", job.name, started)
+    val timer : Timer
+    val paused = AtomicBoolean(false)
+
+    init {
+        timer = timer("scheduler", true, 15000, 5000,  {
+            if (!paused.get()) {
+                schedule()
+            }
+        })
+    }
+
+    override fun startJob(job: Job) : Boolean {
+        val started= jobService.start(job)
         if (!started) {
             return false
         }
-        val yaml = generateK8JobSpec(job)
-        logger.info("JOB: {}", job.id)
-        logger.info("YAML {}", yaml)
-        val kjob = kubernetesClient.extensions().jobs().load(
-                yaml.byteInputStream(Charsets.UTF_8)).create()
+        try {
+            val yaml = generateK8JobSpec(job)
+            logger.info("JOB: {}", job.id)
+            logger.info("YAML {}", yaml)
+            kubernetesClient.extensions().jobs().load(
+                    yaml.byteInputStream(Charsets.UTF_8)).create()
+        } catch (e: Exception) {
+            jobService.setState(job, JobState.RUNNING, JobState.FAIL)
+            return false
+        }
+
         return true
     }
 
@@ -100,16 +120,13 @@ class K8SchedulerServiceImpl @Autowired constructor(
          * Resolve the list of processors and append one to talk back
          */
         logger.info("Building job with pipelines: {}", job.pipelines)
-        val endpoint = "${k8settings.talkBackUrl}/api/v1/jobs/${job.id}/result"
+        val endpoint = "${k8settings.talkBackUrl}/api/v1/assets/${job.assetId}?job=${job.id}"
         val processors =
                 pipelineService.buildProcessorList(job.pipelines)
         processors.add(
                 ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
                 args=mapOf("endpoint" to endpoint)))
-        /*
-        * Pull the current state of the asset
-        */
-        val asset = Asset(job.assetId, job.organizationId, job.attrs)
+
         val doc = try {
             //assetService.getDocument(asset)
             Document(job.assetId.toString())
@@ -118,9 +135,9 @@ class K8SchedulerServiceImpl @Autowired constructor(
             Document(job.assetId.toString())
         }
 
-        // make sure this is et.
+        // make sure these are set.
         doc.setAttr("irm.companyId", job.attrs["companyId"])
-
+        doc.setAttr("zorroa.organizationId", job.organizationId.toString())
         /*
          * Setup ZPS script
          */
@@ -160,6 +177,9 @@ class K8SchedulerServiceImpl @Autowired constructor(
         mount.mountPath = "/var/secrets/google"
 
         val container = Container()
+        container.resources.limits = mapOf("cpu" to Quantity("1"))
+        container.resources.requests = mapOf("cpu" to Quantity("1"))
+        container.args = listOf("-cpus", "1")
         container.volumeMounts = listOf(mount)
         container.name = job.name
         container.image = k8settings.image
@@ -192,6 +212,40 @@ class K8SchedulerServiceImpl @Autowired constructor(
                 .addAllToContainers(listOf(container)).endSpec()
         template.endTemplate().endSpec()
         return SerializationUtils.dumpAsYaml(builder.build())
+    }
+
+    override fun pause() : Boolean = paused.compareAndSet(false, true)
+    override fun resume() : Boolean = paused.compareAndSet(true, false)
+
+    fun schedule() {
+        logger.info("Running scheduler")
+        val jobs = jobService.getWaiting(10)
+
+        for (job in jobs) {
+            startJob(job)
+        }
+
+        validateRunning()
+    }
+
+    fun validateRunning() {
+        val jobs = jobService.getRunning()
+        logger.info("Kubernetes has N running jobs")
+        for (job in jobs) {
+            val kjob = kubernetesClient.extensions().jobs().withName(job.name).get()
+            logger.info("{}", kjob.status)
+            if (kjob.status.succeeded >= 1) {
+                jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
+            }
+            else {
+                for (cond in kjob.status.conditions) {
+                    if (cond.type == "Failed") {
+                        jobService.setState(job, JobState.FAIL, JobState.RUNNING)
+                        break
+                    }
+                }
+            }
+        }
     }
 
     companion object {

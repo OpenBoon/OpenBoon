@@ -1,17 +1,23 @@
 package com.zorroa.analyst.repository
 
-import com.zorroa.common.domain.JobSpec
 import com.zorroa.analyst.AbstractTest
+import com.zorroa.analyst.domain.LockSpec
 import com.zorroa.analyst.service.PipelineService
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class JobDaoTests : AbstractTest() {
 
     @Autowired
     internal lateinit var jobDao: JobDao
+
+    @Autowired
+    internal lateinit var lockDao: LockDao
 
     @Autowired
     internal lateinit var pipelineService: PipelineService
@@ -60,5 +66,41 @@ class JobDaoTests : AbstractTest() {
         assertEquals(spec.assetId, t2.assetId)
         assertEquals(spec.pipelines, t2.pipelines)
         assertEquals(1, t2.pipelines.size)
+    }
+
+    @Test
+    fun testGetRunning() {
+        val spec = JobSpec("run_some_stuff",
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                listOf("standard"))
+        val t1 = jobDao.create(spec)
+        assertTrue(jobDao.setState(t1, JobState.RUNNING, JobState.WAITING))
+        val all = jobDao.getRunning()
+        assertTrue(all.isNotEmpty())
+    }
+
+    @Test
+    fun testGetWaiting() {
+        val spec = JobSpec("run_some_stuff",
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                listOf("standard"))
+        val t1 = jobDao.create(spec)
+        val all = jobDao.getWaiting(10)
+        assertTrue(all.contains(t1))
+    }
+
+    @Test
+    fun testGetWaitingButLocked() {
+        val spec = JobSpec("run_some_stuff",
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                listOf("standard"))
+        val t1 = jobDao.create(spec)
+        val l1 = lockDao.create(LockSpec(t1))
+
+        val all = jobDao.getWaiting(10)
+        assertTrue(all.isEmpty())
     }
 }

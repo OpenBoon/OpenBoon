@@ -1,6 +1,8 @@
 package com.zorroa.analyst.service
 
+import com.zorroa.analyst.domain.LockSpec
 import com.zorroa.analyst.repository.JobDao
+import com.zorroa.analyst.repository.LockDao
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
@@ -14,13 +16,18 @@ interface JobService {
     fun create(spec: JobSpec) : Job
     fun get(id: UUID) : Job
     fun get(name: String) : Job
-    fun finish(job: Job) : Boolean
+    fun stop(job: Job) : Boolean
+    fun start(job: Job) : Boolean
+    fun getWaiting(limit: Int) : List<Job>
+    fun getRunning() : List<Job>
+    fun setState(job: Job, newState: JobState, oldState: JobState) : Boolean
 }
 
 @Transactional
 @Service
 class JobServiceImpl @Autowired constructor(
-        val jobDao: JobDao): JobService {
+        val jobDao: JobDao,
+        val lockDao: LockDao): JobService {
 
     override fun get(id: UUID) : Job {
         return jobDao.get(id)
@@ -34,10 +41,41 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.create(spec)
     }
 
-    override fun finish(job: Job) : Boolean {
-        val result = jobDao.setState(job, JobState.SUCCESS, JobState.RUNNING)
-        logger.info("Job {} RUNNING->SUCCESS: {}", job.name, result)
+    override fun setState(job: Job, newState: JobState, oldState: JobState) : Boolean {
+        val result = jobDao.setState(job, newState, oldState)
+        if (result) {
+            logger.info("JOB State Change: {} {}->{} State",
+                    job.name, newState.name, oldState.name)
+        }
+        else {
+            logger.warn("JOB Failed State Change: {} {}->{}",
+                    job.name, newState.name, oldState.name)
+        }
         return result
+    }
+
+    override fun start(job: Job) : Boolean {
+        val result = setState(job, JobState.RUNNING, JobState.WAITING)
+        if (result) {
+            lockDao.create(LockSpec(job))
+        }
+        return result
+    }
+
+    override fun stop(job: Job) : Boolean {
+        val result = setState(job, JobState.SUCCESS, JobState.RUNNING)
+        if (result) {
+            lockDao.deleteByJob(job.id)
+        }
+        return result
+    }
+
+    override fun getWaiting(limit: Int) : List<Job> {
+        return jobDao.getWaiting(limit)
+    }
+
+    override fun getRunning() : List<Job> {
+        return jobDao.getRunning()
     }
 
     companion object {

@@ -14,6 +14,9 @@ interface JobDao {
     fun get(id: UUID) : Job
     fun get(name: String) : Job
     fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean
+    fun getWaiting(count:Int) : List<Job>
+    fun getRunning() : List<Job>
+
 }
 
 @Repository
@@ -50,6 +53,14 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
         return jdbc.queryForObject("$GET WHERE str_name=?", MAPPER, name)
     }
 
+    override fun getWaiting(count : Int) : List<Job> {
+        return jdbc.query(GET_WAITING, MAPPER, JobState.WAITING.ordinal, count)
+    }
+
+    override fun getRunning() : List<Job> {
+        return jdbc.query(GET_RUNNING, MAPPER, JobState.RUNNING.ordinal)
+    }
+
     override fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean {
         val time = System.currentTimeMillis()
         return if (oldState != null) {
@@ -76,6 +87,18 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
         }
 
         private const val GET = "SELECT * FROM job"
+
+        private const val GET_WAITING = "$GET " +
+                "WHERE " +
+                    "int_state=? " +
+                "AND " +
+                    "pk_asset NOT IN (SELECT pk_asset FROM lock) " +
+                "ORDER BY " +
+                    "time_created ASC LIMIT ?"
+
+        private const val GET_RUNNING = "$GET " +
+                "WHERE " +
+                "int_state=? "
 
         private val INSERT = sqlInsert("job",
                 "pk_job",

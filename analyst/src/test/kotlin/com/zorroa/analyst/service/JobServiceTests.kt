@@ -1,6 +1,7 @@
 package com.zorroa.analyst.service
 
 import com.zorroa.analyst.AbstractTest
+import com.zorroa.analyst.repository.LockDao
 import com.zorroa.common.domain.JobSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,7 @@ class JobServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var pipelineService: PipelineService
+    lateinit var lockDao: LockDao
 
     @Test
     fun testCreate() {
@@ -31,5 +32,19 @@ class JobServiceTests : AbstractTest() {
         assertEquals(spec.organizationId, t.organizationId)
         assertEquals(spec.pipelines, t.pipelines)
         assertEquals(spec.name, t.name)
+    }
+
+    @Test
+    fun testStart() {
+        val spec = JobSpec(
+                "unit-test-task",
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                listOf("standard"))
+        val t = jobService.create(spec)
+        jobService.start(t)
+
+        val lock = lockDao.getByAsset(spec.assetId)
+        assertEquals(lock.jobId, t.id)
     }
 }
