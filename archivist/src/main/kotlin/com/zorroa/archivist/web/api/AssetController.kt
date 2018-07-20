@@ -38,6 +38,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.io.File
 import java.io.IOException
+import java.net.URL
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -53,7 +54,8 @@ class AssetController @Autowired constructor(
         private val logService: EventLogService,
         private val imageService: ImageService,
         private val ofs: ObjectFileSystem,
-        private val fieldService: FieldService
+        private val fieldService: FieldService,
+        private val storageService: StorageService
 ){
     /**
      * Describes a file to stream.
@@ -142,7 +144,7 @@ class AssetController @Autowired constructor(
         return null
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
+    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.GET, RequestMethod.HEAD])
     @Throws(Exception::class)
     fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
                     @RequestParam(value = "ext", required = false) ext: String?,
@@ -152,10 +154,16 @@ class AssetController @Autowired constructor(
         val canExport = canExport(asset)
         val format = getPreferredFormat(asset, ext, fallback, !canExport)
 
-        if (format == null) {
-            response.status = 404
-        } else {
-            try {
+        when {
+            request.method == "HEAD" -> {
+                val stream : String? = asset.getAttr("source.stream")
+                if (stream != null) {
+                    response.setHeader("X-Zorroa-Signed-URL",
+                            storageService.getSignedUrl(URL(stream)).toString())
+                }
+            }
+            format == null -> response.status = 404
+            else -> try {
                 MultipartFileSender.fromPath(Paths.get(format.path))
                         .with(request)
                         .with(response)
@@ -167,7 +175,6 @@ class AssetController @Autowired constructor(
             } catch (e: Exception) {
                 logger.warn("MultipartFileSender failed on {}, unexpected {}", id, e.message)
             }
-
         }
     }
 

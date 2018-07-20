@@ -12,6 +12,10 @@ import java.io.FileInputStream
 import java.net.URL
 
 class MockStorageService : StorageService {
+    override fun getSignedUrl(url: URL): URL {
+        val urlStr = url.toString()
+        return URL("$urlStr?key=bar")
+    }
 
     override fun getObjectFile(url: URL, mimeType: String?): ObjectFile {
         return ObjectFile(FileInputStream(File("../../zorroa-test-data/images/set01/faces.jpg")),
