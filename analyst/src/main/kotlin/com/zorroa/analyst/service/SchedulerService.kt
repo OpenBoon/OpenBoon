@@ -120,16 +120,13 @@ class K8SchedulerServiceImpl: SchedulerService {
          * Resolve the list of processors and append one to talk back
          */
         logger.info("Building job with pipelines: {}", job.pipelines)
-        val endpoint = "${k8settings.talkBackUrl}/api/v1/jobs/${job.id}/result"
+        val endpoint = "${k8settings.talkBackUrl}/api/v1/assets/${job.assetId}?job=${job.id}"
         val processors =
                 pipelineService.buildProcessorList(job.pipelines)
         processors.add(
                 ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
                 args=mapOf("endpoint" to endpoint)))
-        /*
-        * Pull the current state of the asset
-        */
-        val asset = Asset(job.assetId, job.organizationId, job.attrs)
+
         val doc = try {
             //assetService.getDocument(asset)
             Document(job.assetId.toString())
@@ -138,9 +135,9 @@ class K8SchedulerServiceImpl: SchedulerService {
             Document(job.assetId.toString())
         }
 
-        // make sure this is et.
+        // make sure these are set.
         doc.setAttr("irm.companyId", job.attrs["companyId"])
-
+        doc.setAttr("zorroa.organizationId", job.organizationId.toString())
         /*
          * Setup ZPS script
          */
