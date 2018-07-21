@@ -213,7 +213,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         container.image = k8Props.image
         container.args = listOf(url.toString())
         container.env = mutableListOf(
-                EnvVar("ZORROA_ANALYST_BASE_URL", selfUrl, null),
+                EnvVar("ZORROA_ANALYST_URL", selfUrl, null),
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
@@ -276,8 +276,6 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                     if (kjob.status.succeeded != null) {
                         if (kjob.status.succeeded >= 1) {
                             jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
-                            logger.info("deleting job: {}", job.name)
-                            kubernetesClient.extensions().jobs().delete(kjob)
                         }
                     }
                     else if (kjob.status.conditions != null) {
@@ -296,7 +294,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             }
             else {
                 orphanJobs++
-                // Have to decide what to do here
+                // Orphans are jobs running in the DB with no K8 job.
+                jobService.stop(job, JobState.ORPHAN)
             }
         }
         if (orphanJobs > 0) {
