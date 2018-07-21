@@ -1,5 +1,6 @@
 package com.zorroa.analyst
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.common.collect.Lists
 import com.zorroa.analyst.service.*
 import com.zorroa.common.clients.EsClientCache
@@ -17,6 +18,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
+import java.io.FileInputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 
 @Configuration
 class ApplicationConfig {
@@ -62,6 +66,16 @@ class ApplicationConfig {
     @Bean
     fun routingService() : IndexRoutingService {
         return IndexRoutingServiceImpl()
+    }
+
+    @Bean
+    fun googleCredential() : GoogleCredential {
+        return if (Files.exists(Paths.get("config/credentials.json"))) {
+            GoogleCredential.fromStream(FileInputStream("config/credentials.json"))
+        }
+        else {
+            GoogleCredential.getApplicationDefault()
+        }
     }
 
     @Autowired

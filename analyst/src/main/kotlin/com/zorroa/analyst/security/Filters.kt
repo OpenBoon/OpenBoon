@@ -8,23 +8,14 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import java.io.FileInputStream
 import java.io.IOException
 import java.util.*
-import javax.annotation.PostConstruct
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
-
-    private lateinit var credentials: GoogleCredential
-
-    @PostConstruct
-    fun setup() {
-        credentials = GoogleCredential.fromStream(FileInputStream("keys/credentials.json"))
-    }
+class JWTAuthorizationFilter(authManager: AuthenticationManager, private val credentials: GoogleCredential) : BasicAuthenticationFilter(authManager) {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(req: HttpServletRequest,
