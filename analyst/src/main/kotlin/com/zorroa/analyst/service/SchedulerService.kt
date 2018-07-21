@@ -35,6 +35,7 @@ interface SchedulerService {
 @ConfigurationProperties("analyst.scheduler")
 class SchedulerProperties {
     var type: String? = "local"
+    var maxJobs : Int = 3
     var k8 : Map<String, Any>? = null
 }
 
@@ -81,6 +82,9 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
 
     @Autowired
     lateinit var pipelineService: PipelineService
+
+    @Autowired
+    lateinit var schedulerProperties : SchedulerProperties
 
     @Value("\${cdv.url}")
     lateinit var cdvUrl : String
@@ -243,9 +247,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     }
 
     override fun pause() : Boolean = paused.compareAndSet(false, true)
-    override fun resume() : Boolean = paused.compareAndSet(true, false)
 
-    val maxJobs = 3
+    override fun resume() : Boolean = paused.compareAndSet(true, false)
 
     override fun schedule() {
         val runningJobs = jobService.getRunning()
@@ -256,8 +259,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             logger.warn("failed to validate running jobs", e)
         }
 
-        if (runningJobs.size < maxJobs) {
-            val jobs = jobService.getWaiting(maxJobs - runningJobs.size)
+        if (runningJobs.size < schedulerProperties.maxJobs) {
+            val jobs = jobService.getWaiting(schedulerProperties.maxJobs - runningJobs.size)
             logger.info("Found {} waiting jobs", jobs.size)
 
             for (job in jobs) {
