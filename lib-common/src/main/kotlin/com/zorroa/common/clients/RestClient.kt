@@ -255,9 +255,12 @@ class RestClient {
         }
 
         if (response.statusLine.statusCode != 200) {
+            logger.warn("Bad REST response: {} {} {}", req.requestLine.uri, response.statusLine.reasonPhrase, response.statusLine.statusCode)
             val error = checkResponse(response, Json.GENERIC_MAP)
-            val message ="Unknown REST client exception to $host, ${response.statusLine.statusCode}"
-            throw RestClientException(error.getOrDefault("message", message) as String)
+            val message = error.getOrElse("message", {
+                "Unknown REST client exception to $host, ${response.statusLine.statusCode}"
+            })
+            throw RestClientException(message.toString())
         }
 
         return response

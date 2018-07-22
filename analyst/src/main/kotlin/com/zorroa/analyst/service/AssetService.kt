@@ -29,14 +29,16 @@ class AssetServiceImpl @Autowired constructor(
         try {
             coreDataVault.updateIndexedMetadata(assetId, doc)
             result.status["stored"] = true
+            logger.info("Stored: {}", assetId.id)
         } catch (e: Exception) {
-            logger.info("Failed to write {} into CDV", assetId.id,e)
+            logger.warn("Failed to write {} into CDV", assetId.id,e)
         }
         try {
             indexDao.indexDocument(assetId, doc)
             result.status["indexed"] = true
+            logger.info("Indexed: {}", assetId.id)
         } catch(e: Exception) {
-            logger.info("Failed to write {} into Index", assetId.id,e)
+            logger.warn("Failed to write {} into Index", assetId.id,e)
         }
 
         return result
