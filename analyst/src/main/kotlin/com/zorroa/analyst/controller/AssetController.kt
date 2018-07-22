@@ -1,5 +1,7 @@
 package com.zorroa.analyst.controller
 
+import com.zorroa.analyst.domain.PreconditionFailedException
+import com.zorroa.analyst.domain.UpdateStatus
 import com.zorroa.analyst.service.AssetService
 import com.zorroa.analyst.service.JobService
 import com.zorroa.common.domain.Asset
@@ -7,7 +9,7 @@ import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.JobState
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpMethod
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -19,7 +21,7 @@ class AssetController @Autowired constructor(
 
     @PostMapping("/api/v1/assets/{id}")
     fun update(@PathVariable id: UUID, @RequestBody doc: Document,
-               @RequestParam("job", required = false) jobId: String?) : Any {
+               @RequestParam("job", required = false) jobId: String?) : ResponseEntity<UpdateStatus> {
 
         if (jobId != null) {
             try {
@@ -36,10 +38,9 @@ class AssetController @Autowired constructor(
         }
         else {
             val asset = Asset(id, UUID.fromString(doc.getAttr("zorroa.organizationId")))
-            assetService.storeAndReindex(asset, doc)
+            val result = assetService.storeAndReindex(asset, doc)
+            return ResponseEntity.ok(result)
         }
-
-        return RestResponse(HttpMethod.POST,  "/api/v1/assets/$id", true)
     }
 
     companion object {

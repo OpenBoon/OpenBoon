@@ -1,6 +1,5 @@
-package com.zorroa.analyst.controller
+package com.zorroa.analyst.domain
 
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
@@ -14,6 +13,7 @@ class PreconditionFailedException(message: String) : RuntimeException(message)
 /**
  * A standard response for a controller method.
  */
-data class RestResponse(val method : HttpMethod,
-                        val endpoint : String,
-                        val success: Boolean)
+data class UpdateStatus(val status: MutableMap<String, Any> = mutableMapOf()) {
+
+    constructor(op: String, state: Boolean) : this(mutableMapOf(op to state))
+}
