@@ -19,7 +19,7 @@ data class AssetSpec(
 data class Asset (
         val id: UUID,
         val organizationId: UUID,
-        val keys: Map<String, Any> = mutableMapOf()
+        val keys: MutableMap<String, Any> = mutableMapOf()
 )
 
 /**

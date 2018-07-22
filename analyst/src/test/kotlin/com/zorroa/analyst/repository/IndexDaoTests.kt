@@ -24,7 +24,7 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testIndexDocument() {
-        val asset = Asset(UUID.randomUUID(),UUID.randomUUID(), mapOf())
+        val asset = Asset(UUID.randomUUID(),UUID.randomUUID())
         val doc = Document(asset.id.toString(), mapOf("foo" to "bar"))
         indexDao.indexDocument(asset, doc)
         Thread.sleep(2000)

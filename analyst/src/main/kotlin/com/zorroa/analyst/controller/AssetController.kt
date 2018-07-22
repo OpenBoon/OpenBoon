@@ -1,10 +1,8 @@
 package com.zorroa.analyst.controller
 
-import com.zorroa.analyst.domain.PreconditionFailedException
 import com.zorroa.analyst.domain.UpdateStatus
 import com.zorroa.analyst.service.AssetService
 import com.zorroa.analyst.service.JobService
-import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.JobState
 import org.slf4j.LoggerFactory
@@ -33,14 +31,9 @@ class AssetController @Autowired constructor(
             }
         }
 
-        if (!doc.attrExists("zorroa.organizationId")) {
-            throw PreconditionFailedException("Asset $id has no organization Id, cannot index")
-        }
-        else {
-            val asset = Asset(id, UUID.fromString(doc.getAttr("zorroa.organizationId")))
-            val result = assetService.storeAndReindex(asset, doc)
-            return ResponseEntity.ok(result)
-        }
+        val asset = assetService.getAsset(doc)
+        val result = assetService.storeAndReindex(asset, doc)
+        return ResponseEntity.ok(result)
     }
 
     companion object {
