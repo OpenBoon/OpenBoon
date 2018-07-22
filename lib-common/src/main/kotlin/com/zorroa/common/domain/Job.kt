@@ -10,7 +10,8 @@ enum class JobState {
     RUNNING,
     SUCCESS,
     FAIL,
-    ORPHAN
+    ORPHAN,
+    SKIP
 }
 
 data class JobSpec (

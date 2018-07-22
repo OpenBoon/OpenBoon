@@ -1,16 +1,18 @@
 package com.zorroa.analyst.service
 
+import com.zorroa.analyst.domain.UpdateStatus
+import com.zorroa.analyst.repository.IndexDao
 import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
 import com.zorroa.common.service.CoreDataVaultService
-import com.zorroa.analyst.repository.IndexDao
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 
 interface AssetService {
     fun getDocument(assetId: Asset) : Document
-    fun storeAndReindex(assetId: Asset, doc: Document)
+    fun storeAndReindex(assetId: Asset, doc: Document) : UpdateStatus
 }
 
 @Service
@@ -22,8 +24,25 @@ class AssetServiceImpl @Autowired constructor(
         return coreDataVault.getIndexedMetadata(assetId)
     }
 
-    override fun storeAndReindex(assetId: Asset, doc: Document) {
-        coreDataVault.updateIndexedMetadata(assetId, doc)
-        indexDao.indexDocument(assetId, doc)
+    override fun storeAndReindex(assetId: Asset, doc: Document) : UpdateStatus {
+        val result = UpdateStatus()
+        try {
+            coreDataVault.updateIndexedMetadata(assetId, doc)
+            result.status["stored"] = true
+        } catch (e: Exception) {
+            logger.info("Failed to write {} into CDV", assetId.id,e)
+        }
+        try {
+            indexDao.indexDocument(assetId, doc)
+            result.status["indexed"] = true
+        } catch(e: Exception) {
+            logger.info("Failed to write {} into Index", assetId.id,e)
+        }
+
+        return result
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
     }
 }

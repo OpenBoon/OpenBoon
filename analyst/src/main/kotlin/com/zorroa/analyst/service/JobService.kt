@@ -22,8 +22,9 @@ interface JobService {
     fun start(job: Job) : Boolean
     fun getWaiting(limit: Int) : List<Job>
     fun getRunning() : List<Job>
-    fun setState(job: Job, newState: JobState, oldState: JobState) : Boolean
+    fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean
     fun getAll(filter: JobFilter) : KPagedList<Job>
+    fun clearLocks(job: Job)
 }
 
 @Transactional
@@ -44,15 +45,15 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.create(spec)
     }
 
-    override fun setState(job: Job, newState: JobState, oldState: JobState) : Boolean {
+    override fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean {
         val result = jobDao.setState(job, newState, oldState)
         if (result) {
             logger.info("SUCCESS JOB State Change: {} {}->{}",
-                    job.name, oldState.name, newState.name)
+                    job.name, oldState?.name, newState.name)
         }
         else {
             logger.warn("FAILED JOB State Change: {} {}->{}",
-                    job.name, oldState.name, newState.name)
+                    job.name, oldState?.name, newState.name)
         }
         return result
     }
@@ -83,6 +84,10 @@ class JobServiceImpl @Autowired constructor(
 
     override fun getAll(filter: JobFilter) : KPagedList<Job> {
         return jobDao.getAll(filter)
+    }
+
+    override fun clearLocks(job: Job) {
+        lockDao.deleteByJob(job.id)
     }
 
     companion object {

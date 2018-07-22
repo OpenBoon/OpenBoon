@@ -1,6 +1,7 @@
 package com.zorroa.analyst.controller
 
 import com.zorroa.analyst.service.JobService
+import com.zorroa.analyst.service.SchedulerService
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobState
@@ -12,7 +13,8 @@ import java.util.*
 
 @RestController
 class JobController @Autowired constructor(
-        val jobService: JobService
+        val jobService: JobService,
+        val schedulerService: SchedulerService
 ){
 
     /**
@@ -23,6 +25,13 @@ class JobController @Autowired constructor(
         val job = jobService.get(id)
         jobService.stop(job, JobState.SUCCESS)
     }
+
+    @PutMapping("/api/v1/jobs/{id}/_retry")
+    fun retry(@PathVariable id: UUID) {
+        val job = jobService.get(id)
+        schedulerService.retry(job)
+    }
+
 
     @GetMapping("/api/v1/jobs")
     fun getAll(@RequestBody filter: JobFilter) : KPagedList<Job> {
