@@ -70,10 +70,12 @@ class ApplicationConfig {
 
     @Bean
     fun googleCredential() : GoogleCredential {
-        return if (Files.exists(Paths.get("config/credentials.json"))) {
-            GoogleCredential.fromStream(FileInputStream("config/credentials.json"))
+        val path = "config/credentials.json"
+        return if (Files.exists(Paths.get(path))) {
+            GoogleCredential.fromStream(FileInputStream(path))
         }
         else {
+            logger.warn("Unable to find credentials file, defaulting to ApplicationDefault creds")
             GoogleCredential.getApplicationDefault()
         }
     }
