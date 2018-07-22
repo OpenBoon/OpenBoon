@@ -44,6 +44,6 @@ class AssetController @Autowired constructor(
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(JobController::class.java)
+        private val logger = LoggerFactory.getLogger(AssetController::class.java)
     }
 }
