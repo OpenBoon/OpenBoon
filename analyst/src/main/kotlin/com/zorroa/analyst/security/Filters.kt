@@ -15,7 +15,20 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter(authManager: AuthenticationManager, private val credentials: GoogleCredential) : BasicAuthenticationFilter(authManager) {
+class JWTAuthorizationFilter(authManager: AuthenticationManager, credentials: GoogleCredential) : BasicAuthenticationFilter(authManager) {
+
+    private val key: ByteArray
+
+    init {
+        val privateKey = credentials.serviceAccountPrivateKey
+        key = if (privateKey == null) {
+            "abc123".toByteArray()
+        }
+        else {
+            String(Base64.getEncoder().encode(privateKey.encoded)).toByteArray()
+        }
+
+    }
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(req: HttpServletRequest,
@@ -34,16 +47,13 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager, private val cre
     }
 
     private fun getAuthentication(token: String): UsernamePasswordAuthenticationToken? {
-        val user = Jwts.parser()
-                .setSigningKey(credentials.serviceAccountPrivateKey)
+
+        val claims = Jwts.parser()
+                .setSigningKey(key)
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                .body
-                .subject
-        return if (user != null) {
-            UsernamePasswordAuthenticationToken(user, null, ArrayList())
-        }
-        else {
-            null
-        }
+        val jobId :Any? = claims.body["jobId"]
+        val user = jobId?.toString() ?: "unknown-job"
+        return UsernamePasswordAuthenticationToken(user, null, ArrayList())
     }
 }
+
