@@ -2,8 +2,10 @@ package com.zorroa.analyst.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -16,6 +18,8 @@ interface JobDao {
     fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean
     fun getWaiting(count:Int) : List<Job>
     fun getRunning() : List<Job>
+    fun getAll(filter: JobFilter) : KPagedList<Job>
+    fun setCount(filter: JobFilter)
 
 }
 
@@ -61,6 +65,17 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
         return jdbc.query(GET_RUNNING, MAPPER, JobState.RUNNING.ordinal)
     }
 
+    override fun getAll(filter: JobFilter) : KPagedList<Job> {
+        setCount(filter)
+        return KPagedList(filter.page, jdbc.query(filter.getQuery(GET),
+                        MAPPER, *filter.getValues()))
+    }
+
+    override fun setCount(filter: JobFilter) {
+        filter?.page?.totalCount = jdbc.queryForObject(filter.getCountQuery(COUNT),
+                Long::class.java, *filter.getValues(forCount = true))
+    }
+
     override fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean {
         val time = System.currentTimeMillis()
         return if (oldState != null) {
@@ -87,6 +102,8 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
         }
 
         private const val GET = "SELECT * FROM job"
+
+        private const val COUNT = "SELECT COUNT(1) FROM job"
 
         private const val GET_WAITING = "$GET " +
                 "WHERE " +

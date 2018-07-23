@@ -1,5 +1,5 @@
 {
-  "name": "dit1-ingest",
+  "name": "irm-dit1-ingest",
   "version": 1,
   "processors": [
     {

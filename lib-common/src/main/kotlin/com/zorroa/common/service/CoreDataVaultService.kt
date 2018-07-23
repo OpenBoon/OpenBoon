@@ -19,13 +19,14 @@ class IrmCoreDataVaultServiceImpl constructor(url: String) : CoreDataVaultServic
 
     override fun getIndexedMetadata(assetId: Asset): Document {
         val companyId = assetId.keys["companyId"]
-        return client.get("/companies/$companyId/assets/${assetId.id}/metadata/es", Document::class.java)
+        return client.get("/companies/$companyId/assets/${assetId.id}/es", Document::class.java)
     }
 
-    override fun updateIndexedMetadata(assetId:Asset, doc: Document): Any {
-        val companyId = assetId.keys["companyId"]
-        return client.put("/companies/$companyId/assets/${assetId.id}/metadata/es", doc, Json.GENERIC_MAP)
+    override fun updateIndexedMetadata(asset:Asset, doc: Document): Any {
+        val companyId : String? = doc.getAttr("irm.companyId", String::class.java)
+        if (companyId == null) {
+            throw IllegalStateException("Document has no companyId: ${asset.id}")
+        }
+        return client.put("/companies/$companyId/assets/${asset.id}/es", doc, Json.GENERIC_MAP)
     }
-
-
 }

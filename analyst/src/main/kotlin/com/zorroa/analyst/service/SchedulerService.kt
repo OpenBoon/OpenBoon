@@ -5,7 +5,6 @@ import com.zorroa.common.util.Json
 import com.zorroa.common.util.getPublicUrl
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
-import io.fabric8.kubernetes.api.model.Quantity
 import io.fabric8.kubernetes.api.model.VolumeMount
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder
 import io.fabric8.kubernetes.api.model.extensions.DeploymentSpec
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
+import java.time.Instant
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.annotation.PostConstruct
@@ -29,6 +29,7 @@ interface SchedulerService {
     fun pause(): Boolean
     fun resume() : Boolean
     fun schedule()
+    fun retry(job: Job) : Boolean
 }
 
 
@@ -36,6 +37,8 @@ interface SchedulerService {
 @ConfigurationProperties("analyst.scheduler")
 class SchedulerProperties {
     var type: String? = "local"
+    var maxJobs : Int = 3
+    var maxJobAgeHours = 24
     var k8 : Map<String, Any>? = null
 }
 
@@ -51,20 +54,22 @@ class K8SchedulerProperties {
  * This will eventually replicate the old Analyst behavior.
  */
 class LocalSchedulerServiceImpl: SchedulerService {
-    override fun schedule() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun retry(job: Job): Boolean {
+        return true
     }
 
+    override fun schedule() { }
+
     override fun startJob(job: Job): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun pause(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       return true
     }
 
     override fun resume(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 }
 
@@ -82,6 +87,9 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
 
     @Autowired
     lateinit var pipelineService: PipelineService
+
+    @Autowired
+    lateinit var schedulerProperties : SchedulerProperties
 
     @Value("\${cdv.url}")
     lateinit var cdvUrl : String
@@ -126,6 +134,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     override fun startJob(job: Job) : Boolean {
         val started= jobService.start(job)
         if (!started) {
+            logger.warn("The job {} was not in the Waiting state", job.name)
             return false
         }
         try {
@@ -133,14 +142,37 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             val yaml = generateK8JobSpec(job, selfUrl)
             logger.info("JOB: {}", job.id)
             logger.info("YAML {}", yaml)
-            kubernetesClient.extensions().jobs().load(
+
+            val job = kubernetesClient.extensions().jobs().load(
                     yaml.byteInputStream(Charsets.UTF_8)).create()
+
         } catch (e: Exception) {
-            jobService.setState(job, JobState.RUNNING, JobState.FAIL)
+            logger.warn("Failed to start job {}", job.name, e)
+            jobService.stop(job, JobState.FAIL)
             return false
         }
 
         return true
+    }
+
+    override fun retry(job: Job) : Boolean {
+        if (job.state == JobState.RUNNING) {
+            jobService.stop(job, JobState.WAITING)
+        }
+        else {
+            jobService.setState(job, JobState.WAITING, null)
+        }
+
+        val jobs =
+                kubernetesClient.extensions().jobs().withLabel("jobId", job.id.toString()).list()
+        if (!jobs.items.isEmpty()) {
+            for (job in jobs.items) {
+                logger.info("deleting : {}", job.metadata.name)
+                kubernetesClient.extensions().jobs().delete(job)
+            }
+        }
+        jobService.clearLocks(job)
+        return startJob(job)
     }
 
     fun generateZpsScript(job: Job, selfUrl: String) : ZpsScript {
@@ -206,15 +238,14 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         mount.mountPath = "/var/secrets/google"
 
         val container = Container()
-        container.resources.limits = mapOf("cpu" to Quantity("1"))
-        container.resources.requests = mapOf("cpu" to Quantity("1"))
         container.args = listOf("-cpus", "1")
         container.volumeMounts = listOf(mount)
         container.name = job.name
         container.image = k8Props.image
         container.args = listOf(url.toString())
         container.env = mutableListOf(
-                EnvVar("ZORROA_ANALYST_BASE_URL", selfUrl, null),
+                EnvVar("ZORROA_ANALYST_URL", selfUrl, null),
+                EnvVar("ZORROA_JOB_ID", job.id.toString(), null),
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
@@ -244,15 +275,27 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     }
 
     override fun pause() : Boolean = paused.compareAndSet(false, true)
+
     override fun resume() : Boolean = paused.compareAndSet(true, false)
 
     override fun schedule() {
         val runningJobs = jobService.getRunning()
         logger.info("Analyst has {} running jobs", runningJobs)
-        validateRunning(runningJobs)
+        try {
+            validateRunning(runningJobs)
+        } catch (e: Exception) {
+            logger.warn("failed to validate running jobs", e)
+        }
 
-        if (runningJobs.size < 10) {
-            val jobs = jobService.getWaiting(10 - runningJobs.size)
+        try {
+            removeOldJobs()
+        }
+        catch(e: Exception) {
+            logger.warn("Error removing old K8 jobs,", e)
+        }
+
+        if (runningJobs.size < schedulerProperties.maxJobs) {
+            val jobs = jobService.getWaiting(schedulerProperties.maxJobs - runningJobs.size)
             logger.info("Found {} waiting jobs", jobs.size)
 
             for (job in jobs) {
@@ -264,31 +307,77 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     private fun validateRunning(jobs:List<Job>) {
         var orphanJobs = 0
         for (job in jobs) {
-            val kjob: io.fabric8.kubernetes.api.model.Job? = kubernetesClient.extensions().jobs().withName(job.name).get()
+            val kjob: io.fabric8.kubernetes.api.model.Job? =
+                    kubernetesClient.extensions().jobs().withName(job.name).get()
             if (kjob != null) {
-                // Remove this later
-                logger.info("{}", Json.prettyString(kjob.status))
-                if (kjob.status.succeeded >= 1) {
-                    jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
-                    kubernetesClient.extensions().jobs().delete(kjob)
-                }
-                else {
-                    for (cond in kjob.status.conditions) {
-                        if (cond.type == "Failed") {
-                            jobService.setState(job, JobState.FAIL, JobState.RUNNING)
-                            break
+                if (kjob.status != null) {
+                    if (kjob.status.succeeded != null) {
+                        if (kjob.status.succeeded >= 1) {
+                            jobService.stop(job, JobState.SUCCESS)
                         }
                     }
+                    else if (kjob.status.conditions != null) {
+                        for (cond in kjob.status.conditions) {
+                            if (cond.type == "Failed") {
+                                jobService.stop(job, JobState.FAIL)
+                                break
+                            }
+                        }
+                    }
+                }
+                else {
+                    logger.warn("Job has no status data: {}", job.name)
+                    logger.warn(Json.prettyString(kjob))
                 }
             }
             else {
                 orphanJobs++
-                // Have to decide what to do here
+                // Orphans are jobs running in the DB with no K8 job.
+                jobService.stop(job, JobState.ORPHAN)
             }
         }
         if (orphanJobs > 0) {
             logger.warn("Analyst had {} orphan jobs", orphanJobs)
         }
+    }
+
+    private fun removeOldJobs() {
+        val now = Instant.now().epochSecond
+        val jobs = kubernetesClient.extensions().jobs().list()
+        for (job in jobs.items) {
+            if (job.status != null) {
+                /**
+                 * First delete by completion time
+                 */
+                if (job.status.completionTime != null) {
+                    val i =  Instant.parse(job.status.completionTime)
+                    if (checkExpired(now, i)) {
+                        logger.info("Removing job: {}", job.metadata.name)
+                        kubernetesClient.extensions().jobs().delete(job)
+                    }
+                }
+                /**
+                 * Then check failures which have no completion time.
+                 */
+                if (job.status.conditions != null) {
+                    for (cond in job.status.conditions) {
+                        if (cond.type != null) {
+                            if (cond.type == "Failed") {
+                                val i =  Instant.parse(cond.lastTransitionTime)
+                                if (checkExpired(now, i)) {
+                                    logger.info("Removing job: {}", job.metadata.name)
+                                    kubernetesClient.extensions().jobs().delete(job)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkExpired(now: Long, i: Instant) : Boolean {
+        return (now - i.epochSecond) / 3600.0 > schedulerProperties.maxJobAgeHours
     }
 
     companion object {
