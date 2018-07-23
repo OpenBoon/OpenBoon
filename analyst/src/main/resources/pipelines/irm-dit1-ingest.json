@@ -5,7 +5,9 @@
     {
       "className": "zplugins.irm.processors.CDVAssetProcessor",
       "language": "python",
-      "args": {}
+      "args": {
+        "google_credential_path": "/var/secrets/google/cdv.json"
+      }
     },
     {
       "className": "zplugins.pdf.processors.PdfIngestor",
