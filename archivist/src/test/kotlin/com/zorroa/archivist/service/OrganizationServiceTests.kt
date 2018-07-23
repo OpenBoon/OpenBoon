@@ -20,7 +20,7 @@ class OrganizationServiceTests {
     private val organizationName = "Wendys"
     private val organizationSpec = OrganizationSpec(organizationName)
     private val organizationId = UUID.randomUUID()
-    private val organization = Organization(organizationId.toString(), organizationName)
+    private val organization = Organization(organizationId, organizationName)
 
     @InjectMocks
     private lateinit var organizationService: OrganizationServiceImpl
