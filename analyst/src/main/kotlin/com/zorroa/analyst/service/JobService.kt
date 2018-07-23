@@ -4,8 +4,10 @@ import com.zorroa.analyst.domain.LockSpec
 import com.zorroa.analyst.repository.JobDao
 import com.zorroa.analyst.repository.LockDao
 import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -20,7 +22,9 @@ interface JobService {
     fun start(job: Job) : Boolean
     fun getWaiting(limit: Int) : List<Job>
     fun getRunning() : List<Job>
-    fun setState(job: Job, newState: JobState, oldState: JobState) : Boolean
+    fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean
+    fun getAll(filter: JobFilter) : KPagedList<Job>
+    fun clearLocks(job: Job)
 }
 
 @Transactional
@@ -41,15 +45,15 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.create(spec)
     }
 
-    override fun setState(job: Job, newState: JobState, oldState: JobState) : Boolean {
+    override fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean {
         val result = jobDao.setState(job, newState, oldState)
         if (result) {
             logger.info("SUCCESS JOB State Change: {} {}->{}",
-                    job.name, oldState.name, newState.name)
+                    job.name, oldState?.name, newState.name)
         }
         else {
             logger.warn("FAILED JOB State Change: {} {}->{}",
-                    job.name, oldState.name, newState.name)
+                    job.name, oldState?.name, newState.name)
         }
         return result
     }
@@ -76,6 +80,14 @@ class JobServiceImpl @Autowired constructor(
 
     override fun getRunning() : List<Job> {
         return jobDao.getRunning()
+    }
+
+    override fun getAll(filter: JobFilter) : KPagedList<Job> {
+        return jobDao.getAll(filter)
+    }
+
+    override fun clearLocks(job: Job) {
+        lockDao.deleteByJob(job.id)
     }
 
     companion object {

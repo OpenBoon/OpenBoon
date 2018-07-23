@@ -28,6 +28,7 @@ interface SchedulerService {
     fun pause(): Boolean
     fun resume() : Boolean
     fun schedule()
+    fun retry(job: Job) : Boolean
 }
 
 
@@ -35,6 +36,7 @@ interface SchedulerService {
 @ConfigurationProperties("analyst.scheduler")
 class SchedulerProperties {
     var type: String? = "local"
+    var maxJobs : Int = 3
     var k8 : Map<String, Any>? = null
 }
 
@@ -50,20 +52,22 @@ class K8SchedulerProperties {
  * This will eventually replicate the old Analyst behavior.
  */
 class LocalSchedulerServiceImpl: SchedulerService {
-    override fun schedule() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun retry(job: Job): Boolean {
+        return true
     }
 
+    override fun schedule() { }
+
     override fun startJob(job: Job): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun pause(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       return true
     }
 
     override fun resume(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 }
 
@@ -81,6 +85,9 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
 
     @Autowired
     lateinit var pipelineService: PipelineService
+
+    @Autowired
+    lateinit var schedulerProperties : SchedulerProperties
 
     @Value("\${cdv.url}")
     lateinit var cdvUrl : String
@@ -133,8 +140,10 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             val yaml = generateK8JobSpec(job, selfUrl)
             logger.info("JOB: {}", job.id)
             logger.info("YAML {}", yaml)
-            kubernetesClient.extensions().jobs().load(
+
+            val job = kubernetesClient.extensions().jobs().load(
                     yaml.byteInputStream(Charsets.UTF_8)).create()
+
         } catch (e: Exception) {
             logger.warn("Failed to start job {}", job.name, e)
             jobService.stop(job, JobState.FAIL)
@@ -142,6 +151,26 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         }
 
         return true
+    }
+
+    override fun retry(job: Job) : Boolean {
+        if (job.state == JobState.RUNNING) {
+            jobService.stop(job, JobState.WAITING)
+        }
+        else {
+            jobService.setState(job, JobState.WAITING, null)
+        }
+
+        val jobs =
+                kubernetesClient.extensions().jobs().withLabel("jobId", job.id.toString()).list()
+        if (!jobs.items.isEmpty()) {
+            for (job in jobs.items) {
+                logger.info("deleting : {}", job.metadata.name)
+                kubernetesClient.extensions().jobs().delete(job)
+            }
+        }
+        jobService.clearLocks(job)
+        return startJob(job)
     }
 
     fun generateZpsScript(job: Job, selfUrl: String) : ZpsScript {
@@ -213,7 +242,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         container.image = k8Props.image
         container.args = listOf(url.toString())
         container.env = mutableListOf(
-                EnvVar("ZORROA_ANALYST_BASE_URL", selfUrl, null),
+                EnvVar("ZORROA_ANALYST_URL", selfUrl, null),
+                EnvVar("ZORROA_JOB_ID", job.id.toString(), null),
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
@@ -243,9 +273,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     }
 
     override fun pause() : Boolean = paused.compareAndSet(false, true)
-    override fun resume() : Boolean = paused.compareAndSet(true, false)
 
-    val maxJobs = 3
+    override fun resume() : Boolean = paused.compareAndSet(true, false)
 
     override fun schedule() {
         val runningJobs = jobService.getRunning()
@@ -256,8 +285,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             logger.warn("failed to validate running jobs", e)
         }
 
-        if (runningJobs.size < maxJobs) {
-            val jobs = jobService.getWaiting(maxJobs - runningJobs.size)
+        if (runningJobs.size < schedulerProperties.maxJobs) {
+            val jobs = jobService.getWaiting(schedulerProperties.maxJobs - runningJobs.size)
             logger.info("Found {} waiting jobs", jobs.size)
 
             for (job in jobs) {
@@ -275,9 +304,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 if (kjob.status != null) {
                     if (kjob.status.succeeded != null) {
                         if (kjob.status.succeeded >= 1) {
-                            jobService.setState(job, JobState.SUCCESS, JobState.RUNNING)
-                            logger.info("deleting job: {}", job.name)
-                            kubernetesClient.extensions().jobs().delete(kjob)
+                            jobService.stop(job, JobState.SUCCESS)
                         }
                     }
                     else if (kjob.status.conditions != null) {
@@ -296,7 +323,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             }
             else {
                 orphanJobs++
-                // Have to decide what to do here
+                // Orphans are jobs running in the DB with no K8 job.
+                jobService.stop(job, JobState.ORPHAN)
             }
         }
         if (orphanJobs > 0) {

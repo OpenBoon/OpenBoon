@@ -3,8 +3,10 @@ package com.zorroa.analyst.repository
 import com.zorroa.analyst.AbstractTest
 import com.zorroa.analyst.domain.LockSpec
 import com.zorroa.analyst.service.PipelineService
+import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
@@ -102,5 +104,30 @@ class JobDaoTests : AbstractTest() {
 
         val all = jobDao.getWaiting(10)
         assertTrue(all.isEmpty())
+    }
+
+    @Test
+    fun testGetAllWithFilter() {
+        val assetId = UUID.randomUUID()
+        val orgId = UUID.randomUUID()
+        for (i in 1..10) {
+            val spec = JobSpec("run_some_stuff_v$i",
+                    assetId,
+                    orgId,
+                    listOf("standard"))
+            jobDao.create(spec)
+        }
+
+        var filter = JobFilter(assetIds=listOf(assetId))
+        var jobs = jobDao.getAll(filter)
+        assertEquals(10, jobs.size())
+        assertEquals(10, jobs.page.totalCount)
+
+        filter = JobFilter(assetIds=listOf(assetId), organizationIds =listOf(UUID.randomUUID()))
+        jobs = jobDao.getAll(filter)
+        assertEquals(0, jobs.size())
+
+        logger.info(Json.prettyString(jobs))
+
     }
 }

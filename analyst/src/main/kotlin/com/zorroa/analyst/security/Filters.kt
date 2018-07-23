@@ -8,22 +8,26 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import java.io.FileInputStream
 import java.io.IOException
 import java.util.*
-import javax.annotation.PostConstruct
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
+class JWTAuthorizationFilter(authManager: AuthenticationManager, credentials: GoogleCredential) : BasicAuthenticationFilter(authManager) {
 
-    private lateinit var credentials: GoogleCredential
+    private val key: ByteArray
 
-    @PostConstruct
-    fun setup() {
-        credentials = GoogleCredential.fromStream(FileInputStream("keys/credentials.json"))
+    init {
+        val privateKey = credentials.serviceAccountPrivateKey
+        key = if (privateKey == null) {
+            "abc123".toByteArray()
+        }
+        else {
+            String(Base64.getEncoder().encode(privateKey.encoded)).toByteArray()
+        }
+
     }
 
     @Throws(IOException::class, ServletException::class)
@@ -43,16 +47,13 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
     }
 
     private fun getAuthentication(token: String): UsernamePasswordAuthenticationToken? {
-        val user = Jwts.parser()
-                .setSigningKey(credentials.serviceAccountPrivateKey)
+
+        val claims = Jwts.parser()
+                .setSigningKey(key)
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                .body
-                .subject
-        return if (user != null) {
-            UsernamePasswordAuthenticationToken(user, null, ArrayList())
-        }
-        else {
-            null
-        }
+        val jobId :Any? = claims.body["jobId"]
+        val user = jobId?.toString() ?: "unknown-job"
+        return UsernamePasswordAuthenticationToken(user, null, ArrayList())
     }
 }
+
