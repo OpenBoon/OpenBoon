@@ -234,7 +234,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 .endMetadata()
 
         val mount = VolumeMount()
-        mount.name = "google-cloud-key"
+        mount.name = "secrets-volume"
         mount.mountPath = "/var/secrets/google"
 
         val container = Container()
@@ -251,7 +251,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
                 EnvVar("CDV_DOCUMENT_GUID", job.assetId.toString(),null),
                 EnvVar("CDV_API_BASE_URL", cdvUrl, null),
-                EnvVar("GOOGLE_APPLICATION_CREDENTIALS", " /var/secrets/google/key.json", null))
+                EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null))
 
         val dspec = DeploymentSpec()
         dspec.setAdditionalProperty("backOffLimit", 1)
@@ -263,9 +263,9 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 .endMetadata()
         template.editOrNewSpec()
                 .addNewVolume()
-                    .withName("google-cloud-key")
+                    .withName("secrets-volume")
                     .withNewSecret()
-                        .withSecretName("zorroa-workers-key")
+                        .withSecretName("analyst-secrets")
                     .endSecret()
                 .endVolume()
                 .withRestartPolicy("Never")
