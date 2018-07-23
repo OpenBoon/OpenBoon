@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
+import java.time.Instant
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.annotation.PostConstruct
@@ -37,6 +38,7 @@ interface SchedulerService {
 class SchedulerProperties {
     var type: String? = "local"
     var maxJobs : Int = 3
+    var maxJobAgeHours = 24
     var k8 : Map<String, Any>? = null
 }
 
@@ -285,6 +287,13 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             logger.warn("failed to validate running jobs", e)
         }
 
+        try {
+            removeOldJobs()
+        }
+        catch(e: Exception) {
+            logger.warn("Error removing old K8 jobs,", e)
+        }
+
         if (runningJobs.size < schedulerProperties.maxJobs) {
             val jobs = jobService.getWaiting(schedulerProperties.maxJobs - runningJobs.size)
             logger.info("Found {} waiting jobs", jobs.size)
@@ -330,6 +339,45 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         if (orphanJobs > 0) {
             logger.warn("Analyst had {} orphan jobs", orphanJobs)
         }
+    }
+
+    private fun removeOldJobs() {
+        val now = Instant.now().epochSecond
+        val jobs = kubernetesClient.extensions().jobs().list()
+        for (job in jobs.items) {
+            if (job.status != null) {
+                /**
+                 * First delete by completion time
+                 */
+                if (job.status.completionTime != null) {
+                    val i =  Instant.parse(job.status.completionTime)
+                    if (checkExpired(now, i)) {
+                        logger.info("Removing job: {}", job.metadata.name)
+                        kubernetesClient.extensions().jobs().delete(job)
+                    }
+                }
+                /**
+                 * Then check failures which have no completion time.
+                 */
+                if (job.status.conditions != null) {
+                    for (cond in job.status.conditions) {
+                        if (cond.type != null) {
+                            if (cond.type == "Failed") {
+                                val i =  Instant.parse(cond.lastTransitionTime)
+                                if (checkExpired(now, i)) {
+                                    logger.info("Removing job: {}", job.metadata.name)
+                                    kubernetesClient.extensions().jobs().delete(job)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkExpired(now: Long, i: Instant) : Boolean {
+        return (now - i.epochSecond) / 3600.0 > schedulerProperties.maxJobAgeHours
     }
 
     companion object {
