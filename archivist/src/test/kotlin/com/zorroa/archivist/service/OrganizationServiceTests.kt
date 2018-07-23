@@ -19,7 +19,8 @@ class OrganizationServiceTests {
 
     private val organizationName = "Wendys"
     private val organizationSpec = OrganizationSpec(organizationName)
-    private val organization = Organization(UUID.randomUUID().toString(), organizationName)
+    private val organizationId = UUID.randomUUID()
+    private val organization = Organization(organizationId.toString(), organizationName)
 
     @InjectMocks
     private lateinit var organizationService: OrganizationServiceImpl
@@ -30,6 +31,7 @@ class OrganizationServiceTests {
     @Before
     fun init() {
         Mockito.`when`(organizationDao.create(organizationSpec)).thenReturn(organization)
+        Mockito.`when`(organizationDao.get(organizationId)).thenReturn(organization)
     }
 
     @Test
@@ -40,5 +42,10 @@ class OrganizationServiceTests {
     @Test
     fun testCreateWithSpec() {
         assertEquals(organization, organizationService.create(organizationSpec))
+    }
+
+    @Test
+    fun testGet() {
+        assertEquals(organization, organizationService.get(organizationId))
     }
 }

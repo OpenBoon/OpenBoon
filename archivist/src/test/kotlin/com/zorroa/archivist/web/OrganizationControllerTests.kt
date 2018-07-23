@@ -12,7 +12,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
-import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
 
@@ -21,7 +20,8 @@ class OrganizationControllerTests {
 
     private val organizationName = "Wendys"
     private val organizationSpec = OrganizationSpec(organizationName)
-    private val organization = Organization(UUID.randomUUID().toString(), organizationName)
+    private val organizationId = UUID.randomUUID()
+    private val organization = Organization(organizationId.toString(), organizationName)
 
     @InjectMocks
     private lateinit var organizationService: OrganizationServiceImpl
@@ -32,6 +32,7 @@ class OrganizationControllerTests {
     @Before
     fun init() {
         Mockito.`when`(organizationDao.create(organizationSpec)).thenReturn(organization)
+        Mockito.`when`(organizationDao.get(organizationId)).thenReturn(organization)
     }
 
     @Test
@@ -40,5 +41,12 @@ class OrganizationControllerTests {
         val organization = organizationController.create(organizationSpec)
         assertEquals(organizationName, organization.name)
     }
+
+    @Test
+    fun testGet() {
+        val organizationController = OrganizationController(organizationService)
+        assertEquals(organization, organizationController.get(organizationId.toString()))
+    }
+
 
 }

@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 interface OrganizationService {
-    fun create(name: String): Organization
-    fun create(spec: OrganizationSpec): Organization
-//    fun get(id: UUID): Organization
-//    fun update(): Boolean
-//    fun delete(organization: Organization): Boolean
+    fun create(name: String) : Organization
+    fun create(spec: OrganizationSpec) : Organization
+    fun get(id: UUID) : Organization
 }
 
 @Service
@@ -29,4 +27,6 @@ class OrganizationServiceImpl @Autowired constructor () : OrganizationService {
     override fun create(spec: OrganizationSpec): Organization {
         return organizationDao.create(spec)
     }
+
+    override fun get(id: UUID) = organizationDao.get(id)
 }
