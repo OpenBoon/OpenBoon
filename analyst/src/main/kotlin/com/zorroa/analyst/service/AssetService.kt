@@ -53,6 +53,7 @@ class AssetServiceImpl @Autowired constructor(
 
     override fun storeAndReindex(assetId: Asset, doc: Document) : UpdateStatus {
         val result = UpdateStatus()
+        removeIllegalNamespaces(doc)
         try {
             coreDataVault.updateIndexedMetadata(assetId, doc)
             result.status["stored"] = true

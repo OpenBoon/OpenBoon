@@ -11,9 +11,13 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @RunWith(MockitoJUnitRunner::class)
 class AssetServiceTests {
+
+    private val asset = Asset(UUID.randomUUID(), UUID.randomUUID(), mutableMapOf("tmp.download_url" to "https://fake.com/file"))
+    private val document = Document(asset.id.toString())
 
     @InjectMocks
     private lateinit var assetService: AssetServiceImpl
@@ -26,9 +30,15 @@ class AssetServiceTests {
 
     @Test
     fun testRemoveIllegalNamespaces() {
-        val asset = Asset(UUID.randomUUID(), UUID.randomUUID(), mutableMapOf("tmp.download_url" to "https://fake.com/file"))
-        val document = Document(asset.id.toString())
         assetService.removeIllegalNamespaces(document)
+        assertNull(document.getAttr("tmp"))
+    }
+
+    @Test
+    fun storeAndReindex() {
+        val result = assetService.storeAndReindex(asset, document)
+        assertTrue(result.status["stored"] as Boolean)
+        assertTrue(result.status["indexed"] as Boolean)
         assertNull(document.getAttr("tmp"))
     }
 }
