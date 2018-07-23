@@ -77,7 +77,7 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     companion object {
         private val MAPPER = RowMapper<Organization> { rs, _ ->
             Organization(
-                    rs.getObject("pk_organization") as UUID,
+                    (rs.getObject("pk_organization") as UUID).toString(),
                     rs.getString("str_name"))
         }
 
