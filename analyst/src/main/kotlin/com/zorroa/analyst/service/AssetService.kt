@@ -30,8 +30,7 @@ class AssetServiceImpl @Autowired constructor(
          * Namespaces that are only populated via the API.  IF people manipulate these
          * incorrectly via the asset API then it would corrupt the asset.
          */
-        private val NS_PROTECTED_API = ImmutableSet.of(
-                "zorroa", "tmp")
+        private val NS_PROTECTED_API = ImmutableSet.of("tmp")
         private val logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
     }
 
