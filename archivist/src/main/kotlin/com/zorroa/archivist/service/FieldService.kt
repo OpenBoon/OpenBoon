@@ -204,9 +204,15 @@ class FieldServiceImpl @Autowired constructor(
         val result = mutableMapOf<String, Float>()
         val fields = getFields("asset")
         fields.getValue("keywords").forEach { v-> result[v] = 1.0f }
-        fields.getValue("keywords-boost").asSequence()
-                .map { it.split(":", limit = 2) }
-                .map { result[it[0]] = it[1].toFloat() }
+        for (field in fields.getValue("keywords-boost")) {
+            val (key,boost) = field.split(':', limit=2)
+            try {
+                result[key] = boost.toFloat()
+            } catch (e: Exception) {
+                logger.warn("Failed to parse boosted keyword field: {}", field)
+            }
+        }
+
         return result
     }
 
