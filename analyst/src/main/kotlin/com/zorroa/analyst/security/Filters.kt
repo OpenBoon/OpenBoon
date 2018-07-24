@@ -1,6 +1,5 @@
 package com.zorroa.analyst.security
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.analyst.security.SecurityConstants.HEADER_STRING
 import com.zorroa.analyst.security.SecurityConstants.TOKEN_PREFIX
 import io.jsonwebtoken.Jwts
@@ -15,20 +14,17 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter(authManager: AuthenticationManager, credentials: GoogleCredential) : BasicAuthenticationFilter(authManager) {
+object SecurityConstants {
+    val EXPIRATION_TIME: Long = 864000000 // 10 days
+    val TOKEN_PREFIX = "Bearer "
+    val HEADER_STRING = "Authorization"
+}
 
-    private val key: ByteArray
+data class JwtCredentials(val key: String) {
+    val bytes = key.toByteArray()
+}
 
-    init {
-        val privateKey = credentials.serviceAccountPrivateKey
-        key = if (privateKey == null) {
-            "abc123".toByteArray()
-        }
-        else {
-            String(Base64.getEncoder().encode(privateKey.encoded)).toByteArray()
-        }
-
-    }
+class JWTAuthorizationFilter(authManager: AuthenticationManager, private val credentials: JwtCredentials) : BasicAuthenticationFilter(authManager) {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(req: HttpServletRequest,
@@ -49,7 +45,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager, credentials: Go
     private fun getAuthentication(token: String): UsernamePasswordAuthenticationToken? {
 
         val claims = Jwts.parser()
-                .setSigningKey(key)
+                .setSigningKey(credentials.bytes)
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
         val jobId :Any? = claims.body["jobId"]
         val user = jobId?.toString() ?: "unknown-job"

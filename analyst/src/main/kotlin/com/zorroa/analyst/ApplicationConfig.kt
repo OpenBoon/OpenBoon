@@ -2,6 +2,7 @@ package com.zorroa.analyst
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.common.collect.Lists
+import com.zorroa.analyst.security.JwtCredentials
 import com.zorroa.analyst.service.*
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.FakeIndexRoutingServiceImpl
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 
 @Configuration
 class ApplicationConfig {
@@ -69,14 +71,15 @@ class ApplicationConfig {
     }
 
     @Bean
-    fun googleCredential() : GoogleCredential {
+    fun jwtCredential() : JwtCredentials {
         val path = "config/credentials.json"
         return if (Files.exists(Paths.get(path))) {
-            GoogleCredential.fromStream(FileInputStream(path))
-        }
+            val cred = GoogleCredential.fromStream(FileInputStream(path))
+                JwtCredentials(String(Base64.getEncoder().encode(cred.serviceAccountPrivateKey.encoded)))
+            }
         else {
-            logger.warn("Unable to find credentials file, defaulting to ApplicationDefault creds")
-            GoogleCredential.getApplicationDefault()
+            logger.warn("Unable to find credentials file, defaulting to random key")
+            JwtCredentials(UUID.randomUUID().toString())
         }
     }
 
