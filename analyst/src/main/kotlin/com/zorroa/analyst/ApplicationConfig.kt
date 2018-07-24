@@ -75,11 +75,11 @@ class ApplicationConfig {
         val path = "config/credentials.json"
         return if (Files.exists(Paths.get(path))) {
             val cred = GoogleCredential.fromStream(FileInputStream(path))
-            return JwtCredentials(String(Base64.getEncoder().encode(cred.serviceAccountPrivateKey.encoded)))
+                JwtCredentials(String(Base64.getEncoder().encode(cred.serviceAccountPrivateKey.encoded)))
             }
         else {
             logger.warn("Unable to find credentials file, defaulting to known private key")
-            return JwtCredentials("5c79b747b715caf888fb728aa1b119b51f4be33d")
+            JwtCredentials("5c79b747b715caf888fb728aa1b119b51f4be33d")
         }
     }
 
