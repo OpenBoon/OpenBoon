@@ -72,7 +72,9 @@ public class SettingsServiceTests extends AbstractTest {
         SettingsFilter filter = new SettingsFilter();
         filter.setStartsWith(ImmutableSet.of("server"));
         List<Setting> settings = settingsService.getAll(filter);
-        assertEquals(9, settings.size());
+        for (Setting setting: settings) {
+            assertTrue(setting.getName().startsWith("server."));
+        }
     }
 
     @Test

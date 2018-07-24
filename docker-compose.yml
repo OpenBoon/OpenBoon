@@ -24,13 +24,13 @@ services:
       args:
         node_type: single
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "49200:9200"
+      - "49300:9300"
   dev-postgres:
     image: "postgres:9.6.9"
     hostname: "localhost"
     ports:
-          - "5432:5432"
+          - "45432:5432"
     environment:
       POSTGRES_PASSWORD: zorroa
       POSTGRES_USER: zorroa
