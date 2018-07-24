@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.api
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
@@ -97,19 +96,6 @@ class AssetController @Autowired constructor(
                 val preferMediaType = tika.detect(path)
                 checkFiles.add(StreamFile(preferPath, preferMediaType, false))
 
-                val proxies = asset.getAttr("proxies.$type", object : TypeReference<List<Proxy>>() {})
-                if (proxies != null) {
-                    for (proxy in proxies) {
-                        if (preferExt == proxy.format) {
-                            val f = ofs.get(proxy.id)
-                            if (f.exists()) {
-                                checkFiles.add(StreamFile(f.file.toString(),
-                                        tika.detect(f.file.toString()), false))
-                                break
-                            }
-                        }
-                    }
-                }
             } else {
                 checkFiles.add(StreamFile(path, mediaType, false))
             }
@@ -152,7 +138,6 @@ class AssetController @Autowired constructor(
 
         val asset = indexService.get(id)
         val canExport = canExport(asset)
-        val format = getPreferredFormat(asset, ext, fallback, !canExport)
 
         when {
             request.method == "HEAD" -> {
@@ -162,16 +147,22 @@ class AssetController @Autowired constructor(
                             storageService.getSignedUrl(URL(stream)).toString())
                 }
             }
-            format == null -> response.status = 404
             else -> try {
-                MultipartFileSender.fromPath(Paths.get(format.path))
-                        .with(request)
-                        .with(response)
-                        .setContentType(format.mimeType)
-                        .serveResource()
-                if (canExport) {
-                    logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.id))
+                val format = getPreferredFormat(asset, ext, fallback, !canExport)
+                if (format == null) {
+                    response.status = 404
                 }
+                else {
+                    MultipartFileSender.fromPath(Paths.get(format.path))
+                            .with(request)
+                            .with(response)
+                            .setContentType(format.mimeType)
+                            .serveResource()
+                    if (canExport) {
+                        logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.id))
+                    }
+                }
+
             } catch (e: Exception) {
                 logger.warn("MultipartFileSender failed on {}, unexpected {}", id, e.message)
             }
