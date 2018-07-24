@@ -8,7 +8,7 @@ install:
   - mvn package
   - cd ../
   - cp es-similarity/target/releases/es-similarity.zip elasticsearch
-  - docker compose up -d
+  - docker-compose up -d
   - ./travis/travis-install-test-data.sh
 
 script:
