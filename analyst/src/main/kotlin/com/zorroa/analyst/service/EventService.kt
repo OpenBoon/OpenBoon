@@ -7,6 +7,7 @@ import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -91,7 +92,7 @@ class GcpEventServiceImpl : EventService {
                     val spec = JobSpec(jobName,
                             UUID.fromString(assetId),
                             UUID.fromString("00000000-9998-8888-7777-666666666666"),
-                            pipelineService.getDefaultPipelineList(),
+                            pipelineService.getDefaultPipelineNames(PipelineType.IMPORT),
                             attrs=mapOf("companyId" to companyId))
 
                     val job = jobService.create(spec)
