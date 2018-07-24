@@ -1,6 +1,5 @@
 package com.zorroa.analyst.security
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -14,18 +13,11 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
-
-object SecurityConstants {
-    val EXPIRATION_TIME: Long = 864000000 // 10 days
-    val TOKEN_PREFIX = "Bearer "
-    val HEADER_STRING = "Authorization"
-}
-
 @EnableWebSecurity
 class WebSecurity : WebSecurityConfigurerAdapter() {
 
     @Autowired
-    lateinit var googleCredential : GoogleCredential
+    lateinit var jwtCredentials : JwtCredentials
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -35,7 +27,7 @@ class WebSecurity : WebSecurityConfigurerAdapter() {
                 .and()
                 .httpBasic()
                 .and()
-                .addFilter(JWTAuthorizationFilter(authenticationManager(), googleCredential))
+                .addFilter(JWTAuthorizationFilter(authenticationManager(), jwtCredentials))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
