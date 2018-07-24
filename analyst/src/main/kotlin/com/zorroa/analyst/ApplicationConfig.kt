@@ -78,8 +78,8 @@ class ApplicationConfig {
                 JwtCredentials(String(Base64.getEncoder().encode(cred.serviceAccountPrivateKey.encoded)))
             }
         else {
-            logger.warn("Unable to find credentials file, defaulting to known private key")
-            JwtCredentials("5c79b747b715caf888fb728aa1b119b51f4be33d")
+            logger.warn("Unable to find credentials file, defaulting to random key")
+            JwtCredentials(UUID.randomUUID().toString())
         }
     }
 
