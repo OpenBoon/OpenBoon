@@ -7,7 +7,7 @@ These instructions will walk you though setting up Archivist and Analyst for tes
 ### Prequisites:
 1. Java SDK: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 1. ffmpeg & ffprobe (must be in your PATH, /usr/local/bin/ is suggested): https://evermeet.cx/ffmpeg/
-1. Postgres.app: https://postgresapp.com/
+1. Docker: https://www.docker.com/docker-mac
 1. Homebrew: https://brew.sh/
 1. git: Installed via Homebrew ```brew install git```
 1. oiiotool (must be in your PATH, /usr/local/bin/ is suggested): https://dl.zorroa.com/public/osx/oiiotool or build your own at https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md
@@ -30,18 +30,10 @@ git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
 git clone git@github.com:Zorroa/zorroa-server.git
 ``` 
 
-### Build Plugin SDK
+### Start the dev Elastic Search and Postgres instances.
+These are all handled by a docker compose. From the root of the zorroa-server repo run the following.
 
-In theory one would build and test the Zorroa plugin SDK like this:
-
-```
-cd ~/zorroa/zorroa-plugin-sdk
-mvn clean install
-```
-But since there are unit test failures even in stabilized release branches, one must skip testing in order for the build to run to completion. This is achieved by passing an additional flag like this:
-```
-mvn clean install -Dmaven.test.skip=true
-```
+```docker-compose up -d```
 
 ### Build the Server
 

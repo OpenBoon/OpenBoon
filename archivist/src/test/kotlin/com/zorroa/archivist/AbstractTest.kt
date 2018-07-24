@@ -49,7 +49,7 @@ import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@ActiveProfiles("test")
+@TestPropertySource(locations=["classpath:test.properties"])
 @WebAppConfiguration
 @Transactional
 open abstract class AbstractTest {
