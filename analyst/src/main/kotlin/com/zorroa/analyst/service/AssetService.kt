@@ -1,5 +1,6 @@
 package com.zorroa.analyst.service
 
+import com.google.common.collect.ImmutableSet
 import com.zorroa.analyst.domain.PreconditionFailedException
 import com.zorroa.analyst.domain.UpdateStatus
 import com.zorroa.analyst.repository.IndexDao
@@ -14,6 +15,7 @@ import java.util.*
 
 interface AssetService {
     fun getDocument(assetId: Asset) : Document
+    fun removeIllegalNamespaces(doc: Document)
     fun storeAndReindex(assetId: Asset, doc: Document) : UpdateStatus
     fun getAsset(doc: Document) : Asset
 }
@@ -22,6 +24,15 @@ interface AssetService {
 class AssetServiceImpl @Autowired constructor(
         val coreDataVault: CoreDataVaultService,
         val indexDao: IndexDao): AssetService {
+
+    companion object {
+        /**
+         * Namespaces that are only populated via the API.  IF people manipulate these
+         * incorrectly via the asset API then it would corrupt the asset.
+         */
+        private val NS_PROTECTED_API = ImmutableSet.of("tmp")
+        private val logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
+    }
 
     /**
      * A fakeish implementation for now.
@@ -42,6 +53,7 @@ class AssetServiceImpl @Autowired constructor(
 
     override fun storeAndReindex(assetId: Asset, doc: Document) : UpdateStatus {
         val result = UpdateStatus()
+        removeIllegalNamespaces(doc)
         try {
             coreDataVault.updateIndexedMetadata(assetId, doc)
             result.status["stored"] = true
@@ -60,7 +72,14 @@ class AssetServiceImpl @Autowired constructor(
         return result
     }
 
-    companion object {
-        private val logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
+    override fun removeIllegalNamespaces(doc: Document) {
+        /**
+         * Removes illegal namespaces from the [Document].
+         **/
+        NS_PROTECTED_API.forEach { n -> doc.removeAttr(n) }
     }
+
+
+
+
 }
