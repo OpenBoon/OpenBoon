@@ -6,6 +6,7 @@ import com.zorroa.analyst.service.PipelineService
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,7 +48,7 @@ class JobDaoTests : AbstractTest() {
         val spec = JobSpec("run_some_stuff",
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                pipelineService.getDefaultPipelineList())
+                pipelineService.getDefaultPipelineNames(PipelineType.IMPORT))
         val t1 = jobDao.create(spec)
         assertEquals(spec.name, t1.name)
         assertEquals(spec.assetId, t1.assetId)

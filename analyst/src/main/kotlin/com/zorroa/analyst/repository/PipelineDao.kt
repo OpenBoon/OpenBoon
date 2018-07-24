@@ -3,6 +3,7 @@ package com.zorroa.analyst.repository
 import com.google.common.base.Preconditions
 import com.zorroa.common.domain.Pipeline
 import com.zorroa.common.domain.PipelineSpec
+import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.util.Json
 import com.zorroa.common.util.Json.LIST_OF_PREFS
 import org.springframework.dao.EmptyResultDataAccessException
@@ -92,6 +93,7 @@ class PipelineDaoImpl : AbstractJdbcDao(), PipelineDao {
         private val MAPPER = RowMapper { rs, _ ->
             Pipeline(rs.getObject("pk_pipeline") as UUID,
                     rs.getString("str_name"),
+                    PipelineType.values()[rs.getInt("int_type")],
                     rs.getLong("int_version"),
                     Json.Mapper.readValue(rs.getString("json_processors"), LIST_OF_PREFS))
         }
