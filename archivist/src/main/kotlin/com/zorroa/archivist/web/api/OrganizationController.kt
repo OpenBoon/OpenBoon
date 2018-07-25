@@ -16,12 +16,11 @@ class OrganizationController @Autowired constructor(
 
     @PostMapping(value = [v1ApiRoot])
     fun create(@RequestBody builder: OrganizationSpec) : Organization {
-        val organization = organizationService.create(builder)
-        return organization
+        return organizationService.create(builder)
     }
 
-    @RequestMapping(value = ["$v1ApiRoot/{id}"])
-    fun get(@PathVariable id: String): Organization {
+    @RequestMapping(value = ["/api/v1/organizations/{id}"])
+    operator fun get(@PathVariable id: String): Organization {
         return organizationService.get(UUID.fromString(id))
     }
 }

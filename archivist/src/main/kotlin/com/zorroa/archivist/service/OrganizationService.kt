@@ -14,10 +14,9 @@ interface OrganizationService {
 }
 
 @Service
-class OrganizationServiceImpl @Autowired constructor () : OrganizationService {
-
-    @Autowired
-    private lateinit var organizationDao: OrganizationDao
+class OrganizationServiceImpl @Autowired constructor (
+        val organizationDao: OrganizationDao
+) : OrganizationService {
 
     override fun create(name: String): Organization {
         val spec = OrganizationSpec(name)
@@ -28,5 +27,5 @@ class OrganizationServiceImpl @Autowired constructor () : OrganizationService {
         return organizationDao.create(spec)
     }
 
-    override fun get(id: UUID) = organizationDao.get(id)
+    override fun get(id: UUID): Organization =  organizationDao.get(id)
 }
