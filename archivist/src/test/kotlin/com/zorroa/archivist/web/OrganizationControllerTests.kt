@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.service.OrganizationService
-import com.zorroa.archivist.web.api.OrganizationController
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
@@ -19,9 +18,6 @@ class OrganizationControllerTests: MockMvcTest() {
 
     private val organizationName = "Wendys"
     private val organizationSpec = OrganizationSpec(organizationName)
-
-    @Autowired
-    internal lateinit var organizationController: OrganizationController
 
     @Autowired
     internal lateinit var session: MockHttpSession
