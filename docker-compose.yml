@@ -1,0 +1,37 @@
+
+version: '3'
+services:
+  test-es:
+    build:
+      context: elasticsearch/.
+      args:
+        node_type: single
+    ports:
+      - "39200:9200"
+      - "39300:9300"
+  test-postgres:
+    image: "postgres:9.6.9"
+    hostname: "localhost"
+    ports:
+          - "35432:5432"
+    environment:
+      POSTGRES_PASSWORD: zorroa
+      POSTGRES_USER: zorroa
+      POSTGRES_DB: zorroa
+  dev-es:
+    build:
+      context: elasticsearch/.
+      args:
+        node_type: single
+    ports:
+      - "49200:9200"
+      - "49300:9300"
+  dev-postgres:
+    image: "postgres:9.6.9"
+    hostname: "localhost"
+    ports:
+          - "45432:5432"
+    environment:
+      POSTGRES_PASSWORD: zorroa
+      POSTGRES_USER: zorroa
+      POSTGRES_DB: zorroa

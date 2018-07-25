@@ -7,4 +7,3 @@ RUN unzip es-similarity.zip
 RUN mv elasticsearch zorroa-similarity
 RUN rm es-similarity.zip
 WORKDIR /usr/share/elasticsearch
-
