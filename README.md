@@ -1,5 +1,12 @@
 # zorroa-server
 
+| Branch | Status |
+|--------|--------|
+|DEVELOPMENT | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=development)](https://travis-ci.com/Zorroa/zorroa-server) |
+| QA | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=qa)](https://travis-ci.com/Zorroa/zorroa-server) |
+| MASTER | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=master)](https://travis-ci.com/Zorroa/zorroa-server) |
+
+
 ## Test Build Instructions (MacOS)
 
 These instructions will walk you though setting up Archivist and Analyst for testing and development.
