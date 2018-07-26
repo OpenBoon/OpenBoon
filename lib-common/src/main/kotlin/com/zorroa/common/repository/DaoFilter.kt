@@ -1,7 +1,6 @@
 package com.zorroa.common.repository
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.google.common.collect.Lists
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -14,10 +13,10 @@ abstract class DaoFilter {
     private var whereClause: String? = null
 
     @JsonIgnore
-    protected var where: MutableList<String> = Lists.newArrayList()
+    protected var where: MutableList<String> = mutableListOf()
 
     @JsonIgnore
-    protected var values: MutableList<Any> = Lists.newArrayList()
+    protected var values: MutableList<Any> = mutableListOf()
 
     var page : KPage = KPage()
 

@@ -119,8 +119,10 @@ class MinioStorageImpl @Autowired constructor (
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+
     private val client: MinioClient = MinioClient(
             properties.getString("archivist.storage.minio.endpoint"),
             properties.getString("archivist.storage.minio.accessKey"),
             properties.getString("archivist.storage.minio.secretKey"))
+
 }
