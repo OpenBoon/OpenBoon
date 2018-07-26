@@ -264,7 +264,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
              * Breadth first walk of the aggregations which creates the folders as it goes.
              */
             val folders = FolderStack(folderService.get(dyhi.folderId), dyhi)
-            val queue = Queues.newArrayDeque<Tuple<Aggregations, Int>>()
+            val queue = ArrayDeque<Tuple<Aggregations, Int>>()
             queue.add(Tuple(rest.client.search(sr.request).aggregations, 0))
             createDynamicHierarchy(queue, folders)
 
