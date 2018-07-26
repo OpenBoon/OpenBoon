@@ -4,9 +4,14 @@ import com.zorroa.common.search.Scroll
 import java.util.*
 import java.util.stream.Stream
 
+class KPage constructor(from: Int?, size: Int?=pageSizeDefault) {
 
+    var from : Int = from ?: 0
+    var size : Int
 
-class Page constructor(var from: Int, var size: Int=pageSizeDefault) {
+    init {
+        this.size = size ?: pageSizeDefault
+    }
 
     var totalCount : Long = 0
 
@@ -20,17 +25,17 @@ class Page constructor(var from: Int, var size: Int=pageSizeDefault) {
 class KPagedList<T> : Iterable<T> {
 
     var list: List<T>
-    var page: Page
+    var page: KPage
 
     var aggregations: Map<String, Any>? = null
     var scroll: Scroll? = null
 
     constructor() {
         list = ArrayList()
-        page = Page()
+        page = KPage()
     }
 
-    constructor(page: Page, list: List<T>) {
+    constructor(page: KPage, list: List<T>) {
         this.page = page
         this.list = list
     }

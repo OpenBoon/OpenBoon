@@ -39,8 +39,8 @@ class JobServiceTests : AbstractTest() {
                 PipelineType.IMPORT,
                 UUID.randomUUID(),
                 ZpsScript("foo"),
-                attrs=mapOf("foo" to 1),
-                env= mapOf("foo" to "bar"))
+                attrs=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
         var job = jobService.create(spec)
         jobService.setState(job, JobState.WAITING, null)
         jobService.start(job)

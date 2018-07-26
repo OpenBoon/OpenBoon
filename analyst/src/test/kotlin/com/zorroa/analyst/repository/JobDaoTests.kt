@@ -20,8 +20,8 @@ class JobDaoTests : AbstractTest() {
                 PipelineType.IMPORT,
                 UUID.randomUUID(),
                 ZpsScript("foo"),
-                attrs=mapOf("foo" to 1),
-                env= mapOf("foo" to "bar"))
+                attrs=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
 
         val t1 = jobDao.create(spec)
         assertEquals(spec.name, t1.name)
@@ -40,8 +40,8 @@ class JobDaoTests : AbstractTest() {
                 PipelineType.IMPORT,
                 UUID.randomUUID(),
                 ZpsScript("test_script"),
-                attrs=mapOf("foo" to 1),
-                env= mapOf("foo" to "bar"))
+                attrs=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
 
         val t2 = jobDao.create(spec)
         val t1 = jobDao.get(t2.id)
