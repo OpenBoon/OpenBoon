@@ -36,7 +36,7 @@ class PipelineDaoTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val pl1 = pipelineDao.get("test")
+        val pl1 = pipelineDao.get("import-test")
         pl1.name = "hello"
         pipelineDao.update(pl1)
         val pl2 =  pipelineDao.get("hello")

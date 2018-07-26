@@ -2,10 +2,7 @@ package com.zorroa.analyst.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.analyst.repository.PipelineDao
-import com.zorroa.common.domain.Pipeline
-import com.zorroa.common.domain.PipelineSpec
-import com.zorroa.common.domain.PipelineType
-import com.zorroa.common.domain.ProcessorRef
+import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,13 +17,14 @@ import java.nio.file.Paths
 import java.util.*
 
 interface PipelineService {
-    fun buildProcessorList(pipelines: List<String>) : MutableList<ProcessorRef>
+    fun resolveExecute(pipelines: List<String>) : MutableList<ProcessorRef>
     fun buildDefaultProcessorList(type: PipelineType) : MutableList<ProcessorRef>
     fun create(spec: PipelineSpec) : Pipeline
     fun get(id: UUID) : Pipeline
     fun get(name: String) : Pipeline
     fun update(pipeline: Pipeline) : Boolean
     fun getDefaultPipelineNames(type: PipelineType) : List<String>
+    fun resolveExecute(script: ZpsScript)
 }
 
 @Configuration
@@ -82,10 +80,10 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
 
     override fun buildDefaultProcessorList(type: PipelineType) : MutableList<ProcessorRef> {
         val names = getDefaultPipelineNames(type)
-        return buildProcessorList(names)
+        return resolveExecute(names)
     }
 
-    override fun buildProcessorList(pipelines: List<String>) : MutableList<ProcessorRef> {
+    override fun resolveExecute(pipelines: List<String>) : MutableList<ProcessorRef> {
         val processors = mutableListOf<ProcessorRef>()
         pipelines.forEach {
             logger.info("Pipeline: {}", it)
@@ -93,6 +91,22 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
             processors.addAll(pipeline.processors)
         }
         return processors
+    }
+
+    override fun resolveExecute(script: ZpsScript) {
+        val execute = mutableListOf<ProcessorRef>()
+        script?.execute?.forEach { ref ->
+            if (ref.className.startsWith("pipeline:")) {
+                val name = ref.className.split(":", limit=2)[1]
+                val pipeline = pipelineDao.get(name)
+                execute.addAll(pipeline.processors)
+            }
+            else {
+                execute.add(ref)
+            }
+        }
+        script.execute?.clear()
+        script.execute?.addAll(execute)
     }
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
