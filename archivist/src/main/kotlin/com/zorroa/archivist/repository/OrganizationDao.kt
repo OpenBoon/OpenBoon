@@ -14,9 +14,6 @@ interface OrganizationDao : GenericNamedDao<Organization, OrganizationSpec> {
     fun getOnlyOne(): Organization
 }
 
-
-
-
 @Repository
 class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
 
