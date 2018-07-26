@@ -19,9 +19,15 @@ abstract class DaoFilter {
     @JsonIgnore
     protected var values: MutableList<Any> = Lists.newArrayList()
 
-    var page : Page = Page()
+    var page : KPage = KPage()
 
     var sort: Map<String, String> = mutableMapOf()
+
+    constructor()
+
+    constructor(page: KPage) {
+        this.page = page
+    }
 
     @get:JsonIgnore
     abstract val sortMap: Map<String, String>?

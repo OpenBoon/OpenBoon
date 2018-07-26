@@ -7,12 +7,11 @@ import com.zorroa.archivist.service.GcpStorageService
 import com.zorroa.archivist.service.MinioStorageImpl
 import com.zorroa.archivist.service.StorageService
 import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.clients.FakeIndexRoutingServiceImpl
-import com.zorroa.common.clients.IndexRoutingService
+import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
 import com.zorroa.common.util.FileUtils
+import com.zorroa.common.util.getPublicUrl
 import io.undertow.servlet.api.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -130,6 +129,11 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus() : EventBus {
         return EventBus()
+    }
+
+    @Bean
+    fun analystClient() : AnalystClient {
+        return AnalystClientImpl(getPublicUrl("analyst"))
     }
 
     @Bean

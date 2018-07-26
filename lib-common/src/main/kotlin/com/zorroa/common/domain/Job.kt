@@ -21,8 +21,8 @@ data class JobSpec (
         val organizationId: UUID,
         val script: ZpsScript,
         val lockAssets : Boolean = false,
-        val attrs: Map<String, Any>? = null,
-        val env: Map<String, String>? = null
+        val attrs: MutableMap<String, Any> = mutableMapOf(),
+        val env: MutableMap<String, String> =  mutableMapOf()
 )
 
 data class Job (
