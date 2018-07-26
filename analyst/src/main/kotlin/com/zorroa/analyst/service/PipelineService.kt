@@ -1,39 +1,38 @@
 package com.zorroa.analyst.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.common.domain.Pipeline
-import com.zorroa.common.domain.PipelineSpec
-import com.zorroa.common.domain.ProcessorRef
-import com.zorroa.common.util.Json
-
 import com.zorroa.analyst.repository.PipelineDao
+import com.zorroa.common.domain.*
+import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ContextRefreshedEvent
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
-import javax.annotation.PostConstruct
 
 interface PipelineService {
-    fun buildProcessorList(pipelines: List<String>) : MutableList<ProcessorRef>
-    fun buildDefaultProcessorList() : MutableList<ProcessorRef>
+    fun resolveExecute(pipelines: List<String>) : MutableList<ProcessorRef>
+    fun buildDefaultProcessorList(type: PipelineType) : MutableList<ProcessorRef>
     fun create(spec: PipelineSpec) : Pipeline
     fun get(id: UUID) : Pipeline
     fun get(name: String) : Pipeline
-    fun getDefaultPipelineList() : List<String>
     fun update(pipeline: Pipeline) : Boolean
+    fun getDefaultPipelineNames(type: PipelineType) : List<String>
+    fun resolveExecute(script: ZpsScript)
 }
 
 @Configuration
-@ConfigurationProperties("zorroa.pipeline")
-class ZorroaPipelineConfiguration {
-
-    var defaultPipelines : String? = null
+@ConfigurationProperties("analyst.pipeline")
+class PipelineProperties {
+    var searchPath : String? = null
+    var defaultImportPipelines : String? = null
+    var defaultExportPipelines : String? = null
 }
 
 /**
@@ -46,19 +45,7 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
     lateinit var pipelineDao : PipelineDao
 
     @Autowired
-    lateinit var settings: ZorroaPipelineConfiguration
-
-    val defaultPipelines = mutableListOf<String>()
-
-    @PostConstruct
-    fun setup() {
-        settings.defaultPipelines
-                ?.split(",")
-                ?.forEach {
-                    defaultPipelines.add(it.trim())
-                }
-        logger.info("default Pipelines: {}", defaultPipelines)
-    }
+    lateinit var properties: PipelineProperties
 
     override fun create(spec: PipelineSpec) : Pipeline {
         return pipelineDao.create(spec)
@@ -76,15 +63,27 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
         return pipelineDao.get(name)
     }
 
-    override fun getDefaultPipelineList(): List<String> {
-        return defaultPipelines
+    override fun getDefaultPipelineNames(type: PipelineType) : List<String> {
+        val names = when (type) {
+            PipelineType.IMPORT-> properties.defaultImportPipelines
+            PipelineType.EXPORT-> properties.defaultExportPipelines
+            else -> throw IllegalArgumentException("There are no default $type pipelines")
+        }
+        logger.info(names)
+        return if (names != null) {
+            names.split(',').map { it.trim() }
+        }
+        else {
+            listOf()
+        }
     }
 
-    override fun buildDefaultProcessorList() : MutableList<ProcessorRef> {
-        return buildProcessorList(defaultPipelines)
+    override fun buildDefaultProcessorList(type: PipelineType) : MutableList<ProcessorRef> {
+        val names = getDefaultPipelineNames(type)
+        return resolveExecute(names)
     }
 
-    override fun buildProcessorList(pipelines: List<String>) : MutableList<ProcessorRef> {
+    override fun resolveExecute(pipelines: List<String>) : MutableList<ProcessorRef> {
         val processors = mutableListOf<ProcessorRef>()
         pipelines.forEach {
             logger.info("Pipeline: {}", it)
@@ -94,28 +93,41 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
         return processors
     }
 
-    override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
-        val cl = this.javaClass.classLoader
-        val resolver = PathMatchingResourcePatternResolver(cl)
-        val resources = resolver.getResources("classpath:/pipelines/*.json")
-
-        for (resource in resources) {
-            val spec = Json.Mapper.readValue<PipelineSpec>(resource.inputStream)
-            print("$spec")
-            try {
-                val pipe = pipelineDao.get(spec.name)
-                logger.info("Updating embedded pipeline: {}", resource.filename)
-                pipelineDao.update(pipe)
+    override fun resolveExecute(script: ZpsScript) {
+        val execute = mutableListOf<ProcessorRef>()
+        script?.execute?.forEach { ref ->
+            if (ref.className.startsWith("pipeline:")) {
+                val name = ref.className.split(":", limit=2)[1]
+                val pipeline = pipelineDao.get(name)
+                execute.addAll(pipeline.processors)
             }
-            catch (e: EmptyResultDataAccessException) {
-                logger.info("Creating embedded pipeline: {}", resource.filename)
-                val created = pipelineDao.create(spec)
-                logger.info("Created embedded pipeline: {}", created)
+            else {
+                execute.add(ref)
             }
         }
+        script.execute?.clear()
+        script.execute?.addAll(execute)
+    }
 
-        logger.info("Default pipelines are: {}", getDefaultPipelineList())
-
+    override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
+        properties.searchPath?.split(",")?.forEach {
+            val path = Paths.get(it.trim())
+            if (Files.exists(path)) {
+                for (file in Files.list(path)) {
+                    val spec = Json.Mapper.readValue<PipelineSpec>(file.toFile())
+                    print("$spec")
+                    try {
+                        val pipe = pipelineDao.get(spec.name)
+                        logger.info("Updating embedded pipeline: {} [{}]", spec.name, spec.type)
+                        pipelineDao.update(pipe)
+                    } catch (e: EmptyResultDataAccessException) {
+                        logger.info("Creating embedded pipeline: {} [{}]", spec.name, spec.type)
+                        val created = pipelineDao.create(spec)
+                        logger.info("Created embedded pipeline: {}", created)
+                    }
+                }
+            }
+        }
     }
 
     companion object {

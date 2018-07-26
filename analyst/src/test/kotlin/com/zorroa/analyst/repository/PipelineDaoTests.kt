@@ -1,7 +1,8 @@
 package com.zorroa.analyst.repository
 
-import com.zorroa.common.domain.PipelineSpec
 import com.zorroa.analyst.AbstractTest
+import com.zorroa.common.domain.PipelineSpec
+import com.zorroa.common.domain.PipelineType
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -18,7 +19,7 @@ class PipelineDaoTests : AbstractTest() {
 
     @Test
     fun testCreateAndGetByName() {
-        val pl1 = PipelineSpec(pipelineName)
+        val pl1 = PipelineSpec(pipelineName, PipelineType.IMPORT)
         val pl2 = pipelineDao.create(pl1)
         val pl3 = pipelineDao.get(pipelineName)
 
@@ -27,7 +28,7 @@ class PipelineDaoTests : AbstractTest() {
 
     @Test
     fun testCreateAndGetById() {
-        val pl1 = PipelineSpec(pipelineName)
+        val pl1 = PipelineSpec(pipelineName, PipelineType.IMPORT)
         val pl2 = pipelineDao.create(pl1)
         val pl3 = pipelineDao.get(pl2.id)
         assertEquals(pl2, pl3)
@@ -35,7 +36,7 @@ class PipelineDaoTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val pl1 = pipelineDao.get("test")
+        val pl1 = pipelineDao.get("import-test")
         pl1.name = "hello"
         pipelineDao.update(pl1)
         val pl2 =  pipelineDao.get("hello")
@@ -43,7 +44,7 @@ class PipelineDaoTests : AbstractTest() {
 
     @Test
     fun testExists() {
-        assertTrue(pipelineDao.exists("test"))
+        assertTrue(pipelineDao.exists("export-test"))
         assertFalse(pipelineDao.exists("captain kirk"))
     }
 
@@ -51,7 +52,7 @@ class PipelineDaoTests : AbstractTest() {
     @Test
     fun testCount() {
         val count = pipelineDao.count()
-        pipelineDao.create(PipelineSpec(pipelineName))
+        pipelineDao.create(PipelineSpec(pipelineName, PipelineType.IMPORT))
         assertEquals( pipelineDao.count(), count+1)
     }
 }

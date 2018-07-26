@@ -1,14 +1,14 @@
 package com.zorroa.analyst.service
 
 import com.zorroa.analyst.AbstractTest
-import com.zorroa.analyst.repository.LockDao
-import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.web.WebAppConfiguration
 import java.util.*
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @WebAppConfiguration
 class JobServiceTests : AbstractTest() {
@@ -16,35 +16,83 @@ class JobServiceTests : AbstractTest() {
     @Autowired
     lateinit var jobService: JobService
 
-    @Autowired
-    lateinit var lockDao: LockDao
-
     @Test
     fun testCreate() {
-        val spec = JobSpec(
-                "unit-test-task",
+        val assetId = UUID.randomUUID().toString()
+        val spec = JobSpec("test_job",
+                PipelineType.IMPORT,
                 UUID.randomUUID(),
-                UUID.randomUUID(),
-                listOf("standard"))
-        val t = jobService.create(spec)
-        assertNotNull(t.id)
-        assertEquals(spec.assetId, t.assetId)
-        assertEquals(spec.organizationId, t.organizationId)
-        assertEquals(spec.pipelines, t.pipelines)
-        assertEquals(spec.name, t.name)
+                ZpsScript("foo", over=mutableListOf(Document(assetId))),
+                lockAssets = true)
+        val job = jobService.create(spec)
+
+        // Since lockAssets = true, the asset IDs should be in the mapping table.
+        val count = jdbc.queryForObject(
+                "SELECT COUNT(1) FROM x_asset_job WHERE pk_asset=?::uuid AND pk_job=?",
+                Int::class.java, assetId, job.id)
+        assertEquals(1, count)
     }
 
     @Test
     fun testStart() {
-        val spec = JobSpec(
-                "unit-test-task",
+        val spec = JobSpec("test_job",
+                PipelineType.IMPORT,
                 UUID.randomUUID(),
-                UUID.randomUUID(),
-                listOf("standard"))
-        val t = jobService.create(spec)
-        jobService.start(t)
+                ZpsScript("foo"),
+                attrs=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        var job = jobService.create(spec)
+        jobService.setState(job, JobState.WAITING, null)
+        jobService.start(job)
+        job = jobService.get(job.id)
+        assertEquals(JobState.RUNNING, job.state)
+    }
 
-        val lock = lockDao.getByAsset(spec.assetId)
-        assertEquals(lock.jobId, t.id)
+    @Test
+    fun testGet() {
+        val spec = JobSpec("test_job",
+                PipelineType.IMPORT,
+                UUID.randomUUID(),
+                ZpsScript("foo"))
+        var job1 = jobService.create(spec)
+        var job2 = jobService.get(job1.id)
+        var job3 = jobService.get(job1.name)
+        assertEquals(job1.id, job2.id)
+        assertEquals(job1.id, job3.id)
+    }
+
+
+    @Test
+    fun testSetState() {
+        val spec = JobSpec("test_job",
+                PipelineType.IMPORT,
+                UUID.randomUUID(),
+                ZpsScript("foo"))
+        var job1 = jobService.create(spec)
+        assertTrue(jobService.setState(job1, JobState.FAIL))
+        assertFalse(jobService.setState(job1, JobState.FAIL, JobState.RUNNING))
+        assertTrue(jobService.setState(job1, JobState.RUNNING, JobState.FAIL))
+    }
+
+    @Test
+    fun testStop() {
+        val spec = JobSpec("test_job",
+                PipelineType.IMPORT,
+                UUID.randomUUID(),
+                ZpsScript("foo"))
+        var job = jobService.create(spec)
+        jobService.setState(job, JobState.WAITING)
+        jobService.start(job)
+
+        assertTrue(jobService.stop(job, JobState.SUCCESS))
+
+        val startTime = jdbc.queryForObject(
+                "SELECT time_started FROM job WHERE pk_job=?", Long::class.java, job.id)
+        assertTrue(startTime > -1)
+
+        val stopTime = jdbc.queryForObject(
+                "SELECT time_stopped FROM job WHERE pk_job=?", Long::class.java, job.id)
+        assertTrue(stopTime > -1)
+
     }
 }

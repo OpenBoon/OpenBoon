@@ -3,10 +3,11 @@ package com.zorroa.common.domain
 
 data class ZpsScript(
         val name: String,
-        val generate : List<ProcessorRef>? = mutableListOf(),
-        val over: List<Document>? =  mutableListOf(),
-        val execute : List<ProcessorRef>? = mutableListOf(),
-        val globals:  Map<String, Any>? = mutableMapOf()
+        val generate : MutableList<ProcessorRef>? = mutableListOf(),
+        val over: MutableList<Document>? =  mutableListOf(),
+        val execute : MutableList<ProcessorRef>? = mutableListOf(),
+        val globals:  MutableMap<String, Any>? = mutableMapOf(),
+        var inline: Boolean = true
 )
 
 data class ZpsError (
@@ -28,7 +29,7 @@ data class ProcessorFilter(
 )
 
 data class ProcessorRef(
-        var className: String? = null,
+        var className: String,
         var args: Map<String, Any>? = mutableMapOf(),
         var execute: List<ProcessorRef>? = mutableListOf(),
         var filters: List<ProcessorFilter>? = mutableListOf(),

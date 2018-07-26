@@ -6,6 +6,7 @@ import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
 enum class JobState {
+    SETUP,
     WAITING,
     RUNNING,
     SUCCESS,
@@ -16,27 +17,35 @@ enum class JobState {
 
 data class JobSpec (
         val name: String,
-        val assetId: UUID,
+        val type: PipelineType,
         val organizationId: UUID,
-        val pipelines: List<String>,
-        val attrs: Map<String, Any>? = null,
-        val env: Map<String, String>? = null
+        val script: ZpsScript,
+        val lockAssets : Boolean = false,
+        val attrs: MutableMap<String, Any> = mutableMapOf(),
+        val env: MutableMap<String, String> =  mutableMapOf()
 )
 
 data class Job (
         val id: UUID,
-        val assetId: UUID,
+        val type: PipelineType,
         val organizationId: UUID,
         val name: String,
         val state: JobState,
-        val pipelines: List<String>,
-        val attrs: Map<String, Any> = mutableMapOf(),
-        val env: Map<String, String> = mutableMapOf()
+        val lockAssets: Boolean,
+        val attrs: Map<String, Any>,
+        val env: Map<String, String>
 )
+{
+    /**
+     * The relative path to the job script, on any storage service.
+     */
+    fun getScriptPath() : String {
+        return "zorroa/jobs/$id/script.zps"
+    }
+}
 
 data class JobFilter (
         private val ids : List<UUID>? = null,
-        private val assetIds : List<UUID>? = null,
         private val states : List<JobState>? = null,
         private val organizationIds: List<UUID>? = null
 ) : DaoFilter() {
@@ -49,11 +58,6 @@ data class JobFilter (
         if (!ids.orEmpty().isEmpty()) {
             addToWhere(JdbcUtils.inClause("job.pk_job", ids!!.size))
             addToValues(ids)
-        }
-
-        if (!assetIds.orEmpty().isEmpty()) {
-            addToWhere(JdbcUtils.inClause("job.pk_asset", assetIds!!.size))
-            addToValues(assetIds)
         }
 
         if (!states.orEmpty().isEmpty()) {
