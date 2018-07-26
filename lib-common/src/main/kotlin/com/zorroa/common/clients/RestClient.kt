@@ -1,6 +1,10 @@
 package com.zorroa.common.clients
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.impl.PublicClaims
 import com.fasterxml.jackson.core.type.TypeReference
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.common.util.Json
 import org.apache.commons.codec.binary.Hex
 import org.apache.http.HttpEntity
@@ -31,6 +35,7 @@ import java.nio.file.Paths
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import java.security.SignatureException
+import java.security.interfaces.RSAPrivateKey
 import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -55,6 +60,7 @@ class RestClient {
 
     private var user: String? = null
     private var hmac: String? = null
+    private var jwtMethod: String? = null
     private var host: HttpHost? = null
     private var client: CloseableHttpClient? = null
     private var retryConnectionTimeout = false
@@ -63,6 +69,7 @@ class RestClient {
         this.host = initHost()
         this.user = initUser()
         this.hmac = initHmacKey()
+        this.jwtMethod = initJwtMethod()
         this.client = initClient()
     }
 
@@ -118,6 +125,34 @@ class RestClient {
         }
 
         return key
+    }
+
+    fun signJwt(): String? {
+        var token : String? = null
+        if (this.jwtMethod == "gcp") {
+            val credential = GoogleCredential.getApplicationDefault()
+            val now = Date()
+            var expiration = Calendar.getInstance()
+            expiration.add(Calendar.HOUR_OF_DAY, 1)
+            val token = JWT.create()
+                    .withKeyId(credential.getServiceAccountPrivateKeyId())
+                    .withIssuer("https://cloud.google.com/iap")
+                    .withClaim(PublicClaims.SUBJECT, credential.getServiceAccountUser())
+                    .withAudience(host.toString())
+                    .withIssuedAt(now)
+                    .withExpiresAt(expiration.time)
+                    .sign(Algorithm.RSA256(null, credential.serviceAccountPrivateKey as RSAPrivateKey?))
+            return token
+        }
+        return token
+    }
+
+    fun initJwtMethod(): String? {
+        var method: String? = null
+        if (System.getenv("GOOGLE_APPLICATION_CREDENTIALS") != null) {
+            method = "gcp"
+        }
+        return method
     }
 
     fun <T> post(url: String, body: Any?, resultType: Class<T>): T {
@@ -277,7 +312,9 @@ class RestClient {
             } catch (e: Exception) {
                 throw RestClientException("Failed to sign request, $e", e)
             }
-
+        }
+        else if (jwtMethod != null) {
+            req.setHeader("Authorization", "Bearer " + signJwt())
         }
     }
 
