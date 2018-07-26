@@ -3,7 +3,6 @@ package com.zorroa.analyst.service
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.util.Json
-import com.zorroa.common.util.getPublicUrl
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
 import io.fabric8.kubernetes.api.model.VolumeMount
@@ -163,8 +162,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         jobService.start(job)
 
         try {
-            val selfUrl = getPublicUrl()
-            val yaml = generateK8JobSpec(job, selfUrl)
+            val yaml = generateK8JobSpec(job)
             logger.info("JOB: {}", job.id)
             logger.info("YAML {}", yaml)
 
@@ -226,7 +224,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     }
 
 
-    fun generateK8JobSpec(job: Job, selfUrl: String) : String {
+    fun generateK8JobSpec(job: Job) : String {
         val labels = mapOf(
                 "companyId" to job.attrs["companyId"].toString(),
                 "organizationId" to job.organizationId.toString(),
@@ -259,6 +257,10 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
                 EnvVar("CDV_API_BASE_URL", cdvUrl, null),
                 EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null))
+
+        for ((k,v) in job.env) {
+            container.env.add(EnvVar(k, v, null))
+        }
 
         val dspec = DeploymentSpec()
         dspec.setAdditionalProperty("backOffLimit", 1)
