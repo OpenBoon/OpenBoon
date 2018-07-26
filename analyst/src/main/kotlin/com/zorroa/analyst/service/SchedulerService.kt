@@ -256,7 +256,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
                 EnvVar("CDV_API_BASE_URL", cdvUrl, null),
-                EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null))
+                EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null),
+                EnvVar("CDV_GOOGLE_CREDENTIAL_PATH", "/var/secrets/google/cdv.json", null))
 
         for ((k,v) in job.env) {
             container.env.add(EnvVar(k, v, null))
