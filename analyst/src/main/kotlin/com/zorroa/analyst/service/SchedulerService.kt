@@ -1,6 +1,7 @@
 package com.zorroa.analyst.service
 
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobState
 import com.zorroa.common.util.Json
 import com.zorroa.common.util.getPublicUrl
 import io.fabric8.kubernetes.api.model.Container
@@ -25,11 +26,36 @@ import kotlin.concurrent.fixedRateTimer
 import io.fabric8.kubernetes.api.model.Job as KJob
 
 interface SchedulerService {
-    fun startJob(job: Job) : Boolean
+
+    /**
+     * Start running the given job.
+     */
+    fun runJob(job: Job) : Boolean
+
+    /**
+     * Pause scheduling
+     */
     fun pause(): Boolean
+
+    /**
+     * Resume scheduling
+     */
     fun resume() : Boolean
+
+    /**
+     * Do a scheduling pass.
+     */
     fun schedule()
+
+    /**
+     * Retry the given job.
+     */
     fun retry(job: Job) : Boolean
+
+    /**
+     * Kill the given job and set to the failed state.
+     */
+    fun kill(job: Job) : Boolean
 }
 
 
@@ -54,13 +80,17 @@ class K8SchedulerProperties {
  * This will eventually replicate the old Analyst behavior.
  */
 class LocalSchedulerServiceImpl: SchedulerService {
+    override fun kill(job: Job): Boolean {
+        return true;
+    }
+
     override fun retry(job: Job): Boolean {
         return true
     }
 
     override fun schedule() { }
 
-    override fun startJob(job: Job): Boolean {
+    override fun runJob(job: Job): Boolean {
         return true
     }
 
@@ -83,10 +113,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var storageService: StorageService
-
-    @Autowired
-    lateinit var pipelineService: PipelineService
+    lateinit var storageService: JobStorageService
 
     @Autowired
     lateinit var schedulerProperties : SchedulerProperties
@@ -131,12 +158,10 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         }
     }
 
-    override fun startJob(job: Job) : Boolean {
-        val started= jobService.start(job)
-        if (!started) {
-            logger.warn("The job {} was not in the Waiting state", job.name)
-            return false
-        }
+    override fun runJob(job: Job) : Boolean {
+        // will throw on failure to stat
+        jobService.start(job)
+
         try {
             val selfUrl = getPublicUrl()
             val yaml = generateK8JobSpec(job, selfUrl)
@@ -155,13 +180,30 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         return true
     }
 
-    override fun retry(job: Job) : Boolean {
-        if (job.state == JobState.RUNNING) {
-            jobService.stop(job, JobState.WAITING)
+    override fun kill(job: Job) : Boolean {
+        val jobs =
+                kubernetesClient.extensions().jobs().withLabel("jobId", job.id.toString()).list()
+        if (!jobs.items.isEmpty()) {
+            for (job in jobs.items) {
+                logger.info("deleting : {}", job.metadata.name)
+                kubernetesClient.extensions().jobs().delete(job)
+            }
+        }
+
+        val killed = if (job.state == JobState.RUNNING) {
+            jobService.stop(job, JobState.FAIL)
         }
         else {
-            jobService.setState(job, JobState.WAITING, null)
+            jobService.setState(job, JobState.FAIL, null)
         }
+
+        if (killed) {
+            jobService.clearLocks(job)
+        }
+        return killed
+    }
+
+    override fun retry(job: Job) : Boolean {
 
         val jobs =
                 kubernetesClient.extensions().jobs().withLabel("jobId", job.id.toString()).list()
@@ -171,54 +213,21 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 kubernetesClient.extensions().jobs().delete(job)
             }
         }
+
+        if (job.state == JobState.RUNNING) {
+            jobService.stop(job, JobState.WAITING)
+        }
+        else {
+            jobService.setState(job, JobState.WAITING, null)
+        }
+
         jobService.clearLocks(job)
-        return startJob(job)
+        return runJob(job)
     }
 
-    fun generateZpsScript(job: Job, selfUrl: String) : ZpsScript {
-
-        /*
-         * Resolve the list of processors and append one to talk back
-         */
-        logger.info("Building job with pipelines: {}", job.pipelines)
-        val endpoint = "$selfUrl/api/v1/assets/${job.assetId}?job=${job.id}"
-        val processors =
-                pipelineService.buildProcessorList(job.pipelines)
-        processors.add(
-                ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
-                args=mapOf("endpoint" to endpoint)))
-
-        val doc = try {
-            //assetService.getDocument(asset)
-            Document(job.assetId.toString())
-        }
-        catch (e : Exception) {
-            Document(job.assetId.toString())
-        }
-
-        // make sure these are set.
-        doc.setAttr("irm.companyId", job.attrs["companyId"])
-        doc.setAttr("zorroa.organizationId", job.organizationId.toString())
-        /*
-         * Setup ZPS script
-         */
-        return ZpsScript(job.name,
-                over=listOf(doc),
-                execute=processors)
-    }
 
     fun generateK8JobSpec(job: Job, selfUrl: String) : String {
-
-        val zps = generateZpsScript(job, selfUrl)
-        logger.info("ZPS: {}", Json.serializeToString(zps))
-
-        val url = storageService.storeSignedBlob(
-                "zorroa/jobs/${job.id}.zps",
-                "application/json",
-                Json.serialize(zps))
-
         val labels = mapOf(
-                "assetId" to job.assetId.toString(),
                 "companyId" to job.attrs["companyId"].toString(),
                 "organizationId" to job.organizationId.toString(),
                 "jobId" to job.id.toString(),
@@ -242,14 +251,12 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         container.volumeMounts = listOf(mount)
         container.name = job.name
         container.image = k8Props.image
-        container.args = listOf(url.toString())
+        container.args = listOf(storageService.getSignedUrl(job.getScriptPath()).toString())
         container.env = mutableListOf(
-                EnvVar("ZORROA_ANALYST_URL", selfUrl, null),
                 EnvVar("ZORROA_JOB_ID", job.id.toString(), null),
-                EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
+                EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
-                EnvVar("CDV_DOCUMENT_GUID", job.assetId.toString(),null),
                 EnvVar("CDV_API_BASE_URL", cdvUrl, null),
                 EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null))
 
@@ -299,7 +306,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             logger.info("Found {} waiting jobs", jobs.size)
 
             for (job in jobs) {
-                startJob(job)
+                runJob(job)
             }
         }
     }

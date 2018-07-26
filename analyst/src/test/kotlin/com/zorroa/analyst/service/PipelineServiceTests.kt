@@ -24,7 +24,7 @@ class PipelineServiceTests : AbstractTest() {
 
     @Test
     fun testBuilProcessorList() {
-        assertEquals(2, pipelineService.buildProcessorList(listOf("source", "ml")).size)
+        assertEquals(2, pipelineService.resolveExecute(listOf("source", "ml")).size)
     }
 
     @Test

@@ -2,7 +2,7 @@ package com.zorroa.analyst.controller
 
 import com.zorroa.analyst.AbstractMvcTest
 import com.zorroa.analyst.repository.JobDao
-import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Test
@@ -21,16 +21,37 @@ class JobControllerTests : AbstractMvcTest() {
     lateinit var jobDao: JobDao
 
     @Test
+    fun getCreate() {
+        val orgId = UUID.randomUUID()
+        val spec = JobSpec("test_job",
+                PipelineType.IMPORT,
+                orgId,
+                ZpsScript("foo", over=mutableListOf(Document(UUID.randomUUID().toString()))),
+                env=mutableMapOf("foo" to "bar"))
+
+        val req = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(spec)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+        val job = Json.deserialize(req.response.contentAsByteArray, Job::class.java)
+        assertEquals(spec.name, job.name)
+        assertEquals(spec.type, job.type)
+        assertEquals(spec.organizationId, job.organizationId)
+        assertEquals(spec.env, job.env)
+    }
+
+    @Test
     fun testGetAll() {
-        val assetId = UUID.randomUUID()
         val orgId = UUID.randomUUID()
         for (i in 1..10) {
             val spec = JobSpec("run_some_stuff_v$i",
-                    assetId,
+                    PipelineType.IMPORT,
                     orgId,
-                    listOf("standard"))
+                    ZpsScript("foo"))
             jobDao.create(spec)
         }
+
         val req = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/jobs")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))

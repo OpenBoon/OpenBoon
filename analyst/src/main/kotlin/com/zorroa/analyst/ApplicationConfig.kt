@@ -4,9 +4,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.common.collect.Lists
 import com.zorroa.analyst.service.*
 import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.clients.FakeIndexRoutingServiceImpl
 import com.zorroa.common.clients.IndexRoutingService
-import com.zorroa.common.clients.RestClient
 import com.zorroa.common.service.CoreDataVaultService
 import com.zorroa.common.service.IrmCoreDataVaultServiceImpl
 import com.zorroa.common.util.Json
@@ -35,10 +33,10 @@ class ApplicationConfig {
     lateinit var schedulerProperties: SchedulerProperties
 
     @Bean
-    fun storageService() : StorageService {
+    fun storageService() : JobStorageService {
         return when (storageProperties.type) {
             "gcp"-> GcpStorageServiceImpl()
-            else-> LocalStorageServiceImpl()
+            else-> LocalJobStorageServiceImpl()
         }
     }
 
