@@ -133,7 +133,9 @@ class ArchivistConfiguration {
 
     @Bean
     fun analystClient() : AnalystClient {
-        return AnalystClientImpl(getPublicUrl("analyst"))
+        return AnalystClientImpl(getPublicUrl("analyst"),
+                GcpJwtSigner("/config/service-credentials.json"))
+
     }
 
     @Bean
