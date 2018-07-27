@@ -72,7 +72,7 @@ class RestClient {
         this.client = initClient()
     }
 
-    constructor(host: String, jwtSigner: JwtSigner) {
+    constructor(host: String, jwtSigner: JwtSigner?) {
         this.host = HttpHost.create(host)
         this.client = initClient()
         this.jwtSigner = jwtSigner

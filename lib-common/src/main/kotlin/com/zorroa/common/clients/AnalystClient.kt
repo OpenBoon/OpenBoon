@@ -7,7 +7,7 @@ interface AnalystClient {
     fun createJob(spec: JobSpec) : Job
 }
 
-class AnalystClientImpl(val url: String, jwtSigner: JwtSigner) : AnalystClient {
+class AnalystClientImpl(val url: String, jwtSigner: JwtSigner?) : AnalystClient {
 
     val client = RestClient(url, jwtSigner)
 
