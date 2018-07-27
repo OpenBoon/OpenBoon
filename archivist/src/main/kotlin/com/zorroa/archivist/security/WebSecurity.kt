@@ -70,7 +70,7 @@ class MultipleWebSecurityConfig {
         @Autowired
         internal lateinit var properties: ApplicationProperties
 
-        @Bean
+        @Bean(name=["globalAuthenticationManager"])
         @Throws(Exception::class)
         fun globalAuthenticationManager(): AuthenticationManager {
             return super.authenticationManagerBean()
