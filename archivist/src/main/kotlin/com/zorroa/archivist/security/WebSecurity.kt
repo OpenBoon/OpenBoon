@@ -73,7 +73,7 @@ class MultipleWebSecurityConfig {
         @Bean
         @Throws(Exception::class)
         fun globalAuthenticationManager(): AuthenticationManager {
-            return authenticationManager()
+            return super.authenticationManagerBean()
         }
 
         @Bean
