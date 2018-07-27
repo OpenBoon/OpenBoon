@@ -38,16 +38,6 @@ class MultipleWebSecurityConfig {
     @Autowired
     internal lateinit var properties: ApplicationProperties
 
-    @Autowired
-    @Bean
-    fun jwtAuthorizationFilter(authenticationManager: AuthenticationManager, validator: JwtValidator, userRegistryService: UserRegistryService) : JWTAuthorizationFilter {
-        return JWTAuthorizationFilter(authenticationManager,  validator, userRegistryService)
-    }
-
-    init {
-        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL)
-    }
-
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -55,12 +45,6 @@ class MultipleWebSecurityConfig {
 
         @Autowired
         internal lateinit var properties: ApplicationProperties
-
-        @Bean
-        @Throws(Exception::class)
-        fun customAuthenticationManager(): AuthenticationManager {
-            return authenticationManager()
-        }
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -89,19 +73,27 @@ class MultipleWebSecurityConfig {
         @Autowired
         internal lateinit var properties: ApplicationProperties
 
-        @Autowired
-        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
+        @Bean
+        @Throws(Exception::class)
+        fun globalAuthenticationManager(): AuthenticationManager {
+            return authenticationManager()
+        }
 
         @Bean
         fun resetPasswordSecurityFilter(): ResetPasswordSecurityFilter {
             return ResetPasswordSecurityFilter()
         }
 
+        @Bean
+        fun jwtAuthorizationFilter() : JWTAuthorizationFilter {
+            return JWTAuthorizationFilter(authenticationManager())
+        }
+
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**")
-                    .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
+                    .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterBefore(HmacSecurityFilter(
                             properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
