@@ -64,9 +64,8 @@ class GcpStorageService @Autowired constructor (
 
     @PostConstruct
     fun setup() {
-        val credentials = properties.getString("archivist.storage.gcp.credentials")
         storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream(credentials))).build().service
+                GoogleCredentials.fromStream(FileInputStream("/config/data-credentials.json"))).build().service
     }
 
     override fun getSignedUrl(url: URL): URL {

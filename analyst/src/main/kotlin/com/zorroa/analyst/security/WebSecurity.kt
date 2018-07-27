@@ -1,5 +1,6 @@
 package com.zorroa.analyst.security
 
+import com.zorroa.common.server.JwtValidator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -17,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class WebSecurity : WebSecurityConfigurerAdapter() {
 
     @Autowired
-    lateinit var jwtCredentials : JwtCredentials
+    lateinit var jwtValidator : JwtValidator
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -27,7 +28,7 @@ class WebSecurity : WebSecurityConfigurerAdapter() {
                 .and()
                 .httpBasic()
                 .and()
-                .addFilter(JWTAuthorizationFilter(authenticationManager(), jwtCredentials))
+                .addFilter(JWTAuthorizationFilter(authenticationManager(), jwtValidator))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 

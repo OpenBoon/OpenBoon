@@ -3,15 +3,15 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.service.GcpStorageService
-import com.zorroa.archivist.service.MinioStorageImpl
-import com.zorroa.archivist.service.StorageService
-import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.archivist.service.*
 import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
+import com.zorroa.common.server.GcsJwtValidator
+import com.zorroa.common.server.JwtValidator
+import com.zorroa.common.server.NoOpJwtValidator
+import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.FileUtils
-import com.zorroa.common.util.getPublicUrl
 import io.undertow.servlet.api.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,6 +29,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 
 @Configuration
@@ -145,6 +147,25 @@ class ArchivistConfiguration {
     @Bean
     fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
         return EsClientCache(routingService)
+    }
+
+    @Bean
+    fun pubSubService() : PubSubService {
+        return when(properties().getString("archivist.pubsub.type")) {
+            "gcp"->GcpPubSubServiceImpl()
+            else->NoOpPubSubService()
+        }
+    }
+
+    @Bean
+    fun jwtValidator() : JwtValidator {
+        val path = "/config/service-credentials.json"
+        return if (Files.exists(Paths.get(path))) {
+            GcsJwtValidator(path)
+        }
+        else {
+            NoOpJwtValidator()
+        }
     }
 
     companion object {
