@@ -27,7 +27,7 @@ import javax.annotation.PreDestroy
 interface PubSubService
 
 @Configuration
-@ConfigurationProperties("archivist.pubsub.gcs")
+@ConfigurationProperties("archivist.pubsub.gcp")
 class GooglePubSubSettings {
     lateinit var subscription: String
     lateinit var project: String
