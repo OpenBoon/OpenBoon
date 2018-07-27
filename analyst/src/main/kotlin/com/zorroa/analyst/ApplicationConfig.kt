@@ -6,8 +6,6 @@ import com.zorroa.analyst.security.JwtCredentials
 import com.zorroa.analyst.service.*
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.IndexRoutingService
-import com.zorroa.common.service.CoreDataVaultService
-import com.zorroa.common.service.IrmCoreDataVaultServiceImpl
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -85,11 +83,6 @@ class ApplicationConfig {
     @Bean
     fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
         return EsClientCache(routingService)
-    }
-
-    @Bean
-    fun coreDataVault() : CoreDataVaultService {
-        return IrmCoreDataVaultServiceImpl(cdvUrl)
     }
 
     companion object {

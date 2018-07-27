@@ -1,11 +1,10 @@
-package com.zorroa.common.service
+package com.zorroa.common.clients
 
-import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
 
-interface CoreDataVaultService {
+interface CoreDataVaultClient {
 
     val client: RestClient
 
@@ -13,7 +12,7 @@ interface CoreDataVaultService {
     fun getIndexedMetadata(assetId:Asset) : Document
 }
 
-class IrmCoreDataVaultServiceImpl constructor(url: String) : CoreDataVaultService {
+class IrmCoreDataVaultClientImpl constructor(url: String) : CoreDataVaultClient {
 
     override val client = RestClient(url)
 
