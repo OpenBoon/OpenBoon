@@ -39,6 +39,7 @@ class PipelineDaoTests : AbstractTest() {
         pl1.name = "hello"
         pipelineDao.update(pl1)
         val pl2 =  pipelineDao.get("hello")
+        assertEquals(pl1.id, pl2.id)
     }
 
     @Test
