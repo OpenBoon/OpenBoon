@@ -37,7 +37,7 @@ class NoOpJwtValidator: JwtValidator {
 /**
  * Validates a token with google credentials
  */
-class GcsJwtValidator : JwtValidator {
+class GcpJwtValidator : JwtValidator {
 
     private val credentials : GoogleCredential
     private val client = RestClient("https://www.googleapis.com")
@@ -45,7 +45,7 @@ class GcsJwtValidator : JwtValidator {
 
     constructor(credentials: GoogleCredential) {
         this.credentials = credentials
-        val user = credentials.serviceAccountUser
+        val user = credentials.serviceAccountId
         val keys = client.get("/robot/v1/metadata/x509/$user", Json.STRING_MAP)
 
         val cfactory = CertificateFactory.getInstance("X.509")
@@ -67,13 +67,16 @@ class GcsJwtValidator : JwtValidator {
             }
             alg.verify(jwt)
             val expDate: Date? = jwt.expiresAt
-            if (expDate != null && (expDate.time + 30000L > System.currentTimeMillis())) {
+
+            if (expDate != null && (System.currentTimeMillis() > expDate.time)) {
                 throw JwtValidatorException("Token has expired")
             }
 
             val result = mutableMapOf<String,String>()
             jwt.claims.forEach { (k,v) ->
-                result[k] = v.asString()
+                if (v.asString() != null) {
+                    result[k] = v.asString()
+                }
             }
             return result
 

@@ -7,7 +7,7 @@ import com.zorroa.archivist.service.*
 import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
-import com.zorroa.common.server.GcsJwtValidator
+import com.zorroa.common.server.GcpJwtValidator
 import com.zorroa.common.server.JwtValidator
 import com.zorroa.common.server.NoOpJwtValidator
 import com.zorroa.common.server.getPublicUrl
@@ -163,7 +163,7 @@ class ArchivistConfiguration {
     fun jwtValidator() : JwtValidator {
         val path = "/config/service-credentials.json"
         return if (Files.exists(Paths.get(path))) {
-            GcsJwtValidator(path)
+            GcpJwtValidator(path)
         }
         else {
             NoOpJwtValidator()
