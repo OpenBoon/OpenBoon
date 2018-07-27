@@ -9,6 +9,8 @@ services:
     ports:
       - "39200:9200"
       - "39300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
   test-postgres:
     image: "postgres:9.6.9"
     hostname: "localhost"
@@ -23,14 +25,10 @@ services:
       context: elasticsearch
       args:
         node_type: single
-    ports:
-      - "49200:9200"
-      - "49300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
   dev-postgres:
     image: "postgres:9.6.9"
-    hostname: "localhost"
-    ports:
-          - "45432:5432"
     environment:
       POSTGRES_PASSWORD: zorroa
       POSTGRES_USER: zorroa
@@ -43,8 +41,9 @@ services:
       - "~/.m2:/root/.m2"
       - "./:/zorroa-server"
   archivist:
-    depends_on:
-      - "mvn-build"
+    links:
+       - "dev-es"
+       - "dev-postgres"
     build:
       context: archivist
     ports:
