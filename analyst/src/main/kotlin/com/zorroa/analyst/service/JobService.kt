@@ -5,8 +5,9 @@ import com.zorroa.analyst.repository.JobDao
 import com.zorroa.analyst.repository.LockDao
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.server.getJobDataBucket
+import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.Json
-import com.zorroa.common.util.getPublicUrl
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -103,6 +104,7 @@ class JobRegistryServiceImpl @Autowired constructor(
 
             // The scheduler will sign this when its needed.
             storageService.storeBlob(
+                    getJobDataBucket(),
                     job.getScriptPath(),
                     "application/json",
                     Json.serialize(spec.script))
@@ -197,7 +199,7 @@ class JobServiceImpl @Autowired constructor(
          */
         if (job.lockAssets) {
             val script = Json.Mapper.readValue(
-                    storageService.getInputStream(job.getScriptPath()), ZpsScript::class.java)
+                    storageService.getInputStream(getJobDataBucket(), job.getScriptPath()), ZpsScript::class.java)
             script?.over?.forEach {
                 lockDao.create(LockSpec(UUID.fromString(it.id), job.id))
             }

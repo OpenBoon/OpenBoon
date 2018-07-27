@@ -3,7 +3,6 @@ package com.zorroa.analyst.service
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.*
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import java.io.FileInputStream
@@ -21,10 +20,10 @@ import javax.annotation.PostConstruct
  * The storage service is also responsible for clearing out expired paths.
  */
 interface JobStorageService {
-    fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray) : URL
-    fun storeBlob(path: String, mediaType: String, bytes: ByteArray) : URL
-    fun getSignedUrl(path: String) : URL
-    fun getInputStream(path: String): InputStream
+    fun storeSignedBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray) : URL
+    fun storeBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray) : URL
+    fun getSignedUrl(bucket: String, path: String) : URL
+    fun getInputStream(bucket: String, path: String): InputStream
 }
 
 /**
@@ -35,7 +34,6 @@ interface JobStorageService {
 class StorageProperties {
 
     var type: String? = null
-    var gcp: Map<String, String>? = null
 }
 
 /**
@@ -44,19 +42,19 @@ class StorageProperties {
  */
 class LocalJobStorageServiceImpl : JobStorageService {
 
-    override fun storeBlob(path: String, mediaType: String, bytes: ByteArray): URL {
+    override fun storeBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray): URL {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getSignedUrl(path: String): URL {
+    override fun getSignedUrl(bucket: String, path: String): URL {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray): URL {
+    override fun storeSignedBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray): URL {
         return URL("http://localhost")
     }
 
-    override fun getInputStream(path: String): InputStream {
+    override fun getInputStream(bucket: String, path: String): InputStream {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
@@ -66,23 +64,17 @@ class LocalJobStorageServiceImpl : JobStorageService {
  */
 class GcpStorageServiceImpl : JobStorageService {
 
-    @Autowired
-    lateinit var settings : StorageProperties
-
     lateinit var storage: Storage
 
     lateinit var bucket : String
 
     @PostConstruct
     fun setup() {
-        bucket = settings.gcp!!.getValue("bucket")
-
-        val creds= settings.gcp!!["credentials"]
         storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream(creds))).build().service
+                GoogleCredentials.fromStream(FileInputStream("/config/data-credentials.json"))).build().service
     }
 
-    override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray) : URL {
+    override fun storeSignedBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray) : URL {
         logger.info("Storing in bucket: {} {}", bucket, path)
         val blobId = BlobId.of(bucket, path)
         val blobInfo = BlobInfo.newBuilder(blobId).setContentType(mediaType).build()
@@ -92,7 +84,7 @@ class GcpStorageServiceImpl : JobStorageService {
                 Storage.SignUrlOption.httpMethod(HttpMethod.GET))
     }
 
-    override fun storeBlob(path: String, mediaType: String, bytes: ByteArray) : URL {
+    override fun storeBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray) : URL {
         logger.info("Storing in bucket: {} {}", bucket, path)
         val blobId = BlobId.of(bucket, path)
         val blobInfo = BlobInfo.newBuilder(blobId).setContentType(mediaType).build()
@@ -100,7 +92,7 @@ class GcpStorageServiceImpl : JobStorageService {
         return URL(blob.selfLink)
     }
 
-    override fun getSignedUrl(path: String) : URL {
+    override fun getSignedUrl(bucket: String, path: String) : URL {
         logger.info("Storing in bucket: {} {}", bucket, path)
         val blobId = BlobId.of(bucket, path)
         val blobInfo = storage.get(blobId)
@@ -108,7 +100,7 @@ class GcpStorageServiceImpl : JobStorageService {
                 Storage.SignUrlOption.httpMethod(HttpMethod.GET))
     }
 
-    override fun getInputStream(path: String): InputStream {
+    override fun getInputStream(bucket: String, path: String): InputStream {
         val blobId = BlobId.of(bucket, path)
         return Channels.newInputStream(storage.get(blobId).reader())
     }

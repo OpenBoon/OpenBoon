@@ -1,6 +1,6 @@
 package com.zorroa.analyst.controller
 
-import com.zorroa.common.util.getPublicUrl
+import com.zorroa.common.server.getPublicUrl
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 

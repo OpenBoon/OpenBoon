@@ -55,7 +55,7 @@ class ExportServiceTests : AbstractTest() {
 
         assertEquals("bar", ma.lastSpec!!.env["foo"])
         assertEquals(user.organizationId.toString(), ma.lastSpec!!.env["ZORROA_ORG_ID"])
-        assertEquals(user.id.toString(), ma.lastSpec!!.env["ZORROA_USER_ID"])
+        assertEquals(user.username, ma.lastSpec!!.env["ZORROA_USER"])
         assertEquals(ex1.id.toString(), ma.lastSpec!!.env["ZORROA_EXPORT_ID"])
     }
 

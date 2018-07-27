@@ -2,6 +2,7 @@ package com.zorroa.analyst.service
 
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.server.getJobDataBucket
 import com.zorroa.common.util.Json
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
@@ -249,7 +250,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         container.volumeMounts = listOf(mount)
         container.name = job.name
         container.image = k8Props.image
-        container.args = listOf(storageService.getSignedUrl(job.getScriptPath()).toString())
+        container.args = listOf(storageService.getSignedUrl(
+                getJobDataBucket(), job.getScriptPath()).toString())
         container.env = mutableListOf(
                 EnvVar("ZORROA_JOB_ID", job.id.toString(), null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),

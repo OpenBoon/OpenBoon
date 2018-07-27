@@ -5,8 +5,10 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.sdk.security.UserAuthed
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.common.server.JwtValidator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -35,6 +37,12 @@ class MultipleWebSecurityConfig {
 
     @Autowired
     internal lateinit var properties: ApplicationProperties
+
+    @Autowired
+    @Bean
+    fun jwtAuthorizationFilter(authenticationManager: AuthenticationManager, validator: JwtValidator, userRegistryService: UserRegistryService) : JWTAuthorizationFilter {
+        return JWTAuthorizationFilter(authenticationManager,  validator, userRegistryService)
+    }
 
     init {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL)
@@ -81,6 +89,9 @@ class MultipleWebSecurityConfig {
         @Autowired
         internal lateinit var properties: ApplicationProperties
 
+        @Autowired
+        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
+
         @Bean
         fun resetPasswordSecurityFilter(): ResetPasswordSecurityFilter {
             return ResetPasswordSecurityFilter()
@@ -90,6 +101,7 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**")
+                    .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterBefore(HmacSecurityFilter(
                             properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
