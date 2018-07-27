@@ -3,13 +3,12 @@ package com.zorroa.analyst
 import com.zorroa.analyst.service.*
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.IndexRoutingService
-import com.zorroa.common.server.GcsJwtValidator
+import com.zorroa.common.server.GcpJwtValidator
 import com.zorroa.common.server.JwtValidator
 import com.zorroa.common.server.NoOpJwtValidator
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
@@ -68,7 +67,7 @@ class ApplicationConfig {
     fun jwtValidator() : JwtValidator {
         val path = "$configPath/service-credentials.json"
         return if (Files.exists(Paths.get(path))) {
-            GcsJwtValidator(path)
+            GcpJwtValidator(path)
         }
         else {
             NoOpJwtValidator()
