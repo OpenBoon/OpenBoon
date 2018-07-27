@@ -4,6 +4,7 @@ import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.common.server.JwtSecurityConstants.HEADER_STRING
 import com.zorroa.common.server.JwtSecurityConstants.TOKEN_PREFIX
 import com.zorroa.common.server.JwtValidator
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,10 +15,13 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter(authManager: AuthenticationManager,
-                             private val validator: JwtValidator,
-                             private val userRegistryService: UserRegistryService) : BasicAuthenticationFilter(authManager) {
+class JWTAuthorizationFilter @Autowired constructor(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
 
+    @Autowired
+    private lateinit var validator: JwtValidator
+
+    @Autowired
+    private lateinit var userRegistryService: UserRegistryService
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(req: HttpServletRequest,
