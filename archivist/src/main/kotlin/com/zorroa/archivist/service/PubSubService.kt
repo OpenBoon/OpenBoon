@@ -14,6 +14,7 @@ import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.domain.ZpsScript
 import com.zorroa.common.util.Json
+import com.zorroa.common.util.getPublicUrl
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -76,6 +77,7 @@ class GcpPubSubServiceImpl : PubSubService {
          * This method will create a single job per message.
          */
         override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
+
             val payload : Map<String, Any> = try {
                 Json.Mapper.readValue(message.data.toByteArray())
             } catch (e: Exception) {
@@ -83,8 +85,6 @@ class GcpPubSubServiceImpl : PubSubService {
                 logger.warn("Failed to parse GPubSub payload: {}", String(message.data.toByteArray()))
                 return
             }
-
-            // TODO: authorize this thread
 
             val type= payload["type"] as String?
 
@@ -94,10 +94,7 @@ class GcpPubSubServiceImpl : PubSubService {
                 val companyId = payload["companyId"] as Int
                 val jobName = "$assetId-$type".toLowerCase()
 
-                /**
-                 * TODO: Fix what the org name is
-                 */
-                val org = organizationDao.get("irm-" + payload["companyId"])
+                val org = organizationDao.get("company-" + payload["companyId"])
 
                 // Pull the latest document or otherwise create a new one.
                 // TODO: use CDV
@@ -122,7 +119,11 @@ class GcpPubSubServiceImpl : PubSubService {
                             org.id,
                             zps,
                             lockAssets = true,
-                            attrs=mutableMapOf("companyId" to companyId.toString()))
+                            attrs=mutableMapOf("companyId" to companyId.toString()),
+                            env=mutableMapOf(
+                                    "ZORROA_ARCHIVIST_URL" to getPublicUrl(),
+                                    "ZORROA_ORG_ID" to "123",
+                                    "ZORROA_USER" to "admin"))
 
                     val job = analystClient.createJob(spec)
                     logger.info("launched job: {}", job)
