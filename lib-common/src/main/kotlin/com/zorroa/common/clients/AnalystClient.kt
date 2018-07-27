@@ -7,9 +7,9 @@ interface AnalystClient {
     fun createJob(spec: JobSpec) : Job
 }
 
-class AnalystClientImpl(val url: String) : AnalystClient {
+class AnalystClientImpl(val url: String, jwtSigner: JwtSigner?) : AnalystClient {
 
-    val client = RestClient(url)
+    val client = RestClient(url, jwtSigner)
 
     override fun createJob(spec: JobSpec) : Job {
         return client.post("/api/v1/jobs", spec, Job::class.java)

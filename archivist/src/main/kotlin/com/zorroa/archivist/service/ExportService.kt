@@ -97,7 +97,7 @@ class ExportServiceImpl @Autowired constructor(
 
         val env = mutableMapOf<String, String>()
         env.putAll(spec.env)
-        env.putAll(mapOf("ZORROA_USER_ID" to user.id.toString(),
+        env.putAll(mapOf("ZORROA_USER" to user.username,
                 "ZORROA_ORG_ID" to user.organizationId.toString(),
                 "ZORROA_EXPORT_ID" to export.id.toString()))
 

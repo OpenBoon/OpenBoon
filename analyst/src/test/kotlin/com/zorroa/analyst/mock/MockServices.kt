@@ -18,23 +18,23 @@ class MockStorageService: JobStorageService {
 
     var url = URL("http://johnvansickle.com")
 
-    override fun storeBlob(path: String, mediaType: String, bytes: ByteArray): URL {
+    override fun storeBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray): URL {
         logger.info("MockStorageService.storeBlob")
         lastBlob = bytes
         return url
     }
 
-    override fun getSignedUrl(path: String): URL {
+    override fun getSignedUrl(bucket: String, path: String): URL {
         logger.info("MockStorageService.getSignedUrl")
         return URL("http://johnvansickle.com?signed=true")
     }
 
-    override fun getInputStream(path: String): InputStream {
+    override fun getInputStream(bucket: String, path: String): InputStream {
         logger.info("MockStorageService.getInputStream")
         return ByteArrayInputStream(lastBlob)
     }
 
-    override fun storeSignedBlob(path: String, mediaType: String, bytes: ByteArray): URL {
+    override fun storeSignedBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray): URL {
         logger.info("MockStorageService.storeSignedBlob")
         return url
     }

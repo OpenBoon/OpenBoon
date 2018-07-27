@@ -1,30 +1,24 @@
 package com.zorroa.analyst
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
-import com.google.common.collect.Lists
-import com.zorroa.analyst.security.JwtCredentials
 import com.zorroa.analyst.service.*
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.IndexRoutingService
+import com.zorroa.common.server.GcpJwtValidator
+import com.zorroa.common.server.JwtValidator
+import com.zorroa.common.server.NoOpJwtValidator
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
-import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
 
 @Configuration
 class ApplicationConfig {
-
-    @Value("\${cdv.url}")
-    lateinit var cdvUrl: String
 
     @Autowired
     lateinit var storageProperties: StorageProperties
@@ -55,7 +49,7 @@ class ApplicationConfig {
     @Bean
     fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
         val adapter = RequestMappingHandlerAdapter()
-        adapter.messageConverters = Lists.newArrayList<HttpMessageConverter<*>>(
+        adapter.messageConverters = mutableListOf<HttpMessageConverter<*>>(
                 MappingJackson2HttpMessageConverter()
         )
         return adapter
@@ -67,15 +61,13 @@ class ApplicationConfig {
     }
 
     @Bean
-    fun jwtCredential() : JwtCredentials {
-        val path = "config/credentials.json"
+    fun jwtValidator() : JwtValidator {
+        val path = "/config/service-credentials.json"
         return if (Files.exists(Paths.get(path))) {
-            val cred = GoogleCredential.fromStream(FileInputStream(path))
-                JwtCredentials(String(Base64.getEncoder().encode(cred.serviceAccountPrivateKey.encoded)))
-            }
+            GcpJwtValidator(path)
+        }
         else {
-            logger.warn("Unable to find credentials file, defaulting to random key")
-            JwtCredentials(UUID.randomUUID().toString())
+            NoOpJwtValidator()
         }
     }
 

@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.pubsub.v1.AckReplyConsumer
 import com.google.cloud.pubsub.v1.MessageReceiver
 import com.google.cloud.pubsub.v1.Subscriber
@@ -13,30 +14,36 @@ import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.domain.ZpsScript
+import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Service
+import java.io.FileInputStream
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
 interface PubSubService
 
 @Configuration
-@ConfigurationProperties("archivist.pubsub.gcs")
+@ConfigurationProperties("archivist.pubsub.gcp")
 class GooglePubSubSettings {
     lateinit var subscription: String
     lateinit var project: String
     var enabled : Boolean = true
 }
 
+
+class NoOpPubSubService : PubSubService {
+
+}
+
 /**
  * A GCP specific EventService built on Google Pub/Sub.  This class currently waits for certain
  * events and launches kubernetes jobs to process data as it comes in.
  */
-@Service
+
 class GcpPubSubServiceImpl : PubSubService {
 
     @Autowired
@@ -56,8 +63,11 @@ class GcpPubSubServiceImpl : PubSubService {
 
     @PostConstruct
     fun setup() {
+        logger.info("Initializing GCP pub sub {} {}", settings.project, settings.subscription)
         subscription = ProjectSubscriptionName.of(settings.project, settings.subscription)
-        subscriber = Subscriber.newBuilder(settings.subscription, GcpDataMessageReceiver()).build()
+        subscriber = Subscriber.newBuilder(settings.subscription, GcpDataMessageReceiver())
+                .setCredentialsProvider({ GoogleCredentials.fromStream(FileInputStream("/config/data-credentials.json")) })
+                .build()
         if (settings.enabled) {
             subscriber.startAsync().awaitRunning()
         }
@@ -76,6 +86,7 @@ class GcpPubSubServiceImpl : PubSubService {
          * This method will create a single job per message.
          */
         override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
+
             val payload : Map<String, Any> = try {
                 Json.Mapper.readValue(message.data.toByteArray())
             } catch (e: Exception) {
@@ -83,8 +94,6 @@ class GcpPubSubServiceImpl : PubSubService {
                 logger.warn("Failed to parse GPubSub payload: {}", String(message.data.toByteArray()))
                 return
             }
-
-            // TODO: authorize this thread
 
             val type= payload["type"] as String?
 
@@ -94,10 +103,7 @@ class GcpPubSubServiceImpl : PubSubService {
                 val companyId = payload["companyId"] as Int
                 val jobName = "$assetId-$type".toLowerCase()
 
-                /**
-                 * TODO: Fix what the org name is
-                 */
-                val org = organizationDao.get("irm-" + payload["companyId"])
+                val org = organizationDao.get("company-" + payload["companyId"])
 
                 // Pull the latest document or otherwise create a new one.
                 // TODO: use CDV
@@ -122,7 +128,11 @@ class GcpPubSubServiceImpl : PubSubService {
                             org.id,
                             zps,
                             lockAssets = true,
-                            attrs=mutableMapOf("companyId" to companyId.toString()))
+                            attrs=mutableMapOf("companyId" to companyId.toString()),
+                            env=mutableMapOf(
+                                    "ZORROA_ARCHIVIST_URL" to getPublicUrl(),
+                                    "ZORROA_ORG_ID" to "123",
+                                    "ZORROA_USER" to "admin"))
 
                     val job = analystClient.createJob(spec)
                     logger.info("launched job: {}", job)

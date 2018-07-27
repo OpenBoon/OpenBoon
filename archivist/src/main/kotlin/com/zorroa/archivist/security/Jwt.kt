@@ -1,20 +1,27 @@
-package com.zorroa.analyst.security
+package com.zorroa.archivist.security
 
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.common.server.JwtSecurityConstants.HEADER_STRING
 import com.zorroa.common.server.JwtSecurityConstants.TOKEN_PREFIX
 import com.zorroa.common.server.JwtValidator
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import java.io.IOException
-import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter(authManager: AuthenticationManager, private val validator: JwtValidator) : BasicAuthenticationFilter(authManager) {
+class JWTAuthorizationFilter @Autowired constructor(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
+
+    @Autowired
+    private lateinit var validator: JwtValidator
+
+    @Autowired
+    private lateinit var userRegistryService: UserRegistryService
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(req: HttpServletRequest,
@@ -34,11 +41,8 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager, private val val
 
     private fun getAuthentication(token: String): UsernamePasswordAuthenticationToken? {
         val claims = validator.validate(token)
-
-        val user =  UsernamePasswordAuthenticationToken(
-                claims["ZORROA_USER"], null, ArrayList())
-        user.details = claims
-        return user
+        val user = userRegistryService.getUser(claims.getValue("ZORROA_USER"))
+        return UsernamePasswordAuthenticationToken(user, "",
+                user.authorities)
     }
 }
-

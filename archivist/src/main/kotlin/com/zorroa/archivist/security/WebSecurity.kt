@@ -5,8 +5,10 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.sdk.security.UserAuthed
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.common.server.JwtValidator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -36,10 +38,6 @@ class MultipleWebSecurityConfig {
     @Autowired
     internal lateinit var properties: ApplicationProperties
 
-    init {
-        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL)
-    }
-
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -47,12 +45,6 @@ class MultipleWebSecurityConfig {
 
         @Autowired
         internal lateinit var properties: ApplicationProperties
-
-        @Bean
-        @Throws(Exception::class)
-        fun customAuthenticationManager(): AuthenticationManager {
-            return authenticationManager()
-        }
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -82,14 +74,26 @@ class MultipleWebSecurityConfig {
         internal lateinit var properties: ApplicationProperties
 
         @Bean
+        @Throws(Exception::class)
+        fun globalAuthenticationManager(): AuthenticationManager {
+            return authenticationManager()
+        }
+
+        @Bean
         fun resetPasswordSecurityFilter(): ResetPasswordSecurityFilter {
             return ResetPasswordSecurityFilter()
+        }
+
+        @Bean
+        fun jwtAuthorizationFilter() : JWTAuthorizationFilter {
+            return JWTAuthorizationFilter(authenticationManager())
         }
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**")
+                    .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterBefore(HmacSecurityFilter(
                             properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
