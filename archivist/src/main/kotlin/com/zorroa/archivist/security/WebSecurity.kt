@@ -5,10 +5,8 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.UserService
-import com.zorroa.common.server.JwtValidator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -25,7 +23,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
@@ -86,7 +83,7 @@ class MultipleWebSecurityConfig {
 
         @Bean
         fun jwtAuthorizationFilter() : JWTAuthorizationFilter {
-            return JWTAuthorizationFilter(authenticationManager())
+            return JWTAuthorizationFilter(globalAuthenticationManager())
         }
 
         @Throws(Exception::class)
