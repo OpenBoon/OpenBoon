@@ -15,7 +15,7 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter @Autowired constructor(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
+class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
 
     @Autowired
     private lateinit var validator: JwtValidator
