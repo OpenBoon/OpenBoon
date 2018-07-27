@@ -35,11 +35,20 @@ services:
       POSTGRES_PASSWORD: zorroa
       POSTGRES_USER: zorroa
       POSTGRES_DB: zorroa
+  mvn-build:
+    image: maven:3.5.4-jdk-8
+    command: mvn clean package -Dmaven.test.skip=true
+    working_dir: "/zorroa-server"
+    volumes:
+      - "~/.m2:/root/.m2"
+      - "./:/zorroa-server"
   archivist:
+    depends_on:
+      - "mvn-build"
     build:
       context: archivist
     ports:
       - 8080:8080
     volumes:
-      - "./localdev/archivist-config:/config"
+      - "./localdev/zorroa-archivist-config:/config"
 
