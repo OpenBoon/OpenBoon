@@ -494,7 +494,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @throws  Exception
      */
-    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

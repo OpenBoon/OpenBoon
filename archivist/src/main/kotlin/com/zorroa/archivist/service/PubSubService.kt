@@ -18,6 +18,7 @@ import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import java.io.FileInputStream
@@ -58,6 +59,9 @@ class GcpPubSubServiceImpl : PubSubService {
     @Autowired
     private lateinit var analystClient: AnalystClient
 
+    @Value("\${archivist.config.path}")
+    lateinit var configPath: String
+
     lateinit var subscription : ProjectSubscriptionName
     lateinit var subscriber: Subscriber
 
@@ -66,7 +70,7 @@ class GcpPubSubServiceImpl : PubSubService {
         logger.info("Initializing GCP pub sub {} {}", settings.project, settings.subscription)
         subscription = ProjectSubscriptionName.of(settings.project, settings.subscription)
         subscriber = Subscriber.newBuilder(settings.subscription, GcpDataMessageReceiver())
-                .setCredentialsProvider({ GoogleCredentials.fromStream(FileInputStream("/config/data-credentials.json")) })
+                .setCredentialsProvider({ GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) })
                 .build()
         if (settings.enabled) {
             subscriber.startAsync().awaitRunning()

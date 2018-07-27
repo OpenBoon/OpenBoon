@@ -27,6 +27,9 @@ class ApplicationConfig {
     @Autowired
     lateinit var schedulerProperties: SchedulerProperties
 
+    @Value("\${archivist.config.path}")
+    lateinit var configPath: String
+
     @Bean
     fun storageService() : JobStorageService {
         return when (storageProperties.type) {
@@ -63,7 +66,7 @@ class ApplicationConfig {
 
     @Bean
     fun jwtValidator() : JwtValidator {
-        val path = "/config/service-credentials.json"
+        val path = "$configPath/service-credentials.json"
         return if (Files.exists(Paths.get(path))) {
             GcsJwtValidator(path)
         }

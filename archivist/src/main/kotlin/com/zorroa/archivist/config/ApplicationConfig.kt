@@ -159,7 +159,7 @@ class ArchivistConfiguration {
 
     @Bean
     fun jwtValidator() : JwtValidator {
-        val path = "/config/service-credentials.json"
+        val path = properties().get("archivist.config.path}", String::class.java) + "/service-credentials.json"
         return if (Files.exists(Paths.get(path))) {
             GcsJwtValidator(path)
         }
