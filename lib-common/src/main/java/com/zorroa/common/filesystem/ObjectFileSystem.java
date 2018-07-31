@@ -22,21 +22,21 @@ public interface ObjectFileSystem {
      * @param variant
      * @return
      */
-    ObjectFile prepare(String category, Object value, String type, String... variant);
+    OfsFile prepare(String category, Object value, String type, String... variant);
 
-    ObjectFile get(String category, Object value, String type, String... variant);
+    OfsFile get(String category, Object value, String type, String... variant);
 
     /**
      * Get a file based its unique ID, which is formatted as category/id_[variant].ext
      *
      * @return
      */
-    ObjectFile get(String id);
+    OfsFile get(String id);
 
     /**
      * Get a file based its unique ID and name which is formatted as category/name
      *
      * @return
      */
-    ObjectFile get(String category, String name);
+    OfsFile get(String category, String name);
 }

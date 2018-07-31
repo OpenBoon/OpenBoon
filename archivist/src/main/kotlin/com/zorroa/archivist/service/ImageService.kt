@@ -6,7 +6,6 @@ import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +21,6 @@ import java.awt.Font
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.*
-import java.net.URL
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,9 +43,6 @@ interface ImageService {
     fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource>
 
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, url: URL): ResponseEntity<InputStreamResource>
-
-    @Throws(IOException::class)
     fun watermark(req: HttpServletRequest, file: File, format: String): ByteArrayOutputStream
 
     fun watermark(req: HttpServletRequest, src: BufferedImage): BufferedImage
@@ -58,8 +53,7 @@ interface ImageService {
  */
 @Service
 class ImageServiceImpl @Autowired constructor(
-        private val objectFileSystem: ObjectFileSystem,
-        private val storageService: StorageService,
+        private val storageRouter: StorageRouter,
         private val properties: ApplicationProperties,
         private val eventBus: EventBus
 
@@ -100,27 +94,8 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, url: URL): ResponseEntity<InputStreamResource> {
-        if (url == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
-        }
-
-        val bstream = storageService.getObjectFile(url)
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .contentLength(bstream.size)
-                .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                .body(InputStreamResource(bstream.stream))
-    }
-
-    @Throws(IOException::class)
     override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
-        return if (proxy.stream != null ) {
-            serveImage(req, URL(proxy.stream))
-        }
-        else {
-            serveImage(req, objectFileSystem.get(proxy.id).file)
-        }
+        return storageRouter.getObjectFile(proxy).getReponseEntity()
     }
 
     @Throws(IOException::class)

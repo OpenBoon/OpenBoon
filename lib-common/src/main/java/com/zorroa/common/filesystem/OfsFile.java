@@ -13,13 +13,13 @@ import java.util.Objects;
 /**
  * Created by chambers on 3/9/16.
  */
-public class ObjectFile {
+public class OfsFile {
 
     private final File file;
     private final String category;
     private final String name;
 
-    public ObjectFile(String category, String name, File file) {
+    public OfsFile(String category, String name, File file) {
         this.category = category;
         this.name = name;
         this.file = file;
@@ -88,7 +88,7 @@ public class ObjectFile {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ObjectFile that = (ObjectFile) o;
+        OfsFile that = (OfsFile) o;
         return Objects.equals(getFile(), that.getFile());
     }
 
