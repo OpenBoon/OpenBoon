@@ -27,7 +27,7 @@ class ApplicationConfig {
     @Autowired
     lateinit var schedulerProperties: SchedulerProperties
 
-    @Value("\${archivist.config.path}")
+    @Value("\${analyst.config.path}")
     lateinit var configPath: String
 
     @Bean

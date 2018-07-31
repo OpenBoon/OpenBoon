@@ -5,3 +5,6 @@
 /**/target
 /**/dependency-reduced-pom.xml
 /**/*.jar
+k8.cert
+service-credentials.json
+data-credentials.json

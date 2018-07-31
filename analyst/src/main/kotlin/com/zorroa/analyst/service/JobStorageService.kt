@@ -69,13 +69,13 @@ class GcpStorageServiceImpl : JobStorageService {
 
     lateinit var bucket : String
 
-    @Value("\${archivist.config.path}")
+    @Value("\${analyst.config.path}")
     lateinit var configPath: String
 
     @PostConstruct
     fun setup() {
         storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream("${configPath}data-credentials.json"))).build().service
+                GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json"))).build().service
     }
 
     override fun storeSignedBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray) : URL {
