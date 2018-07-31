@@ -8,11 +8,8 @@ import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
 import io.minio.MinioClient
 import org.apache.tika.Tika
-import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
@@ -124,10 +121,9 @@ class StorageRouterImpl @Autowired constructor (
         ofs: ObjectFileSystem) : StorageRouter {
 
     private val services : Map<String, StorageService>
-    private val types: Set<String>
+    private val types: Set<String> = properties.getList("archivist.storage.types").toSet()
 
     init {
-        types = properties.getList("archivist.storage.types").toSet()
 
         services = mutableMapOf()
         if (types.contains("gcp")) {
@@ -362,10 +358,14 @@ class GcpStorageService constructor (
     }
 
     override fun getSignedUrl(url: URI): URL {
-        var (bucket, path) =  splitGcpUrl(url)
-        val blobId = BlobId.of(bucket, path)
-        return storage.get(blobId).signUrl(60, TimeUnit.MINUTES,
-                Storage.SignUrlOption.httpMethod(HttpMethod.GET))
+        val blob = getBlob(url)
+        if (blob != null) {
+            return blob.signUrl(60, TimeUnit.MINUTES,
+                    Storage.SignUrlOption.httpMethod(HttpMethod.GET))
+        }
+        else {
+            throw StorageReadException("$url not found")
+        }
     }
 
     override fun objectExists(url: URI): Boolean {

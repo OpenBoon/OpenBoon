@@ -69,8 +69,6 @@ class AssetController @Autowired constructor(
 
     fun getPreferredFormat(asset: Document, forceProxy: Boolean): ObjectFile? {
 
-        val mediaType = asset.getAttr("source.mediaType", String::class.java)
-
         return if (forceProxy) {
             getProxyStream(asset)
         } else  {
@@ -112,20 +110,20 @@ class AssetController @Autowired constructor(
                 }
             }
             else {
-                /**
-                 * TODO: Handle multiple extentions.  Must be implemented in storage router
-                 */
-                logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.id))
-                if (!ofile.isLocal()) {
-                    ofile.copyTo(response)
-                }
-                else {
-                    MultipartFileSender.fromPath(ofile.getLocalFile())
-                            .with(request)
-                            .with(response)
-                            .setContentType(ofile.getStat().contentType)
-                            .serveResource()
+                try {
+                    logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.id))
+                    if (!ofile.isLocal()) {
+                        ofile.copyTo(response)
+                    } else {
+                        MultipartFileSender.fromPath(ofile.getLocalFile())
+                                .with(request)
+                                .with(response)
+                                .setContentType(ofile.getStat().contentType)
+                                .serveResource()
 
+                    }
+                } catch (e: Exception) {
+                    response.sendError(404, "StorageSystem unable to find file")
                 }
             }
         }

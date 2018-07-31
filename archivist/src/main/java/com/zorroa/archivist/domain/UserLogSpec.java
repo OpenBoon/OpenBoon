@@ -2,11 +2,9 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.security.UserId;
 import com.zorroa.common.search.AssetSearch;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -148,6 +146,7 @@ public class UserLogSpec {
     }
 
     public UserLogSpec setSearch(AssetSearch search) {
+        /*
         this.query = Sets.newHashSet();
         if (search.isQuerySet()) {
             this.query.add(search.getQuery());
@@ -161,6 +160,7 @@ public class UserLogSpec {
                 }
             }
         }
+        */
         return this;
     }
 
