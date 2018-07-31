@@ -9,6 +9,7 @@ import com.zorroa.common.server.NoOpJwtValidator
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
@@ -25,6 +26,9 @@ class ApplicationConfig {
 
     @Autowired
     lateinit var schedulerProperties: SchedulerProperties
+
+    @Value("\${analyst.config.path}")
+    lateinit var configPath: String
 
     @Bean
     fun storageService() : JobStorageService {
@@ -62,7 +66,7 @@ class ApplicationConfig {
 
     @Bean
     fun jwtValidator() : JwtValidator {
-        val path = "/config/service-credentials.json"
+        val path = "$configPath/service-credentials.json"
         return if (Files.exists(Paths.get(path))) {
             GcpJwtValidator(path)
         }

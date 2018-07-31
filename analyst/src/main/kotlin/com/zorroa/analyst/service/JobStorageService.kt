@@ -3,6 +3,7 @@ package com.zorroa.analyst.service
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.*
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import java.io.FileInputStream
@@ -68,10 +69,13 @@ class GcpStorageServiceImpl : JobStorageService {
 
     lateinit var bucket : String
 
+    @Value("\${analyst.config.path}")
+    lateinit var configPath: String
+
     @PostConstruct
     fun setup() {
         storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream("/config/data-credentials.json"))).build().service
+                GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json"))).build().service
     }
 
     override fun storeSignedBlob(bucket: String, path: String, mediaType: String, bytes: ByteArray) : URL {

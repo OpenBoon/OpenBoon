@@ -37,47 +37,58 @@ git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
 git clone git@github.com:Zorroa/zorroa-server.git
 ``` 
 
-### Start the dev Elastic Search and Postgres instances.
-These are all handled by a docker compose. From the root of the zorroa-server repo run the following.
+### Using the docker-compose local dev environment.
+The local development is orchestrated in by the docker-compose.yml file found in the root of the repo. Docker compose is 
+used to run a series of docker containers that serve all the services for a complete ZVI backend. Below are some examples 
+of useful commands. You can check the help for docker-compose to learn more.
 
-```docker-compose up -d```
+Note that this environment does not include the curator frontend. You'll need to follow the instruction in that repo
+for running the curator locally.
 
-### Build the Server
+#### Example commands:
 
-Build the Zorroa server.
+##### Create the development environment for the first time:
 
 ```
-cd ~/zorroa/zorroa-server
-mvn clean install
-```
-As with the plugin-sdk, there are server test failures. For a successful build tests must be disabled:
-```
-mvn clean install -Dmaven.test.skip=true
+docker-compose run build
+docker-compose up -d
+cd elasticsearch
+./create_local_index.sh
 ```
 
-### Run Servers
+##### Rebuild all java code: ```docker-compose run build```
 
-Run the Archivist and Analyst servers. More information about these servers can be found below:
+##### Start all services: ```docker-compose up -d```
 
-https://dl.zorroa.com/public/docs/0.39/server/archivist.html
+##### Stop all services: ```docker-compose down```
 
-https://dl.zorroa.com/public/docs/0.39/server/analyst.html
+##### Restart the archivist: ```docker-compose restart archivist```
 
-*Archivist*
+##### Pause the analyst: ```docker-compose pause analyst```
 
-In a fresh shell:
+##### Unpause the analyst: ```docker-compose unpause analyst```
+
+##### Monitor the archivist logs: ```docker-compose logs -f archivist```
+
+##### View the currently running services: ```docker-compose ps```
+
+##### View all running processes on the analyst: ```docker-compose top analyst```
+
+##### Rebuild the archivist docker container: ```docker-compose build archivist```
+
+##### Destroy the elastic search database and start over: 
+
 ```
-cd ~/zorroa/zorroa-server/archivist
-./run.sh
+docker-compose down
+docker-compose rm es
+docker-compose up -d
+cd elasticsearch
+./create_local_index.sh
 ```
 
-*Analyst*
 
-In a fresh shell:
-```
-cd ~/zorroa/zorroa-server/analyst
-./run.sh
-```
+
+
 
 ### Visit the Server
 

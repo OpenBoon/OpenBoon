@@ -1,8 +1,8 @@
 #!/bin/sh
-if [ -n "${GCS_CONFIG}" ]
+if [ -n "${GAE_SERVICE}" ]
 then
   echo "Downloading config files from GCS secret bucket."
   mkdir -p /config
-  /root/google-cloud-sdk/bin/gsutil cp -r "${GCS_CONFIG}/*" /config
+  /root/google-cloud-sdk/bin/gsutil cp -r "${GCLOUD_PROJECT}-zorroa-configuration/{GAE_SERVICE}-config/*" /config
 fi
-java -Dloader.path=/config/ext -Djava.security.egd=file:/dev/./urandom -jar /service/app.jar "$@"
+java -Dloader.path=/config/ext -Djava.security.egd=file:/dev/./urandom -jar /service/archivist.jar "$@"

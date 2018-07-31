@@ -8,6 +8,7 @@ import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.config.ApplicationProperties
 import io.minio.MinioClient
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import java.io.FileInputStream
 import java.io.InputStream
 import java.net.URL
@@ -62,10 +63,13 @@ class GcpStorageService @Autowired constructor (
 
     lateinit var storage: Storage
 
+    @Value("\${archivist.config.path}")
+    lateinit var configPath: String
+
     @PostConstruct
     fun setup() {
         storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream("/config/data-credentials.json"))).build().service
+                GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json"))).build().service
     }
 
     override fun getSignedUrl(url: URL): URL {

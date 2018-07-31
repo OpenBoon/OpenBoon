@@ -29,22 +29,10 @@ def main():
 
 
 def build_docker_image(project, app, gcs_config):
-    ext_file = "deploy/%s/config/ext.json" % project
-    if os.path.exists(ext_file):
-        exts = json.load(open(ext_file))
-        for ext in exts:
-            src_file = "../%s/target/%s.jar" % (ext, ext)
-            dst_file = "deploy/%s/ext" % project
-            print "Copying %s extension plugin %s->%s" % (ext, src_file, dst_file)
-            shutil.copy(src_file, dst_file)
-
     service = app["service"]
     print "Building docker image: %s:%s" % (project, service)
-    if not gcs_config:
-        gcs_config = 'gs://%s-zorroa-configuration/%s-config' % (project, service)
     cmd = ["docker", "build",
            "-t", get_image_name(project, app),
-           "--build-arg", "gcs_config=%s" % gcs_config,
            "--build-arg", "project=%s" % project,
            "."]
     print cmd
