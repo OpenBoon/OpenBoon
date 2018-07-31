@@ -107,25 +107,27 @@ class GcpPubSubServiceImpl : PubSubService {
                 val companyId = payload["companyId"] as Int
                 val jobName = "$assetId-$type".toLowerCase()
 
-                val org = organizationDao.get("company-" + payload["companyId"])
+                try {
 
-                // Pull the latest document or otherwise create a new one.
-                // TODO: use CDV
-                val doc = try {
-                    indexDao.get(assetId)
-                } catch (e: Exception) {
-                    Document(assetId)
-                }
+                    val org = organizationDao.get("company-" + payload["companyId"])
 
-                // make sure these are set.
-                doc.setAttr("irm.companyId", companyId)
-                doc.setAttr("zorroa.organizationId", org.id)
+                    // Pull the latest document or otherwise create a new one.
+                    // TODO: use CDV
+                    val doc = try {
+                        indexDao.get(assetId)
+                    } catch (e: Exception) {
+                        Document(assetId)
+                    }
+
+                    // make sure these are set.
+                    doc.setAttr("irm.companyId", companyId)
+                    doc.setAttr("zorroa.organizationId", org.id)
 
                 /**
                  * If the same event comes in for a given job we'll attempt to run
                  * it again, assuming its not already running.
                  */
-                try {
+
                     val zps = ZpsScript(jobName, over=mutableListOf(doc))
                     val spec = JobSpec(jobName,
                             PipelineType.IMPORT,
@@ -144,9 +146,6 @@ class GcpPubSubServiceImpl : PubSubService {
                 } catch (e: Exception) {
                     logger.warn("Error launching job: {}, asset: {} company: {}",
                             e.message, assetId, companyId)
-                }
-                catch (e: Exception) {
-
                 }
             }
             consumer.ack()
