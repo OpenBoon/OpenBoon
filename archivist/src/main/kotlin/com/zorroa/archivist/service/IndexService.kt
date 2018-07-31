@@ -15,7 +15,6 @@ import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
-import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.schema.ProxySchema
@@ -28,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
@@ -95,7 +93,7 @@ class IndexServiceImpl  @Autowired  constructor (
         private val logService: EventLogService,
         private val searchService: SearchService,
         private val properties: ApplicationProperties,
-        private val ofs: ObjectFileSystem
+        private val storageRouter: StorageRouter
 
 ) : IndexService, ApplicationListener<ContextRefreshedEvent> {
 
@@ -305,12 +303,9 @@ class IndexServiceImpl  @Autowired  constructor (
         val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
         if (proxySchema != null) {
             for (proxy in proxySchema.proxies!!) {
-                try {
-                    if (!Files.deleteIfExists(ofs.get(proxy.id).file.toPath())) {
-                        logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
-                    }
-                } catch (e: Exception) {
-                    logger.warn("Failed to delete OFS file: {}", e)
+                val ofile = storageRouter.getObjectFile(proxy)
+                if (!ofile.delete()) {
+                    logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
                 }
             }
         }

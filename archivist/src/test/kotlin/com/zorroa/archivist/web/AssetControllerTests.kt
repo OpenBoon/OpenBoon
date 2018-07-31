@@ -379,7 +379,11 @@ class AssetControllerTests : MockMvcTest() {
 
     }
 
+    /**
+     * Bring this back when we support alternative extensions
+     */
     @Test
+    @Ignore
     @Throws(Exception::class)
     fun testStream404() {
         val session = admin()
@@ -394,24 +398,5 @@ class AssetControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().is4xxClientError)
                 .andReturn()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testGetPreferredFormat() {
-        val session = admin()
-        addTestAssets("/video")
-        refreshIndex()
-
-        val assets = indexService.getAll(Pager.first())
-        var file: AssetController.StreamFile? = assetController!!.getPreferredFormat(assets.get(0), "m4v",
-                false, false)
-
-        assertNotNull(file)
-        ///assertEquals("video/x-m4v", file!!.mimeType)
-
-        file = assetController!!.getPreferredFormat(assets.get(0), "ogv",
-                false, false)
-        assertNull(file)
     }
 }

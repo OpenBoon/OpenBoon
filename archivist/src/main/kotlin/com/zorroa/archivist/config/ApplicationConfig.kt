@@ -3,7 +3,10 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.GcpPubSubServiceImpl
+import com.zorroa.archivist.service.NoOpPubSubService
+import com.zorroa.archivist.service.PubSubService
+import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
@@ -108,19 +111,6 @@ class ArchivistConfiguration {
         val ufs = UUIDFileSystem(File(properties().getString("archivivst.storage.ofs.path")))
         ufs.init()
         return ufs
-    }
-
-    /**
-     * Just hard coding this for now.  In the future we'll check a configuration
-     * option or load a plugin.
-     */
-    @Bean
-    fun storageService() : StorageService {
-        val properties = properties()
-        return when (properties.getString("archivist.storage.type")) {
-            "gcp"->GcpStorageService(properties)
-            else->MinioStorageImpl(properties)
-        }
     }
 
     @Bean
