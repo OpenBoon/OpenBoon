@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -35,7 +36,11 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     override fun get(id: UUID): Organization {
-        return jdbc.queryForObject("$GET WHERE pk_organization=?", MAPPER, id)
+        try {
+            return jdbc.queryForObject("$GET WHERE pk_organization=?", MAPPER, id)
+        } catch (e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("The organization ID '$id' does not exist", 1)
+        }
     }
 
     override fun refresh(obj: Organization): Organization {
@@ -64,7 +69,11 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     override fun get(name: String): Organization {
-        return jdbc.queryForObject("$GET WHERE str_name=?", MAPPER, name)
+        try {
+            return jdbc.queryForObject("$GET WHERE str_name=?", MAPPER, name)
+        } catch (e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("The organization name '$name' does not exist", 1)
+        }
     }
 
     override fun exists(name: String): Boolean {
