@@ -3,6 +3,7 @@ package com.zorroa.analyst.service
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.server.getJobDataBucket
+import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.Json
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
@@ -15,7 +16,6 @@ import io.fabric8.kubernetes.client.KubernetesClient
 import io.fabric8.kubernetes.client.internal.SerializationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import java.time.Instant
@@ -117,9 +117,6 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
 
     @Autowired
     lateinit var schedulerProperties : SchedulerProperties
-
-    @Value("\${cdv.url}")
-    lateinit var cdvUrl : String
 
     private val kubernetesClient : KubernetesClient
 
@@ -257,7 +254,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
-                EnvVar("CDV_API_BASE_URL", cdvUrl, null),
+                EnvVar("CDV_API_BASE_URL", getPublicUrl("core-data-vault-api"), null),
                 EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null),
                 EnvVar("CDV_GOOGLE_CREDENTIAL_PATH", "/var/secrets/google/cdv.json", null))
 
