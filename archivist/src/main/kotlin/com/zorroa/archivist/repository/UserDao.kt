@@ -10,7 +10,6 @@ import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -71,9 +70,6 @@ interface UserDao {
 
 @Repository
 class UserDaoImpl : AbstractDao(), UserDao {
-
-    @Value("\${archivist.organization.domain}")
-    private lateinit var domain: String
 
     private val hashFunc = Hashing.sha256()
 
@@ -140,6 +136,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
             ps.setObject(13, builder.organizationId)
+            ps.setString(14, Json.serializeToString(builder.authAttrs, "{}"))
             ps
         })
         return get(id)
@@ -284,7 +281,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
         const val SOURCE_LOCAL = "local"
 
-        private val MAPPER = RowMapper<User> { rs, _ ->
+        private val MAPPER = RowMapper { rs, _ ->
             User(rs.getObject("pk_user") as UUID,
                     rs.getString("str_username"),
                     rs.getString("str_email"),
@@ -295,7 +292,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     rs.getString("str_firstname"),
                     rs.getString("str_lastname"),
                     rs.getBoolean("bool_enabled"),
-                    Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java),
+                    Json.deserialize(rs.getString("json_settings"), UserSettings::class.java),
                     rs.getInt("int_login_count"),
                     rs.getLong("time_last_login"))
         }
@@ -315,7 +312,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "str_source",
                 "pk_permission",
                 "pk_folder",
-                "pk_organization")
+                "pk_organization",
+                "json_auth_attrs")
 
         private val RESET_PASSWORD = "UPDATE " +
                 "users " +

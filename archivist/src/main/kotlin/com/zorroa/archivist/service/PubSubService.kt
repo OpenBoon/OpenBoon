@@ -133,7 +133,7 @@ class GcpPubSubServiceImpl : PubSubService {
                             PipelineType.IMPORT,
                             org.id,
                             zps,
-                            lockAssets = true,
+                            lockAssets=true,
                             attrs=mutableMapOf("companyId" to companyId.toString()),
                             env=mutableMapOf(
                                     "ZORROA_ARCHIVIST_URL" to getPublicUrl(),

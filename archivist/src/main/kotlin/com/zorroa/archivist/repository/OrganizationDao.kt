@@ -19,7 +19,7 @@ interface OrganizationDao : GenericNamedDao<Organization, OrganizationSpec> {
 class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
 
     override fun getAll(): List<Organization> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return jdbc.query(GET, MAPPER)
     }
 
     override fun create(spec: OrganizationSpec): Organization {
@@ -51,7 +51,6 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
         return  jdbc.queryForObject("$GET LIMIT 1", MAPPER)
     }
 
-
     override fun getAll(paging: Pager): PagedList<Organization> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -81,7 +80,7 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     companion object {
-        private val MAPPER = RowMapper<Organization> { rs, _ ->
+        private val MAPPER = RowMapper { rs, _ ->
             Organization(
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"))

@@ -76,7 +76,8 @@ data class UserSpec (
         var lastName: String? = null,
         var permissionIds: List<UUID>? = null,
         var homeFolderId: UUID? = null,
-        var userPermissionId: UUID? = null) {
+        var userPermissionId: UUID? = null,
+        var authAttrs :Map<String,String>? =  null) {
 
     fun hashedPassword(): String {
         return createPasswordHash(password)

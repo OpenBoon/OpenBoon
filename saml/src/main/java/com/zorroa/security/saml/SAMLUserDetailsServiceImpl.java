@@ -18,6 +18,7 @@ package com.zorroa.security.saml;
 
 import com.zorroa.archivist.sdk.security.AuthSource;
 import com.zorroa.archivist.sdk.security.UserRegistryService;
+import org.opensaml.saml2.core.Attribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,9 @@ import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
@@ -46,15 +49,13 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 			throws UsernameNotFoundException {
 
 		String userId = null;
+		String orgName = null;
+
 		final String issuer = credential.getAuthenticationAssertion().getIssuer().getValue();
 
 		try {
 
 			ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(issuer);
-			AuthSource source = new AuthSource(
-					zd.getProp("label"),
-					zd.getProp("authSourceId") + "-saml",
-					zd.getProp("permissionType"));
 
             /**
              * if the username attr is set, then try to use that, otherwise
@@ -65,13 +66,29 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
                 userId = credential.getAttributeAsString(usernameAttr);
 			}
 
-			if (userId == null) {
+            if (userId == null) {
                 userId = credential.getNameID().getValue();
             }
 
-			LOG.info("Loading SAML user: {} from {}", userId, issuer);
-            return userRegistryService.registerUser(userId, source,
+            // TODO: make this the ID
+            orgName = credential.getAttributeAsString("organization_name");
+
+            Map<String,String> attrs = new HashMap();
+			for (Attribute a: credential.getAttributes()) {
+			    attrs.put(a.getName(), credential.getAttributeAsString(a.getName()));
+            }
+
+            AuthSource source = new AuthSource(
+                    zd.getProp("label"),
+                    zd.getProp("authSourceId") + "-saml",
+                    zd.getProp("permissionType"),
+                    orgName,
+                    attrs,
                     parseGroups(zd.getProp("groupAttr"), credential));
+
+
+            LOG.info("Loading SAML user: {} from {}", userId, issuer);
+            return userRegistryService.registerUser(userId, source);
 
 		}
 		catch (Exception e) {

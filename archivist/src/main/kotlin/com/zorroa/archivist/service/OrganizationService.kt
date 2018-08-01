@@ -11,6 +11,8 @@ interface OrganizationService {
     fun create(name: String) : Organization
     fun create(spec: OrganizationSpec) : Organization
     fun get(id: UUID) : Organization
+    fun get(name: String): Organization
+    fun getOnlyOne(): Organization
 }
 
 @Service
@@ -28,4 +30,8 @@ class OrganizationServiceImpl @Autowired constructor (
     }
 
     override fun get(id: UUID): Organization =  organizationDao.get(id)
+
+    override fun get(name: String): Organization =  organizationDao.get(name)
+
+    override fun getOnlyOne(): Organization =  organizationDao.getOnlyOne()
 }

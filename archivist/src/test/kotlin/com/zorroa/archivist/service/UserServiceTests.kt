@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.common.domain.DuplicateEntityException
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
@@ -33,7 +34,8 @@ class UserServiceTests : AbstractTest() {
                 "123password",
                 "test@test.com",
                 firstName="Bilbo",
-                lastName = "Baggins")
+                lastName = "Baggins",
+                authAttrs = mapOf("foo" to "bar"))
 
         builder.permissionIds =
                 listOf(permissionService.getPermission(Groups.MANAGER).id)
@@ -61,6 +63,12 @@ class UserServiceTests : AbstractTest() {
         assertTrue(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)))
         assertTrue(userService.hasPermission(user, permissionService.getPermission("user::test")))
         assertFalse(userService.hasPermission(user, permissionService.getPermission(Groups.DEV)))
+
+        // Validate our auth attrs if any
+        val map = Json.deserialize(jdbc.queryForObject("SELECT json_auth_attrs FROM users WHERE pk_user=?",
+                String::class.java, user.id), Json.STRING_MAP)
+        assertEquals("bar", map["foo"])
+
     }
 
     @Test(expected = DuplicateEntityException::class)

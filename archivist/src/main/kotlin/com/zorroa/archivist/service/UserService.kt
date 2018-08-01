@@ -21,6 +21,7 @@ import com.zorroa.common.domain.Pager
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.dao.DataAccessException
@@ -97,29 +98,47 @@ class UserRegistryServiceImpl @Autowired constructor(
 ): UserRegistryService {
 
     @Autowired
+    internal lateinit var organizationService: OrganizationService
+
+    @Autowired
     internal lateinit var userService: UserService
 
     @Autowired
     internal lateinit var permissionService: PermissionService
 
+    @Value("\${archivist.organization.multiTenant}")
+    var multiTentant : Boolean = false
+
     /**
      * Register and external user from OAuth/SAML.
      */
-    override fun registerUser(username: String, source: AuthSource, groups: List<String>?): UserAuthed {
+    override fun registerUser(username: String, source: AuthSource): UserAuthed {
+        var org : Organization = if (multiTentant) {
+            source.organizationName?.let {
+                organizationService.get(it)
+            }
+            throw BadCredentialsException("Unable to determine organization")
+        }
+        else {
+            organizationService.getOnlyOne()
+        }
+
         val user = if (!userService.exists(username, null)) {
             val spec = UserSpec(
                     username,
                     UUID.randomUUID().toString() + UUID.randomUUID().toString(),
                     username,
-                    source.authSourceId)
+                    source.authSourceId,
+                    organizationId = org.id)
             userService.create(spec)
         } else {
             userService.get(username)
         }
 
-        if (properties.getBoolean("archivist.security.saml.permissions.import") &&
-                groups != null) {
-            importAndAssignPermissions(user, source, groups)
+        if (properties.getBoolean("archivist.security.saml.permissions.import")) {
+            source.groups?.let {
+                importAndAssignPermissions(user, source, it)
+            }
         }
 
         val perms = userService.getPermissions(user)
@@ -175,6 +194,9 @@ class UserServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var logService: EventLogService
 
+    @Value("\${archivist.organization.multiTenant}")
+    var multiTentant : Boolean = false
+
     private val PASS_MIN_LENGTH = 8
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
@@ -192,12 +214,9 @@ class UserServiceImpl @Autowired constructor(
 
     override fun create(builder: UserSpec): User {
 
-        /**
-         * TODO:
-         * Look into how and where this gets set in the cloud.
-        */
-        if (builder.organizationId == null) {
-            builder.organizationId = UUID.fromString("00000000-9998-8888-7777-666666666666")
+        if (!multiTentant && builder.organizationId == null) {
+            val org = organizationDao.getOnlyOne()
+            builder.organizationId = org.id
         }
 
         if (builder.source == null) {
