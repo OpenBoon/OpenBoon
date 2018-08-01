@@ -15,7 +15,10 @@ import com.zorroa.common.server.JwtValidator
 import com.zorroa.common.server.NoOpJwtValidator
 import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.FileUtils
-import io.undertow.servlet.api.*
+import io.undertow.servlet.api.SecurityConstraint
+import io.undertow.servlet.api.SecurityInfo
+import io.undertow.servlet.api.TransportGuaranteeType
+import io.undertow.servlet.api.WebResourceCollection
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
@@ -33,7 +36,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.*
 
 @Configuration
@@ -89,7 +91,7 @@ class ArchivistConfiguration {
                                 .addUrlPattern("/*"))
                         .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
                         .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
-                        .setConfidentialPortManager(ConfidentialPortManager {
+                        .setConfidentialPortManager({
                             properties().getInt("server.port", 8066)
                         })
             })
@@ -125,12 +127,14 @@ class ArchivistConfiguration {
 
     @Bean
     fun analystClient() : AnalystClient {
-        return if (Files.exists(Paths.get("/config/service-credentials.json"))) {
-            AnalystClientImpl(getPublicUrl("analyst"),
-                    GcpJwtSigner("/config/service-credentials.json"))
+        val path = properties().getPath("archivist.config.path")
+                .resolve("service-credentials.json")
+        return if (Files.exists(path)) {
+            AnalystClientImpl(getPublicUrl("zorroa-analyst"),
+                    GcpJwtSigner(path.toString()))
         }
         else {
-            AnalystClientImpl(getPublicUrl("analyst"), null)
+            AnalystClientImpl(getPublicUrl("zorroa-analyst"), null)
         }
     }
 
@@ -155,9 +159,10 @@ class ArchivistConfiguration {
 
     @Bean
     fun jwtValidator() : JwtValidator {
-        val path = properties().get("archivist.config.path", String::class.java) + "/service-credentials.json"
-        return if (Files.exists(Paths.get(path))) {
-            GcpJwtValidator(path)
+        val path = properties().getPath("archivist.config.path")
+                .resolve("service-credentials.json")
+        return if (Files.exists(path)) {
+            GcpJwtValidator(path.toString())
         }
         else {
             NoOpJwtValidator()
