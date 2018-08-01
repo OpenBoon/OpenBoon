@@ -74,12 +74,14 @@ class GcpJwtValidator : JwtValidator {
             }
 
             val result = mutableMapOf<String,String>()
+            logger.info("Claims: {}", Json.prettyString(jwt.claims))
+
             jwt.claims.forEach { (k,v) ->
-                logger.info("Adding Claim to result: {} {}", k, v.asString())
                 if (v.asString() != null) {
                     result[k] = v.asString()
                 }
             }
+            logger.info("Claims Result: {}", Json.prettyString(jwt.claims))
             return result
 
         } catch(e: JWTVerificationException) {
