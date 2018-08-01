@@ -134,6 +134,7 @@ class ArchivistConfiguration {
                     GcpJwtSigner(path.toString()))
         }
         else {
+            logger.info("Service credentials path does not exist: {}", path)
             AnalystClientImpl(getPublicUrl("zorroa-analyst"), null)
         }
     }
@@ -165,6 +166,7 @@ class ArchivistConfiguration {
             GcpJwtValidator(path.toString())
         }
         else {
+            logger.info("Service credentials path does not exist: {}", path)
             NoOpJwtValidator()
         }
     }

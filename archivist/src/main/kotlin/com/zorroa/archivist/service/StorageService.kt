@@ -127,15 +127,15 @@ class StorageRouterImpl @Autowired constructor (
 
         services = mutableMapOf()
         if (types.contains("gcp")) {
-            logger.info("Storage initializing GCP")
+            logger.info("Initializing storage: GCP")
             services["gcp"] = GcpStorageService(properties)
         }
         if (types.contains("ofs")) {
-            logger.info("Storage initializing OFS")
+            logger.info("Initializing storage: OFS")
             services["ofs"] = OfsStorageService(properties, ofs)
         }
         if (types.contains("local")) {
-            logger.info("Storage initializing LOCAL")
+            logger.info("Initializing storage: LOCAL")
             services["local"] = LocalStorageService(properties)
         }
     }
