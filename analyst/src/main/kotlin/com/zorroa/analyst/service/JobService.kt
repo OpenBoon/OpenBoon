@@ -105,6 +105,7 @@ class JobRegistryServiceImpl @Autowired constructor(
     override fun launchJob(spec: JobSpec) : Job {
         val job = jobService.create(spec)
         try {
+
             buildPipeline(spec, job)
 
             // The scheduler will sign this when its needed.
@@ -123,7 +124,7 @@ class JobRegistryServiceImpl @Autowired constructor(
 
     fun buildPipeline(spec: JobSpec, job: Job) {
 
-        pipelineService.resolveExecute(spec.script)
+        pipelineService.resolveExecute(job.type, spec.script)
 
         when(job.type) {
             PipelineType.IMPORT->handleImportJob(spec, job)

@@ -24,7 +24,7 @@ interface PipelineService {
     fun get(name: String) : Pipeline
     fun update(pipeline: Pipeline) : Boolean
     fun getDefaultPipelineNames(type: PipelineType) : List<String>
-    fun resolveExecute(script: ZpsScript)
+    fun resolveExecute(type: PipelineType, script: ZpsScript)
 }
 
 @Configuration
@@ -93,20 +93,24 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
         return processors
     }
 
-    override fun resolveExecute(script: ZpsScript) {
+    override fun resolveExecute(type: PipelineType, script: ZpsScript) {
         val execute = mutableListOf<ProcessorRef>()
-        script?.execute?.forEach { ref ->
-            if (ref.className.startsWith("pipeline:")) {
-                val name = ref.className.split(":", limit=2)[1]
-                val pipeline = pipelineDao.get(name)
-                execute.addAll(pipeline.processors)
-            }
-            else {
-                execute.add(ref)
+        if (script.execute.orEmpty().isEmpty()) {
+            execute.addAll(buildDefaultProcessorList(type))
+        }
+        else {
+            script.execute?.forEach { ref ->
+                if (ref.className.startsWith("pipeline:")) {
+                    val name = ref.className.split(":", limit = 2)[1]
+                    val pipeline = pipelineDao.get(name)
+                    execute.addAll(pipeline.processors)
+                } else {
+                    execute.add(ref)
+                }
             }
         }
-        script.execute?.clear()
-        script.execute?.addAll(execute)
+
+        script.execute = execute
     }
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {

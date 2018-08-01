@@ -3,10 +3,10 @@ package com.zorroa.common.domain
 
 data class ZpsScript(
         val name: String,
-        val generate : MutableList<ProcessorRef>? = mutableListOf(),
-        val over: MutableList<Document>? =  mutableListOf(),
-        val execute : MutableList<ProcessorRef>? = mutableListOf(),
-        val globals:  MutableMap<String, Any>? = mutableMapOf(),
+        var generate : MutableList<ProcessorRef>? = mutableListOf(),
+        var over: MutableList<Document>? =  mutableListOf(),
+        var execute : MutableList<ProcessorRef>? = mutableListOf(),
+        var globals:  MutableMap<String, Any>? = mutableMapOf(),
         var inline: Boolean = true
 )
 

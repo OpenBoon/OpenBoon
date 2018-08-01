@@ -4,10 +4,12 @@ import com.zorroa.analyst.AbstractTest
 import com.zorroa.common.domain.PipelineSpec
 import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.domain.ProcessorRef
+import com.zorroa.common.domain.ZpsScript
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class PipelineServiceTests : AbstractTest() {
 
@@ -32,4 +34,11 @@ class PipelineServiceTests : AbstractTest() {
         assertEquals(1, pipelineService.getDefaultPipelineNames(PipelineType.IMPORT).size)
     }
 
+    @Test
+    fun testResolveDefautImportPipeline() {
+        val script = ZpsScript("foo")
+        assertTrue(script.execute!!.isEmpty())
+        pipelineService.resolveExecute(PipelineType.IMPORT, script)
+        assertTrue(script.execute!!.size > 0)
+    }
 }
