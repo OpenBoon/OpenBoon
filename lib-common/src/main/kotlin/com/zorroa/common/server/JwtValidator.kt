@@ -87,7 +87,9 @@ class GcpJwtValidator : JwtValidator {
             }
 
             val result = mutableMapOf<String,String>()
-            logger.info("Claims: {}", Json.prettyString(jwt.claims))
+            if (logger.isDebugEnabled) {
+                logger.debug("JWT Claims: {}", Json.prettyString(jwt.claims))
+            }
 
             jwt.claims.forEach { (k,v) ->
 
