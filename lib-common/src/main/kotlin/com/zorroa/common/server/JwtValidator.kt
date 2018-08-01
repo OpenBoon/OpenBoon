@@ -32,7 +32,14 @@ interface JwtValidator {
 }
 
 class NoOpJwtValidator: JwtValidator {
+    init {
+        logger.info("Initializing NoOP JwtValidator")
+    }
     override fun validate(token: String) : Map<String,String> { return mapOf() }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(NoOpJwtValidator::class.java)
+    }
 }
 
 /**
@@ -43,6 +50,10 @@ class GcpJwtValidator : JwtValidator {
     private val credentials : GoogleCredential
     private val client = RestClient("https://www.googleapis.com")
     private val publickKey : RSAPublicKey
+
+    init {
+        logger.info("Initializing NoOP GcpJwtValidator")
+    }
 
     constructor(credentials: GoogleCredential) {
         this.credentials = credentials
@@ -77,11 +88,11 @@ class GcpJwtValidator : JwtValidator {
             logger.info("Claims: {}", Json.prettyString(jwt.claims))
 
             jwt.claims.forEach { (k,v) ->
+
                 if (v.asString() != null) {
                     result[k] = v.asString()
                 }
             }
-            logger.info("Claims Result: {}", Json.prettyString(jwt.claims))
             return result
 
         } catch(e: JWTVerificationException) {
