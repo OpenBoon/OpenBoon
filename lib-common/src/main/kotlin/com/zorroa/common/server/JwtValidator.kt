@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
+import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.security.cert.CertificateFactory
 import java.security.interfaces.RSAPrivateKey
@@ -58,7 +59,7 @@ class GcpJwtValidator : JwtValidator {
 
     constructor() : this(System.getenv()["GOOGLE_APPLICATION_CREDENTIALS"])
 
-    override fun validate(token: String) : Map<String,String> {
+    override fun validate(token: String) : Map<String, String> {
         try {
             val jwt = JWT.decode(token)
             val alg = when(jwt.algorithm) {
@@ -74,6 +75,7 @@ class GcpJwtValidator : JwtValidator {
 
             val result = mutableMapOf<String,String>()
             jwt.claims.forEach { (k,v) ->
+                logger.info("Adding Claim to result: {} {}", k, v.asString())
                 if (v.asString() != null) {
                     result[k] = v.asString()
                 }
@@ -83,5 +85,9 @@ class GcpJwtValidator : JwtValidator {
         } catch(e: JWTVerificationException) {
             throw JwtValidatorException("Failed to validate token", e)
         }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(GcpJwtValidator::class.java)
     }
 }
