@@ -64,6 +64,7 @@ class MasterScheduler {
 
     @PostConstruct
     fun start() {
+        logger.info("Initializing scheduler timer")
         timer = fixedRateTimer("scheduler",
                 daemon = true, initialDelay = 60000, period = 60000) {
             if (!paused.get()) {
