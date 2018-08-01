@@ -1,5 +1,8 @@
 package com.zorroa.analyst
 
+import com.zorroa.analyst.scheduler.K8SchedulerProperties
+import com.zorroa.analyst.scheduler.K8SchedulerServiceImpl
+import com.zorroa.analyst.scheduler.LocalSchedulerServiceImpl
 import com.zorroa.analyst.service.*
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.IndexRoutingService
@@ -60,11 +63,6 @@ class ApplicationConfig {
     }
 
     @Bean
-    fun routingService() : IndexRoutingService {
-        return IndexRoutingServiceImpl()
-    }
-
-    @Bean
     fun jwtValidator() : JwtValidator {
         val path = "$configPath/service-credentials.json"
         return if (Files.exists(Paths.get(path))) {
@@ -73,12 +71,6 @@ class ApplicationConfig {
         else {
             NoOpJwtValidator()
         }
-    }
-
-    @Autowired
-    @Bean
-    fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
-        return EsClientCache(routingService)
     }
 
     companion object {
