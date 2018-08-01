@@ -39,7 +39,7 @@ class IndexRoutingServiceImpl : IndexRoutingService {
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(K8SchedulerServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(IndexRoutingServiceImpl::class.java)
     }
 }
 
