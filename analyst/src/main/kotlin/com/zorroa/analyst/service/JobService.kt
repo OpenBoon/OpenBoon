@@ -46,7 +46,7 @@ interface JobService {
     /**
      * Get the next N waiting jobs.
      */
-    fun getWaiting(limit: Int) : List<Job>
+    fun queueWaiting(limit: Int) : List<Job>
 
     /**
      * Get all the running jobs.
@@ -206,8 +206,8 @@ class JobServiceImpl @Autowired constructor(
         }
 
         // throwing here rolls back any locks
-        if (!setState(job, JobState.RUNNING, JobState.WAITING)) {
-            throw IllegalStateException("Job ${job.id} was not in the waiting state")
+        if (!setState(job, JobState.RUNNING, JobState.QUEUE)) {
+            throw IllegalStateException("Job ${job.id} was not in the queue state")
         }
     }
 
@@ -219,8 +219,15 @@ class JobServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun getWaiting(limit: Int) : List<Job> {
-        return jobDao.getWaiting(limit)
+    override fun queueWaiting(limit: Int) : List<Job> {
+        val result = mutableListOf<Job>()
+        val jobs = jobDao.getWaiting(limit)
+        for (job in jobs) {
+            if (setState(job, JobState.QUEUE, JobState.WAITING)) {
+                result.add(job)
+            }
+        }
+        return result
     }
 
     override fun getRunning() : List<Job> {

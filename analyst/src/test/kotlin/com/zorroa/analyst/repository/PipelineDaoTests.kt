@@ -35,7 +35,7 @@ class PipelineDaoTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val pl1 = pipelineDao.create(PipelineSpec("import-test", PipelineType.IMPORT))
+        val pl1 = pipelineDao.create(PipelineSpec("import-test2", PipelineType.IMPORT))
         pl1.name = "hello"
         pipelineDao.update(pl1)
         val pl2 =  pipelineDao.get("hello")
@@ -44,8 +44,8 @@ class PipelineDaoTests : AbstractTest() {
 
     @Test
     fun testExists() {
-        pipelineDao.create(PipelineSpec("export-test", PipelineType.EXPORT))
-        assertTrue(pipelineDao.exists("export-test"))
+        pipelineDao.create(PipelineSpec("export-test2", PipelineType.EXPORT))
+        assertTrue(pipelineDao.exists("export-test2"))
         assertFalse(pipelineDao.exists("captain kirk"))
     }
 

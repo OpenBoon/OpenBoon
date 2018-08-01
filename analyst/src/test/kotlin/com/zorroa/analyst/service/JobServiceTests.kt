@@ -42,7 +42,7 @@ class JobServiceTests : AbstractTest() {
                 attrs=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
         var job = jobService.create(spec)
-        jobService.setState(job, JobState.WAITING, null)
+        jobService.setState(job, JobState.QUEUE, null)
         jobService.start(job)
         job = jobService.get(job.id)
         assertEquals(JobState.RUNNING, job.state)
@@ -81,7 +81,7 @@ class JobServiceTests : AbstractTest() {
                 UUID.randomUUID(),
                 ZpsScript("foo"))
         var job = jobService.create(spec)
-        jobService.setState(job, JobState.WAITING)
+        jobService.setState(job, JobState.QUEUE)
         jobService.start(job)
 
         assertTrue(jobService.stop(job, JobState.SUCCESS))

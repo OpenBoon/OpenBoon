@@ -58,7 +58,7 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
     }
 
     override fun getWaiting(count : Int) : List<Job> {
-        return jdbc.query(GET_WAITING, MAPPER, JobState.WAITING.ordinal, count)
+        return jdbc.query(GET_WAITING , MAPPER, JobState.WAITING.ordinal, count)
     }
 
     override fun getRunning() : List<Job> {
@@ -137,7 +137,7 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
                         "WHERE x.pk_job = job.pk_job " +
                     ")" +
                 "ORDER BY " +
-                    "time_created ASC LIMIT ?"
+                    "time_created ASC LIMIT ? "
 
         private const val GET_RUNNING = "$GET " +
                 "WHERE " +
