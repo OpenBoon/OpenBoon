@@ -5,6 +5,7 @@ import com.zorroa.common.domain.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -78,6 +79,22 @@ class JobDaoTests : AbstractTest() {
         val all = jobDao.getWaiting(10)
         assertTrue(all.isNotEmpty())
         assertEquals(t1.id, all[0].id)
+    }
+
+    @Test
+    fun testGetOrphans() {
+        val spec = JobSpec("test_job",
+                PipelineType.IMPORT,
+                UUID.randomUUID(),
+                ZpsScript("test_script"))
+        val t1 = jobDao.create(spec)
+        jobDao.setState(t1, JobState.QUEUE, null)
+        jdbc.update("UPDATE job SET time_modified=? WHERE pk_job=?",
+                System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(6),
+                t1.id)
+
+        val all = jobDao.getOrphans()
+        assertEquals(1, all.size)
     }
 
     @Test

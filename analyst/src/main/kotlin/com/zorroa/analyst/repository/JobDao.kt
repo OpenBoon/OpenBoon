@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.Types
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 interface JobDao {
     fun create(spec: JobSpec): Job
@@ -20,7 +21,7 @@ interface JobDao {
     fun getAll(filter: JobFilter) : KPagedList<Job>
     fun setCount(filter: JobFilter)
     fun mapAssetsToJob(job: Job, assets: List<UUID>)
-
+    fun getOrphans() : List<Job>
 }
 
 @Repository
@@ -63,6 +64,12 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
 
     override fun getRunning() : List<Job> {
         return jdbc.query(GET_RUNNING, MAPPER, JobState.RUNNING.ordinal)
+    }
+
+    override fun getOrphans() : List<Job> {
+        return jdbc.query(GET_QUEUE_ORPHANS, MAPPER,
+                JobState.QUEUE.ordinal, System.currentTimeMillis(),
+                TimeUnit.MINUTES.toMillis(5))
     }
 
     override fun getAll(filter: JobFilter) : KPagedList<Job> {
@@ -138,6 +145,13 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
                     ")" +
                 "ORDER BY " +
                     "time_created ASC LIMIT ? "
+
+        private const val GET_QUEUE_ORPHANS = "$GET " +
+                "WHERE " +
+                "int_state=? " +
+                "AND " +
+                "? - time_modified > ? " +
+                "LIMIT 100"
 
         private const val GET_RUNNING = "$GET " +
                 "WHERE " +

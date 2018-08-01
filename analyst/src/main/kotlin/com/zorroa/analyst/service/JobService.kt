@@ -54,6 +54,11 @@ interface JobService {
     fun getRunning() : List<Job>
 
     /**
+     * Get jobs that were running or queued but never ran.
+     */
+    fun getOprhans() : List<Job>
+
+    /**
      * Set a new job state.  Optionally provide a required oldState
      */
     fun setState(job: Job, newState: JobState, oldState: JobState?=null) : Boolean
@@ -230,8 +235,12 @@ class JobServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun getRunning() : List<Job> {
+     override fun getRunning() : List<Job> {
         return jobDao.getRunning()
+    }
+
+    override fun getOprhans() : List<Job> {
+        return jobDao.getOrphans()
     }
 
     override fun getAll(filter: JobFilter) : KPagedList<Job> {
