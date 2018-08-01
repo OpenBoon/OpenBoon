@@ -35,7 +35,9 @@ class NoOpJwtValidator: JwtValidator {
     init {
         logger.info("Initializing NoOP JwtValidator")
     }
-    override fun validate(token: String) : Map<String,String> { return mapOf() }
+    override fun validate(token: String) : Map<String,String> {
+        throw JwtValidatorException("JWT Validation support is not configured")
+    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(NoOpJwtValidator::class.java)
@@ -52,7 +54,7 @@ class GcpJwtValidator : JwtValidator {
     private val publickKey : RSAPublicKey
 
     init {
-        logger.info("Initializing NoOP GcpJwtValidator")
+        logger.info("Initializing GCP JwtValidator")
     }
 
     constructor(credentials: GoogleCredential) {
