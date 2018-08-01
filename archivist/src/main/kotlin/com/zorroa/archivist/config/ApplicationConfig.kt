@@ -174,19 +174,6 @@ class ArchivistConfiguration {
         private val logger = LoggerFactory.getLogger(ArchivistConfiguration::class.java)
 
         var unittest = false
-
-        fun <T> instantiate(className: String, type: Class<T>): T? {
-            try {
-                return type.cast(Class.forName(className).newInstance())
-            } catch (e: InstantiationException) {
-                throw IllegalStateException(e)
-            } catch (e: IllegalAccessException) {
-                throw IllegalStateException(e)
-            } catch (e: ClassNotFoundException) {
-                throw IllegalStateException(e)
-            }
-
-        }
     }
 }
 

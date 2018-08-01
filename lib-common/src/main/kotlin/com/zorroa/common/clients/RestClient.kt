@@ -55,9 +55,9 @@ class RestClient {
 
     private var user: String? = null
     private var hmac: String? = null
-    private var host: HttpHost? = null
-    private var jwtSigner: JwtSigner? = null
-    private var client: CloseableHttpClient? = null
+    private val host: HttpHost
+    private val jwtSigner: JwtSigner?
+    private val client: CloseableHttpClient
     private var retryConnectionTimeout = false
 
     constructor() {
@@ -65,11 +65,13 @@ class RestClient {
         this.user = initUser()
         this.hmac = initHmacKey()
         this.client = initClient()
+        this.jwtSigner = null
     }
 
     constructor(host: String) {
         this.host = HttpHost.create(host)
         this.client = initClient()
+        this.jwtSigner = null
     }
 
     constructor(host: String, jwtSigner: JwtSigner?) {
@@ -263,7 +265,10 @@ class RestClient {
         }
 
         if (response.statusLine.statusCode != 200) {
-            logger.warn("Bad REST response: {} {} {}", req.requestLine.uri, response.statusLine.reasonPhrase, response.statusLine.statusCode)
+            logger.warn("REST response error: {} {} {} {}",
+                    host.hostName, req.requestLine.uri,
+                    response.statusLine.reasonPhrase, response.statusLine.statusCode)
+
             val error = checkResponse(response, Json.GENERIC_MAP)
             val message = error.getOrElse("message", {
                 "Unknown REST client exception to $host, ${response.statusLine.statusCode} ${response.statusLine.reasonPhrase}"
