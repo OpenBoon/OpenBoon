@@ -234,6 +234,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ExtendedMetadata extendedMetadata() {
         boolean discovery = properties.discovery;
+        logger.info("SAML discovery  {}", discovery);
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setIdpDiscoveryEnabled(discovery);
         extendedMetadata.setSignMetadata(true);
@@ -259,11 +260,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         boolean discovery = properties.discovery;
 
         List<MetadataProvider> providers = new ArrayList();
-        Files.list(Paths.get("config/saml"))
+        Files.list(Paths.get("/config/saml"))
                 .filter(Files::isRegularFile)
                 .filter(p->p.getFileName().toString().endsWith(".properties"))
                 .forEach(p -> {
 
+                    logger.info("Initializing SAML : {}", p);
                     Properties props = new Properties();
                     try {
                         props.load(new FileInputStream(p.toFile()));
@@ -274,11 +276,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         extendedMetadata.setSignMetadata(true);
                         extendedMetadata.setEcpEnabled(true);
                         extendedMetadata.setProps(props);
-                        /*
-                         * To support multiple IDPs, we use the key with the same name
-                         * as the authSourceId, which we should not ever change.
-                         */
-                        extendedMetadata.setSigningKey(props.getProperty("authSourceId"));
 
                         if (uri.startsWith("http")) {
                             HTTPMetadataProvider httpMetadataProvider = new HTTPMetadataProvider(
@@ -286,8 +283,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             httpMetadataProvider.setParserPool(parserPool());
                             ExtendedMetadataDelegate emd =
                                     new ExtendedMetadataDelegate(httpMetadataProvider, extendedMetadata);
-                            emd.setMetadataTrustCheck(true);
+                            emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
+                            emd.setRequireValidMetadata(false);
                             backgroundTaskTimer.purge();
                             providers.add(emd);
                         }
@@ -297,8 +295,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             provider.setParserPool(parserPool());
                             ExtendedMetadataDelegate emd =
                                     new ExtendedMetadataDelegate(provider, extendedMetadata);
-                            emd.setMetadataTrustCheck(true);
+                            emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
+                            emd.setRequireValidMetadata(false);
                             providers.add(emd);
                         }
                     } catch (IOException e) {
@@ -316,6 +315,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public MetadataGenerator metadataGenerator() {
         String baseURL = properties.baseUrl;
+        logger.info("SAML base URL {}", baseURL);
         MetadataGenerator metadataGenerator = new MetadataGenerator();
         metadataGenerator.setEntityId(baseURL + "/saml/metadata");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
