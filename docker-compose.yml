@@ -62,10 +62,11 @@ services:
       context: archivist
     ports:
       - 8080:8080
-      - 8066:8066
     volumes:
       - "./localdev/zorroa-archivist-config:/config"
       - "./archivist/target:/service"
+    environment:
+      ZORROA_USER: admin
 
   # Local Analyst server.
   analyst:
@@ -75,7 +76,7 @@ services:
       build:
         context: analyst
       ports:
-        - 8082:8066
+        - 8082:8080
       volumes:
         - "./localdev/zorroa-analyst-config:/config"
         - "./analyst/target:/service"

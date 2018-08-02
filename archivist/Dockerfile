@@ -9,7 +9,7 @@ ENV GCS_CONFIG ${gcs_config}
 
 RUN mkdir /service
 
-COPY target/archivist.jar /service/app.jar
+COPY target/archivist.jar /service/archivist.jar
 COPY run_server.sh run_server.sh
 
 EXPOSE 8080
