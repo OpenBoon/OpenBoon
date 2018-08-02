@@ -137,8 +137,8 @@ class JobRegistryServiceImpl @Autowired constructor(
         val selfUrl = getPublicUrl()
         val endpoint = "$selfUrl/api/v1/jobs/${job.id}/_finish"
 
-        spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
-                args=mapOf("endpoint" to endpoint, "phase" to "teardown")))
+        spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.MetadataRestRequest",
+                args=mapOf("endpoint" to endpoint, "phase" to "teardown", "method" to "put")))
         spec.script.execute?.add(ProcessorRef("zplugins.core.collector.IndexDocumentCollector"))
     }
 
@@ -146,8 +146,8 @@ class JobRegistryServiceImpl @Autowired constructor(
         // TODO: Add processors to register exported files with Archivist
         val selfUrl = getPublicUrl()
         val endpoint = "$selfUrl/api/v1/jobs/${job.id}/_finish"
-        spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.PostMetadataToRestApi",
-                args=mapOf("endpoint" to endpoint, "phase" to "teardown")))
+        spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.MetadataRestRequest",
+                args=mapOf("endpoint" to endpoint, "phase" to "teardown", "method" to "put")))
     }
 
     fun handleBatchJob(spec: JobSpec, job: Job) { }

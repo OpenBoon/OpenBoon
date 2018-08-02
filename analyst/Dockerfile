@@ -9,7 +9,7 @@ ENV GCS_CONFIG ${gcs_config}
 
 RUN mkdir /service
 
-COPY target/analyst.jar /service/app.jar
+COPY target/analyst.jar /service/analyst.jar
 COPY run_server.sh run_server.sh
 
 EXPOSE 8080

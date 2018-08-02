@@ -76,6 +76,8 @@ cd elasticsearch
 
 ##### Rebuild the archivist docker container: ```docker-compose build archivist```
 
+##### Access a shell on the analyst: ```docker-compose exec analyst bash```
+
 ##### Destroy the elastic search database and start over: 
 
 ```
