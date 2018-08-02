@@ -130,10 +130,10 @@ class ArchivistConfiguration {
         val path = properties().getPath("archivist.config.path")
                 .resolve("service-credentials.json")
         return if (Files.exists(path)) {
-            val host: String = if (properties().getString("analyst.host") != null)
-                properties().getString("analyst.host") else {
-                    getPublicUrl("zorroa-analyst")
-                }
+            var host = properties().getString("analyst.host", "")
+            if (host.isBlank()) {
+                host = getPublicUrl("zorroa-analyst")
+            }
             AnalystClientImpl(host, GcpJwtSigner(path.toString()))
         }
         else {
