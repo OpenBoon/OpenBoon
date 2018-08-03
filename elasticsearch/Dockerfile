@@ -1,5 +1,5 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
-ARG node_type
+ARG node_type=single
 COPY configs/${node_type}.yml /usr/share/elasticsearch/config/elasticsearch.yml
 COPY es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 WORKDIR /usr/share/elasticsearch/plugins
