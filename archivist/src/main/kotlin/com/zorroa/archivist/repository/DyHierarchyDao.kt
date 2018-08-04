@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.DyHierarchy
 import com.zorroa.archivist.domain.DyHierarchyLevel
 import com.zorroa.archivist.domain.DyHierarchySpec
 import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.domain.PagedList
@@ -37,13 +38,13 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
      */
     private val WORKING = Sets.newConcurrentHashSet<DyHierarchy>()
 
-    private val MAPPER = RowMapper<DyHierarchy> { rs, _ ->
+    private val MAPPER = RowMapper { rs, _ ->
         val h = DyHierarchy()
         h.folderId = rs.getObject("pk_folder") as UUID
         h.id = rs.getObject("pk_dyhi") as UUID
         h.timeCreated = rs.getLong("time_created")
         h.user = userDaoCache!!.getUser(rs.getObject("pk_user_created") as UUID)
-        h.levels = Json.deserialize<List<DyHierarchyLevel>>(rs.getString("json_levels"),
+        h.levels = Json.deserialize(rs.getString("json_levels"),
                 object : TypeReference<List<DyHierarchyLevel>>() {
 
                 })
@@ -68,11 +69,13 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
     }
 
     override fun get(id: UUID): DyHierarchy {
-        return jdbc.queryForObject<DyHierarchy>(GET + " WHERE pk_dyhi=?", MAPPER, id)
+        return jdbc.queryForObject<DyHierarchy>(
+                "$GET WHERE pk_organization=? AND pk_dyhi=?", MAPPER, getOrgId(), id)
     }
 
     override fun get(folder: Folder): DyHierarchy {
-        return jdbc.queryForObject<DyHierarchy>(GET + " WHERE pk_folder=?", MAPPER, folder.id)
+        return jdbc.queryForObject<DyHierarchy>(
+                "$GET WHERE pk_organization=? AND pk_folder=?", MAPPER, getOrgId(), folder.id)
     }
 
     override fun refresh(obj: DyHierarchy): DyHierarchy {
@@ -80,13 +83,13 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
     }
 
     override fun getAll(): List<DyHierarchy> {
-        return jdbc.query(GET, MAPPER)
+        return jdbc.query("$GET WHERE pk_organization=?" , MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<DyHierarchy> {
         return PagedList(paging.setTotalCount(count()),
-                jdbc.query<DyHierarchy>(GET + "ORDER BY pk_dyhi LIMIT ? OFFSET ?",
-                        MAPPER, paging.size, paging.from))
+                jdbc.query<DyHierarchy>("$GET WHERE pk_organization=? AND ORDER BY pk_dyhi LIMIT ? OFFSET ?",
+                        MAPPER, getOrgId(), paging.size, paging.from))
     }
 
     override fun update(id: UUID, spec: DyHierarchy): Boolean {
@@ -95,11 +98,11 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
     }
 
     override fun delete(id: UUID): Boolean {
-        return jdbc.update("DELETE FROM dyhi WHERE pk_dyhi=?", id) == 1
+        return jdbc.update("DELETE FROM dyhi WHERE pk_organization=? AND pk_dyhi=?", getOrgId(), id) == 1
     }
 
     override fun count(): Long {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM dyhi", Long::class.java)
+        return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Long::class.java, getOrgId())
     }
 
     override fun isWorking(d: DyHierarchy): Boolean {
@@ -125,7 +128,9 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
                 "json_levels",
                 "pk_organization")
 
-        private val GET = "SELECT " +
+        private const val COUNT = "SELECT COUNT(1) FROM dyhi"
+
+        private const val GET = "SELECT " +
                 "pk_dyhi," +
                 "pk_folder, " +
                 "pk_user_created, " +
