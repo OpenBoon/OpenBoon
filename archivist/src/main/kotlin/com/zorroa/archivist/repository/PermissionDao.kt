@@ -59,7 +59,7 @@ interface PermissionDao {
 @Repository
 class PermissionDaoImpl : AbstractDao(), PermissionDao {
 
-    override fun create(builder: PermissionSpec, immutable: Boolean): Permission {
+    override fun create(spec: PermissionSpec, immutable: Boolean): Permission {
 
         val id = uuid1.generate()
         try {
@@ -67,19 +67,19 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 val ps = connection.prepareStatement(INSERT)
                 ps.setObject(1, id)
                 ps.setObject(2, getUser().organizationId)
-                ps.setString(3, builder.name)
-                ps.setString(4, builder.type)
-                ps.setString(5, builder.type + "::" + builder.name)
-                ps.setString(6, if (builder.description == null)
-                    String.format("%s permission", builder.name)
+                ps.setString(3, spec.name)
+                ps.setString(4, spec.type)
+                ps.setString(5, spec.type + "::" + spec.name)
+                ps.setString(6, if (spec.description == null)
+                    String.format("%s permission", spec.name)
                 else
-                    builder.description)
-                ps.setString(7, builder.source)
+                    spec.description)
+                ps.setString(7, spec.source)
                 ps.setBoolean(8, immutable)
                 ps
             })
         } catch (e: DuplicateKeyException) {
-            throw DuplicateKeyException("The permission " + builder.name + " already exists")
+            throw DuplicateKeyException("The permission " + spec.name + " already exists")
         }
 
         return get(id)
