@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions
 import com.zorroa.common.domain.Pipeline
 import com.zorroa.common.domain.PipelineSpec
 import com.zorroa.common.domain.PipelineType
+import com.zorroa.common.util.JdbcUtils.isUUID
 import com.zorroa.common.util.Json
 import com.zorroa.common.util.Json.LIST_OF_PREFS
 import org.springframework.dao.EmptyResultDataAccessException
@@ -51,10 +52,12 @@ class PipelineDaoImpl : AbstractJdbcDao(), PipelineDao {
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to get pipeline: id=$id", 1)
         }
-
     }
 
     override fun get(name: String): Pipeline {
+        if (isUUID(name)) {
+            return get(UUID.fromString(name))
+        }
         try {
             return jdbc.queryForObject<Pipeline>("SELECT * FROM pipeline WHERE str_name=?", MAPPER, name)
         } catch (e: EmptyResultDataAccessException) {
