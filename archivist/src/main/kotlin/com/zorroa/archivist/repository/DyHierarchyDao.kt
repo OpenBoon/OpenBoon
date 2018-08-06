@@ -88,7 +88,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
 
     override fun getAll(paging: Pager): PagedList<DyHierarchy> {
         return PagedList(paging.setTotalCount(count()),
-                jdbc.query<DyHierarchy>("$GET WHERE pk_organization=? AND ORDER BY pk_dyhi LIMIT ? OFFSET ?",
+                jdbc.query<DyHierarchy>("$GET WHERE pk_organization=? ORDER BY pk_dyhi LIMIT ? OFFSET ?",
                         MAPPER, getOrgId(), paging.size, paging.from))
     }
 
