@@ -134,7 +134,7 @@ class ExportServiceImpl @Autowired constructor(
          */
         val params = resolveExportSearch(spec.search, export.id)
         script.generate?.add(ProcessorRef(
-                "com.zorroa.core.generator.AssetSearchGenerator",
+                "zplugins.asset.generators.AssetSearchGenerator",
                 mapOf<String, Any>("search" to params.search)))
 
         return script
