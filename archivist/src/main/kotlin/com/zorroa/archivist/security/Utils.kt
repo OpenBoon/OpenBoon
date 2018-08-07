@@ -87,7 +87,7 @@ fun hasPermission(perms: Collection<String>): Boolean {
 
     auth?.authorities?.let{
         for (g in it) {
-            if (Objects.equals(g.authority, Groups.ADMIN) || perms.contains(g.authority)) {
+            if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
                 return true
             }
         }
@@ -128,10 +128,18 @@ fun hasPermission(acl: Acl?, access: Access): Boolean {
 fun getPermissionIds(): Set<UUID> {
     val result = Sets.newHashSet<UUID>()
     for (g in SecurityContextHolder.getContext().authentication.authorities) {
-        val p = g as Permission
-        result.add(p.id)
+        try {
+            val p = g as Permission
+            result.add(p.id)
+        } catch (e: ClassCastException) {
+            // ignore
+        }
     }
     return result
+}
+
+fun getOrganizationFilter(): QueryBuilder {
+    return  QueryBuilders.termQuery("zorroa.organizationId", getOrgId().toString())
 }
 
 fun getPermissionsFilter(access: Access?): QueryBuilder? {

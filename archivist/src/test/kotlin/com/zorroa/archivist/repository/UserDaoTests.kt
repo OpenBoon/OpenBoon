@@ -2,7 +2,6 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.ROOT_ID
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.common.domain.Pager
@@ -12,6 +11,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.crypto.bcrypt.BCrypt
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -28,9 +28,8 @@ class UserDaoTests : AbstractTest() {
 
     @Before
     fun init() {
-
         val builder = testUserSpec()
-        builder.homeFolderId = ROOT_ID
+        builder.homeFolderId = UUID.randomUUID()
         builder.userPermissionId = permissionDao.get("zorroa", "manager").id
         user = userService.create(builder)
     }
@@ -54,7 +53,7 @@ class UserDaoTests : AbstractTest() {
         var count = userDao.getCount()
         assertEquals(count, userDao.getCount())
         val builder = testUserSpec("test2")
-        builder.homeFolderId = ROOT_ID
+        builder.homeFolderId = UUID.randomUUID()
         builder.userPermissionId = permissionDao.get("zorroa", "manager").id
         user = userService.create(builder)
         assertEquals(++count, userDao.getCount())
@@ -65,7 +64,7 @@ class UserDaoTests : AbstractTest() {
         assertEquals(4, userDao.getAll().size.toLong())
 
         val builder = testUserSpec("foo")
-        builder.homeFolderId = ROOT_ID
+        builder.homeFolderId = UUID.randomUUID()
         builder.userPermissionId = permissionDao.get("zorroa", "manager").id
         userService.create(builder)
 

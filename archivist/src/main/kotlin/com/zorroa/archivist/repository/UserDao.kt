@@ -7,6 +7,7 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
@@ -135,7 +136,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setString(10, builder.source)
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
-            ps.setObject(13, builder.organizationId)
+            ps.setObject(13, getOrgId())
             ps.setString(14, Json.serializeToString(builder.authAttrs, "{}"))
             ps
         })
