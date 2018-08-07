@@ -33,6 +33,8 @@ interface FolderDao {
 
     fun getAllIds(dyhi: DyHierarchy): List<UUID>
 
+    fun getRootFolder(): Folder
+
     fun exists(parentId: UUID, name: String): Boolean
 
     fun count(): Int
@@ -44,6 +46,8 @@ interface FolderDao {
     fun create(spec: FolderSpec): Folder
 
     fun create(spec: TrashedFolder): Folder
+
+    fun createRootFolder(org: Organization) : Folder
 
     fun update(id: UUID, folder: FolderUpdate): Boolean
 
@@ -121,24 +125,27 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
     override operator fun get(id: UUID?): Folder {
         if (id == null) {
-            throw IllegalArgumentException("Folder Id cannot be be null")
+            return getRootFolder()
         }
         return jdbc.queryForObject<Folder>(appendReadAccess("$GET WHERE pk_organization=? AND pk_folder=?"),
                 MAPPER, *appendAclArgs(getOrgId(), id))
     }
 
     override operator fun get(parent: UUID?, name: String, ignorePerms: Boolean): Folder {
-        if (parent == null) {
-            throw IllegalArgumentException("Parent folder cannot be null")
+        val parentId =if (parent == null) {
+            getRootFolder().id
+        }
+        else {
+            parent
         }
         try {
             return if (true) {
                 jdbc.queryForObject<Folder>("$GET WHERE pk_organization=? AND pk_parent=? and str_name=?",
-                        MAPPER, getOrgId(), parent, name)
+                        MAPPER, getOrgId(), parentId, name)
             } else {
                 jdbc.queryForObject<Folder>(
                         appendReadAccess("$GET WHERE pk_organization=? AND pk_parent=? AND str_name=?"), MAPPER,
-                        *appendAclArgs(getOrgId(),parent, name))
+                        *appendAclArgs(getOrgId(),parentId, name))
             }
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to find folder, parent: $parent name: $name", 1)
@@ -147,6 +154,11 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
     override operator fun get(parent: Folder, name: String): Folder {
         return get(parent.id, name, false)
+    }
+
+    override fun getRootFolder(): Folder {
+        return jdbc.queryForObject("$GET WHERE pk_organization=? AND pk_parent IS NULL and str_name='/'",
+                MAPPER, getOrgId())
     }
 
     override fun getAll(ids: Collection<UUID>): List<Folder> {
@@ -198,6 +210,31 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         return exists(parent.id, name)
     }
 
+    override fun createRootFolder(org: Organization) : Folder {
+        val time = System.currentTimeMillis()
+        val id = uuid1.generate()
+        val user = getUser()
+
+        jdbc.update({ connection ->
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, null)
+            ps.setObject(3, org.id)
+            ps.setString(4, "/")
+            ps.setObject(5, user.id)
+            ps.setLong(6, time)
+            ps.setBoolean(7, false)
+            ps.setObject(8, user.id)
+            ps.setLong(9, time)
+            ps.setString(10, null)
+            ps.setObject(11, null)
+            ps.setString(12, "{}")
+            ps
+        })
+
+        return getAfterCreate(id)
+    }
+
     override fun create(spec: FolderSpec): Folder {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
@@ -206,10 +243,14 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             spec.userId = user
         }
 
+        if (spec.parentId == null) {
+            spec.parentId = getRootFolder().id
+        }
+
         jdbc.update({ connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setObject(2, if (spec.parentId == null) ROOT_ID else spec.parentId)
+            ps.setObject(2, spec.parentId)
             ps.setObject(3, getUser().organizationId)
             ps.setString(4, spec.name)
             ps.setObject(5, spec.userId)
@@ -229,10 +270,14 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     override fun create(spec: TrashedFolder): Folder {
         val time = System.currentTimeMillis()
 
+        if (spec.parentId == null) {
+            spec.parentId = getRootFolder().id
+        }
+
         jdbc.update { connection ->
             val ps = connection.prepareStatement(RESTORE)
             ps.setObject(1, spec.folderId)
-            ps.setObject(2, if (spec.parentId == null) ROOT_ID else spec.parentId)
+            ps.setObject(2, spec.parentId)
             ps.setObject(3, getUser().organizationId)
             ps.setString(4, spec.name)
             ps.setObject(5, spec.user.id)
@@ -255,8 +300,9 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
     override fun update(id: UUID, folder: FolderUpdate): Boolean {
         Preconditions.checkNotNull(folder.parentId, "Parent folder cannot be null")
-        Preconditions.checkArgument(!Objects.equals(id, ROOT_ID),
-                "Cannot modify folder: ${id}")
+        if (getRootFolder().id == id) {
+            throw IllegalArgumentException("Cannot modify root folder")
+        }
 
         /**
          * Skip updating the search if its a dyhi so the exists statement
@@ -272,7 +318,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                     Json.serializeToString(folder.attrs, "{}"),
                     id, getOrgId()) == 1
         } else {
-            jdbc.update("$UPDATE0 AND pk_organization=?",
+            jdbc.update("$UPDATE AND pk_organization=?",
                     System.currentTimeMillis(),
                     getUserId(),
                     folder.parentId,
@@ -312,18 +358,27 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     }
 
     override fun setTaxonomyRoot(folder: Folder, value: Boolean): Boolean {
-        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_organization=? AND pk_folder=? AND bool_tax_root=? AND pk_folder!=?",
-                value, getOrgId(), folder.id, !value, ROOT_ID) == 1
+        if (getRootFolder().id == folder.id) {
+            throw IllegalArgumentException("Cannot set taxonomy on root folder")
+        }
+        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_organization=? AND pk_folder=? AND bool_tax_root=?",
+                value, getOrgId(), folder.id, !value) == 1
     }
 
     override fun setDyHierarchyRoot(folder: Folder, field: String): Boolean {
-        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?, str_dyhi_field=? WHERE pk_organization=? AND pk_folder=? AND pk_folder!=?",
-                false, true, field, getOrgId(), folder.id, ROOT_ID) == 1
+        if (getRootFolder().id == folder.id) {
+            throw IllegalArgumentException("Cannot set dyhi on root folder")
+        }
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?, str_dyhi_field=? WHERE pk_organization=? AND pk_folder=?",
+                false, true, field, getOrgId(), folder.id) == 1
     }
 
     override fun removeDyHierarchyRoot(folder: Folder): Boolean {
-        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?,str_dyhi_field=null WHERE pk_organization=? AND pk_folder=? AND pk_folder!=?",
-                true, false, getOrgId(), folder.id, ROOT_ID) == 1
+        if (getRootFolder().id == folder.id) {
+            throw IllegalArgumentException("Cannot remove dyhi on root folder")
+        }
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?,str_dyhi_field=null WHERE pk_organization=? AND pk_folder=?",
+                true, false, getOrgId(), folder.id) == 1
     }
 
     override fun setAcl(folder: UUID, acl: Acl) {
@@ -503,7 +558,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                 "json_search",
                 "json_attrs")
 
-        private val UPDATE0 = JdbcUtils.update("folder", "pk_folder",
+        private val UPDATE = JdbcUtils.update("folder", "pk_folder",
                 "time_modified",
                 "pk_user_modified",
                 "pk_parent",

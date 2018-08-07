@@ -6,6 +6,8 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FolderDao
+import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Pager
@@ -17,18 +19,22 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 class FolderServiceTests : AbstractTest() {
 
     @Autowired
-    internal var dyhiService: DyHierarchyService? = null
+    lateinit var dyhiService: DyHierarchyService
 
     @Autowired
-    internal var folderDao: FolderDao? = null
+    lateinit var folderDao: FolderDao
 
     @Autowired
-    internal var taxonomyService: TaxonomyService? = null
+    lateinit var taxonomyService: TaxonomyService
+
+    @Autowired
+    lateinit var organizationDao: OrganizationDao
 
     @Before
     fun init() {
@@ -227,7 +233,7 @@ class FolderServiceTests : AbstractTest() {
         folderService.get(folder.id)
 
         // use the DAO so don't fail the remove access from self check.
-        folderDao!!.setAcl(folder.id, Acl().addEntry(
+        folderDao.setAcl(folder.id, Acl().addEntry(
                 permissionService.getPermission(Groups.ADMIN), Access.Read))
         folderService.invalidate(folder)
         folderService.get(folder.id)
@@ -238,7 +244,7 @@ class FolderServiceTests : AbstractTest() {
         authenticate("librarian")
         val builder = FolderSpec("Folder", folderService.get("/Library")!!)
         val folder = folderService.create(builder)
-        folderDao!!.setAcl(folder.id,
+        folderDao.setAcl(folder.id,
                 Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Read))
         folderService.invalidate(folder)
         folderService.get(folder.id)
@@ -270,7 +276,7 @@ class FolderServiceTests : AbstractTest() {
         authenticate("librarian")
         val builder = FolderSpec("Folder", folderService.get("/Library")!!)
         val folder = folderService.create(builder)
-        folderDao!!.setAcl(folder.id,
+        folderDao.setAcl(folder.id,
                 Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write))
         val up = FolderUpdate(folder)
         up.name = "bilbo"
@@ -360,7 +366,7 @@ class FolderServiceTests : AbstractTest() {
         val folder1 = folderService.create(FolderSpec("test1"))
         val folder1a = folderService.create(FolderSpec("test1a", folder1))
         val folder1b = folderService.create(FolderSpec("test1b", folder1a))
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(FolderSpec("test1c", folder1b))
+        folderService.create(FolderSpec("test1c", folder1b))
 
         assertTrue(folderService.exists("/test1/test1a/test1b/test1c"))
         assertTrue(folderService.exists("/test1/test1a"))
@@ -457,7 +463,7 @@ class FolderServiceTests : AbstractTest() {
 
         // Move the folder into the library
         assertTrue(folderService.update(moving.id, up))
-        val acl = folderDao!!.getAcl(moving.id)
+        val acl = folderDao.getAcl(moving.id)
 
         assertTrue(acl.hasAccess(permissionService.getPermission(Groups.LIBRARIAN), Access.Write))
         assertTrue(acl.hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read))
@@ -609,7 +615,7 @@ class FolderServiceTests : AbstractTest() {
 
         assertTrue(folderService.isDescendantOf(folder3, folder1))
         assertFalse(folderService.isDescendantOf(folder1, folder3))
-        assertTrue(folderService.isDescendantOf(folder3, folderService.get(getRootFolderId())))
+        //assertTrue(folderService.isDescendantOf(folder3, folderService.get(getRootFolderId())))
 
     }
 
@@ -637,4 +643,15 @@ class FolderServiceTests : AbstractTest() {
         val (_, _, _, _, _, _, _, _, _, _, _, _, acl) = folderService.createUserFolder("gandalf", perm)
         assertTrue(acl!!.hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read))
     }
+
+    @Test
+    fun createStandardfolders() {
+        val org = organizationDao.create(OrganizationSpec("test"))
+        SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+        val rootFolder = folderService.createStandardFolders(org)
+
+        assertTrue(folderService.exists("/Users"))
+        assertTrue(folderService.exists("/Library"))
+    }
+
 }
