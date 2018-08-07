@@ -12,6 +12,7 @@ import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.search.AssetFilter
 import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -123,9 +124,13 @@ class ExportServiceImpl @Autowired constructor(
         script.globals?.putAll(mapOf(
                 "exportArgs" to mapOf(
                         "exportId" to export.id,
-                        "exportName" to export.name)))
+                        "exportName" to export.name,
+                        "exportRoot" to properties.getString("archivist.export.export-root"))))
 
         script.execute?.addAll(spec.processors)
+        script.execute?.add(ProcessorRef("zplugins.export.processors.GcsExportUploader",
+                mapOf<String, Any>("gcs_bucket" to properties.getString("archivist.export.gcs_bucket"))))
+        script.execute?.add(ProcessorRef("zplugins.export.processors.ExportedFileRegister"))
 
         /**
          * Replace the search the user supplied with our own search so we ensure
@@ -135,7 +140,10 @@ class ExportServiceImpl @Autowired constructor(
         val params = resolveExportSearch(spec.search, export.id)
         script.generate?.add(ProcessorRef(
                 "zplugins.asset.generators.AssetSearchGenerator",
-                mapOf<String, Any>("search" to params.search)))
+                mapOf<String, Any>(
+                        "search" to params.search
+                )
+        ))
 
         return script
     }
