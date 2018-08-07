@@ -36,7 +36,7 @@ def build_docker_image(project, app, gcs_config):
            "--build-arg", "project=%s" % project,
            "."]
     print cmd
-    subprocess.call(cmd, shell=False)
+    subprocess.check_call(cmd, shell=False)
 
 def get_image_name(project, app):
     return "gcr.io/%s/%s:latest" % (project, app["service"])
@@ -45,18 +45,18 @@ def push_to_gcp(project, app):
     image = get_image_name(project, app)
     cmd = ["docker", "push", image]
     print cmd
-    subprocess.call(cmd, shell=False)
+    subprocess.check_call(cmd, shell=False)
 
 def deploy_to_app_engine(project, app):
     image = get_image_name(project, app)
     cmd = ["gcloud", "app", "deploy", "app.yaml", "--project", project, "--image-url", image, "--quiet"]
     print cmd
-    subprocess.call(cmd, shell=False)
+    subprocess.check_call(cmd, shell=False)
 
 def rebuild_jar_file():
     cmd =["mvn", "clean", "package", "-T", "1C", "-Dmaven.test.skip=true"]
     print cmd
-    ret = subprocess.call(cmd, shell=False)
+    ret = subprocess.check_call(cmd, shell=False)
     if ret != 0:
         raise RuntimeError("Failed to compile java library!!");
 
