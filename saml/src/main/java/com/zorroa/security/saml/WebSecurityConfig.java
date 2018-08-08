@@ -20,15 +20,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
+import org.springframework.security.saml.context.SAMLContextProvider;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
-import org.springframework.security.saml.key.EmptyKeyManager;
+import org.springframework.security.saml.context.SAMLContextProviderLB;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -56,6 +56,7 @@ import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -125,8 +126,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Provider of default SAML Context
     @Bean
-    public SAMLContextProviderImpl contextProvider() {
-        return new SAMLContextProviderImpl();
+    public SAMLContextProvider contextProvider() {
+        logger.info("BaseURL is proxy: {}", properties.isBaseUrlIsProxy());
+
+        if (properties.isBaseUrlIsProxy()) {
+            URI uri = URI.create(properties.baseUrl);
+            SAMLContextProviderLB ctx = new SAMLContextProviderLB();
+            ctx.setScheme(uri.getScheme());
+            ctx.setServerName(uri.getHost());
+            ctx.setIncludeServerPortInRequestURL(false);
+            ctx.setContextPath("/");
+
+            if (uri.getScheme().endsWith("s")) {
+                ctx.setServerPort(443);
+            }
+            else{
+                ctx.setServerPort(80);
+            }
+            return ctx;
+        }
+        else {
+            return new SAMLContextProviderImpl();
+        }
     }
 
     // Initialization of OpenSAML library
@@ -371,7 +392,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public MetadataGeneratorFilter metadataGeneratorFilter() {
-        return new MetadataGeneratorFilter(metadataGenerator());
+        if (properties.isBaseUrlIsProxy()) {
+            return new ZorroaMetadataFilter(properties.baseUrl, metadataGenerator());
+        }
+        else {
+            return new MetadataGeneratorFilter(metadataGenerator());
+        }
     }
 
     // Handler for successful logout
