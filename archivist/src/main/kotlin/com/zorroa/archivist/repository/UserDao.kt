@@ -82,7 +82,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun get(id: UUID): User {
-        return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?", MAPPER, id)
+        return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?",
+                MAPPER, id)
     }
 
     override fun get(username: String): User {
@@ -103,13 +104,13 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getAll(): List<User> {
-        return jdbc.query(GET_ALL, MAPPER)
+        return jdbc.query("$GET_ALL WHERE pk_organization=? ORDER BY str_username", MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>("$GET_ALL LIMIT ? OFFSET ?",
-                        MAPPER, paging.size, paging.from))
+                jdbc.query<User>("$GET_ALL WHERE pk_organization=? ORDER BY str_username LIMIT ? OFFSET ?",
+                        MAPPER, getOrgId(), paging.size, paging.from))
     }
 
     override fun create(builder: UserSpec): User {
@@ -158,8 +159,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
     override fun setSettings(user: User, settings: UserSettings): Boolean {
         return jdbc.update(
-                "UPDATE users SET json_settings=? WHERE pk_user=?",
-                Json.serializeToString(settings, "{}"), user.id) == 1
+                "UPDATE users SET json_settings=? WHERE pk_organization=? AND pk_user=?",
+                Json.serializeToString(settings, "{}"), getOrgId(), user.id) == 1
     }
 
     override fun getSettings(id: UUID): UserSettings {
@@ -204,7 +205,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun delete(user: User): Boolean {
-        return jdbc.update("DELETE FROM users WHERE pk_user=?", user.id) == 1
+        return jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
+                getOrgId(), user.id) == 1
     }
 
     override fun getPassword(username: String): String {
@@ -229,7 +231,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getCount(): Long {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM users", Int::class.java).toLong()
+        return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Int::class.java, getOrgId()).toLong()
     }
 
 
@@ -298,7 +300,9 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     rs.getLong("time_last_login"))
         }
 
-        private const val GET_ALL = "SELECT * FROM users ORDER BY str_username"
+        private const val GET_ALL = "SELECT * FROM users"
+
+        private const val COUNT = "SELECT COUNT(1) FROM users"
 
         private val INSERT = JdbcUtils.insert("users",
                 "pk_user",
@@ -316,7 +320,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "pk_organization",
                 "json_auth_attrs")
 
-        private val RESET_PASSWORD = "UPDATE " +
+        private const val RESET_PASSWORD = "UPDATE " +
                 "users " +
                 "SET " +
                 "str_password=?," +

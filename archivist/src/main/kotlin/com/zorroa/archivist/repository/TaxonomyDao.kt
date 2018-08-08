@@ -4,6 +4,7 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.Taxonomy
 import com.zorroa.archivist.domain.TaxonomySpec
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
@@ -27,7 +28,8 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
         val id = uuid1.generate()
 
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_taxonomy"))
+            val ps = connection.prepareStatement(
+                    INSERT, arrayOf("pk_taxonomy"))
             ps.setObject(1, id)
             ps.setObject(2, spec.folderId)
             ps.setObject(3, getUser().organizationId)
@@ -37,11 +39,13 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
     }
 
     override fun get(id: UUID): Taxonomy {
-        return jdbc.queryForObject<Taxonomy>(GET + "WHERE pk_taxonomy=?", MAPPER, id)
+        return jdbc.queryForObject<Taxonomy>(GET + "WHERE pk_organization=? AND pk_taxonomy=?",
+                MAPPER, getOrgId(), id)
     }
 
     override fun get(folder: Folder): Taxonomy {
-        return jdbc.queryForObject<Taxonomy>(GET + "WHERE pk_folder=?", MAPPER, folder.id)
+        return jdbc.queryForObject<Taxonomy>(GET + "WHERE pk_organization=? AND pk_folder=?",
+                MAPPER, getOrgId(), folder.id)
     }
 
     override fun refresh(obj: Taxonomy): Taxonomy {
@@ -62,16 +66,16 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
 
     override fun setActive(id: Taxonomy, value: Boolean): Boolean {
         return if (value) {
-            jdbc.update("UPDATE taxonomy SET time_started=?, time_stopped=0, bool_active=? WHERE pk_taxonomy=? AND bool_active=?",
-                    System.currentTimeMillis(), true, id.taxonomyId, false) == 1
+            jdbc.update("UPDATE taxonomy SET time_started=?, time_stopped=0, bool_active=? WHERE pk_organization=? AND pk_taxonomy=? AND bool_active=?",
+                    System.currentTimeMillis(), true, getOrgId(), id.taxonomyId, false) == 1
         } else {
-            jdbc.update("UPDATE taxonomy SET time_stopped=?, bool_active=? WHERE pk_taxonomy=? AND bool_active=?",
-                    System.currentTimeMillis(), false, id.taxonomyId, true) == 1
+            jdbc.update("UPDATE taxonomy SET time_stopped=?, bool_active=? WHERE pk_organization=? AND pk_taxonomy=? AND bool_active=?",
+                    System.currentTimeMillis(), false, getOrgId(), id.taxonomyId, true) == 1
         }
     }
 
     override fun delete(id: UUID): Boolean {
-        return jdbc.update("DELETE FROM taxonomy WHERE pk_taxonomy=?", id) == 1
+        return jdbc.update("DELETE FROM taxonomy WHERE pk_organization=? AND pk_taxonomy=?", getOrgId(), id) == 1
     }
 
     override fun count(): Long {
