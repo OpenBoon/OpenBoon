@@ -121,23 +121,15 @@ interface FolderService {
 
     fun setFoldersForAsset(assetId: String, folders: List<UUID>);
 
-    /**
-     * Asynchronously creata a new folder.  Return a future in case
-     * you eventually need the result.
-     *
-     * @param spec
-     * @param mightExist
-     * @return
-     */
-    fun submitCreate(parent: Folder, spec: FolderSpec, mightExist: Boolean): Future<Folder>
+    fun submitCreate(parent: Folder, spec: FolderSpec): Future<Folder>
 
-    fun submitCreate(spec: FolderSpec, mightExist: Boolean): Future<Folder>
+    fun submitCreate(spec: FolderSpec): Future<Folder>
 
     fun create(spec: FolderSpec): Folder
 
-    fun create(spec: FolderSpec, mightExist: Boolean): Folder
+    fun create(spec: FolderSpec, errorIfExists: Boolean) : Folder
 
-    fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean, errorIfExists: Boolean = true): Folder
+    fun create(parent: Folder, spec: FolderSpec, errorIfExists: Boolean = true): Folder
 
     fun createStandardFolders(org: Organization): Folder
 
@@ -740,15 +732,15 @@ class FolderServiceImpl @Autowired constructor(
         }
     }
 
-    override fun submitCreate(spec: FolderSpec, mightExist: Boolean): Future<Folder> {
-        return folderExecutor.submit<Folder> { create(spec, mightExist) }
+    override fun submitCreate(spec: FolderSpec): Future<Folder> {
+        return folderExecutor.submit<Folder> { create(spec) }
     }
 
-    override fun submitCreate(parent: Folder, spec: FolderSpec, mightExist: Boolean): Future<Folder> {
-        return folderExecutor.submit<Folder> { create(parent, spec, mightExist) }
+    override fun submitCreate(parent: Folder, spec: FolderSpec): Future<Folder> {
+        return folderExecutor.submit<Folder> { create(parent, spec) }
     }
 
-    override fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean, errorIfExists: Boolean): Folder {
+    override fun create(parent: Folder, spec: FolderSpec, errorIfExists: Boolean): Folder {
         if (!hasPermission(parent.acl, Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
@@ -792,8 +784,8 @@ class FolderServiceImpl @Autowired constructor(
         })
     }
 
-    override fun create(spec: FolderSpec, mightExist: Boolean): Folder {
-        return create(folderDao.get(spec.parentId), spec, mightExist)
+    override fun create(spec: FolderSpec, errorIfExists: Boolean): Folder {
+        return create(folderDao.get(spec.parentId), spec, errorIfExists)
     }
 
     override fun create(spec: FolderSpec): Folder {
