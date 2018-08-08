@@ -138,6 +138,10 @@ class StorageRouterImpl @Autowired constructor (
             logger.info("Initializing storage: LOCAL")
             services["local"] = LocalStorageService(properties)
         }
+        if (types.contains("remote")) {
+            logger.info("Initializing storage: REMOTE")
+            services["remote"] = RemoteStorageService(properties)
+        }
     }
 
     fun getStorageService(uri: URI) : StorageService {
@@ -147,7 +151,7 @@ class StorageRouterImpl @Autowired constructor (
                     "gcp"
                 }
                 else {
-                    "unknown"
+                    "remote"
                 }
             }
             "gs" -> "gcp"
@@ -211,6 +215,47 @@ open class ZorroaStorageException(override var message:String?) : RuntimeExcepti
 
 class StorageReadException (override var message:String?) : ZorroaStorageException(message)
 
+/**
+ * A storage service that handles files stored on a remote http(s) server.
+ * Not fully implemented
+ */
+class RemoteStorageService @Autowired constructor (
+        val properties: ApplicationProperties) : StorageService {
+
+    override fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun copyTo(url: URI, response: HttpServletResponse) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun copyTo(url: URI, output: OutputStream) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun objectExists(url: URI): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getSignedUrl(url: URI): URL {
+       return url.toURL()
+    }
+
+    override fun getLocalPath(url: URI): Path? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getStat(url: URI): ObjectStat {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override val storedLocally: Boolean
+        get() = false
+
+
+
+}
 class LocalStorageService @Autowired constructor (
         val properties: ApplicationProperties) : StorageService {
 
