@@ -1,8 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
-import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.repository.MaintenanceDao
 import com.zorroa.archivist.repository.SharedLinkDao
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,8 +19,6 @@ interface MaintenanceService {
 
 @Service
 class MaintenanceServiceImpl @Autowired constructor(
-        private val properties: ApplicationProperties,
-        private val maintenanceDao: MaintenanceDao,
         private val sharedLinkDao: SharedLinkDao
 ) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
 
