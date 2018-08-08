@@ -15,9 +15,9 @@ data class UserBase (
         override val id: UUID,
         val username: String,
         val email: String,
-        val permissionId: UUID,
-        val homeFolderId: UUID,
-        val organizationId: UUID) : UserId {
+        val permissionId: UUID?,
+        val homeFolderId: UUID?,
+        val organizationId: UUID?) : UserId {
 
     @JsonIgnore
     override fun getName(): String = username

@@ -1,14 +1,23 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.security.Groups
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.security.core.context.SecurityContextHolder
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class PermissionServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var organizationDao: OrganizationDao
 
     @Test
     fun testCreate() {
@@ -46,5 +55,14 @@ class PermissionServiceTests : AbstractTest() {
         assertTrue(permissionService.deletePermission(perm1))
         assertFalse(permissionService.deletePermission(perm1))
         permissionService.getPermission(perm1.id)
+    }
+
+    @Test
+    fun createStandardPermissions() {
+        val org = organizationDao.create(OrganizationSpec("test"))
+        SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+        permissionService.createStandardPermissions(org)
+        assertTrue(permissionService.permissionExists(Groups.ADMIN))
+        assertTrue(permissionService.permissionExists(Groups.EVERYONE))
     }
 }

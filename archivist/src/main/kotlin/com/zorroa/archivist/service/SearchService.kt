@@ -10,10 +10,7 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getPermissionsFilter
-import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.*
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.domain.Document
@@ -407,21 +404,23 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
-
-        val permsQuery = getPermissionsFilter(search.access)
-        if (search == null) {
-            return permsQuery ?: QueryBuilders.matchAllQuery()
-        }
-
         val query = QueryBuilders.boolQuery()
-        query.minimumShouldMatch(1)
+        query.filter(getOrganizationFilter())
 
-        val assetBool = QueryBuilders.boolQuery()
-
-        if (perms && permsQuery != null) {
-            query.filter(permsQuery)
+        if (perms) {
+            val permsQuery = getPermissionsFilter(search.access)
+            if (permsQuery != null) {
+                query.filter(permsQuery)
+            }
         }
 
+        if (search == null || (search.filter == null && search.query == null)) {
+            query.must(QueryBuilders.matchAllQuery())
+            return query
+        }
+
+        query.minimumShouldMatch(1)
+        val assetBool = QueryBuilders.boolQuery()
         if (search.isQuerySet) {
             assetBool.must(getQueryStringQuery(search))
         }
