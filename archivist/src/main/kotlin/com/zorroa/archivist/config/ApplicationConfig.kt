@@ -161,7 +161,7 @@ class ArchivistConfiguration {
 
     @Bean
     fun assetService() : AssetService {
-        val type = properties().getString("archivist.assetStore.type", "local")
+        val type = properties().getString("archivist.assetStore.type", "sql")
         logger.info("Initializing Core Asset Store: {}", type)
         return when(type) {
             "irm"->IrmAssetServiceImpl(
