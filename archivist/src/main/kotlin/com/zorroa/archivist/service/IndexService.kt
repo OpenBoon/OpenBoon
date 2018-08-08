@@ -9,7 +9,7 @@ import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Document
@@ -24,8 +24,6 @@ import com.zorroa.common.search.AssetSearchOrder
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationListener
-import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -95,13 +93,7 @@ class IndexServiceImpl  @Autowired  constructor (
         private val properties: ApplicationProperties,
         private val storageRouter: StorageRouter
 
-) : IndexService, ApplicationListener<ContextRefreshedEvent> {
-
-    private var defaultPerms = PermissionSchema()
-
-    override fun onApplicationEvent(contextRefreshedEvent: ContextRefreshedEvent) {
-        setDefaultPermissions()
-    }
+) : IndexService {
 
     override fun get(id: String): Document {
         return if (id.startsWith("/")) {
@@ -154,7 +146,7 @@ class IndexServiceImpl  @Autowired  constructor (
          * and if they do exist we'll remove them so they don't overwrite
          * the proper value.
          */
-        val organizationId = getUser().organizationId
+        val organizationId = getOrgId()
 
         for (source in spec.sources!!) {
 
@@ -222,14 +214,16 @@ class IndexServiceImpl  @Autowired  constructor (
                 }
                 source.setAttr("zorroa.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
             } else if (perms.isEmpty) {
+
                 /**
                  * If the source didn't come with any permissions and the current perms
                  * on the asset are empty, we apply the default permissions.
                  *
                  * If there is no permissions.
                  */
+                // get the default perms for org.
                 source.setAttr("zorroa.permissions",
-                        Json.Mapper.convertValue<Map<String,Any>>(defaultPerms, Json.GENERIC_MAP))
+                        Json.Mapper.convertValue<Map<String,Any>>(permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP))
             }
 
             if (source.links != null) {
@@ -315,24 +309,6 @@ class IndexServiceImpl  @Autowired  constructor (
 
     override fun getMapping(): Map<String, Any> {
         return indexDao.getMapping()
-    }
-
-    private fun setDefaultPermissions() {
-        val defaultReadPerms = properties.getList("archivist.security.permissions.defaultRead")
-        val defaultWritePerms = properties.getList("archivist.security.permissions.defaultWrite")
-        val defaultExportPerms = properties.getList("archivist.security.permissions.defaultExport")
-
-        for (p in permissionDao.getAll(defaultReadPerms)) {
-            defaultPerms.addToRead(p.id)
-        }
-
-        for (p in permissionDao.getAll(defaultWritePerms)) {
-            defaultPerms.addToWrite(p.id)
-        }
-
-        for (p in permissionDao.getAll(defaultExportPerms)) {
-            defaultPerms.addToExport(p.id)
-        }
     }
 
     companion object {

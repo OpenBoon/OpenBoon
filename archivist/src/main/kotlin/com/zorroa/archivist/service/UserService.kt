@@ -6,7 +6,6 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserDaoCache
@@ -15,6 +14,7 @@ import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.dao.DataAccessException
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -107,29 +108,29 @@ class UserRegistryServiceImpl @Autowired constructor(
     internal lateinit var permissionService: PermissionService
 
     @Value("\${archivist.organization.multiTenant}")
-    var multiTentant : Boolean = false
+    var multiTentant: Boolean = false
 
     /**
      * Register and external user from OAuth/SAML.
      */
     override fun registerUser(username: String, source: AuthSource): UserAuthed {
-        var org : Organization = if (multiTentant) {
-            source.organizationName?.let {
-                organizationService.get(it)
-            }
-            throw BadCredentialsException("Unable to determine organization")
-        }
-        else {
-            organizationService.getOnlyOne()
-        }
+
+        logger.info("Registering external user, multi-tenant enabled: {}", multiTentant)
+        val org = getOrganization(source)
 
         val user = if (!userService.exists(username, null)) {
+            logger.info("User not found, creating user: {}", username)
+
+            // We must become the super admin to add new users.
+            SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+
             val spec = UserSpec(
                     username,
                     UUID.randomUUID().toString() + UUID.randomUUID().toString(),
-                    username,
+                    source.attrs.getOrDefault("mail", "$username@zorroa.com"),
                     source.authSourceId,
-                    organizationId = org.id)
+                    firstName = source.attrs.getOrDefault("first_name", "First"),
+                    lastName = source.attrs.getOrDefault("last_name", "Last"))
             userService.create(spec)
         } else {
             userService.get(username)
@@ -150,6 +151,18 @@ class UserRegistryServiceImpl @Autowired constructor(
         val user = userService.get(username)
         val perms = userService.getPermissions(user)
         return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
+    }
+
+    fun getOrganization(source: AuthSource) : Organization {
+        return if (multiTentant) {
+            if (source.organizationName != null) {
+                organizationService.get(source.organizationName!!)
+            } else {
+                throw BadCredentialsException("Unable to determine organization, organization was null")
+            }
+        } else {
+            organizationService.getOnlyOne()
+        }
     }
 
     fun importAndAssignPermissions(user: UserId, source: AuthSource, groups: List<String>) {
@@ -175,6 +188,13 @@ class UserRegistryServiceImpl @Autowired constructor(
 
         userService.setPermissions(user, perms, source.authSourceId)
     }
+
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(UserRegistryServiceImpl::class.java)
+
+    }
 }
 
 @Service
@@ -183,7 +203,6 @@ class UserServiceImpl @Autowired constructor(
         private val userDao: UserDao,
         private val userDaoCache: UserDaoCache,
         private val permissionDao: PermissionDao,
-        private val organizationDao: OrganizationDao,
         private val tx: TransactionEventManager,
         private val properties: ApplicationProperties
 ): UserService, ApplicationListener<ContextRefreshedEvent> {
@@ -193,9 +212,6 @@ class UserServiceImpl @Autowired constructor(
 
     @Autowired
     internal lateinit var logService: EventLogService
-
-    @Value("\${archivist.organization.multiTenant}")
-    var multiTentant : Boolean = false
 
     private val PASS_MIN_LENGTH = 8
 
@@ -214,11 +230,6 @@ class UserServiceImpl @Autowired constructor(
 
     override fun create(builder: UserSpec): User {
 
-        if (!multiTentant && builder.organizationId == null) {
-            val org = organizationDao.getOnlyOne()
-            builder.organizationId = org.id
-        }
-
         if (builder.source == null) {
             builder.source = SOURCE_LOCAL
         }
@@ -234,9 +245,9 @@ class UserServiceImpl @Autowired constructor(
 
         val userPerm = permissionDao.create(
                 PermissionSpec("user", builder.username), true)
-
         val userFolder = folderService.createUserFolder(
                 builder.username, userPerm)
+
 
         builder.homeFolderId = userFolder.id
         builder.userPermissionId = userPerm.id

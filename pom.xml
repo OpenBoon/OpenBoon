@@ -18,6 +18,7 @@
         <zorroa-server.version>0.40.0-SNAPSHOT</zorroa-server.version>
         <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
         <kotlin.version>1.2.50</kotlin.version>
+        <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
     </properties>
 
     <modules>

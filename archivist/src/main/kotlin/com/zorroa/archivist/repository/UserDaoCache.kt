@@ -3,6 +3,8 @@ package com.zorroa.archivist.repository
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.UserBase
+import com.zorroa.archivist.security.superAdminBase
+import com.zorroa.archivist.security.superAdminId
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -25,7 +27,13 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
             .build(object : CacheLoader<UUID, UserBase>() {
                 @Throws(Exception::class)
                 override fun load(key: UUID): UserBase {
-                    return jdbc.queryForObject(GET_BY_ID, MAPPER, key)
+                    // Super admin isn't in the DB so we'll return a static record
+                    return if (key == superAdminId) {
+                        superAdminBase
+                    }
+                    else {
+                        jdbc.queryForObject(GET_BY_ID, MAPPER, key)
+                    }
                 }
             })
 
@@ -49,7 +57,7 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
 
         private const val GET_BY_NAME = "$GET WHERE (str_username=? OR str_email=?)"
 
-        private val MAPPER = RowMapper<UserBase> { rs, _ ->
+        private val MAPPER = RowMapper { rs, _ ->
             UserBase(rs.getObject("pk_user") as UUID,
                     rs.getString("str_username"),
                     rs.getString("str_email"),

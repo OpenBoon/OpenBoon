@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +27,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
-import org.springframework.security.saml.key.EmptyKeyManager;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -53,11 +51,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.*;
 
 
@@ -179,7 +179,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Central storage of cryptographic keys
     @Bean
     public KeyManager keyManager() {
-        Map<String,String> keystore = properties.keystore;
+        Map<String, String> keystore = properties.keystore;
         Resource storeFile = new FileSystemResource(new File(keystore.get("path")));
         Map<String, String> passwords = new HashMap<>();
         passwords.put(keystore.get("alias"), keystore.get("keyPassword"));
@@ -262,7 +262,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         List<MetadataProvider> providers = new ArrayList();
         Files.list(Paths.get("/config/saml"))
                 .filter(Files::isRegularFile)
-                .filter(p->p.getFileName().toString().endsWith(".properties"))
+                .filter(p -> p.getFileName().toString().endsWith(".properties"))
                 .forEach(p -> {
 
                     logger.info("Initializing SAML : {}", p);
@@ -288,8 +288,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             emd.setRequireValidMetadata(false);
                             backgroundTaskTimer.purge();
                             providers.add(emd);
-                        }
-                        else {
+                        } else {
+                            try {
+                                MessageDigest md5 = MessageDigest.getInstance("MD5");
+                                byte[] bytes = Files.readAllBytes(Paths.get(uri));
+                                byte[] hash = md5.digest(bytes);
+                                logger.info("Metdata MD5: {}", DatatypeConverter.printHexBinary(hash));
+                            } catch (Exception e) {
+                                logger.warn("Unable to MD5 metadata");
+                            }
+
                             FilesystemMetadataProvider provider =
                                     new FilesystemMetadataProvider(new File(uri));
                             provider.setParserPool(parserPool());
@@ -302,8 +310,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         }
                     } catch (IOException e) {
                         logger.warn("Failed to open SAML file: ", e);
-                    }
-                    catch (MetadataProviderException e) {
+                    } catch (MetadataProviderException e) {
                         logger.warn("Failed to open SAML file: ", e);
                     }
                 });
@@ -406,8 +413,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SAMLLogoutFilter samlLogoutFilter() {
         return new SAMLLogoutFilter(successLogoutHandler(),
-                new LogoutHandler[] { logoutHandler() },
-                new LogoutHandler[] { logoutHandler() });
+                new LogoutHandler[]{logoutHandler()},
+                new LogoutHandler[]{logoutHandler()});
     }
 
     // Bindings
@@ -490,8 +497,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Defines the web based security configuration.
      *
-     * @param   http It allows configuring web based security for specific http requests.
-     * @throws  Exception
+     * @param http It allows configuring web based security for specific http requests.
+     * @throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -529,8 +536,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Sets a custom authentication provider.
      *
-     * @param   auth SecurityBuilder used to create an AuthenticationManager.
-     * @throws  Exception
+     * @param auth SecurityBuilder used to create an AuthenticationManager.
+     * @throws Exception
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

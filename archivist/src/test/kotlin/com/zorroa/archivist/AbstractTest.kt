@@ -19,19 +19,16 @@ import com.zorroa.common.util.FileUtils
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
-import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.web.WebAppConfiguration
@@ -91,6 +88,9 @@ open abstract class AbstractTest {
 
     @Autowired
     protected lateinit var requestService: RequestService
+
+    @Autowired
+    protected lateinit var organizationService: OrganizationService
 
     @Autowired
     protected lateinit var userRegistryService: UserRegistryService
@@ -294,7 +294,6 @@ open abstract class AbstractTest {
             }
         }
 
-        logger.info("TEST ASSET: {}", result)
         return result
     }
 

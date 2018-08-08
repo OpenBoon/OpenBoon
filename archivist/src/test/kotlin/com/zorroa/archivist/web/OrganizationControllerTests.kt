@@ -3,7 +3,6 @@ package com.zorroa.archivist.web
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
-import com.zorroa.archivist.service.OrganizationService
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
@@ -21,9 +20,6 @@ class OrganizationControllerTests: MockMvcTest() {
 
     @Autowired
     internal lateinit var session: MockHttpSession
-
-    @Autowired
-    internal lateinit var organizationService: OrganizationService
 
     @Before
     @Throws(Exception::class)
@@ -46,24 +42,4 @@ class OrganizationControllerTests: MockMvcTest() {
                 })
         assertEquals(organizationName, name)
     }
-
-    @Test
-    @Throws(Exception::class)
-    fun testGet() {
-        val organization = organizationService.create(organizationName)
-        val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/organizations/" + organization.id)
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn()
-
-        val (id, name) = Json.Mapper.readValue<Organization>(result.response.contentAsString,
-                object : TypeReference<Organization>() {
-
-                })
-        assertEquals(organizationName, name)
-        assertEquals(organization.id, id)
-    }
-
-
 }
