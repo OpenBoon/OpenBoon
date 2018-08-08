@@ -25,6 +25,15 @@ class MockAnalystClient: AnalystClient {
                 spec.attrs, spec.env)
     }
 
+    override fun <T> get(url: String, resultType: Class<T>, jwtClaims: Map<String, String>?): T {
+        var text = "null"
+        if (url == "/api/v1/processor-lists/defaults/export") {
+            text = """{"name": "default-export","processors": [{"className": "zplugins.export.PdfProcessor","language": "python","args": {}}]}"""
+        }
+        return Json.Mapper.readValue(text, resultType)
+
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(MockAnalystClient::class.java)
