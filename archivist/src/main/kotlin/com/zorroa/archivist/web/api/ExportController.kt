@@ -25,7 +25,7 @@ class ExportController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}"])
-    operator fun get(@PathVariable id: UUID): Any {
+    fun get(@PathVariable id: UUID): Any {
         return exportService.get(id)
     }
 

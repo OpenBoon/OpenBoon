@@ -342,7 +342,6 @@ class AssetControllerTests : MockMvcTest() {
         }
     }
 
-    @Ignore("TODO: Fix this test.")
     @Test
     @Throws(Exception::class)
     fun testStreamHeadRequest() {
@@ -357,7 +356,7 @@ class AssetControllerTests : MockMvcTest() {
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
-                .andExpect(header().string("X-Zorroa-Signed-URL", "https://foo/bar?key=bar"))
+                .andExpect(header().string("X-Zorroa-Signed-URL", "https://foo/bar"))
                 .andReturn()
     }
 

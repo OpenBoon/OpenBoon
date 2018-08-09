@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.ExportDao
 import com.zorroa.archivist.repository.ExportFileDao
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
-import com.zorroa.common.clients.AnalystClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
@@ -39,7 +39,7 @@ class ExportServiceImpl @Autowired constructor(
         private val exportDao: ExportDao,
         private val exportFileDao: ExportFileDao,
         private val txm : TransactionEventManager,
-        private val analystClient: AnalystClient
+        private val jobService: JobService
         ) : ExportService {
 
     @Autowired
@@ -98,17 +98,15 @@ class ExportServiceImpl @Autowired constructor(
 
         val env = mutableMapOf<String, String>()
         env.putAll(spec.env)
-        env.putAll(mapOf("ZORROA_USER" to user.username,
-                "ZORROA_ORGANIZATION_ID" to user.organizationId.toString(),
-                "ZORROA_EXPORT_ID" to export.id.toString()))
+        env.putAll(mapOf("ZORROA_EXPORT_ID" to export.id.toString()))
 
         val jspec = JobSpec(spec.name!!,
                 PipelineType.EXPORT,
-                getUser().organizationId,
+                getOrgId(),
                 buildZpsSciript(export, spec),
                 env=env)
 
-        val job = analystClient.createJob(jspec)
+        val job = jobService.launchJob(jspec)
         exportDao.setAnalystJobId(export, job)
 
         return export

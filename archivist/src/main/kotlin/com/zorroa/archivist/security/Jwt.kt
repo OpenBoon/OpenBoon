@@ -47,10 +47,10 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
         return when {
             claims.containsKey("ZORROA_USER") -> {
                 val user = userRegistryService.getUser(claims.getValue("ZORROA_USER"))
-                UsernamePasswordAuthenticationToken(user, "",
-                        user.authorities)
+                UsernamePasswordAuthenticationToken(user, "", user.authorities)
             }
-            claims.containsKey("ZORROA_ORGANIZATION_ID") -> {
+            claims.containsKey("ZORROA_SUPER_ADMIN")
+                    && claims.containsKey("ZORROA_ORGANIZATION_ID") -> {
                 SuperAdminAuthentication(UUID.fromString(claims["ZORROA_ORGANIZATION_ID"]))
             }
             else -> {
