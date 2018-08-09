@@ -7,11 +7,8 @@ import com.google.cloud.pubsub.v1.MessageReceiver
 import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
-import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.OrganizationDao
-import com.zorroa.common.clients.AnalystClient
 import com.zorroa.common.domain.*
-import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,10 +49,7 @@ class GcpPubSubServiceImpl : PubSubService {
     private lateinit var organizationDao: OrganizationDao
 
     @Autowired
-    private lateinit var indexDao: IndexDao
-
-    @Autowired
-    private lateinit var analystClient: AnalystClient
+    private lateinit var jobSerice: JobService
 
     @Autowired
     private lateinit var assetService: AssetService
@@ -139,12 +133,9 @@ class GcpPubSubServiceImpl : PubSubService {
                             org.id,
                             zps,
                             lockAssets=true,
-                            attrs=mutableMapOf("companyId" to companyId.toString()),
-                            env=mutableMapOf(
-                                    "ZORROA_ARCHIVIST_URL" to getPublicUrl(),
-                                    "ZORROA_ORGANIZATION_ID" to org.id.toString()))
+                            attrs=mutableMapOf("companyId" to companyId.toString()))
 
-                    val job = analystClient.createJob(spec)
+                    val job = jobSerice.launchJob(spec)
                     logger.info("launched job: {}", job)
 
                 } catch (e: Exception) {
