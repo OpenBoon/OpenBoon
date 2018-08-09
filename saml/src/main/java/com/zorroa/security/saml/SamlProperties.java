@@ -13,6 +13,7 @@ public class SamlProperties {
     public boolean discovery = true;
     public String baseUrl;
     public String landingPage;
+    public boolean baseUrlIsProxy = false;
 
     public Map<String, String> getKeystore() {
         return keystore;
@@ -47,6 +48,15 @@ public class SamlProperties {
 
     public SamlProperties setLandingPage(String landingPage) {
         this.landingPage = landingPage;
+        return this;
+    }
+
+    public boolean isBaseUrlIsProxy() {
+        return baseUrlIsProxy;
+    }
+
+    public SamlProperties setBaseUrlIsProxy(boolean baseUrlIsProxy) {
+        this.baseUrlIsProxy = baseUrlIsProxy;
         return this;
     }
 }
