@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
-import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.AssetIndexResult
@@ -86,14 +85,24 @@ interface IndexService {
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
         private val permissionDao: PermissionDao,
-        private val dyHierarchyService: DyHierarchyService,
-        private val taxonomyService: TaxonomyService,
-        private val logService: EventLogService,
-        private val searchService: SearchService,
-        private val properties: ApplicationProperties,
         private val storageRouter: StorageRouter
 
 ) : IndexService {
+
+    @Autowired
+    lateinit var dyHierarchyService: DyHierarchyService
+
+    @Autowired
+    lateinit var  taxonomyService: TaxonomyService
+
+    @Autowired
+    lateinit var logService: EventLogService
+
+    @Autowired
+    lateinit var searchService: SearchService
+
+    @Autowired
+    lateinit var assetService: AssetService
 
     override fun get(id: String): Document {
         return if (id.startsWith("/")) {
@@ -236,11 +245,16 @@ class IndexServiceImpl  @Autowired  constructor (
                 }
                 source.setAttr("zorroa.links", links)
             }
+
+            try {
+                assetService.setDocument(UUID.fromString(source.id), source)
+            } catch (e: Exception) {
+                logger.warn("Failed to store asset in TX store: ", e)
+            }
         }
 
         val result = indexDao.index(spec.sources!!)
         if (result.created + result.updated + result.replaced > 0) {
-
             /**
              * TODO: make these 1 thread pool
              */

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FieldDao;
@@ -21,9 +20,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.zorroa.archivist.security.UtilsKt.getPermissionsFilter;
 import static org.junit.Assert.*;
@@ -242,7 +243,6 @@ public class SearchServiceTests extends AbstractTest {
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
-    @Ignore("TODO: Fix this test.")
     @Test
     public void testSmartFolderSearch() throws IOException {
 
@@ -256,12 +256,8 @@ public class SearchServiceTests extends AbstractTest {
         builder.setSearch(new AssetSearch("captain america"));
         Folder folder3 = folderService.create(builder);
 
-        String filename = "captain_america.jpg";
-        String filepath = "/tmp/" + filename;
-        Files.touch(new File(filepath));
-
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.setAttr("media.media", ImmutableList.of("captain"));
+        source.setAttr("media.keywords", ImmutableList.of("captain"));
 
         Document a = indexService.index(source);
         refreshIndex();
@@ -819,19 +815,16 @@ public class SearchServiceTests extends AbstractTest {
 
     }
 
-    @Ignore("TODO: Fix this test.")
     @Test
     public void testHammingDistanceFilterWithQuery() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source1.addToKeywords("source", "beer_kettle_01.jpg");
+        source1.setAttr("media.keywords", Lists.newArrayList("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
         source1.setAttr("test.hash1.shash", "afafafaf");
-        source1.addToKeywords("foo", "bar");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
         source2.setAttr("test.hash1.shash", "adadadad");
-        source1.addToKeywords("foo", "bing");
 
         indexService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
@@ -848,19 +841,16 @@ public class SearchServiceTests extends AbstractTest {
         assertTrue(score >= .5);
     }
 
-    @Ignore("TODO: Fix this test.")
     @Test
     public void testHammingDistanceFilterWithAssetId() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source1.addToKeywords("source", "beer");
+        source1.setAttr("media.keywords", Lists.newArrayList("beer"));
         source1.setAttr("superhero", "captain");
         source1.setAttr("test.hash1.shash", "afafafaf");
-        source1.addToKeywords("foo", "bar");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
         source2.setAttr("test.hash1.shash", "adadadad");
-        source1.addToKeywords("foo", "bing");
 
         indexService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();

@@ -482,7 +482,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             spec.dyhiId = dyhi.id
             spec.search = search
 
-            val folder = folderService.create(spec, true)
+            val folder = folderService.create(spec, false)
             if (level.acl != null && spec.created) {
                 /**
                  * If the ACL is set, build an ACL based on the name.

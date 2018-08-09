@@ -3,10 +3,7 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.service.GcpPubSubServiceImpl
-import com.zorroa.archivist.service.NoOpPubSubService
-import com.zorroa.archivist.service.PubSubService
-import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.archivist.service.*
 import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
@@ -158,6 +155,18 @@ class ArchivistConfiguration {
         return when(properties().getString("archivist.pubsub.type")) {
             "gcp"->GcpPubSubServiceImpl()
             else->NoOpPubSubService()
+        }
+    }
+
+
+    @Bean
+    fun assetService() : AssetService {
+        val type = properties().getString("archivist.assetStore.type", "sql")
+        logger.info("Initializing Core Asset Store: {}", type)
+        return when(type) {
+            "irm"->IrmAssetServiceImpl(
+                    IrmCoreDataVaultClientImpl(getPublicUrl("core-data-vault-api")))
+            else->AssetServiceImpl()
         }
     }
 
