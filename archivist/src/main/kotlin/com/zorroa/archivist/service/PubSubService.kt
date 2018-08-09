@@ -10,10 +10,7 @@ import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.common.clients.AnalystClient
-import com.zorroa.common.domain.Document
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.PipelineType
-import com.zorroa.common.domain.ZpsScript
+import com.zorroa.common.domain.*
 import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -22,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import java.io.FileInputStream
+import java.util.*
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
@@ -58,6 +56,9 @@ class GcpPubSubServiceImpl : PubSubService {
 
     @Autowired
     private lateinit var analystClient: AnalystClient
+
+    @Autowired
+    private lateinit var assetService: AssetService
 
     @Value("\${archivist.config.path}")
     lateinit var configPath: String
@@ -108,14 +109,19 @@ class GcpPubSubServiceImpl : PubSubService {
                 val jobName = "$assetId-$type".toLowerCase()
 
                 try {
-
+                    /**
+                     * Currently IRM has to name the org company-id for use to pick it up.
+                     */
                     val org = organizationDao.get("company-" + payload["companyId"])
+                    val asset = Asset(
+                            UUID.fromString(assetId),
+                            org.id,
+                            mutableMapOf("companyId" to companyId))
 
-                    // Pull the latest document or otherwise create a new one.
-                    // TODO: use CDV
                     val doc = try {
-                        indexDao.get(assetId)
+                        assetService.getDocument(asset)
                     } catch (e: Exception) {
+                        logger.warn("Asset ID does not exist: $assetId")
                         Document(assetId)
                     }
 
@@ -123,11 +129,10 @@ class GcpPubSubServiceImpl : PubSubService {
                     doc.setAttr("irm.companyId", companyId)
                     doc.setAttr("zorroa.organizationId", org.id)
 
-                /**
-                 * If the same event comes in for a given job we'll attempt to run
-                 * it again, assuming its not already running.
-                 */
-
+                    /**
+                     * No ZORROA_USER env var means any communication back to the
+                     * archivist with a proper service key will be super admin.
+                     */
                     val zps = ZpsScript(jobName, over=mutableListOf(doc))
                     val spec = JobSpec(jobName,
                             PipelineType.IMPORT,
@@ -137,8 +142,7 @@ class GcpPubSubServiceImpl : PubSubService {
                             attrs=mutableMapOf("companyId" to companyId.toString()),
                             env=mutableMapOf(
                                     "ZORROA_ARCHIVIST_URL" to getPublicUrl(),
-                                    "ZORROA_ORG_ID" to "123",
-                                    "ZORROA_USER" to "admin"))
+                                    "ZORROA_ORGANIZATION_ID" to org.id.toString()))
 
                     val job = analystClient.createJob(spec)
                     logger.info("launched job: {}", job)
