@@ -135,7 +135,7 @@ class TaxonomyServiceImpl @Autowired constructor(
             throw ArchivistWriteException("The root folder cannot be a taxonomy.")
         }
 
-        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == ROOT_ID) {
+        if (EXCLUDE_FOLDERS.contains(folder.name) || folder.name == "/") {
             throw ArchivistWriteException("This folder cannot hold a taxonomy.")
         }
 

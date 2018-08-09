@@ -12,13 +12,14 @@
 These instructions will walk you though setting up Archivist and Analyst for testing and development.
 
 ### Prequisites:
-1. Java SDK: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-1. ffmpeg & ffprobe (must be in your PATH, /usr/local/bin/ is suggested): https://evermeet.cx/ffmpeg/
-1. Docker: https://www.docker.com/docker-mac
-1. Homebrew: https://brew.sh/
+1. [Java 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+1. [ffmpeg & ffprobe](https://evermeet.cx/ffmpeg/) (must be in your PATH, /usr/local/bin/ is suggested)
+1. [Docker](https://www.docker.com/docker-mac)
+1. [Homebrew](https://brew.sh/)
 1. git: Installed via Homebrew ```brew install git```
-1. oiiotool (must be in your PATH, /usr/local/bin/ is suggested): https://dl.zorroa.com/public/osx/oiiotool or build your own at https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md
-1. SSH keys configured on github: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+1. [oiiotool](https://dl.zorroa.com/public/osx/oiiotool) (must be in your PATH, /usr/local/bin/ is suggested) or [build your own](https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md)
+1. SSH keys [configured on GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) 
+1. [Maven](https://maven.apache.org/)
 
 ### Start Postgres
 

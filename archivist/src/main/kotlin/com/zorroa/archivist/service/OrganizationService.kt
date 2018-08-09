@@ -3,12 +3,13 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.archivist.security.SuperAdminAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.util.*
 
 interface OrganizationService {
-    fun create(name: String) : Organization
     fun create(spec: OrganizationSpec) : Organization
     fun get(id: UUID) : Organization
     fun get(name: String): Organization
@@ -20,13 +21,21 @@ class OrganizationServiceImpl @Autowired constructor (
         val organizationDao: OrganizationDao
 ) : OrganizationService {
 
-    override fun create(name: String): Organization {
-        val spec = OrganizationSpec(name)
-        return organizationDao.create(spec)
-    }
+    @Autowired
+    internal lateinit var folderService: FolderService
+
+    @Autowired
+    internal lateinit var userService: UserService
+
+    @Autowired
+    internal lateinit var permissionService: PermissionService
 
     override fun create(spec: OrganizationSpec): Organization {
-        return organizationDao.create(spec)
+        val org = organizationDao.create(spec)
+        SecurityContextHolder.getContext().authentication  = SuperAdminAuthentication(org.id)
+        permissionService.createStandardPermissions(org)
+        folderService.createStandardFolders(org)
+        return org
     }
 
     override fun get(id: UUID): Organization =  organizationDao.get(id)
@@ -34,4 +43,7 @@ class OrganizationServiceImpl @Autowired constructor (
     override fun get(name: String): Organization =  organizationDao.get(name)
 
     override fun getOnlyOne(): Organization =  organizationDao.getOnlyOne()
+
+
+
 }

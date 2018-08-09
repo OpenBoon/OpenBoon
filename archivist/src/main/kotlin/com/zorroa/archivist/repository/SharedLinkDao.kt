@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.SharedLinkSpec
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
@@ -28,10 +29,10 @@ class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
     @Autowired
     internal lateinit var userDaoCache: UserDaoCache
 
-    private val MAPPER = RowMapper<SharedLink> { rs, _ ->
+    private val MAPPER = RowMapper { rs, _ ->
         val link = SharedLink()
         link.id = rs.getObject("pk_shared_link") as UUID
-        link.state = Json.deserialize<Map<String, Any>>(rs.getString("json_state"),
+        link.state = Json.deserialize(rs.getString("json_state"),
                 Json.GENERIC_MAP)
         link.expireTime = rs.getLong("time_expired")
         link
@@ -66,8 +67,8 @@ class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
     }
 
     override operator fun get(id: UUID): SharedLink {
-        return jdbc.queryForObject("SELECT * FROM shared_link WHERE pk_shared_link=?",
-                MAPPER, id)
+        return jdbc.queryForObject("SELECT * FROM shared_link WHERE pk_organization=? AND pk_shared_link=?",
+                MAPPER, getOrgId(), id)
     }
 
     override fun deleteExpired(olderThan: Long): Int {

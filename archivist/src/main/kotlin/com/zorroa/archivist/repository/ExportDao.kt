@@ -84,9 +84,9 @@ class ExportDaoImpl : AbstractDao(), ExportDao {
                     rs.getLong("time_created"))
         }
 
-        private val COUNT = "SELECT COUNT(1) FROM export "
+        private const val COUNT = "SELECT COUNT(1) FROM export "
 
-        private val GET = "SELECT * FROM export "
+        private const val GET = "SELECT * FROM export "
 
         private val INSERT = JdbcUtils.insert("export",
                 "pk_export",

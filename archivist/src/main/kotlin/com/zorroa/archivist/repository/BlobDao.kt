@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getPermissionIds
-import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.Access
@@ -53,7 +53,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
             ps.setObject(7, getUserId())
             ps.setLong(8, time)
             ps.setLong(9, time)
-            ps.setObject(10, getUser().organizationId)
+            ps.setObject(10, getOrgId())
             ps
         })
 
@@ -63,27 +63,28 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
     override fun update(bid: BlobId, data: Any): Boolean {
         return jdbc.update(UPDATE,
                 Json.serializeToString(data, "{}"), getUserId(), System.currentTimeMillis(),
-                bid.getBlobId()) == 1
+                getOrgId(), bid.getBlobId()) == 1
     }
 
     override fun delete(blob: BlobId): Boolean {
-        return jdbc.update("DELETE FROM jblob WHERE pk_jblob=?", blob.getBlobId()) == 1
+        return jdbc.update("DELETE FROM jblob WHERE pk_organization=? AND pk_jblob=?",
+                getOrgId(), blob.getBlobId()) == 1
     }
 
     override fun get(id: UUID): Blob {
-        return jdbc.queryForObject<Blob>(appendAccess(GET + "WHERE pk_jblob=?", Access.Read), MAPPER,
-                *appendAccessArgs(id))
+        return jdbc.queryForObject<Blob>(appendAccess(GET + "WHERE pk_organization=? AND pk_jblob=?", Access.Read), MAPPER,
+                *appendAccessArgs(getOrgId(), id))
     }
 
     override fun get(app: String, feature: String, name: String): Blob {
         return jdbc.queryForObject<Blob>(appendAccess(
-                GET + "WHERE str_app=? AND str_feature=? AND str_name=?", Access.Read), MAPPER,
-                *appendAccessArgs(app, feature, name))
+                GET + "WHERE pk_organization=? AND str_app=? AND str_feature=? AND str_name=?", Access.Read), MAPPER,
+                *appendAccessArgs(getOrgId(), app, feature, name))
     }
 
     override fun getId(app: String, feature: String, name: String, forAccess: Access): BlobId {
         return jdbc.queryForObject<BlobId>(
-                appendAccess("SELECT pk_jblob FROM jblob WHERE str_app=? AND str_feature=? AND str_name=?", forAccess),
+                appendAccess("SELECT pk_jblob FROM jblob WHERE pk_organization=? AND str_app=? AND str_feature=? AND str_name=?", forAccess),
                 RowMapper<BlobId> { rs, _ ->
                     val blobId = rs.getObject(1) as UUID
                     object : BlobId {
@@ -91,12 +92,12 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                             return blobId
                         }
                     }
-                }, *appendAccessArgs(app, feature, name))
+                }, *appendAccessArgs(getOrgId(), app, feature, name))
     }
 
     override fun getAll(app: String, feature: String): List<Blob> {
-        return jdbc.query<Blob>(GET + "WHERE str_app=? AND str_feature=?", MAPPER,
-                app, feature)
+        return jdbc.query<Blob>(GET + "WHERE pk_organization=? AND str_app=? AND str_feature=?", MAPPER,
+                getOrgId(), app, feature)
     }
 
     override fun getPermissions(blob: BlobId): Acl {
@@ -104,7 +105,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
         jdbc.query(GET_PERMS,
                 RowCallbackHandler {
                     rs -> acl.addEntry(rs.getObject("pk_permission") as UUID, rs.getInt("int_access"))
-                }, blob.getBlobId())
+                }, getOrgId(), blob.getBlobId())
         return acl
     }
 
@@ -179,14 +180,14 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
 
     companion object {
 
-        private val MAPPER = RowMapper<Blob> { rs, _ ->
+        private val MAPPER = RowMapper { rs, _ ->
             val blob = Blob(
                     rs.getObject("pk_jblob") as UUID,
                     rs.getLong("int_version"),
                     rs.getString("str_app"),
                     rs.getString("str_feature"),
                     rs.getString("str_name"),
-                    Json.deserialize<Map<String, Any>>(rs.getString("json_data"), Json.GENERIC_MAP))
+                    Json.deserialize(rs.getString("json_data"), Json.GENERIC_MAP))
             blob
         }
 
@@ -202,7 +203,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                 "time_modified",
                 "pk_organization")
 
-        private val UPDATE = "UPDATE " +
+        private const val UPDATE = "UPDATE " +
                 "jblob " +
                 "SET " +
                 "json_data=?," +
@@ -210,9 +211,11 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                 "pk_user_modified=?, " +
                 "time_modified=? " +
                 "WHERE " +
+                "pk_organization=? " +
+                "AND " +
                 "pk_jblob=?"
 
-        private val GET = "SELECT " +
+        private const val GET = "SELECT " +
                 "pk_jblob," +
                 "str_app," +
                 "str_feature," +
@@ -222,7 +225,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                 "FROM " +
                 "jblob "
 
-        private val GET_PERMS =
+        private const val GET_PERMS =
                 "SELECT " +
                     "jblob_acl.pk_permission, " +
                     "jblob_acl.int_access, " +
@@ -232,6 +235,8 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                     "permission " +
                 "WHERE " +
                     "permission.pk_permission = jblob_acl.pk_permission " +
+                "AND " +
+                    "pk_organization=? " +
                 "AND " +
                     "pk_jblob=?"
 

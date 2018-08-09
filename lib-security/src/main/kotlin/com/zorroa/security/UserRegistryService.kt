@@ -4,7 +4,7 @@ data class AuthSource(val label:String,
                       val authSourceId:String,
                       val permissionType:String,
                       var organizationName: String?=null,
-                      val attrs: Map<String, String>?=null,
+                      val attrs: Map<String, String> = mapOf(),
                       val groups: List<String>?=null)
 
 interface UserRegistryService {

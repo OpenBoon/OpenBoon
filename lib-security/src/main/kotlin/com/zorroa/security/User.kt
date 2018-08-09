@@ -12,7 +12,7 @@ interface UserId {
 
 class UserAuthed(
         override val id: UUID,
-        val organizationId: UUID,
+        var organizationId: UUID,
         username: String,
         permissions: Set<out GrantedAuthority>) : UserId, UserDetails, Serializable {
 
