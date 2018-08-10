@@ -13,7 +13,7 @@
     {
       "className": "zplugins.export.processors.GcsExportUploader",
       "args": {
-        "gcs_bucket": "gs://rmaas-dit-1-zorroa-exports"
+        "gcs-bucket": "gs://rmaas-dit-1-zorroa-exports"
       }
     },
     {

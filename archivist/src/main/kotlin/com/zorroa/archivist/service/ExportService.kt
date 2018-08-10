@@ -118,16 +118,18 @@ class ExportServiceImpl @Autowired constructor(
          * Now start to build the script for the task.
          */
         val script = ZpsScript(export.name, inline=true)
-
         script.globals?.putAll(mapOf(
                 "exportArgs" to mapOf(
                         "exportId" to export.id,
                         "exportName" to export.name,
                         "exportRoot" to properties.getString("archivist.export.export-root"))))
 
+        //TODO: This should be coming from the default pipeline. Need to sort this out.
+        script.execute?.add(ProcessorRef("zplugins.irm.processors.CDVAssetProcessor"))
+
         script.execute?.addAll(spec.processors)
         script.execute?.add(ProcessorRef("zplugins.export.processors.GcsExportUploader",
-                mapOf<String, Any>("gcs_bucket" to properties.getString("archivist.export.gcs_bucket"))))
+                mapOf<String, Any>("gcs-bucket" to properties.getString("archivist.export.gcs-bucket"))))
         script.execute?.add(ProcessorRef("zplugins.export.processors.ExportedFileRegister"))
 
         /**
