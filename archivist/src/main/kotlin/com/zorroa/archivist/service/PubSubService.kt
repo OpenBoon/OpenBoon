@@ -48,10 +48,10 @@ class JobEventSubscription {
 
     @PostConstruct
     fun setup() {
-        logger.info("Initializing Analyst Job Event pub sub {} {}", settings.project)
         val project = System.getenv("GCLOUD_PROJECT")
 
         if (project != null) {
+            logger.info("Initializing Analyst Job Event pub sub {}", project)
             subscription = ProjectSubscriptionName.of(project, "zorroa-archivist")
             subscriber = Subscriber.newBuilder(subscription, JobEventReceiver())
                     .setCredentialsProvider({ GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) })
@@ -74,6 +74,7 @@ class JobEventSubscription {
         override fun receiveMessage(message: PubsubMessage?, p1: AckReplyConsumer?) {
             message?.data?.let {
                 val event = Json.Mapper.readValue(it.toByteArray(), JobEvent::class.java)
+                logger.info("pubsub message: {}", event.type)
                 when(event.type) {
                     "job-state-change"-> {
                         val payload = Json.Mapper.convertValue(
