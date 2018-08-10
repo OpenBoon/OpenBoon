@@ -3,9 +3,10 @@ package com.zorroa.common.domain
 import java.util.*
 
 enum class PipelineType {
-    IMPORT,
-    EXPORT,
-    BATCH
+    Import,
+    Export,
+    Batch,
+    Generate
 }
 
 data class Pipeline (

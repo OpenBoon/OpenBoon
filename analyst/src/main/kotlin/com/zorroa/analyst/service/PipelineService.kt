@@ -65,8 +65,8 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
 
     override fun getDefaultPipelineNames(type: PipelineType) : List<String> {
         val names = when (type) {
-            PipelineType.IMPORT-> properties.defaultImportPipelines
-            PipelineType.EXPORT-> properties.defaultExportPipelines
+            PipelineType.Import-> properties.defaultImportPipelines
+            PipelineType.Export-> properties.defaultExportPipelines
             else -> throw IllegalArgumentException("There are no default $type pipelines")
         }
         logger.info(names)

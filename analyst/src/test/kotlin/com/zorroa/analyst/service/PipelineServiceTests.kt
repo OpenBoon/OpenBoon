@@ -18,9 +18,9 @@ class PipelineServiceTests : AbstractTest() {
 
     @Before
     fun setup() {
-        pipelineService.create(PipelineSpec("source", PipelineType.IMPORT,
+        pipelineService.create(PipelineSpec("source", PipelineType.Import,
                 processors = listOf(ProcessorRef("com.zorroa.IngestImages"))))
-        pipelineService.create(PipelineSpec("ml", PipelineType.IMPORT,
+        pipelineService.create(PipelineSpec("ml", PipelineType.Import,
                 processors = listOf(ProcessorRef("com.zorroa.Classify"))))
     }
 
@@ -31,14 +31,14 @@ class PipelineServiceTests : AbstractTest() {
 
     @Test
     fun testGetDefaultPipelines() {
-        assertEquals(1, pipelineService.getDefaultPipelineNames(PipelineType.IMPORT).size)
+        assertEquals(1, pipelineService.getDefaultPipelineNames(PipelineType.Import).size)
     }
 
     @Test
     fun testResolveDefautImportPipeline() {
         val script = ZpsScript("foo")
         assertTrue(script.execute!!.isEmpty())
-        pipelineService.resolveExecute(PipelineType.IMPORT, script)
+        pipelineService.resolveExecute(PipelineType.Import, script)
         assertTrue(script.execute!!.size > 0)
     }
 }

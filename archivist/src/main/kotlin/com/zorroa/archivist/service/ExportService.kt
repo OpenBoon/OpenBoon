@@ -100,7 +100,7 @@ class ExportServiceImpl @Autowired constructor(
         env.putAll(mapOf("ZORROA_EXPORT_ID" to export.id.toString()))
 
         val jspec = JobSpec(spec.name!!,
-                PipelineType.EXPORT,
+                PipelineType.Export,
                 getOrgId(),
                 buildZpsSciript(export, spec),
                 env=env)
