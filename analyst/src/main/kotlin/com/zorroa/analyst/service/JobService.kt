@@ -127,9 +127,9 @@ class JobRegistryServiceImpl @Autowired constructor(
         pipelineService.resolveExecute(job.type, spec.script)
 
         when(job.type) {
-            PipelineType.IMPORT->handleImportJob(spec, job)
-            PipelineType.EXPORT->handleExportJob(spec, job)
-            PipelineType.BATCH->handleBatchJob(spec, job)
+            PipelineType.Import->handleImportJob(spec, job)
+            PipelineType.Export->handleExportJob(spec, job)
+            PipelineType.Batch->handleBatchJob(spec, job)
         }
     }
 
@@ -191,6 +191,7 @@ class JobServiceImpl @Autowired constructor(
         if (result) {
             logger.info("SUCCESS JOB State Change: {} {}->{}",
                     job.name, oldState?.name, newState.name)
+
         }
         else {
             logger.warn("FAILED JOB State Change: {} {}->{}",

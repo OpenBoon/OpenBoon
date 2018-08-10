@@ -18,7 +18,7 @@ class JobDaoTests : AbstractTest() {
     fun testCreate() {
 
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"),
                 attrs=mutableMapOf("foo" to 1),
@@ -31,14 +31,14 @@ class JobDaoTests : AbstractTest() {
         assertEquals("bar", t1.env.get("foo"))
         assertEquals(spec.lockAssets, t1.lockAssets)
         assertEquals(JobState.SETUP, t1.state)
-        assertEquals(PipelineType.IMPORT, t1.type)
+        assertEquals(PipelineType.Import, t1.type)
         assertEquals("zorroa/jobs/${t1.id}/script.zps", t1.getScriptPath())
     }
 
     @Test
     fun testGet() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"),
                 attrs=mutableMapOf("foo" to 1),
@@ -60,7 +60,7 @@ class JobDaoTests : AbstractTest() {
     @Test
     fun testGetRunning() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
@@ -71,7 +71,7 @@ class JobDaoTests : AbstractTest() {
     @Test
     fun testGetWaiting() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
@@ -84,7 +84,7 @@ class JobDaoTests : AbstractTest() {
     @Test
     fun testGetOrphans() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
@@ -102,7 +102,7 @@ class JobDaoTests : AbstractTest() {
         val orgId = UUID.randomUUID()
         for (i in 1..10) {
             val spec = JobSpec("run_some_stuff_$i",
-                    PipelineType.IMPORT,
+                    PipelineType.Import,
                     orgId,
                     ZpsScript("test_script"))
             jobDao.create(spec)

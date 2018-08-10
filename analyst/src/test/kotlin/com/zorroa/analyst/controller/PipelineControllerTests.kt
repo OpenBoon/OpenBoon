@@ -23,7 +23,7 @@ class PipelineControllerTests : AbstractMvcTest() {
 
     @Test
     fun testGet() {
-        val defaultImport = pipelineService.getDefaultPipelineNames(PipelineType.IMPORT)
+        val defaultImport = pipelineService.getDefaultPipelineNames(PipelineType.Import)
         assertTrue(defaultImport.isNotEmpty())
 
         val req = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/pipelines/" + defaultImport[0])

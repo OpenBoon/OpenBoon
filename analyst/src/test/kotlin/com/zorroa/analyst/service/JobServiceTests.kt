@@ -20,7 +20,7 @@ class JobServiceTests : AbstractTest() {
     fun testCreate() {
         val assetId = UUID.randomUUID().toString()
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo", over=mutableListOf(Document(assetId))),
                 lockAssets = true)
@@ -36,7 +36,7 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testStart() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"),
                 attrs=mutableMapOf("foo" to 1),
@@ -51,7 +51,7 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testGet() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"))
         var job1 = jobService.create(spec)
@@ -65,7 +65,7 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testSetState() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"))
         var job1 = jobService.create(spec)
@@ -77,7 +77,7 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testStop() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"))
         var job = jobService.create(spec)
