@@ -30,7 +30,7 @@ class JobDaoTests : AbstractTest() {
         assertEquals(1, t1.attrs.get("foo"))
         assertEquals("bar", t1.env.get("foo"))
         assertEquals(spec.lockAssets, t1.lockAssets)
-        assertEquals(JobState.SETUP, t1.state)
+        assertEquals(JobState.Setup, t1.state)
         assertEquals(PipelineType.Import, t1.type)
         assertEquals("zorroa/jobs/${t1.id}/script.zps", t1.getScriptPath())
     }
@@ -64,7 +64,7 @@ class JobDaoTests : AbstractTest() {
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
-        assertTrue(jobDao.setState(t1, JobState.RUNNING, null))
+        assertTrue(jobDao.setState(t1, JobState.Running, null))
         assertTrue(jobDao.getRunning().isNotEmpty())
     }
 
@@ -75,7 +75,7 @@ class JobDaoTests : AbstractTest() {
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
-        jobDao.setState(t1, JobState.WAITING, null)
+        jobDao.setState(t1, JobState.Waiting, null)
         val all = jobDao.getWaiting(10)
         assertTrue(all.isNotEmpty())
         assertEquals(t1.id, all[0].id)
@@ -88,7 +88,7 @@ class JobDaoTests : AbstractTest() {
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
-        jobDao.setState(t1, JobState.QUEUE, null)
+        jobDao.setState(t1, JobState.Queue, null)
         jdbc.update("UPDATE job SET time_modified=? WHERE pk_job=?",
                 System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(6),
                 t1.id)

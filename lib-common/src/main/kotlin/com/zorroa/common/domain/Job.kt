@@ -6,14 +6,14 @@ import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
 enum class JobState {
-    SETUP,
-    WAITING,
-    RUNNING,
-    SUCCESS,
-    FAIL,
-    ORPHAN,
-    SKIP,
-    QUEUE
+    Setup,
+    Waiting,
+    Running,
+    Success,
+    Fail,
+    Orphan,
+    Skip,
+    Queue
 }
 
 data class JobSpec (

@@ -74,7 +74,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
 
         } catch (e: Exception) {
             logger.warn("Failed to start job {}", job.name, e)
-            jobService.stop(job, JobState.FAIL)
+            jobService.stop(job, JobState.Fail)
             return false
         }
 
@@ -91,11 +91,11 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             }
         }
 
-        val killed = if (job.state == JobState.RUNNING) {
-            jobService.stop(job, JobState.FAIL)
+        val killed = if (job.state == JobState.Running) {
+            jobService.stop(job, JobState.Fail)
         }
         else {
-            jobService.setState(job, JobState.FAIL, null)
+            jobService.setState(job, JobState.Fail, null)
         }
 
         if (killed) {
@@ -115,11 +115,11 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             }
         }
 
-        if (job.state == JobState.RUNNING) {
-            jobService.stop(job, JobState.WAITING)
+        if (job.state == JobState.Running) {
+            jobService.stop(job, JobState.Waiting)
         }
         else {
-            jobService.setState(job, JobState.WAITING, null)
+            jobService.setState(job, JobState.Waiting, null)
         }
 
         jobService.clearLocks(job)
@@ -224,13 +224,13 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 if (kjob.status != null) {
                     if (kjob.status.succeeded != null) {
                         if (kjob.status.succeeded >= 1) {
-                            jobService.stop(job, JobState.SUCCESS)
+                            jobService.stop(job, JobState.Success)
                         }
                     }
                     else if (kjob.status.conditions != null) {
                         for (cond in kjob.status.conditions) {
                             if (cond.type == "Failed") {
-                                jobService.stop(job, JobState.FAIL)
+                                jobService.stop(job, JobState.Fail)
                                 break
                             }
                         }
@@ -244,7 +244,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             else {
                 orphanJobs++
                 // Orphans are jobs running in the DB with no K8 job.
-                jobService.stop(job, JobState.ORPHAN)
+                jobService.stop(job, JobState.Orphan)
             }
         }
         if (orphanJobs > 0) {

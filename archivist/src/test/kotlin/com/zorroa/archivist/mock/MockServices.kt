@@ -21,7 +21,7 @@ class MockAnalystClient: AnalystClient {
         lastSpec = spec
         logger.info("spec: {}", Json.prettyString(spec))
         return Job(UUID.randomUUID(), spec.type, spec.organizationId,
-                spec.name, JobState.WAITING, true,
+                spec.name, JobState.Waiting, true,
                 spec.attrs, spec.env)
     }
 

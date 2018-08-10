@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFilter
 import com.zorroa.archivist.domain.ExportSpec
-import com.zorroa.archivist.domain.JobState
+import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.ProcessorRef
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.search.AssetSearch
@@ -78,10 +78,10 @@ class ExortDaoTests : AbstractTest() {
     @Test
     fun testSetState() {
         val ex1 = exportDao.get(export.id)
-        assertTrue(exportDao.setState(ex1.id, JobState.Finished))
-        assertFalse(exportDao.setState(ex1.id, JobState.Finished))
-        assertTrue(exportDao.setState(ex1.id, JobState.Active))
-        assertFalse(exportDao.setState(ex1.id, JobState.Active))
+        assertTrue(exportDao.setState(ex1.id, JobState.Running))
+        assertFalse(exportDao.setState(ex1.id, JobState.Running))
+        assertTrue(exportDao.setState(ex1.id, JobState.Success))
+        assertFalse(exportDao.setState(ex1.id, JobState.Success))
     }
 
 }

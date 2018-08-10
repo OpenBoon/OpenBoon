@@ -123,9 +123,9 @@ class JobRegistryServiceImpl @Autowired constructor(
                     "application/json",
                     Json.serialize(spec.script))
 
-            jobService.setState(job, JobState.WAITING, null)
+            jobService.setState(job, JobState.Waiting, null)
         } catch (e: Exception) {
-            jobService.setState(job, JobState.FAIL, null)
+            jobService.setState(job, JobState.Fail, null)
         }
         return job
     }
@@ -222,13 +222,13 @@ class JobServiceImpl @Autowired constructor(
         }
 
         // throwing here rolls back any locks
-        if (!setState(job, JobState.RUNNING, JobState.QUEUE)) {
+        if (!setState(job, JobState.Running, JobState.Queue)) {
             throw IllegalStateException("Job ${job.id} was not in the queue state")
         }
     }
 
     override fun stop(job: Job, finalState: JobState) : Boolean {
-        val result = setState(job, finalState, JobState.RUNNING)
+        val result = setState(job, finalState, JobState.Running)
         if (result) {
             lockDao.deleteByJob(job.id)
         }
@@ -239,7 +239,7 @@ class JobServiceImpl @Autowired constructor(
         val result = mutableListOf<Job>()
         val jobs = jobDao.getWaiting(limit)
         for (job in jobs) {
-            if (setState(job, JobState.QUEUE, JobState.WAITING)) {
+            if (setState(job, JobState.Queue, JobState.Waiting)) {
                 result.add(job)
             }
         }
