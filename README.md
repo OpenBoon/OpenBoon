@@ -7,38 +7,41 @@
 | MASTER | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=master)](https://travis-ci.com/Zorroa/zorroa-server) |
 
 
-## Test Build Instructions (MacOS)
+## Quickstart Guide - Running the ZVI Backend services locally (if you are a frontend developer, this is for you).
 
-These instructions will walk you though setting up Archivist and Analyst for testing and development.
-
-### Prequisites:
-1. [Java 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-1. [ffmpeg & ffprobe](https://evermeet.cx/ffmpeg/) (must be in your PATH, /usr/local/bin/ is suggested)
+### Prerequisites:
 1. [Docker](https://www.docker.com/docker-mac)
-1. [Homebrew](https://brew.sh/)
-1. git: Installed via Homebrew ```brew install git```
-1. [oiiotool](https://dl.zorroa.com/public/osx/oiiotool) (must be in your PATH, /usr/local/bin/ is suggested) or [build your own](https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md)
-1. SSH keys [configured on GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) 
-1. [Maven](https://maven.apache.org/)
+1. `cd` to the root of the this repo.
 
-### Start Postgres
+### Building the server code.
+1. Check out the correct branch. 
+ - `development` will be the bleeding edge.
+ - `qa` will be latest code currently being QA'd for release.
+ - `master` will be the latest stable code.
+1. `docker-compose run build`
 
-Postgres must be running and have a database named after your username. This can be achieved by running Postgres.app 
-clicking "initialize" the first time the app is started.
+### Running the services.
+1. `docker-compose up -d`
 
-### Clone the Repos
+### Prepping elastic search (this is only required the first time you launch the services.)
+1. `cd elasticsearch`
+1. `./create_local_index.sh`
 
-Clone the necessary repos into a zorroa projects directory. 
+### You now have the following services running locally:
+- postgres on port 5432
+- elasticsearch on port 9200 & 9300
+- archivist on port 8080
+- analyst on port 8082
 
-```
-mkdir ~/zorroa
-cd ~/zorroa
-git clone git@github.com:Zorroa/zorroa-test-data.git
-git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
-git clone git@github.com:Zorroa/zorroa-server.git
-``` 
+### Shutting down services
+1. `docker-compose down`
 
-### Using the docker-compose local dev environment.
+### Starting services back up
+1. `docker-compose up -d`
+
+You will only need to rebuild the code if you pull new code or change branches.
+
+## Using the docker-compose local dev environment.
 The local development is orchestrated in by the docker-compose.yml file found in the root of the repo. Docker compose is 
 used to run a series of docker containers that serve all the services for a complete ZVI backend. Below are some examples 
 of useful commands. You can check the help for docker-compose to learn more.
@@ -90,16 +93,33 @@ cd elasticsearch
 ```
 
 
+## Full dev environment instructions (MacOS)
 
+These instructions will walk you though setting up Archivist and Analyst for testing and development.
 
+### Prequisites:
+1. [Java 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+1. [ffmpeg & ffprobe](https://evermeet.cx/ffmpeg/) (must be in your PATH, /usr/local/bin/ is suggested)
+1. [Docker](https://www.docker.com/docker-mac)
+1. [Homebrew](https://brew.sh/)
+1. git: Installed via Homebrew ```brew install git```
+1. [oiiotool](https://dl.zorroa.com/public/osx/oiiotool) (must be in your PATH, /usr/local/bin/ is suggested) or [build your own](https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md)
+1. SSH keys [configured on GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) 
+1. [Maven](https://maven.apache.org/)
 
-### Visit the Server
+### Clone the Repos
 
-You can access the server at the link below. You will need a username and password to access the API endpoints. A default superuser will have been pre-populated in database, please ask your neighbor for the credentials. 
+Clone the necessary repos into a zorroa projects directory. 
 
-[http://localhost:8080/api/v1/settings]()
+```
+mkdir ~/zorroa
+cd ~/zorroa
+git clone git@github.com:Zorroa/zorroa-test-data.git
+git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
+git clone git@github.com:Zorroa/zorroa-server.git
+```
 
-## Enable HTTPS (Optional)
+## Enable HTTPS (Optional) TODO: Everything below needs to be updated.
 
 You can enable https and also force https.
 
