@@ -5,6 +5,8 @@ import com.zorroa.archivist.domain.ExportFilter
 import com.zorroa.archivist.domain.ExportSpec
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
@@ -81,7 +83,9 @@ class ExportDaoImpl : AbstractDao(), ExportDao {
                     rs.getObject("pk_organization") as UUID,
                     rs.getObject("pk_user_created") as UUID,
                     rs.getString("str_name"),
-                    rs.getLong("time_created"))
+                    rs.getLong("time_created"),
+                    PipelineType.Export,
+                    JobState.values()[rs.getInt("int_state")])
         }
 
         private const val COUNT = "SELECT COUNT(1) FROM export "

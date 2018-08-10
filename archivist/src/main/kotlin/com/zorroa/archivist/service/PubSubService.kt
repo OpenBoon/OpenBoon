@@ -95,12 +95,13 @@ class GcpPubSubServiceImpl : PubSubService {
             }
 
             val type= payload["type"] as String?
+            val time = System.currentTimeMillis() / 1000
 
             if (type == "UPDATE") {
 
                 val assetId = payload["key"] as String
                 val companyId = payload["companyId"] as Int
-                val jobName = "$assetId-$type".toLowerCase()
+                val jobName = "$time-$type-$assetId".toLowerCase()
 
                 try {
                     /**
@@ -129,7 +130,7 @@ class GcpPubSubServiceImpl : PubSubService {
                      */
                     val zps = ZpsScript(jobName, over=mutableListOf(doc))
                     val spec = JobSpec(jobName,
-                            PipelineType.IMPORT,
+                            PipelineType.Import,
                             org.id,
                             zps,
                             lockAssets=true,
