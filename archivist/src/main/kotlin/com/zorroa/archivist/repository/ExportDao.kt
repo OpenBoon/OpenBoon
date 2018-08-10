@@ -5,6 +5,8 @@ import com.zorroa.archivist.domain.ExportFilter
 import com.zorroa.archivist.domain.ExportSpec
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
@@ -18,7 +20,7 @@ interface ExportDao {
     fun get(id: UUID) : Export
     fun getAll(page: KPage, filter: ExportFilter): KPagedList<Export>
     fun count(): Long
-
+    fun setState(id: UUID, state: JobState) : Boolean
     fun setAnalystJobId(export: Export, job: Job) : Boolean
 }
 
@@ -51,12 +53,23 @@ class ExportDaoImpl : AbstractDao(), ExportDao {
 
     }
 
+    override fun setState(id:UUID, state: JobState) : Boolean {
+        return jdbc.update("UPDATE export SET int_state=? WHERE pk_export=? AND int_state!=?",
+                state.ordinal, id, state.ordinal) == 1
+    }
+
     override fun get(id: UUID) : Export {
         return jdbc.queryForObject("$GET WHERE pk_export=? AND pk_organization=?",
                 MAPPER, id, getUser().organizationId)
     }
 
     fun setCount(filter: ExportFilter) {
+        filter?.page?.totalCount = jdbc.queryForObject(filter.getCountQuery(COUNT),
+                Long::class.java, *filter.getValues(forCount = true))
+    }
+
+
+    fun setState(filter: ExportFilter) {
         filter?.page?.totalCount = jdbc.queryForObject(filter.getCountQuery(COUNT),
                 Long::class.java, *filter.getValues(forCount = true))
     }
@@ -81,7 +94,9 @@ class ExportDaoImpl : AbstractDao(), ExportDao {
                     rs.getObject("pk_organization") as UUID,
                     rs.getObject("pk_user_created") as UUID,
                     rs.getString("str_name"),
-                    rs.getLong("time_created"))
+                    rs.getLong("time_created"),
+                    PipelineType.Export,
+                    JobState.values()[rs.getInt("int_state")])
         }
 
         private const val COUNT = "SELECT COUNT(1) FROM export "

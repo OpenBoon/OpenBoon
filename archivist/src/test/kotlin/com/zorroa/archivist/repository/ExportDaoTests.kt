@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFilter
 import com.zorroa.archivist.domain.ExportSpec
+import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.ProcessorRef
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.search.AssetSearch
@@ -11,6 +12,8 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 data class ExportSpec (
         var name: String?,
@@ -71,4 +74,14 @@ class ExortDaoTests : AbstractTest() {
         }
         assertEquals(11, exportDao.count())
     }
+
+    @Test
+    fun testSetState() {
+        val ex1 = exportDao.get(export.id)
+        assertTrue(exportDao.setState(ex1.id, JobState.Running))
+        assertFalse(exportDao.setState(ex1.id, JobState.Running))
+        assertTrue(exportDao.setState(ex1.id, JobState.Success))
+        assertFalse(exportDao.setState(ex1.id, JobState.Success))
+    }
+
 }

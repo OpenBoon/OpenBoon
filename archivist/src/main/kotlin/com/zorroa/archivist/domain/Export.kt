@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.domain.ProcessorRef
 import com.zorroa.common.repository.DaoFilter
 import com.zorroa.common.search.AssetSearch
@@ -14,7 +15,9 @@ data class Export(
         val organizationId: UUID,
         val userId: UUID,
         val name: String,
-        val timeCreated : Long
+        val timeCreated : Long,
+        val type: PipelineType,
+        val state: JobState
 )
 
 /**

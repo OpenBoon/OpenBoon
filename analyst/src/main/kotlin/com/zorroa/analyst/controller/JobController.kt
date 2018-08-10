@@ -35,7 +35,7 @@ class JobController @Autowired constructor(
     @PutMapping("/api/v1/jobs/{id}/_finish")
     fun finish(@PathVariable id: UUID) {
         val job = jobService.get(id)
-        jobService.stop(job, JobState.SUCCESS)
+        jobService.stop(job, JobState.Success)
     }
 
     /**

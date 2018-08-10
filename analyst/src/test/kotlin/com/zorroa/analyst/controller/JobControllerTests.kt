@@ -24,7 +24,7 @@ class JobControllerTests : AbstractMvcTest() {
     fun getCreate() {
         val orgId = UUID.randomUUID()
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 orgId,
                 ZpsScript("foo", over=mutableListOf(Document(UUID.randomUUID().toString()))),
                 env=mutableMapOf("foo" to "bar"))
@@ -46,7 +46,7 @@ class JobControllerTests : AbstractMvcTest() {
         val orgId = UUID.randomUUID()
         for (i in 1..10) {
             val spec = JobSpec("run_some_stuff_v$i",
-                    PipelineType.IMPORT,
+                    PipelineType.Import,
                     orgId,
                     ZpsScript("foo"))
             jobDao.create(spec)

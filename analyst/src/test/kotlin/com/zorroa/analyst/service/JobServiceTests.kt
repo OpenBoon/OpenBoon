@@ -20,7 +20,7 @@ class JobServiceTests : AbstractTest() {
     fun testCreate() {
         val assetId = UUID.randomUUID().toString()
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo", over=mutableListOf(Document(assetId))),
                 lockAssets = true)
@@ -36,22 +36,22 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testStart() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"),
                 attrs=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
         var job = jobService.create(spec)
-        jobService.setState(job, JobState.QUEUE, null)
+        jobService.setState(job, JobState.Queue, null)
         jobService.start(job)
         job = jobService.get(job.id)
-        assertEquals(JobState.RUNNING, job.state)
+        assertEquals(JobState.Running, job.state)
     }
 
     @Test
     fun testGet() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"))
         var job1 = jobService.create(spec)
@@ -65,26 +65,26 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testSetState() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"))
         var job1 = jobService.create(spec)
-        assertTrue(jobService.setState(job1, JobState.FAIL))
-        assertFalse(jobService.setState(job1, JobState.FAIL, JobState.RUNNING))
-        assertTrue(jobService.setState(job1, JobState.RUNNING, JobState.FAIL))
+        assertTrue(jobService.setState(job1, JobState.Fail))
+        assertFalse(jobService.setState(job1, JobState.Fail, JobState.Running))
+        assertTrue(jobService.setState(job1, JobState.Running, JobState.Fail))
     }
 
     @Test
     fun testStop() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"))
         var job = jobService.create(spec)
-        jobService.setState(job, JobState.QUEUE)
+        jobService.setState(job, JobState.Queue)
         jobService.start(job)
 
-        assertTrue(jobService.stop(job, JobState.SUCCESS))
+        assertTrue(jobService.stop(job, JobState.Success))
 
         val startTime = jdbc.queryForObject(
                 "SELECT time_started FROM job WHERE pk_job=?", Long::class.java, job.id)

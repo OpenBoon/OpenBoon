@@ -38,7 +38,7 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
             ps.setObject(1, id)
             ps.setObject(2, spec.organizationId)
             ps.setString(3, spec.name)
-            ps.setInt(4, JobState.SETUP.ordinal)
+            ps.setInt(4, JobState.Setup.ordinal)
             ps.setInt(5, spec.type.ordinal)
             ps.setLong(6, time)
             ps.setLong(7, time)
@@ -59,16 +59,16 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
     }
 
     override fun getWaiting(count : Int) : List<Job> {
-        return jdbc.query(GET_WAITING , MAPPER, JobState.WAITING.ordinal, count)
+        return jdbc.query(GET_WAITING , MAPPER, JobState.Waiting.ordinal, count)
     }
 
     override fun getRunning() : List<Job> {
-        return jdbc.query(GET_RUNNING, MAPPER, JobState.RUNNING.ordinal)
+        return jdbc.query(GET_RUNNING, MAPPER, JobState.Running.ordinal)
     }
 
     override fun getOrphans() : List<Job> {
         return jdbc.query(GET_QUEUE_ORPHANS, MAPPER,
-                JobState.QUEUE.ordinal, System.currentTimeMillis(),
+                JobState.Queue.ordinal, System.currentTimeMillis(),
                 TimeUnit.MINUTES.toMillis(5))
     }
 
@@ -116,9 +116,9 @@ class JobDaoImpl : AbstractJdbcDao(), JobDao {
 
     companion object {
 
-        private val START_STATES = setOf(JobState.RUNNING)
+        private val START_STATES = setOf(JobState.Running)
 
-        private val STOP_STATES = setOf(JobState.ORPHAN, JobState.SUCCESS, JobState.FAIL)
+        private val STOP_STATES = setOf(JobState.Orphan, JobState.Success, JobState.Fail)
 
         private val MAPPER = RowMapper { rs, _ ->
             Job(rs.getObject("pk_job") as UUID,

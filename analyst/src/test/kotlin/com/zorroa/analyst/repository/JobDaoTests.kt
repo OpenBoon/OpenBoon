@@ -18,7 +18,7 @@ class JobDaoTests : AbstractTest() {
     fun testCreate() {
 
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("foo"),
                 attrs=mutableMapOf("foo" to 1),
@@ -30,15 +30,15 @@ class JobDaoTests : AbstractTest() {
         assertEquals(1, t1.attrs.get("foo"))
         assertEquals("bar", t1.env.get("foo"))
         assertEquals(spec.lockAssets, t1.lockAssets)
-        assertEquals(JobState.SETUP, t1.state)
-        assertEquals(PipelineType.IMPORT, t1.type)
+        assertEquals(JobState.Setup, t1.state)
+        assertEquals(PipelineType.Import, t1.type)
         assertEquals("zorroa/jobs/${t1.id}/script.zps", t1.getScriptPath())
     }
 
     @Test
     fun testGet() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"),
                 attrs=mutableMapOf("foo" to 1),
@@ -60,22 +60,22 @@ class JobDaoTests : AbstractTest() {
     @Test
     fun testGetRunning() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
-        assertTrue(jobDao.setState(t1, JobState.RUNNING, null))
+        assertTrue(jobDao.setState(t1, JobState.Running, null))
         assertTrue(jobDao.getRunning().isNotEmpty())
     }
 
     @Test
     fun testGetWaiting() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
-        jobDao.setState(t1, JobState.WAITING, null)
+        jobDao.setState(t1, JobState.Waiting, null)
         val all = jobDao.getWaiting(10)
         assertTrue(all.isNotEmpty())
         assertEquals(t1.id, all[0].id)
@@ -84,11 +84,11 @@ class JobDaoTests : AbstractTest() {
     @Test
     fun testGetOrphans() {
         val spec = JobSpec("test_job",
-                PipelineType.IMPORT,
+                PipelineType.Import,
                 UUID.randomUUID(),
                 ZpsScript("test_script"))
         val t1 = jobDao.create(spec)
-        jobDao.setState(t1, JobState.QUEUE, null)
+        jobDao.setState(t1, JobState.Queue, null)
         jdbc.update("UPDATE job SET time_modified=? WHERE pk_job=?",
                 System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(6),
                 t1.id)
@@ -102,7 +102,7 @@ class JobDaoTests : AbstractTest() {
         val orgId = UUID.randomUUID()
         for (i in 1..10) {
             val spec = JobSpec("run_some_stuff_$i",
-                    PipelineType.IMPORT,
+                    PipelineType.Import,
                     orgId,
                     ZpsScript("test_script"))
             jobDao.create(spec)

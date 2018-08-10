@@ -57,8 +57,7 @@ class ExportServiceTests : AbstractTest() {
         val user = getUser()
 
         assertEquals("bar", ma.lastSpec!!.env["foo"])
-        assertEquals(user.organizationId.toString(), ma.lastSpec!!.env["ZORROA_ORG_ID"])
-        assertEquals(user.username, ma.lastSpec!!.env["ZORROA_USER"])
+        assertEquals(user.organizationId.toString(), ma.lastSpec!!.env["ZORROA_ORGANIZATION_ID"])
         assertEquals(ex1.id.toString(), ma.lastSpec!!.env["ZORROA_EXPORT_ID"])
     }
 

@@ -54,7 +54,7 @@ def deploy_to_app_engine(project, app):
     subprocess.check_call(cmd, shell=False)
 
 def rebuild_jar_file():
-    cmd =["mvn", "clean", "package", "-T", "1C", "-Dmaven.test.skip=true"]
+    cmd =["mvn", "clean", "package", "-Dmaven.test.skip=true"]
     print cmd
     ret = subprocess.check_call(cmd, shell=False)
     if ret != 0:
