@@ -124,7 +124,8 @@ class ArchivistConfiguration {
 
     @Bean
     fun analystClient() : AnalystClient {
-        val path = properties().getPath("archivist.config.path")
+        val path = properties()
+                .getPath("archivist.config.path")
                 .resolve("service-credentials.json")
         return if (Files.exists(path)) {
             var host = properties().getString("analyst.host", "")
@@ -164,8 +165,13 @@ class ArchivistConfiguration {
         val type = properties().getString("archivist.assetStore.type", "sql")
         logger.info("Initializing Core Asset Store: {}", type)
         return when(type) {
-            "irm"->IrmAssetServiceImpl(
-                    IrmCoreDataVaultClientImpl(getPublicUrl("core-data-vault-api")))
+            "irm"-> {
+                val path = properties()
+                        .getPath("archivist.config.path")
+                        .resolve("service-credentials.json")
+                IrmAssetServiceImpl(
+                    IrmCoreDataVaultClientImpl(getPublicUrl("core-data-vault-api"), path))
+            }
             else->AssetServiceImpl()
         }
     }

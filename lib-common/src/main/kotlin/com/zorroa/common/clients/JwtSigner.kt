@@ -6,6 +6,7 @@ import com.auth0.jwt.impl.PublicClaims
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import org.apache.http.HttpRequest
 import java.io.FileInputStream
+import java.nio.file.Path
 import java.security.interfaces.RSAPrivateKey
 import java.util.*
 
@@ -26,6 +27,8 @@ class GcpJwtSigner : JwtSigner {
     }
 
     constructor(path: String) : this(GoogleCredential.fromStream(FileInputStream(path)))
+
+    constructor(path: Path) : this(GoogleCredential.fromStream(FileInputStream(path.toFile())))
 
     constructor() {
         if (System.getenv("GOOGLE_APPLICATION_CREDENTIALS") != null) {

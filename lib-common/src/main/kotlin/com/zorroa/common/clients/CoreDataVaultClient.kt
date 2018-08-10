@@ -3,6 +3,7 @@ package com.zorroa.common.clients
 import com.zorroa.common.domain.Asset
 import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
+import java.nio.file.Path
 
 interface CoreDataVaultClient {
 
@@ -12,9 +13,9 @@ interface CoreDataVaultClient {
     fun getIndexedMetadata(assetId:Asset) : Document
 }
 
-class IrmCoreDataVaultClientImpl constructor(url: String) : CoreDataVaultClient {
+class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : CoreDataVaultClient {
 
-    override val client = RestClient(url)
+    override val client = RestClient(url, GcpJwtSigner(serviceKey))
 
     override fun getIndexedMetadata(assetId: Asset): Document {
         val companyId = assetId.keys["companyId"]
