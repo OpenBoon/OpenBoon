@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.repository.ExportDao
 import com.zorroa.archivist.repository.ExportFileDao
 import com.zorroa.archivist.repository.IndexDao
@@ -15,7 +16,6 @@ import com.zorroa.common.search.AssetSearch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.io.InputStream
 import java.util.*
 
 interface ExportService {
@@ -26,8 +26,7 @@ interface ExportService {
     fun createExportFile(export: Export, spec: ExportFileSpec) : ExportFile
     fun getAllExportFiles(export: Export) :  List<ExportFile>
     fun getExportFile(id: UUID) : ExportFile
-    fun getExportFileStream(exportFile: ExportFile) : InputStream
-
+    fun setState(id:UUID, state: JobState) : Boolean
 }
 
 @Service
@@ -38,7 +37,8 @@ class ExportServiceImpl @Autowired constructor(
         private val exportDao: ExportDao,
         private val exportFileDao: ExportFileDao,
         private val txm : TransactionEventManager,
-        private val jobService: JobService
+        private val jobService: JobService,
+        private val storageRouter: StorageRouter
         ) : ExportService {
 
     @Autowired
@@ -60,12 +60,12 @@ class ExportServiceImpl @Autowired constructor(
         return exportFileDao.get(id)
     }
 
-    override fun getExportFileStream(exportFile: ExportFile) : InputStream {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun getAll(page: KPage, filter: ExportFilter): KPagedList<Export> {
         return exportDao.getAll(page, filter)
+    }
+
+    override fun setState(id:UUID, state: JobState) : Boolean {
+        return exportDao.setState(id, state)
     }
 
     private inner class ExportParams(var search: AssetSearch)

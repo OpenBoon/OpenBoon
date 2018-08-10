@@ -156,6 +156,7 @@ class StorageRouterImpl @Autowired constructor (
             }
             "gs" -> "gcp"
             "file" -> "local"
+            null->"local"
             else -> uri.scheme
         }
 

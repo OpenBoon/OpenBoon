@@ -1,5 +1,10 @@
 package com.zorroa.analyst.service
 
+import com.google.api.core.ApiFutureCallback
+import com.google.cloud.pubsub.v1.Publisher
+import com.google.protobuf.ByteString
+import com.google.pubsub.v1.ProjectTopicName
+import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.analyst.domain.LockSpec
 import com.zorroa.analyst.repository.JobDao
 import com.zorroa.analyst.repository.LockDao
@@ -14,6 +19,9 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import javax.annotation.PreDestroy
 
 interface JobService {
 
@@ -161,7 +169,8 @@ class JobRegistryServiceImpl @Autowired constructor(
 @Service
 class JobServiceImpl @Autowired constructor(
         val jobDao: JobDao,
-        val lockDao: LockDao): JobService {
+        val lockDao: LockDao,
+        val eventPublisher: EventPublisher): JobService {
 
     @Autowired
     lateinit var storageService : JobStorageService
@@ -191,7 +200,7 @@ class JobServiceImpl @Autowired constructor(
         if (result) {
             logger.info("SUCCESS JOB State Change: {} {}->{}",
                     job.name, oldState?.name, newState.name)
-
+            eventPublisher.publishJobStateChange(job, newState, oldState)
         }
         else {
             logger.warn("FAILED JOB State Change: {} {}->{}",
@@ -255,5 +264,61 @@ class JobServiceImpl @Autowired constructor(
 
     companion object {
         private val logger = LoggerFactory.getLogger(JobServiceImpl::class.java)
+    }
+}
+
+@Component
+class EventPublisher  {
+
+    val topic : ProjectTopicName
+    val publisher: Publisher?
+    val executor : ExecutorService =  Executors.newFixedThreadPool(2)
+
+    init  {
+        val project = System.getenv("GCLOUD_PROJECT")
+        if (project != null) {
+            logger.info("Initializing GCP job event system: {}", project)
+            topic = ProjectTopicName.of(project, "zorroa-jobs")
+            publisher = Publisher.newBuilder(topic).build()
+        }
+        else {
+            topic = ProjectTopicName.of("local", "zorroa-jobs")
+            publisher = null
+        }
+    }
+
+    @PreDestroy
+    fun teardown() {
+        publisher?.let {
+            it.shutdown()
+        }
+    }
+
+    fun publishJobStateChange(job: Job, newState: JobState, oldState: JobState?) {
+        publisher?.let {
+            executor.execute({
+                val event = JobEvent("job-state-change",
+                        JobStateChangeEvent(job, newState, oldState))
+                val bytes = ByteString.copyFrom(Json.serialize(event))
+                val message = PubsubMessage.newBuilder()
+                        .setData(bytes).build()
+                it.publish(message)
+            })
+        }
+    }
+
+    // possibly use later
+    inner class Callback : ApiFutureCallback<String> {
+        override fun onSuccess(p0: String?) {
+
+        }
+
+        override fun onFailure(p0: Throwable?) {
+            logger.warn("Failed to publish event: ", p0)
+        }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(EventPublisher::class.java)
     }
 }
