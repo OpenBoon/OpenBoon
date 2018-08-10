@@ -71,7 +71,8 @@ class JobEventSubscription {
 
     inner class JobEventReceiver : MessageReceiver {
 
-        override fun receiveMessage(message: PubsubMessage?, p1: AckReplyConsumer?) {
+        override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
+            consumer.ack()
             message?.data?.let {
                 val event = Json.Mapper.readValue(it.toByteArray(), JobEvent::class.java)
                 logger.info("pubsub message: {}", event.type)
