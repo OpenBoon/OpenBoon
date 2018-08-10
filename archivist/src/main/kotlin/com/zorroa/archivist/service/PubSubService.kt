@@ -79,7 +79,7 @@ class JobEventSubscription {
                         val payload = Json.Mapper.convertValue(
                                 event.payload, JobStateChangeEvent::class.java)
 
-                        if (payload.job.type == PipelineType.EXPORT) {
+                        if (payload.job.type == PipelineType.Export) {
                             try {
                                 logger.info("Updating export state: {}", payload.job.env)
                                 val id = UUID.fromString(payload.job.env["ZORROA_EXPORT_ID"])

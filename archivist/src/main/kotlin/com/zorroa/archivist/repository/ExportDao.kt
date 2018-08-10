@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFilter
 import com.zorroa.archivist.domain.ExportSpec
-import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobState

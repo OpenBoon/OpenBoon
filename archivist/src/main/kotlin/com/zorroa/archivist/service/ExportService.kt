@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.repository.ExportDao
 import com.zorroa.archivist.repository.ExportFileDao
 import com.zorroa.archivist.repository.IndexDao
