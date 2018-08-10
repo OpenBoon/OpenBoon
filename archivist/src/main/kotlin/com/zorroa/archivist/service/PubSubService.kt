@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 import java.io.FileInputStream
 import java.util.*
 import javax.annotation.PostConstruct
@@ -28,6 +29,76 @@ class GooglePubSubSettings {
     lateinit var subscription: String
     lateinit var project: String
     var enabled : Boolean = true
+}
+
+@Component
+class JobEventSubscription {
+
+    @Autowired
+    lateinit var settings: GooglePubSubSettings
+
+    @Autowired
+    lateinit var exportService: ExportService
+
+    var subscription : ProjectSubscriptionName? = null
+    var subscriber: Subscriber? = null
+
+    @Value("\${archivist.config.path}")
+    lateinit var configPath: String
+
+    @PostConstruct
+    fun setup() {
+        logger.info("Initializing Analyst Job Event pub sub {} {}", settings.project)
+        val project = System.getenv("GCLOUD_PROJECT")
+
+        if (project != null) {
+            subscription = ProjectSubscriptionName.of(project, "zorroa-archivist")
+            subscriber = Subscriber.newBuilder(subscription, JobEventReceiver())
+                    .setCredentialsProvider({ GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) })
+                    .build()
+            subscriber?.let {
+                it.startAsync().awaitRunning()
+            }
+        }
+    }
+
+    @PreDestroy
+    fun shutdown() {
+        subscriber?.let {
+            it.stopAsync()
+        }
+    }
+
+    inner class JobEventReceiver : MessageReceiver {
+
+        override fun receiveMessage(message: PubsubMessage?, p1: AckReplyConsumer?) {
+            message?.data?.let {
+                val event = Json.Mapper.readValue(it.toByteArray(), JobEvent::class.java)
+                when(event.type) {
+                    "job-state-change"-> {
+                        val payload = Json.Mapper.convertValue(
+                                event.payload, JobStateChangeEvent::class.java)
+
+                        if (payload.job.type == PipelineType.EXPORT) {
+                            try {
+                                logger.info("Updating export state: {}", payload.job.env)
+                                val id = UUID.fromString(payload.job.env["ZORROA_EXPORT_ID"])
+                                val job = exportService.get(id)
+
+                            } catch (e: Exception) {
+                                logger.warn("faild to update job state from event: ", event.payload)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(JobEventSubscription::class.java)
+    }
+
 }
 
 

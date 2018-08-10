@@ -72,3 +72,7 @@ data class JobFilter (
         }
     }
 }
+
+class JobEvent(val type:String, val payload: Any)
+
+class JobStateChangeEvent(val job: Job, val newState: JobState, val oldState : JobState?)
