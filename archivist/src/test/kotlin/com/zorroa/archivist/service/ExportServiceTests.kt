@@ -10,6 +10,9 @@ import com.zorroa.common.search.AssetSearch
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -48,7 +51,7 @@ class ExportServiceTests : AbstractTest() {
     }
 
     @Test
-    fun tesValidateScriptEnv() {
+    fun testValidateScriptEnv() {
         val ma = analystClient as MockAnalystClient
         val ex1 = exportService.get(export.id)
         val user = getUser()
@@ -59,7 +62,7 @@ class ExportServiceTests : AbstractTest() {
     }
 
     @Test
-    fun tesValidateExportAssetSearch() {
+    fun testValidateExportAssetSearch() {
         val search = AssetSearch()
         search.addToFilter().addToLinks("export", export.id)
         assertTrue(searchService.count(search) > 0)

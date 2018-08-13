@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.client.KubernetesClient
 import io.fabric8.kubernetes.client.internal.SerializationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import java.time.Instant
-
 
 
 class K8SchedulerProperties {
@@ -161,7 +161,8 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
                 EnvVar("CDV_API_BASE_URL", getPublicUrl("core-data-vault-api"), null),
                 EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null),
-                EnvVar("CDV_GOOGLE_CREDENTIAL_PATH", "/var/secrets/google/cdv.json", null))
+                EnvVar("CDV_GOOGLE_CREDENTIAL_PATH", "/var/secrets/google/cdv.json", null),
+                EnvVar("ZORROA_ARCHIVIST_URL", getPublicUrl("zorroa-archivist"), null))
 
         for ((k,v) in job.env) {
             container.env.add(EnvVar(k, v, null))

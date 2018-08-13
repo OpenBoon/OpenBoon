@@ -14,7 +14,7 @@ class ProcessorListController @Autowired constructor(
 
     @GetMapping("/api/v1/processor-lists/defaults/{type}")
     fun get(@PathVariable type: String) : Any {
-        val plType = PipelineType.valueOf(type.toUpperCase())
+        val plType = PipelineType.valueOf(type.capitalize())
         return mapOf("type" to type, "processors" to pipelineService.buildDefaultProcessorList(plType))
     }
 }

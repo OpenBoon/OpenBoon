@@ -1,0 +1,24 @@
+{
+  "name": "irm-dit1-export",
+  "type": 1,
+  "version": 1,
+  "processors": [
+    {
+      "className": "zplugins.export.processors.PdfExporter",
+      "args": {
+        "exportOriginal": true,
+        "pageMode": "separate"
+      }
+    },
+    {
+      "className": "zplugins.export.processors.GcsExportUploader",
+      "args": {
+        "gcs-bucket": "gs://rmaas-dit-1-zorroa-exports"
+      }
+    },
+    {
+      "className": "zplugins.export.processors.ExportedFileRegister",
+      "args": {}
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.search.AssetFilter
 import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -116,13 +117,19 @@ class ExportServiceImpl @Autowired constructor(
          * Now start to build the script for the task.
          */
         val script = ZpsScript(export.name, inline=true)
-
         script.globals?.putAll(mapOf(
                 "exportArgs" to mapOf(
                         "exportId" to export.id,
-                        "exportName" to export.name)))
+                        "exportName" to export.name,
+                        "exportRoot" to properties.getString("archivist.export.export-root"))))
+
+        //TODO: This should be coming from the default pipeline. Need to sort this out.
+        script.execute?.add(ProcessorRef("zplugins.irm.processors.CDVAssetProcessor"))
 
         script.execute?.addAll(spec.processors)
+        script.execute?.add(ProcessorRef("zplugins.export.processors.GcsExportUploader",
+                mapOf<String, Any>("gcs-bucket" to properties.getString("archivist.export.gcs-bucket"))))
+        script.execute?.add(ProcessorRef("zplugins.export.processors.ExportedFileRegister"))
 
         /**
          * Replace the search the user supplied with our own search so we ensure
@@ -132,7 +139,10 @@ class ExportServiceImpl @Autowired constructor(
         val params = resolveExportSearch(spec.search, export.id)
         script.generate?.add(ProcessorRef(
                 "zplugins.asset.generators.AssetSearchGenerator",
-                mapOf<String, Any>("search" to params.search)))
+                mapOf<String, Any>(
+                        "search" to params.search
+                )
+        ))
 
         return script
     }
