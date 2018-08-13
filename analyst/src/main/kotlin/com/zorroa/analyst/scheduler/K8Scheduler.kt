@@ -47,9 +47,6 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
     @Autowired
     lateinit var schedulerProperties : SchedulerProperties
 
-    @Value("\${archivist.host}")
-    lateinit var archivist_url: String
-
     private val kubernetesClient : KubernetesClient
 
     init {
@@ -165,7 +162,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
                 EnvVar("CDV_API_BASE_URL", getPublicUrl("core-data-vault-api"), null),
                 EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null),
                 EnvVar("CDV_GOOGLE_CREDENTIAL_PATH", "/var/secrets/google/cdv.json", null),
-                EnvVar("ZORROA_ARCHIVIST_URL", archivist_url, null))
+                EnvVar("ZORROA_ARCHIVIST_URL", getPublicUrl("zorroa-archivist"), null))
 
         for ((k,v) in job.env) {
             container.env.add(EnvVar(k, v, null))
