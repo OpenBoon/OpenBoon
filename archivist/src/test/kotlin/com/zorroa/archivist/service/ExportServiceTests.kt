@@ -67,20 +67,4 @@ class ExportServiceTests : AbstractTest() {
         search.addToFilter().addToLinks("export", export.id)
         assertTrue(searchService.count(search) > 0)
     }
-
-//    @Test
-//    fun testBuildZpsScript() {
-//        val export = Export(
-//                id = UUID.randomUUID(),
-//                organizationId = UUID.randomUUID(),
-//                userId = UUID.randomUUID(),
-//                name = "7eleven",
-//                timeCreated = measureTimeMillis { LocalDateTime.now() }
-//        )
-//        val exportSpec = ExportSpec(
-//                name = "some export",
-//                search = AssetSearch()
-//        )
-//        script = exportService.buildZpsSciript(export, exportSpec)
-//    }
 }
