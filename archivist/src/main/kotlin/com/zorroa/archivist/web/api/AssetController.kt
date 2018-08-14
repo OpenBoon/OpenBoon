@@ -1,10 +1,7 @@
 package com.zorroa.archivist.web.api
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.Acl
@@ -17,13 +14,14 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
-import com.zorroa.common.domain.*
-import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.Document
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.search.AssetSuggestBuilder
-import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -33,7 +31,6 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.io.File
 import java.io.IOException
 import java.nio.file.Paths
 import java.util.*
@@ -45,19 +42,18 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 class AssetController @Autowired constructor(
         private val indexService: IndexService,
-        private val assetService: AssetService,
         private val searchService: SearchService,
         private val folderService: FolderService,
         private val logService: EventLogService,
         private val imageService: ImageService,
-        private val ofs: ObjectFileSystem,
-        private val fieldService: FieldService
+        private val fieldService: FieldService,
+        private val storageRouter: StorageRouter
 ){
     /**
      * Describes a file to stream.
      */
-    class StreamFile(var path: String, var mimeType: String, var proxy: Boolean)
-    
+    //class StreamFile(var path: String, var mimeType: String, var proxy: Boolean, var local: Boolean=false)
+
     @GetMapping(value = ["/api/v1/assets/_fields"])
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
         response.setHeader("Cache-Control", CacheControl.maxAge(
@@ -70,77 +66,31 @@ class AssetController @Autowired constructor(
         @Throws(IOException::class)
         get() = indexService.getMapping()
 
-    fun getPreferredFormat(asset: Document, preferExt: String?, fallback: Boolean, streamProxy: Boolean): StreamFile? {
 
-        val mediaType = asset.getAttr("source.mediaType", String::class.java)
+    fun getPreferredFormat(asset: Document, forceProxy: Boolean): ObjectFile? {
 
-        /**
-         * Zorroa types get handled special.
-         */
-        if (streamProxy) {
-            return getProxyStream(asset)
-        } else {
-            val checkFiles = Lists.newArrayList<StreamFile>()
-            val path = asset.getAttr("source.path", String::class.java)
-            val type = asset.getAttr("source.type", String::class.java)
-
-            if (preferExt != null) {
-                /**
-                 * If preferExt is set, then first we check the assets source directory for
-                 * a file with that ext.
-                 */
-                val preferPath = path.substring(0, path.lastIndexOf('.') + 1) + preferExt
-                val preferMediaType = tika.detect(path)
-                checkFiles.add(StreamFile(preferPath, preferMediaType, false))
-
-                val proxies = asset.getAttr("proxies.$type", object : TypeReference<List<Proxy>>() {})
-                if (proxies != null) {
-                    for (proxy in proxies) {
-                        if (preferExt == proxy.format) {
-                            val f = ofs.get(proxy.id)
-                            if (f.exists()) {
-                                checkFiles.add(StreamFile(f.file.toString(),
-                                        tika.detect(f.file.toString()), false))
-                                break
-                            }
-                        }
-                    }
-                }
-            } else {
-                checkFiles.add(StreamFile(path, mediaType, false))
-            }
-
-            for (sf in checkFiles) {
-                if (File(sf.path).exists()) {
-                    return sf
-                }
-            }
-
-            return if (fallback) {
-                getProxyStream(asset)
-            } else {
-                null
-            }
+        return if (forceProxy) {
+            getProxyStream(asset)
+        } else  {
+            storageRouter.getObjectFile(storageRouter.getStorageUri(asset))
         }
     }
 
-    fun getProxyStream(asset: Document): StreamFile? {
+    fun getProxyStream(asset: Document): ObjectFile? {
         // If the file doesn't have a proxy this will throw.
         val proxies = asset.getAttr("proxies", ProxySchema::class.java)
+
         if (proxies != null) {
             val largest = proxies.getLargest()
             if (largest != null) {
-                return StreamFile(
-                        ofs.get(largest.id).file.toString(),
-                        (PROXY_MIME_LOOKUP as java.util.Map<String, String>).getOrDefault(largest.format,
-                                "application/octet-stream"), true)
+                return storageRouter.getObjectFile(storageRouter.getStorageUri(largest))
             }
         }
 
         return null
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
+    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.GET, RequestMethod.HEAD])
     @Throws(Exception::class)
     fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
                     @RequestParam(value = "ext", required = false) ext: String?,
@@ -148,24 +98,34 @@ class AssetController @Autowired constructor(
 
         val asset = indexService.get(id)
         val canExport = canExport(asset)
-        val format = getPreferredFormat(asset, ext, fallback, !canExport)
+        val ofile = getPreferredFormat(asset, !canExport)
 
-        if (format == null) {
+        if (ofile == null) {
             response.status = 404
-        } else {
-            try {
-                MultipartFileSender.fromPath(Paths.get(format.path))
-                        .with(request)
-                        .with(response)
-                        .setContentType(format.mimeType)
-                        .serveResource()
-                if (canExport) {
-                    logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.id))
+        }
+        else {
+            if (request.method == "HEAD") {
+                if (!ofile.isLocal()) {
+                    response.setHeader("X-Zorroa-Signed-URL", ofile.getSignedUrl().toString())
                 }
-            } catch (e: Exception) {
-                logger.warn("MultipartFileSender failed on {}, unexpected {}", id, e.message)
             }
+            else {
+                try {
+                    logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.id))
+                    if (!ofile.isLocal()) {
+                        ofile.copyTo(response)
+                    } else {
+                        MultipartFileSender.fromPath(ofile.getLocalFile())
+                                .with(request)
+                                .with(response)
+                                .setContentType(ofile.getStat().contentType)
+                                .serveResource()
 
+                    }
+                } catch (e: Exception) {
+                    response.sendError(404, "StorageSystem unable to find file")
+                }
+            }
         }
     }
 
@@ -381,24 +341,8 @@ class AssetController @Autowired constructor(
     fun refresh() {
         logger.warn("Refresh called.")
     }
-
-    @PostMapping(value = ["/api/v1/assets"])
-    @ResponseBody
-    fun create(@RequestBody spec: AssetSpec): Any {
-        return assetService.create(spec)
-    }
-
     companion object {
 
         private val logger = LoggerFactory.getLogger(AssetController::class.java)
-
-        private val tika = Tika()
-
-        /**
-         * We could try to detect it using something like Tika but
-         * there are only a couple types.
-         */
-        private val PROXY_MIME_LOOKUP = ImmutableMap.of("png", "image/png",
-                "jpg", "image/jpeg")
     }
 }

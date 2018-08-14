@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -14,14 +15,11 @@ interface OrganizationDao : GenericNamedDao<Organization, OrganizationSpec> {
     fun getOnlyOne(): Organization
 }
 
-
-
-
 @Repository
 class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
 
     override fun getAll(): List<Organization> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return jdbc.query(GET, MAPPER)
     }
 
     override fun create(spec: OrganizationSpec): Organization {
@@ -38,7 +36,11 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     override fun get(id: UUID): Organization {
-        return jdbc.queryForObject("$GET WHERE pk_organization=?", MAPPER, id)
+        try {
+            return jdbc.queryForObject("$GET WHERE pk_organization=?", MAPPER, id)
+        } catch (e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("The organization ID '$id' does not exist", 1)
+        }
     }
 
     override fun refresh(obj: Organization): Organization {
@@ -48,7 +50,6 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     override fun getOnlyOne(): Organization {
         return  jdbc.queryForObject("$GET LIMIT 1", MAPPER)
     }
-
 
     override fun getAll(paging: Pager): PagedList<Organization> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -67,7 +68,11 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     override fun get(name: String): Organization {
-        return jdbc.queryForObject("$GET WHERE str_name=?", MAPPER, name)
+        try {
+            return jdbc.queryForObject("$GET WHERE str_name=?", MAPPER, name)
+        } catch (e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("The organization name '$name' does not exist", 1)
+        }
     }
 
     override fun exists(name: String): Boolean {
@@ -75,7 +80,7 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     companion object {
-        private val MAPPER = RowMapper<Organization> { rs, _ ->
+        private val MAPPER = RowMapper { rs, _ ->
             Organization(
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"))

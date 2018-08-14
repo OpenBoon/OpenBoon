@@ -86,7 +86,7 @@ class SpringApplicationProperties : ApplicationProperties {
             }
 
         } else {
-            value.split(",").map { it.trim() }.filter { it.isEmpty() }
+            value.split(",").map { it.trim() }.filter { it.isNotBlank() }
         }
     }
 

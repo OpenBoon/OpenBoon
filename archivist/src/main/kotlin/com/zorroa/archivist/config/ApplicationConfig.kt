@@ -3,12 +3,21 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.archivist.service.*
+import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
+import com.zorroa.common.server.GcpJwtValidator
+import com.zorroa.common.server.JwtValidator
+import com.zorroa.common.server.NoOpJwtValidator
+import com.zorroa.common.server.getPublicUrl
 import com.zorroa.common.util.FileUtils
-import io.undertow.servlet.api.*
+import io.undertow.servlet.api.SecurityConstraint
+import io.undertow.servlet.api.SecurityInfo
+import io.undertow.servlet.api.TransportGuaranteeType
+import io.undertow.servlet.api.WebResourceCollection
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer
@@ -23,6 +32,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.util.*
 
 @Configuration
@@ -55,7 +65,7 @@ class ArchivistConfiguration {
             }
 
             builder.withDetail("archivist-plugins",
-                    File("lib/ext").walkTopDown()
+                    File("config/ext").walkTopDown()
                     .map { it.toString() }
                     .filter { it.endsWith(".jar")}
                     .map { FileUtils.basename(it) }
@@ -78,7 +88,7 @@ class ArchivistConfiguration {
                                 .addUrlPattern("/*"))
                         .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
                         .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
-                        .setConfidentialPortManager(ConfidentialPortManager {
+                        .setConfidentialPortManager({
                             properties().getInt("server.port", 8066)
                         })
             })
@@ -112,24 +122,78 @@ class ArchivistConfiguration {
         return EventBus()
     }
 
+    @Bean
+    fun analystClient() : AnalystClient {
+        val path = properties()
+                .getPath("archivist.config.path")
+                .resolve("service-credentials.json")
+        return if (Files.exists(path)) {
+            var host = properties().getString("analyst.host", "")
+            if (host.isBlank()) {
+                host = getPublicUrl("zorroa-analyst")
+            }
+            AnalystClientImpl(host, GcpJwtSigner(path.toString()))
+        }
+        else {
+            logger.info("Service credentials path does not exist: {}", path)
+            AnalystClientImpl(getPublicUrl("zorroa-analyst"), null)
+        }
+    }
+
+    @Bean
+    fun routingService() : IndexRoutingService {
+        return FakeIndexRoutingServiceImpl(properties().getString("es-routing-service.url"))
+    }
+
+    @Autowired
+    @Bean
+    fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
+        return EsClientCache(routingService)
+    }
+
+    @Bean
+    fun pubSubService() : PubSubService {
+        return when(properties().getString("archivist.pubsub.type")) {
+            "gcp"->GcpPubSubServiceImpl()
+            else->NoOpPubSubService()
+        }
+    }
+
+
+    @Bean
+    fun assetService() : AssetService {
+        val type = properties().getString("archivist.assetStore.type", "sql")
+        logger.info("Initializing Core Asset Store: {}", type)
+        return when(type) {
+            "irm"-> {
+                val path = properties()
+                        .getPath("archivist.config.path")
+                        .resolve("service-credentials.json")
+                IrmAssetServiceImpl(
+                    IrmCoreDataVaultClientImpl(getPublicUrl("core-data-vault-api"), path))
+            }
+            else->AssetServiceImpl()
+        }
+    }
+
+    @Bean
+    fun jwtValidator() : JwtValidator {
+        val path = properties().getPath("archivist.config.path")
+                .resolve("service-credentials.json")
+        return if (Files.exists(path)) {
+            GcpJwtValidator(path.toString())
+        }
+        else {
+            logger.info("Service credentials path does not exist: {}", path)
+            NoOpJwtValidator()
+        }
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(ArchivistConfiguration::class.java)
 
         var unittest = false
-
-        fun <T> instantiate(className: String, type: Class<T>): T? {
-            try {
-                return type.cast(Class.forName(className).newInstance())
-            } catch (e: InstantiationException) {
-                throw IllegalStateException(e)
-            } catch (e: IllegalAccessException) {
-                throw IllegalStateException(e)
-            } catch (e: ClassNotFoundException) {
-                throw IllegalStateException(e)
-            }
-
-        }
     }
 }
 

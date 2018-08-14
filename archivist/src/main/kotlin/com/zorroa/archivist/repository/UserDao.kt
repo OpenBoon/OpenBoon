@@ -7,10 +7,10 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -72,9 +72,6 @@ interface UserDao {
 @Repository
 class UserDaoImpl : AbstractDao(), UserDao {
 
-    @Value("\${archivist.organization.domain}")
-    private lateinit var domain: String
-
     private val hashFunc = Hashing.sha256()
 
     private fun generateKey() : String {
@@ -85,7 +82,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun get(id: UUID): User {
-        return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?", MAPPER, id)
+        return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?",
+                MAPPER, id)
     }
 
     override fun get(username: String): User {
@@ -106,13 +104,13 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getAll(): List<User> {
-        return jdbc.query(GET_ALL, MAPPER)
+        return jdbc.query("$GET_ALL WHERE pk_organization=? ORDER BY str_username", MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>("$GET_ALL LIMIT ? OFFSET ?",
-                        MAPPER, paging.size, paging.from))
+                jdbc.query<User>("$GET_ALL WHERE pk_organization=? ORDER BY str_username LIMIT ? OFFSET ?",
+                        MAPPER, getOrgId(), paging.size, paging.from))
     }
 
     override fun create(builder: UserSpec): User {
@@ -139,7 +137,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setString(10, builder.source)
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
-            ps.setObject(13, builder.organizationId)
+            ps.setObject(13, getOrgId())
+            ps.setString(14, Json.serializeToString(builder.authAttrs, "{}"))
             ps
         })
         return get(id)
@@ -160,8 +159,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
     override fun setSettings(user: User, settings: UserSettings): Boolean {
         return jdbc.update(
-                "UPDATE users SET json_settings=? WHERE pk_user=?",
-                Json.serializeToString(settings, "{}"), user.id) == 1
+                "UPDATE users SET json_settings=? WHERE pk_organization=? AND pk_user=?",
+                Json.serializeToString(settings, "{}"), getOrgId(), user.id) == 1
     }
 
     override fun getSettings(id: UUID): UserSettings {
@@ -206,7 +205,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun delete(user: User): Boolean {
-        return jdbc.update("DELETE FROM users WHERE pk_user=?", user.id) == 1
+        return jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
+                getOrgId(), user.id) == 1
     }
 
     override fun getPassword(username: String): String {
@@ -231,7 +231,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getCount(): Long {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM users", Int::class.java).toLong()
+        return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Int::class.java, getOrgId()).toLong()
     }
 
 
@@ -284,7 +284,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
         const val SOURCE_LOCAL = "local"
 
-        private val MAPPER = RowMapper<User> { rs, _ ->
+        private val MAPPER = RowMapper { rs, _ ->
             User(rs.getObject("pk_user") as UUID,
                     rs.getString("str_username"),
                     rs.getString("str_email"),
@@ -295,12 +295,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     rs.getString("str_firstname"),
                     rs.getString("str_lastname"),
                     rs.getBoolean("bool_enabled"),
-                    Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java),
+                    Json.deserialize(rs.getString("json_settings"), UserSettings::class.java),
                     rs.getInt("int_login_count"),
                     rs.getLong("time_last_login"))
         }
 
-        private const val GET_ALL = "SELECT * FROM users ORDER BY str_username"
+        private const val GET_ALL = "SELECT * FROM users"
+
+        private const val COUNT = "SELECT COUNT(1) FROM users"
 
         private val INSERT = JdbcUtils.insert("users",
                 "pk_user",
@@ -315,9 +317,10 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "str_source",
                 "pk_permission",
                 "pk_folder",
-                "pk_organization")
+                "pk_organization",
+                "json_auth_attrs")
 
-        private val RESET_PASSWORD = "UPDATE " +
+        private const val RESET_PASSWORD = "UPDATE " +
                 "users " +
                 "SET " +
                 "str_password=?," +

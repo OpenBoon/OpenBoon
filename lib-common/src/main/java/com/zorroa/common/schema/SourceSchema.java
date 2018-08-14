@@ -33,6 +33,7 @@ public class SourceSchema {
      */
     private String subType;
 
+    private String stream;
     private String path;
     private String extension;
     private String filename;
@@ -221,6 +222,15 @@ public class SourceSchema {
 
     public SourceSchema setExists(Boolean exists) {
         this.exists = exists;
+        return this;
+    }
+
+    public String getStream() {
+        return stream;
+    }
+
+    public SourceSchema setStream(String stream) {
+        this.stream = stream;
         return this;
     }
 

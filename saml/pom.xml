@@ -61,6 +61,7 @@
                             <exclude>ch.qos.logback:*</exclude>
                         </excludes>
                     </artifactSet>
+                    <finalName>saml</finalName>
                 </configuration>
                 <executions>
                     <execution>

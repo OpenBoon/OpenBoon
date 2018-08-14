@@ -4,14 +4,15 @@ import com.google.common.base.Splitter
 import com.google.common.collect.*
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.elastic.SearchBuilder
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUsername
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Tuple
 import com.zorroa.common.search.AssetScript
 import com.zorroa.common.search.AssetSearch
-import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -76,7 +77,7 @@ interface DyHierarchyService {
 @Service
 class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
-    val client: RestHighLevelClient,
+    val esClientCache: EsClientCache,
     val transactionEventManager: TransactionEventManager,
     val folderTaskExecutor: UniqueTaskExecutor
 ) : DyHierarchyService {
@@ -166,6 +167,9 @@ class DyHierarchyServiceImpl @Autowired constructor (
     override fun create(spec: DyHierarchySpec): DyHierarchy {
 
         val folder = folderService.get(spec.folderId)
+        if (folder.attrs?.getOrDefault("launchpad", false) as Boolean) {
+            throw ArchivistWriteException("A Launchpad with the same name already exists. Please choose a different name.")
+        }
         val dyhi = dyHierarchyDao.create(spec)
         folderService.setDyHierarchyRoot(folder, spec.levels[0].field)
 
@@ -226,14 +230,14 @@ class DyHierarchyServiceImpl @Autowired constructor (
         }
 
         val rf = folderService.get(dyhi.folderId)
-
+        val rest = esClientCache[getOrgId()]
 
         /**
          * TODO: allow some custom search options here, for example, maybe you
          * want to agg for the last 24 hours.
          */
         try {
-            val sr = SearchBuilder()
+            val sr = rest.newSearchBuilder()
             if (rf.search != null) {
                 sr.source.query(searchService.getQuery(rf.search))
             }
@@ -260,8 +264,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
              * Breadth first walk of the aggregations which creates the folders as it goes.
              */
             val folders = FolderStack(folderService.get(dyhi.folderId), dyhi)
-            val queue = Queues.newArrayDeque<Tuple<Aggregations, Int>>()
-            queue.add(Tuple(client.search(sr.request).aggregations, 0))
+            val queue = ArrayDeque<Tuple<Aggregations, Int>>()
+            queue.add(Tuple(rest.client.search(sr.request).aggregations, 0))
             createDynamicHierarchy(queue, folders)
 
             /**
@@ -478,7 +482,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             spec.dyhiId = dyhi.id
             spec.search = search
 
-            val folder = folderService.create(spec, true)
+            val folder = folderService.create(spec, false)
             if (level.acl != null && spec.created) {
                 /**
                  * If the ACL is set, build an ACL based on the name.

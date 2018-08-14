@@ -3,6 +3,7 @@ package com.zorroa.common.clients
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.common.util.Json
 import org.apache.commons.codec.binary.Hex
+import org.apache.http.HttpEntity
 import org.apache.http.HttpHost
 import org.apache.http.HttpRequest
 import org.apache.http.HttpResponse
@@ -54,8 +55,9 @@ class RestClient {
 
     private var user: String? = null
     private var hmac: String? = null
-    private var host: HttpHost? = null
-    private var client: CloseableHttpClient? = null
+    private val host: HttpHost
+    private val jwtSigner: JwtSigner?
+    private val client: CloseableHttpClient
     private var retryConnectionTimeout = false
 
     constructor() {
@@ -63,11 +65,19 @@ class RestClient {
         this.user = initUser()
         this.hmac = initHmacKey()
         this.client = initClient()
+        this.jwtSigner = null
     }
 
     constructor(host: String) {
         this.host = HttpHost.create(host)
         this.client = initClient()
+        this.jwtSigner = null
+    }
+
+    constructor(host: String, jwtSigner: JwtSigner?) {
+        this.host = HttpHost.create(host)
+        this.client = initClient()
+        this.jwtSigner = jwtSigner
     }
 
     fun isRetryConnectionTimeout(): Boolean {
@@ -119,47 +129,64 @@ class RestClient {
         return key
     }
 
-    fun <T> post(url: String, body: Any?, resultType: Class<T>): T {
+
+    fun <T> post(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
         val post = HttpPost(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post)
+        val response = checkStatus(post, jwtClaims)
         return checkResponse(response, resultType)
     }
 
-    fun <T> put(url: String, body: Any?, resultType: Class<T>): T {
+    fun <T> put(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
         val post = HttpPut(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post)
+        val response = checkStatus(post, jwtClaims)
         return checkResponse(response, resultType)
     }
 
-    fun <T> post(url: String, body: Any?, type: TypeReference<T>): T {
+    fun <T> put(url: String, body: Any?, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
+        val post = HttpPut(url)
+        if (body != null) {
+            post.setHeader("Content-Type", "application/json")
+            post.entity = ByteArrayEntity(Json.serialize(body))
+        }
+        val response = checkStatus(post, jwtClaims)
+        return checkResponse(response, type)
+    }
+
+    fun <T> post(url: String, body: Any?, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
         val post = HttpPost(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post)
+        val response = checkStatus(post, jwtClaims)
         return checkResponse(response, type)
     }
 
-    fun <T> delete(url: String, body: Any?, resultType: Class<T>): T {
+    fun <T> delete(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
         val post = HttpDeleteWithEntity(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post)
+        val response = checkStatus(post, jwtClaims)
         return checkResponse(response, resultType)
     }
 
-    fun post(url: String, files: List<File>): Any {
+    fun download(url: String, jwtClaims: Map<String, String>? = null): HttpEntity {
+        val get = HttpGetWithEntity(url)
+        val rsp = checkStatus(get, jwtClaims)
+        return rsp.entity
+    }
+
+    fun post(url: String, files: List<File>, jwtClaims: Map<String, String>? = null): Any {
 
         val builder = MultipartEntityBuilder.create()
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
@@ -173,31 +200,30 @@ class RestClient {
         val post = HttpPost(url)
         post.addHeader("Content-Type", "multipart/mixed; boundary=\"---Content Boundary\"")
         post.entity = builder.build()
-        val response = checkStatus(post)
+        val response = checkStatus(post, jwtClaims)
         return checkResponse(response, Any::class.java)
     }
 
-    operator fun <T> get(url: String, resultType: Class<T>): T {
-        return checkResponse(checkStatus(HttpGet(url)), resultType)
+    operator fun <T> get(url: String, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
+        return checkResponse(checkStatus(HttpGet(url), jwtClaims), resultType)
     }
 
-    operator fun <T> get(url: String, body: Any?, resultType: Class<T>): T {
+    operator fun <T> get(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
         val get = HttpGetWithEntity(url)
         if (body != null) {
             get.setHeader("Content-Type", "application/json")
             get.entity = ByteArrayEntity(Json.serialize(body))
         }
-        return checkResponse(checkStatus(get), resultType)
+        return checkResponse(checkStatus(get, jwtClaims), resultType)
     }
 
-    operator fun <T> get(url: String, type: TypeReference<T>): T {
-        return checkResponse(checkStatus(HttpGet(url)), type)
+    operator fun <T> get(url: String, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
+        return checkResponse(checkStatus(HttpGet(url), jwtClaims), type)
     }
 
     private fun <T> checkResponse(response: HttpResponse, resultType: Class<T>): T {
         try {
             val text = response.entity.content.bufferedReader().use { it.readText() }
-            println(text)
             return Json.Mapper.readValue(text, resultType)
         } catch (e: Exception) {
             throw RestClientException("Failed to deserialize response", e)
@@ -207,15 +233,14 @@ class RestClient {
     private fun <T> checkResponse(response: HttpResponse, type: TypeReference<T>): T {
         try {
             val text = response.entity.content.bufferedReader().use { it.readText() }
-            println(text)
             return Json.Mapper.readValue(text, type)
         } catch (e: Exception) {
             throw RestClientException("Failed to deserialize response", e)
         }
     }
 
-    private fun checkStatus(req: HttpRequest): HttpResponse {
-        headers(req)
+    private fun checkStatus(req: HttpRequest, jwtClaims: Map<String, String>?): HttpResponse {
+        headers(req, jwtClaims)
         var response: HttpResponse
         while (true) {
             try {
@@ -240,26 +265,35 @@ class RestClient {
         }
 
         if (response.statusLine.statusCode != 200) {
+            logger.warn("REST response error: {} {} {} {}",
+                    host.hostName, req.requestLine.uri,
+                    response.statusLine.reasonPhrase, response.statusLine.statusCode)
+
             val error = checkResponse(response, Json.GENERIC_MAP)
-            val message ="Unknown REST client exception to $host, ${response.statusLine.statusCode}"
-            throw RestClientException(error.getOrDefault("message", message) as String)
+            val message = error.getOrElse("message", {
+                "Unknown REST client exception to $host, ${response.statusLine.statusCode} ${response.statusLine.reasonPhrase}"
+            })
+            throw RestClientException(message.toString())
         }
 
         return response
     }
 
-    private fun headers(req: HttpRequest) {
+    private fun headers(req: HttpRequest, jwtClaims: Map<String, String>?) {
         val msg = UUID.randomUUID().toString()
         req.setHeader("X-Archivist-User", user)
 
-        if (hmac != null) {
+        hmac?.let {
             try {
                 req.setHeader("X-Archivist-Data", msg)
-                req.setHeader("X-Archivist-Hmac", calculateSigningKey(msg, hmac!!))
+                req.setHeader("X-Archivist-Hmac", calculateSigningKey(msg, it))
             } catch (e: Exception) {
                 throw RestClientException("Failed to sign request, $e", e)
             }
+        }
 
+        jwtSigner?.let {
+            it.sign(req, host.toString(),jwtClaims)
         }
     }
 
@@ -296,7 +330,6 @@ class RestClient {
     companion object {
 
         private val logger = LoggerFactory.getLogger(RestClient::class.java)
-
 
         @Throws(SignatureException::class, NoSuchAlgorithmException::class, InvalidKeyException::class)
         private fun calculateSigningKey(data: String, key: String): String {

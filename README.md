@@ -1,22 +1,111 @@
 # zorroa-server
 
-## Test Build Instructions (MacOS)
+| Branch | Status |
+|--------|--------|
+|DEVELOPMENT | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=development)](https://travis-ci.com/Zorroa/zorroa-server) |
+| QA | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=qa)](https://travis-ci.com/Zorroa/zorroa-server) |
+| MASTER | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=master)](https://travis-ci.com/Zorroa/zorroa-server) |
+
+
+## Quickstart Guide - Running the ZVI Backend services locally (if you are a frontend developer, this is for you).
+
+### Prerequisites:
+1. [Docker](https://www.docker.com/docker-mac)
+1. `cd` to the root of the this repo.
+
+### Building the server code.
+1. Check out the correct branch. 
+ - `development` will be the bleeding edge.
+ - `qa` will be latest code currently being QA'd for release.
+ - `master` will be the latest stable code.
+1. `docker-compose run build`
+
+### Running the services.
+1. `docker-compose up -d`
+
+### Prepping elastic search (this is only required the first time you launch the services.)
+1. `cd elasticsearch`
+1. `./create_local_index.sh`
+
+### You now have the following services running locally:
+- postgres on port 5432
+- elasticsearch on port 9200 & 9300
+- archivist on port 8080
+- analyst on port 8082
+
+### Shutting down services
+1. `docker-compose down`
+
+### Starting services back up
+1. `docker-compose up -d`
+
+You will only need to rebuild the code if you pull new code or change branches.
+
+## Using the docker-compose local dev environment.
+The local development is orchestrated in by the docker-compose.yml file found in the root of the repo. Docker compose is 
+used to run a series of docker containers that serve all the services for a complete ZVI backend. Below are some examples 
+of useful commands. You can check the help for docker-compose to learn more.
+
+Note that this environment does not include the curator frontend. You'll need to follow the instruction in that repo
+for running the curator locally.
+
+#### Example commands:
+
+##### Create the development environment for the first time:
+
+```
+docker-compose run build
+docker-compose up -d
+cd elasticsearch
+./create_local_index.sh
+```
+
+##### Rebuild all java code: ```docker-compose run build```
+
+##### Start all services: ```docker-compose up -d```
+
+##### Stop all services: ```docker-compose down```
+
+##### Restart the archivist: ```docker-compose restart archivist```
+
+##### Pause the analyst: ```docker-compose pause analyst```
+
+##### Unpause the analyst: ```docker-compose unpause analyst```
+
+##### Monitor the archivist logs: ```docker-compose logs -f archivist```
+
+##### View the currently running services: ```docker-compose ps```
+
+##### View all running processes on the analyst: ```docker-compose top analyst```
+
+##### Rebuild the archivist docker container: ```docker-compose build archivist```
+
+##### Access a shell on the analyst: ```docker-compose exec analyst bash```
+
+##### Destroy the elastic search database and start over: 
+
+```
+docker-compose down
+docker-compose rm es
+docker-compose up -d
+cd elasticsearch
+./create_local_index.sh
+```
+
+
+## Full dev environment instructions (MacOS)
 
 These instructions will walk you though setting up Archivist and Analyst for testing and development.
 
 ### Prequisites:
-1. Java SDK: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-1. ffmpeg & ffprobe (must be in your PATH, /usr/local/bin/ is suggested): https://evermeet.cx/ffmpeg/
-1. Postgres.app: https://postgresapp.com/
-1. Homebrew: https://brew.sh/
+1. [Java 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+1. [ffmpeg & ffprobe](https://evermeet.cx/ffmpeg/) (must be in your PATH, /usr/local/bin/ is suggested)
+1. [Docker](https://www.docker.com/docker-mac)
+1. [Homebrew](https://brew.sh/)
 1. git: Installed via Homebrew ```brew install git```
-1. oiiotool (must be in your PATH, /usr/local/bin/ is suggested): https://dl.zorroa.com/public/osx/oiiotool or build your own at https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md
-1. SSH keys configured on github: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-
-### Start Postgres
-
-Postgres must be running and have a database named after your username. This can be achieved by running Postgres.app 
-clicking "initialize" the first time the app is started.
+1. [oiiotool](https://dl.zorroa.com/public/osx/oiiotool) (must be in your PATH, /usr/local/bin/ is suggested) or [build your own](https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md)
+1. SSH keys [configured on GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) 
+1. [Maven](https://maven.apache.org/)
 
 ### Clone the Repos
 
@@ -28,65 +117,9 @@ cd ~/zorroa
 git clone git@github.com:Zorroa/zorroa-test-data.git
 git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
 git clone git@github.com:Zorroa/zorroa-server.git
-``` 
-
-### Build Plugin SDK
-
-In theory one would build and test the Zorroa plugin SDK like this:
-
-```
-cd ~/zorroa/zorroa-plugin-sdk
-mvn clean install
-```
-But since there are unit test failures even in stabilized release branches, one must skip testing in order for the build to run to completion. This is achieved by passing an additional flag like this:
-```
-mvn clean install -Dmaven.test.skip=true
 ```
 
-### Build the Server
-
-Build the Zorroa server.
-
-```
-cd ~/zorroa/zorroa-server
-mvn clean install
-```
-As with the plugin-sdk, there are server test failures. For a successful build tests must be disabled:
-```
-mvn clean install -Dmaven.test.skip=true
-```
-
-### Run Servers
-
-Run the Archivist and Analyst servers. More information about these servers can be found below:
-
-https://dl.zorroa.com/public/docs/0.39/server/archivist.html
-
-https://dl.zorroa.com/public/docs/0.39/server/analyst.html
-
-*Archivist*
-
-In a fresh shell:
-```
-cd ~/zorroa/zorroa-server/archivist
-./run.sh
-```
-
-*Analyst*
-
-In a fresh shell:
-```
-cd ~/zorroa/zorroa-server/analyst
-./run.sh
-```
-
-### Visit the Server
-
-You can access the server at the link below. You will need a username and password to access the API endpoints. A default superuser will have been pre-populated in database, please ask your neighbor for the credentials. 
-
-[http://localhost:8080/api/v1/settings]()
-
-## Enable HTTPS (Optional)
+## Enable HTTPS (Optional) TODO: Everything below needs to be updated.
 
 You can enable https and also force https.
 

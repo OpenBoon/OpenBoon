@@ -66,7 +66,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
     @Autowired
     internal lateinit var userDaoCache: UserDaoCache
 
-    private val MAPPER = RowMapper<TrashedFolder> { rs, _ ->
+    private val MAPPER = RowMapper { rs, _ ->
         val folder = TrashedFolder()
         folder.opId = rs.getString("str_opid")
         folder.id = rs.getObject("pk_folder_trash") as UUID
@@ -86,12 +86,12 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
 
         val searchString = rs.getString("json_search")
         if (searchString != null) {
-            folder.search = Json.deserialize<AssetSearch>(searchString, AssetSearch::class.java)
+            folder.search = Json.deserialize(searchString, AssetSearch::class.java)
         }
 
         val aclString = rs.getString("json_acl")
         if (aclString != null) {
-            folder.acl = Json.deserialize<Acl>(aclString, Acl::class.java)
+            folder.acl = Json.deserialize(aclString, Acl::class.java)
         }
 
         val attrs = rs.getString("json_attrs")

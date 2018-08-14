@@ -5,8 +5,8 @@ import com.google.common.collect.Sets.intersection
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Access
+import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Document
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
@@ -37,7 +37,7 @@ fun getUser(): UserAuthed {
             try {
                 SecurityContextHolder.getContext().authentication.details as UserAuthed
             } catch (e2: ClassCastException) {
-                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed not found")
+                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed object not found")
             }
 
         }
@@ -62,6 +62,10 @@ fun getUserId(): UUID {
     return getUser().id
 }
 
+fun getOrgId(): UUID {
+    return getUser().organizationId
+}
+
 fun hasPermission(permIds: Set<UUID>?): Boolean {
     if (permIds == null) {
         return true
@@ -83,7 +87,7 @@ fun hasPermission(perms: Collection<String>): Boolean {
 
     auth?.authorities?.let{
         for (g in it) {
-            if (Objects.equals(g.authority, Groups.ADMIN) || perms.contains(g.authority)) {
+            if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
                 return true
             }
         }
@@ -124,10 +128,18 @@ fun hasPermission(acl: Acl?, access: Access): Boolean {
 fun getPermissionIds(): Set<UUID> {
     val result = Sets.newHashSet<UUID>()
     for (g in SecurityContextHolder.getContext().authentication.authorities) {
-        val p = g as Permission
-        result.add(p.id)
+        try {
+            val p = g as Permission
+            result.add(p.id)
+        } catch (e: ClassCastException) {
+            // ignore
+        }
     }
     return result
+}
+
+fun getOrganizationFilter(): QueryBuilder {
+    return  QueryBuilders.termQuery("zorroa.organizationId", getOrgId().toString())
 }
 
 fun getPermissionsFilter(access: Access?): QueryBuilder? {

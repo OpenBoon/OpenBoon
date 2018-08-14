@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+import argparse
+import subprocess
+import yaml
+import json
+import shutil
+import os
+
+def main():
+    parser = argparse.ArgumentParser(prog="zbuild")
+    parser.add_argument("project", help="The project to build")
+    parser.add_argument("-g", "--gcs_config", help="gs:// location of a configuration directory to use for this build.")
+    parser.add_argument("-p", "--push", action="store_true", help="push to GCP container registry")
+    parser.add_argument("-d", "--deploy", action="store_true", help="Deploy latest version")
+    parser.add_argument("-b", "--build", action="store_true", help="Recompile jar file")
+
+    args = parser.parse_args()
+    app = yaml.load(open("app.yaml"))
+
+    if args.build:
+        rebuild_jar_file()
+        build_docker_image(args.project, app, args.gcs_config)
+
+    if args.push:
+        push_to_gcp(args.project, app)
+
+    if args.deploy:
+        deploy_to_app_engine(args.project, app)
+
+
+def build_docker_image(project, app, gcs_config):
+    service = app["service"]
+    print "Building docker image: %s:%s" % (project, service)
+    cmd = ["docker", "build",
+           "-t", get_image_name(project, app),
+           "--build-arg", "project=%s" % project,
+           "."]
+    print cmd
+    subprocess.check_call(cmd, shell=False)
+
+def get_image_name(project, app):
+    return "gcr.io/%s/%s:latest" % (project, app["service"])
+
+def push_to_gcp(project, app):
+    image = get_image_name(project, app)
+    cmd = ["docker", "push", image]
+    print cmd
+    subprocess.check_call(cmd, shell=False)
+
+def deploy_to_app_engine(project, app):
+    image = get_image_name(project, app)
+    cmd = ["gcloud", "app", "deploy", "app.yaml", "--project", project, "--image-url", image, "--quiet"]
+    print cmd
+    subprocess.check_call(cmd, shell=False)
+
+def rebuild_jar_file():
+    cmd =["mvn", "clean", "package", "-Dmaven.test.skip=true"]
+    print cmd
+    ret = subprocess.check_call(cmd, shell=False)
+    if ret != 0:
+        raise RuntimeError("Failed to compile java library!!");
+
+if __name__ == '__main__':
+    main()
+

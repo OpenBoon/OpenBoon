@@ -1,10 +1,16 @@
-FROM openjdk:8-jre-slim
+FROM zorroaevi/8-jre-slim-gcloud
 VOLUME /tmp
 MAINTAINER Zorroa <support@zorroa.com>
-ARG JAR_FILE
+
+ARG project
+ENV project ${project:-zorroa-evi-dev}
+ARG gcs_config
+ENV GCS_CONFIG ${gcs_config}
+
 RUN mkdir /service
-COPY target/archivist.jar /service/app.jar
+
+COPY target/archivist.jar /service/archivist.jar
+COPY run_server.sh run_server.sh
 
 EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-jar", "/service/app.jar"]
-CMD = []
+ENTRYPOINT ["./run_server.sh"]

@@ -6,7 +6,6 @@ import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -54,7 +53,7 @@ interface ImageService {
  */
 @Service
 class ImageServiceImpl @Autowired constructor(
-        private val objectFileSystem: ObjectFileSystem,
+        private val storageRouter: StorageRouter,
         private val properties: ApplicationProperties,
         private val eventBus: EventBus
 
@@ -96,7 +95,7 @@ class ImageServiceImpl @Autowired constructor(
 
     @Throws(IOException::class)
     override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
-        return serveImage(req, objectFileSystem.get(proxy.id).file)
+        return storageRouter.getObjectFile(proxy).getReponseEntity()
     }
 
     @Throws(IOException::class)

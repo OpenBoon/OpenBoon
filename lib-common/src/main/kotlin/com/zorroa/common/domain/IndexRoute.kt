@@ -10,8 +10,16 @@ data class IndexRoute (
         val routingKey : String?
 )
 {
-    fun getCompanyId(): Long {
-        return name.toLong()
+
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val route = o as IndexRoute
+        return id === route.id
+    }
+
+    override fun hashCode(): Int {
+        return Objects.hash(id)
     }
 }
 

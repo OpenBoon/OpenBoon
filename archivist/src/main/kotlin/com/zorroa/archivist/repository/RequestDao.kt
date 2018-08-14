@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.domain.RequestState
 import com.zorroa.archivist.domain.RequestType
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
@@ -24,7 +25,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
     @Autowired
     internal lateinit var userDaoCache: UserDaoCache;
 
-    private val MAPPER = RowMapper<Request> { rs, _ ->
+    private val MAPPER = RowMapper { rs, _ ->
          Request(
                  rs.getObject("pk_request") as UUID,
                  rs.getObject("pk_folder") as UUID,
@@ -63,7 +64,8 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
     }
 
     override fun get(id: UUID) : Request {
-        return jdbc.queryForObject("$GET WHERE pk_request=?", MAPPER, id)
+        return jdbc.queryForObject("$GET WHERE pk_organization=? AND pk_request=?",
+                MAPPER, getOrgId(), id)
     }
 
     companion object {

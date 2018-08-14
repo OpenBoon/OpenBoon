@@ -33,27 +33,27 @@ public class UUIDFileSystem extends AbstractFileSystem implements ObjectFileSyst
     }
 
     @Override
-    public ObjectFile prepare(String category, Object value, String type, String... variant) {
-        ObjectFile file = get(category, value, type, variant);
+    public OfsFile prepare(String category, Object value, String type, String... variant) {
+        OfsFile file = get(category, value, type, variant);
         file.mkdirs();
         return file;
     }
 
     @Override
-    public ObjectFile get(String category, Object value, String type, String ... variant) {
+    public OfsFile get(String category, Object value, String type, String ... variant) {
         UUID uuid = nameBasedGenerator.generate(value.toString());
         StringBuilder sb = getParentDirectory(category, uuid);
         String name = getFilename(uuid, type, variant);
         sb.append(name);
 
-        return new ObjectFile(category, name, new File(sb.toString()));
+        return new OfsFile(category, name, new File(sb.toString()));
     }
 
     private static final Pattern REGEX_NAME =
             Pattern.compile("^([a-f0-9\\-]{36})_?([_\\w]+)?\\.([\\w]+)$", Pattern.CASE_INSENSITIVE);
 
     @Override
-    public ObjectFile get(String category, String name) {
+    public OfsFile get(String category, String name) {
         Matcher matcher = REGEX_NAME.matcher(name);
         if (matcher.matches()) {
             UUID id = UUID.fromString(matcher.group(1));
@@ -68,7 +68,7 @@ public class UUIDFileSystem extends AbstractFileSystem implements ObjectFileSyst
                 sb.append(getFilename(id, ext));
             }
 
-            return new ObjectFile(category, name, new File(sb.toString()));
+            return new OfsFile(category, name, new File(sb.toString()));
         }
         else {
             throw new IllegalArgumentException("Invalid object ID: " + name);
@@ -76,7 +76,8 @@ public class UUIDFileSystem extends AbstractFileSystem implements ObjectFileSyst
     }
 
     @Override
-    public ObjectFile get(String id) {
+    public OfsFile get(String id) {
+        id = id.replace("ofs://", "");
         String e[] = id.split("/", 2);
         return get(e[0], e[1]);
     }

@@ -1,0 +1,29 @@
+{
+  "name": "irm-dit1-import",
+  "type": 0,
+  "version": 1,
+  "processors": [
+    {
+      "className": "zplugins.irm.processors.CDVAssetProcessor",
+      "language": "python",
+      "args": {
+        "google_credential_path": "/var/secrets/google/cdv.json"
+      }
+    },
+    {
+      "className": "zplugins.pdf.processors.PdfIngestor",
+      "language": "python",
+      "args": {}
+    },
+    {
+      "className": "zplugins.proxies.processors.ProxyIngestor",
+      "language": "python",
+      "args": {}
+    },
+    {
+      "className": "zplugins.mxnet.mx.MxNetHash",
+      "language": "python",
+      "args": {}
+    }
+  ]
+}

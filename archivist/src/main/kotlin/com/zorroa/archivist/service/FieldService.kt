@@ -6,12 +6,12 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
-import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -35,14 +35,11 @@ interface FieldService {
 
 @Service
 class FieldServiceImpl @Autowired constructor(
-        val client: RestHighLevelClient,
+        val esClientCache: EsClientCache,
         val properties: ApplicationProperties,
         val fieldDao: FieldDao
 
 ): FieldService {
-
-    @Value("\${archivist.organization.single-org-index}")
-    private lateinit var alias: String
 
     private val fieldMapCache = CacheBuilder.newBuilder()
             .maximumSize(2)
@@ -78,9 +75,10 @@ class FieldServiceImpl @Autowired constructor(
                         .map { it }
                 )
 
-        val stream = client.lowLevelClient.performRequest("GET", "/archivist").entity.content
+        val rest = esClientCache[getOrgId()]
+        val stream = rest.client.lowLevelClient.performRequest("GET", "/${rest.route.indexName}").entity.content
         val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
-        getList(result, "", Document(map).getAttr("archivist.mappings.asset")!!, hiddenFields)
+        getList(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!, hiddenFields)
         return result
     }
 
@@ -205,10 +203,19 @@ class FieldServiceImpl @Autowired constructor(
     override fun getQueryFields(): Map<String, Float> {
         val result = mutableMapOf<String, Float>()
         val fields = getFields("asset")
+
+        logger.info("{}", fields)
+
         fields.getValue("keywords").forEach { v-> result[v] = 1.0f }
-        fields.getValue("keywords-boost").asSequence()
-                .map { it.split(":", limit = 2) }
-                .map { result[it[0]] = it[1].toFloat() }
+        for (field in fields.getValue("keywords-boost")) {
+            val (key,boost) = field.split(':', limit=2)
+            try {
+                result[key] = boost.toFloat()
+            } catch (e: Exception) {
+                logger.warn("Failed to parse boosted keyword field: {}", field)
+            }
+        }
+
         return result
     }
 

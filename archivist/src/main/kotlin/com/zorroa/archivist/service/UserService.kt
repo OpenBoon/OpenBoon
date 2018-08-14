@@ -6,7 +6,6 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserDaoCache
@@ -15,16 +14,19 @@ import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.dao.DataAccessException
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -97,29 +99,47 @@ class UserRegistryServiceImpl @Autowired constructor(
 ): UserRegistryService {
 
     @Autowired
+    internal lateinit var organizationService: OrganizationService
+
+    @Autowired
     internal lateinit var userService: UserService
 
     @Autowired
     internal lateinit var permissionService: PermissionService
 
+    @Value("\${archivist.organization.multiTenant}")
+    var multiTentant: Boolean = false
+
     /**
      * Register and external user from OAuth/SAML.
      */
-    override fun registerUser(username: String, source: AuthSource, groups: List<String>?): UserAuthed {
+    override fun registerUser(username: String, source: AuthSource): UserAuthed {
+
+        logger.info("Registering external user, multi-tenant enabled: {}", multiTentant)
+        val org = getOrganization(source)
+
         val user = if (!userService.exists(username, null)) {
+            logger.info("User not found, creating user: {}", username)
+
+            // We must become the super admin to add new users.
+            SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+
             val spec = UserSpec(
                     username,
                     UUID.randomUUID().toString() + UUID.randomUUID().toString(),
-                    username,
-                    source.authSourceId)
+                    source.attrs.getOrDefault("mail", "$username@zorroa.com"),
+                    source.authSourceId,
+                    firstName = source.attrs.getOrDefault("first_name", "First"),
+                    lastName = source.attrs.getOrDefault("last_name", "Last"))
             userService.create(spec)
         } else {
             userService.get(username)
         }
 
-        if (properties.getBoolean("archivist.security.saml.permissions.import") &&
-                groups != null) {
-            importAndAssignPermissions(user, source, groups)
+        if (properties.getBoolean("archivist.security.saml.permissions.import")) {
+            source.groups?.let {
+                importAndAssignPermissions(user, source, it)
+            }
         }
 
         val perms = userService.getPermissions(user)
@@ -131,6 +151,18 @@ class UserRegistryServiceImpl @Autowired constructor(
         val user = userService.get(username)
         val perms = userService.getPermissions(user)
         return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
+    }
+
+    fun getOrganization(source: AuthSource) : Organization {
+        return if (multiTentant) {
+            if (source.organizationName != null) {
+                organizationService.get(source.organizationName!!)
+            } else {
+                throw BadCredentialsException("Unable to determine organization, organization was null")
+            }
+        } else {
+            organizationService.getOnlyOne()
+        }
     }
 
     fun importAndAssignPermissions(user: UserId, source: AuthSource, groups: List<String>) {
@@ -156,6 +188,13 @@ class UserRegistryServiceImpl @Autowired constructor(
 
         userService.setPermissions(user, perms, source.authSourceId)
     }
+
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(UserRegistryServiceImpl::class.java)
+
+    }
 }
 
 @Service
@@ -164,7 +203,6 @@ class UserServiceImpl @Autowired constructor(
         private val userDao: UserDao,
         private val userDaoCache: UserDaoCache,
         private val permissionDao: PermissionDao,
-        private val organizationDao: OrganizationDao,
         private val tx: TransactionEventManager,
         private val properties: ApplicationProperties
 ): UserService, ApplicationListener<ContextRefreshedEvent> {
@@ -192,16 +230,6 @@ class UserServiceImpl @Autowired constructor(
 
     override fun create(builder: UserSpec): User {
 
-        /**
-         * TODO:
-         * Look into how and where this gets set in the cloud.
-         * Probably needs to be set.
-         */
-        if (builder.organizationId == null &&
-                properties.getBoolean("archivist.organization.single-org-mode")) {
-            builder.organizationId = organizationDao.getOnlyOne().id
-        }
-
         if (builder.source == null) {
             builder.source = SOURCE_LOCAL
         }
@@ -217,9 +245,9 @@ class UserServiceImpl @Autowired constructor(
 
         val userPerm = permissionDao.create(
                 PermissionSpec("user", builder.username), true)
-
         val userFolder = folderService.createUserFolder(
                 builder.username, userPerm)
+
 
         builder.homeFolderId = userFolder.id
         builder.userPermissionId = userPerm.id

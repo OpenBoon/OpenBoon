@@ -27,6 +27,7 @@ class FolderController @Autowired constructor(
         get() = folderService.getAll()
 
     @PostMapping(value = ["/api/v1/folders"])
+    @Throws(Exception::class)
     fun create(@RequestBody spec: FolderSpec): Folder {
         return folderService.create(spec, false)
     }

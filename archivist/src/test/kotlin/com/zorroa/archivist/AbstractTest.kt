@@ -9,8 +9,9 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
-import com.zorroa.common.domain.Document
+import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.Source
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
@@ -18,12 +19,10 @@ import com.zorroa.common.util.FileUtils
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
-import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
@@ -47,7 +46,7 @@ import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource("/test.properties")
+@TestPropertySource(locations=["classpath:test.properties"])
 @WebAppConfiguration
 @Transactional
 open abstract class AbstractTest {
@@ -55,16 +54,13 @@ open abstract class AbstractTest {
     val logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
-    protected lateinit var client: RestHighLevelClient
+    protected lateinit var estClientCache: EsClientCache
 
     @Autowired
     protected lateinit var userService: UserService
 
     @Autowired
-    protected lateinit var assetService: AssetService
-
-    @Autowired
-    protected lateinit var storageService: StorageService
+    protected lateinit var storageRouter: StorageRouter
 
     @Autowired
     protected lateinit var permissionService: PermissionService
@@ -94,6 +90,9 @@ open abstract class AbstractTest {
     protected lateinit var requestService: RequestService
 
     @Autowired
+    protected lateinit var organizationService: OrganizationService
+
+    @Autowired
     protected lateinit var userRegistryService: UserRegistryService
 
     @Autowired
@@ -104,9 +103,6 @@ open abstract class AbstractTest {
 
     @Autowired
     internal lateinit var transactionManager: DataSourceTransactionManager
-
-    @Value("\${archivist.organization.single-org-index}")
-    protected lateinit var alias: String
 
     protected lateinit var jdbc: JdbcTemplate
 
@@ -153,14 +149,14 @@ open abstract class AbstractTest {
         transactionEventManager.isImmediateMode = true
 
         /**
-         * Elastic must be created and cleaned before authentication.
-         */
-        cleanElastic()
-
-        /**
          * Before we can do anything reliably we need a logged in user.
          */
         authenticate()
+
+        /**
+         * We need to be authed to clean elastic.
+         */
+        cleanElastic()
 
         val spec1 = UserSpec(
                 "user",
@@ -203,16 +199,19 @@ open abstract class AbstractTest {
          * which adds some standard data to both databases.
          */
 
+        val rest = estClientCache[getOrgId()]
+        logger.info(rest.route.clusterUrl)
+
 
         val reqDel = DeleteIndexRequest("_all")
-        client.indices().delete(reqDel)
+        rest.client.indices().delete(reqDel)
 
         val mapping = Json.Mapper.readValue<Map<String,Any>>(
                 File("../elasticsearch/asset.json"), Json.GENERIC_MAP)
 
-        val reqCreate = CreateIndexRequest("archivist")
+        val reqCreate = CreateIndexRequest(rest.route.indexName)
         reqCreate.source(mapping)
-        client.indices().create(reqCreate)
+        rest.client.indices().create(reqCreate)
     }
 
     /**
@@ -295,7 +294,6 @@ open abstract class AbstractTest {
             }
         }
 
-        logger.info("TEST ASSET: {}", result)
         return result
     }
 
@@ -317,10 +315,12 @@ open abstract class AbstractTest {
     }
 
     fun refreshIndex() {
-        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
+        val rest = estClientCache[UUID.randomUUID()]
+        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 
     fun refreshIndex(sleep: Long) {
-        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
+        val rest = estClientCache[UUID.randomUUID()]
+        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 }

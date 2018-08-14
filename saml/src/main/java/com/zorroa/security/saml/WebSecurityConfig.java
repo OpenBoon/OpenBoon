@@ -20,14 +20,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
+import org.springframework.security.saml.context.SAMLContextProvider;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
+import org.springframework.security.saml.context.SAMLContextProviderLB;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -52,11 +53,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.*;
 
 
@@ -124,8 +128,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Provider of default SAML Context
     @Bean
-    public SAMLContextProviderImpl contextProvider() {
-        return new SAMLContextProviderImpl();
+    public SAMLContextProvider contextProvider() {
+        logger.info("BaseURL is proxy: {}", properties.isBaseUrlIsProxy());
+
+        if (properties.isBaseUrlIsProxy()) {
+            URI uri = URI.create(properties.baseUrl);
+            SAMLContextProviderLB ctx = new SAMLContextProviderLB();
+            ctx.setScheme(uri.getScheme());
+            ctx.setServerName(uri.getHost());
+            ctx.setIncludeServerPortInRequestURL(false);
+            ctx.setContextPath("/");
+
+            if (uri.getScheme().endsWith("s")) {
+                ctx.setServerPort(443);
+            }
+            else{
+                ctx.setServerPort(80);
+            }
+            return ctx;
+        }
+        else {
+            return new SAMLContextProviderImpl();
+        }
     }
 
     // Initialization of OpenSAML library
@@ -178,10 +202,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Central storage of cryptographic keys
     @Bean
     public KeyManager keyManager() {
-        Map<String,String> keystore = properties.keystore;
-
+        Map<String, String> keystore = properties.keystore;
         Resource storeFile = new FileSystemResource(new File(keystore.get("path")));
-        Map<String, String> passwords = new HashMap<String, String>();
+        Map<String, String> passwords = new HashMap<>();
         passwords.put(keystore.get("alias"), keystore.get("keyPassword"));
 
         return new JKSKeyManager(storeFile, keystore.get("password"),
@@ -234,9 +257,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ExtendedMetadata extendedMetadata() {
         boolean discovery = properties.discovery;
+        logger.info("SAML discovery  {}", discovery);
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setIdpDiscoveryEnabled(discovery);
-        extendedMetadata.setSignMetadata(false);
+        extendedMetadata.setSignMetadata(true);
         extendedMetadata.setEcpEnabled(true);
         return extendedMetadata;
     }
@@ -259,11 +283,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         boolean discovery = properties.discovery;
 
         List<MetadataProvider> providers = new ArrayList();
-        Files.list(Paths.get("config/saml"))
+        Files.list(Paths.get("/config/saml"))
                 .filter(Files::isRegularFile)
-                .filter(p->p.getFileName().toString().endsWith(".properties"))
+                .filter(p -> p.getFileName().toString().endsWith(".properties"))
                 .forEach(p -> {
 
+                    logger.info("Initializing SAML : {}", p);
                     Properties props = new Properties();
                     try {
                         props.load(new FileInputStream(p.toFile()));
@@ -271,7 +296,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                         ZorroaExtendedMetadata extendedMetadata = new ZorroaExtendedMetadata();
                         extendedMetadata.setIdpDiscoveryEnabled(discovery);
-                        extendedMetadata.setSignMetadata(false);
+                        extendedMetadata.setSignMetadata(true);
                         extendedMetadata.setEcpEnabled(true);
                         extendedMetadata.setProps(props);
 
@@ -283,10 +308,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                     new ExtendedMetadataDelegate(httpMetadataProvider, extendedMetadata);
                             emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
+                            emd.setRequireValidMetadata(false);
                             backgroundTaskTimer.purge();
                             providers.add(emd);
-                        }
-                        else {
+                        } else {
+                            try {
+                                MessageDigest md5 = MessageDigest.getInstance("MD5");
+                                byte[] bytes = Files.readAllBytes(Paths.get(uri));
+                                byte[] hash = md5.digest(bytes);
+                                logger.info("Metdata MD5: {}", DatatypeConverter.printHexBinary(hash));
+                            } catch (Exception e) {
+                                logger.warn("Unable to MD5 metadata");
+                            }
+
                             FilesystemMetadataProvider provider =
                                     new FilesystemMetadataProvider(new File(uri));
                             provider.setParserPool(parserPool());
@@ -294,12 +328,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                     new ExtendedMetadataDelegate(provider, extendedMetadata);
                             emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
+                            emd.setRequireValidMetadata(false);
                             providers.add(emd);
                         }
                     } catch (IOException e) {
                         logger.warn("Failed to open SAML file: ", e);
-                    }
-                    catch (MetadataProviderException e) {
+                    } catch (MetadataProviderException e) {
                         logger.warn("Failed to open SAML file: ", e);
                     }
                 });
@@ -311,10 +345,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public MetadataGenerator metadataGenerator() {
         String baseURL = properties.baseUrl;
+        logger.info("SAML base URL {}", baseURL);
         MetadataGenerator metadataGenerator = new MetadataGenerator();
         metadataGenerator.setEntityId(baseURL + "/saml/metadata");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
-        metadataGenerator.setIncludeDiscoveryExtension(false);
         metadataGenerator.setKeyManager(keyManager());
         metadataGenerator.setEntityBaseURL(baseURL);
         return metadataGenerator;
@@ -332,7 +366,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl("/landing");
+        successRedirectHandler.setDefaultTargetUrl("/curator");
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
@@ -367,7 +401,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public MetadataGeneratorFilter metadataGeneratorFilter() {
-        return new MetadataGeneratorFilter(metadataGenerator());
+        if (properties.isBaseUrlIsProxy()) {
+            return new ZorroaMetadataFilter(properties.baseUrl, metadataGenerator());
+        }
+        else {
+            return new MetadataGeneratorFilter(metadataGenerator());
+        }
     }
 
     // Handler for successful logout
@@ -402,8 +441,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SAMLLogoutFilter samlLogoutFilter() {
         return new SAMLLogoutFilter(successLogoutHandler(),
-                new LogoutHandler[] { logoutHandler() },
-                new LogoutHandler[] { logoutHandler() });
+                new LogoutHandler[]{logoutHandler()},
+                new LogoutHandler[]{logoutHandler()});
     }
 
     // Bindings
@@ -484,23 +523,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Returns the authentication manager currently used by Spring.
-     * It represents a bean definition with the aim allow wiring from
-     * other classes performing the Inversion of Control (IoC).
-     *
-     * @throws  Exception
-     */
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    /**
      * Defines the web based security configuration.
      *
-     * @param   http It allows configuring web based security for specific http requests.
-     * @throws  Exception
+     * @param http It allows configuring web based security for specific http requests.
+     * @throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -521,6 +547,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/error").permitAll()
+                .antMatchers("/curator").permitAll()
                 .antMatchers("/saml/**").permitAll();
 
         http
@@ -537,8 +564,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Sets a custom authentication provider.
      *
-     * @param   auth SecurityBuilder used to create an AuthenticationManager.
-     * @throws  Exception
+     * @param auth SecurityBuilder used to create an AuthenticationManager.
+     * @throws Exception
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

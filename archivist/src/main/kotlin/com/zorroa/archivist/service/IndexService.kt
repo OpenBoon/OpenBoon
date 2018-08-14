@@ -3,19 +3,17 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
-import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
-import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.schema.ProxySchema
@@ -25,10 +23,7 @@ import com.zorroa.common.search.AssetSearchOrder
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationListener
-import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
@@ -90,20 +85,24 @@ interface IndexService {
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
         private val permissionDao: PermissionDao,
-        private val dyHierarchyService: DyHierarchyService,
-        private val taxonomyService: TaxonomyService,
-        private val logService: EventLogService,
-        private val searchService: SearchService,
-        private val properties: ApplicationProperties,
-        private val ofs: ObjectFileSystem
+        private val storageRouter: StorageRouter
 
-) : IndexService, ApplicationListener<ContextRefreshedEvent> {
+) : IndexService {
 
-    private var defaultPerms = PermissionSchema()
+    @Autowired
+    lateinit var dyHierarchyService: DyHierarchyService
 
-    override fun onApplicationEvent(contextRefreshedEvent: ContextRefreshedEvent) {
-        setDefaultPermissions()
-    }
+    @Autowired
+    lateinit var  taxonomyService: TaxonomyService
+
+    @Autowired
+    lateinit var logService: EventLogService
+
+    @Autowired
+    lateinit var searchService: SearchService
+
+    @Autowired
+    lateinit var assetService: AssetService
 
     override fun get(id: String): Document {
         return if (id.startsWith("/")) {
@@ -156,7 +155,7 @@ class IndexServiceImpl  @Autowired  constructor (
          * and if they do exist we'll remove them so they don't overwrite
          * the proper value.
          */
-        val organizationId = getUser().organizationId
+        val organizationId = getOrgId()
 
         for (source in spec.sources!!) {
 
@@ -224,14 +223,16 @@ class IndexServiceImpl  @Autowired  constructor (
                 }
                 source.setAttr("zorroa.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
             } else if (perms.isEmpty) {
+
                 /**
                  * If the source didn't come with any permissions and the current perms
                  * on the asset are empty, we apply the default permissions.
                  *
                  * If there is no permissions.
                  */
+                // get the default perms for org.
                 source.setAttr("zorroa.permissions",
-                        Json.Mapper.convertValue<Map<String,Any>>(defaultPerms, Json.GENERIC_MAP))
+                        Json.Mapper.convertValue<Map<String,Any>>(permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP))
             }
 
             if (source.links != null) {
@@ -244,11 +245,16 @@ class IndexServiceImpl  @Autowired  constructor (
                 }
                 source.setAttr("zorroa.links", links)
             }
+
+            try {
+                assetService.setDocument(UUID.fromString(source.id), source)
+            } catch (e: Exception) {
+                logger.warn("Failed to store asset in TX store: ", e)
+            }
         }
 
         val result = indexDao.index(spec.sources!!)
         if (result.created + result.updated + result.replaced > 0) {
-
             /**
              * TODO: make these 1 thread pool
              */
@@ -305,12 +311,9 @@ class IndexServiceImpl  @Autowired  constructor (
         val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
         if (proxySchema != null) {
             for (proxy in proxySchema.proxies!!) {
-                try {
-                    if (!Files.deleteIfExists(ofs.get(proxy.id).file.toPath())) {
-                        logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
-                    }
-                } catch (e: Exception) {
-                    logger.warn("Failed to delete OFS file: {}", e)
+                val ofile = storageRouter.getObjectFile(proxy)
+                if (!ofile.delete()) {
+                    logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
                 }
             }
         }
@@ -320,24 +323,6 @@ class IndexServiceImpl  @Autowired  constructor (
 
     override fun getMapping(): Map<String, Any> {
         return indexDao.getMapping()
-    }
-
-    private fun setDefaultPermissions() {
-        val defaultReadPerms = properties.getList("archivist.security.permissions.defaultRead")
-        val defaultWritePerms = properties.getList("archivist.security.permissions.defaultWrite")
-        val defaultExportPerms = properties.getList("archivist.security.permissions.defaultExport")
-
-        for (p in permissionDao.getAll(defaultReadPerms)) {
-            defaultPerms.addToRead(p.id)
-        }
-
-        for (p in permissionDao.getAll(defaultWritePerms)) {
-            defaultPerms.addToWrite(p.id)
-        }
-
-        for (p in permissionDao.getAll(defaultExportPerms)) {
-            defaultPerms.addToExport(p.id)
-        }
     }
 
     companion object {

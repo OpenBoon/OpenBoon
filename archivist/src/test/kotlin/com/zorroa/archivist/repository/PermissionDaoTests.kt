@@ -5,9 +5,9 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
-import com.zorroa.security.Groups
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
+import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -112,8 +112,21 @@ class PermissionDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testGet() {
+    fun testGetId() {
+        val p = permissionDao.getId(perm.authority)
+        assertEquals(p, perm.id)
+    }
+
+    @Test
+    fun testGetById() {
         val p = permissionDao.get(perm.id)
+        assertEquals(perm.name, p.name)
+        assertEquals(perm.description, p.description)
+    }
+
+    @Test
+    fun testGetByAuthority() {
+        val p = permissionDao.get(perm.authority)
         assertEquals(perm.name, p.name)
         assertEquals(perm.description, p.description)
     }
@@ -121,7 +134,7 @@ class PermissionDaoTests : AbstractTest() {
     @Test
     fun testGetAll() {
         val perms = permissionDao.getAll()
-        assertTrue(perms.size > 0)
+        assertTrue(perms.isNotEmpty())
     }
 
     @Test
@@ -260,5 +273,13 @@ class PermissionDaoTests : AbstractTest() {
         var acl = Acl().addEntry("zorroa::shizzle", 1)
         acl = permissionDao.resolveAcl(acl, true)
         assertNotNull(acl[0].permissionId)
+    }
+
+    @Test
+    fun getAllPermissionSchema() {
+        val schema = permissionDao.getDefaultPermissionSchema()
+        assertTrue(schema.write.isNotEmpty())
+        assertTrue(schema.read.isNotEmpty())
+        assertTrue(schema.export.isNotEmpty())
     }
 }
