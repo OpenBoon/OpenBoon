@@ -19,7 +19,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
 
     override fun getIndexedMetadata(assetId: Asset): Document {
         val companyId = assetId.keys["companyId"]
-        return client.get("/companies/$companyId/assets/${assetId.id}/es", Document::class.java)
+        return client.get("/companies/$companyId/documents/${assetId.id}/es", Document::class.java)
     }
 
     override fun updateIndexedMetadata(asset:Asset, doc: Document): Any {
@@ -27,6 +27,6 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
         if (companyId == null) {
             throw IllegalStateException("Document has no companyId: ${asset.id}")
         }
-        return client.put("/companies/$companyId/assets/${asset.id}/es", doc, Json.GENERIC_MAP)
+        return client.put("/companies/$companyId/documents/${asset.id}/es", doc, Json.GENERIC_MAP)
     }
 }
