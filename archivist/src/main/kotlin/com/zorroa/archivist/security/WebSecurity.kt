@@ -50,7 +50,6 @@ class MultipleWebSecurityConfig {
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
-                    .and().sessionManagement()
                     .and().httpBasic()
                     .and().csrf().disable()
 
@@ -103,7 +102,6 @@ class MultipleWebSecurityConfig {
                     .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
-                    .and().sessionManagement()
                     .and().csrf().disable()
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
