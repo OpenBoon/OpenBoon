@@ -123,7 +123,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
         val id = uuid1.generate()
 
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setString(2, builder.username)
@@ -140,7 +140,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setObject(13, getOrgId())
             ps.setString(14, Json.serializeToString(builder.authAttrs, "{}"))
             ps
-        })
+        }
         return get(id)
     }
 

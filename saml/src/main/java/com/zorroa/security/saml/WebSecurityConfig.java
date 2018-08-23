@@ -120,7 +120,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // messages
     @Bean
     public SAMLAuthenticationProvider samlAuthenticationProvider() {
-        SAMLAuthenticationProvider samlAuthenticationProvider = new SAMLAuthenticationProvider();
+        SAMLAuthenticationProvider samlAuthenticationProvider = new ZorroaSAMLAuthenticationProvider();
         samlAuthenticationProvider.setUserDetails(samlUserDetailsServiceImpl);
         samlAuthenticationProvider.setForcePrincipalAsString(false);
         return samlAuthenticationProvider;
@@ -265,8 +265,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return extendedMetadata;
     }
 
-    // IDP Discovery Service
-
     @Bean
     public SAMLDiscovery samlIDPDiscovery() {
         SAMLDiscovery idpDiscovery = new SAMLDiscovery();
@@ -366,7 +364,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl("/curator");
+        successRedirectHandler.setDefaultTargetUrl(properties.landingPage);
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
@@ -413,7 +411,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SimpleUrlLogoutSuccessHandler successLogoutHandler() {
         SimpleUrlLogoutSuccessHandler successLogoutHandler = new SimpleUrlLogoutSuccessHandler();
-        successLogoutHandler.setDefaultTargetUrl("/");
+        successLogoutHandler.setDefaultTargetUrl(properties.landingPage);
         return successLogoutHandler;
     }
 
@@ -534,9 +532,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .httpBasic()
-                .authenticationEntryPoint(samlEntryPoint())
-                .and()
-                .sessionManagement();
+                .authenticationEntryPoint(samlEntryPoint());
 
         http
                 .csrf()

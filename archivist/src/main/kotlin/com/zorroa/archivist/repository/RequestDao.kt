@@ -45,7 +45,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
         val userId = getUserId()
         val time = System.currentTimeMillis()
 
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, userId)
@@ -58,7 +58,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
             ps.setString(9, Json.serializeToString(spec.emailCC, "[]"))
             ps.setObject(10, getUser().organizationId)
             ps
-        })
+        }
 
         return get(id)
     }

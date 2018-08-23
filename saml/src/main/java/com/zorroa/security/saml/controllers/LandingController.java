@@ -36,7 +36,6 @@ public class LandingController {
 
 	@RequestMapping(value = "/curator", method = {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView landing(ModelMap model) {
-		logger.info("SAML Landing page");
 		return new ModelAndView("redirect:" + properties.landingPage, model);
 	}
 }

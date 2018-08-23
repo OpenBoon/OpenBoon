@@ -42,7 +42,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
     override fun create(app: String, feature: String, name: String, data: Any): Blob {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setString(2, app)
@@ -55,7 +55,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
             ps.setLong(9, time)
             ps.setObject(10, getOrgId())
             ps
-        })
+        }
 
         return get(id)
     }

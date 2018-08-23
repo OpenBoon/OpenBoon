@@ -77,7 +77,7 @@ class ObjectFile (
      * Currently unsupported
      */
     fun delete() : Boolean {
-        return false;
+        return false
     }
 }
 

@@ -66,7 +66,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
 
         val id = uuid1.generate()
         try {
-            jdbc.update({ connection ->
+            jdbc.update { connection ->
                 val ps = connection.prepareStatement(INSERT)
                 ps.setObject(1, id)
                 ps.setObject(2, getOrgId())
@@ -80,7 +80,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 ps.setString(7, spec.source)
                 ps.setBoolean(8, immutable)
                 ps
-            })
+            }
         } catch (e: DuplicateKeyException) {
             throw DuplicateKeyException("The permission " + spec.name + " already exists")
         }

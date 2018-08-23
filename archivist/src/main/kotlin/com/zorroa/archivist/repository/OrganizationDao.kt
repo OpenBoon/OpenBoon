@@ -26,12 +26,12 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
         Preconditions.checkNotNull(spec.name,
                 "The organization cannot be null")
         val id = uuid1.generate()
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setString(2, spec.name)
             ps
-        })
+        }
         return get(id)
     }
 
