@@ -3,6 +3,7 @@ import argparse
 import subprocess
 import yaml
 import time
+import os
 
 def main():
     parser = argparse.ArgumentParser(prog="zbuild")
@@ -30,7 +31,7 @@ def main():
         push_to_gcp(project, app)
 
     if args.deploy:
-        deploy_to_app_engine(project, app)
+        deploy_to_app_engine(project, app, args.version)
 
 
 def get_project():
@@ -57,11 +58,19 @@ def push_to_gcp(project, app):
 
 def deploy_to_app_engine(project, app, version):
     image = get_image_name(project, app)
-    cmd = ["gcloud", "app", "deploy", "app.yaml", "--project", project, "--image-url", image, "--quiet"]
+    cmd = ["gcloud", "app", "deploy", determine_app_yaml(project), "--project", project, "--image-url", image, "--quiet"]
     if version:
         cmd.extend(["--version", version])
     print cmd
     subprocess.check_call(cmd, shell=False)
+
+def determine_app_yaml(project):
+    proj_yaml = project + ".yaml"
+    if os.path.exists(proj_yaml):
+        print "Detected project specific: %s:" % proj_yaml
+        return proj_yaml
+    else:
+        return "app.yaml"
 
 def rebuild_jar_file():
     cmd =["mvn", "clean", "package", "-Dmaven.test.skip=true"]
