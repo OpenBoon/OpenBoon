@@ -54,7 +54,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
 
     override fun create(spec: DyHierarchySpec): DyHierarchy {
         val id = uuid1.generate()
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, spec.folderId!!)
@@ -64,7 +64,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
             ps.setString(6, Json.serializeToString(spec.levels, "[]"))
             ps.setObject(7, getUser().organizationId)
             ps
-        })
+        }
         return get(id)
     }
 

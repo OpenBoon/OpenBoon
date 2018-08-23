@@ -107,7 +107,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
         val user = getUserId()
         val id = uuid1.generate()
 
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, folder.id)
@@ -127,7 +127,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             ps.setInt(16, order)
             ps.setString(17, Json.serializeToString(folder.attrs, "{}"))
             ps
-        })
+        }
         return id
     }
 
