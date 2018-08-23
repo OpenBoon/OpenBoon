@@ -364,7 +364,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl("/curator");
+        successRedirectHandler.setDefaultTargetUrl(properties.landingPage);
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
