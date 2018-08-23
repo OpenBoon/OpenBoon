@@ -129,6 +129,9 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
                         val created = pipelineDao.create(spec)
                         logger.info("Created embedded pipeline: {}", created)
                     }
+                    catch (e: Exception) {
+                        logger.warn("Failed to load pipeline file:", e)
+                    }
                 }
             }
         }
