@@ -10,6 +10,7 @@ def main():
     parser.add_argument("-p", "--push", action="store_true", help="push to GCP container registry")
     parser.add_argument("-d", "--deploy", action="store_true", help="Deploy latest version")
     parser.add_argument("-b", "--build", action="store_true", help="Recompile jar file")
+    parser.add_argument("-v", "--version", help="specify version")
 
     args = parser.parse_args()
     app = yaml.load(open("app.yaml"))
@@ -54,9 +55,11 @@ def push_to_gcp(project, app):
     print cmd
     subprocess.check_call(cmd, shell=False)
 
-def deploy_to_app_engine(project, app):
+def deploy_to_app_engine(project, app, version):
     image = get_image_name(project, app)
     cmd = ["gcloud", "app", "deploy", "app.yaml", "--project", project, "--image-url", image, "--quiet"]
+    if version:
+        cmd.extend(["--version", version])
     print cmd
     subprocess.check_call(cmd, shell=False)
 
