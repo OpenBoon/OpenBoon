@@ -101,26 +101,35 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override operator fun get(id: UUID): Permission {
-        return jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND pk_permission=?",
-                MAPPER, getOrgId(), id)
+        val orgId = getOrgId()
+        return throwWhenNotFound("Permission '$id' was not found for '$orgId'") {
+            jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND pk_permission=?",
+                    MAPPER, orgId, id)
+        }
     }
 
     override fun getId(name: String): UUID {
         if (UUID_REGEXP.matches(name)) {
             return UUID.fromString(name)
         }
-        try {
+        val orgId = getOrgId()
+        return throwWhenNotFound("Permission '$name' was not found for org: $orgId") {
             return jdbc.queryForObject("SELECT pk_permission FROM permission WHERE pk_organization=? AND str_authority=?",
-                    UUID::class.java, getOrgId(), name)
-        } catch (e: EmptyResultDataAccessException) {
-            throw EmptyResultDataAccessException("Failed to find permission $name", 1)
+                    UUID::class.java, orgId, name)
+        }
+    }
+
+    override fun get(type: String, name: String): Permission {
+        val orgId = getOrgId()
+        return throwWhenNotFound("Permission '$type::$name' was not found for org: '$orgId'") {
+            jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND str_name=? AND str_type=?",
+                    MAPPER, orgId, name, type)
         }
     }
 
     override operator fun get(authority: String): Permission {
         val parts = authority.split(Permission.JOIN.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        return jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND str_name=? AND str_type=?", MAPPER,
-                getOrgId(), parts[1], parts[0])
+        return get(parts[0], parts[1])
     }
 
     override fun resolveAcl(acl: Acl?, createMissing: Boolean): Acl {
@@ -201,11 +210,6 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 MAPPER, getOrgId(), type)
     }
 
-    override fun get(type: String, name: String): Permission {
-        return jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND str_name=? AND str_type=?",
-                MAPPER, getOrgId(), name, type)
-    }
-
     override fun getAll(ids: Collection<UUID>?): List<Permission> {
         return if (ids == null || ids.isEmpty()) {
             listOf()
@@ -276,7 +280,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         private const val COUNT = "SELECT COUNT(1) FROM permission"
         private const val GET = "SELECT * FROM permission "
 
-        private val GET_BY_USER = "SELECT p.* " +
+        private const val GET_BY_USER = "SELECT p.* " +
                 "FROM " +
                 "permission p, " +
                 "user_permission m " +
