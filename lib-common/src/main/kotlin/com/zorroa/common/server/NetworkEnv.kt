@@ -1,39 +1,39 @@
 package com.zorroa.common.server
 
-/**
- * Return the URL to self.
- */
-fun getPublicUrl() : String {
-    val env = System.getenv()
-    return if (env["GCLOUD_PROJECT"] != null) {
-        val project = env["GCLOUD_PROJECT"]
-        val service = env["GAE_SERVICE"]
-        "https://$service-dot-$project.appspot.com"
-    } else {
-        "http://localhost:8080"
+interface NetworkEnvironment {
+    fun getPublicUrl(service: String) : String
+    fun getBucket(name: String) : String
+}
+
+class GoogleAppEngineEnvironment(private val project: String, private val hostTable: Map<String, String>) : NetworkEnvironment {
+
+    override fun getPublicUrl(service: String) : String {
+        return hostTable.getOrDefault(service,  "https://$service-dot-$project.appspot.com")
+    }
+
+    override fun getBucket(name: String) : String {
+        return "$project-$name"
     }
 }
 
-/**
- * Return the URL to the given microservice
- */
-fun getPublicUrl(service: String) : String {
-    val env= System.getenv()
-    return if (env["GCLOUD_PROJECT"] != null) {
-        val project = env["GCLOUD_PROJECT"]
-        "https://$service-dot-$project.appspot.com"
-    } else {
-        "http://localhost:8080"
+class StaticVmEnvironment(private val project: String, private val hostTable: Map<String, String>) : NetworkEnvironment {
+
+    override fun getPublicUrl(service: String) : String {
+        return hostTable.getOrDefault(service, "https://$service-$project.zorroa.com")
+    }
+
+    override fun getBucket(name: String) : String {
+        return "$project-$name"
     }
 }
 
-fun getJobDataBucket() : String {
-    val env= System.getenv()
-    return if (env.get("GCLOUD_PROJECT") != null) {
-        val project = env["GCLOUD_PROJECT"]
-        return "$project-zorroa-job-data"
+class DockerComposeEnvironment(private val hostTable: Map<String, String>) : NetworkEnvironment {
+
+    override fun getPublicUrl(service: String): String {
+        return  hostTable.getOrDefault(service, "http://$service")
     }
-    else {
-        "zorroa-job-data"
+
+    override fun getBucket(name: String): String {
+        return name
     }
 }

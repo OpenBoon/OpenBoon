@@ -10,8 +10,7 @@ import com.zorroa.analyst.repository.JobDao
 import com.zorroa.analyst.repository.LockDao
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.server.getJobDataBucket
-import com.zorroa.common.server.getPublicUrl
+import com.zorroa.common.server.NetworkEnvironment
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -108,7 +107,8 @@ interface JobRegistryService {
 class JobRegistryServiceImpl @Autowired constructor(
         private val jobService: JobService,
         private val storageService: JobStorageService,
-        private val pipelineService: PipelineService) : JobRegistryService {
+        private val pipelineService: PipelineService,
+        private val networkEnvironment: NetworkEnvironment) : JobRegistryService {
 
     override fun launchJob(spec: JobSpec) : Job {
         val job = jobService.create(spec)
@@ -118,7 +118,7 @@ class JobRegistryServiceImpl @Autowired constructor(
 
             // The scheduler will sign this when its needed.
             storageService.storeBlob(
-                    getJobDataBucket(),
+                    networkEnvironment.getBucket("zorroa-job-data"),
                     job.getScriptPath(),
                     "application/json",
                     Json.serialize(spec.script))
@@ -142,7 +142,7 @@ class JobRegistryServiceImpl @Autowired constructor(
     }
 
     fun handleImportJob(spec: JobSpec, job: Job) {
-        val selfUrl = getPublicUrl()
+        val selfUrl = networkEnvironment.getPublicUrl("zorroa-analyst")
         val endpoint = "$selfUrl/api/v1/jobs/${job.id}/_finish"
 
         spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.MetadataRestRequest",
@@ -152,7 +152,7 @@ class JobRegistryServiceImpl @Autowired constructor(
 
     fun handleExportJob(spec: JobSpec, job: Job) {
         // TODO: Add processors to register exported files with Archivist
-        val selfUrl = getPublicUrl()
+        val selfUrl = networkEnvironment.getPublicUrl("zorroa-analyst")
         val endpoint = "$selfUrl/api/v1/jobs/${job.id}/_finish"
         spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.MetadataRestRequest",
                 args=mapOf("endpoint" to endpoint, "phase" to "teardown", "method" to "put")))
@@ -170,7 +170,8 @@ class JobRegistryServiceImpl @Autowired constructor(
 class JobServiceImpl @Autowired constructor(
         val jobDao: JobDao,
         val lockDao: LockDao,
-        val eventPublisher: EventPublisher): JobService {
+        val eventPublisher: EventPublisher,
+        val networkEnvironment: NetworkEnvironment): JobService {
 
     @Autowired
     lateinit var storageService : JobStorageService
@@ -215,7 +216,8 @@ class JobServiceImpl @Autowired constructor(
          */
         if (job.lockAssets) {
             val script = Json.Mapper.readValue(
-                    storageService.getInputStream(getJobDataBucket(), job.getScriptPath()), ZpsScript::class.java)
+                    storageService.getInputStream(networkEnvironment.getBucket("zorroa-job-data"),
+                            job.getScriptPath()), ZpsScript::class.java)
             script?.over?.forEach {
                 lockDao.create(LockSpec(UUID.fromString(it.id), job.id))
             }

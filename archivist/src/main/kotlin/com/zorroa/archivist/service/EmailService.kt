@@ -4,12 +4,12 @@ import com.google.common.base.Charsets
 import com.google.common.io.CharStreams
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.domain.PasswordResetToken
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.repository.UserDao
+import com.zorroa.common.server.NetworkEnvironment
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
@@ -44,7 +44,7 @@ class EmailServiceImpl @Autowired constructor(
 
         val toName = toUser.firstName ?: toUser.username
         val fromName = fromUser.firstName ?: fromUser.username
-        val url = networkEnv.publicUri().toString() + "/search?id=" + link.id
+        val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/search?id=" + link.id
 
         val text = StringBuilder(1024)
         text.append("Hello ")
@@ -78,7 +78,7 @@ class EmailServiceImpl @Autowired constructor(
 
         if (token != null) {
             val name = if (user.firstName == null) user.username else user.firstName
-            val url = networkEnv.publicUri().toString() + "/password?token=" + token.toString()
+            val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/password?token=" + token.toString()
 
             val text = StringBuilder(1024)
             text.append("Hello ")
@@ -111,7 +111,7 @@ class EmailServiceImpl @Autowired constructor(
         val name = if (user.firstName == null) user.username else user.firstName
 
         if (token != null) {
-            val url = networkEnv.publicUri().toString() + "/onboard?token=" + token.toString()
+            val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/onboard?token=" + token.toString()
 
             val text = StringBuilder(1024)
             text.append("Hello ")
@@ -150,7 +150,7 @@ class EmailServiceImpl @Autowired constructor(
         } else {
             name = user.username
         }
-        val url = networkEnv.publicUri().toString() + "/folder/" + req.folderId
+        val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/folder/" + req.folderId
         val folderPath = folderService.getPath(folderService.get(req.folderId))
         val folderName = folderPath.split("/").last()
         val toEmail = properties.getString("archivist.requests.managerEmail")
