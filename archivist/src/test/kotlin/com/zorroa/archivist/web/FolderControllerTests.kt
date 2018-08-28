@@ -76,6 +76,24 @@ class FolderControllerTests : MockMvcTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testGetRoot() {
+
+        val result = mvc.perform(get("/api/v1/folders/_root")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+        val folder = Json.Mapper.readValue<Folder>(result.response.contentAsString,
+                object : TypeReference<Folder>() {
+
+                })
+
+        assertEquals(null, folder.parentId)
+        assertEquals("/", folder.name)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testGet() {
         val result = mvc.perform(get("/api/v1/folders/" + folder.id)
                 .session(session)

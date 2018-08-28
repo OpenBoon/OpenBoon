@@ -71,6 +71,11 @@ class FolderController @Autowired constructor(
                 folderService.exists(req.getValue("path")))
     }
 
+    @GetMapping(value = ["/api/v1/folders/_root"])
+    fun getRootFolder(): Any {
+        return folderService.getRoot()
+    }
+
     @Deprecated("")
     @GetMapping(value = ["/api/v1/folders/_exists/**"])
     fun exists(request: HttpServletRequest): Any {
