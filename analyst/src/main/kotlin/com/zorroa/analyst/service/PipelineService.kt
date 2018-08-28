@@ -69,7 +69,6 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
             PipelineType.Export-> properties.defaultExportPipelines
             else -> throw IllegalArgumentException("There are no default $type pipelines")
         }
-        logger.info(names)
         return if (names != null) {
             names.split(',').map { it.trim() }
         }
@@ -86,7 +85,6 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
     override fun resolveExecute(pipelines: List<String>) : MutableList<ProcessorRef> {
         val processors = mutableListOf<ProcessorRef>()
         pipelines.forEach {
-            logger.info("Pipeline: {}", it)
             val pipeline = pipelineDao.get(it)
             processors.addAll(pipeline.processors)
         }
@@ -119,7 +117,6 @@ class PipelineServiceImpl : PipelineService, ApplicationListener<ContextRefreshe
             if (Files.exists(path)) {
                 for (file in Files.list(path)) {
                     val spec = Json.Mapper.readValue<PipelineSpec>(file.toFile())
-                    print("$spec")
                     try {
                         val pipe = pipelineDao.get(spec.name)
                         logger.info("Updating embedded pipeline: {} [{}]", spec.name, spec.type)
