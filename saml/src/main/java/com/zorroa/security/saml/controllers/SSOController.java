@@ -16,6 +16,7 @@
 
 package com.zorroa.security.saml.controllers;
 
+import com.zorroa.security.saml.SamlProperties;
 import com.zorroa.security.saml.ZorroaExtendedMetadata;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.saml.metadata.MetadataManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/saml")
@@ -38,6 +38,26 @@ public class SSOController {
 
 	@Autowired
 	private MetadataManager metadata;
+
+	@Autowired
+	private SamlProperties properties;
+
+	@GetMapping(value = "/options")
+	public @ResponseBody Object samlOptions() {
+		Set<String> idps = metadata.getIDPEntityNames();
+		List<String> urls = new ArrayList();
+		for (String idp : idps) {
+			urls.add("/saml/login?disco=true&idp=" + idp);
+		}
+
+		Map<String, Object> result = new HashMap();
+		result.put("logout", properties.logout);
+		result.put("discovery", properties.discovery);
+		result.put("landing", properties.landingPage);
+		result.put("idps", urls);
+		return result;
+
+	}
 
 	@RequestMapping(value = "/idpSelection")
 	public String idpSelection(HttpServletRequest request, Model model) throws MetadataProviderException {
