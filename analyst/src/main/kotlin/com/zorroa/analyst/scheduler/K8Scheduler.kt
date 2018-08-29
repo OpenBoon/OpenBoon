@@ -6,8 +6,7 @@ import com.zorroa.analyst.service.SchedulerProperties
 import com.zorroa.analyst.service.SchedulerService
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobState
-import com.zorroa.common.server.getJobDataBucket
-import com.zorroa.common.server.getPublicUrl
+import com.zorroa.common.server.NetworkEnvironment
 import com.zorroa.common.util.Json
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
@@ -20,7 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClient
 import io.fabric8.kubernetes.client.internal.SerializationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import java.time.Instant
 
 
@@ -46,6 +44,9 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
 
     @Autowired
     lateinit var schedulerProperties : SchedulerProperties
+
+    @Autowired
+    lateinit var networkEnvironment: NetworkEnvironment
 
     private val kubernetesClient : KubernetesClient
 
@@ -153,16 +154,16 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
         container.name = job.name
         container.image = k8Props.image
         container.args = listOf(storageService.getSignedUrl(
-                getJobDataBucket(), job.getScriptPath()).toString())
+                networkEnvironment.getBucket("zorroa-job-data"), job.getScriptPath()).toString())
         container.env = mutableListOf(
                 EnvVar("ZORROA_JOB_ID", job.id.toString(), null),
                 EnvVar("ZORROA_ORGANIZATION_ID", job.organizationId.toString(), null),
                 EnvVar("OFS_CLASS", "cdv", null),
                 EnvVar("CDV_COMPANY_ID", job.attrs["companyId"].toString(), null),
-                EnvVar("CDV_API_BASE_URL", getPublicUrl("core-data-vault-api"), null),
+                EnvVar("CDV_API_BASE_URL", networkEnvironment.getPublicUrl("core-data-vault-api"), null),
                 EnvVar("GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/credentials.json", null),
                 EnvVar("CDV_GOOGLE_CREDENTIAL_PATH", "/var/secrets/google/cdv.json", null),
-                EnvVar("ZORROA_ARCHIVIST_URL", getPublicUrl("zorroa-archivist"), null))
+                EnvVar("ZORROA_ARCHIVIST_URL", networkEnvironment.getPublicUrl("zorroa-archivist"), null))
 
         for ((k,v) in job.env) {
             container.env.add(EnvVar(k, v, null))

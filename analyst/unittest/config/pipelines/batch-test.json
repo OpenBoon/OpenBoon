@@ -1,7 +1,7 @@
 {
   "name": "batch-test",
   "version": 1,
-  "type": "BATCH",
+  "type": "Batch",
   "processors": [
     {
       "className": "zplugins.core.document.PySetAttributes",

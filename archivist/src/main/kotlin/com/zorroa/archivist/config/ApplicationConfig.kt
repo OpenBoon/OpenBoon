@@ -7,10 +7,7 @@ import com.zorroa.archivist.service.*
 import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.filesystem.UUIDFileSystem
-import com.zorroa.common.server.GcpJwtValidator
-import com.zorroa.common.server.JwtValidator
-import com.zorroa.common.server.NoOpJwtValidator
-import com.zorroa.common.server.getPublicUrl
+import com.zorroa.common.server.*
 import com.zorroa.common.util.FileUtils
 import io.undertow.servlet.api.SecurityConstraint
 import io.undertow.servlet.api.SecurityInfo
@@ -88,9 +85,9 @@ class ArchivistConfiguration {
                                 .addUrlPattern("/*"))
                         .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
                         .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
-                        .setConfidentialPortManager({
+                        .setConfidentialPortManager {
                             properties().getInt("server.port", 8066)
-                        })
+                        }
             })
         }
         return factory
@@ -124,19 +121,20 @@ class ArchivistConfiguration {
 
     @Bean
     fun analystClient() : AnalystClient {
+        val network = networkEnvironment()
         val path = properties()
                 .getPath("archivist.config.path")
                 .resolve("service-credentials.json")
         return if (Files.exists(path)) {
             var host = properties().getString("analyst.host", "")
             if (host.isBlank()) {
-                host = getPublicUrl("zorroa-analyst")
+                host = network.getPublicUrl("zorroa-analyst")
             }
             AnalystClientImpl(host, GcpJwtSigner(path.toString()))
         }
         else {
             logger.info("Service credentials path does not exist: {}", path)
-            AnalystClientImpl(getPublicUrl("zorroa-analyst"), null)
+            AnalystClientImpl(network.getPublicUrl("zorroa-analyst"), null)
         }
     }
 
@@ -162,6 +160,7 @@ class ArchivistConfiguration {
 
     @Bean
     fun assetService() : AssetService {
+        val network = networkEnvironment()
         val type = properties().getString("archivist.assetStore.type", "sql")
         logger.info("Initializing Core Asset Store: {}", type)
         return when(type) {
@@ -170,7 +169,7 @@ class ArchivistConfiguration {
                         .getPath("archivist.config.path")
                         .resolve("service-credentials.json")
                 IrmAssetServiceImpl(
-                    IrmCoreDataVaultClientImpl(getPublicUrl("core-data-vault-api"), path))
+                    IrmCoreDataVaultClientImpl(network.getPublicUrl("core-data-vault-api"), path))
             }
             else->AssetServiceImpl()
         }
@@ -186,6 +185,30 @@ class ArchivistConfiguration {
         else {
             logger.info("Service credentials path does not exist: {}", path)
             NoOpJwtValidator()
+        }
+    }
+
+    @Bean
+    fun networkEnvironment(): NetworkEnvironment {
+        val props = properties()
+        val override = props.getMap("env.host-override.example-service")
+                .map { it.key.split('.').last() to it.value.toString() }.toMap()
+        println(override)
+
+        return when (props.getString("env.type")) {
+            "app-engine"->  {
+                val project: String = System.getenv().getValue("GCLOUD_PROJECT")
+                GoogleAppEngineEnvironment(project, override)
+            }
+            "static-vm"-> {
+                StaticVmEnvironment(props.getString("env.project", "dev"), override)
+            }
+            "docker-compose" -> {
+                DockerComposeEnvironment(override)
+            }
+            else-> {
+                DockerComposeEnvironment(override)
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 {
   "name": "import-test",
   "version": 1,
-  "type": "IMPORT",
+  "type": "Import",
   "processors": [
     {
       "className": "zplugins.core.document.PySetAttributes",
