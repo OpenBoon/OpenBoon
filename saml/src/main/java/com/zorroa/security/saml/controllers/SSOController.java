@@ -54,6 +54,8 @@ public class SSOController {
 		result.put("logout", properties.logout);
 		result.put("discovery", properties.discovery);
 		result.put("landing", properties.landingPage);
+		result.put("baseUrl", properties.baseUrl);
+		result.put("proxyBase", properties.baseUrlIsProxy);
 		result.put("idps", urls);
 		return result;
 

@@ -74,6 +74,10 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
             if (orgName != null) {
                 LOG.info("Detected organization name from SAML metadata: " +  orgName);
             }
+            else {
+                // the default org namne
+                orgName = "Zorroa";
+            }
 
             Map<String, String> attrs = new HashMap();
             for (Attribute a : credential.getAttributes()) {
