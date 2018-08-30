@@ -3,3 +3,7 @@ env: flex
 service: zorroa-archivist
 automatic_scaling:
     max_num_instances: 1
+resources:
+  cpu: 4
+  memory_gb: 8
+
