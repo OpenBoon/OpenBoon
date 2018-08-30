@@ -12,4 +12,9 @@ class RootController @Autowired constructor(val networkEnvironment: NetworkEnvir
     fun getRoot() : Any {
         return mapOf("endpoint" to networkEnvironment.getPublicUrl("zorroa-archivist"))
     }
+
+    @GetMapping("/api/v1/commands")
+    fun getCommands() : List<Any> {
+        return listOf()
+    }
 }
