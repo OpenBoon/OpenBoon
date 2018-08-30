@@ -43,6 +43,13 @@ class FolderServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testGet() {
+        val root = UUID.fromString("00000000-0000-0000-0000-000000000000")
+        val folder = folderService.get(root)
+        assertEquals("/", folder.name)
+    }
+
+    @Test
     fun testSetAssets() {
 
         val folders = Lists.newArrayList<UUID>()
