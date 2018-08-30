@@ -1,7 +1,7 @@
 {
   "name": "export-test",
   "version": 1,
-  "type": "EXPORT",
+  "type": "Export",
   "processors": [
     {
       "className": "zplugins.core.document.PySetAttributes",

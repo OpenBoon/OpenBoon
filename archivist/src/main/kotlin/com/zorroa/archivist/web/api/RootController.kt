@@ -1,4 +1,4 @@
-package com.zorroa.analyst.controller
+package com.zorroa.archivist.web.api
 
 import com.zorroa.common.server.NetworkEnvironment
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,6 +10,11 @@ class RootController @Autowired constructor(val networkEnvironment: NetworkEnvir
 
     @GetMapping("/")
     fun getRoot() : Any {
-        return mapOf("endpoint" to networkEnvironment.getPublicUrl("zorroa-analyst"))
+        return mapOf("endpoint" to networkEnvironment.getPublicUrl("zorroa-archivist"))
+    }
+
+    @GetMapping("/api/v1/commands")
+    fun getCommands() : List<Any> {
+        return listOf()
     }
 }

@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.*
+import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.common.domain.Document
 import com.zorroa.common.filesystem.ObjectFileSystem
@@ -101,8 +102,9 @@ interface StorageRouter {
 
     fun getStorageUri(doc: Document) : URI {
         val stream = doc.getAttr("source.stream", String::class.java)
+
         return if (stream != null) {
-            URI(stream)
+            URI(UrlEscapers.urlFragmentEscaper().escape(stream))
         }
         else {
             val path = doc.getAttr("source.path", String::class.java)

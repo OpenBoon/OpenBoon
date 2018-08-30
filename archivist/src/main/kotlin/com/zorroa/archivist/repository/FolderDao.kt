@@ -215,7 +215,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         val id = uuid1.generate()
         val user = getUser()
 
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, null)
@@ -230,7 +230,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps.setObject(11, null)
             ps.setString(12, "{}")
             ps
-        })
+        }
 
         return getAfterCreate(id)
     }
@@ -247,7 +247,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             spec.parentId = getRootFolder().id
         }
 
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, spec.parentId)
@@ -262,7 +262,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps.setObject(11, spec.dyhiId)
             ps.setString(12, Json.serializeToString(spec.attrs, "{}"))
             ps
-        })
+        }
 
         return getAfterCreate(id)
     }

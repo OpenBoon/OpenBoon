@@ -14,6 +14,7 @@ public class SamlProperties {
     public String baseUrl;
     public String landingPage;
     public boolean baseUrlIsProxy = false;
+    public boolean logout = true;
 
     public Map<String, String> getKeystore() {
         return keystore;
@@ -58,5 +59,13 @@ public class SamlProperties {
     public SamlProperties setBaseUrlIsProxy(boolean baseUrlIsProxy) {
         this.baseUrlIsProxy = baseUrlIsProxy;
         return this;
+    }
+
+    public boolean isLogout() {
+        return logout;
+    }
+
+    public void setLogout(boolean logout) {
+        this.logout = logout;
     }
 }

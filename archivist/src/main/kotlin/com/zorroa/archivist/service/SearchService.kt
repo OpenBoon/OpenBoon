@@ -575,8 +575,10 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
-                val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), value)
-                query.must(termsQuery)
+                if (!value.orEmpty().isEmpty()) {
+                    val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), value)
+                    query.must(termsQuery)
+                }
             }
         }
 

@@ -112,20 +112,6 @@ class MultipleWebSecurityConfig {
         }
     }
 
-    @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
-    class FormSecurityConfig : WebSecurityConfigurerAdapter() {
-
-        @Throws(Exception::class)
-        override fun configure(http: HttpSecurity) {
-            http
-                    .antMatcher("/")
-                    .csrf().disable()
-                    .sessionManagement()
-                    .invalidSessionUrl("/")
-        }
-    }
-
     @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService, logService: EventLogService) {
@@ -150,8 +136,6 @@ class MultipleWebSecurityConfig {
     fun authenticationEventPublisher(userService: UserService, logService: EventLogService): AuthenticationEventPublisher {
 
         return object : AuthenticationEventPublisher {
-
-            private val logger = LoggerFactory.getLogger(FormSecurityConfig::class.java)
 
             override fun publishAuthenticationSuccess(
                     authentication: Authentication) {
