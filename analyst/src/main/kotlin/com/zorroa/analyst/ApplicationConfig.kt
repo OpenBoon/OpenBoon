@@ -43,6 +43,7 @@ class ApplicationConfig {
 
     @Bean
     fun storageService() : JobStorageService {
+        logger.info("Initializing {} storage service", storageProperties.type)
         return when (storageProperties.type) {
             "gcp"-> GcpStorageServiceImpl()
             else-> LocalJobStorageServiceImpl()
