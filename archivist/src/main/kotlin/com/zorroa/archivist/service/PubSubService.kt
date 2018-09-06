@@ -224,7 +224,7 @@ class GcpPubSubServiceImpl : PubSubService {
 
                 } catch (e: Exception) {
                     logger.warn("Error launching job: {}, asset: {} company: {}",
-                            e.message, assetId, companyId)
+                            e.message, assetId, companyId, e)
                 }
                 finally {
                     SecurityContextHolder.getContext().authentication = null
