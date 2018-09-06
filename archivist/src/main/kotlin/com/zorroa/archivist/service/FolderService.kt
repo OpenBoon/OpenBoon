@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.google.common.base.Preconditions
 import com.google.common.base.Splitter
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
@@ -8,13 +7,13 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Queues
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
-import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
-import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.domain.Access
+import com.zorroa.common.domain.Access
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -42,6 +41,8 @@ interface FolderService {
     fun get(id: UUID?): Folder
 
     fun get(parent: UUID?, name: String): Folder
+
+    fun getRoot(): Folder
 
     fun exists(path: String): Boolean
 
@@ -120,23 +121,17 @@ interface FolderService {
 
     fun setFoldersForAsset(assetId: String, folders: List<UUID>);
 
-    /**
-     * Asynchronously creata a new folder.  Return a future in case
-     * you eventually need the result.
-     *
-     * @param spec
-     * @param mightExist
-     * @return
-     */
-    fun submitCreate(parent: Folder, spec: FolderSpec, mightExist: Boolean): Future<Folder>
+    fun submitCreate(parent: Folder, spec: FolderSpec): Future<Folder>
 
-    fun submitCreate(spec: FolderSpec, mightExist: Boolean): Future<Folder>
+    fun submitCreate(spec: FolderSpec): Future<Folder>
 
     fun create(spec: FolderSpec): Folder
 
-    fun create(spec: FolderSpec, mightExist: Boolean): Folder
+    fun create(spec: FolderSpec, errorIfExists: Boolean) : Folder
 
-    fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean): Folder
+    fun create(parent: Folder, spec: FolderSpec, errorIfExists: Boolean = true): Folder
+
+    fun createStandardFolders(org: Organization): Folder
 
     fun createUserFolder(username: String, perm: Permission): Folder
 
@@ -219,7 +214,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun setDyHierarchyRoot(folder: Folder, attribute: String): Boolean {
-        if (folder.id == ROOT_ID) {
+        if (folder.name == "/") {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
         val result = folderDao.setDyHierarchyRoot(folder, attribute)
@@ -270,7 +265,13 @@ class FolderServiceImpl @Autowired constructor(
         return get(folder.id)
     }
 
+
     override fun get(id: UUID?): Folder {
+        if (id != null) {
+            if (id==ROOT_ID) {
+                return getRoot()
+            }
+        }
         val f: Folder
         try {
             f = folderCache.get(id)
@@ -284,16 +285,22 @@ class FolderServiceImpl @Autowired constructor(
         }
     }
 
+    override fun getRoot(): Folder {
+        return folderDao.getRootFolder()
+    }
+
+
     override fun get(parent: UUID?, name: String): Folder {
         return folderDao.get(parent, name, false)
     }
 
     override fun get(path: String): Folder? {
-        var parentId = ROOT_ID
+        val rootFolder = folderDao.getRootFolder()
+        var parentId = rootFolder.id
         var current: Folder? = null
 
         if ("/" == path) {
-            return folderDao.get(ROOT_ID)
+            return  rootFolder
         }
 
         // Just throw the exception to the caller,don't return null
@@ -324,7 +331,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun getAll(): List<Folder> {
-        return folderDao.getChildren(ROOT_ID)
+        return folderDao.getChildren(folderDao.getRootFolder().id)
     }
 
     override fun getAll(ids: Collection<UUID>): List<Folder> {
@@ -355,7 +362,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (folderId == ROOT_ID) {
+        if (folderId == folderDao.getRootFolder().id) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
 
@@ -421,7 +428,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You don't have the permissions to delete this folder")
         }
 
-        if (folder.id == ROOT_ID) {
+        if (folder.id == folderDao.getRootFolder().id) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
         /**
@@ -515,7 +522,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (folder.id == ROOT_ID) {
+        if (folder.id == folderDao.getRootFolder().id) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
 
@@ -613,12 +620,13 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun isInTaxonomy(folder: Folder): Boolean {
+        val root = folderDao.getRootFolder()
         var current = folder
 
         if (folder.taxonomyRoot) {
             return true
         }
-        while (current.parentId != ROOT_ID) {
+        while (current.parentId != root.id) {
             current = get(folder.parentId)
             if (current.taxonomyRoot) {
                 return true
@@ -628,11 +636,12 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun getParentTaxonomy(folder: Folder): Taxonomy? {
+        val root = folderDao.getRootFolder()
         var current = folder
         if (current.taxonomyRoot) {
             return taxonomyService.get(folder)
         }
-        while (current.parentId != ROOT_ID) {
+        while (current.parentId != root.id) {
             current = get(current.parentId)
             if (current.taxonomyRoot) {
                 return taxonomyService.get(current)
@@ -642,12 +651,13 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun getAllAncestors(folder: Folder, includeStart: Boolean, taxOnly: Boolean): List<Folder> {
+        val root = folderDao.getRootFolder()
         val result = Lists.newArrayList<Folder>()
         if (includeStart) {
             result.add(folder)
         }
         var start = folder
-        while (start.parentId != ROOT_ID) {
+        while (start.parentId != root.id) {
             start = get(start.parentId)
             result.add(start)
             if (start.taxonomyRoot && taxOnly) {
@@ -728,15 +738,15 @@ class FolderServiceImpl @Autowired constructor(
         }
     }
 
-    override fun submitCreate(spec: FolderSpec, mightExist: Boolean): Future<Folder> {
-        return folderExecutor.submit<Folder> { create(spec, mightExist) }
+    override fun submitCreate(spec: FolderSpec): Future<Folder> {
+        return folderExecutor.submit<Folder> { create(spec) }
     }
 
-    override fun submitCreate(parent: Folder, spec: FolderSpec, mightExist: Boolean): Future<Folder> {
-        return folderExecutor.submit<Folder> { create(parent, spec, mightExist) }
+    override fun submitCreate(parent: Folder, spec: FolderSpec): Future<Folder> {
+        return folderExecutor.submit<Folder> { create(parent, spec) }
     }
 
-    override fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean): Folder {
+    override fun create(parent: Folder, spec: FolderSpec, errorIfExists: Boolean): Folder {
         if (!hasPermission(parent.acl, Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
@@ -749,6 +759,9 @@ class FolderServiceImpl @Autowired constructor(
 
         try {
             result = get(spec.parentId, spec.name as String)
+            if (errorIfExists) {
+                throw ArchivistWriteException("A folder with the same name already exists. Please choose a different name.")
+            }
         } catch (e: EmptyResultDataAccessException) {
             spec.acl.whenNullOrEmpty {
                 spec.acl = parent.acl
@@ -777,13 +790,19 @@ class FolderServiceImpl @Autowired constructor(
         })
     }
 
-    override fun create(spec: FolderSpec, mightExist: Boolean): Folder {
-        Preconditions.checkNotNull(spec.parentId, "Parent cannot be null")
-        return create(folderDao.get(spec.parentId), spec, mightExist)
+    override fun create(spec: FolderSpec, errorIfExists: Boolean): Folder {
+        return create(folderDao.get(spec.parentId), spec, errorIfExists)
     }
 
     override fun create(spec: FolderSpec): Folder {
         return create(folderDao.get(spec.parentId), spec, false)
+    }
+
+    override fun createStandardFolders(org: Organization): Folder {
+        val root = folderDao.createRootFolder(org)
+        create(FolderSpec("Users", root))
+        create(FolderSpec("Library", root))
+        return root
     }
 
     override fun createUserFolder(username: String, perm: Permission): Folder {
@@ -792,10 +811,11 @@ class FolderServiceImpl @Autowired constructor(
         val adminUser = userDao.get("admin")
         val everyone = permissionDao.get(Groups.EVERYONE)
 
-        val rootFolder = folderDao.get(ROOT_ID, "Users", true)
+        val rootFolder = folderDao.getRootFolder()
+        val userFolder = folderDao.get(rootFolder.id, "Users", true)
         val spec = FolderSpec(
                 username,
-                rootFolder.id)
+                userFolder.id)
         spec.userId = adminUser.id
         val folder = folderDao.create(spec)
         folderDao.setAcl(folder.id, Acl()
@@ -843,6 +863,8 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     companion object {
+
+        val ROOT_ID = UUID.fromString("00000000-0000-0000-0000-000000000000")
 
         private val logger = LoggerFactory.getLogger(FolderServiceImpl::class.java)
     }

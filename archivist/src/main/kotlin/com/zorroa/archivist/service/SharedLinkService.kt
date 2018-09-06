@@ -32,7 +32,7 @@ class SharedLinkServiceImpl @Autowired constructor(
         val fromUser = userService.get(getUserId())
 
         if (spec.isSendEmail) {
-            transactionEventManager.afterCommit(false, {
+            transactionEventManager.afterCommit(false) {
                 for (userId in spec.userIds) {
                     try {
                         val toUser = userService.get(userId)
@@ -42,7 +42,7 @@ class SharedLinkServiceImpl @Autowired constructor(
                     }
 
                 }
-            })
+            }
         }
         return link
     }

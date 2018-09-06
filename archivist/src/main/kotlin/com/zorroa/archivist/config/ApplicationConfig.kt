@@ -1,36 +1,36 @@
 package com.zorroa.archivist.config
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.Lists
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.common.config.NetworkEnvironment
-import com.zorroa.common.config.NetworkEnvironmentUtils
-import com.zorroa.common.config.SpringApplicationProperties
-import com.zorroa.sdk.filesystem.ObjectFileSystem
-import com.zorroa.sdk.filesystem.UUIDFileSystem
-import com.zorroa.sdk.processor.SharedData
-import com.zorroa.sdk.util.FileUtils
+import com.zorroa.archivist.service.*
+import com.zorroa.common.clients.*
+import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.common.filesystem.UUIDFileSystem
+import com.zorroa.common.server.*
+import com.zorroa.common.util.FileUtils
+import io.undertow.servlet.api.SecurityConstraint
+import io.undertow.servlet.api.SecurityInfo
+import io.undertow.servlet.api.TransportGuaranteeType
+import io.undertow.servlet.api.WebResourceCollection
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.actuate.endpoint.InfoEndpoint
 import org.springframework.boot.actuate.info.InfoContributor
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder
-import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.actuate.info.InfoEndpoint
+import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer
+import org.springframework.boot.web.embedded.undertow.UndertowDeploymentInfoCustomizer
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
-import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.util.*
-import javax.sql.DataSource
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -38,22 +38,6 @@ class ArchivistConfiguration {
 
     @Bean
     fun properties() : ApplicationProperties = SpringApplicationProperties()
-
-    @Bean
-    fun getNetworkEnvironment() : NetworkEnvironment =
-            NetworkEnvironmentUtils.getNetworkEnvironment("archivist", properties())
-
-    @Bean
-    @ConfigurationProperties(prefix = "archivist.datasource.primary")
-    fun dataSource(): DataSource {
-        return DataSourceBuilder.create().build()
-    }
-
-    @Bean
-    @Autowired
-    fun transactionManager(datasource: DataSource): DataSourceTransactionManager {
-        return DataSourceTransactionManager(datasource)
-    }
 
     @Bean
     fun transactionEventManager(): TransactionEventManager {
@@ -78,7 +62,7 @@ class ArchivistConfiguration {
             }
 
             builder.withDetail("archivist-plugins",
-                    File("lib/ext").walkTopDown()
+                    File("config/ext").walkTopDown()
                     .map { it.toString() }
                     .filter { it.endsWith(".jar")}
                     .map { FileUtils.basename(it) }
@@ -89,9 +73,30 @@ class ArchivistConfiguration {
     }
 
     @Bean
+    fun servletWebServerFactory() : UndertowServletWebServerFactory {
+        val factory =  UndertowServletWebServerFactory()
+        factory.addBuilderCustomizers( UndertowBuilderCustomizer {
+            it.addHttpListener(properties().getInt("server.http_port", 8080), "0.0.0.0")
+        })
+        if (properties().getBoolean("security.require_ssl", false)) {
+            factory.addDeploymentInfoCustomizers(UndertowDeploymentInfoCustomizer {
+                it.addSecurityConstraint(SecurityConstraint()
+                        .addWebResourceCollection(WebResourceCollection()
+                                .addUrlPattern("/*"))
+                        .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
+                        .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
+                        .setConfidentialPortManager {
+                            properties().getInt("server.port", 8066)
+                        }
+            })
+        }
+        return factory
+    }
+
+    @Bean
     fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
         val adapter = RequestMappingHandlerAdapter()
-        adapter.messageConverters = Lists.newArrayList<HttpMessageConverter<*>>(
+        adapter.messageConverters = listOf<HttpMessageConverter<*>>(
                 MappingJackson2HttpMessageConverter()
         )
         return adapter
@@ -99,14 +104,9 @@ class ArchivistConfiguration {
 
     @Bean
     fun ofs(): ObjectFileSystem {
-        val ufs = UUIDFileSystem(File(properties().getString("archivist.path.ofs")))
+        val ufs = UUIDFileSystem(File(properties().getString("archivivst.storage.ofs.path")))
         ufs.init()
         return ufs
-    }
-
-    @Bean
-    fun sharedData(): SharedData {
-        return SharedData(properties().getString("archivist.path.shared"))
     }
 
     @Bean
@@ -119,24 +119,104 @@ class ArchivistConfiguration {
         return EventBus()
     }
 
+    @Bean
+    fun analystClient() : AnalystClient {
+        val network = networkEnvironment()
+        val path = properties()
+                .getPath("archivist.config.path")
+                .resolve("service-credentials.json")
+        return if (Files.exists(path)) {
+            var host = properties().getString("analyst.host", "")
+            if (host.isBlank()) {
+                host = network.getPublicUrl("zorroa-analyst")
+            }
+            AnalystClientImpl(host, GcpJwtSigner(path.toString()))
+        }
+        else {
+            logger.info("Service credentials path does not exist: {}", path)
+            AnalystClientImpl(network.getPublicUrl("zorroa-analyst"), null)
+        }
+    }
+
+    @Bean
+    fun routingService() : IndexRoutingService {
+        return FakeIndexRoutingServiceImpl(properties().getString("es-routing-service.url"))
+    }
+
+    @Autowired
+    @Bean
+    fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
+        return EsClientCache(routingService)
+    }
+
+    @Bean
+    fun pubSubService() : PubSubService {
+        return when(properties().getString("archivist.pubsub.type")) {
+            "gcp"->GcpPubSubServiceImpl()
+            else->NoOpPubSubService()
+        }
+    }
+
+
+    @Bean
+    fun assetService() : AssetService {
+        val network = networkEnvironment()
+        val type = properties().getString("archivist.assetStore.type", "sql")
+        logger.info("Initializing Core Asset Store: {}", type)
+        return when(type) {
+            "irm"-> {
+                val path = properties()
+                        .getPath("archivist.config.path")
+                        .resolve("service-credentials.json")
+                IrmAssetServiceImpl(
+                    IrmCoreDataVaultClientImpl(network.getPublicUrl("core-data-vault-api"), path))
+            }
+            else->AssetServiceImpl()
+        }
+    }
+
+    @Bean
+    fun jwtValidator() : JwtValidator {
+        val path = properties().getPath("archivist.config.path")
+                .resolve("service-credentials.json")
+        return if (Files.exists(path)) {
+            GcpJwtValidator(path.toString())
+        }
+        else {
+            logger.info("Service credentials path does not exist: {}", path)
+            NoOpJwtValidator()
+        }
+    }
+
+    @Bean
+    fun networkEnvironment(): NetworkEnvironment {
+        val props = properties()
+        val override = props.getMap("env.host-override.example-service")
+                .map { it.key.split('.').last() to it.value.toString() }.toMap()
+        println(override)
+
+        return when (props.getString("env.type")) {
+            "app-engine"->  {
+                val project: String = System.getenv().getValue("GCLOUD_PROJECT")
+                GoogleAppEngineEnvironment(project, override)
+            }
+            "static-vm"-> {
+                StaticVmEnvironment(props.getString("env.project", "dev"), override)
+            }
+            "docker-compose" -> {
+                DockerComposeEnvironment(override)
+            }
+            else-> {
+                DockerComposeEnvironment(override)
+            }
+        }
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(ArchivistConfiguration::class.java)
 
         var unittest = false
-
-        fun <T> instantiate(className: String, type: Class<T>): T? {
-            try {
-                return type.cast(Class.forName(className).newInstance())
-            } catch (e: InstantiationException) {
-                throw IllegalStateException(e)
-            } catch (e: IllegalAccessException) {
-                throw IllegalStateException(e)
-            } catch (e: ClassNotFoundException) {
-                throw IllegalStateException(e)
-            }
-
-        }
     }
 }
 

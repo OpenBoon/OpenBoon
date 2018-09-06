@@ -1,17 +1,13 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.sdk.security.Groups
-import com.zorroa.archivist.security.getPermissionIds
-import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.security.getUserId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.sdk.domain.Access
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
+import com.zorroa.archivist.security.*
+import com.zorroa.common.domain.Access
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
+import com.zorroa.security.Groups
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowCallbackHandler
@@ -37,6 +33,8 @@ interface FolderDao {
 
     fun getAllIds(dyhi: DyHierarchy): List<UUID>
 
+    fun getRootFolder(): Folder
+
     fun exists(parentId: UUID, name: String): Boolean
 
     fun count(): Int
@@ -48,6 +46,8 @@ interface FolderDao {
     fun create(spec: FolderSpec): Folder
 
     fun create(spec: TrashedFolder): Folder
+
+    fun createRootFolder(org: Organization) : Folder
 
     fun update(id: UUID, folder: FolderUpdate): Boolean
 
@@ -83,7 +83,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     internal lateinit var userDaoCache: UserDaoCache
 
 
-    private val MAPPER = RowMapper<Folder> { rs, _ ->
+    private val MAPPER = RowMapper { rs, _ ->
         val id = rs.getObject("pk_folder") as UUID
         val dyhiField = rs.getString("str_dyhi_field")
 
@@ -125,22 +125,27 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
     override operator fun get(id: UUID?): Folder {
         if (id == null) {
-            throw IllegalArgumentException("Folder Id cannot be be null")
+            return getRootFolder()
         }
-        return jdbc.queryForObject<Folder>(appendReadAccess("$GET WHERE pk_folder=?"), MAPPER, *appendAclArgs(id))
+        return jdbc.queryForObject<Folder>(appendReadAccess("$GET WHERE pk_organization=? AND pk_folder=?"),
+                MAPPER, *appendAclArgs(getOrgId(), id))
     }
 
     override operator fun get(parent: UUID?, name: String, ignorePerms: Boolean): Folder {
-        if (parent == null) {
-            throw IllegalArgumentException("Parent folder cannot be null")
+        val parentId =if (parent == null) {
+            getRootFolder().id
+        }
+        else {
+            parent
         }
         try {
             return if (true) {
-                jdbc.queryForObject<Folder>("$GET WHERE pk_parent=? and str_name=?", MAPPER, parent, name)
+                jdbc.queryForObject<Folder>("$GET WHERE pk_organization=? AND pk_parent=? and str_name=?",
+                        MAPPER, getOrgId(), parentId, name)
             } else {
                 jdbc.queryForObject<Folder>(
-                        appendReadAccess("$GET WHERE pk_parent=? and str_name=?"), MAPPER,
-                        *appendAclArgs(parent, name))
+                        appendReadAccess("$GET WHERE pk_organization=? AND pk_parent=? AND str_name=?"), MAPPER,
+                        *appendAclArgs(getOrgId(),parentId, name))
             }
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to find folder, parent: $parent name: $name", 1)
@@ -151,19 +156,25 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         return get(parent.id, name, false)
     }
 
+    override fun getRootFolder(): Folder {
+        return jdbc.queryForObject("$GET WHERE pk_organization=? AND pk_parent IS NULL and str_name='/'",
+                MAPPER, getOrgId())
+    }
+
     override fun getAll(ids: Collection<UUID>): List<Folder> {
         val sb = StringBuilder(512)
         sb.append(GET)
         sb.append(" WHERE ")
         sb.append(JdbcUtils.`in`("pk_folder", ids.size))
-        return jdbc.query(sb.toString(), MAPPER, *ids.toTypedArray())
+        sb.append(" AND pk_organization=?")
+        return jdbc.query(sb.toString(), MAPPER, *ids.toTypedArray().plus(getOrgId()))
     }
 
     override fun getChildren(parentId: UUID): List<Folder> {
         val sb = StringBuilder(512)
         sb.append(GET)
-        sb.append(" WHERE pk_parent=?")
-        return jdbc.query(appendReadAccess(sb.toString()), MAPPER, *appendAclArgs(parentId))
+        sb.append(" WHERE pk_organization=? AND pk_parent=?")
+        return jdbc.query(appendReadAccess(sb.toString()), MAPPER, *appendAclArgs(getOrgId(), parentId))
     }
 
     override fun getChildrenInsecure(parentId: UUID): List<Folder> {
@@ -178,24 +189,50 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     }
 
     override fun getAllIds(dyhi: DyHierarchy): List<UUID> {
-        return jdbc.queryForList("SELECT pk_folder FROM folder WHERE pk_dyhi=?", UUID::class.java, dyhi.id)
+        return jdbc.queryForList("SELECT pk_folder FROM folder WHERE pk_organization=? AND pk_dyhi=?",
+                UUID::class.java, getOrgId(), dyhi.id)
     }
 
     override fun exists(parentId: UUID, name: String): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE pk_parent=? AND str_name=?",
-                Int::class.java, parentId, name) == 1
+        return jdbc.queryForObject("$COUNT folder WHERE pk_organization=? AND pk_parent=? AND str_name=?",
+                Int::class.java, getOrgId(), parentId, name) == 1
     }
 
     override fun count(): Int {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM folder", Int::class.java)
+        return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Int::class.java, getOrgId())
     }
 
     override fun count(d: DyHierarchy): Int {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE pk_dyhi=?", Int::class.java, d.id)
+        return jdbc.queryForObject("$COUNT WHERE pk_organization=? AND pk_dyhi=?", Int::class.java, getOrgId(), d.id)
     }
 
     override fun exists(parent: Folder, name: String): Boolean {
         return exists(parent.id, name)
+    }
+
+    override fun createRootFolder(org: Organization) : Folder {
+        val time = System.currentTimeMillis()
+        val id = uuid1.generate()
+        val user = getUser()
+
+        jdbc.update { connection ->
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, null)
+            ps.setObject(3, org.id)
+            ps.setString(4, "/")
+            ps.setObject(5, user.id)
+            ps.setLong(6, time)
+            ps.setBoolean(7, false)
+            ps.setObject(8, user.id)
+            ps.setLong(9, time)
+            ps.setString(10, null)
+            ps.setObject(11, null)
+            ps.setString(12, "{}")
+            ps
+        }
+
+        return getAfterCreate(id)
     }
 
     override fun create(spec: FolderSpec): Folder {
@@ -206,10 +243,14 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             spec.userId = user
         }
 
-        jdbc.update({ connection ->
+        if (spec.parentId == null) {
+            spec.parentId = getRootFolder().id
+        }
+
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setObject(2, if (spec.parentId == null) ROOT_ID else spec.parentId)
+            ps.setObject(2, spec.parentId)
             ps.setObject(3, getUser().organizationId)
             ps.setString(4, spec.name)
             ps.setObject(5, spec.userId)
@@ -221,7 +262,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps.setObject(11, spec.dyhiId)
             ps.setString(12, Json.serializeToString(spec.attrs, "{}"))
             ps
-        })
+        }
 
         return getAfterCreate(id)
     }
@@ -229,10 +270,14 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     override fun create(spec: TrashedFolder): Folder {
         val time = System.currentTimeMillis()
 
+        if (spec.parentId == null) {
+            spec.parentId = getRootFolder().id
+        }
+
         jdbc.update { connection ->
             val ps = connection.prepareStatement(RESTORE)
             ps.setObject(1, spec.folderId)
-            ps.setObject(2, if (spec.parentId == null) ROOT_ID else spec.parentId)
+            ps.setObject(2, spec.parentId)
             ps.setObject(3, getUser().organizationId)
             ps.setString(4, spec.name)
             ps.setObject(5, spec.user.id)
@@ -249,29 +294,31 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     }
 
     override fun renameUserFolder(user: User, newName:String): Boolean {
-        return jdbc.update("UPDATE folder SET str_name=? WHERE pk_folder=?", newName, user.homeFolderId) == 1;
+        return jdbc.update("UPDATE folder SET str_name=? WHERE pk_organization=? AND pk_folder=?",
+                newName, getOrgId(), user.homeFolderId) == 1
     }
 
     override fun update(id: UUID, folder: FolderUpdate): Boolean {
         Preconditions.checkNotNull(folder.parentId, "Parent folder cannot be null")
-        Preconditions.checkArgument(!Objects.equals(id, ROOT_ID),
-                "Cannot modify folder: ${id}")
+        if (getRootFolder().id == id) {
+            throw IllegalArgumentException("Cannot modify root folder")
+        }
 
         /**
          * Skip updating the search if its a dyhi so the exists statement
          * doesn't get automatically updated.  Its also
          */
         return if (isDyHi(id)) {
-            jdbc.update(UPDATE[1],
+            jdbc.update("$UPDATE_IS_DYHI AND pk_organization=?",
                     System.currentTimeMillis(),
                     getUserId(),
                     folder.parentId,
                     folder.name,
                     folder.recursive,
                     Json.serializeToString(folder.attrs, "{}"),
-                    id) == 1
+                    id, getOrgId()) == 1
         } else {
-            jdbc.update(UPDATE[0],
+            jdbc.update("$UPDATE AND pk_organization=?",
                     System.currentTimeMillis(),
                     getUserId(),
                     folder.parentId,
@@ -279,16 +326,16 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                     folder.recursive,
                     Json.serializeToString(folder.search, null),
                     Json.serializeToString(folder.attrs, "{}"),
-                    id) == 1
+                    id, getOrgId()) == 1
         }
     }
 
     override fun deleteAll(dyhi: DyHierarchy): Int {
-        return jdbc.update("DELETE FROM folder WHERE pk_dyhi=?", dyhi.id)
+        return jdbc.update("DELETE FROM folder WHERE pk_organization=? AND pk_dyhi=?", getOrgId(), dyhi.id)
     }
 
     override fun delete(folder: Folder): Boolean {
-        return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.id) == 1
+        return jdbc.update("DELETE FROM folder WHERE pk_organization=? AND pk_folder=?", getOrgId(), folder.id) == 1
     }
 
     override fun deleteAll(ids: Collection<UUID>): Int {
@@ -300,30 +347,38 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
          * always have a lower ID than child folders.  Hopefully this is enough
          * for a clean delete.
          */
-        val sorted = Lists.newArrayList(ids)
-        sorted.sort()
-        return jdbc.update("DELETE FROM folder WHERE " + JdbcUtils.`in`("pk_folder", ids.size),
-                *sorted.toTypedArray())
+        val sorted = ids.sorted().plus(getOrgId())
+        return jdbc.update("DELETE FROM folder WHERE " + JdbcUtils.`in`("pk_folder", ids.size) +
+                " AND pk_organization=?", *sorted.toTypedArray())
     }
 
     override fun hasAccess(folder: Folder, access: Access): Boolean {
-        return jdbc.queryForObject(appendAccess("SELECT COUNT(1) FROM folder WHERE pk_folder=?", access),
-                Int::class.java, *appendAclArgs(folder.id)) > 0
+        return jdbc.queryForObject(appendAccess("$COUNT WHERE pk_organization=? AND pk_folder=?", access),
+                Int::class.java, *appendAclArgs(getOrgId(), folder.id)) > 0
     }
 
     override fun setTaxonomyRoot(folder: Folder, value: Boolean): Boolean {
-        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_folder=? AND bool_tax_root=? AND pk_folder!=?",
-                value, folder.id, !value, ROOT_ID) == 1
+        if (getRootFolder().id == folder.id) {
+            throw IllegalArgumentException("Cannot set taxonomy on root folder")
+        }
+        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_organization=? AND pk_folder=? AND bool_tax_root=?",
+                value, getOrgId(), folder.id, !value) == 1
     }
 
     override fun setDyHierarchyRoot(folder: Folder, field: String): Boolean {
-        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?, str_dyhi_field=? WHERE pk_folder=? AND pk_folder!=?",
-                false, true, field, folder.id, ROOT_ID) == 1
+        if (getRootFolder().id == folder.id) {
+            throw IllegalArgumentException("Cannot set dyhi on root folder")
+        }
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?, str_dyhi_field=? WHERE pk_organization=? AND pk_folder=?",
+                false, true, field, getOrgId(), folder.id) == 1
     }
 
     override fun removeDyHierarchyRoot(folder: Folder): Boolean {
-        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?,str_dyhi_field=null WHERE pk_folder=? AND pk_folder!=?",
-                true, false, folder.id, ROOT_ID) == 1
+        if (getRootFolder().id == folder.id) {
+            throw IllegalArgumentException("Cannot remove dyhi on root folder")
+        }
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?,str_dyhi_field=null WHERE pk_organization=? AND pk_folder=?",
+                true, false, getOrgId(), folder.id) == 1
     }
 
     override fun setAcl(folder: UUID, acl: Acl) {
@@ -374,11 +429,12 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
     override fun getAcl(folder: UUID): Acl {
         val result = Acl()
-        jdbc.query("SELECT p.str_authority, p.pk_permission, f.int_access FROM folder_acl f,permission p WHERE f.pk_permission = p.pk_permission and f.pk_folder=?",
+        jdbc.query("SELECT p.str_authority, p.pk_permission, f.int_access FROM folder_acl f, permission p WHERE " +
+                "p.pk_organization=? AND f.pk_permission = p.pk_permission and f.pk_folder=?",
                 RowCallbackHandler { rs ->
                     result.add(AclEntry(rs.getString("str_authority"),
                             rs.getObject("pk_permission") as UUID,
-                            rs.getInt("int_access"))) }, folder)
+                            rs.getInt("int_access"))) }, getOrgId(), folder)
         return result
     }
 
@@ -469,7 +525,8 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
     companion object {
 
-        private val GET = "SELECT " +
+        private const val COUNT = "SELECT COUNT(1) FROM folder "
+        private const val GET = "SELECT " +
                 "* " +
                 "FROM " +
                 "folder "
@@ -501,21 +558,21 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                 "json_search",
                 "json_attrs")
 
-        private val UPDATE = arrayOf(JdbcUtils.update("folder", "pk_folder",
+        private val UPDATE = JdbcUtils.update("folder", "pk_folder",
                 "time_modified",
                 "pk_user_modified",
                 "pk_parent",
                 "str_name",
                 "bool_recursive",
                 "json_search",
-                "json_attrs"),
+                "json_attrs")
 
-            JdbcUtils.update("folder", "pk_folder",
+        private val UPDATE_IS_DYHI = JdbcUtils.update("folder", "pk_folder",
                     "time_modified",
                     "pk_user_modified",
                     "pk_parent",
                     "str_name",
                     "bool_recursive",
-                    "json_attrs"))
+                    "json_attrs")
     }
 }

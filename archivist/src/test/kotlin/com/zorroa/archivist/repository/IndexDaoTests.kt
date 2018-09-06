@@ -2,17 +2,15 @@ package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.elastic.SearchBuilder
-import com.zorroa.sdk.domain.Asset
-import com.zorroa.sdk.domain.Document
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
-import com.zorroa.sdk.processor.Source
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.clients.SearchBuilder
+import com.zorroa.common.domain.Document
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
+import com.zorroa.common.domain.Source
+import com.zorroa.common.util.Json
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.junit.Assert.*
@@ -96,7 +94,7 @@ class IndexDaoTests : AbstractTest() {
         sb.source.aggregation(AggregationBuilders.terms("path").field("source.path.raw"))
 
         indexDao.getAll(Pager.first(10), sb, stream)
-        val result = Json.deserialize(stream.toString(), object : TypeReference<PagedList<Asset>>() {})
+        val result = Json.deserialize(stream.toString(), object : TypeReference<PagedList<Document>>() {})
         assertEquals(2, result.list.size.toLong())
         assertEquals(1, result.aggregations.entries.size)
     }
@@ -151,8 +149,8 @@ class IndexDaoTests : AbstractTest() {
         val folder_links = a.getAttr<Collection<Any>>("zorroa.links.folder")
         val parent_links = a.getAttr<Collection<Any>>("zorroa.links.parent")
 
-        assertEquals(1, folder_links.size.toLong())
-        assertEquals(1, parent_links.size.toLong())
+        assertEquals(1, folder_links!!.size.toLong())
+        assertEquals(1, parent_links!!.size.toLong())
         assertTrue(folder_links.contains("100"))
         assertTrue(parent_links.contains("foo"))
     }
@@ -164,14 +162,14 @@ class IndexDaoTests : AbstractTest() {
 
         var a = indexDao[asset1.id]
         var links = a.getAttr<Collection<Any>>("zorroa.links.folder")
-        assertEquals(1, links.size.toLong())
+        assertEquals(1, links!!.size.toLong())
 
         assertTrue(indexDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
         a = indexDao[asset1.id]
         links = a.getAttr("zorroa.links.folder")
-        assertEquals(0, links.size.toLong())
+        assertEquals(0, links!!.size.toLong())
     }
 
     @Test
@@ -182,21 +180,6 @@ class IndexDaoTests : AbstractTest() {
         indexDao.update(asset1.id, attrs)
         val asset2 = indexDao[asset1.id]
         assertEquals(100, (asset2.getAttr<Any>("foo.bar") as Int).toLong())
-    }
-
-    @Test
-    fun testBatchIndexWithReplace() {
-
-        val source1 = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
-        indexDao.index(Lists.newArrayList(source1))
-
-        source1.removeAttr("keywords")
-        source1.isReplace = true
-        indexDao.index(Lists.newArrayList(source1))
-        refreshIndex()
-
-        val a = indexDao[source1.id]
-        assertFalse(a.attrExists("keywords"))
     }
 
     @Test
@@ -222,48 +205,30 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testReplace() {
-        val source1 = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
-        source1.isReplace = true
-        var rsp = indexDao.index(Lists.newArrayList(source1))
-        assertEquals(rsp.replaced.toLong(), 1)
-        assertEquals(rsp.created.toLong(), 0)
-
-        rsp = indexDao.index(Lists.newArrayList(
-                Source(getTestImagePath("set01/standard/visa12.jpg"))))
-        assertEquals(rsp.replaced.toLong(), 0)
-        assertEquals(rsp.created.toLong(), 1)
-    }
-
-    @Test
     @Throws(InterruptedException::class)
     fun testRetryBrokenFields() {
-        run {
-            val assets = ImmutableList.of<Document>(
-                    Source(getTestImagePath("set01/standard/faces.jpg")))
-            assets[0].setAttr("foo.bar", 1000)
 
+        val assets = ImmutableList.of<Document>(
+                Source(getTestImagePath("set01/standard/faces.jpg")))
+        assets[0].setAttr("foo.bar", 1000)
+        var result = indexDao.index(assets)
+        refreshIndex()
 
-            var result = indexDao.index(assets)
-
-            logger.info("{}", result)
-            refreshIndex()
-
-            val next = ImmutableList.of<Document>(
-                    Source(getTestImagePath("set01/standard/hyena.jpg")),
-                    Source(getTestImagePath("set01/standard/toucan.jpg")),
-                    Source(getTestImagePath("set01/standard/visa.jpg")),
-                    Source(getTestImagePath("set01/standard/visa12.jpg")))
-            for (s in next) {
-                s.setAttr("foo.bar", "bob")
-            }
-            result = indexDao.index(next)
-            logger.info("{}", result)
-
-            assertEquals(4, result.created.toLong())
-            assertEquals(4, result.warnings.toLong())
-            assertEquals(1, result.retries.toLong())
+        val next = ImmutableList.of<Document>(
+                Source(getTestImagePath("set01/standard/hyena.jpg")),
+                Source(getTestImagePath("set01/standard/toucan.jpg")),
+                Source(getTestImagePath("set01/standard/visa.jpg")),
+                Source(getTestImagePath("set01/standard/visa12.jpg")))
+        for (s in next) {
+            s.setAttr("foo.bar", "bob")
         }
+        result = indexDao.index(next)
+        logger.info("{}", result)
+
+        assertEquals(4, result.created.toLong())
+        assertEquals(4, result.warnings.toLong())
+        assertEquals(1, result.retries.toLong())
+
     }
 
 }

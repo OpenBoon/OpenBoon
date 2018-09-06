@@ -6,12 +6,13 @@ import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
-import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import java.util.*
 import java.util.concurrent.atomic.AtomicLong
@@ -44,7 +45,24 @@ interface GenericNamedDao<T, S> : GenericDao<T, S> {
 }
 
 /**
- * Lifted from M. Chamber's FXP project.
+ * Lifted from M. Chamber's BBQ project.
+ *
+ * A utility function for catching a EmptyResultDataAccessException and rethrowing
+ * the same function with a better message intended for the client.
+ */
+inline fun <T> throwWhenNotFound(msg:String, body: () -> T): T {
+
+    try {
+        return body()
+    }
+    catch (e: EmptyResultDataAccessException) {
+        throw EmptyResultDataAccessException(msg, 1)
+    }
+}
+
+
+/**
+ * Lifted from M. Chamber's BBQ project.
  *
  * Used to ensure a UUID generator does not generate colliding UUIDs.
  *

@@ -4,27 +4,25 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.UserSpec
-import com.zorroa.archivist.sdk.services.AssetService
-import com.zorroa.archivist.sdk.services.StorageService
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
-import com.zorroa.sdk.domain.Proxy
-import com.zorroa.sdk.processor.Source
-import com.zorroa.sdk.schema.ProxySchema
-import com.zorroa.sdk.util.FileUtils
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.domain.Source
+import com.zorroa.common.schema.Proxy
+import com.zorroa.common.schema.ProxySchema
+import com.zorroa.common.util.FileUtils
+import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
-import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
@@ -48,7 +46,7 @@ import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource("/test.properties")
+@TestPropertySource(locations=["classpath:test.properties"])
 @WebAppConfiguration
 @Transactional
 open abstract class AbstractTest {
@@ -56,16 +54,13 @@ open abstract class AbstractTest {
     val logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
-    protected lateinit var client: RestHighLevelClient
+    protected lateinit var estClientCache: EsClientCache
 
     @Autowired
     protected lateinit var userService: UserService
 
     @Autowired
-    protected lateinit var assetService: AssetService
-
-    @Autowired
-    protected lateinit var storageService: StorageService
+    protected lateinit var storageRouter: StorageRouter
 
     @Autowired
     protected lateinit var permissionService: PermissionService
@@ -74,16 +69,10 @@ open abstract class AbstractTest {
     protected lateinit var folderService: FolderService
 
     @Autowired
-    protected lateinit var pipelineService: PipelineService
-
-    @Autowired
     protected lateinit var searchService: SearchService
 
     @Autowired
     protected lateinit var fieldService: FieldService
-
-    @Autowired
-    protected lateinit var pluginService: PluginService
 
     @Autowired
     protected lateinit var indexService: IndexService
@@ -101,6 +90,9 @@ open abstract class AbstractTest {
     protected lateinit var requestService: RequestService
 
     @Autowired
+    protected lateinit var organizationService: OrganizationService
+
+    @Autowired
     protected lateinit var userRegistryService: UserRegistryService
 
     @Autowired
@@ -111,9 +103,6 @@ open abstract class AbstractTest {
 
     @Autowired
     internal lateinit var transactionManager: DataSourceTransactionManager
-
-    @Value("\${zorroa.cluster.index.alias}")
-    protected lateinit var alias: String
 
     protected lateinit var jdbc: JdbcTemplate
 
@@ -160,14 +149,14 @@ open abstract class AbstractTest {
         transactionEventManager.isImmediateMode = true
 
         /**
-         * Elastic must be created and cleaned before authentication.
-         */
-        cleanElastic()
-
-        /**
          * Before we can do anything reliably we need a logged in user.
          */
         authenticate()
+
+        /**
+         * We need to be authed to clean elastic.
+         */
+        cleanElastic()
 
         val spec1 = UserSpec(
                 "user",
@@ -210,16 +199,19 @@ open abstract class AbstractTest {
          * which adds some standard data to both databases.
          */
 
+        val rest = estClientCache[getOrgId()]
+        logger.info(rest.route.clusterUrl)
+
 
         val reqDel = DeleteIndexRequest("_all")
-        client.indices().delete(reqDel)
+        rest.client.indices().delete(reqDel)
 
         val mapping = Json.Mapper.readValue<Map<String,Any>>(
                 File("../elasticsearch/asset.json"), Json.GENERIC_MAP)
 
-        val reqCreate = CreateIndexRequest("archivist")
+        val reqCreate = CreateIndexRequest(rest.route.indexName)
         reqCreate.source(mapping)
-        client.indices().create(reqCreate)
+        rest.client.indices().create(reqCreate)
     }
 
     /**
@@ -271,7 +263,7 @@ open abstract class AbstractTest {
             "jpg", "pdf", "m4v", "gif", "tif")
 
     fun getTestAssets(subdir: String): List<Source> {
-        val result = Lists.newArrayList<Source>()
+        val result = mutableListOf<Source>()
         val tip = getTestImagePath(subdir)
         for (f in tip.toFile().listFiles()!!) {
 
@@ -284,9 +276,9 @@ open abstract class AbstractTest {
                     val id = UUID.randomUUID().toString()
 
                     val proxies = Lists.newArrayList<Proxy>()
-                    proxies.add(Proxy().setHeight(100).setWidth(100).setId("proxy/" + id + "_foo.jpg"))
-                    proxies.add(Proxy().setHeight(200).setWidth(200).setId("proxy/" + id + "_bar.jpg"))
-                    proxies.add(Proxy().setHeight(300).setWidth(300).setId("proxy/" + id + "_bing.jpg"))
+                    proxies.add(Proxy(width=100, height=100, id="proxy/" + id + "_foo.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=200, height=200, id="proxy/" + id + "_bar.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=300, height=300, id="proxy/" + id + "_bing.jpg", mimeType = "image/jpeg"))
 
                     val p = ProxySchema()
                     p.proxies = proxies
@@ -302,7 +294,6 @@ open abstract class AbstractTest {
             }
         }
 
-        logger.info("TEST ASSET: {}", result)
         return result
     }
 
@@ -315,7 +306,7 @@ open abstract class AbstractTest {
             val schema = source.sourceSchema
 
             logger.info("Adding test asset: {}", source.path.toString())
-            source.addToKeywords("source", ImmutableList.of(
+            source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
             indexService.index(source)
@@ -324,10 +315,12 @@ open abstract class AbstractTest {
     }
 
     fun refreshIndex() {
-        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
+        val rest = estClientCache[UUID.randomUUID()]
+        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 
     fun refreshIndex(sleep: Long) {
-        client.lowLevelClient.performRequest("POST", "/archivist/_refresh")
+        val rest = estClientCache[UUID.randomUUID()]
+        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 }

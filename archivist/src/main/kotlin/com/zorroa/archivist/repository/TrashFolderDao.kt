@@ -6,8 +6,8 @@ import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.TrashedFolder
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -66,7 +66,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
     @Autowired
     internal lateinit var userDaoCache: UserDaoCache
 
-    private val MAPPER = RowMapper<TrashedFolder> { rs, _ ->
+    private val MAPPER = RowMapper { rs, _ ->
         val folder = TrashedFolder()
         folder.opId = rs.getString("str_opid")
         folder.id = rs.getObject("pk_folder_trash") as UUID
@@ -86,12 +86,12 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
 
         val searchString = rs.getString("json_search")
         if (searchString != null) {
-            folder.search = Json.deserialize<AssetSearch>(searchString, AssetSearch::class.java)
+            folder.search = Json.deserialize(searchString, AssetSearch::class.java)
         }
 
         val aclString = rs.getString("json_acl")
         if (aclString != null) {
-            folder.acl = Json.deserialize<Acl>(aclString, Acl::class.java)
+            folder.acl = Json.deserialize(aclString, Acl::class.java)
         }
 
         val attrs = rs.getString("json_attrs")
@@ -107,7 +107,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
         val user = getUserId()
         val id = uuid1.generate()
 
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, folder.id)
@@ -127,7 +127,7 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             ps.setInt(16, order)
             ps.setString(17, Json.serializeToString(folder.attrs, "{}"))
             ps
-        })
+        }
         return id
     }
 

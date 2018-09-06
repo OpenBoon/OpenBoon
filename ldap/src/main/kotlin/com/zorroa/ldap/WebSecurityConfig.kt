@@ -1,17 +1,14 @@
 package com.zorroa.ldap
 
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationProvider
-import org.springframework.security.authentication.encoding.LdapShaPasswordEncoder
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -19,8 +16,16 @@ import org.springframework.security.ldap.DefaultSpringSecurityContextSource
 import org.springframework.security.ldap.authentication.BindAuthenticator
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch
-import org.springframework.security.ldap.search.LdapUserSearch
 
+
+@Configuration
+@ConfigurationProperties("archivist.security.ldap")
+open class LdapProperties {
+    var enabled: Boolean = false
+    var url: String? = null
+    var base: String? = null
+    var filter: String? = null
+}
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +33,7 @@ import org.springframework.security.ldap.search.LdapUserSearch
 open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
-    lateinit var properties : ApplicationProperties
+    lateinit var properties : LdapProperties
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -37,7 +42,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
     open fun configureGlobal(auth: AuthenticationManagerBuilder) {
-        if (!properties.getBoolean("archivist.security.ldap.enabled")) {
+        if (!properties.enabled ){
             return
         }
         logger.info("Adding LDAP authentication provider");
@@ -47,15 +52,11 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean
     @Throws(Exception::class)
     open fun ldapAuthenticationProvider(): AuthenticationProvider {
-        val url = properties.getString("archivist.security.ldap.url")
-        val base = properties.getString("archivist.security.ldap.base")
-        val filter = properties.getString("archivist.security.ldap.filter")
-
         val userDetailsService = ldapUserDetailsService()
-        val contextSource = DefaultSpringSecurityContextSource(url)
-        contextSource.setBase(base)
+        val contextSource = DefaultSpringSecurityContextSource(properties.url)
+        contextSource.setBase(properties.base)
         contextSource.afterPropertiesSet()
-        val ldapUserSearch = FilterBasedLdapUserSearch("", filter, contextSource)
+        val ldapUserSearch = FilterBasedLdapUserSearch("", properties.filter, contextSource)
         val bindAuthenticator = BindAuthenticator(contextSource)
         bindAuthenticator.setUserSearch(ldapUserSearch)
         val ldapAuthenticationProvider = LdapAuthenticationProvider(bindAuthenticator, userDetailsService)

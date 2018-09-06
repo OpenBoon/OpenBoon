@@ -31,7 +31,7 @@ open class LdapUserDetailsServiceImpl : LdapAuthoritiesPopulator, UserDetailsCon
     override fun getGrantedAuthorities(ctx: DirContextOperations, username: String): MutableCollection<out GrantedAuthority> {
 
          val authed = userRegistryService.registerUser(username,
-                 AuthSource("ldap", "ldap", "ldap"), null)
+                 AuthSource("ldap", "ldap", "ldap"))
 
         ctx.setAttributeValue("authorities", authed.authorities)
         ctx.setAttributeValue("user", authed)

@@ -3,7 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.repository.DaoFilter
-import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.common.search.AssetSearch
 import java.util.*
 
 class FolderFilter : DaoFilter() {
@@ -18,21 +18,8 @@ class FolderFilter : DaoFilter() {
     }
 }
 
-val ROOT_ID = UUID.fromString("00000000-0000-0000-0000-000000000000")
-
-fun getRootFolderId() : UUID {
-    return ROOT_ID
-}
-
 fun isRootFolder(folder: Folder) : Boolean {
-    return folder.id == ROOT_ID
-}
-
-fun isRootFolder(id:UUID?) : Boolean {
-    if (id == null) {
-        return false
-    }
-    return id == ROOT_ID
+    return folder.name == "/" && folder.parentId == null
 }
 
 data class Folder(
@@ -99,12 +86,12 @@ class FolderSpec {
     constructor()
 
     constructor(name: String) :
-            this(name, ROOT_ID)
+            this(name, null)
 
     constructor(name: String, folder: Folder) :
             this(name, folder.id)
 
-    constructor(name: String, parentId: UUID) {
+    constructor(name: String, parentId: UUID?) {
         this.name = name
         this.parentId = parentId
     }

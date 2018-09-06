@@ -15,9 +15,9 @@ data class UserBase (
         override val id: UUID,
         val username: String,
         val email: String,
-        val permissionId: UUID,
-        val homeFolderId: UUID,
-        val organizationId: UUID) : UserId {
+        val permissionId: UUID?,
+        val homeFolderId: UUID?,
+        val organizationId: UUID?) : UserId {
 
     @JsonIgnore
     override fun getName(): String = username
@@ -76,7 +76,8 @@ data class UserSpec (
         var lastName: String? = null,
         var permissionIds: List<UUID>? = null,
         var homeFolderId: UUID? = null,
-        var userPermissionId: UUID? = null) {
+        var userPermissionId: UUID? = null,
+        var authAttrs :Map<String,String>? =  null) {
 
     fun hashedPassword(): String {
         return createPasswordHash(password)

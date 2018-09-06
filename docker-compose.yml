@@ -1,0 +1,91 @@
+
+version: '3'
+services:
+
+  ## Unit testing services.
+
+  # Elastic Search instance used by the unit tests.
+  test-es:
+    build:
+      context: elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "39200:9200"
+      - "39300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+
+  # Postgres instance used by the unit tests.
+  test-postgres:
+    image: "postgres:9.6.9"
+    hostname: "localhost"
+    ports:
+     - "35432:5432"
+    environment:
+      POSTGRES_PASSWORD: zorroa
+      POSTGRES_USER: zorroa
+      POSTGRES_DB: zorroa
+
+  ## Local Development Services
+
+  # Elastic Search instance used for local devlopment servers.
+  es:
+    build:
+      context: elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+
+  # Postgres instance used for local devleopment servers.
+  postgres:
+    image: "postgres:9.6.9"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: zorroa
+      POSTGRES_USER: zorroa
+      POSTGRES_DB: zorroa
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  # Local Archivist server.
+  archivist:
+    links:
+       - "es"
+       - "postgres"
+       - "analyst"
+    build:
+      context: archivist
+    ports:
+      - 8080:8080
+    volumes:
+      - "./localdev/zorroa-archivist-config:/config"
+      - "./archivist/target:/service"
+    environment:
+      ZORROA_USER: admin
+
+  # Local Analyst server.
+  analyst:
+      links:
+         - "es"
+         - "postgres"
+      build:
+        context: analyst
+      ports:
+        - 8082:8080
+      volumes:
+        - "./localdev/zorroa-analyst-config:/config"
+        - "./analyst/target:/service"
+
+  # Builds all java code. Use `docker-compose run build` to rebuild code.
+  build:
+      image: maven:3.5.4-jdk-8
+      command: mvn clean install -Dmaven.test.skip=true
+      working_dir: "/zorroa-server"
+      volumes:
+        - "~/.m2:/root/.m2"
+        - "./:/zorroa-server"

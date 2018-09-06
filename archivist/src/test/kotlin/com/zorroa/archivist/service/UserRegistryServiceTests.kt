@@ -10,8 +10,8 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testGetUser() {
-        val authed = AuthSource("IRM", "saml", "saml")
-        val user1 = userRegistryService.registerUser("billybob@bob.com", authed, listOf("marketing", "sales"))
+        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"))
+        val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
         val user2 = userRegistryService.getUser("billybob@bob.com")
         assertEquals(user1.username, user2.username)
         assertEquals(user1.id, user2.id)
@@ -20,8 +20,8 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testRegisterUserWithGroups() {
-        val authed = AuthSource("IRM", "saml", "saml")
-        val user = userRegistryService.registerUser("billybob@bob.com", authed, listOf("marketing", "sales"))
+        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"))
+        val user = userRegistryService.registerUser("billybob@bob.com", authed)
 
         assertEquals(user.username,"billybob@bob.com")
 
@@ -44,9 +44,9 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testRegisterUserWithGroupsTwice() {
-        val authed = AuthSource("IRM", "saml", "saml")
-        val user1 = userRegistryService.registerUser("billybob@bob.com", authed, listOf("marketing", "sales"))
-        val user2 = userRegistryService.registerUser("billybob@bob.com", authed, listOf("marketing", "sales"))
+        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"))
+        val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
+        val user2 = userRegistryService.registerUser("billybob@bob.com", authed)
         assertEquals(user1.username, user2.username)
         assertEquals(user1.id, user2.id)
         assertEquals(user1.authorities.size, user2.authorities.size)
@@ -55,7 +55,7 @@ class UserRegistryServiceTests : AbstractTest() {
     @Test
     fun testRegisterUserWithNullGroups() {
         val authed = AuthSource("IRM", "saml", "saml")
-        val user = userRegistryService.registerUser("billybob@bob.com", authed, null)
+        val user = userRegistryService.registerUser("billybob@bob.com", authed)
 
         assertEquals(user.username,"billybob@bob.com")
 

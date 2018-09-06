@@ -1,7 +1,6 @@
 package com.zorroa.archivist.domain
 
-import com.zorroa.sdk.domain.Asset
-import com.zorroa.sdk.domain.Document
+import com.zorroa.common.domain.Document
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
@@ -49,12 +48,11 @@ class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
                 return hasMore
             }
 
-            override fun next(): Asset {
-                val asset = Asset()
+            override fun next(): Document {
                 val hit = hits[index++]
-
-                asset.document = hit.sourceAsMap
-                asset.id = hit.id
+                val asset = Document(
+                        hit.id,
+                        hit.sourceAsMap)
 
                 count++
                 return asset

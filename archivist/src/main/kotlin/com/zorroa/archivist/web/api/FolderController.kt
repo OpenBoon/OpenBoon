@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.FolderUpdate
 import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.SearchService
-import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.common.search.AssetSearch
 import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,6 +27,7 @@ class FolderController @Autowired constructor(
         get() = folderService.getAll()
 
     @PostMapping(value = ["/api/v1/folders"])
+    @Throws(Exception::class)
     fun create(@RequestBody spec: FolderSpec): Folder {
         return folderService.create(spec, false)
     }
@@ -68,6 +69,11 @@ class FolderController @Autowired constructor(
     fun existsV2(@RequestBody req: Map<String, String>): Any {
         return HttpUtils.status("folders", path, "exists",
                 folderService.exists(req.getValue("path")))
+    }
+
+    @GetMapping(value = ["/api/v1/folders/_root"])
+    fun getRootFolder(): Any {
+        return folderService.getRoot()
     }
 
     @Deprecated("")

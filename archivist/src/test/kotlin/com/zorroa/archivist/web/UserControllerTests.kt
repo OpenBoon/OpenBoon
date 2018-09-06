@@ -1,0 +1,226 @@
+package com.zorroa.archivist.web
+
+import com.fasterxml.jackson.core.type.TypeReference
+import com.google.common.collect.ImmutableMap
+import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.common.util.Json
+import com.zorroa.security.Groups
+import org.junit.Test
+import org.springframework.http.MediaType
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.web.WebAppConfiguration
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.stream.Collectors
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+
+@WebAppConfiguration
+class UserControllerTests : MockMvcTest() {
+
+    @Test
+    @Throws(Exception::class)
+    fun testLogin() {
+        mvc.perform(post("/api/v1/login").session(admin())).andExpect(status().isOk())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testSendPasswordRecoveryEmail() {
+        val user = userService.get("user")
+        emailService.sendPasswordResetEmail(user)
+
+        SecurityContextHolder.getContext().authentication = null
+        val result = mvc.perform(post("/api/v1/send-password-reset-email")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ImmutableMap.of("email", "user@zorroa.com"))))
+                .andExpect(status().isOk())
+                .andReturn()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testSendOnboardEmail() {
+        val (id, username, email, source, permissionId, homeFolderId, organizationId, firstName, lastName, enabled, settings, loginCount, timeLastLogin) = userService.get("user")
+
+        SecurityContextHolder.getContext().authentication = null
+        val result = mvc.perform(post("/api/v1/send-onboard-email")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ImmutableMap.of("email", "user@zorroa.com"))))
+                .andExpect(status().isOk())
+                .andReturn()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testResetPassword() {
+        val user = userService.get("user")
+        val token = emailService.sendPasswordResetEmail(user)
+        assertTrue(token.isEmailSent)
+
+        SecurityContextHolder.getContext().authentication = null
+        val result = mvc.perform(post("/api/v1/reset-password")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("X-Archivist-Recovery-Token", token.token)
+                .content(Json.serialize(ImmutableMap.of(
+                        "username", "user", "password", "Bilb0Baggins"))))
+                .andExpect(status().isOk())
+                .andReturn()
+
+        val (id) = Json.deserialize(
+                result.response.contentAsByteArray, User::class.java)
+        assertEquals(user.id, id)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testUpdateProfile() {
+
+        val (id) = userService.get("user")
+
+        val builder = UserProfileUpdate()
+        builder.username = "foo"
+        builder.email = "test@test.com"
+        builder.firstName = "test123"
+        builder.lastName = "456test"
+
+        val session = admin()
+        val result = mvc.perform(put("/api/v1/users/$id/_profile")
+                .session(session)
+                .content(Json.serialize(builder))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+
+        val sr = Json.deserialize(
+                result.response.contentAsByteArray, object : TypeReference<StatusResult<User>>() {
+
+        })
+        val (id1, username, email, _, _, _, _, firstName, lastName) = sr.`object`
+
+        assertEquals(id, id1)
+        assertEquals(builder.username, username)
+        assertEquals(builder.email, email)
+        assertEquals(builder.firstName, firstName)
+        assertEquals(builder.lastName, lastName)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testUpdateSettings() {
+        val (id) = userService.get("user")
+        val settings = UserSettings()
+        settings.search = ImmutableMap.of<String, Any>("foo", "bar")
+
+        val session = admin()
+        val result = mvc.perform(put("/api/v1/users/$id/_settings")
+                .session(session)
+                .content(Json.serialize(settings))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+
+        val sr = Json.deserialize(
+                result.response.contentAsByteArray, object : TypeReference<StatusResult<User>>() {
+
+        })
+        val (id1, _, _, _, _, _, _, _, _, _, settings1) = sr.`object`
+        assertEquals(id, id1)
+        assertNotNull(settings1.search["foo"])
+        assertEquals("bar", settings1.search["foo"])
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testEnableDisable() {
+        var user = userService.get("user")
+        val session = admin()
+        mvc.perform(put("/api/v1/users/" + user.id + "/_enabled")
+                .session(session)
+                .content(Json.serialize(ImmutableMap.of("enabled", false)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+
+        user = userService.get("user")
+        assertFalse(user.enabled)
+
+        mvc.perform(put("/api/v1/users/" + user.id + "/_enabled")
+                .session(session)
+                .content(Json.serialize(ImmutableMap.of("enabled", true)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+
+        user = userService.get("user")
+        assertTrue(user.enabled)
+    }
+
+
+    @Test
+    @Throws(Exception::class)
+    fun testDisableSelf() {
+        val session = admin()
+        mvc.perform(put("/api/v1/users/1/_enabled")
+                .content(Json.serialize(ImmutableMap.of("enabled", false)))
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().is4xxClientError())
+                .andReturn()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testSetPermissions() {
+
+        val user = userService.get("user")
+        val perms = permissionService.getPermissions().stream()
+                .map { p -> p.id }.collect(Collectors.toList())
+
+        val session = admin()
+        val result = mvc.perform(put("/api/v1/users/" + user.id + "/permissions")
+                .session(session)
+                .content(Json.serialize(perms))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+
+        val response = Json.Mapper.readValue<List<Permission>>(result.response.contentAsString,
+                object : TypeReference<List<Permission>>() {
+
+                })
+        assertEquals(response, userService.getPermissions(user))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testGetPermissions() {
+
+        val user = userService.get("user")
+        val perms = userService.getPermissions(user) as MutableList
+        assertTrue(perms.size > 0)
+
+        userService.setPermissions(user, Lists.newArrayList(permissionService.getPermission(Groups.ADMIN)))
+        perms.add(permissionService.getPermission(Groups.ADMIN))
+
+        val session = admin()
+        val result = mvc.perform(get("/api/v1/users/" + user.id + "/permissions")
+                .session(session)
+                .content(Json.serialize(perms))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+
+        val response = Json.Mapper.readValue<List<Permission>>(result.response.contentAsString,
+                object : TypeReference<List<Permission>>() {
+
+                })
+        assertEquals(response, userService.getPermissions(user))
+    }
+}

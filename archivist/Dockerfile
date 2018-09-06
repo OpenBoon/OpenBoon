@@ -1,6 +1,16 @@
-FROM openjdk:8-jdk-alpine
+FROM zorroaevi/8-jre-slim-gcloud
 VOLUME /tmp
-ARG JAR_FILE
-COPY target/archivist.jar app.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+MAINTAINER Zorroa <support@zorroa.com>
 
+ARG project
+ENV project ${project:-zorroa-evi-dev}
+ARG gcs_config
+ENV GCS_CONFIG ${gcs_config}
+
+RUN mkdir /service
+
+COPY target/archivist.jar /service/archivist.jar
+COPY run_server.sh run_server.sh
+
+EXPOSE 8080
+ENTRYPOINT ["./run_server.sh"]

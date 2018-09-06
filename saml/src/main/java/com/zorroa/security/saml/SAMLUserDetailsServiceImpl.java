@@ -18,6 +18,7 @@ package com.zorroa.security.saml;
 
 import com.zorroa.archivist.sdk.security.AuthSource;
 import com.zorroa.archivist.sdk.security.UserRegistryService;
+import org.opensaml.saml2.core.Attribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,78 +29,95 @@ import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
-	@Autowired
-	UserRegistryService userRegistryService;
+    @Autowired
+    UserRegistryService userRegistryService;
 
-	@Autowired
-	private MetadataManager metadata;
+    @Autowired
+    private MetadataManager metadata;
 
-	// Logger
-	private static final Logger LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
+    // Logger
+    private static final Logger LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
-	public Object loadUserBySAML(SAMLCredential credential)
-			throws UsernameNotFoundException {
+    public Object loadUserBySAML(SAMLCredential credential)
+            throws UsernameNotFoundException {
 
-		String userId = null;
-		final String issuer = credential.getAuthenticationAssertion().getIssuer().getValue();
+        String userId = null;
 
-		try {
+        final String issuer = credential.getAuthenticationAssertion().getIssuer().getValue();
 
-			ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(issuer);
-			AuthSource source = new AuthSource(
-					zd.getProp("label"),
-					zd.getProp("authSourceId") + "-saml",
-					zd.getProp("permissionType"));
+        try {
+
+            ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(issuer);
 
             /**
              * if the username attr is set, then try to use that, otherwise
              * default to the username that logged in.
              */
-			String usernameAttr = trim(zd.getProp("usernameAttr"));
-			if (usernameAttr != null) {
+            String usernameAttr = trim(zd.getProp("usernameAttr"));
+            if (usernameAttr != null) {
                 userId = credential.getAttributeAsString(usernameAttr);
-			}
+            }
 
-			if (userId == null) {
+            if (userId == null) {
                 userId = credential.getNameID().getValue();
             }
 
-			LOG.info("Loading SAML user: {} from {}", userId, issuer);
-            return userRegistryService.registerUser(userId, source,
+            // TODO: make this the ID
+            String orgName = credential.getAttributeAsString("organization_name");
+            if (orgName != null) {
+                LOG.info("Detected organization name from SAML metadata: " +  orgName);
+            }
+            else {
+                // the default org namne
+                orgName = "Zorroa";
+            }
+
+            Map<String, String> attrs = new HashMap();
+            for (Attribute a : credential.getAttributes()) {
+                attrs.put(a.getName(), credential.getAttributeAsString(a.getName()));
+            }
+
+            AuthSource source = new AuthSource(
+                    zd.getProp("label"),
+                    zd.getProp("authSourceId") + "-saml",
+                    zd.getProp("permissionType"),
+                    orgName,
+                    attrs,
                     parseGroups(zd.getProp("groupAttr"), credential));
 
-		}
-		catch (Exception e) {
-			LOG.warn("Failed to register user, IDP not founds", e);
-			throw new UsernameNotFoundException("Unable to authenticate user: " + userId, e);
-		}
-	}
+            LOG.info("Loading SAML user: {} from {}", userId, issuer);
+            return userRegistryService.registerUser(userId, source);
 
-	public List<String> parseGroups(String groupAttrName, SAMLCredential credential) {
-		List<String> groups = null;
-		if (groupAttrName != null) {
-			String[] groupAttr = credential.getAttributeAsStringArray(groupAttrName);
-			if (groupAttr != null) {
-				groups = Arrays.asList(groupAttr);
-			}
-		}
-		return groups;
-	}
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("Unable to authenticate user: " + userId, e);
+        }
+    }
 
-	private static String trim(String value) {
-	    if (value == null) {
-	        return null;
+    public List<String> parseGroups(String groupAttrName, SAMLCredential credential) {
+        List<String> groups = null;
+        if (groupAttrName != null) {
+            String[] groupAttr = credential.getAttributeAsStringArray(groupAttrName);
+            if (groupAttr != null) {
+                groups = Arrays.asList(groupAttr);
+            }
         }
-        else if (value.trim().isEmpty()) {
-	        return null;
-        }
-        else {
-	        return value.trim();
+        return groups;
+    }
+
+    private static String trim(String value) {
+        if (value == null) {
+            return null;
+        } else if (value.trim().isEmpty()) {
+            return null;
+        } else {
+            return value.trim();
         }
     }
 }

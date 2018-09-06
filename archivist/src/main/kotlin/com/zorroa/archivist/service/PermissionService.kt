@@ -5,8 +5,8 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.sdk.domain.PagedList
-import com.zorroa.sdk.domain.Pager
+import com.zorroa.common.domain.PagedList
+import com.zorroa.common.domain.Pager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
@@ -17,38 +17,40 @@ import java.util.stream.Collectors
 
 interface PermissionService {
 
-     fun getPermissions(): List<Permission>
+    fun createStandardPermissions(org: Organization)
 
-     fun getPermissions(page: Pager, filter: PermissionFilter): PagedList<Permission>
+    fun getPermissions(): List<Permission>
 
-     fun getPermissions(page: Pager): PagedList<Permission>
+    fun getPermissions(page: Pager, filter: PermissionFilter): PagedList<Permission>
 
-     fun getUserAssignablePermissions(page: Pager): PagedList<Permission>
+    fun getPermissions(page: Pager): PagedList<Permission>
 
-     fun getObjAssignablePermissions(page: Pager): PagedList<Permission>
+    fun getUserAssignablePermissions(page: Pager): PagedList<Permission>
 
-     fun getPermission(id: UUID): Permission
+    fun getObjAssignablePermissions(page: Pager): PagedList<Permission>
 
-     fun createPermission(builder: PermissionSpec): Permission
+    fun getPermission(id: UUID): Permission
 
-     fun getPermissionNames(): List<String>
+    fun createPermission(builder: PermissionSpec): Permission
 
-     fun permissionExists(authority: String): Boolean
+    fun getPermissionNames(): List<String>
 
-     fun getPermission(name: String): Permission
+    fun permissionExists(authority: String): Boolean
 
-     fun deletePermission(permission: Permission): Boolean
+    fun getPermission(name: String): Permission
+
+    fun deletePermission(permission: Permission): Boolean
 }
 
 @Service
 @Transactional
 class PermissionServiceImpl @Autowired constructor(
-        private val permissionDao : PermissionDao,
+        private val permissionDao: PermissionDao,
         private val txem: TransactionEventManager
 ) : PermissionService {
 
     @Autowired
-    private lateinit var logService : EventLogService
+    private lateinit var logService: EventLogService
 
     private val permissionCache = CacheBuilder.newBuilder()
             .maximumSize(200)
@@ -119,6 +121,22 @@ class PermissionServiceImpl @Autowired constructor(
         val perm = permissionDao.create(builder, false)
         txem.afterCommit(true, { logService.logAsync(UserLogSpec.build(LogAction.Create, perm)) })
         return perm
+    }
+
+    val standardPerms = listOf(
+            mapOf("name" to  "administrator", "desc" to "Superuser, can do and access everything"),
+            mapOf("name" to "everyone", "desc" to "A standard user of the system"),
+            mapOf("name" to "share", "desc" to "Modify all permissions"),
+            mapOf("name" to "export", "desc" to "Export all files"),
+            mapOf("name" to "read", "desc" to "Read all data"),
+            mapOf("name" to "write", "desc" to "Write all data"),
+            mapOf("name" to "librarian", "desc" to "Manager /library folder"))
+
+    override fun createStandardPermissions(org: Organization) {
+        for (entry in standardPerms) {
+            val spec = PermissionSpec("zorroa", entry["name"]!!)
+            permissionDao.create(spec, true)
+        }
     }
 
     override fun deletePermission(permission: Permission): Boolean {

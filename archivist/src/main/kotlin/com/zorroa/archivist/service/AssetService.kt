@@ -1,49 +1,43 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.TaskSpec
-import com.zorroa.archivist.repository.AssetDao
-import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.archivist.sdk.services.AssetId
-import com.zorroa.archivist.sdk.services.AssetService
-import com.zorroa.archivist.sdk.services.AssetSpec
-import com.zorroa.archivist.sdk.services.StorageService
+import com.zorroa.common.clients.CoreDataVaultClient
+import com.zorroa.common.domain.Asset
+import com.zorroa.common.domain.Document
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
+interface AssetService {
+    fun getDocument(asset: Asset) : Document
+    fun setDocument(id: UUID, doc: Document)
+}
 
-@Service
-@Transactional
-class AssetServiceInternalImpl @Autowired constructor (
-        val assetDao: AssetDao,
-        val storageService : StorageService,
-        val pipelineService: PipelineService,
-        val properties: ApplicationProperties,
-        val tx: TransactionEventManager) : AssetService {
+class IrmAssetServiceImpl constructor(val cdvClient: CoreDataVaultClient) : AssetService {
 
-    @Autowired
-    private lateinit var taskService: TaskService
-
-    override fun create(spec: AssetSpec) : AssetId {
-
-        val asset = assetDao.create(spec)
-        spec.pipelines?.forEach {
-            val pipeline = pipelineService.get(it)
-            val taskSpec = TaskSpec(asset.id, pipeline.id,
-                    "pipeline ${pipeline.name} running on ${spec.filename}")
-            taskService.create(taskSpec)
-        }
-
-        tx.afterCommit {
-            storageService.createBucket(asset)
-            storageService.storeMetadata(asset, spec.document)
-        }
-
-        return asset
+    override fun getDocument(asset: Asset) : Document {
+        return cdvClient.getIndexedMetadata(asset)
     }
 
-    override fun get(id: UUID) : AssetId {
-        return assetDao.getId(id)
+    override fun setDocument(id: UUID, doc: Document) {
+
+        val asset = Asset(UUID.fromString(doc.id),
+                UUID.fromString(doc.getAttr("zorroa.organizationId")),
+                mutableMapOf("companyId" to doc.getAttr("irm.companyId", Int::class.java)))
+        cdvClient.updateIndexedMetadata(asset, doc)
     }
 }
+
+class AssetServiceImpl  : AssetService {
+
+    @Autowired
+    lateinit var indexService : IndexService
+
+    override fun getDocument(asset: Asset) : Document {
+        return indexService.get(asset.id.toString())
+    }
+
+    override fun setDocument(id: UUID, doc: Document) { }
+}
+
+
+
+

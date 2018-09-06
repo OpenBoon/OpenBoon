@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+import argparse
+import subprocess
+import yaml
+import time
+import os
+
+def main():
+    parser = argparse.ArgumentParser(prog="zbuild")
+    parser.add_argument("-g", "--gcs_config", help="gs:// location of a configuration directory to use for this build.")
+    parser.add_argument("-p", "--push", action="store_true", help="push to GCP container registry")
+    parser.add_argument("-d", "--deploy", action="store_true", help="Deploy latest version")
+    parser.add_argument("-b", "--build", action="store_true", help="Recompile jar file")
+    parser.add_argument("-v", "--version", help="specify version")
+
+    args = parser.parse_args()
+    app = yaml.load(open("app.yaml"))
+    project = get_project()
+
+    print "#############################################"
+    print "Project: %s" % project
+    print "Deploying in 3 seconds. Ctr-c to cancel"
+    print "#############################################"
+    time.sleep(3)
+
+    if args.build:
+        rebuild_jar_file()
+        build_docker_image(project, app, args.gcs_config)
+
+    if args.push:
+        push_to_gcp(project, app)
+
+    if args.deploy:
+        deploy_to_app_engine(project, app, args.version)
+
+
+def get_project():
+    return subprocess.check_output(["gcloud", "config", "get-value", "project"]).strip()
+
+def build_docker_image(project, app, gcs_config):
+    service = app["service"]
+    print "Building docker image: %s:%s" % (project, service)
+    cmd = ["docker", "build",
+           "-t", get_image_name(project, app),
+           "--build-arg", "project=%s" % project,
+           "."]
+    print cmd
+    subprocess.check_call(cmd, shell=False)
+
+def get_image_name(project, app):
+    return "gcr.io/%s/%s:latest" % (project, app["service"])
+
+def push_to_gcp(project, app):
+    image = get_image_name(project, app)
+    cmd = ["docker", "push", image]
+    print cmd
+    subprocess.check_call(cmd, shell=False)
+
+def deploy_to_app_engine(project, app, version):
+    image = get_image_name(project, app)
+    cmd = ["gcloud", "app", "deploy", determine_app_yaml(project), "--project", project, "--image-url", image, "--quiet"]
+    if version:
+        cmd.extend(["--version", version])
+    print cmd
+    subprocess.check_call(cmd, shell=False)
+
+def determine_app_yaml(project):
+    proj_yaml = project + ".yaml"
+    if os.path.exists(proj_yaml):
+        print "Detected project specific: %s:" % proj_yaml
+        return proj_yaml
+    else:
+        return "app.yaml"
+
+def rebuild_jar_file():
+    cmd =["mvn", "clean", "package", "-Dmaven.test.skip=true"]
+    print cmd
+    ret = subprocess.check_call(cmd, shell=False)
+    if ret != 0:
+        raise RuntimeError("Failed to compile java library!!");
+
+if __name__ == '__main__':
+    main()
+

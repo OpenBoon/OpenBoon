@@ -16,7 +16,6 @@
     </parent>
 
     <properties>
-        <kotlin.version>1.2.41</kotlin.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
@@ -31,8 +30,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
         <dependency>
@@ -43,8 +41,7 @@
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>server-sdk</artifactId>
-            <version>${project.version}</version>
+            <artifactId>lib-security</artifactId>
             <scope>provided</scope>
         </dependency>
 
@@ -69,6 +66,7 @@
                             <exclude>ch.qos.logback:*</exclude>
                         </excludes>
                     </artifactSet>
+                    <finalName>saml</finalName>
                 </configuration>
                 <executions>
                     <execution>

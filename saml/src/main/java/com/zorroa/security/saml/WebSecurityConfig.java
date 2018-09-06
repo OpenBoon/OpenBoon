@@ -1,6 +1,5 @@
 package com.zorroa.security.saml;
 
-import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.protocol.Protocol;
@@ -19,17 +18,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
+import org.springframework.security.saml.context.SAMLContextProvider;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
+import org.springframework.security.saml.context.SAMLContextProviderLB;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -51,17 +50,19 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.*;
+
 
 @Configuration
 @EnableWebSecurity
@@ -72,6 +73,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Timer backgroundTaskTimer;
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
+
+    @Autowired
+    private SamlProperties properties;
 
     @PostConstruct
     public void init() {
@@ -85,9 +89,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.backgroundTaskTimer.cancel();
         this.multiThreadedHttpConnectionManager.shutdown();
     }
-
-    @Autowired
-    private ApplicationProperties properties;
 
     @Autowired
     private SAMLUserDetailsServiceImpl samlUserDetailsServiceImpl;
@@ -119,7 +120,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // messages
     @Bean
     public SAMLAuthenticationProvider samlAuthenticationProvider() {
-        SAMLAuthenticationProvider samlAuthenticationProvider = new SAMLAuthenticationProvider();
+        SAMLAuthenticationProvider samlAuthenticationProvider = new ZorroaSAMLAuthenticationProvider();
         samlAuthenticationProvider.setUserDetails(samlUserDetailsServiceImpl);
         samlAuthenticationProvider.setForcePrincipalAsString(false);
         return samlAuthenticationProvider;
@@ -127,8 +128,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Provider of default SAML Context
     @Bean
-    public SAMLContextProviderImpl contextProvider() {
-        return new SAMLContextProviderImpl();
+    public SAMLContextProvider contextProvider() {
+        logger.info("BaseURL is proxy: {}", properties.isBaseUrlIsProxy());
+
+        if (properties.isBaseUrlIsProxy()) {
+            URI uri = URI.create(properties.baseUrl);
+            SAMLContextProviderLB ctx = new SAMLContextProviderLB();
+            ctx.setScheme(uri.getScheme());
+            ctx.setServerName(uri.getHost());
+            ctx.setIncludeServerPortInRequestURL(false);
+            ctx.setContextPath("/");
+
+            if (uri.getScheme().endsWith("s")) {
+                ctx.setServerPort(443);
+            }
+            else{
+                ctx.setServerPort(80);
+            }
+            return ctx;
+        }
+        else {
+            return new SAMLContextProviderImpl();
+        }
     }
 
     // Initialization of OpenSAML library
@@ -181,17 +202,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Central storage of cryptographic keys
     @Bean
     public KeyManager keyManager() {
-        String keystorePath = properties.getString("archivist.security.saml.keystore.path");
-        String storePass = properties.getString("archivist.security.saml.keystore.password");
-        String defaultKey = properties.getString("archivist.security.saml.keystore.alias");
-        String keyPass = properties.getString("archivist.security.saml.keystore.keyPassword");
+        Map<String, String> keystore = properties.keystore;
+        Resource storeFile = new FileSystemResource(new File(keystore.get("path")));
+        Map<String, String> passwords = new HashMap<>();
+        passwords.put(keystore.get("alias"), keystore.get("keyPassword"));
 
-        Resource storeFile = new FileSystemResource(new File(keystorePath));
-
-        Map<String, String> passwords = new HashMap<String, String>();
-        passwords.put(defaultKey, keyPass);
-
-        return new JKSKeyManager(storeFile, storePass, passwords, defaultKey);
+        return new JKSKeyManager(storeFile, keystore.get("password"),
+                passwords, keystore.get("alias"));
     }
 
     // Setup TLS Socket Factory
@@ -239,15 +256,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Setup advanced info about metadata
     @Bean
     public ExtendedMetadata extendedMetadata() {
-        boolean discovery = properties.getBoolean("archivist.security.saml.discovery");
+        boolean discovery = properties.discovery;
+        logger.info("SAML discovery  {}", discovery);
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setIdpDiscoveryEnabled(discovery);
-        extendedMetadata.setSignMetadata(false);
+        extendedMetadata.setSignMetadata(true);
         extendedMetadata.setEcpEnabled(true);
         return extendedMetadata;
     }
-
-    // IDP Discovery Service
 
     @Bean
     public SAMLDiscovery samlIDPDiscovery() {
@@ -262,14 +278,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Qualifier("metadata")
     public CachingMetadataManager metadata() throws MetadataProviderException, IOException {
-        boolean discovery = properties.getBoolean("archivist.security.saml.discovery");
+        boolean discovery = properties.discovery;
 
         List<MetadataProvider> providers = new ArrayList();
-        Files.list(Paths.get("config/saml"))
+        Files.list(Paths.get("/config/saml"))
                 .filter(Files::isRegularFile)
-                .filter(p->p.getFileName().toString().endsWith(".properties"))
+                .filter(p -> p.getFileName().toString().endsWith(".properties"))
                 .forEach(p -> {
 
+                    logger.info("Initializing SAML : {}", p);
                     Properties props = new Properties();
                     try {
                         props.load(new FileInputStream(p.toFile()));
@@ -277,7 +294,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                         ZorroaExtendedMetadata extendedMetadata = new ZorroaExtendedMetadata();
                         extendedMetadata.setIdpDiscoveryEnabled(discovery);
-                        extendedMetadata.setSignMetadata(false);
+                        extendedMetadata.setSignMetadata(true);
                         extendedMetadata.setEcpEnabled(true);
                         extendedMetadata.setProps(props);
 
@@ -289,10 +306,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                     new ExtendedMetadataDelegate(httpMetadataProvider, extendedMetadata);
                             emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
+                            emd.setRequireValidMetadata(false);
                             backgroundTaskTimer.purge();
                             providers.add(emd);
-                        }
-                        else {
+                        } else {
+                            try {
+                                MessageDigest md5 = MessageDigest.getInstance("MD5");
+                                byte[] bytes = Files.readAllBytes(Paths.get(uri));
+                                byte[] hash = md5.digest(bytes);
+                                logger.info("Metdata MD5: {}", DatatypeConverter.printHexBinary(hash));
+                            } catch (Exception e) {
+                                logger.warn("Unable to MD5 metadata");
+                            }
+
                             FilesystemMetadataProvider provider =
                                     new FilesystemMetadataProvider(new File(uri));
                             provider.setParserPool(parserPool());
@@ -300,12 +326,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                     new ExtendedMetadataDelegate(provider, extendedMetadata);
                             emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
+                            emd.setRequireValidMetadata(false);
                             providers.add(emd);
                         }
                     } catch (IOException e) {
                         logger.warn("Failed to open SAML file: ", e);
-                    }
-                    catch (MetadataProviderException e) {
+                    } catch (MetadataProviderException e) {
                         logger.warn("Failed to open SAML file: ", e);
                     }
                 });
@@ -316,11 +342,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Filter automatically generates default SP metadata
     @Bean
     public MetadataGenerator metadataGenerator() {
-        String baseURL = properties.getString("archivist.security.saml.baseUrl");
+        String baseURL = properties.baseUrl;
+        logger.info("SAML base URL {}", baseURL);
         MetadataGenerator metadataGenerator = new MetadataGenerator();
         metadataGenerator.setEntityId(baseURL + "/saml/metadata");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
-        metadataGenerator.setIncludeDiscoveryExtension(false);
         metadataGenerator.setKeyManager(keyManager());
         metadataGenerator.setEntityBaseURL(baseURL);
         return metadataGenerator;
@@ -338,7 +364,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl("/landing");
+        successRedirectHandler.setDefaultTargetUrl(properties.landingPage);
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true);
         return successRedirectHandler;
     }
@@ -373,14 +399,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public MetadataGeneratorFilter metadataGeneratorFilter() {
-        return new MetadataGeneratorFilter(metadataGenerator());
+        if (properties.isBaseUrlIsProxy()) {
+            return new ZorroaMetadataFilter(properties.baseUrl, metadataGenerator());
+        }
+        else {
+            return new MetadataGeneratorFilter(metadataGenerator());
+        }
     }
 
     // Handler for successful logout
     @Bean
     public SimpleUrlLogoutSuccessHandler successLogoutHandler() {
         SimpleUrlLogoutSuccessHandler successLogoutHandler = new SimpleUrlLogoutSuccessHandler();
-        successLogoutHandler.setDefaultTargetUrl("/");
+        successLogoutHandler.setDefaultTargetUrl(properties.landingPage);
         return successLogoutHandler;
     }
 
@@ -408,8 +439,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SAMLLogoutFilter samlLogoutFilter() {
         return new SAMLLogoutFilter(successLogoutHandler(),
-                new LogoutHandler[] { logoutHandler() },
-                new LogoutHandler[] { logoutHandler() });
+                new LogoutHandler[]{logoutHandler()},
+                new LogoutHandler[]{logoutHandler()});
     }
 
     // Bindings
@@ -490,33 +521,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Returns the authentication manager currently used by Spring.
-     * It represents a bean definition with the aim allow wiring from
-     * other classes performing the Inversion of Control (IoC).
-     *
-     * @throws  Exception
-     */
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    /**
      * Defines the web based security configuration.
      *
-     * @param   http It allows configuring web based security for specific http requests.
-     * @throws  Exception
+     * @param http It allows configuring web based security for specific http requests.
+     * @throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        boolean discovery = properties.getBoolean("archivist.security.saml.discovery");
+        boolean discovery = properties.discovery;
 
         http
                 .httpBasic()
-                .authenticationEntryPoint(samlEntryPoint())
-                .and()
-                .sessionManagement();
+                .authenticationEntryPoint(samlEntryPoint());
 
         http
                 .csrf()
@@ -527,6 +543,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/error").permitAll()
+                .antMatchers("/curator").permitAll()
                 .antMatchers("/saml/**").permitAll();
 
         http
@@ -543,8 +560,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Sets a custom authentication provider.
      *
-     * @param   auth SecurityBuilder used to create an AuthenticationManager.
-     * @throws  Exception
+     * @param auth SecurityBuilder used to create an AuthenticationManager.
+     * @throws Exception
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

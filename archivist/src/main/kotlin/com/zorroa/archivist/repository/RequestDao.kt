@@ -5,9 +5,10 @@ import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.domain.RequestState
 import com.zorroa.archivist.domain.RequestType
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.sdk.util.Json
+import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -24,7 +25,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
     @Autowired
     internal lateinit var userDaoCache: UserDaoCache;
 
-    private val MAPPER = RowMapper<Request> { rs, _ ->
+    private val MAPPER = RowMapper { rs, _ ->
          Request(
                  rs.getObject("pk_request") as UUID,
                  rs.getObject("pk_folder") as UUID,
@@ -44,7 +45,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
         val userId = getUserId()
         val time = System.currentTimeMillis()
 
-        jdbc.update({ connection ->
+        jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, userId)
@@ -57,13 +58,14 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
             ps.setString(9, Json.serializeToString(spec.emailCC, "[]"))
             ps.setObject(10, getUser().organizationId)
             ps
-        })
+        }
 
         return get(id)
     }
 
     override fun get(id: UUID) : Request {
-        return jdbc.queryForObject("$GET WHERE pk_request=?", MAPPER, id)
+        return jdbc.queryForObject("$GET WHERE pk_organization=? AND pk_request=?",
+                MAPPER, getOrgId(), id)
     }
 
     companion object {
