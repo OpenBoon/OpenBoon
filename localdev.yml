@@ -1,0 +1,56 @@
+
+version: '3'
+services:
+
+  # Elastic Search instance used for local devlopment servers.
+  es:
+    build:
+      context: elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+
+  # Postgres instance used for local devleopment servers.
+  postgres:
+    image: "postgres:9.6.9"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: zorroa
+      POSTGRES_USER: zorroa
+      POSTGRES_DB: zorroa
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  # Local Archivist server.
+  zorroa-archivist:
+    links:
+       - "es"
+       - "postgres"
+       - "zorroa-analyst"
+    build:
+      context: archivist
+    ports:
+      - 8080:8080
+    volumes:
+      - "./localdev/zorroa-archivist-config:/config"
+      - "./archivist/target:/service"
+    environment:
+      ZORROA_USER: admin
+
+  # Local Analyst server.
+  zorroa-analyst:
+      links:
+         - "es"
+         - "postgres"
+      build:
+        context: analyst
+      ports:
+        - 8082:8080
+      volumes:
+        - "./localdev/zorroa-analyst-config:/config"
+        - "./analyst/target:/service"
+

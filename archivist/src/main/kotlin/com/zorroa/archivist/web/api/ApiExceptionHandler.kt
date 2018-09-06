@@ -1,5 +1,7 @@
 package com.zorroa.archivist.web.api
 
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.web.InvalidObjectException
 import com.zorroa.common.domain.*
@@ -9,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
@@ -59,7 +62,7 @@ class ApiExceptionHandler {
             sb.append(getUsername())
         }
         catch (e: Exception) {
-            sb.append("Unknown/Unauthorized")
+            sb.append("Unknown Auth: {}", getUserOrNull())
         }
         sb.append("\n")
 

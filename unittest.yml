@@ -7,7 +7,7 @@ services:
   # Elastic Search instance used by the unit tests.
   test-es:
     build:
-      context: ../elasticsearch
+      context: ./elasticsearch
       args:
         node_type: single
     ports:

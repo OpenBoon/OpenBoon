@@ -528,8 +528,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        boolean discovery = properties.discovery;
-
         http
                 .httpBasic()
                 .authenticationEntryPoint(samlEntryPoint());
@@ -548,13 +546,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .logout()
-                .logoutSuccessUrl("/");
-
-        if (discovery) {
-            http
-                    .authorizeRequests()
-                    .anyRequest().authenticated();
-        }
+                .logoutSuccessUrl(properties.landingPage);
     }
 
     /**

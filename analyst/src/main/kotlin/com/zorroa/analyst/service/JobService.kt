@@ -125,6 +125,7 @@ class JobRegistryServiceImpl @Autowired constructor(
 
             jobService.setState(job, JobState.Waiting, null)
         } catch (e: Exception) {
+            logger.warn("Failed to launch job {}", job.name, e)
             jobService.setState(job, JobState.Fail, null)
         }
         return job
