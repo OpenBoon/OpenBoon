@@ -191,8 +191,10 @@ class ArchivistConfiguration {
     @Bean
     fun networkEnvironment(): NetworkEnvironment {
         val props = properties()
-        val override = props.getMap("env.host-override.example-service")
+        val override = props.getMap("env.host-override")
                 .map { it.key.split('.').last() to it.value.toString() }.toMap()
+
+        logger.info("Host overrides: {}", override)
 
         return when (props.getString("env.type")) {
             "app-engine"->  {
