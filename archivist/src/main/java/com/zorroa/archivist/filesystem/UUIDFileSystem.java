@@ -1,4 +1,4 @@
-package com.zorroa.common.filesystem;
+package com.zorroa.archivist.filesystem;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;

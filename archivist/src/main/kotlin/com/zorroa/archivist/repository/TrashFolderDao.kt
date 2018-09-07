@@ -1,12 +1,12 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Sets
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.TrashedFolder
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException

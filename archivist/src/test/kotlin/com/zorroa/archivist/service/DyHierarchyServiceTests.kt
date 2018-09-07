@@ -5,10 +5,9 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
-import com.zorroa.common.util.FileUtils
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.util.FileUtils
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.common.domain.*
-import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository

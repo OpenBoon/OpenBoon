@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before

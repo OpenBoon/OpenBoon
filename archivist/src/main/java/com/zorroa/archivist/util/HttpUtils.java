@@ -1,7 +1,6 @@
-package com.zorroa.archivist;
+package com.zorroa.archivist.util;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.common.util.FileUtils;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;

@@ -7,12 +7,10 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.security.Groups
 import org.junit.Assert.*
 import org.junit.Before

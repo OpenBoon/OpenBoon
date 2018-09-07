@@ -1,4 +1,4 @@
-package com.zorroa.common.search;
+package com.zorroa.archivist.search;
 
 import java.util.ArrayList;
 import java.util.List;

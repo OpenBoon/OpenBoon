@@ -54,11 +54,6 @@
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>lib-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zorroa</groupId>
             <artifactId>lib-security</artifactId>
         </dependency>
 
@@ -201,6 +196,18 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>3.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.2</version>
         </dependency>
 
         <dependency>

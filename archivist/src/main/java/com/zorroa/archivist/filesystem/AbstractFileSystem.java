@@ -1,4 +1,4 @@
-package com.zorroa.common.filesystem;
+package com.zorroa.archivist.filesystem;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

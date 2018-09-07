@@ -6,10 +6,10 @@ import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders

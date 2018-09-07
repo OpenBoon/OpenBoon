@@ -2,16 +2,11 @@ package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.Sets
-import com.zorroa.archivist.JdbcUtils
-import com.zorroa.archivist.domain.DyHierarchy
-import com.zorroa.archivist.domain.DyHierarchyLevel
-import com.zorroa.archivist.domain.DyHierarchySpec
-import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper

@@ -6,7 +6,6 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.domain.Access
 import com.zorroa.security.Groups
 import org.junit.Assert.*
 import org.junit.Test

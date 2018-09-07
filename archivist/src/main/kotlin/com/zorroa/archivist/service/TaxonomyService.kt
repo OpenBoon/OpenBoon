@@ -10,13 +10,13 @@ import com.zorroa.archivist.elastic.ESUtils
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.TaxonomyDao
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.InternalRunnable
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkProcessor

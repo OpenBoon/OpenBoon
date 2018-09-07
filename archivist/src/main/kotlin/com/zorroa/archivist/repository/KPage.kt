@@ -1,6 +1,6 @@
 package com.zorroa.common.repository
 
-import com.zorroa.common.search.Scroll
+import com.zorroa.archivist.search.Scroll
 import java.util.*
 import java.util.stream.Stream
 

@@ -2,14 +2,12 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.google.common.hash.Hashing
-import com.zorroa.archivist.HttpUtils
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper

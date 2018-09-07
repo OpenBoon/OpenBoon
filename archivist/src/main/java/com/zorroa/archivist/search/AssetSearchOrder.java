@@ -2,7 +2,7 @@
  * Copyright (c) 2015 by Zorroa
  */
 
-package com.zorroa.common.search;
+package com.zorroa.archivist.search;
 
 /**
  * Specify the field and order for search results

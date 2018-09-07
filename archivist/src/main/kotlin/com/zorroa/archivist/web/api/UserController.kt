@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.api
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
-import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService

@@ -3,8 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportSpec
-import com.zorroa.archivist.security.getUser
-import com.zorroa.common.search.AssetSearch
+import com.zorroa.archivist.search.AssetSearch
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

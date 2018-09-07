@@ -1,4 +1,4 @@
-package com.zorroa.common.domain;
+package com.zorroa.archivist.domain;
 
 public enum Access {
     Read(1),

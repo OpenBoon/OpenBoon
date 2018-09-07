@@ -2,22 +2,20 @@ package com.zorroa.archivist.web.api
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.zorroa.archivist.HttpUtils
-import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
+import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetIndexResult
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.search.AssetSearch
-import com.zorroa.common.search.AssetSuggestBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource

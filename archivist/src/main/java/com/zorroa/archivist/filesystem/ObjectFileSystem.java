@@ -1,4 +1,4 @@
-package com.zorroa.common.filesystem;
+package com.zorroa.archivist.filesystem;
 
 /**
  * The object file system interface is for storing files of all types, including proxies,

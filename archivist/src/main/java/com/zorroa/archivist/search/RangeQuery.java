@@ -1,4 +1,4 @@
-package com.zorroa.common.search;
+package com.zorroa.archivist.search;
 
 /**
  * Created by chambers on 7/26/16.

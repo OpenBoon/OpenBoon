@@ -1,4 +1,4 @@
-package com.zorroa.common.search;
+package com.zorroa.archivist.search;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

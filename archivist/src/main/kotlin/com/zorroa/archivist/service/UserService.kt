@@ -16,8 +16,6 @@ import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.DuplicateEntityException
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

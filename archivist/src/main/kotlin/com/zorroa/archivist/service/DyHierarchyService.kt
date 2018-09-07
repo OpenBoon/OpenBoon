@@ -5,13 +5,13 @@ import com.google.common.collect.*
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
+import com.zorroa.archivist.search.AssetScript
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.search.AssetScript
-import com.zorroa.common.search.AssetSearch
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
 import org.elasticsearch.search.aggregations.AggregationBuilders

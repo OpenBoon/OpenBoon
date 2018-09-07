@@ -2,10 +2,10 @@
  * Copyright (c) 2015 by Zorroa
  */
 
-package com.zorroa.common.search;
+package com.zorroa.archivist.search;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zorroa.common.domain.Access;
+import com.zorroa.archivist.domain.Access;
 
 import java.util.HashMap;
 import java.util.List;

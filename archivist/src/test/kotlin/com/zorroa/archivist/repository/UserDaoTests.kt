@@ -2,9 +2,9 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserProfileUpdate
-import com.zorroa.common.domain.Pager
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test

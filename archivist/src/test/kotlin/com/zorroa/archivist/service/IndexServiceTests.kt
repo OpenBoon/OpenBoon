@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
-import com.zorroa.common.domain.Pager
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

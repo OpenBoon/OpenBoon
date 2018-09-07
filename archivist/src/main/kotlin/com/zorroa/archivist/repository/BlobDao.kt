@@ -1,13 +1,12 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getPermissionIds
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.domain.Access
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.springframework.jdbc.core.RowCallbackHandler

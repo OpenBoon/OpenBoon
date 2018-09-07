@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zorroa.common.schema.SourceSchema;
+import com.zorroa.archivist.schema.SourceSchema;
 
 import java.io.File;
 import java.nio.file.Files;

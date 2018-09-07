@@ -1,6 +1,6 @@
-package com.zorroa.common.filesystem;
+package com.zorroa.archivist.filesystem;
 
-import com.zorroa.common.util.FileUtils;
+import com.zorroa.archivist.util.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

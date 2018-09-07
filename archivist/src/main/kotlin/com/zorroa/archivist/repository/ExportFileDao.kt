@@ -4,7 +4,7 @@ import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.security.getUser
-import com.zorroa.common.util.FileUtils
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.util.JdbcUtils
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository

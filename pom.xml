@@ -22,7 +22,6 @@
     </properties>
 
     <modules>
-        <module>lib-common</module>
         <module>lib-security</module>
         <module>ldap</module>
         <module>saml</module>

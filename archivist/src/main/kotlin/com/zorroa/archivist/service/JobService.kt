@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.common.domain.*
-import com.zorroa.common.server.NetworkEnvironment
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

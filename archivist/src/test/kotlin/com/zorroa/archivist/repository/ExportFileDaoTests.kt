@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
-import com.zorroa.common.search.AssetSearch
+import com.zorroa.archivist.search.AssetSearch
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

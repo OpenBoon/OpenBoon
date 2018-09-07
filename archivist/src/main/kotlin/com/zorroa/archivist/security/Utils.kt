@@ -2,11 +2,11 @@ package com.zorroa.archivist.security
 
 import com.google.common.collect.Sets
 import com.google.common.collect.Sets.intersection
+import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json

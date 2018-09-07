@@ -5,13 +5,13 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.ExportDao
 import com.zorroa.archivist.repository.ExportFileDao
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

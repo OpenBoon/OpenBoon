@@ -1,6 +1,6 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.domain.RequestState

@@ -12,10 +12,10 @@ import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.util.FileUtils
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest

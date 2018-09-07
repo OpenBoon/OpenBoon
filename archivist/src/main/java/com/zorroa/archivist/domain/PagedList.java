@@ -1,6 +1,6 @@
-package com.zorroa.common.domain;
+package com.zorroa.archivist.domain;
 
-import com.zorroa.common.search.Scroll;
+import com.zorroa.archivist.search.Scroll;
 
 import java.util.ArrayList;
 import java.util.Iterator;

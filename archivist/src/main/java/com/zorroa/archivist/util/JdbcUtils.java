@@ -1,4 +1,4 @@
-package com.zorroa.archivist;
+package com.zorroa.archivist.util;
 /*
 *    Copyright 2014 Matthew Chambers
 *

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zorroa.common.util.FileUtils;
+import com.zorroa.archivist.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

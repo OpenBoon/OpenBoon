@@ -1,4 +1,4 @@
-package com.zorroa.common.util;
+package com.zorroa.archivist.util;
 
 
 import org.apache.tika.Tika;
