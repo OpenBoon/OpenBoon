@@ -5,7 +5,7 @@ import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.PipelineType
 import com.zorroa.common.domain.ProcessorRef
-import com.zorroa.common.repository.DaoFilter
+import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.JdbcUtils
 import java.util.*
@@ -60,7 +60,7 @@ data class ExportSpec (
 data class ExportFilter (
         private val ids : List<UUID>? = null,
         private val states : List<JobState>? = null
-) : DaoFilter() {
+) : KDaoFilter() {
 
     override val sortMap: Map<String, String>? = null
 

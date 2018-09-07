@@ -101,13 +101,10 @@ class ExportServiceImpl @Autowired constructor(
 
         val jspec = JobSpec(spec.name!!,
                 PipelineType.Export,
-                getOrgId(),
-                buildZpsSciript(export, spec),
+                listOf(buildZpsSciript(export, spec)),
                 env=env)
 
-        val job = jobService.launchJob(jspec)
-        exportDao.setAnalystJobId(export, job)
-
+        val job = jobService.create(jspec)
         return export
     }
 

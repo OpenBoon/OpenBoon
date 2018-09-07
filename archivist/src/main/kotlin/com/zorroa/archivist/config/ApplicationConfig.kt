@@ -120,25 +120,6 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun analystClient() : AnalystClient {
-        val network = networkEnvironment()
-        val path = properties()
-                .getPath("archivist.config.path")
-                .resolve("service-credentials.json")
-        return if (Files.exists(path)) {
-            var host = properties().getString("analyst.host", "")
-            if (host.isBlank()) {
-                host = network.getPublicUrl("zorroa-analyst")
-            }
-            AnalystClientImpl(host, GcpJwtSigner(path.toString()))
-        }
-        else {
-            logger.info("Service credentials path does not exist: {}", path)
-            AnalystClientImpl(network.getPublicUrl("zorroa-analyst"), null)
-        }
-    }
-
-    @Bean
     fun routingService() : IndexRoutingService {
         return FakeIndexRoutingServiceImpl(properties().getString("es-routing-service.url"))
     }

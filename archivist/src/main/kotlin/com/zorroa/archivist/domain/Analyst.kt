@@ -1,7 +1,7 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.common.repository.DaoFilter
+import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
@@ -40,7 +40,7 @@ data class AnalystFilter (
         private val ids : List<UUID>? = null,
         private val states : List<AnalystState>? = null,
         private val taskIds: List<UUID>? = null
-) : DaoFilter() {
+) : KDaoFilter() {
 
     override val sortMap: Map<String, String>? = null
 

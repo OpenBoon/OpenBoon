@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import org.slf4j.LoggerFactory
 import java.util.*
 
-abstract class DaoFilter {
+abstract class KDaoFilter {
 
     @JsonIgnore
     private var built = false
@@ -125,13 +125,13 @@ abstract class DaoFilter {
     }
 
     @JsonIgnore
-    fun forceSort(sort: Map<String, String>): DaoFilter {
+    fun forceSort(sort: Map<String, String>): KDaoFilter {
         this.sort = sort
         return this
     }
 
     companion object {
 
-        protected val logger = LoggerFactory.getLogger(DaoFilter::class.java)
+        protected val logger = LoggerFactory.getLogger(KDaoFilter::class.java)
     }
 }

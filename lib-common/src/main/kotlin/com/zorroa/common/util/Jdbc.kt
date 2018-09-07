@@ -17,9 +17,27 @@ object JdbcUtils {
         sb.append("INSERT INTO ")
         sb.append(table)
         sb.append("(")
-        sb.append(StringUtils.join(cols, ","))
+        for(col in  cols) {
+            if ("::" in col) {
+                sb.append(col.split("::").first())
+            }
+            else {
+                sb.append(col)
+            }
+            sb.append(",")
+        }
+        sb.deleteCharAt(sb.lastIndex)
         sb.append(") VALUES (")
-        sb.append(StringUtils.repeat("?", ",", cols.size))
+        for(col in  cols) {
+            if ("::" in col) {
+                sb.append("?::"+col.split("::").last())
+            }
+            else {
+                sb.append("?")
+            }
+            sb.append(",")
+        }
+        sb.deleteCharAt(sb.lastIndex)
         sb.append(")")
         return sb.toString()
     }

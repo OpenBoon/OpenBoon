@@ -1,55 +1,37 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.common.repository.DaoFilter
+import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
 enum class JobState {
-    Setup,
-    Waiting,
-    Running,
-    Success,
-    Fail,
-    Orphan,
-    Skip,
-    Queue
+    Active,
+    Cancelled,
+    Finished
 }
 
-data class JobSpec (
+class JobSpec (
         val name: String,
         val type: PipelineType,
-        val organizationId: UUID,
-        val script: ZpsScript,
-        val lockAssets : Boolean = false,
-        val attrs: MutableMap<String, Any> = mutableMapOf(),
+        val scripts : List<ZpsScript>,
+        val args: MutableMap<String, Any> = mutableMapOf(),
         val env: MutableMap<String, String> =  mutableMapOf()
 )
 
-data class Job (
+class Job (
         val id: UUID,
-        val type: PipelineType,
         val organizationId: UUID,
         val name: String,
-        val state: JobState,
-        val lockAssets: Boolean,
-        val attrs: Map<String, Any>,
-        val env: Map<String, String>
+        val type: PipelineType,
+        val state: JobState
 )
-{
-    /**
-     * The relative path to the job script, on any storage service.
-     */
-    fun getScriptPath() : String {
-        return "zorroa/jobs/$id/script.zps"
-    }
-}
 
 data class JobFilter (
         private val ids : List<UUID>? = null,
         private val states : List<JobState>? = null,
         private val organizationIds: List<UUID>? = null
-) : DaoFilter() {
+) : KDaoFilter() {
 
     override val sortMap: Map<String, String>? = null
 

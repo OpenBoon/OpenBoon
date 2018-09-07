@@ -8,7 +8,6 @@ import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.archivist.repository.OrganizationDao
-import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.io.FileInputStream
 import java.util.*
@@ -56,7 +54,7 @@ class JobEventSubscription {
             logger.info("Initializing Analyst Job Event pub sub {}", project)
             subscription = ProjectSubscriptionName.of(project, "zorroa-archivist")
             subscriber = Subscriber.newBuilder(subscription, JobEventReceiver())
-                    .setCredentialsProvider{ GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) }
+                    .setCredentialsProvider({ GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) })
                     .build()
             subscriber?.let {
                 it.startAsync().awaitRunning()
@@ -85,9 +83,9 @@ class JobEventSubscription {
 
                         if (payload.job.type == PipelineType.Export) {
                             try {
-                                logger.info("Updating export state: {}", payload.job.env)
-                                val id = UUID.fromString(payload.job.env["ZORROA_EXPORT_ID"])
-                                val job = exportService.get(id)
+                                //logger.info("Updating export state: {}", payload.job.env)
+                                //val id = UUID.fromString(payload.job.env["ZORROA_EXPORT_ID"])
+                                //val job = exportService.get(id)
 
                             } catch (e: Exception) {
                                 logger.warn("faild to update job state from event: ", event.payload)
@@ -137,10 +135,9 @@ class GcpPubSubServiceImpl : PubSubService {
 
     @PostConstruct
     fun setup() {
-        val project = System.getenv("GCLOUD_PROJECT")
-        logger.info("Initializing GCP pub sub {} {}", project, "zorroa-ingest-pipeline")
-        subscription = ProjectSubscriptionName.of(project, "zorroa-ingest-pipeline")
-        subscriber = Subscriber.newBuilder(subscription, GcpDataMessageReceiver())
+        logger.info("Initializing GCP pub sub {} {}", settings.project, settings.subscription)
+        subscription = ProjectSubscriptionName.of(settings.project, settings.subscription)
+        subscriber = Subscriber.newBuilder(settings.subscription, GcpDataMessageReceiver())
                 .setCredentialsProvider { GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) }
                 .build()
         if (settings.enabled) {
@@ -184,13 +181,6 @@ class GcpPubSubServiceImpl : PubSubService {
                      * Currently IRM has to name the org company-id for use to pick it up.
                      */
                     val org = organizationDao.get("company-" + payload["companyId"])
-
-                    /**
-                     * Set ourselves as the super admin for the given companty.
-                     */
-                    SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
-
-                    // Need all this to query the asset serivce (which would be CDV)
                     val asset = Asset(
                             UUID.fromString(assetId),
                             org.id,
@@ -199,7 +189,7 @@ class GcpPubSubServiceImpl : PubSubService {
                     val doc = try {
                         assetService.getDocument(asset)
                     } catch (e: Exception) {
-                        logger.warn("Exiting ES metadata does not exist for $assetId")
+                        logger.warn("Asset ID does not exist: $assetId")
                         Document(assetId)
                     }
 
@@ -214,20 +204,15 @@ class GcpPubSubServiceImpl : PubSubService {
                     val zps = ZpsScript(jobName, over=mutableListOf(doc))
                     val spec = JobSpec(jobName,
                             PipelineType.Import,
-                            org.id,
-                            zps,
-                            lockAssets=true,
-                            attrs=mutableMapOf("companyId" to companyId.toString()))
+                            listOf(zps),
+                            args=mutableMapOf("companyId" to companyId.toString()))
 
-                    val job = jobSerice.launchJob(spec)
+                    val job = jobSerice.create(spec)
                     logger.info("launched job: {}", job)
 
                 } catch (e: Exception) {
                     logger.warn("Error launching job: {}, asset: {} company: {}",
-                            e.message, assetId, companyId, e)
-                }
-                finally {
-                    SecurityContextHolder.getContext().authentication = null
+                            e.message, assetId, companyId)
                 }
             }
             consumer.ack()
