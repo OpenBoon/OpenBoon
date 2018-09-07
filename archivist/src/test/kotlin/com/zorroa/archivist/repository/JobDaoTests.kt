@@ -1,6 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.*
 import org.junit.Test

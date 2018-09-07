@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList

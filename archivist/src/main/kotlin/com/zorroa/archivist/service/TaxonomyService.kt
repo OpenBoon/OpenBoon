@@ -15,7 +15,6 @@ import com.zorroa.archivist.security.InternalRunnable
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
 import com.zorroa.common.search.AssetFilter
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json

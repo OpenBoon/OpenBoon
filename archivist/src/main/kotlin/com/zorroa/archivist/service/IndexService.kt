@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
+import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.AssetIndexResult
@@ -11,7 +12,6 @@ import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.schema.LinkSchema

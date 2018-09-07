@@ -7,6 +7,10 @@ import com.google.cloud.pubsub.v1.MessageReceiver
 import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
+import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.zorroa.common.domain.ProcessorRef
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,9 +40,6 @@ object Json {
 
     }
     var LIST_OF_UUIDS: TypeReference<List<UUID>> = object : TypeReference<List<UUID>>() {
-
-    }
-    var LIST_OF_PREFS: TypeReference<List<ProcessorRef>> = object : TypeReference<List<ProcessorRef>>() {
 
     }
 

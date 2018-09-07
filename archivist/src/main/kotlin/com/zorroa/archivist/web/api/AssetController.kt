@@ -4,10 +4,7 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
-import com.zorroa.archivist.domain.Acl
-import com.zorroa.archivist.domain.HideField
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.UserLogSpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
@@ -15,7 +12,6 @@ import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.schema.Proxy

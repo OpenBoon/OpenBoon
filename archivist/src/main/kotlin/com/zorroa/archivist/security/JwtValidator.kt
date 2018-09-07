@@ -1,4 +1,4 @@
-package com.zorroa.common.server
+package com.zorroa.archivist.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm

@@ -1,4 +1,4 @@
-package com.zorroa.common.domain;
+package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zorroa.common.schema.SourceSchema;
@@ -7,7 +7,10 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by chambers on 7/6/16.

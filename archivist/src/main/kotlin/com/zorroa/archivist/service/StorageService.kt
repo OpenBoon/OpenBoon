@@ -4,7 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.*
 import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.common.domain.Document
+import com.zorroa.archivist.domain.Document
 import com.zorroa.common.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
 import io.minio.MinioClient

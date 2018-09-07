@@ -1,6 +1,7 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DaoFilter
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils

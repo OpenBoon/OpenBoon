@@ -6,7 +6,6 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.common.domain.Pager
-import com.zorroa.common.domain.Source
 import com.zorroa.common.search.AssetFilter
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.FileUtils

@@ -5,8 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.common.domain.ArchivistWriteException;
-import com.zorroa.common.domain.Document;
-import com.zorroa.common.domain.Source;
 import com.zorroa.common.search.AssetSearch;
 import org.assertj.core.util.Lists;
 import org.junit.Test;

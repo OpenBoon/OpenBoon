@@ -3,6 +3,9 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
+import com.zorroa.archivist.security.GcpJwtValidator
+import com.zorroa.archivist.security.JwtValidator
+import com.zorroa.archivist.security.NoOpJwtValidator
 import com.zorroa.archivist.service.*
 import com.zorroa.common.clients.*
 import com.zorroa.common.filesystem.ObjectFileSystem

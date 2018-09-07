@@ -3,8 +3,6 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.PipelineType
-import com.zorroa.common.domain.ProcessorRef
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.JdbcUtils

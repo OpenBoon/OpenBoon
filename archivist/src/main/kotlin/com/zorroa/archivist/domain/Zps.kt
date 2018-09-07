@@ -1,4 +1,6 @@
-package com.zorroa.common.domain
+package com.zorroa.archivist.domain
+
+import com.fasterxml.jackson.core.type.TypeReference
 
 
 data class ZpsScript(
@@ -36,3 +38,5 @@ data class ProcessorRef(
         var fileTypes: Set<String>? = mutableSetOf(),
         val language : String = "python"
 )
+
+var LIST_OF_PREFS: TypeReference<List<ProcessorRef>> = object : TypeReference<List<ProcessorRef>>() {}

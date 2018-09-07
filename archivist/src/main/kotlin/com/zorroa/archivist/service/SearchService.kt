@@ -5,15 +5,11 @@ import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.Folder
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.ScanAndScrollAssetIterator
-import com.zorroa.archivist.domain.UserLogSpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.security.*
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.Document
 import com.zorroa.common.domain.PagedList
 import com.zorroa.common.domain.Pager
 import com.zorroa.common.search.AssetFilter

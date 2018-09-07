@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.Document
 import com.zorroa.common.clients.CoreDataVaultClient
-import com.zorroa.common.domain.Asset
-import com.zorroa.common.domain.Document
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 

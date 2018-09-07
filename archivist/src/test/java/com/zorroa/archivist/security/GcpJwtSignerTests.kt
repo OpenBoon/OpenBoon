@@ -1,7 +1,7 @@
-package com.zorroa.common.clients
+package com.zorroa.archivist.security
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
-import com.zorroa.common.server.GcpJwtValidator
+import com.zorroa.common.clients.GcpJwtSigner
 import org.apache.http.client.methods.HttpPost
 import org.junit.Test
 import java.io.FileInputStream

@@ -1,4 +1,4 @@
-package com.zorroa.common.server
+package com.zorroa.archivist.security
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import org.junit.Test

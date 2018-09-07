@@ -1,9 +1,8 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.sdk.security.UserRegistryService
-import com.zorroa.common.server.JwtSecurityConstants.HEADER_STRING
-import com.zorroa.common.server.JwtSecurityConstants.TOKEN_PREFIX
-import com.zorroa.common.server.JwtValidator
+import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
+import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

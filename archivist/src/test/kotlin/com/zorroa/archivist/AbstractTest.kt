@@ -6,13 +6,13 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
 import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.domain.Source
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.FileUtils

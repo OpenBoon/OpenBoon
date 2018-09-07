@@ -1,7 +1,7 @@
 package com.zorroa.common.clients
 
-import com.zorroa.common.domain.Asset
-import com.zorroa.common.domain.Document
+import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.Document
 import com.zorroa.common.util.Json
 import java.nio.file.Path
 
@@ -9,7 +9,7 @@ interface CoreDataVaultClient {
 
     val client: RestClient
 
-    fun updateIndexedMetadata(assetId:Asset, doc: Document) : Any
+    fun updateIndexedMetadata(assetId: Asset, doc: Document) : Any
     fun getIndexedMetadata(assetId:Asset) : Document
 }
 

@@ -10,7 +10,6 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Tuple
 import com.zorroa.common.search.AssetScript
 import com.zorroa.common.search.AssetSearch
 import org.elasticsearch.index.query.QueryBuilders

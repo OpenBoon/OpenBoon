@@ -5,10 +5,10 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.web.api.AssetController
 import com.zorroa.common.domain.Pager
-import com.zorroa.common.domain.Source
 import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.junit.Assert.*
