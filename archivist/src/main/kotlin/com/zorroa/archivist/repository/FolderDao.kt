@@ -162,6 +162,9 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     }
 
     override fun getAll(ids: Collection<UUID>): List<Folder> {
+        if (ids.isEmpty()) {
+            return listOf()
+        }
         val sb = StringBuilder(512)
         sb.append(GET)
         sb.append(" WHERE ")
