@@ -13,10 +13,10 @@ import java.util.*
 interface TaskDao {
     fun create(job: Job, spec: TaskSpec): Task
     fun get(id: UUID) : Task
-    fun setState(task: Task, newState: TaskState, oldState: TaskState?) : Boolean
+    fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean
     fun getAll(filter: TaskFilter) : KPagedList<Task>
-    fun setHostEndpoint(task: Task, host: String)
-    fun setExitStatus(task: Task, exitStatus: Int)
+    fun setHostEndpoint(task: TaskId, host: String)
+    fun setExitStatus(task: TaskId, exitStatus: Int)
     fun getScript(id: UUID) : ZpsScript
 }
 
@@ -57,33 +57,33 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 MAPPER, *filter.getValues()))
     }
 
-    override fun setState(job: Task, newState: TaskState, oldState: TaskState?) : Boolean {
+    override fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean {
         val time = System.currentTimeMillis()
         val updated =  if (oldState != null) {
             jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=? AND int_state=?",
-                    newState.ordinal, time, job.id, oldState.ordinal) == 1
+                    newState.ordinal, time, task.taskId, oldState.ordinal) == 1
         }
         else {
             jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=?",
-                    newState.ordinal, time, job.id) == 1
+                    newState.ordinal, time, task.taskId) == 1
         }
         if (updated) {
             if (newState in START_STATES) {
-                jdbc.update("UPDATE task SET time_started=?, time_stopped=-1 WHERE pk_task=?", time, job.id)
+                jdbc.update("UPDATE task SET time_started=?, time_stopped=-1 WHERE pk_task=?", time, task.taskId)
             }
             else if (newState in STOP_STATES) {
-                jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, job.id)
+                jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
             }
         }
         return updated
     }
 
-    override fun setHostEndpoint(task: Task, host: String) {
-        jdbc.update("UPDATE task SET str_endpoint=? WHERE pk_task=?", host, task.id)
+    override fun setHostEndpoint(task: TaskId, host: String) {
+        jdbc.update("UPDATE task SET str_endpoint=? WHERE pk_task=?", host, task.taskId)
     }
 
-    override fun setExitStatus(task: Task, exitStatus: Int) {
-        jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.id)
+    override fun setExitStatus(task: TaskId, exitStatus: Int) {
+        jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.taskId)
     }
 
     private fun setCount(filter: TaskFilter) {

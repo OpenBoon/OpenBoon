@@ -31,7 +31,9 @@ open class Task(
         val organizationId: UUID,
         val name: String,
         val state: TaskState
-)
+) : TaskId {
+    override val taskId = id
+}
 
 class DispatchTask(
         id: UUID,
@@ -41,7 +43,11 @@ class DispatchTask(
         state: TaskState,
         val script: ZpsScript,
         var env: MutableMap<String,String>,
-        var args: MutableMap<String,Object>) : Task(id, jobId, organizationId, name, state)
+        var args: MutableMap<String,Object>) : Task(id, jobId, organizationId, name, state), TaskId {
+
+    override val taskId = id
+}
+
 
 class Expand(
         val endpoint: String,

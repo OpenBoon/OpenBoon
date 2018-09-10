@@ -9,14 +9,15 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface DispatcherService {
     fun getNext(host: String) : DispatchTask?
-    fun startTask(task: Task) : Boolean
-    fun stopTask(task: Task, exitStatus: Int) : Boolean
+    fun startTask(task: TaskId) : Boolean
+    fun stopTask(task: TaskId, exitStatus: Int) : Boolean
     fun handleEvent(event: TaskEvent)
     fun expand(job: Job, script: ZpsScript) : Task
 }
@@ -42,28 +43,36 @@ class DispatcherServiceImpl @Autowired constructor(
         return null
     }
 
-    override fun startTask(task: Task) : Boolean {
-        return taskDao.setState(task, TaskState.Running, TaskState.Queue)
+    override fun startTask(task: TaskId) : Boolean {
+        val result =  taskDao.setState(task, TaskState.Running, TaskState.Queue)
+        logger.info("Starting task: {}, {}", task.taskId, result)
+        return result
     }
 
-    override fun stopTask(task: Task, exitStatus: Int) : Boolean {
+    override fun stopTask(task: TaskId, exitStatus: Int) : Boolean {
+
         val newState = if (exitStatus != 0) {
             TaskState.Fail
         }
         else {
             TaskState.Success
         }
-        return if (taskDao.setState(task, TaskState.Running, newState)) {
+        val result =  if (taskDao.setState(task, newState, TaskState.Running)) {
             taskDao.setExitStatus(task, exitStatus)
             true
         }
         else {
             false
         }
+
+        logger.info("Stopping task: {}, newState={}, result={}", task.taskId, newState, result)
+        return result
     }
 
     override fun expand(job: Job, script: ZpsScript) : Task {
-        return taskDao.create(job, TaskSpec(script.name, script))
+        val task =  taskDao.create(job, TaskSpec(script.name, script))
+        logger.info("Expanding job: {} with task: {}", job.id, task.id)
+        return task
     }
 
     override fun handleEvent(event: TaskEvent) {
@@ -87,5 +96,9 @@ class DispatcherServiceImpl @Autowired constructor(
 
             }
         }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(DispatcherServiceImpl::class.java)
     }
 }
