@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.NetworkEnvironment
+import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.common.domain.*
@@ -23,6 +24,9 @@ class JobServiceImpl @Autowired constructor(
         private val taskDao: TaskDao
 ): JobService {
 
+    @Autowired
+    private lateinit var pipelineService: PipelineService
+
     override fun create(spec: JobSpec) : Job {
         /*
         spec.env.putAll(mapOf(
@@ -33,6 +37,12 @@ class JobServiceImpl @Autowired constructor(
         val job = jobDao.create(spec)
 
         for (script in spec.scripts) {
+            if (script.execute == null) {
+                script.execute = pipelineService.resolveDefault(spec.type)
+            }
+            else {
+                script.execute = pipelineService.resolve(spec.type, script.execute)
+            }
             taskDao.create(job, TaskSpec(script.name, script))
         }
         return job

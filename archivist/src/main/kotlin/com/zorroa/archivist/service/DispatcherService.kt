@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript

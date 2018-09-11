@@ -19,7 +19,7 @@ class OrganizationController @Autowired constructor(
         return organizationService.create(builder)
     }
 
-    @RequestMapping(value = ["/api/v1/organizations/{id}"])
+    @GetMapping(value = ["/api/v1/organizations/{id}"])
     operator fun get(@PathVariable id: String): Organization {
         return organizationService.get(UUID.fromString(id))
     }

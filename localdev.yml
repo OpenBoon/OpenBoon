@@ -30,7 +30,6 @@ services:
     links:
        - "es"
        - "postgres"
-       - "zorroa-analyst"
     build:
       context: archivist
     ports:
@@ -40,17 +39,4 @@ services:
       - "./archivist/target:/service"
     environment:
       ZORROA_USER: admin
-
-  # Local Analyst server.
-  zorroa-analyst:
-      links:
-         - "es"
-         - "postgres"
-      build:
-        context: analyst
-      ports:
-        - 8082:8080
-      volumes:
-        - "./localdev/zorroa-analyst-config:/config"
-        - "./analyst/target:/service"
 
