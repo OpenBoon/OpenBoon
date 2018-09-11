@@ -48,6 +48,25 @@ class DispatchTask(
     override val taskId = id
 }
 
+class TaskError(
+        val id: UUID,
+        val taskId: UUID,
+        val jobId: UUID,
+        val assetId: UUID,
+        val path: String,
+        val message: String,
+        val processor: String,
+        val fatal: Boolean,
+        val endpoint: String
+)
+
+class TaskErrorEvent(
+        val assetId: UUID,
+        val path: String,
+        val message: String,
+        val processor: String,
+        val fatal: Boolean
+)
 
 class Expand(
         val endpoint: String,

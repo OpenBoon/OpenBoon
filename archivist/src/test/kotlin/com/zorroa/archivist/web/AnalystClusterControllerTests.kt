@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
@@ -34,6 +35,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
     @Autowired
     lateinit var dispatcherService: DispatcherService
 
+    @Autowired
+    lateinit var taskErrorDao: TaskErrorDao
 
     fun launchJob() : Job {
         val spec = JobSpec("test_job",
@@ -151,6 +154,43 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val count = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?",
                     Int::class.java, task.jobId)
             assertEquals(3, count)
+        }
+        else {
+            assertNotNull(task)
+        }
+    }
+
+    @Test
+    fun testErrorEvent() {
+        val job = launchJob()
+        val task = dispatcherService.getNext("http://localhost:1234")
+
+        if (task != null) {
+
+            assertTrue(dispatcherService.startTask(task))
+            val tev = TaskErrorEvent(UUID.randomUUID(),"/foo/bar.jpg","it broke",
+                    "com.zorroa.ImageIngestor", true)
+            val te = TaskEvent("error",
+                    "http://localhost:1234",
+                    task.id,
+                    job.id,
+                    tev)
+
+            SecurityContextHolder.getContext().authentication = null
+            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(Json.serialize(te)))
+                    .andExpect(MockMvcResultMatchers.status().isOk)
+                    .andReturn()
+
+            val terr = taskErrorDao.getLast()
+            assertEquals(task.id, terr.taskId)
+            assertEquals(task.jobId, terr.jobId)
+            assertEquals(te.endpoint, terr.endpoint)
+            assertEquals(true, terr.fatal)
+            assertEquals(tev.path, terr.path)
+            assertEquals(tev.message, terr.message)
+            assertEquals(tev.processor, terr.processor)
         }
         else {
             assertNotNull(task)

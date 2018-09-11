@@ -24,7 +24,7 @@ class PipelineControllerTests : MockMvcTest() {
 
     @Before
     fun init() {
-        spec = PipelineSpec("Zorroa Test", PipelineType.Import, processors=listOf())
+        spec = PipelineSpec("Zorroa Test", PipelineType.Import, "test", processors=listOf())
         pl = pipelineService.create(spec)
     }
 
@@ -32,7 +32,7 @@ class PipelineControllerTests : MockMvcTest() {
     fun testCreate() {
         val session = admin()
 
-        val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, processors=listOf())
+        val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, "test", processors=listOf())
         val result = mvc.perform(post("/api/v1/pipelines")
                 .session(session)
                 .content(Json.serialize(spec))

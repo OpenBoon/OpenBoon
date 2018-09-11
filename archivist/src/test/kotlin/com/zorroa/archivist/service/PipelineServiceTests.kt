@@ -16,9 +16,9 @@ class PipelineServiceTests : AbstractTest() {
 
     @Before
     fun init() {
-        pipelineService.create(PipelineSpec("source", PipelineType.Import,
+        pipelineService.create(PipelineSpec("source", PipelineType.Import, "test",
                 processors = listOf(ProcessorRef("com.zorroa.IngestImages"))))
-        pipelineService.create(PipelineSpec("ml", PipelineType.Import,
+        pipelineService.create(PipelineSpec("ml", PipelineType.Import, "test",
                 processors = listOf(ProcessorRef("com.zorroa.Classify"))))
     }
 

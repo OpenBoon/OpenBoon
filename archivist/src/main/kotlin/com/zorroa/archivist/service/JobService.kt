@@ -28,12 +28,6 @@ class JobServiceImpl @Autowired constructor(
     private lateinit var pipelineService: PipelineService
 
     override fun create(spec: JobSpec) : Job {
-        /*
-        spec.env.putAll(mapOf(
-                "ZORROA_SUPER_ADMIN" to "true",
-                "ZORROA_ARCHIVIST_URL" to networkEnvironment.getPublicUrl("zorroa-archivist"),
-                "ZORROA_ORGANIZATION_ID" to getOrgId().toString()))
-        */
         val job = jobDao.create(spec)
 
         for (script in spec.scripts) {

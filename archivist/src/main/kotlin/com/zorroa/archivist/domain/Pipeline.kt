@@ -19,6 +19,7 @@ data class Pipeline (
 data class PipelineSpec (
         var name: String,
         var type: PipelineType,
+        var description: String,
         var processors: List<ProcessorRef> = mutableListOf()
 )
 

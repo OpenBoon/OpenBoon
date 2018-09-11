@@ -42,8 +42,9 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             ps.setString(2, spec.name)
             ps.setInt(3, spec.type.ordinal)
             ps.setString(4, Json.serializeToString(spec.processors, "[]"))
-            ps.setLong(5, time)
+            ps.setString(5, spec.description)
             ps.setLong(6, time)
+            ps.setLong(7, time)
             ps
         }
         return get(id)
@@ -119,6 +120,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
                 "str_name",
                 "int_type",
                 "json_processors",
+                "str_description",
                 "time_created",
                 "time_modified")
 

@@ -1,13 +1,13 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -28,6 +28,7 @@ interface DispatcherService {
 class DispatcherServiceImpl @Autowired constructor(
         private val dispatchTaskDao: DispatchTaskDao,
         private val taskDao: TaskDao,
+        private val taskErrorDao: TaskErrorDao,
         private val jobDao: JobDao) : DispatcherService {
 
     @Autowired
@@ -86,7 +87,9 @@ class DispatcherServiceImpl @Autowired constructor(
             }
             "started" -> startTask(task)
             "error"-> {
-
+                // Might have to queue and submit in batches
+                val payload = Json.Mapper.convertValue<TaskErrorEvent>(event.payload)
+                taskErrorDao.create(event, payload)
             }
             "expand" -> {
                 val job = jobDao.get(task.jobId)
@@ -94,7 +97,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 expand(job, script)
             }
             else-> {
-
+                logger.warn("Failed to handle event type: {}", event.type)
             }
         }
     }

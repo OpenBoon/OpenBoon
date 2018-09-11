@@ -12,5 +12,3 @@ open class TaskEvent(
 class TaskStoppedEvent(
         val exitStatus: Int
 )
-
-
