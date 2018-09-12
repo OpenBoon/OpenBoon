@@ -66,7 +66,7 @@ class MasterScheduler {
     fun start() {
         logger.info("Initializing scheduler timer")
         timer = fixedRateTimer("scheduler",
-                daemon = true, initialDelay = 60000, period = 60000) {
+                daemon = true, initialDelay = 10000, period = 3000) {
             if (!paused.get()) {
                 try {
                     scheduler.schedule()

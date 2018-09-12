@@ -186,15 +186,7 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun create(spec: JobSpec) : Job {
-        val job =  jobDao.create(spec)
-        if (job.lockAssets) {
-            val assets = mutableListOf<UUID>()
-            spec.script.over?.forEach {
-                assets.add(UUID.fromString(it.id))
-            }
-            jobDao.mapAssetsToJob(job, assets)
-        }
-        return job
+        return jobDao.create(spec)
     }
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean {
@@ -219,9 +211,6 @@ class JobServiceImpl @Autowired constructor(
             val script = Json.Mapper.readValue(
                     storageService.getInputStream(networkEnvironment.getBucket("zorroa-job-data"),
                             job.getScriptPath()), ZpsScript::class.java)
-            script?.over?.forEach {
-                lockDao.create(LockSpec(UUID.fromString(it.id), job.id))
-            }
         }
 
         // throwing here rolls back any locks

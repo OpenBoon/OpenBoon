@@ -12,6 +12,7 @@ import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
 import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.search.AssetSearch
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -799,8 +800,15 @@ class FolderServiceImpl @Autowired constructor(
 
     override fun createStandardFolders(org: Organization): Folder {
         val root = folderDao.createRootFolder(org)
-        create(FolderSpec("Users", root))
-        create(FolderSpec("Library", root))
+        val userSpec = FolderSpec("Users", root)
+        userSpec.recursive = false
+
+        val libSpec = FolderSpec("Library", root)
+        libSpec.recursive = false
+        libSpec.search = AssetSearch()
+
+        create(userSpec)
+        create(libSpec)
         return root
     }
 
