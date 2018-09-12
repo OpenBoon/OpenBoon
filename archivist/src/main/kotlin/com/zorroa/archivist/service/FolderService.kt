@@ -7,12 +7,12 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Queues
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
