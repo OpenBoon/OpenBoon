@@ -1,11 +1,12 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.service.ExportService
+import com.zorroa.common.domain.Job
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,12 +15,12 @@ import kotlin.test.assertEquals
 class ExportFileDaoTests : AbstractTest() {
 
     @Autowired
-    private lateinit var exportDao : ExportDao
+    private lateinit var exportService : ExportService
 
     @Autowired
     private lateinit var exportFileDao : ExportFileDao
 
-    lateinit var export : Export
+    lateinit var export : Job
     lateinit var exportFile : ExportFile
 
     @Before
@@ -30,7 +31,7 @@ class ExportFileDaoTests : AbstractTest() {
                 mutableMapOf("foo" to "bar"),
                 mutableMapOf("foo" to "bar"),
                 compress=true)
-        export = exportDao.create(espec)
+        export = exportService.create(espec, resolve = false)
 
         val spec = ExportFileSpec("/tmp/foo.bar",
                 "application/x-bar",

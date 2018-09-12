@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 interface TaskDao {
-    fun create(job: Job, spec: TaskSpec): Task
+    fun create(job: JobId, spec: TaskSpec): Task
     fun get(id: UUID) : Task
     fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean
     fun getAll(filter: TaskFilter) : KPagedList<Task>
@@ -23,7 +23,7 @@ interface TaskDao {
 @Repository
 class TaskDaoImpl : AbstractDao(), TaskDao {
 
-    override fun create(job: Job, spec: TaskSpec): Task {
+    override fun create(job: JobId, spec: TaskSpec): Task {
         Preconditions.checkNotNull(spec.name)
 
         val id = uuid1.generate()
@@ -32,7 +32,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setObject(2, job.id)
+            ps.setObject(2, job.jobId)
             ps.setString(3, spec.name)
             ps.setLong(4, time)
             ps.setLong(5, time)

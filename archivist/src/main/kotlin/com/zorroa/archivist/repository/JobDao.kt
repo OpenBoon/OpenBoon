@@ -1,8 +1,12 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
@@ -15,7 +19,7 @@ interface JobDao {
     fun create(spec: JobSpec): Job
     fun get(id: UUID) : Job
     fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean
-    fun getAll(filter: JobFilter) : KPagedList<Job>
+    fun getAll(pager: Pager, filter: JobFilter?) : PagedList<Job>
 }
 
 @Repository
@@ -50,11 +54,17 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return jdbc.queryForObject("$GET WHERE pk_job=?", MAPPER, id)
     }
 
-    override fun getAll(filter: JobFilter) : KPagedList<Job> {
-        setCount(filter)
-        return KPagedList(filter.page, jdbc.query(filter.getQuery(GET),
-                        MAPPER, *filter.getValues()))
+    override fun getAll(page: Pager, filter: JobFilter?): PagedList<Job> {
+        var filter = filter
+        if (filter == null) {
+            filter = JobFilter()
+        }
+
+        val query = filter.getQuery(GET, false)
+        return PagedList(page.setTotalCount(count(filter)),
+                jdbc.query<Job>(query, MAPPER, *filter.getValues(false)))
     }
+
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean {
         val time = System.currentTimeMillis()
@@ -66,6 +76,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=?",
                     newState.ordinal, time, job.id) == 1
         }
+    }
+
+    private fun count(filter: JobFilter): Long {
+        val query = filter.getQuery(COUNT, true)
+        return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
     }
 
     private fun setCount(filter: JobFilter) {

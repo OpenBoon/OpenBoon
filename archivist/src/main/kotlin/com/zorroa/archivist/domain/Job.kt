@@ -13,6 +13,12 @@ enum class JobState {
     Finished
 }
 
+
+interface JobId {
+    val jobId: UUID
+}
+
+
 class JobSpec (
         val name: String,
         val type: PipelineType,
@@ -21,16 +27,21 @@ class JobSpec (
         val env: MutableMap<String, String> =  mutableMapOf()
 )
 
+
 class Job (
         val id: UUID,
         val organizationId: UUID,
         val name: String,
         val type: PipelineType,
         val state: JobState
-)
+) : JobId {
+    override val jobId = id
+}
 
-data class JobFilter (
+
+class JobFilter (
         private val ids : List<UUID>? = null,
+        private val type: PipelineType? = null,
         private val states : List<JobState>? = null,
         private val organizationIds: List<UUID>? = null
 ) : KDaoFilter() {
@@ -43,6 +54,11 @@ data class JobFilter (
         if (!ids.orEmpty().isEmpty()) {
             addToWhere(JdbcUtils.inClause("job.pk_job", ids!!.size))
             addToValues(ids)
+        }
+
+        if (type != null) {
+            addToWhere("job.int_Type=?")
+            addToValues(type.ordinal)
         }
 
         if (!states.orEmpty().isEmpty()) {

@@ -74,4 +74,11 @@ CREATE TABLE task_error(
         str_extension TEXT,
         time_created BIGINT NOT NULL,
         bool_fatal BOOLEAN NOT NULL
-)
+);
+
+---
+
+ALTER TABLE export_file ADD COLUMN pk_organization UUID;
+UPDATE export_file SET pk_organization='00000000-9998-8888-7777-666666666666';
+ALTER TABLE export_file ALTER COLUMN pk_organization SET NOT NULL;
+

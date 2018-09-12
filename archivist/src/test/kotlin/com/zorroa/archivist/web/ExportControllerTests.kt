@@ -1,11 +1,11 @@
 package com.zorroa.archivist.web
 
-import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.ExportService
+import com.zorroa.common.domain.Job
 import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,7 +40,7 @@ class ExportControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val export = Json.Mapper.readValue<Export>(req.response.contentAsString, Export::class.java)
+        val export = Json.Mapper.readValue<Job>(req.response.contentAsString, Job::class.java)
         assertEquals(spec.name, export.name)
     }
 

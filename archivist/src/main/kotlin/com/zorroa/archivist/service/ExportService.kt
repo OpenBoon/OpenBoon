@@ -2,17 +2,12 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.ExportDao
 import com.zorroa.archivist.repository.ExportFileDao
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
-import com.zorroa.common.repository.KPage
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,13 +15,11 @@ import java.util.*
 
 interface ExportService {
 
-    fun getAll(page: KPage, filter: ExportFilter): KPagedList<Export>
-    fun get(id: UUID) : Export
-    fun create(spec: ExportSpec) : Export
-    fun createExportFile(export: Export, spec: ExportFileSpec) : ExportFile
-    fun getAllExportFiles(export: Export) :  List<ExportFile>
+    fun getAll(page: Pager): PagedList<Job>
+    fun create(spec: ExportSpec, resolve:Boolean=true) : Job
+    fun createExportFile(job: JobId, spec: ExportFileSpec) : ExportFile
+    fun getAllExportFiles(job: JobId) :  List<ExportFile>
     fun getExportFile(id: UUID) : ExportFile
-    fun setState(id:UUID, state: JobState) : Boolean
 }
 
 @Service
@@ -34,7 +27,6 @@ interface ExportService {
 class ExportServiceImpl @Autowired constructor(
         private val properties: ApplicationProperties,
         private val indexDao: IndexDao,
-        private val exportDao: ExportDao,
         private val exportFileDao: ExportFileDao,
         private val txm : TransactionEventManager,
         private val jobService: JobService,
@@ -44,28 +36,21 @@ class ExportServiceImpl @Autowired constructor(
     @Autowired
     lateinit var searchService : SearchService
 
-    override fun get(id: UUID): Export {
-       return exportDao.get(id)
+    override fun createExportFile(job: JobId, spec: ExportFileSpec) : ExportFile {
+        return exportFileDao.create(job, spec)
     }
 
-    override fun createExportFile(export: Export, spec: ExportFileSpec) : ExportFile {
-        return exportFileDao.create(export, spec)
-    }
-
-    override fun getAllExportFiles(export: Export) : List<ExportFile> {
-        return exportFileDao.getAll(export)
+    override fun getAllExportFiles(job: JobId) : List<ExportFile> {
+        return exportFileDao.getAll(job)
     }
 
     override fun getExportFile(id: UUID) : ExportFile {
         return exportFileDao.get(id)
     }
 
-    override fun getAll(page: KPage, filter: ExportFilter): KPagedList<Export> {
-        return exportDao.getAll(page, filter)
-    }
-
-    override fun setState(id:UUID, state: JobState) : Boolean {
-        return exportDao.setState(id, state)
+    override fun getAll(page: Pager): PagedList<Job> {
+        val filter = JobFilter(type=PipelineType.Export)
+        return jobService.getAll(page, filter)
     }
 
     private inner class ExportParams(var search: AssetSearch)
@@ -90,34 +75,32 @@ class ExportServiceImpl @Autowired constructor(
         return params
     }
 
-    override fun create(spec: ExportSpec): Export {
+    override fun create(spec: ExportSpec, resolve:Boolean): Job {
         val user = getUser()
         spec.name = spec.name ?: "Export By ${user.username}"
-        val export = exportDao.create(spec)
 
         val env = mutableMapOf<String, String>()
         env.putAll(spec.env)
-        env.putAll(mapOf("ZORROA_EXPORT_ID" to export.id.toString()))
 
         val jspec = JobSpec(spec.name!!,
                 PipelineType.Export,
-                listOf(buildZpsSciript(export, spec)),
+                listOf(),
                 env=env)
-
-        val job = jobService.create(jspec)
-        return export
+        val job =  jobService.create(jspec)
+        jobService.createTask(job, TaskSpec("export file generator", buildZpsSciript(job, spec, resolve)))
+        return job
     }
 
-    private fun buildZpsSciript(export: Export, spec: ExportSpec) : ZpsScript {
+    private fun buildZpsSciript(job: Job, spec: ExportSpec, resolve:Boolean) : ZpsScript {
 
         /**
          * Now start to build the script for the task.
          */
-        val script = ZpsScript(export.name, inline=true)
+        val script = ZpsScript(spec.name!!, inline=true)
         script.globals?.putAll(mapOf(
                 "exportArgs" to mapOf(
-                        "exportId" to export.id,
-                        "exportName" to export.name,
+                        "exportId" to job.id,
+                        "exportName" to job.name,
                         "exportRoot" to properties.getString("archivist.export.export-root"))))
 
         //TODO: This should be coming from the default pipeline. Need to sort this out.
@@ -133,13 +116,23 @@ class ExportServiceImpl @Autowired constructor(
          * we get the exact assets during the export and new data
          * added that might match their search change the export.
          */
-        val params = resolveExportSearch(spec.search, export.id)
-        script.generate?.add(ProcessorRef(
-                "zplugins.asset.generators.AssetSearchGenerator",
-                mapOf<String, Any>(
-                        "search" to params.search
-                )
-        ))
+        if (resolve) {
+            val params = resolveExportSearch(spec.search, job.id)
+            script.generate?.add(ProcessorRef(
+                    "zplugins.asset.generators.AssetSearchGenerator",
+                    mapOf<String, Any>(
+                            "search" to params.search
+                    )
+            ))
+        }
+        else {
+            script.generate?.add(ProcessorRef(
+                    "zplugins.asset.generators.AssetSearchGenerator",
+                    mapOf<String, Any>(
+                            "search" to spec.search
+                    )
+            ))
+        }
 
         return script
     }

@@ -1,9 +1,11 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Export
+import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.common.domain.Job
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +18,7 @@ class ExportServiceTests : AbstractTest() {
     @Autowired
     lateinit var exportService : ExportService
 
-    lateinit var export: Export
+    lateinit var job: Job
 
     @Before
     fun init() {
@@ -29,22 +31,27 @@ class ExportServiceTests : AbstractTest() {
                 mutableMapOf("foo" to "bar"),
                 mutableMapOf("foo" to "bar"),
                 compress=true)
-        export = exportService.create(spec)
+        job = exportService.create(spec)
     }
 
     @Test
-    fun testGet(){
-        val ex1 = exportService.get(export.id)
-        assertEquals(export.id, ex1.id)
-        assertEquals(export.organizationId, ex1.organizationId)
-        assertEquals(export.name, ex1.name)
-        assertEquals(export.userId, ex1.userId)
+    fun testGetAll(){
+        val ex1 = exportService.getAll(Pager.first())
+        assertEquals(1, ex1.size())
+    }
+
+    @Test
+    fun testCreatExportFile() {
+        assertEquals(0, exportService.getAllExportFiles(job).size)
+        val spec = ExportFileSpec("/foo/bar/jpg", "image/jpeg", 1000)
+        val ex1 = exportService.createExportFile(job, spec)
+        assertEquals(1, exportService.getAllExportFiles(job).size)
     }
 
     @Test
     fun testValidateExportAssetSearch() {
         val search = AssetSearch()
-        search.addToFilter().addToLinks("export", export.id)
+        search.addToFilter().addToLinks("export", job.id)
         assertTrue(searchService.count(search) > 0)
     }
 }
