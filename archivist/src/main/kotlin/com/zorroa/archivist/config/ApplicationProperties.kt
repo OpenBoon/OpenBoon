@@ -43,6 +43,12 @@ interface ApplicationProperties {
     fun getProperties(prefix: String): Properties
     fun getProperties(prefix: String, includePrefix: Boolean): Properties
     fun getList(key: String): List<String>
+
+    /**
+     * Parses the value of a give attribute into a Map<String,String>. The format
+     * is k=v,k=v,k=v
+     */
+    fun parseToMap(key: String): Map<String, String>
 }
 
 
@@ -158,6 +164,16 @@ class SpringApplicationProperties : ApplicationProperties {
 
         for (propertySource in env.propertySources) {
             walkPropertySource(result, prefix, propertySource)
+        }
+        return result
+    }
+
+    override fun parseToMap(key: String): Map<String, String> {
+        val result = mutableMapOf<String, String>()
+        val str = getString(key, "")
+        for (item in str.split(',')) {
+            val (k,v) = item.split('=')
+            result[k.trim()]=v.trim()
         }
         return result
     }
