@@ -147,7 +147,7 @@ class JobRegistryServiceImpl @Autowired constructor(
         val endpoint = "$selfUrl/api/v1/jobs/${job.id}/_finish"
 
         spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.MetadataRestRequest",
-                args=mapOf("endpoint" to endpoint, "phase" to "teardown", "method" to "put")))
+                args=mapOf("endpoint" to endpoint, "phase" to "teardown", "method" to "put", "verify_ssl" to false)))
         spec.script.execute?.add(ProcessorRef("zplugins.core.collector.IndexDocumentCollector"))
     }
 
@@ -156,7 +156,7 @@ class JobRegistryServiceImpl @Autowired constructor(
         val selfUrl = networkEnvironment.getPublicUrl("zorroa-analyst")
         val endpoint = "$selfUrl/api/v1/jobs/${job.id}/_finish"
         spec.script.execute?.add(ProcessorRef("zplugins.metadata.metadata.MetadataRestRequest",
-                args=mapOf("endpoint" to endpoint, "phase" to "teardown", "method" to "put")))
+                args=mapOf("endpoint" to endpoint, "phase" to "teardown", "method" to "put", "verify_ssl" to false)))
     }
 
     fun handleBatchJob(spec: JobSpec, job: Job) { }
