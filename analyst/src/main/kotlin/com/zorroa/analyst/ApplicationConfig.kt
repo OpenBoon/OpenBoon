@@ -43,6 +43,7 @@ class ApplicationConfig {
 
     @Bean
     fun storageService() : JobStorageService {
+        logger.info("Initializing {} storage service", storageProperties.type)
         return when (storageProperties.type) {
             "gcp"-> GcpStorageServiceImpl()
             else-> LocalJobStorageServiceImpl()
@@ -85,9 +86,10 @@ class ApplicationConfig {
     @Autowired
     fun networkEnvironment(props : NetworkEnvironmentProperties): NetworkEnvironment {
         logger.info("Initializing network env: ${props.type}, overrides: ${props.hostOverride}")
+
         return when (props.type) {
             "app-engine"->  {
-                val project: String = System.getenv().getValue("GCLOUD_PROJECT")
+                val project: String = System.getenv("GCLOUD_PROJECT")
                 GoogleAppEngineEnvironment(project, props.hostOverride)
             }
             "static-vm"-> {

@@ -191,13 +191,14 @@ class ArchivistConfiguration {
     @Bean
     fun networkEnvironment(): NetworkEnvironment {
         val props = properties()
-        val override = props.getMap("env.host-override.example-service")
+        val override = props.getMap("env.host-override")
                 .map { it.key.split('.').last() to it.value.toString() }.toMap()
-        println(override)
+
+        logger.info("Host overrides: {}", override)
 
         return when (props.getString("env.type")) {
             "app-engine"->  {
-                val project: String = System.getenv().getValue("GCLOUD_PROJECT")
+                val project: String = System.getenv("GCLOUD_PROJECT")
                 GoogleAppEngineEnvironment(project, override)
             }
             "static-vm"-> {

@@ -70,7 +70,7 @@ class K8SchedulerServiceImpl constructor(val k8Props : K8SchedulerProperties) : 
             logger.info("JOB: {}", job.id)
             logger.info("YAML {}", yaml)
 
-            val job = kubernetesClient.extensions().jobs().load(
+            kubernetesClient.extensions().jobs().load(
                     yaml.byteInputStream(Charsets.UTF_8)).create()
 
         } catch (e: Exception) {
