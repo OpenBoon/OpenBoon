@@ -62,13 +62,7 @@ class UserController @Autowired constructor(
         }
     }
 
-    @Deprecated("")
-    @PostMapping(value = ["/api/v1/generate_api_key"])
-    fun generate_api_key_V1(): String {
-        return userService.generateHmacKey(getUsername())
-    }
-
-    @PostMapping(value = ["/api/v1/api-key"])
+    @PostMapping(value = ["/api/v1/generate-api-key"])
     fun generate_api_key(): String {
         return userService.generateHmacKey(getUsername())
     }

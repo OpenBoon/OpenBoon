@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
+import com.zorroa.archivist.service.UserService
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -31,16 +32,43 @@ interface JwtValidator {
     fun validate(token: String): Map<String,String>
 }
 
-class NoOpJwtValidator: JwtValidator {
+class MasterJwtValidator constructor(private val validators: List<JwtValidator>) : JwtValidator {
+
+    override fun validate(token: String): Map<String, String> {
+        for (validator in validators) {
+            try {
+                return validator.validate(token)
+            }
+            catch (e: Exception) { }
+        }
+        throw JwtValidatorException("Failed to validate JWT token")
+    }
+}
+
+class UserJwtValidator constructor(val userService: UserService): JwtValidator {
+
     init {
         logger.info("Initializing NoOP JwtValidator")
     }
-    override fun validate(token: String) : Map<String,String> {
-        throw JwtValidatorException("JWT Validation support is not configured")
-    }
 
+    override fun validate(token: String) : Map<String, String> {
+        try {
+            val jwt = JWT.decode(token)
+            val user = jwt.claims.getValue("user").asString()
+            val key = userService.getHmacKey(user)
+            val alg = Algorithm.HMAC256(key)
+            alg.verify(jwt)
+
+            return jwt.claims.map {
+                it.key to it.value.asString()
+            }.toMap()
+
+        } catch(e: JWTVerificationException) {
+            throw JwtValidatorException("Failed to validate token", e)
+        }
+    }
     companion object {
-        private val logger = LoggerFactory.getLogger(NoOpJwtValidator::class.java)
+        private val logger = LoggerFactory.getLogger(UserJwtValidator::class.java)
     }
 }
 

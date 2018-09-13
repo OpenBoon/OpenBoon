@@ -5,9 +5,7 @@ import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
 import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.filesystem.UUIDFileSystem
-import com.zorroa.archivist.security.GcpJwtValidator
-import com.zorroa.archivist.security.JwtValidator
-import com.zorroa.archivist.security.NoOpJwtValidator
+import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.*
@@ -159,16 +157,17 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun jwtValidator() : JwtValidator {
+    @Autowired
+    fun jwtValidator(userService: UserService) : JwtValidator {
+        val validators = mutableListOf<JwtValidator>()
+        validators.add(UserJwtValidator(userService))
+
         val path = properties().getPath("archivist.config.path")
                 .resolve("service-credentials.json")
-        return if (Files.exists(path)) {
-            GcpJwtValidator(path.toString())
+        if (Files.exists(path)) {
+            validators.add(GcpJwtValidator(path.toString()))
         }
-        else {
-            logger.info("Service credentials path does not exist: {}", path)
-            NoOpJwtValidator()
-        }
+        return MasterJwtValidator(validators)
     }
 
     @Bean
