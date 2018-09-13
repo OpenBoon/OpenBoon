@@ -89,11 +89,11 @@ class FolderDaoTests : AbstractTest() {
         val folder1 = folderDao.create(FolderSpec("test1"))
         val folder2 = folderDao.create(FolderSpec("test2"))
         val folder3 = folderDao.create(FolderSpec("test3"))
-        val some = folderDao.getAll(
-                Lists.newArrayList(folder2.id, folder3.id))
+        val some = folderDao.getAll(listOf(folder2.id, folder3.id))
         assertTrue(some.contains(folder2))
         assertTrue(some.contains(folder3))
         assertFalse(some.contains(folder1))
+        assertTrue(folderDao.getAll(listOf()).isEmpty())
     }
 
     @Test(expected = DataIntegrityViolationException::class)

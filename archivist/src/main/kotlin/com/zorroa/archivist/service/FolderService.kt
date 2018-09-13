@@ -13,6 +13,7 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
 import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.search.AssetSearch
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -800,8 +801,24 @@ class FolderServiceImpl @Autowired constructor(
 
     override fun createStandardFolders(org: Organization): Folder {
         val root = folderDao.createRootFolder(org)
-        create(FolderSpec("Users", root))
-        create(FolderSpec("Library", root))
+        val userSpec = FolderSpec("Users", root)
+        userSpec.recursive = false
+
+        val libSpec = FolderSpec("Library", root)
+        libSpec.recursive = false
+        libSpec.search = AssetSearch()
+
+        val everyone = permissionDao.get("zorroa::everyone")
+        val librarian = permissionDao.get("zorroa::librarian")
+
+        val userFolder = create(userSpec)
+        setAcl(userFolder, Acl().addEntry(everyone.id, Access.Read),true, false)
+
+        val libFolder = create(libSpec)
+        setAcl(libFolder,
+                Acl().addEntry(everyone, Access.Read)
+                        .addEntry(librarian, Access.Read, Access.Write), true, false)
+
         return root
     }
 
