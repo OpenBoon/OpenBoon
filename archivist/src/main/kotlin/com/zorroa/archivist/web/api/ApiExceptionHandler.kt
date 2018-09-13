@@ -42,9 +42,11 @@ class Error(r: HttpServletRequest, e:Exception, clazz: Class<*>) {
 @RestControllerAdvice
 class ApiExceptionHandler {
 
-    val maxStackTraceLength = 20
+    val maxStackTraceLength = 200
 
     fun logError(e: Exception) {
+
+        logger.warn("Failed: ", e)
 
         val sb = StringBuilder(2048)
         sb.append("API Error: ")
@@ -57,13 +59,10 @@ class ApiExceptionHandler {
             sb.append("\n")
         }
 
+        val user = getUserOrNull()
+
         sb.append("User: ")
-        try {
-            sb.append(getUsername())
-        }
-        catch (e: Exception) {
-            sb.append("Unknown Auth: {}", getUserOrNull())
-        }
+        sb.append(user)
         sb.append("\n")
 
         for ((index, value) in e.stackTrace.withIndex()) {

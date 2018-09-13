@@ -41,13 +41,15 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
             logger.debug("Worker request from $addr")
         }
 
-        for (r in ipRegexes) {
-            if (r.matches(addr)) {
-                SecurityContextHolder.getContext().authentication = WorkerAuthentication(req.remoteAddr)
-                if (logger.isDebugEnabled) {
-                    logger.debug("Worker $addr is allowed, matches ${r.pattern}")
+        if (req.requestURI.startsWith("/cluster")) {
+            for (r in ipRegexes) {
+                if (r.matches(addr)) {
+                    SecurityContextHolder.getContext().authentication = WorkerAuthentication(req.remoteAddr)
+                    if (logger.isDebugEnabled) {
+                        logger.debug("Worker $addr is allowed, matches ${r.pattern}")
+                    }
+                    break
                 }
-                break
             }
         }
         chain.doFilter(req, res)

@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
 
@@ -123,7 +124,7 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/cluster/**")
-                    .addFilterBefore(analystAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+                    .addFilterAfter(analystAuthenticationFilter, BasicAuthenticationFilter::class.java)
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and().sessionManagement().disable()
