@@ -17,15 +17,18 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer
 import org.springframework.boot.web.embedded.undertow.UndertowDeploymentInfoCustomizer
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
+import org.springframework.context.annotation.Primary
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
@@ -193,6 +196,14 @@ class ArchivistConfiguration {
                 DockerComposeEnvironment(override)
             }
         }
+    }
+
+    @Bean
+    @ConditionalOnProperty(name=["archivist.debug-mode.enabled"], havingValue = "true")
+    fun requestLoggingFilter() : CommonsRequestLoggingFilter  {
+        val filter = CommonsRequestLoggingFilter()
+        filter.setIncludePayload(true)
+        return filter
     }
 
     companion object {
