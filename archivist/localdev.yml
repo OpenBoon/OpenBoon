@@ -5,7 +5,7 @@ services:
   # Elastic Search instance used for local devlopment servers.
   es:
     build:
-      context: elasticsearch
+      context: ../elasticsearch
       args:
         node_type: single
     ports:
@@ -31,12 +31,12 @@ services:
        - "es"
        - "postgres"
     build:
-      context: archivist
+      context: .
     ports:
       - 8080:8080
     volumes:
       - "./localdev/zorroa-archivist-config:/config"
-      - "./archivist/target:/service"
+      - "./target:/service"
     environment:
       ZORROA_USER: admin
 
