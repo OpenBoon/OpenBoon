@@ -13,11 +13,16 @@ import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
 import java.util.*
+
+object SecurityLogger {
+    val logger = LoggerFactory.getLogger(SecurityLogger::class.java)
+}
 
 fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication
@@ -28,20 +33,22 @@ fun createPasswordHash(plainPassword: String): String {
 }
 
 fun getUser(): UserAuthed {
-    return if (SecurityContextHolder.getContext().authentication == null) {
+    val auth = SecurityContextHolder.getContext().authentication
+    return if (auth == null) {
         throw AuthenticationCredentialsNotFoundException("No login credentials specified")
     } else {
         try {
-            SecurityContextHolder.getContext().authentication.principal as UserAuthed
+            auth.principal as UserAuthed
         } catch (e1: ClassCastException) {
             try {
-                SecurityContextHolder.getContext().authentication.details as UserAuthed
+                auth.details as UserAuthed
             } catch (e2: ClassCastException) {
-                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed object not found")
+                // Log this message so we can see what the type is.
+                SecurityLogger.logger.warn("Invalid auth objects {} is {} and {} is {}",
+                        auth?.principal, auth?.principal::class.java.canonicalName, auth?.details, auth?.details::class.java.canonicalName)
+                throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
             }
-
         }
-
     }
 }
 
