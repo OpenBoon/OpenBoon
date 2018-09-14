@@ -10,7 +10,8 @@ import java.util.*
 enum class JobState {
     Active,
     Cancelled,
-    Finished
+    Finished,
+    Archived
 }
 
 
@@ -20,11 +21,10 @@ interface JobId {
 
 
 class JobSpec (
-        val name: String,
-        val type: PipelineType,
-        val scripts : List<ZpsScript>,
-        val args: MutableMap<String, Any> = mutableMapOf(),
-        val env: MutableMap<String, String> =  mutableMapOf()
+        var name: String?,
+        var script : ZpsScript?,
+        val args: MutableMap<String, Any>? = mutableMapOf(),
+        val env: MutableMap<String, String>? =  mutableMapOf()
 )
 
 

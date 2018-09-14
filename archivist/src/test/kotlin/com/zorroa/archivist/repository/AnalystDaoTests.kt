@@ -24,10 +24,10 @@ class AnalystDaoTests : AbstractTest() {
     fun init() {
         spec = AnalystSpec(
                 "http://localhost:1234",
-                null,
                 1024,
                 648,
-                0.5f)
+                0.5f,
+                null)
         analyst = analystDao.create(spec)
     }
 

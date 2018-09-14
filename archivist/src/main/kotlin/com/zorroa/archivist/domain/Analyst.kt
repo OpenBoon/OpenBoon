@@ -17,11 +17,11 @@ enum class LockState {
 
 class AnalystSpec (
         val endpoint: String,
-        val taskId: UUID?,
         val totalRamMb: Int,
         val freeRamMb: Int,
-        val load: Float
-)
+        val load: Float,
+        val taskId: UUID?=null)
+
 
 class Analyst (
         val id: UUID,

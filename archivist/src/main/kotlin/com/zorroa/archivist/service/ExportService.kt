@@ -82,11 +82,8 @@ class ExportServiceImpl @Autowired constructor(
         val env = mutableMapOf<String, String>()
         env.putAll(spec.env)
 
-        val jspec = JobSpec(spec.name!!,
-                PipelineType.Export,
-                listOf(),
-                env=env)
-        val job =  jobService.create(jspec)
+        val jspec = JobSpec(spec.name!!, script=null, env=env)
+        val job =  jobService.create(jspec, PipelineType.Export)
         jobService.createTask(job, TaskSpec("export file generator", buildZpsSciript(job, spec, resolve)))
         return job
     }
@@ -96,7 +93,7 @@ class ExportServiceImpl @Autowired constructor(
         /**
          * Now start to build the script for the task.
          */
-        val script = ZpsScript(spec.name!!, inline=true)
+        val script = ZpsScript(spec.name!!, inline=true, generate = mutableListOf(), execute= mutableListOf(), over=null)
         script.globals?.putAll(mapOf(
                 "exportArgs" to mapOf(
                         "exportId" to job.id,

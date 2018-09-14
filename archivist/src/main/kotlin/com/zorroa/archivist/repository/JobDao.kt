@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 interface JobDao {
-    fun create(spec: JobSpec): Job
+    fun create(spec: JobSpec, type:PipelineType): Job
     fun get(id: UUID) : Job
     fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean
     fun getAll(pager: Pager, filter: JobFilter?) : PagedList<Job>
@@ -25,7 +25,7 @@ interface JobDao {
 @Repository
 class JobDaoImpl : AbstractDao(), JobDao {
 
-    override fun create(spec: JobSpec): Job {
+    override fun create(spec: JobSpec, type:PipelineType): Job {
         Preconditions.checkNotNull(spec.name)
 
         val id = uuid1.generate()
@@ -38,7 +38,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setObject(2, user.organizationId)
             ps.setString(3, spec.name)
             ps.setInt(4, JobState.Active.ordinal)
-            ps.setInt(5, spec.type.ordinal)
+            ps.setInt(5, type.ordinal)
             ps.setLong(6, time)
             ps.setLong(7, time)
             ps.setObject(8, user.id)

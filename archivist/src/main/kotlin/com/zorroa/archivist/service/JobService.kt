@@ -3,6 +3,8 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.common.domain.*
@@ -13,6 +15,7 @@ import java.util.*
 
 interface JobService {
     fun create(spec: JobSpec) : Job
+    fun create(spec: JobSpec, type: PipelineType) : Job
     fun get(id: UUID) : Job
     fun getTask(id: UUID) : Task
     fun createTask(job: JobId, spec: TaskSpec) : Task
@@ -31,16 +34,31 @@ class JobServiceImpl @Autowired constructor(
     private lateinit var pipelineService: PipelineService
 
     override fun create(spec: JobSpec) : Job {
-        val job = jobDao.create(spec)
-
-        for (script in spec.scripts) {
-            if (script.execute == null) {
-                script.execute = pipelineService.resolveDefault(spec.type)
+        if (spec.script != null) {
+            val type = if (spec.script?.type == null) {
+                PipelineType.Import
             }
             else {
-                script.execute = pipelineService.resolve(spec.type, script.execute)
+                spec.script!!.type
             }
-            taskDao.create(job, TaskSpec(script.name, script))
+            return create(spec, type)
+        }
+        else {
+            throw IllegalArgumentException("Cannot launch job without script to determine type")
+        }
+    }
+
+    override fun create(spec: JobSpec, type: PipelineType) : Job {
+        val job = jobDao.create(spec, type)
+
+        spec.script?.let { script->
+            if (script.execute == null) {
+                script.execute = pipelineService.resolveDefault(job.type)
+            }
+            else {
+                script.execute = pipelineService.resolve(job.type, script.execute)
+            }
+            taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
         return job
     }

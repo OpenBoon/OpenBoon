@@ -205,10 +205,11 @@ class GcpPubSubServiceImpl : PubSubService {
                      * No ZORROA_USER env var means any communication back to the
                      * archivist with a proper service key will be super admin.
                      */
-                    val zps = ZpsScript(jobName, over=mutableListOf(doc))
+                    val zps = ZpsScript(jobName, type=PipelineType.Import,
+                            over=mutableListOf(doc), generate=null, execute=null)
+
                     val spec = JobSpec(jobName,
-                            PipelineType.Import,
-                            listOf(zps),
+                            zps,
                             args=mutableMapOf("companyId" to companyId.toString()))
 
                     val job = jobSerice.create(spec)

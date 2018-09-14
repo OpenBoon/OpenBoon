@@ -2,14 +2,41 @@ package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.core.type.TypeReference
 
+fun zpsTaskName(zps: ZpsScript) : String {
+    if (zps.name == null) {
+        val sb = StringBuffer(128)
+        if (zps.generate != null) {
+            sb.append("Generator ")
+        }
+        else if (zps.over != null) {
+            val size = zps.execute?.size
+            sb.append("$size assets ")
+        }
+        if (zps.execute != null) {
+            val size = zps.execute?.size
+            sb.append("with $size processors ")
+        }
+        return sb.toString()
+    }
+    else {
+        return zps.name!!
+    }
+}
+
+fun emptyZpsScript(name: String) : ZpsScript {
+    return ZpsScript(name,
+            null, null, null)
+}
+
 
 data class ZpsScript(
-        val name: String,
-        var generate : MutableList<ProcessorRef>? = mutableListOf(),
-        var over: MutableList<Document>? =  mutableListOf(),
-        var execute : MutableList<ProcessorRef>? = mutableListOf(),
+        var name: String?,
+        var generate : MutableList<ProcessorRef>?,
+        var over: MutableList<Document>?,
+        var execute : MutableList<ProcessorRef>?,
         var globals:  MutableMap<String, Any>? = mutableMapOf(),
-        var inline: Boolean = true
+        var inline: Boolean = true,
+        var type: PipelineType = PipelineType.Import
 )
 
 data class ZpsError (

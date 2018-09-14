@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.*
 import org.junit.Test
@@ -20,12 +21,11 @@ class JobDaoTests : AbstractTest() {
     fun testCreate() {
 
         val spec = JobSpec("test_job",
-                PipelineType.Import,
-                listOf(ZpsScript("foo")),
+                emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
 
-        val t1 = jobDao.create(spec)
+        val t1 = jobDao.create(spec, PipelineType.Import)
         assertEquals(spec.name, t1.name)
         assertEquals(JobState.Active, t1.state)
         assertEquals(PipelineType.Import, t1.type)
@@ -34,12 +34,11 @@ class JobDaoTests : AbstractTest() {
     @Test
     fun testGet() {
         val spec = JobSpec("test_job",
-                PipelineType.Import,
-                listOf(ZpsScript("test_script")),
+                emptyZpsScript("test_script"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
 
-        val t2 = jobDao.create(spec)
+        val t2 = jobDao.create(spec, PipelineType.Import)
         val t1 = jobDao.get(t2.id)
 
         assertEquals(t2.name, t1.name)
@@ -53,9 +52,8 @@ class JobDaoTests : AbstractTest() {
         val orgId = UUID.randomUUID()
         for (i in 1..10) {
             val spec = JobSpec("run_some_stuff_$i",
-                    PipelineType.Import,
-                    listOf(ZpsScript("test_script")))
-            jobDao.create(spec)
+                    emptyZpsScript("test_script"))
+            jobDao.create(spec, PipelineType.Import)
         }
 
         var filter = JobFilter(organizationIds=listOf(UUID.randomUUID()))

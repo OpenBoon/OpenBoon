@@ -1,9 +1,6 @@
 package com.zorroa.archivist.web
 
-import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.domain.TaskEvent
-import com.zorroa.archivist.domain.TaskStoppedEvent
-import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatcherService
@@ -40,8 +37,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
     fun launchJob() : Job {
         val spec = JobSpec("test_job",
-                PipelineType.Import,
-                listOf(ZpsScript("foo"), ZpsScript("bar")),
+                emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
         return jobService.create(spec)
@@ -142,7 +138,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                     "http://localhost:1234",
                     task.id,
                     job.id,
-                    ZpsScript("bob"))
+                    emptyZpsScript("bob"))
 
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
@@ -153,7 +149,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
             val count = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?",
                     Int::class.java, task.jobId)
-            assertEquals(3, count)
+            assertEquals(2, count)
         }
         else {
             assertNotNull(task)
@@ -203,10 +199,10 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         val spec = AnalystSpec(
                 "http://localhost:1234",
-                null,
                 1024,
                 648,
-                0.5f)
+                0.5f,
+                null)
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -225,27 +221,19 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         val aspec = AnalystSpec(
                 "https://10.0.0.1",
-                null,
                 1024,
                 648,
-                0.5f)
+                0.5f,
+                null)
 
         analystService.upsert(aspec)
 
         val spec = JobSpec("test_job",
-                PipelineType.Import,
-                listOf(ZpsScript("foo"), ZpsScript("bar")),
+                emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
 
         jobService.create(spec)
-
-        // There are 2 tasks, we're going to queue both
-        mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mapOf("endpoint" to  "https://10.0.0.1"))))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
 
         mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

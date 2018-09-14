@@ -4,6 +4,7 @@ import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.repository.KPagedList
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,14 +21,20 @@ class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): Anal
     override fun upsert(spec: AnalystSpec) : Analyst {
         return if (analystDao.update(spec)) {
             analystDao.get(spec.endpoint)
-
         }
         else {
-            analystDao.create(spec)
+            val analyst = analystDao.create(spec)
+            logger.info("Created analyst: {}", analyst.endpoint)
+            analyst
         }
+
     }
 
     override fun exists(endpoint: String) : Boolean {
         return analystDao.exists(endpoint)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(DispatcherServiceImpl::class.java)
     }
 }

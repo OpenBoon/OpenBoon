@@ -5,12 +5,13 @@ import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.ExportService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobSpec
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.*
 import java.io.IOException
+import java.util.*
+import javax.validation.Valid
 
 
 @RestController
@@ -26,5 +27,16 @@ class JobController @Autowired constructor(
                @RequestParam(value = "from", required = false) from: Int?,
                @RequestParam(value = "count", required = false) count: Int?): Any {
         return jobService.getAll(Pager(from, count), filter)
+    }
+
+    @PostMapping(value = ["/api/v1/jobs"])
+    @Throws(IOException::class)
+    fun create(@RequestBody spec: JobSpec): Any {
+        return jobService.create(spec)
+    }
+
+    @GetMapping(value = ["/api/v1/jobs/{id}"])
+    fun get(@PathVariable id: String): Any {
+        return jobService.get(UUID.fromString(id))
     }
 }

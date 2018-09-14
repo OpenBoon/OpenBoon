@@ -17,18 +17,18 @@ class AnalystServiceTests : AbstractTest() {
     fun testUpsert() {
         val spec1 = AnalystSpec(
                 "http://localhost:1234",
-                null,
                 1024,
                 648,
-                0.5f)
+                0.5f,
+                null)
         analystService.upsert(spec1)
 
         val spec2 = AnalystSpec(
                 "http://localhost:1234",
-                UUID.fromString("EF3B1E5A-31B5-4AEB-8C4E-7DA50F2AC592"),
                 1024,
                 1024,
-                1.0f)
+                1.0f,
+                UUID.fromString("EF3B1E5A-31B5-4AEB-8C4E-7DA50F2AC592"))
         val a2 = analystService.upsert(spec2)
         assertEquals(spec2.totalRamMb, a2.totalRamMb)
         assertEquals(spec2.freeRamMb, a2.freeRamMb)

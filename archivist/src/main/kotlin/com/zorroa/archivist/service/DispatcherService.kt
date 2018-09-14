@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
@@ -72,32 +73,32 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun expand(job: Job, script: ZpsScript) : Task {
-        val task =  taskDao.create(job, TaskSpec(script.name, script))
+        val task =  taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         logger.info("Expanding job: {} with task: {}", job.id, task.id)
         return task
     }
 
     override fun handleEvent(event: TaskEvent) {
         val task = taskDao.get(event.taskId)
-
-        when(event.type) {
-            "stopped" -> {
+        val type = event.type.toUpperCase()
+        when(type) {
+            "STOPPED" -> {
                 val payload = Json.Mapper.convertValue<TaskStoppedEvent>(event.payload)
                 stopTask(task, payload.exitStatus)
             }
-            "started" -> startTask(task)
-            "error"-> {
+            "STARTED" -> startTask(task)
+            "ERROR"-> {
                 // Might have to queue and submit in batches
                 val payload = Json.Mapper.convertValue<TaskErrorEvent>(event.payload)
                 taskErrorDao.create(event, payload)
             }
-            "expand" -> {
+            "EXPAND" -> {
                 val job = jobDao.get(task.jobId)
                 val script = Json.Mapper.convertValue<ZpsScript>(event.payload)
                 expand(job, script)
             }
             else-> {
-                logger.warn("Failed to handle event type: {}", event.type)
+                logger.warn("Failed to handle event type: {}", type)
             }
         }
     }

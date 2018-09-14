@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.*
 import org.junit.Before
@@ -28,13 +29,12 @@ class TaskDaoTests : AbstractTest() {
     @Before
     fun init() {
         val jspec = JobSpec("test_job",
-                PipelineType.Import,
-                listOf(ZpsScript("test_script")),
+                emptyZpsScript("test_script"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
 
-        job = jobDao.create(jspec)
-        spec = TaskSpec("generator", jspec.scripts[0])
+        job = jobDao.create(jspec, PipelineType.Import)
+        spec = TaskSpec("generator", jspec.script!!)
         task = taskDao.create(job, spec)
     }
 

@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.*
 import org.junit.Before
@@ -22,14 +23,13 @@ class DispatchTaskDaoTests : AbstractTest() {
     @Test
     fun testGetNext() {
         val spec = JobSpec("test_job",
-                PipelineType.Import,
-                listOf(ZpsScript("foo"), ZpsScript("bar")),
+                emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
 
         jobService.create(spec)
         val tasks = dispatchTaskDao.getNext(5)
-        assertEquals(2, tasks.size)
+        assertEquals(1, tasks.size)
         assertTrue(tasks[0].args.containsKey("foo"))
         assertEquals(spec.env, tasks[0].env)
     }
