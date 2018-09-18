@@ -119,7 +119,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                     .andReturn()
 
             val rtask = jobService.getTask(task.id)
-            assertEquals(TaskState.Fail, rtask.state)
+            assertEquals(TaskState.Failure, rtask.state)
         }
         else {
             assertNotNull(task)

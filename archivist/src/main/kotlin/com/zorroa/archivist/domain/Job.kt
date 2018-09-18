@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import java.sql.ResultSet
 import java.util.*
 
 enum class JobState {
@@ -33,11 +34,12 @@ class Job (
         val organizationId: UUID,
         val name: String,
         val type: PipelineType,
-        val state: JobState
+        val state: JobState,
+        var assetCounts: Map<String,Int>?=null,
+        var taskCounts: Map<String,Int>?=null
 ) : JobId {
     override val jobId = id
 }
-
 
 class JobFilter (
         private val ids : List<UUID>? = null,

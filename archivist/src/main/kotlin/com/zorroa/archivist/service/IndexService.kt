@@ -81,7 +81,8 @@ interface IndexService {
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
         private val permissionDao: PermissionDao,
-        private val storageRouter: StorageRouter
+        private val storageRouter: StorageRouter,
+        private val jobService: JobService
 
 ) : IndexService {
 
@@ -250,6 +251,11 @@ class IndexServiceImpl  @Autowired  constructor (
         }
 
         val result = indexDao.index(spec.sources!!)
+        spec.taskId?.let {
+            val task = jobService.getTask(it)
+            jobService.incrementAssetCounts(task, result)
+        }
+
         if (result.created + result.updated + result.replaced > 0) {
             /**
              * TODO: make these 1 thread pool

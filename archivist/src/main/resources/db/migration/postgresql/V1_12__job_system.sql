@@ -54,3 +54,43 @@ CREATE TABLE task_error(
 
 ---
 
+DROP TRIGGER trig_update_job_state ON job_count CASCADE;
+
+
+---
+ALTER TABLE job_count RENAME COLUMN int_task_state_waiting_count TO int_task_state_0;
+ALTER TABLE job_count RENAME COLUMN int_task_state_running_count TO int_task_state_1;
+ALTER TABLE job_count RENAME COLUMN int_task_state_success_count TO int_task_state_2;
+ALTER TABLE job_count RENAME COLUMN int_task_state_failure_count TO int_task_state_3;
+ALTER TABLE job_count RENAME COLUMN int_task_state_skipped_count TO int_task_state_4;
+ALTER TABLE job_count RENAME COLUMN int_task_state_queued_count TO int_task_state_5;
+
+CREATE OR REPLACE FUNCTION after_task_state_change() RETURNS TRIGGER AS $$
+DECLARE
+    old_state_col VARCHAR;
+    new_state_col VARCHAR;
+BEGIN
+  old_state_col := 'int_task_state_' || old.int_state::text;
+  new_state_col := 'int_task_state_' || new.int_state::text;
+  EXECUTE 'UPDATE job_count SET ' || old_state_col || '=' || old_state_col || '-1,'
+    || new_state_col || '=' || new_state_col || '+1 WHERE job_count.pk_job = $1' USING new.pk_job;
+  RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trig_after_task_state_change AFTER UPDATE ON task
+  FOR EACH ROW WHEN (OLD.int_state != NEW.int_state)
+  EXECUTE PROCEDURE after_task_state_change();
+
+---
+
+CREATE OR REPLACE FUNCTION after_task_insert() RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE job_count SET int_task_total_count=int_task_total_count+1,
+    int_task_state_0=int_task_state_0+1 WHERE pk_job=new.pk_job;
+  RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trig_after_task_insert AFTER INSERT ON task
+  FOR EACH ROW EXECUTE PROCEDURE after_task_insert();

@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.zpsTaskName
+import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.common.domain.*
@@ -20,6 +21,7 @@ interface JobService {
     fun getTask(id: UUID) : Task
     fun createTask(job: JobId, spec: TaskSpec) : Task
     fun getAll(page: Pager, filter: JobFilter): PagedList<Job>
+    fun incrementAssetCounts(task: Task,  counts: AssetIndexResult)
 }
 
 @Service
@@ -60,7 +62,7 @@ class JobServiceImpl @Autowired constructor(
             }
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
-        return job
+        return get(job.id)
     }
 
     @Transactional(readOnly = true)
@@ -79,6 +81,11 @@ class JobServiceImpl @Autowired constructor(
 
     override fun createTask(job: JobId, spec: TaskSpec) : Task {
         return taskDao.create(job, spec)
+    }
+
+    override fun incrementAssetCounts(task: Task,  counts: AssetIndexResult) {
+        taskDao.incrementAssetStats(task, counts)
+        jobDao.incrementAssetStats(task, counts)
     }
 
 }

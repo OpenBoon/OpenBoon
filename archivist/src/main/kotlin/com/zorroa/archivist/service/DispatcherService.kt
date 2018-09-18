@@ -35,7 +35,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun getNext(host: String): DispatchTask? {
         val tasks = dispatchTaskDao.getNext(5)
         for (task in tasks) {
-            if (taskDao.setState(task, TaskState.Queue, TaskState.Waiting)) {
+            if (taskDao.setState(task, TaskState.Queued, TaskState.Waiting)) {
                 taskDao.setHostEndpoint(task, host)
                 return task
             }
@@ -44,7 +44,7 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun startTask(task: TaskId) : Boolean {
-        val result =  taskDao.setState(task, TaskState.Running, TaskState.Queue)
+        val result =  taskDao.setState(task, TaskState.Running, TaskState.Queued)
         logger.info("Starting task: {}, {}", task.taskId, result)
         return result
     }
@@ -52,7 +52,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun stopTask(task: TaskId, exitStatus: Int) : Boolean {
 
         val newState = if (exitStatus != 0) {
-            TaskState.Fail
+            TaskState.Failure
         }
         else {
             TaskState.Success

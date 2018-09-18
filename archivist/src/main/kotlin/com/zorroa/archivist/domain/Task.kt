@@ -11,9 +11,9 @@ enum class TaskState {
     Waiting,
     Running,
     Success,
-    Fail,
-    Skip,
-    Queue
+    Failure,
+    Skipped,
+    Queued
 }
 
 class TaskSpec(
@@ -25,13 +25,13 @@ interface TaskId {
     val taskId: UUID
 }
 
-open class Task(
+open class Task (
         val id: UUID,
-        val jobId: UUID,
+        override val jobId: UUID,
         val organizationId: UUID,
         val name: String,
         val state: TaskState
-) : TaskId {
+) : TaskId, JobId {
     override val taskId = id
 }
 

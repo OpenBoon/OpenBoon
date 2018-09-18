@@ -18,6 +18,7 @@ interface TaskDao {
     fun setHostEndpoint(task: TaskId, host: String)
     fun setExitStatus(task: TaskId, exitStatus: Int)
     fun getScript(id: UUID) : ZpsScript
+    fun incrementAssetStats(task: TaskId, counts: AssetIndexResult) : Boolean
 }
 
 @Repository
@@ -40,6 +41,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps.setString(7, Json.serializeToString(spec.script, "{}"))
             ps
         }
+
+        jdbc.update("INSERT INTO task_stat (pk_task, pk_job) VALUES (?,?)", id, job.jobId)
         return get(id)
     }
 
@@ -60,6 +63,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
 
     override fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean {
         val time = System.currentTimeMillis()
+        // Note: There is a trigger updating counts here.
         val updated =  if (oldState != null) {
             jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=? AND int_state=?",
                     newState.ordinal, time, task.taskId, oldState.ordinal) == 1
@@ -92,11 +96,16 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 Long::class.java, *filter.getValues(forCount = true))
     }
 
+    override fun incrementAssetStats(task: TaskId, counts: AssetIndexResult) : Boolean {
+        return jdbc.update(INC_STATS,
+                counts.total, counts.created, counts.updated, counts.warnings, counts.errors, counts.replaced, task.taskId) == 1
+    }
+
     companion object {
 
         private val START_STATES = setOf(TaskState.Running)
 
-        private val STOP_STATES = setOf(TaskState.Fail, TaskState.Skip, TaskState.Success)
+        private val STOP_STATES = setOf(TaskState.Failure, TaskState.Skipped, TaskState.Success)
 
         private val MAPPER = RowMapper { rs, _ ->
             Task(rs.getObject("pk_task") as UUID,
@@ -105,6 +114,18 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")])
         }
+
+        private const val INC_STATS = "UPDATE " +
+                "task_stat " +
+                "SET " +
+                "int_asset_total_count=int_asset_total_count+?," +
+                "int_asset_create_count=int_asset_create_count+?," +
+                "int_asset_update_count=int_asset_update_count+?," +
+                "int_asset_warning_count=int_asset_warning_count+?," +
+                "int_asset_error_count=int_asset_error_count+?," +
+                "int_asset_replace_count=int_asset_replace_count+? " +
+                "WHERE " +
+                "pk_task=?"
 
         private const val GET = "SELECT " +
                 "job.pk_organization, " +
