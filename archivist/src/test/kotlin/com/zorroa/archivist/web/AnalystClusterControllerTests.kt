@@ -49,7 +49,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         val task = dispatcherService.getNext("http://localhost:1234")
 
         if (task != null) {
-            val te = TaskEvent("started",
+            val te = TaskEvent(TaskEventType.STARTED,
                     "http://localhost:1234",
                     task.id,
                     job.id,
@@ -77,7 +77,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
-            val te = TaskEvent("stopped",
+            val te = TaskEvent(TaskEventType.STOPPED,
                     "http://localhost:1234",
                     task.id,
                     job.id,
@@ -105,7 +105,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
-            val te = TaskEvent("stopped",
+            val te = TaskEvent(TaskEventType.STOPPED,
                     "http://localhost:1234",
                     task.id,
                     job.id,
@@ -134,7 +134,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         if (task != null) {
 
             assertTrue(dispatcherService.startTask(task))
-            val te = TaskEvent("expand",
+            val te = TaskEvent(TaskEventType.EXPAND,
                     "http://localhost:1234",
                     task.id,
                     job.id,
@@ -166,7 +166,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             assertTrue(dispatcherService.startTask(task))
             val tev = TaskErrorEvent(UUID.randomUUID(),"/foo/bar.jpg","it broke",
                     "com.zorroa.ImageIngestor", true)
-            val te = TaskEvent("error",
+            val te = TaskEvent(TaskEventType.ERROR,
                     "http://localhost:1234",
                     task.id,
                     job.id,

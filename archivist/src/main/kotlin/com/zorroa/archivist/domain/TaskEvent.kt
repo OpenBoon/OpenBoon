@@ -2,8 +2,15 @@ package com.zorroa.archivist.domain
 
 import java.util.*
 
+enum class TaskEventType {
+    STOPPED,
+    STARTED,
+    ERROR,
+    EXPAND
+}
+
 open class TaskEvent(
-        val type: String,
+        val type: TaskEventType,
         val endpoint: String,
         val taskId: UUID,
         val jobId: UUID,
@@ -11,4 +18,12 @@ open class TaskEvent(
 
 class TaskStoppedEvent(
         val exitStatus: Int
+)
+
+class TaskErrorEvent(
+        val assetId: UUID,
+        val path: String,
+        val message: String,
+        val processor: String,
+        val fatal: Boolean
 )

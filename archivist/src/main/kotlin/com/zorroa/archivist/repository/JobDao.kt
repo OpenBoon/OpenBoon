@@ -5,10 +5,10 @@ import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.security.getUserId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.domain.*
-import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
@@ -16,16 +16,16 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 interface JobDao {
-    fun create(spec: JobSpec, type:PipelineType): Job
-    fun get(id: UUID) : Job
-    fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean
-    fun getAll(pager: Pager, filter: JobFilter?) : PagedList<Job>
+    fun create(spec: JobSpec, type: PipelineType): Job
+    fun get(id: UUID): Job
+    fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
+    fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
 }
 
 @Repository
 class JobDaoImpl : AbstractDao(), JobDao {
 
-    override fun create(spec: JobSpec, type:PipelineType): Job {
+    override fun create(spec: JobSpec, type: PipelineType): Job {
         Preconditions.checkNotNull(spec.name)
 
         val id = uuid1.generate()
@@ -41,16 +41,17 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setInt(5, type.ordinal)
             ps.setLong(6, time)
             ps.setLong(7, time)
-            ps.setObject(8, user.id)
+            ps.setLong(8, -1)
             ps.setObject(9, user.id)
-            ps.setString(10, Json.serializeToString(spec.args, "{}"))
-            ps.setString(11, Json.serializeToString(spec.env, "{}"))
+            ps.setObject(10, user.id)
+            ps.setString(11, Json.serializeToString(spec.args, "{}"))
+            ps.setString(12, Json.serializeToString(spec.env, "{}"))
             ps
         }
         return get(id)
     }
 
-    override fun get(id: UUID) : Job {
+    override fun get(id: UUID): Job {
         return jdbc.queryForObject("$GET WHERE pk_job=?", MAPPER, id)
     }
 
@@ -66,13 +67,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
 
-    override fun setState(job: Job, newState: JobState, oldState: JobState?) : Boolean {
+    override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
         val time = System.currentTimeMillis()
         return if (oldState != null) {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=? AND int_state=?",
                     newState.ordinal, time, job.id, oldState.ordinal) == 1
-        }
-        else {
+        } else {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=?",
                     newState.ordinal, time, job.id) == 1
         }
@@ -104,16 +104,17 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private val INSERT = insert("job",
                 "pk_job",
-                    "pk_organization",
-                    "str_name",
-                    "int_state",
-                    "int_type",
-                    "time_created",
-                    "time_modified",
-                    "user_created",
-                    "user_modified",
-                    "json_args",
-                    "json_env")
+                "pk_organization",
+                "str_name",
+                "int_state",
+                "int_type",
+                "time_created",
+                "time_modified",
+                "time_started",
+                "pk_user_created",
+                "pk_user_modified",
+                "json_args",
+                "json_env")
     }
 }
 

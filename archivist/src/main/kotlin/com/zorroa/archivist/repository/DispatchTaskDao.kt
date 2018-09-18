@@ -34,6 +34,6 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
         private const val GET = "SELECT job.pk_organization, job.json_env, job.json_args, task.* " +
                 "FROM task INNER JOIN job ON job.pk_job = task.pk_job " +
-                "WHERE job.int_state=? AND task.int_state=? ORDER BY job.int_priority,task.int_priority LIMIT ?"
+                "WHERE job.int_state=? AND task.int_state=? ORDER BY job.int_priority,task.int_order LIMIT ?"
     }
 }

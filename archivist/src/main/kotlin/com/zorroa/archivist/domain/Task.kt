@@ -60,14 +60,6 @@ class TaskError(
         val endpoint: String
 )
 
-class TaskErrorEvent(
-        val assetId: UUID,
-        val path: String,
-        val message: String,
-        val processor: String,
-        val fatal: Boolean
-)
-
 class Expand(
         val endpoint: String,
         val jobId: UUID,

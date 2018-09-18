@@ -31,7 +31,7 @@ class DispatcherServiceTests : AbstractTest() {
         assertNotNull(next)
         next?.let {
             assertEquals(job.id, it.jobId)
-            val host :String = this.jdbc.queryForObject("SELECT str_endpoint FROM task WHERE pk_task=?",
+            val host :String = this.jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
                     String::class.java, it.id)
             assertEquals(analyst, host)
         }

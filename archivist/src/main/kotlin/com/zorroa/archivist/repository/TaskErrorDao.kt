@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.domain.*

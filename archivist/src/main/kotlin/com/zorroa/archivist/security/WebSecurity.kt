@@ -26,6 +26,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
+import org.springframework.security.config.annotation.web.builders.WebSecurity
+
+
 
 @EnableWebSecurity
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -129,6 +132,17 @@ class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                     .and().sessionManagement().disable()
                     .csrf().disable()
+        }
+    }
+
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 3)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    class Swagger : WebSecurityConfigurerAdapter() {
+
+        @Throws(Exception::class)
+        override fun configure(web: WebSecurity?) {
+            web!!.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**")
         }
     }
 

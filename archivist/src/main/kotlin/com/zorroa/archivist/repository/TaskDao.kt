@@ -36,7 +36,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps.setString(3, spec.name)
             ps.setLong(4, time)
             ps.setLong(5, time)
-            ps.setString(6, Json.serializeToString(spec.script, "{}"))
+            ps.setLong(6, time)
+            ps.setString(7, Json.serializeToString(spec.script, "{}"))
             ps
         }
         return get(id)
@@ -79,7 +80,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun setHostEndpoint(task: TaskId, host: String) {
-        jdbc.update("UPDATE task SET str_endpoint=? WHERE pk_task=?", host, task.taskId)
+        jdbc.update("UPDATE task SET str_host=? WHERE pk_task=?", host, task.taskId)
     }
 
     override fun setExitStatus(task: TaskId, exitStatus: Int) {
@@ -122,6 +123,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "str_name",
                 "time_created",
                 "time_modified",
+                "time_state_change",
                 "json_script::JSON")
 
     }

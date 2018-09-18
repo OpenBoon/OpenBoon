@@ -20,52 +20,28 @@ CREATE UNIQUE INDEX analyst_str_endpoint_idx ON analyst(str_endpoint);
 ALTER TABLE pipeline ADD COLUMN time_created BIGINT NOT NULL DEFAULT 1536693258000;
 ALTER TABLE pipeline ADD COLUMN time_modified BIGINT NOT NULL DEFAULT 1536693258000;
 
-
-CREATE TABLE job (
-        pk_job UUID PRIMARY KEY NOT NULL,
-        pk_organization UUID NOT NULL,
-        int_state SMALLINT DEFAULT 0 NOT NULL,
-        int_type SMALLINT NOT NULL,
-        int_priority SMALLINT DEFAULT 0 NOT NULL,
-        str_name TEXT NOT NULL,
-        time_created BIGINT NOT NULL,
-        time_modified BIGINT NOT NULL,
-        user_created UUID NOT NULL,
-        user_modified UUID NOT NULL,
-        json_args TEXT NOT NULL DEFAULT '{}',
-        json_env TEXT NOT NULL DEFAULT '{}'
-);
-
-CREATE INDEX job_pk_organization_idx ON job (pk_organization);
-CREATE INDEX job_int_state_idx ON job (int_state);
-CREATE INDEX job_int_type_idx ON job (int_type);
-
-CREATE TABLE task(
-        pk_task UUID PRIMARY KEY,
-        pk_job UUID NOT NULL,
-        str_name TEXT NOT NULL,
-        int_state SMALLINT DEFAULT 0 NOT NULL,
-        time_started BIGINT DEFAULT -1 NOT NULL,
-        time_stopped BIGINT DEFAULT -1 NOT NULL,
-        time_created BIGINT NOT NULL,
-        time_modified BIGINT NOT NULL,
-        time_ping BIGINT DEFAULT 0 NOT NULL,
-        int_priority SMALLINT DEFAULT 0 NOT NULL,
-        int_exit_status SMALLINT DEFAULT -1 NOT NULL,
-        str_endpoint TEXT,
-        json_script JSONB NOT NULL
-);
+--
 
 
-CREATE INDEX task_pk_job_idx ON task(pk_job);
-CREATE INDEX task_int_state_idx ON task(int_state);
-CREATE INDEX task_int_priority_idx ON task(int_priority);
-CREATE INDEX task_str_namne ON task(str_name);
+ALTER TABLE job ADD COLUMN int_priority SMALLINT DEFAULT 0 NOT NULL;
+ALTER TABLE job ADD COLUMN time_created BIGINT NOT NULL DEFAULT 1536693258000;
+ALTER TABLE job ADD COLUMN time_modified BIGINT NOT NULL DEFAULT 1536693258000;
+ALTER TABLE job ADD COLUMN pk_user_modified UUID;
+UPDATE job SET pk_user_modified='00000000-7B0B-480E-8C36-F06F04AED2F1';
+ALTER TABLE job ALTER COLUMN pk_user_modified SET NOT NULL;
+ALTER TABLE job DROP COLUMN str_root_path;
+
+ALTER TABLE task DROP COLUMN pk_depend_parent;
+ALTER TABLE task DROP COLUMN int_depend_count;
+ALTER TABLE task ADD COLUMN time_modified BIGINT NOT NULL DEFAULT 1536693258000;
+ALTER TABLE task ADD COLUMN json_script TEXT NOT NULL DEFAULT '{}';
+
+---
 
 CREATE TABLE task_error(
         pk_task_error UUID NOT NULL,
-        pk_task UUID NOT NULL,
-        pk_job UUID NOT NULL,
+        pk_task UUID NOT NULL REFERENCES task(pk_task),
+        pk_job UUID NOT NULL REFERENCES job(pk_job),
         pk_asset UUID NOT NULL,
         str_message TEXT,
         str_path TEXT,
@@ -77,8 +53,4 @@ CREATE TABLE task_error(
 );
 
 ---
-
-ALTER TABLE export_file ADD COLUMN pk_organization UUID;
-UPDATE export_file SET pk_organization='00000000-9998-8888-7777-666666666666';
-ALTER TABLE export_file ALTER COLUMN pk_organization SET NOT NULL;
 

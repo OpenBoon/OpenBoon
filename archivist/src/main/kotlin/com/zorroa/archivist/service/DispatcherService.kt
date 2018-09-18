@@ -1,10 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.zorroa.archivist.domain.TaskEvent
-import com.zorroa.archivist.domain.TaskStoppedEvent
-import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.domain.zpsTaskName
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
@@ -80,25 +77,21 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun handleEvent(event: TaskEvent) {
         val task = taskDao.get(event.taskId)
-        val type = event.type.toUpperCase()
-        when(type) {
-            "STOPPED" -> {
+        when(event.type) {
+            TaskEventType.STOPPED -> {
                 val payload = Json.Mapper.convertValue<TaskStoppedEvent>(event.payload)
                 stopTask(task, payload.exitStatus)
             }
-            "STARTED" -> startTask(task)
-            "ERROR"-> {
+            TaskEventType.STARTED -> startTask(task)
+            TaskEventType.ERROR-> {
                 // Might have to queue and submit in batches
                 val payload = Json.Mapper.convertValue<TaskErrorEvent>(event.payload)
                 taskErrorDao.create(event, payload)
             }
-            "EXPAND" -> {
+            TaskEventType.EXPAND -> {
                 val job = jobDao.get(task.jobId)
                 val script = Json.Mapper.convertValue<ZpsScript>(event.payload)
                 expand(job, script)
-            }
-            else-> {
-                logger.warn("Failed to handle event type: {}", type)
             }
         }
     }
