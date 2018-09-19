@@ -31,7 +31,7 @@ interface EmailService {
 @Component
 class EmailServiceImpl @Autowired constructor(
         private val userDao: UserDao,
-        private val mailSender: JavaMailSender,
+        private val mailSender: JavaMailSender?,
         private val networkEnv: NetworkEnvironment,
         private val properties: ApplicationProperties
 ) : EmailService {
@@ -193,26 +193,31 @@ class EmailServiceImpl @Autowired constructor(
 
     @Throws(MessagingException::class)
     private fun sendHTMLEmail(email:String, subject: String, text: String, cc: List<String>, htmlMsg: String?) {
-        val mimeMessage = mailSender.createMimeMessage()
-        val helper = MimeMessageHelper(mimeMessage, true, "utf-8")
-        helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>")
-        helper.setReplyTo("Zorroa Account Bot <support@zorroa.com>")
-        helper.setSubject(subject)
-        helper.setCc(cc.toTypedArray())
 
-        if (ArchivistConfiguration.unittest) {
-            helper.setTo(System.getProperty("user.name") + "@zorroa.com")
-        }
-        else {
-            helper.setTo(email)
+        mailSender?.let {
+            val mimeMessage = mailSender.createMimeMessage()
+            val helper = MimeMessageHelper(mimeMessage, true, "utf-8")
+            helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>")
+            helper.setReplyTo("Zorroa Account Bot <support@zorroa.com>")
+            helper.setSubject(subject)
+            helper.setCc(cc.toTypedArray())
+
+            if (ArchivistConfiguration.unittest) {
+                helper.setTo(System.getProperty("user.name") + "@zorroa.com")
+            }
+            else {
+                helper.setTo(email)
+            }
+
+            if (htmlMsg != null) {
+                helper.setText(text, htmlMsg)
+            } else {
+                helper.setText(text)
+            }
+            mailSender.send(mimeMessage)
         }
 
-        if (htmlMsg != null) {
-            helper.setText(text, htmlMsg)
-        } else {
-            helper.setText(text)
-        }
-        mailSender.send(mimeMessage)
+
     }
 
 
