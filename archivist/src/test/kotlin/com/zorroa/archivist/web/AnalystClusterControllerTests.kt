@@ -2,12 +2,13 @@ package com.zorroa.archivist.web
 
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.security.ANALYST_HEADER_STRING
+import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
-import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -43,14 +44,18 @@ class AnalystClusterControllerTests : MockMvcTest() {
         return jobService.create(spec)
     }
 
+    fun authenticateAsAnalyst() {
+        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
+    }
+
     @Test
     fun testStartedEvent() {
         val job = launchJob()
-        val task = dispatcherService.getNext("http://localhost:1234")
+        authenticateAsAnalyst()
+        val task = dispatcherService.getNext()
 
         if (task != null) {
             val te = TaskEvent(TaskEventType.STARTED,
-                    "http://localhost:1234",
                     task.id,
                     job.id,
                     emptyMap<String,String>())
@@ -58,6 +63,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -73,12 +79,12 @@ class AnalystClusterControllerTests : MockMvcTest() {
     @Test
     fun testStoppedEventSuccess() {
         val job = launchJob()
-        val task = dispatcherService.getNext("http://localhost:1234")
+        authenticateAsAnalyst()
+        val task = dispatcherService.getNext()
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
             val te = TaskEvent(TaskEventType.STOPPED,
-                    "http://localhost:1234",
                     task.id,
                     job.id,
                     TaskStoppedEvent(0))
@@ -86,6 +92,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -101,12 +108,12 @@ class AnalystClusterControllerTests : MockMvcTest() {
     @Test
     fun testStoppedEventFailure() {
         val job = launchJob()
-        val task = dispatcherService.getNext("http://localhost:1234")
+        authenticateAsAnalyst()
+        val task = dispatcherService.getNext()
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
             val te = TaskEvent(TaskEventType.STOPPED,
-                    "http://localhost:1234",
                     task.id,
                     job.id,
                     TaskStoppedEvent(1))
@@ -114,6 +121,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -129,13 +137,13 @@ class AnalystClusterControllerTests : MockMvcTest() {
     @Test
     fun testExpandEvent() {
         val job = launchJob()
-        val task = dispatcherService.getNext("http://localhost:1234")
+        authenticateAsAnalyst()
+        val task = dispatcherService.getNext()
 
         if (task != null) {
 
             assertTrue(dispatcherService.startTask(task))
             val te = TaskEvent(TaskEventType.EXPAND,
-                    "http://localhost:1234",
                     task.id,
                     job.id,
                     emptyZpsScript("bob"))
@@ -143,6 +151,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -159,7 +168,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
     @Test
     fun testErrorEvent() {
         val job = launchJob()
-        val task = dispatcherService.getNext("http://localhost:1234")
+        authenticateAsAnalyst()
+        val task = dispatcherService.getNext()
 
         if (task != null) {
 
@@ -167,7 +177,6 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val tev = TaskErrorEvent(UUID.randomUUID(),"/foo/bar.jpg","it broke",
                     "com.zorroa.ImageIngestor", true)
             val te = TaskEvent(TaskEventType.ERROR,
-                    "http://localhost:1234",
                     task.id,
                     job.id,
                     tev)
@@ -175,6 +184,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -182,7 +192,6 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val terr = taskErrorDao.getLast()
             assertEquals(task.id, terr.taskId)
             assertEquals(task.jobId, terr.jobId)
-            assertEquals(te.endpoint, terr.endpoint)
             assertEquals(true, terr.fatal)
             assertEquals(tev.path, terr.path)
             assertEquals(tev.message, terr.message)
@@ -195,10 +204,9 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
     @Test
     fun testPing() {
-        SecurityContextHolder.getContext().authentication = null
+        authenticateAsAnalyst()
 
         val spec = AnalystSpec(
-                "http://localhost:1234",
                 1024,
                 648,
                 0.5f,
@@ -206,28 +214,18 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(ANALYST_HEADER_STRING, "5000")
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
         val analyst = Json.Mapper.readValue<Analyst>(result.response.contentAsString, Analyst::class.java)
-        assertEquals(spec.endpoint, analyst.endpoint)
-        assertTrue(analystService.exists(spec.endpoint))
+        assertTrue(analystService.exists(analyst.endpoint))
 
     }
 
     @Test
     fun testQueue() {
-
-        val aspec = AnalystSpec(
-                "https://10.0.0.1",
-                1024,
-                648,
-                0.5f,
-                null)
-
-        analystService.upsert(aspec)
-
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
@@ -235,16 +233,25 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         jobService.create(spec)
 
+        authenticateAsAnalyst()
+        val aspec = AnalystSpec(
+                1024,
+                648,
+                0.5f,
+                null)
+
+        analystService.upsert(aspec)
+
         mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mapOf("endpoint" to  "https://10.0.0.1"))))
+                .header(ANALYST_HEADER_STRING, "5000"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
         // This should be 404
         mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mapOf("endpoint" to  "https://10.0.0.1"))))
+                .header(ANALYST_HEADER_STRING, "5000"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
                 .andReturn()
     }

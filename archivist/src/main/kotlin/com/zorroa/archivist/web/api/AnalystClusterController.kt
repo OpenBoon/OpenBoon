@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web.api
 
 import com.zorroa.archivist.domain.TaskEvent
+import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.util.HttpUtils
@@ -22,6 +23,7 @@ class AnalystClusterController @Autowired constructor(
         val analystService: AnalystService,
         val dispatcherService: DispatcherService) {
 
+
     @PostMapping(value = ["/cluster/_ping"])
     fun ping(@RequestBody spec: AnalystSpec) : Any {
         return analystService.upsert(spec)
@@ -31,15 +33,13 @@ class AnalystClusterController @Autowired constructor(
 
     @PutMapping(value = ["/cluster/_queue"])
     @Throws(IOException::class)
-    fun queue(@RequestBody req: QueueTaskReq) : ResponseEntity<DispatchTask> {
-        if (!analystService.exists(req.endpoint)) {
-            return ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-        val task = dispatcherService.getNext(req.endpoint)
+    fun queue() : ResponseEntity<DispatchTask> {
+        val endpoint = getAnalystEndpoint() ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+
+        val task = dispatcherService.getNext()
         return if (task == null) {
             ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-        else {
+        } else {
             ResponseEntity(task, HttpStatus.OK)
         }
     }

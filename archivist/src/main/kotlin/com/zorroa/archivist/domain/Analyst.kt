@@ -16,7 +16,6 @@ enum class LockState {
 }
 
 class AnalystSpec (
-        val endpoint: String,
         val totalRamMb: Int,
         val freeRamMb: Int,
         val load: Float,

@@ -33,8 +33,7 @@ class TaskErrorDaoTests : AbstractTest() {
 
         val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
                 "it broke", "com.zorroa.ImageIngestor", true)
-        val event = TaskEvent(TaskEventType.ERROR,"https://localhost:8080",
-                task.id, job.id, error)
+        val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         val result = taskErrorDao.create(event, error)
     }
 

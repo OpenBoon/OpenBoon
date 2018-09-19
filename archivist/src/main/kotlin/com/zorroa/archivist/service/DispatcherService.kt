@@ -6,6 +6,7 @@ import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface DispatcherService {
-    fun getNext(host: String) : DispatchTask?
+    fun getNext() : DispatchTask?
     fun startTask(task: TaskId) : Boolean
     fun stopTask(task: TaskId, exitStatus: Int) : Boolean
     fun handleEvent(event: TaskEvent)
@@ -32,12 +33,15 @@ class DispatcherServiceImpl @Autowired constructor(
     @Autowired
     lateinit var jobService: JobService
 
-    override fun getNext(host: String): DispatchTask? {
-        val tasks = dispatchTaskDao.getNext(5)
-        for (task in tasks) {
-            if (taskDao.setState(task, TaskState.Queued, TaskState.Waiting)) {
-                taskDao.setHostEndpoint(task, host)
-                return task
+    override fun getNext(): DispatchTask? {
+        val endpoint = getAnalystEndpoint()
+        if (endpoint != null ) {
+            val tasks = dispatchTaskDao.getNext(5)
+            for (task in tasks) {
+                if (taskDao.setState(task, TaskState.Queued, TaskState.Waiting)) {
+                    taskDao.setHostEndpoint(task, endpoint)
+                    return task
+                }
             }
         }
         return null

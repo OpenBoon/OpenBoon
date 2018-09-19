@@ -27,7 +27,7 @@ class DispatcherServiceTests : AbstractTest() {
                 env=mutableMapOf("foo" to "bar"))
         val job = jobService.create(spec)
 
-        val next = dispatcherService.getNext(analyst)
+        val next = dispatcherService.getNext()
         assertNotNull(next)
         next?.let {
             assertEquals(job.id, it.jobId)

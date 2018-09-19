@@ -3,16 +3,13 @@ package com.zorroa.archivist.web.api
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.service.DispatcherService
-import com.zorroa.archivist.service.ExportService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
 import java.util.*
-import javax.validation.Valid
 
 
 @RestController

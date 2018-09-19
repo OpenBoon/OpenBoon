@@ -1,10 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.NetworkEnvironment
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.domain.zpsTaskName
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
@@ -59,6 +56,22 @@ class JobServiceImpl @Autowired constructor(
             }
             else {
                 script.execute = pipelineService.resolve(job.type, script.execute)
+            }
+
+            /*
+             * Add the proper collector
+             */
+            script.execute?.let {
+                when(type) {
+                    PipelineType.Import-> {
+                        it.add(ProcessorRef("zplugins.core.collector.ImportCollector"))
+                    }
+                    PipelineType.Export->{
+                        script.inline = true
+                        it.add(ProcessorRef("zplugins.core.collector.ExportCollector"))
+                    }
+                    PipelineType.Batch,PipelineType.Generate-> { }
+                }
             }
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }

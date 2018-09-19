@@ -23,7 +23,6 @@ class AnalystDaoTests : AbstractTest() {
     @Before
     fun init() {
         spec = AnalystSpec(
-                "http://localhost:1234",
                 1024,
                 648,
                 0.5f,
@@ -33,7 +32,6 @@ class AnalystDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        assertEquals(spec.endpoint, analyst.endpoint)
         assertEquals(spec.taskId, analyst.taskId)
         assertEquals(spec.totalRamMb, analyst.totalRamMb)
         assertEquals(spec.freeRamMb, analyst.freeRamMb)

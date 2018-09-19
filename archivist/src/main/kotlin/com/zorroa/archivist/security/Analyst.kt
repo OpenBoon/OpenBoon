@@ -16,6 +16,8 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+const val ANALYST_HEADER_STRING = "X-Analyst-Port"
+
 @Component
 class AnalystAuthenticationFilter @Autowired constructor(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
 
@@ -36,22 +38,28 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
                                   res: HttpServletResponse,
                                   chain: FilterChain) {
 
-        val addr = req.remoteAddr
-        if (logger.isDebugEnabled) {
-            logger.debug("Worker request from $addr")
-        }
+        val analystPort = req.getHeader(ANALYST_HEADER_STRING)
+        if (analystPort != null) {
+            val addr = req.remoteAddr
+            if (logger.isDebugEnabled) {
+                logger.debug("Worker request from $addr")
+            }
 
-        if (req.requestURI.startsWith("/cluster")) {
-            for (r in ipRegexes) {
-                if (r.matches(addr)) {
-                    SecurityContextHolder.getContext().authentication = WorkerAuthentication(req.remoteAddr)
-                    if (logger.isDebugEnabled) {
-                        logger.debug("Worker $addr is allowed, matches ${r.pattern}")
+            if (req.requestURI.startsWith("/cluster")) {
+                for (r in ipRegexes) {
+                    if (r.matches(addr)) {
+                        val port = analystPort.toInt()
+                        val endpoint = "https://${req.remoteAddr}:$port"
+                        SecurityContextHolder.getContext().authentication = AnalystAuthentication(endpoint)
+                        if (logger.isDebugEnabled) {
+                            logger.debug("Worker $addr is allowed, matches ${r.pattern}")
+                        }
+                        break
                     }
-                    break
                 }
             }
         }
+
         chain.doFilter(req, res)
     }
 
@@ -60,8 +68,7 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
     }
 }
 
-class WorkerAuthentication(private val name: String): Authentication {
-
+class AnalystAuthentication(private val endpoint: String): Authentication {
 
     override fun getAuthorities(): Collection<out GrantedAuthority> {
         return listOf()
@@ -70,15 +77,15 @@ class WorkerAuthentication(private val name: String): Authentication {
     override fun setAuthenticated(p0: Boolean) { }
 
     override fun getName(): String {
-        return name
+        return endpoint
     }
 
     override fun getCredentials(): Any {
-        return name
+        return endpoint
     }
 
     override fun getPrincipal(): Any {
-        return name
+        return endpoint
     }
 
     override fun isAuthenticated(): Boolean {
@@ -86,7 +93,7 @@ class WorkerAuthentication(private val name: String): Authentication {
     }
 
     override fun getDetails(): Any {
-        return name
+        return endpoint
     }
 
 }

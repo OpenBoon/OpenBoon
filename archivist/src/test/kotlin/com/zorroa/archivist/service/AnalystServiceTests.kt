@@ -1,10 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.common.domain.AnalystSpec
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 import kotlin.test.assertEquals
 
@@ -15,8 +17,8 @@ class AnalystServiceTests : AbstractTest() {
 
     @Test
     fun testUpsert() {
+        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
         val spec1 = AnalystSpec(
-                "http://localhost:1234",
                 1024,
                 648,
                 0.5f,
@@ -24,7 +26,6 @@ class AnalystServiceTests : AbstractTest() {
         analystService.upsert(spec1)
 
         val spec2 = AnalystSpec(
-                "http://localhost:1234",
                 1024,
                 1024,
                 1.0f,

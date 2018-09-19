@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.JdbcUtils.update
@@ -21,15 +22,17 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
 
     override fun create(spec: AnalystSpec) : Analyst {
         val id = uuid1.generate()
+        val endpoint = getAnalystEndpoint()
         val time = System.currentTimeMillis()
-        jdbc.update(INSERT, id, spec.taskId, time, time, spec.endpoint,
+        jdbc.update(INSERT, id, spec.taskId, time, time, endpoint,
                 spec.totalRamMb, spec.freeRamMb, spec.load)
         return get(id)
     }
 
     override fun update(spec: AnalystSpec) : Boolean {
         val time = System.currentTimeMillis()
-        return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb, spec.freeRamMb, spec.load, spec.endpoint) == 1
+        val endpoint = getAnalystEndpoint()
+        return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb, spec.freeRamMb, spec.load, endpoint) == 1
     }
 
     override fun get(id: UUID): Analyst {

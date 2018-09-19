@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
+import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.JdbcUtils
@@ -32,7 +33,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             ps.setString(5, spec.message)
             ps.setString(6, spec.path)
             ps.setString(7, spec.processor)
-            ps.setString(8, event.endpoint)
+            ps.setString(8, getAnalystEndpoint())
             ps.setString(9, FileUtils.extension(spec.path))
             ps.setBoolean(10, spec.fatal)
             ps.setLong(11, time)

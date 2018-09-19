@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.repository.AnalystDao
+import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.repository.KPagedList
@@ -20,7 +21,8 @@ class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): Anal
 
     override fun upsert(spec: AnalystSpec) : Analyst {
         return if (analystDao.update(spec)) {
-            analystDao.get(spec.endpoint)
+            val endpoint = getAnalystEndpoint()
+            analystDao.get(endpoint!!)
         }
         else {
             val analyst = analystDao.create(spec)

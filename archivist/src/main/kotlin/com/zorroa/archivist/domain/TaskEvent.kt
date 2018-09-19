@@ -11,7 +11,6 @@ enum class TaskEventType {
 
 open class TaskEvent(
         val type: TaskEventType,
-        val endpoint: String,
         val taskId: UUID,
         val jobId: UUID,
         val payload: Any)
