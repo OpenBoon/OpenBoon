@@ -20,7 +20,7 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testRegisterUserWithGroups() {
-        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"))
+        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("anim", "comp"))
         val user = userRegistryService.registerUser("billybob@bob.com", authed)
 
         assertEquals(user.username,"billybob@bob.com")
@@ -35,10 +35,10 @@ class UserRegistryServiceTests : AbstractTest() {
 
         // Test we got the imported permissions
         assertTrue(user.authorities.stream().anyMatch({
-            it.authority == "saml::marketing"
+            it.authority == "saml::anim"
         }))
         assertTrue(user.authorities.stream().anyMatch({
-            it.authority == "saml::sales"
+            it.authority == "saml::comp"
         }))
     }
 
@@ -50,6 +50,17 @@ class UserRegistryServiceTests : AbstractTest() {
         assertEquals(user1.username, user2.username)
         assertEquals(user1.id, user2.id)
         assertEquals(user1.authorities.size, user2.authorities.size)
+    }
+
+    @Test
+    fun testRegisterWithMappedGroups() {
+        val authed = AuthSource("IRM", "saml", "irm",
+                groups=listOf("marketing", "sales", "pigman", "boo"))
+        val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
+        assertTrue(userService.hasPermission(user1, "zorroa", "librarian"))
+        assertTrue(userService.hasPermission(user1, "zorroa", "admin"))
+        assertTrue(userService.hasPermission(user1, "irm", "pigman"))
+        assertTrue(userService.hasPermission(user1, "zorroa", "everyone"))
     }
 
     @Test

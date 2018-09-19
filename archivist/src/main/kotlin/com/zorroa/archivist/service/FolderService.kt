@@ -807,8 +807,17 @@ class FolderServiceImpl @Autowired constructor(
         libSpec.recursive = false
         libSpec.search = AssetSearch()
 
-        create(userSpec)
-        create(libSpec)
+        val everyone = permissionDao.get("zorroa::everyone")
+        val librarian = permissionDao.get("zorroa::librarian")
+
+        val userFolder = create(userSpec)
+        setAcl(userFolder, Acl().addEntry(everyone.id, Access.Read),true, false)
+
+        val libFolder = create(libSpec)
+        setAcl(libFolder,
+                Acl().addEntry(everyone, Access.Read)
+                        .addEntry(librarian, Access.Read, Access.Write), true, false)
+
         return root
     }
 

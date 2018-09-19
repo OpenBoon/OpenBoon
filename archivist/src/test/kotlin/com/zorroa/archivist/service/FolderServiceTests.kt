@@ -645,15 +645,16 @@ class FolderServiceTests : AbstractTest() {
     fun testCreateUserFolder() {
         val spec = PermissionSpec("group::wizards")
         val perm = permissionService.createPermission(spec)
-        val (_, _, _, _, _, _, _, _, _, _, _, _, acl) = folderService.createUserFolder("gandalf", perm)
-        assertTrue(acl!!.hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read))
+        val folder = folderService.createUserFolder("gandalf", perm)
+        assertTrue(folder.acl!!.hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read))
     }
 
     @Test
     fun createStandardfolders() {
         val org = organizationDao.create(OrganizationSpec("test"))
         SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
-        val rootFolder = folderService.createStandardFolders(org)
+        permissionService.createStandardPermissions(org)
+        folderService.createStandardFolders(org)
 
         assertTrue(folderService.exists("/Users"))
         assertTrue(folderService.exists("/Library"))
