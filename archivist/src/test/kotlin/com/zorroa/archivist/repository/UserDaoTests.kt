@@ -36,8 +36,8 @@ class UserDaoTests : AbstractTest() {
 
     @Test
     fun testGet() {
-        val (id) = userDao.get(user.id)
-        assertEquals(user.id, id)
+        val user = userDao.get(user.id)
+        assertEquals(user.id, user.id)
     }
 
     @Test
@@ -165,8 +165,8 @@ class UserDaoTests : AbstractTest() {
     @Test
     fun testGetUserByPasswordToken() {
         val token = userDao.setEnablePasswordRecovery(user)
-        val (id) = userDao.getByToken(token)
-        assertEquals(user.id, id)
+        val user = userDao.getByToken(token)
+        assertEquals(user.id, user.id)
     }
 
     @Test

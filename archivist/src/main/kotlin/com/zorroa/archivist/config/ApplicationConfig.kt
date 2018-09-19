@@ -5,6 +5,7 @@ import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
 import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.filesystem.UUIDFileSystem
+import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
@@ -161,9 +162,9 @@ class ArchivistConfiguration {
 
     @Bean
     @Autowired
-    fun jwtValidator(userService: UserService) : JwtValidator {
+    fun jwtValidator(userDao: UserDao) : JwtValidator {
         val validators = mutableListOf<JwtValidator>()
-        validators.add(UserJwtValidator(userService))
+        validators.add(UserJwtValidator(userDao))
 
         val path = properties().getPath("archivist.config.path")
                 .resolve("service-credentials.json")

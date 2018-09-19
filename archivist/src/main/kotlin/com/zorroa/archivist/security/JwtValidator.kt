@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
+import com.zorroa.archivist.domain.ApiKey
+import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.service.UserService
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
@@ -19,6 +21,14 @@ class JwtValidatorException constructor(override val message :
 
     constructor(message: String) : this(message, null)
 }
+
+fun generateUserToken(apiKey: ApiKey) : String {
+    val algo = Algorithm.HMAC256(apiKey.key)
+    return JWT.create().withIssuer("zorroa")
+            .withClaim("userId", apiKey.userId.toString())
+            .sign(algo)
+}
+
 
 object JwtSecurityConstants {
     const val TOKEN_PREFIX = "Bearer "
@@ -45,7 +55,7 @@ class MasterJwtValidator constructor(private val validators: List<JwtValidator>)
     }
 }
 
-class UserJwtValidator constructor(val userService: UserService): JwtValidator {
+class UserJwtValidator constructor(val userDao: UserDao): JwtValidator {
 
     init {
         logger.info("Initializing NoOP JwtValidator")
@@ -54,9 +64,9 @@ class UserJwtValidator constructor(val userService: UserService): JwtValidator {
     override fun validate(token: String) : Map<String, String> {
         try {
             val jwt = JWT.decode(token)
-            val user = jwt.claims.getValue("user").asString()
-            val key = userService.getHmacKey(user)
-            val alg = Algorithm.HMAC256(key)
+            val userId = UUID.fromString(jwt.claims.getValue("userId").asString())
+            val apiKey = userDao.getApiKey(userId)
+            val alg = Algorithm.HMAC256(apiKey.key)
             alg.verify(jwt)
 
             return jwt.claims.map {

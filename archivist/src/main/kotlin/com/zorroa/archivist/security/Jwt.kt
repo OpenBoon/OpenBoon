@@ -3,7 +3,6 @@ package com.zorroa.archivist.security
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -44,13 +43,13 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
 
     private fun getAuthentication(token: String): Authentication? {
         val claims = validator.validate(token)
-        val user = claims.getValue("user")
+        val userId = claims.getValue("userId")
 
-        return if (user == "superadmin" && claims.containsKey("org")) {
+        return if (userId == "superadmin" && claims.containsKey("org")) {
             SuperAdminAuthentication(UUID.fromString(claims["org"]))
         }
         else {
-            val user = userRegistryService.getUser(user)
+            val user = userRegistryService.getUser(UUID.fromString(userId))
             UsernamePasswordAuthenticationToken(user, "", user.authorities)
         }
     }

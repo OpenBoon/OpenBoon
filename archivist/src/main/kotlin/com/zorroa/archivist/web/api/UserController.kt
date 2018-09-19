@@ -39,15 +39,6 @@ class UserController @Autowired constructor(
         private val emailService: EmailService
 ) {
 
-    @RequestMapping(value = ["/api/v1/api-key"])
-    fun getApiKey(): String {
-        return try {
-            userService.getHmacKey(getUsername())
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
@@ -62,9 +53,14 @@ class UserController @Autowired constructor(
         }
     }
 
+    @RequestMapping(value = ["/api/v1/api-key"])
+    fun getApiKey(): Any {
+        return userService.getApiKey(getUser())
+    }
+
     @PostMapping(value = ["/api/v1/generate-api-key"])
-    fun generate_api_key(): String {
-        return userService.generateHmacKey(getUsername())
+    fun generateApiKey(): Any {
+        return userService.getApiKey(getUser())
     }
 
     /**

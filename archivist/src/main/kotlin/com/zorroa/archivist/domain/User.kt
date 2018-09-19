@@ -11,7 +11,7 @@ import java.util.*
 /**
  * The base user attributes returned with objects that reference a user.
  */
-data class UserBase (
+class UserBase (
         override val id: UUID,
         val username: String,
         val email: String,
@@ -33,7 +33,7 @@ data class UserBase (
 /**
  * The UserCore is all the user properties.
  */
-data class User (
+class User (
         override val id: UUID,
         val username: String,
         val email: String,
@@ -59,14 +59,14 @@ data class User (
     }
 }
 
-data class UserProfileUpdate (
+class UserProfileUpdate (
         @NotEmpty var username: String = "",
         @NotEmpty @Email var email: String = "",
         var firstName : String? = "",
         var lastName: String? = "")
 
 
-data class UserSpec (
+class UserSpec (
         val username: String,
         val password: String,
         val email: String,
@@ -84,4 +84,11 @@ data class UserSpec (
     }
 }
 
+/**
+ * Structure for storing a users API key.
+ */
+class ApiKey(
+        val userId: UUID,
+        val key: String
+)
 
