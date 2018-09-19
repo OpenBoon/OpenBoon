@@ -3,6 +3,7 @@ package com.zorroa.archivist.security
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -28,6 +29,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
     override fun doFilterInternal(req: HttpServletRequest,
                                   res: HttpServletResponse,
                                   chain: FilterChain) {
+
         val token = req.getHeader(HEADER_STRING)
 
         if (token == null || !token.startsWith(TOKEN_PREFIX)) {
@@ -42,20 +44,14 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
 
     private fun getAuthentication(token: String): Authentication? {
         val claims = validator.validate(token)
+        val user = claims.getValue("user")
 
-        return when {
-            claims.containsKey("ZORROA_USER") -> {
-                val user = userRegistryService.getUser(claims.getValue("ZORROA_USER"))
-                UsernamePasswordAuthenticationToken(user, "", user.authorities)
-            }
-            claims.containsKey("ZORROA_SUPER_ADMIN")
-                    && claims.containsKey("ZORROA_ORGANIZATION_ID") -> {
-                SuperAdminAuthentication(UUID.fromString(claims["ZORROA_ORGANIZATION_ID"]))
-            }
-            else -> {
-                logger.warn("Not enough claim information to provide JWT auth")
-                null
-            }
+        return if (user == "superadmin" && claims.containsKey("org")) {
+            SuperAdminAuthentication(UUID.fromString(claims["org"]))
+        }
+        else {
+            val user = userRegistryService.getUser(user)
+            UsernamePasswordAuthenticationToken(user, "", user.authorities)
         }
     }
 }
