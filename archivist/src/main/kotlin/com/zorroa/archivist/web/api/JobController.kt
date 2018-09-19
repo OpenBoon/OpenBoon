@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web.api
 
 import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.ExportService
 import com.zorroa.archivist.service.JobService
@@ -16,7 +17,7 @@ import javax.validation.Valid
 
 @RestController
 class JobController @Autowired constructor(
-        val exportService: ExportService,
+        val jobDao: JobDao,
         val jobService: JobService,
         val dispatcherService: DispatcherService
 ) {
@@ -32,7 +33,8 @@ class JobController @Autowired constructor(
     @PostMapping(value = ["/api/v1/jobs"])
     @Throws(IOException::class)
     fun create(@RequestBody spec: JobSpec): Any {
-        return jobService.create(spec)
+        val job = jobService.create(spec)
+        return jobDao.getForClient(job.id)
     }
 
     @GetMapping(value = ["/api/v1/jobs/{id}"])

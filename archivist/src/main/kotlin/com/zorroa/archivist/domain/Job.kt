@@ -2,6 +2,7 @@ package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.UserBase
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
@@ -36,7 +37,8 @@ class Job (
         val type: PipelineType,
         val state: JobState,
         var assetCounts: Map<String,Int>?=null,
-        var taskCounts: Map<String,Int>?=null
+        var taskCounts: Map<String,Int>?=null,
+        var createdUser: UserBase?=null
 ) : JobId {
     override val jobId = id
 }

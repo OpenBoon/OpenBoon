@@ -8,6 +8,7 @@ import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
@@ -19,10 +20,25 @@ interface JobDao {
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
     fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
     fun incrementAssetStats(job: JobId, counts: AssetIndexResult) : Boolean
+    fun getForClient(id: UUID): Job
 }
 
 @Repository
 class JobDaoImpl : AbstractDao(), JobDao {
+
+    @Autowired
+    internal lateinit var userDaoCache: UserDaoCache
+
+    private val FOR_CLIENT_MAPPER = RowMapper { rs, _ ->
+        Job(rs.getObject("pk_job") as UUID,
+                rs.getObject("pk_organization") as UUID,
+                rs.getString("str_name"),
+                PipelineType.values()[rs.getInt("int_type")],
+                JobState.values()[rs.getInt("int_state")],
+                buildAssetCounts(rs),
+                buildTaskCountMap(rs),
+                userDaoCache.getUser(rs.getObject("pk_user_created") as UUID))
+    }
 
     override fun create(spec: JobSpec, type: PipelineType): Job {
         Preconditions.checkNotNull(spec.name)
@@ -54,6 +70,10 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     override fun get(id: UUID): Job {
         return jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER, id)
+    }
+
+    override fun getForClient(id: UUID): Job {
+        return jdbc.queryForObject("$GET WHERE job.pk_job=?", FOR_CLIENT_MAPPER, id)
     }
 
     override fun getAll(page: Pager, filter: JobFilter?): PagedList<Job> {

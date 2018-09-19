@@ -38,7 +38,7 @@ class JobServiceTests : AbstractTest() {
     fun testCreate() {
         assertEquals(spec.name, job.name)
         val tcount = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?", Int::class.java, job.id)
-        assertEquals(1, tcount)
+        assertEquals(2, tcount)
     }
 
     @Test

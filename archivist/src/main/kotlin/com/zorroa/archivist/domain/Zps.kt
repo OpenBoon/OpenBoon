@@ -6,15 +6,15 @@ fun zpsTaskName(zps: ZpsScript) : String {
     if (zps.name == null) {
         val sb = StringBuffer(128)
         if (zps.generate != null) {
-            sb.append("Generator ")
+            sb.append("Generator")
         }
         else if (zps.over != null) {
             val size = zps.execute?.size
-            sb.append("$size assets ")
+            sb.append(" asset count=$size")
         }
         if (zps.execute != null) {
             val size = zps.execute?.size
-            sb.append("with $size processors ")
+            sb.append(" processors=$size")
         }
         return sb.toString()
     }
