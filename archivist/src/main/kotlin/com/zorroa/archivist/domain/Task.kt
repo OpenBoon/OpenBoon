@@ -71,7 +71,7 @@ data class TaskFilter (
         private val ids : List<UUID>? = null,
         private val states : List<JobState>? = null,
         private val jobIds: List<UUID>? = null
-) : KDaoFilter() {
+) : DaoFilter() {
 
     override val sortMap: Map<String, String>? = null
 

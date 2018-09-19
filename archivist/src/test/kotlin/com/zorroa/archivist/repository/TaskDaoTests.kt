@@ -1,10 +1,9 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.*
 import org.junit.Before
 import org.junit.Test
@@ -36,6 +35,23 @@ class TaskDaoTests : AbstractTest() {
         job = jobDao.create(jspec, PipelineType.Import)
         spec = TaskSpec("generator", jspec.script!!)
         task = taskDao.create(job, spec)
+    }
+
+
+    @Test
+    fun getPagedByFilter() {
+        for (i in 0..9) {
+            taskDao.create(job, TaskSpec("test$i", emptyZpsScript("test_script")))
+        }
+
+        val filter1 = TaskFilter(jobIds=listOf(job.id))
+        assertEquals(10, taskDao.getAll(Pager.first(), filter1).size())
+
+        val filter2 = TaskFilter(jobIds=listOf(UUID.randomUUID()))
+        assertEquals(0, taskDao.getAll(Pager.first(), filter2).size())
+
+        val filter3 = TaskFilter(jobIds=listOf(job.id))
+        assertEquals(1, taskDao.getAll(Pager.first(1), filter3).size())
     }
 
     @Test

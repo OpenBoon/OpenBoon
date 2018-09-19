@@ -1,10 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.domain.*
-import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -14,11 +15,11 @@ interface TaskDao {
     fun create(job: JobId, spec: TaskSpec): Task
     fun get(id: UUID) : Task
     fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean
-    fun getAll(filter: TaskFilter) : KPagedList<Task>
     fun setHostEndpoint(task: TaskId, host: String)
     fun setExitStatus(task: TaskId, exitStatus: Int)
     fun getScript(id: UUID) : ZpsScript
     fun incrementAssetStats(task: TaskId, counts: AssetIndexResult) : Boolean
+    fun getAll(pager: Pager, filter: TaskFilter): PagedList<Task>
 }
 
 @Repository
@@ -55,12 +56,6 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         return Json.deserialize(script, ZpsScript::class.java)
     }
 
-    override fun getAll(filter: TaskFilter) : KPagedList<Task> {
-        setCount(filter)
-        return KPagedList(filter.page, jdbc.query(filter.getQuery(GET),
-                MAPPER, *filter.getValues()))
-    }
-
     override fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean {
         val time = System.currentTimeMillis()
         // Note: There is a trigger updating counts here.
@@ -91,14 +86,18 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.taskId)
     }
 
-    private fun setCount(filter: TaskFilter) {
-        filter?.page?.totalCount = jdbc.queryForObject(filter.getCountQuery(COUNT),
-                Long::class.java, *filter.getValues(forCount = true))
-    }
-
     override fun incrementAssetStats(task: TaskId, counts: AssetIndexResult) : Boolean {
         return jdbc.update(INC_STATS,
                 counts.total, counts.created, counts.updated, counts.warnings, counts.errors, counts.replaced, task.taskId) == 1
+    }
+
+    override fun getAll(pager: Pager, filter: TaskFilter): PagedList<Task> {
+        val q = filter.getCountQuery("SELECT COUNT(1) FROM task ")
+        val count = jdbc.queryForObject(q, Long::class.java, *filter.getValues())
+
+        return PagedList(pager.setTotalCount(count),
+                jdbc.query<Task>(filter.getQuery(GET_TASKS, pager),
+                        MAPPER, *filter.getValues(pager)))
     }
 
     companion object {
@@ -146,6 +145,31 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "time_modified",
                 "time_state_change",
                 "json_script::JSON")
+
+        private val GET_TASKS = "SELECT " +
+                "task.pk_task," +
+                "task.pk_parent," +
+                "task.pk_job," +
+                "task.str_name," +
+                "task.int_state," +
+                "task.int_order," +
+                "task.time_started," +
+                "task.time_stopped," +
+                "task.time_created," +
+                "task.time_state_change," +
+                "task.int_exit_status," +
+                "task.str_host, " +
+                "task_stat.int_asset_total_count," +
+                "task_stat.int_asset_create_count," +
+                "task_stat.int_asset_replace_count," +
+                "task_stat.int_asset_error_count," +
+                "task_stat.int_asset_warning_count," +
+                "task_stat.int_asset_update_count, " +
+                "job.pk_organization "+
+                "FROM " +
+                "task " +
+                "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
+                "JOIN job ON task.pk_job = job.pk_job "
 
     }
 }
