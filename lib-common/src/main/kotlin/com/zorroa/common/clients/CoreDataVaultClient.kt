@@ -28,7 +28,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
             throw IllegalStateException("Document has no companyId: ${asset.id}")
         }
         val response = client.put("/companies/$companyId/documents/${asset.id}/es", doc, Json.GENERIC_MAP)
-        client.put("/companies/$companyId/documents/${asset.id}/fields/state/INDEXED", "", Json.GENERIC_MAP)
+        client.put("/companies/$companyId/documents/${asset.id}/fields/state/INDEXED", null, Json.GENERIC_MAP)
         return response
     }
 }
