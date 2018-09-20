@@ -1,18 +1,29 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonValue
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
 enum class AnalystState {
-    Up,
-    Down
+    Down,
+    Up;
+
+    @JsonValue
+    fun toValue() : Int {
+        return ordinal
+    }
 }
 
 enum class LockState {
     Unlocked,
-    Locked
+    Locked;
+
+    @JsonValue
+    fun toValue() : Int {
+        return ordinal
+    }
 }
 
 class AnalystSpec (
