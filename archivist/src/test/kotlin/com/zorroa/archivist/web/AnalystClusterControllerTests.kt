@@ -44,10 +44,6 @@ class AnalystClusterControllerTests : MockMvcTest() {
         return jobService.create(spec)
     }
 
-    fun authenticateAsAnalyst() {
-        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
-    }
-
     @Test
     fun testStartedEvent() {
         val job = launchJob()
@@ -175,7 +171,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
             assertTrue(dispatcherService.startTask(task))
             val tev = TaskErrorEvent(UUID.randomUUID(),"/foo/bar.jpg","it broke",
-                    "com.zorroa.ImageIngestor", true)
+                    "com.zorroa.ImageIngestor", true, "execute")
             val te = TaskEvent(TaskEventType.ERROR,
                     task.id,
                     job.id,

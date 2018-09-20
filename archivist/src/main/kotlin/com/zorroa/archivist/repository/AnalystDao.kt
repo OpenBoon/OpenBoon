@@ -25,7 +25,7 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         val endpoint = getAnalystEndpoint()
         val time = System.currentTimeMillis()
         jdbc.update(INSERT, id, spec.taskId, time, time, endpoint,
-                spec.totalRamMb, spec.freeRamMb, spec.load)
+                spec.totalRamMb, spec.freeRamMb, spec.load, AnalystState.Up.ordinal)
         return get(id)
     }
 
@@ -80,7 +80,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                 "str_endpoint",
                 "int_total_ram",
                 "int_free_ram",
-                "flt_load")
+                "flt_load",
+                "int_state")
 
         private val UPDATE = update("analyst",
                 "str_endpoint",

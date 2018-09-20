@@ -40,11 +40,7 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
 
         val analystPort = req.getHeader(ANALYST_HEADER_STRING)
         if (analystPort != null) {
-            val addr = req.remoteAddr
-            if (logger.isDebugEnabled) {
-                logger.debug("Worker request from $addr")
-            }
-
+            val addr = req.remoteHost
             if (req.requestURI.startsWith("/cluster")) {
                 for (r in ipRegexes) {
                     if (r.matches(addr)) {
