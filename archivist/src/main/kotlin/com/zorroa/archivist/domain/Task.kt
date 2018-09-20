@@ -43,7 +43,8 @@ class DispatchTask(
         state: TaskState,
         val script: ZpsScript,
         var env: MutableMap<String,String>,
-        var args: MutableMap<String,Object>) : Task(id, jobId, organizationId, name, state), TaskId {
+        var args: MutableMap<String,Object>,
+        val userId: UUID) : Task(id, jobId, organizationId, name, state), TaskId {
 
     override val taskId = id
 }
@@ -52,13 +53,13 @@ class TaskError(
         val id: UUID,
         val taskId: UUID,
         val jobId: UUID,
-        val assetId: UUID,
-        val path: String,
+        val assetId: UUID?,
+        val path: String?,
         val message: String,
         val processor: String,
         val fatal: Boolean,
-        val endpoint: String
-)
+        val analyst: String,
+        val phase: String)
 
 class Expand(
         val endpoint: String,

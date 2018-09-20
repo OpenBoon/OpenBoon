@@ -123,6 +123,9 @@ public class FileUtils {
      * @return
      */
     public static String extension(String path) {
+        if (path == null) {
+            return null;
+        }
         try {
             return path.substring(path.lastIndexOf('.')+1).toLowerCase();
         }

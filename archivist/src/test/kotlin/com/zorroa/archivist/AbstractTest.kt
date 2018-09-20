@@ -9,6 +9,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
@@ -181,6 +182,10 @@ open abstract class AbstractTest {
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"))
         Json.Mapper.registerModule(KotlinModule())
+    }
+
+    fun authenticateAsAnalyst() {
+        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
     }
 
     fun testUserSpec(name: String="test") : UserSpec {

@@ -11,6 +11,7 @@ import com.zorroa.common.domain.TaskSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
+import kotlin.test.assertEquals
 
 class TaskErrorDaoTests : AbstractTest() {
 
@@ -23,7 +24,6 @@ class TaskErrorDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
@@ -31,10 +31,36 @@ class TaskErrorDaoTests : AbstractTest() {
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
+        authenticateAsAnalyst()
         val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
-                "it broke", "com.zorroa.ImageIngestor", true)
+                "it broke", "com.zorroa.ImageIngestor", true, "execute")
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         val result = taskErrorDao.create(event, error)
+        assertEquals(error.message, result.message)
+        assertEquals(event.jobId, result.jobId)
+        assertEquals(event.taskId, result.taskId)
+        assertEquals(error.phase, result.phase)
+    }
+
+    @Test
+    fun testCreateNoFile() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        val job = jobService.create(spec)
+        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+
+        authenticateAsAnalyst()
+        val error = TaskErrorEvent(null, null,
+                "it broke", "com.zorroa.ImageIngestor", true, "execute")
+        val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
+        val result = taskErrorDao.create(event, error)
+        assertEquals(error.message, result.message)
+        assertEquals(error.phase, result.phase)
+        assertEquals(event.jobId, result.jobId)
+        assertEquals(event.taskId, result.taskId)
+
     }
 
 }

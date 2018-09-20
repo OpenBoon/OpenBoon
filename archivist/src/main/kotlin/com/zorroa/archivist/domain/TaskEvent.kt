@@ -6,7 +6,8 @@ enum class TaskEventType {
     STOPPED,
     STARTED,
     ERROR,
-    EXPAND
+    EXPAND,
+    MESSAGE
 }
 
 open class TaskEvent(
@@ -20,9 +21,14 @@ class TaskStoppedEvent(
 )
 
 class TaskErrorEvent(
-        val assetId: UUID,
-        val path: String,
+        val assetId: UUID?,
+        val path: String?,
         val message: String,
         val processor: String,
-        val fatal: Boolean
+        val fatal: Boolean,
+        val phase: String
+)
+
+class TaskMessageEvent(
+        val message: String
 )

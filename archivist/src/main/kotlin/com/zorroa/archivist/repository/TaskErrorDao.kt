@@ -36,7 +36,8 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             ps.setString(8, getAnalystEndpoint())
             ps.setString(9, FileUtils.extension(spec.path))
             ps.setBoolean(10, spec.fatal)
-            ps.setLong(11, time)
+            ps.setString(11, spec.phase)
+            ps.setLong(12, time)
             ps
         }
         return get(id)
@@ -56,12 +57,13 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             TaskError(rs.getObject("pk_task_error") as UUID,
                     rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
-                    rs.getObject("pk_asset") as UUID,
+                    rs.getObject("pk_asset") as UUID?,
                     rs.getString("str_path"),
                     rs.getString("str_message"),
                     rs.getString("str_processor"),
                     rs.getBoolean("bool_fatal"),
-                    rs.getString("str_endpoint"))
+                    rs.getString("str_endpoint"),
+                    rs.getString("str_phase"))
         }
 
         private const val GET = "SELECT * FROM task_error"
@@ -77,6 +79,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 "str_endpoint",
                 "str_extension",
                 "bool_fatal",
+                "str_phase",
                 "time_created")
     }
 }

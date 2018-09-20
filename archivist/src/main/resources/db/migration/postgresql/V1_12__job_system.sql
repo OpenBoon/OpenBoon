@@ -42,14 +42,15 @@ CREATE TABLE task_error(
         pk_task_error UUID NOT NULL,
         pk_task UUID NOT NULL REFERENCES task(pk_task),
         pk_job UUID NOT NULL REFERENCES job(pk_job),
-        pk_asset UUID NOT NULL,
+        pk_asset UUID,
         str_message TEXT,
         str_path TEXT,
         str_processor TEXT,
         str_endpoint TEXT,
         str_extension TEXT,
         time_created BIGINT NOT NULL,
-        bool_fatal BOOLEAN NOT NULL
+        bool_fatal BOOLEAN NOT NULL,
+        str_phase TEXT NOT NULL
 );
 
 ---
