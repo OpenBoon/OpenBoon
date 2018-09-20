@@ -1,6 +1,6 @@
 package com.zorroa.archivist;
 
-import com.zorroa.common.domain.Source;
+import com.zorroa.archivist.domain.Source;
 import org.junit.Test;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;

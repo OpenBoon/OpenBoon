@@ -1,6 +1,5 @@
 package com.zorroa.archivist.domain
 
-import com.zorroa.common.domain.Document
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest

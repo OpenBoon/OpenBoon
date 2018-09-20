@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.EventLogSearch
+import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.security.SecureSingleThreadExecutor
-import com.zorroa.common.domain.PagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

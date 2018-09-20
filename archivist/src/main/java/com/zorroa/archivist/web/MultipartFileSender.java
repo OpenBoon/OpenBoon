@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.zorroa.archivist.HttpUtils.CACHE_CONTROL;
+import static com.zorroa.archivist.util.HttpUtils.CACHE_CONTROL;
 
 /**
  * Created by kevin on 10/02/15.

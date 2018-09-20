@@ -5,9 +5,9 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.web.api.FolderController
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test

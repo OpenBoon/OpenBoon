@@ -1,7 +1,7 @@
 package com.zorroa.archivist.web.sender
 
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.SearchService
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import javax.servlet.http.HttpServletResponse
 

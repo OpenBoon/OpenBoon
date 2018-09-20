@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web.api
 
-import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.DyHierarchy
 import com.zorroa.archivist.domain.DyHierarchySpec
 import com.zorroa.archivist.service.DyHierarchyService

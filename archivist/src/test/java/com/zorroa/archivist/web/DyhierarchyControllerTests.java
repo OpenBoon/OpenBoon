@@ -3,7 +3,6 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.Source;
 import com.zorroa.common.util.Json;
 import org.junit.Before;
 import org.junit.Test;

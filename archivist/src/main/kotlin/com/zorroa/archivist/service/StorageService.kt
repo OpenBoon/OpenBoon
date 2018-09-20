@@ -4,8 +4,8 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.*
 import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.common.domain.Document
-import com.zorroa.common.filesystem.ObjectFileSystem
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
 import io.minio.MinioClient
 import org.apache.tika.Tika
@@ -83,11 +83,7 @@ class ObjectFile (
 }
 
 /**
- * StorageService is a WIP attempt to handle both GCP, AWS, and possibly OFS.
- * For now there is an AWS version, and stubs for a GCP version.
- *
- * It's not clear all of these methods are going to be used or if any of this
- * code moves forward after MVP.
+ * StorageRouter handles abstracting GCP, AWS, File/NFS, and HTTP based repositories.
  */
 interface StorageRouter {
 

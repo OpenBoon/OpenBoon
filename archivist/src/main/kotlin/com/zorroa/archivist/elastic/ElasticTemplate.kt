@@ -1,12 +1,12 @@
 package com.zorroa.archivist.elastic
 
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.search.Scroll
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.search.Scroll
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.index.IndexRequestBuilder
 import org.elasticsearch.action.search.SearchRequestBuilder

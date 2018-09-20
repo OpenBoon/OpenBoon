@@ -3,12 +3,13 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
+import com.zorroa.archivist.filesystem.ObjectFileSystem
+import com.zorroa.archivist.filesystem.UUIDFileSystem
+import com.zorroa.archivist.repository.UserDao
+import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.*
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.*
-import com.zorroa.common.filesystem.ObjectFileSystem
-import com.zorroa.common.filesystem.UUIDFileSystem
-import com.zorroa.common.server.*
-import com.zorroa.common.util.FileUtils
 import io.undertow.servlet.api.SecurityConstraint
 import io.undertow.servlet.api.SecurityInfo
 import io.undertow.servlet.api.TransportGuaranteeType
@@ -17,15 +18,18 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer
 import org.springframework.boot.web.embedded.undertow.UndertowDeploymentInfoCustomizer
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
+import org.springframework.context.annotation.Primary
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
@@ -120,25 +124,6 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun analystClient() : AnalystClient {
-        val network = networkEnvironment()
-        val path = properties()
-                .getPath("archivist.config.path")
-                .resolve("service-credentials.json")
-        return if (Files.exists(path)) {
-            var host = properties().getString("analyst.host", "")
-            if (host.isBlank()) {
-                host = network.getPublicUrl("zorroa-analyst")
-            }
-            AnalystClientImpl(host, GcpJwtSigner(path.toString()))
-        }
-        else {
-            logger.info("Service credentials path does not exist: {}", path)
-            AnalystClientImpl(network.getPublicUrl("zorroa-analyst"), null)
-        }
-    }
-
-    @Bean
     fun routingService() : IndexRoutingService {
         return FakeIndexRoutingServiceImpl(properties().getString("es-routing-service.url"))
     }
@@ -176,16 +161,17 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun jwtValidator() : JwtValidator {
+    @Autowired
+    fun jwtValidator(userDao: UserDao) : JwtValidator {
+        val validators = mutableListOf<JwtValidator>()
+        validators.add(UserJwtValidator(userDao))
+
         val path = properties().getPath("archivist.config.path")
                 .resolve("service-credentials.json")
-        return if (Files.exists(path)) {
-            GcpJwtValidator(path.toString())
+        if (Files.exists(path)) {
+            validators.add(GcpJwtValidator(path.toString()))
         }
-        else {
-            logger.info("Service credentials path does not exist: {}", path)
-            NoOpJwtValidator()
-        }
+        return MasterJwtValidator(validators)
     }
 
     @Bean
@@ -211,6 +197,14 @@ class ArchivistConfiguration {
                 DockerComposeEnvironment(override)
             }
         }
+    }
+
+    @Bean
+    @ConditionalOnProperty(name=["archivist.debug-mode.enabled"], havingValue = "true")
+    fun requestLoggingFilter() : CommonsRequestLoggingFilter  {
+        val filter = CommonsRequestLoggingFilter()
+        filter.setIncludePayload(true)
+        return filter
     }
 
     companion object {

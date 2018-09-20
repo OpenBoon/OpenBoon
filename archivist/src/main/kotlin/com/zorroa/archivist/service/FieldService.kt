@@ -4,11 +4,11 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

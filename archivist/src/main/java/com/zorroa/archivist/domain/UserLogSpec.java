@@ -3,7 +3,7 @@ package com.zorroa.archivist.domain;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.security.UserId;
-import com.zorroa.common.search.AssetSearch;
+import com.zorroa.archivist.search.AssetSearch;
 
 import java.util.Map;
 import java.util.Set;

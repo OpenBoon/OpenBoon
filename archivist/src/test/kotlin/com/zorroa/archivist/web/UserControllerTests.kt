@@ -47,7 +47,7 @@ class UserControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testSendOnboardEmail() {
-        val (id, username, email, source, permissionId, homeFolderId, organizationId, firstName, lastName, enabled, settings, loginCount, timeLastLogin) = userService.get("user")
+        val user =  userService.get("user")
 
         SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/send-onboard-email")
@@ -73,16 +73,16 @@ class UserControllerTests : MockMvcTest() {
                 .andExpect(status().isOk())
                 .andReturn()
 
-        val (id) = Json.deserialize(
+        val user1 = Json.deserialize(
                 result.response.contentAsByteArray, User::class.java)
-        assertEquals(user.id, id)
+        assertEquals(user.id, user1.id)
     }
 
     @Test
     @Throws(Exception::class)
     fun testUpdateProfile() {
 
-        val (id) = userService.get("user")
+        val user1 = userService.get("user")
 
         val builder = UserProfileUpdate()
         builder.username = "foo"
@@ -91,7 +91,7 @@ class UserControllerTests : MockMvcTest() {
         builder.lastName = "456test"
 
         val session = admin()
-        val result = mvc.perform(put("/api/v1/users/$id/_profile")
+        val result = mvc.perform(put("/api/v1/users/${user1.id}/_profile")
                 .session(session)
                 .content(Json.serialize(builder))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -102,24 +102,24 @@ class UserControllerTests : MockMvcTest() {
                 result.response.contentAsByteArray, object : TypeReference<StatusResult<User>>() {
 
         })
-        val (id1, username, email, _, _, _, _, firstName, lastName) = sr.`object`
+        val user2 = sr.`object`
 
-        assertEquals(id, id1)
-        assertEquals(builder.username, username)
-        assertEquals(builder.email, email)
-        assertEquals(builder.firstName, firstName)
-        assertEquals(builder.lastName, lastName)
+        assertEquals(user1.id, user2.id)
+        assertEquals(builder.username, user2.username)
+        assertEquals(builder.email, user2.email)
+        assertEquals(builder.firstName, user2.firstName)
+        assertEquals(builder.lastName, user2.lastName)
     }
 
     @Test
     @Throws(Exception::class)
     fun testUpdateSettings() {
-        val (id) = userService.get("user")
+        val user = userService.get("user")
         val settings = UserSettings()
         settings.search = ImmutableMap.of<String, Any>("foo", "bar")
 
         val session = admin()
-        val result = mvc.perform(put("/api/v1/users/$id/_settings")
+        val result = mvc.perform(put("/api/v1/users/${user.id}/_settings")
                 .session(session)
                 .content(Json.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -130,10 +130,10 @@ class UserControllerTests : MockMvcTest() {
                 result.response.contentAsByteArray, object : TypeReference<StatusResult<User>>() {
 
         })
-        val (id1, _, _, _, _, _, _, _, _, _, settings1) = sr.`object`
-        assertEquals(id, id1)
-        assertNotNull(settings1.search["foo"])
-        assertEquals("bar", settings1.search["foo"])
+        val user2 = sr.`object`
+        assertEquals(user.id, user2.id)
+        assertNotNull(settings.search["foo"])
+        assertEquals("bar", settings.search["foo"])
     }
 
     @Test
