@@ -16,8 +16,6 @@ import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.DuplicateEntityException
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,9 +55,9 @@ interface UserService {
 
     fun setPassword(user: User, password: String): Boolean
 
-    fun getHmacKey(username: String): String
+    fun getApiKey(user: UserId): ApiKey
 
-    fun generateHmacKey(username: String): String
+    fun generateApiKey(user: UserId): ApiKey
 
     fun update(user: User, builder: UserProfileUpdate): Boolean
 
@@ -153,6 +151,13 @@ class UserRegistryServiceImpl @Autowired constructor(
         return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
     }
 
+    @Transactional(readOnly = true)
+    override fun getUser(id: UUID): UserAuthed {
+        val user = userService.get(id)
+        val perms = userService.getPermissions(user)
+        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
+    }
+
     fun getOrganization(source: AuthSource) : Organization {
         return if (multiTentant) {
             if (source.organizationName != null) {
@@ -226,10 +231,9 @@ class UserServiceImpl @Autowired constructor(
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         try {
-            val key = userDao.getHmacKey("admin")
-            if (key.isEmpty()) {
-                logger.info("Regenerating admin key")
-                userDao.generateHmacKey("admin")
+
+            if (userDao.generateAdminKey()) {
+                logger.info("Regenerated admin key on first startup")
             }
         }
         catch (e:Exception) {
@@ -316,20 +320,12 @@ class UserServiceImpl @Autowired constructor(
         }
     }
 
-    override fun getHmacKey(username: String): String {
-        try {
-            return userDao.getHmacKey(username)
-        } catch (e: DataAccessException) {
-            throw BadCredentialsException("Invalid username or password")
-        }
+    override fun getApiKey(user: UserId): ApiKey {
+        return userDao.getApiKey(user)
     }
 
-    override fun generateHmacKey(username: String): String {
-        return if (userDao.generateHmacKey(username)) {
-            userDao.getHmacKey(username)
-        } else {
-            throw BadCredentialsException("Invalid username or password")
-        }
+    override fun generateApiKey(user: UserId): ApiKey {
+        return userDao.generateApiKey(user)
     }
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {

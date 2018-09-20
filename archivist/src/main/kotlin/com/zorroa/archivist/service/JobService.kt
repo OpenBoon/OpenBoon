@@ -1,29 +1,111 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.common.clients.AnalystClient
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.server.NetworkEnvironment
+import com.zorroa.archivist.config.NetworkEnvironment
+import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.AssetIndexResult
+import com.zorroa.archivist.repository.JobDao
+import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.security.getUser
+import com.zorroa.common.domain.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 interface JobService {
-    fun launchJob(spec: JobSpec) : Job
+    fun create(spec: JobSpec) : Job
+    fun create(spec: JobSpec, type: PipelineType) : Job
+    fun get(id: UUID, forClient:Boolean=false) : Job
+    fun getTask(id: UUID) : Task
+    fun createTask(job: JobId, spec: TaskSpec) : Task
+    fun getAll(page: Pager, filter: JobFilter): PagedList<Job>
+    fun incrementAssetCounts(task: Task,  counts: AssetIndexResult)
 }
 
-@Component
+@Service
+@Transactional
 class JobServiceImpl @Autowired constructor(
-        private val analystClient: AnalystClient,
-        private val networkEnvironment: NetworkEnvironment
+        private val networkEnvironment: NetworkEnvironment,
+        private val jobDao: JobDao,
+        private val taskDao: TaskDao
 ): JobService {
 
+    @Autowired
+    private lateinit var pipelineService: PipelineService
 
-    override fun launchJob(spec: JobSpec) : Job {
-        // A centralized place to outfit each job with the env it needs
-        spec.env.putAll(mapOf(
-                "ZORROA_SUPER_ADMIN" to "true",
-                "ZORROA_ARCHIVIST_URL" to networkEnvironment.getPublicUrl("zorroa-archivist"),
-                "ZORROA_ORGANIZATION_ID" to spec.organizationId.toString()))
-        return analystClient.createJob(spec)
+    override fun create(spec: JobSpec) : Job {
+        if (spec.script != null) {
+            val type = if (spec.script?.type == null) {
+                PipelineType.Import
+            }
+            else {
+                spec.script!!.type
+            }
+            return create(spec, type)
+        }
+        else {
+            throw IllegalArgumentException("Cannot launch job without script to determine type")
+        }
     }
+
+    override fun create(spec: JobSpec, type: PipelineType) : Job {
+        if (spec.name == null) {
+            val user = getUser()
+            val date = Date()
+            spec.name = "${type.name} job launched by ${user.getName()} on $date"
+        }
+
+        val job = jobDao.create(spec, type)
+
+        spec.script?.let { script->
+            if (script.execute == null) {
+                script.execute = pipelineService.resolveDefault(job.type)
+            }
+            else {
+                script.execute = pipelineService.resolve(job.type, script.execute)
+            }
+
+            /*
+             * Add the proper collector
+             */
+            script.execute?.let {
+                when(type) {
+                    PipelineType.Import-> {
+                        it.add(ProcessorRef("zplugins.core.collector.ImportCollector"))
+                    }
+                    PipelineType.Export->{
+                        script.inline = true
+                        it.add(ProcessorRef("zplugins.core.collector.ExportCollector"))
+                    }
+                    PipelineType.Batch,PipelineType.Generate-> { }
+                }
+            }
+            taskDao.create(job, TaskSpec(zpsTaskName(script), script))
+        }
+        return get(job.id)
+    }
+
+    @Transactional(readOnly = true)
+    override fun get(id: UUID, forClient:Boolean) : Job {
+        return jobDao.get(id, forClient)
+    }
+
+    override fun getAll(page: Pager, filter: JobFilter): PagedList<Job> {
+        return jobDao.getAll(page, filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getTask(id: UUID) : Task {
+        return taskDao.get(id)
+    }
+
+    override fun createTask(job: JobId, spec: TaskSpec) : Task {
+        return taskDao.create(job, spec)
+    }
+
+    override fun incrementAssetCounts(task: Task,  counts: AssetIndexResult) {
+        taskDao.incrementAssetStats(task, counts)
+        jobDao.incrementAssetStats(task, counts)
+    }
+
 }

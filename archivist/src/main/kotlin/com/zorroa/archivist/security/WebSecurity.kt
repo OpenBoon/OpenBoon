@@ -4,7 +4,6 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.UserLogSpec
-import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.UserService
 import org.slf4j.LoggerFactory
@@ -15,7 +14,6 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationEventPublisher
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -25,8 +23,12 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
+import org.springframework.security.config.annotation.web.builders.WebSecurity
+
+
 
 @EnableWebSecurity
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -90,9 +92,7 @@ class MultipleWebSecurityConfig {
             http
                     .antMatcher("/api/**")
                     .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
-                    .addFilterBefore(HmacSecurityFilter(
-                            properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
-                    .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
+                    .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
                     .antMatchers("/api/v1/who").permitAll()
@@ -112,15 +112,46 @@ class MultipleWebSecurityConfig {
         }
     }
 
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    class WorkerSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Autowired
+        internal lateinit var properties: ApplicationProperties
+
+        @Autowired
+        internal lateinit var analystAuthenticationFilter: AnalystAuthenticationFilter
+
+        @Throws(Exception::class)
+        override fun configure(http: HttpSecurity) {
+            http
+                    .antMatcher("/cluster/**")
+                    .addFilterAfter(analystAuthenticationFilter, BasicAuthenticationFilter::class.java)
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and().sessionManagement().disable()
+                    .csrf().disable()
+        }
+    }
+
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 3)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    class Swagger : WebSecurityConfigurerAdapter() {
+
+        @Throws(Exception::class)
+        override fun configure(web: WebSecurity?) {
+            web!!.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**")
+        }
+    }
+
     @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService, logService: EventLogService) {
 
-        if (properties.getBoolean("archivist.security.hmac.enabled")) {
-            auth.authenticationProvider(hmacAuthenticationProvider())
-        }
         auth
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(zorroaAuthenticationProvider())
                 .authenticationEventPublisher(authenticationEventPublisher(userService, logService))
 
         /**
@@ -137,8 +168,9 @@ class MultipleWebSecurityConfig {
 
         return object : AuthenticationEventPublisher {
 
-            override fun publishAuthenticationSuccess(
-                    authentication: Authentication) {
+            override fun publishAuthenticationSuccess(authentication: Authentication) {
+
+                /*
                 try {
                     val user = authentication.principal as UserAuthed
                     userService.incrementLoginCounter(user)
@@ -151,7 +183,7 @@ class MultipleWebSecurityConfig {
                     logger.warn("Failed to log user authentication", e)
                     throw SecurityException(e)
                 }
-
+                */
             }
 
             override fun publishAuthenticationFailure(
@@ -167,18 +199,8 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
-    fun authenticationProvider(): AuthenticationProvider {
+    fun zorroaAuthenticationProvider(): ZorroaAuthenticationProvider {
         return ZorroaAuthenticationProvider()
-    }
-
-    /**
-     * Handles python/java client authentication.
-     *
-     * @return
-     */
-    @Bean
-    fun hmacAuthenticationProvider(): AuthenticationProvider {
-        return HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"))
     }
 
     companion object {

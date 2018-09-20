@@ -3,23 +3,19 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.UserLogSpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.PermissionDao
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
-import com.zorroa.common.search.AssetSearchOrder
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -85,7 +81,8 @@ interface IndexService {
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
         private val permissionDao: PermissionDao,
-        private val storageRouter: StorageRouter
+        private val storageRouter: StorageRouter,
+        private val jobService: JobService
 
 ) : IndexService {
 
@@ -254,6 +251,11 @@ class IndexServiceImpl  @Autowired  constructor (
         }
 
         val result = indexDao.index(spec.sources!!)
+        spec.taskId?.let {
+            val task = jobService.getTask(it)
+            jobService.incrementAssetCounts(task, result)
+        }
+
         if (result.created + result.updated + result.replaced > 0) {
             /**
              * TODO: make these 1 thread pool

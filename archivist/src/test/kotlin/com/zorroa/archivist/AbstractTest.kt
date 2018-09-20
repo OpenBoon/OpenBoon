@@ -6,16 +6,17 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.domain.Source
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.util.FileUtils
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
@@ -181,6 +182,10 @@ open abstract class AbstractTest {
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"))
         Json.Mapper.registerModule(KotlinModule())
+    }
+
+    fun authenticateAsAnalyst() {
+        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
     }
 
     fun testUserSpec(name: String="test") : UserSpec {

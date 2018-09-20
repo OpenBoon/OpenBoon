@@ -1,9 +1,8 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.sdk.security.UserRegistryService
-import com.zorroa.common.server.JwtSecurityConstants.HEADER_STRING
-import com.zorroa.common.server.JwtSecurityConstants.TOKEN_PREFIX
-import com.zorroa.common.server.JwtValidator
+import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
+import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -29,6 +28,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
     override fun doFilterInternal(req: HttpServletRequest,
                                   res: HttpServletResponse,
                                   chain: FilterChain) {
+
         val token = req.getHeader(HEADER_STRING)
 
         if (token == null || !token.startsWith(TOKEN_PREFIX)) {
@@ -43,20 +43,14 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
 
     private fun getAuthentication(token: String): Authentication? {
         val claims = validator.validate(token)
+        val userId = claims.getValue("userId")
 
-        return when {
-            claims.containsKey("ZORROA_USER") -> {
-                val user = userRegistryService.getUser(claims.getValue("ZORROA_USER"))
-                UsernamePasswordAuthenticationToken(user, "", user.authorities)
-            }
-            claims.containsKey("ZORROA_SUPER_ADMIN")
-                    && claims.containsKey("ZORROA_ORGANIZATION_ID") -> {
-                SuperAdminAuthentication(UUID.fromString(claims["ZORROA_ORGANIZATION_ID"]))
-            }
-            else -> {
-                logger.warn("Not enough claim information to provide JWT auth")
-                null
-            }
+        return if (userId == "superadmin" && claims.containsKey("org")) {
+            SuperAdminAuthentication(UUID.fromString(claims["org"]))
+        }
+        else {
+            val user = userRegistryService.getUser(UUID.fromString(userId))
+            UsernamePasswordAuthenticationToken(user, "", user.authorities)
         }
     }
 }

@@ -4,12 +4,12 @@ import com.google.common.base.Charsets
 import com.google.common.io.CharStreams
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.domain.PasswordResetToken
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.repository.UserDao
-import com.zorroa.common.server.NetworkEnvironment
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
@@ -31,7 +31,7 @@ interface EmailService {
 @Component
 class EmailServiceImpl @Autowired constructor(
         private val userDao: UserDao,
-        private val mailSender: JavaMailSender,
+        private val mailSender: JavaMailSender?,
         private val networkEnv: NetworkEnvironment,
         private val properties: ApplicationProperties
 ) : EmailService {
@@ -44,7 +44,7 @@ class EmailServiceImpl @Autowired constructor(
 
         val toName = toUser.firstName ?: toUser.username
         val fromName = fromUser.firstName ?: fromUser.username
-        val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/search?id=" + link.id
+        val url = networkEnv.getPublicUrl("zorroa-archivist") + "/search?id=" + link.id
 
         val text = StringBuilder(1024)
         text.append("Hello ")
@@ -193,26 +193,31 @@ class EmailServiceImpl @Autowired constructor(
 
     @Throws(MessagingException::class)
     private fun sendHTMLEmail(email:String, subject: String, text: String, cc: List<String>, htmlMsg: String?) {
-        val mimeMessage = mailSender.createMimeMessage()
-        val helper = MimeMessageHelper(mimeMessage, true, "utf-8")
-        helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>")
-        helper.setReplyTo("Zorroa Account Bot <support@zorroa.com>")
-        helper.setSubject(subject)
-        helper.setCc(cc.toTypedArray())
 
-        if (ArchivistConfiguration.unittest) {
-            helper.setTo(System.getProperty("user.name") + "@zorroa.com")
-        }
-        else {
-            helper.setTo(email)
+        mailSender?.let {
+            val mimeMessage = mailSender.createMimeMessage()
+            val helper = MimeMessageHelper(mimeMessage, true, "utf-8")
+            helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>")
+            helper.setReplyTo("Zorroa Account Bot <support@zorroa.com>")
+            helper.setSubject(subject)
+            helper.setCc(cc.toTypedArray())
+
+            if (ArchivistConfiguration.unittest) {
+                helper.setTo(System.getProperty("user.name") + "@zorroa.com")
+            }
+            else {
+                helper.setTo(email)
+            }
+
+            if (htmlMsg != null) {
+                helper.setText(text, htmlMsg)
+            } else {
+                helper.setText(text)
+            }
+            mailSender.send(mimeMessage)
         }
 
-        if (htmlMsg != null) {
-            helper.setText(text, htmlMsg)
-        } else {
-            helper.setText(text)
-        }
-        mailSender.send(mimeMessage)
+
     }
 
 

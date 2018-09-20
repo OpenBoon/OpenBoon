@@ -2,12 +2,13 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.Access;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.security.Groups;
 import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.UserService;
-import com.zorroa.common.domain.Access;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

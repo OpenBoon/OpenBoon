@@ -2,14 +2,12 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.google.common.hash.Hashing
-import com.zorroa.archivist.HttpUtils
-import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
+import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -28,9 +26,13 @@ interface UserDao {
 
     fun getByToken(token: String): User
 
-    fun getHmacKey(username: String): String
+    fun getApiKey(user: UserId): ApiKey
 
-    fun generateHmacKey(username: String): Boolean
+    fun getApiKey(id: UUID): ApiKey
+
+    fun generateApiKey(user: UserId): ApiKey
+
+    fun generateAdminKey(): Boolean
 
     fun delete(user: User): Boolean
 
@@ -214,26 +216,32 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 String::class.java, username, username, true)
     }
 
-    override fun getHmacKey(username: String): String {
-        val result =  jdbc.queryForObject("SELECT hmac_key FROM users WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
-                String::class.java, username, username, true)
-        if (result == null) {
-            return ""
-        }
-        else {
-            return result
-        }
+    override fun getApiKey(user: UserId): ApiKey {
+        return getApiKey(user.id)
     }
 
-    override fun generateHmacKey(username: String): Boolean {
-        return jdbc.update("UPDATE users SET hmac_key=? WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
-                generateKey(), username, username, true) == 1
+    override fun getApiKey(id: UUID): ApiKey {
+        val key = jdbc.queryForObject("SELECT hmac_key FROM users WHERE pk_user=? AND bool_enabled=?",
+                String::class.java, id, true)
+        return ApiKey(id, key)
+    }
+
+    override fun generateApiKey(user: UserId): ApiKey {
+        val key = generateKey()
+        if (jdbc.update("UPDATE users SET hmac_key=? WHERE pk_user=? AND bool_enabled=?", key, user.id, true) != 1) {
+            throw EmptyResultDataAccessException("Unknown user", 1)
+        }
+        return ApiKey(user.id, key)
+    }
+
+    override fun generateAdminKey(): Boolean {
+        val key = generateKey()
+        return jdbc.update("UPDATE users SET hmac_key=? WHERE str_username='admin' AND hmac_key IS NULL", key) == 1;
     }
 
     override fun getCount(): Long {
         return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Int::class.java, getOrgId()).toLong()
     }
-
 
     override fun hasPermission(user: UserId, permission: Permission): Boolean {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.web.api
 
 import com.google.common.collect.Lists
-import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.TrashedFolder
 import com.zorroa.archivist.domain.TrashedFolderOp
 import com.zorroa.archivist.service.FolderService

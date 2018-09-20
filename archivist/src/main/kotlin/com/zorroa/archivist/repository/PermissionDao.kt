@@ -1,13 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.ImmutableMap
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.security.Groups
 import org.springframework.dao.DuplicateKeyException

@@ -1,11 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository

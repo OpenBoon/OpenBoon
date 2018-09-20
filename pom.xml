@@ -16,18 +16,16 @@
         <java.version>1.8</java.version>
         <elasticsearch.version>6.2.4</elasticsearch.version>
         <zorroa-server.version>0.40.0-SNAPSHOT</zorroa-server.version>
-        <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
         <kotlin.version>1.2.50</kotlin.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
     </properties>
 
     <modules>
-        <module>lib-common</module>
         <module>lib-security</module>
         <module>ldap</module>
         <module>saml</module>
         <module>archivist</module>
-        <module>analyst</module>
         <module>es-similarity</module>
     </modules>
 

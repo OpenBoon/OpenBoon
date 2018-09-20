@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.api
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
-import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
@@ -39,15 +39,6 @@ class UserController @Autowired constructor(
         private val emailService: EmailService
 ) {
 
-    @RequestMapping(value = ["/api/v1/api-key"])
-    fun getApiKey(): String {
-        return try {
-            userService.getHmacKey(getUsername())
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
@@ -62,15 +53,14 @@ class UserController @Autowired constructor(
         }
     }
 
-    @Deprecated("")
-    @PostMapping(value = ["/api/v1/generate_api_key"])
-    fun generate_api_key_V1(): String {
-        return userService.generateHmacKey(getUsername())
+    @RequestMapping(value = ["/api/v1/api-key"])
+    fun getApiKey(): Any {
+        return userService.getApiKey(getUser())
     }
 
-    @PostMapping(value = ["/api/v1/api-key"])
-    fun generate_api_key(): String {
-        return userService.generateHmacKey(getUsername())
+    @PostMapping(value = ["/api/v1/generate-api-key"])
+    fun generateApiKey(): Any {
+        return userService.getApiKey(getUser())
     }
 
     /**

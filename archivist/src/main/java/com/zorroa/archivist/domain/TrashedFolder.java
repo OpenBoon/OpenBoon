@@ -1,6 +1,6 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.common.search.AssetSearch;
+import com.zorroa.archivist.search.AssetSearch;
 
 import java.util.Map;
 import java.util.UUID;
