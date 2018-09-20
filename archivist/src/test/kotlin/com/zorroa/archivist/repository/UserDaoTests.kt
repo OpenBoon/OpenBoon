@@ -104,6 +104,13 @@ class UserDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testGenerateAdminKey() {
+        jdbc.update("UPDATE users SET hmac_key=NULL")
+        assertTrue(userDao.generateAdminKey())
+        assertFalse(userDao.generateAdminKey())
+    }
+
+    @Test
     fun testUpdate() {
         val builder = UserProfileUpdate()
         builder.firstName = "foo"

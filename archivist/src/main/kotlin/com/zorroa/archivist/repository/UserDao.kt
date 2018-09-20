@@ -32,6 +32,8 @@ interface UserDao {
 
     fun generateApiKey(user: UserId): ApiKey
 
+    fun generateAdminKey(): Boolean
+
     fun delete(user: User): Boolean
 
     fun getPassword(username: String): String
@@ -225,11 +227,16 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun generateApiKey(user: UserId): ApiKey {
-        val key =  generateKey()
+        val key = generateKey()
         if (jdbc.update("UPDATE users SET hmac_key=? WHERE pk_user=? AND bool_enabled=?", key, user.id, true) != 1) {
             throw EmptyResultDataAccessException("Unknown user", 1)
         }
         return ApiKey(user.id, key)
+    }
+
+    override fun generateAdminKey(): Boolean {
+        val key = generateKey()
+        return jdbc.update("UPDATE users SET hmac_key=? WHERE str_username='admin' AND hmac_key IS NULL", key) == 1;
     }
 
     override fun getCount(): Long {

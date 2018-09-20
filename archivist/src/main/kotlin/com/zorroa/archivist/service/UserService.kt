@@ -231,11 +231,9 @@ class UserServiceImpl @Autowired constructor(
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         try {
-            val admin = userDao.get("admin")
-            val key = userDao.getApiKey(admin)
-            if (key.key.isEmpty()) {
-                logger.info("Regenerating admin key")
-                userDao.generateApiKey(admin)
+
+            if (userDao.generateAdminKey()) {
+                logger.info("Regenerated admin key on first startup")
             }
         }
         catch (e:Exception) {
