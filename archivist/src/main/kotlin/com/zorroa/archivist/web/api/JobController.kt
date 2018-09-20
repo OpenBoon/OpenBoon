@@ -14,7 +14,6 @@ import java.util.*
 
 @RestController
 class JobController @Autowired constructor(
-        val jobDao: JobDao,
         val jobService: JobService,
         val dispatcherService: DispatcherService
 ) {
@@ -31,11 +30,11 @@ class JobController @Autowired constructor(
     @Throws(IOException::class)
     fun create(@RequestBody spec: JobSpec): Any {
         val job = jobService.create(spec)
-        return jobDao.getForClient(job.id)
+        return jobService.get(job.id, forClient = true)
     }
 
     @GetMapping(value = ["/api/v1/jobs/{id}"])
     fun get(@PathVariable id: String): Any {
-        return jobService.get(UUID.fromString(id))
+        return jobService.get(UUID.fromString(id), forClient = true)
     }
 }

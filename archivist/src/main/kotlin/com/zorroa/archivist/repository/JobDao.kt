@@ -16,11 +16,10 @@ import java.util.*
 
 interface JobDao {
     fun create(spec: JobSpec, type: PipelineType): Job
-    fun get(id: UUID): Job
+    fun get(id: UUID, forClient:Boolean=false): Job
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
     fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
     fun incrementAssetStats(job: JobId, counts: AssetIndexResult) : Boolean
-    fun getForClient(id: UUID): Job
 }
 
 @Repository
@@ -28,17 +27,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     @Autowired
     internal lateinit var userDaoCache: UserDaoCache
-
-    private val FOR_CLIENT_MAPPER = RowMapper { rs, _ ->
-        Job(rs.getObject("pk_job") as UUID,
-                rs.getObject("pk_organization") as UUID,
-                rs.getString("str_name"),
-                PipelineType.values()[rs.getInt("int_type")],
-                JobState.values()[rs.getInt("int_state")],
-                buildAssetCounts(rs),
-                buildTaskCountMap(rs),
-                userDaoCache.getUser(rs.getObject("pk_user_created") as UUID))
-    }
 
     override fun create(spec: JobSpec, type: PipelineType): Job {
         Preconditions.checkNotNull(spec.name)
@@ -68,12 +56,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return get(id)
     }
 
-    override fun get(id: UUID): Job {
-        return jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER, id)
-    }
-
-    override fun getForClient(id: UUID): Job {
-        return jdbc.queryForObject("$GET WHERE job.pk_job=?", FOR_CLIENT_MAPPER, id)
+    override fun get(id: UUID, forClient: Boolean): Job {
+        return if (forClient) {
+            jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER_FOR_CLIENT, id)
+        } else {
+            jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER, id)
+        }
     }
 
     override fun getAll(page: Pager, filter: JobFilter?): PagedList<Job> {
@@ -86,7 +74,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return PagedList(page.setTotalCount(count(filter)),
                 jdbc.query<Job>(query, MAPPER, *filter.getValues(false)))
     }
-
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
         val time = System.currentTimeMillis()
@@ -113,19 +100,26 @@ class JobDaoImpl : AbstractDao(), JobDao {
         filter?.page?.totalCount = jdbc.queryForObject(filter.getCountQuery(COUNT),
                 Long::class.java, *filter.getValues(forCount = true))
     }
-    
+
+    private val MAPPER_FOR_CLIENT = RowMapper { rs, row ->
+        val job = MAPPER.mapRow(rs, row)
+        job.assetCounts =  buildAssetCounts(rs)
+        job.taskCounts = buildTaskCountMap(rs)
+        job.createdUser = userDaoCache.getUser(rs.getObject("pk_user_created") as UUID)
+        job
+    }
+
     companion object {
 
+        private inline fun getTaskStateCount(rs: ResultSet, state: TaskState) : Int {
+            return rs.getInt("int_task_state_${state.ordinal}")
+        }
+
         private inline fun buildTaskCountMap(rs: ResultSet) : Map<String, Int> {
-            val result = mutableMapOf<String,Int>()
-            for (state in TaskState.values()) {
-                val field = "tasks" + state.toString()
-                val ord = state.ordinal
-                result[field] =  rs.getInt("int_task_state_$ord")
-            }
-            result["tasksCompleted"] = rs.getInt("int_task_state_2")
-                    + rs.getInt("int_task_state_3")
-                    + rs.getInt("int_task_state_4")
+            val result = mutableMapOf("tasksTotal" to rs.getInt("int_task_total_count"))
+            return TaskState.values().map {
+                "tasks" + it.toString() to getTaskStateCount(rs, it)
+            }.toMap(result)
             return result
         }
 
@@ -141,13 +135,26 @@ class JobDaoImpl : AbstractDao(), JobDao {
         }
 
         private val MAPPER = RowMapper { rs, _ ->
+            val state =  JobState.values()[rs.getInt("int_state")]
+            val newState = if (state == JobState.Active) {
+                if (getTaskStateCount(rs, TaskState.Running) +
+                        getTaskStateCount(rs, TaskState.Queued) +
+                        getTaskStateCount(rs, TaskState.Waiting) != 0) {
+                    JobState.Active
+                }
+                else {
+                    JobState.Finished
+                }
+            }
+            else {
+                state
+            }
+
             Job(rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
                     PipelineType.values()[rs.getInt("int_type")],
-                    JobState.values()[rs.getInt("int_state")],
-                    buildAssetCounts(rs),
-                    buildTaskCountMap(rs))
+                    newState)
         }
 
         private const val GET = "SELECT * FROM job " +
@@ -155,7 +162,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "INNER JOIN job_count ON job.pk_job=job_count.pk_job "
 
         private const val COUNT = "SELECT COUNT(1) FROM job"
-
 
         private const val INC_STATS = "UPDATE " +
                 "job_stat " +

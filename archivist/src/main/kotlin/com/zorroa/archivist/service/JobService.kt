@@ -14,7 +14,7 @@ import java.util.*
 interface JobService {
     fun create(spec: JobSpec) : Job
     fun create(spec: JobSpec, type: PipelineType) : Job
-    fun get(id: UUID) : Job
+    fun get(id: UUID, forClient:Boolean=false) : Job
     fun getTask(id: UUID) : Task
     fun createTask(job: JobId, spec: TaskSpec) : Task
     fun getAll(page: Pager, filter: JobFilter): PagedList<Job>
@@ -79,8 +79,8 @@ class JobServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun get(id: UUID) : Job {
-        return jobDao.get(id)
+    override fun get(id: UUID, forClient:Boolean) : Job {
+        return jobDao.get(id, forClient)
     }
 
     override fun getAll(page: Pager, filter: JobFilter): PagedList<Job> {

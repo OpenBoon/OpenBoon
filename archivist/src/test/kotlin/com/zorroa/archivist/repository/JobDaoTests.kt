@@ -11,6 +11,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class JobDaoTests : AbstractTest() {
@@ -28,7 +29,7 @@ class JobDaoTests : AbstractTest() {
 
         val t1 = jobDao.create(spec, PipelineType.Import)
         assertEquals(spec.name, t1.name)
-        assertEquals(JobState.Active, t1.state)
+        assertEquals(JobState.Finished, t1.state) // no tasks
         assertEquals(PipelineType.Import, t1.type)
     }
 
@@ -46,6 +47,20 @@ class JobDaoTests : AbstractTest() {
         assertEquals(t2.organizationId, t1.organizationId)
         assertEquals(t2.state, t1.state)
         assertEquals(t2.type, t1.type)
+    }
+
+    @Test
+    fun getTestForClient() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("test_script"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+
+        val t2 = jobDao.create(spec, PipelineType.Import)
+        val t1 = jobDao.get(t2.id, forClient = true)
+        assertNotNull(t1.assetCounts)
+        assertNotNull(t1.taskCounts)
+        assertNotNull(t1.createdUser)
     }
 
     @Test
