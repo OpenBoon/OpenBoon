@@ -98,7 +98,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     "SELECT * FROM users WHERE str_reset_pass_token=? AND " + "? - time_reset_pass < ? LIMIT 1 ",
                     MAPPER, token, System.currentTimeMillis(), expireTime)
         } catch (e: EmptyResultDataAccessException) {
-            throw EmptyResultDataAccessException("This password change token has expired.", 1)
+            throw EmptyResultDataAccessException("The password change token has expired, request a new password reset.", 1)
         }
 
     }
