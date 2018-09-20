@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -48,6 +49,12 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun create(spec: JobSpec, type: PipelineType) : Job {
+        if (spec.name == null) {
+            val user = getUser()
+            val date = Date()
+            spec.name = "${type.name} job launched by ${user.getName()} on $date"
+        }
+
         val job = jobDao.create(spec, type)
 
         spec.script?.let { script->

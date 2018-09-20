@@ -13,6 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class JobServiceTests : AbstractTest() {
 
@@ -39,6 +40,17 @@ class JobServiceTests : AbstractTest() {
         assertEquals(spec.name, job.name)
         val tcount = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?", Int::class.java, job.id)
         assertEquals(2, tcount)
+    }
+
+    @Test
+    fun testCreateWithAutoName() {
+        val spec2 = JobSpec(null,
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        val job2 = jobService.create(spec2)
+        assertTrue("admin" in job2.name)
+        assertTrue("Import" in job2.name)
     }
 
     @Test
