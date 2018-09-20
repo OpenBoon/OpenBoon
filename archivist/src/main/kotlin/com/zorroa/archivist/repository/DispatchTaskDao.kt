@@ -29,11 +29,26 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                     TaskState.values()[rs.getInt("int_state")],
                     Json.deserialize(rs.getString("json_script"), ZpsScript::class.java),
                     Json.deserialize(rs.getString("json_env"), object : TypeReference<MutableMap<String, String>>(){}),
-                    Json.deserialize(rs.getString("json_args"), object : TypeReference<MutableMap<String, Object>>(){}))
+                    Json.deserialize(rs.getString("json_args"), object : TypeReference<MutableMap<String, Object>>(){}),
+                    rs.getObject("pk_user_created") as UUID)
         }
 
-        private const val GET = "SELECT job.pk_organization, job.json_env, job.json_args, task.* " +
-                "FROM task INNER JOIN job ON job.pk_job = task.pk_job " +
-                "WHERE job.int_state=? AND task.int_state=? ORDER BY job.int_priority,task.int_order LIMIT ?"
+        private const val GET = "SELECT " +
+                "job.pk_organization," +
+                "job.json_env," +
+                "job.json_args," +
+                "job.pk_user_created," +
+                "task.pk_task,"+
+                "task.pk_job,"+
+                "task.str_name,"+
+                "task.int_state,"+
+                "task.json_script "+
+                "FROM " +
+                    "task INNER JOIN job ON job.pk_job = task.pk_job " +
+                "WHERE " +
+                    "job.int_state=? " +
+                "AND " +
+                    "task.int_state=? " +
+                "ORDER BY job.int_priority,task.int_order LIMIT ?"
     }
 }

@@ -2,11 +2,10 @@ package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.DispatchTaskDao
-import com.zorroa.archivist.repository.JobDao
-import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.repository.*
+import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -28,10 +27,12 @@ class DispatcherServiceImpl @Autowired constructor(
         private val dispatchTaskDao: DispatchTaskDao,
         private val taskDao: TaskDao,
         private val taskErrorDao: TaskErrorDao,
-        private val jobDao: JobDao) : DispatcherService {
+        private val jobDao: JobDao,
+        private val userDao: UserDao) : DispatcherService {
 
     @Autowired
     lateinit var jobService: JobService
+
 
     override fun getNext(): DispatchTask? {
         val endpoint = getAnalystEndpoint()
@@ -40,6 +41,7 @@ class DispatcherServiceImpl @Autowired constructor(
             for (task in tasks) {
                 if (taskDao.setState(task, TaskState.Queued, TaskState.Waiting)) {
                     taskDao.setHostEndpoint(task, endpoint)
+                    task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(userDao.getApiKey(task.userId))
                     return task
                 }
             }
@@ -96,6 +98,10 @@ class DispatcherServiceImpl @Autowired constructor(
                 val job = jobDao.get(task.jobId)
                 val script = Json.Mapper.convertValue<ZpsScript>(event.payload)
                 expand(job, script)
+            }
+            TaskEventType.MESSAGE -> {
+                val message = Json.Mapper.convertValue<TaskMessageEvent>(event.payload)
+                logger.warn("Task Event Message: ${task.id} : $message")
             }
         }
     }
