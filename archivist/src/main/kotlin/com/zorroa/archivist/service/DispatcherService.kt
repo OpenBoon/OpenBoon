@@ -41,6 +41,8 @@ class DispatcherServiceImpl @Autowired constructor(
             for (task in tasks) {
                 if (taskDao.setState(task, TaskState.Queued, TaskState.Waiting)) {
                     taskDao.setHostEndpoint(task, endpoint)
+                    task.env["ZORROA_TASK_ID"] = task.id.toString()
+                    task.env["ZORROA_JOB_ID"] = task.jobId.toString()
                     task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(userDao.getApiKey(task.userId))
                     return task
                 }
