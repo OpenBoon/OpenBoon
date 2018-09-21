@@ -32,7 +32,9 @@ class FileStorage(
         val stream: String,
         val id: String,
         val scheme: String,
-        val mimeType: String
+        val mimeType: String,
+        val size: Long,
+        val exists: Boolean
 
 
 ) {
@@ -41,22 +43,4 @@ class FileStorage(
     }
 }
 
-/**
- * The result of stating a storage location.
- *
- * @property size: The size of the file
- * @property mimeType: The mimeType of the file
- * @property exists: True if the file exists
- */
-class FileStorageStat(
-        val size: Long,
-        val mimeType: String,
-        val exists: Boolean
-
-
-) {
-    override fun toString(): String {
-        return "FileStorageStat(size=$size, mimeType='$mimeType', exists=$exists)"
-    }
-}
 

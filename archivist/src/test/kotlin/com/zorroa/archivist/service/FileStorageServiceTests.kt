@@ -48,7 +48,7 @@ class OfsFileStorageServiceTests : AbstractTest() {
     fun testStatNotExists() {
         val spec = FileStorageSpec("proxy", "abc123", "jpg",
                 listOf("x", "100", "y", "100"))
-        val stat = fileStorage.getStat(spec)
+        val stat = fileStorage.get(spec)
         assertFalse(stat.exists)
         assertEquals("image/jpeg", stat.mimeType)
     }
@@ -59,7 +59,7 @@ class OfsFileStorageServiceTests : AbstractTest() {
         val fs = fileStorage.create(spec)
         Files.copy(getTestImagePath().resolve("beer_kettle_01.jpg"),
                 Paths.get(URI(fs.stream)), StandardCopyOption.REPLACE_EXISTING)
-        val stat = fileStorage.getStat(spec)
+        val stat = fileStorage.get(spec)
         assertTrue(stat.exists)
         assertEquals("image/jpeg", stat.mimeType)
         assertEquals(1800475, stat.size)
