@@ -1,5 +1,7 @@
 package com.zorroa.archivist.filesystem;
 
+import java.util.List;
+
 /**
  * The object file system interface is for storing files of all types, including proxies,
  * assets, spreadsheets, models, and any other type of file the analyst may need to its
@@ -22,9 +24,9 @@ public interface ObjectFileSystem {
      * @param variant
      * @return
      */
-    OfsFile prepare(String category, Object value, String type, String... variant);
+    OfsFile prepare(String category, Object value, String type, List<String> variant);
 
-    OfsFile get(String category, Object value, String type, String... variant);
+    OfsFile get(String category, Object value, String type, List<String> variant);
 
     /**
      * Get a file based its unique ID, which is formatted as category/id_[variant].ext

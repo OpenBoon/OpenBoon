@@ -10,18 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.nio.file.Files
 
 interface FileStorageService {
+    /**
+     * Allocates new file storage.
+     *
+     * @param[spec] The FileStorageSpec which describes what is being stored.
+     * @return a FileStorage object detailing the location of the storage
+     */
     fun create(spec: FileStorageSpec) : FileStorage
+
+    /**
+     * Use a FileStorageSpec to determine if a file already exists with the given spec.
+
+     * @param[spec] The FileStorageSpec which describes what is being stored.
+     * @return a FileStorageStat object which contains the size, mimeType, and online status.
+     */
     fun getStat(spec: FileStorageSpec) : FileStorageStat
 }
 
-private inline fun checkNullVariants(spec: FileStorageSpec) : Array<String> {
-    return if (spec.variants == null) {
-        emptyArray()
-    }
-    else {
-        spec.variants.toTypedArray()
-    }
-}
 
 class OfsFileStorageService @Autowired constructor(
         private val ofs: ObjectFileSystem): FileStorageService {
@@ -29,15 +34,13 @@ class OfsFileStorageService @Autowired constructor(
     private val tika = Tika()
 
     override fun create(spec: FileStorageSpec) : FileStorage {
-        val variants = checkNullVariants(spec)
-        val ofile = ofs.prepare(spec.category, spec.name, spec.type, *variants)
+        val ofile = ofs.prepare(spec.category, spec.name, spec.type, spec.variants)
         return FileStorage(ofile.file.toURI().toString(), ofile.id, "file",
                 tika.detect(ofile.file.toString()))
     }
 
     override fun getStat(spec: FileStorageSpec) : FileStorageStat {
-        val variants = checkNullVariants(spec)
-        val ofile = ofs.get(spec.category, spec.name, spec.type, *variants)
+        val ofile = ofs.get(spec.category, spec.name, spec.type, spec.variants)
 
         return try {
             FileStorageStat(

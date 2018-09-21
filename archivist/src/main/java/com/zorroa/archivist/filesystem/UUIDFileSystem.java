@@ -2,8 +2,10 @@ package com.zorroa.archivist.filesystem;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.google.common.collect.Lists;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,17 +35,17 @@ public class UUIDFileSystem extends AbstractFileSystem implements ObjectFileSyst
     }
 
     @Override
-    public OfsFile prepare(String category, Object value, String type, String... variant) {
-        OfsFile file = get(category, value, type, variant);
+    public OfsFile prepare(String category, Object value, String type, List<String> variants) {
+        OfsFile file = get(category, value, type, variants);
         file.mkdirs();
         return file;
     }
 
     @Override
-    public OfsFile get(String category, Object value, String type, String ... variant) {
+    public OfsFile get(String category, Object value, String type, List<String> variants) {
         UUID uuid = nameBasedGenerator.generate(value.toString());
         StringBuilder sb = getParentDirectory(category, uuid);
-        String name = getFilename(uuid, type, variant);
+        String name = getFilename(uuid, type, variants);
         sb.append(name);
 
         return new OfsFile(category, name, new File(sb.toString()));
@@ -62,10 +64,10 @@ public class UUIDFileSystem extends AbstractFileSystem implements ObjectFileSyst
 
             String variant = matcher.group(2);
             if (variant != null) {
-                sb.append(getFilename(id, ext, variant));
+                sb.append(getFilename(id, ext, Lists.newArrayList(variant)));
             }
             else {
-                sb.append(getFilename(id, ext));
+                sb.append(getFilename(id, ext, null));
             }
 
             return new OfsFile(category, name, new File(sb.toString()));
@@ -103,12 +105,12 @@ public class UUIDFileSystem extends AbstractFileSystem implements ObjectFileSyst
         return sb;
     }
 
-    private String getFilename(UUID id, String type, String ... variant) {
+    private String getFilename(UUID id, String type, List<String> variants) {
         StringBuilder sb = new StringBuilder(64);
         sb.append(id);
-        if (variant.length > 0) {
+        if (variants != null && !variants.isEmpty()) {
             sb.append("_");
-            sb.append(String.join("_", variant));
+            sb.append(String.join("_", variants));
         }
         sb.append(".");
         sb.append(type);
