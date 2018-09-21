@@ -22,6 +22,7 @@ class AnalystDaoTests : AbstractTest() {
 
     @Before
     fun init() {
+        authenticateAsAnalyst()
         spec = AnalystSpec(
                 1024,
                 648,

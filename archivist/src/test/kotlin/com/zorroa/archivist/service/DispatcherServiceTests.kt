@@ -20,13 +20,14 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNext() {
-        val analyst = "http://10.0.0.1:8080"
+        val analyst = "https://127.0.0.1:5000"
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
         val job = jobService.create(spec)
 
+        authenticateAsAnalyst()
         val next = dispatcherService.getNext()
         assertNotNull(next)
         next?.let {

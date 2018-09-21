@@ -114,6 +114,11 @@ class ArchivistConfiguration {
     }
 
     @Bean
+    fun fileStorageService() : FileStorageService {
+        return OfsFileStorageService(ofs())
+    }
+
+    @Bean
     fun folderTaskExecutor(): UniqueTaskExecutor {
         return UniqueTaskExecutor(unittest)
     }
