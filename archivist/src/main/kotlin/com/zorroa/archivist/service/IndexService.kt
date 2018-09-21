@@ -251,6 +251,8 @@ class IndexServiceImpl  @Autowired  constructor (
         }
 
         val result = indexDao.index(spec.sources!!)
+        logger.info("Indexed result: {} task:{}", result, spec.taskId)
+
         spec.taskId?.let {
             val task = jobService.getTask(it)
             jobService.incrementAssetCounts(task, result)

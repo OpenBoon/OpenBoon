@@ -28,7 +28,7 @@ interface FileStorageService {
     /**
      * Use a FileStorage ID to get an existing FileStorage record
      *
-     * @param[id] The unqiue id of the storage element
+     * @param[id] The unique id of the storage element
      * @return a FileStorage object detailing the location of the storage
      */
     fun get(id: String) : FileStorage
