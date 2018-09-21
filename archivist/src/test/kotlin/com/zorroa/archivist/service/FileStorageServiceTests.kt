@@ -6,7 +6,6 @@ import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.util.FileUtils
 
 import org.junit.Test
-import java.io.File
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -31,7 +30,7 @@ class OfsFileStorageServiceTests : AbstractTest() {
         val spec = FileStorageSpec("proxy", "abc123", "jpg",
                 listOf("x", "100", "y", "100"))
         val fs = fileStorage.create(spec)
-        assertTrue(FileUtils.filename(fs.stream).endsWith("x_100_y_100.jpg"))
+        assertTrue(FileUtils.filename(fs.uri).endsWith("x_100_y_100.jpg"))
         assertEquals("image/jpeg", fs.mimeType)
     }
 
@@ -39,7 +38,7 @@ class OfsFileStorageServiceTests : AbstractTest() {
     fun testCreate() {
         val spec = FileStorageSpec("proxy", "abc123", "jpg", null)
         val fs = fileStorage.create(spec)
-        assertTrue(FileUtils.filename(fs.stream).endsWith(".jpg"))
+        assertTrue(FileUtils.filename(fs.uri).endsWith(".jpg"))
         assertEquals("image/jpeg", fs.mimeType)
         assertEquals("file", fs.scheme)
     }
@@ -58,7 +57,7 @@ class OfsFileStorageServiceTests : AbstractTest() {
         val spec = FileStorageSpec("proxy", "abc123", "jpg", listOf("x", "100", "y", "100"))
         val fs = fileStorage.create(spec)
         Files.copy(getTestImagePath().resolve("beer_kettle_01.jpg"),
-                Paths.get(URI(fs.stream)), StandardCopyOption.REPLACE_EXISTING)
+                Paths.get(URI(fs.uri)), StandardCopyOption.REPLACE_EXISTING)
         val stat = fileStorage.get(spec)
         assertTrue(stat.exists)
         assertEquals("image/jpeg", stat.mimeType)
