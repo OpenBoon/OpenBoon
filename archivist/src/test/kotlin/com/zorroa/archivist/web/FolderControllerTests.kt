@@ -107,7 +107,7 @@ class FolderControllerTests : MockMvcTest() {
 
         assertEquals(folder.id, id)
         assertEquals(folder.parentId, parentId)
-        assertEquals(folder.user, user)
+        assertEquals(folder.user.id, user.id)
         assertEquals(folder.name, name)
     }
 
