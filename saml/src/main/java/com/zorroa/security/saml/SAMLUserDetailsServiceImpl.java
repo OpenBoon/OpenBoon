@@ -40,7 +40,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
     UserRegistryService userRegistryService;
 
     @Autowired
-    private MetadataManager metadata;
+    MetadataManager metadata;
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);

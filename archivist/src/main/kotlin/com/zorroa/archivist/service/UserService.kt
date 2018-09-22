@@ -166,10 +166,21 @@ class UserRegistryServiceImpl @Autowired constructor(
     }
 
     fun importAndAssignPermissions(user: UserId, source: AuthSource, groups: List<String>) {
+        val perms = getAssignedPermissions(user, source, groups)
+        userService.setPermissions(user, perms, source.authSourceId)
+    }
 
+    fun getAssignedPermissions(user: UserId, source: AuthSource, groups: List<String>) : List<Permission> {
+        val mapping = properties.parseToMap("archivist.security.saml.permissions.map")
         val perms = mutableListOf<Permission>()
         for (group in groups) {
-            val parts = group.split(Permission.JOIN, limit = 2)
+
+            val parts = if (mapping.containsKey(group)) {
+                mapping.getValue(group).split(Permission.JOIN, limit = 2)
+            }
+            else {
+                group.split(Permission.JOIN, limit = 2)
+            }
 
             val spec = if (parts.size == 1) {
                 PermissionSpec(source.permissionType, parts[0])
@@ -185,10 +196,8 @@ class UserRegistryServiceImpl @Autowired constructor(
                 permissionService.createPermission(spec)
             })
         }
-
-        userService.setPermissions(user, perms, source.authSourceId)
+        return perms
     }
-
 
     companion object {
 
