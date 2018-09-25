@@ -204,8 +204,6 @@ class FieldServiceImpl @Autowired constructor(
         val result = mutableMapOf<String, Float>()
         val fields = getFields("asset")
 
-        logger.info("{}", fields)
-
         fields.getValue("keywords").forEach { v-> result[v] = 1.0f }
         for (field in fields.getValue("keywords-boost")) {
             val (key,boost) = field.split(':', limit=2)

@@ -321,7 +321,6 @@ class SearchServiceImpl @Autowired constructor(
 
                 result[name] = agg
             }
-
             val map = mutableMapOf("aggs" to search.aggs)
             val json = Json.serializeToString(map)
 
@@ -330,7 +329,7 @@ class SearchServiceImpl @Autowired constructor(
                      NamedXContentRegistry(searchModule.namedXContents), json)
 
             val ssb2 = SearchSourceBuilder.fromXContent(parser)
-            ssb2.aggregations().aggregatorFactories.forEach( { ssb.aggregation(it)})
+            ssb2.aggregations().aggregatorFactories.forEach { ssb.aggregation(it) }
         }
 
         if (search.postFilter != null) {
@@ -569,7 +568,8 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
-                if (!value.orEmpty().isEmpty()) {
+                val values = value.orEmpty().filterNotNull()
+                if (values.isNotEmpty()) {
                     val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), value)
                     query.must(termsQuery)
                 }
