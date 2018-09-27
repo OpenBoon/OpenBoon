@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
-class FileStorageController @Autowired constructor(
+class InternalFileController @Autowired constructor(
         private val internalFileStorageService: InternalFileStorageService) {
 
     @PostMapping("/api/v1/file-storage")
