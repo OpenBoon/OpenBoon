@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.config.ApplicationProperties
@@ -19,6 +20,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import java.io.FileInputStream
 import java.net.URI
+import java.net.URL
 import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Path
@@ -65,6 +67,8 @@ interface InternalFileStorageService {
     fun getReponseEntity(id: String) : ResponseEntity<InputStreamResource>
 
     fun copyTo(id: String, response: HttpServletResponse)
+
+    fun getSignedUrl(id: String, method: HttpMethod) : String
 
 }
 
@@ -136,6 +140,13 @@ class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: S
         }
     }
 
+    override fun getSignedUrl(id: String, method: HttpMethod) : String {
+        var uri = URI(buildUri(id))
+        val blob =  gcs.get(bucket, uri.path)
+        return blob.signUrl(10, TimeUnit.MINUTES,
+                Storage.SignUrlOption.httpMethod(method)).toString()
+    }
+
     fun buildUri(id: String): String {
         val org = getOrgId()
         val slashed = slashed(id)
@@ -190,6 +201,11 @@ class OfsFileStorageService @Autowired constructor(
         response.setContentLengthLong(Files.size(path))
         response.contentType = tika.detect(path)
         FileInputStream(ofsFile.file).copyTo(response.outputStream)
+    }
+
+    override fun getSignedUrl(id: String, method: HttpMethod) : String  {
+        val ofile = ofs.get(slashed(id))
+        return ofile.file.toURI().toString()
     }
 
     private fun buildFileStorage(ofile: OfsFile) : FileStorage {
