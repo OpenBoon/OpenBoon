@@ -25,7 +25,6 @@ import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFa
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
-import org.springframework.context.annotation.Primary
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
@@ -33,6 +32,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
+import java.lang.IllegalStateException
 import java.nio.file.Files
 import java.util.*
 
@@ -106,16 +106,42 @@ class ArchivistConfiguration {
         return adapter
     }
 
+
     @Bean
     fun ofs(): ObjectFileSystem {
-        val ufs = UUIDFileSystem(File(properties().getString("archivivst.storage.ofs.path")))
+        val path = properties().getPath("archivist.storage.local.path").resolve("ofs")
+        val ufs = UUIDFileSystem(path.toFile())
         ufs.init()
         return ufs
     }
 
+    /**
+     * Initialize the internal file storage system.  This is either "local" for a shared
+     * NFS mount or "gcs" for Google Cloud Storage.
+     */
     @Bean
-    fun fileStorageService() : FileStorageService {
-        return OfsFileStorageService(ofs())
+    fun fileStorageService() : InternalFileStorageService {
+        val props = properties()
+        val type = props.getString("archivist.storage.type")
+        return when(type) {
+            "local"-> {
+                val path = properties().getPath("archivist.storage.local.path").resolve("ofs")
+                logger.info("Initializing local storage: {}", path)
+                val ufs = UUIDFileSystem(path.toFile())
+                ufs.init()
+                OfsFileStorageService(ufs)
+            }
+            "gcs"-> {
+                logger.info("Initializing GCP storage")
+                val configPath = props.getPath("archivist.config.path")
+                val configFile = configPath.resolve("data-credentials.json")
+                GcsFileStorageService(configFile)
+            }
+            else -> {
+                throw IllegalStateException("Invalid storage type: $type")
+
+            }
+        }
     }
 
     @Bean

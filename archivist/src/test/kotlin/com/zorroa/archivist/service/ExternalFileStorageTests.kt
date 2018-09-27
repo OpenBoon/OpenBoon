@@ -5,7 +5,7 @@ import org.junit.Test
 import java.net.URI
 import kotlin.test.assertTrue
 
-class StorageRouterTests : AbstractTest() {
+class ExternalFileStorageTests : AbstractTest() {
 
     @Test
     fun getLocalFileStat() {

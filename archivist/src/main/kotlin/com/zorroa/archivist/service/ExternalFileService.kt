@@ -7,7 +7,6 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.common.schema.Proxy
-import io.minio.MinioClient
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,6 +27,9 @@ import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
 
+/**
+ * The ExternalFileService system is for serving source files that live in different repositories
+ */
 
 private val tika = Tika()
 
@@ -38,40 +40,36 @@ private val defaultContentType = "application/octet-steam"
  */
 data class ObjectStat(val size: Long, val contentType: String, val exists: Boolean)
 
-class ObjectFile (
-        val storageService: StorageService,
+class ExternalFile (
+        val externalFileService: ExternalFileService,
         val uri: URI) {
 
     fun exists() : Boolean {
-        return storageService.objectExists(uri)
+        return externalFileService.objectExists(uri)
     }
 
     fun isLocal() : Boolean {
-        return storageService.storedLocally
+        return externalFileService.storedLocally
     }
 
     fun getSignedUrl() : URL {
-        return storageService.getSignedUrl(uri)
+        return externalFileService.getSignedUrl(uri)
     }
 
     fun getReponseEntity() : ResponseEntity<InputStreamResource> {
-        return storageService.getReponseEntity(uri)
+        return externalFileService.getReponseEntity(uri)
     }
 
     fun copyTo(response: HttpServletResponse) {
-        return storageService.copyTo(uri, response)
-    }
-
-    fun copyTo(stream: OutputStream) {
-        return storageService.copyTo(uri, stream)
+        return externalFileService.copyTo(uri, response)
     }
 
     fun getLocalFile() : Path? {
-        return storageService.getLocalPath(uri)
+        return externalFileService.getLocalPath(uri)
     }
 
     fun getStat(): ObjectStat {
-        return storageService.getStat(uri)
+        return externalFileService.getStat(uri)
     }
 
     /**
@@ -108,9 +106,9 @@ interface StorageRouter {
         }
     }
 
-    fun getObjectFile(uri: URI): ObjectFile
-    fun getObjectFile(proxy: Proxy): ObjectFile
-    fun getObjectFile(doc: Document): ObjectFile
+    fun getObjectFile(uri: URI): ExternalFile
+    fun getObjectFile(proxy: Proxy): ExternalFile
+    fun getObjectFile(doc: Document): ExternalFile
 }
 
 @Component
@@ -118,31 +116,23 @@ class StorageRouterImpl @Autowired constructor (
         val properties: ApplicationProperties,
         ofs: ObjectFileSystem) : StorageRouter {
 
-    private val services : Map<String, StorageService>
-    private val types: Set<String> = properties.getList("archivist.storage.types").toSet()
+    private val services : Map<String, ExternalFileService>
 
     init {
-
         services = mutableMapOf()
-        if (types.contains("gcp")) {
+        val internalStorageType = properties.getString("archivist.storage.type")
+
+        if (internalStorageType== "gcp") {
             logger.info("Initializing storage: GCP")
             services["gcp"] = GcpStorageService(properties)
         }
-        if (types.contains("ofs")) {
-            logger.info("Initializing storage: OFS")
+        else {
             services["ofs"] = OfsStorageService(properties, ofs)
-        }
-        if (types.contains("local")) {
-            logger.info("Initializing storage: LOCAL")
-            services["local"] = LocalStorageService(properties)
-        }
-        if (types.contains("remote")) {
-            logger.info("Initializing storage: REMOTE")
-            services["remote"] = RemoteStorageService(properties)
+            services["local"] = LocalFileService(properties)
         }
     }
 
-    fun getStorageService(uri: URI) : StorageService {
+    fun getStorageService(uri: URI) : ExternalFileService {
         val type = when(uri.scheme) {
             "http", "https"-> {
                 if (uri.host.contains("google")) {
@@ -158,26 +148,28 @@ class StorageRouterImpl @Autowired constructor (
             else -> uri.scheme
         }
 
+        /*
         if (!types.contains(type)) {
-            throw ZorroaStorageException(
+            throw ZorroaExternalFileException(
                     "Unable to find storage service for: $type")
         }
+        */
 
-        return services[type] ?: throw ZorroaStorageException(
+        return services[type] ?: throw ZorroaExternalFileException(
                 "Unable to find storage service for: $type")
     }
 
-    override fun getObjectFile(uri: URI): ObjectFile {
+    override fun getObjectFile(uri: URI): ExternalFile {
         val service = getStorageService(uri)
-        return ObjectFile(service, uri)
+        return ExternalFile(service, uri)
     }
 
-    override fun getObjectFile(doc: Document): ObjectFile {
+    override fun getObjectFile(doc: Document): ExternalFile {
         val uri = getStorageUri(doc)
         return getObjectFile(uri)
     }
 
-    override fun getObjectFile(proxy: Proxy): ObjectFile {
+    override fun getObjectFile(proxy: Proxy): ExternalFile {
         val uri = getStorageUri(proxy)
         return getObjectFile(uri)
     }
@@ -187,7 +179,7 @@ class StorageRouterImpl @Autowired constructor (
     }
 }
 
-interface StorageService {
+interface ExternalFileService {
 
     val storedLocally : Boolean
 
@@ -206,57 +198,16 @@ interface StorageService {
     fun getStat(url: URI) : ObjectStat
 }
 
-open class ZorroaStorageException(override var message:String?) : RuntimeException(message) {
+open class ZorroaExternalFileException(override var message:String?) : RuntimeException(message) {
     constructor(e: Exception) : this(e.message) {
         this.initCause(e)
     }
 }
 
-class StorageReadException (override var message:String?) : ZorroaStorageException(message)
+class ExternalFileReadException (override var message:String?) : ZorroaExternalFileException(message)
 
-/**
- * A storage service that handles files stored on a remote http(s) server.
- * Not fully implemented
- */
-class RemoteStorageService @Autowired constructor (
-        val properties: ApplicationProperties) : StorageService {
-
-    override fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun copyTo(url: URI, response: HttpServletResponse) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun copyTo(url: URI, output: OutputStream) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun objectExists(url: URI): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getSignedUrl(url: URI): URL {
-       return url.toURL()
-    }
-
-    override fun getLocalPath(url: URI): Path? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getStat(url: URI): ObjectStat {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override val storedLocally: Boolean
-        get() = false
-
-
-
-}
-class LocalStorageService @Autowired constructor (
-        val properties: ApplicationProperties) : StorageService {
+class LocalFileService @Autowired constructor (
+        val properties: ApplicationProperties) : ExternalFileService {
 
     override val storedLocally: Boolean
         get() = true
@@ -307,7 +258,7 @@ class LocalStorageService @Autowired constructor (
 
 class OfsStorageService @Autowired constructor (
         val properties: ApplicationProperties,
-        val ofs: ObjectFileSystem) : StorageService {
+        val ofs: ObjectFileSystem) : ExternalFileService {
 
     override val storedLocally: Boolean
         get() = true
@@ -357,7 +308,7 @@ class OfsStorageService @Autowired constructor (
 
 
 class GcpStorageService constructor (
-        val properties: ApplicationProperties) : StorageService {
+        val properties: ApplicationProperties) : ExternalFileService {
 
     private val storage: Storage
     init {
@@ -378,7 +329,7 @@ class GcpStorageService constructor (
                     .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                     .body(InputStreamResource(Channels.newInputStream(blob.reader())))
         } else {
-            throw StorageReadException("$url not found")
+            throw ExternalFileReadException("$url not found")
         }
     }
 
@@ -389,7 +340,7 @@ class GcpStorageService constructor (
             response.contentType = blob.contentType
             Channels.newInputStream(blob.reader()).copyTo(response.outputStream)
         } else {
-            throw StorageReadException("$url not found")
+            throw ExternalFileReadException("$url not found")
         }
     }
 
@@ -398,7 +349,7 @@ class GcpStorageService constructor (
         if (blob != null) {
             Channels.newInputStream(blob.reader()).copyTo(output)
         } else {
-            throw StorageReadException("$url not found")
+            throw ExternalFileReadException("$url not found")
         }
     }
 
@@ -409,7 +360,7 @@ class GcpStorageService constructor (
                     Storage.SignUrlOption.httpMethod(HttpMethod.GET))
         }
         else {
-            throw StorageReadException("$url not found")
+            throw ExternalFileReadException("$url not found")
         }
     }
 
@@ -451,48 +402,4 @@ class GcpStorageService constructor (
     companion object {
         private val logger = LoggerFactory.getLogger(GcpStorageService::class.java)
     }
-}
-
-
-class MinioStorageImpl @Autowired constructor (
-        val properties: ApplicationProperties) : StorageService {
-
-    override val storedLocally: Boolean
-        get() = false
-
-
-    override fun getStat(url: URI): ObjectStat {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun copyTo(url: URI, response: HttpServletResponse) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun copyTo(url: URI, output: OutputStream) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getSignedUrl(url: URI): URL {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun objectExists(url: URI): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getLocalPath(url: URI): Path? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
-    private val client: MinioClient = MinioClient(
-            properties.getString("archivist.storage.minio.endpoint"),
-            properties.getString("archivist.storage.minio.accessKey"),
-            properties.getString("archivist.storage.minio.secretKey"))
-
 }

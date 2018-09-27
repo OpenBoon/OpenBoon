@@ -61,7 +61,7 @@ class AssetController @Autowired constructor(
         get() = indexService.getMapping()
 
 
-    fun getPreferredFormat(asset: Document, forceProxy: Boolean): ObjectFile? {
+    fun getPreferredFormat(asset: Document, forceProxy: Boolean): ExternalFile? {
 
         return if (forceProxy) {
             getProxyStream(asset)
@@ -70,7 +70,7 @@ class AssetController @Autowired constructor(
         }
     }
 
-    fun getProxyStream(asset: Document): ObjectFile? {
+    fun getProxyStream(asset: Document): ExternalFile? {
         // If the file doesn't have a proxy this will throw.
         val proxies = asset.getAttr("proxies", ProxySchema::class.java)
 
