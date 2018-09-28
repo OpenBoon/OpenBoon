@@ -14,25 +14,25 @@ import com.zorroa.archivist.filesystem.OfsFile
 import com.zorroa.archivist.security.getOrgId
 import org.apache.tika.Tika
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.CacheControl
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import java.io.FileInputStream
 import java.net.URI
-import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit
-import javax.servlet.http.HttpServletResponse
 
 private val tika = Tika()
 private val uuid3 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
+/**
+ * Utility method for replacing slashes with triple ___ in proxy IDs
+ */
 private inline fun unslashed(id: String) : String {
     return id.replace("/", "___")
 }
 
+/**
+ * Utility method for replacing ___ with triple / in proxy IDs
+ */
 private inline fun slashed(id: String) : String {
     return id.replace("___", "/")
 }
@@ -63,10 +63,12 @@ interface InternalFileStorageService {
      */
     fun get(id: String) : FileStorage
 
-    fun getReponseEntity(id: String) : ResponseEntity<InputStreamResource>
-
-    fun copyTo(id: String, response: HttpServletResponse)
-
+    /**
+     * In order to read/write this image, callers need a signed URL.
+     * @param[id] The unique id of the storage element
+     * @param[method] The http method (put to write, get to read)
+     * @return a FileStorage object detailing the location of the storage
+     */
     fun getSignedUrl(id: String, method: HttpMethod) : String
 
 }
@@ -113,32 +115,6 @@ class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: S
         return FileStorage(unslashed(id), buildUri(id), "gs", tika.detect(id), -1, false)
     }
 
-    override fun getReponseEntity(id: String): ResponseEntity<InputStreamResource> {
-        var uri = URI(buildUri(id))
-        val blob =  gcs.get(bucket, uri.path)
-        if (blob != null) {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(blob.contentType))
-                    .contentLength(blob.size)
-                    .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                    .body(InputStreamResource(Channels.newInputStream(blob.reader())))
-        } else {
-            throw ExternalFileReadException("$id not found")
-        }
-    }
-
-    override fun copyTo(id: String, response: HttpServletResponse) {
-        var uri = URI(buildUri(id))
-        val blob =  gcs.get(bucket, uri.path)
-        if (blob != null) {
-            response.setContentLengthLong(blob.size)
-            response.contentType = blob.contentType
-            Channels.newInputStream(blob.reader()).copyTo(response.outputStream)
-        } else {
-            throw ExternalFileReadException("$id not found")
-        }
-    }
-
     override fun getSignedUrl(id: String, method: HttpMethod) : String {
         var uri = URI(buildUri(id))
         val blob =  gcs.get(bucket, uri.path)
@@ -182,24 +158,6 @@ class OfsFileStorageService @Autowired constructor(
     override fun get(id: String) : FileStorage {
         val ofile = ofs.get(slashed(id))
         return buildFileStorage(ofile)
-    }
-
-    override fun getReponseEntity(id: String): ResponseEntity<InputStreamResource> {
-        val ofsFile = ofs.get(slashed(id))
-        val path = ofsFile.file.toPath()
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(tika.detect(path)))
-                .contentLength(Files.size(path))
-                .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                .body(InputStreamResource(FileInputStream(path.toFile())))
-    }
-
-    override fun copyTo(id: String, response: HttpServletResponse) {
-        val ofsFile = ofs.get(slashed(id))
-        val path = ofsFile.file.toPath()
-        response.setContentLengthLong(Files.size(path))
-        response.contentType = tika.detect(path)
-        FileInputStream(ofsFile.file).copyTo(response.outputStream)
     }
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String  {

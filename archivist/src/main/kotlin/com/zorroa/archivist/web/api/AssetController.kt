@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
+import java.net.URI
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -41,7 +42,8 @@ class AssetController @Autowired constructor(
         private val logService: EventLogService,
         private val imageService: ImageService,
         private val fieldService: FieldService,
-        private val storageRouter: StorageRouter
+        private val storageRouter: StorageRouter,
+        private val internalFileStorageService: InternalFileStorageService
 ){
     /**
      * Describes a file to stream.
@@ -62,25 +64,29 @@ class AssetController @Autowired constructor(
 
 
     fun getPreferredFormat(asset: Document, forceProxy: Boolean): ExternalFile? {
+        if (forceProxy) {
+            val proxy = getProxyStream(asset)
+             if (proxy != null) {
+                 return storageRouter.getObjectFile(URI(proxy.uri))
+             }
 
-        return if (forceProxy) {
-            getProxyStream(asset)
         } else  {
-            storageRouter.getObjectFile(storageRouter.getStorageUri(asset))
+            return storageRouter.getObjectFile(storageRouter.getStorageUri(asset))
         }
+
+        return null
     }
 
-    fun getProxyStream(asset: Document): ExternalFile? {
+    fun getProxyStream(asset: Document): FileStorage? {
         // If the file doesn't have a proxy this will throw.
         val proxies = asset.getAttr("proxies", ProxySchema::class.java)
 
         if (proxies != null) {
             val largest = proxies.getLargest()
             if (largest != null) {
-                return storageRouter.getObjectFile(storageRouter.getStorageUri(largest))
+                internalFileStorageService.get(largest.id!!)
             }
         }
-
         return null
     }
 
@@ -92,6 +98,7 @@ class AssetController @Autowired constructor(
 
         val asset = indexService.get(id)
         val canExport = canExport(asset)
+
         val ofile = getPreferredFormat(asset, !canExport)
 
         if (ofile == null) {
@@ -99,6 +106,9 @@ class AssetController @Autowired constructor(
         }
         else {
             if (request.method == "HEAD") {
+                /**
+                 * Only non-local files need to be signed.
+                 */
                 if (!ofile.isLocal()) {
                     response.setHeader("X-Zorroa-Signed-URL", ofile.getSignedUrl().toString())
                 }

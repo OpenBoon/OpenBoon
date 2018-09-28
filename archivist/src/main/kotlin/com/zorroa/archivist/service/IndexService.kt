@@ -82,6 +82,7 @@ class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
         private val permissionDao: PermissionDao,
         private val storageRouter: StorageRouter,
+        private val internalFileStorageService: InternalFileStorageService,
         private val jobService: JobService
 
 ) : IndexService {
@@ -315,7 +316,8 @@ class IndexServiceImpl  @Autowired  constructor (
         val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
         if (proxySchema != null) {
             for (proxy in proxySchema.proxies!!) {
-                val ofile = storageRouter.getObjectFile(proxy)
+                val storage = internalFileStorageService.get(proxy.id!!)
+                val ofile = storageRouter.getObjectFile(storage.uri)
                 if (!ofile.delete()) {
                     logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
                 }

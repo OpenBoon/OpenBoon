@@ -85,15 +85,6 @@ class ExternalFile (
  */
 interface StorageRouter {
 
-    fun getStorageUri(proxy: Proxy) : URI {
-        return if (proxy.stream != null) {
-            URI(proxy.stream)
-        }
-        else {
-            URI("ofs://${proxy.id}")
-        }
-    }
-
     fun getStorageUri(doc: Document) : URI {
         val stream = doc.getAttr("source.stream", String::class.java)
 
@@ -107,8 +98,10 @@ interface StorageRouter {
     }
 
     fun getObjectFile(uri: URI): ExternalFile
-    fun getObjectFile(proxy: Proxy): ExternalFile
     fun getObjectFile(doc: Document): ExternalFile
+    fun getObjectFile(uri: String) : ExternalFile {
+        return this.getObjectFile(URI(uri))
+    }
 }
 
 @Component
@@ -127,7 +120,6 @@ class StorageRouterImpl @Autowired constructor (
             services["gcp"] = GcpStorageService(properties)
         }
         else {
-            services["ofs"] = OfsStorageService(properties, ofs)
             services["local"] = LocalFileService(properties)
         }
     }
@@ -166,11 +158,6 @@ class StorageRouterImpl @Autowired constructor (
 
     override fun getObjectFile(doc: Document): ExternalFile {
         val uri = getStorageUri(doc)
-        return getObjectFile(uri)
-    }
-
-    override fun getObjectFile(proxy: Proxy): ExternalFile {
-        val uri = getStorageUri(proxy)
         return getObjectFile(uri)
     }
 
@@ -254,58 +241,6 @@ class LocalFileService @Autowired constructor (
        }
     }
 }
-
-
-class OfsStorageService @Autowired constructor (
-        val properties: ApplicationProperties,
-        val ofs: ObjectFileSystem) : ExternalFileService {
-
-    override val storedLocally: Boolean
-        get() = true
-
-    override fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource> {
-        val ofsFile = ofs.get(url.toString())
-        val path = ofsFile.file.toPath()
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(tika.detect(path)))
-                .contentLength(Files.size(path))
-                .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                .body(InputStreamResource(FileInputStream(path.toFile())))
-    }
-
-    override fun copyTo(url: URI, response: HttpServletResponse) {
-        val ofsFile = ofs.get(url.toString())
-        val path = ofsFile.file.toPath()
-        response.setContentLengthLong(Files.size(path))
-        response.contentType = tika.detect(path)
-        FileInputStream(ofsFile.file).copyTo(response.outputStream)
-    }
-
-    override fun copyTo(url: URI, output: OutputStream) {
-        val ofsFile = ofs.get(url.toString())
-        FileInputStream(ofsFile.file).copyTo(output)
-    }
-
-    override fun objectExists(url: URI): Boolean {
-        val ofsFile = ofs.get(url.toString())
-        return ofsFile.exists()
-    }
-
-    override fun getSignedUrl(url: URI): URL {
-        return url.toURL()
-    }
-
-    override fun getLocalPath(url: URI): Path? {
-        val ofsFile = ofs.get(url.toString())
-        return ofsFile.file.toPath()
-    }
-
-    override fun getStat(url: URI): ObjectStat {
-        val path = getLocalPath(url)
-        return ObjectStat(Files.size(path), tika.detect(path), objectExists(url))
-    }
-}
-
 
 class GcpStorageService constructor (
         val properties: ApplicationProperties) : ExternalFileService {

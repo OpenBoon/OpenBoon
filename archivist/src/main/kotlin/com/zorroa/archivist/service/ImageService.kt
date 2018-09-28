@@ -22,6 +22,7 @@ import java.awt.Font
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.*
+import java.net.URI
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,6 +56,7 @@ interface ImageService {
 @Service
 class ImageServiceImpl @Autowired constructor(
         private val internalFileStorageService: InternalFileStorageService,
+        private val storageRouter: StorageRouter,
         private val properties: ApplicationProperties,
         private val eventBus: EventBus
 
@@ -96,7 +98,11 @@ class ImageServiceImpl @Autowired constructor(
 
     @Throws(IOException::class)
     override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
-        return internalFileStorageService.getReponseEntity(proxy.id as String)
+        val st = internalFileStorageService.get(proxy.id!!)
+        if (logger.isDebugEnabled) {
+            logger.debug("Serving proxy: {}", st)
+        }
+        return storageRouter.getObjectFile(st.uri).getReponseEntity()
     }
 
     @Throws(IOException::class)
