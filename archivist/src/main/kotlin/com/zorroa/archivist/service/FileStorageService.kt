@@ -24,20 +24,6 @@ private val tika = Tika()
 private val uuid3 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
 /**
- * Utility method for replacing slashes with triple ___ in proxy IDs
- */
-private inline fun unslashed(id: String) : String {
-    return id.replace("/", "___")
-}
-
-/**
- * Utility method for replacing ___ with triple / in proxy IDs
- */
-private inline fun slashed(id: String) : String {
-    return id.replace("___", "/")
-}
-
-/**
  * The FileStorageService is for storing files associated with assets.  This
  * is typically used for proxies.
  *
@@ -186,6 +172,20 @@ class OfsFileStorageService @Autowired constructor(
                 size,
                 size != -1L)
     }
+}
+
+/**
+ * Utility method for replacing slashes with triple ___ in proxy IDs
+ */
+private inline fun unslashed(id: String) : String {
+    return id.replace("/", "___")
+}
+
+/**
+ * Utility method for replacing ___ with triple / in proxy IDs
+ */
+private inline fun slashed(id: String) : String {
+    return id.replace("___", "/")
 }
 
 
