@@ -37,8 +37,12 @@ private inline fun slashed(id: String) : String {
     return id.replace("___", "/")
 }
 
-
-interface InternalFileStorageService {
+/**
+ * The FileStorageService is for storing files associated with assets.  This
+ * is typically used for proxies.
+ *
+ */
+interface FileStorageService {
     /**
      * Allocates new file storage.
      *
@@ -73,7 +77,7 @@ interface InternalFileStorageService {
 
 }
 
-class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: String?=null) : InternalFileStorageService {
+class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: String?=null) : FileStorageService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
@@ -143,7 +147,7 @@ class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: S
 }
 
 class OfsFileStorageService @Autowired constructor(
-        private val ofs: ObjectFileSystem): InternalFileStorageService {
+        private val ofs: ObjectFileSystem): FileStorageService {
 
     override fun create(spec: FileStorageSpec) : FileStorage {
         val ofile = ofs.prepare(spec.category, spec.name, spec.type, spec.variants)

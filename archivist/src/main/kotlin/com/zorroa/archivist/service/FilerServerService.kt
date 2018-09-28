@@ -5,8 +5,6 @@ import com.google.cloud.storage.*
 import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.filesystem.ObjectFileSystem
-import com.zorroa.common.schema.Proxy
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,7 +26,7 @@ import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
 
 /**
- * The ExternalFileService system is for serving source files that live in different repositories
+ * The FileServerService system is for serving source files that live in different repositories
  */
 
 private val tika = Tika()
@@ -40,36 +38,36 @@ private val defaultContentType = "application/octet-steam"
  */
 data class ObjectStat(val size: Long, val contentType: String, val exists: Boolean)
 
-class ExternalFile (
-        val externalFileService: ExternalFileService,
+class ServableFile (
+        val fileServerService: FileServerService,
         val uri: URI) {
 
     fun exists() : Boolean {
-        return externalFileService.objectExists(uri)
+        return fileServerService.objectExists(uri)
     }
 
     fun isLocal() : Boolean {
-        return externalFileService.storedLocally
+        return fileServerService.storedLocally
     }
 
     fun getSignedUrl() : URL {
-        return externalFileService.getSignedUrl(uri)
+        return fileServerService.getSignedUrl(uri)
     }
 
     fun getReponseEntity() : ResponseEntity<InputStreamResource> {
-        return externalFileService.getReponseEntity(uri)
+        return fileServerService.getReponseEntity(uri)
     }
 
     fun copyTo(response: HttpServletResponse) {
-        return externalFileService.copyTo(uri, response)
+        return fileServerService.copyTo(uri, response)
     }
 
     fun getLocalFile() : Path? {
-        return externalFileService.getLocalPath(uri)
+        return fileServerService.getLocalPath(uri)
     }
 
     fun getStat(): ObjectStat {
-        return externalFileService.getStat(uri)
+        return fileServerService.getStat(uri)
     }
 
     /**
@@ -81,9 +79,9 @@ class ExternalFile (
 }
 
 /**
- * StorageRouter handles abstracting GCP, AWS, File/NFS, and HTTP based repositories.
+ * FileServerProvider handles proving a proper FileServerService based on a given URI.
  */
-interface StorageRouter {
+interface FileServerProvider {
 
     fun getStorageUri(doc: Document) : URI {
         val stream = doc.getAttr("source.stream", String::class.java)
@@ -97,19 +95,18 @@ interface StorageRouter {
         }
     }
 
-    fun getObjectFile(uri: URI): ExternalFile
-    fun getObjectFile(doc: Document): ExternalFile
-    fun getObjectFile(uri: String) : ExternalFile {
-        return this.getObjectFile(URI(uri))
+    fun getServableFile(uri: URI): ServableFile
+    fun getServableFile(doc: Document): ServableFile
+    fun getServableFile(uri: String) : ServableFile {
+        return this.getServableFile(URI(uri))
     }
 }
 
 @Component
-class StorageRouterImpl @Autowired constructor (
-        val properties: ApplicationProperties,
-        ofs: ObjectFileSystem) : StorageRouter {
+class FileServerProviderImpl @Autowired constructor (
+        val properties: ApplicationProperties) : FileServerProvider {
 
-    private val services : Map<String, ExternalFileService>
+    private val services : Map<String, FileServerService>
 
     init {
         services = mutableMapOf()
@@ -117,14 +114,15 @@ class StorageRouterImpl @Autowired constructor (
 
         if (internalStorageType== "gcp") {
             logger.info("Initializing storage: GCP")
-            services["gcp"] = GcpStorageService(properties)
+            services["gcp"] = GcpFileServerService(properties)
         }
         else {
-            services["local"] = LocalFileService(properties)
+            logger.info("Initializing storage: LOCAL")
+            services["local"] = LocalFileServerService(properties)
         }
     }
 
-    fun getStorageService(uri: URI) : ExternalFileService {
+    fun getStorageService(uri: URI) : FileServerService {
         val type = when(uri.scheme) {
             "http", "https"-> {
                 if (uri.host.contains("google")) {
@@ -142,31 +140,35 @@ class StorageRouterImpl @Autowired constructor (
 
         /*
         if (!types.contains(type)) {
-            throw ZorroaExternalFileException(
+            throw FileServerException(
                     "Unable to find storage service for: $type")
         }
         */
 
-        return services[type] ?: throw ZorroaExternalFileException(
+        return services[type] ?: throw FileServerException(
                 "Unable to find storage service for: $type")
     }
 
-    override fun getObjectFile(uri: URI): ExternalFile {
+    override fun getServableFile(uri: URI): ServableFile {
         val service = getStorageService(uri)
-        return ExternalFile(service, uri)
+        return ServableFile(service, uri)
     }
 
-    override fun getObjectFile(doc: Document): ExternalFile {
+    override fun getServableFile(doc: Document): ServableFile {
         val uri = getStorageUri(doc)
-        return getObjectFile(uri)
+        return getServableFile(uri)
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(StorageRouterImpl::class.java)
+        private val logger = LoggerFactory.getLogger(FileServerProviderImpl::class.java)
     }
 }
 
-interface ExternalFileService {
+/**
+ * Implementations of the FileServerService are responsible for serving files to the client,
+ * be they internally stored files or external files.
+ */
+interface FileServerService {
 
     val storedLocally : Boolean
 
@@ -185,16 +187,8 @@ interface ExternalFileService {
     fun getStat(url: URI) : ObjectStat
 }
 
-open class ZorroaExternalFileException(override var message:String?) : RuntimeException(message) {
-    constructor(e: Exception) : this(e.message) {
-        this.initCause(e)
-    }
-}
-
-class ExternalFileReadException (override var message:String?) : ZorroaExternalFileException(message)
-
-class LocalFileService @Autowired constructor (
-        val properties: ApplicationProperties) : ExternalFileService {
+class LocalFileServerService @Autowired constructor (
+        val properties: ApplicationProperties) : FileServerService {
 
     override val storedLocally: Boolean
         get() = true
@@ -242,8 +236,8 @@ class LocalFileService @Autowired constructor (
     }
 }
 
-class GcpStorageService constructor (
-        val properties: ApplicationProperties) : ExternalFileService {
+class GcpFileServerService constructor (
+        val properties: ApplicationProperties) : FileServerService {
 
     private val storage: Storage
     init {
@@ -264,7 +258,7 @@ class GcpStorageService constructor (
                     .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                     .body(InputStreamResource(Channels.newInputStream(blob.reader())))
         } else {
-            throw ExternalFileReadException("$url not found")
+            throw FileServerReadException("$url not found")
         }
     }
 
@@ -275,7 +269,7 @@ class GcpStorageService constructor (
             response.contentType = blob.contentType
             Channels.newInputStream(blob.reader()).copyTo(response.outputStream)
         } else {
-            throw ExternalFileReadException("$url not found")
+            throw FileServerReadException("$url not found")
         }
     }
 
@@ -284,7 +278,7 @@ class GcpStorageService constructor (
         if (blob != null) {
             Channels.newInputStream(blob.reader()).copyTo(output)
         } else {
-            throw ExternalFileReadException("$url not found")
+            throw FileServerReadException("$url not found")
         }
     }
 
@@ -295,7 +289,7 @@ class GcpStorageService constructor (
                     Storage.SignUrlOption.httpMethod(HttpMethod.GET))
         }
         else {
-            throw ExternalFileReadException("$url not found")
+            throw FileServerReadException("$url not found")
         }
     }
 
@@ -335,6 +329,15 @@ class GcpStorageService constructor (
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(GcpStorageService::class.java)
+        private val logger = LoggerFactory.getLogger(GcpFileServerService::class.java)
     }
 }
+
+open class FileServerException(override var message:String?) : RuntimeException(message) {
+    constructor(e: Exception) : this(e.message) {
+        this.initCause(e)
+    }
+}
+
+class FileServerReadException (override var message:String?) : FileServerException(message)
+

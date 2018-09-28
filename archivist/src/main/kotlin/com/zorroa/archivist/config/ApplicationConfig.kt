@@ -120,7 +120,7 @@ class ArchivistConfiguration {
      * NFS mount or "gcs" for Google Cloud Storage.
      */
     @Bean
-    fun fileStorageService() : InternalFileStorageService {
+    fun fileStorageService() : FileStorageService {
         val props = properties()
         val type = props.getString("archivist.storage.type")
         return when(type) {

@@ -42,8 +42,8 @@ class AssetController @Autowired constructor(
         private val logService: EventLogService,
         private val imageService: ImageService,
         private val fieldService: FieldService,
-        private val storageRouter: StorageRouter,
-        private val internalFileStorageService: InternalFileStorageService
+        private val fileServerProvider: FileServerProvider,
+        private val fileStorageService: FileStorageService
 ){
     /**
      * Describes a file to stream.
@@ -63,15 +63,15 @@ class AssetController @Autowired constructor(
         get() = indexService.getMapping()
 
 
-    fun getPreferredFormat(asset: Document, forceProxy: Boolean): ExternalFile? {
+    fun getPreferredFormat(asset: Document, forceProxy: Boolean): ServableFile? {
         if (forceProxy) {
             val proxy = getProxyStream(asset)
              if (proxy != null) {
-                 return storageRouter.getObjectFile(URI(proxy.uri))
+                 return fileServerProvider.getServableFile(URI(proxy.uri))
              }
 
         } else  {
-            return storageRouter.getObjectFile(storageRouter.getStorageUri(asset))
+            return fileServerProvider.getServableFile(fileServerProvider.getStorageUri(asset))
         }
 
         return null
@@ -84,7 +84,7 @@ class AssetController @Autowired constructor(
         if (proxies != null) {
             val largest = proxies.getLargest()
             if (largest != null) {
-                internalFileStorageService.get(largest.id!!)
+                fileStorageService.get(largest.id!!)
             }
         }
         return null
