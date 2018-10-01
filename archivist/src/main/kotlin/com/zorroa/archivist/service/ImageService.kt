@@ -54,7 +54,8 @@ interface ImageService {
  */
 @Service
 class ImageServiceImpl @Autowired constructor(
-        private val storageRouter: StorageRouter,
+        private val fileStorageService: FileStorageService,
+        private val fileServerProvider: FileServerProvider,
         private val properties: ApplicationProperties,
         private val eventBus: EventBus
 
@@ -96,7 +97,11 @@ class ImageServiceImpl @Autowired constructor(
 
     @Throws(IOException::class)
     override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
-        return storageRouter.getObjectFile(proxy).getReponseEntity()
+        val st = fileStorageService.get(proxy.id!!)
+        if (logger.isDebugEnabled) {
+            logger.debug("Serving proxy: {}", st)
+        }
+        return fileServerProvider.getServableFile(st.uri).getReponseEntity()
     }
 
     @Throws(IOException::class)

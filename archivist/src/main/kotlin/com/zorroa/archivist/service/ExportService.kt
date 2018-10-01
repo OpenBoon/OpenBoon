@@ -29,8 +29,7 @@ class ExportServiceImpl @Autowired constructor(
         private val indexDao: IndexDao,
         private val exportFileDao: ExportFileDao,
         private val txm : TransactionEventManager,
-        private val jobService: JobService,
-        private val storageRouter: StorageRouter
+        private val jobService: JobService
         ) : ExportService {
 
     @Autowired

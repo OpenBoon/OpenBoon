@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain
 
+import java.util.*
+
 /**
  * The attributes needed to register storage.
  *
@@ -12,7 +14,8 @@ class FileStorageSpec(
         val category: String,
         val name: String,
         val type: String,
-        val variants:List<String>?=null
+        val variants: List<String>?=null,
+        var assetId: UUID?=null
 
 ) {
     override fun toString(): String {
@@ -31,8 +34,8 @@ class FileStorageSpec(
  * @property exists: If the file exists or not.
  */
 class FileStorage(
-        val uri: String,
         val id: String,
+        val uri: String,
         val scheme: String,
         val mimeType: String,
         val size: Long,

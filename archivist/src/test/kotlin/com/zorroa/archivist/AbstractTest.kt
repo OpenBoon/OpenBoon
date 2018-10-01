@@ -61,7 +61,7 @@ open abstract class AbstractTest {
     protected lateinit var userService: UserService
 
     @Autowired
-    protected lateinit var storageRouter: StorageRouter
+    protected lateinit var fileServerProvider: FileServerProvider
 
     @Autowired
     protected lateinit var permissionService: PermissionService

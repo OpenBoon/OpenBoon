@@ -15,7 +15,7 @@ import java.util.List;
 public interface ObjectFileSystem {
 
     /**
-     * Return an ObjectFile for storing a file with the given arguments.  The directory
+     * Return an ServableFile for storing a file with the given arguments.  The directory
      * for storing th file is created automatically.
      *
      * @param category
