@@ -2,28 +2,26 @@
 version: '3'
 services:
 
-  ## Unit testing services.
-
-  # Elastic Search instance used by the unit tests.
-  test-es:
+  # Elastic Search instance used for local devlopment servers.
+  es:
     build:
       context: elasticsearch
       args:
         node_type: single
     ports:
-      - "39200:9200"
-      - "39300:9300"
+      - "9200:9200"
+      - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
 
-  # Postgres instance used by the unit tests.
-  test-postgres:
+  # Postgres instance used for local devleopment servers.
+  postgres:
     image: "postgres:9.6.9"
-    hostname: "localhost"
     ports:
-     - "35432:5432"
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: zorroa
       POSTGRES_USER: zorroa
       POSTGRES_DB: zorroa
+      PGDATA: /var/lib/postgresql/data/pgdata
 
