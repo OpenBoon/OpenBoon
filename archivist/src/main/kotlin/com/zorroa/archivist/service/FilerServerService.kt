@@ -118,18 +118,11 @@ class FileServerProviderImpl @Autowired constructor (
             logger.info("Initializing storage: LOCAL")
             services["local"] = LocalFileServerService(properties)
         }
+
     }
 
     fun getStorageService(uri: URI) : FileServerService {
         val type = when(uri.scheme) {
-            "http", "https"-> {
-                if (uri.host.contains("google")) {
-                    "gcp"
-                }
-                else {
-                    "remote"
-                }
-            }
             "gs" -> "gcp"
             "file" -> "local"
             null->"local"
@@ -232,9 +225,16 @@ class GcpFileServerService constructor (
 
     private val storage: Storage
     init {
-        val configPath = properties.getPath("archivist.config.path")
-        storage = StorageOptions.newBuilder().setCredentials(
-                GoogleCredentials.fromStream(FileInputStream(configPath.resolve("data-credentials.json").toFile()))).build().service
+        val configPath = properties.getPath("archivist.config.path").resolve("data-credentials.json")
+        storage = if (Files.exists(configPath)) {
+            StorageOptions.newBuilder().setCredentials(
+                    GoogleCredentials.fromStream(FileInputStream(
+                            configPath.resolve("data-credentials.json").toFile()))).build().service
+        }
+        else {
+            StorageOptions.newBuilder().build().service
+        }
+
     }
 
     override val storedLocally: Boolean
@@ -298,10 +298,9 @@ class GcpFileServerService constructor (
     }
 
     private fun splitGcpUrl(url: URI) : Array<String> {
-        val path = url.path
         return arrayOf (
-            path.substring(path.indexOf('/') + 1, path.indexOf('/', 1)),
-            path.substring(path.indexOf('/', 1) + 1)
+            url.authority,
+            url.path
         )
     }
 

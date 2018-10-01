@@ -342,7 +342,11 @@ class AssetControllerTests : MockMvcTest() {
         }
     }
 
+    /**
+     * Ignoring until we have good way to test this.
+     */
     @Test
+    @Ignore
     @Throws(Exception::class)
     fun testStreamHeadRequest() {
         val session = admin()
