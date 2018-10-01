@@ -18,7 +18,8 @@ interface DispatcherService {
     fun startTask(task: TaskId) : Boolean
     fun stopTask(task: TaskId, exitStatus: Int) : Boolean
     fun handleEvent(event: TaskEvent)
-    fun expand(job: Job, script: ZpsScript) : Task
+    fun expand(parentTask: Task, script: ZpsScript) : Task
+    fun expand(job: JobId, script: ZpsScript) : Task
 }
 
 @Service
@@ -77,11 +78,27 @@ class DispatcherServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun expand(job: Job, script: ZpsScript) : Task {
-        val task =  taskDao.create(job, TaskSpec(zpsTaskName(script), script))
-        logger.info("Expanding job: {} with task: {}", job.id, task.id)
-        return task
+    override fun expand(parentTask: Task, script: ZpsScript) : Task {
+
+        if (script.execute.orEmpty().isEmpty()) {
+            val parentScript = taskDao.getScript(parentTask.id)
+            script.inline = true
+            script.execute = parentScript.execute
+            script.globals = parentScript.globals
+            script.type = parentScript.type
+        }
+
+        val newTask =  taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
+        logger.info("Expanding parent task: {} with task: {}", parentTask.id, newTask.id)
+        return newTask
     }
+
+    override fun expand(job: JobId, script: ZpsScript) : Task {
+        val newTask =  taskDao.create(job, TaskSpec(zpsTaskName(script), script))
+        logger.info("Expanding job: {} with task: {}", job.jobId, newTask.id)
+        return newTask
+    }
+
 
     override fun handleEvent(event: TaskEvent) {
         val task = taskDao.get(event.taskId)
@@ -97,9 +114,9 @@ class DispatcherServiceImpl @Autowired constructor(
                 taskErrorDao.create(event, payload)
             }
             TaskEventType.EXPAND -> {
-                val job = jobDao.get(task.jobId)
+                val task = taskDao.get(task.id)
                 val script = Json.Mapper.convertValue<ZpsScript>(event.payload)
-                expand(job, script)
+                expand(task, script)
             }
             TaskEventType.MESSAGE -> {
                 val message = Json.Mapper.convertValue<TaskMessageEvent>(event.payload)
