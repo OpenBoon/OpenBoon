@@ -31,15 +31,15 @@ import javax.servlet.http.HttpServletResponse
 
 private val tika = Tika()
 
-private val defaultContentType = "application/octet-steam"
+private const val defaultContentType = "application/octet-steam"
+
+data class FileStat(val size: Long, val contentType: String, val exists: Boolean)
 
 /**
  * On object that can be stored somewhere in the vast reaches of the interweb.
  */
-data class ObjectStat(val size: Long, val contentType: String, val exists: Boolean)
-
 class ServableFile (
-        val fileServerService: FileServerService,
+        private val fileServerService: FileServerService,
         val uri: URI) {
 
     fun exists() : Boolean {
@@ -66,7 +66,7 @@ class ServableFile (
         return fileServerService.getLocalPath(uri)
     }
 
-    fun getStat(): ObjectStat {
+    fun getStat(): FileStat {
         return fileServerService.getStat(uri)
     }
 
@@ -97,9 +97,7 @@ interface FileServerProvider {
 
     fun getServableFile(uri: URI): ServableFile
     fun getServableFile(doc: Document): ServableFile
-    fun getServableFile(uri: String) : ServableFile {
-        return this.getServableFile(URI(uri))
-    }
+    fun getServableFile(uri: String) : ServableFile = getServableFile(URI(uri))
 }
 
 @Component
@@ -137,13 +135,6 @@ class FileServerProviderImpl @Autowired constructor (
             null->"local"
             else -> uri.scheme
         }
-
-        /*
-        if (!types.contains(type)) {
-            throw FileServerException(
-                    "Unable to find storage service for: $type")
-        }
-        */
 
         return services[type] ?: throw FileServerException(
                 "Unable to find storage service for: $type")
@@ -184,7 +175,7 @@ interface FileServerService {
 
     fun getLocalPath(url: URI) : Path?
 
-    fun getStat(url: URI) : ObjectStat
+    fun getStat(url: URI) : FileStat
 }
 
 class LocalFileServerService @Autowired constructor (
@@ -226,12 +217,12 @@ class LocalFileServerService @Autowired constructor (
       return Paths.get(url)
     }
 
-    override fun getStat(url: URI): ObjectStat {
+    override fun getStat(url: URI): FileStat {
        return try {
            val path = getLocalPath(url)
-           ObjectStat(Files.size(path), tika.detect(path), objectExists(url))
+           FileStat(Files.size(path), tika.detect(path), objectExists(url))
        } catch (e: Exception) {
-           ObjectStat(0, defaultContentType, false)
+           FileStat(0, defaultContentType, false)
        }
     }
 }
@@ -318,13 +309,13 @@ class GcpFileServerService constructor (
        return null
     }
 
-    override fun getStat(url: URI): ObjectStat {
+    override fun getStat(url: URI): FileStat {
         val blob = getBlob(url)
         return if (blob != null) {
-            ObjectStat(blob.size, blob.contentType, objectExists(url))
+            FileStat(blob.size, blob.contentType, objectExists(url))
         }
         else {
-            ObjectStat(0, defaultContentType, false)
+            FileStat(0, defaultContentType, false)
         }
     }
 
