@@ -80,12 +80,13 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun expand(parentTask: Task, script: ZpsScript) : Task {
 
+        val parentScript = taskDao.getScript(parentTask.id)
+        script.globals = parentScript.globals
+        script.type = parentScript.type
+        script.inline = true
+
         if (script.execute.orEmpty().isEmpty()) {
-            val parentScript = taskDao.getScript(parentTask.id)
-            script.inline = true
             script.execute = parentScript.execute
-            script.globals = parentScript.globals
-            script.type = parentScript.type
         }
 
         val newTask =  taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
