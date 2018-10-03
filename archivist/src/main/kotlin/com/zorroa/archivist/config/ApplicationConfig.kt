@@ -166,15 +166,6 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun pubSubService() : PubSubService {
-        return when(properties().getString("archivist.pubsub.type")) {
-            "gcp"->GcpPubSubServiceImpl()
-            else->NoOpPubSubService()
-        }
-    }
-
-
-    @Bean
     fun assetService() : AssetService {
         val network = networkEnvironment()
         val type = properties().getString("archivist.assetStore.type", "sql")
