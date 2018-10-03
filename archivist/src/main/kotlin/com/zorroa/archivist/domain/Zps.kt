@@ -36,7 +36,8 @@ data class ZpsScript(
         var execute : MutableList<ProcessorRef>?,
         var globals:  MutableMap<String, Any>? = mutableMapOf(),
         var inline: Boolean = true,
-        var type: PipelineType = PipelineType.Import
+        var type: PipelineType = PipelineType.Import,
+        var settings: Map<String,Any>?=null
 )
 
 data class ZpsError (

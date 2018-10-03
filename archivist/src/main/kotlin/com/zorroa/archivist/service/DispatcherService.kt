@@ -84,6 +84,7 @@ class DispatcherServiceImpl @Autowired constructor(
         script.globals = parentScript.globals
         script.type = parentScript.type
         script.inline = true
+        script.settings = parentScript.settings
 
         if (script.execute.orEmpty().isEmpty()) {
             script.execute = parentScript.execute
