@@ -26,8 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
-import org.springframework.security.config.annotation.web.builders.WebSecurity
-
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 
 @EnableWebSecurity
@@ -53,7 +52,7 @@ class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
                     .and().httpBasic()
-                    .and().csrf().disable()
+                    .and().csrf().csrfTokenRepository(csrfTokenRepository)
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
@@ -102,7 +101,7 @@ class MultipleWebSecurityConfig {
                     .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
-                    .and().csrf().disable()
+                    .and().csrf().csrfTokenRepository(csrfTokenRepository)
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
@@ -132,17 +131,6 @@ class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                     .and().sessionManagement().disable()
                     .csrf().disable()
-        }
-    }
-
-    @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE + 3)
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
-    class Swagger : WebSecurityConfigurerAdapter() {
-
-        @Throws(Exception::class)
-        override fun configure(web: WebSecurity?) {
-            web!!.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**")
         }
     }
 
@@ -204,6 +192,8 @@ class MultipleWebSecurityConfig {
     }
 
     companion object {
+
+        private val csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse()
 
         private val logger = LoggerFactory.getLogger(MultipleWebSecurityConfig::class.java)
     }
