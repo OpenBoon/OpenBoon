@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.generateUserToken
@@ -28,7 +29,7 @@ class DispatcherServiceImpl @Autowired constructor(
         private val dispatchTaskDao: DispatchTaskDao,
         private val taskDao: TaskDao,
         private val taskErrorDao: TaskErrorDao,
-        private val jobDao: JobDao,
+        private val properties: ApplicationProperties,
         private val userDao: UserDao) : DispatcherService {
 
     @Autowired
@@ -45,6 +46,9 @@ class DispatcherServiceImpl @Autowired constructor(
                     task.env["ZORROA_TASK_ID"] = task.id.toString()
                     task.env["ZORROA_JOB_ID"] = task.jobId.toString()
                     task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(userDao.getApiKey(task.userId))
+                    if (properties.getBoolean("archivist.debug-mode.enabled")) {
+                        task.env["ZORROA_DEBUG_MODE"] = "true"
+                    }
                     return task
                 }
             }
