@@ -11,6 +11,7 @@ import com.zorroa.archivist.service.UserService
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -66,11 +67,21 @@ class UserController @Autowired constructor(
     /**
      * An HTTP auth based login endpoint.
      *
+     * Returns the current user as well as a X-Zorroa-Auth-Token header with a
+     * valid JWT token.
+     *
      * @return
      */
     @PostMapping(value = ["/api/v1/login"])
-    fun login(): User {
-        return userService.get(getUserId())
+    fun login(): ResponseEntity<User> {
+        val user = getUser()
+        val headers = HttpHeaders()
+        headers.add("X-Zorroa-Auth-Token",
+                generateUserToken(userService.getApiKey(getUser())))
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(userService.get(user.id))
     }
 
     /**

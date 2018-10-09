@@ -27,6 +27,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.csrf.CsrfFilter
+import javax.servlet.http.HttpServletRequest
 
 
 @EnableWebSecurity
@@ -53,6 +55,7 @@ class MultipleWebSecurityConfig {
                     .and().headers().frameOptions().disable()
                     .and().httpBasic()
                     .and().csrf().csrfTokenRepository(csrfTokenRepository)
+                    .requireCsrfProtectionMatcher(csrfRequestMatcher)
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
@@ -90,7 +93,7 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**")
-                    .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
+                    .addFilterBefore(jwtAuthorizationFilter(), CsrfFilter::class.java)
                     .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
@@ -102,6 +105,7 @@ class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
                     .and().csrf().csrfTokenRepository(csrfTokenRepository)
+                    .requireCsrfProtectionMatcher(csrfRequestMatcher)
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
@@ -192,6 +196,14 @@ class MultipleWebSecurityConfig {
     }
 
     companion object {
+
+        /**
+         * an Http RequestMatcher for requiring CSRF protection
+         */
+        val csrfRequestMatcher = RequestMatcher {
+            !(it.method in setOf("GET", "HEAD", "TRACE", "OPTIONS")
+                    || it.getAttribute("authType") == HttpServletRequest.CLIENT_CERT_AUTH)
+        }
 
         private val csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse()
 

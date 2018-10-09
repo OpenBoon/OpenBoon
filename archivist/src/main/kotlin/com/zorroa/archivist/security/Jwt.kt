@@ -38,6 +38,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
 
         val authentication = getAuthentication(token.replace(TOKEN_PREFIX, ""))
         SecurityContextHolder.getContext().authentication = authentication
+        req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
         chain.doFilter(req, res)
     }
 
@@ -45,12 +46,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
         val claims = validator.validate(token)
         val userId = claims.getValue("userId")
 
-        return if (userId == "superadmin" && claims.containsKey("org")) {
-            SuperAdminAuthentication(UUID.fromString(claims["org"]))
-        }
-        else {
-            val user = userRegistryService.getUser(UUID.fromString(userId))
-            UsernamePasswordAuthenticationToken(user, "", user.authorities)
-        }
+        val user = userRegistryService.getUser(UUID.fromString(userId))
+        return UsernamePasswordAuthenticationToken(user, "", user.authorities)
     }
 }
