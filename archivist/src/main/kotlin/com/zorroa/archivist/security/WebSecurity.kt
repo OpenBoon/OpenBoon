@@ -201,8 +201,12 @@ class MultipleWebSecurityConfig {
          * an Http RequestMatcher for requiring CSRF protection
          */
         val csrfRequestMatcher = RequestMatcher {
-            !(it.method in setOf("GET", "HEAD", "TRACE", "OPTIONS")
-                    || it.getAttribute("authType") == HttpServletRequest.CLIENT_CERT_AUTH)
+            if (it.getAttribute("authType") == HttpServletRequest.CLIENT_CERT_AUTH) {
+                false
+            }
+            else {
+                it.method !in setOf("GET", "HEAD", "TRACE", "OPTIONS")
+            }
         }
 
         private val csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse()
