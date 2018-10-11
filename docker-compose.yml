@@ -65,5 +65,29 @@ services:
       - "./localdev/shared:/shared"
       - "./localdev/zorroa-archivist-config:/config"
       - "./archivist/target:/service"
+      - "../zorroa-test-data:/zorroa-test-data"
     environment:
       ZORROA_USER: admin
+
+  # Local Archivist server.
+  analyst:
+    image: "zorroa/sdk:latest"
+    links:
+       - "archivist"
+    ports:
+      - 5000:5000
+    volumes:
+      - "./localdev/shared:/shared"
+      - "../zorroa-test-data:/zorroa-test-data"
+
+  curator:
+     image: "zorroa-js-curator"
+     user: node
+     ports:
+       - 80:8081
+       - 443:8443
+     environment:
+         NODE_ENV: "production"
+         ARCHIVIST_API_URL: "http://archivist:8080"
+         CURATOR_PORT_SECURE: "8443"
+
