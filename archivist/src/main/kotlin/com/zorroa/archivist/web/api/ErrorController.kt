@@ -48,7 +48,7 @@ class CustomErrorController : ErrorController {
         errAttrs["errorId"] = errorId
 
         if (!debug) {
-            errAttrs["message"] = "Please refer to errorId='$errorId' for actual message"
+            errAttrs["message"] = "An unexpected error was encountered. When reporting this please use error ID '$errorId'."
         }
         return ResponseEntity.status(rsp.status).body(errAttrs)
     }
