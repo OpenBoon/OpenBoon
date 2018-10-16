@@ -14,6 +14,18 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
 
+  # Elastic Search instance used for unit tests
+  es-test:
+    build:
+      context: elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "39200:9200"
+      - "39300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+
   # Postgres instance used for local devleopment servers.
   postgres:
     image: "postgres:9.6.9"
