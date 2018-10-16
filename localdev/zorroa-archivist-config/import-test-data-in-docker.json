@@ -1,0 +1,20 @@
+{
+  "generate": [
+    {
+      "className": "zplugins.core.generators.PyFileSystemGenerator",
+      "args": {
+        "paths": [ "/zorroa-test-data" ]
+      }
+    }
+  ],
+  "execute": [
+    {
+      "className": "zplugins.image.ImageIngestor",
+      "args": { "extract_extended_metadata": true }
+    },
+    {
+      "className": "zplugins.proxies.ProxyIngestor",
+      "args": {}
+    }
+  ]
+}
