@@ -12,6 +12,7 @@ import com.zorroa.security.Groups
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -27,7 +28,11 @@ class UserControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testLogin() {
-        mvc.perform(post("/api/v1/login").session(admin())).andExpect(status().isOk())
+        mvc.perform(
+                post("/api/v1/login")
+                        .session(admin())
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk)
     }
 
     @Test
@@ -38,6 +43,7 @@ class UserControllerTests : MockMvcTest() {
 
         SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/send-password-reset-email")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(ImmutableMap.of("email", "user@zorroa.com"))))
                 .andExpect(status().isOk())
@@ -51,6 +57,7 @@ class UserControllerTests : MockMvcTest() {
 
         SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/send-onboard-email")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(ImmutableMap.of("email", "user@zorroa.com"))))
                 .andExpect(status().isOk())
@@ -67,6 +74,7 @@ class UserControllerTests : MockMvcTest() {
         SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/reset-password")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("X-Archivist-Recovery-Token", token.token)
                 .content(Json.serialize(ImmutableMap.of(
                         "username", "user", "password", "Bilb0Baggins"))))
@@ -93,6 +101,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(put("/api/v1/users/${user1.id}/_profile")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(builder))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -121,6 +130,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(put("/api/v1/users/${user.id}/_settings")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -143,6 +153,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         mvc.perform(put("/api/v1/users/" + user.id + "/_enabled")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(ImmutableMap.of("enabled", false)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -153,6 +164,7 @@ class UserControllerTests : MockMvcTest() {
 
         mvc.perform(put("/api/v1/users/" + user.id + "/_enabled")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(ImmutableMap.of("enabled", true)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -170,6 +182,7 @@ class UserControllerTests : MockMvcTest() {
         mvc.perform(put("/api/v1/users/1/_enabled")
                 .content(Json.serialize(ImmutableMap.of("enabled", false)))
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().is4xxClientError())
                 .andReturn()
@@ -186,6 +199,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(put("/api/v1/users/" + user.id + "/permissions")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(perms))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

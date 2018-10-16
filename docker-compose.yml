@@ -16,19 +16,6 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
 
-  # Postgres instance used by the unit tests.
-  test-postgres:
-    image: "postgres:9.6.9"
-    hostname: "localhost"
-    ports:
-     - "35432:5432"
-    environment:
-      POSTGRES_PASSWORD: zorroa
-      POSTGRES_USER: zorroa
-      POSTGRES_DB: zorroa
-
-  ## Local Development Services
-
   # Elastic Search instance used for local devlopment servers.
   es:
     build:

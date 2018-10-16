@@ -17,6 +17,7 @@ import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -66,6 +67,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(put("/api/v1/assets/_fields/hide")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -86,6 +88,7 @@ class AssetControllerTests : MockMvcTest() {
 
         mvc.perform(delete("/api/v1/assets/_fields/hide")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -111,6 +114,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v3/assets/_search")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(AssetSearch("O'Malley"))))
                 .andExpect(status().isOk)
@@ -131,6 +135,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v2/assets/_count")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(AssetSearch("beer"))))
                 .andExpect(status().isOk)
@@ -158,6 +163,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"text\": \"re\" }".toByteArray()))
                 .andExpect(status().isOk)
@@ -184,6 +190,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"text\": \"re\" }".toByteArray()))
                 .andExpect(status().isOk)
@@ -210,6 +217,7 @@ class AssetControllerTests : MockMvcTest() {
         for (asset in assets) {
             val result = mvc.perform(delete("/api/v1/assets/" + asset.id)
                     .session(session)
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
                     .andExpect(status().isOk)
                     .andReturn()
@@ -290,6 +298,7 @@ class AssetControllerTests : MockMvcTest() {
         val session = admin()
         mvc.perform(put("/api/v1/assets/" + doc.id + "/_setFolders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(ImmutableMap.of<String, List<UUID>>("folders", folders))))
                 .andExpect(status().isOk)
@@ -315,6 +324,7 @@ class AssetControllerTests : MockMvcTest() {
         mvc.run {
             perform(post("/api/v1/folders/$id/assets")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map{ it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)
@@ -322,6 +332,7 @@ class AssetControllerTests : MockMvcTest() {
 
             perform(post("/api/v1/folders/$id1/assets")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map{ it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)

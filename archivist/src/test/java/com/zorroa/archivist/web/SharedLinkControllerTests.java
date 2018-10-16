@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static com.zorroa.archivist.security.UtilsKt.getUserId;
@@ -38,6 +39,7 @@ public class SharedLinkControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(post("/api/v1/shared_link")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.INSTANCE.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
