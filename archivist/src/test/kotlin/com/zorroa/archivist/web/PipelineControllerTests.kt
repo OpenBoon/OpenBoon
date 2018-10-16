@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import kotlin.test.assertEquals
@@ -35,6 +36,7 @@ class PipelineControllerTests : MockMvcTest() {
         val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, "test", processors=listOf())
         val result = mvc.perform(post("/api/v1/pipelines")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -51,6 +53,7 @@ class PipelineControllerTests : MockMvcTest() {
         val session = admin()
         val result2 = mvc.perform(delete("/api/v1/pipelines/" + pl.id)
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
@@ -72,6 +75,7 @@ class PipelineControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(put("/api/v1/pipelines/" + pl.id)
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec2))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)

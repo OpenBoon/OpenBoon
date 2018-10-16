@@ -7,6 +7,7 @@ import com.zorroa.common.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class PermissionContollerTests extends MockMvcTest {
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(post("/api/v1/permissions")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.INSTANCE.serialize(b))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

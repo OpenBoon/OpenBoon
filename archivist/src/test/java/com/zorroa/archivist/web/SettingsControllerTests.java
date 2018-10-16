@@ -8,6 +8,7 @@ import com.zorroa.common.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class SettingsControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(put("/api/v1/settings/")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.INSTANCE.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

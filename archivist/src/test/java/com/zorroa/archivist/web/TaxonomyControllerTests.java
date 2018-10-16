@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Map;
@@ -37,6 +38,7 @@ public class TaxonomyControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(post("/api/v1/taxonomy")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.INSTANCE.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -56,6 +58,7 @@ public class TaxonomyControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(delete("/api/v1/taxonomy/" + tax.getTaxonomyId())
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.INSTANCE.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

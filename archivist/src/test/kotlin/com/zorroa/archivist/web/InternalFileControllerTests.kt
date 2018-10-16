@@ -6,6 +6,7 @@ import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
@@ -25,6 +26,7 @@ class InternalFileControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -47,6 +49,7 @@ class InternalFileControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage/_stat")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -74,6 +77,8 @@ class InternalFileControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage/_stat")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)

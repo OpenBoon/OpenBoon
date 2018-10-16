@@ -9,6 +9,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
@@ -32,6 +33,7 @@ class OrganizationControllerTests: MockMvcTest() {
     fun testCreate() {
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/organizations")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(organizationSpec)))
                 .andExpect(MockMvcResultMatchers.status().isOk())

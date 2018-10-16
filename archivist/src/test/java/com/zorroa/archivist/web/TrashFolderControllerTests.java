@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class TrashFolderControllerTests extends MockMvcTest {
                 ImmutableList.of(deleteOp.getTrashFolderId().toString()));
         MvcResult result = mvc.perform(post("/api/v1/trash/_restore")
                 .session(admin())
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -67,6 +69,7 @@ public class TrashFolderControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(delete("/api/v1/trash")
                 .session(admin())
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -85,6 +88,7 @@ public class TrashFolderControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(delete("/api/v1/trash")
                 .session(admin())
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.INSTANCE.serializeToString(Lists.newArrayList(folder1.getId())))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

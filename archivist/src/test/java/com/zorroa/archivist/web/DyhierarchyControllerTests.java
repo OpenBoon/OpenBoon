@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.File;
@@ -52,6 +53,7 @@ public class DyhierarchyControllerTests  extends MockMvcTest {
 
         MvcResult result = mvc.perform(post("/api/v1/dyhi")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.INSTANCE.serialize(spec)))
                 .andExpect(status().isOk())
