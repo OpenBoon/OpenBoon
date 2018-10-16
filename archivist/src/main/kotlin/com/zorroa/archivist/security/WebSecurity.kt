@@ -29,6 +29,7 @@ import org.springframework.web.cors.CorsUtils
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.security.web.csrf.CsrfFilter
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 
 @EnableWebSecurity
@@ -106,6 +107,11 @@ class MultipleWebSecurityConfig {
                     .and().headers().frameOptions().disable()
                     .and().csrf().csrfTokenRepository(csrfTokenRepository)
                     .requireCsrfProtectionMatcher(csrfRequestMatcher)
+                    .and()
+                    .exceptionHandling().authenticationEntryPoint {
+                        _: HttpServletRequest, rsp: HttpServletResponse, exp: AuthenticationException ->
+                        rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED, exp.message)
+                    }
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()

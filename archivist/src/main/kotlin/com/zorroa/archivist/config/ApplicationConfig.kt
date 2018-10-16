@@ -226,6 +226,7 @@ class ArchivistConfiguration {
     fun requestLoggingFilter() : CommonsRequestLoggingFilter  {
         val filter = CommonsRequestLoggingFilter()
         filter.setIncludePayload(true)
+        filter.setMaxPayloadLength(1024)
         return filter
     }
 
