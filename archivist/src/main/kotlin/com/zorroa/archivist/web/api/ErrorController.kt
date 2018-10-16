@@ -85,10 +85,11 @@ class RestApiExceptionHandler {
         else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
             mve.status = HttpStatus.CONFLICT
         }
-        else if (e is ArchivistWriteException) {
-            mve.status = HttpStatus.NOT_MODIFIED
+        else if (e is ArchivistSecurityException) {
+            mve.status = HttpStatus.UNAUTHORIZED
         }
-        else if (e is InvalidObjectException ||
+        else if (e is ArchivistException ||
+                e is InvalidObjectException ||
                 e is InvalidRequestException ||
                 e is DataAccessException ||
                 e is NullPointerException ||
