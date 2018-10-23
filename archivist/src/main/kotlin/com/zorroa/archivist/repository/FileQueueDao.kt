@@ -18,26 +18,26 @@ interface FileQueueDao {
     fun create(spec: QueuedFileSpec): QueuedFile
     fun get(id: UUID) : QueuedFile
     fun getAll(limit: Int) : List<QueuedFile>
-    fun delete(files: List<QueuedFile>)
+    fun delete(files: List<QueuedFile>) : Int
 
 }
 
 @Repository
 class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
 
-    override fun delete(files: List<QueuedFile>) {
-        jdbc.batchUpdate("DELETE FROM queued_file WHERE pk_queued_file=?",
+    override fun delete(files: List<QueuedFile>) : Int {
+        return jdbc.batchUpdate("DELETE FROM queued_file WHERE pk_queued_file=?",
                 object : BatchPreparedStatementSetter {
 
             @Throws(SQLException::class)
             override fun setValues(ps: PreparedStatement, i: Int) {
-                ps.setObject(1, files[0].id)
+                ps.setObject(1, files[i].id)
             }
 
             override fun getBatchSize(): Int {
                 return files.size
             }
-        })
+        }).size
     }
 
     override fun getAll(limit: Int) : List<QueuedFile> {

@@ -36,6 +36,21 @@ class FileQueueDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testDelete() {
+        val count = 20
+        val files = mutableListOf<QueuedFile>()
+        val org = getOrgId()
+        for (i in 1..count) {
+            val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(),"/tmp/foo$i.jpg", mapOf("foo" to "bar"))
+            files.add(fileQueueDao.create(spec))
+        }
+        assertEquals(count, jdbc.queryForObject("SELECT COUNT(1) FROM queued_file", Int::class.java))
+        assertEquals(count, fileQueueDao.delete(files))
+        assertEquals(0, jdbc.queryForObject("SELECT COUNT(1) FROM queued_file", Int::class.java))
+
+    }
+
+    @Test
     fun testGetQueued() {
         val org = getOrgId()
 
