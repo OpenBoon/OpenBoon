@@ -9,7 +9,6 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserDaoCache
-import com.zorroa.archivist.repository.UserDaoImpl.Companion.SOURCE_LOCAL
 import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
@@ -88,6 +87,14 @@ interface UserService {
     fun resetPassword(token: String, password: String): User?
 
     fun incrementLoginCounter(user: UserId)
+
+    /**
+     * Create the standard users for a new Organization.  The current thread must
+     * be authed as an Organization super admin.
+     *
+     * @param: Organization - the organization to create the user for.
+     */
+    fun createStandardUsers(org: Organization)
 }
 
 
@@ -241,10 +248,29 @@ class UserServiceImpl @Autowired constructor(
         }
     }
 
+    override fun createStandardUsers(org: Organization) {
+        val username = getOrgBatchUserName(org.id)
+        val spec = UserSpec(username,
+                UUID.randomUUID().toString(),
+                "$username@zorroa.com",
+                UserSource.INTERNAL,
+                org.id,
+                "Batch",
+                "Job")
+
+        val batchUser = userDao.create(spec)
+        /**
+         * This user gets everyone and write. The batch user cannot iterate assets or
+         * do searches, just processing.
+         */
+        userDao.addPermission(batchUser, permissionDao.get(Groups.EVERYONE), true)
+        userDao.addPermission(batchUser, permissionDao.get(Groups.WRITE), true)
+    }
+
     override fun create(builder: UserSpec): User {
 
         if (builder.source == null) {
-            builder.source = SOURCE_LOCAL
+            builder.source = UserSource.LOCAL
         }
 
         if (builder.username.length < MIN_USERNAME_SIZE) {
@@ -269,7 +295,7 @@ class UserServiceImpl @Autowired constructor(
 
         /*
          * Get the permissions specified with the builder and add our
-         * user permission to the list.q
+         * user permission to the list.
          */
         val perms = Sets.newHashSet(permissionDao.getAll(builder.permissionIds))
         if (!perms.isEmpty()) {
@@ -278,9 +304,6 @@ class UserServiceImpl @Autowired constructor(
 
         userDao.addPermission(user, userPerm, true)
         userDao.addPermission(user, permissionDao.get(Groups.EVERYONE), true)
-
-        tx.afterCommit(false, { logService.logAsync(UserLogSpec.build(LogAction.Create, user)) })
-
         return userDao.get(user.id)
     }
 
@@ -339,7 +362,7 @@ class UserServiceImpl @Autowired constructor(
         }
 
         val updatePermsAndFolders = user.username != form.username
-        if (!userDao.exists(user.username, SOURCE_LOCAL)
+        if (!userDao.exists(user.username, UserSource.LOCAL)
                 && (updatePermsAndFolders
                 || user.email != form.email)) {
             throw IllegalArgumentException("Users from external sources cannot change their username or email address.")
@@ -361,23 +384,28 @@ class UserServiceImpl @Autowired constructor(
 
     override fun delete(user: User): Boolean {
         val result = userDao.delete(user)
+
         if (result) {
+
             try {
-                permissionDao.delete(permissionDao.get(user.permissionId))
+                if (user.permissionId != null) {
+                    permissionDao.delete(permissionDao.get(user.permissionId))
+                }
             } catch (e: Exception) {
                 logger.warn("Failed to delete user permission for {}", user)
             }
 
             try {
-                folderService.delete(folderService.get(user.homeFolderId))
+                if (user.homeFolderId != null) {
+                    folderService.delete(folderService.get(user.homeFolderId))
+                }
             } catch (e: Exception) {
                 logger.warn("Failed to delete home folder for {}", user)
             }
 
-            tx.afterCommit(false,  {
+            tx.afterCommit(false) {
                 userDaoCache.invalidate(user.id)
-                logService.logAsync(UserLogSpec.build(LogAction.Update, user))
-            })
+            }
         }
         return result
     }

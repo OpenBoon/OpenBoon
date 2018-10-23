@@ -9,6 +9,31 @@ import org.hibernate.validator.constraints.NotEmpty
 import java.util.*
 
 /**
+ * A couple internal constants for user source.
+ */
+object UserSource {
+    /**
+     * The user is internal only, no folder or user perm
+     */
+    const val INTERNAL : String = "internal"
+
+    /**
+     * The user authenticates locally, ie we have a salted pass for this user.
+     */
+    const val LOCAL : String = "local"
+}
+
+/**
+ * Return the organizations batch user.
+ *
+ * @param orgId The UUID for the org.
+ * @return The name of the organizations batch user.
+ */
+fun getOrgBatchUserName(orgId: UUID) : String {
+    return "batch_user_$orgId"
+}
+
+/**
  * The base user attributes returned with objects that reference a user.
  */
 class UserBase (
@@ -38,8 +63,8 @@ class User (
         val username: String,
         val email: String,
         val source: String,
-        val permissionId: UUID,
-        val homeFolderId: UUID,
+        val permissionId: UUID?,
+        val homeFolderId: UUID?,
         val organizationId: UUID,
         val firstName: String?,
         val lastName: String?,

@@ -18,10 +18,17 @@ class AdminAuthority : GrantedAuthority {
     }
 }
 
-val superAdminId = UUID.fromString("00000000-1111-1111-1111-000000000000")
-val superAdminUser = "internal-system"
-val superAdminBase = UserBase(superAdminId, superAdminUser,
-        "support@zorroa.com", null, null, null)
+/**
+ * Some constants referring to super admin users. The super admin doesn't have access to
+ * any data.  It's a temporary in-memory user used for creating organizations and SSO users.
+ */
+object SuperAdmin {
+    val id : UUID = UUID.fromString("00000000-1111-1111-1111-000000000000")
+    const val username = "organization-admin"
+    val base = UserBase(id, username,
+            "support@zorroa.com", null, null, null)
+}
+
 
 /**
  * The super-admin is both an admin for an org, and a super admin for the system overall
@@ -31,7 +38,7 @@ class SuperAdminAuthentication : AbstractAuthenticationToken {
     val authed : UserAuthed
 
     constructor(orgId: UUID): super(listOf(SuperAdminAuthority(), AdminAuthority())) {
-        authed = UserAuthed(superAdminId, orgId,superAdminUser, this.authorities.toSet())
+        authed = UserAuthed(SuperAdmin.id, orgId, SuperAdmin.username, this.authorities.toSet())
     }
 
     override fun getDetails(): Any? {
