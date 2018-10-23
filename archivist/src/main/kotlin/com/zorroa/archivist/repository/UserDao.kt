@@ -108,12 +108,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getAll(): List<User> {
-        return jdbc.query("$GET_ALL WHERE pk_organization=? ORDER BY str_username", MAPPER, getOrgId())
+        return jdbc.query("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+                "ORDER BY str_username", MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>("$GET_ALL WHERE pk_organization=? ORDER BY str_username LIMIT ? OFFSET ?",
+                jdbc.query<User>("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+                        "ORDER BY str_username LIMIT ? OFFSET ?",
                         MAPPER, getOrgId(), paging.size, paging.from))
     }
 

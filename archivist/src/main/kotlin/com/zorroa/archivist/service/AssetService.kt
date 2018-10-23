@@ -14,7 +14,7 @@ interface AssetService {
 class IrmAssetServiceImpl constructor(val cdvClient: CoreDataVaultClient) : AssetService {
 
     override fun getDocument(asset: Asset) : Document {
-        return cdvClient.getIndexedMetadata(asset)
+        return cdvClient.getIndexedMetadata(asset.keys["companyId"] as Int, asset.id)
     }
 
     override fun setDocument(id: UUID, doc: Document) {
@@ -22,7 +22,7 @@ class IrmAssetServiceImpl constructor(val cdvClient: CoreDataVaultClient) : Asse
         val asset = Asset(UUID.fromString(doc.id),
                 UUID.fromString(doc.getAttr("zorroa.organizationId")),
                 mutableMapOf("companyId" to doc.getAttr("irm.companyId", Int::class.java)))
-        cdvClient.updateIndexedMetadata(asset, doc)
+        cdvClient.updateIndexedMetadata(asset.keys["companyId"] as Int, asset.id, doc)
     }
 }
 

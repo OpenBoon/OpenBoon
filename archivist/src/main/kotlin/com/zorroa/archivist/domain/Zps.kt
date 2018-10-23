@@ -31,9 +31,9 @@ fun emptyZpsScript(name: String) : ZpsScript {
 
 data class ZpsScript(
         var name: String?,
-        var generate : MutableList<ProcessorRef>?,
-        var over: MutableList<Document>?,
-        var execute : MutableList<ProcessorRef>?,
+        var generate : List<ProcessorRef>?,
+        var over: List<Document>?,
+        var execute : List<ProcessorRef>?,
         var globals:  MutableMap<String, Any>? = mutableMapOf(),
         var inline: Boolean = true,
         var type: PipelineType = PipelineType.Import,

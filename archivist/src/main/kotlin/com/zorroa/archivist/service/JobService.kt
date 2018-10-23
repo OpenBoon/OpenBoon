@@ -7,6 +7,7 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -49,8 +50,8 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun create(spec: JobSpec, type: PipelineType) : Job {
+        val user = getUser()
         if (spec.name == null) {
-            val user = getUser()
             val date = Date()
             spec.name = "${type.name} job launched by ${user.getName()} on $date"
         }
@@ -58,30 +59,32 @@ class JobServiceImpl @Autowired constructor(
         val job = jobDao.create(spec, type)
 
         spec.script?.let { script->
-            if (script.execute == null) {
-                script.execute = pipelineService.resolveDefault(job.type)
+
+            // Gather up all the procs for execute.
+            val execute = if (script.execute == null) {
+                pipelineService.resolveDefault(job.type).toMutableList()
             }
             else {
-                script.execute = pipelineService.resolve(job.type, script.execute)
+                pipelineService.resolve(job.type, script.execute).toMutableList()
             }
 
-            /*
-             * Add the proper collector
-             */
-            script.execute?.let {
-                when(type) {
-                    PipelineType.Import-> {
-                        it.add(ProcessorRef("zplugins.core.collector.ImportCollector"))
-                    }
-                    PipelineType.Export->{
-                        script.inline = true
-                        it.add(ProcessorRef("zplugins.core.collector.ExportCollector"))
-                    }
-                    PipelineType.Batch,PipelineType.Generate-> { }
+            when(type) {
+                PipelineType.Import-> {
+                    execute.add(ProcessorRef("zplugins.core.collector.ImportCollector"))
                 }
+                PipelineType.Export->{
+                    script.inline = true
+                    execute.add(ProcessorRef("zplugins.core.collector.ExportCollector"))
+                }
+                PipelineType.Batch,PipelineType.Generate-> { }
+
             }
+            script.execute = execute
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
+
+        logger.info("user.name='{}' launched job.name='{}'", user.getName(), job.name)
+
         return get(job.id)
     }
 
@@ -108,4 +111,7 @@ class JobServiceImpl @Autowired constructor(
         jobDao.incrementAssetStats(task, counts)
     }
 
+    companion object {
+        private val logger = LoggerFactory.getLogger(JobServiceImpl::class.java)
+    }
 }

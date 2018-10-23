@@ -11,3 +11,19 @@ INSERT INTO users(pk_user, pk_organization, str_username, str_password, str_emai
 INSERT INTO user_permission(pk_permission, pk_user, bool_immutable) VALUES
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA8', '00000000-7B0B-480E-8C36-F06F04AED2B2', TRUE),
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA5', '00000000-7B0B-480E-8C36-F06F04AED2B2', TRUE);
+
+
+--- A table for storing queued files coming from pubsub.
+CREATE TABLE queued_file (
+  pk_queued_file UUID PRIMARY KEY,
+  pk_organization UUID REFERENCES organization (pk_organization),
+  pk_pipeline UUID REFERENCES pipeline (pk_pipeline),
+  asset_id UUID NOT NULL,
+  json_metadata TEXT NOT NULL,
+  str_path TEXT NOT NULL,
+  time_created BIGINT NOT NULL
+);
+
+CREATE INDEX queued_file_pk_organization_idx ON queued_file (pk_organization);
+CREATE INDEX queued_file_pk_pipeline_idx ON queued_file (pk_pipeline);
+

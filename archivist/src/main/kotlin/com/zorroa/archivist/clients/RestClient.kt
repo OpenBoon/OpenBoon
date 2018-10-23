@@ -204,11 +204,11 @@ class RestClient {
         return checkResponse(response, Any::class.java)
     }
 
-    operator fun <T> get(url: String, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> get(url: String, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
         return checkResponse(checkStatus(HttpGet(url), jwtClaims), resultType)
     }
 
-    operator fun <T> get(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> get(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
         val get = HttpGetWithEntity(url)
         if (body != null) {
             get.setHeader("Content-Type", "application/json")
@@ -217,7 +217,7 @@ class RestClient {
         return checkResponse(checkStatus(get, jwtClaims), resultType)
     }
 
-    operator fun <T> get(url: String, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> get(url: String, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
         return checkResponse(checkStatus(HttpGet(url), jwtClaims), type)
     }
 

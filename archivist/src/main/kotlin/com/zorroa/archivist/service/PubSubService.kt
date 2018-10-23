@@ -7,11 +7,9 @@ import com.google.cloud.pubsub.v1.MessageReceiver
 import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
-import com.zorroa.archivist.domain.Asset
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -46,19 +44,22 @@ class GcpPubSubServiceImpl : PubSubService {
     lateinit var settings: GooglePubSubSettings
 
     @Autowired
+    private lateinit var pipelineService: PipelineService
+
+    @Autowired
     private lateinit var organizationDao: OrganizationDao
 
     @Autowired
-    private lateinit var jobSerice: JobService
+    private lateinit var fileQueueService: FileQueueService
 
     @Autowired
-    private lateinit var assetService: AssetService
+    private lateinit var coreDataVaultClient: CoreDataVaultClient
 
     @Value("\${archivist.config.path}")
     lateinit var configPath: String
 
-    lateinit var subscription : ProjectSubscriptionName
-    lateinit var subscriber: Subscriber
+    private lateinit var subscription : ProjectSubscriptionName
+    private lateinit var subscriber: Subscriber
 
     @PostConstruct
     fun setup() {
@@ -95,48 +96,39 @@ class GcpPubSubServiceImpl : PubSubService {
             }
 
             val type= payload["type"] as String?
-            val time = System.currentTimeMillis() / 1000
 
             if (type == "UPDATE") {
 
-                val assetId = payload["key"] as String
+                val assetId = UUID.fromString(payload["key"] as String)
                 val companyId = payload["companyId"] as Int
-                val jobName = "$time-$type-$assetId".toLowerCase()
 
                 try {
                     /**
                      * Currently IRM has to name the org company-id for use to pick it up.
                      */
                     val org = organizationDao.get("company-" + payload["companyId"])
-                    val asset = Asset(
-                            UUID.fromString(assetId),
-                            org.id,
-                            mutableMapOf("companyId" to companyId))
-
                     val doc = try {
-                        assetService.getDocument(asset)
+                        coreDataVaultClient.getIndexedMetadata(companyId, assetId)
                     } catch (e: Exception) {
                         logger.warn("Asset ID does not exist: $assetId")
-                        Document(assetId)
+                        Document(assetId.toString())
                     }
 
-                    // make sure these are set.
                     doc.setAttr("irm.companyId", companyId)
                     doc.setAttr("zorroa.organizationId", org.id)
 
-                    /**
-                     * No ZORROA_USER env var means any communication back to the
-                     * archivist with a proper service key will be super admin.
-                     */
-                    val zps = ZpsScript(jobName, type=PipelineType.Import,
-                            over=mutableListOf(doc), generate=null, execute=null)
+                    // obtain the file's download path
+                    val md = coreDataVaultClient.getMetadata(companyId, assetId)
+                    val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
+                            "gs://", true)
 
-                    val spec = JobSpec(jobName,
-                            zps,
-                            args=mutableMapOf("companyId" to companyId.toString()))
-
-                    val job = jobSerice.create(spec)
-                    logger.info("launched job: {}", job)
+                    // queue up the file for processing
+                    fileQueueService.create(QueuedFileSpec(
+                            org.id,
+                            assetId,
+                            pipelineService.get("full").id,
+                            url,
+                            doc.document))
 
                 } catch (e: Exception) {
                     logger.warn("Error launching job: {}, asset: {} company: {}",

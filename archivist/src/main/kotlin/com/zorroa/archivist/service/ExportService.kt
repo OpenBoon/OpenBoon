@@ -92,20 +92,17 @@ class ExportServiceImpl @Autowired constructor(
         /**
          * Now start to build the script for the task.
          */
-        val script = ZpsScript(spec.name!!, inline=true, generate = mutableListOf(), execute= mutableListOf(), over=null)
-        script.globals?.putAll(mapOf(
-                "exportArgs" to mapOf(
-                        "exportId" to job.id,
-                        "exportName" to job.name,
-                        "exportRoot" to properties.getString("archivist.export.export-root"))))
+        val execute=  mutableListOf<ProcessorRef>()
+        val generate =  mutableListOf<ProcessorRef>()
 
-        //TODO: This should be coming from the default pipeline. Need to sort this out.
-        script.execute?.add(ProcessorRef("zplugins.irm.processors.CDVAssetProcessor"))
-
-        script.execute?.addAll(spec.processors)
-        script.execute?.add(ProcessorRef("zplugins.export.processors.GcsExportUploader",
+        /**
+         * TODO: Need to check the standard storage setting to terminate this pipeline
+         * with either local storage or GCS.
+         */
+        execute.addAll(spec.processors)
+        execute.add(ProcessorRef("zplugins.export.processors.GcsExportUploader",
                 mapOf<String, Any>("gcs-bucket" to properties.getString("archivist.export.gcs-bucket"))))
-        script.execute?.add(ProcessorRef("zplugins.export.processors.ExportedFileRegister"))
+        execute.add(ProcessorRef("zplugins.export.processors.ExportedFileRegister"))
 
         /**
          * Replace the search the user supplied with our own search so we ensure
@@ -114,7 +111,7 @@ class ExportServiceImpl @Autowired constructor(
          */
         if (resolve) {
             val params = resolveExportSearch(spec.search, job.id)
-            script.generate?.add(ProcessorRef(
+            generate.add(ProcessorRef(
                     "zplugins.asset.generators.AssetSearchGenerator",
                     mapOf<String, Any>(
                             "search" to params.search
@@ -122,7 +119,7 @@ class ExportServiceImpl @Autowired constructor(
             ))
         }
         else {
-            script.generate?.add(ProcessorRef(
+            generate.add(ProcessorRef(
                     "zplugins.asset.generators.AssetSearchGenerator",
                     mapOf<String, Any>(
                             "search" to spec.search
@@ -130,7 +127,18 @@ class ExportServiceImpl @Autowired constructor(
             ))
         }
 
-        return script
+        val globals : MutableMap<String, Any> = mutableMapOf(
+                "exportArgs" to mapOf(
+                        "exportId" to job.id,
+                        "exportName" to job.name,
+                        "exportRoot" to properties.getString("archivist.export.export-root")))
+
+        return ZpsScript(spec.name!!,
+                generate=generate ,
+                execute=execute,
+                inline=true,
+                over=null,
+                globals=globals)
     }
 }
 

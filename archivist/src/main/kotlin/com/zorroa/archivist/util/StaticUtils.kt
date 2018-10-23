@@ -41,8 +41,7 @@ fun Logger.event(message: String, kvp: Map<String, Any>) {
     val user = getUser()
     val sb = StringBuilder(512)
     sb.append(message)
-    sb.append(" ---")
-    sb.append("actorName='${user.getName()}' orgId='${user.organizationId}'")
+    sb.append(" --- actorName='${user.getName()}' orgId='${user.organizationId}'")
     kvp.forEach {
         if (it.value is Number) {
             sb.append(" ${it.key}=${it.value}")

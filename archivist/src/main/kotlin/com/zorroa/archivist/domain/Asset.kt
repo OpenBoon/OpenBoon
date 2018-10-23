@@ -61,6 +61,11 @@ open class Document {
         this.document = mutableMapOf()
     }
 
+    constructor(id: UUID) {
+        this.id = id.toString()
+        this.document = mutableMapOf()
+    }
+
     constructor(doc: Map<String, Any>) {
         this.document = doc
     }
