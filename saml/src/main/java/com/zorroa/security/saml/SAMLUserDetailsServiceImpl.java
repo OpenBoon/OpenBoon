@@ -67,8 +67,8 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
             }
 
             // TODO: make this the ID
+            String orgPrefix = zd.getProp("organizationPrefix");
             String orgId = credential.getAttributeAsString(zd.getProp("organizationAttr"));
-            String orgPrefix = credential.getAttributeAsString(zd.getProp("organizationPrefix"));
             String orgName;
 
             if (orgId != null) {
