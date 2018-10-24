@@ -70,14 +70,18 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
             }
 
             // TODO: make this the ID
-            String orgName = credential.getAttributeAsString("organization_name");
-            if (orgName != null) {
-                LOG.info("Detected organization name from SAML metadata: " +  orgName);
+            String orgId = credential.getAttributeAsString(zd.getProp("organizationAttr"));
+            String orgPrefix = credential.getAttributeAsString(zd.getProp("organizationPrefix"));
+            String orgName;
+
+            if (orgId != null) {
+                orgName = orgPrefix + orgId;
             }
             else {
-                // the default org namne
                 orgName = "Zorroa";
             }
+
+            LOG.info("Detected organization name from SAML metadata: " +  orgName);
 
             Map<String, String> attrs = new HashMap();
             for (Attribute a : credential.getAttributes()) {
