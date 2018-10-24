@@ -170,7 +170,9 @@ class MultipleWebSecurityConfig {
                 try {
                     val user = authentication.principal as UserAuthed
                     userService.incrementLoginCounter(user)
-                    logger.event("authed User", mapOf())
+                    logger.event("authed User",
+                            mapOf("actorName" to user.username,
+                                    "orgId" to user.organizationId))
                 } catch (e: Exception) {
                     // If we throw here, the authentication fails, so if we can't log
                     // it then nobody can login.

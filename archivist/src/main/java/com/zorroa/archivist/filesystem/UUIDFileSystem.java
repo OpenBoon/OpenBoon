@@ -31,7 +31,7 @@ public class UUIDFileSystem extends AbstractFileSystem implements ObjectFileSyst
     public void init() {
         root.mkdirs();
         baseDir = root.toPath().normalize().toAbsolutePath().toString();
-        logger.info("Filesystem initialized: {}", baseDir);
+        logger.info("OFS Filesystem initialized: {}", baseDir);
     }
 
     @Override

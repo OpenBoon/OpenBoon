@@ -267,11 +267,6 @@ class FolderServiceImpl @Autowired constructor(
 
 
     override fun get(id: UUID?): Folder {
-        if (id != null) {
-            if (id==ROOT_ID) {
-                return getRoot()
-            }
-        }
         val f: Folder
         try {
             f = folderCache.get(id)
@@ -880,10 +875,7 @@ class FolderServiceImpl @Autowired constructor(
 
     companion object {
 
-        val ROOT_ID = UUID.fromString("00000000-0000-0000-0000-000000000000")
-
         private val logger = LoggerFactory.getLogger(FolderServiceImpl::class.java)
     }
-
 }
 

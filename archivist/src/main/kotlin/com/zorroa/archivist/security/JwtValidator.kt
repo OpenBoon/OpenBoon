@@ -58,7 +58,7 @@ class MasterJwtValidator constructor(private val validators: List<JwtValidator>)
 class UserJwtValidator constructor(val userDao: UserDao): JwtValidator {
 
     init {
-        logger.info("Initializing NoOP JwtValidator")
+        logger.info("Initializing User/Hmac JwtValidator")
     }
 
     override fun validate(token: String) : Map<String, String> {

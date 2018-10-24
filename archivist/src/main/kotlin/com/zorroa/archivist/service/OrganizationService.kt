@@ -31,6 +31,10 @@ class OrganizationServiceImpl @Autowired constructor (
     @Autowired
     internal lateinit var permissionService: PermissionService
 
+    @Autowired
+    internal lateinit var fileStorageService: FileStorageService
+
+
     override fun create(spec: OrganizationSpec): Organization {
         val org = organizationDao.create(spec)
         val auth = resetAuthentication(SuperAdminAuthentication(org.id))
