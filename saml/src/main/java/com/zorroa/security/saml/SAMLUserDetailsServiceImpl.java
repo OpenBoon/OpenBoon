@@ -28,10 +28,7 @@ import org.springframework.security.saml.metadata.MetadataManager;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
@@ -105,11 +102,20 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
     }
 
     public List<String> parseGroups(String groupAttrName, SAMLCredential credential) {
+        LOG.info("Loading SAML group attribute {}", groupAttrName);
         List<String> groups = null;
         if (groupAttrName != null) {
-            String[] groupAttr = credential.getAttributeAsStringArray(groupAttrName);
-            if (groupAttr != null) {
-                groups = Arrays.asList(groupAttr);
+            String[] groupAttrArray = credential.getAttributeAsStringArray(groupAttrName);
+            if (groupAttrArray != null || groupAttrArray.length == 0) {
+                LOG.info("Found Group array with length {}", groupAttrArray.length);
+                groups = Arrays.asList(groupAttrArray);
+            }
+            else {
+                String groupAttrString = credential.getAttributeAsString(groupAttrName);
+                if (groupAttrString != null) {
+                    LOG.info("Found Group string {}", groupAttrString);
+                    groups = Arrays.asList(new String[] { groupAttrString });
+                }
             }
         }
         return groups;
