@@ -38,7 +38,9 @@ class Job (
         val state: JobState,
         var assetCounts: Map<String,Int>?=null,
         var taskCounts: Map<String,Int>?=null,
-        var createdUser: UserBase?=null
+        var createdUser: UserBase?=null,
+        var timeStarted: Long,
+        var timeUpdated: Long
 ) : JobId {
     override val jobId = id
 }

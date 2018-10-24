@@ -63,6 +63,20 @@ class JobDaoTests : AbstractTest() {
         assertNotNull(t1.createdUser)
     }
 
+
+    @Test
+    fun getTestWeHaveTimestampsForClient() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("test_script"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+
+        val t2 = jobDao.create(spec, PipelineType.Import)
+        val t1 = jobDao.get(t2.id, forClient = true)
+        assertNotNull(t1.timeStarted)
+        assertNotNull(t1.timeUpdated)
+    }
+
     @Test
     fun testIncrementAssetStats() {
         val spec = JobSpec("test_job",
