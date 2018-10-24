@@ -70,7 +70,7 @@ class FileQueueServiceImpl @Autowired constructor(
         var total = 0
         try {
             val batchSize = properties.getInt("archivist.file-queue.batch-size")
-            
+
             // Jobs have to be grouped by these guys.  The queued file list is already sorted
             var orgId: UUID = files[0].organizationId
             var pipelineId: UUID = files[0].pipelineId

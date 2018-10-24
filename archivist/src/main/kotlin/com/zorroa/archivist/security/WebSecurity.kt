@@ -2,10 +2,10 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.UserLogSpec
-import com.zorroa.archivist.service.EventLogService
+import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.UserService
+import com.zorroa.archivist.util.event
+import com.zorroa.archivist.util.warnEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -146,11 +146,11 @@ class MultipleWebSecurityConfig {
 
     @Autowired
     @Throws(Exception::class)
-    fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService, logService: EventLogService) {
+    fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService) {
 
         auth
                 .authenticationProvider(zorroaAuthenticationProvider())
-                .authenticationEventPublisher(authenticationEventPublisher(userService, logService))
+                .authenticationEventPublisher(authenticationEventPublisher(userService))
 
         /**
          * If its a unit test we add our rubber stamp authenticator.
@@ -162,36 +162,27 @@ class MultipleWebSecurityConfig {
 
     @Bean
     @Autowired
-    fun authenticationEventPublisher(userService: UserService, logService: EventLogService): AuthenticationEventPublisher {
+    fun authenticationEventPublisher(userService: UserService): AuthenticationEventPublisher {
 
         return object : AuthenticationEventPublisher {
 
             override fun publishAuthenticationSuccess(authentication: Authentication) {
-
-                /*
                 try {
                     val user = authentication.principal as UserAuthed
                     userService.incrementLoginCounter(user)
-                    logService.logAsync(UserLogSpec()
-                            .setAction(LogAction.Login)
-                            .setUser(user))
+                    logger.event("authed User", mapOf())
                 } catch (e: Exception) {
                     // If we throw here, the authentication fails, so if we can't log
-                    // it then nobody can login.  Sorry L337 hackers
+                    // it then nobody can login.
                     logger.warn("Failed to log user authentication", e)
                     throw SecurityException(e)
                 }
-                */
             }
 
             override fun publishAuthenticationFailure(
                     exception: AuthenticationException,
                     authentication: Authentication) {
-                logger.info("Failed to authenticate: {}", authentication)
-                logService.logAsync(UserLogSpec()
-                        .setAction(LogAction.LoginFailure)
-                        .setMessage(authentication.principal.toString() + " failed to login, reason "
-                                + exception.message))
+                logger.warnEvent("failed authed User", mapOf("user" to authentication.principal.toString()))
             }
         }
     }

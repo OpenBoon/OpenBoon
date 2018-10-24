@@ -12,6 +12,7 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema

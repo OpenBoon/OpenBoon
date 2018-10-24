@@ -9,6 +9,7 @@ import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
@@ -121,6 +122,10 @@ class GcpPubSubServiceImpl : PubSubService {
                     val md = coreDataVaultClient.getMetadata(companyId, assetId)
                     val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
                             "gs://", true)
+
+                    logger.event("pubsub IRM",
+                            mapOf("companyId" to companyId, "assetId" to assetId, "orgId" to org.id))
+
 
                     // queue up the file for processing
                     fileQueueService.create(QueuedFileSpec(

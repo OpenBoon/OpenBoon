@@ -14,6 +14,7 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
@@ -140,6 +141,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         } else {
             userService.get(username)
         }
+        userService.incrementLoginCounter(user)
 
         if (properties.getBoolean("archivist.security.saml.permissions.import")) {
             source.groups?.let {
@@ -148,6 +150,9 @@ class UserRegistryServiceImpl @Autowired constructor(
         }
 
         val perms = userService.getPermissions(user)
+        logger.event("userAuthed",
+                mapOf("userId" to user.id,
+                "userSource" to source.authSourceId))
         return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
     }
 

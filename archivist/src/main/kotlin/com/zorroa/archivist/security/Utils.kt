@@ -56,8 +56,8 @@ fun getUser(): UserAuthed {
                 auth.details as UserAuthed
             } catch (e2: ClassCastException) {
                 // Log this message so we can see what the type is.
-                SecurityLogger.logger.warn("Invalid auth objects {} is {} and {} is {}",
-                        auth?.principal, auth?.principal::class.java.canonicalName, auth?.details, auth?.details::class.java.canonicalName)
+                SecurityLogger.logger.warn("Invalid auth objects: principal='{}' details='{}'",
+                        auth?.principal,  auth?.details)
                 throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
             }
         }

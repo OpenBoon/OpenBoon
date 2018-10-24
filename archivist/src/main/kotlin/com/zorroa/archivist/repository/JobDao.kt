@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
@@ -51,8 +52,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setString(12, Json.serializeToString(spec.env, "{}"))
             ps
         }
+
         jdbc.update("INSERT INTO job_count (pk_job) VALUES (?)", id)
         jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", id)
+
+        logger.event("create Job", mapOf("jobId" to id, "jobName" to spec.name))
+
         return get(id)
     }
 
@@ -77,18 +82,34 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
         val time = System.currentTimeMillis()
-        return if (oldState != null) {
+        val result =  if (oldState != null) {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=? AND int_state=?",
                     newState.ordinal, time, job.id, oldState.ordinal) == 1
         } else {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=?",
                     newState.ordinal, time, job.id) == 1
         }
+        logger.event("update Job",
+                mapOf("jobId" to job.id,
+                        "newState" to newState.name,
+                        "oldState" to oldState?.name,
+                        "status" to result))
+        return result
+
     }
 
     override fun incrementAssetStats(job: JobId, counts: AssetIndexResult) : Boolean {
-        return jdbc.update(INC_STATS,
+        val updated =  jdbc.update(INC_STATS,
                 counts.total, counts.created, counts.updated, counts.warnings, counts.errors, counts.replaced, job.jobId) == 1
+        logger.event("update JobAssetStats",
+                mapOf("taskId" to job.jobId,
+                        "assetsCreated" to counts.created,
+                        "assetsUpdated" to counts.updated,
+                        "assetsWarned" to counts.warnings,
+                        "assetErrors" to counts.errors,
+                        "assetsReplaced" to counts.replaced,
+                        "status" to updated))
+        return updated
     }
 
     private fun count(filter: JobFilter): Long {
