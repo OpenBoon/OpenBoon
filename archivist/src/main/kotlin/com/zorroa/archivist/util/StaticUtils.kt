@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUserOrNull
+import org.slf4j.Logger
 import java.text.SimpleDateFormat
 
 object StaticUtils {
@@ -32,3 +35,38 @@ inline fun  <E: Any, T: Collection<E>> T?.whenNullOrEmpty(func: () -> Unit): Uni
     }
 }
 
+/**
+ * Format a log message with key value pairs
+ */
+fun formatLogMessage(message: String, kvp: Map<String, Any?>) : String {
+    val user = getUserOrNull()
+    val sb = StringBuilder(512)
+    sb.append(message)
+    if (user != null) {
+        sb.append(" --- actorName='${user.getName()}' orgId='${user.organizationId}'")
+    }
+    kvp.forEach {
+        if (it.value != null) {
+            if (it.value is Number || it.value is Boolean) {
+                sb.append(" ${it.key}=${it.value}")
+            } else {
+                sb.append(" ${it.key}='${it.value}'")
+            }
+        }
+    }
+    return sb.toString()
+}
+
+/**
+ * Extend the SLF4J logger with an event method.
+ */
+fun Logger.event(message: String, kvp: Map<String, Any?>) {
+    this.info(formatLogMessage(message, kvp))
+}
+
+/**
+ * Extend the SLF4J logger with an event method.
+ */
+fun Logger.warnEvent(message: String, kvp: Map<String, Any?>, ex: Exception?=null) {
+    this.warn(formatLogMessage(message, kvp), ex)
+}

@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.util.event
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
@@ -43,6 +44,11 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps
         }
 
+        logger.event("create Task",
+                mapOf("taskId" to id,
+                        "jobId" to job.jobId,
+                        "taskName" to spec.name))
+
         jdbc.update("INSERT INTO task_stat (pk_task, pk_job) VALUES (?,?)", id, job.jobId)
         return get(id)
     }
@@ -68,6 +74,11 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     newState.ordinal, time, task.taskId) == 1
         }
         if (updated) {
+            logger.event("update Task",
+                    mapOf("taskId" to task.taskId,
+                            "newState" to newState.name,
+                            "oldState" to oldState?.name))
+
             if (newState in START_STATES) {
                 jdbc.update("UPDATE task SET time_started=?, time_stopped=-1 WHERE pk_task=?", time, task.taskId)
             }
@@ -75,6 +86,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
             }
         }
+
         return updated
     }
 
@@ -87,8 +99,18 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun incrementAssetStats(task: TaskId, counts: AssetIndexResult) : Boolean {
-        return jdbc.update(INC_STATS,
+        val updated =  jdbc.update(INC_STATS,
                 counts.total, counts.created, counts.updated, counts.warnings, counts.errors, counts.replaced, task.taskId) == 1
+
+        logger.event("updated TaskAssetStats",
+                mapOf("taskId" to task.taskId,
+                    "assetsCreated" to counts.created,
+                    "assetsUpdated" to counts.updated,
+                    "assetsWarned" to counts.warnings,
+                    "assetErrors" to counts.errors,
+                    "assetsReplaced" to counts.replaced,
+                    "status" to updated))
+        return updated
     }
 
     override fun getAll(pager: Pager, filter: TaskFilter): PagedList<Task> {

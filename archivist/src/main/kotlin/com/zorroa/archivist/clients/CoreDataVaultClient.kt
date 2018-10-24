@@ -4,31 +4,32 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.Document
 import com.zorroa.common.util.Json
 import java.nio.file.Path
+import java.util.*
 
 interface CoreDataVaultClient {
 
     val client: RestClient
 
-    fun updateIndexedMetadata(assetId: Asset, doc: Document) : Any
-    fun getIndexedMetadata(assetId:Asset) : Document
+    fun getMetadata(companyId: Int, assetId: UUID): Map<String, Any>
+    fun updateIndexedMetadata(companyId: Int, assetId: UUID, doc: Document) : Any
+    fun getIndexedMetadata(companyId: Int, assetId: UUID) : Document
 }
 
 class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : CoreDataVaultClient {
 
     override val client = RestClient(url, GcpJwtSigner(serviceKey))
 
-    override fun getIndexedMetadata(assetId: Asset): Document {
-        val companyId = assetId.keys["companyId"]
-        return client.get("/companies/$companyId/documents/${assetId.id}/es", Document::class.java)
+    override fun getMetadata(companyId: Int, assetId: UUID): Map<String, Any> {
+        return client.get("/companies/$companyId/documents/assetId", Json.GENERIC_MAP)
     }
 
-    override fun updateIndexedMetadata(asset:Asset, doc: Document): Any {
-        val companyId : String? = doc.getAttr("irm.companyId", String::class.java)
-        if (companyId == null) {
-            throw IllegalStateException("Document has no companyId: ${asset.id}")
-        }
-        val response = client.put("/companies/$companyId/documents/${asset.id}/es", doc, Json.GENERIC_MAP)
-        client.put("/companies/$companyId/documents/${asset.id}/fields/state/INDEXED", null, Json.GENERIC_MAP)
+    override fun getIndexedMetadata(companyId: Int, assetId: UUID): Document {
+        return client.get("/companies/$companyId/documents/$assetId/es", Document::class.java)
+    }
+
+    override fun updateIndexedMetadata(companyId: Int, assetId: UUID, doc: Document): Any {
+        val response = client.put("/companies/$companyId/documents/$assetId/es", doc, Json.GENERIC_MAP)
+        client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED", null, Json.GENERIC_MAP)
         return response
     }
 }

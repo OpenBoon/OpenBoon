@@ -23,13 +23,13 @@ class PipelineServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testResolvePipelineNames() {
-        assertEquals(2, pipelineService.resolve(listOf("source", "ml")).size)
+    fun testResolvePipelineName() {
+        assertEquals(1, pipelineService.resolve("ml").size)
     }
 
     @Test
     fun testGetDefaultPipelines() {
-        assertEquals(1, pipelineService.getDefaultPipelineNames(PipelineType.Import).size)
+        assertEquals("standard-import", pipelineService.getDefaultPipelineName(PipelineType.Import))
     }
 
     @Test
@@ -53,7 +53,7 @@ class PipelineServiceTests : AbstractTest() {
 
     @Test
     fun resolveEmbeddedPipeline() {
-        val refs = pipelineService.resolve(listOf("embedded"))
+        val refs = pipelineService.resolve("embedded")
         assertEquals(2, refs.size)
     }
 }

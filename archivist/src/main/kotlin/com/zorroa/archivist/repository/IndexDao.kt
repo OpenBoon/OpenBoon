@@ -10,6 +10,8 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
+import com.zorroa.archivist.util.event
+import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
@@ -271,7 +273,9 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                     result.warnings++
                     retries.add(sources[index])
                 } else {
-                    logger.warn("Failed to index {}, {}", response.id, message)
+                    logger.warnEvent("failed to index Asset, $message",
+                            mapOf("assetId" to response.id,
+                                    "index" to response.index))
                     result.logs.add(StringBuilder(1024).append(
                             message).append(",").toString())
                     result.errors++
@@ -285,6 +289,9 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                         } else {
                             result.updated++
                         }
+                        logger.event("update Asset",
+                                mapOf("assetId" to response.id,
+                                        "index" to response.index))
                         result.addToAssetIds(update.id)
                     }
                     DocWriteRequest.OpType.INDEX -> {
@@ -294,6 +301,9 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                         } else {
                             result.replaced++
                         }
+                        logger.event("create Asset",
+                                mapOf("assetId" to response.id,
+                                        "index" to response.index))
                         result.addToAssetIds(idxr.id)
                     }
                 }
@@ -442,7 +452,12 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
 
     override fun delete(id: String): Boolean {
         val rest = getClient()
-        return rest.client.delete(rest.newDeleteRequest(id)).result == DocWriteResponse.Result.DELETED
+        val result = rest.client.delete(rest.newDeleteRequest(id)).result == DocWriteResponse.Result.DELETED
+        logger.event("delete Asset",
+                mapOf("assetId" to id,
+                        "index" to rest.route.indexName,
+                        "status" to result))
+        return result
     }
 
     override fun get(id: String): Document {

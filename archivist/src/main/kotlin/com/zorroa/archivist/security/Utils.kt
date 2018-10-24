@@ -2,10 +2,7 @@ package com.zorroa.archivist.security
 
 import com.google.common.collect.Sets
 import com.google.common.collect.Sets.intersection
-import com.zorroa.archivist.domain.Access
-import com.zorroa.archivist.domain.Acl
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
@@ -18,7 +15,22 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.security.web.authentication.session.SessionAuthenticationException
 import java.util.*
+
+/**
+ * Set a new Authentication value and return the previous one, or null in the case
+ * that no Authentication exists.
+ *
+ * @param auth The new Authentication value.
+ * @return the old authentication value or null
+ */
+fun resetAuthentication(auth: Authentication?) : Authentication?   {
+    val oldAuth =  SecurityContextHolder.getContext().authentication
+    SecurityContextHolder.getContext().authentication = auth
+    return oldAuth
+}
+
 
 object SecurityLogger {
     val logger = LoggerFactory.getLogger(SecurityLogger::class.java)
@@ -44,8 +56,8 @@ fun getUser(): UserAuthed {
                 auth.details as UserAuthed
             } catch (e2: ClassCastException) {
                 // Log this message so we can see what the type is.
-                SecurityLogger.logger.warn("Invalid auth objects {} is {} and {} is {}",
-                        auth?.principal, auth?.principal::class.java.canonicalName, auth?.details, auth?.details::class.java.canonicalName)
+                SecurityLogger.logger.warn("Invalid auth objects: principal='{}' details='{}'",
+                        auth?.principal,  auth?.details)
                 throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
             }
         }

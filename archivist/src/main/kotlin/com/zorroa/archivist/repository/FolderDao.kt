@@ -5,6 +5,7 @@ import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.*
+import com.zorroa.archivist.util.event
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.springframework.beans.factory.annotation.Autowired
@@ -265,6 +266,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps.setString(12, Json.serializeToString(spec.attrs, "{}"))
             ps
         }
+
+        logger.event("create Folder", mapOf(
+                "folderId" to id,
+                "folderName" to spec.name))
 
         return getAfterCreate(id)
     }

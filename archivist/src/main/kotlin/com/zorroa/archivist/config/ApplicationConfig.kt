@@ -106,15 +106,6 @@ class ArchivistConfiguration {
         return adapter
     }
 
-
-    @Bean
-    fun ofs(): ObjectFileSystem {
-        val path = properties().getPath("archivist.storage.local.path").resolve("ofs")
-        val ufs = UUIDFileSystem(path.toFile())
-        ufs.init()
-        return ufs
-    }
-
     /**
      * Initialize the internal file storage system.  This is either "local" for a shared
      * NFS mount or "gcs" for Google Cloud Storage.
@@ -125,14 +116,13 @@ class ArchivistConfiguration {
         val type = props.getString("archivist.storage.type")
         return when(type) {
             "local"-> {
-                val path = properties().getPath("archivist.storage.local.path").resolve("ofs")
-                logger.info("Initializing local storage: {}", path)
-                val ufs = UUIDFileSystem(path.toFile())
+                val path = properties().getPath("archivist.storage.path")
+                // OFS gets shoved into the OFS dir.
+                val ufs = UUIDFileSystem(path.resolve("ofs").toFile())
                 ufs.init()
-                OfsFileStorageService(ufs)
+                LocalFileStorageService(path, ufs)
             }
             "gcs"-> {
-                logger.info("Initializing GCP storage")
                 val configPath = props.getPath("archivist.config.path")
                 val configFile = configPath.resolve("data-credentials.json")
                 GcsFileStorageService(configFile)
@@ -152,6 +142,16 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus() : EventBus {
         return EventBus()
+    }
+
+    @Bean
+    fun pubSubService() : PubSubService? {
+        val props = properties()
+        if (props.getString("archivist.pubsub.type") == "gcp") {
+            return GcpPubSubServiceImpl()
+        }
+        logger.info("No PubSub service configured")
+        return null
     }
 
     @Bean

@@ -6,8 +6,10 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.archivist.util.event
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -106,12 +108,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getAll(): List<User> {
-        return jdbc.query("$GET_ALL WHERE pk_organization=? ORDER BY str_username", MAPPER, getOrgId())
+        return jdbc.query("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+                "ORDER BY str_username", MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>("$GET_ALL WHERE pk_organization=? ORDER BY str_username LIMIT ? OFFSET ?",
+                jdbc.query<User>("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+                        "ORDER BY str_username LIMIT ? OFFSET ?",
                         MAPPER, getOrgId(), paging.size, paging.from))
     }
 
@@ -124,6 +128,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
         }
 
         val id = uuid1.generate()
+        val user = getUser()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
@@ -139,10 +144,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setString(10, builder.source)
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
-            ps.setObject(13, getOrgId())
+            ps.setObject(13, user.organizationId)
             ps.setString(14, Json.serializeToString(builder.authAttrs, "{}"))
             ps
         }
+
+        logger.event("created User",
+                mapOf("userName" to builder.username,
+                        "userOrg" to user.organizationId))
         return get(id)
     }
 
@@ -207,8 +216,10 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun delete(user: User): Boolean {
-        return jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
+        val result = jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
                 getOrgId(), user.id) == 1
+        logger.event("deleted User", mapOf("userName" to user.username, "opResult" to result))
+        return result
     }
 
     override fun getPassword(username: String): String {
@@ -297,8 +308,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     rs.getString("str_username"),
                     rs.getString("str_email"),
                     rs.getString("str_source"),
-                    rs.getObject("pk_permission") as UUID,
-                    rs.getObject("pk_folder") as UUID,
+                    rs.getObject("pk_permission") as UUID?,
+                    rs.getObject("pk_folder") as UUID?,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_firstname"),
                     rs.getString("str_lastname"),

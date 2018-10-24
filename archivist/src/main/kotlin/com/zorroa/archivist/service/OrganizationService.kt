@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.resetAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -30,11 +31,23 @@ class OrganizationServiceImpl @Autowired constructor (
     @Autowired
     internal lateinit var permissionService: PermissionService
 
+    @Autowired
+    internal lateinit var fileStorageService: FileStorageService
+
+
     override fun create(spec: OrganizationSpec): Organization {
         val org = organizationDao.create(spec)
-        SecurityContextHolder.getContext().authentication  = SuperAdminAuthentication(org.id)
-        permissionService.createStandardPermissions(org)
-        folderService.createStandardFolders(org)
+        val auth = resetAuthentication(SuperAdminAuthentication(org.id))
+
+        try {
+            permissionService.createStandardPermissions(org)
+            folderService.createStandardFolders(org)
+            userService.createStandardUsers(org)
+
+        } finally {
+            resetAuthentication(auth)
+        }
+
         return org
     }
 

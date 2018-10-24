@@ -12,6 +12,8 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.util.event
+import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
@@ -319,7 +321,8 @@ class IndexServiceImpl  @Autowired  constructor (
                 val storage = fileStorageService.get(proxy.id!!)
                 val ofile = fileServerProvider.getServableFile(storage.uri)
                 if (!ofile.delete()) {
-                    logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
+                    logger.warnEvent("delete Proxy, file did not exist.",
+                            mapOf("proxyId" to proxy.id))
                 }
             }
         }

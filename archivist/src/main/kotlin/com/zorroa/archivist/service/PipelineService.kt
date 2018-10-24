@@ -17,8 +17,9 @@ import java.nio.file.Paths
 import java.util.*
 
 interface PipelineService {
-    fun resolve(pipelines: List<String>) : MutableList<ProcessorRef>
-    fun resolveDefault(type: PipelineType) : MutableList<ProcessorRef>
+    fun resolve(name: String) : List<ProcessorRef>
+    fun resolve(id: UUID) : List<ProcessorRef>
+    fun resolveDefault(type: PipelineType) : List<ProcessorRef>
     fun create(spec: PipelineSpec) : Pipeline
     fun get(id: UUID) : Pipeline
     fun get(name: String) : Pipeline
@@ -27,8 +28,8 @@ interface PipelineService {
     fun getAll(page: Pager): PagedList<Pipeline>
     fun update(pipeline: Pipeline) : Boolean
     fun delete(id: UUID): Boolean
-    fun getDefaultPipelineNames(type: PipelineType) : List<String>
-    fun resolve(type: PipelineType, refs: List<ProcessorRef>?) : MutableList<ProcessorRef>
+    fun getDefaultPipelineName(type: PipelineType) : String
+    fun resolve(type: PipelineType, refs: List<ProcessorRef>?) : List<ProcessorRef>
 }
 
 /**
@@ -43,7 +44,6 @@ class PipelineServiceImpl @Autowired constructor(
 
     override fun create(spec: PipelineSpec) : Pipeline {
         val p =  pipelineDao.create(spec)
-        logger.info(Json.prettyString(p))
         return p
     }
 
@@ -75,32 +75,29 @@ class PipelineServiceImpl @Autowired constructor(
         return pipelineDao.delete(id)
     }
 
-    override fun getDefaultPipelineNames(type: PipelineType) : List<String> {
+    override fun getDefaultPipelineName(type: PipelineType) : String {
         val names = when (type) {
-            PipelineType.Import-> properties.getString("archivist.pipeline.default-import-pipelines")
-            PipelineType.Export-> properties.getString("archivist.pipeline.default-export-pipelines")
+            PipelineType.Import-> properties.getString("archivist.pipeline.default-import-pipeline")
+            PipelineType.Export-> properties.getString("archivist.pipeline.default-export-pipeline")
             else -> throw IllegalArgumentException("There are no default $type pipelines")
         }
-        return if (names != null) {
-            names.split(',').map { it.trim() }
-        }
-        else {
-            listOf()
-        }
+        return names?.trim()
     }
 
-    override fun resolveDefault(type: PipelineType) : MutableList<ProcessorRef> {
-        val names = getDefaultPipelineNames(type)
-        return resolve(names)
+    override fun resolveDefault(type: PipelineType) : List<ProcessorRef> {
+        val name = getDefaultPipelineName(type)
+        return resolve(type,  pipelineDao.get(name).processors)
     }
 
-    override fun resolve(pipelines: List<String>) : MutableList<ProcessorRef> {
-        val processors = mutableListOf<ProcessorRef>()
-        pipelines.forEach {
-            val pipeline = pipelineDao.get(it)
-            processors.addAll(pipeline.processors)
-        }
-        return processors
+    override fun resolve(name: String) : List<ProcessorRef> {
+        //val processors = mutableListOf<ProcessorRef>()
+        val pipeline = pipelineDao.get(name)
+        return pipeline.processors
+    }
+
+    override fun resolve(id: UUID) : List<ProcessorRef> {
+        val pipeline = pipelineDao.get(id)
+        return resolve(pipeline.type, pipeline.processors)
     }
 
 

@@ -111,11 +111,9 @@ class FileServerProviderImpl @Autowired constructor (
         val internalStorageType = properties.getString("archivist.storage.type")
 
         if (internalStorageType== "gcp") {
-            logger.info("Initializing storage: GCP")
             services["gcp"] = GcpFileServerService(properties)
         }
         else {
-            logger.info("Initializing storage: LOCAL")
             services["local"] = LocalFileServerService(properties)
         }
 
@@ -177,6 +175,9 @@ class LocalFileServerService @Autowired constructor (
     override val storedLocally: Boolean
         get() = true
 
+    init {
+        logger.info("Initializing local mount file server")
+    }
     override fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource> {
         val path = Paths.get(url)
         return ResponseEntity.ok()
@@ -218,6 +219,10 @@ class LocalFileServerService @Autowired constructor (
            FileStat(0, defaultContentType, false)
        }
     }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(LocalFileServerService::class.java)
+    }
 }
 
 class GcpFileServerService constructor (
@@ -225,6 +230,8 @@ class GcpFileServerService constructor (
 
     private val storage: Storage
     init {
+        logger.info("Initializing Google Cloud Storage file server")
+
         val configPath = properties.getPath("archivist.config.path").resolve("data-credentials.json")
         storage = if (Files.exists(configPath)) {
             StorageOptions.newBuilder().setCredentials(
