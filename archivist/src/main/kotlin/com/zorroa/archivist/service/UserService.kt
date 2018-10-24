@@ -137,8 +137,13 @@ class UserRegistryServiceImpl @Autowired constructor(
         }
 
         if (properties.getBoolean("archivist.security.saml.permissions.import")) {
-            source.groups?.let {
-                importAndAssignPermissions(user, source, it)
+            SecurityContextHolder.getContext().authentication  = SuperAdminAuthentication(org.id)
+            try {
+                source.groups?.let {
+                    importAndAssignPermissions(user, source, it)
+                }
+            } finally {
+                SecurityContextHolder.getContext().authentication = null
             }
         }
 
