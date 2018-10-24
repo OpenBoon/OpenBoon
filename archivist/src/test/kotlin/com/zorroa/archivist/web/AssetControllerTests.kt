@@ -307,7 +307,7 @@ class AssetControllerTests : MockMvcTest() {
         refreshIndex()
         authenticate("admin")
         doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("zorroa.links.folder", List::class.java).size.toLong())
+        assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
 
     }
 
@@ -344,7 +344,7 @@ class AssetControllerTests : MockMvcTest() {
         assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
             logger.info("{}", asset.document)
-            val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<String>>() {
+            val links = asset.getAttr("system.links.folder", object : TypeReference<List<String>>() {
 
             })
             assertEquals(2, links.size.toLong())

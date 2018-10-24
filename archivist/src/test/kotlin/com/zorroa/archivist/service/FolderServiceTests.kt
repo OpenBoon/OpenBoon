@@ -65,7 +65,7 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
 
         doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("zorroa.links.folder", List::class.java).size.toLong())
+        assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
     }
 
     @Test
@@ -99,7 +99,7 @@ class FolderServiceTests : AbstractTest() {
 
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
-            assertEquals(1, (a.getAttr<Any>("zorroa.links.folder") as List<*>).size.toLong())
+            assertEquals(1, (a.getAttr<Any>("system.links.folder") as List<*>).size.toLong())
         }
     }
 
@@ -149,7 +149,7 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
 
         assertEquals(2, searchService.search(AssetSearch(
-                AssetFilter().addToTerms("zorroa.links.folder", folder.id))).hits.getTotalHits())
+                AssetFilter().addToTerms("system.links.folder", folder.id))).hits.getTotalHits())
         fieldService.invalidateFields()
         refreshIndex()
         assertEquals(2, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
@@ -164,7 +164,7 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
 
         assertEquals(0, searchService.search(AssetSearch(
-                AssetFilter().addToTerms("zorroa.links.folder", folder.id))).hits.getTotalHits())
+                AssetFilter().addToTerms("system.links.folder", folder.id))).hits.getTotalHits())
         assertEquals(0, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
 
     }

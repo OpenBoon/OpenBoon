@@ -236,7 +236,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 var search: AssetSearch? = folder.search
                 if (search == null) {
                     search = AssetSearch(AssetFilter()
-                            .addToTerms("zorroa.links.folder", folder.id)
+                            .addToTerms("system.links.folder", folder.id)
                             .setRecursive(false))
                 }
 
@@ -352,7 +352,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val search = AssetSearch()
         search.filter = AssetFilter()
                 .addToTerms("_id", assets)
-                .addToTerms("zorroa.taxonomy.folderId", folder.id)
+                .addToTerms("system.taxonomy.folderId", folder.id)
 
         val sb = rest.newSearchBuilder()
         sb.request.scroll(SCROLL_TIME)
@@ -390,7 +390,7 @@ class TaxonomyServiceImpl @Autowired constructor(
 
             val search = AssetSearch()
             search.filter = AssetFilter()
-                    .addToTerms("zorroa.taxonomy.folderId", list as MutableList<Any>)
+                    .addToTerms("system.taxonomy.folderId", list as MutableList<Any>)
 
             val sb = rest.newSearchBuilder()
             sb.request.scroll(SCROLL_TIME)
@@ -426,7 +426,7 @@ class TaxonomyServiceImpl @Autowired constructor(
 
         val search = AssetSearch()
         search.filter = AssetFilter()
-                .addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
+                .addToTerms("system.taxonomy.taxId", tax.taxonomyId)
 
         val sb = rest.newSearchBuilder()
         sb.request.scroll(SCROLL_TIME)
@@ -469,7 +469,7 @@ class TaxonomyServiceImpl @Autowired constructor(
          * This filters out assets with a new timestamp.
          */
         val search = AssetSearch()
-        search.filter = AssetFilter().addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
+        search.filter = AssetFilter().addToTerms("system.taxonomy.taxId", tax.taxonomyId)
 
         val sb = rest.newSearchBuilder()
         sb.request.scroll(SCROLL_TIME)
@@ -543,6 +543,6 @@ class TaxonomyServiceImpl @Autowired constructor(
          */
         private const val PAGE_SIZE = 100
 
-        private const val ROOT_FIELD = "zorroa.taxonomy"
+        private const val ROOT_FIELD = "system.taxonomy"
     }
 }

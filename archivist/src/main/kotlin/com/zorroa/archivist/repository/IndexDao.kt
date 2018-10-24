@@ -417,7 +417,7 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
         if (typeOfLink.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
-        val doc = mapOf("zorroa" to mapOf("links" to mapOf(typeOfLink to ids)))
+        val doc = mapOf("system" to mapOf("links" to mapOf(typeOfLink to ids)))
         val rest = getClient()
         rest.client.update(rest.newUpdateRequest(assetId)
                 .doc(Json.serializeToString(doc), XContentType.JSON))
@@ -547,17 +547,17 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
     companion object {
 
         private const val REMOVE_LINK_SCRIPT =
-                "if (ctx._source.zorroa != null) {  "+
-                "if (ctx._source.zorroa.links != null) { " +
-                "if (ctx._source.zorroa.links[params.type] != null) { " +
-                "ctx._source.zorroa.links[params.type].removeIf(i-> i==params.id); }}}"
+                "if (ctx._source.system != null) {  "+
+                "if (ctx._source.system.links != null) { " +
+                "if (ctx._source.system.links[params.type] != null) { " +
+                "ctx._source.system.links[params.type].removeIf(i-> i==params.id); }}}"
 
         private const val APPEND_LINK_SCRIPT =
-                "if (ctx._source.zorroa == null) { ctx._source.zorroa = new HashMap(); } " +
-                "if (ctx._source.zorroa.links == null) { ctx._source.zorroa.links = new HashMap(); }  " +
-                "if (ctx._source.zorroa.links[params.type] == null) { ctx._source.zorroa.links[params.type] = new ArrayList(); }" +
-                "ctx._source.zorroa.links[params.type].add(params.id); "+
-                "ctx._source.zorroa.links[params.type] = new HashSet(ctx._source.zorroa.links[params.type]);"
+                "if (ctx._source.system == null) { ctx._source.system = new HashMap(); } " +
+                "if (ctx._source.system.links == null) { ctx._source.system.links = new HashMap(); }  " +
+                "if (ctx._source.system.links[params.type] == null) { ctx._source.system.links[params.type] = new ArrayList(); }" +
+                "ctx._source.system.links[params.type].add(params.id); "+
+                "ctx._source.system.links[params.type] = new HashSet(ctx._source.system.links[params.type]);"
 
         private val MAPPER = object : SearchHitRowMapper<Document> {
             override fun mapRow(hit: SingleHit): Document {
