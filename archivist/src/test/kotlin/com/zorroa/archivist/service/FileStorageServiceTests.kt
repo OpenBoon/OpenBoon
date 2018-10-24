@@ -23,7 +23,7 @@ class GcsFileStorageServiceTests : AbstractTest() {
     @Test
     fun testGetUri() {
         val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
-        val uri = fileStorage.buildUri(spec)
+        val uri = fileStorage.dlp.buildUri(spec)
 
         val expectedPath = "/orgs/00000000-9998-8888-7777-666666666666/ofs/proxy/38f154c7-e214-551b-9374-075c2bac63a1/foo_bar.jpg"
         val auri = URI.create(uri)
@@ -36,7 +36,7 @@ class GcsFileStorageServiceTests : AbstractTest() {
     @Test
     fun testGetId() {
         val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
-        val id = fileStorage.buildId(spec)
+        val id = fileStorage.dlp.buildId(spec)
         assertTrue(id.startsWith("proxy_"))
         assertTrue(id.endsWith("_foo_bar.jpg"))
     }
@@ -67,14 +67,15 @@ class GcsFileStorageServiceTests : AbstractTest() {
 
 }
 
-class OfsFileStorageServiceTests : AbstractTest() {
+class LocalFileStorageServiceTests : AbstractTest() {
 
-    val ofs: UUIDFileSystem = UUIDFileSystem(Files.createTempDirectory("test").toFile())
-    val fileStorage: OfsFileStorageService
+    val testShared = Files.createTempDirectory("test")
+    val ofs: UUIDFileSystem = UUIDFileSystem(testShared.resolve("ofs").toFile())
+    val fileStorage: LocalFileStorageService
 
     init {
         ofs.init()
-        fileStorage = OfsFileStorageService(ofs)
+        fileStorage = LocalFileStorageService(testShared, ofs)
     }
 
     @Test

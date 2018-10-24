@@ -15,7 +15,9 @@ class FileStorageSpec(
         val name: String,
         val type: String,
         val variants: List<String>?=null,
-        var assetId: UUID?=null
+        var assetId: UUID?=null,
+        var jobId: UUID?=null,
+        var taskId: UUID?=null
 
 ) {
     override fun toString(): String {

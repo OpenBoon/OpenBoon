@@ -12,23 +12,27 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.filesystem.OfsFile
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.util.event
+import com.zorroa.common.domain.ArchivistWriteException
 import org.apache.tika.Tika
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.FileInputStream
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
 private val tika = Tika()
 private val uuid3 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
 /**
- * The FileStorageService is for storing files associated with assets.  This
- * is typically used for proxies.
+ * The FileStorageService is for storing files associated with assets, exports, etc.
  *
  */
 interface FileStorageService {
+
     /**
      * Allocates new file storage.
      *
@@ -71,8 +75,9 @@ class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: S
     private val gcs: Storage
     private val bucket: String
 
-    init {
+    val dlp : DirectoryLayoutProvider
 
+    init {
         bucket = if (bucketOverride != null) {
             bucketOverride
         } else {
@@ -87,53 +92,56 @@ class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: S
         else {
             StorageOptions.newBuilder().build().service
         }
+
+        dlp = GcsDirectoryLayoutProvider(bucket)
     }
 
     override fun create(spec: FileStorageSpec): FileStorage {
-        val uri = buildUri(spec)
-        val id = buildId(spec)
-        return FileStorage(id, uri,"gs", tika.detect(uri),-1, false)
+        val uri = dlp.buildUri(spec)
+        val id = dlp.buildId(spec)
+        val storage =  FileStorage(id, uri,"gs", tika.detect(uri),-1, false)
+
+        logger.event("create FileStorage",
+                mapOf("fileStorageId" to storage.id,
+                        "fileStorageUri" to storage.uri))
+        return storage
     }
 
     override fun get(spec: FileStorageSpec): FileStorage {
-        val uri = buildUri(spec)
-        val id = buildId(spec)
+        val uri = dlp.buildUri(spec)
+        val id = dlp.buildId(spec)
         return FileStorage(id, uri,"gs", tika.detect(uri),-1, false)
     }
 
     override fun get(id: String): FileStorage {
-        return FileStorage(unslashed(id), buildUri(id), "gs", tika.detect(id), -1, false)
+        return FileStorage(unslashed(id), dlp.buildUri(id), "gs", tika.detect(id), -1, false)
     }
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String {
-        var uri = URI(buildUri(id))
+        var uri = URI(dlp.buildUri(id))
         val blob =  gcs.get(bucket, uri.path)
         return blob.signUrl(10, TimeUnit.MINUTES,
                 Storage.SignUrlOption.httpMethod(method)).toString()
     }
 
-    fun buildUri(id: String): String {
-        val org = getOrgId()
-        val slashed = slashed(id)
-        return "gs://$bucket/orgs/$org/ofs/$slashed"
-    }
-
-    fun buildUri(spec: FileStorageSpec) : String {
-        val org = getOrgId()
-        val variant = spec.variants?.joinToString("_") ?: ""
-        val assetId = spec.assetId ?: uuid3.generate(spec.name)
-        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/${spec.name}$variant.${spec.type}"
-    }
-
-    fun buildId(spec: FileStorageSpec) : String {
-        val variant = spec.variants?.joinToString("_") ?: ""
-        val assetId = spec.assetId ?: uuid3.generate(spec.name)
-        return "${spec.category}___${assetId}___${spec.name}$variant.${spec.type}"
+    companion object {
+        private val logger = LoggerFactory.getLogger(GcsFileStorageService::class.java)
     }
 }
 
-class OfsFileStorageService @Autowired constructor(
-        private val ofs: ObjectFileSystem): FileStorageService {
+/**
+ * LocalFileStorageService handles where files are stored in an on-prem single
+ * tenant install.
+ */
+class LocalFileStorageService @Autowired constructor(
+        val root: Path, private val ofs: ObjectFileSystem): FileStorageService {
+
+    init {
+        logger.info("Initializig LocalFileStorageService at {}", root)
+        Files.createDirectories(root)
+        Files.createDirectories(root.resolve("exports"))
+        Files.createDirectories(root.resolve("models"))
+    }
 
     override fun create(spec: FileStorageSpec) : FileStorage {
         val ofile = ofs.prepare(spec.category, spec.name, spec.type, spec.variants)
@@ -164,13 +172,67 @@ class OfsFileStorageService @Autowired constructor(
             -1
         }
 
-        return FileStorage(
+        val storage = FileStorage(
                 unslashed(ofile.id),
                 ofile.file.toURI().toString(),
                 "file",
                 tika.detect(ofile.file.toString()),
                 size,
                 size != -1L)
+
+        logger.event("create FileStorage",
+                mapOf("fileStorageId" to storage.id,
+                        "fileStorageUri" to storage.uri))
+        return storage
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(LocalFileStorageService::class.java)
+    }
+}
+
+interface DirectoryLayoutProvider {
+    fun buildUri(st: FileStorageSpec): String
+    fun buildUri(id: String): String
+    fun buildId(spec: FileStorageSpec): String
+}
+
+class GcsDirectoryLayoutProvider(bucket: String) : DirectoryLayoutProvider {
+
+    private val dlpDefault = DefaultGcsDirectoryLayoutProvider(bucket)
+
+    override fun buildUri(st: FileStorageSpec): String {
+        return dlpDefault.buildUri(st)
+    }
+
+    override fun buildUri(id: String): String {
+        return dlpDefault.buildUri(id)
+    }
+
+    override fun buildId(spec: FileStorageSpec): String {
+        return dlpDefault.buildId(spec)
+    }
+}
+
+class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryLayoutProvider {
+
+    override fun buildUri(id: String): String {
+        val org = getOrgId()
+        val slashed = slashed(id)
+        return "gs://$bucket/orgs/$org/ofs/$slashed"
+    }
+
+    override fun buildUri(spec: FileStorageSpec) : String {
+        val org = getOrgId()
+        val variant = spec.variants?.joinToString("_") ?: ""
+        val assetId = spec.assetId ?: uuid3.generate(spec.name)
+        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/${spec.name}$variant.${spec.type}"
+    }
+
+    override fun buildId(spec: FileStorageSpec) : String {
+        val variant = spec.variants?.joinToString("_") ?: ""
+        val assetId = spec.assetId ?: uuid3.generate(spec.name)
+        return "${spec.category}___${assetId}___${spec.name}$variant.${spec.type}"
     }
 }
 
