@@ -29,13 +29,12 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
-    fun tetDelete() {
+    fun testDelete() {
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
             assertTrue(indexService.delete(a.id as String))
         }
     }
-
 
     @Test
     @Throws(InterruptedException::class)

@@ -145,6 +145,16 @@ class ArchivistConfiguration {
     }
 
     @Bean
+    fun pubSubService() : PubSubService? {
+        val props = properties()
+        if (props.getString("archivist.pubsub.type") == "gcp") {
+            return GcpPubSubServiceImpl()
+        }
+        logger.info("No PubSub service configured")
+        return null
+    }
+
+    @Bean
     fun routingService() : IndexRoutingService {
         return FakeIndexRoutingServiceImpl(properties().getString("es-routing-service.url"))
     }

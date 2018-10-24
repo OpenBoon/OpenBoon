@@ -20,6 +20,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
 import java.io.FileInputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
@@ -31,7 +33,6 @@ interface PubSubService
 class GooglePubSubSettings {
     lateinit var subscription: String
     lateinit var project: String
-    var enabled : Boolean = true
 }
 
 /**
@@ -66,19 +67,19 @@ class GcpPubSubServiceImpl : PubSubService {
     fun setup() {
         logger.info("Initializing GCP pub sub {} {}", settings.project, settings.subscription)
         subscription = ProjectSubscriptionName.of(settings.project, settings.subscription)
-        subscriber = Subscriber.newBuilder(settings.subscription, GcpDataMessageReceiver())
-                .setCredentialsProvider { GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) }
-                .build()
-        if (settings.enabled) {
-            subscriber.startAsync().awaitRunning()
+        val credPath = "$configPath/data-credentials.json"
+
+        val builder = Subscriber.newBuilder(settings.subscription, GcpDataMessageReceiver())
+        if (Files.exists(Paths.get(credPath))) {
+            builder.setCredentialsProvider { GoogleCredentials.fromStream(FileInputStream(credPath)) }
         }
+        subscriber = builder.build()
+        subscriber.startAsync().awaitRunning()
     }
 
     @PreDestroy
     fun shutdown() {
-        if (settings.enabled) {
-            subscriber.stopAsync()
-        }
+        subscriber.stopAsync()
     }
 
     inner class GcpDataMessageReceiver : MessageReceiver {
