@@ -137,10 +137,18 @@ class LocalFileStorageService @Autowired constructor(
         val root: Path, private val ofs: ObjectFileSystem): FileStorageService {
 
     init {
-        logger.info("Initializig LocalFileStorageService at {}", root)
-        Files.createDirectories(root)
-        Files.createDirectories(root.resolve("exports"))
-        Files.createDirectories(root.resolve("models"))
+        logger.info("Initializing LocalFileStorageService at {}", root)
+        if (!Files.exists(root)) {
+            logger.info("LocalFileStorageService creating directory: {}", root)
+            Files.createDirectories(root)
+        }
+        listOf("exports", "models").forEach {
+            val p = root.resolve(it)
+            if (!Files.exists(p)) {
+                logger.info("LocalFileStorageService creating directory: {}", p)
+                Files.createDirectories(p)
+            }
+        }
     }
 
     override fun create(spec: FileStorageSpec) : FileStorage {
