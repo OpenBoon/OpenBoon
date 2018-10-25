@@ -146,8 +146,8 @@ class IndexDaoTests : AbstractTest() {
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
         val a = indexDao[asset1.id]
-        val folder_links = a.getAttr<Collection<Any>>("zorroa.links.folder")
-        val parent_links = a.getAttr<Collection<Any>>("zorroa.links.parent")
+        val folder_links = a.getAttr<Collection<Any>>("system.links.folder")
+        val parent_links = a.getAttr<Collection<Any>>("system.links.parent")
 
         assertEquals(1, folder_links!!.size.toLong())
         assertEquals(1, parent_links!!.size.toLong())
@@ -161,14 +161,14 @@ class IndexDaoTests : AbstractTest() {
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
         var a = indexDao[asset1.id]
-        var links = a.getAttr<Collection<Any>>("zorroa.links.folder")
+        var links = a.getAttr<Collection<Any>>("system.links.folder")
         assertEquals(1, links!!.size.toLong())
 
         assertTrue(indexDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
         a = indexDao[asset1.id]
-        links = a.getAttr("zorroa.links.folder")
+        links = a.getAttr("system.links.folder")
         assertEquals(0, links!!.size.toLong())
     }
 

@@ -42,10 +42,10 @@ class IndexServiceTests : AbstractTest() {
         val builder = Source(getTestImagePath("set01/toucan.jpg"))
         val asset1 = indexService.index(builder)
 
-        assertNotNull(asset1.getAttr("zorroa.timeCreated"))
-        assertNotNull(asset1.getAttr("zorroa.timeModified"))
-        assertEquals(asset1.getAttr("zorroa.timeCreated", String::class.java),
-                asset1.getAttr("zorroa.timeModified", String::class.java))
+        assertNotNull(asset1.getAttr("system.timeCreated"))
+        assertNotNull(asset1.getAttr("system.timeModified"))
+        assertEquals(asset1.getAttr("system.timeCreated", String::class.java),
+                asset1.getAttr("system.timeModified", String::class.java))
 
         refreshIndex()
         Thread.sleep(1000)
@@ -53,7 +53,7 @@ class IndexServiceTests : AbstractTest() {
         val asset2 = indexService.index(builder2)
 
         refreshIndex()
-        assertNotEquals(asset2.getAttr("zorroa.timeCreated", String::class.java),
-                asset2.getAttr("zorroa.timeModified", String::class.java))
+        assertNotEquals(asset2.getAttr("system.timeCreated", String::class.java),
+                asset2.getAttr("system.timeModified", String::class.java))
     }
 }

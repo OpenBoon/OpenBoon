@@ -90,7 +90,7 @@ class RestClient {
     }
 
     private fun initHost(): HttpHost {
-        var host: String? = (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_ARCHIVIST_URL", System.getProperty("zorroa.archivist.url"))
+        var host: String? = (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_ARCHIVIST_URL", System.getProperty("system.archivist.url"))
         if (host == null) {
             host = "http://localhost:8066"
         }
@@ -99,7 +99,7 @@ class RestClient {
     }
 
     private fun initUser(): String {
-        return (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_USER", System.getProperty("zorroa.user"))
+        return (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_USER", System.getProperty("system.user"))
                 ?: return System.getProperty("user.name")
     }
 

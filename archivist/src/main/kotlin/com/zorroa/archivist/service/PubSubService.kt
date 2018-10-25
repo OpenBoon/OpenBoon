@@ -117,7 +117,7 @@ class GcpPubSubServiceImpl : PubSubService {
                     }
 
                     doc.setAttr("irm.companyId", companyId)
-                    doc.setAttr("zorroa.organizationId", org.id)
+                    doc.setAttr("system.organizationId", org.id)
 
                     // obtain the file's download path
                     val md = coreDataVaultClient.getMetadata(companyId, assetId)

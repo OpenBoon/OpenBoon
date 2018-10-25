@@ -46,7 +46,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Document doc = new Document(
                 searchService.search(new AssetSearch()).getHits().getHits()[0].getSourceAsMap());
-        assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("zorroa.taxonomy",
+        assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("system.taxonomy",
                 new TypeReference<List<TaxonomySchema>>() {
                 }).get(0).getKeywords());
 
@@ -119,7 +119,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         refreshIndex();
 
         Document a = indexService.get(d.getId());
-        assertEquals(0, a.getAttr("zorroa.taxonomy", List.class).size());
+        assertEquals(0, a.getAttr("system.taxonomy", List.class).size());
     }
 
     @Test
@@ -199,7 +199,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         assertEquals(1, searchService.search(
                 new AssetSearch("ships")).getHits().getTotalHits());
         assertTrue(fieldService.getFields("asset").get(
-                "string").contains("zorroa.taxonomy.keywords"));
+                "string").contains("system.taxonomy.keywords"));
 
         folderService.trash(folder1);
 

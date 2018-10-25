@@ -407,26 +407,26 @@ public class SearchServiceTests extends AbstractTest {
         Map<String, Object> doc = response.getHits().getAt(0).getSourceAsMap();
         Document _doc = new Document(doc);
 
-        List<String> folders = _doc.getAttr("zorroa.links.folder", List.class);
+        List<String> folders = _doc.getAttr("system.links.folder", List.class);
         assertEquals(2, folders.size());
 
         response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"keywords*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSourceAsMap();
-        assertNull(doc.get("zorroa.links"));
+        assertNull(doc.get("system.links"));
 
-        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"zorroa.links.folder"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"system.links.folder"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSourceAsMap();
         _doc = new Document(doc);
-        folders = folders = _doc.getAttr("zorroa.links.folder", List.class);
+        folders = folders = _doc.getAttr("system.links.folder", List.class);
         assertEquals(2, folders.size());
 
-        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"zorroa.links*"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"system.links*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSourceAsMap();
         _doc = new Document(doc);
-        folders = folders = _doc.getAttr("zorroa.links.folder", List.class);
+        folders = folders = _doc.getAttr("system.links.folder", List.class);
         assertEquals(2, folders.size());
     }
 
