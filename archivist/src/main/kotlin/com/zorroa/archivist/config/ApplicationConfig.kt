@@ -123,9 +123,10 @@ class ArchivistConfiguration {
                 LocalFileStorageService(path, ufs)
             }
             "gcs"-> {
+                val bucket = properties().getString("archivist.storage.bucket")
                 val configPath = props.getPath("archivist.config.path")
                 val configFile = configPath.resolve("data-credentials.json")
-                GcsFileStorageService(configFile)
+                GcsFileStorageService(bucket, configFile)
             }
             else -> {
                 throw IllegalStateException("Invalid storage type: $type")
@@ -220,6 +221,7 @@ class ArchivistConfiguration {
             }
         }
     }
+
 
     @Bean
     @ConditionalOnProperty(name=["archivist.debug-mode.enabled"], havingValue = "true")

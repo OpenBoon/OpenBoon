@@ -67,23 +67,16 @@ interface FileStorageService {
 
 }
 
-class GcsFileStorageService constructor(credsFile: Path?=null, bucketOverride: String?=null) : FileStorageService {
+class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=null) : FileStorageService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
 
     private val gcs: Storage
-    private val bucket: String
 
     val dlp : DirectoryLayoutProvider
 
     init {
-        bucket = if (bucketOverride != null) {
-            bucketOverride
-        } else {
-            val project = System.getenv("GCP_PROJECT") ?: throw IllegalStateException("GCP_PROJECT env var not set.")
-            "${project}_zorroa_data"
-        }
 
         gcs = if (credsFile!= null && Files.exists(credsFile)) {
             StorageOptions.newBuilder().setCredentials(
