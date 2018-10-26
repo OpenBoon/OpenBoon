@@ -86,8 +86,8 @@ public class SettingsServiceTests extends AbstractTest {
         assertEquals("The default sort fields in the format of field:direction,field:direction. Score is always first.",
                 setting.getDescription());
         assertTrue(setting.isLive());
-        assertEquals("zorroa.timeCreated:DESC", setting.getCurrentValue());
-        assertEquals("zorroa.timeCreated:DESC", setting.getDefaultValue());
+        assertEquals("system.timeCreated:DESC", setting.getCurrentValue());
+        assertEquals("system.timeCreated:DESC", setting.getDefaultValue());
         assertTrue(setting.isDefault());
     }
 

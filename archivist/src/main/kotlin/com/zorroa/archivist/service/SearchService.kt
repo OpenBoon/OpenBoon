@@ -449,7 +449,7 @@ class SearchServiceImpl @Autowired constructor(
             if (key == "folder") {
                 continue
             }
-            staticBool.should(QueryBuilders.termsQuery("zorroa.links.$key", value))
+            staticBool.should(QueryBuilders.termsQuery("system.links.$key", value))
         }
 
         /*
@@ -497,10 +497,10 @@ class SearchServiceImpl @Autowired constructor(
                 }
 
                 if (!childFolders.isEmpty()) {
-                    staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", childFolders))
+                    staticBool.should(QueryBuilders.termsQuery("system.links.folder", childFolders))
                 }
             } else {
-                staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", folders))
+                staticBool.should(QueryBuilders.termsQuery("system.links.folder", folders))
             }
         }
 

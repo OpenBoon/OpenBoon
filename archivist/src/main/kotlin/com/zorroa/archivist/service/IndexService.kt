@@ -169,28 +169,28 @@ class IndexServiceImpl  @Autowired  constructor (
             /**
              * Re-add the organization
              */
-            source.setAttr("zorroa.organizationId", organizationId)
+            source.setAttr("system.organizationId", organizationId)
 
             /**
              * Update created and modified times.
              */
             val time = Date()
 
-            if (managedValues.attrExists("zorroa.timeCreated")) {
-                source.setAttr("zorroa.timeModified", time)
+            if (managedValues.attrExists("system.timeCreated")) {
+                source.setAttr("system.timeModified", time)
                 /**
                  * If the document is being replaced, maintain the created time.
                  */
                 //if (source.replace) {
-                //    source.setAttr("zorroa.timeCreated", managedValues.getAttr("zorroa.timeCreated"))
+                //    source.setAttr("system.timeCreated", managedValues.getAttr("system.timeCreated"))
                 //}
             }
             else {
-                source.setAttr("zorroa.timeModified", time)
-                source.setAttr("zorroa.timeCreated", time)
+                source.setAttr("system.timeModified", time)
+                source.setAttr("system.timeCreated", time)
             }
 
-            var perms = managedValues.getAttr("zorroa.permissions", PermissionSchema::class.java)
+            var perms = managedValues.getAttr("system.permissions", PermissionSchema::class.java)
             if (perms == null) {
                 perms = PermissionSchema()
             }
@@ -221,7 +221,7 @@ class IndexServiceImpl  @Autowired  constructor (
                     }
 
                 }
-                source.setAttr("zorroa.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
+                source.setAttr("system.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
             } else if (perms.isEmpty) {
 
                 /**
@@ -231,19 +231,19 @@ class IndexServiceImpl  @Autowired  constructor (
                  * If there is no permissions.
                  */
                 // get the default perms for org.
-                source.setAttr("zorroa.permissions",
+                source.setAttr("system.permissions",
                         Json.Mapper.convertValue<Map<String,Any>>(permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP))
             }
 
             if (source.links != null) {
-                var links = managedValues.getAttr("zorroa.links", LinkSchema::class.java)
+                var links = managedValues.getAttr("system.links", LinkSchema::class.java)
                 if (links == null) {
                     links = LinkSchema()
                 }
                 for (link in source.links!!) {
                     links.addLink(link.left, link.right)
                 }
-                source.setAttr("zorroa.links", links)
+                source.setAttr("system.links", links)
             }
 
             try {
@@ -296,7 +296,7 @@ class IndexServiceImpl  @Autowired  constructor (
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
 
         val asset = indexDao[assetId]
-        val write = asset.getAttr("zorroa.permissions.write", Json.SET_OF_UUIDS)
+        val write = asset.getAttr("system.permissions.write", Json.SET_OF_UUIDS)
 
         if (!hasPermission(write)) {
             throw ArchivistWriteException("You cannot make changes to this asset.")

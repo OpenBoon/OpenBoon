@@ -132,7 +132,7 @@ fun hasPermission(perms: Collection<String>): Boolean {
  * @return
  */
 fun hasPermission(field: String, asset: Document): Boolean {
-    val perms = asset.getAttr("zorroa.permissions.$field", Json.SET_OF_UUIDS)
+    val perms = asset.getAttr("system.permissions.$field", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 
@@ -168,7 +168,7 @@ fun getPermissionIds(): Set<UUID> {
 }
 
 fun getOrganizationFilter(): QueryBuilder {
-    return  QueryBuilders.termQuery("zorroa.organizationId", getOrgId().toString())
+    return  QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
 }
 
 fun getPermissionsFilter(access: Access?): QueryBuilder? {
@@ -179,30 +179,30 @@ fun getPermissionsFilter(access: Access?): QueryBuilder? {
             return if (hasPermission(Groups.READ)) {
                 null
             } else {
-                QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
             }
         }
         else if (access == Access.Write) {
             return if (hasPermission(Groups.WRITE)) {
                 null
             } else {
-                QueryBuilders.termsQuery("zorroa.permissions.write", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.write", getPermissionIds())
             }
         }
         else if (access == Access.Export) {
             return if (hasPermission(Groups.EXPORT)) {
                 null
             } else {
-                QueryBuilders.termsQuery("zorroa.permissions.export", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.export", getPermissionIds())
             }
         }
     }
 
-    return QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
+    return QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
 }
 
 fun setWritePermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
+    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
     }
@@ -210,11 +210,11 @@ fun setWritePermissions(source: Document, perms: Collection<Permission>) {
     for (p in perms) {
         ps.write.add(p.id)
     }
-    source.setAttr("zorroa.permissions", ps)
+    source.setAttr("system.permissions", ps)
 }
 
 fun setExportPermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
+    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
     }
@@ -222,7 +222,7 @@ fun setExportPermissions(source: Document, perms: Collection<Permission>) {
     for (p in perms) {
         ps.export.add(p.id)
     }
-    source.setAttr("zorroa.permissions", ps)
+    source.setAttr("system.permissions", ps)
 }
 
 /**
@@ -280,7 +280,7 @@ fun canExport(asset: Document): Boolean {
         return true
     }
 
-    val perms = asset.getAttr("zorroa.permissions.export", Json.SET_OF_UUIDS)
+    val perms = asset.getAttr("system.permissions.export", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 
