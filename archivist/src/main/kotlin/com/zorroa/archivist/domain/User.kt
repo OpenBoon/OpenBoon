@@ -71,7 +71,8 @@ class User (
         val enabled: Boolean,
         val settings: UserSettings,
         val loginCount: Int,
-        val timeLastLogin: Long) : UserId {
+        val timeLastLogin: Long,
+        var attrs: Map<String,Any>) : UserId {
 
     @JsonIgnore
     override fun getName(): String = username

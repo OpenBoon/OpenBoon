@@ -316,7 +316,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     rs.getBoolean("bool_enabled"),
                     Json.deserialize(rs.getString("json_settings"), UserSettings::class.java),
                     rs.getInt("int_login_count"),
-                    rs.getLong("time_last_login"))
+                    rs.getLong("time_last_login"),
+                    Json.deserialize(rs.getString("json_auth_attrs"), Json.GENERIC_MAP))
         }
 
         private const val GET_ALL = "SELECT * FROM users"

@@ -14,7 +14,8 @@ class UserAuthed(
         override val id: UUID,
         var organizationId: UUID,
         username: String,
-        permissions: Set<out GrantedAuthority>) : UserId, UserDetails, Serializable {
+        permissions: Set<out GrantedAuthority>,
+        val attrs: Map<String,Any>) : UserId, UserDetails, Serializable {
 
     private val user : String = username
     private val permissions : Set<out GrantedAuthority> = permissions
