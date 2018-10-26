@@ -18,7 +18,7 @@ import kotlin.test.assertTrue
 class GcsFileStorageServiceTests : AbstractTest() {
 
     val bucketName = "zorroa-test"
-    val fileStorage: GcsFileStorageService = GcsFileStorageService(bucketOverride = "zorroa-test")
+    val fileStorage: GcsFileStorageService = GcsFileStorageService("zorroa-test")
 
     @Test
     fun testGetUri() {
