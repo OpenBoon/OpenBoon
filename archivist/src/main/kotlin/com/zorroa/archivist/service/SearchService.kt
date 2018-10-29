@@ -12,11 +12,13 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.RangeQuery
 import com.zorroa.archivist.search.SimilarityFilter
 import com.zorroa.archivist.security.*
+import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
@@ -33,6 +35,8 @@ import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
+import org.elasticsearch.search.SearchHit
+import org.elasticsearch.search.SearchHits
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
@@ -61,6 +65,14 @@ interface SearchService {
     fun getSuggestTerms(text: String): List<String>
 
     fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean=false): Iterable<Document>
+
+    /**
+     * Execute a scan and scroll and for every hit, call the given function.
+     * @param search An asset search
+     * @param fetchSource Set to true if your function requires the full doc
+     * @param func the function to call for each batch
+     */
+    fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit)
 
     /**
      * Execute the AssetSearch with the given Paging object.
@@ -203,6 +215,32 @@ class SearchServiceImpl @Autowired constructor(
         return result
     }
 
+    override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit) {
+        val rest = esClientCache[getOrgId()]
+        val builder = rest.newSearchBuilder()
+        builder.source.query(getQuery(search))
+        builder.source.fetchSource(fetchSource)
+        builder.source.size(100)
+        builder.request.scroll(TimeValue(60000))
+
+        var rsp = rest.client.search(builder.request)
+        try {
+            do {
+                func(rsp.hits)
+                val sr = SearchScrollRequest(rsp.scrollId)
+                sr.scroll(TimeValue.timeValueSeconds(30))
+                rsp = rest.client.searchScroll(sr)
+            } while (rsp.hits.hits.isNotEmpty())
+        } finally {
+            try {
+                val cs = ClearScrollRequest()
+                cs.addScrollId(rsp.scrollId)
+                rest.client.clearScroll(cs)
+            } catch (e: IOException) {
+                logger.warn("failed to clear scan/scroll request, ", e)
+            }
+        }
+    }
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
         val rest = esClientCache[getOrgId()]
         val builder = rest.newSearchBuilder()
@@ -371,12 +409,6 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            XContentFactory.jsonBuilder().use { builder->
-                ssb.query().toXContent(builder, ToXContent.EMPTY_PARAMS)
-                logger.info("SEARCH: {}", builder.string())
-            }
-        }
         return rest.newSearchBuilder(req, ssb)
     }
 
@@ -437,6 +469,12 @@ class SearchServiceImpl @Autowired constructor(
             query.should(assetBool)
         }
 
+        if (properties.getBoolean("archivist.debug-mode.enabled")) {
+            XContentFactory.jsonBuilder().use { builder->
+                query.toXContent(builder, ToXContent.EMPTY_PARAMS)
+                logger.info("SEARCH: {}", builder.string())
+            }
+        }
         return query
     }
 
