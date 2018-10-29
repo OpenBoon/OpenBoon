@@ -501,7 +501,7 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
             }
         }
 
-        return BatchDeleteAssetsResponse(total, success, failures)
+        return BatchDeleteAssetsResponse(total, success, 0, failures)
     }
 
 

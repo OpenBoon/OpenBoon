@@ -329,10 +329,24 @@ class IndexServiceImpl  @Autowired  constructor (
          */
         val rsp = BatchDeleteAssetsResponse()
         searchService.scanAndScroll(search, true) { hits->
-            rsp + indexDao.batchDelete(hits.hits.map { it.id })
+            /*
+             * Determine if any documents are on hold.
+             */
+            val okToDelete = mutableListOf<Document>()
+            for (hit in hits.hits) {
+                val doc = Document(hit.id, hit.sourceAsMap)
+                if (doc.attrExists("system.hold") && doc.getAttr("system.hold", Boolean::class.java)) {
+                    rsp.onHold = rsp.onHold + 1
+                }
+                else {
+                    okToDelete.add(doc)
+                }
+            }
+
+            rsp + indexDao.batchDelete(okToDelete.map { it.id })
             GlobalScope.launch {
-                hits.forEach {
-                    deleteAssociatedFiles(Document(it.id, it.sourceAsMap))
+                okToDelete.forEach {
+                    deleteAssociatedFiles(it)
                 }
             }
         }

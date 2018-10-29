@@ -24,11 +24,11 @@ class BatchDeleteAssetsRequest (
  * @property totalRequested The total number of assets requested to be deleted.
  * @property totalDeleted The total nunber of assets deleted.
  * @property failures A map AssetID/Message failures.
- * @property childrenDeleted The number of deleted children
  */
 class BatchDeleteAssetsResponse (
     var totalRequested: Int=0,
     var totalDeleted: Int=0,
+    var onHold: Int=0,
     var failures: MutableMap<String, String> = mutableMapOf()
 ) {
     operator fun plus(other: BatchDeleteAssetsResponse) {
@@ -37,7 +37,7 @@ class BatchDeleteAssetsResponse (
         failures.putAll(other.failures)
     }
 
-    fun childrenDeleted() : Int { return totalDeleted - totalRequested }
+    fun getChildrenDeleted() : Int { return totalDeleted - totalRequested - onHold }
 }
 
 /**

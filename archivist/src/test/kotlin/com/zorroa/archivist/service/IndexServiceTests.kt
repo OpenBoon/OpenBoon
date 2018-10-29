@@ -61,6 +61,20 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchDeleteWithOnHold() {
+        val assets = indexService.getAll(Pager.first())
+        indexService.update(assets[0].id, mapOf("system.hold" to true))
+        refreshIndex()
+        Thread.sleep(1000)
+
+        val res = indexService.batchDelete(assets.map { it.id })
+        assertEquals(1, res.totalRequested)
+        assertEquals(1, res.totalDeleted)
+        assertEquals(1, res.onHold)
+        assertTrue(res.failures.isEmpty())
+    }
+
+    @Test
     fun testBatchDeleteSkipChildren() {
         val assets = indexService.getAll(Pager.first())
         val child = assets[1]
