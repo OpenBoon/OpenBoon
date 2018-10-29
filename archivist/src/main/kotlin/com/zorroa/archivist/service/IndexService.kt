@@ -19,6 +19,10 @@ import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -77,6 +81,8 @@ interface IndexService {
     fun update(assetId: String, attrs: Map<String, Any>): Long
 
     fun delete(assetId: String): Boolean
+
+    fun batchDelete(assetId: List<String>): BatchDeleteAssetsResponse
 }
 
 @Component
@@ -100,9 +106,6 @@ class IndexServiceImpl  @Autowired  constructor (
 
     @Autowired
     lateinit var searchService: SearchService
-
-    @Autowired
-    lateinit var assetService: AssetService
 
     override fun get(id: String): Document {
         return if (id.startsWith("/")) {
@@ -245,12 +248,6 @@ class IndexServiceImpl  @Autowired  constructor (
                 }
                 source.setAttr("system.links", links)
             }
-
-            try {
-                assetService.setDocument(UUID.fromString(source.id), source)
-            } catch (e: Exception) {
-                logger.warn("Failed to store asset in TX store: ", e)
-            }
         }
 
         val result = indexDao.index(spec.sources!!)
@@ -307,28 +304,63 @@ class IndexServiceImpl  @Autowired  constructor (
          * Remove keys which are maintained via other methods.
          */
         NS_PROTECTED_API.forEach { n -> copy.remove(n) }
+        return indexDao.update(assetId, copy)
+    }
 
-        val version = indexDao.update(assetId, copy)
-        logService.logAsync(UserLogSpec.build(LogAction.Update, "asset", assetId))
-        return version
+    /**
+     * Batch delete the the given asset IDs, along with their supporting files.
+     * This method propagates to children as well.
+     *
+     * @param assetIds: the IDs of the assets the delete.
+     */
+    override fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse {
+        /*
+         * Setup an OR search where we target both the parents and children.
+         */
+        val search = AssetSearch()
+        search.filter = AssetFilter()
+        search.filter.should = listOf(
+                AssetFilter().addToTerms("_id", assetIds).addToMissing("media.clip.parent"),
+                AssetFilter().addToTerms("media.clip.parent", assetIds))
+
+        /*
+         * Iterate a scan and scroll and batch delete each batch.
+         * Along the way queue up work to delete any files.
+         */
+        val rsp = BatchDeleteAssetsResponse()
+        searchService.scanAndScroll(search, true) { hits->
+            rsp + indexDao.batchDelete(hits.hits.map { it.id })
+            GlobalScope.launch {
+                hits.forEach {
+                    deleteAssociatedFiles(Document(it.id, it.sourceAsMap))
+                }
+            }
+        }
+        return rsp
     }
 
     override fun delete(assetId: String): Boolean {
         val doc = indexDao[assetId]
-        val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
-        if (proxySchema != null) {
-            for (proxy in proxySchema.proxies!!) {
-                val storage = fileStorageService.get(proxy.id!!)
-                val ofile = fileServerProvider.getServableFile(storage.uri)
-                if (!ofile.delete()) {
-                    logger.warnEvent("delete Proxy, file did not exist.",
-                            mapOf("proxyId" to proxy.id))
-                }
-            }
-        }
+        deleteAssociatedFiles(doc)
         return indexDao.delete(assetId)
     }
 
+    fun deleteAssociatedFiles(doc: Document) {
+        logger.event("delete Proxy", mapOf("assetId" to doc.id))
+        doc.getAttr("proxies", ProxySchema::class.java)?.let {
+            it.proxies?.forEach { pr ->
+                try {
+                    val storage = fileStorageService.get(pr.id as String)
+                    val ofile = fileServerProvider.getServableFile(storage.uri)
+                    if (!ofile.delete()) {
+                        logger.warnEvent("delete Proxy", "file did not exist", mapOf("proxyId" to pr.id))
+                    }
+                } catch (e: Exception) {
+                    logger.warnEvent("delete Proxy", e.message!!, mapOf("proxyId" to pr.id), e)
+                }
+            }
+        }
+    }
 
     override fun getMapping(): Map<String, Any> {
         return indexDao.getMapping()

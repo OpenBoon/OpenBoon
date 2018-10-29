@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
+import com.zorroa.common.util.Json
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -34,6 +35,43 @@ class IndexServiceTests : AbstractTest() {
         for (a in assets) {
             assertTrue(indexService.delete(a.id as String))
         }
+    }
+
+    @Test
+    fun testBatchDelete() {
+        val assets = indexService.getAll(Pager.first())
+        val res = indexService.batchDelete(assets.map { it.id })
+        assertEquals(2, res.totalRequested)
+        assertEquals(2, res.totalDeleted)
+        assertTrue(res.failures.isEmpty())
+    }
+
+    @Test
+    fun testBatchDeleteWithChildren() {
+        val assets = indexService.getAll(Pager.first())
+        val child = assets[1]
+        indexService.update(child.id, mapOf("media.clip.parent" to assets[0].id))
+        refreshIndex()
+        Thread.sleep(1000)
+
+        val res = indexService.batchDelete(listOf(assets[0].id))
+        assertEquals(2, res.totalRequested)
+        assertEquals(2, res.totalDeleted)
+        assertTrue(res.failures.isEmpty())
+    }
+
+    @Test
+    fun testBatchDeleteSkipChildren() {
+        val assets = indexService.getAll(Pager.first())
+        val child = assets[1]
+        indexService.update(child.id, mapOf("media.clip.parent" to assets[0].id))
+        refreshIndex()
+        Thread.sleep(1000)
+
+        val res = indexService.batchDelete(listOf(child.id))
+        assertEquals(0, res.totalRequested)
+        assertEquals(0, res.totalDeleted)
+        assertTrue(res.failures.isEmpty())
     }
 
     @Test

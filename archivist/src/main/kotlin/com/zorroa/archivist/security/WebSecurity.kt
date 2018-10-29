@@ -184,7 +184,7 @@ class MultipleWebSecurityConfig {
             override fun publishAuthenticationFailure(
                     exception: AuthenticationException,
                     authentication: Authentication) {
-                logger.warnEvent("failed authed User", mapOf("user" to authentication.principal.toString()))
+                logger.warnEvent("auth User", "failed to auth", mapOf("user" to authentication.principal.toString()))
             }
         }
     }

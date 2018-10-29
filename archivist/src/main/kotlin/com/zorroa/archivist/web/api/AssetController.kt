@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 class AssetController @Autowired constructor(
         private val indexService: IndexService,
+        private val assetService: AssetService,
         private val searchService: SearchService,
         private val folderService: FolderService,
         private val logService: EventLogService,
@@ -264,13 +265,13 @@ class AssetController @Autowired constructor(
     @DeleteMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun delete(@PathVariable id: String): Any {
-        val asset = indexService.get(id)
-        if (!hasPermission("write", asset)) {
-            throw ArchivistWriteException("delete access denied")
-        }
+        return HttpUtils.deleted("asset", id, assetService.delete(id))
+    }
 
-        val result = indexService.delete(id)
-        return HttpUtils.deleted("asset", id, result)
+    @DeleteMapping(value = ["/api/v1/assets"])
+    @Throws(IOException::class)
+    fun batchDelete(@RequestBody batch: BatchDeleteAssetsRequest): BatchDeleteAssetsResponse {
+        return assetService.batchDelete(batch.assetIds)
     }
 
     @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
