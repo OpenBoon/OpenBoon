@@ -175,7 +175,13 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
                     PipelineType.values()[rs.getInt("int_type")],
-                    newState)
+                    newState,
+                    null,
+                    null,
+                    null,
+                    rs.getLong("time_modified"),
+                    rs.getLong("time_started")
+            )
         }
 
         private const val GET = "SELECT * FROM job " +
