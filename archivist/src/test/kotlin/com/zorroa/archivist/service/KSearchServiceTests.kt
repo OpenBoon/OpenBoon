@@ -18,12 +18,14 @@ class KSearchServiceTests : AbstractTest() {
     @Test
     fun testScanAndScrollWithFunction() {
         var files = mutableListOf<String?>()
+
         searchService.scanAndScroll(AssetSearch(), true) {
             it.hits.forEach { source ->
                 val doc = Document(source.sourceAsMap)
                 files.add(doc.getAttr("source.filename"))
             }
         }
+
         assertTrue("beer_kettle_01.jpg" in files)
         assertTrue("new_zealand_wellington_harbour.jpg" in files)
     }

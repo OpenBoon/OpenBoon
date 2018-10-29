@@ -3,6 +3,7 @@ package com.zorroa.common.clients
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import java.nio.file.Path
@@ -63,7 +64,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
         return runBlocking {
             val result = ConcurrentHashMap<String, Boolean>()
             for (id in assetIds) {
-                launch {
+                GlobalScope.launch{
                     result[id] = delete(companyId, id)
                 }
             }
