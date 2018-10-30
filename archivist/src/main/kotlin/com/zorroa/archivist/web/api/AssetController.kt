@@ -11,6 +11,7 @@ import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
+import com.zorroa.archivist.util.event
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
 import com.zorroa.common.domain.ArchivistWriteException
@@ -40,7 +41,6 @@ class AssetController @Autowired constructor(
         private val assetService: AssetService,
         private val searchService: SearchService,
         private val folderService: FolderService,
-        private val logService: EventLogService,
         private val imageService: ImageService,
         private val fieldService: FieldService,
         private val fileServerProvider: FileServerProvider,
@@ -116,7 +116,7 @@ class AssetController @Autowired constructor(
             }
             else {
                 try {
-                    logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.id))
+                    logger.event("view Asset", mapOf("assetId" to asset.id))
                     if (!ofile.isLocal()) {
                         ofile.copyTo(response)
                     } else {
