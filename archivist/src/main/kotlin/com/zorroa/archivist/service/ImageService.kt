@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
@@ -16,10 +17,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.awt.AlphaComposite
-import java.awt.Color
-import java.awt.Font
-import java.awt.RenderingHints
+import java.awt.*
 import java.awt.image.BufferedImage
 import java.io.*
 import java.nio.file.Files
@@ -65,10 +63,13 @@ class ImageServiceImpl @Autowired constructor(
     private var watermarkMinProxySize: Int = 0
     private var watermarkTemplate: String = ""
     private var watermarkScale: Double = 1.0
+    private var watermarkImage: BufferedImage? = null
+    private var watermarkImageScale: Double = 0.2
+    private var watermarkFontName : String = "Arial"
 
     @PostConstruct
     fun init() {
-        setupWaterMarkFont(null)
+        setupWaterMarkResources(null)
         eventBus.register(this)
     }
 
@@ -79,7 +80,7 @@ class ImageServiceImpl @Autowired constructor(
         }
 
         val ext = FileUtils.extension(file)
-        return if (watermarkEnabled) {
+        return if (watermarkEnabled && !hasPermission("zorroa::export")) {
             val output = watermark(req, file, ext)
             ResponseEntity.ok()
                     .contentType(PROXY_MEDIA_TYPES[ext])
@@ -98,10 +99,17 @@ class ImageServiceImpl @Autowired constructor(
     @Throws(IOException::class)
     override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
         val st = fileStorageService.get(proxy.id!!)
-        if (logger.isDebugEnabled) {
-            logger.debug("Serving proxy: {}", st)
+        val path = fileServerProvider.getServableFile(st.uri).getLocalFile()
+        /*
+         * Note that watermarks don't work with bucket storage yet, the file
+         * has to be local.
+         */
+        return if (path != null) {
+             serveImage(req, path.toFile())
         }
-        return fileServerProvider.getServableFile(st.uri).getReponseEntity()
+        else {
+            return fileServerProvider.getServableFile(st.uri).getReponseEntity()
+        }
     }
 
     @Throws(IOException::class)
@@ -136,44 +144,54 @@ class ImageServiceImpl @Autowired constructor(
             return src
         }
 
-        val replacements = mapOf(
-                "USER" to getUsername(),
-                "DATE" to SimpleDateFormat("MM/dd/yyyy").format(Date()),
-                "IP" to req.remoteAddr,
-                "HOST" to req.remoteHost)
-
-        val sb = StringBuffer(watermarkTemplate.length * 2)
-        val m = PATTERN.matcher(watermarkTemplate)
-        while (m.find()) {
-            try {
-                m.appendReplacement(sb, replacements[m.group(1)])
-            } catch (ignore: Exception) {
-                //
-            }
-        }
-        m.appendTail(sb)
-        val text = sb.toString()
-        val fontName = properties.getString("archivist.watermark.font-name")
-        val fontSize = getWatermarkFontSize(src.width, src.height, text.length)
-        val watermarkFont = Font(fontName, Font.PLAIN, fontSize)
-
-        // FIXME: Wrap strings that are too long
         val g2d = src.createGraphics()
         try {
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-            val c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)
-            g2d.composite = c
+            if (watermarkImage != null) {
+                watermarkImage?.let {
+                    val width = src.width.times(watermarkImageScale).toInt()
+                    val image = it.getScaledInstance(width, -1, Image.SCALE_SMOOTH)
+                    val xpos = src.width - image.getWidth(null) - 10
+                    val ypos = src.height - image.getHeight(null) - 10
+                    g2d.drawImage(image, xpos, ypos, null)
+                }
+            }
+            else {
+                val replacements = mapOf(
+                        "USER" to getUsername(),
+                        "DATE" to SimpleDateFormat("MM/dd/yyyy").format(Date()),
+                        "IP" to req.remoteAddr,
+                        "HOST" to req.remoteHost)
 
-            g2d.font = watermarkFont
-            val x = ((src.width - g2d.getFontMetrics(watermarkFont).stringWidth(text)) / 2).toFloat()
-            val y = src.height - (1.1f * g2d.getFontMetrics(watermarkFont).height)
-            g2d.paint = Color.black
-            g2d.drawString(text, x - 1, y + 1)
-            g2d.drawString(text, x - 1, y - 1)
-            g2d.drawString(text, x + 1, y + 1)
-            g2d.drawString(text, x + 1, y -1)
-            g2d.paint = Color.white
-            g2d.drawString(text, x, y)
+                val sb = StringBuffer(watermarkTemplate.length * 2)
+                val m = PATTERN.matcher(watermarkTemplate)
+                while (m.find()) {
+                    try {
+                        m.appendReplacement(sb, replacements[m.group(1)])
+                    } catch (ignore: Exception) {
+                        //
+                    }
+                }
+                m.appendTail(sb)
+                val text = sb.toString()
+
+                val fontSize = getWatermarkFontSize(src.width, src.height, text.length)
+                val watermarkFont = Font(watermarkFontName, Font.PLAIN, fontSize)
+
+                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
+                val c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)
+                g2d.composite = c
+
+                g2d.font = watermarkFont
+                val x = ((src.width - g2d.getFontMetrics(watermarkFont).stringWidth(text)) / 2).toFloat()
+                val y = src.height - (1.1f * g2d.getFontMetrics(watermarkFont).height)
+                g2d.paint = Color.black
+                g2d.drawString(text, x - 1, y + 1)
+                g2d.drawString(text, x - 1, y - 1)
+                g2d.drawString(text, x + 1, y + 1)
+                g2d.drawString(text, x + 1, y - 1)
+                g2d.paint = Color.white
+                g2d.drawString(text, x, y)
+            }
 
         } finally {
             g2d.dispose()
@@ -183,11 +201,26 @@ class ImageServiceImpl @Autowired constructor(
 
     @Synchronized
     @Subscribe
-    fun setupWaterMarkFont(e: WatermarkSettingsChanged?) {
+    fun setupWaterMarkResources(e: WatermarkSettingsChanged?) {
         watermarkEnabled = properties.getBoolean("archivist.watermark.enabled")
         watermarkTemplate = properties.getString("archivist.watermark.template")
         watermarkMinProxySize = properties.getInt("archivist.watermark.min-proxy-size")
         watermarkScale = properties.getDouble("archivist.watermark.scale")
+        watermarkFontName = properties.getString("archivist.watermark.font-name")
+        watermarkImageScale = properties.getDouble("archivist.watermark.image-scale")
+
+        val imagePath : String? = properties.getString("archivist.watermark.image-path")
+        if (imagePath != null && imagePath.isNotBlank()) {
+            try {
+                logger.info("loading watermark image: '{}'", imagePath)
+                watermarkImage = ImageIO.read(File(imagePath))
+            } catch (e: Exception) {
+                logger.warn("Failed to load watermark Image '{}'", imagePath, e)
+            }
+        }
+        else {
+            watermarkImage = null
+        }
     }
 
     companion object {
