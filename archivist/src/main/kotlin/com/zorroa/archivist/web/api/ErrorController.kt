@@ -13,6 +13,7 @@ import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.context.request.WebRequest
@@ -41,8 +42,8 @@ class CustomErrorController : ErrorController {
     /**
      * This single point serves all exception data for the entire app.
      */
-    @RequestMapping("/error", produces = ["application/json"])
-    fun handleError(req: WebRequest, rsp: HttpServletResponse) : Any {
+    @RequestMapping("/error", method = [RequestMethod.GET, RequestMethod.POST])
+    fun handleError(req: WebRequest, rsp: HttpServletResponse) : ResponseEntity<Any> {
         val errAttrs = errorAttributes.getErrorAttributes(req, debug)
         val errorId = req.getAttribute("errorId", 0)
         errAttrs["errorId"] = errorId
@@ -50,7 +51,9 @@ class CustomErrorController : ErrorController {
         if (!debug) {
             errAttrs["message"] = "An unexpected error was encountered. When reporting this please use error ID '$errorId'."
         }
-        return ResponseEntity.status(rsp.status).body(errAttrs)
+        return ResponseEntity.status(rsp.status)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(errAttrs)
     }
 
     override fun getErrorPath(): String  = path
