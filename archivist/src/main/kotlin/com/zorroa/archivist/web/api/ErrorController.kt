@@ -23,73 +23,35 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
-/**
- * The custom error controller handles serializing exceptions that bubble
- * out of controllers into a JSON response.
- */
-@RestController
-class CustomErrorController : ErrorController {
-
-    val path = "/error"
-
-    @Value("\${archivist.debug-mode.enabled}")
-    var debug : Boolean = false
-
-    @Autowired
-    lateinit var errorAttributes: ErrorAttributes
-
-    /**
-     * This single point serves all exception data for the entire app.
-     */
-    @RequestMapping("/error", method = [RequestMethod.GET, RequestMethod.POST])
-    fun handleError(req: WebRequest, rsp: HttpServletResponse) : ResponseEntity<Any> {
-        val errAttrs = errorAttributes.getErrorAttributes(req, debug)
-        val errorId = req.getAttribute("errorId", 0)
-        errAttrs["errorId"] = errorId
-
-        if (!debug) {
-            errAttrs["message"] = "An unexpected error was encountered. When reporting this please use error ID '$errorId'."
-        }
-        return ResponseEntity.status(rsp.status)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(errAttrs)
-    }
-
-    override fun getErrorPath(): String  = path
-}
-
 /**
  * The RestApiExceptionHandler converts different types of excepts into HTTP response codes.
  */
 @ControllerAdvice
 class RestApiExceptionHandler {
 
+    @Autowired
+    lateinit var errorAttributes: ErrorAttributes
+
+
+    @Value("\${archivist.debug-mode.enabled}")
+    var debug : Boolean = false
+
     @ExceptionHandler(Exception::class)
-    fun  defaultErrorHandler(r: HttpServletRequest, e: Exception) : ModelAndView {
+    fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception) : ResponseEntity<Any> {
 
-        /**
-         * Each error gets its own random UUID for each searching in logs.
-         */
-        val errorId = UUID.randomUUID().toString()
-        r.setAttribute("errorId", errorId)
-        logger.error("endpoint='{}' user='{}', errorId='{}',",
-                r.servletPath, getUserOrNull()?.toString(), errorId, e)
-
-        val mve = ModelAndView("/error")
         val annotation = AnnotationUtils.findAnnotation(e::class.java, ResponseStatus::class.java)
 
-        if (annotation != null) {
-            mve.status = annotation.value
+        val status = if (annotation != null) {
+            annotation.value
         }
         else if (e is EmptyResultDataAccessException || e is EntityNotFoundException) {
-            mve.status = HttpStatus.NOT_FOUND
+           HttpStatus.NOT_FOUND
         }
         else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
-            mve.status = HttpStatus.CONFLICT
+            HttpStatus.CONFLICT
         }
         else if (e is ArchivistSecurityException) {
-            mve.status = HttpStatus.UNAUTHORIZED
+            HttpStatus.UNAUTHORIZED
         }
         else if (e is ArchivistException ||
                 e is InvalidObjectException ||
@@ -101,13 +63,30 @@ class RestApiExceptionHandler {
                 e is NumberFormatException ||
                 e is ArrayIndexOutOfBoundsException ||
                 e is MethodArgumentTypeMismatchException) {
-            mve.status = HttpStatus.BAD_REQUEST
+            HttpStatus.BAD_REQUEST
         }
         else {
-            mve.status = HttpStatus.INTERNAL_SERVER_ERROR
+            HttpStatus.INTERNAL_SERVER_ERROR
         }
 
-        return  mve
+        /**
+         * Each error gets its own random UUID for each searching in logs.
+         */
+        val errorId = UUID.randomUUID().toString()
+        logger.error("endpoint='{}' user='{}', errorId='{}',",
+                req.servletPath, getUserOrNull()?.toString(), errorId, e)
+
+        val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
+        errAttrs["errorId"] = errorId
+
+        if (!debug) {
+            errAttrs["message"] = "Please refer to errorId='$errorId' for actual message"
+        }
+
+        return ResponseEntity.status(status)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(errAttrs)
+
     }
 
     companion object {
