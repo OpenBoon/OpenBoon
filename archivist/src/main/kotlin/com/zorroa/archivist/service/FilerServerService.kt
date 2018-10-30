@@ -120,8 +120,8 @@ class FileServerProviderImpl @Autowired constructor (
         services = mutableMapOf()
         val internalStorageType = properties.getString("archivist.storage.type")
 
-        if (internalStorageType== "gcp") {
-            services["gcp"] = GcpFileServerService(properties)
+        if (internalStorageType== "gcs") {
+            services["gcs"] = GcpFileServerService(properties)
         }
         else {
             services["local"] = LocalFileServerService(properties)
