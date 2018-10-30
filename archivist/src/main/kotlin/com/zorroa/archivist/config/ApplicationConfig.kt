@@ -34,6 +34,7 @@ import java.io.File
 import java.io.IOException
 import java.lang.IllegalStateException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.util.*
 
 @Configuration
@@ -149,7 +150,9 @@ class ArchivistConfiguration {
     fun pubSubService() : PubSubService? {
         val props = properties()
         if (props.getString("archivist.pubsub.type") == "gcp") {
-            return GcpPubSubServiceImpl()
+            val network = networkEnvironment()
+            return GcpPubSubServiceImpl(IrmCoreDataVaultClientImpl(
+                    network.getPublicUrl("core-data-vault-api"), irmServiceCredentials()))
         }
         logger.info("No PubSub service configured")
         return null
@@ -173,11 +176,8 @@ class ArchivistConfiguration {
         logger.info("Initializing Core Asset Store: {}", type)
         return when(type) {
             "irm"-> {
-                val path = properties()
-                        .getPath("archivist.config.path")
-                        .resolve("service-credentials.json")
                 IrmAssetServiceImpl(
-                    IrmCoreDataVaultClientImpl(network.getPublicUrl("core-data-vault-api"), path))
+                    IrmCoreDataVaultClientImpl(network.getPublicUrl("core-data-vault-api"), irmServiceCredentials()))
             }
             else->AssetServiceImpl()
         }
@@ -230,6 +230,12 @@ class ArchivistConfiguration {
         filter.setIncludePayload(true)
         filter.setMaxPayloadLength(1024)
         return filter
+    }
+
+    fun irmServiceCredentials() : Path {
+        return properties()
+                .getPath("archivist.config.path")
+                .resolve("service-credentials.json")
     }
 
     companion object {

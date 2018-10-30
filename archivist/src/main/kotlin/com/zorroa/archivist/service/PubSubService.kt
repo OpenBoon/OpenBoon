@@ -42,7 +42,7 @@ class GooglePubSubSettings {
  * events and launches kubernetes jobs to process data as it comes in.
  */
 
-class GcpPubSubServiceImpl : PubSubService {
+class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreDataVaultClient) : PubSubService {
 
     @Autowired
     lateinit var settings: GooglePubSubSettings
@@ -55,9 +55,6 @@ class GcpPubSubServiceImpl : PubSubService {
 
     @Autowired
     private lateinit var fileQueueService: FileQueueService
-
-    @Autowired
-    private lateinit var coreDataVaultClient: CoreDataVaultClient
 
     @Value("\${archivist.config.path}")
     lateinit var configPath: String
