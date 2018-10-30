@@ -68,7 +68,7 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
         subscription = ProjectSubscriptionName.of(settings.project, settings.subscription)
         val credPath = "$configPath/data-credentials.json"
 
-        val builder = Subscriber.newBuilder(settings.subscription, GcpDataMessageReceiver())
+        val builder = Subscriber.newBuilder(subscription, GcpDataMessageReceiver())
         if (Files.exists(Paths.get(credPath))) {
             builder.setCredentialsProvider { GoogleCredentials.fromStream(FileInputStream(credPath)) }
         }
