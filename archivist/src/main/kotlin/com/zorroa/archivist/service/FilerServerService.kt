@@ -252,8 +252,7 @@ class GcpFileServerService constructor (
         val configPath = properties.getPath("archivist.config.path").resolve("data-credentials.json")
         storage = if (Files.exists(configPath)) {
             StorageOptions.newBuilder().setCredentials(
-                    GoogleCredentials.fromStream(FileInputStream(
-                            configPath.resolve("data-credentials.json").toFile()))).build().service
+                    GoogleCredentials.fromStream(FileInputStream(configPath.toFile()))).build().service
         }
         else {
             StorageOptions.newBuilder().build().service
