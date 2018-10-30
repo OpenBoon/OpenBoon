@@ -102,7 +102,7 @@
             }
           }
         },
-        "zorroa": {
+        "system": {
           "properties": {
             "timeCreated": {
               "type": "date",
