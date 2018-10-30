@@ -38,7 +38,7 @@ class SuperAdminAuthentication : AbstractAuthenticationToken {
     val authed : UserAuthed
 
     constructor(orgId: UUID): super(listOf(SuperAdminAuthority(), AdminAuthority())) {
-        authed = UserAuthed(SuperAdmin.id, orgId, SuperAdmin.username, this.authorities.toSet())
+        authed = UserAuthed(SuperAdmin.id, orgId, SuperAdmin.username, this.authorities.toSet(), mapOf())
     }
 
     override fun getDetails(): Any? {

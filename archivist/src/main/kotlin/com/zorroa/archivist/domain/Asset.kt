@@ -9,18 +9,36 @@ import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.regex.Pattern
 
-data class IrmAsset (val documentGUID : UUID, val companyId: Long)
-
-data class AssetSpec(
-        var filename: String,
-        val storedAttrs: Map<String, Any> = mutableMapOf()
+/**
+ * A request to batch delete assets.
+ *
+ * @property assetIds an array of assetIds to delete.
+ */
+class BatchDeleteAssetsRequest (
+        val assetIds: List<String>
 )
 
-data class Asset (
-        val id: UUID,
-        val organizationId: UUID,
-        val keys: MutableMap<String, Any> = mutableMapOf()
-)
+/**
+ * The response returned when assets are deleted.
+ *
+ * @property totalRequested The total number of assets requested to be deleted.
+ * @property totalDeleted The total nunber of assets deleted.
+ * @property failures A map AssetID/Message failures.
+ */
+class BatchDeleteAssetsResponse (
+    var totalRequested: Int=0,
+    var totalDeleted: Int=0,
+    var onHold: Int=0,
+    var failures: MutableMap<String, String> = mutableMapOf()
+) {
+    operator fun plus(other: BatchDeleteAssetsResponse) {
+        totalRequested += other.totalRequested
+        totalDeleted += other.totalDeleted
+        failures.putAll(other.failures)
+    }
+
+    fun getChildrenDeleted() : Int { return totalDeleted - totalRequested - onHold }
+}
 
 /**
  * The ES document

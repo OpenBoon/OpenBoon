@@ -41,9 +41,9 @@ inline fun  <E: Any, T: Collection<E>> T?.whenNullOrEmpty(func: () -> Unit): Uni
 fun formatLogMessage(message: String, kvp: Map<String, Any?>) : String {
     val user = getUserOrNull()
     val sb = StringBuilder(512)
-    sb.append(message)
+    sb.append("$message --- ")
     if (user != null) {
-        sb.append(" --- actorName='${user.getName()}' orgId='${user.organizationId}'")
+        sb.append("actorName='${user.getName()}' orgId='${user.organizationId}'")
     }
     kvp.forEach {
         if (it.value != null) {
@@ -67,6 +67,6 @@ fun Logger.event(message: String, kvp: Map<String, Any?>) {
 /**
  * Extend the SLF4J logger with an event method.
  */
-fun Logger.warnEvent(message: String, kvp: Map<String, Any?>, ex: Exception?=null) {
-    this.warn(formatLogMessage(message, kvp), ex)
+fun Logger.warnEvent(op: String, message: String, kvp: Map<String, Any?>, ex: Exception?=null) {
+    this.warn(formatLogMessage("$op ::: $message", kvp), ex)
 }

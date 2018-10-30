@@ -136,7 +136,8 @@ class UserRegistryServiceImpl @Autowired constructor(
                     source.attrs.getOrDefault("mail", "$username@zorroa.com"),
                     source.authSourceId,
                     firstName = source.attrs.getOrDefault("first_name", "First"),
-                    lastName = source.attrs.getOrDefault("last_name", "Last"))
+                    lastName = source.attrs.getOrDefault("last_name", "Last"),
+                    authAttrs = source.attrs)
             userService.create(spec)
         } else {
             userService.get(username)
@@ -154,25 +155,20 @@ class UserRegistryServiceImpl @Autowired constructor(
             }
         }
 
-        val perms = userService.getPermissions(user)
         logger.event("userAuthed",
                 mapOf("userId" to user.id,
                 "userSource" to source.authSourceId))
-        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
+        return toUserAuthed(user)
     }
 
     @Transactional(readOnly = true)
     override fun getUser(username: String): UserAuthed {
-        val user = userService.get(username)
-        val perms = userService.getPermissions(user)
-        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
+        return toUserAuthed(userService.get(username))
     }
 
     @Transactional(readOnly = true)
     override fun getUser(id: UUID): UserAuthed {
-        val user = userService.get(id)
-        val perms = userService.getPermissions(user)
-        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet())
+        return toUserAuthed(userService.get(id))
     }
 
     fun getOrganization(source: AuthSource) : Organization {
@@ -219,6 +215,17 @@ class UserRegistryServiceImpl @Autowired constructor(
             })
         }
         return perms
+    }
+
+    /**
+     * Convert an internal User into a  UserAuthed, which is something Spring understands.
+     *
+     * @param user: The User who has been authed
+     * @return UserAuthed The authed user object
+     */
+    fun toUserAuthed(user: User) : UserAuthed {
+        val perms = userService.getPermissions(user)
+        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet(), user.attrs)
     }
 
     companion object {

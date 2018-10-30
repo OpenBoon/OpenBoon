@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
@@ -146,6 +147,12 @@ interface IndexDao {
 
     fun delete(id: String): Boolean
 
+    /**
+     * Batch delete the given asset IDs.
+     * @param ids the list of asset IDS to delete.
+     */
+    fun batchDelete(ids: List<String>): BatchDeleteAssetsResponse
+
     operator fun get(id: String): Document
 
     /**
@@ -273,7 +280,7 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                     result.warnings++
                     retries.add(sources[index])
                 } else {
-                    logger.warnEvent("failed to index Asset, $message",
+                    logger.warnEvent("Index Asset", message,
                             mapOf("assetId" to response.id,
                                     "index" to response.index))
                     result.logs.add(StringBuilder(1024).append(
@@ -427,12 +434,16 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
         val asset = get(assetId)
         for ((key, value) in attrs) {
+            logger.event("update Asset Attribute", mapOf("key" to key))
             asset.setAttr(key, value)
         }
         val rest = getClient()
-        return rest.client.update(rest.newUpdateRequest(assetId)
+        val ver =  rest.client.update(rest.newUpdateRequest(assetId)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
+        logger.event("update Asset",
+                mapOf("assetId" to assetId, "version" to ver))
+        return ver
     }
 
     override fun removeFields(assetId: String, fields: Set<String>, refresh: Boolean) {
@@ -459,6 +470,40 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                         "status" to result))
         return result
     }
+
+    override fun batchDelete(ids: List<String>): BatchDeleteAssetsResponse {
+        if (ids.isEmpty()) { return BatchDeleteAssetsResponse() }
+
+        val rest = getClient()
+        val bulkRequest = BulkRequest()
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
+        ids.forEach { bulkRequest.add(rest.newDeleteRequest(it)) }
+
+        logger.event("batchDelete Asset",
+                mapOf("index" to rest.route.indexName, "count" to ids.size))
+
+        val failures : MutableMap<String, String> = mutableMapOf()
+        val total = ids.size
+        var success = 0
+
+        val bulk = rest.client.bulk(bulkRequest)
+        for (br in bulk.items) {
+            when {
+                br.isFailed -> {
+                    logger.warnEvent("batch delete Asset", br.failureMessage,
+                            mapOf("assetId" to br.id, "index" to br.index))
+                    failures[br.id] = br.failureMessage
+                }
+                else ->  {
+                    logger.event("batch delete Asset", mapOf("assetId" to br.id, "index" to br.index))
+                    success+=1
+                }
+            }
+        }
+
+        return BatchDeleteAssetsResponse(total, success, 0, failures)
+    }
+
 
     override fun get(id: String): Document {
         return elastic.queryForObject(id, "asset", MAPPER)

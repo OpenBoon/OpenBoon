@@ -9,6 +9,8 @@ import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.resetAuthentication
 import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.domain.*
@@ -88,60 +90,57 @@ class GcpPubSubServiceImpl : PubSubService {
          * This method will create a single job per message.
          */
         override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
-
-            val payload : Map<String, Any> = try {
-                Json.Mapper.readValue(message.data.toByteArray())
-            } catch (e: Exception) {
-                consumer.ack()
-                logger.warn("Failed to parse GPubSub payload: {}", String(message.data.toByteArray()))
-                return
-            }
-
-            val type= payload["type"] as String?
-
-            if (type == "UPDATE") {
-
-                val assetId = UUID.fromString(payload["key"] as String)
-                val companyId = payload["companyId"] as Int
-
-                try {
-                    /**
-                     * Currently IRM has to name the org company-id for use to pick it up.
-                     */
-                    val org = organizationDao.get("company-" + payload["companyId"])
-                    val doc = try {
-                        coreDataVaultClient.getIndexedMetadata(companyId, assetId)
-                    } catch (e: Exception) {
-                        logger.warn("Asset ID does not exist: $assetId")
-                        Document(assetId.toString())
-                    }
-
-                    doc.setAttr("irm.companyId", companyId)
-                    doc.setAttr("system.organizationId", org.id)
-
-                    // obtain the file's download path
-                    val md = coreDataVaultClient.getMetadata(companyId, assetId)
-                    val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
-                            "gs://", true)
-
-                    logger.event("pubsub IRM",
-                            mapOf("companyId" to companyId, "assetId" to assetId, "orgId" to org.id))
-
-
-                    // queue up the file for processing
-                    fileQueueService.create(QueuedFileSpec(
-                            org.id,
-                            assetId,
-                            pipelineService.get("full").id,
-                            url,
-                            doc.document))
-
-                } catch (e: Exception) {
-                    logger.warn("Error launching job: {}, asset: {} company: {}",
-                            e.message, assetId, companyId)
+            try {
+                val payload : Map<String, Any?> = Json.Mapper.readValue(message.data.toByteArray())
+                val type= payload["type"] as String?
+                when(type) {
+                    "UPDATE" -> handleUpdate(payload)
                 }
+            } catch (e: Exception) {
+                logger.warn("Failed to parse GPubSub payload: {}", String(message.data.toByteArray()))
             }
-            consumer.ack()
+            finally {
+                consumer.ack()
+            }
+        }
+
+        fun handleUpdate(payload : Map<String, Any?>) {
+
+            try {
+                val assetId = payload.getValue("key").toString()
+                val companyId = payload.getValue("companyId") as Int
+                val org = organizationDao.get("company-" + payload["companyId"])
+
+                logger.event("pubsub UPDATE",
+                        mapOf("companyId" to companyId, "assetId" to assetId, "orgId" to org.id))
+
+                /**
+                 * Grab the existing doc, otherise make a new one.
+                 */
+                val doc = try {
+                    coreDataVaultClient.getIndexedMetadata(companyId, assetId)
+                } catch (e: Exception) {
+                    Document(assetId)
+                }
+
+                doc.setAttr("irm.companyId", companyId)
+                doc.setAttr("zorroa.organizationId", org.id)
+
+                val md = coreDataVaultClient.getMetadata(companyId, assetId)
+                val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
+                        "gs://", true)
+
+                // queue up the file for processing
+                fileQueueService.create(QueuedFileSpec(
+                        org.id,
+                        UUID.fromString(assetId),
+                        pipelineService.get("full").id,
+                        url,
+                        doc.document))
+
+            } catch (e: Exception) {
+                logger.warn("Error queueing file: {}", e.message, e)
+            }
         }
     }
 

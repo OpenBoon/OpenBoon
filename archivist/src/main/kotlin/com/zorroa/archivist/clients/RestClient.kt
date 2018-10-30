@@ -71,6 +71,7 @@ class RestClient {
     constructor(host: String) {
         this.host = HttpHost.create(host)
         this.client = initClient()
+        this.user = initUser()
         this.jwtSigner = null
     }
 
@@ -129,64 +130,74 @@ class RestClient {
         return key
     }
 
-
-    fun <T> post(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> post(url: String, body: Any?, resultType: Class<T>, headers: Map<String, String>? = null): T {
         val post = HttpPost(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post, jwtClaims)
+        val response = checkStatus(post, headers)
         return checkResponse(response, resultType)
     }
 
-    fun <T> put(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> put(url: String, body: Any?, resultType: Class<T>, headers: Map<String, String>? = null): T {
         val post = HttpPut(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post, jwtClaims)
+        val response = checkStatus(post, headers)
         return checkResponse(response, resultType)
     }
 
-    fun <T> put(url: String, body: Any?, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> put(url: String, body: Any?, type: TypeReference<T>, headers: Map<String, String>? = null): T {
         val post = HttpPut(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post, jwtClaims)
+        val response = checkStatus(post, headers)
         return checkResponse(response, type)
     }
 
-    fun <T> post(url: String, body: Any?, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> post(url: String, body: Any?, type: TypeReference<T>, headers: Map<String, String>? = null): T {
         val post = HttpPost(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post, jwtClaims)
+        val response = checkStatus(post, headers)
         return checkResponse(response, type)
     }
 
-    fun <T> delete(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> delete(url: String, body: Any?, resultType: Class<T>, headers: Map<String, String>? = null): T {
         val post = HttpDeleteWithEntity(url)
         if (body != null) {
             post.setHeader("Content-Type", "application/json")
             post.entity = ByteArrayEntity(Json.serialize(body))
         }
-        val response = checkStatus(post, jwtClaims)
+        val response = checkStatus(post, headers)
         return checkResponse(response, resultType)
     }
 
-    fun download(url: String, jwtClaims: Map<String, String>? = null): HttpEntity {
+    fun <T> delete(url: String, body: Any?, type: TypeReference<T>, headers: Map<String, String>? = null): T {
+        val post = HttpDeleteWithEntity(url)
+        if (body != null) {
+            post.setHeader("Content-Type", "application/json")
+            post.entity = ByteArrayEntity(Json.serialize(body))
+        }
+        val response = checkStatus(post, headers)
+        return checkResponse(response, type)
+    }
+
+
+    fun download(url: String, headers: Map<String, String>? = null): HttpEntity {
         val get = HttpGetWithEntity(url)
-        val rsp = checkStatus(get, jwtClaims)
+        val rsp = checkStatus(get, headers)
         return rsp.entity
     }
 
-    fun post(url: String, files: List<File>, jwtClaims: Map<String, String>? = null): Any {
+    fun post(url: String, files: List<File>, headers: Map<String, String>? = null): Any {
 
         val builder = MultipartEntityBuilder.create()
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
@@ -200,25 +211,25 @@ class RestClient {
         val post = HttpPost(url)
         post.addHeader("Content-Type", "multipart/mixed; boundary=\"---Content Boundary\"")
         post.entity = builder.build()
-        val response = checkStatus(post, jwtClaims)
+        val response = checkStatus(post, headers)
         return checkResponse(response, Any::class.java)
     }
 
-    fun <T> get(url: String, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
-        return checkResponse(checkStatus(HttpGet(url), jwtClaims), resultType)
+    fun <T> get(url: String, resultType: Class<T>, headers: Map<String, String>? = null): T {
+        return checkResponse(checkStatus(HttpGet(url), headers), resultType)
     }
 
-    fun <T> get(url: String, body: Any?, resultType: Class<T>, jwtClaims: Map<String, String>? = null): T {
+    fun <T> get(url: String, body: Any?, resultType: Class<T>, headers: Map<String, String>? = null): T {
         val get = HttpGetWithEntity(url)
         if (body != null) {
             get.setHeader("Content-Type", "application/json")
             get.entity = ByteArrayEntity(Json.serialize(body))
         }
-        return checkResponse(checkStatus(get, jwtClaims), resultType)
+        return checkResponse(checkStatus(get, headers), resultType)
     }
 
-    fun <T> get(url: String, type: TypeReference<T>, jwtClaims: Map<String, String>? = null): T {
-        return checkResponse(checkStatus(HttpGet(url), jwtClaims), type)
+    fun <T> get(url: String, type: TypeReference<T>, headers: Map<String, String>? = null): T {
+        return checkResponse(checkStatus(HttpGet(url), headers), type)
     }
 
     private fun <T> checkResponse(response: HttpResponse, resultType: Class<T>): T {
@@ -239,8 +250,8 @@ class RestClient {
         }
     }
 
-    private fun checkStatus(req: HttpRequest, jwtClaims: Map<String, String>?): HttpResponse {
-        headers(req, jwtClaims)
+    private fun checkStatus(req: HttpRequest, headers: Map<String, String>?): HttpResponse {
+        headers(req, headers)
         var response: HttpResponse
         while (true) {
             try {
@@ -270,18 +281,22 @@ class RestClient {
                     response.statusLine.reasonPhrase, response.statusLine.statusCode)
 
             val error = checkResponse(response, Json.GENERIC_MAP)
-            val message = error.getOrElse("message", {
+            val message = error.getOrElse("message") {
                 "Unknown REST client exception to $host, ${response.statusLine.statusCode} ${response.statusLine.reasonPhrase}"
-            })
+            }
             throw RestClientException(message.toString())
         }
 
         return response
     }
 
-    private fun headers(req: HttpRequest, jwtClaims: Map<String, String>?) {
+    private fun headers(req: HttpRequest, headers: Map<String, String>?) {
         val msg = UUID.randomUUID().toString()
         req.setHeader("X-Archivist-User", user)
+
+        headers?.forEach {
+            req.setHeader(it.key, it.value)
+        }
 
         hmac?.let {
             try {
@@ -293,7 +308,7 @@ class RestClient {
         }
 
         jwtSigner?.let {
-            it.sign(req, host.toString(),jwtClaims)
+            it.sign(req, host.toString())
         }
     }
 
@@ -308,7 +323,7 @@ class RestClient {
         }
 
         companion object {
-            val METHOD_NAME = "GET"
+            const val METHOD_NAME = "GET"
         }
     }
 
@@ -323,7 +338,7 @@ class RestClient {
         }
 
         companion object {
-            val METHOD_NAME = "DELETE"
+            const val METHOD_NAME = "DELETE"
         }
     }
 
