@@ -5,6 +5,7 @@ import com.google.cloud.storage.*
 import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FileStorage
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileInputStream
+import java.io.InputStream
 import java.io.OutputStream
 import java.net.URI
 import java.net.URL
@@ -66,6 +68,13 @@ class ServableFile (
         return fileServerService.getLocalPath(uri)
     }
 
+    /**
+     * Return an open InputStream for the given file.
+     */
+    fun getInputStream() : InputStream {
+        return fileServerService.getInputStream(uri)
+    }
+
     fun getStat(): FileStat {
         return fileServerService.getStat(uri)
     }
@@ -95,6 +104,7 @@ interface FileServerProvider {
         }
     }
 
+    fun getServableFile(storage: FileStorage): ServableFile = getServableFile(URI(storage.uri))
     fun getServableFile(uri: URI): ServableFile
     fun getServableFile(doc: Document): ServableFile
     fun getServableFile(uri: String) : ServableFile = getServableFile(URI(uri))
@@ -160,6 +170,8 @@ interface FileServerService {
 
     fun copyTo(url: URI, output: OutputStream)
 
+    fun getInputStream(url: URI): InputStream
+
     fun objectExists(url: URI): Boolean
 
     fun getSignedUrl(url: URI): URL
@@ -185,6 +197,11 @@ class LocalFileServerService @Autowired constructor (
                 .contentLength(Files.size(path))
                 .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                 .body(InputStreamResource(FileInputStream(path.toFile())))
+    }
+
+    override fun getInputStream(url: URI): InputStream {
+        val path = Paths.get(url)
+        return FileInputStream(path.toFile())
     }
 
     override fun copyTo(url: URI, response: HttpServletResponse) {
@@ -275,6 +292,15 @@ class GcpFileServerService constructor (
         val blob =  getBlob(url)
         if (blob != null) {
             Channels.newInputStream(blob.reader()).copyTo(output)
+        } else {
+            throw FileServerReadException("$url not found")
+        }
+    }
+
+    override fun getInputStream(url: URI): InputStream {
+        val blob =  getBlob(url)
+        if (blob != null) {
+            return Channels.newInputStream(blob.reader())
         } else {
             throw FileServerReadException("$url not found")
         }
