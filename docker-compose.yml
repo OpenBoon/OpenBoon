@@ -53,12 +53,10 @@ services:
       - "./localdev/zorroa-archivist-config:/config"
       - "./archivist/target:/service"
       - "../zorroa-test-data:/zorroa-test-data"
-    environment:
-      ZORROA_USER: admin
 
   # Local Archivist server.
   analyst:
-    image: "zorroa/sdk:latest"
+    image: "zorroa/zorroa-analyst:latest"
     links:
        - "archivist"
     ports:
