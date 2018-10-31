@@ -51,7 +51,6 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
     override fun create(spec: QueuedFileSpec): QueuedFile {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
-        val user = getUser()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
