@@ -134,7 +134,7 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
                 fileQueueService.create(QueuedFileSpec(
                         org.id,
                         UUID.fromString(assetId),
-                        pipelineService.get("full").id,
+                        pipelineService.get("standard-import").id,
                         url,
                         doc.document))
 
