@@ -43,7 +43,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
     override val client = RestClient(url, GcpJwtSigner(serviceKey))
 
     override fun getMetadata(companyId: Int, assetId: String): Map<String, Any> {
-        return client.get("/companies/$companyId/documents/assetId", Json.GENERIC_MAP,
+        return client.get("/companies/$companyId/documents/$assetId", Json.GENERIC_MAP,
                 headers=getRequestHeaders())
     }
 
