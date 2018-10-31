@@ -124,7 +124,7 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
                 }
 
                 doc.setAttr("irm.companyId", companyId)
-                doc.setAttr("zorroa.organizationId", org.id)
+                doc.setAttr("system.organizationId", org.id)
 
                 val md = coreDataVaultClient.getMetadata(companyId, assetId)
                 val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
