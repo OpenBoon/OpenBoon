@@ -111,6 +111,9 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
                 logger.event("pubsub UPDATE",
                         mapOf("companyId" to companyId, "assetId" to assetId, "orgId" to org.id))
 
+                logger.info("PubSub Payload")
+                logger.info(Json.prettyString(payload))
+
                 /**
                  * Grab the existing doc, otherise make a new one.
                  */
