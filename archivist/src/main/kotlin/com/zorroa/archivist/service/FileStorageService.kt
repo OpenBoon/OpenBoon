@@ -111,8 +111,12 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
     }
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String {
-        var uri = URI(dlp.buildUri(id))
-        val blob =  gcs.get(bucket, uri.path)
+        val uri = URI(dlp.buildUri(id))
+        val path = uri.path
+
+        logger.event("sign StorageFile", mapOf("storageId" to uri, "bucket" to bucket, "path" to path))
+        val blob =  gcs.get(bucket, path)
+
         return blob.signUrl(10, TimeUnit.MINUTES,
                 Storage.SignUrlOption.httpMethod(method)).toString()
     }
