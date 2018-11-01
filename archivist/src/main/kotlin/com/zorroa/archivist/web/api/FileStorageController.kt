@@ -33,6 +33,6 @@ class FileStorageController @Autowired constructor(
 
     @GetMapping("/api/v1/file-storage/{id}/_upload-uri")
     fun getUploadURI(@PathVariable id: String) : Any {
-        return mapOf("uri" to fileStorageService.getSignedUrl(id, HttpMethod.POST))
+        return mapOf("uri" to fileStorageService.getSignedUrl(id, HttpMethod.PUT))
     }
 }
