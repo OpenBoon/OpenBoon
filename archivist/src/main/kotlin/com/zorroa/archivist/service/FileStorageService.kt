@@ -120,7 +120,8 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val path = uri.path
 
         logger.event("sign StorageFile", mapOf("storageId" to uri, "bucket" to bucket, "path" to path))
-        return gcs.signUrl(BlobInfo.newBuilder(bucket, path).build(), 10, TimeUnit.MINUTES).toString()
+        val info = BlobInfo.newBuilder(bucket, path).build()
+        return gcs.signUrl(info, 10, TimeUnit.MINUTES, SignUrlOption.httpMethod(method)).toString()
     }
 
     companion object {

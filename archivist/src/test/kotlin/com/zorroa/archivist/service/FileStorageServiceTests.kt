@@ -100,7 +100,7 @@ class DefaultGcsDirectoryLayoutProviderTests : AbstractTest() {
 
 class GcsFileStorageServiceTests : AbstractTest() {
 
-    val bucketName = "zorroa-test"
+    val bucketName = "rmass-dit-2-zorroa-data"
     val fileStorage: GcsFileStorageService = GcsFileStorageService("rmass-dit-2-zorroa-data",
             Paths.get("unittest/config/rmaas-dit-2-data.json"))
 
