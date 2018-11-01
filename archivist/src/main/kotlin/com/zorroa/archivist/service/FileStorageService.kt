@@ -231,13 +231,13 @@ class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryL
         val org = getOrgId()
         val variant = spec.variants?.joinToString("_", prefix="_") ?: ""
         val assetId = spec.assetId ?: uuid3.generate(spec.name)
-        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/${spec.name}$variant.${spec.type}"
+        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/$variant.${spec.type}"
     }
 
     override fun buildId(spec: FileStorageSpec) : String {
         val variant = spec.variants?.joinToString("_", prefix="_") ?: ""
         val assetId = spec.assetId ?: uuid3.generate(spec.name)
-        return "${spec.category}___${assetId}___${spec.name}$variant.${spec.type}"
+        return "${spec.category}___${assetId}___$variant.${spec.type}"
     }
 }
 
