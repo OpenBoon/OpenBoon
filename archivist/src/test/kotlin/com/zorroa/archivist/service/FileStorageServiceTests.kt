@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.filesystem.UUIDFileSystem
@@ -11,14 +12,97 @@ import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+class DefaultGcsDirectoryLayoutProviderTests : AbstractTest() {
+
+    @Test
+    fun testGenerateId() {
+        val spec = FileStorageSpec(
+                "proxy",
+                "so_urgent",
+                "jpg",
+                listOf("x", "100", "y", "100"))
+
+        val id = DefaultGcsDirectoryLayoutProvider("foo").buildId(spec)
+        assertEquals("proxy___f920837e-9d15-5963-998b-38bd44b17468___so_urgent_x_100_y_100.jpg", id)
+    }
+
+    @Test
+    fun testGenerateIdNoVariants() {
+        val spec = FileStorageSpec(
+                "proxy",
+                "so_urgent",
+                "jpg")
+
+        val id = DefaultGcsDirectoryLayoutProvider("foo").buildId(spec)
+        assertEquals("proxy___f920837e-9d15-5963-998b-38bd44b17468___so_urgent.jpg", id)
+    }
+
+    @Test
+    fun testGetUri() {
+        val spec = FileStorageSpec(
+                "proxy",
+                "so_urgent",
+                "jpg")
+
+        val id1 = DefaultGcsDirectoryLayoutProvider("foo").buildId(spec)
+        val uri = DefaultGcsDirectoryLayoutProvider("foo").buildUri(id1)
+        println(id1)
+        println(uri)
+    }
+
+    @Test
+    fun testUseAssetId() {
+        val assetId = UUID.fromString("16C13597-CE2F-4CB2-8EB0-F01AEA1702D0")
+        val spec = FileStorageSpec(
+                "proxy",
+                "so_urgent",
+                "jpg",
+                listOf("x", "200", "y", "200"),assetId=assetId)
+
+        val id = DefaultGcsDirectoryLayoutProvider("foo").buildId(spec)
+        assertEquals("proxy___16c13597-ce2f-4cb2-8eb0-f01aea1702d0___so_urgent_x_200_y_200.jpg", id)
+    }
+
+    @Test
+    fun getUri() {
+        val assetId = UUID.fromString("16C13597-CE2F-4CB2-8EB0-F01AEA1702D0")
+        val spec = FileStorageSpec(
+                "proxy",
+                "so_urgent",
+                "jpg",
+                listOf("x", "200", "y", "200"),assetId=assetId)
+
+        val uri = DefaultGcsDirectoryLayoutProvider("foo").buildUri(spec)
+        println(uri)
+    }
+
+    @Test
+    fun getIdFromPath() {
+        val provider = DefaultGcsDirectoryLayoutProvider("foo")
+        val assetId = UUID.fromString("16C13597-CE2F-4CB2-8EB0-F01AEA1702D0")
+        val spec = FileStorageSpec(
+                "proxy",
+                "so_urgent",
+                "jpg",
+                listOf("x", "200", "y", "200"),assetId=assetId)
+
+        val uri = provider.buildUri(spec)
+
+        println(uri)
+    }
+
+}
+
 class GcsFileStorageServiceTests : AbstractTest() {
 
     val bucketName = "zorroa-test"
-    val fileStorage: GcsFileStorageService = GcsFileStorageService("zorroa-test")
+    val fileStorage: GcsFileStorageService = GcsFileStorageService("rmass-dit-2-zorroa-data",
+            Paths.get("unittest/config/rmaas-dit-2-data.json"))
 
     @Test
     fun testGetUri() {
@@ -39,6 +123,13 @@ class GcsFileStorageServiceTests : AbstractTest() {
         val id = fileStorage.dlp.buildId(spec)
         assertTrue(id.startsWith("proxy_"))
         assertTrue(id.endsWith("_foo_bar.jpg"))
+    }
+
+    @Test
+    fun testSignUrl() {
+        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val id = fileStorage.dlp.buildId(spec)
+        println(fileStorage.getSignedUrl(id, HttpMethod.PUT))
     }
 
     @Test

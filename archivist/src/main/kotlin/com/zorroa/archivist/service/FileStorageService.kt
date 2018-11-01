@@ -23,6 +23,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import com.google.auth.oauth2.ServiceAccountCredentials
+import com.google.cloud.storage.Storage.SignUrlOption
+import com.google.cloud.storage.BlobInfo
+
+
 
 private val tika = Tika()
 private val uuid3 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
@@ -115,10 +120,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val path = uri.path
 
         logger.event("sign StorageFile", mapOf("storageId" to uri, "bucket" to bucket, "path" to path))
-        val blob =  gcs.get(bucket, path)
-
-        return blob.signUrl(10, TimeUnit.MINUTES,
-                Storage.SignUrlOption.httpMethod(method)).toString()
+        return gcs.signUrl(BlobInfo.newBuilder(bucket, path).build(), 10, TimeUnit.MINUTES).toString()
     }
 
     companion object {
@@ -229,15 +231,21 @@ class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryL
 
     override fun buildUri(spec: FileStorageSpec) : String {
         val org = getOrgId()
-        val variant = spec.variants?.joinToString("_", prefix="_") ?: ""
+        var variant = spec.variants?.joinToString("_", prefix="_") ?: ""
+        if (variant == "_") {
+            variant = ""
+        }
         val assetId = spec.assetId ?: uuid3.generate(spec.name)
-        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/$variant.${spec.type}"
+        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/${spec.name}$variant.${spec.type}"
     }
 
     override fun buildId(spec: FileStorageSpec) : String {
-        val variant = spec.variants?.joinToString("_", prefix="_") ?: ""
+        var variant = spec.variants?.joinToString("_", prefix="_") ?: ""
+        if (variant == "_") {
+            variant = ""
+        }
         val assetId = spec.assetId ?: uuid3.generate(spec.name)
-        return "${spec.category}___${assetId}___$variant.${spec.type}"
+        return "${spec.category}___${assetId}___${spec.name}$variant.${spec.type}"
     }
 }
 

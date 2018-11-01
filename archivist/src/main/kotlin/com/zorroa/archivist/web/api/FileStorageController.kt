@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class InternalFileController @Autowired constructor(
+class FileStorageController @Autowired constructor(
         private val fileStorageService: FileStorageService) {
 
     @PostMapping("/api/v1/file-storage")

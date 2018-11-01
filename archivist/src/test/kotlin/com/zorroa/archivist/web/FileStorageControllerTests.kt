@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class InternalFileControllerTests : MockMvcTest() {
+class FileStorageControllerTests : MockMvcTest() {
 
     @Test
     fun testCreate() {
