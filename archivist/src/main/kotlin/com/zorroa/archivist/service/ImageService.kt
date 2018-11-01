@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.io.*
+import java.nio.ByteBuffer
+import java.nio.channels.Channels
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,6 +31,7 @@ import java.util.regex.Pattern
 import javax.annotation.PostConstruct
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import kotlin.math.roundToInt
 
 inline fun bufferedImageToInputStream(size: Int, img: BufferedImage) : InputStream {
@@ -48,10 +51,10 @@ inline fun bufferedImageToInputStream(size: Int, img: BufferedImage) : InputStre
 interface ImageService {
 
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, storage: FileStorage): ResponseEntity<InputStreamResource>
+    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean)
 
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource>
+    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy)
 
     fun watermark(req: HttpServletRequest, inputStream: InputStream): BufferedImage
 }
@@ -82,50 +85,37 @@ class ImageServiceImpl @Autowired constructor(
         eventBus.register(this)
     }
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, storage: FileStorage): ResponseEntity<InputStreamResource> {
+    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean) {
         if (storage == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+            rsp.status = HttpStatus.NOT_FOUND.value()
         }
         val file = fileServerProvider.getServableFile(storage)
 
-        return if (watermarkEnabled && !hasPermission("zorroa::export")) {
+        rsp.setHeader("Pragma", "")
+        if (watermarkEnabled && isWatermarkSize) {
             val image = watermark(req, file.getInputStream())
-            // make a ByteArrayOutputStream which doesn't create a defensive copy.
-            val ostream = object : ByteArrayOutputStream(storage.size.toInt()) {
-                @Synchronized override fun toByteArray(): ByteArray {
-                    return this.buf
-                }
-            }
-            // Write the image to the stream
-            ImageIO.write(image, "jpg", ostream)
-            val bytes = ostream.toByteArray()
+            rsp.contentType = MediaType.IMAGE_JPEG_VALUE
+            rsp.setHeader("Cache-Control", CacheControl.maxAge(1, TimeUnit.DAYS).cachePrivate().headerValue)
+            rsp.bufferSize = BUFFER_SIZE
+            ImageIO.write(image, "jpg", rsp.outputStream)
 
-            ResponseEntity.ok()
-                    .contentLength(bytes.size.toLong())
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                    .body(InputStreamResource(ByteArrayInputStream(bytes)))
         } else {
-            ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(storage.mimeType))
-                    .contentLength(storage.size)
-                    .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                    .body(InputStreamResource(file.getInputStream()))
+            rsp.contentType = storage.mimeType
+            rsp.setContentLengthLong(storage.size)
+            rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
+            copyInputToOuput(file.getInputStream(), rsp.outputStream)
         }
     }
 
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, proxy: Proxy): ResponseEntity<InputStreamResource> {
+    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy) {
+        val isWatermarkSize = (proxy.width <= watermarkMinProxySize && proxy.height <= watermarkMinProxySize)
         val st = fileStorageService.get(proxy.id!!)
-        return serveImage(req, st)
+        serveImage(req, rsp, st, isWatermarkSize)
     }
 
     override fun watermark(req: HttpServletRequest, inputStream: InputStream): BufferedImage {
         val src = ImageIO.read(inputStream)
-        if (src.width <= watermarkMinProxySize && src.height <= watermarkMinProxySize) {
-            return src
-        }
-
         val g2d = src.createGraphics()
         try {
             if (watermarkImage != null) {
@@ -141,7 +131,7 @@ class ImageServiceImpl @Autowired constructor(
                 val replacements = mapOf(
                         "USER" to getUsername(),
                         "DATE" to SimpleDateFormat("MM/dd/yyyy").format(Date()),
-                        "IP" to req.remoteAddr,
+                        "IP" to (req.getHeader("X-FORWARDED-FOR") ?: req.remoteAddr),
                         "HOST" to req.remoteHost)
 
                 val sb = StringBuffer(watermarkTemplate.length * 2)
@@ -156,21 +146,17 @@ class ImageServiceImpl @Autowired constructor(
                 m.appendTail(sb)
                 val text = sb.toString()
 
-                val fontSize = getWatermarkFontSize(src.width, src.height, text.length)
-                val watermarkFont = Font(watermarkFontName, Font.PLAIN, fontSize)
-
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
                 val c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)
                 g2d.composite = c
-
-                g2d.font = watermarkFont
-                val x = ((src.width - g2d.getFontMetrics(watermarkFont).stringWidth(text)) / 2).toFloat()
-                val y = src.height - (1.1f * g2d.getFontMetrics(watermarkFont).height)
+                g2d.font = getWatermarkFont(g2d, text, src.width)
+                val x = ((src.width - g2d.getFontMetrics(g2d.font).stringWidth(text)) / 2).toFloat()
+                val y = src.height - (1.1f * g2d.getFontMetrics(g2d.font).height)
                 g2d.paint = Color.black
                 g2d.drawString(text, x - 1, y + 1)
                 g2d.drawString(text, x - 1, y - 1)
                 g2d.drawString(text, x + 1, y + 1)
-                g2d.drawString(text, x + 1, y - 1)
+                g2d.drawString(text, x + 1, y -1)
                 g2d.paint = Color.white
                 g2d.drawString(text, x, y)
             }
@@ -179,21 +165,6 @@ class ImageServiceImpl @Autowired constructor(
             g2d.dispose()
         }
         return src
-    }
-
-    fun getWatermarkFontSize(width: Int, height: Int, characterLength: Int): Int {
-        /*
-        Calculates the correct font size for the watermark based on the width and height of the image and the number of
-        characters in the text.
-         */
-        var fontSize = (width * 1.5 / characterLength * watermarkScale).roundToInt()
-        if (fontSize > 96) {
-            fontSize = 96
-        }
-        if (fontSize > height) {
-            fontSize = height
-        }
-        return fontSize
     }
 
     @Synchronized
@@ -220,9 +191,65 @@ class ImageServiceImpl @Autowired constructor(
         }
     }
 
+    /**
+     * Copy the contents of the given InputStream to the OutputStream.  Utilizes
+     * NIO streams for max performance.
+     *
+     * @param input The src input stream
+     * @param output The dst output stream
+     */
+    fun copyInputToOuput(input: InputStream, output: OutputStream) : Long {
+        val inputChannel = Channels.newChannel(input)
+        val outputChannel = Channels.newChannel(output)
+        var size = 0L
+
+        inputChannel.use { ic ->
+            outputChannel.use { oc ->
+                val buffer = ByteBuffer.allocateDirect(BUFFER_SIZE)
+                while (ic.read(buffer) != -1) {
+                    buffer.flip()
+                    size += oc.write(buffer)
+                    buffer.clear()
+                }
+            }
+        }
+        return size
+    }
+
+    /**
+     * Calculates the correct font size for the watermark based on the width and height of the
+     * image and watermark scale. Returns the Font to use for the watermark.
+     *
+     * @param g2d the current graphics2D instance
+     * @param text the string to calculate the size of
+     * @param imageWidth the full image width
+    */
+    fun getWatermarkFont(g2d: Graphics2D, text: String, imageWidth: Int): Font {
+        val baseFontSize = 20
+        val baseFont = Font(watermarkFontName, Font.PLAIN, baseFontSize)
+        val fontWidth = g2d.getFontMetrics(baseFont).stringWidth(text)
+        val scale = (imageWidth.toFloat() * 0.75) / fontWidth.toFloat()
+        var fontSize = baseFontSize.toFloat() * scale * watermarkScale
+        return Font(watermarkFontName, Font.PLAIN, fontSize.toInt())
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(ImageServiceImpl::class.java)
+
+        /**
+         * A table for converting the proxy type to a media type, which is required
+         * to serve the proxy images properly.
+         */
+        val PROXY_MEDIA_TYPES: Map<String, MediaType> = ImmutableMap.of(
+                "gif", MediaType.IMAGE_GIF,
+                "jpg", MediaType.IMAGE_JPEG,
+                "png", MediaType.IMAGE_PNG)
+
+        /**
+         * Output stream buffer size
+         */
+        const val BUFFER_SIZE = 16 * 1024
 
         /**
          * The pattern used to define text replacements in the watermark texts

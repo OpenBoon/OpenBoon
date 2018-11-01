@@ -104,7 +104,7 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/api/v1/send-onboard-email").permitAll()
                     .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                     .anyRequest().authenticated()
-                    .and().headers().frameOptions().disable()
+                    .and().headers().frameOptions().disable().cacheControl().disable()
                     .and().csrf().csrfTokenRepository(csrfTokenRepository)
                     .requireCsrfProtectionMatcher(csrfRequestMatcher)
                     .and()
