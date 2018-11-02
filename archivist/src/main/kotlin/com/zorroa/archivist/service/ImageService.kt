@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.archivist.util.event
 import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -100,6 +101,7 @@ class ImageServiceImpl @Autowired constructor(
             ImageIO.write(image, "jpg", rsp.outputStream)
 
         } else {
+            logger.event("serve Image", mapOf("mimeType" to storage.mimeType, "size" to storage.size))
             rsp.contentType = storage.mimeType
             rsp.setContentLengthLong(storage.size)
             rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
