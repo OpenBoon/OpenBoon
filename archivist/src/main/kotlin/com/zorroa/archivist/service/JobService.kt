@@ -6,6 +6,7 @@ import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -83,7 +84,8 @@ class JobServiceImpl @Autowired constructor(
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 
-        logger.info("user.name='{}' launched job.name='{}'", user.getName(), job.name)
+        logger.event("launched Job",
+                mapOf("jobName" to job.name, "jobId" to job.id))
 
         return get(job.id)
     }
