@@ -325,7 +325,7 @@ class GcpFileServerService constructor (
 
     private fun getBlob(url: URI) : Blob? {
         var (bucket, path) =  splitGcpUrl(url)
-        val blobId = BlobId.of(bucket, path)
+        val blobId = BlobId.of(bucket, path.substring(1))
         return storage.get(blobId)
     }
 
