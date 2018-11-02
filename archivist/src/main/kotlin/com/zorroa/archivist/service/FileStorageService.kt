@@ -3,8 +3,10 @@ package com.zorroa.archivist.service
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
+import com.google.cloud.storage.Storage.SignUrlOption
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
@@ -13,7 +15,6 @@ import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.filesystem.OfsFile
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.event
-import com.zorroa.common.domain.ArchivistWriteException
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,12 +22,7 @@ import java.io.FileInputStream
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
-import com.google.auth.oauth2.ServiceAccountCredentials
-import com.google.cloud.storage.Storage.SignUrlOption
-import com.google.cloud.storage.BlobInfo
-
 
 
 private val tika = Tika()
@@ -117,7 +113,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String {
         val uri = URI(dlp.buildUri(id))
-        val path = uri.path.substring(1)
+        val path = uri.path
         val contentType = tika.detect(path)
 
         logger.event("sign StorageFile",
