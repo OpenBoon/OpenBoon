@@ -102,7 +102,7 @@ class ImageServiceImpl @Autowired constructor(
             ImageIO.write(image, "jpg", rsp.outputStream)
 
         } else {
-            logger.event("serve Image", mapOf("mimeType" to storage.mimeType, "size" to storage.size))
+            logger.event("serve Image", mapOf("mimeType" to stat.contentType, "size" to stat.size))
             rsp.contentType = stat.contentType
             rsp.setContentLengthLong(stat.size)
             rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
