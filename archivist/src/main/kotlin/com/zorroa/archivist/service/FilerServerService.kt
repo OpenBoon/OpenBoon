@@ -94,14 +94,13 @@ class ServableFile (
 interface FileServerProvider {
 
     fun getStorageUri(doc: Document) : URI {
-        val stream = doc.getAttr("source.stream", String::class.java)
+        val stream : String = doc.getAttr("source.path") ?: throw IllegalStateException("${doc.id} has no source.path")
 
-        return if (stream != null) {
+        return if (stream.contains(":/")) {
             URI(UrlEscapers.urlFragmentEscaper().escape(stream))
         }
         else {
-            val path = doc.getAttr("source.path", String::class.java)
-            URI("file://$path")
+            URI("file://$stream")
         }
     }
 
