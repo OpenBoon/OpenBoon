@@ -117,11 +117,15 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String {
         val uri = URI(dlp.buildUri(id))
-        val path = uri.path
+        val path = uri.path.substring(1)
+        val contentType = tika.detect(path)
 
-        logger.event("sign StorageFile", mapOf("storageId" to uri, "bucket" to bucket, "path" to path))
-        val info = BlobInfo.newBuilder(bucket, path).build()
-        return gcs.signUrl(info, 10, TimeUnit.MINUTES, SignUrlOption.httpMethod(method)).toString()
+        logger.event("sign StorageFile",
+                mapOf("contentType" to contentType, "storageId" to uri, "bucket" to bucket, "path" to path))
+
+        val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
+        return gcs.signUrl(info, 10, TimeUnit.MINUTES,
+                SignUrlOption.withContentType(), SignUrlOption.httpMethod(method)).toString()
     }
 
     companion object {
