@@ -131,7 +131,7 @@ class FileServerProviderImpl @Autowired constructor (
 
     fun getStorageService(uri: URI) : FileServerService {
         val type = when(uri.scheme) {
-            "gs" -> "gcp"
+            "gs" -> "gcs"
             "file" -> "local"
             null->"local"
             else -> uri.scheme
