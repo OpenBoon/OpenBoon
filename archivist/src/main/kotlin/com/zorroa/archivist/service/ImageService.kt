@@ -91,6 +91,7 @@ class ImageServiceImpl @Autowired constructor(
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
         val file = fileServerProvider.getServableFile(storage)
+        val stat = file.getStat()
 
         rsp.setHeader("Pragma", "")
         rsp.bufferSize = BUFFER_SIZE
@@ -102,7 +103,8 @@ class ImageServiceImpl @Autowired constructor(
 
         } else {
             logger.event("serve Image", mapOf("mimeType" to storage.mimeType, "size" to storage.size))
-            rsp.contentType = storage.mimeType
+            rsp.contentType = stat.contentType
+            rsp.setContentLengthLong(stat.size)
             rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
             copyInputToOuput(file.getInputStream(), rsp.outputStream)
         }
