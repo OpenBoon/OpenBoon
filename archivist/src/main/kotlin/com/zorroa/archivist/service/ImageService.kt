@@ -93,17 +93,16 @@ class ImageServiceImpl @Autowired constructor(
         val file = fileServerProvider.getServableFile(storage)
 
         rsp.setHeader("Pragma", "")
+        rsp.bufferSize = BUFFER_SIZE
         if (watermarkEnabled && isWatermarkSize) {
             val image = watermark(req, file.getInputStream())
             rsp.contentType = MediaType.IMAGE_JPEG_VALUE
             rsp.setHeader("Cache-Control", CacheControl.maxAge(1, TimeUnit.DAYS).cachePrivate().headerValue)
-            rsp.bufferSize = BUFFER_SIZE
             ImageIO.write(image, "jpg", rsp.outputStream)
 
         } else {
             logger.event("serve Image", mapOf("mimeType" to storage.mimeType, "size" to storage.size))
             rsp.contentType = storage.mimeType
-            rsp.setContentLengthLong(storage.size)
             rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
             copyInputToOuput(file.getInputStream(), rsp.outputStream)
         }
