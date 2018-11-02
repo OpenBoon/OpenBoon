@@ -6,6 +6,7 @@ import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.util.event
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -136,7 +137,6 @@ class FileServerProviderImpl @Autowired constructor (
             null->"local"
             else -> uri.scheme
         }
-
         return services[type] ?: throw FileServerException(
                 "Unable to find storage service for: $type")
     }
@@ -299,6 +299,7 @@ class GcpFileServerService constructor (
     override fun getInputStream(url: URI): InputStream {
         val blob =  getBlob(url)
         if (blob != null) {
+            logger.event("get StorageFile", mapOf("uri" to url.toString()))
             return Channels.newInputStream(blob.reader())
         } else {
             throw FileServerReadException("$url not found")
