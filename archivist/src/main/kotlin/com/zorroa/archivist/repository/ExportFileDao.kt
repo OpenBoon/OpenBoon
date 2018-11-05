@@ -48,7 +48,7 @@ class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
     }
 
     override fun getAll(job: JobId): List<ExportFile> {
-        return jdbc.query("$GET WHERE pk_job=? AND pk_organization=?",
+        return jdbc.query("$GET WHERE pk_job=? AND pk_organization=? ORDER BY time_created DESC",
                 MAPPER, job.jobId, getUser().organizationId)
     }
 
