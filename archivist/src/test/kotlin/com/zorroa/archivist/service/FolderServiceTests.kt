@@ -115,10 +115,21 @@ class FolderServiceTests : AbstractTest() {
         assertTrue(results["failed"]!!.isEmpty())
         assertFalse(results["success"]!!.isEmpty())
 
+        var s = AssetSearch()
+        s.addToFilter().addToLinks("folder", folder.id)
+        assertEquals(2, searchService.count(s))
+        assertEquals(2, searchService.count(folder))
+
         results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
         assertTrue(results["failed"]!!.isEmpty())
         assertFalse(results["success"]!!.isEmpty())
+
+        s = AssetSearch()
+        s.addToFilter().addToLinks("folder", folder.id)
+        assertEquals(0, searchService.count(s))
+        assertEquals(0, searchService.count(folder))
+
     }
 
     @Test
