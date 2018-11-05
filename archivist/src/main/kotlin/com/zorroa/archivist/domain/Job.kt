@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.UserBase
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import java.sql.ResultSet
@@ -72,9 +74,15 @@ class JobFilter (
             addToValues(states.map{it.ordinal})
         }
 
-        if (!organizationIds.orEmpty().isEmpty()) {
-            addToWhere(JdbcUtils.inClause("job.pk_organization", organizationIds!!.size))
-            addToValues(organizationIds)
+        if (hasPermission("zorroa::superadmin")) {
+            if (!organizationIds.orEmpty().isEmpty()) {
+                addToWhere(JdbcUtils.inClause("job.pk_organization", organizationIds!!.size))
+                addToValues(organizationIds)
+            }
+        }
+        else {
+            addToWhere("job.pk_organization=?")
+            addToValues(getOrgId())
         }
     }
 }
