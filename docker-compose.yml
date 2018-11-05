@@ -6,10 +6,7 @@ services:
 
   # Elastic Search instance used by the unit tests.
   test-es:
-    build:
-      context: elasticsearch
-      args:
-        node_type: single
+    image: "zorroa-elasticsearch-single:latest"
     ports:
       - "39200:9200"
       - "39300:9300"

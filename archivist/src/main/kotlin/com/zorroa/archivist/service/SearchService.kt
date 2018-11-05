@@ -3,16 +3,12 @@ package com.zorroa.archivist.service
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
-import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.search.AssetFilter
-import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.search.RangeQuery
-import com.zorroa.archivist.search.SimilarityFilter
+import com.zorroa.archivist.search.*
 import com.zorroa.archivist.security.*
-import com.zorroa.archivist.util.warnEvent
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
@@ -35,7 +31,6 @@ import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
-import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.SearchHits
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
@@ -646,6 +641,11 @@ class SearchServiceImpl @Autowired constructor(
             handleHammingFilter(filter.similarity, query)
         }
 
+        if (filter.kwconf != null) {
+            handleKwConfFilter(filter.kwconf, query)
+        }
+
+
         // Recursively add bool sub-filters for must, must_not and should
         if (filter.must != null) {
             for (f in filter.must) {
@@ -672,6 +672,31 @@ class SearchServiceImpl @Autowired constructor(
         }
     }
 
+    private fun handleKwConfFilter(filters: Map<String, KwConfFilter>,  query: BoolQueryBuilder) {
+        val bool = QueryBuilders.boolQuery()
+        query.must(bool)
+
+        for ((field, filter) in filters) {
+            val args = mutableMapOf<String, Any>()
+            args["field"] = field
+            args["keywords"] = filter.keywords
+            args["range"] = filter.range
+
+            val fsqb = QueryBuilders.functionScoreQuery(
+                    ScoreFunctionBuilders.scriptFunction(Script(ScriptType.INLINE,
+                            "zorroa-kwconf", "kwconf", args)))
+
+            fsqb.minScore = filter.range[0].toFloat()
+            fsqb.boostMode(CombineFunction.REPLACE)
+            fsqb.scoreMode(FunctionScoreQuery.ScoreMode.MULTIPLY)
+
+            val fbool =  QueryBuilders.boolQuery()
+            fbool.must(fsqb)
+            fbool.must(QueryBuilders.termsQuery("$field.keyword.raw", filter.keywords))
+            bool.should(fbool)
+        }
+    }
+
     private fun handleHammingFilter(filters: Map<String, SimilarityFilter>, query: BoolQueryBuilder) {
 
         val hammingBool = QueryBuilders.boolQuery()
@@ -683,8 +708,8 @@ class SearchServiceImpl @Autowired constructor(
              * Resolve any asset Ids in the hash list.
              */
 
-            val hashes = Lists.newArrayList<String>()
-            val weights = Lists.newArrayList<Float>()
+            val hashes = mutableListOf<String>()
+            val weights = mutableListOf<Float>()
 
             for (hash in filter.hashes) {
                 var hashValue: String? = hash.hash
@@ -701,7 +726,7 @@ class SearchServiceImpl @Autowired constructor(
                 }
             }
 
-            val args = Maps.newHashMap<String, Any>()
+            val args = mutableMapOf<String, Any>()
             args["field"] = field
             args["hashes"] = hashes.joinToString(",")
             args["weights"] = weights.joinToString(",")

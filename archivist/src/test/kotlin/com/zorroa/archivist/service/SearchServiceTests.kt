@@ -740,6 +740,24 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     @Throws(IOException::class, InterruptedException::class)
+    fun testKwConfSearch() {
+        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        source1.setAttr("kw_with_conf", listOf(
+                mapOf("keyword" to "dog", "confidence" to 0.5),
+                mapOf("keyword" to "cat", "confidence" to 0.1),
+                mapOf("keyword" to "bilboAngry", "confidence" to 0.7)))
+
+        indexService.index(AssetIndexSpec(ImmutableList.of(source1)))
+        refreshIndex()
+
+        val filter = AssetFilter()
+                .addToKwConf("kw_with_conf", KwConfFilter(listOf("bilboAngry"), listOf(0.25, 0.70)))
+
+        assertEquals(1, searchService.search(AssetSearch(filter)).hits.getTotalHits())
+    }
+
+    @Test
+    @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilterWithEmptyValue() {
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
