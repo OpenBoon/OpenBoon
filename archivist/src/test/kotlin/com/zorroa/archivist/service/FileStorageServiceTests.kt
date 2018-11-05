@@ -102,7 +102,7 @@ class GcsFileStorageServiceTests : AbstractTest() {
 
     val bucketName = "rmaas-dit-2-zorroa-data"
     val fileStorage: GcsFileStorageService = GcsFileStorageService(bucketName,
-            Paths.get("unittest/config/rmaas-dit-2-data.json"))
+            Paths.get("unittest/config/data-credentials.json"))
 
     @Test
     fun testGetUri() {
@@ -196,26 +196,5 @@ class LocalFileStorageServiceTests : AbstractTest() {
         assertTrue(FileUtils.filename(fs.uri).endsWith(".jpg"))
         assertEquals("image/jpeg", fs.mimeType)
         assertEquals("file", fs.scheme)
-    }
-
-    @Test
-    fun testStatNotExists() {
-        val spec = FileStorageSpec("proxy", "abc123", "jpg",
-                listOf("x", "100", "y", "100"))
-        val stat = fileStorage.get(spec)
-        assertFalse(stat.exists)
-        assertEquals("image/jpeg", stat.mimeType)
-    }
-
-    @Test
-    fun testStatExists() {
-        val spec = FileStorageSpec("proxy", "abc123", "jpg", listOf("x", "100", "y", "100"))
-        val fs = fileStorage.create(spec)
-        Files.copy(getTestImagePath().resolve("beer_kettle_01.jpg"),
-                Paths.get(URI(fs.uri)), StandardCopyOption.REPLACE_EXISTING)
-        val stat = fileStorage.get(spec)
-        assertTrue(stat.exists)
-        assertEquals("image/jpeg", stat.mimeType)
-        assertEquals(1800475, stat.size)
     }
 }

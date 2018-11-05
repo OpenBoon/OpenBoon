@@ -85,8 +85,6 @@ class FileStorageControllerTests : MockMvcTest() {
                 .andReturn()
 
         val stat = Json.Mapper.readValue(req.response.contentAsString, FileStorage::class.java)
-        assertEquals(-1, stat.size)
         assertEquals("image/jpeg", stat.mimeType)
-        assertFalse(stat.exists)
     }
 }

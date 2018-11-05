@@ -1,7 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.fasterxml.uuid.Generators
-import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
@@ -14,8 +12,8 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.filesystem.OfsFile
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.archivist.util.event
-import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.FileInputStream
@@ -25,11 +23,9 @@ import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 
 
-private val tika = Tika()
-private val uuid3 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
-
 /**
- * The FileStorageService is for storing files associated with assets, exports, etc.
+ * The FileStorageService is for determining the location of files assocaiated with
+ * assets, exports, etc.
  *
  */
 interface FileStorageService {
@@ -93,7 +89,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
     override fun create(spec: FileStorageSpec): FileStorage {
         val uri = dlp.buildUri(spec)
         val id = dlp.buildId(spec)
-        val storage =  FileStorage(id, uri,"gs", tika.detect(uri),-1, false)
+        val storage =  FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri))
 
         logger.event("create FileStorage",
                 mapOf("fileStorageId" to storage.id,
@@ -104,17 +100,18 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
     override fun get(spec: FileStorageSpec): FileStorage {
         val uri = dlp.buildUri(spec)
         val id = dlp.buildId(spec)
-        return FileStorage(id, uri,"gs", tika.detect(uri),-1, false)
+
+        return FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri))
     }
 
     override fun get(id: String): FileStorage {
-        return FileStorage(unslashed(id), dlp.buildUri(id), "gs", tika.detect(id), -1, false)
+        return FileStorage(unslashed(id), dlp.buildUri(id), "gs", StaticUtils.tika.detect(id))
     }
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String {
         val uri = URI(dlp.buildUri(id))
         val path = uri.path
-        val contentType = tika.detect(path)
+        val contentType = StaticUtils.tika.detect(path)
 
         logger.event("sign StorageFile",
                 mapOf("contentType" to contentType, "storageId" to uri, "bucket" to bucket, "path" to path))
@@ -172,21 +169,11 @@ class LocalFileStorageService @Autowired constructor(
     }
 
     private fun buildFileStorage(ofile: OfsFile) : FileStorage {
-
-        val size : Long = try {
-            Files.size(ofile.file.toPath())
-        }
-        catch (e: Exception) {
-            -1
-        }
-
         val storage = FileStorage(
                 unslashed(ofile.id),
                 ofile.file.toURI().toString(),
                 "file",
-                tika.detect(ofile.file.toString()),
-                size,
-                size != -1L)
+                StaticUtils.tika.detect(ofile.file.toString()))
 
         logger.event("create FileStorage",
                 mapOf("fileStorageId" to storage.id,
@@ -236,7 +223,7 @@ class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryL
         if (variant == "_") {
             variant = ""
         }
-        val assetId = spec.assetId ?: uuid3.generate(spec.name)
+        val assetId = spec.assetId ?: StaticUtils.uuid3.generate(spec.name)
         return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/${spec.name}$variant.${spec.type}"
     }
 
@@ -245,7 +232,7 @@ class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryL
         if (variant == "_") {
             variant = ""
         }
-        val assetId = spec.assetId ?: uuid3.generate(spec.name)
+        val assetId = spec.assetId ?: StaticUtils.uuid3.generate(spec.name)
         return "${spec.category}___${assetId}___${spec.name}$variant.${spec.type}"
     }
 }

@@ -6,6 +6,7 @@ import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.archivist.util.event
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
@@ -32,14 +33,13 @@ import javax.servlet.http.HttpServletResponse
  * The FileServerService system is for serving source files that live in different repositories
  */
 
-private val tika = Tika()
-
 private const val defaultContentType = "application/octet-steam"
 
 data class FileStat(val size: Long, val contentType: String, val exists: Boolean)
 
 /**
- * On object that can be stored somewhere in the vast reaches of the interweb.
+ * On object that can be stored somewhere locallly or in the vast
+ * reaches of the interweb.
  */
 class ServableFile (
         private val fileServerService: FileServerService,
@@ -110,9 +110,9 @@ interface FileServerProvider {
     fun getServableFile(uri: String) : ServableFile = getServableFile(URI(uri))
 }
 
-@Component
 class FileServerProviderImpl @Autowired constructor (
-        val properties: ApplicationProperties) : FileServerProvider {
+        val properties: ApplicationProperties,
+        val credentials: Path?) : FileServerProvider {
 
     private val services : Map<String, FileServerService>
 
@@ -121,7 +121,7 @@ class FileServerProviderImpl @Autowired constructor (
         val internalStorageType = properties.getString("archivist.storage.type")
 
         if (internalStorageType== "gcs") {
-            services["gcs"] = GcpFileServerService(properties)
+            services["gcs"] = GcpFileServerService(properties, credentials)
         }
         else {
             services["local"] = LocalFileServerService(properties)
@@ -192,7 +192,7 @@ class LocalFileServerService @Autowired constructor (
     override fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource> {
         val path = Paths.get(url)
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(tika.detect(path)))
+                .contentType(MediaType.parseMediaType(StaticUtils.tika.detect(path)))
                 .contentLength(Files.size(path))
                 .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                 .body(InputStreamResource(FileInputStream(path.toFile())))
@@ -206,7 +206,7 @@ class LocalFileServerService @Autowired constructor (
     override fun copyTo(url: URI, response: HttpServletResponse) {
         val path = Paths.get(url)
         response.setContentLengthLong(Files.size(path))
-        response.contentType = tika.detect(path)
+        response.contentType = StaticUtils.tika.detect(path)
         FileInputStream(path.toFile()).copyTo(response.outputStream)
     }
 
@@ -230,7 +230,7 @@ class LocalFileServerService @Autowired constructor (
     override fun getStat(url: URI): FileStat {
        return try {
            val path = getLocalPath(url)
-           FileStat(Files.size(path), tika.detect(path), objectExists(url))
+           FileStat(Files.size(path), StaticUtils.tika.detect(path), objectExists(url))
        } catch (e: Exception) {
            FileStat(0, defaultContentType, false)
        }
@@ -242,16 +242,16 @@ class LocalFileServerService @Autowired constructor (
 }
 
 class GcpFileServerService constructor (
-        val properties: ApplicationProperties) : FileServerService {
+        val properties: ApplicationProperties,
+        val credentials: Path?) : FileServerService {
 
     private val storage: Storage
     init {
         logger.info("Initializing Google Cloud Storage file server")
 
-        val configPath = properties.getPath("archivist.config.path").resolve("data-credentials.json")
-        storage = if (Files.exists(configPath)) {
+        storage = if (credentials!= null && Files.exists(credentials)) {
             StorageOptions.newBuilder().setCredentials(
-                    GoogleCredentials.fromStream(FileInputStream(configPath.toFile()))).build().service
+                    GoogleCredentials.fromStream(FileInputStream(credentials.toFile()))).build().service
         }
         else {
             StorageOptions.newBuilder().build().service
@@ -298,7 +298,6 @@ class GcpFileServerService constructor (
     override fun getInputStream(url: URI): InputStream {
         val blob =  getBlob(url)
         if (blob != null) {
-            logger.event("get StorageFile", mapOf("uri" to url.toString()))
             return Channels.newInputStream(blob.reader())
         } else {
             throw FileServerReadException("$url not found")
@@ -308,6 +307,7 @@ class GcpFileServerService constructor (
     override fun getSignedUrl(url: URI): URL {
         val blob = getBlob(url)
         if (blob != null) {
+            logger.event("sign StorageFile", mapOf("uri" to url.toString()))
             return blob.signUrl(60, TimeUnit.MINUTES,
                     Storage.SignUrlOption.httpMethod(HttpMethod.GET))
         }
@@ -326,6 +326,7 @@ class GcpFileServerService constructor (
     private fun getBlob(url: URI) : Blob? {
         var (bucket, path) =  splitGcpUrl(url)
         val blobId = BlobId.of(bucket, path.substring(1))
+        logger.event("get StorageFile", mapOf("uri" to url.toString()))
         return storage.get(blobId)
     }
 

@@ -6,8 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.uuid.Generators
+import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserOrNull
+import org.apache.tika.Tika
 import org.slf4j.Logger
 import java.text.SimpleDateFormat
 
@@ -27,6 +30,11 @@ object StaticUtils {
     }
 
     val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+
+    val tika = Tika()
+
+    val uuid3 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
+
 }
 
 inline fun  <E: Any, T: Collection<E>> T?.whenNullOrEmpty(func: () -> Unit): Unit {

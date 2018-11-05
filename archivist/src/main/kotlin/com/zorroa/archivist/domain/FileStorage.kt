@@ -32,18 +32,12 @@ class FileStorageSpec(
  * @property id The ID for the file, is used for streaming the file from the Archivist.
  * @property scheme The URI scheme, will be file, http(s).
  * @property mimeType A mime type based off the file extension.
- * @property size: The size of the file.
- * @property exists: If the file exists or not.
  */
 class FileStorage(
         val id: String,
         val uri: String,
         val scheme: String,
-        val mimeType: String,
-        val size: Long,
-        val exists: Boolean
-
-
+        val mimeType: String
 ) {
     override fun toString(): String {
         return "FileStorage(uri='$uri', id='$id', scheme='$scheme', mimeType='$mimeType')"

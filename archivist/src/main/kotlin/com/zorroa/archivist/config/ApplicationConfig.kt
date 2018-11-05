@@ -107,6 +107,11 @@ class ArchivistConfiguration {
         return adapter
     }
 
+    @Bean
+    fun fileServerProvider() : FileServerProvider {
+        return FileServerProviderImpl(properties(), dataCredentials())
+    }
+
     /**
      * Initialize the internal file storage system.  This is either "local" for a shared
      * NFS mount or "gcs" for Google Cloud Storage.
@@ -125,9 +130,7 @@ class ArchivistConfiguration {
             }
             "gcs"-> {
                 val bucket = properties().getString("archivist.storage.bucket")
-                val configPath = props.getPath("archivist.config.path")
-                val configFile = configPath.resolve("data-credentials.json")
-                GcsFileStorageService(bucket, configFile)
+                GcsFileStorageService(bucket, dataCredentials())
             }
             else -> {
                 throw IllegalStateException("Invalid storage type: $type")
@@ -152,7 +155,7 @@ class ArchivistConfiguration {
         if (props.getString("archivist.pubsub.type") == "gcp") {
             val network = networkEnvironment()
             return GcpPubSubServiceImpl(IrmCoreDataVaultClientImpl(
-                    network.getPublicUrl("core-data-vault-api"), irmServiceCredentials()))
+                    network.getPublicUrl("core-data-vault-api"), serviceCredentials()))
         }
         logger.info("No PubSub service configured")
         return null
@@ -177,7 +180,7 @@ class ArchivistConfiguration {
         return when(type) {
             "irm"-> {
                 IrmAssetServiceImpl(
-                    IrmCoreDataVaultClientImpl(network.getPublicUrl("core-data-vault-api"), irmServiceCredentials()))
+                    IrmCoreDataVaultClientImpl(network.getPublicUrl("core-data-vault-api"), serviceCredentials()))
             }
             else->AssetServiceImpl()
         }
@@ -232,10 +235,22 @@ class ArchivistConfiguration {
         return filter
     }
 
-    fun irmServiceCredentials() : Path {
+    /**
+     * The service credentials key.
+     */
+    fun serviceCredentials() : Path {
         return properties()
                 .getPath("archivist.config.path")
                 .resolve("service-credentials.json")
+    }
+
+    /**
+     *  The data credentials key.
+     */
+    fun dataCredentials() : Path {
+        return properties()
+                .getPath("archivist.config.path")
+                .resolve("data-credentials.json")
     }
 
     companion object {
