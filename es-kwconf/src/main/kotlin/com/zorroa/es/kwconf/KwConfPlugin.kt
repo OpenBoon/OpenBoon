@@ -11,6 +11,19 @@ import org.elasticsearch.search.lookup.SearchLookup
 
 import java.util.logging.Logger
 
+
+/**
+ *
+ * The Keyword Confidence plugin allows you to filter keyword/confidence pairs. The pairs
+ * must be described as :
+ *
+ * [
+ *     { "keyword": "dog", "confidence": 0.87 },
+ *     { "keyword": "ardvark", confidence: 0.62 },
+ *     { "keyword": "badger", confidence: 0.38 }
+ * ]
+ *
+ */
 class KwConfPlugin : Plugin(), ScriptPlugin {
 
     companion object {
