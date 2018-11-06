@@ -99,7 +99,6 @@ class AssetController @Autowired constructor(
 
         val asset = indexService.get(id)
         val canExport = canExport(asset)
-
         val ofile = getPreferredFormat(asset, !canExport)
 
         if (ofile == null) {
@@ -123,7 +122,7 @@ class AssetController @Autowired constructor(
                         MultipartFileSender.fromPath(ofile.getLocalFile())
                                 .with(request)
                                 .with(response)
-                                .setContentType(ofile.getStat().contentType)
+                                .setContentType(ofile.getStat().mediaType)
                                 .serveResource()
 
                     }

@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse
 
 private const val defaultContentType = "application/octet-steam"
 
-data class FileStat(val size: Long, val contentType: String, val exists: Boolean)
+data class FileStat(val size: Long, val mediaType: String, val exists: Boolean)
 
 /**
  * On object that can be stored somewhere locallly or in the vast
@@ -228,11 +228,14 @@ class LocalFileServerService @Autowired constructor (
     }
 
     override fun getStat(url: URI): FileStat {
-       return try {
+        val path = getLocalPath(url)
+
+        return try {
            val path = getLocalPath(url)
            FileStat(Files.size(path), StaticUtils.tika.detect(path), objectExists(url))
        } catch (e: Exception) {
-           FileStat(0, defaultContentType, false)
+            // guessing mediaType from string path
+           FileStat(0, StaticUtils.tika.detect(path.toString()), false)
        }
     }
 
