@@ -11,7 +11,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class FileStorageControllerTests : MockMvcTest() {
@@ -35,7 +34,7 @@ class FileStorageControllerTests : MockMvcTest() {
 
         val fs = Json.Mapper.readValue(req.response.contentAsString, FileStorage::class.java)
         assertTrue(FileUtils.filename(fs.uri).endsWith(".jpg"))
-        assertEquals("image/jpeg", fs.mimeType)
+        assertEquals("image/jpeg", fs.mediaType)
         assertEquals("file", fs.scheme)
     }
 

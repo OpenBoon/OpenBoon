@@ -46,10 +46,6 @@ class AssetController @Autowired constructor(
         private val fileServerProvider: FileServerProvider,
         private val fileStorageService: FileStorageService
 ){
-    /**
-     * Describes a file to stream.
-     */
-    //class StreamFile(var path: String, var mimeType: String, var proxy: Boolean, var local: Boolean=false)
 
     @GetMapping(value = ["/api/v1/assets/_fields"])
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
