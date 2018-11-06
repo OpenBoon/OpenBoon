@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -35,8 +36,8 @@ public class TaxonomyServiceTests extends AbstractTest {
         Folder folder4 = folderService.create(new FolderSpec("federation", folder1));
 
         Source d = new Source();
-        d.setId("abc123");
-        indexService.index(d);
+        d.setId(UUID.randomUUID().toString());
+        assetService.createOrReplace(d);
         refreshIndex();
 
         folderService.addAssets(folder4, Lists.newArrayList(d.getId()));
@@ -103,9 +104,9 @@ public class TaxonomyServiceTests extends AbstractTest {
         folder1 = folderService.get(folder1.getId());
 
         Source d = new Source();
-        d.setId("abc123");
+        d.setId(UUID.randomUUID().toString());
         d.setAttr("foo.keywords", "ships");
-        indexService.index(d);
+        assetService.createOrReplace(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
@@ -129,8 +130,8 @@ public class TaxonomyServiceTests extends AbstractTest {
         folder1 = folderService.get(folder1.getId());
 
         Source d = new Source();
-        d.setId("abc123");
-        indexService.index(d);
+        d.setId(UUID.randomUUID().toString());
+        assetService.createOrReplace(d);
         refreshIndex();
 
         assertEquals(0, searchService.search(
@@ -161,8 +162,8 @@ public class TaxonomyServiceTests extends AbstractTest {
         folder1 = folderService.get(folder1.getId());
 
         Source d = new Source();
-        d.setId("abc123");
-        indexService.index(d);
+        d.setId(UUID.randomUUID().toString());
+        assetService.createOrReplace(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
@@ -188,8 +189,8 @@ public class TaxonomyServiceTests extends AbstractTest {
         folder1 = folderService.get(folder1.getId());
 
         Source d = new Source();
-        d.setId("abc123");
-        indexService.index(d);
+        d.setId(UUID.randomUUID().toString());
+        assetService.createOrReplace(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));

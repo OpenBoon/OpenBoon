@@ -4,11 +4,65 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
+import com.google.common.base.MoreObjects
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.regex.Pattern
 
+/**
+ * Structure for upserting a batch of assets.
+ *
+ * @property sources: The source documents
+ * @property jobId: The associated job Id
+ * @property taskID: The associated task Id
+ */
+class BatchCreateAssetsRequest(
+        val sources: List<Document>,
+        val jobId: UUID?,
+        val taskId: UUID?) {
+
+    constructor( sources: List<Document>) : this(sources, null, null)
+}
+
+
+/**
+ * The response after batch creating an array of assets.
+ */
+class BatchCreateAssetsResponse {
+    var tried = 0
+    var created = 0
+    var replaced = 0
+    var warnings = 0
+    var retries = 0
+    var errors = 0
+    var total = 0
+    var logs: MutableList<String> = mutableListOf()
+    var assetIds: MutableList<String> = mutableListOf()
+
+    fun add(other: BatchCreateAssetsResponse): BatchCreateAssetsResponse {
+        tried += other.tried
+        created += other.created
+        replaced += other.replaced
+        warnings += other.warnings
+        errors += other.errors
+        retries += other.retries
+        logs.addAll(other.logs)
+        assetIds.addAll(other.assetIds)
+        return this
+    }
+
+    override fun toString(): String {
+        return MoreObjects.toStringHelper(this)
+                .add("tried", tried)
+                .add("created", created)
+                .add("replaced", replaced)
+                .add("warnings", warnings)
+                .add("errors", errors)
+                .add("retries", retries)
+                .toString()
+    }
+}
 /**
  * A request to batch delete assets.
  *

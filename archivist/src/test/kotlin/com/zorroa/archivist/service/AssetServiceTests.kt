@@ -1,23 +1,28 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.search.AssetSearch
 import org.junit.Before
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
 
-    @Autowired
-    lateinit var assetService: AssetService
-
     @Before
     fun init() {
         addTestAssets("set04/standard")
         refreshIndex()
+    }
+
+    @Test
+    fun testBatchUpsert() {
+        val assets = getTestAssets("set04/standard")
+        val rsp = assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets))
+        assertEquals(2, rsp.replaced)
+        assertEquals(0, rsp.created)
     }
 
     @Test

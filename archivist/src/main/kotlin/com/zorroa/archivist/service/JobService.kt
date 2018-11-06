@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getUser
@@ -21,7 +20,7 @@ interface JobService {
     fun getTask(id: UUID) : Task
     fun createTask(job: JobId, spec: TaskSpec) : Task
     fun getAll(page: Pager, filter: JobFilter): PagedList<Job>
-    fun incrementAssetCounts(task: Task,  counts: AssetIndexResult)
+    fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse)
 }
 
 @Service
@@ -108,7 +107,7 @@ class JobServiceImpl @Autowired constructor(
         return taskDao.create(job, spec)
     }
 
-    override fun incrementAssetCounts(task: Task,  counts: AssetIndexResult) {
+    override fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse) {
         taskDao.incrementAssetStats(task, counts)
         jobDao.incrementAssetStats(task, counts)
     }

@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
-import com.zorroa.common.util.Json
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -91,8 +90,8 @@ class IndexServiceTests : AbstractTest() {
     @Test
     @Throws(InterruptedException::class)
     fun testIndexCheckOrigin() {
-        val builder = Source(getTestImagePath("set01/toucan.jpg"))
-        val asset1 = indexService.index(builder)
+        val source = Source(getTestImagePath("set01/toucan.jpg"))
+        val asset1 = assetService.createOrReplace(source)
 
         assertNotNull(asset1.getAttr("system.timeCreated"))
         assertNotNull(asset1.getAttr("system.timeModified"))
@@ -101,8 +100,8 @@ class IndexServiceTests : AbstractTest() {
 
         refreshIndex()
         Thread.sleep(1000)
-        val builder2 = Source(getTestImagePath("set01/toucan.jpg"))
-        val asset2 = indexService.index(builder2)
+        val source2 = Source(getTestImagePath("set01/toucan.jpg"))
+        val asset2 = assetService.createOrReplace(source2)
 
         refreshIndex()
         assertNotEquals(asset2.getAttr("system.timeCreated", String::class.java),

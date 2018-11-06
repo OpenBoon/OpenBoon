@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
@@ -90,12 +91,11 @@ class TaskDaoTests : AbstractTest() {
 
     @Test
     fun testIncrementAssetStats() {
-        val counts = AssetIndexResult()
+        val counts = BatchCreateAssetsResponse()
         counts.created = 1
         counts.replaced = 2
         counts.errors = 3
         counts.warnings = 4
-        counts.updated = 5
         counts.total = 11
         assertTrue(taskDao.incrementAssetStats(task, counts))
 
@@ -105,7 +105,6 @@ class TaskDaoTests : AbstractTest() {
         assertEquals(counts.replaced, map["int_asset_replace_count"])
         assertEquals(counts.errors, map["int_asset_error_count"])
         assertEquals(counts.warnings, map["int_asset_warning_count"])
-        assertEquals(counts.updated, map["int_asset_update_count"])
         assertEquals(counts.total, map["int_asset_total_count"])
     }
 }

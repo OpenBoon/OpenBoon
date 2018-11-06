@@ -131,11 +131,11 @@ class IndexDaoTests : AbstractTest() {
 
         var result = indexDao.index(ImmutableList.of(source1, source2))
         assertEquals(1, result.created.toLong())
-        assertEquals(1, result.updated.toLong())
+        assertEquals(1, result.replaced.toLong())
 
         result = indexDao.index(ImmutableList.of(source1, source2))
         assertEquals(0, result.created.toLong())
-        assertEquals(2, result.updated.toLong())
+        assertEquals(2, result.replaced.toLong())
     }
 
     @Test
@@ -187,14 +187,6 @@ class IndexDaoTests : AbstractTest() {
         assertTrue(indexDao.delete(asset1.id))
         refreshIndex()
         assertFalse(indexDao.delete(asset1.id))
-    }
-
-    @Test
-    fun testGetProtectedFields() {
-        var v = indexDao.getManagedFields("a")
-        assertNotNull(v)
-        v = indexDao.getManagedFields(asset1.id)
-        assertNotNull(v)
     }
 
     @Test

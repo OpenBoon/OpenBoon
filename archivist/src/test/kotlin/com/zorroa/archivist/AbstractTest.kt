@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
@@ -77,6 +78,9 @@ open abstract class AbstractTest {
 
     @Autowired
     protected lateinit var indexService: IndexService
+
+    @Autowired
+    protected lateinit var assetService: AssetService
 
     @Autowired
     protected lateinit var properties: ApplicationProperties
@@ -314,7 +318,7 @@ open abstract class AbstractTest {
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-            indexService.index(source)
+            assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)))
         }
         refreshIndex()
     }

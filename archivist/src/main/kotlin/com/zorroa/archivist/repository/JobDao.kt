@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
@@ -20,7 +21,7 @@ interface JobDao {
     fun get(id: UUID, forClient:Boolean=false): Job
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
     fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
-    fun incrementAssetStats(job: JobId, counts: AssetIndexResult) : Boolean
+    fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean
 }
 
 @Repository
@@ -98,13 +99,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     }
 
-    override fun incrementAssetStats(job: JobId, counts: AssetIndexResult) : Boolean {
+    override fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean {
         val updated =  jdbc.update(INC_STATS,
-                counts.total, counts.created, counts.updated, counts.warnings, counts.errors, counts.replaced, job.jobId) == 1
+                counts.total, counts.created, counts.warnings, counts.errors, counts.replaced, job.jobId) == 1
         logger.event("update JobAssetStats",
                 mapOf("taskId" to job.jobId,
                         "assetsCreated" to counts.created,
-                        "assetsUpdated" to counts.updated,
                         "assetsWarned" to counts.warnings,
                         "assetErrors" to counts.errors,
                         "assetsReplaced" to counts.replaced,
@@ -150,7 +150,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
             result["assetReplacedCount"] = rs.getInt("int_asset_replace_count")
             result["assetWarningCount"] = rs.getInt("int_asset_warning_count")
             result["assetErrorCount"] = rs.getInt("int_asset_error_count")
-            result["assetUpdateCount"] = rs.getInt("int_asset_update_count")
             result["assetTotalCount"] = rs.getInt("int_asset_total_count")
             return result
         }
@@ -195,7 +194,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "SET " +
                 "int_asset_total_count=int_asset_total_count+?," +
                 "int_asset_create_count=int_asset_create_count+?," +
-                "int_asset_update_count=int_asset_update_count+?," +
                 "int_asset_warning_count=int_asset_warning_count+?," +
                 "int_asset_error_count=int_asset_error_count+?," +
                 "int_asset_replace_count=int_asset_replace_count+? " +

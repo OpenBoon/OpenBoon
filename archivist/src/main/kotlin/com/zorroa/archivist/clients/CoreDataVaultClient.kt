@@ -18,6 +18,16 @@ interface CoreDataVaultClient {
     fun getIndexedMetadata(companyId: Int, assetId: String) : Document
 
     /**
+     * Batch update all assets for a given company.  Return a map of
+     * assetId to boolean delete status.
+     *
+     * @param companyId the Int ID of the company
+     * @param assetIds the array of asset ids
+     * @return a Map of assetId to delete status.
+     */
+    fun batchUpdateIndexedMetadata(companyId: Int, docs: List<Document>)
+
+    /**
      * Batch delete all assets for a given company.  Return a map of
      * assetId to boolean delete status.
      *
@@ -58,6 +68,16 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
         client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED", null, Json.GENERIC_MAP,
                 headers=getRequestHeaders())
         return response
+    }
+
+    override fun batchUpdateIndexedMetadata(companyId: Int, docs: List<Document>) {
+        return runBlocking {
+            for (doc in docs) {
+                GlobalScope.launch{
+                    updateIndexedMetadata(companyId, doc.id, doc)
+                }
+            }
+        }
     }
 
     override fun batchDelete(companyId: Int, assetIds: List<String>): Map<String, Boolean> {
