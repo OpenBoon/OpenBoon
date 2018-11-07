@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
@@ -24,6 +25,7 @@ import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Repository
 import java.io.IOException
@@ -106,13 +108,14 @@ interface IndexDao {
 }
 
 @Repository
-class IndexDaoImpl : AbstractElasticDao(), IndexDao {
+class IndexDaoImpl @Autowired constructor(
+        private val properties: ApplicationProperties
+) : AbstractElasticDao(), IndexDao {
 
     /**
      * Allows us to flush the first batch.
      */
     private val flushTime = AtomicLong(0)
-
 
     override fun <T> getFieldValue(id: String, field: String): T? {
         val rest = getClient()
@@ -143,8 +146,12 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
         val bulkRequest = BulkRequest()
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
+        val debug = properties.getBoolean("archivist.debug-mode.enabled")
         for (source in sources) {
             bulkRequest.add(prepareInsert(source))
+            if (debug) {
+                logger.info(Json.prettyString(source))
+            }
         }
 
         val rest = getClient()
