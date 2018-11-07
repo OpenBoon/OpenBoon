@@ -237,9 +237,18 @@
           }
         },
         {
-          "hash_template": {
+          "similarity_template": {
             "match_mapping_type": "string",
             "match": "shash",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "byte_hash_template": {
+            "match_mapping_type": "string",
+            "match": "byte*",
             "mapping": {
               "type": "keyword"
             }
