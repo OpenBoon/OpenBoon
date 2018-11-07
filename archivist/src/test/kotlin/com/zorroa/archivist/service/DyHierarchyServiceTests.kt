@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 class DyHierarchyServiceTests : AbstractTest() {
 
     @Autowired
-    internal var dyhiService: DyHierarchyService? = null
+    lateinit var dyhiService: DyHierarchyService
 
     lateinit var testDataPath: String
 
@@ -69,7 +69,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         agg.folderId = id
         agg.levels = ImmutableList.of(
                 DyHierarchyLevel("tree.path", DyHierarchyLevelType.Path))
-        val result = dyhiService!!.generate(agg)
+        val result = dyhiService.generate(agg)
 
         var folder = folderService.get("/foo/foo/bar")
         assertEquals(5, searchService.count(folder!!.search!!))
@@ -91,7 +91,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         agg.folderId = id
         agg.levels = ImmutableList.of(
                 DyHierarchyLevel("source.directory.raw"))
-        val result = dyhiService!!.generate(agg)
+        val result = dyhiService.generate(agg)
         assertTrue(result > 0)
 
         val base = testDataPath.replace('/', '_')
@@ -110,7 +110,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.directory", DyHierarchyLevelType.Path),
                 DyHierarchyLevel("source.extension.raw"))
-        val result = dyhiService!!.generate(agg)
+        val result = dyhiService.generate(agg)
 
         // Video aggs
         folder = folderService.get("/foo/video$testDataPath/video/m4v")
@@ -136,7 +136,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
                 DyHierarchyLevel("source.filename.raw"))
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
     }
 
     @Test
@@ -148,7 +148,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.extension.raw")
                         .setAcl(Acl().addEntry("zorroa::foo", 3)))
 
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
         assertEquals("zorroa::foo",
                 folderService.get("/foo/jpg")!!.acl!![0].permission)
         assertEquals(1,
@@ -164,7 +164,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.extension.raw")
                         .setAcl(Acl().addEntry("zorroa::%{name}", 3)))
 
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
         assertEquals("zorroa::jpg",
                 folderService.get("/foo/jpg")!!.acl!![0].permission)
         assertEquals(1,
@@ -180,7 +180,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"))
 
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
 
         val assets = indexService.getAll(Pager.first(100))
         for (asset in assets) {
@@ -188,7 +188,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                     ImmutableMap.of("extension", "abc")))
         }
         refreshIndex()
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
     }
 
     @Test
@@ -201,7 +201,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Month),
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
 
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
 
         var year = folderService.get(id, "2014")
         assertEquals(5, searchService.search(year.search!!).hits.getTotalHits())
@@ -230,7 +230,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Month),
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
 
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
 
         val (id1, _, _, _, _, _, _, _, _, _, _, _, _, search) = folderService.get(id, "2014")
         assertEquals(5, searchService.search(search!!).hits.getTotalHits())
@@ -256,7 +256,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.extension.raw"),
                 DyHierarchyLevel("source.filename.raw"))
 
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
 
         for (f in getTestImagePath("set02").toFile().listFiles()!!) {
             if (!f.isFile) {
@@ -275,7 +275,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         }
 
         refreshIndex()
-        dyhiService!!.generate(agg)
+        dyhiService.generate(agg)
     }
 
     @Test
@@ -286,7 +286,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         spec.levels = ImmutableList.of(
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
 
-        val dyhi = dyhiService!!.create(spec)
+        val dyhi = dyhiService.create(spec)
         folder = folderService.get(folder.id)
         assertTrue(folder.search!!.filter.exists.contains("source.date"))
 
@@ -302,9 +302,9 @@ class DyHierarchyServiceTests : AbstractTest() {
         spec.levels = ImmutableList.of(
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
 
-        val dyhi = dyhiService!!.create(spec)
+        val dyhi = dyhiService.create(spec)
         folder = folderService.get(folder.id)
-        dyhiService!!.delete(dyhi)
+        dyhiService.delete(dyhi)
         folder = folderService.get(folder.id)
         assertEquals(0, folder.childCount.toLong())
     }
@@ -319,7 +319,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
                 DyHierarchyLevel("source.filename.raw"))
-        val dyhi = dyhiService!!.create(spec)
+        val dyhi = dyhiService.create(spec)
         folder = folderService.get(folder.id)
         assertTrue(folder.search!!.filter.exists.contains("source.date"))
 
@@ -327,7 +327,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
                 DyHierarchyLevel("source.filename.raw"))
-        dyhiService!!.update(dyhi.id, dyhi)
+        dyhiService.update(dyhi.id, dyhi)
         folder = folderService.get(folder.id)
         assertTrue(folder.search!!.filter.exists.contains("source.type.raw"))
     }
@@ -344,7 +344,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
                 DyHierarchyLevel("source.filename.raw"))
-        val dyhi = dyhiService!!.create(spec)
+        val dyhi = dyhiService.create(spec)
         folder = folderService.get(folder.id)
         assertTrue(folder.search!!.filter.exists.contains("source.date"))
         assertEquals("beer", folder.search!!.query)
@@ -354,7 +354,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
                 DyHierarchyLevel("source.filename.raw"))
-        dyhiService!!.update(dyhi.id, dyhi)
+        dyhiService.update(dyhi.id, dyhi)
         folder = folderService.get(folder.id)
         assertTrue(folder.search!!.filter.exists.contains("source.type.raw"))
         assertEquals(1, folder.search!!.filter.exists.size.toLong())

@@ -5,16 +5,13 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.util.Json
 
 import org.junit.Test
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 import java.util.*
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class DefaultGcsDirectoryLayoutProviderTests : AbstractTest() {
@@ -136,14 +133,14 @@ class GcsFileStorageServiceTests : AbstractTest() {
     fun testCreate() {
         val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
         val storage = fileStorage.create(spec)
-        assertEquals(storage.mimeType, "image/jpeg")
+        assertEquals(storage.mediaType, "image/jpeg")
     }
 
     @Test
     fun testGetGetBySpec() {
         val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
         val storage = fileStorage.create(spec)
-        assertEquals(storage.mimeType, "image/jpeg")
+        assertEquals(storage.mediaType, "image/jpeg")
     }
 
     @Test
@@ -153,7 +150,7 @@ class GcsFileStorageServiceTests : AbstractTest() {
         val storage2 = fileStorage.get(storage1.id)
         assertEquals(storage1.uri, storage2.uri)
         assertEquals(storage1.id, storage2.id)
-        assertEquals(storage1.mimeType, storage2.mimeType)
+        assertEquals(storage1.mediaType, storage2.mediaType)
     }
 
 }
@@ -175,7 +172,7 @@ class LocalFileStorageServiceTests : AbstractTest() {
                 listOf("x", "100", "y", "100"))
         val fs = fileStorage.create(spec)
         assertTrue(FileUtils.filename(fs.uri).endsWith("x_100_y_100.jpg"))
-        assertEquals("image/jpeg", fs.mimeType)
+        assertEquals("image/jpeg", fs.mediaType)
     }
 
 
@@ -194,7 +191,7 @@ class LocalFileStorageServiceTests : AbstractTest() {
         val spec = FileStorageSpec("proxy", "abc123", "jpg", null)
         val fs = fileStorage.create(spec)
         assertTrue(FileUtils.filename(fs.uri).endsWith(".jpg"))
-        assertEquals("image/jpeg", fs.mimeType)
+        assertEquals("image/jpeg", fs.mediaType)
         assertEquals("file", fs.scheme)
     }
 }

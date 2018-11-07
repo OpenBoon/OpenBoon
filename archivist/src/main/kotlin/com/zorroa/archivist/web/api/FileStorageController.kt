@@ -3,13 +3,17 @@ package com.zorroa.archivist.web.api
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.FileServerService
+import com.zorroa.archivist.service.FileStat
 import com.zorroa.archivist.service.FileStorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
 class FileStorageController @Autowired constructor(
-        private val fileStorageService: FileStorageService) {
+        private val fileStorageService: FileStorageService,
+        private val fileServerProvider: FileServerProvider) {
 
     @PostMapping("/api/v1/file-storage")
     fun create(@RequestBody spec: FileStorageSpec) : FileStorage {
@@ -21,9 +25,10 @@ class FileStorageController @Autowired constructor(
         return fileStorageService.get(id)
     }
 
-    @RequestMapping("/api/v1/file-storage/_stat", method = [RequestMethod.GET, RequestMethod.POST])
-    fun stat(@RequestBody spec: FileStorageSpec) : FileStorage {
-        return fileStorageService.get(spec)
+    @GetMapping("/api/v1/file-storage/{id}/_stat")
+    fun stat(@PathVariable id: String) : FileStat {
+        val loc = fileStorageService.get(id)
+        return fileServerProvider.getServableFile(loc.uri).getStat()
     }
 
     @GetMapping("/api/v1/file-storage/{id}/_download-uri")
