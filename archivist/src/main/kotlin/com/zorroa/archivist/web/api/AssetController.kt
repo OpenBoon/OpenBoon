@@ -139,11 +139,11 @@ class AssetController @Autowired constructor(
                     val proxies = indexService.getProxies(e[1])
 
                     return when {
-                        e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
-                        e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt())
-                        e[0] == "smallest" -> proxies.getSmallest()
-                        e[0] == "largest" -> proxies.getLargest()
-                        else -> proxies.getLargest()
+                        e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt(), e.last())
+                        e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt(), e.last())
+                        e[0] == "smallest" -> proxies.getSmallest(e.last())
+                        e[0] == "largest" -> proxies.getLargest(e.last())
+                        else -> proxies.getLargest(e.last())
                     }
                 }
             })
