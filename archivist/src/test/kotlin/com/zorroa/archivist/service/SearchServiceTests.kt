@@ -572,12 +572,16 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testBoostFields() {
-        settingsService.set("archivist.search.keywords.boost", "foo:1,bar:2")
-        fieldService.invalidateFields()
+        try {
+            settingsService.set("archivist.search.keywords.boost", "foo:1,bar:2")
+            fieldService.invalidateFields()
 
-        val fields = fieldService.getFields("asset")
-        assertTrue(fields["keywords-boost"]!!.contains("foo:1"))
-        assertTrue(fields["keywords-boost"]!!.contains("bar:2"))
+            val fields = fieldService.getFields("asset")
+            assertTrue(fields["keywords-boost"]!!.contains("foo:1"))
+            assertTrue(fields["keywords-boost"]!!.contains("bar:2"))
+        } finally {
+            settingsService.set("archivist.search.keywords.boost", null)
+        }
     }
 
     @Test

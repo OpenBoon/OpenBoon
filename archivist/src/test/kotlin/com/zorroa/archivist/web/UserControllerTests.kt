@@ -113,7 +113,7 @@ class UserControllerTests : MockMvcTest() {
         })
         val user2 = sr.`object`
 
-        assertEquals(user1.id, user2.id)
+        assertEquals(user1.id, user2!!.id)
         assertEquals(builder.username, user2.username)
         assertEquals(builder.email, user2.email)
         assertEquals(builder.firstName, user2.firstName)
@@ -141,7 +141,7 @@ class UserControllerTests : MockMvcTest() {
 
         })
         val user2 = sr.`object`
-        assertEquals(user.id, user2.id)
+        assertEquals(user.id, user2!!.id)
         assertNotNull(settings.search["foo"])
         assertEquals("bar", settings.search["foo"])
     }
