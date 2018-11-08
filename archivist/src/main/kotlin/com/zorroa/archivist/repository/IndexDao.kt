@@ -18,6 +18,7 @@ import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.DocWriteResponse
 import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchType
@@ -495,8 +496,14 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                     failures[br.id] = br.failureMessage
                 }
                 else ->  {
-                    logger.event("batch delete Asset", mapOf("assetId" to br.id, "index" to br.index))
-                    success+=1
+                    val deleted =  br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
+                    if (deleted) {
+                        logger.event("batch delete Asset", mapOf("assetId" to br.id, "index" to br.index))
+                        success += 1
+                    }
+                    else {
+                        logger.warnEvent("batch delete Asset", "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
+                    }
                 }
             }
         }

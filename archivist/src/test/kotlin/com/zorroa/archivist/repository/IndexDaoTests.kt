@@ -190,6 +190,20 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchDelete() {
+        val rsp1 = indexDao.batchDelete(listOf(asset1.id))
+        refreshIndex()
+        val rsp2 = indexDao.batchDelete(listOf(asset1.id))
+        assertEquals(1, rsp1.totalDeleted)
+        assertEquals(1, rsp1.totalRequested)
+        assertEquals(0, rsp1.failures.size)
+
+        assertEquals(0, rsp2.totalDeleted)
+        assertEquals(1, rsp2.totalRequested)
+        assertEquals(0, rsp2.failures.size)
+    }
+
+    @Test
     fun testGetProtectedFields() {
         var v = indexDao.getManagedFields("a")
         assertNotNull(v)
