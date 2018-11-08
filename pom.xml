@@ -37,6 +37,7 @@
         <module>saml</module>
         <module>archivist</module>
         <module>es-similarity</module>
+        <module>es-kwconf</module>
     </modules>
 
     <dependencyManagement>
