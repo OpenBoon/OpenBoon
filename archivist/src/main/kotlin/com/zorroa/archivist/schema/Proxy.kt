@@ -3,11 +3,14 @@ package com.zorroa.common.schema
 import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class Proxy(
-        var stream: String?=null,
-        var mimeType: String?,
+        var id: String,
         var width: Int,
         var height: Int,
-        var id: String? = null,
+        /**
+         * Some older versions don't have a mimetype but they
+         * are all image/jpeg, so we'll default to that.
+         */
+        var mimeType: String = "image/jpeg",
         var format: String? = null
 )
 
@@ -22,7 +25,7 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun getClosest(width: Int, height: Int): Proxy? {
+    fun getClosest(width: Int, height: Int, type: String = "image"): Proxy? {
         if (proxies == null) {
             return null
         }
@@ -33,6 +36,9 @@ data class ProxySchema (
 
         return try {
             for (p in proxies!!) {
+                if (!p.mimeType.startsWith(type, ignoreCase = true)) {
+                    continue
+                }
                 val pDim = p.width + p.height
                 val diff = Math.abs(pDim - dim)
                 if (diff < distance) {
@@ -63,8 +69,9 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun getLargest(): Proxy? {
+    fun getLargest(type: String="image"): Proxy? {
         return proxies?.stream()
+                ?.filter { p-> p.mimeType.startsWith(type, ignoreCase = true) }
                 ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
                 ?.findFirst()
                 ?.orElse(null)
@@ -76,9 +83,10 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun getSmallest(): Proxy? {
+    fun getSmallest(type: String="image"): Proxy? {
         return proxies?.stream()
-                ?.sorted({o1, o2 -> Integer.compare(o2.width, o1.width)})
+                ?.filter { p-> p.mimeType.startsWith(type, ignoreCase = true) }
+                ?.sorted{ o1, o2 -> Integer.compare(o1.width, o2.width) }
                 ?.findFirst()
                 ?.orElse(null)
     }
@@ -92,10 +100,11 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun atLeastThisSize(minDim: Int): Proxy? {
+    fun atLeastThisSize(minDim: Int, type: String="image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p -> p.width >= minDim || p.height >= minDim }
-                ?.sorted({o1, o2 -> Integer.compare(o2.width, o1.width)})
+                ?.filter { p -> (p.width >= minDim || p.height >= minDim)
+                        && p.mimeType.startsWith(type, ignoreCase = true) }
+                ?.sorted {o1, o2 -> Integer.compare(o1.width, o2.width) }
                 ?.findFirst()
                 ?.orElse(null)
     }
@@ -108,9 +117,10 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun thisSizeOrBelow(minDim: Int): Proxy? {
+    fun thisSizeOrBelow(minDim: Int, type: String="image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p -> p.width <= minDim || p.width <= minDim }
+                ?.filter { p -> (p.width <= minDim || p.width <= minDim)
+                        && p.mimeType.startsWith(type, ignoreCase = true) }
                 ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
                 ?.findFirst()
                 ?.orElse(null)
