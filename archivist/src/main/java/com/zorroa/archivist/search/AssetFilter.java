@@ -2,6 +2,7 @@ package com.zorroa.archivist.search;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Maps;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class AssetFilter {
     private List<AssetScript> scripts;
     private Map<String, List<Object>> links;
     private Map<String, SimilarityFilter> similarity;
+    private Map<String, KwConfFilter> kwconf;
     private Boolean recursive;
 
     @Deprecated
@@ -301,6 +303,22 @@ public class AssetFilter {
 
     public AssetFilter setHamming(Object hamming) {
         this.hamming = hamming;
+        return this;
+    }
+
+    public Map<String, KwConfFilter> getKwconf() {
+        return kwconf;
+    }
+
+    public void setKwconf(Map<String, KwConfFilter> kwconf) {
+        this.kwconf = kwconf;
+    }
+
+    public AssetFilter addToKwConf(String field, KwConfFilter kwfilt) {
+        if (this.kwconf == null) {
+            this.kwconf = Maps.newHashMap();
+        }
+        kwconf.put(field, kwfilt);
         return this;
     }
 
