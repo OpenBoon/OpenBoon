@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
 import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 import java.util.stream.Collectors
+import kotlin.streams.toList
 
 class AssetControllerTests : MockMvcTest() {
 
@@ -228,6 +230,59 @@ class AssetControllerTests : MockMvcTest() {
             assertEquals(true, json["success"])
             assertEquals("delete", json["op"])
         }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchDelete() {
+
+        val session = admin()
+        addTestAssets("set04/standard")
+        refreshIndex()
+
+        val assets = indexDao.getAll(Pager.first())
+        val ids = assets.stream().map { a -> a.id }.toList()
+
+        val result = mvc.perform(delete("/api/v1/assets")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serializeToString(mapOf("assetIds" to ids)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val rsp = Json.Mapper.readValue(result.response.contentAsString,
+                BatchDeleteAssetsResponse::class.java)
+        assertEquals(2, rsp.totalRequested)
+        assertEquals(0, rsp.childrenRequested)
+        assertEquals(2, rsp.totalDeleted)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchDeleteAccessDenied() {
+
+        val session = user("user")
+        addTestAssets("set04/standard")
+        refreshIndex()
+
+        val assets = indexDao.getAll(Pager.first())
+        val ids = assets.stream().map{ a -> a.id }.toList()
+
+        val result = mvc.perform(delete("/api/v1/assets")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serializeToString(mapOf("assetIds" to ids)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val rsp = Json.Mapper.readValue(result.response.contentAsString,
+                BatchDeleteAssetsResponse::class.java)
+        assertEquals(0, rsp.totalRequested)
+        assertEquals(0, rsp.childrenRequested)
+        assertEquals(0, rsp.totalDeleted)
+        assertEquals(2, rsp.accessDenied)
     }
 
     @Test

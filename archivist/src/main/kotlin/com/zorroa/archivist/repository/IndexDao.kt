@@ -11,6 +11,7 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.SearchBuilder
@@ -152,7 +153,7 @@ interface IndexDao {
      * Batch delete the given asset IDs.
      * @param ids the list of asset IDS to delete.
      */
-    fun batchDelete(ids: List<String>): BatchDeleteAssetsResponse
+    fun batchDelete(ids: List<Document>): BatchDeleteAssetsResponse
 
     operator fun get(id: String): Document
 
@@ -472,20 +473,36 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
         return result
     }
 
-    override fun batchDelete(ids: List<String>): BatchDeleteAssetsResponse {
-        if (ids.isEmpty()) { return BatchDeleteAssetsResponse() }
+    override fun batchDelete(docs: List<Document>): BatchDeleteAssetsResponse {
+        if (docs.isEmpty()) { return BatchDeleteAssetsResponse() }
 
+        val rsp = BatchDeleteAssetsResponse()
         val rest = getClient()
         val bulkRequest = BulkRequest()
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
-        ids.forEach { bulkRequest.add(rest.newDeleteRequest(it)) }
+
+        docs.forEach { doc->
+            if (doc.attrExists("system.hold") && doc.getAttr("system.hold", Boolean::class.java)) {
+                rsp.onHold+=1
+            }
+            else if (!hasPermission("write", doc)) {
+                rsp.accessDenied+=1
+            }
+            else {
+                if (doc.attrExists("media.clip.parent")) {
+                    rsp.childrenRequested+=1
+                }
+                rsp.totalRequested+=1
+                bulkRequest.add(rest.newDeleteRequest(doc.id))
+            }
+        }
+
+        if (rsp.totalRequested == 0) {
+            return rsp
+        }
 
         logger.event("batchDelete Asset",
-                mapOf("index" to rest.route.indexName, "count" to ids.size))
-
-        val failures : MutableMap<String, String> = mutableMapOf()
-        val total = ids.size
-        var success = 0
+                mapOf("index" to rest.route.indexName, "count" to docs.size))
 
         val bulk = rest.client.bulk(bulkRequest)
         for (br in bulk.items) {
@@ -493,22 +510,24 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                 br.isFailed -> {
                     logger.warnEvent("batch delete Asset", br.failureMessage,
                             mapOf("assetId" to br.id, "index" to br.index))
-                    failures[br.id] = br.failureMessage
+                    rsp.failures[br.id] = br.failureMessage
                 }
                 else ->  {
                     val deleted =  br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
                     if (deleted) {
                         logger.event("batch delete Asset", mapOf("assetId" to br.id, "index" to br.index))
-                        success += 1
+                        rsp.totalDeleted += 1
+                        rsp.success.add(br.id)
                     }
                     else {
+                        rsp.missing += 1
                         logger.warnEvent("batch delete Asset", "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
                     }
                 }
             }
         }
 
-        return BatchDeleteAssetsResponse(total, success, 0, failures)
+        return rsp
     }
 
 

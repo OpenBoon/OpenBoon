@@ -26,6 +26,7 @@ import kotlinx.coroutines.experimental.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.lang.IllegalArgumentException
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
@@ -314,6 +315,10 @@ class IndexServiceImpl  @Autowired  constructor (
      * @param assetIds: the IDs of the assets the delete.
      */
     override fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse {
+        if (assetIds.size > 1000) {
+            throw ArchivistWriteException("Unable to delete more than 1000 assets in a single request")
+        }
+
         /*
          * Setup an OR search where we target both the parents and children.
          */
@@ -332,20 +337,14 @@ class IndexServiceImpl  @Autowired  constructor (
             /*
              * Determine if any documents are on hold.
              */
-            val okToDelete = mutableListOf<Document>()
-            for (hit in hits.hits) {
-                val doc = Document(hit.id, hit.sourceAsMap)
-                if (doc.attrExists("system.hold") && doc.getAttr("system.hold", Boolean::class.java)) {
-                    rsp.onHold = rsp.onHold + 1
-                }
-                else {
-                    okToDelete.add(doc)
-                }
-            }
+            val docs = hits.hits.map { Document(it.id, it.sourceAsMap) }
+            val batchRsp = indexDao.batchDelete(docs)
+            // add the batch results to the overall result.
+            rsp.plus(batchRsp)
 
-            rsp + indexDao.batchDelete(okToDelete.map { it.id })
             GlobalScope.launch {
-                okToDelete.forEach {
+                docs.forEach {
+                    if (it.id in batchRsp.success)
                     deleteAssociatedFiles(it)
                 }
             }
@@ -355,12 +354,15 @@ class IndexServiceImpl  @Autowired  constructor (
 
     override fun delete(assetId: String): Boolean {
         val doc = indexDao[assetId]
+        if (!hasPermission("write", doc)) {
+            throw ArchivistWriteException("delete access denied")
+        }
         deleteAssociatedFiles(doc)
         return indexDao.delete(assetId)
     }
 
     fun deleteAssociatedFiles(doc: Document) {
-        logger.event("delete Proxy", mapOf("assetId" to doc.id))
+        logger.event("deleteAll assetProxy", mapOf("assetId" to doc.id))
         doc.getAttr("proxies", ProxySchema::class.java)?.let {
             it.proxies?.forEach { pr ->
                 try {
