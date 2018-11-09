@@ -123,12 +123,28 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
                     Document(assetId)
                 }
 
-                doc.setAttr("irm.companyId", companyId)
                 doc.setAttr("system.organizationId", org.id)
 
                 val md = coreDataVaultClient.getMetadata(companyId, assetId)
                 val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
                         "gs://", true)
+
+                // Add IRM metadata
+                doc.setAttr("irm.companyId", companyId)
+                if (md.containsKey("barcode")) {
+                    doc.setAttr("irm.barcode", md["barcode"])
+                }
+                if (md.containsKey("attributeValues")) {
+                    val attributeValues = md["attributeValues"]
+                    if (attributeValues is List<*>) {
+                        for (attributeValue in attributeValues) {
+                            if (attributeValue is Map<*, *>) {
+                                doc.setAttr("irm." + attributeValue["name"], attributeValue["value"])
+                            }
+                        }
+
+                    }
+                }
 
                 // queue up the file for processing
                 fileQueueService.create(QueuedFileSpec(
