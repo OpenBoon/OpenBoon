@@ -135,14 +135,9 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
                     doc.setAttr("irm.barcode", md["barcode"])
                 }
                 if (md.containsKey("attributeValues")) {
-                    val attributeValues = md["attributeValues"]
-                    if (attributeValues is List<*>) {
-                        for (attributeValue in attributeValues) {
-                            if (attributeValue is Map<*, *>) {
-                                doc.setAttr("irm." + attributeValue["name"], attributeValue["value"])
-                            }
-                        }
-
+                    val attributeValues = md["attributeValues"] as List<Map<String, Any>>
+                    for (attributeValue in attributeValues) {
+                        doc.setAttr("irm." + attributeValue["name"], attributeValue["value"])
                     }
                 }
 
