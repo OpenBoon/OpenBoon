@@ -6,11 +6,10 @@ import java.util.*
 
 /**
  * Defines fields needed to make new ExportFile.
+ * @propertyc
  */
 data class ExportFileSpec (
-        var path: String,
-        val mimeType: String,
-        val size: Long
+        var storageId: String
 )
 
 /**
@@ -24,7 +23,6 @@ data class ExportFile (
         val mimeType : String,
         val size : Long,
         val timeCreated: Long)
-
 
 /**
  * Defines fields needed to create a new export.

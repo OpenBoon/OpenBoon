@@ -5,6 +5,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.util.FileUtils
+import org.junit.Before
 import org.junit.Test
 import java.net.URI
 import java.nio.file.Files
@@ -188,8 +189,14 @@ class DefaultGcsLayoutProviderTests : AbstractTest() {
 class GcsFileStorageServiceTests : AbstractTest() {
 
     val bucketName = "rmaas-dit-2-zorroa-data"
-    val fileStorage: GcsFileStorageService = GcsFileStorageService(bucketName,
-            Paths.get("unittest/config/data-credentials.json"))
+    lateinit var fileStorage: GcsFileStorageService
+
+    @Before
+    fun init() {
+        fileStorage = GcsFileStorageService(bucketName,
+                Paths.get("unittest/config/data-credentials.json"))
+        fileStorage.fileServerProvider = fileServerProvider
+    }
 
     @Test
     fun testGetUri() {
@@ -242,10 +249,12 @@ class LocalFileStorageServiceTests : AbstractTest() {
 
     val testShared = Files.createTempDirectory("test")
     val ofs: UUIDFileSystem = UUIDFileSystem(testShared.resolve("ofs"))
-    val fileStorage: LocalFileStorageService
+    lateinit var fileStorage: LocalFileStorageService
 
-    init {
+    @Before
+    fun init() {
         fileStorage = LocalFileStorageService(testShared, ofs)
+        fileStorage.fileServerProvider = fileServerProvider
     }
 
     @Test

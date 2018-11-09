@@ -1,5 +1,8 @@
 package com.zorroa.archivist.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.ServableFile
 import java.util.*
 
 /**
@@ -17,7 +20,8 @@ class FileStorageSpec(
         val variants: List<String>?=null,
         var assetId: UUID?=null,
         var jobId: UUID?=null,
-        var taskId: UUID?=null
+        var taskId: UUID?=null,
+        var create: Boolean=true
 
 ) {
     override fun toString(): String {
@@ -37,10 +41,21 @@ class FileStorage(
         val id: String,
         val uri: String,
         val scheme: String,
-        val mediaType: String
+        val mediaType: String,
+        @JsonIgnore val fileServerProvider: FileServerProvider
 ) {
     override fun toString(): String {
-        return "FileStorage(uri='$uri', id='$id', scheme='$scheme', mediaType='$mediaType')"
+        return "FileStorage(uri='$uri', id='$id', scheme='$scheme', mimeType='$mediaType')"
+    }
+
+    @JsonIgnore
+    /**
+     * Return a ServableFile instance for this storage.
+     *
+     * @return  ServableFile
+     */
+    fun getServableFile() : ServableFile {
+        return fileServerProvider.getServableFile(uri)
     }
 }
 

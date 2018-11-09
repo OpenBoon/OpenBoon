@@ -99,6 +99,9 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
     @Autowired
     lateinit var properties: ApplicationProperties
 
+    @Autowired
+    lateinit var fileServerProvider: FileServerProvider
+
     private val gcs: Storage
 
     val dlp  = GcsLayoutProvider(bucket)
@@ -121,11 +124,16 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
                 mapOf("fileStorageId" to id,
                         "fileStorageUri" to uri))
 
-        return FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri))
+        return FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri), fileServerProvider)
     }
 
     override fun get(id: String): FileStorage {
-        val storage =  FileStorage(unslashed(id), dlp.buildUri(id), "gs", StaticUtils.tika.detect(id))
+        val storage =  FileStorage(
+                unslashed(id),
+                dlp.buildUri(id),
+                "gs",
+                StaticUtils.tika.detect(id),
+                fileServerProvider)
         logger.event("getLocation FileStorage",
                 mapOf("fileStorageId" to storage.id,
                         "fileStorageUri" to storage.uri))
@@ -153,10 +161,13 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
 /**
  * LocalFileStorageService handles the location of files in an on-prem single tenant install.
  */
-class LocalFileStorageService @Autowired constructor(
+class LocalFileStorageService constructor(
         val root: Path, ofs: ObjectFileSystem): FileStorageService {
 
     val dlp = LocalLayoutProvider(root, ofs)
+
+    @Autowired
+    lateinit var fileServerProvider: FileServerProvider
 
     init {
         logger.info("Initializing LocalFileStorageService at {}", root)
@@ -191,7 +202,8 @@ class LocalFileStorageService @Autowired constructor(
                 unslashed(id),
                 url,
                 "file",
-                StaticUtils.tika.detect(url))
+                StaticUtils.tika.detect(url),
+                fileServerProvider)
 
         logger.event("getLocation FileStorage",
                 mapOf("fileStorageId" to storage.id,
@@ -211,9 +223,11 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
 
         return if (spec.category == "export") {
             Preconditions.checkNotNull(spec.jobId, "Export locations must have a job Id")
-            root.resolve("exports")
+            val path = root.resolve("exports")
                     .resolve(spec.jobId.toString())
-                    .resolve("${spec.name}.${spec.type}").toUri().toString()
+                    .resolve("${spec.name}.${spec.type}")
+            path.toFile().parentFile.mkdirs()
+            path.toUri().toString()
         }
         else {
             val name = spec.assetId ?: spec.name
@@ -223,6 +237,9 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
     }
 
     override fun buildUri(id: String): String {
+        if (id.contains('/')) {
+            throw IllegalArgumentException("Id '$id' cannot contain a slash")
+        }
         val e = id.split("___")
         val sid = slashed(id)
         return when (e[0]) {
