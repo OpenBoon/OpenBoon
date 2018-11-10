@@ -68,8 +68,7 @@ open class AbstractAssetService {
 
         return assets.map { source->
 
-             val existingSource : Document = existingDocs.getOrDefault(source.id,
-                     Document(source.id))
+             val existingSource : Document = existingDocs.getOrDefault(source.id, Document(source.id))
 
              /**
               * Remove parts protected by API.
@@ -163,11 +162,9 @@ open class AbstractAssetService {
          }
     }
 
-    fun updateFolders(rsp: BatchCreateAssetsResponse) {
-        if (rsp.created + rsp.replaced > 0) {
-            dyHierarchyService.submitGenerateAll(true)
-            taxonomyService.runAllAsync()
-        }
+    fun runDyhiAndTaxons() {
+        dyHierarchyService.submitGenerateAll(true)
+        taxonomyService.runAllAsync()
     }
 
     companion object {
@@ -209,19 +206,28 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
          */
         val deleted = cdvClient.batchDelete(getCompanyId(), ids)
         // Only delete from index stuff we deleted from CDV?
-        return indexService.batchDelete(ids.minus(deleted.filterValues { v-> v }.keys))
+        val result =  indexService.batchDelete(ids.minus(deleted.filterValues { v-> v }.keys))
+        if (result.totalDeleted > 0) {
+            runDyhiAndTaxons()
+        }
+        return result
     }
 
     override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
         val prepped = prepAssets(spec.sources)
         cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped)
-        return indexService.index(prepped)
+        val result = indexService.index(prepped)
+        if (result.replaced > 0 || result.created > 0) {
+            runDyhiAndTaxons()
+        }
+        return result
     }
 
     override fun createOrReplace(doc: Document) : Document {
         val prepped = prepAssets(listOf(doc))
         cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped)
         indexService.index(prepped)
+        runDyhiAndTaxons()
         return prepped[0]
     }
 
@@ -234,7 +240,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         indexService.update(assetId, attrs)
         val updated = indexService.get(assetId)
         setDocument(assetId, updated)
-
+        runDyhiAndTaxons()
         return updated
     }
 
@@ -274,11 +280,19 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("delete access denied")
         }
-        return indexService.delete(id)
+        val result = indexService.delete(id)
+        if (result) {
+            runDyhiAndTaxons()
+        }
+        return result
     }
 
     override fun batchDelete(ids: List<String>): BatchDeleteAssetsResponse {
-       return indexService.batchDelete(ids)
+       val result =  indexService.batchDelete(ids)
+        if (result.totalDeleted > 0) {
+            runDyhiAndTaxons()
+        }
+        return result
     }
 
     override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
@@ -301,6 +315,9 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
             jobService.incrementAssetCounts(task, rsp)
         }
 
+        if (rsp.created > 0 || rsp.replaced > 0) {
+            runDyhiAndTaxons()
+        }
         return rsp
     }
 
@@ -308,7 +325,9 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         val prepped = prepAssets(listOf(doc))
         assetDao.createOrReplace(prepped[0])
         indexService.index(prepped)
-        return prepped[0]
+        val result =  prepped[0]
+        runDyhiAndTaxons()
+        return result
     }
 
     override fun update(assetId: String, attrs: Map<String, Any>) : Document {
@@ -320,6 +339,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         indexService.update(assetId, attrs)
         val updated = indexService.get(assetId)
         assetDao.createOrReplace(updated)
+        runDyhiAndTaxons()
         return asset
     }
 }
