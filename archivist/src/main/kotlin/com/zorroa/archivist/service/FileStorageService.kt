@@ -91,7 +91,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val id = dlp.buildId(spec)
         val storage =  FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri))
 
-        logger.event("create FileStorage",
+        logger.event("getLocation FileStorage",
                 mapOf("fileStorageId" to storage.id,
                         "fileStorageUri" to storage.uri))
         return storage
@@ -101,11 +101,19 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val uri = dlp.buildUri(spec)
         val id = dlp.buildId(spec)
 
+        logger.event("getLocation FileStorage",
+                mapOf("fileStorageId" to id,
+                        "fileStorageUri" to uri))
+
         return FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri))
     }
 
     override fun get(id: String): FileStorage {
-        return FileStorage(unslashed(id), dlp.buildUri(id), "gs", StaticUtils.tika.detect(id))
+        val storage =  FileStorage(unslashed(id), dlp.buildUri(id), "gs", StaticUtils.tika.detect(id))
+        logger.event("getLocation FileStorage",
+                mapOf("fileStorageId" to storage.id,
+                        "fileStorageUri" to storage.uri))
+        return storage
     }
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String {
@@ -175,7 +183,7 @@ class LocalFileStorageService @Autowired constructor(
                 "file",
                 StaticUtils.tika.detect(ofile.file.toString()))
 
-        logger.event("create FileStorage",
+        logger.event("getLocation FileStorage",
                 mapOf("fileStorageId" to storage.id,
                         "fileStorageUri" to storage.uri))
         return storage

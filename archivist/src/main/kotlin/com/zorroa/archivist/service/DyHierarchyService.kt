@@ -327,7 +327,13 @@ class DyHierarchyServiceImpl @Autowired constructor (
             }
             DyHierarchyLevelType.Path -> {
                 val pathTerms = AggregationBuilders.terms(idx.toString())
-                pathTerms.field(level.field)
+                val field = if (level.field.endsWith(".paths")) {
+                    level.field
+                }
+                else {
+                    "${level.field}.paths"
+                }
+                pathTerms.field(field)
                 pathTerms.size(maxFoldersPerLevel!!)
                 return pathTerms
             }

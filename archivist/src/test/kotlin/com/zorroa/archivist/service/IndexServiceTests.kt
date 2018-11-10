@@ -43,6 +43,7 @@ class IndexServiceTests : AbstractTest() {
         assertEquals(2, res.totalRequested)
         assertEquals(2, res.totalDeleted)
         assertTrue(res.failures.isEmpty())
+        Thread.sleep(2000)
     }
 
     @Test

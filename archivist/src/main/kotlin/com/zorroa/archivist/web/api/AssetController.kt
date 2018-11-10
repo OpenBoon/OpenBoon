@@ -133,11 +133,11 @@ class AssetController @Autowired constructor(
                     val proxies = indexService.getProxies(e[1])
 
                     return when {
-                        e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
-                        e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt())
-                        e[0] == "smallest" -> proxies.getSmallest()
-                        e[0] == "largest" -> proxies.getLargest()
-                        else -> proxies.getLargest()
+                        e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt(), e.last())
+                        e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt(), e.last())
+                        e[0] == "smallest" -> proxies.getSmallest(e.last())
+                        e[0] == "largest" -> proxies.getLargest(e.last())
+                        else -> proxies.getLargest(e.last())
                     }
                 }
             })
@@ -148,9 +148,10 @@ class AssetController @Autowired constructor(
                         rsp: HttpServletResponse,
                         @PathVariable id: String,
                         @PathVariable width: Int,
-                        @PathVariable height: Int) {
+                        @PathVariable height: Int,
+                        @RequestParam(value="type", defaultValue = "image") type: String)  {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("closest:$id:$width:$height"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get("closest:$id:$width:$height:$type"))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -161,9 +162,10 @@ class AssetController @Autowired constructor(
     fun getAtLeast(req: HttpServletRequest,
                    rsp: HttpServletResponse,
                    @PathVariable id: String,
-                   @PathVariable(required = true) size: Int) {
+                   @PathVariable(required = true) size: Int,
+                   @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("atLeast:$id:$size"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get("atLeast:$id:$size:$type"))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -173,9 +175,10 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun getLargestProxy(req: HttpServletRequest,
                         rsp: HttpServletResponse,
-                        @PathVariable id: String) {
+                        @PathVariable id: String,
+                        @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("largest:$id"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get("largest:$id:$type"))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -185,9 +188,10 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun getSmallestProxy(req: HttpServletRequest,
                          rsp: HttpServletResponse,
-                         @PathVariable id: String) {
+                         @PathVariable id: String,
+                         @RequestParam(value="type", defaultValue = "image") type: String) {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("smallest:$id"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get("smallest:$id:$type"))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }

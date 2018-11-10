@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
@@ -75,23 +76,33 @@ class BatchDeleteAssetsRequest (
 /**
  * The response returned when assets are deleted.
  *
- * @property totalRequested The total number of assets requested to be deleted.
- * @property totalDeleted The total nunber of assets deleted.
+ * @property totalRequested The total number of assets requested to be deleted.  This includes the resolved # of clips.
+ * @property totalDeleted The total number of assets actually deleted.
+ * @property childrenRequested The total number of children deleted.
+ * @property onHold Assets skipped due to being on hold.
+ * @property accessDenied Assets skipped due to permissions
+ * @property missing Assets that have already been deleted.
  * @property failures A map AssetID/Message failures.
  */
 class BatchDeleteAssetsResponse (
     var totalRequested: Int=0,
     var totalDeleted: Int=0,
+    var childrenRequested: Int=0,
     var onHold: Int=0,
-    var failures: MutableMap<String, String> = mutableMapOf()
+    var accessDenied: Int=0,
+    var missing: Int=0,
+    var failures: MutableMap<String, String> = mutableMapOf(),
+    @JsonIgnore var success: MutableSet<String> = mutableSetOf()
 ) {
     operator fun plus(other: BatchDeleteAssetsResponse) {
         totalRequested += other.totalRequested
         totalDeleted += other.totalDeleted
+        childrenRequested += other.childrenRequested
+        onHold += other.onHold
+        accessDenied += other.accessDenied
+        missing += other.missing
         failures.putAll(other.failures)
     }
-
-    fun getChildrenDeleted() : Int { return totalDeleted - totalRequested - onHold }
 }
 
 /**

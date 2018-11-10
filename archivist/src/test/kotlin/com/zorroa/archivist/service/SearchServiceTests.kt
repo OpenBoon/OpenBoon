@@ -570,10 +570,9 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testBoostFields() {
-        settingsService.set("archivist.search.keywords.boost", "foo:1,bar:2")
-        fieldService.invalidateFields()
-
         try {
+            settingsService.set("archivist.search.keywords.boost", "foo:1,bar:2")
+            fieldService.invalidateFields()
             val fields = fieldService.getFields("asset")
             assertTrue(fields["keywords-boost"]!!.contains("foo:1"))
             assertTrue(fields["keywords-boost"]!!.contains("bar:2"))
@@ -738,6 +737,24 @@ class SearchServiceTests : AbstractTest() {
         val filter = AssetFilter().setShould(ImmutableList.of(AssetFilter().addToTerms("superhero", "captain")))
         val search = AssetSearch().setFilter(filter)
         assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    @Throws(IOException::class, InterruptedException::class)
+    fun testKwConfSearch() {
+        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        source1.setAttr("kw_with_conf", listOf(
+                mapOf("keyword" to "dog", "confidence" to 0.5),
+                mapOf("keyword" to "cat", "confidence" to 0.1),
+                mapOf("keyword" to "bilboAngry", "confidence" to 0.7)))
+
+        indexService.index(ImmutableList.of(source1))
+        refreshIndex()
+
+        val filter = AssetFilter()
+                .addToKwConf("kw_with_conf", KwConfFilter(listOf("bilboAngry"), listOf(0.25, 0.70)))
+
+        assertEquals(1, searchService.search(AssetSearch(filter)).hits.getTotalHits())
     }
 
     @Test

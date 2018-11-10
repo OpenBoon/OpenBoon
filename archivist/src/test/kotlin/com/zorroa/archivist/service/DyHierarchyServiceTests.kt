@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.common.util.Json
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -115,15 +116,17 @@ class DyHierarchyServiceTests : AbstractTest() {
         // Video aggs
         folder = folderService.get("/foo/video$testDataPath/video/m4v")
         assertEquals(1, searchService.count(folder!!.search!!))
-
+        println(1)
         folder = folderService.get("/foo/video$testDataPath/video")
         assertEquals(4, searchService.count(folder!!.search!!))
-
+        println(2)
         folder = folderService.get("/foo/video$testDataPath")
+        println(Json.prettyString(folder!!.search!!))
         assertEquals(4, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video")
         assertEquals(4, searchService.count(folder!!.search!!))
+        println(4)
     }
 
     @Test
