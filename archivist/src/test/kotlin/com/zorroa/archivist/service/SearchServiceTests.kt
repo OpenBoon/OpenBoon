@@ -748,7 +748,7 @@ class SearchServiceTests : AbstractTest() {
                 mapOf("keyword" to "cat", "confidence" to 0.1),
                 mapOf("keyword" to "bilboAngry", "confidence" to 0.7)))
 
-        indexService.index(ImmutableList.of(source1))
+        assetService.createOrReplace(source1)
         refreshIndex()
 
         val filter = AssetFilter()
