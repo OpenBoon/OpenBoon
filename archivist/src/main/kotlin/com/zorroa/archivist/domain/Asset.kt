@@ -105,6 +105,18 @@ class BatchDeleteAssetsResponse (
     }
 }
 
+enum class AssetState {
+    /**
+     * The default state for an Asset.
+     */
+    Active,
+
+    /**
+     * The asset has been deleted from ES.
+     */
+    Deleted
+}
+
 /**
  * The ES document
  */

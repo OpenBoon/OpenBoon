@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
@@ -37,7 +38,8 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
             ps.setObject(4, user.id)
             ps.setLong(5, time.time)
             ps.setLong(6, time.time)
-            ps.setString(7, Json.serializeToString(doc.document, "{}"))
+            ps.setInt(7, AssetState.Active.ordinal)
+            ps.setString(8, Json.serializeToString(doc.document, "{}"))
             ps
         }
 
@@ -58,7 +60,8 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
                 ps.setObject(4, user.id)
                 ps.setLong(5, time.time)
                 ps.setLong(6, time.time)
-                ps.setString(7, Json.serializeToString(doc.document, "{}"))
+                ps.setInt(7, AssetState.Active.ordinal)
+                ps.setString(8, Json.serializeToString(doc.document, "{}"))
                 ps
             }
 
@@ -120,6 +123,7 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
                 "pk_user_modified",
                 "time_created",
                 "time_modified",
+                "int_state",
                 "json_document::jsonb")
                 .plus("ON CONFLICT (pk_asset) DO UPDATE SET json_document=EXCLUDED.json_document,")
                 .plus("pk_user_modified=EXCLUDED.pk_user_modified,")
