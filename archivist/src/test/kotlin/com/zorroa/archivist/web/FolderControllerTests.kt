@@ -5,15 +5,16 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.web.api.FolderController
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.stream.Collectors
@@ -47,6 +48,7 @@ class FolderControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("TestFolder1"))))
                 .andExpect(status().isOk())
@@ -63,6 +65,7 @@ class FolderControllerTests : MockMvcTest() {
     fun testCreate() {
         val result = mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("TestFolder2"))))
                 .andExpect(status().isOk())
@@ -107,7 +110,7 @@ class FolderControllerTests : MockMvcTest() {
 
         assertEquals(folder.id, id)
         assertEquals(folder.parentId, parentId)
-        assertEquals(folder.user, user)
+        assertEquals(folder.user.id, user.id)
         assertEquals(folder.name, name)
     }
 
@@ -209,6 +212,7 @@ class FolderControllerTests : MockMvcTest() {
 
         var result = mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("TestFolder3"))))
                 .andExpect(status().isOk())
@@ -225,6 +229,7 @@ class FolderControllerTests : MockMvcTest() {
 
         result = mvc.perform(put("/api/v1/folders/" + createdFolder.id)
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(createdFolder)))
                 .andExpect(status().isOk())
@@ -244,6 +249,7 @@ class FolderControllerTests : MockMvcTest() {
 
         mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("first"))))
                 .andExpect(status().isOk())
@@ -251,6 +257,7 @@ class FolderControllerTests : MockMvcTest() {
 
         var result = mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("second"))))
                 .andExpect(status().isOk())
@@ -263,6 +270,7 @@ class FolderControllerTests : MockMvcTest() {
 
         mvc.perform(delete("/api/v1/folders/$id")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -290,6 +298,7 @@ class FolderControllerTests : MockMvcTest() {
 
         var result = mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("grandpa"))))
                 .andExpect(status().isOk())
@@ -302,6 +311,7 @@ class FolderControllerTests : MockMvcTest() {
 
         result = mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("daddy", grandpa))))
                 .andExpect(status().isOk())
@@ -314,6 +324,7 @@ class FolderControllerTests : MockMvcTest() {
 
         mvc.perform(post("/api/v1/folders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("uncly", grandpa))))
                 .andExpect(status().isOk())
@@ -341,6 +352,7 @@ class FolderControllerTests : MockMvcTest() {
 
         result = mvc.perform(put("/api/v1/folders/" + dad.id)
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(up)))
                 .andExpect(status().isOk())
@@ -367,6 +379,7 @@ class FolderControllerTests : MockMvcTest() {
         val session = admin()
         mvc.perform(post("/api/v1/folders/$id/assets")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map({ it.id}).collect(Collectors.toList()))))
                 .andExpect(status().isOk())
@@ -376,7 +389,7 @@ class FolderControllerTests : MockMvcTest() {
         authenticate("admin")
         assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
-            val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<Any>>() {
+            val links = asset.getAttr("system.links.folder", object : TypeReference<List<Any>>() {
 
             })
             assertEquals(links[0], id.toString())
@@ -398,6 +411,7 @@ class FolderControllerTests : MockMvcTest() {
         val session = admin()
         mvc.perform(delete("/api/v1/folders/" + folder1.id + "/assets")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map({ it.id }).collect(Collectors.toList()))))
                 .andExpect(status().isOk())
@@ -407,7 +421,7 @@ class FolderControllerTests : MockMvcTest() {
         authenticate("admin")
         assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
-            val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<Any>>() {
+            val links = asset.getAttr("system.links.folder", object : TypeReference<List<Any>>() {
 
             })
             assertEquals(0, links.size.toLong())

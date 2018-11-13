@@ -3,26 +3,18 @@ package com.zorroa.archivist.service
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
-import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.Folder
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.ScanAndScrollAssetIterator
-import com.zorroa.archivist.domain.UserLogSpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.search.*
 import com.zorroa.archivist.security.*
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.Document
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
-import com.zorroa.common.search.RangeQuery
-import com.zorroa.common.search.SimilarityFilter
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
@@ -39,6 +31,7 @@ import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
+import org.elasticsearch.search.SearchHits
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
@@ -67,6 +60,14 @@ interface SearchService {
     fun getSuggestTerms(text: String): List<String>
 
     fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean=false): Iterable<Document>
+
+    /**
+     * Execute a scan and scroll and for every hit, call the given function.
+     * @param search An asset search
+     * @param fetchSource Set to true if your function requires the full doc
+     * @param func the function to call for each batch
+     */
+    fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit)
 
     /**
      * Execute the AssetSearch with the given Paging object.
@@ -209,6 +210,32 @@ class SearchServiceImpl @Autowired constructor(
         return result
     }
 
+    override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit) {
+        val rest = esClientCache[getOrgId()]
+        val builder = rest.newSearchBuilder()
+        builder.source.query(getQuery(search))
+        builder.source.fetchSource(fetchSource)
+        builder.source.size(100)
+        builder.request.scroll(TimeValue(60000))
+
+        var rsp = rest.client.search(builder.request)
+        try {
+            do {
+                func(rsp.hits)
+                val sr = SearchScrollRequest(rsp.scrollId)
+                sr.scroll(TimeValue.timeValueSeconds(30))
+                rsp = rest.client.searchScroll(sr)
+            } while (rsp.hits.hits.isNotEmpty())
+        } finally {
+            try {
+                val cs = ClearScrollRequest()
+                cs.addScrollId(rsp.scrollId)
+                rest.client.clearScroll(cs)
+            } catch (e: IOException) {
+                logger.warn("failed to clear scan/scroll request, ", e)
+            }
+        }
+    }
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
         val rest = esClientCache[getOrgId()]
         val builder = rest.newSearchBuilder()
@@ -327,7 +354,6 @@ class SearchServiceImpl @Autowired constructor(
 
                 result[name] = agg
             }
-
             val map = mutableMapOf("aggs" to search.aggs)
             val json = Json.serializeToString(map)
 
@@ -336,7 +362,7 @@ class SearchServiceImpl @Autowired constructor(
                      NamedXContentRegistry(searchModule.namedXContents), json)
 
             val ssb2 = SearchSourceBuilder.fromXContent(parser)
-            ssb2.aggregations().aggregatorFactories.forEach( { ssb.aggregation(it)})
+            ssb2.aggregations().aggregatorFactories.forEach { ssb.aggregation(it) }
         }
 
         if (search.postFilter != null) {
@@ -378,12 +404,6 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            XContentFactory.jsonBuilder().use { builder->
-                ssb.query().toXContent(builder, ToXContent.EMPTY_PARAMS)
-                logger.info("SEARCH: {}", builder.string())
-            }
-        }
         return rest.newSearchBuilder(req, ssb)
     }
 
@@ -444,6 +464,12 @@ class SearchServiceImpl @Autowired constructor(
             query.should(assetBool)
         }
 
+        if (properties.getBoolean("archivist.debug-mode.enabled")) {
+            XContentFactory.jsonBuilder().use { builder->
+                query.toXContent(builder, ToXContent.EMPTY_PARAMS)
+                logger.info("SEARCH: {}", builder.string())
+            }
+        }
         return query
     }
 
@@ -456,7 +482,7 @@ class SearchServiceImpl @Autowired constructor(
             if (key == "folder") {
                 continue
             }
-            staticBool.should(QueryBuilders.termsQuery("zorroa.links.$key", value))
+            staticBool.should(QueryBuilders.termsQuery("system.links.$key", value))
         }
 
         /*
@@ -504,10 +530,10 @@ class SearchServiceImpl @Autowired constructor(
                 }
 
                 if (!childFolders.isEmpty()) {
-                    staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", childFolders))
+                    staticBool.should(QueryBuilders.termsQuery("system.links.folder", childFolders))
                 }
             } else {
-                staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", folders))
+                staticBool.should(QueryBuilders.termsQuery("system.links.folder", folders))
             }
         }
 
@@ -575,7 +601,8 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
-                if (!value.orEmpty().isEmpty()) {
+                val values = value.orEmpty().filterNotNull()
+                if (values.isNotEmpty()) {
                     val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), value)
                     query.must(termsQuery)
                 }
@@ -614,6 +641,11 @@ class SearchServiceImpl @Autowired constructor(
             handleHammingFilter(filter.similarity, query)
         }
 
+        if (filter.kwconf != null) {
+            handleKwConfFilter(filter.kwconf, query)
+        }
+
+
         // Recursively add bool sub-filters for must, must_not and should
         if (filter.must != null) {
             for (f in filter.must) {
@@ -640,6 +672,31 @@ class SearchServiceImpl @Autowired constructor(
         }
     }
 
+    private fun handleKwConfFilter(filters: Map<String, KwConfFilter>,  query: BoolQueryBuilder) {
+        val bool = QueryBuilders.boolQuery()
+        query.must(bool)
+
+        for ((field, filter) in filters) {
+            val args = mutableMapOf<String, Any>()
+            args["field"] = field
+            args["keywords"] = filter.keywords
+            args["range"] = filter.range
+
+            val fsqb = QueryBuilders.functionScoreQuery(
+                    ScoreFunctionBuilders.scriptFunction(Script(ScriptType.INLINE,
+                            "zorroa-kwconf", "kwconf", args)))
+
+            fsqb.minScore = filter.range[0].toFloat()
+            fsqb.boostMode(CombineFunction.REPLACE)
+            fsqb.scoreMode(FunctionScoreQuery.ScoreMode.MULTIPLY)
+
+            val fbool =  QueryBuilders.boolQuery()
+            fbool.must(fsqb)
+            fbool.must(QueryBuilders.termsQuery("$field.keyword.raw", filter.keywords))
+            bool.should(fbool)
+        }
+    }
+
     private fun handleHammingFilter(filters: Map<String, SimilarityFilter>, query: BoolQueryBuilder) {
 
         val hammingBool = QueryBuilders.boolQuery()
@@ -651,8 +708,8 @@ class SearchServiceImpl @Autowired constructor(
              * Resolve any asset Ids in the hash list.
              */
 
-            val hashes = Lists.newArrayList<String>()
-            val weights = Lists.newArrayList<Float>()
+            val hashes = mutableListOf<String>()
+            val weights = mutableListOf<Float>()
 
             for (hash in filter.hashes) {
                 var hashValue: String? = hash.hash
@@ -669,7 +726,7 @@ class SearchServiceImpl @Autowired constructor(
                 }
             }
 
-            val args = Maps.newHashMap<String, Any>()
+            val args = mutableMapOf<String, Any>()
             args["field"] = field
             args["hashes"] = hashes.joinToString(",")
             args["weights"] = weights.joinToString(",")

@@ -1,15 +1,16 @@
 package com.zorroa.archivist.web
 
-import com.zorroa.archivist.domain.Export
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.ExportService
-import com.zorroa.common.search.AssetSearch
+import com.zorroa.common.domain.Job
 import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.nio.file.Files
@@ -35,12 +36,13 @@ class ExportControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val export = Json.Mapper.readValue<Export>(req.response.contentAsString, Export::class.java)
+        val export = Json.Mapper.readValue<Job>(req.response.contentAsString, Job::class.java)
         assertEquals(spec.name, export.name)
     }
 
@@ -64,6 +66,7 @@ class ExportControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(fspec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -94,6 +97,7 @@ class ExportControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(fspec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)

@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Source
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.Document
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.domain.Source
 import com.zorroa.common.util.Json
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -146,8 +146,8 @@ class IndexDaoTests : AbstractTest() {
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
         val a = indexDao[asset1.id]
-        val folder_links = a.getAttr<Collection<Any>>("zorroa.links.folder")
-        val parent_links = a.getAttr<Collection<Any>>("zorroa.links.parent")
+        val folder_links = a.getAttr<Collection<Any>>("system.links.folder")
+        val parent_links = a.getAttr<Collection<Any>>("system.links.parent")
 
         assertEquals(1, folder_links!!.size.toLong())
         assertEquals(1, parent_links!!.size.toLong())
@@ -161,14 +161,14 @@ class IndexDaoTests : AbstractTest() {
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
         var a = indexDao[asset1.id]
-        var links = a.getAttr<Collection<Any>>("zorroa.links.folder")
+        var links = a.getAttr<Collection<Any>>("system.links.folder")
         assertEquals(1, links!!.size.toLong())
 
         assertTrue(indexDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
         a = indexDao[asset1.id]
-        links = a.getAttr("zorroa.links.folder")
+        links = a.getAttr("system.links.folder")
         assertEquals(0, links!!.size.toLong())
     }
 
@@ -187,6 +187,21 @@ class IndexDaoTests : AbstractTest() {
         assertTrue(indexDao.delete(asset1.id))
         refreshIndex()
         assertFalse(indexDao.delete(asset1.id))
+    }
+
+    @Test
+    fun testBatchDelete() {
+        val rsp1 = indexDao.batchDelete(listOf(asset1))
+        refreshIndex()
+        val rsp2 = indexDao.batchDelete(listOf(asset1))
+        assertEquals(1, rsp1.totalDeleted)
+        assertEquals(1, rsp1.totalRequested)
+        assertEquals(0, rsp1.failures.size)
+
+        assertEquals(0, rsp2.totalDeleted)
+        assertEquals(1, rsp2.totalRequested)
+        assertEquals(1, rsp2.missing)
+        assertEquals(0, rsp2.failures.size)
     }
 
     @Test

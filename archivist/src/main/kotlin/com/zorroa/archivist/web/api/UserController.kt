@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.api
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
-import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
@@ -11,6 +11,7 @@ import com.zorroa.archivist.service.UserService
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -39,15 +40,6 @@ class UserController @Autowired constructor(
         private val emailService: EmailService
 ) {
 
-    @RequestMapping(value = ["/api/v1/api-key"])
-    fun getApiKey(): String {
-        return try {
-            userService.getHmacKey(getUsername())
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
@@ -62,25 +54,34 @@ class UserController @Autowired constructor(
         }
     }
 
-    @Deprecated("")
-    @PostMapping(value = ["/api/v1/generate_api_key"])
-    fun generate_api_key_V1(): String {
-        return userService.generateHmacKey(getUsername())
+    @RequestMapping(value = ["/api/v1/api-key"])
+    fun getApiKey(): Any {
+        return userService.getApiKey(getUser())
     }
 
-    @PostMapping(value = ["/api/v1/api-key"])
-    fun generate_api_key(): String {
-        return userService.generateHmacKey(getUsername())
+    @PostMapping(value = ["/api/v1/generate-api-key"])
+    fun generateApiKey(): Any {
+        return userService.getApiKey(getUser())
     }
 
     /**
      * An HTTP auth based login endpoint.
      *
+     * Returns the current user as well as a X-Zorroa-Auth-Token header with a
+     * valid JWT token.
+     *
      * @return
      */
     @PostMapping(value = ["/api/v1/login"])
-    fun login(): User {
-        return userService.get(getUserId())
+    fun login(): ResponseEntity<User> {
+        val user = getUser()
+        val headers = HttpHeaders()
+        headers.add("X-Zorroa-Auth-Token",
+                generateUserToken(userService.getApiKey(getUser())))
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(userService.get(user.id))
     }
 
     /**

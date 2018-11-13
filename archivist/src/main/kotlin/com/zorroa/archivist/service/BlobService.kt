@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.BlobDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.common.domain.Access
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service

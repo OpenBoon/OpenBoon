@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
 import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.web.api.AssetController
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.domain.Source
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.junit.Assert.*
 import org.junit.Before
@@ -17,11 +18,13 @@ import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 import java.util.stream.Collectors
+import kotlin.streams.toList
 
 class AssetControllerTests : MockMvcTest() {
 
@@ -66,6 +69,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(put("/api/v1/assets/_fields/hide")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -86,6 +90,7 @@ class AssetControllerTests : MockMvcTest() {
 
         mvc.perform(delete("/api/v1/assets/_fields/hide")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -111,6 +116,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v3/assets/_search")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(AssetSearch("O'Malley"))))
                 .andExpect(status().isOk)
@@ -131,6 +137,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v2/assets/_count")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(AssetSearch("beer"))))
                 .andExpect(status().isOk)
@@ -158,6 +165,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"text\": \"re\" }".toByteArray()))
                 .andExpect(status().isOk)
@@ -184,6 +192,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"text\": \"re\" }".toByteArray()))
                 .andExpect(status().isOk)
@@ -210,6 +219,7 @@ class AssetControllerTests : MockMvcTest() {
         for (asset in assets) {
             val result = mvc.perform(delete("/api/v1/assets/" + asset.id)
                     .session(session)
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
                     .andExpect(status().isOk)
                     .andReturn()
@@ -220,6 +230,59 @@ class AssetControllerTests : MockMvcTest() {
             assertEquals(true, json["success"])
             assertEquals("delete", json["op"])
         }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchDelete() {
+
+        val session = admin()
+        addTestAssets("set04/standard")
+        refreshIndex()
+
+        val assets = indexDao.getAll(Pager.first())
+        val ids = assets.stream().map { a -> a.id }.toList()
+
+        val result = mvc.perform(delete("/api/v1/assets")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serializeToString(mapOf("assetIds" to ids)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val rsp = Json.Mapper.readValue(result.response.contentAsString,
+                BatchDeleteAssetsResponse::class.java)
+        assertEquals(2, rsp.totalRequested)
+        assertEquals(0, rsp.childrenRequested)
+        assertEquals(2, rsp.totalDeleted)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchDeleteAccessDenied() {
+
+        val session = user("user")
+        addTestAssets("set04/standard")
+        refreshIndex()
+
+        val assets = indexDao.getAll(Pager.first())
+        val ids = assets.stream().map{ a -> a.id }.toList()
+
+        val result = mvc.perform(delete("/api/v1/assets")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serializeToString(mapOf("assetIds" to ids)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val rsp = Json.Mapper.readValue(result.response.contentAsString,
+                BatchDeleteAssetsResponse::class.java)
+        assertEquals(0, rsp.totalRequested)
+        assertEquals(0, rsp.childrenRequested)
+        assertEquals(0, rsp.totalDeleted)
+        assertEquals(2, rsp.accessDenied)
     }
 
     @Test
@@ -290,6 +353,7 @@ class AssetControllerTests : MockMvcTest() {
         val session = admin()
         mvc.perform(put("/api/v1/assets/" + doc.id + "/_setFolders")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(ImmutableMap.of<String, List<UUID>>("folders", folders))))
                 .andExpect(status().isOk)
@@ -298,7 +362,7 @@ class AssetControllerTests : MockMvcTest() {
         refreshIndex()
         authenticate("admin")
         doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("zorroa.links.folder", List::class.java).size.toLong())
+        assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
 
     }
 
@@ -315,6 +379,7 @@ class AssetControllerTests : MockMvcTest() {
         mvc.run {
             perform(post("/api/v1/folders/$id/assets")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map{ it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)
@@ -322,6 +387,7 @@ class AssetControllerTests : MockMvcTest() {
 
             perform(post("/api/v1/folders/$id1/assets")
                 .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map{ it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)
@@ -333,7 +399,7 @@ class AssetControllerTests : MockMvcTest() {
         assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
             logger.info("{}", asset.document)
-            val links = asset.getAttr("zorroa.links.folder", object : TypeReference<List<String>>() {
+            val links = asset.getAttr("system.links.folder", object : TypeReference<List<String>>() {
 
             })
             assertEquals(2, links.size.toLong())
@@ -342,7 +408,11 @@ class AssetControllerTests : MockMvcTest() {
         }
     }
 
+    /**
+     * Ignoring until we have good way to test this.
+     */
     @Test
+    @Ignore
     @Throws(Exception::class)
     fun testStreamHeadRequest() {
         val session = admin()

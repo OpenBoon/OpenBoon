@@ -11,24 +11,33 @@
     <name>zorroa-server</name>
     <description>Zorroa Platform Application Server</description>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <properties>
         <junit.version>4.12</junit.version>
         <java.version>1.8</java.version>
         <elasticsearch.version>6.2.4</elasticsearch.version>
         <zorroa-server.version>0.40.0-SNAPSHOT</zorroa-server.version>
-        <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
-        <kotlin.version>1.2.50</kotlin.version>
+        <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
+        <kotlin.version>1.2.71</kotlin.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
     </properties>
 
     <modules>
-        <module>lib-common</module>
         <module>lib-security</module>
         <module>ldap</module>
         <module>saml</module>
         <module>archivist</module>
-        <module>analyst</module>
         <module>es-similarity</module>
+        <module>es-kwconf</module>
     </modules>
 
     <dependencyManagement>
@@ -37,6 +46,24 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib-jdk8</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib-jdk7</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib-common</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
                 <version>${kotlin.version}</version>
             </dependency>
 

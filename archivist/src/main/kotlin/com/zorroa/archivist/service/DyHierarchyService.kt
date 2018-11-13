@@ -5,14 +5,14 @@ import com.google.common.collect.*
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
+import com.zorroa.archivist.search.AssetScript
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Tuple
-import com.zorroa.common.search.AssetScript
-import com.zorroa.common.search.AssetSearch
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -86,9 +86,6 @@ class DyHierarchyServiceImpl @Autowired constructor (
     private lateinit var folderService: FolderService;
 
     @Autowired
-    private lateinit var logService: EventLogService
-
-    @Autowired
     private lateinit var searchService: SearchService
 
     @Autowired
@@ -135,11 +132,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
         /*
          * Queue up an event where after this transaction commits.
          */
-        transactionEventManager.afterCommit(false, {
-            logService.logAsync(UserLogSpec.build(LogAction.Update, updated))
+        transactionEventManager.afterCommit(false) {
             folderService.deleteAll(current)
             submitGenerate(dyHierarchyDao.get(current.id))
-        })
+        }
 
         return true
     }
@@ -156,8 +152,6 @@ class DyHierarchyServiceImpl @Autowired constructor (
             } else {
                 folderService.deleteAll(dyhi)
             }
-            transactionEventManager.afterCommit(true,
-                    { logService.logAsync(UserLogSpec.build(LogAction.Delete, dyhi)) })
             return true
         }
         return false
@@ -180,10 +174,9 @@ class DyHierarchyServiceImpl @Autowired constructor (
              * Generate the hierarchy in another thread
              * after this method returns.
              */
-            transactionEventManager.afterCommit(true, {
-                logService.logAsync(UserLogSpec.build(LogAction.Create, dyhi))
+            transactionEventManager.afterCommit(true) {
                 submitGenerate(dyhi)
-            })
+            }
         }
 
         return dyhi
@@ -205,12 +198,12 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
     override fun submitGenerateAll(refresh: Boolean) {
         folderTaskExecutor.execute(
-                UniqueRunnable("dyhi_run_all", SecureRunnable(SecurityContextHolder.getContext(), {
+                UniqueRunnable("dyhi_run_all", SecureRunnable(SecurityContextHolder.getContext()) {
                     if (refresh) {
 
                     }
                     generateAll()
-                })))
+                }))
     }
 
     override fun submitGenerate(dyhi: DyHierarchy) {
@@ -229,6 +222,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             return 0
         }
 
+        logger.event("running DyHierarchy", mapOf("dyhiId" to dyhi.id))
         val rf = folderService.get(dyhi.folderId)
         val rest = esClientCache[getOrgId()]
 
@@ -333,7 +327,13 @@ class DyHierarchyServiceImpl @Autowired constructor (
             }
             DyHierarchyLevelType.Path -> {
                 val pathTerms = AggregationBuilders.terms(idx.toString())
-                pathTerms.field(level.field)
+                val field = if (level.field.endsWith(".paths")) {
+                    level.field
+                }
+                else {
+                    "${level.field}.paths"
+                }
+                pathTerms.field(field)
                 pathTerms.size(maxFoldersPerLevel!!)
                 return pathTerms
             }

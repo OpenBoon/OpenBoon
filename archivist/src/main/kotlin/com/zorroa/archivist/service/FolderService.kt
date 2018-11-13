@@ -7,13 +7,12 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Queues
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
-import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -268,11 +267,6 @@ class FolderServiceImpl @Autowired constructor(
 
 
     override fun get(id: UUID?): Folder {
-        if (id != null) {
-            if (id==ROOT_ID) {
-                return getRoot()
-            }
-        }
         val f: Folder
         try {
             f = folderCache.get(id)
@@ -881,10 +875,7 @@ class FolderServiceImpl @Autowired constructor(
 
     companion object {
 
-        val ROOT_ID = UUID.fromString("00000000-0000-0000-0000-000000000000")
-
         private val logger = LoggerFactory.getLogger(FolderServiceImpl::class.java)
     }
-
 }
 

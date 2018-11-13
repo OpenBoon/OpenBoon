@@ -102,7 +102,7 @@
             }
           }
         },
-        "zorroa": {
+        "system": {
           "properties": {
             "timeCreated": {
               "type": "date",
@@ -171,7 +171,7 @@
                   "contexts": {
                     "name": "organization",
                     "type": "category",
-                    "path": "zorroa.organizationId"
+                    "path": "system.organizationId"
                   }
                 }
               }
@@ -180,7 +180,7 @@
         },
         {
           "links_template": {
-            "path_match": "zorroa.links.*",
+            "path_match": "system.links.*",
             "match_mapping_type": "string",
             "mapping": {
               "type": "keyword"
@@ -237,9 +237,18 @@
           }
         },
         {
-          "hash_template": {
+          "similarity_template": {
             "match_mapping_type": "string",
             "match": "shash",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "byte_hash_template": {
+            "match_mapping_type": "string",
+            "match": "byte*",
             "mapping": {
               "type": "keyword"
             }

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.domain
 
-import com.zorroa.common.domain.Document
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
@@ -12,7 +11,6 @@ import java.util.function.Consumer
  * Defines the fields needed for an online-asset.
  */
 
-
 class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
                                  private val rsp: SearchResponse,
                                  private var maxResults: Long) : Iterable<Document> {
@@ -20,7 +18,7 @@ class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
     override fun iterator(): Iterator<Document> {
         return object : Iterator<Document> {
 
-            internal var hits = rsp.hits.hits
+            var hits = rsp.hits.hits
             private var index = 0
             private var count = 0
 

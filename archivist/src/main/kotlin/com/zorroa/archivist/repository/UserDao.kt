@@ -2,14 +2,14 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.google.common.hash.Hashing
-import com.zorroa.archivist.HttpUtils
-import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.archivist.util.event
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -28,9 +28,13 @@ interface UserDao {
 
     fun getByToken(token: String): User
 
-    fun getHmacKey(username: String): String
+    fun getApiKey(user: UserId): ApiKey
 
-    fun generateHmacKey(username: String): Boolean
+    fun getApiKey(id: UUID): ApiKey
+
+    fun generateApiKey(user: UserId): ApiKey
+
+    fun generateAdminKey(): Boolean
 
     fun delete(user: User): Boolean
 
@@ -98,18 +102,20 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     "SELECT * FROM users WHERE str_reset_pass_token=? AND " + "? - time_reset_pass < ? LIMIT 1 ",
                     MAPPER, token, System.currentTimeMillis(), expireTime)
         } catch (e: EmptyResultDataAccessException) {
-            throw EmptyResultDataAccessException("This password change token has expired.", 1)
+            throw EmptyResultDataAccessException("The password change token has expired, request a new password reset.", 1)
         }
 
     }
 
     override fun getAll(): List<User> {
-        return jdbc.query("$GET_ALL WHERE pk_organization=? ORDER BY str_username", MAPPER, getOrgId())
+        return jdbc.query("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+                "ORDER BY str_username", MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>("$GET_ALL WHERE pk_organization=? ORDER BY str_username LIMIT ? OFFSET ?",
+                jdbc.query<User>("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+                        "ORDER BY str_username LIMIT ? OFFSET ?",
                         MAPPER, getOrgId(), paging.size, paging.from))
     }
 
@@ -122,6 +128,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
         }
 
         val id = uuid1.generate()
+        val user = getUser()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
@@ -137,10 +144,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setString(10, builder.source)
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
-            ps.setObject(13, getOrgId())
+            ps.setObject(13, user.organizationId)
             ps.setString(14, Json.serializeToString(builder.authAttrs, "{}"))
             ps
         }
+
+        logger.event("created User",
+                mapOf("userName" to builder.username,
+                        "userOrg" to user.organizationId))
         return get(id)
     }
 
@@ -205,8 +216,10 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun delete(user: User): Boolean {
-        return jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
+        val result = jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
                 getOrgId(), user.id) == 1
+        logger.event("deleted User", mapOf("userName" to user.username, "opResult" to result))
+        return result
     }
 
     override fun getPassword(username: String): String {
@@ -214,26 +227,32 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 String::class.java, username, username, true)
     }
 
-    override fun getHmacKey(username: String): String {
-        val result =  jdbc.queryForObject("SELECT hmac_key FROM users WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
-                String::class.java, username, username, true)
-        if (result == null) {
-            return ""
-        }
-        else {
-            return result
-        }
+    override fun getApiKey(user: UserId): ApiKey {
+        return getApiKey(user.id)
     }
 
-    override fun generateHmacKey(username: String): Boolean {
-        return jdbc.update("UPDATE users SET hmac_key=? WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
-                generateKey(), username, username, true) == 1
+    override fun getApiKey(id: UUID): ApiKey {
+        val key = jdbc.queryForObject("SELECT hmac_key FROM users WHERE pk_user=? AND bool_enabled=?",
+                String::class.java, id, true)
+        return ApiKey(id, key)
+    }
+
+    override fun generateApiKey(user: UserId): ApiKey {
+        val key = generateKey()
+        if (jdbc.update("UPDATE users SET hmac_key=? WHERE pk_user=? AND bool_enabled=?", key, user.id, true) != 1) {
+            throw EmptyResultDataAccessException("Unknown user", 1)
+        }
+        return ApiKey(user.id, key)
+    }
+
+    override fun generateAdminKey(): Boolean {
+        val key = generateKey()
+        return jdbc.update("UPDATE users SET hmac_key=? WHERE str_username='admin' AND hmac_key IS NULL", key) == 1;
     }
 
     override fun getCount(): Long {
         return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Int::class.java, getOrgId()).toLong()
     }
-
 
     override fun hasPermission(user: UserId, permission: Permission): Boolean {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",
@@ -289,15 +308,16 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     rs.getString("str_username"),
                     rs.getString("str_email"),
                     rs.getString("str_source"),
-                    rs.getObject("pk_permission") as UUID,
-                    rs.getObject("pk_folder") as UUID,
+                    rs.getObject("pk_permission") as UUID?,
+                    rs.getObject("pk_folder") as UUID?,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_firstname"),
                     rs.getString("str_lastname"),
                     rs.getBoolean("bool_enabled"),
                     Json.deserialize(rs.getString("json_settings"), UserSettings::class.java),
                     rs.getInt("int_login_count"),
-                    rs.getLong("time_last_login"))
+                    rs.getLong("time_last_login"),
+                    Json.deserialize(rs.getString("json_auth_attrs"), Json.GENERIC_MAP))
         }
 
         private const val GET_ALL = "SELECT * FROM users"

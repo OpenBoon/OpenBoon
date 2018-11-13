@@ -7,8 +7,12 @@ import com.google.cloud.pubsub.v1.MessageReceiver
 import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.resetAuthentication
+import com.zorroa.archivist.util.event
+import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -16,9 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.io.FileInputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
@@ -30,84 +35,6 @@ interface PubSubService
 class GooglePubSubSettings {
     lateinit var subscription: String
     lateinit var project: String
-    var enabled : Boolean = true
-}
-
-@Component
-class JobEventSubscription {
-
-    @Autowired
-    lateinit var settings: GooglePubSubSettings
-
-    @Autowired
-    lateinit var exportService: ExportService
-
-    var subscription : ProjectSubscriptionName? = null
-    var subscriber: Subscriber? = null
-
-    @Value("\${archivist.config.path}")
-    lateinit var configPath: String
-
-    @PostConstruct
-    fun setup() {
-        val project = System.getenv("GCLOUD_PROJECT")
-
-        if (project != null) {
-            logger.info("Initializing Analyst Job Event pub sub {}", project)
-            subscription = ProjectSubscriptionName.of(project, "zorroa-archivist")
-            subscriber = Subscriber.newBuilder(subscription, JobEventReceiver())
-                    .setCredentialsProvider{ GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) }
-                    .build()
-            subscriber?.let {
-                it.startAsync().awaitRunning()
-            }
-        }
-    }
-
-    @PreDestroy
-    fun shutdown() {
-        subscriber?.let {
-            it.stopAsync()
-        }
-    }
-
-    inner class JobEventReceiver : MessageReceiver {
-
-        override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
-            consumer.ack()
-            message?.data?.let {
-                val event = Json.Mapper.readValue(it.toByteArray(), JobEvent::class.java)
-                logger.info("pubsub message: {}", event.type)
-                when(event.type) {
-                    "job-state-change"-> {
-                        val payload = Json.Mapper.convertValue(
-                                event.payload, JobStateChangeEvent::class.java)
-
-                        if (payload.job.type == PipelineType.Export) {
-                            try {
-                                logger.info("Updating export state: {}", payload.job.env)
-                                val id = UUID.fromString(payload.job.env["ZORROA_EXPORT_ID"])
-                                val job = exportService.get(id)
-
-                            } catch (e: Exception) {
-                                logger.warn("faild to update job state from event: ", event.payload)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(JobEventSubscription::class.java)
-    }
-
-}
-
-
-class NoOpPubSubService : PubSubService {
-
 }
 
 /**
@@ -115,44 +42,43 @@ class NoOpPubSubService : PubSubService {
  * events and launches kubernetes jobs to process data as it comes in.
  */
 
-class GcpPubSubServiceImpl : PubSubService {
+class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreDataVaultClient) : PubSubService {
 
     @Autowired
     lateinit var settings: GooglePubSubSettings
 
     @Autowired
+    private lateinit var pipelineService: PipelineService
+
+    @Autowired
     private lateinit var organizationDao: OrganizationDao
 
     @Autowired
-    private lateinit var jobSerice: JobService
-
-    @Autowired
-    private lateinit var assetService: AssetService
+    private lateinit var fileQueueService: FileQueueService
 
     @Value("\${archivist.config.path}")
     lateinit var configPath: String
 
-    lateinit var subscription : ProjectSubscriptionName
-    lateinit var subscriber: Subscriber
+    private lateinit var subscription : ProjectSubscriptionName
+    private lateinit var subscriber: Subscriber
 
     @PostConstruct
     fun setup() {
-        val project = System.getenv("GCLOUD_PROJECT")
-        logger.info("Initializing GCP pub sub {} {}", project, "zorroa-ingest-pipeline")
-        subscription = ProjectSubscriptionName.of(project, "zorroa-ingest-pipeline")
-        subscriber = Subscriber.newBuilder(subscription, GcpDataMessageReceiver())
-                .setCredentialsProvider { GoogleCredentials.fromStream(FileInputStream("$configPath/data-credentials.json")) }
-                .build()
-        if (settings.enabled) {
-            subscriber.startAsync().awaitRunning()
+        logger.info("Initializing GCP pub sub {} {}", settings.project, settings.subscription)
+        subscription = ProjectSubscriptionName.of(settings.project, settings.subscription)
+        val credPath = "$configPath/data-credentials.json"
+
+        val builder = Subscriber.newBuilder(subscription, GcpDataMessageReceiver())
+        if (Files.exists(Paths.get(credPath))) {
+            builder.setCredentialsProvider { GoogleCredentials.fromStream(FileInputStream(credPath)) }
         }
+        subscriber = builder.build()
+        subscriber.startAsync().awaitRunning()
     }
 
     @PreDestroy
     fun shutdown() {
-        if (settings.enabled) {
-            subscriber.stopAsync()
-        }
+        subscriber.stopAsync()
     }
 
     inner class GcpDataMessageReceiver : MessageReceiver {
@@ -161,76 +87,72 @@ class GcpPubSubServiceImpl : PubSubService {
          * This method will create a single job per message.
          */
         override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
-
-            val payload : Map<String, Any> = try {
-                Json.Mapper.readValue(message.data.toByteArray())
+            try {
+                val payload : Map<String, Any?> = Json.Mapper.readValue(message.data.toByteArray())
+                val type= payload["type"] as String?
+                when(type) {
+                    "UPDATE" -> handleUpdate(payload)
+                }
             } catch (e: Exception) {
-                consumer.ack()
                 logger.warn("Failed to parse GPubSub payload: {}", String(message.data.toByteArray()))
-                return
             }
+            finally {
+                consumer.ack()
+            }
+        }
 
-            val type= payload["type"] as String?
-            val time = System.currentTimeMillis() / 1000
+        fun handleUpdate(payload : Map<String, Any?>) {
 
-            if (type == "UPDATE") {
+            try {
+                val assetId = payload.getValue("key").toString()
+                val companyId = payload.getValue("companyId") as Int
+                val org = organizationDao.get("company-" + payload["companyId"])
 
-                val assetId = payload["key"] as String
-                val companyId = payload["companyId"] as Int
-                val jobName = "$time-$type-$assetId".toLowerCase()
+                logger.event("pubsub UPDATE",
+                        mapOf("companyId" to companyId, "assetId" to assetId, "orgId" to org.id))
 
-                try {
-                    /**
-                     * Currently IRM has to name the org company-id for use to pick it up.
-                     */
-                    val org = organizationDao.get("company-" + payload["companyId"])
+                logger.info("PubSub Payload")
+                logger.info(Json.prettyString(payload))
 
-                    /**
-                     * Set ourselves as the super admin for the given companty.
-                     */
-                    SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
-
-                    // Need all this to query the asset serivce (which would be CDV)
-                    val asset = Asset(
-                            UUID.fromString(assetId),
-                            org.id,
-                            mutableMapOf("companyId" to companyId))
-
-                    val doc = try {
-                        assetService.getDocument(asset)
-                    } catch (e: Exception) {
-                        logger.warn("Exiting ES metadata does not exist for $assetId")
-                        Document(assetId)
-                    }
-
-                    // make sure these are set.
-                    doc.setAttr("irm.companyId", companyId)
-                    doc.setAttr("zorroa.organizationId", org.id)
-
-                    /**
-                     * No ZORROA_USER env var means any communication back to the
-                     * archivist with a proper service key will be super admin.
-                     */
-                    val zps = ZpsScript(jobName, over=mutableListOf(doc))
-                    val spec = JobSpec(jobName,
-                            PipelineType.Import,
-                            org.id,
-                            zps,
-                            lockAssets=true,
-                            attrs=mutableMapOf("companyId" to companyId.toString()))
-
-                    val job = jobSerice.launchJob(spec)
-                    logger.info("launched job: {}", job)
-
+                /**
+                 * Grab the existing doc, otherise make a new one.
+                 */
+                val doc = try {
+                    coreDataVaultClient.getIndexedMetadata(companyId, assetId)
                 } catch (e: Exception) {
-                    logger.warn("Error launching job: {}, asset: {} company: {}",
-                            e.message, assetId, companyId, e)
+                    Document(assetId)
                 }
-                finally {
-                    SecurityContextHolder.getContext().authentication = null
+
+                doc.setAttr("system.organizationId", org.id)
+                doc.setAttr("tmp.copy_attrs_to_clip", listOf("irm"))
+
+                val md = coreDataVaultClient.getMetadata(companyId, assetId)
+                val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
+                        "gs://", true)
+
+                // Add IRM metadata
+                doc.setAttr("irm.companyId", companyId)
+                if (md.containsKey("barcode")) {
+                    doc.setAttr("irm.barcode", md["barcode"])
                 }
+                if (md.containsKey("attributeValues")) {
+                    val attributeValues = md["attributeValues"] as List<Map<String, Any>>
+                    for (attributeValue in attributeValues) {
+                        doc.setAttr("irm." + attributeValue["name"], attributeValue["value"])
+                    }
+                }
+
+                // queue up the file for processing
+                fileQueueService.create(QueuedFileSpec(
+                        org.id,
+                        pipelineService.get("standard-import").id,
+                        UUID.fromString(assetId),
+                        url,
+                        doc.document))
+
+            } catch (e: Exception) {
+                logger.warn("Error queueing file: {}", e.message, e)
             }
-            consumer.ack()
         }
     }
 

@@ -4,7 +4,7 @@ package com.zorroa.archivist.web.api
  * Created by chambers on 10/28/15.
  */
 
-import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.service.IndexService

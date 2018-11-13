@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web.api
 
-import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.Taxonomy
 import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.service.FolderService

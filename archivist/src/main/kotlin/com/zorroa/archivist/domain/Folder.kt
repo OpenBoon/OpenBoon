@@ -3,7 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.repository.DaoFilter
-import com.zorroa.common.search.AssetSearch
+import com.zorroa.archivist.search.AssetSearch
 import java.util.*
 
 class FolderFilter : DaoFilter() {
@@ -23,22 +23,22 @@ fun isRootFolder(folder: Folder) : Boolean {
 }
 
 data class Folder(
-     val id: UUID,
-     val name: String,
-     val parentId: UUID?,
-     val organizationId: UUID,
-     val dyhiId: UUID?,
-     val user: UserBase,
-     val timeCreated: Long,
-     val timeModified: Long,
-     val recursive: Boolean,
-     val dyhiRoot: Boolean,
-     val dyhiField: String?,
-     val childCount: Int = 0,
-     val acl: Acl? = null,
-     val search: AssetSearch? = null,
-     var taxonomyRoot: Boolean = false,
-     val attrs: Map<String, Any>? = null) {
+        val id: UUID,
+        val name: String,
+        val parentId: UUID?,
+        val organizationId: UUID,
+        val dyhiId: UUID?,
+        val user: UserBase,
+        val timeCreated: Long,
+        val timeModified: Long,
+        val recursive: Boolean,
+        val dyhiRoot: Boolean,
+        val dyhiField: String?,
+        val childCount: Int = 0,
+        val acl: Acl? = null,
+        val search: AssetSearch? = null,
+        var taxonomyRoot: Boolean = false,
+        val attrs: Map<String, Any>? = null) {
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)

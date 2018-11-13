@@ -2,9 +2,9 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserProfileUpdate
-import com.zorroa.common.domain.Pager
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
@@ -36,8 +36,8 @@ class UserDaoTests : AbstractTest() {
 
     @Test
     fun testGet() {
-        val (id) = userDao.get(user.id)
-        assertEquals(user.id, id)
+        val user = userDao.get(user.id)
+        assertEquals(user.id, user.id)
     }
 
     @Test
@@ -104,6 +104,13 @@ class UserDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testGenerateAdminKey() {
+        jdbc.update("UPDATE users SET hmac_key=NULL")
+        assertTrue(userDao.generateAdminKey())
+        assertFalse(userDao.generateAdminKey())
+    }
+
+    @Test
     fun testUpdate() {
         val builder = UserProfileUpdate()
         builder.firstName = "foo"
@@ -165,8 +172,8 @@ class UserDaoTests : AbstractTest() {
     @Test
     fun testGetUserByPasswordToken() {
         val token = userDao.setEnablePasswordRecovery(user)
-        val (id) = userDao.getByToken(token)
-        assertEquals(user.id, id)
+        val user = userDao.getByToken(token)
+        assertEquals(user.id, user.id)
     }
 
     @Test

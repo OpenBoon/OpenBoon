@@ -3,27 +3,30 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.UserLogSpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.PermissionDao
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.util.event
+import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
 import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
-import com.zorroa.common.search.AssetSearchOrder
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.lang.IllegalArgumentException
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
@@ -79,13 +82,17 @@ interface IndexService {
     fun update(assetId: String, attrs: Map<String, Any>): Long
 
     fun delete(assetId: String): Boolean
+
+    fun batchDelete(assetId: List<String>): BatchDeleteAssetsResponse
 }
 
 @Component
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
         private val permissionDao: PermissionDao,
-        private val storageRouter: StorageRouter
+        private val fileServerProvider: FileServerProvider,
+        private val fileStorageService: FileStorageService,
+        private val jobService: JobService
 
 ) : IndexService {
 
@@ -100,9 +107,6 @@ class IndexServiceImpl  @Autowired  constructor (
 
     @Autowired
     lateinit var searchService: SearchService
-
-    @Autowired
-    lateinit var assetService: AssetService
 
     override fun get(id: String): Document {
         return if (id.startsWith("/")) {
@@ -169,28 +173,28 @@ class IndexServiceImpl  @Autowired  constructor (
             /**
              * Re-add the organization
              */
-            source.setAttr("zorroa.organizationId", organizationId)
+            source.setAttr("system.organizationId", organizationId)
 
             /**
              * Update created and modified times.
              */
             val time = Date()
 
-            if (managedValues.attrExists("zorroa.timeCreated")) {
-                source.setAttr("zorroa.timeModified", time)
+            if (managedValues.attrExists("system.timeCreated")) {
+                source.setAttr("system.timeModified", time)
                 /**
                  * If the document is being replaced, maintain the created time.
                  */
                 //if (source.replace) {
-                //    source.setAttr("zorroa.timeCreated", managedValues.getAttr("zorroa.timeCreated"))
+                //    source.setAttr("system.timeCreated", managedValues.getAttr("system.timeCreated"))
                 //}
             }
             else {
-                source.setAttr("zorroa.timeModified", time)
-                source.setAttr("zorroa.timeCreated", time)
+                source.setAttr("system.timeModified", time)
+                source.setAttr("system.timeCreated", time)
             }
 
-            var perms = managedValues.getAttr("zorroa.permissions", PermissionSchema::class.java)
+            var perms = managedValues.getAttr("system.permissions", PermissionSchema::class.java)
             if (perms == null) {
                 perms = PermissionSchema()
             }
@@ -221,7 +225,7 @@ class IndexServiceImpl  @Autowired  constructor (
                     }
 
                 }
-                source.setAttr("zorroa.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
+                source.setAttr("system.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
             } else if (perms.isEmpty) {
 
                 /**
@@ -231,29 +235,30 @@ class IndexServiceImpl  @Autowired  constructor (
                  * If there is no permissions.
                  */
                 // get the default perms for org.
-                source.setAttr("zorroa.permissions",
+                source.setAttr("system.permissions",
                         Json.Mapper.convertValue<Map<String,Any>>(permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP))
             }
 
             if (source.links != null) {
-                var links = managedValues.getAttr("zorroa.links", LinkSchema::class.java)
+                var links = managedValues.getAttr("system.links", LinkSchema::class.java)
                 if (links == null) {
                     links = LinkSchema()
                 }
                 for (link in source.links!!) {
                     links.addLink(link.left, link.right)
                 }
-                source.setAttr("zorroa.links", links)
-            }
-
-            try {
-                assetService.setDocument(UUID.fromString(source.id), source)
-            } catch (e: Exception) {
-                logger.warn("Failed to store asset in TX store: ", e)
+                source.setAttr("system.links", links)
             }
         }
 
         val result = indexDao.index(spec.sources!!)
+        logger.info("Indexed result: {} task:{}", result, spec.taskId)
+
+        spec.taskId?.let {
+            val task = jobService.getTask(it)
+            jobService.incrementAssetCounts(task, result)
+        }
+
         if (result.created + result.updated + result.replaced > 0) {
             /**
              * TODO: make these 1 thread pool
@@ -289,7 +294,7 @@ class IndexServiceImpl  @Autowired  constructor (
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
 
         val asset = indexDao[assetId]
-        val write = asset.getAttr("zorroa.permissions.write", Json.SET_OF_UUIDS)
+        val write = asset.getAttr("system.permissions.write", Json.SET_OF_UUIDS)
 
         if (!hasPermission(write)) {
             throw ArchivistWriteException("You cannot make changes to this asset.")
@@ -300,26 +305,78 @@ class IndexServiceImpl  @Autowired  constructor (
          * Remove keys which are maintained via other methods.
          */
         NS_PROTECTED_API.forEach { n -> copy.remove(n) }
+        return indexDao.update(assetId, copy)
+    }
 
-        val version = indexDao.update(assetId, copy)
-        logService.logAsync(UserLogSpec.build(LogAction.Update, "asset", assetId))
-        return version
+    /**
+     * Batch delete the the given asset IDs, along with their supporting files.
+     * This method propagates to children as well.
+     *
+     * @param assetIds: the IDs of the assets the delete.
+     */
+    override fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse {
+        if (assetIds.size > 1000) {
+            throw ArchivistWriteException("Unable to delete more than 1000 assets in a single request")
+        }
+
+        /*
+         * Setup an OR search where we target both the parents and children.
+         */
+        val search = AssetSearch()
+        search.filter = AssetFilter()
+        search.filter.should = listOf(
+                AssetFilter().addToTerms("_id", assetIds).addToMissing("media.clip.parent"),
+                AssetFilter().addToTerms("media.clip.parent", assetIds))
+
+        /*
+         * Iterate a scan and scroll and batch delete each batch.
+         * Along the way queue up work to delete any files.
+         */
+        val rsp = BatchDeleteAssetsResponse()
+        searchService.scanAndScroll(search, true) { hits->
+            /*
+             * Determine if any documents are on hold.
+             */
+            val docs = hits.hits.map { Document(it.id, it.sourceAsMap) }
+            val batchRsp = indexDao.batchDelete(docs)
+            // add the batch results to the overall result.
+            rsp.plus(batchRsp)
+
+            GlobalScope.launch {
+                docs.forEach {
+                    if (it.id in batchRsp.success)
+                    deleteAssociatedFiles(it)
+                }
+            }
+        }
+        return rsp
     }
 
     override fun delete(assetId: String): Boolean {
         val doc = indexDao[assetId]
-        val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
-        if (proxySchema != null) {
-            for (proxy in proxySchema.proxies!!) {
-                val ofile = storageRouter.getObjectFile(proxy)
-                if (!ofile.delete()) {
-                    logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
-                }
-            }
+        if (!hasPermission("write", doc)) {
+            throw ArchivistWriteException("delete access denied")
         }
+        deleteAssociatedFiles(doc)
         return indexDao.delete(assetId)
     }
 
+    fun deleteAssociatedFiles(doc: Document) {
+        logger.event("deleteAll assetProxy", mapOf("assetId" to doc.id))
+        doc.getAttr("proxies", ProxySchema::class.java)?.let {
+            it.proxies?.forEach { pr ->
+                try {
+                    val storage = fileStorageService.get(pr.id as String)
+                    val ofile = fileServerProvider.getServableFile(storage.uri)
+                    if (!ofile.delete()) {
+                        logger.warnEvent("delete Proxy", "file did not exist", mapOf("proxyId" to pr.id))
+                    }
+                } catch (e: Exception) {
+                    logger.warnEvent("delete Proxy", e.message!!, mapOf("proxyId" to pr.id), e)
+                }
+            }
+        }
+    }
 
     override fun getMapping(): Map<String, Any> {
         return indexDao.getMapping()
