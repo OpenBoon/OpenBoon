@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.PermissionDao
@@ -40,6 +41,9 @@ interface AssetService {
 open class AbstractAssetService {
 
     @Autowired
+    lateinit var properties: ApplicationProperties
+
+    @Autowired
     lateinit var assetDao: AssetDao
 
     @Autowired
@@ -58,103 +62,110 @@ open class AbstractAssetService {
 
         val existingDocs = assetDao.getMap(assets.map{it.id})
         val orgId = getOrgId()
-        val defaultPermissions =   Json.Mapper.convertValue<Map<String,Any>>(
+        val defaultPermissions = Json.Mapper.convertValue<Map<String,Any>>(
                 permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP)
 
         return assets.map { source->
 
-             val existingSource : Document = existingDocs.getOrDefault(source.id, Document(source.id))
+            val existingSource : Document = existingDocs.getOrDefault(source.id, Document(source.id))
+            /**
+             * Remove parts protected by API.
+             */
+            PROTECTED_NAMESPACES.forEach { n -> source.removeAttr(n) }
 
-             /**
-              * Remove parts protected by API.
-              */
-             PROTECTED_NAMESPACES.forEach { n -> source.removeAttr(n) }
+            source.setAttr("system.organizationId", orgId)
 
-             /**
-              * Add the organization
-              */
-             source.setAttr("system.organizationId", orgId)
-
-             /**
-              * Update created and modified times.
-              */
-             val time = Date()
-
-             if (existingSource.attrExists("system.timeCreated")) {
-                 source.setAttr("system.timeModified", time)
-             }
-             else {
-                 source.setAttr("system.timeModified", time)
-                 source.setAttr("system.timeCreated", time)
-             }
-
-
-            var hold : Any? = existingSource.getAttr("system.hold", Any::class.java)
-            if (hold != null) {
-                source.setAttr("system.hold", hold)
-            }
-
-             /**
-              * Handle permissions assigned from processing.
-              */
-             var existingPerms = existingSource.getAttr("system.permissions",
-                     PermissionSchema::class.java)
-
-             if (existingPerms == null) {
-                 existingPerms = PermissionSchema()
-             }
-
-             if (source.permissions != null) {
-                 source.permissions?.forEach {
-                     val key = it.key
-                     val value = it.value
-                     try {
-                         val perm = permissionDao.get(key)
-                         if (value and 1 == 1) {
-                             existingPerms.addToRead(perm.id)
-                         } else {
-                             existingPerms.removeFromRead(perm.id)
-                         }
-
-                         if (value and 2 == 2) {
-                             existingPerms.addToWrite(perm.id)
-                         } else {
-                             existingPerms.removeFromWrite(perm.id)
-                         }
-
-                         if (value and 4 == 4) {
-                             existingPerms.addToExport(perm.id)
-                         } else {
-                             existingPerms.removeFromExport(perm.id)
-                         }
-                     } catch (e: Exception) {
-                         logger.warn("Permission not found: {}", key)
-                     }
-                 }
-                 source.setAttr("system.permissions",
-                         Json.Mapper.convertValue<Map<String,Any>>(existingPerms, Json.GENERIC_MAP))
-
-             } else if (existingPerms.isEmpty) {
-                 /**
-                  * If the source didn't come with any permissions and the current perms
-                  * on the asset are empty, we apply the default permissions.
-                  */
-                 source.setAttr("system.permissions", defaultPermissions)
-             }
-
-             if (source.links != null) {
-                 var links = existingSource.getAttr("system.links", LinkSchema::class.java)
-                 if (links == null) {
-                     links = LinkSchema()
-                 }
-                 source.links?.forEach {
-                     links.addLink(it.left, it.right)
-                 }
-                 source.setAttr("system.links", links)
-             }
+            handleTimes(existingSource, source)
+            handleHold(existingSource, source)
+            handlePermissions(existingSource, source, defaultPermissions)
+            handleLinks(source, existingSource)
 
              source
          }
+    }
+
+    private fun handleTimes(existingSource: Document, source: Document) {
+        /**
+         * Update created and modified times.
+         */
+        val time = Date()
+
+        if (existingSource.attrExists("system.timeCreated")) {
+            source.setAttr("system.timeModified", time)
+        } else {
+            source.setAttr("system.timeModified", time)
+            source.setAttr("system.timeCreated", time)
+        }
+    }
+
+    private fun handleHold(existingSource: Document, source: Document) {
+        var hold: Any? = existingSource.getAttr("system.hold", Any::class.java)
+        if (hold != null) {
+            source.setAttr("system.hold", hold)
+        }
+    }
+
+    private fun handleLinks(source: Document, existingSource: Document) {
+        if (source.links != null) {
+            var links = existingSource.getAttr("system.links", LinkSchema::class.java)
+            if (links == null) {
+                links = LinkSchema()
+            }
+            source.links?.forEach {
+                links.addLink(it.left, it.right)
+            }
+            source.setAttr("system.links", links)
+        }
+    }
+
+    private fun handlePermissions(existingSource: Document, source: Document, defaultPermissions: Map<String, Any>?) {
+        /**
+         * Handle permissions assigned from processing.
+         */
+        var existingPerms = existingSource.getAttr("system.permissions",
+                PermissionSchema::class.java)
+
+        if (existingPerms == null) {
+            existingPerms = PermissionSchema()
+        }
+
+        if (source.permissions != null) {
+            source.permissions?.forEach {
+                val key = it.key
+                val value = it.value
+                try {
+                    val perm = permissionDao.get(key)
+                    if (value and 1 == 1) {
+                        existingPerms.addToRead(perm.id)
+                    } else {
+                        existingPerms.removeFromRead(perm.id)
+                    }
+
+                    if (value and 2 == 2) {
+                        existingPerms.addToWrite(perm.id)
+                    } else {
+                        existingPerms.removeFromWrite(perm.id)
+                    }
+
+                    if (value and 4 == 4) {
+                        existingPerms.addToExport(perm.id)
+                    } else {
+                        existingPerms.removeFromExport(perm.id)
+                    }
+                } catch (e: Exception) {
+                    logger.warn("Permission not found: {}", key)
+                }
+            }
+            source.setAttr("system.permissions",
+                    Json.Mapper.convertValue<Map<String, Any>>(existingPerms, Json.GENERIC_MAP))
+
+        } else if (existingPerms.isEmpty) {
+            /**
+             * If the source didn't come with any permissions and the current perms
+             * on the asset are empty, we apply the default permissions.
+             */
+            source.setAttr("system.permissions", defaultPermissions)
+        }
     }
 
     fun runDyhiAndTaxons() {
