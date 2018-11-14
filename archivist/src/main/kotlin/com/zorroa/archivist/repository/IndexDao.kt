@@ -93,7 +93,7 @@ interface IndexDao {
 
     fun setLinks(assetId: String, type:String, ids: Collection<Any>)
 
-    fun update(assetId: String, attrs: Map<String, Any>): Long
+    fun update(assetId: String, attrs: Map<String, Any>): Document
 
     fun <T> getFieldValue(id: String, field: String): T?
 
@@ -138,8 +138,7 @@ class IndexDaoImpl @Autowired constructor(
     }
 
     override fun index(sources: List<Document>, refresh: Boolean): BatchCreateAssetsResponse {
-        val result = BatchCreateAssetsResponse()
-        result.total = sources.size
+        val result = BatchCreateAssetsResponse(sources.size)
         if (sources.isEmpty()) {
             return result
         }
@@ -166,30 +165,30 @@ class IndexDaoImpl @Autowired constructor(
                 val message = response.failure.message
                 val asset = sources[index]
                 if (removeBrokenField(asset, message)) {
-                    result.warnings++
+                    result.warningAssetIds.add(asset.id)
                     retries.add(sources[index])
                 } else {
-                    logger.warnEvent("Index Asset", message,
+                    logger.warnEvent("index Asset", message,
                             mapOf("assetId" to response.id,
                                     "index" to response.index))
-                    result.logs.add(StringBuilder(1024).append(
-                            message).append(",").toString())
-                    result.errors++
+                    result.erroredAssetIds.add(asset.id)
                 }
             } else {
                 when (response.opType) {
-
                     DocWriteRequest.OpType.INDEX -> {
                         val idxr = response.getResponse<IndexResponse>()
                         if (idxr.result == DocWriteResponse.Result.CREATED) {
-                            result.created++
+                            logger.event("create Asset",
+                                    mapOf("assetId" to response.id,
+                                            "index" to response.index))
+                            result.createdAssetIds.add(idxr.id)
                         } else {
-                            result.replaced++
+                            logger.event("replace Asset",
+                                    mapOf("assetId" to response.id,
+                                            "index" to response.index))
+                            result.replacedAssetIds.add(idxr.id)
                         }
-                        logger.event("create Asset",
-                                mapOf("assetId" to response.id,
-                                        "index" to response.index))
-                        result.assetIds.add(idxr.id)
+
                     }
                 }
             }
@@ -199,15 +198,9 @@ class IndexDaoImpl @Autowired constructor(
          * TODO: limit number of retries to reasonable number.
          */
         if (!retries.isEmpty()) {
-            result.retries++
+            result.retryCount++
             result.add(index(retries))
         }
-
-        logger.event("index Asset", mapOf(
-                "replaced" to result.replaced,
-                "created" to result.created,
-                "errors" to result.errors,
-                "warnings" to result.warnings))
 
         return result
     }
@@ -315,20 +308,16 @@ class IndexDaoImpl @Autowired constructor(
                 .doc(Json.serializeToString(doc), XContentType.JSON))
     }
 
-
-    override fun update(assetId: String, attrs: Map<String, Any>): Long {
+    override fun update(assetId: String, attrs: Map<String, Any>): Document {
+        val rest = getClient()
         val asset = get(assetId)
         for ((key, value) in attrs) {
-            logger.event("update Asset Attribute", mapOf("key" to key))
             asset.setAttr(key, value)
         }
-        val rest = getClient()
         val ver =  rest.client.update(rest.newUpdateRequest(assetId)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
-        logger.event("update Asset",
-                mapOf("assetId" to assetId, "version" to ver))
-        return ver
+        return asset
     }
 
     override fun removeFields(assetId: String, fields: Set<String>, refresh: Boolean) {
@@ -348,12 +337,7 @@ class IndexDaoImpl @Autowired constructor(
 
     override fun delete(id: String): Boolean {
         val rest = getClient()
-        val result = rest.client.delete(rest.newDeleteRequest(id)).result == DocWriteResponse.Result.DELETED
-        logger.event("delete Asset",
-                mapOf("assetId" to id,
-                        "index" to rest.route.indexName,
-                        "status" to result))
-        return result
+        return rest.client.delete(rest.newDeleteRequest(id)).result == DocWriteResponse.Result.DELETED
     }
 
     override fun batchDelete(docs: List<Document>): BatchDeleteAssetsResponse {
@@ -384,27 +368,23 @@ class IndexDaoImpl @Autowired constructor(
             return rsp
         }
 
-        logger.event("batchDelete Asset",
-                mapOf("index" to rest.route.indexName, "count" to docs.size))
-
         val bulk = rest.client.bulk(bulkRequest)
         for (br in bulk.items) {
             when {
                 br.isFailed -> {
-                    logger.warnEvent("batch delete Asset", br.failureMessage,
+                    logger.warnEvent("batcDelete Asset", br.failureMessage,
                             mapOf("assetId" to br.id, "index" to br.index))
                     rsp.failures[br.id] = br.failureMessage
                 }
                 else ->  {
                     val deleted =  br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
                     if (deleted) {
-                        logger.event("batch delete Asset", mapOf("assetId" to br.id, "index" to br.index))
                         rsp.totalDeleted += 1
                         rsp.success.add(br.id)
                     }
                     else {
                         rsp.missing += 1
-                        logger.warnEvent("batch delete Asset", "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
+                        logger.warnEvent("batcDelete Asset", "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
                     }
                 }
             }

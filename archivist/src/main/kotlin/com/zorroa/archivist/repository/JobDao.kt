@@ -101,14 +101,21 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     override fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean {
         val updated =  jdbc.update(INC_STATS,
-                counts.total, counts.created, counts.warnings, counts.errors, counts.replaced, job.jobId) == 1
-        logger.event("update JobAssetStats",
-                mapOf("taskId" to job.jobId,
-                        "assetsCreated" to counts.created,
-                        "assetsWarned" to counts.warnings,
-                        "assetErrors" to counts.errors,
-                        "assetsReplaced" to counts.replaced,
-                        "status" to updated))
+                counts.total,
+                counts.createdAssetIds.size,
+                counts.warningAssetIds.size,
+                counts.erroredAssetIds.size,
+                counts.replacedAssetIds.size,
+                job.jobId) == 1
+
+        if (updated) {
+            logger.event("update JobAssetStats",
+                    mapOf("taskId" to job.jobId,
+                            "assetsCreated" to counts.createdAssetIds.size,
+                            "assetsWarned" to counts.warningAssetIds.size,
+                            "assetErrors" to counts.erroredAssetIds.size,
+                            "assetsReplaced" to counts.replacedAssetIds.size))
+        }
         return updated
     }
 

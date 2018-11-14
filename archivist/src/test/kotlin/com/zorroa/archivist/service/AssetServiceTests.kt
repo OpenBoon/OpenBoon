@@ -18,11 +18,11 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchUpsert() {
+    fun testBatchCreateOrReplace() {
         val assets = getTestAssets("set04/standard")
         val rsp = assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets))
-        assertEquals(2, rsp.replaced)
-        assertEquals(0, rsp.created)
+        assertEquals(2, rsp.replacedAssetIds.size)
+        assertEquals(0, rsp.createdAssetIds.size)
     }
 
     @Test

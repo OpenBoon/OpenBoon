@@ -130,12 +130,12 @@ class IndexDaoTests : AbstractTest() {
         val source2 = Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"))
 
         var result = indexDao.index(ImmutableList.of(source1, source2))
-        assertEquals(1, result.created.toLong())
-        assertEquals(1, result.replaced.toLong())
+        assertEquals(1, result.createdAssetIds.size)
+        assertEquals(1, result.replacedAssetIds.size)
 
         result = indexDao.index(ImmutableList.of(source1, source2))
-        assertEquals(0, result.created.toLong())
-        assertEquals(2, result.replaced.toLong())
+        assertEquals(0, result.createdAssetIds.size)
+        assertEquals(2, result.replacedAssetIds.size)
     }
 
     @Test
@@ -232,9 +232,9 @@ class IndexDaoTests : AbstractTest() {
         result = indexDao.index(next)
         logger.info("{}", result)
 
-        assertEquals(4, result.created.toLong())
-        assertEquals(4, result.warnings.toLong())
-        assertEquals(1, result.retries.toLong())
+        assertEquals(4, result.createdAssetIds.size)
+        assertEquals(4, result.warningAssetIds.size)
+        assertEquals(1, result.retryCount.toLong())
 
     }
 

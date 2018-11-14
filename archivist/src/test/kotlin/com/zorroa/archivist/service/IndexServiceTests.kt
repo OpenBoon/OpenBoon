@@ -89,6 +89,13 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testUpdate() {
+        val asset = indexService.getAll(Pager.first())[0]
+        val result = indexService.update(asset.id, mapOf("foo.bar.bing" to "bang"))
+        assertEquals("bang", result.getAttr("foo.bar.bing"))
+    }
+
+    @Test
     @Throws(InterruptedException::class)
     fun testIndexCheckOrigin() {
         val source = Source(getTestImagePath("set01/toucan.jpg"))

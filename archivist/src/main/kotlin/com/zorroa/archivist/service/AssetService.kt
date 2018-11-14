@@ -1,9 +1,6 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
-import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.security.getOrgId
@@ -32,7 +29,6 @@ import java.util.*
  */
 interface AssetService {
     fun getDocument(assetId: String): Document
-    fun setDocument(assetId: String, doc: Document)
     fun delete(assetId: String): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
@@ -57,7 +53,6 @@ open class AbstractAssetService {
 
     @Autowired
     lateinit var taxonomyService: TaxonomyService
-
 
     fun prepAssets(assets: List<Document>) : List<Document>  {
 
@@ -186,10 +181,6 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         return cdvClient.getIndexedMetadata(getCompanyId(), assetId)
     }
 
-    override fun setDocument(assetId: String, doc: Document) {
-        cdvClient.updateIndexedMetadata(getCompanyId(), assetId, doc)
-    }
-
     override fun delete(assetId: String): Boolean {
         /**
          * Relying on IRM's security to know if the asset can be deleted.
@@ -217,7 +208,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         val prepped = prepAssets(spec.sources)
         cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped)
         val result = indexService.index(prepped)
-        if (result.replaced > 0 || result.created > 0) {
+        if (result.assetsChanged()) {
             runDyhiAndTaxons()
         }
         return result
@@ -232,14 +223,13 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     }
 
     override fun update(assetId: String, attrs: Map<String, Any>): Document {
-        val asset = indexService.get(assetId)
+
+        val asset = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("update access denied")
         }
-
-        indexService.update(assetId, attrs)
-        val updated = indexService.get(assetId)
-        setDocument(assetId, updated)
+        val updated = indexService.update(assetId, attrs)
+        cdvClient.updateIndexedMetadata(getCompanyId(), assetId, updated)
         runDyhiAndTaxons()
         return updated
     }
@@ -269,10 +259,6 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     override fun getDocument(assetId: String): Document {
         return indexService.get(assetId)
-    }
-
-    override fun setDocument(id: String, doc: Document) {
-        indexService.index(doc)
     }
 
     override fun delete(id: String): Boolean {
@@ -315,7 +301,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
             jobService.incrementAssetCounts(task, rsp)
         }
 
-        if (rsp.created > 0 || rsp.replaced > 0) {
+        if (rsp.assetsChanged()) {
             runDyhiAndTaxons()
         }
         return rsp

@@ -100,16 +100,22 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean {
-        val updated =  jdbc.update(INC_STATS,
-                counts.total, counts.created, counts.warnings, counts.errors, counts.replaced, task.taskId) == 1
+        val updated = jdbc.update(INC_STATS,
+                counts.total,
+                counts.createdAssetIds.size,
+                counts.warningAssetIds.size,
+                counts.erroredAssetIds.size,
+                counts.replacedAssetIds.size,
+                task.taskId) == 1
 
-        logger.event("updated TaskAssetStats",
-                mapOf("taskId" to task.taskId,
-                    "assetsCreated" to counts.created,
-                    "assetsWarned" to counts.warnings,
-                    "assetErrors" to counts.errors,
-                    "assetsReplaced" to counts.replaced,
-                    "status" to updated))
+        if (updated) {
+            logger.event("updated TaskAssetStats",
+                    mapOf("taskId" to task.taskId,
+                            "assetsCreated" to counts.createdAssetIds.size,
+                            "assetsWarned" to counts.warningAssetIds.size,
+                            "assetErrors" to counts.erroredAssetIds.size,
+                            "assetsReplaced" to counts.replacedAssetIds.size))
+        }
         return updated
     }
 

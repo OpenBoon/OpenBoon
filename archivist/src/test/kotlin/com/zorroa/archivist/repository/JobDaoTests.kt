@@ -85,20 +85,19 @@ class JobDaoTests : AbstractTest() {
                 env=mutableMapOf("foo" to "bar"))
 
         val job1 = jobDao.create(spec, PipelineType.Import)
-        val counts = BatchCreateAssetsResponse()
-        counts.created = 1
-        counts.replaced = 2
-        counts.errors = 3
-        counts.warnings = 4
-        counts.total = 11
+        val counts = BatchCreateAssetsResponse(6)
+        counts.createdAssetIds.add("foo")
+        counts.replacedAssetIds.addAll(listOf("foo", "bar"))
+        counts.erroredAssetIds.addAll(listOf("foo", "bar", "bing"))
+        counts.warningAssetIds.addAll(listOf("foo", "bar", "bing", "bang"))
         assertTrue(jobDao.incrementAssetStats(job1, counts))
 
         val map = jdbc.queryForMap("SELECT * FROM job_stat WHERE pk_job=?", job1.id)
         print(map)
-        assertEquals(counts.created, map["int_asset_create_count"])
-        assertEquals(counts.replaced, map["int_asset_replace_count"])
-        assertEquals(counts.errors, map["int_asset_error_count"])
-        assertEquals(counts.warnings, map["int_asset_warning_count"])
+        assertEquals(counts.createdAssetIds.size, map["int_asset_create_count"])
+        assertEquals(counts.replacedAssetIds.size, map["int_asset_replace_count"])
+        assertEquals(counts.erroredAssetIds.size, map["int_asset_error_count"])
+        assertEquals(counts.warningAssetIds.size, map["int_asset_warning_count"])
         assertEquals(counts.total, map["int_asset_total_count"])
     }
 

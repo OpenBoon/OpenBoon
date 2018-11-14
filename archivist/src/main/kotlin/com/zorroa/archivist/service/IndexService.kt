@@ -1,13 +1,14 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableSet
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.service.AbstractAssetService.Companion.PROTECTED_NAMESPACES
 import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.ArchivistWriteException
@@ -18,7 +19,6 @@ import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -71,7 +71,7 @@ interface IndexService {
      * @param attrs
      * @return
      */
-    fun update(assetId: String, attrs: Map<String, Any>): Long
+    fun update(assetId: String, attrs: Map<String, Any>): Document
 
     fun delete(assetId: String): Boolean
 
@@ -81,6 +81,7 @@ interface IndexService {
 @Component
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
+        private val auditLogDao: AuditLogDao,
         private val fileServerProvider: FileServerProvider,
         private val fileStorageService: FileStorageService
 
@@ -125,8 +126,8 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun index(doc: Document): Document {
-        val result = index(listOf(doc))
-        return indexDao.get(result.assetIds[0])
+        index(listOf(doc))
+        return indexDao.get(doc.id)
     }
 
     override fun index(assets: List<Document>): BatchCreateAssetsResponse {
@@ -141,12 +142,15 @@ class IndexServiceImpl  @Autowired  constructor (
          * the proper value.
          */
 
-        return indexDao.index(assets)
+        val result = indexDao.index(assets)
+        auditLogDao.batchCreate(result.createdAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Created) })
+        auditLogDao.batchCreate(result.replacedAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Replaced) })
+        return result
     }
 
     override fun removeFields(id: String, fields: MutableSet<String>) {
         // remove fields from list the can't remove.
-        fields.removeAll(NS_PROTECTED_API)
+        fields.removeAll(PROTECTED_NAMESPACES)
         indexDao.removeFields(id, fields, false)
     }
 
@@ -166,7 +170,7 @@ class IndexServiceImpl  @Autowired  constructor (
         return indexDao.exists(id)
     }
 
-    override fun update(assetId: String, attrs: Map<String, Any>): Long {
+    override fun update(assetId: String, attrs: Map<String, Any>): Document {
 
         val asset = indexDao[assetId]
         val write = asset.getAttr("system.permissions.write", Json.SET_OF_UUIDS)
@@ -175,12 +179,17 @@ class IndexServiceImpl  @Autowired  constructor (
             throw ArchivistWriteException("You cannot make changes to this asset.")
         }
 
-        val copy = attrs.toMutableMap()
         /**
-         * Remove keys which are maintained via other methods.
+         * Make a copy and remove fields which are maintained via other methods.
          */
-        NS_PROTECTED_API.forEach { n -> copy.remove(n) }
-        return indexDao.update(assetId, copy)
+        val copy = attrs.toMutableMap()
+        PROTECTED_NAMESPACES.forEach { n -> copy.remove(n) }
+
+        val result = indexDao.update(assetId, copy)
+        auditLogDao.batchCreate(
+                attrs.map { AuditLogEntrySpec(assetId, AuditLogType.Changed, field = it.key, value = it.value) })
+
+        return result
     }
 
     /**
@@ -214,6 +223,11 @@ class IndexServiceImpl  @Autowired  constructor (
              */
             val docs = hits.hits.map { Document(it.id, it.sourceAsMap) }
             val batchRsp = indexDao.batchDelete(docs)
+
+            auditLogDao.batchCreate(batchRsp.success.map {
+                AuditLogEntrySpec(it, AuditLogType.Deleted)
+            })
+
             // add the batch results to the overall result.
             rsp.plus(batchRsp)
 
@@ -232,8 +246,13 @@ class IndexServiceImpl  @Autowired  constructor (
         if (!hasPermission("write", doc)) {
             throw ArchivistWriteException("delete access denied")
         }
+
+        val result = indexDao.delete(assetId)
         deleteAssociatedFiles(doc)
-        return indexDao.delete(assetId)
+        if (result) {
+            auditLogDao.create(AuditLogEntrySpec(assetId, AuditLogType.Deleted))
+        }
+        return result
     }
 
     fun deleteAssociatedFiles(doc: Document) {
@@ -260,13 +279,6 @@ class IndexServiceImpl  @Autowired  constructor (
     companion object {
 
         private val logger = LoggerFactory.getLogger(IndexServiceImpl::class.java)
-
-        /**
-         * Namespaces that are only populated via the API.  IF people manipulate these
-         * wrong via the asset API then it would corrupt the asset.
-         */
-        private val NS_PROTECTED_API = ImmutableSet.of(
-                "zorroa", "tmp")
     }
 
 }

@@ -48,7 +48,6 @@ class AuditLogDaoTests : AbstractTest() {
 
     }
 
-
     @Test
     fun testBatchCreate() {
         val specs = mutableListOf<AuditLogEntrySpec>()
@@ -62,6 +61,20 @@ class AuditLogDaoTests : AbstractTest() {
 
         assertEquals(10, auditLogDao.batchCreate(specs))
         assertEquals(10, jdbc.queryForObject("SELECT COUNT(1) FROM auditlog", Int::class.java))
+    }
 
+    @Test
+    fun testCount() {
+        val specs = mutableListOf<AuditLogEntrySpec>()
+        val assetId = "D585D35C-AF3D-4AEB-A78F-42C61C1077CB"
+        for (i in 1..10) {
+            specs.add(AuditLogEntrySpec(
+                    UUID.fromString(assetId),
+                    AuditLogType.Changed,
+                    field="irm.documentType",
+                    value="cat"))
+        }
+        assertEquals(10, auditLogDao.batchCreate(specs))
+        assertEquals(10, auditLogDao.count(assetId))
     }
 }

@@ -29,7 +29,12 @@ enum class AuditLogType {
     /**
      * A field on an asset changed in some way.
      */
-    Changed
+    Changed,
+
+    /**
+     * A Warning message concerning the asset.
+     */
+    Warning
 }
 
 class AuditLogEntry(
@@ -51,3 +56,11 @@ class AuditLogEntrySpec(
         val field: String?=null,
         val value: Any?=null
 )
+{
+    constructor(assetId: String,
+                type: AuditLogType,
+                message: String?=null,
+                field: String?=null,
+                value: Any?=null) :
+            this(UUID.fromString(assetId), type, message, field, value)
+}

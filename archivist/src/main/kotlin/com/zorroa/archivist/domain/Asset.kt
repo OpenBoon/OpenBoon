@@ -29,38 +29,39 @@ class BatchCreateAssetsRequest(
 
 /**
  * The response after batch creating an array of assets.
+ * @property createdAssetIds An array of asset ids that were created.
+ * @property replacedAssetIds An array of asset ids that were replaced.
+ * @property erroredAssetIds An array of asset ids that were an error and were not added.
+ * @property warningAssetIds Asset IDs with a field warning.
+ * @property retryCount Number of retries it took to get this batch through.
  */
-class BatchCreateAssetsResponse {
-    var tried = 0
-    var created = 0
-    var replaced = 0
-    var warnings = 0
-    var retries = 0
-    var errors = 0
-    var total = 0
-    var logs: MutableList<String> = mutableListOf()
-    var assetIds: MutableList<String> = mutableListOf()
+class BatchCreateAssetsResponse(val total: Int) {
+    var createdAssetIds = mutableListOf<String>()
+    var replacedAssetIds  = mutableListOf<String>()
+    var erroredAssetIds  = mutableListOf<String>()
+    var warningAssetIds = mutableListOf<String>()
+    var retryCount = 0
 
     fun add(other: BatchCreateAssetsResponse): BatchCreateAssetsResponse {
-        tried += other.tried
-        created += other.created
-        replaced += other.replaced
-        warnings += other.warnings
-        errors += other.errors
-        retries += other.retries
-        logs.addAll(other.logs)
-        assetIds.addAll(other.assetIds)
+        createdAssetIds.addAll(other.createdAssetIds)
+        replacedAssetIds.addAll(other.replacedAssetIds)
+        erroredAssetIds.addAll(other.erroredAssetIds)
+        warningAssetIds.addAll(other.warningAssetIds)
+        retryCount += other.retryCount
         return this
+    }
+
+    fun assetsChanged() : Boolean {
+        return createdAssetIds.isNotEmpty() || replacedAssetIds.isNotEmpty()
     }
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-                .add("tried", tried)
-                .add("created", created)
-                .add("replaced", replaced)
-                .add("warnings", warnings)
-                .add("errors", errors)
-                .add("retries", retries)
+                .add("created", createdAssetIds.size)
+                .add("replaced", replacedAssetIds.size)
+                .add("warnings", warningAssetIds)
+                .add("errors", erroredAssetIds.size)
+                .add("retries", retryCount)
                 .toString()
     }
 }
