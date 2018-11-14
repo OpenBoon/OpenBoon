@@ -12,7 +12,6 @@ import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import org.slf4j.Logger
@@ -37,6 +36,9 @@ interface AssetService {
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
+    fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
+    fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
+
 }
 
 /**
@@ -50,13 +52,10 @@ class PreppedAssets(
         val auditLogs: List<AuditLogEntrySpec>)
 
 
-open class AbstractAssetService {
+open abstract class AbstractAssetService : AssetService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
-
-    @Autowired
-    lateinit var assetDao: AssetDao
 
     @Autowired
     lateinit var auditLogDao: AuditLogDao
@@ -76,7 +75,6 @@ open class AbstractAssetService {
     @Autowired
     lateinit var jobService: JobService
 
-
     /**
      * Prepare a list of assets to be replaced or replaced.  Handles:
      *
@@ -94,20 +92,28 @@ open class AbstractAssetService {
      * @param assets The list of assets to prepare
      * @return PreppedAssets
      */
-    fun prepAssets(assets: List<Document>) : PreppedAssets  {
+    fun prepAssets(req: BatchCreateAssetsRequest) : PreppedAssets  {
+        logger.info("prep skip: {}", req.skipAssetPrep)
+        if (req.skipAssetPrep) {
+            return PreppedAssets(req.sources, listOf())
+        }
 
-        val existingDocs = assetDao.getMap(assets.map{it.id})
+        val assets = req.sources
         val orgId = getOrgId()
         val defaultPermissions = Json.Mapper.convertValue<Map<String,Any>>(
                 permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP)
         val watchedFields = properties.getList("archivist.auditlog.watched-fields")
         val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
-        logger.info("Prepping ${assets.size} assets, pulled ${existingDocs.size} existing assets. ")
+        logger.info("Prepping ${assets.size} assets")
 
         return PreppedAssets(assets.map { newSource->
 
-            val existingSource : Document = existingDocs.getOrDefault(newSource.id, Document(newSource.id))
+            val existingSource : Document = try {
+                get(newSource.id)
+            } catch (e: Exception) {
+                Document(newSource.id)
+            }
 
             /**
              * Remove parts protected by API.
@@ -123,7 +129,6 @@ open class AbstractAssetService {
 
             if (watchedFields.isNotEmpty()) {
                 watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
-                println(watchedFields.size)
             }
 
              newSource
@@ -205,7 +210,7 @@ open class AbstractAssetService {
                 links = LinkSchema()
             }
             newAsset.links?.forEach {
-                links.addLink(it.left, it.right)
+                links.addLink(it.left, it.right.toString())
             }
             newAsset.setAttr("system.links", links)
         }
@@ -351,13 +356,13 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     }
 
     override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
-        val prepped = prepAssets(spec.sources)
+        val prepped = prepAssets(spec)
         cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped.assets)
         return indexAssets(spec, prepped)
     }
 
     override fun createOrReplace(doc: Document) : Document {
-        val prepped = prepAssets(listOf(doc))
+        val prepped = prepAssets(BatchCreateAssetsRequest(listOf(doc)))
         cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped.assets)
         indexAssets(null, prepped)
         return get(doc.id)
@@ -386,6 +391,14 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
             throw ArchivistSecurityException("Invalid company Id")
         }
     }
+
+    override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 @Transactional
@@ -393,6 +406,9 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     @Autowired
     lateinit var searchService: SearchService
+
+    @Autowired
+    lateinit var assetDao: AssetDao
 
     override fun get(assetId: String): Document {
         return assetDao.get(assetId)
@@ -423,7 +439,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
          * We have to do this backwards here because we're relying on ES to
          * merge existing docs and updates together.
          */
-        val prepped = prepAssets(spec.sources)
+        val prepped = prepAssets(spec)
         val txResult  = assetDao.batchCreateOrReplace(prepped.assets)
 
         if (txResult != prepped.assets.size) {
@@ -436,7 +452,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
     }
 
     override fun createOrReplace(doc: Document): Document {
-        val prepped = prepAssets(listOf(doc))
+        val prepped = prepAssets(BatchCreateAssetsRequest(listOf(doc)))
         assetDao.createOrReplace(prepped.assets[0])
         indexAssets(null, prepped)
         return prepped.assets[0]
@@ -452,6 +468,50 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         assetDao.createOrReplace(updated)
         runDyhiAndTaxons()
         return asset
+    }
+
+    override fun removeLinks(type: LinkType, target: UUID, assets: List<String>) : ModifyLinksResponse {
+        val result = ModifyLinksResponse()
+        val req = BatchCreateAssetsRequest(assetDao.getMap(assets).map {
+            val doc = it.value
+            var links = doc.getAttr("system.links", LinkSchema::class.java)
+            if (links.isEmpty()) {
+                return result
+            }
+            if (links.removeLink(type, target)) {
+                result.success.add(it.key)
+            }
+            else {
+                result.failed.add(it.key)
+            }
+            doc.setAttr("system.links", links)
+            it.value
+        })
+        req.skipAssetPrep = true
+        batchCreateOrReplace(req)
+        return result
+    }
+
+    override fun addLinks(type: LinkType, target: UUID, assets: List<String>) : ModifyLinksResponse {
+        val result = ModifyLinksResponse()
+        val req = BatchCreateAssetsRequest(assetDao.getMap(assets).map {
+            val doc = it.value
+            var links : LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
+            if (links == null) {
+                links = LinkSchema()
+            }
+            if (links.addLink(type, target)) {
+                result.success.add(it.key)
+            }
+            else {
+                result.failed.add(it.key)
+            }
+            doc.setAttr("system.links", links)
+            it.value
+        })
+        req.skipAssetPrep = true
+        batchCreateOrReplace(req)
+        return result
     }
 }
 

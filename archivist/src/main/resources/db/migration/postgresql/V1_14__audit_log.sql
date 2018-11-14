@@ -38,4 +38,3 @@ CREATE INDEX auditlog_pk_user_created_idx on auditlog (pk_user_created);
 CREATE INDEX auditlog_time_created_idx on auditlog (time_created);
 CREATE INDEX auditlog_int_type_idx on auditlog (int_type);
 CREATE INDEX auditlog_str_field_idx on auditlog (str_field);
-

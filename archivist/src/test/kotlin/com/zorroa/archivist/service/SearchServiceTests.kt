@@ -18,10 +18,10 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 import java.io.IOException
-import java.util.ArrayList
 
 import com.zorroa.archivist.security.getPermissionsFilter
 import org.junit.Assert.*
+import java.util.*
 
 /**
  * Created by chambers on 10/30/15.
@@ -411,8 +411,8 @@ class SearchServiceTests : AbstractTest() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("zooland"))
-        source.addToLinks("folder", "abc123")
-        source.addToLinks("folder", "abc456")
+        source.addToLinks("folder", UUID.randomUUID())
+        source.addToLinks("folder", UUID.randomUUID())
         assetService.createOrReplace(source)
         refreshIndex()
 

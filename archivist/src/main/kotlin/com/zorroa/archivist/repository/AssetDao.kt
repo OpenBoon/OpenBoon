@@ -83,6 +83,9 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
     }
 
     override fun getMap(ids: List<String>): Map<String, Document> {
+        if (ids.isEmpty()) {
+            return emptyMap()
+        }
         val where = inClause("pk_asset", ids.size, "uuid")
         val values = mutableListOf<Any>()
         values.add(getOrgId())

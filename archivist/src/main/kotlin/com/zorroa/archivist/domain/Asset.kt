@@ -17,11 +17,16 @@ import java.util.regex.Pattern
  * @property sources: The source documents
  * @property jobId: The associated job Id
  * @property taskID: The associated task Id
+ * @property skipAssetPrep: Skip over asset prep stage during create.
  */
 class BatchCreateAssetsRequest(
         val sources: List<Document>,
         val jobId: UUID?,
         val taskId: UUID?) {
+
+
+    @JsonIgnore
+    var skipAssetPrep = false
 
     constructor( sources: List<Document>) : this(sources, null, null)
 }
@@ -51,8 +56,18 @@ class BatchCreateAssetsResponse(val total: Int) {
         return this
     }
 
+    /**
+     * Return true if assets were created or replaced.
+     */
     fun assetsChanged() : Boolean {
         return createdAssetIds.isNotEmpty() || replacedAssetIds.isNotEmpty()
+    }
+
+    /**
+     * The total number of assets either created or replaced
+     */
+    fun totalAssetsChanged() : Int {
+        return createdAssetIds.size + replacedAssetIds.size
     }
 
     override fun toString(): String {

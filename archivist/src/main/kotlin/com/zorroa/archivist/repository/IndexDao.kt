@@ -207,7 +207,7 @@ class IndexDaoImpl @Autowired constructor(
     private fun prepareInsert(source: Document): IndexRequest {
         val rest = getClient()
         val idx = rest.newIndexRequest(source.id)
-                .opType( DocWriteRequest.OpType.INDEX)
+                .opType(DocWriteRequest.OpType.INDEX)
                 .source(Json.serialize(source.document), XContentType.JSON)
         return idx
     }
@@ -344,7 +344,7 @@ class IndexDaoImpl @Autowired constructor(
         for (br in bulk.items) {
             when {
                 br.isFailed -> {
-                    logger.warnEvent("batcDelete Asset", br.failureMessage,
+                    logger.warnEvent("batchDelete Asset", br.failureMessage,
                             mapOf("assetId" to br.id, "index" to br.index))
                     rsp.failures[br.id] = br.failureMessage
                 }

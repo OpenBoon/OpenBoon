@@ -16,11 +16,6 @@ class AuditLogDaoTests : AbstractTest() {
     @Autowired
     lateinit var auditLogDao : AuditLogDao
 
-    @Before
-    fun init() {
-
-    }
-
     @Test
     fun testCreateNoField() {
         val spec = AuditLogEntrySpec(
