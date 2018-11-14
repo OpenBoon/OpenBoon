@@ -297,6 +297,18 @@ open class AbstractAssetService {
         }
     }
 
+    fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets) : BatchCreateAssetsResponse {
+        val rsp = indexService.index(prepped.assets)
+        if (req != null) {
+            incrementJobCounters(req, rsp)
+        }
+        if (rsp.assetsChanged()) {
+            auditLogChanges(prepped, rsp)
+            runDyhiAndTaxons()
+        }
+        return rsp
+    }
+
     companion object {
 
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
@@ -341,21 +353,13 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
         val prepped = prepAssets(spec.sources)
         cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped.assets)
-        val result = indexService.index(prepped.assets)
-        incrementJobCounters(spec, result)
-        if (result.assetsChanged()) {
-            auditLogChanges(prepped, result)
-            runDyhiAndTaxons()
-        }
-        return result
+        return indexAssets(spec, prepped)
     }
 
     override fun createOrReplace(doc: Document) : Document {
         val prepped = prepAssets(listOf(doc))
         cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped.assets)
-        val result = indexService.index(prepped.assets)
-        auditLogChanges(prepped, result)
-        runDyhiAndTaxons()
+        indexAssets(null, prepped)
         return get(doc.id)
     }
 
@@ -428,23 +432,14 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
                     mapOf())
         }
 
-        val rsp = indexService.index(prepped.assets)
-        incrementJobCounters(spec, rsp)
-        if (rsp.assetsChanged()) {
-            auditLogChanges(prepped, rsp)
-            runDyhiAndTaxons()
-        }
-        return rsp
+        return indexAssets(spec, prepped)
     }
 
     override fun createOrReplace(doc: Document): Document {
         val prepped = prepAssets(listOf(doc))
         assetDao.createOrReplace(prepped.assets[0])
-        val rsp = indexService.index(prepped.assets)
-        val result =  prepped.assets[0]
-        auditLogChanges(prepped, rsp)
-        runDyhiAndTaxons()
-        return result
+        indexAssets(null, prepped)
+        return prepped.assets[0]
     }
 
     override fun update(assetId: String, attrs: Map<String, Any>) : Document {
