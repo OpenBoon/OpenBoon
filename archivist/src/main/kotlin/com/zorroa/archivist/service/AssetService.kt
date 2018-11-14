@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
+import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
@@ -14,6 +15,7 @@ import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.LinkSchema
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
@@ -29,13 +31,23 @@ import java.util.*
  * the full doc, we could switch this behavior.
  */
 interface AssetService {
-    fun getDocument(assetId: String): Document
+    fun get(assetId: String): Document
     fun delete(assetId: String): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
 }
+
+/**
+ * PreppedAssets is the result of preparing assets to be indexed.
+ *
+ * @property assets a list of assets prepped and ready to be ingested.
+ * @property auditLogs uncommitted field change logs detected for each asset
+ */
+class PreppedAssets(
+        val assets: List<Document>,
+        val auditLogs: List<AuditLogEntrySpec>)
 
 
 open class AbstractAssetService {
@@ -45,6 +57,9 @@ open class AbstractAssetService {
 
     @Autowired
     lateinit var assetDao: AssetDao
+
+    @Autowired
+    lateinit var auditLogDao: AuditLogDao
 
     @Autowired
     lateinit var permissionDao: PermissionDao
@@ -58,79 +73,162 @@ open class AbstractAssetService {
     @Autowired
     lateinit var taxonomyService: TaxonomyService
 
-    fun prepAssets(assets: List<Document>) : List<Document>  {
+    @Autowired
+    lateinit var jobService: JobService
+
+
+    /**
+     * Prepare a list of assets to be replaced or replaced.  Handles:
+     *
+     * - Removing tmp/system namespaces
+     * - Applying the organization Id
+     * - Applying modified / created times
+     * - Applying default permissions
+     * - Applying links
+     * - Detecting changes and watched fields
+     *
+     * Return a PreppedAssets object which contains the updated assets as well as
+     * the field change audit logs.  The audit logs for successful assets are
+     * added to the audit log table.
+     *
+     * @param assets The list of assets to prepare
+     * @return PreppedAssets
+     */
+    fun prepAssets(assets: List<Document>) : PreppedAssets  {
 
         val existingDocs = assetDao.getMap(assets.map{it.id})
         val orgId = getOrgId()
         val defaultPermissions = Json.Mapper.convertValue<Map<String,Any>>(
                 permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP)
+        val watchedFields = properties.getList("archivist.auditlog.watched-fields")
+        val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
-        return assets.map { source->
+        logger.info("Prepping ${assets.size} assets, pulled ${existingDocs.size} existing assets. ")
 
-            val existingSource : Document = existingDocs.getOrDefault(source.id, Document(source.id))
+        return PreppedAssets(assets.map { newSource->
+
+            val existingSource : Document = existingDocs.getOrDefault(newSource.id, Document(newSource.id))
+
             /**
              * Remove parts protected by API.
              */
-            PROTECTED_NAMESPACES.forEach { n -> source.removeAttr(n) }
+            PROTECTED_NAMESPACES.forEach { n -> newSource.removeAttr(n) }
 
-            source.setAttr("system.organizationId", orgId)
+            newSource.setAttr("system.organizationId", orgId)
 
-            handleTimes(existingSource, source)
-            handleHold(existingSource, source)
-            handlePermissions(existingSource, source, defaultPermissions)
-            handleLinks(source, existingSource)
+            handleTimes(existingSource, newSource)
+            handleHold(existingSource, newSource)
+            handlePermissions(existingSource, newSource, defaultPermissions)
+            handleLinks(existingSource, newSource)
 
-             source
-         }
+            if (watchedFields.isNotEmpty()) {
+                watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
+                println(watchedFields.size)
+            }
+
+             newSource
+         }, watchedFieldsLogs)
     }
 
-    private fun handleTimes(existingSource: Document, source: Document) {
+    /**
+     * Detects if there are value changes on a watched field and returns them as a list of AuditLogEntrySpec
+     *
+     * @param fields the list of fields to watch
+     * @param oldAsset the original asset
+     * @param newAsset the new asset
+     * @return a list of AuditLogEntrySpec to describe the changes
+     */
+    private fun handleWatchedFieldChanges(fields: List<String>, oldAsset: Document, newAsset: Document): List<AuditLogEntrySpec> {
+        return fields.map {
+            if (oldAsset == null && newAsset.attrExists(it)) {
+                AuditLogEntrySpec(
+                        oldAsset.id,
+                        AuditLogType.Changed,
+                        field=it,
+                        value=newAsset.getAttr(it))
+            }
+            else if (oldAsset.getAttr(it, Any::class.java) != newAsset.getAttr(it, Any::class.java)) {
+                AuditLogEntrySpec(
+                        oldAsset.id,
+                        AuditLogType.Changed,
+                        field=it,
+                        value=newAsset.getAttr(it))
+            }
+            else {
+                null
+            }
+        }.filterNotNull()
+    }
+
+    /**
+     * Handles updating the system.timeCreated and system.timeModified fields.
+     *
+     * @param oldAsset the original asset
+     * @param newAsset the new asset
+     */
+    private fun handleTimes(oldAsset: Document, newAsset: Document) {
         /**
          * Update created and modified times.
          */
         val time = Date()
 
-        if (existingSource.attrExists("system.timeCreated")) {
-            source.setAttr("system.timeModified", time)
+        if (oldAsset.attrExists("system.timeCreated")) {
+            newAsset.setAttr("system.timeModified", time)
         } else {
-            source.setAttr("system.timeModified", time)
-            source.setAttr("system.timeCreated", time)
+            newAsset.setAttr("system.timeModified", time)
+            newAsset.setAttr("system.timeCreated", time)
         }
     }
 
-    private fun handleHold(existingSource: Document, source: Document) {
-        var hold: Any? = existingSource.getAttr("system.hold", Any::class.java)
-        if (hold != null) {
-            source.setAttr("system.hold", hold)
+    /**
+     * Handles re-applying the hold if any.
+     *
+     * @param oldAsset the original asset
+     * @param newAsset the new asset
+     */
+    private fun handleHold(oldAsset: Document, newAsset: Document) {
+        if (oldAsset.attrExists("system.hold")) {
+            newAsset.setAttr("system.hold", oldAsset.getAttr("system.hold"))
         }
     }
 
-    private fun handleLinks(source: Document, existingSource: Document) {
-        if (source.links != null) {
-            var links = existingSource.getAttr("system.links", LinkSchema::class.java)
+    /**
+     * Handles checking the new asset for links and merging then with links from old asset.
+     *
+     * @param oldAsset the original asset
+     * @param newAsset the new asset
+     */
+    private fun handleLinks(oldAsset: Document, newAsset: Document) {
+        if (newAsset.links != null) {
+            var links = oldAsset.getAttr("system.links", LinkSchema::class.java)
             if (links == null) {
                 links = LinkSchema()
             }
-            source.links?.forEach {
+            newAsset.links?.forEach {
                 links.addLink(it.left, it.right)
             }
-            source.setAttr("system.links", links)
+            newAsset.setAttr("system.links", links)
         }
     }
 
-    private fun handlePermissions(existingSource: Document, source: Document, defaultPermissions: Map<String, Any>?) {
-        /**
-         * Handle permissions assigned from processing.
-         */
-        var existingPerms = existingSource.getAttr("system.permissions",
+    /**
+     * Handles checking the new asset for permissions and merging them with old asset.
+     *
+     * @param oldAsset the original asset
+     * @param newAsset the new asset
+     * @param defaultPermissions The default permissions as set in application.properties
+     */
+    private fun handlePermissions(oldAsset: Document, newAsset: Document, defaultPermissions: Map<String, Any>?) {
+
+        var existingPerms = oldAsset.getAttr("system.permissions",
                 PermissionSchema::class.java)
 
         if (existingPerms == null) {
             existingPerms = PermissionSchema()
         }
 
-        if (source.permissions != null) {
-            source.permissions?.forEach {
+        if (newAsset.permissions != null) {
+            newAsset.permissions?.forEach {
                 val key = it.key
                 val value = it.value
                 try {
@@ -156,7 +254,7 @@ open class AbstractAssetService {
                     logger.warn("Permission not found: {}", key)
                 }
             }
-            source.setAttr("system.permissions",
+            newAsset.setAttr("system.permissions",
                     Json.Mapper.convertValue<Map<String, Any>>(existingPerms, Json.GENERIC_MAP))
 
         } else if (existingPerms.isEmpty) {
@@ -164,20 +262,45 @@ open class AbstractAssetService {
              * If the source didn't come with any permissions and the current perms
              * on the asset are empty, we apply the default permissions.
              */
-            source.setAttr("system.permissions", defaultPermissions)
+            newAsset.setAttr("system.permissions", defaultPermissions)
         }
     }
 
+    /**
+     * Apply the watched field audit logs for any asset that was created or replaced.
+     */
+    fun auditLogChanges(prepped: PreppedAssets, rsp: BatchCreateAssetsResponse) {
+        auditLogDao.batchCreate(prepped.auditLogs.filter {
+            val strId = it.assetId.toString()
+            strId in rsp.createdAssetIds || strId in rsp.replacedAssetIds
+        })
+        // Create audit logs for created and replaced entries.
+        auditLogDao.batchCreate(rsp.createdAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Created) })
+        auditLogDao.batchCreate(rsp.replacedAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Replaced) })
+    }
+
+    /**
+     * Run Dyhis and taxons. This should be called if assets are added, removed, or updated.
+     */
     fun runDyhiAndTaxons() {
         dyHierarchyService.submitGenerateAll(true)
         taxonomyService.runAllAsync()
     }
 
+    /**
+     * Increment any job counters for index requests coming from the job system.
+     */
+    fun incrementJobCounters(req: BatchCreateAssetsRequest, rsp: BatchCreateAssetsResponse) {
+        req.taskId?.let {
+            val task = jobService.getTask(it)
+            jobService.incrementAssetCounts(task, rsp)
+        }
+    }
+
     companion object {
 
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
-
-        val logger = LoggerFactory.getLogger(AbstractAssetService::class.java)
+        val logger : Logger = LoggerFactory.getLogger(AbstractAssetService::class.java)
     }
 
 }
@@ -188,7 +311,7 @@ open class AbstractAssetService {
  */
 class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
 
-    override fun getDocument(assetId: String): Document {
+    override fun get(assetId: String): Document {
         return cdvClient.getIndexedMetadata(getCompanyId(), assetId)
     }
 
@@ -217,9 +340,11 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
 
     override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
         val prepped = prepAssets(spec.sources)
-        cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped)
-        val result = indexService.index(prepped)
+        cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped.assets)
+        val result = indexService.index(prepped.assets)
+        incrementJobCounters(spec, result)
         if (result.assetsChanged()) {
+            auditLogChanges(prepped, result)
             runDyhiAndTaxons()
         }
         return result
@@ -227,10 +352,11 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
 
     override fun createOrReplace(doc: Document) : Document {
         val prepped = prepAssets(listOf(doc))
-        cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped)
-        indexService.index(prepped)
+        cdvClient.batchUpdateIndexedMetadata(getCompanyId(), prepped.assets)
+        val result = indexService.index(prepped.assets)
+        auditLogChanges(prepped, result)
         runDyhiAndTaxons()
-        return prepped[0]
+        return get(doc.id)
     }
 
     override fun update(assetId: String, attrs: Map<String, Any>): Document {
@@ -239,7 +365,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("update access denied")
         }
-        val updated = indexService.update(assetId, attrs)
+        val updated = indexService.update(asset, attrs)
         cdvClient.updateIndexedMetadata(getCompanyId(), assetId, updated)
         runDyhiAndTaxons()
         return updated
@@ -264,12 +390,8 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
     @Autowired
     lateinit var searchService: SearchService
 
-    @Autowired
-    lateinit var jobService: JobService
-
-
-    override fun getDocument(assetId: String): Document {
-        return indexService.get(assetId)
+    override fun get(assetId: String): Document {
+        return assetDao.get(assetId)
     }
 
     override fun delete(id: String): Boolean {
@@ -298,21 +420,18 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
          * merge existing docs and updates together.
          */
         val prepped = prepAssets(spec.sources)
-        val txResult  = assetDao.batchCreateOrReplace(prepped)
+        val txResult  = assetDao.batchCreateOrReplace(prepped.assets)
 
-        if (txResult != prepped.size) {
+        if (txResult != prepped.assets.size) {
             logger.warnEvent("batchUpsert Asset",
                     "Number of assets indexed did not match number in DB.",
                     mapOf())
         }
 
-        val rsp = indexService.index(prepped)
-        spec.taskId?.let {
-            val task = jobService.getTask(it)
-            jobService.incrementAssetCounts(task, rsp)
-        }
-
+        val rsp = indexService.index(prepped.assets)
+        incrementJobCounters(spec, rsp)
         if (rsp.assetsChanged()) {
+            auditLogChanges(prepped, rsp)
             runDyhiAndTaxons()
         }
         return rsp
@@ -320,21 +439,21 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     override fun createOrReplace(doc: Document): Document {
         val prepped = prepAssets(listOf(doc))
-        assetDao.createOrReplace(prepped[0])
-        indexService.index(prepped)
-        val result =  prepped[0]
+        assetDao.createOrReplace(prepped.assets[0])
+        val rsp = indexService.index(prepped.assets)
+        val result =  prepped.assets[0]
+        auditLogChanges(prepped, rsp)
         runDyhiAndTaxons()
         return result
     }
 
     override fun update(assetId: String, attrs: Map<String, Any>) : Document {
-        val asset = indexService.get(assetId)
+        val asset = get(assetId)
         if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("update access denied")
         }
 
-        indexService.update(assetId, attrs)
-        val updated = indexService.get(assetId)
+        val updated = indexService.update(asset, attrs)
         assetDao.createOrReplace(updated)
         runDyhiAndTaxons()
         return asset

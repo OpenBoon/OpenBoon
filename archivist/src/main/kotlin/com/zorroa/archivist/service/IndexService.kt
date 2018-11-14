@@ -13,7 +13,6 @@ import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.util.Json
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
@@ -22,7 +21,9 @@ import org.springframework.stereotype.Component
 import java.nio.file.Path
 import java.nio.file.Paths
 
-
+/**
+ * The IndexService is responsible for the business logic around asset CRUD and batch operations.
+ */
 interface IndexService {
 
     fun getMapping(): Map<String, Any>
@@ -31,22 +32,8 @@ interface IndexService {
 
     fun get(path: Path): Document
 
-    /**
-     * Return the proxy schema for the given asset.  If the asset does not have a proxy
-     * schema, check to see if it has children and choose the first child.
-     *
-     * If there is no proxy schema anywhere, return an empty one.
-     *
-     * @param id
-     * @return
-     */
     fun getProxies(id: String): ProxySchema
 
-    /**
-     * Fetch the first page of assets.
-     *
-     * @return
-     */
     fun getAll(page: Pager): PagedList<Document>
 
     fun index(assets: List<Document>): BatchCreateAssetsResponse
@@ -63,15 +50,7 @@ interface IndexService {
 
     fun exists(id: String): Boolean
 
-    /**
-     * Update the given assetId with the supplied Map of attributes.  Return
-     * the new version number of the asset.
-     *
-     * @param id
-     * @param attrs
-     * @return
-     */
-    fun update(assetId: String, attrs: Map<String, Any>): Document
+    fun update(doc: Document, attrs: Map<String, Any>): Document
 
     fun delete(assetId: String): Boolean
 
@@ -94,12 +73,12 @@ class IndexServiceImpl  @Autowired  constructor (
         return if (id.startsWith("/")) {
             get(Paths.get(id))
         } else {
-            indexDao[id]
+            indexDao.get(id)
         }
     }
 
     override fun get(path: Path): Document {
-        return indexDao[path]
+        return indexDao.get(path)
     }
 
     override fun getProxies(id: String): ProxySchema {
@@ -131,21 +110,7 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun index(assets: List<Document>): BatchCreateAssetsResponse {
-
-        /**
-         * Clear out any protected name spaces, this lets us ensure people
-         * can't manipulate them with the attr API.
-         *
-         * There is no guarantee the document is the full document, so we can't
-         * modify the permissions/links right here since the might not exist,
-         * and if they do exist we'll remove them so they don't overwrite
-         * the proper value.
-         */
-
-        val result = indexDao.index(assets)
-        auditLogDao.batchCreate(result.createdAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Created) })
-        auditLogDao.batchCreate(result.replacedAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Replaced) })
-        return result
+        return indexDao.index(assets)
     }
 
     override fun removeFields(id: String, fields: MutableSet<String>) {
@@ -170,26 +135,30 @@ class IndexServiceImpl  @Autowired  constructor (
         return indexDao.exists(id)
     }
 
-    override fun update(assetId: String, attrs: Map<String, Any>): Document {
-
-        val asset = indexDao[assetId]
-        val write = asset.getAttr("system.permissions.write", Json.SET_OF_UUIDS)
-
-        if (!hasPermission(write)) {
-            throw ArchivistWriteException("You cannot make changes to this asset.")
-        }
-
+    override fun update(doc: Document, attrs: Map<String, Any>): Document {
         /**
          * Make a copy and remove fields which are maintained via other methods.
          */
-        val copy = attrs.toMutableMap()
-        PROTECTED_NAMESPACES.forEach { n -> copy.remove(n) }
-
-        val result = indexDao.update(assetId, copy)
-        auditLogDao.batchCreate(
-                attrs.map { AuditLogEntrySpec(assetId, AuditLogType.Changed, field = it.key, value = it.value) })
-
-        return result
+        PROTECTED_NAMESPACES.forEach { doc.removeAttr(it) }
+        val auditLogs = mutableListOf<AuditLogEntrySpec>()
+        attrs.forEach {
+            val ns = it.key.split('.')
+            try {
+                if (ns[0] !in PROTECTED_NAMESPACES) {
+                    doc.setAttr(it.key, it.value)
+                    auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed, field = it.key, value = it.value))
+                } else {
+                    logger.warnEvent("update Asset",
+                            "Attempted to set protected namespace ${it.key}", emptyMap())
+                }
+            } catch (e: Exception) {
+                logger.warnEvent("update Asset",
+                        "Attempted to set invalid namespace ${it.key}", emptyMap())
+            }
+        }
+        indexDao.update(doc)
+        auditLogDao.batchCreate(auditLogs)
+        return indexDao.get(doc.id)
     }
 
     /**
@@ -242,7 +211,7 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun delete(assetId: String): Boolean {
-        val doc = indexDao[assetId]
+        val doc = indexDao.get(assetId)
         if (!hasPermission("write", doc)) {
             throw ArchivistWriteException("delete access denied")
         }

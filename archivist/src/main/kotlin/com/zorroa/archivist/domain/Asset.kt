@@ -36,10 +36,10 @@ class BatchCreateAssetsRequest(
  * @property retryCount Number of retries it took to get this batch through.
  */
 class BatchCreateAssetsResponse(val total: Int) {
-    var createdAssetIds = mutableListOf<String>()
-    var replacedAssetIds  = mutableListOf<String>()
-    var erroredAssetIds  = mutableListOf<String>()
-    var warningAssetIds = mutableListOf<String>()
+    var createdAssetIds = mutableSetOf<String>()
+    var replacedAssetIds  = mutableSetOf<String>()
+    var erroredAssetIds  = mutableSetOf<String>()
+    var warningAssetIds = mutableSetOf<String>()
     var retryCount = 0
 
     fun add(other: BatchCreateAssetsResponse): BatchCreateAssetsResponse {

@@ -51,7 +51,7 @@ fun formatLogMessage(message: String, vararg kvp: Map<String, Any?>?) : String {
     val sb = StringBuilder(512)
     sb.append("$message --- ")
     if (user != null) {
-        sb.append("actorName='${user.getName()}' orgId='${user.organizationId}'")
+        sb.append("userName='${user.getName()}' orgId='${user.organizationId}'")
     }
     kvp?.forEach { e->
         e?.forEach {

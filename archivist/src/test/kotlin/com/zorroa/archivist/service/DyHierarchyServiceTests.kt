@@ -187,7 +187,7 @@ class DyHierarchyServiceTests : AbstractTest() {
 
         val assets = indexService.getAll(Pager.first(100))
         for (asset in assets) {
-            indexService.update(asset.id, ImmutableMap.of("source",
+            indexService.update(asset, ImmutableMap.of("source",
                     ImmutableMap.of("extension", "abc")))
         }
         refreshIndex()

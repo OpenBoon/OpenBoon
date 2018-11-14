@@ -3,15 +3,20 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
+import com.zorroa.archivist.repository.IndexDao
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.nio.file.Paths
 
 /**
  * Created by chambers on 9/1/16.
  */
 class IndexServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var indexDao: IndexDao
 
     @Before
     fun init() {
@@ -50,7 +55,7 @@ class IndexServiceTests : AbstractTest() {
     fun testBatchDeleteWithChildren() {
         val assets = indexService.getAll(Pager.first())
         val child = assets[1]
-        indexService.update(child.id, mapOf("media.clip.parent" to assets[0].id))
+        indexService.update(child, mapOf("media.clip.parent" to assets[0].id))
         refreshIndex()
         Thread.sleep(1000)
 
@@ -63,14 +68,14 @@ class IndexServiceTests : AbstractTest() {
     @Test
     fun testBatchDeleteWithOnHold() {
         val assets = indexService.getAll(Pager.first())
-        indexService.update(assets[0].id, mapOf("system.hold" to true))
+        assets[0].setAttr("system.hold", true)
+        indexDao.update(assets[0])
         refreshIndex()
-        Thread.sleep(1000)
 
         val res = indexService.batchDelete(assets.map { it.id })
         assertEquals(1, res.totalRequested)
-        assertEquals(1, res.totalDeleted)
         assertEquals(1, res.onHold)
+        assertEquals(1, res.totalDeleted)
         assertTrue(res.failures.isEmpty())
     }
 
@@ -78,7 +83,7 @@ class IndexServiceTests : AbstractTest() {
     fun testBatchDeleteSkipChildren() {
         val assets = indexService.getAll(Pager.first())
         val child = assets[1]
-        indexService.update(child.id, mapOf("media.clip.parent" to assets[0].id))
+        indexService.update(child, mapOf("media.clip.parent" to assets[0].id))
         refreshIndex()
         Thread.sleep(1000)
 
@@ -91,7 +96,7 @@ class IndexServiceTests : AbstractTest() {
     @Test
     fun testUpdate() {
         val asset = indexService.getAll(Pager.first())[0]
-        val result = indexService.update(asset.id, mapOf("foo.bar.bing" to "bang"))
+        val result = indexService.update(asset, mapOf("foo.bar.bing" to "bang"))
         assertEquals("bang", result.getAttr("foo.bar.bing"))
     }
 

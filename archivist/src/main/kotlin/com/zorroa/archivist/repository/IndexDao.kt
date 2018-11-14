@@ -9,7 +9,6 @@ import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
@@ -50,7 +49,7 @@ interface IndexDao {
      */
     fun batchDelete(ids: List<Document>): BatchDeleteAssetsResponse
 
-    operator fun get(id: String): Document
+    fun get(id: String): Document
 
     /**
      * Return the next page of an asset scroll.
@@ -85,7 +84,7 @@ interface IndexDao {
 
     fun exists(id: String): Boolean
 
-    operator fun get(path: Path): Document
+    fun get(path: Path): Document
 
     fun removeLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>>
 
@@ -93,7 +92,7 @@ interface IndexDao {
 
     fun setLinks(assetId: String, type:String, ids: Collection<Any>)
 
-    fun update(assetId: String, attrs: Map<String, Any>): Document
+    fun update(doc: Document): Long
 
     fun <T> getFieldValue(id: String, field: String): T?
 
@@ -178,14 +177,8 @@ class IndexDaoImpl @Autowired constructor(
                     DocWriteRequest.OpType.INDEX -> {
                         val idxr = response.getResponse<IndexResponse>()
                         if (idxr.result == DocWriteResponse.Result.CREATED) {
-                            logger.event("create Asset",
-                                    mapOf("assetId" to response.id,
-                                            "index" to response.index))
                             result.createdAssetIds.add(idxr.id)
                         } else {
-                            logger.event("replace Asset",
-                                    mapOf("assetId" to response.id,
-                                            "index" to response.index))
                             result.replacedAssetIds.add(idxr.id)
                         }
 
@@ -308,16 +301,12 @@ class IndexDaoImpl @Autowired constructor(
                 .doc(Json.serializeToString(doc), XContentType.JSON))
     }
 
-    override fun update(assetId: String, attrs: Map<String, Any>): Document {
+    override fun update(asset: Document): Long {
         val rest = getClient()
-        val asset = get(assetId)
-        for ((key, value) in attrs) {
-            asset.setAttr(key, value)
-        }
-        val ver =  rest.client.update(rest.newUpdateRequest(assetId)
+        val ver =  rest.client.update(rest.newUpdateRequest(asset.id)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
-        return asset
+        return ver
     }
 
     override fun removeFields(assetId: String, fields: Set<String>, refresh: Boolean) {

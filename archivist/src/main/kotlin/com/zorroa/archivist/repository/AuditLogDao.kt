@@ -2,13 +2,13 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.domain.AuditLogEntry
 import com.zorroa.archivist.domain.AuditLogEntrySpec
-import com.zorroa.archivist.domain.AuditLogType
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.util.Json
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.stereotype.Repository
@@ -54,9 +54,9 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         val id = uuid1.generate()
         val user = getUser()
         val value = Json.serializeToString(spec.value, null)
-        val message = spec.message ?: getAutoMessage(user, spec, value)
+        val message = spec.message ?: getLogMessage(user, spec, value)
 
-        logger.event("$message", kvp, appendEsValues(user))
+        logger.event(message, kvp, appendKeyValuePairs(user, spec, value))
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
@@ -92,9 +92,9 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
             override fun setValues(ps: PreparedStatement, i: Int) {
                 val spec = specs[i]
                 val value = Json.serializeToString(spec.value, null)
-                val message = spec.message ?: getAutoMessage(user, spec, value)
+                val message = spec.message ?: getLogMessage(user, spec, value)
 
-                logger.event("$message", kvp, appendEsValues(user))
+                logger.event(getEventMessage(spec), kvp, appendKeyValuePairs(user, spec, value))
 
                 ps.setObject(1, uuid1.generate())
                 ps.setObject(2, spec.assetId)
@@ -104,7 +104,7 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
                 ps.setInt(6, spec.type.ordinal)
                 ps.setString(7, spec.field)
                 ps.setString(8, value)
-                ps.setString(9,  message)
+                ps.setString(9, message)
             }
 
             override fun getBatchSize(): Int {
@@ -119,20 +119,32 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
                Int::class.java, assetId)
     }
 
-    private fun appendEsValues(user: UserAuthed) : Map<String,Any> {
+    private fun appendKeyValuePairs(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : Map<String, Any> {
         val client = esClientCache[user.organizationId]
         val map = mutableMapOf<String,Any>()
         map["index"] = client.route.indexName
         map["cluster"] = client.route.clusterUrl
+        map["assetId"] = spec.assetId
+        if (spec.field != null) {
+            map["field"] = spec.field
+        }
+        if (fieldValue != null) {
+            map["fieldValue"] = fieldValue
+        }
         return map
     }
 
-    private fun getAutoMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?)  : String {
+    private inline fun getEventMessage(spec: AuditLogEntrySpec)  : String {
+        val type = spec.type.toString().toLowerCase()
+        return "$type Asset"
+    }
+
+    private inline fun getLogMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?)  : String {
         return if (spec.field != null) {
-            "${spec.type} Asset field='${spec.field}' to value='$fieldValue' on assetId='${spec.assetId}'"
+            "${user.username} ${spec.type} field '${spec.field}' to '$fieldValue' on Asset ${spec.assetId}"
         }
         else {
-            "${spec.type} Asset assetId='${spec.assetId}'"
+            "${user.username} ${spec.type} Asset ${spec.assetId}'"
         }
     }
 
