@@ -40,8 +40,6 @@ interface IndexService {
 
     fun index(doc: Document): Document
 
-    fun removeFields(id: String, fields: MutableSet<String>)
-
     fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>>
 
     fun appendLink(type: String, value: String, assets: List<String>): Map<String, List<Any>>
@@ -111,12 +109,6 @@ class IndexServiceImpl  @Autowired  constructor (
 
     override fun index(assets: List<Document>): BatchCreateAssetsResponse {
         return indexDao.index(assets)
-    }
-
-    override fun removeFields(id: String, fields: MutableSet<String>) {
-        // remove fields from list the can't remove.
-        fields.removeAll(PROTECTED_NAMESPACES)
-        indexDao.removeFields(id, fields, false)
     }
 
     override fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>> {

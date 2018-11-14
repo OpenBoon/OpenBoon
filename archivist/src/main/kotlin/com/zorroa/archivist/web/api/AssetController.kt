@@ -269,13 +269,6 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
     }
 
-    @DeleteMapping(value = ["/api/v1/assets/{id}/_fields"])
-    @Throws(IOException::class)
-    fun removeFields(@RequestBody fields: MutableSet<String>, @PathVariable id: String): Any {
-        indexService.removeFields(id, fields)
-        return HttpUtils.updated("asset", id, true, indexService.get(id))
-    }
-
     @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
     @Throws(IOException::class)
     fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {

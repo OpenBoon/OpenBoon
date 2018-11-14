@@ -203,13 +203,6 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testRemoveFields() {
-        indexDao.removeFields(asset1.id, Sets.newHashSet("source"), true)
-        val a = indexDao.get(asset1.id)
-        assertFalse(a.attrExists("source"))
-    }
-
-    @Test
     @Throws(InterruptedException::class)
     fun testRetryBrokenFields() {
 

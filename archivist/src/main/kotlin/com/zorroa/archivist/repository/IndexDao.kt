@@ -39,8 +39,6 @@ interface IndexDao {
 
     fun getMapping(): Map<String, Any>
 
-    fun removeFields(assetId: String, fields: Set<String>, refresh: Boolean)
-
     fun delete(id: String): Boolean
 
     /**
@@ -307,21 +305,6 @@ class IndexDaoImpl @Autowired constructor(
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
         return ver
-    }
-
-    override fun removeFields(assetId: String, fields: Set<String>, refresh: Boolean) {
-        val asset = get(assetId)
-        for (a in fields) {
-            asset.removeAttr(a)
-        }
-
-        // Replaces entire asset
-        // Can't edit elements so no need for parent handling.
-        val rest = getClient()
-        rest.client.index(rest.newIndexRequest(asset.id)
-                .opType(DocWriteRequest.OpType.INDEX)
-                .source(asset.document)
-                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE))
     }
 
     override fun delete(id: String): Boolean {
