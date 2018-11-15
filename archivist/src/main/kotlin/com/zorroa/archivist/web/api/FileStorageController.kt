@@ -15,9 +15,9 @@ class FileStorageController @Autowired constructor(
         private val fileStorageService: FileStorageService,
         private val fileServerProvider: FileServerProvider) {
 
-    @PostMapping("/api/v1/file-storage")
+    @RequestMapping("/api/v1/file-storage", method=[RequestMethod.POST, RequestMethod.GET])
     fun create(@RequestBody spec: FileStorageSpec) : FileStorage {
-        return fileStorageService.create(spec)
+        return fileStorageService.get(spec)
     }
 
     @GetMapping("/api/v1/file-storage/{id}")

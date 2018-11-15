@@ -192,14 +192,14 @@ class IndexDaoTests : AbstractTest() {
         val rsp1 = indexDao.batchDelete(listOf(asset1))
         refreshIndex()
         val rsp2 = indexDao.batchDelete(listOf(asset1))
-        assertEquals(1, rsp1.totalDeleted)
+        assertEquals(1, rsp1.deletedAssetIds.size)
         assertEquals(1, rsp1.totalRequested)
-        assertEquals(0, rsp1.failures.size)
+        assertEquals(0, rsp1.errors.size)
 
-        assertEquals(0, rsp2.totalDeleted)
+        assertEquals(0, rsp2.deletedAssetIds.size)
         assertEquals(1, rsp2.totalRequested)
-        assertEquals(1, rsp2.missing)
-        assertEquals(0, rsp2.failures.size)
+        assertEquals(1, rsp2.missingAssetIds.size)
+        assertEquals(0, rsp2.errors.size)
     }
 
     @Test

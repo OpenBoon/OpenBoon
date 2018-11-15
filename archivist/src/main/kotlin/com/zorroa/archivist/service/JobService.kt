@@ -74,7 +74,7 @@ class JobServiceImpl @Autowired constructor(
                 }
                 PipelineType.Export->{
                     script.inline = true
-                    execute.add(ProcessorRef("zplugins.core.collector.ExportCollector"))
+                    execute.add(ProcessorRef("zplugins.export.collectors.ExportCollector"))
                 }
                 PipelineType.Batch,PipelineType.Generate-> { }
 

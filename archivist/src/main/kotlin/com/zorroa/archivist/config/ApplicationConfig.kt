@@ -3,7 +3,6 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.security.*
@@ -124,8 +123,7 @@ class ArchivistConfiguration {
             "local"-> {
                 val path = properties().getPath("archivist.storage.path")
                 // OFS gets shoved into the OFS dir.
-                val ufs = UUIDFileSystem(path.resolve("ofs").toFile())
-                ufs.init()
+                val ufs = UUIDFileSystem(path.resolve("ofs"))
                 LocalFileStorageService(path, ufs)
             }
             "gcs"-> {

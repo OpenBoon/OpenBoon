@@ -1,6 +1,5 @@
 package com.zorroa.archivist.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
@@ -131,31 +130,27 @@ class BatchDeleteAssetsRequest (
  * The response returned when assets are deleted.
  *
  * @property totalRequested The total number of assets requested to be deleted.  This includes the resolved # of clips.
- * @property totalDeleted The total number of assets actually deleted.
- * @property childrenRequested The total number of children deleted.
- * @property onHold Assets skipped due to being on hold.
- * @property accessDenied Assets skipped due to permissions
- * @property missing Assets that have already been deleted.
- * @property failures A map AssetID/Message failures.
+ * @property deletedAssetIds The total number of assets actually deleted.
+ * @property onHoldAssetIds Assets skipped due to being on hold.
+ * @property accessDeniedAssetIds Assets skipped due to permissions
+ * @property missingAssetIds Assets that have already been deleted.
+ * @property errors A map AssetID/Message failures.
  */
 class BatchDeleteAssetsResponse (
     var totalRequested: Int=0,
-    var totalDeleted: Int=0,
-    var childrenRequested: Int=0,
-    var onHold: Int=0,
-    var accessDenied: Int=0,
-    var missing: Int=0,
-    var failures: MutableMap<String, String> = mutableMapOf(),
-    @JsonIgnore var success: MutableSet<String> = mutableSetOf()
+    var deletedAssetIds: MutableSet<String> = mutableSetOf(),
+    var onHoldAssetIds: MutableSet<String> = mutableSetOf(),
+    var accessDeniedAssetIds: MutableSet<String> = mutableSetOf(),
+    var missingAssetIds: MutableSet<String> = mutableSetOf(),
+    var errors: MutableMap<String, String> = mutableMapOf()
 ) {
     operator fun plus(other: BatchDeleteAssetsResponse) {
         totalRequested += other.totalRequested
-        totalDeleted += other.totalDeleted
-        childrenRequested += other.childrenRequested
-        onHold += other.onHold
-        accessDenied += other.accessDenied
-        missing += other.missing
-        failures.putAll(other.failures)
+        deletedAssetIds.addAll(other.deletedAssetIds)
+        onHoldAssetIds.addAll(other.onHoldAssetIds)
+        accessDeniedAssetIds.addAll(other.accessDeniedAssetIds)
+        missingAssetIds.addAll(other.missingAssetIds)
+        errors.putAll(other.errors)
     }
 }
 

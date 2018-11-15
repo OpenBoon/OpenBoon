@@ -28,7 +28,7 @@ class ExportServiceImpl @Autowired constructor(
         private val properties: ApplicationProperties,
         private val indexDao: IndexDao,
         private val exportFileDao: ExportFileDao,
-        private val txm : TransactionEventManager,
+        private val fileStorageService: FileStorageService,
         private val jobService: JobService
         ) : ExportService {
 
@@ -36,7 +36,11 @@ class ExportServiceImpl @Autowired constructor(
     lateinit var searchService : SearchService
 
     override fun createExportFile(job: JobId, spec: ExportFileSpec) : ExportFile {
-        return exportFileDao.create(job, spec)
+        val st = fileStorageService.get(spec.storageId)
+        if (!st.getServableFile().exists()) {
+            throw ArchivistWriteException("export file '${spec.storageId} does not exist")
+        }
+        return exportFileDao.create(job, st)
     }
 
     override fun getAllExportFiles(job: JobId) : List<ExportFile> {
