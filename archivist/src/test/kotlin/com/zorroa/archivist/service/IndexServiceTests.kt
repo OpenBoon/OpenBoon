@@ -33,7 +33,7 @@ class IndexServiceTests : AbstractTest() {
     fun testDelete() {
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
-            assertTrue(indexService.delete(a.id as String))
+            assertTrue(indexService.delete(a.id))
         }
     }
 
@@ -42,8 +42,8 @@ class IndexServiceTests : AbstractTest() {
         val assets = indexService.getAll(Pager.first())
         val res = indexService.batchDelete(assets.map { it.id })
         assertEquals(2, res.totalRequested)
-        assertEquals(2, res.totalDeleted)
-        assertTrue(res.failures.isEmpty())
+        assertEquals(2, res.deletedAssetIds.size)
+        assertTrue(res.errors.isEmpty())
         Thread.sleep(2000)
     }
 
@@ -57,8 +57,8 @@ class IndexServiceTests : AbstractTest() {
 
         val res = indexService.batchDelete(listOf(assets[0].id))
         assertEquals(2, res.totalRequested)
-        assertEquals(2, res.totalDeleted)
-        assertTrue(res.failures.isEmpty())
+        assertEquals(2, res.deletedAssetIds.size)
+        assertTrue(res.errors.isEmpty())
     }
 
     @Test
@@ -70,9 +70,9 @@ class IndexServiceTests : AbstractTest() {
 
         val res = indexService.batchDelete(assets.map { it.id })
         assertEquals(1, res.totalRequested)
-        assertEquals(1, res.totalDeleted)
-        assertEquals(1, res.onHold)
-        assertTrue(res.failures.isEmpty())
+        assertEquals(1, res.deletedAssetIds.size)
+        assertEquals(1, res.onHoldAssetIds.size)
+        assertTrue(res.errors.isEmpty())
     }
 
     @Test
@@ -85,8 +85,8 @@ class IndexServiceTests : AbstractTest() {
 
         val res = indexService.batchDelete(listOf(child.id))
         assertEquals(0, res.totalRequested)
-        assertEquals(0, res.totalDeleted)
-        assertTrue(res.failures.isEmpty())
+        assertEquals(0, res.deletedAssetIds.size)
+        assertTrue(res.errors.isEmpty())
     }
 
     @Test

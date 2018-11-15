@@ -344,8 +344,9 @@ class IndexServiceImpl  @Autowired  constructor (
 
             GlobalScope.launch {
                 docs.forEach {
-                    if (it.id in batchRsp.success)
-                    deleteAssociatedFiles(it)
+                    if (it.id in batchRsp.deletedAssetIds) {
+                        deleteAssociatedFiles(it)
+                    }
                 }
             }
         }
@@ -366,7 +367,7 @@ class IndexServiceImpl  @Autowired  constructor (
         doc.getAttr("proxies", ProxySchema::class.java)?.let {
             it.proxies?.forEach { pr ->
                 try {
-                    val storage = fileStorageService.get(pr.id as String)
+                    val storage = fileStorageService.get(pr.id)
                     val ofile = fileServerProvider.getServableFile(storage.uri)
                     if (!ofile.delete()) {
                         logger.warnEvent("delete Proxy", "file did not exist", mapOf("proxyId" to pr.id))

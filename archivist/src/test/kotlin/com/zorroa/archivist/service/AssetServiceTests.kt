@@ -35,8 +35,8 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val ids = page.map { it.id }
         val rsp = assetService.batchDelete(ids)
-        assertEquals(0, rsp.failures.size)
-        assertEquals(2, rsp.totalDeleted)
+        assertEquals(0, rsp.errors.size)
+        assertEquals(2, rsp.deletedAssetIds.size)
         assertEquals(2, rsp.totalRequested)
     }
 }
