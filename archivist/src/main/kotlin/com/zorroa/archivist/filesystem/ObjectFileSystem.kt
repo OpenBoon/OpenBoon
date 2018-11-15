@@ -1,6 +1,4 @@
-package com.zorroa.archivist.filesystem;
-
-import java.util.List;
+package com.zorroa.archivist.filesystem
 
 /**
  * The object file system interface is for storing files of all types, including proxies,
@@ -12,7 +10,7 @@ import java.util.List;
  * implementations of this interface should also allow retrieval by relative path.
  *
  */
-public interface ObjectFileSystem {
+interface ObjectFileSystem {
 
     /**
      * Return an ServableFile for storing a file with the given arguments.  The directory
@@ -24,21 +22,21 @@ public interface ObjectFileSystem {
      * @param variant
      * @return
      */
-    OfsFile prepare(String category, Object value, String type, List<String> variant);
+    fun prepare(category: String, value: Any, type: String, variant: List<String>?): OfsFile
 
-    OfsFile get(String category, Object value, String type, List<String> variant);
+    operator fun get(category: String, value: Any, type: String, variant: List<String>?): OfsFile
 
     /**
      * Get a file based its unique ID, which is formatted as category/id_[variant].ext
      *
      * @return
      */
-    OfsFile get(String id);
+    operator fun get(id: String): OfsFile
 
     /**
      * Get a file based its unique ID and name which is formatted as category/name
      *
      * @return
      */
-    OfsFile get(String category, String name);
+    operator fun get(category: String, name: String): OfsFile
 }
