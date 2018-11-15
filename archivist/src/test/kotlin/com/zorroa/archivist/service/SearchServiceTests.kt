@@ -376,6 +376,19 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     @Throws(IOException::class)
+    fun testQueryWithGeoFields() {
+
+        addTestAssets("set05")
+        refreshIndex()
+
+        val bbox: Map<String, Map<String, Map<String, Double>>> = mapOf("source.location" to mapOf("top_left" to mapOf("lat" to 47.000, "lon" to 20.333), "bottom_right" to mapOf("lat" to 28.000, "lon" to 32.000)))
+        val filter = AssetFilter().setGeo_bounding_box(bbox)
+        val search = AssetSearch("searching").setFilter(filter)
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    @Throws(IOException::class)
     fun testHighConfidenceSearch() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))

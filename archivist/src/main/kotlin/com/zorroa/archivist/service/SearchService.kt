@@ -27,6 +27,7 @@ import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.index.query.QueryBuilders.geoBoundingBoxQuery
 import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
@@ -670,6 +671,23 @@ class SearchServiceImpl @Autowired constructor(
                 query.should(should)
             }
         }
+
+        if (filter.geo_bounding_box != null) {
+
+            val bbox = filter.geo_bounding_box
+
+            for ((field, value) in bbox) {
+                if (value != null) {
+                    val bboxQuery = geoBoundingBoxQuery(field)
+                            .setCorners(value["top_left"]!!["lat"]!!,
+                                    value["top_left"]!!["lon"]!!,
+                                    value["bottom_right"]!!["lat"]!!,
+                                    value["bottom_right"]!!["lon"]!!)
+                    query.should(bboxQuery)
+                }
+            }
+        }
+
     }
 
     private fun handleKwConfFilter(filters: Map<String, KwConfFilter>,  query: BoolQueryBuilder) {
