@@ -1,11 +1,11 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AuditLogType
-import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.LinkType
-import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.common.schema.PermissionSchema
+import com.zorroa.common.util.Json
+import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -110,5 +110,33 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(2, assetService.addLinks(LinkType.Folder, folderId, ids).success.size)
         assertEquals(2, assetService.removeLinks(LinkType.Folder, folderId, ids).success.size)
         assertEquals(0, assetService.removeLinks(LinkType.Folder, folderId, ids).success.size)
+    }
+
+    @Test
+    fun testSetPermissions() {
+        val perm = permissionService.getPermission(Groups.ADMIN)
+        val result = assetService.setPermissions(
+                BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4)))
+
+        val page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
+            assertTrue(perms.export.contains(perm.id))
+        }
+    }
+
+    @Test
+    fun testSetPermissionsWithReplace() {
+        val perm = permissionService.getPermission(Groups.ADMIN)
+        val result = assetService.setPermissions(
+                BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4), replace = true))
+
+        val page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
+            assertTrue(perms.export.contains(perm.id))
+            assertTrue(perms.read.isEmpty())
+            assertTrue(perms.write.isEmpty())
+        }
     }
 }

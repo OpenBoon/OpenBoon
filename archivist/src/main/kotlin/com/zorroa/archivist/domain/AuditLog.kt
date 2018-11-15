@@ -54,13 +54,15 @@ class AuditLogEntrySpec(
         val type: AuditLogType,
         val message: String?=null,
         val field: String?=null,
-        val value: Any?=null
+        val value: Any?=null,
+        val scope: String?=null
 )
 {
     constructor(assetId: String,
                 type: AuditLogType,
                 message: String?=null,
                 field: String?=null,
-                value: Any?=null) :
-            this(UUID.fromString(assetId), type, message, field, value)
+                value: Any?=null,
+                scope: String?=null) :
+            this(UUID.fromString(assetId), type, message, field, value, scope)
 }

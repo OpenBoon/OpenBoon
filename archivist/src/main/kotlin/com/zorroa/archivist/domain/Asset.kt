@@ -6,10 +6,41 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.common.base.MoreObjects
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.regex.Pattern
+
+/**
+ * Request to update selected assets with new permissions.  If replace=true, then
+ * all permissions are replaced,otherwise they are updated.
+ *
+ * @param search: An asset search
+ * @param acl: An acl to apply
+ * @param replace: Replace all permissions with this acl, defaults to false.
+ */
+class BatchUpdatePermissionsRequest(
+        val search: AssetSearch,
+        val acl: Acl,
+        val replace: Boolean = false
+)
+
+/**
+ * A response object for a BatchUpdatePermissionsRequest
+ *
+ * @property updatedAssetIds The asset ids that were updated.
+ * @property errors A map of errors which happened during processing
+ */
+class BatchUpdatePermissionsResponse {
+
+    val updatedAssetIds = mutableSetOf<String>()
+    val errors = mutableMapOf<String, String>()
+
+    operator fun plus(other: BatchCreateAssetsResponse) {
+        updatedAssetIds.addAll(other.replacedAssetIds)
+    }
+}
 
 /**
  * Structure for upserting a batch of assets.
@@ -28,7 +59,14 @@ class BatchCreateAssetsRequest(
     @JsonIgnore
     var skipAssetPrep = false
 
-    constructor( sources: List<Document>) : this(sources, null, null)
+    @JsonIgnore
+    var scope = "index"
+
+    constructor(sources: List<Document>, scope : String="create", skipAssetPrep:Boolean=false)
+            : this(sources, null, null) {
+        this.scope = scope
+        this.skipAssetPrep = skipAssetPrep
+    }
 }
 
 

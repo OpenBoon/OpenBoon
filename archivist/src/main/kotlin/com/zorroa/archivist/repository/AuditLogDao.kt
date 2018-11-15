@@ -131,6 +131,9 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         if (fieldValue != null) {
             map["fieldValue"] = fieldValue
         }
+        if (spec.scope != null) {
+            map["scope"] = spec.scope
+        }
         return map
     }
 
@@ -139,12 +142,13 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         return "$type Asset"
     }
 
-    private inline fun getLogMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?)  : String {
+    private inline fun getLogMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : String {
+        val scope = spec.scope ?: "index"
         return if (spec.field != null) {
-            "${user.username} ${spec.type} field '${spec.field}' to '$fieldValue' on Asset ${spec.assetId}"
+            "${user.username} ${spec.type}($scope) field '${spec.field}' to '$fieldValue' on Asset ${spec.assetId}"
         }
         else {
-            "${user.username} ${spec.type} Asset ${spec.assetId}'"
+            "${user.username} ${spec.type}($scope) Asset ${spec.assetId}'"
         }
     }
 

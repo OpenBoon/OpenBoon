@@ -18,7 +18,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -38,6 +37,7 @@ interface AssetService {
     fun update(assetId: String, attrs: Map<String, Any>) : Document
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
     fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
+    fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
 
 }
 
@@ -49,7 +49,8 @@ interface AssetService {
  */
 class PreppedAssets(
         val assets: List<Document>,
-        val auditLogs: List<AuditLogEntrySpec>)
+        val auditLogs: List<AuditLogEntrySpec>,
+        val scope: String)
 
 
 open abstract class AbstractAssetService : AssetService {
@@ -93,9 +94,8 @@ open abstract class AbstractAssetService : AssetService {
      * @return PreppedAssets
      */
     fun prepAssets(req: BatchCreateAssetsRequest) : PreppedAssets  {
-        logger.info("prep skip: {}", req.skipAssetPrep)
         if (req.skipAssetPrep) {
-            return PreppedAssets(req.sources, listOf())
+            return PreppedAssets(req.sources, listOf(), req.scope)
         }
 
         val assets = req.sources
@@ -132,7 +132,7 @@ open abstract class AbstractAssetService : AssetService {
             }
 
              newSource
-         }, watchedFieldsLogs)
+         }, watchedFieldsLogs, req.scope)
     }
 
     /**
@@ -238,23 +238,7 @@ open abstract class AbstractAssetService : AssetService {
                 val value = it.value
                 try {
                     val perm = permissionDao.get(key)
-                    if (value and 1 == 1) {
-                        existingPerms.addToRead(perm.id)
-                    } else {
-                        existingPerms.removeFromRead(perm.id)
-                    }
-
-                    if (value and 2 == 2) {
-                        existingPerms.addToWrite(perm.id)
-                    } else {
-                        existingPerms.removeFromWrite(perm.id)
-                    }
-
-                    if (value and 4 == 4) {
-                        existingPerms.addToExport(perm.id)
-                    } else {
-                        existingPerms.removeFromExport(perm.id)
-                    }
+                    applyAclToPermissions(perm.id, value, existingPerms)
                 } catch (e: Exception) {
                     logger.warn("Permission not found: {}", key)
                 }
@@ -280,8 +264,10 @@ open abstract class AbstractAssetService : AssetService {
             strId in rsp.createdAssetIds || strId in rsp.replacedAssetIds
         })
         // Create audit logs for created and replaced entries.
-        auditLogDao.batchCreate(rsp.createdAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Created) })
-        auditLogDao.batchCreate(rsp.replacedAssetIds.map { AuditLogEntrySpec(it, AuditLogType.Replaced) })
+        auditLogDao.batchCreate(rsp.createdAssetIds.map {
+            AuditLogEntrySpec(it, AuditLogType.Created, scope=prepped.scope) })
+        auditLogDao.batchCreate(rsp.replacedAssetIds.map {
+            AuditLogEntrySpec(it, AuditLogType.Replaced, scope=prepped.scope) })
     }
 
     /**
@@ -302,6 +288,9 @@ open abstract class AbstractAssetService : AssetService {
         }
     }
 
+    /**
+     * Index a batch of PreppedAssets
+     */
     fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets) : BatchCreateAssetsResponse {
         val rsp = indexService.index(prepped.assets)
         if (req != null) {
@@ -312,6 +301,37 @@ open abstract class AbstractAssetService : AssetService {
             runDyhiAndTaxons()
         }
         return rsp
+    }
+
+    /**
+     * Apply a permission and access level to a PermissionSchema
+     */
+    fun applyAclToPermissions(permissionId: UUID, access: Int, perms: PermissionSchema) {
+
+        if (access == 0) {
+            perms.removeFromRead(permissionId)
+            perms.removeFromWrite(permissionId)
+            perms.removeFromExport(permissionId)
+        }
+        else {
+            if (access and 1 == 1) {
+                perms.addToRead(permissionId)
+            } else {
+                perms.removeFromRead(permissionId)
+            }
+
+            if (access and 2 == 2) {
+                perms.addToWrite(permissionId)
+            } else {
+                perms.removeFromWrite(permissionId)
+            }
+
+            if (access and 4 == 4) {
+                perms.addToExport(permissionId)
+            } else {
+                perms.removeFromExport(permissionId)
+            }
+        }
     }
 
     companion object {
@@ -397,6 +417,10 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     }
 
     override fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
@@ -486,8 +510,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
             }
             doc.setAttr("system.links", links)
             it.value
-        })
-        req.skipAssetPrep = true
+        }, skipAssetPrep = true, scope="removeLinks")
         batchCreateOrReplace(req)
         return result
     }
@@ -508,10 +531,48 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
             }
             doc.setAttr("system.links", links)
             it.value
-        })
-        req.skipAssetPrep = true
+        }, skipAssetPrep = true, scope="addLinks")
         batchCreateOrReplace(req)
         return result
+    }
+
+    override fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
+        val rAcl = permissionDao.resolveAcl(spec.acl, false)
+
+        spec.search.access = Access.Write
+        val size = searchService.count(spec.search)
+        if (size > 1000) {
+            throw IllegalArgumentException("Cannot set permissions on over 1000 assets at a time. " +
+                    "Large permission changes should be done with a batch job.")
+        }
+
+        val combinedRep = BatchUpdatePermissionsResponse()
+
+        searchService.scanAndScroll(spec.search, false) { hits->
+            val ids = hits.map { it.id }
+            val req = BatchCreateAssetsRequest(assetDao.getMap(ids).map {
+
+                val doc = it.value
+                val perms = if (spec.replace) {
+                    PermissionSchema()
+                }
+                else {
+                    var existingPerms: PermissionSchema?
+                            = doc.getAttr("system.permissions", PermissionSchema::class.java)
+                    existingPerms ?: PermissionSchema()
+                }
+
+                for (e in rAcl) {
+                    applyAclToPermissions(e.permissionId, e.access, perms)
+                }
+                doc.setAttr("system.permissions", perms)
+
+                doc
+            }, skipAssetPrep = true, scope="setPermissions")
+            combinedRep.plus(batchCreateOrReplace(req))
+        }
+
+        return combinedRep
     }
 }
 

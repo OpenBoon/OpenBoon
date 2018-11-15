@@ -299,24 +299,11 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, false)
     }
 
-    class SetPermissionsRequest {
-        var search: AssetSearch? = null
-        var acl: Acl? = null
-
-    }
-
-    /*
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SHARE) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
-    @PutMapping(value = ["/api/v1/assets/_permissions"])
+    @PutMapping(value = ["/api/v2/assets/_permissions"])
     @Throws(Exception::class)
-    fun setPermissions(
-            @Valid @RequestBody req: SetPermissionsRequest): Command {
-        val spec = CommandSpec()
-        spec.type = CommandType.UpdateAssetPermissions
-        spec.args = arrayOf(req.search, req.acl)
-        return commandService.submit(spec)
+    fun setPermissionsV2(@RequestBody req: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
+        return assetService.setPermissions(req)
     }
-    */
 
     @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {
