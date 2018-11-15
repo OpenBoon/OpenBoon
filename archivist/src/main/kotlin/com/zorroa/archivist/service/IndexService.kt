@@ -185,7 +185,7 @@ class IndexServiceImpl  @Autowired  constructor (
             val docs = hits.hits.map { Document(it.id, it.sourceAsMap) }
             val batchRsp = indexDao.batchDelete(docs)
 
-            auditLogDao.batchCreate(batchRsp.success.map {
+            auditLogDao.batchCreate(batchRsp.deletedAssetIds.map {
                 AuditLogEntrySpec(it, AuditLogType.Deleted)
             })
 

@@ -369,7 +369,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         val deleted = cdvClient.batchDelete(getCompanyId(), ids)
         // Only delete from index stuff we deleted from CDV?
         val result =  indexService.batchDelete(ids.minus(deleted.filterValues { v-> v }.keys))
-        if (result.totalDeleted > 0) {
+        if (result.deletedAssetIds.isNotEmpty()) {
             runDyhiAndTaxons()
         }
         return result
@@ -452,7 +452,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     override fun batchDelete(ids: List<String>): BatchDeleteAssetsResponse {
        val result =  indexService.batchDelete(ids)
-        if (result.totalDeleted > 0) {
+        if (result.deletedAssetIds.isNotEmpty()) {
             runDyhiAndTaxons()
         }
         return result

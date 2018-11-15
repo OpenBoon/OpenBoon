@@ -2,7 +2,6 @@ package com.zorroa.archivist.web
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.common.util.Json
 import org.junit.Before
