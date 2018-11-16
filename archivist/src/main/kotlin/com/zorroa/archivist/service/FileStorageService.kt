@@ -240,13 +240,14 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
         if (id.contains('/')) {
             throw IllegalArgumentException("Id '$id' cannot contain a slash")
         }
+
         val e = id.split("___")
-        val sid = slashed(id)
         return when (e[0]) {
             "export" -> {
                 root.resolve("exports").resolve(e[1]).resolve(e[2]).toUri().toString()
             }
             else -> {
+                val sid = slashed(id)
                 ofs.get(sid).path.toUri().toString()
             }
         }
