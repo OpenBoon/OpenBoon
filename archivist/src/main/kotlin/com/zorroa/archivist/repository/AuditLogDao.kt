@@ -1,18 +1,20 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.AuditLogEntry
-import com.zorroa.archivist.domain.AuditLogEntrySpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.EsClientCache
+import com.zorroa.common.domain.Job
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
+import java.util.*
 
 interface AuditLogDao {
 
@@ -34,10 +36,16 @@ interface AuditLogDao {
 
     /**
      * Batch create an array of audit log entries.
-     * @param assetId count entries in log for a given assset ID
+     * @param filter count entries that match the filter.
      * @return The count
      */
-    fun count(assetId: String) : Int
+    fun count(filter: AuditLogFilter): Long
+
+    /**
+     * Get pages of the audit log
+     */
+    fun getAll(filter: AuditLogFilter) : KPagedList<AuditLogEntry>
+
 }
 
 @Repository
@@ -114,9 +122,16 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         return result.sum()
     }
 
-    override fun count(assetId: String): Int {
-       return jdbc.queryForObject("SELECT COUNT(1) FROM auditlog WHERE pk_asset=?::uuid",
-               Int::class.java, assetId)
+    override fun count(filter: AuditLogFilter): Long {
+        val query = filter.getQuery(COUNT, true)
+        val values = filter.getValues(true)
+        return jdbc.queryForObject(query, Long::class.java, *values)
+    }
+
+    override fun getAll(filter: AuditLogFilter) : KPagedList<AuditLogEntry> {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
     private fun appendKeyValuePairs(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : Map<String, Any> {
@@ -145,14 +160,48 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
     private inline fun getLogMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : String {
         val scope = spec.scope ?: "index"
         return if (spec.field != null) {
-            "${user.username} ${spec.type}($scope) field '${spec.field}' to '$fieldValue' on Asset ${spec.assetId}"
+            "${user.username} ${spec.type} during $scope field '${spec.field}' to '$fieldValue' on Asset ${spec.assetId}"
         }
         else {
-            "${user.username} ${spec.type}($scope) Asset ${spec.assetId}'"
+            "${user.username} ${spec.type} during $scope Asset ${spec.assetId}'"
         }
     }
 
+    private val MAPPER = RowMapper { rs, _ ->
+        val json = rs.getString("json_value")
+        val fieldValue :Any? = if (json == null) {
+            null
+        } else {
+            Json.deserialize(json, Any::class.java)
+        }
+
+        AuditLogEntry(
+                rs.getObject("pk_auditlog") as UUID,
+                rs.getObject("pk_asset") as UUID,
+                userDaoCache.getUser(rs.getObject("pk_user_created") as UUID),
+                rs.getLong("time_created"),
+                AuditLogType.values()[rs.getInt("int_type")],
+                rs.getString("str_message"),
+                rs.getString("str_field"),
+                fieldValue)
+    }
+
+
     companion object {
+
+        private val GET = "SELECT " +
+                "pk_auditlog,"+
+                "pk_asset,"+
+                "pk_user_created,"+
+                "time_created,"+
+                "int_type,"+
+                "str_message,"+
+                "str_field,"+
+                "json_value " +
+                "FROM auditlog"
+
+
+        private val COUNT = "SELECT COUNT(1) FROM auditlog"
 
         private val INSERT = JdbcUtils.insert("auditlog",
                 "pk_auditlog",

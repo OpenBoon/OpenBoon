@@ -1,5 +1,10 @@
 package com.zorroa.archivist.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.repository.LongRangeFilter
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.repository.KDaoFilter
+import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
 /**
@@ -35,6 +40,55 @@ enum class AuditLogType {
      * A Warning message concerning the asset.
      */
     Warning
+}
+
+
+class AuditLogFilter(
+        val assetIds: Set<UUID>?=null,
+        val userIds: Set<UUID>?=null,
+        val timeCreated: LongRangeFilter?=null,
+        val types: Set<AuditLogType>?=null,
+        val fields: Set<String>?=null
+): KDaoFilter() {
+
+    @JsonIgnore
+    override val sortMap: Map<String, String> =
+            mapOf("timeCreated" to "time_created",
+                    "userIds" to "pk_user_created",
+                    "types" to "int_type",
+                    "fields" to "str_field")
+
+    override fun build() {
+
+        assetIds?.let {
+            addToWhere(JdbcUtils.inClause("auditlog.pk_asset", it.size))
+            addToValues(it)
+        }
+
+        userIds?.let {
+            addToWhere(JdbcUtils.inClause("auditlog.pk_user_created", it.size))
+            addToValues(it)
+        }
+
+        timeCreated?.let {
+            addToWhere(JdbcUtils.rangeClause("auditlog.time_created", it))
+            addToValues(it.getFilterValues())
+        }
+
+        types?.let {
+            addToWhere(JdbcUtils.inClause("auditlog.int_type", it.size))
+            addToValues(it.map { t-> t.ordinal })
+        }
+
+        fields?.let {
+            addToWhere(JdbcUtils.inClause("auditlog.str_field", it.size))
+            addToValues(it)
+        }
+
+        addToWhere("pk_organization=?")
+        addToValues(getOrgId())
+
+    }
 }
 
 class AuditLogEntry(

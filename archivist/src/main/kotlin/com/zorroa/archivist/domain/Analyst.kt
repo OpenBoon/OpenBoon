@@ -52,7 +52,7 @@ data class AnalystFilter (
         private val taskIds: List<UUID>? = null
 ) : KDaoFilter() {
 
-    override val sortMap: Map<String, String>? = null
+    override val sortMap: Map<String, String> = mapOf()
 
     @JsonIgnore
     override fun build() {

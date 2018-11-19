@@ -119,6 +119,26 @@ open class AbstractDao {
     }
 }
 
+class LongRangeFilter(
+        val greaterThan: Long?,
+        val lessThan: Long?,
+        val inclusive: Boolean=true
+)
+{
+    /**
+     * Return values needed to satisfy SQL query as list.
+     */
+    fun getFilterValues() : Iterable<Long> {
+        val res = mutableListOf<Long>()
+        if (greaterThan != null) {
+            res.add(greaterThan)
+        }
+        if (lessThan != null) {
+            res.add(lessThan)
+        }
+        return res
+    }
+}
 
 abstract class DaoFilter {
 
