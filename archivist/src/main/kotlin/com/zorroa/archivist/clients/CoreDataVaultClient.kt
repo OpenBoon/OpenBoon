@@ -4,6 +4,8 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import org.slf4j.LoggerFactory
@@ -163,27 +165,36 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
     }
 
     override fun batchUpdateIndexedMetadata(companyId: Int, docs: List<Document>) : Map<String, Boolean> {
-        val result = ConcurrentHashMap<String, Boolean>()
+        val result = mutableMapOf<String, Boolean>()
+        val deferred = docs.map {
+            GlobalScope.async {
+                Pair(it.id, updateIndexedMetadata(companyId, it))
+            }
+        }
+
         runBlocking {
-            for (doc in docs) {
-                launch{
-                    result[doc.id] = updateIndexedMetadata(companyId, doc)
-                }
+            deferred.map {
+                val r = it.await()
+                result.put(r.first, r.second)
             }
         }
         return result
     }
 
     override fun batchDelete(companyId: Int, assetIds: List<String>): Map<String, Boolean> {
-        return runBlocking {
-            val result = ConcurrentHashMap<String, Boolean>()
-            for (id in assetIds) {
-                launch {
-                    result[id] = delete(companyId, id)
-                }
+        val result = mutableMapOf<String, Boolean>()
+        val deferred = assetIds.map {
+            GlobalScope.async {
+                Pair(it, delete(companyId, it))
             }
-            result
         }
+        runBlocking {
+            deferred.map {
+                val r = it.await()
+                result.put(r.first, r.second)
+            }
+        }
+        return result
     }
 
     override fun delete(companyId: Int, assetId: String): Boolean {
