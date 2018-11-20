@@ -13,6 +13,12 @@ object JdbcUtils {
         return UUID_REGEX.matcher(value).matches()
     }
 
+    /**
+     * Create and return an insert query.  Supports the postgres cast
+     * operator (::) for on column names.   For example:
+     *
+     * insert("foo", "pk_foo::uuid") would return "INSERT INTO foo (pk_foo) VALUES (?::uuid)"
+     */
     fun insert(table: String, vararg cols: String): String {
         val sb = StringBuilder(1024)
         sb.append("INSERT INTO ")
