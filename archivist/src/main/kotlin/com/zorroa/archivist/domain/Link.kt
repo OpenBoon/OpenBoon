@@ -14,7 +14,7 @@ enum class LinkType {
 
 class ModifyLinksResponse {
         val success = mutableSetOf<String>()
-        val failed = mutableSetOf<String>()
+        val missing = mutableSetOf<String>()
 }
 
 

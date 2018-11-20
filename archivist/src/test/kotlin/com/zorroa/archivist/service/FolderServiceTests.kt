@@ -77,7 +77,7 @@ class FolderServiceTests : AbstractTest() {
         val results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
 
-        assertTrue(results.failed.isEmpty())
+        assertTrue(results.missing.isEmpty())
         assertFalse(results.success.isEmpty())
     }
 
@@ -112,7 +112,7 @@ class FolderServiceTests : AbstractTest() {
         var results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
 
-        assertTrue(results.failed.isEmpty())
+        assertTrue(results.missing.isEmpty())
         assertFalse(results.success.isEmpty())
 
         var s = AssetSearch()
@@ -122,7 +122,7 @@ class FolderServiceTests : AbstractTest() {
 
         results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results.failed.isEmpty())
+        assertTrue(results.missing.isEmpty())
         assertFalse(results.success.isEmpty())
 
         s = AssetSearch()
@@ -165,12 +165,12 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
         assertEquals(2, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
 
-        assertTrue(results.failed.isEmpty())
+        assertTrue(results.missing.isEmpty())
         assertFalse(results.success.isEmpty())
 
         results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results.failed.isEmpty())
+        assertTrue(results.missing.isEmpty())
         assertFalse(results.success.isEmpty())
         refreshIndex()
 

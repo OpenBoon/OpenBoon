@@ -62,6 +62,8 @@ class BatchCreateAssetsRequest(
     @JsonIgnore
     var scope = "index"
 
+    var isUpload = false
+
     constructor(sources: List<Document>, scope : String="index", skipAssetPrep:Boolean=false)
             : this(sources, null, null) {
         this.scope = scope

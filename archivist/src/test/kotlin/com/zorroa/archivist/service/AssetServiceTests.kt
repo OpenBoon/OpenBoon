@@ -27,10 +27,11 @@ class AssetServiceTests : AbstractTest() {
             val assets =  searchService.search(Pager.first(), AssetSearch())
             assets[0].setAttr("foo", "bar")
             assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
-            val changeCount = jdbc.queryForMap(
+            val change = jdbc.queryForMap(
                     "SELECT * FROM auditlog WHERE pk_asset=?::uuid AND int_type=?",
                     assets[0].id, AuditLogType.Changed.ordinal)
-            println(changeCount)
+            assertEquals(assets[0].id, change["pk_asset"].toString())
+            assertEquals(AuditLogType.Changed.ordinal, change["int_type"] as Int)
 
         } finally {
             System.clearProperty("archivist.auditlog.watched-fields")
@@ -99,7 +100,7 @@ class AssetServiceTests : AbstractTest() {
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
         assertEquals(2, assetService.addLinks(LinkType.Folder, folderId, ids).success.size)
-        assertEquals(2, assetService.addLinks(LinkType.Folder, folderId, ids).failed.size)
+        assertEquals(2, assetService.addLinks(LinkType.Folder, folderId, ids).missing.size)
     }
 
     @Test

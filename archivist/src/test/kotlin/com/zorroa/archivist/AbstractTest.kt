@@ -228,7 +228,10 @@ open abstract class AbstractTest {
      */
     fun authenticate() {
         val auth = UsernamePasswordAuthenticationToken("admin", "admin")
-        SecurityContextHolder.getContext().authentication = authenticationManager.authenticate(auth)
+
+        val userAuthed = userRegistryService.getUser("admin")
+        userAuthed.setAttr("company_id", "25274")
+        SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
     }
 
     fun authenticate(username: String) {
@@ -317,7 +320,7 @@ open abstract class AbstractTest {
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-            assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)))
+            assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)).apply { isUpload=true })
         }
         refreshIndex()
     }
