@@ -40,7 +40,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"))
             ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"))
-            indexService.index(ab)
+            assetService.createOrReplace(ab)
         }
         for (f in getTestPath("office").toFile().listFiles()!!) {
             if (!f.isFile || f.isHidden) {
@@ -49,7 +49,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             val ab = Source(f)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("03-05-2013 09:11:14"))
-            indexService.index(ab)
+            assetService.createOrReplace(ab)
         }
         for (f in getTestPath("video").toFile().listFiles()!!) {
             if (!f.isFile || f.isHidden) {
@@ -58,7 +58,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             val ab = Source(f)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("11-12-2015 06:14:10"))
-            indexService.index(ab)
+            assetService.createOrReplace(ab)
         }
         refreshIndex()
     }
@@ -187,7 +187,7 @@ class DyHierarchyServiceTests : AbstractTest() {
 
         val assets = indexService.getAll(Pager.first(100))
         for (asset in assets) {
-            indexService.update(asset.id, ImmutableMap.of("source",
+            indexService.update(asset, ImmutableMap.of("source",
                     ImmutableMap.of("extension", "abc")))
         }
         refreshIndex()

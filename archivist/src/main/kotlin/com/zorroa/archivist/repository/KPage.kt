@@ -35,6 +35,12 @@ class KPagedList<T> : Iterable<T> {
         page = KPage()
     }
 
+    constructor(count: Long, page: KPage, list: List<T>) {
+        this.page = page
+        this.page.totalCount = count
+        this.list = list
+    }
+
     constructor(page: KPage, list: List<T>) {
         this.page = page
         this.list = list

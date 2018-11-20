@@ -47,35 +47,38 @@ inline fun  <E: Any, T: Collection<E>> T?.whenNullOrEmpty(func: () -> Unit): Uni
 /**
  * Format a log message with key value pairs
  */
-fun formatLogMessage(message: String, kvp: Map<String, Any?>) : String {
+fun formatLogMessage(message: String, vararg kvp: Map<String, Any?>?) : String {
     val user = getUserOrNull()
     val sb = StringBuilder(512)
     sb.append("$message --- ")
     if (user != null) {
-        sb.append("actorName='${user.getName()}' orgId='${user.organizationId}'")
+        sb.append("userName='${user.getName()}' orgId='${user.organizationId}'")
     }
-    kvp.forEach {
-        if (it.value != null) {
-            if (it.value is Number || it.value is Boolean) {
-                sb.append(" ${it.key}=${it.value}")
-            } else {
-                sb.append(" ${it.key}='${it.value}'")
+    kvp?.forEach { e->
+        e?.forEach {
+            if (it.value != null) {
+                if (it.value is Number || it.value is Boolean) {
+                    sb.append(" ${it.key}=${it.value}")
+                } else {
+                    sb.append(" ${it.key}='${it.value}'")
+                }
             }
         }
     }
+
     return sb.toString()
 }
 
 /**
  * Extend the SLF4J logger with an event method.
  */
-fun Logger.event(message: String, kvp: Map<String, Any?>) {
-    this.info(formatLogMessage(message, kvp))
+fun Logger.event(message: String, vararg kvp: Map<String, Any?>?) {
+    this.info(formatLogMessage(message, *kvp))
 }
 
 /**
  * Extend the SLF4J logger with an event method.
  */
-fun Logger.warnEvent(op: String, message: String, kvp: Map<String, Any?>, ex: Exception?=null) {
+fun Logger.warnEvent(op: String, message: String, kvp: Map<String, Any?>?, ex: Exception?=null) {
     this.warn(formatLogMessage("$op ::: $message", kvp), ex)
 }

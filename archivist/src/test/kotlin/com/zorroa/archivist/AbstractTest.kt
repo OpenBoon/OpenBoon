@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
@@ -77,6 +78,9 @@ open abstract class AbstractTest {
 
     @Autowired
     protected lateinit var indexService: IndexService
+
+    @Autowired
+    protected lateinit var assetService: AssetService
 
     @Autowired
     protected lateinit var properties: ApplicationProperties
@@ -224,7 +228,10 @@ open abstract class AbstractTest {
      */
     fun authenticate() {
         val auth = UsernamePasswordAuthenticationToken("admin", "admin")
-        SecurityContextHolder.getContext().authentication = authenticationManager.authenticate(auth)
+
+        val userAuthed = userRegistryService.getUser("admin")
+        userAuthed.setAttr("company_id", "25274")
+        SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
     }
 
     fun authenticate(username: String) {
@@ -279,11 +286,10 @@ open abstract class AbstractTest {
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
 
                     val id = UUID.randomUUID().toString()
-
                     val proxies = Lists.newArrayList<Proxy>()
-                    proxies.add(Proxy(width=100, height=100, id="proxy/" + id + "_foo.jpg", mimeType = "image/jpeg"))
-                    proxies.add(Proxy(width=200, height=200, id="proxy/" + id + "_bar.jpg", mimeType = "image/jpeg"))
-                    proxies.add(Proxy(width=300, height=300, id="proxy/" + id + "_bing.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimeType = "image/jpeg"))
 
                     val p = ProxySchema()
                     p.proxies = proxies
@@ -314,7 +320,7 @@ open abstract class AbstractTest {
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-            indexService.index(source)
+            assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)).apply { isUpload=true })
         }
         refreshIndex()
     }

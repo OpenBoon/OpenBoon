@@ -10,7 +10,7 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testGetUser() {
-        val attrs = mapOf("company_id" to "123")
+        val attrs = mutableMapOf("company_id" to "123")
         val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"),
                 attrs=attrs)
         val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
@@ -18,7 +18,7 @@ class UserRegistryServiceTests : AbstractTest() {
         assertEquals(user1.username, user2.username)
         assertEquals(user1.id, user2.id)
         assertEquals(user1.authorities.size, user2.authorities.size)
-        assertEquals(attrs, user2.attrs)
+        assertEquals(user1.attrs, user2.attrs)
     }
 
     @Test
