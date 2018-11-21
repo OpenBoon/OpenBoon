@@ -45,14 +45,14 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testGetById() {
-        val asset2 = indexDao[asset1.id]
+        val asset2 = indexDao.get(asset1.id)
         assertEquals(asset1.id, asset2.id)
     }
 
     @Test
     fun testGetByPath() {
         val p = getTestImagePath("set04/standard/beer_kettle_01.jpg")
-        val asset2 = indexDao[p]
+        val asset2 = indexDao.get(p)
         assertNotNull(asset2)
     }
 
@@ -130,12 +130,12 @@ class IndexDaoTests : AbstractTest() {
         val source2 = Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"))
 
         var result = indexDao.index(ImmutableList.of(source1, source2))
-        assertEquals(1, result.created.toLong())
-        assertEquals(1, result.updated.toLong())
+        assertEquals(1, result.createdAssetIds.size)
+        assertEquals(1, result.replacedAssetIds.size)
 
         result = indexDao.index(ImmutableList.of(source1, source2))
-        assertEquals(0, result.created.toLong())
-        assertEquals(2, result.updated.toLong())
+        assertEquals(0, result.createdAssetIds.size)
+        assertEquals(2, result.replacedAssetIds.size)
     }
 
     @Test
@@ -145,7 +145,7 @@ class IndexDaoTests : AbstractTest() {
         assertTrue(indexDao.appendLink("parent", "foo",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        val a = indexDao[asset1.id]
+        val a = indexDao.get(asset1.id)
         val folder_links = a.getAttr<Collection<Any>>("system.links.folder")
         val parent_links = a.getAttr<Collection<Any>>("system.links.parent")
 
@@ -160,25 +160,23 @@ class IndexDaoTests : AbstractTest() {
         assertTrue(indexDao.appendLink("folder", "100",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        var a = indexDao[asset1.id]
+        var a = indexDao.get(asset1.id)
         var links = a.getAttr<Collection<Any>>("system.links.folder")
         assertEquals(1, links!!.size.toLong())
 
         assertTrue(indexDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        a = indexDao[asset1.id]
+        a = indexDao.get(asset1.id)
         links = a.getAttr("system.links.folder")
         assertEquals(0, links!!.size.toLong())
     }
 
     @Test
     fun testUpdate() {
-        val attrs = Maps.newHashMap<String, Any>()
-        attrs["foo.bar"] = 100
-
-        indexDao.update(asset1.id, attrs)
-        val asset2 = indexDao[asset1.id]
+        asset1.setAttr("foo.bar", 100)
+        indexDao.update(asset1)
+        val asset2 = indexDao.get(asset1.id)
         assertEquals(100, (asset2.getAttr<Any>("foo.bar") as Int).toLong())
     }
 
@@ -205,21 +203,6 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testGetProtectedFields() {
-        var v = indexDao.getManagedFields("a")
-        assertNotNull(v)
-        v = indexDao.getManagedFields(asset1.id)
-        assertNotNull(v)
-    }
-
-    @Test
-    fun testRemoveFields() {
-        indexDao.removeFields(asset1.id, Sets.newHashSet("source"), true)
-        val a = indexDao[asset1.id]
-        assertFalse(a.attrExists("source"))
-    }
-
-    @Test
     @Throws(InterruptedException::class)
     fun testRetryBrokenFields() {
 
@@ -240,9 +223,9 @@ class IndexDaoTests : AbstractTest() {
         result = indexDao.index(next)
         logger.info("{}", result)
 
-        assertEquals(4, result.created.toLong())
-        assertEquals(4, result.warnings.toLong())
-        assertEquals(1, result.retries.toLong())
+        assertEquals(4, result.createdAssetIds.size)
+        assertEquals(4, result.warningAssetIds.size)
+        assertEquals(1, result.retryCount.toLong())
 
     }
 

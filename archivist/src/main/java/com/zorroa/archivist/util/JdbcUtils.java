@@ -54,9 +54,27 @@ public class JdbcUtils {
         sb.append("INSERT INTO ");
         sb.append(table);
         sb.append("(");
-        sb.append(StringUtils.join(cols, ","));
+        for (String col: cols) {
+            if (col.contains("::")) {
+                sb.append(col.split("::")[0]);
+            }
+            else {
+                sb.append(col);
+            }
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length() -1);
         sb.append(") VALUES (");
-        sb.append(StringUtils.repeat("?",",", cols.length));
+        for (String col: cols) {
+            if (col.contains("::")) {
+                sb.append("?::" + col.split("::")[1]);
+            }
+            else {
+                sb.append("?");
+            }
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length() -1);
         sb.append(")");
         return sb.toString();
     }

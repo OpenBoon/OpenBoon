@@ -54,7 +54,8 @@ class JobFilter (
         private val organizationIds: List<UUID>? = null
 ) : KDaoFilter() {
 
-    override val sortMap: Map<String, String>? = null
+    @JsonIgnore
+    override val sortMap: Map<String, String> = mapOf()
 
     @JsonIgnore
     override fun build() {

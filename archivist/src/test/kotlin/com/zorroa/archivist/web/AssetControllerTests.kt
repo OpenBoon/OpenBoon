@@ -4,14 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
-import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
-import com.zorroa.archivist.domain.FolderSpec
-import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.domain.Source
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.web.api.AssetController
+import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
+import com.zorroa.security.Groups
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Ignore
@@ -363,6 +362,33 @@ class AssetControllerTests : MockMvcTest() {
         doc = indexService.get(doc.id)
         assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
 
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testSetPermissions() {
+        addTestAssets("set04/canyon")
+
+        val session = admin()
+        val perm = permissionService.getPermission(Groups.ADMIN)
+        val req = BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 7))
+
+        mvc.perform(put("/api/v2/assets/_permissions")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req)))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        authenticate("admin")
+        val assets = indexService.getAll(Pager.first(1))
+        for (asset in assets) {
+            val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
+            assertTrue(perm.id in perms.read)
+            assertTrue(perm.id in perms.write)
+            assertTrue(perm.id in perms.export)
+        }
     }
 
     @Test
