@@ -24,6 +24,7 @@ public class AssetFilter {
     private Map<String, SimilarityFilter> similarity;
     private Map<String, KwConfFilter> kwconf;
     private Boolean recursive;
+    private Map<String, GeoBoundingBox> geo_bounding_box;
 
     @Deprecated
     private Object hamming;
@@ -320,6 +321,14 @@ public class AssetFilter {
         }
         kwconf.put(field, kwfilt);
         return this;
+    }
+
+    public Map<String, GeoBoundingBox> getGeo_bounding_box() {
+        return geo_bounding_box;
+    }
+
+    public void setGeo_bounding_box(Map<String, GeoBoundingBox> geo_bounding_box) {
+        this.geo_bounding_box = geo_bounding_box;
     }
 
     @JsonIgnore

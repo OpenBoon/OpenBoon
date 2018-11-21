@@ -16,6 +16,7 @@ import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
+import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
@@ -27,6 +28,7 @@ import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.index.query.QueryBuilders.geoBoundingBoxQuery
 import org.elasticsearch.index.query.RangeQueryBuilder
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
@@ -668,6 +670,19 @@ class SearchServiceImpl @Autowired constructor(
                 val should = QueryBuilders.boolQuery()
                 this.applyFilterToQuery(f, should, linkedFolders)
                 query.should(should)
+            }
+        }
+
+        if (filter.geo_bounding_box != null) {
+            val bbox = filter.geo_bounding_box
+            for ((field, value) in bbox) {
+                if (value != null) {
+                    val tl = value.topLeftPoint()
+                    val br = value.bottomRightPoint()
+                    val bboxQuery = geoBoundingBoxQuery(field)
+                            .setCorners(tl[0], tl[1], br[0], br[1])
+                    query.should(bboxQuery)
+                }
             }
         }
     }

@@ -374,6 +374,20 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     @Throws(IOException::class)
+    fun testQueryWithGeoBBoxFields() {
+
+        addTestAssets("set04")
+        refreshIndex()
+
+        val bbox = GeoBoundingBox("37.031377, -109.083887", "36.968862, -109.000840")
+        val filter = AssetFilter()
+        filter.geo_bounding_box = mapOf("location.point" to bbox)
+        val search = AssetSearch().setFilter(filter)
+        assertEquals(6, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    @Throws(IOException::class)
     fun testHighConfidenceSearch() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
