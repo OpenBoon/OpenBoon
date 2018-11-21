@@ -254,8 +254,7 @@ class AssetControllerTests : MockMvcTest() {
         val rsp = Json.Mapper.readValue(result.response.contentAsString,
                 BatchDeleteAssetsResponse::class.java)
         assertEquals(2, rsp.totalRequested)
-        assertEquals(0, rsp.childrenRequested)
-        assertEquals(2, rsp.totalDeleted)
+        assertEquals(2, rsp.deletedAssetIds.size)
     }
 
     @Test
@@ -280,9 +279,9 @@ class AssetControllerTests : MockMvcTest() {
         val rsp = Json.Mapper.readValue(result.response.contentAsString,
                 BatchDeleteAssetsResponse::class.java)
         assertEquals(0, rsp.totalRequested)
-        assertEquals(0, rsp.childrenRequested)
-        assertEquals(0, rsp.totalDeleted)
-        assertEquals(2, rsp.accessDenied)
+        assertEquals(0, rsp.deletedAssetIds.size)
+        assertEquals(0, rsp.onHoldAssetIds.size)
+        assertEquals(2, rsp.accessDeniedAssetIds.size)
     }
 
     @Test

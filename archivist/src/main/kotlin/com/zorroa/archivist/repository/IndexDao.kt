@@ -483,15 +483,12 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
 
         docs.forEach { doc->
             if (doc.attrExists("system.hold") && doc.getAttr("system.hold", Boolean::class.java)) {
-                rsp.onHold+=1
+                rsp.onHoldAssetIds.add(doc.id)
             }
             else if (!hasPermission("write", doc)) {
-                rsp.accessDenied+=1
+                rsp.accessDeniedAssetIds.add(doc.id)
             }
             else {
-                if (doc.attrExists("media.clip.parent")) {
-                    rsp.childrenRequested+=1
-                }
                 rsp.totalRequested+=1
                 bulkRequest.add(rest.newDeleteRequest(doc.id))
             }
@@ -510,17 +507,16 @@ class IndexDaoImpl : AbstractElasticDao(), IndexDao {
                 br.isFailed -> {
                     logger.warnEvent("batch delete Asset", br.failureMessage,
                             mapOf("assetId" to br.id, "index" to br.index))
-                    rsp.failures[br.id] = br.failureMessage
+                    rsp.errors[br.id] = br.failureMessage
                 }
                 else ->  {
                     val deleted =  br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
                     if (deleted) {
                         logger.event("batch delete Asset", mapOf("assetId" to br.id, "index" to br.index))
-                        rsp.totalDeleted += 1
-                        rsp.success.add(br.id)
+                        rsp.deletedAssetIds.add(br.id)
                     }
                     else {
-                        rsp.missing += 1
+                        rsp.missingAssetIds.add(br.id)
                         logger.warnEvent("batch delete Asset", "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
                     }
                 }
