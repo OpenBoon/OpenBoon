@@ -284,6 +284,10 @@ open abstract class AbstractTest {
                     logger.info("adding test file: {}", f)
                     val b = Source(f)
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
+                    b.setAttr("location.point", mapOf("lat" to "36.996460", "lon" to "-109.043360"))
+                    b.setAttr("location.state", "New Mexico")
+                    b.setAttr("location.country", "USA")
+                    b.setAttr("location.keywords", listOf("boring", "tourist", "attraction"))
 
                     val id = UUID.randomUUID().toString()
                     val proxies = Lists.newArrayList<Proxy>()

@@ -16,6 +16,7 @@ import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
+import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
@@ -673,21 +674,17 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (filter.geo_bounding_box != null) {
-
             val bbox = filter.geo_bounding_box
-
             for ((field, value) in bbox) {
                 if (value != null) {
+                    val tl = value.topLeftPoint()
+                    val br = value.bottomRightPoint()
                     val bboxQuery = geoBoundingBoxQuery(field)
-                            .setCorners(value["top_left"]!!["lat"]!!,
-                                    value["top_left"]!!["lon"]!!,
-                                    value["bottom_right"]!!["lat"]!!,
-                                    value["bottom_right"]!!["lon"]!!)
+                            .setCorners(tl[0], tl[1], br[0], br[1])
                     query.should(bboxQuery)
                 }
             }
         }
-
     }
 
     private fun handleKwConfFilter(filters: Map<String, KwConfFilter>,  query: BoolQueryBuilder) {

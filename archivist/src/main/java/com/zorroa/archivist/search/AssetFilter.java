@@ -24,7 +24,7 @@ public class AssetFilter {
     private Map<String, SimilarityFilter> similarity;
     private Map<String, KwConfFilter> kwconf;
     private Boolean recursive;
-    private Map<String, Map<String, Map<String, Double>>> geo_bounding_box;
+    private Map<String, GeoBoundingBox> geo_bounding_box;
 
     @Deprecated
     private Object hamming;
@@ -323,6 +323,14 @@ public class AssetFilter {
         return this;
     }
 
+    public Map<String, GeoBoundingBox> getGeo_bounding_box() {
+        return geo_bounding_box;
+    }
+
+    public void setGeo_bounding_box(Map<String, GeoBoundingBox> geo_bounding_box) {
+        this.geo_bounding_box = geo_bounding_box;
+    }
+
     @JsonIgnore
     public boolean isEmpty() {
         return ((links == null ? 0 : links.size()) +
@@ -331,14 +339,5 @@ public class AssetFilter {
                 (terms == null ? 0 : terms.size()) +
                 (range == null ? 0 : range.size()) +
                 (scripts == null ? 0 : scripts.size())) == 0;
-    }
-
-    public Map<String, Map<String, Map<String, Double>>> getGeo_bounding_box() {
-        return geo_bounding_box;
-    }
-
-    public AssetFilter setGeo_bounding_box(Map<String, Map<String, Map<String, Double>>> geo_bounding_box) {
-        this.geo_bounding_box = geo_bounding_box;
-        return this;
     }
 }

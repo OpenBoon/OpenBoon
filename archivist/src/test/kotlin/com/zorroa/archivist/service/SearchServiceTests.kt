@@ -374,15 +374,16 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     @Throws(IOException::class)
-    fun testQueryWithGeoFields() {
+    fun testQueryWithGeoBBoxFields() {
 
-        addTestAssets("set05")
+        addTestAssets("set04")
         refreshIndex()
 
-        val bbox: Map<String, Map<String, Map<String, Double>>> = mapOf("source.location" to mapOf("top_left" to mapOf("lat" to 47.000, "lon" to 20.333), "bottom_right" to mapOf("lat" to 28.000, "lon" to 32.000)))
-        val filter = AssetFilter().setGeo_bounding_box(bbox)
-        val search = AssetSearch("searching").setFilter(filter)
-        assertEquals(1, searchService.search(search).hits.getTotalHits())
+        val bbox = GeoBoundingBox("37.031377, -109.083887", "36.968862, -109.000840")
+        val filter = AssetFilter()
+        filter.geo_bounding_box = mapOf("location.point" to bbox)
+        val search = AssetSearch().setFilter(filter)
+        assertEquals(6, searchService.search(search).hits.getTotalHits())
     }
 
     @Test
