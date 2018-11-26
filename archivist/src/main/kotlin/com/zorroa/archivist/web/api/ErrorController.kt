@@ -63,7 +63,7 @@ class RestApiExceptionHandler {
                 e is NumberFormatException ||
                 e is ArrayIndexOutOfBoundsException ||
                 e is MethodArgumentTypeMismatchException) {
-            HttpStatus.INTERNAL_SERVER_ERROR
+            HttpStatus.BAD_REQUEST
         }
         else {
             HttpStatus.INTERNAL_SERVER_ERROR
@@ -74,7 +74,7 @@ class RestApiExceptionHandler {
          */
         val errorId = UUID.randomUUID().toString()
 
-        if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
+        if (status == HttpStatus.INTERNAL_SERVER_ERROR || status == HttpStatus.BAD_REQUEST) {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
                     req.servletPath, getUserOrNull()?.toString(), errorId, e)
         }
