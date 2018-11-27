@@ -18,6 +18,7 @@ import java.util.*
 
 interface JobDao {
     fun create(spec: JobSpec, type: PipelineType): Job
+    fun update(job: JobId, update: JobUpdate): Boolean
     fun get(id: UUID, forClient:Boolean=false): Job
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
     fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
@@ -28,7 +29,7 @@ interface JobDao {
 class JobDaoImpl : AbstractDao(), JobDao {
 
     @Autowired
-    internal lateinit var userDaoCache: UserDaoCache
+    lateinit var userDaoCache: UserDaoCache
 
     override fun create(spec: JobSpec, type: PipelineType): Job {
         Preconditions.checkNotNull(spec.name)
@@ -51,6 +52,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setObject(10, user.id)
             ps.setString(11, Json.serializeToString(spec.args, "{}"))
             ps.setString(12, Json.serializeToString(spec.env, "{}"))
+            ps.setInt(13, spec.priority)
             ps
         }
 
@@ -60,6 +62,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
         logger.event("create Job", mapOf("jobId" to id, "jobName" to spec.name))
 
         return get(id)
+    }
+
+    override fun update(job: JobId, update: JobUpdate): Boolean {
+        return jdbc.update("UPDATE job SET str_name=?, int_priority=? WHERE pk_job=?",
+                update.name, update.priority, job.jobId) == 1
     }
 
     override fun get(id: UUID, forClient: Boolean): Job {
@@ -186,7 +193,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     null,
                     null,
                     rs.getLong("time_modified"),
-                    rs.getLong("time_started")
+                    rs.getLong("time_started"),
+                    rs.getInt("int_priority")
             )
         }
 
@@ -220,7 +228,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "pk_user_created",
                 "pk_user_modified",
                 "json_args",
-                "json_env")
+                "json_env",
+                "int_priority")
     }
 }
 

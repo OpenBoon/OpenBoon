@@ -8,7 +8,6 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
-import java.sql.ResultSet
 import java.util.*
 
 enum class JobState {
@@ -28,9 +27,14 @@ class JobSpec (
         var name: String?,
         var script : ZpsScript?,
         val args: MutableMap<String, Any>? = mutableMapOf(),
-        val env: MutableMap<String, String>? =  mutableMapOf()
+        val env: MutableMap<String, String>? =  mutableMapOf(),
+        val priority: Int=100
 )
 
+class JobUpdate (
+        var name: String,
+        val priority: Int
+)
 
 class Job (
         val id: UUID,
@@ -42,7 +46,8 @@ class Job (
         var taskCounts: Map<String,Int>?=null,
         var createdUser: UserBase?=null,
         var timeStarted: Long,
-        var timeUpdated: Long
+        var timeUpdated: Long,
+        var priority: Int
 ) : JobId {
     override val jobId = id
 }
@@ -88,6 +93,8 @@ class JobFilter (
     }
 }
 
+/**
+ * Emitted by the Analyst to communicate different states of a task/job.
+ */
 class JobEvent(val type:String, val payload: Any)
 
-class JobStateChangeEvent(val job: Job, val newState: JobState, val oldState : JobState?)

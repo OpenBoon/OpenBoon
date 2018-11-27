@@ -34,6 +34,20 @@ class JobDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testUpdate() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        val t1 = jobDao.create(spec, PipelineType.Import)
+        val update = JobUpdate("bilbo_baggins", 5)
+        assertTrue(jobDao.update(t1, update))
+        val t2 = jobDao.get(t1.id)
+        assertEquals(update.name, t2.name)
+        assertEquals(update.priority, t2.priority)
+    }
+
+    @Test
     fun testGet() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("test_script"),
