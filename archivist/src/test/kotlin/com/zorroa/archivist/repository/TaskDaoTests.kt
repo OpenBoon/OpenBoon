@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.common.domain.*
+import com.zorroa.common.repository.KPage
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,13 +47,14 @@ class TaskDaoTests : AbstractTest() {
         }
 
         val filter1 = TaskFilter(jobIds=listOf(job.id))
-        assertEquals(10, taskDao.getAll(Pager.first(), filter1).size())
+        filter1.page = KPage(0, 10)
+        assertEquals(10, taskDao.getAll(filter1).size())
 
         val filter2 = TaskFilter(jobIds=listOf(UUID.randomUUID()))
-        assertEquals(0, taskDao.getAll(Pager.first(), filter2).size())
+        assertEquals(0, taskDao.getAll(filter2).size())
 
         val filter3 = TaskFilter(jobIds=listOf(job.id))
-        assertEquals(1, taskDao.getAll(Pager.first(1), filter3).size())
+        assertEquals(11, taskDao.getAll(filter3).size())
     }
 
     @Test

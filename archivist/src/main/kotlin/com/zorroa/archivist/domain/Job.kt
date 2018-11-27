@@ -31,7 +31,7 @@ class JobSpec (
         val priority: Int=100
 )
 
-class JobUpdate (
+class JobUpdateSpec (
         var name: String,
         val priority: Int
 )
@@ -47,16 +47,17 @@ class Job (
         var createdUser: UserBase?=null,
         var timeStarted: Long,
         var timeUpdated: Long,
+        var timeCreated: Long,
         var priority: Int
 ) : JobId {
     override val jobId = id
 }
 
 class JobFilter (
-        private val ids : List<UUID>? = null,
-        private val type: PipelineType? = null,
-        private val states : List<JobState>? = null,
-        private val organizationIds: List<UUID>? = null
+        val ids : List<UUID>? = null,
+        val type: PipelineType? = null,
+        val states : List<JobState>? = null,
+        val organizationIds: List<UUID>? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -65,9 +66,9 @@ class JobFilter (
     @JsonIgnore
     override fun build() {
 
-        if (!ids.orEmpty().isEmpty()) {
-            addToWhere(JdbcUtils.inClause("job.pk_job", ids!!.size))
-            addToValues(ids)
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("job.pk_job", it.size))
+            addToValues(it)
         }
 
         if (type != null) {
@@ -75,15 +76,15 @@ class JobFilter (
             addToValues(type.ordinal)
         }
 
-        if (!states.orEmpty().isEmpty()) {
-            addToWhere(JdbcUtils.inClause("job.int_state", states!!.size))
-            addToValues(states.map{it.ordinal})
+        states?.let {
+            addToWhere(JdbcUtils.inClause("job.int_state", it.size))
+            addToValues(it.map{ s-> s.ordinal})
         }
 
         if (hasPermission("zorroa::superadmin")) {
-            if (!organizationIds.orEmpty().isEmpty()) {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", organizationIds!!.size))
-                addToValues(organizationIds)
+            organizationIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+                addToValues(it)
             }
         }
         else {
@@ -92,9 +93,4 @@ class JobFilter (
         }
     }
 }
-
-/**
- * Emitted by the Analyst to communicate different states of a task/job.
- */
-class JobEvent(val type:String, val payload: Any)
 

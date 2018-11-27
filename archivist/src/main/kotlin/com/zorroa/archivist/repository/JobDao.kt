@@ -18,7 +18,7 @@ import java.util.*
 
 interface JobDao {
     fun create(spec: JobSpec, type: PipelineType): Job
-    fun update(job: JobId, update: JobUpdate): Boolean
+    fun update(job: JobId, update: JobUpdateSpec): Boolean
     fun get(id: UUID, forClient:Boolean=false): Job
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
     fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
@@ -64,7 +64,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return get(id)
     }
 
-    override fun update(job: JobId, update: JobUpdate): Boolean {
+    override fun update(job: JobId, update: JobUpdateSpec): Boolean {
         return jdbc.update("UPDATE job SET str_name=?, int_priority=? WHERE pk_job=?",
                 update.name, update.priority, job.jobId) == 1
     }
@@ -78,14 +78,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun getAll(page: Pager, filter: JobFilter?): PagedList<Job> {
-        var filter = filter
-        if (filter == null) {
-            filter = JobFilter()
-        }
+        val filt = filter ?: JobFilter()
 
-        val query = filter.getQuery(GET, false)
-        return PagedList(page.setTotalCount(count(filter)),
-                jdbc.query<Job>(query, MAPPER, *filter.getValues(false)))
+        val query = filt.getQuery(GET, false)
+        return PagedList(page.setTotalCount(count(filt)),
+                jdbc.query<Job>(query, MAPPER, *filt.getValues(false)))
     }
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
@@ -192,8 +189,9 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     null,
                     null,
                     null,
-                    rs.getLong("time_modified"),
                     rs.getLong("time_started"),
+                    rs.getLong("time_modified"),
+                    rs.getLong("time_created"),
                     rs.getInt("int_priority")
             )
         }

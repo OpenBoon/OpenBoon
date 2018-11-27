@@ -40,7 +40,7 @@ class JobDaoTests : AbstractTest() {
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
         val t1 = jobDao.create(spec, PipelineType.Import)
-        val update = JobUpdate("bilbo_baggins", 5)
+        val update = JobUpdateSpec("bilbo_baggins", 5)
         assertTrue(jobDao.update(t1, update))
         val t2 = jobDao.get(t1.id)
         assertEquals(update.name, t2.name)
