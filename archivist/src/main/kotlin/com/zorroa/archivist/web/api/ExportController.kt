@@ -2,9 +2,7 @@ package com.zorroa.archivist.web.api
 
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
-import com.zorroa.archivist.service.ExportService
-import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.JobService
+import com.zorroa.archivist.service.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -17,7 +15,8 @@ import java.util.*
 class ExportController @Autowired constructor(
         private val exportService: ExportService,
         private val jobService: JobService,
-        private val fileServerProvider: FileServerProvider
+        private val fileServerProvider: FileServerProvider,
+        private val fileStorageService: FileStorageService
 ) {
 
     @PostMapping(value = ["/api/v1/exports"])
@@ -43,9 +42,10 @@ class ExportController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}/_files/{fileId}/_stream"])
-    fun streamExportfile(@PathVariable id: UUID, @PathVariable fileId: UUID): ResponseEntity<InputStreamResource> {
+    fun streamExportFile(@PathVariable id: UUID, @PathVariable fileId: UUID): ResponseEntity<InputStreamResource> {
         val file = exportService.getExportFile(fileId)
-        return fileServerProvider.getServableFile(URI.create(file.path)).getReponseEntity()
+        val st = fileStorageService.get(file.path)
+        return fileServerProvider.getServableFile(st).getReponseEntity()
     }
 }
 

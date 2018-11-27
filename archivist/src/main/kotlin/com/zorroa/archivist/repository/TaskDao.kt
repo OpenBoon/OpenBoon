@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.ZpsScript
@@ -19,7 +20,7 @@ interface TaskDao {
     fun setHostEndpoint(task: TaskId, host: String)
     fun setExitStatus(task: TaskId, exitStatus: Int)
     fun getScript(id: UUID) : ZpsScript
-    fun incrementAssetStats(task: TaskId, counts: AssetIndexResult) : Boolean
+    fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean
     fun getAll(pager: Pager, filter: TaskFilter): PagedList<Task>
 }
 
@@ -98,18 +99,23 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.taskId)
     }
 
-    override fun incrementAssetStats(task: TaskId, counts: AssetIndexResult) : Boolean {
-        val updated =  jdbc.update(INC_STATS,
-                counts.total, counts.created, counts.updated, counts.warnings, counts.errors, counts.replaced, task.taskId) == 1
+    override fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean {
+        val updated = jdbc.update(INC_STATS,
+                counts.total,
+                counts.createdAssetIds.size,
+                counts.warningAssetIds.size,
+                counts.erroredAssetIds.size,
+                counts.replacedAssetIds.size,
+                task.taskId) == 1
 
-        logger.event("updated TaskAssetStats",
-                mapOf("taskId" to task.taskId,
-                    "assetsCreated" to counts.created,
-                    "assetsUpdated" to counts.updated,
-                    "assetsWarned" to counts.warnings,
-                    "assetErrors" to counts.errors,
-                    "assetsReplaced" to counts.replaced,
-                    "status" to updated))
+        if (updated) {
+            logger.event("updated TaskAssetStats",
+                    mapOf("taskId" to task.taskId,
+                            "assetsCreated" to counts.createdAssetIds.size,
+                            "assetsWarned" to counts.warningAssetIds.size,
+                            "assetErrors" to counts.erroredAssetIds.size,
+                            "assetsReplaced" to counts.replacedAssetIds.size))
+        }
         return updated
     }
 
@@ -141,7 +147,6 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "SET " +
                 "int_asset_total_count=int_asset_total_count+?," +
                 "int_asset_create_count=int_asset_create_count+?," +
-                "int_asset_update_count=int_asset_update_count+?," +
                 "int_asset_warning_count=int_asset_warning_count+?," +
                 "int_asset_error_count=int_asset_error_count+?," +
                 "int_asset_replace_count=int_asset_replace_count+? " +
@@ -186,7 +191,6 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task_stat.int_asset_replace_count," +
                 "task_stat.int_asset_error_count," +
                 "task_stat.int_asset_warning_count," +
-                "task_stat.int_asset_update_count, " +
                 "job.pk_organization "+
                 "FROM " +
                 "task " +

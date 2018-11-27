@@ -28,8 +28,7 @@ abstract class KDaoFilter {
         this.page = page
     }
 
-    @get:JsonIgnore
-    abstract val sortMap: Map<String, String>?
+    abstract val sortMap: Map<String, String>
 
     abstract fun build()
 
@@ -43,7 +42,7 @@ abstract class KDaoFilter {
         }
     }
 
-    fun addToValues(items: Collection<Any>) {
+    fun addToValues(items: Iterable<Any>) {
         values.addAll(items)
     }
 
@@ -60,10 +59,10 @@ abstract class KDaoFilter {
             sb.append(whereClause)
         }
 
-        if (sortMap != null && !sort.isEmpty()) {
+        if (!forCount && sortMap != null && sort.isNotEmpty()) {
             val order = StringBuilder(64)
             for ((key, value) in sort) {
-                val col = sortMap!![key]
+                val col = sortMap[key]
                 if (col != null) {
                     order.append(col + " " + if (value.startsWith("a")) "asc " else "desc ")
                     order.append(",")

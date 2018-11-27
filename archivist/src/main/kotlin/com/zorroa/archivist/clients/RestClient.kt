@@ -3,10 +3,7 @@ package com.zorroa.common.clients
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.common.util.Json
 import org.apache.commons.codec.binary.Hex
-import org.apache.http.HttpEntity
-import org.apache.http.HttpHost
-import org.apache.http.HttpRequest
-import org.apache.http.HttpResponse
+import org.apache.http.*
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
 import org.apache.http.client.methods.HttpGet
@@ -38,7 +35,11 @@ import javax.crypto.spec.SecretKeySpec
 class RestClientException constructor(override val message :
                                            String, override val cause : Throwable?) : RuntimeException(message, cause) {
 
+    var status: Int = HttpStatus.SC_INTERNAL_SERVER_ERROR
     constructor(message: String) : this(message, null)
+    constructor(message: String, status: Int) : this(message, null) {
+        this.status = status
+    }
 
 }
 
@@ -276,7 +277,7 @@ class RestClient {
         }
 
         if (response.statusLine.statusCode != 200) {
-            logger.warn("REST response error: {} {} {} {}",
+            logger.warn("REST response error: {}{} {} {}",
                     host.hostName, req.requestLine.uri,
                     response.statusLine.reasonPhrase, response.statusLine.statusCode)
 
@@ -284,7 +285,7 @@ class RestClient {
             val message = error.getOrElse("message") {
                 "Unknown REST client exception to $host, ${response.statusLine.statusCode} ${response.statusLine.reasonPhrase}"
             }
-            throw RestClientException(message.toString())
+            throw RestClientException(message.toString(), response.statusLine.statusCode)
         }
 
         return response

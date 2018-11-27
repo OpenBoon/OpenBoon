@@ -6,37 +6,32 @@ import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.Storage.SignUrlOption
 import com.google.cloud.storage.StorageOptions
+import com.google.common.base.Preconditions
+import com.google.rpc.PreconditionFailure
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.filesystem.ObjectFileSystem
-import com.zorroa.archivist.filesystem.OfsFile
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.archivist.util.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.FileInputStream
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
 /**
  * The FileStorageService is for determining the location of files assocaiated with
  * assets, exports, etc.
- *
  */
 interface FileStorageService {
-
-    /**
-     * Allocates new file storage.
-     *
-     * @param[spec] The FileStorageSpec which describes what is being stored.
-     * @return a FileStorage object detailing the location of the storage
-     */
-    fun create(spec: FileStorageSpec) : FileStorage
 
     /**
      * Use a FileStorageSpec to determine if a file already exists with the given spec.
@@ -64,17 +59,54 @@ interface FileStorageService {
 
 }
 
+/**
+ * A LayoutProvider is basically a path munger. All this logic could have gone into
+ * the FileStorageService but it's nice to have to be separate so each class
+ * munges with the same API.
+ */
+interface LayoutProvider {
+
+    /**
+     * Takes a FileStorageSpec and returns a URI for the file.
+     *
+     * @param spec the FileStorageSpec
+     * @return the URI as a String
+     */
+    fun buildUri(spec: FileStorageSpec): String
+
+    /**
+     * Takes a unique ID and returns a URI.
+     *
+     * @param id the unique ID
+     * @return the URI as a String
+     */
+    fun buildUri(id: String): String
+
+    /**
+     * Takes a FileStorageSpec and returns a URI.
+     *
+     * @param spec the FileStorageSpec
+     * @return the unique ID
+     */
+    fun buildId(spec: FileStorageSpec): String
+}
+
+/**
+ * The GcsFileStorageService handles the location and placement of files withing GCS.
+ */
 class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=null) : FileStorageService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
 
+    @Autowired
+    lateinit var fileServerProvider: FileServerProvider
+
     private val gcs: Storage
 
-    val dlp : DirectoryLayoutProvider
+    val dlp  = GcsLayoutProvider(bucket)
 
     init {
-
         gcs = if (credsFile!= null && Files.exists(credsFile)) {
             StorageOptions.newBuilder().setCredentials(
                     GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))).build().service
@@ -82,19 +114,6 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         else {
             StorageOptions.newBuilder().build().service
         }
-
-        dlp = GcsDirectoryLayoutProvider(bucket)
-    }
-
-    override fun create(spec: FileStorageSpec): FileStorage {
-        val uri = dlp.buildUri(spec)
-        val id = dlp.buildId(spec)
-        val storage =  FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri))
-
-        logger.event("getLocation FileStorage",
-                mapOf("fileStorageId" to storage.id,
-                        "fileStorageUri" to storage.uri))
-        return storage
     }
 
     override fun get(spec: FileStorageSpec): FileStorage {
@@ -105,11 +124,16 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
                 mapOf("fileStorageId" to id,
                         "fileStorageUri" to uri))
 
-        return FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri))
+        return FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri), fileServerProvider)
     }
 
     override fun get(id: String): FileStorage {
-        val storage =  FileStorage(unslashed(id), dlp.buildUri(id), "gs", StaticUtils.tika.detect(id))
+        val storage =  FileStorage(
+                unslashed(id),
+                dlp.buildUri(id),
+                "gs",
+                StaticUtils.tika.detect(id),
+                fileServerProvider)
         logger.event("getLocation FileStorage",
                 mapOf("fileStorageId" to storage.id,
                         "fileStorageUri" to storage.uri))
@@ -121,7 +145,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val path = uri.path
         val contentType = StaticUtils.tika.detect(path)
 
-        logger.event("sign StorageFile",
+        logger.event("sign FileStorage",
                 mapOf("contentType" to contentType, "storageId" to uri, "bucket" to bucket, "path" to path))
 
         val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
@@ -135,11 +159,15 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
 }
 
 /**
- * LocalFileStorageService handles where files are stored in an on-prem single
- * tenant install.
+ * LocalFileStorageService handles the location of files in an on-prem single tenant install.
  */
-class LocalFileStorageService @Autowired constructor(
-        val root: Path, private val ofs: ObjectFileSystem): FileStorageService {
+class LocalFileStorageService constructor(
+        val root: Path, ofs: ObjectFileSystem): FileStorageService {
+
+    val dlp = LocalLayoutProvider(root, ofs)
+
+    @Autowired
+    lateinit var fileServerProvider: FileServerProvider
 
     init {
         logger.info("Initializing LocalFileStorageService at {}", root)
@@ -147,7 +175,7 @@ class LocalFileStorageService @Autowired constructor(
             logger.info("LocalFileStorageService creating directory: {}", root)
             Files.createDirectories(root)
         }
-        listOf("exports", "models").forEach {
+        listOf("exports").forEach {
             val p = root.resolve(it)
             if (!Files.exists(p)) {
                 logger.info("LocalFileStorageService creating directory: {}", p)
@@ -156,32 +184,26 @@ class LocalFileStorageService @Autowired constructor(
         }
     }
 
-    override fun create(spec: FileStorageSpec) : FileStorage {
-        val ofile = ofs.prepare(spec.category, spec.name, spec.type, spec.variants)
-        return buildFileStorage(ofile)
-    }
-
     override fun get(spec: FileStorageSpec) : FileStorage {
-        val ofile = ofs.get(spec.category, spec.name, spec.type, spec.variants)
-        return buildFileStorage(ofile)
+        return buildFileStorage(dlp.buildId(spec), dlp.buildUri(spec))
     }
 
     override fun get(id: String) : FileStorage {
-        val ofile = ofs.get(slashed(id))
-        return buildFileStorage(ofile)
+        val url = dlp.buildUri(id)
+        return buildFileStorage(id, url)
     }
 
     override fun getSignedUrl(id: String, method: HttpMethod) : String  {
-        val ofile = ofs.get(slashed(id))
-        return ofile.file.toURI().toString()
+        return dlp.buildUri(id)
     }
 
-    private fun buildFileStorage(ofile: OfsFile) : FileStorage {
+    private fun buildFileStorage(id: String, url: String) : FileStorage {
         val storage = FileStorage(
-                unslashed(ofile.id),
-                ofile.file.toURI().toString(),
+                unslashed(id),
+                url,
                 "file",
-                StaticUtils.tika.detect(ofile.file.toString()))
+                StaticUtils.tika.detect(url),
+                fileServerProvider)
 
         logger.event("getLocation FileStorage",
                 mapOf("fileStorageId" to storage.id,
@@ -194,30 +216,59 @@ class LocalFileStorageService @Autowired constructor(
     }
 }
 
-interface DirectoryLayoutProvider {
-    fun buildUri(st: FileStorageSpec): String
-    fun buildUri(id: String): String
-    fun buildId(spec: FileStorageSpec): String
-}
 
-class GcsDirectoryLayoutProvider(bucket: String) : DirectoryLayoutProvider {
+class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : LayoutProvider {
 
-    private val dlpDefault = DefaultGcsDirectoryLayoutProvider(bucket)
+    override fun buildUri(spec: FileStorageSpec): String {
 
-    override fun buildUri(st: FileStorageSpec): String {
-        return dlpDefault.buildUri(st)
+        return if (spec.category == "export") {
+            Preconditions.checkNotNull(spec.jobId, "Export locations must have a job Id")
+            val path = root.resolve("exports")
+                    .resolve(spec.jobId.toString())
+                    .resolve("${spec.name}.${spec.type}")
+            path.toFile().parentFile.mkdirs()
+            path.toUri().toString()
+        }
+        else {
+            val name = spec.assetId ?: spec.name
+            val ofile = ofs.prepare(spec.category, name, spec.type, spec.variants)
+            ofile.file.toPath().toUri().toString()
+        }
     }
 
     override fun buildUri(id: String): String {
-        return dlpDefault.buildUri(id)
+        if (id.contains('/')) {
+            throw IllegalArgumentException("Id '$id' cannot contain a slash")
+        }
+
+        val e = id.split("___")
+        return when (e[0]) {
+            "export" -> {
+                root.resolve("exports").resolve(e[1]).resolve(e[2]).toUri().toString()
+            }
+            else -> {
+                val sid = slashed(id)
+                ofs.get(sid).path.toUri().toString()
+            }
+        }
     }
 
     override fun buildId(spec: FileStorageSpec): String {
-        return dlpDefault.buildId(spec)
+        return when(spec.category) {
+            "export" -> {
+                Preconditions.checkNotNull(spec.jobId, "Export locations must have a job Id")
+                "${spec.category}___${spec.jobId}___${spec.name}.${spec.type}"
+            }
+            else -> {
+                val name = spec.assetId ?: spec.name
+                unslashed(ofs.prepare(spec.category, name, spec.type, spec.variants).id)
+            }
+        }
     }
 }
 
-class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryLayoutProvider {
+
+class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
 
     override fun buildUri(id: String): String {
         val org = getOrgId()
@@ -231,8 +282,8 @@ class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryL
         if (variant == "_") {
             variant = ""
         }
-        val assetId = spec.assetId ?: StaticUtils.uuid3.generate(spec.name)
-        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$assetId/${spec.name}$variant.${spec.type}"
+        val id = getElementId(spec)
+        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$id/${spec.name}$variant.${spec.type}"
     }
 
     override fun buildId(spec: FileStorageSpec) : String {
@@ -240,9 +291,22 @@ class DefaultGcsDirectoryLayoutProvider(private val bucket: String) : DirectoryL
         if (variant == "_") {
             variant = ""
         }
-        val assetId = spec.assetId ?: StaticUtils.uuid3.generate(spec.name)
-        return "${spec.category}___${assetId}___${spec.name}$variant.${spec.type}"
+        val id = getElementId(spec)
+        return "${spec.category}___${id}___${spec.name}$variant.${spec.type}"
     }
+
+    inline fun getElementId(spec: FileStorageSpec) : UUID {
+        return if (spec.category == "export") {
+            spec.jobId?.let {
+                it
+            }
+            throw IllegalStateException("Cannot register export files without job id")
+        }
+        else {
+            spec.assetId ?: StaticUtils.uuid3.generate(spec.name)
+        }
+    }
+
 }
 
 /**

@@ -3,8 +3,10 @@ package com.zorroa.archivist.web
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
+import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.ExportService
+import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.common.domain.Job
 import com.zorroa.common.util.Json
 import org.junit.Test
@@ -20,6 +22,9 @@ class ExportControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var exportService: ExportService
+
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
 
     @Test
     @Throws(Exception::class)
@@ -61,9 +66,11 @@ class ExportControllerTests : MockMvcTest() {
                 compress=true)
         val export = exportService.create(espec)
 
-        val fspec = ExportFileSpec(
-                "/tmp/foo.jpg", "image/jpeg", 1000000)
+        val storage = fileStorageService.get(FileStorageSpec(
+                "export", "foo", "txt", jobId=export.id))
+        Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
 
+        val fspec = ExportFileSpec(storage.id)
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -73,9 +80,11 @@ class ExportControllerTests : MockMvcTest() {
                 .andReturn()
 
         val file = Json.Mapper.readValue(req.response.contentAsString, ExportFile::class.java)
-        assertEquals(fspec.path, file.path)
-        assertEquals(fspec.mimeType, file.mimeType)
-        assertEquals(fspec.size, file.size)
+        println(Json.prettyString(file))
+        assertEquals("export___${export.id}___foo.txt", file.path)
+        assertEquals("text/plain", file.mimeType)
+        assertEquals(4, file.size)
+
     }
 
     @Test
@@ -92,23 +101,31 @@ class ExportControllerTests : MockMvcTest() {
                 compress=true)
         val export = exportService.create(espec)
 
-        val path = getTestImagePath().resolve("beer_kettle_01.jpg")
-        val fspec = ExportFileSpec(path.toUri().toString(), "image/jpeg", Files.size(path))
+
+        val storage = fileStorageService.get(FileStorageSpec(
+                "export", "foo", "txt", jobId=export.id))
+        Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
+
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(fspec)))
+                .content(Json.serialize(mapOf("storageId" to storage.id))))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
         val file = Json.Mapper.readValue(req.response.contentAsString, ExportFile::class.java)
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/exports/${export.id}/_files/${file.id}/_stream")
+        val req2 = mvc.perform(MockMvcRequestBuilders.get("/api/v1/exports/${export.id}/_files/${file.id}/_stream")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
+
+        val content = req2.response.contentAsString
+        assertEquals("bing", content)
+
+
     }
 }

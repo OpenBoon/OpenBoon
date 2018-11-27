@@ -5,11 +5,121 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
+import com.google.common.base.MoreObjects
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.regex.Pattern
 
+/**
+ * Request to update selected assets with new permissions.  If replace=true, then
+ * all permissions are replaced,otherwise they are updated.
+ *
+ * @param search: An asset search
+ * @param acl: An acl to apply
+ * @param replace: Replace all permissions with this acl, defaults to false.
+ */
+class BatchUpdatePermissionsRequest(
+        val search: AssetSearch,
+        val acl: Acl,
+        val replace: Boolean = false
+)
+
+/**
+ * A response object for a BatchUpdatePermissionsRequest
+ *
+ * @property updatedAssetIds The asset ids that were updated.
+ * @property errors A map of errors which happened during processing
+ */
+class BatchUpdatePermissionsResponse {
+
+    val updatedAssetIds = mutableSetOf<String>()
+    val errors = mutableMapOf<String, String>()
+
+    operator fun plus(other: BatchCreateAssetsResponse) {
+        updatedAssetIds.addAll(other.replacedAssetIds)
+    }
+}
+
+/**
+ * Structure for upserting a batch of assets.
+ *
+ * @property sources: The source documents
+ * @property jobId: The associated job Id
+ * @property taskID: The associated task Id
+ * @property skipAssetPrep: Skip over asset prep stage during create.
+ */
+class BatchCreateAssetsRequest(
+        val sources: List<Document>,
+        val jobId: UUID?,
+        val taskId: UUID?) {
+
+
+    @JsonIgnore
+    var skipAssetPrep = false
+
+    @JsonIgnore
+    var scope = "index"
+
+    var isUpload = false
+
+    constructor(sources: List<Document>, scope : String="index", skipAssetPrep:Boolean=false)
+            : this(sources, null, null) {
+        this.scope = scope
+        this.skipAssetPrep = skipAssetPrep
+    }
+}
+
+
+/**
+ * The response after batch creating an array of assets.
+ * @property createdAssetIds An array of asset ids that were created.
+ * @property replacedAssetIds An array of asset ids that were replaced.
+ * @property erroredAssetIds An array of asset ids that were an error and were not added.
+ * @property warningAssetIds Asset IDs with a field warning.
+ * @property retryCount Number of retries it took to get this batch through.
+ */
+class BatchCreateAssetsResponse(val total: Int) {
+    var createdAssetIds = mutableSetOf<String>()
+    var replacedAssetIds  = mutableSetOf<String>()
+    var erroredAssetIds  = mutableSetOf<String>()
+    var warningAssetIds = mutableSetOf<String>()
+    var retryCount = 0
+
+    fun add(other: BatchCreateAssetsResponse): BatchCreateAssetsResponse {
+        createdAssetIds.addAll(other.createdAssetIds)
+        replacedAssetIds.addAll(other.replacedAssetIds)
+        erroredAssetIds.addAll(other.erroredAssetIds)
+        warningAssetIds.addAll(other.warningAssetIds)
+        retryCount += other.retryCount
+        return this
+    }
+
+    /**
+     * Return true if assets were created or replaced.
+     */
+    fun assetsChanged() : Boolean {
+        return createdAssetIds.isNotEmpty() || replacedAssetIds.isNotEmpty()
+    }
+
+    /**
+     * The total number of assets either created or replaced
+     */
+    fun totalAssetsChanged() : Int {
+        return createdAssetIds.size + replacedAssetIds.size
+    }
+
+    override fun toString(): String {
+        return MoreObjects.toStringHelper(this)
+                .add("created", createdAssetIds.size)
+                .add("replaced", replacedAssetIds.size)
+                .add("warnings", warningAssetIds)
+                .add("errors", erroredAssetIds.size)
+                .add("retries", retryCount)
+                .toString()
+    }
+}
 /**
  * A request to batch delete assets.
  *
@@ -23,32 +133,40 @@ class BatchDeleteAssetsRequest (
  * The response returned when assets are deleted.
  *
  * @property totalRequested The total number of assets requested to be deleted.  This includes the resolved # of clips.
- * @property totalDeleted The total number of assets actually deleted.
- * @property childrenRequested The total number of children deleted.
- * @property onHold Assets skipped due to being on hold.
- * @property accessDenied Assets skipped due to permissions
- * @property missing Assets that have already been deleted.
- * @property failures A map AssetID/Message failures.
+ * @property deletedAssetIds The total number of assets actually deleted.
+ * @property onHoldAssetIds Assets skipped due to being on hold.
+ * @property accessDeniedAssetIds Assets skipped due to permissions
+ * @property missingAssetIds Assets that have already been deleted.
+ * @property errors A map AssetID/Message failures.
  */
 class BatchDeleteAssetsResponse (
     var totalRequested: Int=0,
-    var totalDeleted: Int=0,
-    var childrenRequested: Int=0,
-    var onHold: Int=0,
-    var accessDenied: Int=0,
-    var missing: Int=0,
-    var failures: MutableMap<String, String> = mutableMapOf(),
-    @JsonIgnore var success: MutableSet<String> = mutableSetOf()
+    var deletedAssetIds: MutableSet<String> = mutableSetOf(),
+    var onHoldAssetIds: MutableSet<String> = mutableSetOf(),
+    var accessDeniedAssetIds: MutableSet<String> = mutableSetOf(),
+    var missingAssetIds: MutableSet<String> = mutableSetOf(),
+    var errors: MutableMap<String, String> = mutableMapOf()
 ) {
     operator fun plus(other: BatchDeleteAssetsResponse) {
         totalRequested += other.totalRequested
-        totalDeleted += other.totalDeleted
-        childrenRequested += other.childrenRequested
-        onHold += other.onHold
-        accessDenied += other.accessDenied
-        missing += other.missing
-        failures.putAll(other.failures)
+        deletedAssetIds.addAll(other.deletedAssetIds)
+        onHoldAssetIds.addAll(other.onHoldAssetIds)
+        accessDeniedAssetIds.addAll(other.accessDeniedAssetIds)
+        missingAssetIds.addAll(other.missingAssetIds)
+        errors.putAll(other.errors)
     }
+}
+
+enum class AssetState {
+    /**
+     * The default state for an Asset.
+     */
+    Active,
+
+    /**
+     * The asset has been deleted from ES.
+     */
+    Deleted
 }
 
 /**

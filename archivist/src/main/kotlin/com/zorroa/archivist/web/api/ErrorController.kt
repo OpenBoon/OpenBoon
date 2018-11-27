@@ -73,9 +73,16 @@ class RestApiExceptionHandler {
          * Each error gets its own random UUID for each searching in logs.
          */
         val errorId = UUID.randomUUID().toString()
-        logger.error("endpoint='{}' user='{}', errorId='{}',",
-                req.servletPath, getUserOrNull()?.toString(), errorId, e)
 
+        if (status == HttpStatus.INTERNAL_SERVER_ERROR || status == HttpStatus.BAD_REQUEST) {
+            logger.error("endpoint='{}' user='{}', errorId='{}',",
+                    req.servletPath, getUserOrNull()?.toString(), errorId, e)
+        }
+        else {
+            logger.error("endpoint='{}' user='{}', errorId='{}',",
+                    req.servletPath, getUserOrNull()?.toString(), errorId)
+        }
+        
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
 

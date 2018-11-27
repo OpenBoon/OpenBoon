@@ -234,7 +234,7 @@ class LocalFileServerService @Autowired constructor (
            val path = getLocalPath(url)
            FileStat(Files.size(path), StaticUtils.tika.detect(path), objectExists(url))
        } catch (e: Exception) {
-            // guessing mediaType from string path
+            // guessing mimeType from string path
            FileStat(0, StaticUtils.tika.detect(path.toString()), false)
        }
     }

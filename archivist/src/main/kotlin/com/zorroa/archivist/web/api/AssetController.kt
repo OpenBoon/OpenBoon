@@ -3,27 +3,21 @@ package com.zorroa.archivist.web.api
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.archivist.util.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.AssetIndexResult
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
-import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.event
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
-import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
@@ -248,7 +242,7 @@ class AssetController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v2/assets/{id}"])
-    fun getV2(@PathVariable id: String): Any {
+    fun get(@PathVariable id: String): Any {
         return indexService.get(id)
     }
 
@@ -272,20 +266,7 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
-        val asset = indexService.get(id)
-        if (!hasPermission("write", asset)) {
-            throw ArchivistWriteException("update access denied")
-        }
-
-        indexService.update(id, attrs)
-        return HttpUtils.updated("asset", id, true, indexService.get(id))
-    }
-
-    @DeleteMapping(value = ["/api/v1/assets/{id}/_fields"])
-    @Throws(IOException::class)
-    fun removeFields(@RequestBody fields: MutableSet<String>, @PathVariable id: String): Any {
-        indexService.removeFields(id, fields)
-        return HttpUtils.updated("asset", id, true, indexService.get(id))
+        return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
@@ -294,10 +275,10 @@ class AssetController @Autowired constructor(
         FlipbookSender(id, searchService).serveResource(rsp)
     }
 
-    @PostMapping(value = ["/api/v1/assets/_index"], produces = [(MediaType.APPLICATION_JSON_VALUE)])
+    @PostMapping(value = ["/api/v1/assets/_index"])
     @Throws(IOException::class)
-    fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
-        return indexService.index(spec)
+    fun batchCreate(@RequestBody spec: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
+        return assetService.batchCreateOrReplace(spec)
     }
 
     class SetFoldersRequest {
@@ -318,24 +299,11 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, false)
     }
 
-    class SetPermissionsRequest {
-        var search: AssetSearch? = null
-        var acl: Acl? = null
-
-    }
-
-    /*
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SHARE) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
-    @PutMapping(value = ["/api/v1/assets/_permissions"])
+    @PutMapping(value = ["/api/v2/assets/_permissions"])
     @Throws(Exception::class)
-    fun setPermissions(
-            @Valid @RequestBody req: SetPermissionsRequest): Command {
-        val spec = CommandSpec()
-        spec.type = CommandType.UpdateAssetPermissions
-        spec.args = arrayOf(req.search, req.acl)
-        return commandService.submit(spec)
+    fun setPermissionsV2(@RequestBody req: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
+        return assetService.setPermissions(req)
     }
-    */
 
     @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {

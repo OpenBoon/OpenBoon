@@ -77,8 +77,8 @@ class FolderServiceTests : AbstractTest() {
         val results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
 
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
     }
 
     @Test
@@ -112,8 +112,8 @@ class FolderServiceTests : AbstractTest() {
         var results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
 
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
 
         var s = AssetSearch()
         s.addToFilter().addToLinks("folder", folder.id)
@@ -122,8 +122,8 @@ class FolderServiceTests : AbstractTest() {
 
         results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
 
         s = AssetSearch()
         s.addToFilter().addToLinks("folder", folder.id)
@@ -165,13 +165,13 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
         assertEquals(2, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
 
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
 
         results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
         refreshIndex()
 
         assertEquals(0, searchService.search(AssetSearch(
