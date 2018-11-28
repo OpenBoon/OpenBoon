@@ -7,6 +7,7 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
+import com.zorroa.common.repository.KPagedList
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
@@ -21,7 +22,7 @@ interface JobService {
     fun get(id: UUID, forClient:Boolean=false) : Job
     fun getTask(id: UUID) : Task
     fun createTask(job: JobId, spec: TaskSpec) : Task
-    fun getAll(page: Pager, filter: JobFilter): PagedList<Job>
+    fun getAll(filter: JobFilter?): KPagedList<Job>
     fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse)
     fun setJobState(job: Job, newState: JobState, oldState: JobState?): Boolean
     fun setTaskState(task: Task, newState: TaskState, oldState: TaskState?): Boolean
@@ -107,8 +108,8 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.get(id, forClient)
     }
 
-    override fun getAll(page: Pager, filter: JobFilter): PagedList<Job> {
-        return jobDao.getAll(page, filter)
+    override fun getAll(filter: JobFilter?): KPagedList<Job> {
+        return jobDao.getAll(filter)
     }
 
     @Transactional(readOnly = true)

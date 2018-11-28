@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +22,7 @@ interface JobDao {
     fun update(job: JobId, update: JobUpdateSpec): Boolean
     fun get(id: UUID, forClient:Boolean=false): Job
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
-    fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
+    fun getAll(filt: JobFilter?): KPagedList<Job>
     fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean
 }
 
@@ -39,7 +40,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         val user = getUser()
 
         jdbc.update { connection ->
-            val ps = connection.prepareStatement(JobDaoImpl.INSERT)
+            val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, user.organizationId)
             ps.setString(3, spec.name)
@@ -77,12 +78,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
         }
     }
 
-    override fun getAll(page: Pager, filter: JobFilter?): PagedList<Job> {
-        val filt = filter ?: JobFilter()
+    override fun getAll(filt: JobFilter?): KPagedList<Job> {
+        val filter = filt ?: JobFilter()
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER_FOR_CLIENT, *values))
 
-        val query = filt.getQuery(GET, false)
-        return PagedList(page.setTotalCount(count(filt)),
-                jdbc.query<Job>(query, MAPPER, *filt.getValues(false)))
     }
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
@@ -167,25 +168,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private val MAPPER = RowMapper { rs, _ ->
             val state =  JobState.values()[rs.getInt("int_state")]
-            val newState = if (state == JobState.Active) {
-                if (getTaskStateCount(rs, TaskState.Running) +
-                        getTaskStateCount(rs, TaskState.Queued) +
-                        getTaskStateCount(rs, TaskState.Waiting) != 0) {
-                    JobState.Active
-                }
-                else {
-                    JobState.Finished
-                }
-            }
-            else {
-                state
-            }
-
             Job(rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
                     PipelineType.values()[rs.getInt("int_type")],
-                    newState,
+                    state,
                     null,
                     null,
                     null,

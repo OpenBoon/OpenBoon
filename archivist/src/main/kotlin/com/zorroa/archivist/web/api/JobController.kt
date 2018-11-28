@@ -24,7 +24,10 @@ class JobController @Autowired constructor(
     fun search(@RequestBody(required = false) filter: JobFilter,
                @RequestParam(value = "from", required = false) from: Int?,
                @RequestParam(value = "count", required = false) count: Int?): Any {
-        return jobService.getAll(Pager(from, count), filter)
+        // Backwards compat
+        from?.let { filter.page.from = it }
+        count?.let { filter.page.size = it }
+        return jobService.getAll(filter)
     }
 
     @PostMapping(value = ["/api/v1/jobs"])

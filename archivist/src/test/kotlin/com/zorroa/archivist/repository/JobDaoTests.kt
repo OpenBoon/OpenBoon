@@ -2,7 +2,6 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getOrgId
@@ -125,12 +124,12 @@ class JobDaoTests : AbstractTest() {
         }
 
         var filter = JobFilter(organizationIds=listOf(UUID.randomUUID()))
-        var jobs = jobDao.getAll(Pager.first(), filter)
+        var jobs = jobDao.getAll(filter)
         assertEquals(0, jobs.size())
         assertEquals(0, jobs.page.totalCount)
 
         filter = JobFilter(organizationIds=listOf(orgId, getOrgId()))
-        jobs = jobDao.getAll(Pager.first(), filter)
+        jobs = jobDao.getAll(filter)
         assertEquals(10, jobs.size())
         assertEquals(10, jobs.page.totalCount)
     }
