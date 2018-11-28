@@ -207,7 +207,6 @@ abstract class DaoFilter {
             sb.append(" LIMIT ? OFFSET ?")
         }
 
-        println(sb.toString())
         return sb.toString()
     }
 
