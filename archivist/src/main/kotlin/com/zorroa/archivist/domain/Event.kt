@@ -21,7 +21,7 @@ class WatermarkSettingsChanged
 class JobStateChangeEvent(val job: Job, val newState: JobState, val oldState : JobState?)
 
 /**
- * Emitted when a job state changes.
+ * Emitted when a task state changes.
  */
 class TaskStateChangeEvent(val task: Task, val newState: TaskState, val oldState : TaskState?)
 
