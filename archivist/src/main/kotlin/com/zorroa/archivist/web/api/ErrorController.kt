@@ -90,7 +90,7 @@ class RestApiExceptionHandler {
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
 
-        if (!debug) {
+        if (!debug && req.getAttribute("authType") != HttpServletRequest.CLIENT_CERT_AUTH) {
             errAttrs["message"] = "Please refer to errorId='$errorId' for actual message"
         }
 
