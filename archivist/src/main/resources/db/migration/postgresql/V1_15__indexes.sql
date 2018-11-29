@@ -16,6 +16,8 @@ BEGIN
   SELECT int_task_state_0 + int_task_state_1 + int_task_state_5 INTO pending FROM job_count WHERE pk_job=new.pk_job;
   IF pending = 0 THEN
       UPDATE job SET int_state=2 WHERE pk_job=new.pk_job AND int_state != 1;
+  ELSE
+      UPDATE job SET int_state=0 WHERE pk_job=new.pk_job AND int_state = 2;
   END IF;
   RETURN NEW;
 END
