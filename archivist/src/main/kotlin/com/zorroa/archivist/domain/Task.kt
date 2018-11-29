@@ -76,7 +76,7 @@ class Expand(
 
 class TaskFilter (
         val ids : List<UUID>? = null,
-        val states : List<JobState>? = null,
+        val states : List<TaskState>? = null,
         val jobIds: List<UUID>? = null
 ) : KDaoFilter() {
 

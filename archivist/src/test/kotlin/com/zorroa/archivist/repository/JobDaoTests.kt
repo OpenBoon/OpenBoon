@@ -28,7 +28,7 @@ class JobDaoTests : AbstractTest() {
 
         val t1 = jobDao.create(spec, PipelineType.Import)
         assertEquals(spec.name, t1.name)
-        assertEquals(JobState.Finished, t1.state) // no tasks
+        assertEquals(JobState.Active, t1.state) // no tasks
         assertEquals(PipelineType.Import, t1.type)
     }
 
