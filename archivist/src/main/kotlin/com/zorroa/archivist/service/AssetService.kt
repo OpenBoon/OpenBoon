@@ -407,6 +407,9 @@ open abstract class AbstractAssetService : AssetService {
  */
 class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
 
+    @Autowired
+    lateinit var organizationService: OrganizationService
+
     override fun get(assetId: String): Document {
         return cdvClient.getIndexedMetadata(getCompanyId(), assetId)
     }
@@ -488,11 +491,20 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
      * Pull the company ID from the authed user Attrs
      */
     fun getCompanyId() : Int {
-        try {
-            return getUser().attrs["company_id"].toString().toInt()
+        return try {
+            // Check for the user's company ID. This works for users logged
+            // in via SAML.
+            getUser().attrs["company_id"].toString().toInt()
         }
         catch (e: Exception) {
-            throw ArchivistSecurityException("Invalid company Id", e)
+            // Check the magical org name.  This works for magical users that don't
+            // have SAML attributes.
+            try {
+                val org = organizationService.get(getOrgId())
+                org.name.split("-", limit = 2)[1].toInt()
+            } catch (e2: Exception) {
+                throw ArchivistSecurityException("Cannot determine a valid IRM company ID.")
+            }
         }
     }
 

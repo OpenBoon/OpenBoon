@@ -32,9 +32,13 @@ class RestApiExceptionHandler {
     @Autowired
     lateinit var errorAttributes: ErrorAttributes
 
-
     @Value("\${archivist.debug-mode.enabled}")
     var debug : Boolean = false
+
+    /**
+     * Do extra logging for these response statuses
+     */
+    val doExtraLogging = setOf(HttpStatus.UNAUTHORIZED, HttpStatus.BAD_REQUEST, HttpStatus.INTERNAL_SERVER_ERROR)
 
     @ExceptionHandler(Exception::class)
     fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception) : ResponseEntity<Any> {
@@ -74,7 +78,7 @@ class RestApiExceptionHandler {
          */
         val errorId = UUID.randomUUID().toString()
 
-        if (status == HttpStatus.INTERNAL_SERVER_ERROR || status == HttpStatus.BAD_REQUEST) {
+        if (doExtraLogging.contains(status)) {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
                     req.servletPath, getUserOrNull()?.toString(), errorId, e)
         }
@@ -86,7 +90,7 @@ class RestApiExceptionHandler {
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
 
-        if (!debug) {
+        if (!debug && req.getAttribute("authType") != HttpServletRequest.CLIENT_CERT_AUTH) {
             errAttrs["message"] = "Please refer to errorId='$errorId' for actual message"
         }
 
