@@ -1,7 +1,6 @@
 package com.zorroa.common.repository
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -81,7 +80,6 @@ abstract class KDaoFilter {
         }
 
         val s =  sb.toString()
-        logger.info(s)
         return s
     }
 
@@ -108,7 +106,6 @@ abstract class KDaoFilter {
             val result = Arrays.copyOf(values.toTypedArray(), values.size + 2)
             result[values.size] = page.size
             result[values.size + 1] = page.from
-            println(Json.prettyString(result))
             result
         }
     }
