@@ -429,7 +429,6 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
          * Relying on IRM's security to know if the assets can be deleted.
          */
         val deleted = cdvClient.batchDelete(getCompanyId(), ids)
-        // Only delete from index stuff we deleted from CDV?
         val result =  indexService.batchDelete(ids)
         if (result.deletedAssetIds.isNotEmpty()) {
             runDyhiAndTaxons()
