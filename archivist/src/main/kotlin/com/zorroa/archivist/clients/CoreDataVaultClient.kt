@@ -38,6 +38,14 @@ interface CoreDataVaultClient {
     val client: RestClient
 
     /**
+     * Return true if the asset exists.
+     * @param companyId the company id
+     * @param assetId the asset Id
+     * @return Boolean true if asset exists
+     */
+    fun assetExists(companyId: Int, assetId: String) : Boolean
+
+    /**
      * Get the assets core metadata.
      *
      * @param companyId the company id
@@ -126,6 +134,16 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
 
     init {
         logger.info("Initialized CDV REST client $url")
+    }
+
+    override fun assetExists(companyId: Int, assetId: String) : Boolean {
+        return try {
+            getAsset(companyId, assetId)
+            true
+        }
+        catch (e: RestClientException) {
+            false
+        }
     }
 
     override fun createAsset(companyId: Int, spec: CoreDataVaultAssetSpec) : Map<String, Any> {

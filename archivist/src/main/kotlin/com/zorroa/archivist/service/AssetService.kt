@@ -8,6 +8,7 @@ import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.CoreDataVaultClient
@@ -39,7 +40,6 @@ interface AssetService {
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
     fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
-
 }
 
 /**
@@ -295,9 +295,34 @@ open abstract class AbstractAssetService : AssetService {
     /**
      * Index a batch of PreppedAssets
      */
-    fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets, batchUpdateResult:Map<String, Boolean> = mapOf()) : BatchCreateAssetsResponse {
+    fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets,
+                    batchUpdateResult:Map<String, Boolean> = mapOf()) : BatchCreateAssetsResponse {
+
+        val checkedParents = mutableMapOf<String, Boolean>()
+
         // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
-        val docsToIndex = prepped.assets.filter { batchUpdateResult.getOrDefault(it.id, true) }
+        val docsToIndex = prepped.assets.filter {
+            batchUpdateResult.getOrDefault(it.id, true)
+        }.filter {doc ->
+            /**
+             * Filter out any assets where the parent does not exist.  Uses the
+             * isParentValidated() method where the implementation can vary. For
+             * IRM, it checks the CDV.  For plain old Zorroa it just returns true.
+             */
+            var res = true
+            val parentId : String? = doc.getAttr("media.clip.parent", String::class.java)
+            if (parentId != null) {
+                // Determine and cache if the parent is validated.
+                res = checkedParents.computeIfAbsent(parentId) {
+                   isParentValidated(doc)
+                }
+                if (!res) {
+                    logger.event("skipped Assset, invalid parent", mapOf("assetId" to doc.id,
+                            "parentId" to parentId))
+                }
+            }
+            res
+        }
         val rsp = indexService.index(docsToIndex)
         if (req != null) {
             incrementJobCounters(req, rsp)
@@ -393,6 +418,12 @@ open abstract class AbstractAssetService : AssetService {
         doc.setAttr("system.permissions", perms)
     }
 
+    /**
+     * Return true if the parent is validated.  Each implementation can choose
+     * how the parent is validated.
+     */
+    abstract fun isParentValidated(doc: Document) : Boolean
+
     companion object {
 
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
@@ -415,13 +446,25 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     }
 
     override fun delete(assetId: String): Boolean {
+
+        val asset = indexService.get(assetId)
         /**
-         * Relying on IRM's security to know if the asset can be deleted.
+         * If the asset is a clip, then just delete it from the index.
+         * No need to contact CDV.
          */
-        if (cdvClient.delete(getCompanyId(), assetId)) {
+        if (asset.attrExists("media.clip.parent")) {
             return indexService.delete(assetId)
         }
-        return false
+        else {
+            /**
+             * Relying on IRM's security to know if the asset can be deleted.
+             */
+            if (cdvClient.delete(getCompanyId(), assetId)) {
+                return indexService.delete(assetId)
+            }
+
+            return false
+        }
     }
 
     override fun batchDelete(ids: List<String>): BatchDeleteAssetsResponse {
@@ -429,7 +472,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
          * Relying on IRM's security to know if the assets can be deleted.
          */
         val deleted = cdvClient.batchDelete(getCompanyId(), ids)
-        val result =  indexService.batchDelete(ids)
+        val result =  indexService.batchDelete(deleted.keys.toList())
         if (result.deletedAssetIds.isNotEmpty()) {
             runDyhiAndTaxons()
         }
@@ -455,6 +498,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
 
         // Only parents go into the CDV
         val result = cdvClient.batchUpdateIndexedMetadata(getCompanyId(), parentsOnly)
+
         return indexAssets(spec, prepped, result)
     }
 
@@ -586,6 +630,14 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     private fun getAllAssets(ids: List<String>) : List<Document> {
         return ids.map { cdvClient.getIndexedMetadata(getCompanyId(), it) }
     }
+
+    override fun isParentValidated(doc: Document) : Boolean {
+        if (!doc.attrExists("media.clip.parent")) {
+            return true
+        }
+        return cdvClient.assetExists(getCompanyId(), doc.getAttr("media.clip.parent", String::class.java))
+    }
+
 }
 
 @Transactional
@@ -708,6 +760,10 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         }
 
         return combinedRep
+    }
+
+    override fun isParentValidated(doc: Document) : Boolean {
+        return true
     }
 }
 
