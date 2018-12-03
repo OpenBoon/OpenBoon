@@ -164,6 +164,10 @@ class IndexServiceImpl  @Autowired  constructor (
             throw ArchivistWriteException("Unable to delete more than 1000 assets in a single request")
         }
 
+        if (assetIds.isEmpty()) {
+            return BatchDeleteAssetsResponse()
+        }
+
         /*
          * Setup an OR search where we target both the parents and children.
          */
