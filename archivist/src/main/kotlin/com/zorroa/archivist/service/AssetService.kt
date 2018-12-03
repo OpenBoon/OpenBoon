@@ -309,19 +309,19 @@ open abstract class AbstractAssetService : AssetService {
              * isParentValidated() method where the implementation can vary. For
              * IRM, it checks the CDV.  For plain old Zorroa it just returns true.
              */
-            var res = true
+            var result = true
             val parentId : String? = doc.getAttr("media.clip.parent", String::class.java)
             if (parentId != null) {
                 // Determine and cache if the parent is validated.
-                res = checkedParents.computeIfAbsent(parentId) {
+                result = checkedParents.computeIfAbsent(parentId) {
                    isParentValidated(doc)
                 }
-                if (!res) {
+                if (!result) {
                     logger.event("skipped Assset, invalid parent", mapOf("assetId" to doc.id,
                             "parentId" to parentId))
                 }
             }
-            res
+            result
         }
         val rsp = indexService.index(docsToIndex)
         if (req != null) {
