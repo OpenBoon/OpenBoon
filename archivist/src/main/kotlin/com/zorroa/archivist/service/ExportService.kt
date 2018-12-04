@@ -105,9 +105,6 @@ class ExportServiceImpl @Autowired constructor(
          * with either local storage or GCS.
          */
         execute.addAll(spec.processors)
-        execute.add(ProcessorRef("zplugins.export.processors.GcsExportUploader",
-                mapOf<String, Any>("gcs-bucket" to properties.getString("archivist.export.gcs-bucket"))))
-        execute.add(ProcessorRef("zplugins.export.processors.ExportedFileRegister"))
 
         /**
          * Replace the search the user supplied with our own search so we ensure
