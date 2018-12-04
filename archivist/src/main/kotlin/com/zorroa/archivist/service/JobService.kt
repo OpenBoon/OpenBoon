@@ -8,8 +8,6 @@ import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

@@ -16,8 +16,8 @@ import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
