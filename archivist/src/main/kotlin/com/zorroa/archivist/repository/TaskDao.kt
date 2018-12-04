@@ -6,8 +6,9 @@ import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.util.event
-import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.domain.*
+import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -21,7 +22,8 @@ interface TaskDao {
     fun setExitStatus(task: TaskId, exitStatus: Int)
     fun getScript(id: UUID) : ZpsScript
     fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean
-    fun getAll(pager: Pager, filter: TaskFilter): PagedList<Task>
+    fun getAll(tf: TaskFilter?): KPagedList<Task>
+    fun getAll(job: UUID, state: TaskState): List<Task>
 }
 
 @Repository
@@ -119,13 +121,21 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         return updated
     }
 
-    override fun getAll(pager: Pager, filter: TaskFilter): PagedList<Task> {
-        val q = filter.getCountQuery("SELECT COUNT(1) FROM task ")
-        val count = jdbc.queryForObject(q, Long::class.java, *filter.getValues())
+    override fun getAll(tf: TaskFilter?): KPagedList<Task> {
+        val filter = tf ?: TaskFilter()
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
 
-        return PagedList(pager.setTotalCount(count),
-                jdbc.query<Task>(filter.getQuery(GET_TASKS, pager),
-                        MAPPER, *filter.getValues(pager)))
+    private fun count(filter: TaskFilter): Long {
+        val query = filter.getQuery(COUNT, true)
+        return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
+    }
+
+    override fun getAll(job: UUID, state: TaskState): List<Task> {
+        return jdbc.query<Task>("$GET_TASKS WHERE task.pk_job=? AND task.int_state=?",
+                MAPPER, job, state.ordinal)
     }
 
     companion object {
@@ -139,7 +149,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
-                    TaskState.values()[rs.getInt("int_state")])
+                    TaskState.values()[rs.getInt("int_state")],
+                    rs.getString("str_host"))
         }
 
         private const val INC_STATS = "UPDATE " +
@@ -158,7 +169,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task.pk_task," +
                 "task.pk_job," +
                 "task.str_name," +
-                "task.int_state " +
+                "task.int_state, " +
+                "task.str_host " +
                 "FROM " +
                 "task INNER JOIN job ON (job.pk_job=task.pk_job) "
 
@@ -173,7 +185,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "time_state_change",
                 "json_script::JSON")
 
-        private val GET_TASKS = "SELECT " +
+        private const val GET_TASKS = "SELECT " +
                 "task.pk_task," +
                 "task.pk_parent," +
                 "task.pk_job," +

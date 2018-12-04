@@ -6,12 +6,10 @@ import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * The properties required to make a brand new core data vault asset.

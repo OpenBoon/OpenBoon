@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,9 +19,10 @@ import java.util.*
 
 interface JobDao {
     fun create(spec: JobSpec, type: PipelineType): Job
+    fun update(job: JobId, update: JobUpdateSpec): Boolean
     fun get(id: UUID, forClient:Boolean=false): Job
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
-    fun getAll(pager: Pager, filter: JobFilter?): PagedList<Job>
+    fun getAll(filt: JobFilter?): KPagedList<Job>
     fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean
 }
 
@@ -28,7 +30,7 @@ interface JobDao {
 class JobDaoImpl : AbstractDao(), JobDao {
 
     @Autowired
-    internal lateinit var userDaoCache: UserDaoCache
+    lateinit var userDaoCache: UserDaoCache
 
     override fun create(spec: JobSpec, type: PipelineType): Job {
         Preconditions.checkNotNull(spec.name)
@@ -38,7 +40,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         val user = getUser()
 
         jdbc.update { connection ->
-            val ps = connection.prepareStatement(JobDaoImpl.INSERT)
+            val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, user.organizationId)
             ps.setString(3, spec.name)
@@ -51,6 +53,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setObject(10, user.id)
             ps.setString(11, Json.serializeToString(spec.args, "{}"))
             ps.setString(12, Json.serializeToString(spec.env, "{}"))
+            ps.setInt(13, spec.priority)
             ps
         }
 
@@ -62,6 +65,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return get(id)
     }
 
+    override fun update(job: JobId, update: JobUpdateSpec): Boolean {
+        return jdbc.update("UPDATE job SET str_name=?, int_priority=? WHERE pk_job=?",
+                update.name, update.priority, job.jobId) == 1
+    }
+
     override fun get(id: UUID, forClient: Boolean): Job {
         return if (forClient) {
             jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER_FOR_CLIENT, id)
@@ -70,15 +78,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
         }
     }
 
-    override fun getAll(page: Pager, filter: JobFilter?): PagedList<Job> {
-        var filter = filter
-        if (filter == null) {
-            filter = JobFilter()
-        }
-
+    override fun getAll(filt: JobFilter?): KPagedList<Job> {
+        val filter = filt ?: JobFilter()
         val query = filter.getQuery(GET, false)
-        return PagedList(page.setTotalCount(count(filter)),
-                jdbc.query<Job>(query, MAPPER, *filter.getValues(false)))
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER_FOR_CLIENT, *values))
+
     }
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
@@ -163,30 +168,18 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private val MAPPER = RowMapper { rs, _ ->
             val state =  JobState.values()[rs.getInt("int_state")]
-            val newState = if (state == JobState.Active) {
-                if (getTaskStateCount(rs, TaskState.Running) +
-                        getTaskStateCount(rs, TaskState.Queued) +
-                        getTaskStateCount(rs, TaskState.Waiting) != 0) {
-                    JobState.Active
-                }
-                else {
-                    JobState.Finished
-                }
-            }
-            else {
-                state
-            }
-
             Job(rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
                     PipelineType.values()[rs.getInt("int_type")],
-                    newState,
+                    state,
                     null,
                     null,
                     null,
+                    rs.getLong("time_started"),
                     rs.getLong("time_modified"),
-                    rs.getLong("time_started")
+                    rs.getLong("time_created"),
+                    rs.getInt("int_priority")
             )
         }
 
@@ -220,7 +213,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "pk_user_created",
                 "pk_user_modified",
                 "json_args",
-                "json_env")
+                "json_env",
+                "int_priority")
     }
 }
 
