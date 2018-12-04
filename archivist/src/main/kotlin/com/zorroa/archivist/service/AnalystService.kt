@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.common.domain.Analyst
+import com.zorroa.common.domain.AnalystFilter
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 interface AnalystService {
     fun upsert(spec: AnalystSpec) : Analyst
     fun exists(endpoint: String) : Boolean
+    fun getAll(filter: AnalystFilter) : KPagedList<Analyst>
 }
 
 @Service
@@ -34,6 +36,10 @@ class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): Anal
 
     override fun exists(endpoint: String) : Boolean {
         return analystDao.exists(endpoint)
+    }
+
+    override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
+        return analystDao.getAll(filter)
     }
 
     companion object {

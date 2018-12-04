@@ -1,9 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.common.domain.Analyst
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.AnalystState
+import com.zorroa.common.domain.*
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +24,7 @@ class AnalystDaoTests : AbstractTest() {
         spec = AnalystSpec(
                 1024,
                 648,
+                1024,
                 0.5f,
                 null)
         analyst = analystDao.create(spec)
@@ -70,6 +69,62 @@ class AnalystDaoTests : AbstractTest() {
         assertTrue(analystDao.setState(analyst, AnalystState.Down))
         assertFalse(analystDao.setState(analyst, AnalystState.Down))
         assertTrue(analystDao.setState(analyst, AnalystState.Up))
+    }
+
+    @Test
+    fun testGetAllById() {
+        assertEquals(1, analystDao.getAll(AnalystFilter(ids=listOf(analyst.id))).size())
+        assertEquals(0, analystDao.getAll(AnalystFilter(ids=listOf(UUID.randomUUID()))).size())
+    }
+
+    @Test
+    fun testGetAllByEndpoint() {
+        assertEquals(1, analystDao.getAll(AnalystFilter(endpoints=listOf(analyst.endpoint))).size())
+        assertEquals(0, analystDao.getAll(AnalystFilter(endpoints=listOf("foo"))).size())
+    }
+
+    @Test
+    fun testGetAllByStates() {
+        assertEquals(1, analystDao.getAll(AnalystFilter(states=listOf(AnalystState.Up))).size())
+        assertEquals(0, analystDao.getAll(AnalystFilter(states=listOf(AnalystState.Down))).size())
+    }
+
+    @Test
+    fun testGetAllByLockState() {
+        assertEquals(1, analystDao.getAll(AnalystFilter(lockStates=listOf(LockState.Unlocked))).size())
+        assertEquals(0, analystDao.getAll(AnalystFilter(lockStates=listOf(LockState.Locked))).size())
+    }
+
+    @Test
+    fun testGetAllByTaskId() {
+        val spec2 = AnalystSpec(
+                1024,
+                648,
+                1024,
+                0.5f,
+                UUID.randomUUID())
+        assertTrue(analystDao.update(spec2))
+        assertEquals(1, analystDao.getAll(AnalystFilter(taskIds=listOf(spec2.taskId!!))).size())
+        assertEquals(0, analystDao.getAll(AnalystFilter(taskIds=listOf(UUID.randomUUID()))).size())
+    }
+
+    @Test
+    fun testGetAllSorted() {
+        authenticateAsAnalyst()
+        for (i in 1 .. 10) {
+            analystDao.create(AnalystSpec(
+                    1024,
+                    648,
+                    1024,
+                    i.toFloat(),
+                    null).apply { endpoint="https://analyst$i:5000" })
+        }
+        var last = 0.0f
+        for (analyst in analystDao.getAll(AnalystFilter().apply { sort=mapOf("load" to "a") })) {
+            assertTrue(analyst.load > last)
+            last = analyst.load
+        }
+        assertTrue(last > 5)
     }
 
 }
