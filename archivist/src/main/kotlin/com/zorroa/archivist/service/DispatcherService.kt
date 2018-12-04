@@ -1,26 +1,35 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.google.common.eventbus.EventBus
+import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getAnalystEndpoint
-import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.util.event
+import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import javax.annotation.PostConstruct
 
 interface DispatcherService {
     fun getNext() : DispatchTask?
     fun startTask(task: TaskId) : Boolean
-    fun stopTask(task: TaskId, exitStatus: Int) : Boolean
+    fun stopTask(task: TaskId, exitStatus: Int, overrideState: TaskState?=null) : Boolean
     fun handleEvent(event: TaskEvent)
     fun expand(parentTask: Task, script: ZpsScript) : Task
     fun expand(job: JobId, script: ZpsScript) : Task
+    fun retryTask(task: Task): Boolean
+    fun skipTask(task: Task): Boolean
 }
 
 @Service
@@ -31,11 +40,18 @@ class DispatcherServiceImpl @Autowired constructor(
         private val taskErrorDao: TaskErrorDao,
         private val properties: ApplicationProperties,
         private val userDao: UserDao,
-        private val analystDao: AnalystDao) : DispatcherService {
+        private val analystDao: AnalystDao,
+        private val eventBus: EventBus) : DispatcherService {
+
 
     @Autowired
     lateinit var jobService: JobService
 
+    @PostConstruct
+    fun init() {
+        // Register for event bus
+        eventBus.register(this)
+    }
 
     override fun getNext(): DispatchTask? {
         val endpoint = getAnalystEndpoint()
@@ -67,13 +83,12 @@ class DispatcherServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun stopTask(task: TaskId, exitStatus: Int) : Boolean {
+    override fun stopTask(task: TaskId, exitStatus: Int, overrideState: TaskState?) : Boolean {
 
-        val newState = if (exitStatus != 0) {
-            TaskState.Failure
-        }
-        else {
-            TaskState.Success
+        val newState = when {
+            overrideState != null -> overrideState
+            exitStatus != 0 -> TaskState.Failure
+            else -> TaskState.Success
         }
         val result =  if (taskDao.setState(task, newState, TaskState.Running)) {
             taskDao.setExitStatus(task, exitStatus)
@@ -110,13 +125,12 @@ class DispatcherServiceImpl @Autowired constructor(
         return newTask
     }
 
-
     override fun handleEvent(event: TaskEvent) {
         val task = taskDao.get(event.taskId)
         when(event.type) {
             TaskEventType.STOPPED -> {
                 val payload = Json.Mapper.convertValue<TaskStoppedEvent>(event.payload)
-                stopTask(task, payload.exitStatus)
+                stopTask(task, payload.exitStatus, payload.newState)
             }
             TaskEventType.STARTED -> startTask(task)
             TaskEventType.ERROR-> {
@@ -133,6 +147,73 @@ class DispatcherServiceImpl @Autowired constructor(
                 val message = Json.Mapper.convertValue<TaskMessageEvent>(event.payload)
                 logger.warn("Task Event Message: ${task.id} : $message")
             }
+        }
+    }
+
+    fun killRunningTaskOnAnalyst(task: Task, newState: TaskState, reason: String) : Boolean {
+        if (task.host == null) {
+            logger.warn("Failed to kill running task, no host is set")
+            return false
+        }
+        try {
+            logger.event("Task kill",
+                    mapOf("reason" to reason, "taskId" to task.id, "jobId" to task.jobId))
+            val client = RestClient(task.host)
+            val result = client.delete("/kill/" + task.id,
+                    mapOf("reason" to reason + getUsername(), "state" to newState.name), Json.GENERIC_MAP)
+
+            return if (result["status"] as Boolean) {
+                true
+            }
+            else {
+                logger.warn("Failed to kill task {} on host {}, result: {}", task.id, task.host, result)
+                false
+            }
+
+        } catch (e: Exception) {
+            logger.warn("Failed to kill running task an analyst {}", task.host, e)
+        }
+        return false
+    }
+
+    override fun retryTask(task: Task): Boolean {
+        return if (task.state.isDispatched()) {
+            GlobalScope.launch {
+                killRunningTaskOnAnalyst(task, TaskState.Waiting, "Task retried by ")
+            }
+            // just assuming true here as the call to the analyst is backgrounded
+            true
+        }
+        else {
+            jobService.setTaskState(task, TaskState.Waiting, null)
+        }
+    }
+
+    override fun skipTask(task: Task) : Boolean {
+        return if (task.state.isDispatched()) {
+            GlobalScope.launch {
+                killRunningTaskOnAnalyst(task, TaskState.Skipped, "Task skipped by ")
+            }
+            // just assuming true here as the call to the analyst is backgrounded
+            true
+        }
+        else {
+            jobService.setTaskState(task, TaskState.Skipped, null)
+        }
+    }
+
+    @Subscribe
+    fun handleJobStateChangeEvent(event: JobStateChangeEvent) {
+        GlobalScope.launch {
+            if (event.newState == JobState.Cancelled) {
+                handleJobCanceled(event.job)
+            }
+        }
+    }
+
+    fun handleJobCanceled(job: Job) {
+        for (task in  taskDao.getAll(job.id, TaskState.Running)) {
+            killRunningTaskOnAnalyst(task, TaskState.Waiting, "Job canceled by ")
         }
     }
 

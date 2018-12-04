@@ -96,15 +96,12 @@ fun getOrgId(): UUID {
 }
 
 fun hasPermission(permIds: Set<UUID>?): Boolean {
-    if (permIds == null) {
-        return true
-    }
-    if (permIds == null || permIds.isEmpty()) {
+    if (permIds.orEmpty().isEmpty()) {
         return true
     }
     return if (hasPermission(Groups.ADMIN)) {
         true
-    } else !intersection<UUID>(permIds, getPermissionIds()).isEmpty()
+    } else intersection<UUID>(permIds, getPermissionIds()).isNotEmpty()
 }
 
 fun hasPermission(vararg perms: String): Boolean {
