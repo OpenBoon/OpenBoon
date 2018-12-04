@@ -64,7 +64,7 @@ fun getUser(): UserAuthed {
     }
 }
 
-fun getAnalystEndpoint(): String? {
+fun getAnalystEndpoint(): String {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
         throw AuthenticationCredentialsNotFoundException("No login credentials specified for cluster node")

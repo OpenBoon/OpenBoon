@@ -20,6 +20,8 @@ interface AnalystDao {
     fun setState(analyst: Analyst, state: AnalystState): Boolean
     fun getAll(filter: AnalystFilter) : KPagedList<Analyst>
     fun count(filter: AnalystFilter): Long
+    fun setLockState(analyst: Analyst, state: LockState) : Boolean
+    fun isInLockState(endpoint: String, state: LockState) : Boolean
 }
 
 @Repository
@@ -57,6 +59,17 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         return jdbc.update("UPDATE analyst SET int_state=? WHERE pk_analyst=? AND int_state != ?",
                 state.ordinal, analyst.id, state.ordinal) == 1
     }
+
+    override fun setLockState(analyst: Analyst, state: LockState) : Boolean {
+        return jdbc.update("UPDATE analyst SET int_lock_state=? WHERE pk_analyst=? AND int_lock_state != ?",
+                state.ordinal, analyst.id, state.ordinal) == 1
+    }
+
+    override fun isInLockState(endpoint: String, state: LockState) : Boolean {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM analyst WHERE str_endpoint=? AND int_lock_state=?",
+                Int::class.java, endpoint, state.ordinal) == 1
+    }
+
 
     override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
         val query = filter.getQuery(GET, false)

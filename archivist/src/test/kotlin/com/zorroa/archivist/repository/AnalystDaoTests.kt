@@ -72,6 +72,19 @@ class AnalystDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testSetLockState() {
+        assertTrue(analystDao.setLockState(analyst, LockState.Locked))
+        assertFalse(analystDao.setLockState(analyst, LockState.Locked))
+        assertTrue(analystDao.setLockState(analyst, LockState.Unlocked))
+    }
+
+    @Test
+    fun testIsInLockState() {
+        assertTrue(analystDao.setLockState(analyst, LockState.Locked))
+        assertTrue(analystDao.isInLockState(analyst.endpoint, LockState.Locked))
+    }
+
+    @Test
     fun testGetAllById() {
         assertEquals(1, analystDao.getAll(AnalystFilter(ids=listOf(analyst.id))).size())
         assertEquals(0, analystDao.getAll(AnalystFilter(ids=listOf(UUID.randomUUID()))).size())

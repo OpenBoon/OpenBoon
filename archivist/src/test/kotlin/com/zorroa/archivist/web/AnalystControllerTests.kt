@@ -1,8 +1,6 @@
 package com.zorroa.archivist.web
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.zorroa.archivist.domain.AuditLogFilter
-import com.zorroa.archivist.domain.AuditLogType
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystFilter
@@ -10,7 +8,6 @@ import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +16,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class AnalystControllerTests : MockMvcTest() {
 
@@ -75,5 +73,45 @@ class AnalystControllerTests : MockMvcTest() {
         assertEquals(analyst.endpoint, analyst2.endpoint)
         assertEquals(analyst.id, analyst2.id)
         assertEquals(analyst.state, analyst2.state)
+    }
+
+    @Test
+    fun testLockAndUnlock() {
+        val session = admin()
+        val rsp = mvc.perform(MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=locked")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+        val status =  Json.Mapper.readValue<Map<String, Any>>(rsp.response.contentAsString, Json.GENERIC_MAP)
+        assertTrue(status["success"] as Boolean)
+
+        val rsp2 = mvc.perform(MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=unlocked")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+        val status2 =  Json.Mapper.readValue<Map<String, Any>>(rsp2.response.contentAsString, Json.GENERIC_MAP)
+        assertTrue(status2["success"] as Boolean)
+    }
+
+    @Test
+    fun testLockAndUnlockFailure() {
+        val session = admin()
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=sdsdsdsdsds")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+                .andReturn()
+
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/analysts/wedwdsdsds/_lock?state=unlocked")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+                .andReturn()
     }
 }

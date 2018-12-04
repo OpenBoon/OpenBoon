@@ -30,7 +30,8 @@ class DispatcherServiceImpl @Autowired constructor(
         private val taskDao: TaskDao,
         private val taskErrorDao: TaskErrorDao,
         private val properties: ApplicationProperties,
-        private val userDao: UserDao) : DispatcherService {
+        private val userDao: UserDao,
+        private val analystDao: AnalystDao) : DispatcherService {
 
     @Autowired
     lateinit var jobService: JobService
@@ -38,6 +39,10 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun getNext(): DispatchTask? {
         val endpoint = getAnalystEndpoint()
+        if (analystDao.isInLockState(endpoint, LockState.Locked)) {
+            return null
+        }
+
         if (endpoint != null ) {
             val tasks = dispatchTaskDao.getNext(5)
             for (task in tasks) {
