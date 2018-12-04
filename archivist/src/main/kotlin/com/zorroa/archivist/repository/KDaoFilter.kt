@@ -80,7 +80,6 @@ abstract class KDaoFilter {
         }
 
         val s =  sb.toString()
-        logger.info(s)
         return s
     }
 

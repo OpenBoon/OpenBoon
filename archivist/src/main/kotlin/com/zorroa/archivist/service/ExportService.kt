@@ -8,6 +8,7 @@ import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.*
+import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +16,7 @@ import java.util.*
 
 interface ExportService {
 
-    fun getAll(page: Pager): PagedList<Job>
+    fun getAll(page: Pager): KPagedList<Job>
     fun create(spec: ExportSpec, resolve:Boolean=true) : Job
     fun createExportFile(job: JobId, spec: ExportFileSpec) : ExportFile
     fun getAllExportFiles(job: JobId) :  List<ExportFile>
@@ -51,9 +52,9 @@ class ExportServiceImpl @Autowired constructor(
         return exportFileDao.get(id)
     }
 
-    override fun getAll(page: Pager): PagedList<Job> {
+    override fun getAll(page: Pager): KPagedList<Job> {
         val filter = JobFilter(type=PipelineType.Export)
-        return jobService.getAll(page, filter)
+        return jobService.getAll(filter)
     }
 
     private inner class ExportParams(var search: AssetSearch)
