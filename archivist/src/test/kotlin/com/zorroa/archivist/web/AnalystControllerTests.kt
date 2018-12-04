@@ -59,4 +59,21 @@ class AnalystControllerTests : MockMvcTest() {
                 object : TypeReference<KPagedList<Analyst>>() {})
         assertEquals(1, list.size())
     }
+
+    @Test
+    fun testGet() {
+        val session = admin()
+
+        val rsp = mvc.perform(MockMvcRequestBuilders.get("/api/v1/analysts/${analyst.id}")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val analyst2 = Json.Mapper.readValue<Analyst>(rsp.response.contentAsString, Analyst::class.java)
+        assertEquals(analyst.endpoint, analyst2.endpoint)
+        assertEquals(analyst.id, analyst2.id)
+        assertEquals(analyst.state, analyst2.state)
+    }
 }

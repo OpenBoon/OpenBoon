@@ -10,11 +10,13 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 interface AnalystService {
     fun upsert(spec: AnalystSpec) : Analyst
     fun exists(endpoint: String) : Boolean
     fun getAll(filter: AnalystFilter) : KPagedList<Analyst>
+    fun get(id: UUID) : Analyst
 }
 
 @Service
@@ -36,6 +38,10 @@ class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): Anal
 
     override fun exists(endpoint: String) : Boolean {
         return analystDao.exists(endpoint)
+    }
+
+    override fun get(id: UUID) : Analyst {
+        return analystDao.get(id)
     }
 
     override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
