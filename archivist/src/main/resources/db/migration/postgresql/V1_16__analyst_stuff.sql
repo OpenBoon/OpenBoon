@@ -1,0 +1,3 @@
+
+ALTER TABLE analyst ADD COLUMN int_free_disk INTEGER NOT NULL DEFAULT 1024;
+
