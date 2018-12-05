@@ -35,6 +35,7 @@ class AnalystDaoTests : AbstractTest() {
         assertEquals(spec.taskId, analyst.taskId)
         assertEquals(spec.totalRamMb, analyst.totalRamMb)
         assertEquals(spec.freeRamMb, analyst.freeRamMb)
+        assertEquals(spec.freeDiskMb, analyst.freeDiskMb)
         assertEquals(spec.load, analyst.load)
     }
 
@@ -45,6 +46,7 @@ class AnalystDaoTests : AbstractTest() {
         assertEquals(a1.taskId, analyst.taskId)
         assertEquals(a1.totalRamMb, analyst.totalRamMb)
         assertEquals(a1.freeRamMb, analyst.freeRamMb)
+        assertEquals(a1.freeDiskMb, analyst.freeDiskMb)
         assertEquals(a1.load, analyst.load)
     }
 
@@ -133,7 +135,7 @@ class AnalystDaoTests : AbstractTest() {
                     null).apply { endpoint="https://analyst$i:5000" })
         }
         var last = 0.0f
-        for (analyst in analystDao.getAll(AnalystFilter().apply { sort=mapOf("load" to "a") })) {
+        for (analyst in analystDao.getAll(AnalystFilter().apply { sort=listOf("load:a") })) {
             assertTrue(analyst.load > last)
             last = analyst.load
         }

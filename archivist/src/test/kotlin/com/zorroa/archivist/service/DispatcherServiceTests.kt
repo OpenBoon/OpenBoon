@@ -75,6 +75,33 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testStartAndStopTask() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"))
+        jobService.create(spec)
+
+        authenticateAsAnalyst()
+        val analyst = "https://127.0.0.1:5000"
+        val aspec = AnalystSpec(
+                1024,
+                648,
+                1024,
+                0.5f,
+                null).apply { endpoint = analyst }
+
+        val node = analystDao.create(aspec)
+
+        val next = dispatcherService.getNext()
+        assertNotNull(next)
+        next?.let {
+            assertTrue(dispatcherService.startTask(it))
+            assertNotNull(analystDao.get(analyst).taskId)
+            assertTrue(dispatcherService.stopTask(it, 0))
+            assertNull(analystDao.get(analyst).taskId)
+        }
+    }
+
+    @Test
     fun testExpand() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),

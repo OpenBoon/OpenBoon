@@ -22,6 +22,7 @@ interface AnalystDao {
     fun count(filter: AnalystFilter): Long
     fun setLockState(analyst: Analyst, state: LockState) : Boolean
     fun isInLockState(endpoint: String, state: LockState) : Boolean
+    fun setTaskId(endpoint: String, taskId: UUID?): Boolean
 }
 
 @Repository
@@ -70,6 +71,9 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                 Int::class.java, endpoint, state.ordinal) == 1
     }
 
+    override fun setTaskId(endpoint: String, taskId: UUID?) : Boolean {
+        return jdbc.update("UPDATE analyst SET pk_task=? WHERE str_endpoint=?", taskId, endpoint) == 1
+    }
 
     override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
         val query = filter.getQuery(GET, false)
