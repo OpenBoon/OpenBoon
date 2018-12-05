@@ -42,7 +42,7 @@ class Analyst (
         val lock: LockState
 ) {
     override fun toString() : String {
-        return "<Analyst id='$id' endpoint='$endpoint'}"
+        return "<Analyst id='$id' endpoint='$endpoint'>"
     }
 }
 
