@@ -5,10 +5,7 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.DispatchTaskDao
-import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.repository.UserDao
+import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getUsername
@@ -33,6 +30,7 @@ interface DispatcherService {
     fun expand(job: JobId, script: ZpsScript) : Task
     fun retryTask(task: Task): Boolean
     fun skipTask(task: Task): Boolean
+    fun queueTask(task: TaskId, endpoint: String) : Boolean
 }
 
 @Service
@@ -43,7 +41,9 @@ class DispatcherServiceImpl @Autowired constructor(
         private val taskErrorDao: TaskErrorDao,
         private val properties: ApplicationProperties,
         private val userDao: UserDao,
+        private val analystDao: AnalystDao,
         private val eventBus: EventBus) : DispatcherService {
+
 
     @Autowired
     lateinit var jobService: JobService
@@ -56,11 +56,14 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun getNext(): DispatchTask? {
         val endpoint = getAnalystEndpoint()
+        if (analystDao.isInLockState(endpoint, LockState.Locked)) {
+            return null
+        }
+
         if (endpoint != null ) {
             val tasks = dispatchTaskDao.getNext(5)
             for (task in tasks) {
-                if (taskDao.setState(task, TaskState.Queued, TaskState.Waiting)) {
-                    taskDao.setHostEndpoint(task, endpoint)
+                if (queueTask(task, endpoint)) {
                     task.env["ZORROA_TASK_ID"] = task.id.toString()
                     task.env["ZORROA_JOB_ID"] = task.jobId.toString()
                     task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(userDao.getApiKey(task.userId))
@@ -72,6 +75,18 @@ class DispatcherServiceImpl @Autowired constructor(
             }
         }
         return null
+    }
+
+    override fun queueTask(task: TaskId, endpoint: String) : Boolean {
+        val result = taskDao.setState(task, TaskState.Queued, TaskState.Waiting)
+        return if (result) {
+            taskDao.setHostEndpoint(task, endpoint)
+            analystDao.setTaskId(endpoint, task.taskId)
+            true
+        }
+        else {
+            false
+        }
     }
 
     override fun startTask(task: TaskId) : Boolean {
@@ -89,6 +104,13 @@ class DispatcherServiceImpl @Autowired constructor(
         }
         val result =  if (taskDao.setState(task, newState, TaskState.Running)) {
             taskDao.setExitStatus(task, exitStatus)
+            try {
+                val endpoint = getAnalystEndpoint()
+                analystDao.setTaskId(endpoint, null)
+            }
+            catch(e: Exception) {
+                logger.warn("Failed to clear taskId from Analyst")
+            }
             true
         }
         else {

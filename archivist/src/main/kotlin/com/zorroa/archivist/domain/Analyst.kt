@@ -8,29 +8,24 @@ import java.util.*
 
 enum class AnalystState {
     Down,
-    Up;
-
-    @JsonValue
-    fun toValue() : Int {
-        return ordinal
-    }
+    Up
 }
 
 enum class LockState {
     Unlocked,
-    Locked;
-
-    @JsonValue
-    fun toValue() : Int {
-        return ordinal
-    }
+    Locked
 }
 
 class AnalystSpec (
         val totalRamMb: Int,
         val freeRamMb: Int,
+        val freeDiskMb: Int,
         val load: Float,
         val taskId: UUID?=null)
+{
+    @JsonIgnore
+    var endpoint: String? = null
+}
 
 
 class Analyst (
@@ -39,37 +34,60 @@ class Analyst (
         val endpoint: String,
         val totalRamMb: Int,
         val freeRamMb: Int,
+        val freeDiskMb: Int,
         val load: Float,
         val timePing: Long,
         val timeCreated: Long,
         val state: AnalystState,
         val lock: LockState
-)
+) {
+    override fun toString() : String {
+        return "<Analyst id='$id' endpoint='$endpoint'>"
+    }
+}
 
 data class AnalystFilter (
-        private val ids : List<UUID>? = null,
-        private val states : List<AnalystState>? = null,
-        private val taskIds: List<UUID>? = null
+        val ids : List<UUID>? = null,
+        val states : List<AnalystState>? = null,
+        val taskIds: List<UUID>? = null,
+        val lockStates: List<LockState>? = null,
+        val endpoints: List<String>? = null
 ) : KDaoFilter() {
 
-    override val sortMap: Map<String, String> = mapOf()
+    @JsonIgnore
+    override val sortMap: Map<String, String> = mapOf(
+            "id" to "analyst.pk_analyst",
+            "load" to "analyst.flt_load",
+            "endpoint" to "analyst.str_endpoint",
+            "lock" to "analyst.int_lock_state",
+            "timePing" to "analyst.time_ping")
 
     @JsonIgnore
     override fun build() {
 
-        if (!ids.orEmpty().isEmpty()) {
-            addToWhere(JdbcUtils.inClause("analyst.pk_analyst", ids!!.size))
-            addToValues(ids)
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("analyst.pk_analyst", it.size))
+            addToValues(it)
         }
 
-        if (!states.orEmpty().isEmpty()) {
-            addToWhere(JdbcUtils.inClause("analyst.int_state", states!!.size))
-            addToValues(states.map{it.ordinal})
+        endpoints?.let {
+            addToWhere(JdbcUtils.inClause("analyst.str_endpoint", it.size))
+            addToValues(it)
         }
 
-        if (!taskIds.orEmpty().isEmpty()) {
-            addToWhere(JdbcUtils.inClause("analyst.pk_task", taskIds!!.size))
-            addToValues(taskIds)
+        states?.let {
+            addToWhere(JdbcUtils.inClause("analyst.int_state", it.size))
+            addToValues(it.map{s-> s.ordinal})
+        }
+
+        lockStates?.let {
+            addToWhere(JdbcUtils.inClause("analyst.int_lock_state", it.size))
+            addToValues(it.map{s-> s.ordinal})
+        }
+
+        taskIds?.let {
+            addToWhere(JdbcUtils.inClause("analyst.pk_task", it.size))
+            addToValues(it)
         }
     }
 }

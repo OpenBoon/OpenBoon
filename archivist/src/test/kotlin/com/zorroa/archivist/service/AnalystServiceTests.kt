@@ -21,11 +21,13 @@ class AnalystServiceTests : AbstractTest() {
         val spec1 = AnalystSpec(
                 1024,
                 648,
+                1024,
                 0.5f,
                 null)
         analystService.upsert(spec1)
 
         val spec2 = AnalystSpec(
+                1024,
                 1024,
                 1024,
                 1.0f,

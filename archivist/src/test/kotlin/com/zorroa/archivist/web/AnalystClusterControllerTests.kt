@@ -205,6 +205,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         val spec = AnalystSpec(
                 1024,
                 648,
+                1024,
                 0.5f,
                 null)
 
@@ -233,6 +234,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         val aspec = AnalystSpec(
                 1024,
                 648,
+                1024,
                 0.5f,
                 null)
 

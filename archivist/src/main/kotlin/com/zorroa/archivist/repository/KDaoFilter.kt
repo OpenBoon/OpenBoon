@@ -20,7 +20,7 @@ abstract class KDaoFilter {
 
     var page : KPage = KPage()
 
-    var sort: Map<String, String> = mutableMapOf()
+    var sort: List<String>? = null
 
     constructor()
 
@@ -59,15 +59,18 @@ abstract class KDaoFilter {
             sb.append(whereClause)
         }
 
-        if (!forCount && sortMap != null && sort.isNotEmpty()) {
+        if (!forCount && sort != null) {
             val order = StringBuilder(64)
-            for ((key, value) in sort) {
+
+            sort?.forEach { e->
+                val (key, dir) = e.split(":", limit=2)
                 val col = sortMap[key]
                 if (col != null) {
-                    order.append(col + " " + if (value.startsWith("a")) "asc " else "desc ")
+                    order.append(col + " " + if (dir.startsWith("a", ignoreCase = true)) "asc " else "desc ")
                     order.append(",")
                 }
             }
+
             if (order.isNotEmpty()) {
                 order.deleteCharAt(order.length - 1)
                 sb.append(" ORDER BY ")
@@ -123,7 +126,7 @@ abstract class KDaoFilter {
     }
 
     @JsonIgnore
-    fun forceSort(sort: Map<String, String>): KDaoFilter {
+    fun forceSort(sort: List<String>): KDaoFilter {
         this.sort = sort
         return this
     }
