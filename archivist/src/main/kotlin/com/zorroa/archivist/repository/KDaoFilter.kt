@@ -20,7 +20,7 @@ abstract class KDaoFilter {
 
     var page : KPage = KPage()
 
-    var sort: Map<String, String> = mutableMapOf()
+    var sort: Map<String, String>? = null
 
     constructor()
 
@@ -59,15 +59,17 @@ abstract class KDaoFilter {
             sb.append(whereClause)
         }
 
-        if (!forCount && sortMap != null && sort.isNotEmpty()) {
+        if (!forCount && sort != null) {
             val order = StringBuilder(64)
-            for ((key, value) in sort) {
-                val col = sortMap[key]
+
+            sort?.forEach { e->
+                val col = sortMap[e.key]
                 if (col != null) {
-                    order.append(col + " " + if (value.startsWith("a")) "asc " else "desc ")
+                    order.append(col + " " + if (e.value.startsWith("a", ignoreCase = true)) "asc " else "desc ")
                     order.append(",")
                 }
             }
+
             if (order.isNotEmpty()) {
                 order.deleteCharAt(order.length - 1)
                 sb.append(" ORDER BY ")
