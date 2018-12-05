@@ -10,8 +10,13 @@ import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserOrNull
+import com.zorroa.archivist.service.ImageServiceImpl
 import org.apache.tika.Tika
 import org.slf4j.Logger
+import java.io.InputStream
+import java.io.OutputStream
+import java.nio.ByteBuffer
+import java.nio.channels.Channels
 import java.text.SimpleDateFormat
 
 object StaticUtils {
@@ -36,6 +41,32 @@ object StaticUtils {
 
     val uuid3 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
+}
+
+/**
+ * Copy the contents of the given InputStream to the OutputStream.  Utilizes
+ * NIO streams for max performance.
+ *
+ * @param input The src input stream
+ * @param output The dst output stream
+ * @param buffer_size: The size of the copy buffer, defaults to 16384
+ */
+fun copyInputToOuput(input: InputStream, output: OutputStream, buffer_size : Int=16384) : Long {
+    val inputChannel = Channels.newChannel(input)
+    val outputChannel = Channels.newChannel(output)
+    var size = 0L
+
+    inputChannel.use { ic ->
+        outputChannel.use { oc ->
+            val buffer = ByteBuffer.allocateDirect(buffer_size)
+            while (ic.read(buffer) != -1) {
+                buffer.flip()
+                size += oc.write(buffer)
+                buffer.clear()
+            }
+        }
+    }
+    return size
 }
 
 inline fun  <E: Any, T: Collection<E>> T?.whenNullOrEmpty(func: () -> Unit): Unit {
