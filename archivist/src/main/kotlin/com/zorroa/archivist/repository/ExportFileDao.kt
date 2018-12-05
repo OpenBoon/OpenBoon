@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.ServableFile
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.domain.JobId
 import com.zorroa.common.util.JdbcUtils
@@ -14,7 +15,7 @@ import java.util.*
 
 
 interface ExportFileDao {
-    fun create(job: JobId, spec: FileStorage): ExportFile
+    fun create(job: JobId, file: ServableFile, spec: ExportFileSpec): ExportFile
     fun get(id: UUID) : ExportFile
     fun getAll(job: JobId): List<ExportFile>
 }
@@ -22,20 +23,20 @@ interface ExportFileDao {
 @Repository
 class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
 
-    override fun create(job: JobId, spec: FileStorage): ExportFile {
+    override fun create(job: JobId, file: ServableFile, spec: ExportFileSpec): ExportFile {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
-        val servableFile = spec.getServableFile()
+        val stat = file.getStat()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, job.jobId)
             ps.setObject(3, getOrgId())
-            ps.setString(4, FileUtils.filename(spec.uri))
-            ps.setString(5, spec.id)
-            ps.setString(6, spec.mediaType)
-            ps.setLong(7, servableFile.getStat().size)
+            ps.setString(4, spec.filename)
+            ps.setString(5, spec.storageId)
+            ps.setString(6, stat.mediaType)
+            ps.setLong(7, stat.size)
             ps.setLong(8, time)
             ps
         }

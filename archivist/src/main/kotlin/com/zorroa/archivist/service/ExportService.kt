@@ -37,11 +37,11 @@ class ExportServiceImpl @Autowired constructor(
     lateinit var searchService : SearchService
 
     override fun createExportFile(job: JobId, spec: ExportFileSpec) : ExportFile {
-        val st = fileStorageService.get(spec.storageId)
-        if (!st.getServableFile().exists()) {
+        val st = fileStorageService.get(spec.storageId).getServableFile()
+        if (!st.exists()) {
             throw ArchivistWriteException("export file '${spec.storageId} does not exist")
         }
-        return exportFileDao.create(job, st)
+        return exportFileDao.create(job, st, spec)
     }
 
     override fun getAllExportFiles(job: JobId) : List<ExportFile> {
@@ -132,8 +132,7 @@ class ExportServiceImpl @Autowired constructor(
         val globals : MutableMap<String, Any> = mutableMapOf(
                 "exportArgs" to mapOf(
                         "exportId" to job.id,
-                        "exportName" to job.name,
-                        "exportRoot" to properties.getString("archivist.export.export-root")))
+                        "exportName" to job.name))
 
         return ZpsScript(spec.name!!,
                 generate=generate ,
