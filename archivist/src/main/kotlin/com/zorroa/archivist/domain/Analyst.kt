@@ -8,22 +8,12 @@ import java.util.*
 
 enum class AnalystState {
     Down,
-    Up;
-
-    @JsonValue
-    fun toValue() : Int {
-        return ordinal
-    }
+    Up
 }
 
 enum class LockState {
     Unlocked,
-    Locked;
-
-    @JsonValue
-    fun toValue() : Int {
-        return ordinal
-    }
+    Locked
 }
 
 class AnalystSpec (
@@ -57,13 +47,14 @@ class Analyst (
 }
 
 data class AnalystFilter (
-        private val ids : List<UUID>? = null,
-        private val states : List<AnalystState>? = null,
-        private val taskIds: List<UUID>? = null,
-        private val lockStates: List<LockState>? = null,
-        private val endpoints: List<String>? = null
+        val ids : List<UUID>? = null,
+        val states : List<AnalystState>? = null,
+        val taskIds: List<UUID>? = null,
+        val lockStates: List<LockState>? = null,
+        val endpoints: List<String>? = null
 ) : KDaoFilter() {
 
+    @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
             "id" to "analyst.pk_analyst",
             "load" to "analyst.flt_load",
