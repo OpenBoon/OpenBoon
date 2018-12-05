@@ -9,18 +9,15 @@ import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.OrganizationDao
-import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.archivist.security.resetAuthentication
 import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.CoreDataVaultClient
-import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Component
+import org.springframework.dao.EmptyResultDataAccessException
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -101,6 +98,18 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
             }
         }
 
+        fun getPipelineId(companyId: Int): UUID {
+            /**
+             * Tries to get a pipeline based on the companyId and falls back to the standard-import pipeline.
+             */
+            val pipeline = try {
+                pipelineService.get("company-$companyId")
+            } catch (e: EmptyResultDataAccessException) {
+                pipelineService.get("standard-import")
+            }
+            return pipeline.id
+        }
+
         fun handleUpdate(payload : Map<String, Any?>) {
 
             try {
@@ -145,7 +154,7 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
                 // queue up the file for processing
                 fileQueueService.create(QueuedFileSpec(
                         org.id,
-                        pipelineService.get("standard-import").id,
+                        getPipelineId(companyId),
                         UUID.fromString(assetId),
                         url,
                         doc.document))
