@@ -51,7 +51,7 @@ object StaticUtils {
  * @param output The dst output stream
  * @param buffer_size: The size of the copy buffer, defaults to 16384
  */
-fun copyInputToOuput(input: InputStream, output: OutputStream, buffer_size : Int=16384) : Long {
+fun copyInputToOuput(input: InputStream, output: OutputStream, buffer_size: Int=16384) : Long {
     val inputChannel = Channels.newChannel(input)
     val outputChannel = Channels.newChannel(output)
     var size = 0L
