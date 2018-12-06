@@ -15,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
@@ -57,6 +58,10 @@ class RestApiExceptionHandler {
         else if (e is ArchivistSecurityException) {
             HttpStatus.UNAUTHORIZED
         }
+        else if (e is HttpRequestMethodNotSupportedException ||
+                e is MethodArgumentTypeMismatchException) {
+            HttpStatus.METHOD_NOT_ALLOWED
+        }
         else if (e is ArchivistException ||
                 e is InvalidObjectException ||
                 e is InvalidRequestException ||
@@ -65,8 +70,7 @@ class RestApiExceptionHandler {
                 e is IllegalArgumentException ||
                 e is IllegalStateException ||
                 e is NumberFormatException ||
-                e is ArrayIndexOutOfBoundsException ||
-                e is MethodArgumentTypeMismatchException) {
+                e is ArrayIndexOutOfBoundsException) {
             HttpStatus.BAD_REQUEST
         }
         else {
@@ -89,6 +93,7 @@ class RestApiExceptionHandler {
         
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
+        errAttrs["status"] = status.value()
 
         if (!debug && req.getAttribute("authType") != HttpServletRequest.CLIENT_CERT_AUTH) {
             errAttrs["message"] = "Please refer to errorId='$errorId' for actual message"
