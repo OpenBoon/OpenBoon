@@ -113,6 +113,10 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
         fun handleUpdate(payload : Map<String, Any?>) {
 
             try {
+                if (payload["after"] != "DOCUMENT_UPLOADED") {
+                    return
+                }
+
                 val assetId = payload.getValue("key").toString()
                 val companyId = payload.getValue("companyId") as Int
                 val org = organizationDao.get("company-" + payload["companyId"])
