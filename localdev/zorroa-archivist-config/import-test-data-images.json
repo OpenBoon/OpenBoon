@@ -13,14 +13,6 @@
       "args": { "extract_extended_metadata": true }
     },
     {
-      "className": "zplugins.video.processors.VideoIngestor",
-      "args": { "enable_clipifier": true }
-    },
-    {
-      "className": "zplugins.office.processors.OfficeIngestor",
-      "args": {"extract_pages": true}
-    },
-    {
       "className": "zplugins.proxies.ProxyIngestor",
       "args": {}
     }
