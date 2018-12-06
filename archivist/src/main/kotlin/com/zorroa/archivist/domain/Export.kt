@@ -6,10 +6,12 @@ import java.util.*
 
 /**
  * Defines fields needed to make new ExportFile.
- * @propertyc
+ * @property storageId: The id of the exported file.
+ * @property filename: The filename the server will set when downloaded.
  */
 data class ExportFileSpec (
-        var storageId: String
+        var storageId: String,
+        var filename: String
 )
 
 /**

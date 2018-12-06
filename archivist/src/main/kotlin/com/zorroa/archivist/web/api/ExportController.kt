@@ -3,12 +3,15 @@ package com.zorroa.archivist.web.api
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
 import com.zorroa.archivist.service.*
+import com.zorroa.archivist.util.copyInputToOuput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.util.*
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 
 @RestController
@@ -42,10 +45,15 @@ class ExportController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}/_files/{fileId}/_stream"])
-    fun streamExportFile(@PathVariable id: UUID, @PathVariable fileId: UUID): ResponseEntity<InputStreamResource> {
+    fun streamExportFile(req: HttpServletRequest, rsp: HttpServletResponse, @PathVariable id: UUID, @PathVariable fileId: UUID) {
         val file = exportService.getExportFile(fileId)
-        val st = fileStorageService.get(file.path)
-        return fileServerProvider.getServableFile(st).getReponseEntity()
+        val st = fileStorageService.get(file.path).getServableFile()
+        val stat = st.getStat()
+
+        rsp.contentType = stat.mediaType
+        rsp.setContentLengthLong(stat.size)
+        rsp.setHeader("Content-Disposition", "attachment; filename=\"${file.name}\"")
+        copyInputToOuput(st.getInputStream(), rsp.outputStream)
     }
 }
 

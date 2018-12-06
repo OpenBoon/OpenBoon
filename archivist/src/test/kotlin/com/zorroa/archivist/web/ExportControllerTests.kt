@@ -70,7 +70,7 @@ class ExportControllerTests : MockMvcTest() {
                 "export", "foo", "txt", jobId=export.id))
         Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
 
-        val fspec = ExportFileSpec(storage.id)
+        val fspec = ExportFileSpec(storage.id, "foo.txt")
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -106,12 +106,11 @@ class ExportControllerTests : MockMvcTest() {
                 "export", "foo", "txt", jobId=export.id))
         Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
 
-
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mapOf("storageId" to storage.id))))
+                .content(Json.serialize(mapOf("storageId" to storage.id, "filename" to "exported.txt"))))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
@@ -121,11 +120,14 @@ class ExportControllerTests : MockMvcTest() {
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
+                .andExpect(MockMvcResultMatchers.header().string("Content-Disposition",
+                        "attachment; filename=\"exported.txt\""))
+                .andExpect(MockMvcResultMatchers.header().longValue("Content-Length",
+                        storage.getServableFile().getStat().size))
+                .andExpect(MockMvcResultMatchers.header().string("Content-Type", "text/plain"))
                 .andReturn()
 
         val content = req2.response.contentAsString
         assertEquals("bing", content)
-
-
     }
 }
