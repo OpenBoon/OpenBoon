@@ -1,12 +1,14 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AuditLogEntry
+import com.zorroa.archivist.domain.AuditLogEntrySpec
+import com.zorroa.archivist.domain.AuditLogFilter
+import com.zorroa.archivist.domain.AuditLogType
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.event
-import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.domain.Job
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -55,7 +57,7 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
     lateinit var userDaoCache: UserDaoCache
 
     @Autowired
-    lateinit var esClientCache: EsClientCache
+    lateinit var indexRoutingService: IndexRoutingService
 
     override fun create(spec: AuditLogEntrySpec, kvp: Map<String,Any?>?): AuditLogEntry {
         val time = System.currentTimeMillis()
@@ -135,7 +137,7 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
     }
 
     private fun appendKeyValuePairs(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : Map<String, Any> {
-        val client = esClientCache[user.organizationId]
+        val client = indexRoutingService[user.organizationId]
         val map = mutableMapOf<String,Any>()
         map["index"] = client.route.indexName
         map["cluster"] = client.route.clusterUrl

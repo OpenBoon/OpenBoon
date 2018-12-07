@@ -11,7 +11,6 @@ import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.util.event
-import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
@@ -77,7 +76,7 @@ interface DyHierarchyService {
 @Service
 class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
-    val esClientCache: EsClientCache,
+    val indexRoutingService: IndexRoutingService,
     val transactionEventManager: TransactionEventManager,
     val folderTaskExecutor: UniqueTaskExecutor
 ) : DyHierarchyService {
@@ -224,7 +223,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
         logger.event("running DyHierarchy", mapOf("dyhiId" to dyhi.id))
         val rf = folderService.get(dyhi.folderId)
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
 
         /**
          * TODO: allow some custom search options here, for example, maybe you

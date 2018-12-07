@@ -776,7 +776,7 @@ class SearchServiceTests : AbstractTest() {
     fun testHammingDistanceFilterWithEmptyValue() {
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
-        source1.setAttr("test.hash1.jimbo", "")
+        source1.setAttr("test.jimbo.shash", "")
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
@@ -787,7 +787,7 @@ class SearchServiceTests : AbstractTest() {
         val search: AssetSearch
 
         search = AssetSearch(
-                AssetFilter().addToSimilarity("test.hash1.jimbo",
+                AssetFilter().addToSimilarity("test.jimbo.shash",
                         SimilarityFilter("AFAFAFAF", 100)))
         assertEquals(0, searchService.search(search).hits.getTotalHits())
     }

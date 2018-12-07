@@ -9,14 +9,12 @@ import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.*
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
-import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
@@ -107,7 +105,7 @@ class SearchContext(val linkedFolders: MutableSet<UUID>,
 @Service
 class SearchServiceImpl @Autowired constructor(
         val indexDao: IndexDao,
-        val esClientCache: EsClientCache,
+        val indexRoutingService: IndexRoutingService,
         val properties: ApplicationProperties
 
 ): SearchService {
@@ -121,7 +119,7 @@ class SearchServiceImpl @Autowired constructor(
     internal lateinit var fieldService: FieldService
 
     override fun count(builder: AssetSearch): Long {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         return rest.client.search(buildSearch(builder, "asset").request).hits.totalHits
     }
 
@@ -173,7 +171,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getSuggestTerms(text: String): List<String> {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val builder = SearchSourceBuilder()
         val suggestBuilder = SuggestBuilder()
         val req = rest.newSearchRequest()
@@ -213,7 +211,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit) {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
         builder.source.fetchSource(fetchSource)
@@ -239,7 +237,7 @@ class SearchServiceImpl @Autowired constructor(
         }
     }
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
         builder.source.size(100)
@@ -269,7 +267,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun search(search: AssetSearch): SearchResponse {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         return rest.client.search(buildSearch(search, "asset").request)
     }
 
@@ -282,7 +280,7 @@ class SearchServiceImpl @Autowired constructor(
             logService.logAsync(UserLogSpec.build(LogAction.Search, search))
         }
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         if (search.scroll != null) {
             val scroll = search.scroll
             if (scroll.id != null) {
@@ -317,7 +315,7 @@ class SearchServiceImpl @Autowired constructor(
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val result = indexDao.getAll(id, timeout)
         if (result.size() == 0) {
             val req = ClearScrollRequest()
@@ -328,7 +326,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun buildSearch(search: AssetSearch, type: String): SearchBuilder {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
 
         val ssb = SearchSourceBuilder()
         ssb.query(getQuery(search))

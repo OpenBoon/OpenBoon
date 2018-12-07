@@ -15,7 +15,6 @@ import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
@@ -39,7 +38,6 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionCallbackWithoutResult
 import org.springframework.transaction.support.TransactionTemplate
-import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -54,9 +52,6 @@ import javax.sql.DataSource
 open abstract class AbstractTest {
 
     val logger = LoggerFactory.getLogger(javaClass)
-
-    @Autowired
-    protected lateinit var estClientCache: EsClientCache
 
     @Autowired
     protected lateinit var userService: UserService
@@ -102,6 +97,9 @@ open abstract class AbstractTest {
 
     @Autowired
     internal lateinit var authenticationManager: AuthenticationManager
+
+    @Autowired
+    internal lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
@@ -208,19 +206,12 @@ open abstract class AbstractTest {
          * which adds some standard data to both databases.
          */
 
-        val rest = estClientCache[getOrgId()]
-        logger.info(rest.route.clusterUrl)
-
+        val rest = indexRoutingService[getOrgId()]
 
         val reqDel = DeleteIndexRequest("_all")
         rest.client.indices().delete(reqDel)
 
-        val mapping = Json.Mapper.readValue<Map<String,Any>>(
-                File("../elasticsearch/asset.json"), Json.GENERIC_MAP)
-
-        val reqCreate = CreateIndexRequest(rest.route.indexName)
-        reqCreate.source(mapping)
-        rest.client.indices().create(reqCreate)
+        indexRoutingService.setupDefaultIndex()
     }
 
     /**
@@ -330,12 +321,12 @@ open abstract class AbstractTest {
     }
 
     fun refreshIndex() {
-        val rest = estClientCache[UUID.randomUUID()]
+        val rest = indexRoutingService[UUID.randomUUID()]
         rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 
     fun refreshIndex(sleep: Long) {
-        val rest = estClientCache[UUID.randomUUID()]
+        val rest = indexRoutingService[UUID.randomUUID()]
         rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 }
