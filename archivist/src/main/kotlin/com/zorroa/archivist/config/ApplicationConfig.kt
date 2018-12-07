@@ -160,17 +160,6 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun routingService() : IndexRoutingService {
-        return FakeIndexRoutingServiceImpl(properties().getString("es-routing-service.url"))
-    }
-
-    @Autowired
-    @Bean
-    fun esClientCache(routingService: IndexRoutingService) : EsClientCache {
-        return EsClientCache(routingService)
-    }
-
-    @Bean
     fun assetService() : AssetService {
         val network = networkEnvironment()
         val type = properties().getString("archivist.assetStore.type", "sql")
