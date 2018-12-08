@@ -35,8 +35,7 @@ class ExportFileDaoTests : AbstractTest() {
                 AssetSearch(),
                 mutableListOf(),
                 mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"),
-                compress=true)
+                mutableMapOf("foo" to "bar"))
         export = exportService.create(espec, resolve = false)
 
         val spec = FileStorageSpec("export", "foox", "bar",

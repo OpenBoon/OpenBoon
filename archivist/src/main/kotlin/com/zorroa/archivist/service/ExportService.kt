@@ -100,11 +100,8 @@ class ExportServiceImpl @Autowired constructor(
         val execute=  mutableListOf<ProcessorRef>()
         val generate =  mutableListOf<ProcessorRef>()
 
-        /**
-         * TODO: Need to check the standard storage setting to terminate this pipeline
-         * with either local storage or GCS.
-         */
         execute.addAll(spec.processors)
+        execute.add(ProcessorRef("zplugins.export.collectors.ExportCollector"))
 
         /**
          * Replace the search the user supplied with our own search so we ensure
