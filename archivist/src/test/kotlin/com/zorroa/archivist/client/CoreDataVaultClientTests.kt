@@ -26,6 +26,15 @@ class CoreDataVaultClientTests {
             Paths.get("unittest/config/service-credentials.json"))
 
     @Test
+    fun testAssetExists() {
+        val id = UUID.randomUUID().toString()
+        val spec = CoreDataVaultAssetSpec(id, docType,"test.pdf")
+        val asset1 = client.createAsset(companyId, spec)
+        assertTrue(client.assetExists(companyId, asset1["documentGUID"] as String))
+        assertFalse(client.assetExists(companyId, "705EF325-E6E4-4DA7-AD26-C610C70261A8"))
+    }
+
+    @Test
     fun testGetDocumentTypes() {
         val res = client.getDocumentTypes(companyId)
         assertTrue(res.isNotEmpty())

@@ -42,8 +42,8 @@ class ExportFileDaoTests : AbstractTest() {
         val spec = FileStorageSpec("export", "foox", "bar",
                 jobId=export.id)
         val storage = fileStorageService.get(spec)
-
-        exportFile = exportFileDao.create(export, storage)
+        exportFile = exportFileDao.create(export, storage.getServableFile(),
+                ExportFileSpec(storage.id, "foo.bar"))
     }
 
     @Test
@@ -62,7 +62,7 @@ class ExportFileDaoTests : AbstractTest() {
             val spec = FileStorageSpec("export", "foo$i", "bar",
                     jobId=export.id)
             val storage = fileStorageService.get(spec)
-            exportFileDao.create(export, storage)
+            exportFileDao.create(export, storage.getServableFile(), ExportFileSpec(storage.id, "foo$i.bar"))
         }
         assertEquals(11, exportFileDao.getAll(export).size)
         println(Json.prettyString(exportFileDao.getAll(export)))

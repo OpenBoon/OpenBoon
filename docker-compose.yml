@@ -16,7 +16,7 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
 
-  # Elastic Search instance used for local devlopment servers.
+  # Elastic Search instance used for local development servers.
   es:
     build:
       context: elasticsearch
@@ -26,7 +26,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
   # Postgres instance used for local development servers.
   postgres:

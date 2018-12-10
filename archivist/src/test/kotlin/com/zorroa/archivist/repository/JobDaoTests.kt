@@ -2,7 +2,6 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getOrgId
@@ -29,8 +28,22 @@ class JobDaoTests : AbstractTest() {
 
         val t1 = jobDao.create(spec, PipelineType.Import)
         assertEquals(spec.name, t1.name)
-        assertEquals(JobState.Finished, t1.state) // no tasks
+        assertEquals(JobState.Active, t1.state) // no tasks
         assertEquals(PipelineType.Import, t1.type)
+    }
+
+    @Test
+    fun testUpdate() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        val t1 = jobDao.create(spec, PipelineType.Import)
+        val update = JobUpdateSpec("bilbo_baggins", 5)
+        assertTrue(jobDao.update(t1, update))
+        val t2 = jobDao.get(t1.id)
+        assertEquals(update.name, t2.name)
+        assertEquals(update.priority, t2.priority)
     }
 
     @Test
@@ -111,12 +124,12 @@ class JobDaoTests : AbstractTest() {
         }
 
         var filter = JobFilter(organizationIds=listOf(UUID.randomUUID()))
-        var jobs = jobDao.getAll(Pager.first(), filter)
+        var jobs = jobDao.getAll(filter)
         assertEquals(0, jobs.size())
         assertEquals(0, jobs.page.totalCount)
 
         filter = JobFilter(organizationIds=listOf(orgId, getOrgId()))
-        jobs = jobDao.getAll(Pager.first(), filter)
+        jobs = jobDao.getAll(filter)
         assertEquals(10, jobs.size())
         assertEquals(10, jobs.page.totalCount)
     }

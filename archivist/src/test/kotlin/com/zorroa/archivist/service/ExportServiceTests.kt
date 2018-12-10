@@ -50,8 +50,9 @@ class ExportServiceTests : AbstractTest() {
         assertEquals(0, exportService.getAllExportFiles(job).size)
         val storage = fileStorageService.get(FileStorageSpec("export",
                 "foo", "txt", jobId=job.id))
+
         Files.write(storage.getServableFile().getLocalFile(), "a-team".toByteArray())
-        val ex1 = exportService.createExportFile(job, ExportFileSpec(storage.id))
+        val ex1 = exportService.createExportFile(job, ExportFileSpec(storage.id, "bing.txt"))
         assertEquals(1, exportService.getAllExportFiles(job).size)
     }
 

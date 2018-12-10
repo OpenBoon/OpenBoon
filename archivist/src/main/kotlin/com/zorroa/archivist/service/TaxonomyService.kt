@@ -15,7 +15,6 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.InternalRunnable
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
@@ -77,7 +76,7 @@ interface TaxonomyService {
 class TaxonomyServiceImpl @Autowired constructor(
         private val taxonomyDao: TaxonomyDao,
         private val folderDao: FolderDao,
-        private val esClientCache: EsClientCache,
+        private val indexRoutingService: IndexRoutingService,
         private val folderTaskExecutor: UniqueTaskExecutor
 ): TaxonomyService {
 
@@ -193,7 +192,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val folderTotal = LongAdder()
         val assetTotal = LongAdder()
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -342,7 +341,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomyFolders(tax: Taxonomy, folder: Folder, assets: List<String>) {
         logger.warn("Untagging {} on {} assets {}", tax, folder, assets)
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -378,7 +377,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomyFolders(tax: Taxonomy, folders: List<Folder>) {
         logger.warn("Untagging {} on {} folders", tax, folders.size)
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val folderIds = folders.stream().map { f -> f.id }.collect(Collectors.toList())
         for (list in Lists.partition(folderIds, 500)) {
 
@@ -417,7 +416,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy): Map<String, Long> {
         logger.info("Untagging entire taxonomy {}", tax)
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -458,7 +457,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy, timestamp: Long): Map<String, Long> {
 
         logger.info("Untagging assets no longer tagged tagged: {} {}", tax, timestamp)
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -495,7 +494,7 @@ class TaxonomyServiceImpl @Autowired constructor(
 
     private fun processBulk(bulkProcessor: BulkProcessor, rsp: SearchResponse, pred: Predicate<TaxonomySchema>) {
         var rsp = rsp
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         try {
             do {
                 for (hit in rsp.hits.hits) {

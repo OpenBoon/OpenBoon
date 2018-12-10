@@ -1,20 +1,56 @@
 package com.zorroa.common.clients
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
-import com.zorroa.common.domain.IndexRoute
-import org.apache.http.HttpHost
+import com.zorroa.archivist.service.IndexRoutingServiceImpl
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.update.UpdateRequest
-import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.search.builder.SearchSourceBuilder
-import java.net.URI
+import java.io.IOException
 import java.util.*
-import java.util.concurrent.TimeUnit
+
+/**
+ * An IndexRoute contains all the properties needed to route an organization's
+ * ES requests to the right cluster, index, and shards.
+ */
+class IndexRoute (
+        val clusterUrl: String,
+        val indexName: String,
+        val routingKey : String?=null
+)
+{
+    val indexUrl = "$clusterUrl/$indexName"
+
+    fun withKey(key: UUID) : IndexRoute {
+        return IndexRoute(clusterUrl, indexName, key.toString())
+    }
+
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val route = o as IndexRoute
+        return indexUrl == route.indexUrl
+    }
+
+    override fun hashCode(): Int {
+        return Objects.hash(indexUrl)
+    }
+}
+
+/**
+ * Represents a versioned ElasticSearch mapping.
+ */
+class ElasticMapping(
+        val name: String,
+        val version: Int,
+        val mapping: Map<String, Any>
+)
+{
+    val indexName = "${name}_v$version"
+    val alias = name
+}
 
 /**
  * ES 6.x took away the SearchBuilder class which was a convenient way to
@@ -106,54 +142,26 @@ class EsRestClient(val route: IndexRoute, val client: RestHighLevelClient) {
         }
         return req
     }
-}
 
-interface IndexRoutingService {
-    fun getIndexRoute(orgId: UUID) : IndexRoute
-}
-
-/**
- * A stand-in routing service that returns the same ES route for every organization.
- */
-class FakeIndexRoutingServiceImpl constructor(val url: String) : IndexRoutingService {
-
-    val route = IndexRoute(UUID.fromString("00000000-9998-8888-7777-666666666666"),
-            "100",
-            url,
-            "zorroa_v10",
-            null)
-
-    override fun getIndexRoute(orgId: UUID): IndexRoute {
-        return route
-    }
-}
-
-/**
- * A cache for storing EsRestClient instances keyed on an organizations IndexRoute.
- * An EsRestClient instance contains a RestHighLevelClient and routing info.
- */
-class EsClientCache constructor(private val routingService: IndexRoutingService) {
-
-    private val cache = CacheBuilder.newBuilder()
-            .maximumSize(100)
-            .initialCapacity(20)
-            .concurrencyLevel(4)
-            .expireAfterWrite(1, TimeUnit.DAYS)
-            .build(object : CacheLoader<IndexRoute, EsRestClient>() {
-                @Throws(Exception::class)
-                override fun load(route: IndexRoute): EsRestClient {
-                    val uri = URI.create(route.clusterUrl)
-                    return EsRestClient(route, RestHighLevelClient(
-                            RestClient.builder(HttpHost(uri.host, uri.port, uri.scheme))))
-                }
-            })
-
-    operator fun get(orgId: UUID): EsRestClient {
-        val route = routingService.getIndexRoute(orgId)
-        return get(route)
+    /**
+     * Return true of the index referenced in the IndexRoute exists.
+     *
+     * @return Boolean: true on exists
+     */
+    fun indexExists(): Boolean {
+        return client.lowLevelClient.performRequest("HEAD", route.indexUrl).statusLine.statusCode == 200
     }
 
-    fun get(route: IndexRoute): EsRestClient {
-        return cache.get(route)
+    /**
+     * Return true if the ES cluster is available.
+     *
+     * @return Boolean: true if server is up
+     */
+    fun isAvailable(): Boolean {
+        return try {
+            client.lowLevelClient.performRequest("HEAD", route.clusterUrl).statusLine.statusCode == 200
+        } catch (e: IOException) {
+            false
+        }
     }
 }

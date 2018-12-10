@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.zorroa.common.domain.TaskState
 import java.util.*
 
 enum class TaskEventType {
@@ -17,7 +18,8 @@ open class TaskEvent(
         val payload: Any)
 
 class TaskStoppedEvent(
-        val exitStatus: Int
+        val exitStatus: Int,
+        val newState: TaskState?
 )
 
 class TaskErrorEvent(

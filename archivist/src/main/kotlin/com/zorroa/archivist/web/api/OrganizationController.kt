@@ -12,8 +12,6 @@ class OrganizationController @Autowired constructor(
         val organizationService: OrganizationService
 ){
 
-    private val v1ApiRoot = "/api/v1/organizations"
-
     @PostMapping(value = [v1ApiRoot])
     fun create(@RequestBody builder: OrganizationSpec) : Organization {
         return organizationService.create(builder)
@@ -22,5 +20,9 @@ class OrganizationController @Autowired constructor(
     @GetMapping(value = ["/api/v1/organizations/{id}"])
     operator fun get(@PathVariable id: String): Organization {
         return organizationService.get(UUID.fromString(id))
+    }
+
+    companion object {
+        const val v1ApiRoot = "/api/v1/organizations"
     }
 }

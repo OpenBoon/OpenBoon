@@ -4,14 +4,12 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * The properties required to make a brand new core data vault asset.
@@ -36,6 +34,14 @@ class CoreDataVaultAssetSpec (
 interface CoreDataVaultClient {
 
     val client: RestClient
+
+    /**
+     * Return true if the asset exists.
+     * @param companyId the company id
+     * @param assetId the asset Id
+     * @return Boolean true if asset exists
+     */
+    fun assetExists(companyId: Int, assetId: String) : Boolean
 
     /**
      * Get the assets core metadata.
@@ -126,6 +132,16 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
 
     init {
         logger.info("Initialized CDV REST client $url")
+    }
+
+    override fun assetExists(companyId: Int, assetId: String) : Boolean {
+        return try {
+            getAsset(companyId, assetId)
+            true
+        }
+        catch (e: RestClientException) {
+            false
+        }
     }
 
     override fun createAsset(companyId: Int, spec: CoreDataVaultAssetSpec) : Map<String, Any> {

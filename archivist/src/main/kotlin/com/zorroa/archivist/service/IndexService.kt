@@ -13,8 +13,8 @@ import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -162,6 +162,10 @@ class IndexServiceImpl  @Autowired  constructor (
     override fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse {
         if (assetIds.size > 1000) {
             throw ArchivistWriteException("Unable to delete more than 1000 assets in a single request")
+        }
+
+        if (assetIds.isEmpty()) {
+            return BatchDeleteAssetsResponse()
         }
 
         /*

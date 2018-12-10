@@ -83,7 +83,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val te = TaskEvent(TaskEventType.STOPPED,
                     task.id,
                     job.id,
-                    TaskStoppedEvent(0))
+                    TaskStoppedEvent(0, null))
 
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
@@ -112,7 +112,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val te = TaskEvent(TaskEventType.STOPPED,
                     task.id,
                     job.id,
-                    TaskStoppedEvent(1))
+                    TaskStoppedEvent(1, null))
 
             SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
@@ -205,6 +205,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         val spec = AnalystSpec(
                 1024,
                 648,
+                1024,
                 0.5f,
                 null)
 
@@ -233,6 +234,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         val aspec = AnalystSpec(
                 1024,
                 648,
+                1024,
                 0.5f,
                 null)
 

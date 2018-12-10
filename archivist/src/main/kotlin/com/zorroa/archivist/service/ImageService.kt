@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.archivist.util.copyInputToOuput
 import com.zorroa.archivist.util.event
 import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
@@ -195,31 +196,6 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     /**
-     * Copy the contents of the given InputStream to the OutputStream.  Utilizes
-     * NIO streams for max performance.
-     *
-     * @param input The src input stream
-     * @param output The dst output stream
-     */
-    fun copyInputToOuput(input: InputStream, output: OutputStream) : Long {
-        val inputChannel = Channels.newChannel(input)
-        val outputChannel = Channels.newChannel(output)
-        var size = 0L
-
-        inputChannel.use { ic ->
-            outputChannel.use { oc ->
-                val buffer = ByteBuffer.allocateDirect(BUFFER_SIZE)
-                while (ic.read(buffer) != -1) {
-                    buffer.flip()
-                    size += oc.write(buffer)
-                    buffer.clear()
-                }
-            }
-        }
-        return size
-    }
-
-    /**
      * Calculates the correct font size for the watermark based on the width and height of the
      * image and watermark scale. Returns the Font to use for the watermark.
      *
@@ -239,15 +215,6 @@ class ImageServiceImpl @Autowired constructor(
     companion object {
 
         private val logger = LoggerFactory.getLogger(ImageServiceImpl::class.java)
-
-        /**
-         * A table for converting the proxy type to a media type, which is required
-         * to serve the proxy images properly.
-         */
-        val PROXY_MEDIA_TYPES: Map<String, MediaType> = ImmutableMap.of(
-                "gif", MediaType.IMAGE_GIF,
-                "jpg", MediaType.IMAGE_JPEG,
-                "png", MediaType.IMAGE_PNG)
 
         /**
          * Output stream buffer size
