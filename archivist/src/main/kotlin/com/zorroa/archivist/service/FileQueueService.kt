@@ -131,7 +131,7 @@ class FileQueueServiceImpl @Autowired constructor(
             val size = batch.size
             val name = "$size queue files $orgId / $pipelineId"
             val script = ZpsScript("generate $name",
-                    inline = true,
+                    inline = false,
                     type = PipelineType.Import,
                     generate = null,
                     over = docs,
