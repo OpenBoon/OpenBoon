@@ -36,8 +36,7 @@ class ExportControllerTests : MockMvcTest() {
                 AssetSearch(),
                 mutableListOf(),
                 mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"),
-                compress=true)
+                mutableMapOf("foo" to "bar"))
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports")
                 .session(session)
@@ -62,8 +61,7 @@ class ExportControllerTests : MockMvcTest() {
                 AssetSearch(),
                 mutableListOf(),
                 mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"),
-                compress=true)
+                mutableMapOf("foo" to "bar"))
         val export = exportService.create(espec)
 
         val storage = fileStorageService.get(FileStorageSpec(
@@ -97,8 +95,7 @@ class ExportControllerTests : MockMvcTest() {
                 AssetSearch(),
                 mutableListOf(),
                 mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"),
-                compress=true)
+                mutableMapOf("foo" to "bar"))
         val export = exportService.create(espec)
 
 

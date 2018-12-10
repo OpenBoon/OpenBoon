@@ -34,7 +34,6 @@ data class ExportSpec (
         var search: AssetSearch,
         var processors: List<ProcessorRef> = mutableListOf(),
         var args: Map<String,Any> = mutableMapOf(),
-        var env: Map<String,String> = mutableMapOf(),
-        var compress: Boolean = true)
+        var env: Map<String,String> = mutableMapOf())
 
 

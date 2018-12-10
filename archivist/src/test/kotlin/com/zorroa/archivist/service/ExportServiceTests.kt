@@ -34,8 +34,7 @@ class ExportServiceTests : AbstractTest() {
                 AssetSearch(),
                 mutableListOf(),
                 mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"),
-                compress=true)
+                mutableMapOf("foo" to "bar"))
         job = exportService.create(spec)
     }
 
