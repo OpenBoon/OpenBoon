@@ -113,10 +113,18 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
         fun handleUpdate(payload : Map<String, Any?>) {
 
             try {
-                if (payload["after"] != "DOCUMENT_UPLOADED") {
+                var processAsset = false
+                var fields = payload["fields"] as List<Map<String, String>>
+                for (field in fields) {
+                    if (field["after"] == "DOCUMENT_UPLOADED") {
+                        processAsset = true
+                    }
+                }
+                if (processAsset == false) {
+                    logger.info("Pubsub event ignored. It was not a DOCUMENT_UPLOADED event.")
                     return
                 }
-
+                logger.info("DOCUMENT_UPLOADED event detected. Processing new asset.")
                 val assetId = payload.getValue("key").toString()
                 val companyId = payload.getValue("companyId") as Int
                 val org = organizationDao.get("company-" + payload["companyId"])
