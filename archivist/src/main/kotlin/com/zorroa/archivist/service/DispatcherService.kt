@@ -38,6 +38,7 @@ interface DispatcherService {
 class DispatcherServiceImpl @Autowired constructor(
         private val dispatchTaskDao: DispatchTaskDao,
         private val taskDao: TaskDao,
+        private val jobDao: JobDao,
         private val taskErrorDao: TaskErrorDao,
         private val properties: ApplicationProperties,
         private val userDao: UserDao,
@@ -70,6 +71,8 @@ class DispatcherServiceImpl @Autowired constructor(
                     if (properties.getBoolean("archivist.debug-mode.enabled")) {
                         task.env["ZORROA_DEBUG_MODE"] = "true"
                     }
+                    // Set the time started on the job if its not set already.
+                    jobDao.setTimeStarted(task)
                     return task
                 }
             }

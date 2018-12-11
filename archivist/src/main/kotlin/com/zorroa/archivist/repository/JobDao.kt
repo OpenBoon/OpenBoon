@@ -24,6 +24,7 @@ interface JobDao {
     fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
     fun getAll(filt: JobFilter?): KPagedList<Job>
     fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean
+    fun setTimeStarted(job: JobId): Boolean
 }
 
 @Repository
@@ -84,6 +85,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER_FOR_CLIENT, *values))
 
+    }
+
+    override fun setTimeStarted(job: JobId): Boolean {
+        return jdbc.update("UPDATE job SET time_started=? WHERE pk_job=? AND time_started=-1",
+                System.currentTimeMillis(), job.jobId) == 1
     }
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
