@@ -10,6 +10,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -44,6 +45,19 @@ class JobDaoTests : AbstractTest() {
         val t2 = jobDao.get(t1.id)
         assertEquals(update.name, t2.name)
         assertEquals(update.priority, t2.priority)
+    }
+
+    @Test
+    fun testSetTimeStarted() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
+        val t1 = jobDao.create(spec, PipelineType.Import)
+        assertTrue(jobDao.setTimeStarted(t1))
+        assertFalse(jobDao.setTimeStarted(t1))
+        val time = jdbc.queryForObject("SELECT time_started FROM job WHERE pk_job=?", Long::class.java, t1.jobId)
+        assertTrue(time != -1L)
     }
 
     @Test
