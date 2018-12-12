@@ -187,10 +187,7 @@ class FieldServiceImpl @Autowired constructor(
                 }
                 fields.add(fqfn)
 
-                /**
-                 * If the field name is "keywords", then its special!
-                 */
-                if (key == "keywords") {
+                if (key in AUTO_KEYWORDS_FIELDS) {
                     result.getValue("keywords").add(fqfn)
                 }
 
@@ -222,9 +219,11 @@ class FieldServiceImpl @Autowired constructor(
 
         private val logger = LoggerFactory.getLogger(FieldServiceImpl::class.java)
 
-        private val NAME_TYPE_OVERRRIDES = ImmutableMap.of(
-                "point", "point",
-                "shash", "similarity")
+        private val AUTO_KEYWORDS_FIELDS = setOf("keywords", "content")
+
+        private val NAME_TYPE_OVERRRIDES = mapOf(
+                "point" to "point",
+                "shash" to "similarity")
 
         /**
          * The properties prefix used to define keywords fields.
