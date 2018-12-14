@@ -56,7 +56,7 @@ class UserControllerTests : MockMvcTest() {
         val currentKey = userService.getApiKey(userService.get("admin"))
 
         SecurityContextHolder.getContext().authentication = null
-        val result = mvc.perform(post("/api/v1/users/api-key?generate=true")
+        val result = mvc.perform(post("/api/v1/users/api-key?replace=true")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))

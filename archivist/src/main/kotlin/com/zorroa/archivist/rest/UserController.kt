@@ -55,8 +55,8 @@ class UserController @Autowired constructor(
     }
 
     @PostMapping(value = ["/api/v1/users/api-key"])
-    fun getApiKey(@RequestParam(value = "generate", required = false, defaultValue = "false") generate: Boolean): Any {
-        return if (generate) {
+    fun getApiKey(@RequestParam(value = "replace", required = false, defaultValue = "false") replace: Boolean): Any {
+        return if (replace) {
             userService.generateApiKey(getUser())
         }
         else {
