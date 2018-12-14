@@ -54,14 +54,14 @@ class UserController @Autowired constructor(
         }
     }
 
-    @RequestMapping(value = ["/api/v1/api-key"])
-    fun getApiKey(): Any {
-        return userService.getApiKey(getUser())
-    }
-
-    @PostMapping(value = ["/api/v1/generate-api-key"])
-    fun generateApiKey(): Any {
-        return userService.getApiKey(getUser())
+    @PostMapping(value = ["/api/v1/users/api-key"])
+    fun getApiKey(@RequestParam(value = "generate", required = false, defaultValue = "false") generate: Boolean): Any {
+        return if (generate) {
+            userService.generateApiKey(getUser())
+        }
+        else {
+            userService.getApiKey(getUser())
+        }
     }
 
     /**
