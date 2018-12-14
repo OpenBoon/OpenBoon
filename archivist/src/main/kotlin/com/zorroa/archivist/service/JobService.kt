@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
@@ -29,6 +30,8 @@ interface JobService {
     fun retryAllTaskFailures(job: JobId) : Int
     fun getZpsScript(id: UUID) : ZpsScript
     fun updateJob(job: Job, spec: JobUpdateSpec) : Boolean
+    fun getTaskErrors(filter: TaskErrorFilter) : KPagedList<TaskError>
+    fun deleteTaskError(id: UUID): Boolean
 }
 
 @Service
@@ -36,7 +39,8 @@ interface JobService {
 class JobServiceImpl @Autowired constructor(
         private val eventBus: EventBus,
         private val jobDao: JobDao,
-        private val taskDao: TaskDao
+        private val taskDao: TaskDao,
+        private val taskErrorDao: TaskErrorDao
 ): JobService {
 
     @Autowired
@@ -163,6 +167,16 @@ class JobServiceImpl @Autowired constructor(
         }
         return count
     }
+
+    @Transactional(readOnly = true)
+    override fun getTaskErrors(filter: TaskErrorFilter): KPagedList<TaskError> {
+        return taskErrorDao.getAll(filter)
+    }
+
+    override fun deleteTaskError(id: UUID): Boolean {
+        return taskErrorDao.delete(id)
+    }
+
 
     companion object {
         private val logger = LoggerFactory.getLogger(JobServiceImpl::class.java)
