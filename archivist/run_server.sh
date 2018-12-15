@@ -1,4 +1,6 @@
 #!/bin/sh
+#This script the docker file entrypoint.
+
 if [ -n "${GAE_SERVICE}" ]
 then
   echo "Downloading config files from GCS secret bucket."

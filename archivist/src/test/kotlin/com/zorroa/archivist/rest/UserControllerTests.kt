@@ -7,6 +7,8 @@ import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Test
@@ -17,10 +19,7 @@ import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.stream.Collectors
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 @WebAppConfiguration
 class UserControllerTests : MockMvcTest() {
@@ -33,6 +32,38 @@ class UserControllerTests : MockMvcTest() {
                         .session(admin())
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk)
+    }
+
+    @Test
+    fun testApiKey() {
+        val session = admin()
+        val currentKey = userService.getApiKey(userService.get("admin"))
+
+        SecurityContextHolder.getContext().authentication = null
+        val result = mvc.perform(post("/api/v1/users/api-key")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals(currentKey.key, content["key"])
+    }
+
+    @Test
+    fun testApiKeyRegen() {
+        val session = admin()
+        val currentKey = userService.getApiKey(userService.get("admin"))
+
+        SecurityContextHolder.getContext().authentication = null
+        val result = mvc.perform(post("/api/v1/users/api-key?replace=true")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
+        assertNotEquals(currentKey.key, content["key"])
     }
 
     @Test

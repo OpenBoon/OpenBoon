@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import com.zorroa.common.util.Json
+import org.junit.Ignore
 import org.junit.Test
 import java.nio.file.Paths
 import java.util.*
@@ -16,6 +17,7 @@ import kotlin.test.assertTrue
  * Unless you are configured with the proper service-credentials.json file, these tests
  * will not pass.
  */
+@Ignore
 class CoreDataVaultClientTests {
 
     val companyId = 25274
