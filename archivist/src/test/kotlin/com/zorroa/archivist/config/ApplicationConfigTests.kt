@@ -1,7 +1,6 @@
 package com.zorroa.archivist.config
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.common.server.NetworkEnvironment
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals

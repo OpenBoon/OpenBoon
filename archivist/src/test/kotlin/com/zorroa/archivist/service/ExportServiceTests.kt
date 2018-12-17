@@ -1,18 +1,16 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Export
+import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
-import com.zorroa.archivist.mock.MockAnalystClient
-import com.zorroa.archivist.security.getUser
-import com.zorroa.common.clients.AnalystClient
-import com.zorroa.common.search.AssetSearch
+import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.common.domain.Job
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.system.measureTimeMillis
+import java.nio.file.Files
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -23,9 +21,9 @@ class ExportServiceTests : AbstractTest() {
     lateinit var exportService : ExportService
 
     @Autowired
-    lateinit var analystClient: AnalystClient
+    lateinit var fileStorageService: FileStorageService
 
-    lateinit var export: Export
+    lateinit var job: Job
 
     @Before
     fun init() {
@@ -36,35 +34,31 @@ class ExportServiceTests : AbstractTest() {
                 AssetSearch(),
                 mutableListOf(),
                 mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"),
-                compress=true)
-        export = exportService.create(spec)
+                mutableMapOf("foo" to "bar"))
+        job = exportService.create(spec)
     }
 
     @Test
-    fun testGet(){
-        val ex1 = exportService.get(export.id)
-        assertEquals(export.id, ex1.id)
-        assertEquals(export.organizationId, ex1.organizationId)
-        assertEquals(export.name, ex1.name)
-        assertEquals(export.userId, ex1.userId)
+    fun testGetAll(){
+        val ex1 = exportService.getAll(Pager.first())
+        assertEquals(1, ex1.size())
     }
 
     @Test
-    fun testValidateScriptEnv() {
-        val ma = analystClient as MockAnalystClient
-        val ex1 = exportService.get(export.id)
-        val user = getUser()
+    fun testCreatExportFile() {
+        assertEquals(0, exportService.getAllExportFiles(job).size)
+        val storage = fileStorageService.get(FileStorageSpec("export",
+                "foo", "txt", jobId=job.id))
 
-        assertEquals("bar", ma.lastSpec!!.env["foo"])
-        assertEquals(user.organizationId.toString(), ma.lastSpec!!.env["ZORROA_ORGANIZATION_ID"])
-        assertEquals(ex1.id.toString(), ma.lastSpec!!.env["ZORROA_EXPORT_ID"])
+        Files.write(storage.getServableFile().getLocalFile(), "a-team".toByteArray())
+        val ex1 = exportService.createExportFile(job, ExportFileSpec(storage.id, "bing.txt"))
+        assertEquals(1, exportService.getAllExportFiles(job).size)
     }
 
     @Test
     fun testValidateExportAssetSearch() {
         val search = AssetSearch()
-        search.addToFilter().addToLinks("export", export.id)
+        search.addToFilter().addToLinks("export", job.id)
         assertTrue(searchService.count(search) > 0)
     }
 }

@@ -2,11 +2,10 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.archivist.util.event
+import com.zorroa.archivist.util.warnEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -15,7 +14,6 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationEventPublisher
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -25,8 +23,14 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.csrf.CsrfFilter
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 
 @EnableWebSecurity
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -51,7 +55,8 @@ class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
                     .and().httpBasic()
-                    .and().csrf().disable()
+                    .and().csrf().csrfTokenRepository(csrfTokenRepository)
+                    .requireCsrfProtectionMatcher(csrfRequestMatcher)
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
@@ -89,10 +94,8 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**")
-                    .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
-                    .addFilterBefore(HmacSecurityFilter(
-                            properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
-                    .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
+                    .addFilterBefore(jwtAuthorizationFilter(), CsrfFilter::class.java)
+                    .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
                     .antMatchers("/api/v1/who").permitAll()
@@ -101,8 +104,14 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/api/v1/send-onboard-email").permitAll()
                     .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                     .anyRequest().authenticated()
-                    .and().headers().frameOptions().disable()
-                    .and().csrf().disable()
+                    .and().headers().frameOptions().disable().cacheControl().disable()
+                    .and().csrf().csrfTokenRepository(csrfTokenRepository)
+                    .requireCsrfProtectionMatcher(csrfRequestMatcher)
+                    .and()
+                    .exceptionHandling().authenticationEntryPoint {
+                        _: HttpServletRequest, rsp: HttpServletResponse, exp: AuthenticationException ->
+                        rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED, exp.message)
+                    }
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
@@ -112,16 +121,36 @@ class MultipleWebSecurityConfig {
         }
     }
 
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    class WorkerSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Autowired
+        internal lateinit var properties: ApplicationProperties
+
+        @Autowired
+        internal lateinit var analystAuthenticationFilter: AnalystAuthenticationFilter
+
+        @Throws(Exception::class)
+        override fun configure(http: HttpSecurity) {
+            http
+                    .antMatcher("/cluster/**")
+                    .addFilterAfter(analystAuthenticationFilter, BasicAuthenticationFilter::class.java)
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and().sessionManagement().disable()
+                    .csrf().disable()
+        }
+    }
+
     @Autowired
     @Throws(Exception::class)
-    fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService, logService: EventLogService) {
+    fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService) {
 
-        if (properties.getBoolean("archivist.security.hmac.enabled")) {
-            auth.authenticationProvider(hmacAuthenticationProvider())
-        }
         auth
-                .authenticationProvider(authenticationProvider())
-                .authenticationEventPublisher(authenticationEventPublisher(userService, logService))
+                .authenticationProvider(zorroaAuthenticationProvider())
+                .authenticationEventPublisher(authenticationEventPublisher(userService))
 
         /**
          * If its a unit test we add our rubber stamp authenticator.
@@ -133,55 +162,53 @@ class MultipleWebSecurityConfig {
 
     @Bean
     @Autowired
-    fun authenticationEventPublisher(userService: UserService, logService: EventLogService): AuthenticationEventPublisher {
+    fun authenticationEventPublisher(userService: UserService): AuthenticationEventPublisher {
 
         return object : AuthenticationEventPublisher {
 
-            override fun publishAuthenticationSuccess(
-                    authentication: Authentication) {
+            override fun publishAuthenticationSuccess(authentication: Authentication) {
                 try {
                     val user = authentication.principal as UserAuthed
                     userService.incrementLoginCounter(user)
-                    logService.logAsync(UserLogSpec()
-                            .setAction(LogAction.Login)
-                            .setUser(user))
+                    logger.event("authed User",
+                            mapOf("actorName" to user.username,
+                                    "orgId" to user.organizationId))
                 } catch (e: Exception) {
                     // If we throw here, the authentication fails, so if we can't log
-                    // it then nobody can login.  Sorry L337 hackers
+                    // it then nobody can login.
                     logger.warn("Failed to log user authentication", e)
                     throw SecurityException(e)
                 }
-
             }
 
             override fun publishAuthenticationFailure(
                     exception: AuthenticationException,
                     authentication: Authentication) {
-                logger.info("Failed to authenticate: {}", authentication)
-                logService.logAsync(UserLogSpec()
-                        .setAction(LogAction.LoginFailure)
-                        .setMessage(authentication.principal.toString() + " failed to login, reason "
-                                + exception.message))
+                logger.warnEvent("auth User", "failed to auth", mapOf("user" to authentication.principal.toString()))
             }
         }
     }
 
     @Bean
-    fun authenticationProvider(): AuthenticationProvider {
+    fun zorroaAuthenticationProvider(): ZorroaAuthenticationProvider {
         return ZorroaAuthenticationProvider()
     }
 
-    /**
-     * Handles python/java client authentication.
-     *
-     * @return
-     */
-    @Bean
-    fun hmacAuthenticationProvider(): AuthenticationProvider {
-        return HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"))
-    }
-
     companion object {
+
+        /**
+         * an Http RequestMatcher for requiring CSRF protection
+         */
+        val csrfRequestMatcher = RequestMatcher {
+            if (it.getAttribute("authType") == HttpServletRequest.CLIENT_CERT_AUTH) {
+                false
+            }
+            else {
+                it.method !in setOf("GET", "HEAD", "TRACE", "OPTIONS")
+            }
+        }
+
+        private val csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse()
 
         private val logger = LoggerFactory.getLogger(MultipleWebSecurityConfig::class.java)
     }

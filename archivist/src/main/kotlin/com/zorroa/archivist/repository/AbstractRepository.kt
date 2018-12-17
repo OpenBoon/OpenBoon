@@ -5,10 +5,10 @@ import com.fasterxml.uuid.*
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.google.common.collect.Lists
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -119,6 +119,26 @@ open class AbstractDao {
     }
 }
 
+class LongRangeFilter(
+        val greaterThan: Long?,
+        val lessThan: Long?,
+        val inclusive: Boolean=true
+)
+{
+    /**
+     * Return values needed to satisfy SQL query as list.
+     */
+    fun getFilterValues() : Iterable<Long> {
+        val res = mutableListOf<Long>()
+        if (greaterThan != null) {
+            res.add(greaterThan)
+        }
+        if (lessThan != null) {
+            res.add(lessThan)
+        }
+        return res
+    }
+}
 
 abstract class DaoFilter {
 

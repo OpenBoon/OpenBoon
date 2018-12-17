@@ -1,34 +1,29 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableSet
-import com.google.common.collect.Maps
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.UserLogSpec
-import com.zorroa.archivist.repository.AssetIndexResult
+import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.service.AbstractAssetService.Companion.PROTECTED_NAMESPACES
+import com.zorroa.archivist.util.event
+import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.schema.LinkSchema
-import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
-import com.zorroa.common.search.AssetSearchOrder
-import com.zorroa.common.util.Json
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
 
-
+/**
+ * The IndexService is responsible for the business logic around asset CRUD and batch operations.
+ */
 interface IndexService {
 
     fun getMapping(): Map<String, Any>
@@ -37,83 +32,51 @@ interface IndexService {
 
     fun get(path: Path): Document
 
-    /**
-     * Return the proxy schema for the given asset.  If the asset does not have a proxy
-     * schema, check to see if it has children and choose the first child.
-     *
-     * If there is no proxy schema anywhere, return an empty one.
-     *
-     * @param id
-     * @return
-     */
     fun getProxies(id: String): ProxySchema
 
-    /**
-     * Fetch the first page of assets.
-     *
-     * @return
-     */
     fun getAll(page: Pager): PagedList<Document>
 
-    fun index(spec: AssetIndexSpec): AssetIndexResult
+    fun index(assets: List<Document>): BatchCreateAssetsResponse
 
     fun index(doc: Document): Document
 
-    fun removeFields(id: String, fields: MutableSet<String>)
-
     fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>>
+
     fun appendLink(type: String, value: String, assets: List<String>): Map<String, List<Any>>
 
     fun exists(path: Path): Boolean
 
     fun exists(id: String): Boolean
 
-    /**
-     * Update the given assetId with the supplied Map of attributes.  Return
-     * the new version number of the asset.
-     *
-     * @param id
-     * @param attrs
-     * @return
-     */
-    fun update(assetId: String, attrs: Map<String, Any>): Long
+    fun update(doc: Document, attrs: Map<String, Any>): Document
 
     fun delete(assetId: String): Boolean
+
+    fun batchDelete(assetId: List<String>): BatchDeleteAssetsResponse
 }
 
 @Component
 class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
-        private val permissionDao: PermissionDao,
-        private val storageRouter: StorageRouter
+        private val auditLogDao: AuditLogDao,
+        private val fileServerProvider: FileServerProvider,
+        private val fileStorageService: FileStorageService
 
 ) : IndexService {
 
     @Autowired
-    lateinit var dyHierarchyService: DyHierarchyService
-
-    @Autowired
-    lateinit var  taxonomyService: TaxonomyService
-
-    @Autowired
-    lateinit var logService: EventLogService
-
-    @Autowired
     lateinit var searchService: SearchService
-
-    @Autowired
-    lateinit var assetService: AssetService
 
     override fun get(id: String): Document {
         return if (id.startsWith("/")) {
             get(Paths.get(id))
         } else {
-            indexDao[id]
+            indexDao.get(id)
         }
     }
 
     override fun get(path: Path): Document {
-        return indexDao[path]
+        return indexDao.get(path)
     }
 
     override fun getProxies(id: String): ProxySchema {
@@ -140,134 +103,12 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun index(doc: Document): Document {
-        val result = index(AssetIndexSpec(listOf(doc)))
-        return indexDao.get(result.assetIds[0])
+        index(listOf(doc))
+        return indexDao.get(doc.id)
     }
 
-    override fun index(spec: AssetIndexSpec): AssetIndexResult {
-
-        /**
-         * Clear out any protected name spaces, this lets us ensure people
-         * can't manipulate them with the attr API.
-         *
-         * There is no guarantee the document is the full document, so we can't
-         * modify the permissions/links right here since the might not exist,
-         * and if they do exist we'll remove them so they don't overwrite
-         * the proper value.
-         */
-        val organizationId = getOrgId()
-
-        for (source in spec.sources!!) {
-
-            val managedValues = Document(indexDao.getManagedFields(source.id!!))
-
-            /**
-             * Remove parts protected by API.
-             */
-            NS_PROTECTED_API.forEach { n -> source.removeAttr(n) }
-
-            /**
-             * Re-add the organization
-             */
-            source.setAttr("zorroa.organizationId", organizationId)
-
-            /**
-             * Update created and modified times.
-             */
-            val time = Date()
-
-            if (managedValues.attrExists("zorroa.timeCreated")) {
-                source.setAttr("zorroa.timeModified", time)
-                /**
-                 * If the document is being replaced, maintain the created time.
-                 */
-                //if (source.replace) {
-                //    source.setAttr("zorroa.timeCreated", managedValues.getAttr("zorroa.timeCreated"))
-                //}
-            }
-            else {
-                source.setAttr("zorroa.timeModified", time)
-                source.setAttr("zorroa.timeCreated", time)
-            }
-
-            var perms = managedValues.getAttr("zorroa.permissions", PermissionSchema::class.java)
-            if (perms == null) {
-                perms = PermissionSchema()
-            }
-
-            if (source.permissions != null) {
-                for ((key, value) in source.permissions!!) {
-                    try {
-                        val perm = permissionDao.get(key)
-                        if (value and 1 == 1) {
-                            perms.addToRead(perm.id)
-                        } else {
-                            perms.removeFromRead(perm.id)
-                        }
-
-                        if (value and 2 == 2) {
-                            perms.addToWrite(perm.id)
-                        } else {
-                            perms.removeFromWrite(perm.id)
-                        }
-
-                        if (value and 4 == 4) {
-                            perms.addToExport(perm.id)
-                        } else {
-                            perms.removeFromExport(perm.id)
-                        }
-                    } catch (e: Exception) {
-                        logger.warn("Permission not found: {}", key)
-                    }
-
-                }
-                source.setAttr("zorroa.permissions", Json.Mapper.convertValue<Map<String,Any>>(perms, Json.GENERIC_MAP))
-            } else if (perms.isEmpty) {
-
-                /**
-                 * If the source didn't come with any permissions and the current perms
-                 * on the asset are empty, we apply the default permissions.
-                 *
-                 * If there is no permissions.
-                 */
-                // get the default perms for org.
-                source.setAttr("zorroa.permissions",
-                        Json.Mapper.convertValue<Map<String,Any>>(permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP))
-            }
-
-            if (source.links != null) {
-                var links = managedValues.getAttr("zorroa.links", LinkSchema::class.java)
-                if (links == null) {
-                    links = LinkSchema()
-                }
-                for (link in source.links!!) {
-                    links.addLink(link.left, link.right)
-                }
-                source.setAttr("zorroa.links", links)
-            }
-
-            try {
-                assetService.setDocument(UUID.fromString(source.id), source)
-            } catch (e: Exception) {
-                logger.warn("Failed to store asset in TX store: ", e)
-            }
-        }
-
-        val result = indexDao.index(spec.sources!!)
-        if (result.created + result.updated + result.replaced > 0) {
-            /**
-             * TODO: make these 1 thread pool
-             */
-            dyHierarchyService.submitGenerateAll(true)
-            taxonomyService.runAllAsync()
-        }
-        return result
-    }
-
-    override fun removeFields(id: String, fields: MutableSet<String>) {
-        // remove fields from list the can't remove.
-        fields.removeAll(NS_PROTECTED_API)
-        indexDao.removeFields(id, fields, false)
+    override fun index(assets: List<Document>): BatchCreateAssetsResponse {
+        return indexDao.index(assets)
     }
 
     override fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>> {
@@ -286,40 +127,116 @@ class IndexServiceImpl  @Autowired  constructor (
         return indexDao.exists(id)
     }
 
-    override fun update(assetId: String, attrs: Map<String, Any>): Long {
-
-        val asset = indexDao[assetId]
-        val write = asset.getAttr("zorroa.permissions.write", Json.SET_OF_UUIDS)
-
-        if (!hasPermission(write)) {
-            throw ArchivistWriteException("You cannot make changes to this asset.")
-        }
-
-        val copy = Maps.newHashMap(attrs)
+    override fun update(doc: Document, attrs: Map<String, Any>): Document {
         /**
-         * Remove keys which are maintained via other methods.
+         * Make a copy and remove fields which are maintained via other methods.
          */
-        NS_PROTECTED_API.forEach { n -> copy.remove(n) }
-
-        val version = indexDao.update(assetId, copy)
-        logService.logAsync(UserLogSpec.build(LogAction.Update, "asset", assetId))
-        return version
+        PROTECTED_NAMESPACES.forEach { doc.removeAttr(it) }
+        val auditLogs = mutableListOf<AuditLogEntrySpec>()
+        attrs.forEach {
+            val ns = it.key.split('.')
+            try {
+                if (ns[0] !in PROTECTED_NAMESPACES) {
+                    doc.setAttr(it.key, it.value)
+                    auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed, field = it.key, value = it.value))
+                } else {
+                    logger.warnEvent("update Asset",
+                            "Attempted to set protected namespace ${it.key}", emptyMap())
+                }
+            } catch (e: Exception) {
+                logger.warnEvent("update Asset",
+                        "Attempted to set invalid namespace ${it.key}", emptyMap())
+            }
+        }
+        indexDao.update(doc)
+        auditLogDao.batchCreate(auditLogs)
+        return indexDao.get(doc.id)
     }
 
-    override fun delete(assetId: String): Boolean {
-        val doc = indexDao[assetId]
-        val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
-        if (proxySchema != null) {
-            for (proxy in proxySchema.proxies!!) {
-                val ofile = storageRouter.getObjectFile(proxy)
-                if (!ofile.delete()) {
-                    logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
+    /**
+     * Batch delete the the given asset IDs, along with their supporting files.
+     * This method propagates to children as well.
+     *
+     * @param assetIds: the IDs of the assets the delete.
+     */
+    override fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse {
+        if (assetIds.size > 1000) {
+            throw ArchivistWriteException("Unable to delete more than 1000 assets in a single request")
+        }
+
+        if (assetIds.isEmpty()) {
+            return BatchDeleteAssetsResponse()
+        }
+
+        /*
+         * Setup an OR search where we target both the parents and children.
+         */
+        val search = AssetSearch()
+        search.filter = AssetFilter()
+        search.filter.should = listOf(
+                AssetFilter().addToTerms("_id", assetIds).addToMissing("media.clip.parent"),
+                AssetFilter().addToTerms("media.clip.parent", assetIds))
+
+        /*
+         * Iterate a scan and scroll and batch delete each batch.
+         * Along the way queue up work to delete any files.
+         */
+        val rsp = BatchDeleteAssetsResponse()
+        searchService.scanAndScroll(search, true) { hits->
+            /*
+             * Determine if any documents are on hold.
+             */
+            val docs = hits.hits.map { Document(it.id, it.sourceAsMap) }
+            val batchRsp = indexDao.batchDelete(docs)
+
+            auditLogDao.batchCreate(batchRsp.deletedAssetIds.map {
+                AuditLogEntrySpec(it, AuditLogType.Deleted)
+            })
+
+            // add the batch results to the overall result.
+            rsp.plus(batchRsp)
+
+            GlobalScope.launch {
+                docs.forEach {
+                    if (it.id in batchRsp.deletedAssetIds) {
+                        deleteAssociatedFiles(it)
+                    }
                 }
             }
         }
-        return indexDao.delete(assetId)
+        return rsp
     }
 
+    override fun delete(assetId: String): Boolean {
+        val doc = indexDao.get(assetId)
+        if (!hasPermission("write", doc)) {
+            throw ArchivistWriteException("delete access denied")
+        }
+
+        val result = indexDao.delete(assetId)
+        deleteAssociatedFiles(doc)
+        if (result) {
+            auditLogDao.create(AuditLogEntrySpec(assetId, AuditLogType.Deleted))
+        }
+        return result
+    }
+
+    fun deleteAssociatedFiles(doc: Document) {
+        logger.event("deleteAll assetProxy", mapOf("assetId" to doc.id))
+        doc.getAttr("proxies", ProxySchema::class.java)?.let {
+            it.proxies?.forEach { pr ->
+                try {
+                    val storage = fileStorageService.get(pr.id)
+                    val ofile = fileServerProvider.getServableFile(storage.uri)
+                    if (!ofile.delete()) {
+                        logger.warnEvent("delete Proxy", "file did not exist", mapOf("proxyId" to pr.id))
+                    }
+                } catch (e: Exception) {
+                    logger.warnEvent("delete Proxy", e.message!!, mapOf("proxyId" to pr.id), e)
+                }
+            }
+        }
+    }
 
     override fun getMapping(): Map<String, Any> {
         return indexDao.getMapping()
@@ -328,39 +245,6 @@ class IndexServiceImpl  @Autowired  constructor (
     companion object {
 
         private val logger = LoggerFactory.getLogger(IndexServiceImpl::class.java)
-
-        /**
-         * Namespaces that are only populated via the API.  IF people manipulate these
-         * wrong via the asset API then it would corrupt the asset.
-         */
-        private val NS_PROTECTED_API = ImmutableSet.of(
-                "zorroa", "tmp")
     }
 
-}
-
-class AssetIndexSpec {
-
-    var sources: List<Document>? = null
-    var jobId: UUID? = null
-    var taskId: UUID? = null
-
-    constructor(sources: List<Document>) {
-        this.sources = ImmutableList.copyOf(sources)
-    }
-
-    fun setJobId(jobId: UUID): AssetIndexSpec {
-        this.jobId = jobId
-        return this
-    }
-
-    fun setTaskId(taskId: UUID): AssetIndexSpec {
-        this.taskId = taskId
-        return this
-    }
-
-    fun setSources(sources: List<Document>): AssetIndexSpec {
-        this.sources = sources
-        return this
-    }
 }

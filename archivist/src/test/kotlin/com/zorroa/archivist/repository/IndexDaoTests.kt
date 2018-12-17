@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Source
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.Document
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.domain.Source
 import com.zorroa.common.util.Json
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -45,14 +45,14 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testGetById() {
-        val asset2 = indexDao[asset1.id]
+        val asset2 = indexDao.get(asset1.id)
         assertEquals(asset1.id, asset2.id)
     }
 
     @Test
     fun testGetByPath() {
         val p = getTestImagePath("set04/standard/beer_kettle_01.jpg")
-        val asset2 = indexDao[p]
+        val asset2 = indexDao.get(p)
         assertNotNull(asset2)
     }
 
@@ -130,12 +130,12 @@ class IndexDaoTests : AbstractTest() {
         val source2 = Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"))
 
         var result = indexDao.index(ImmutableList.of(source1, source2))
-        assertEquals(1, result.created.toLong())
-        assertEquals(1, result.updated.toLong())
+        assertEquals(1, result.createdAssetIds.size)
+        assertEquals(1, result.replacedAssetIds.size)
 
         result = indexDao.index(ImmutableList.of(source1, source2))
-        assertEquals(0, result.created.toLong())
-        assertEquals(2, result.updated.toLong())
+        assertEquals(0, result.createdAssetIds.size)
+        assertEquals(2, result.replacedAssetIds.size)
     }
 
     @Test
@@ -145,9 +145,9 @@ class IndexDaoTests : AbstractTest() {
         assertTrue(indexDao.appendLink("parent", "foo",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        val a = indexDao[asset1.id]
-        val folder_links = a.getAttr<Collection<Any>>("zorroa.links.folder")
-        val parent_links = a.getAttr<Collection<Any>>("zorroa.links.parent")
+        val a = indexDao.get(asset1.id)
+        val folder_links = a.getAttr<Collection<Any>>("system.links.folder")
+        val parent_links = a.getAttr<Collection<Any>>("system.links.parent")
 
         assertEquals(1, folder_links!!.size.toLong())
         assertEquals(1, parent_links!!.size.toLong())
@@ -160,25 +160,23 @@ class IndexDaoTests : AbstractTest() {
         assertTrue(indexDao.appendLink("folder", "100",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        var a = indexDao[asset1.id]
-        var links = a.getAttr<Collection<Any>>("zorroa.links.folder")
+        var a = indexDao.get(asset1.id)
+        var links = a.getAttr<Collection<Any>>("system.links.folder")
         assertEquals(1, links!!.size.toLong())
 
         assertTrue(indexDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
 
-        a = indexDao[asset1.id]
-        links = a.getAttr("zorroa.links.folder")
+        a = indexDao.get(asset1.id)
+        links = a.getAttr("system.links.folder")
         assertEquals(0, links!!.size.toLong())
     }
 
     @Test
     fun testUpdate() {
-        val attrs = Maps.newHashMap<String, Any>()
-        attrs["foo.bar"] = 100
-
-        indexDao.update(asset1.id, attrs)
-        val asset2 = indexDao[asset1.id]
+        asset1.setAttr("foo.bar", 100)
+        indexDao.update(asset1)
+        val asset2 = indexDao.get(asset1.id)
         assertEquals(100, (asset2.getAttr<Any>("foo.bar") as Int).toLong())
     }
 
@@ -190,18 +188,18 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testGetProtectedFields() {
-        var v = indexDao.getManagedFields("a")
-        assertNotNull(v)
-        v = indexDao.getManagedFields(asset1.id)
-        assertNotNull(v)
-    }
+    fun testBatchDelete() {
+        val rsp1 = indexDao.batchDelete(listOf(asset1))
+        refreshIndex()
+        val rsp2 = indexDao.batchDelete(listOf(asset1))
+        assertEquals(1, rsp1.deletedAssetIds.size)
+        assertEquals(1, rsp1.totalRequested)
+        assertEquals(0, rsp1.errors.size)
 
-    @Test
-    fun testRemoveFields() {
-        indexDao.removeFields(asset1.id, Sets.newHashSet("source"), true)
-        val a = indexDao[asset1.id]
-        assertFalse(a.attrExists("source"))
+        assertEquals(0, rsp2.deletedAssetIds.size)
+        assertEquals(1, rsp2.totalRequested)
+        assertEquals(1, rsp2.missingAssetIds.size)
+        assertEquals(0, rsp2.errors.size)
     }
 
     @Test
@@ -225,9 +223,9 @@ class IndexDaoTests : AbstractTest() {
         result = indexDao.index(next)
         logger.info("{}", result)
 
-        assertEquals(4, result.created.toLong())
-        assertEquals(4, result.warnings.toLong())
-        assertEquals(1, result.retries.toLong())
+        assertEquals(4, result.createdAssetIds.size)
+        assertEquals(4, result.warningAssetIds.size)
+        assertEquals(1, result.retryCount.toLong())
 
     }
 

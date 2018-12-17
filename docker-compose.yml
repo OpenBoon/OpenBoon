@@ -16,20 +16,7 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
 
-  # Postgres instance used by the unit tests.
-  test-postgres:
-    image: "postgres:9.6.9"
-    hostname: "localhost"
-    ports:
-     - "35432:5432"
-    environment:
-      POSTGRES_PASSWORD: zorroa
-      POSTGRES_USER: zorroa
-      POSTGRES_DB: zorroa
-
-  ## Local Development Services
-
-  # Elastic Search instance used for local devlopment servers.
+  # Elastic Search instance used for local development servers.
   es:
     build:
       context: elasticsearch
@@ -39,9 +26,9 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
-  # Postgres instance used for local devleopment servers.
+  # Postgres instance used for local development servers.
   postgres:
     image: "postgres:9.6.9"
     ports:
@@ -57,35 +44,35 @@ services:
     links:
        - "es"
        - "postgres"
-       - "analyst"
     build:
       context: archivist
     ports:
       - 8080:8080
     volumes:
+      - "./localdev/shared:/shared"
       - "./localdev/zorroa-archivist-config:/config"
       - "./archivist/target:/service"
-    environment:
-      ZORROA_USER: admin
+      - "../zorroa-test-data:/zorroa-test-data"
 
-  # Local Analyst server.
+  # Local Archivist server.
   analyst:
-      links:
-         - "es"
-         - "postgres"
-      build:
-        context: analyst
-      ports:
-        - 8082:8080
-      volumes:
-        - "./localdev/zorroa-analyst-config:/config"
-        - "./analyst/target:/service"
+    build: ../zorroa-plugin-sdk
+    links:
+       - "archivist"
+    ports:
+      - 5000:5000
+    volumes:
+      - "./localdev/shared:/shared"
+      - "../zorroa-test-data:/zorroa-test-data"
 
-  # Builds all java code. Use `docker-compose run build` to rebuild code.
-  build:
-      image: maven:3.5.4-jdk-8
-      command: mvn clean install -Dmaven.test.skip=true
-      working_dir: "/zorroa-server"
-      volumes:
-        - "~/.m2:/root/.m2"
-        - "./:/zorroa-server"
+  curator:
+     build: ../zorroa-js-curator
+     user: node
+     ports:
+       - 80:8081
+       - 443:8443
+     environment:
+         NODE_ENV: "production"
+         ARCHIVIST_API_URL: "http://archivist:8080"
+         CURATOR_PORT_SECURE: "8443"
+

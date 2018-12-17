@@ -28,10 +28,7 @@ import org.springframework.security.saml.metadata.MetadataManager;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
@@ -70,14 +67,18 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
             }
 
             // TODO: make this the ID
-            String orgName = credential.getAttributeAsString("organization_name");
-            if (orgName != null) {
-                LOG.info("Detected organization name from SAML metadata: " +  orgName);
+            String orgPrefix = zd.getProp("organizationPrefix");
+            String orgId = credential.getAttributeAsString(zd.getProp("organizationAttr"));
+            String orgName;
+
+            if (orgId != null) {
+                orgName = orgPrefix + orgId;
             }
             else {
-                // the default org namne
                 orgName = "Zorroa";
             }
+
+            LOG.info("Detected organization name from SAML metadata: " +  orgName);
 
             Map<String, String> attrs = new HashMap();
             for (Attribute a : credential.getAttributes()) {
@@ -101,11 +102,20 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
     }
 
     public List<String> parseGroups(String groupAttrName, SAMLCredential credential) {
+        LOG.info("Loading SAML group attribute {}", groupAttrName);
         List<String> groups = null;
         if (groupAttrName != null) {
-            String[] groupAttr = credential.getAttributeAsStringArray(groupAttrName);
-            if (groupAttr != null) {
-                groups = Arrays.asList(groupAttr);
+            String[] groupAttrArray = credential.getAttributeAsStringArray(groupAttrName);
+            if (groupAttrArray != null || groupAttrArray.length == 0) {
+                LOG.info("Found Group array with length {}", groupAttrArray.length);
+                groups = Arrays.asList(groupAttrArray);
+            }
+            else {
+                String groupAttrString = credential.getAttributeAsString(groupAttrName);
+                if (groupAttrString != null) {
+                    LOG.info("Found Group string {}", groupAttrString);
+                    groups = Arrays.asList(new String[] { groupAttrString });
+                }
             }
         }
         return groups;

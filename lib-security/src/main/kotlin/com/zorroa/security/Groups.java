@@ -2,6 +2,7 @@ package com.zorroa.security;
 
 public class Groups {
 
+    public static String SUPERADMIN = "zorroa::superadmin";
     public static String ADMIN = "zorroa::administrator";
     public static String MANAGER = "zorroa::manager";
     public static String EVERYONE = "zorroa::everyone";

@@ -6,16 +6,17 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
-import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.domain.Source
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.util.FileUtils
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
@@ -37,7 +38,6 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionCallbackWithoutResult
 import org.springframework.transaction.support.TransactionTemplate
-import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -54,13 +54,10 @@ open abstract class AbstractTest {
     val logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
-    protected lateinit var estClientCache: EsClientCache
-
-    @Autowired
     protected lateinit var userService: UserService
 
     @Autowired
-    protected lateinit var storageRouter: StorageRouter
+    protected lateinit var fileServerProvider: FileServerProvider
 
     @Autowired
     protected lateinit var permissionService: PermissionService
@@ -76,6 +73,9 @@ open abstract class AbstractTest {
 
     @Autowired
     protected lateinit var indexService: IndexService
+
+    @Autowired
+    protected lateinit var assetService: AssetService
 
     @Autowired
     protected lateinit var properties: ApplicationProperties
@@ -97,6 +97,9 @@ open abstract class AbstractTest {
 
     @Autowired
     internal lateinit var authenticationManager: AuthenticationManager
+
+    @Autowired
+    internal lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
@@ -183,6 +186,10 @@ open abstract class AbstractTest {
         Json.Mapper.registerModule(KotlinModule())
     }
 
+    fun authenticateAsAnalyst() {
+        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
+    }
+
     fun testUserSpec(name: String="test") : UserSpec {
         return UserSpec(
                 name,
@@ -199,19 +206,12 @@ open abstract class AbstractTest {
          * which adds some standard data to both databases.
          */
 
-        val rest = estClientCache[getOrgId()]
-        logger.info(rest.route.clusterUrl)
-
+        val rest = indexRoutingService[getOrgId()]
 
         val reqDel = DeleteIndexRequest("_all")
         rest.client.indices().delete(reqDel)
 
-        val mapping = Json.Mapper.readValue<Map<String,Any>>(
-                File("../elasticsearch/asset.json"), Json.GENERIC_MAP)
-
-        val reqCreate = CreateIndexRequest(rest.route.indexName)
-        reqCreate.source(mapping)
-        rest.client.indices().create(reqCreate)
+        indexRoutingService.setupDefaultIndex()
     }
 
     /**
@@ -219,7 +219,10 @@ open abstract class AbstractTest {
      */
     fun authenticate() {
         val auth = UsernamePasswordAuthenticationToken("admin", "admin")
-        SecurityContextHolder.getContext().authentication = authenticationManager.authenticate(auth)
+
+        val userAuthed = userRegistryService.getUser("admin")
+        userAuthed.setAttr("company_id", "25274")
+        SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
     }
 
     fun authenticate(username: String) {
@@ -272,13 +275,16 @@ open abstract class AbstractTest {
                     logger.info("adding test file: {}", f)
                     val b = Source(f)
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
+                    b.setAttr("location.point", mapOf("lat" to "36.996460", "lon" to "-109.043360"))
+                    b.setAttr("location.state", "New Mexico")
+                    b.setAttr("location.country", "USA")
+                    b.setAttr("location.keywords", listOf("boring", "tourist", "attraction"))
 
                     val id = UUID.randomUUID().toString()
-
                     val proxies = Lists.newArrayList<Proxy>()
-                    proxies.add(Proxy(width=100, height=100, id="proxy/" + id + "_foo.jpg", mimeType = "image/jpeg"))
-                    proxies.add(Proxy(width=200, height=200, id="proxy/" + id + "_bar.jpg", mimeType = "image/jpeg"))
-                    proxies.add(Proxy(width=300, height=300, id="proxy/" + id + "_bing.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimeType = "image/jpeg"))
 
                     val p = ProxySchema()
                     p.proxies = proxies
@@ -309,18 +315,18 @@ open abstract class AbstractTest {
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-            indexService.index(source)
+            assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)).apply { isUpload=true })
         }
         refreshIndex()
     }
 
     fun refreshIndex() {
-        val rest = estClientCache[UUID.randomUUID()]
+        val rest = indexRoutingService[UUID.randomUUID()]
         rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 
     fun refreshIndex(sleep: Long) {
-        val rest = estClientCache[UUID.randomUUID()]
+        val rest = indexRoutingService[UUID.randomUUID()]
         rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }
 }

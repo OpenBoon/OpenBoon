@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.util.JdbcUtils;
 import com.zorroa.archivist.repository.DaoFilter;
 
 import java.util.Map;

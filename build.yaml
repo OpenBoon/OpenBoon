@@ -1,0 +1,11 @@
+version: '3'
+services:
+
+  # Builds all java code. Use `docker-compose run build` to rebuild code.
+  build:
+      image: maven:3.5.4-jdk-8
+      command: mvn clean install -Dmaven.test.skip=true
+      working_dir: "/zorroa-server"
+      volumes:
+        - "~/.m2:/root/.m2"
+        - "./:/zorroa-server"

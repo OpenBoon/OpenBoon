@@ -42,3 +42,12 @@ ALTER TABLE taxonomy ALTER COLUMN pk_organization SET NOT NULL;
 ALTER TABLE dyhi ADD COLUMN pk_organization UUID;
 UPDATE dyhi SET pk_organization='00000000-9998-8888-7777-666666666666';
 ALTER TABLE dyhi ALTER COLUMN pk_organization SET NOT NULL;
+
+ALTER TABLE job ADD COLUMN pk_organization UUID;
+UPDATE job SET pk_organization='00000000-9998-8888-7777-666666666666';
+ALTER TABLE job ALTER COLUMN pk_organization SET NOT NULL;
+
+ALTER TABLE export_file ADD COLUMN pk_organization UUID;
+UPDATE export_file SET pk_organization='00000000-9998-8888-7777-666666666666';
+ALTER TABLE export_file ALTER COLUMN pk_organization SET NOT NULL;
+

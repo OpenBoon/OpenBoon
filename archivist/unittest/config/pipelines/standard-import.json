@@ -1,0 +1,15 @@
+{
+  "name": "standard-import",
+  "type": "Import",
+  "description": "standard-import",
+  "processors": [
+    {
+      "className": "zplugins.core.document.PySetAttributes",
+      "args": {
+        "attrs": {
+          "characters": ["bilbo", "gandalf"]
+        }
+      }
+    }
+  ]
+}

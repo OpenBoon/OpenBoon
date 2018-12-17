@@ -1,0 +1,20 @@
+{
+  "generate": [
+    {
+      "className": "zplugins.core.generators.PyFileSystemGenerator",
+      "args": {
+        "paths": [ "/zorroa-test-data/video" ]
+      }
+    }
+  ],
+  "execute": [
+    {
+      "className": "zplugins.video.processors.VideoIngestor",
+      "args": { "enable_clipifier": true }
+    },
+    {
+      "className": "zplugins.proxies.ProxyIngestor",
+      "args": {}
+    }
+  ]
+}

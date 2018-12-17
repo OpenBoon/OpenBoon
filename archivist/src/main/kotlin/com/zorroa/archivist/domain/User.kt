@@ -9,9 +9,34 @@ import org.hibernate.validator.constraints.NotEmpty
 import java.util.*
 
 /**
+ * A couple internal constants for user source.
+ */
+object UserSource {
+    /**
+     * The user is internal only, no folder or user perm
+     */
+    const val INTERNAL : String = "internal"
+
+    /**
+     * The user authenticates locally, ie we have a salted pass for this user.
+     */
+    const val LOCAL : String = "local"
+}
+
+/**
+ * Return the organizations batch user.
+ *
+ * @param orgId The UUID for the org.
+ * @return The name of the organizations batch user.
+ */
+fun getOrgBatchUserName(orgId: UUID) : String {
+    return "batch_user_$orgId"
+}
+
+/**
  * The base user attributes returned with objects that reference a user.
  */
-data class UserBase (
+class UserBase (
         override val id: UUID,
         val username: String,
         val email: String,
@@ -33,20 +58,21 @@ data class UserBase (
 /**
  * The UserCore is all the user properties.
  */
-data class User (
+class User (
         override val id: UUID,
         val username: String,
         val email: String,
         val source: String,
-        val permissionId: UUID,
-        val homeFolderId: UUID,
+        val permissionId: UUID?,
+        val homeFolderId: UUID?,
         val organizationId: UUID,
         val firstName: String?,
         val lastName: String?,
         val enabled: Boolean,
         val settings: UserSettings,
         val loginCount: Int,
-        val timeLastLogin: Long) : UserId {
+        val timeLastLogin: Long,
+        var attrs: Map<String,Any>) : UserId {
 
     @JsonIgnore
     override fun getName(): String = username
@@ -59,14 +85,14 @@ data class User (
     }
 }
 
-data class UserProfileUpdate (
+class UserProfileUpdate (
         @NotEmpty var username: String = "",
         @NotEmpty @Email var email: String = "",
         var firstName : String? = "",
         var lastName: String? = "")
 
 
-data class UserSpec (
+class UserSpec (
         val username: String,
         val password: String,
         val email: String,
@@ -84,4 +110,11 @@ data class UserSpec (
     }
 }
 
+/**
+ * Structure for storing a users API key.
+ */
+class ApiKey(
+        val userId: UUID,
+        val key: String
+)
 

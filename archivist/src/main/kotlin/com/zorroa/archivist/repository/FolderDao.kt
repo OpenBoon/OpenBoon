@@ -1,11 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.*
-import com.zorroa.common.domain.Access
-import com.zorroa.common.search.AssetSearch
+import com.zorroa.archivist.util.event
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.springframework.beans.factory.annotation.Autowired
@@ -94,7 +94,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
         var assetSearch : AssetSearch? = null
         if (search != null) {
-            assetSearch = Json.deserialize<AssetSearch>(search, AssetSearch::class.java)
+            assetSearch = Json.deserialize(search, AssetSearch::class.java)
             /**
              * The dyhi field is added to the search on the fly, not baked in.
              */
@@ -266,6 +266,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps.setString(12, Json.serializeToString(spec.attrs, "{}"))
             ps
         }
+
+        logger.event("create Folder", mapOf(
+                "folderId" to id,
+                "folderName" to spec.name))
 
         return getAfterCreate(id)
     }

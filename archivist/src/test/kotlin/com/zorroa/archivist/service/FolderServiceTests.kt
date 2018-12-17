@@ -7,12 +7,10 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.OrganizationDao
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.security.Groups
 import org.junit.Assert.*
 import org.junit.Before
@@ -67,7 +65,7 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
 
         doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("zorroa.links.folder", List::class.java).size.toLong())
+        assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
     }
 
     @Test
@@ -79,8 +77,8 @@ class FolderServiceTests : AbstractTest() {
         val results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
 
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
     }
 
     @Test
@@ -101,7 +99,7 @@ class FolderServiceTests : AbstractTest() {
 
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
-            assertEquals(1, (a.getAttr<Any>("zorroa.links.folder") as List<*>).size.toLong())
+            assertEquals(1, (a.getAttr<Any>("system.links.folder") as List<*>).size.toLong())
         }
     }
 
@@ -114,13 +112,24 @@ class FolderServiceTests : AbstractTest() {
         var results = folderService.addAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
 
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
+
+        var s = AssetSearch()
+        s.addToFilter().addToLinks("folder", folder.id)
+        assertEquals(2, searchService.count(s))
+        assertEquals(2, searchService.count(folder))
 
         results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
+
+        s = AssetSearch()
+        s.addToFilter().addToLinks("folder", folder.id)
+        assertEquals(0, searchService.count(s))
+        assertEquals(0, searchService.count(folder))
+
     }
 
     @Test
@@ -151,22 +160,22 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
 
         assertEquals(2, searchService.search(AssetSearch(
-                AssetFilter().addToTerms("zorroa.links.folder", folder.id))).hits.getTotalHits())
+                AssetFilter().addToTerms("system.links.folder", folder.id))).hits.getTotalHits())
         fieldService.invalidateFields()
         refreshIndex()
         assertEquals(2, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
 
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
 
         results = folderService.removeAssets(folder, indexService.getAll(
                 Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results["failed"]!!.isEmpty())
-        assertFalse(results["success"]!!.isEmpty())
+        assertTrue(results.missing.isEmpty())
+        assertFalse(results.success.isEmpty())
         refreshIndex()
 
         assertEquals(0, searchService.search(AssetSearch(
-                AssetFilter().addToTerms("zorroa.links.folder", folder.id))).hits.getTotalHits())
+                AssetFilter().addToTerms("system.links.folder", folder.id))).hits.getTotalHits())
         assertEquals(0, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
 
     }

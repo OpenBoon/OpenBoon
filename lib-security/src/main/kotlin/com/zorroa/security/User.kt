@@ -14,10 +14,21 @@ class UserAuthed(
         override val id: UUID,
         var organizationId: UUID,
         username: String,
-        permissions: Set<out GrantedAuthority>) : UserId, UserDetails, Serializable {
+        permissions: Set<out GrantedAuthority>,
+        attrs: Map<String,Any>) : UserId, UserDetails, Serializable {
 
+    val attrs : MutableMap<String, Any> = attrs.toMutableMap()
     private val user : String = username
     private val permissions : Set<out GrantedAuthority> = permissions
+
+    fun setAttr(key: String, value: Any?) {
+        if (value == null) {
+            attrs.remove(key)
+        }
+        else {
+            attrs[key] = value
+        }
+    }
 
     override fun getAuthorities(): Collection<out GrantedAuthority> {
         return permissions

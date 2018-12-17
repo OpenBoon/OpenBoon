@@ -3,8 +3,7 @@ package com.zorroa.archivist.repository
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.UserBase
-import com.zorroa.archivist.security.superAdminBase
-import com.zorroa.archivist.security.superAdminId
+import com.zorroa.archivist.security.SuperAdmin
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -28,8 +27,8 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
                 @Throws(Exception::class)
                 override fun load(key: UUID): UserBase {
                     // Super admin isn't in the DB so we'll return a static record
-                    return if (key == superAdminId) {
-                        superAdminBase
+                    return if (key == SuperAdmin.id) {
+                        SuperAdmin.base
                     }
                     else {
                         jdbc.queryForObject(GET_BY_ID, MAPPER, key)

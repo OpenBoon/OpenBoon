@@ -7,13 +7,12 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Queues
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
-import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -116,11 +115,11 @@ interface FolderService {
 
     fun updateAcl(folder: Folder, acl: Acl?)
 
-    fun addAssets(folder: Folder, assetIds: List<String>): Map<String, List<Any>>
+    fun addAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse
 
-    fun removeAssets(folder: Folder, assetIds: List<String>): Map<String, List<Any>>
+    fun removeAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse
 
-    fun setFoldersForAsset(assetId: String, folders: List<UUID>);
+    fun setFoldersForAsset(assetId: String, folders: List<UUID>)
 
     fun submitCreate(parent: Folder, spec: FolderSpec): Future<Folder>
 
@@ -178,7 +177,7 @@ class FolderServiceImpl @Autowired constructor(
      * Circular dependencies must be lateinit
      */
     @Autowired
-    private lateinit var logService: EventLogService
+    private lateinit var assetService: AssetService
 
     @Autowired
     private lateinit var dyHierarchyService: DyHierarchyService
@@ -268,11 +267,6 @@ class FolderServiceImpl @Autowired constructor(
 
 
     override fun get(id: UUID?): Folder {
-        if (id != null) {
-            if (id==ROOT_ID) {
-                return getRoot()
-            }
-        }
         val f: Folder
         try {
             f = folderCache.get(id)
@@ -538,19 +532,17 @@ class FolderServiceImpl @Autowired constructor(
         var i = children.size
         while (--i >= 0) {
             if (folderDao.delete(children[i])) {
-                transactionEventManager.afterCommit(true, {
+                transactionEventManager.afterCommit(true) {
                     invalidate(folder)
-                    //logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
-                })
+                }
             }
         }
 
         val result = folderDao.delete(folder)
         if (result) {
-            transactionEventManager.afterCommit(true, {
+            transactionEventManager.afterCommit(true) {
                 invalidate(folder)
-                //logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
-            })
+            }
         }
         return result
     }
@@ -561,7 +553,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun addAssets(folder: Folder, assetIds: List<String>): Map<String, List<Any>> {
+    override fun addAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse {
 
         if (!hasPermission(folder.acl, Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
@@ -571,9 +563,8 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("Cannot add assets to a smart folder.  Remove the search first.")
         }
 
-        val result = indexDao.appendLink("folder", folder.id, assetIds)
+        val result = assetService.addLinks(LinkType.Folder, folder.id, assetIds)
         invalidate(folder)
-        //logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("count", assetIds.size))
 
         val tax = getParentTaxonomy(folder)
         if (tax != null) {
@@ -584,14 +575,13 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun removeAssets(folder: Folder, assetIds: List<String>): Map<String, List<Any>> {
+    override fun removeAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse {
 
         if (!hasPermission(folder.acl, Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        val result = indexDao.removeLink("folder", folder.id, assetIds)
-        //logService.logAsync(UserLogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds))
+        val result = assetService.removeLinks(LinkType.Folder, folder.id, assetIds)
         invalidate(folder)
 
         val tax = getParentTaxonomy(folder)
@@ -881,10 +871,7 @@ class FolderServiceImpl @Autowired constructor(
 
     companion object {
 
-        val ROOT_ID = UUID.fromString("00000000-0000-0000-0000-000000000000")
-
         private val logger = LoggerFactory.getLogger(FolderServiceImpl::class.java)
     }
-
 }
 

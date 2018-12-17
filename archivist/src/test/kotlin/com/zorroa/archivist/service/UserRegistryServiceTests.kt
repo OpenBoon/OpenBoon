@@ -10,12 +10,15 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testGetUser() {
-        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"))
+        val attrs = mutableMapOf("company_id" to "123")
+        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"),
+                attrs=attrs)
         val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
         val user2 = userRegistryService.getUser("billybob@bob.com")
         assertEquals(user1.username, user2.username)
         assertEquals(user1.id, user2.id)
         assertEquals(user1.authorities.size, user2.authorities.size)
+        assertEquals(user1.attrs, user2.attrs)
     }
 
     @Test

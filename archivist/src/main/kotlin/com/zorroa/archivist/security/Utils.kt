@@ -2,22 +2,39 @@ package com.zorroa.archivist.security
 
 import com.google.common.collect.Sets
 import com.google.common.collect.Sets.intersection
-import com.zorroa.archivist.domain.Acl
-import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.common.domain.Access
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.security.web.authentication.session.SessionAuthenticationException
 import java.util.*
+
+/**
+ * Set a new Authentication value and return the previous one, or null in the case
+ * that no Authentication exists.
+ *
+ * @param auth The new Authentication value.
+ * @return the old authentication value or null
+ */
+fun resetAuthentication(auth: Authentication?) : Authentication?   {
+    val oldAuth =  SecurityContextHolder.getContext().authentication
+    SecurityContextHolder.getContext().authentication = auth
+    return oldAuth
+}
+
+
+object SecurityLogger {
+    val logger = LoggerFactory.getLogger(SecurityLogger::class.java)
+}
 
 fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication
@@ -28,20 +45,32 @@ fun createPasswordHash(plainPassword: String): String {
 }
 
 fun getUser(): UserAuthed {
-    return if (SecurityContextHolder.getContext().authentication == null) {
+    val auth = SecurityContextHolder.getContext().authentication
+    return if (auth == null) {
         throw AuthenticationCredentialsNotFoundException("No login credentials specified")
     } else {
         try {
-            SecurityContextHolder.getContext().authentication.principal as UserAuthed
+            auth.principal as UserAuthed
         } catch (e1: ClassCastException) {
             try {
-                SecurityContextHolder.getContext().authentication.details as UserAuthed
+                auth.details as UserAuthed
             } catch (e2: ClassCastException) {
-                throw AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed object not found")
+                // Log this message so we can see what the type is.
+                SecurityLogger.logger.warn("Invalid auth objects: principal='{}' details='{}'",
+                        auth?.principal,  auth?.details)
+                throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
             }
-
         }
+    }
+}
 
+fun getAnalystEndpoint(): String {
+    val auth = SecurityContextHolder.getContext().authentication
+    return if (auth == null) {
+        throw AuthenticationCredentialsNotFoundException("No login credentials specified for cluster node")
+    }
+    else {
+        return SecurityContextHolder.getContext().authentication.principal as String
     }
 }
 
@@ -67,15 +96,12 @@ fun getOrgId(): UUID {
 }
 
 fun hasPermission(permIds: Set<UUID>?): Boolean {
-    if (permIds == null) {
-        return true
-    }
-    if (permIds == null || permIds.isEmpty()) {
+    if (permIds.orEmpty().isEmpty()) {
         return true
     }
     return if (hasPermission(Groups.ADMIN)) {
         true
-    } else !intersection<UUID>(permIds, getPermissionIds()).isEmpty()
+    } else intersection<UUID>(permIds, getPermissionIds()).isNotEmpty()
 }
 
 fun hasPermission(vararg perms: String): Boolean {
@@ -103,7 +129,7 @@ fun hasPermission(perms: Collection<String>): Boolean {
  * @return
  */
 fun hasPermission(field: String, asset: Document): Boolean {
-    val perms = asset.getAttr("zorroa.permissions.$field", Json.SET_OF_UUIDS)
+    val perms = asset.getAttr("system.permissions.$field", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 
@@ -139,7 +165,7 @@ fun getPermissionIds(): Set<UUID> {
 }
 
 fun getOrganizationFilter(): QueryBuilder {
-    return  QueryBuilders.termQuery("zorroa.organizationId", getOrgId().toString())
+    return  QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
 }
 
 fun getPermissionsFilter(access: Access?): QueryBuilder? {
@@ -150,30 +176,30 @@ fun getPermissionsFilter(access: Access?): QueryBuilder? {
             return if (hasPermission(Groups.READ)) {
                 null
             } else {
-                QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
             }
         }
         else if (access == Access.Write) {
             return if (hasPermission(Groups.WRITE)) {
                 null
             } else {
-                QueryBuilders.termsQuery("zorroa.permissions.write", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.write", getPermissionIds())
             }
         }
         else if (access == Access.Export) {
             return if (hasPermission(Groups.EXPORT)) {
                 null
             } else {
-                QueryBuilders.termsQuery("zorroa.permissions.export", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.export", getPermissionIds())
             }
         }
     }
 
-    return QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
+    return QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
 }
 
 fun setWritePermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
+    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
     }
@@ -181,11 +207,11 @@ fun setWritePermissions(source: Document, perms: Collection<Permission>) {
     for (p in perms) {
         ps.write.add(p.id)
     }
-    source.setAttr("zorroa.permissions", ps)
+    source.setAttr("system.permissions", ps)
 }
 
 fun setExportPermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
+    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
     }
@@ -193,7 +219,7 @@ fun setExportPermissions(source: Document, perms: Collection<Permission>) {
     for (p in perms) {
         ps.export.add(p.id)
     }
-    source.setAttr("zorroa.permissions", ps)
+    source.setAttr("system.permissions", ps)
 }
 
 /**
@@ -251,7 +277,7 @@ fun canExport(asset: Document): Boolean {
         return true
     }
 
-    val perms = asset.getAttr("zorroa.permissions.export", Json.SET_OF_UUIDS)
+    val perms = asset.getAttr("system.permissions.export", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 

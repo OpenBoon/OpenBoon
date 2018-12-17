@@ -1,12 +1,12 @@
 package com.zorroa.archivist.elastic
 
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.search.Scroll
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.clients.EsClientCache
+import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.PagedList
-import com.zorroa.common.domain.Pager
-import com.zorroa.common.search.Scroll
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.index.IndexRequestBuilder
 import org.elasticsearch.action.search.SearchRequestBuilder
@@ -21,10 +21,10 @@ import org.springframework.dao.EmptyResultDataAccessException
 import java.io.IOException
 import java.io.OutputStream
 
-class ElasticTemplate(private val esClientCache: EsClientCache) {
+class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
 
     fun <T> queryForObject(id: String, type: String?, mapper: SearchHitRowMapper<T>): T {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val req = rest.newGetRequest(id)
                 .fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
 
@@ -42,7 +42,7 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
     }
 
     fun <T> queryForObject(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): T {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         rest.routeSearchRequest(builder.request)
 
         val r = rest.client.search(builder.request)
@@ -59,7 +59,7 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
     }
 
     fun <T> scroll(id: String, timeout: String, mapper: SearchHitRowMapper<T>): PagedList<T> {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         // already routed
         val req = SearchScrollRequest(id).scroll(timeout)
         val rsp = rest.client.searchScroll(req)
@@ -81,7 +81,7 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
     }
 
     fun <T> query(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): List<T> {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         rest.routeSearchRequest(builder.request)
 
         val r = rest.client.search(builder.request)
@@ -100,7 +100,7 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
     }
 
     fun <T> page(builder: SearchBuilder, paging: Pager, mapper: SearchHitRowMapper<T>): PagedList<T> {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         rest.routeSearchRequest(builder.request)
         builder.source.size(paging.size)
         builder.source.from(paging.from)
@@ -144,7 +144,7 @@ class ElasticTemplate(private val esClientCache: EsClientCache) {
 
     @Throws(IOException::class)
     fun page(builder: SearchBuilder, paging: Pager, out: OutputStream) {
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         rest.routeSearchRequest(builder.request)
         builder.source.size(paging.size)
         builder.source.from(paging.from)

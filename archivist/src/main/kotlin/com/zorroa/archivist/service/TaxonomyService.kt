@@ -10,14 +10,12 @@ import com.zorroa.archivist.elastic.ESUtils
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.TaxonomyDao
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.InternalRunnable
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.clients.EsClientCache
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.Document
-import com.zorroa.common.search.AssetFilter
-import com.zorroa.common.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkProcessor
@@ -78,7 +76,7 @@ interface TaxonomyService {
 class TaxonomyServiceImpl @Autowired constructor(
         private val taxonomyDao: TaxonomyDao,
         private val folderDao: FolderDao,
-        private val esClientCache: EsClientCache,
+        private val indexRoutingService: IndexRoutingService,
         private val folderTaskExecutor: UniqueTaskExecutor
 ): TaxonomyService {
 
@@ -194,7 +192,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val folderTotal = LongAdder()
         val assetTotal = LongAdder()
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -237,7 +235,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 var search: AssetSearch? = folder.search
                 if (search == null) {
                     search = AssetSearch(AssetFilter()
-                            .addToTerms("zorroa.links.folder", folder.id)
+                            .addToTerms("system.links.folder", folder.id)
                             .setRecursive(false))
                 }
 
@@ -343,7 +341,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomyFolders(tax: Taxonomy, folder: Folder, assets: List<String>) {
         logger.warn("Untagging {} on {} assets {}", tax, folder, assets)
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -353,7 +351,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val search = AssetSearch()
         search.filter = AssetFilter()
                 .addToTerms("_id", assets)
-                .addToTerms("zorroa.taxonomy.folderId", folder.id)
+                .addToTerms("system.taxonomy.folderId", folder.id)
 
         val sb = rest.newSearchBuilder()
         sb.request.scroll(SCROLL_TIME)
@@ -379,7 +377,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomyFolders(tax: Taxonomy, folders: List<Folder>) {
         logger.warn("Untagging {} on {} folders", tax, folders.size)
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val folderIds = folders.stream().map { f -> f.id }.collect(Collectors.toList())
         for (list in Lists.partition(folderIds, 500)) {
 
@@ -391,7 +389,7 @@ class TaxonomyServiceImpl @Autowired constructor(
 
             val search = AssetSearch()
             search.filter = AssetFilter()
-                    .addToTerms("zorroa.taxonomy.folderId", list as MutableList<Any>)
+                    .addToTerms("system.taxonomy.folderId", list as MutableList<Any>)
 
             val sb = rest.newSearchBuilder()
             sb.request.scroll(SCROLL_TIME)
@@ -418,7 +416,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy): Map<String, Long> {
         logger.info("Untagging entire taxonomy {}", tax)
 
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -427,7 +425,7 @@ class TaxonomyServiceImpl @Autowired constructor(
 
         val search = AssetSearch()
         search.filter = AssetFilter()
-                .addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
+                .addToTerms("system.taxonomy.taxId", tax.taxonomyId)
 
         val sb = rest.newSearchBuilder()
         sb.request.scroll(SCROLL_TIME)
@@ -459,7 +457,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy, timestamp: Long): Map<String, Long> {
 
         logger.info("Untagging assets no longer tagged tagged: {} {}", tax, timestamp)
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -470,7 +468,7 @@ class TaxonomyServiceImpl @Autowired constructor(
          * This filters out assets with a new timestamp.
          */
         val search = AssetSearch()
-        search.filter = AssetFilter().addToTerms("zorroa.taxonomy.taxId", tax.taxonomyId)
+        search.filter = AssetFilter().addToTerms("system.taxonomy.taxId", tax.taxonomyId)
 
         val sb = rest.newSearchBuilder()
         sb.request.scroll(SCROLL_TIME)
@@ -496,7 +494,7 @@ class TaxonomyServiceImpl @Autowired constructor(
 
     private fun processBulk(bulkProcessor: BulkProcessor, rsp: SearchResponse, pred: Predicate<TaxonomySchema>) {
         var rsp = rsp
-        val rest = esClientCache[getOrgId()]
+        val rest = indexRoutingService[getOrgId()]
         try {
             do {
                 for (hit in rsp.hits.hits) {
@@ -544,6 +542,6 @@ class TaxonomyServiceImpl @Autowired constructor(
          */
         private const val PAGE_SIZE = 100
 
-        private const val ROOT_FIELD = "zorroa.taxonomy"
+        private const val ROOT_FIELD = "system.taxonomy"
     }
 }

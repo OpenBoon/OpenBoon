@@ -4,11 +4,10 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.HideField
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.clients.EsClientCache
-import com.zorroa.common.domain.Document
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +34,7 @@ interface FieldService {
 
 @Service
 class FieldServiceImpl @Autowired constructor(
-        val esClientCache: EsClientCache,
+        val indexRoutingService: IndexRoutingService,
         val properties: ApplicationProperties,
         val fieldDao: FieldDao
 
@@ -75,8 +74,10 @@ class FieldServiceImpl @Autowired constructor(
                         .map { it }
                 )
 
-        val rest = esClientCache[getOrgId()]
-        val stream = rest.client.lowLevelClient.performRequest("GET", "/${rest.route.indexName}").entity.content
+        val rest = indexRoutingService[getOrgId()]
+        val stream = rest.client.lowLevelClient.performRequest(
+                "GET", "/${rest.route.indexName}").entity.content
+
         val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
         getList(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!, hiddenFields)
         return result
@@ -186,10 +187,7 @@ class FieldServiceImpl @Autowired constructor(
                 }
                 fields.add(fqfn)
 
-                /**
-                 * If the field name is "keywords", then its special!
-                 */
-                if (key == "keywords") {
+                if (key in AUTO_KEYWORDS_FIELDS) {
                     result.getValue("keywords").add(fqfn)
                 }
 
@@ -203,8 +201,6 @@ class FieldServiceImpl @Autowired constructor(
     override fun getQueryFields(): Map<String, Float> {
         val result = mutableMapOf<String, Float>()
         val fields = getFields("asset")
-
-        logger.info("{}", fields)
 
         fields.getValue("keywords").forEach { v-> result[v] = 1.0f }
         for (field in fields.getValue("keywords-boost")) {
@@ -223,9 +219,11 @@ class FieldServiceImpl @Autowired constructor(
 
         private val logger = LoggerFactory.getLogger(FieldServiceImpl::class.java)
 
-        private val NAME_TYPE_OVERRRIDES = ImmutableMap.of(
-                "point", "point",
-                "shash", "similarity")
+        private val AUTO_KEYWORDS_FIELDS = setOf("keywords", "content")
+
+        private val NAME_TYPE_OVERRRIDES = mapOf(
+                "point" to "point",
+                "shash" to "similarity")
 
         /**
          * The properties prefix used to define keywords fields.

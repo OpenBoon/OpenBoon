@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.security
 
+import java.util.*
+
 data class AuthSource(val label:String,
                       val authSourceId:String,
                       val permissionType:String,
@@ -12,5 +14,7 @@ interface UserRegistryService {
     fun registerUser(username: String, source: AuthSource) : UserAuthed
 
     fun getUser(username: String) : UserAuthed
+
+    fun getUser(id: UUID): UserAuthed
 }
 
