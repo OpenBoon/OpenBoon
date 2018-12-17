@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.service.DispatcherService
@@ -58,5 +59,18 @@ class TaskController @Autowired constructor(
     fun getScript(@PathVariable id: UUID): ZpsScript {
         return jobService.getZpsScript(id)
     }
+
+    @RequestMapping(value = ["/api/v1/tasks/{id}/taskerrors"], method=[RequestMethod.GET, RequestMethod.POST])
+    fun getTaskErrors(@PathVariable id: UUID, @RequestBody(required = false) filter: TaskErrorFilter?): Any {
+        val fixedFilter = if (filter == null) {
+            TaskErrorFilter(taskIds=listOf(id))
+        }
+        else {
+            filter.taskIds = listOf(id)
+            filter
+        }
+        return jobService.getTaskErrors(fixedFilter)
+    }
+
 }
 

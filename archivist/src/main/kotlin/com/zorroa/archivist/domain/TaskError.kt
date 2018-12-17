@@ -23,10 +23,10 @@ class TaskError(
 
 
 class TaskErrorFilter (
-        val ids : List<UUID>? = null,
-        val jobIds: List<UUID>? = null,
-        val taskIds: List<UUID>? = null,
-        val assetIds: List<UUID>? = null,
+        var ids : List<UUID>? = null,
+        var jobIds: List<UUID>? = null,
+        var taskIds: List<UUID>? = null,
+        var assetIds: List<UUID>? = null,
         val paths: List<String>? = null,
         val processors: List<String>? = null,
         val timeCreated: LongRangeFilter?=null,
