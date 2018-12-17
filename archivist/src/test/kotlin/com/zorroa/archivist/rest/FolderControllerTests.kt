@@ -44,7 +44,6 @@ class FolderControllerTests : MockMvcTest() {
         logger.info(s)
         val spec2 = Json.deserialize(s, FolderSpec::class.java)
 
-
         val result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

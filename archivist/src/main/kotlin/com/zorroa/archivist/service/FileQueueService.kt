@@ -7,6 +7,8 @@ import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.resetAuthentication
 import com.zorroa.common.domain.JobSpec
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.search.MeterNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -15,6 +17,12 @@ import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.timerTask
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation
+import org.springframework.boot.actuate.endpoint.annotation.Selector
+import org.springframework.stereotype.Component
+import java.util.concurrent.atomic.LongAdder
+
 
 /**
  * The FileQueueService handles accepting file processing requests via various
@@ -29,7 +37,8 @@ interface FileQueueService {
 @Service
 class FileQueueServiceImpl @Autowired constructor(
         private val fileQueueDao: FileQueueDao,
-        private val properties: ApplicationProperties): FileQueueService, ApplicationListener<ContextRefreshedEvent> {
+        private val properties: ApplicationProperties,
+        private val meterRegistrty: MeterRegistry): FileQueueService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     lateinit var jobService: JobService
@@ -49,7 +58,10 @@ class FileQueueServiceImpl @Autowired constructor(
     }
 
     override fun create(spec: QueuedFileSpec) : QueuedFile {
-        return fileQueueDao.create(spec)
+        val result = fileQueueDao.create(spec)
+        meterRegistrty.counter("zorroa.file-queue.created",
+                "organizationId", result.organizationId.toString()).increment()
+        return result
     }
 
     override fun processQueue() : Int {
@@ -86,6 +98,9 @@ class FileQueueServiceImpl @Autowired constructor(
 
                     // Launch the job
                     total+=makeJob(orgId, pipelineId, batch)
+
+                    meterRegistrty.counter("file-queue.processed",
+                            "organizationId", qf.organizationId.toString()).increment(total.toDouble())
 
                     // delete batch from DB
                     batch.clear()

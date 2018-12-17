@@ -51,6 +51,16 @@ class FileQueueDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testGetOrgMeters() {
+        val org = getOrgId()
+        val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(), "/tmp/foo.jpg", mapOf("foo" to "bar"))
+        val queued = fileQueueDao.create(spec)
+
+        val meters = fileQueueDao.getOrganizationMeters()
+        assertEquals(meters["Zorroa"], 1)
+    }
+
+    @Test
     fun testGetQueued() {
         val org = getOrgId()
 

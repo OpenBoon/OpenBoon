@@ -4,10 +4,12 @@ import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
+import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -36,7 +38,8 @@ interface JobService {
 class JobServiceImpl @Autowired constructor(
         private val eventBus: EventBus,
         private val jobDao: JobDao,
-        private val taskDao: TaskDao
+        private val taskDao: TaskDao,
+        private val meterRegistrty: MeterRegistry
 ): JobService {
 
     @Autowired
@@ -91,6 +94,10 @@ class JobServiceImpl @Autowired constructor(
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 
+        meterRegistrty.counter("zorroa.jobs.created",
+                "organizationId", getOrgId().toString(),
+                "type", type.toString()).increment()
+
         logger.event("launched Job",
                 mapOf("jobName" to job.name, "jobId" to job.id))
 
@@ -106,6 +113,7 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.get(id, forClient)
     }
 
+    @Transactional(readOnly = true)
     override fun getAll(filter: JobFilter?): KPagedList<Job> {
         return jobDao.getAll(filter)
     }
@@ -121,7 +129,10 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun createTask(job: JobId, spec: TaskSpec) : Task {
-        return taskDao.create(job, spec)
+        val result = taskDao.create(job, spec)
+        meterRegistrty.counter("zorroa.tasks.created",
+                "organizationId", getOrgId().toString()).increment()
+        return result
     }
 
     override fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse) {
