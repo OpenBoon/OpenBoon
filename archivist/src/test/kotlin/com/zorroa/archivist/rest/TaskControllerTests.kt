@@ -1,8 +1,8 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
@@ -15,6 +15,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.*
 import kotlin.test.assertEquals
 
 @WebAppConfiguration
@@ -22,6 +23,9 @@ class TaskControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var taskErrorDao: TaskErrorDao
 
     lateinit var task: Task
 
@@ -167,4 +171,36 @@ class TaskControllerTests : MockMvcTest() {
         assertEquals("bar", script.name)
     }
 
+
+    @Test
+    @Throws(Exception::class)
+    fun testGetTaskErrors() {
+
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        val job = jobService.create(spec)
+        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+
+        authenticateAsAnalyst()
+        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
+                "it broke", "com.zorroa.OfficeIngestor", true, "execute")
+        val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
+        taskErrorDao.create(event, error)
+        authenticate("admin")
+        val session = admin()
+
+        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/tasks/${task.id}/taskerrors")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val content = result.response.contentAsString
+        val log = Json.Mapper.readValue<KPagedList<TaskError>>(content,
+                object : TypeReference<KPagedList<TaskError>>() {})
+        assertEquals(1, log.size())
+    }
 }

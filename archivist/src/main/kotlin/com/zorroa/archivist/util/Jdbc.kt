@@ -51,9 +51,7 @@ object JdbcUtils {
 
     fun update(table: String, keyCol: String, vararg cols: String): String {
         val sb = StringBuilder(1024)
-        sb.append("UPDATE ")
-        sb.append(table)
-        sb.append(" SET ")
+        sb.append("UPDATE $table SET ")
         for (col in cols) {
             sb.append(col)
             if (col.contains("=")) {
@@ -63,31 +61,37 @@ object JdbcUtils {
             }
         }
         sb.deleteCharAt(sb.length - 1)
-        sb.append(" WHERE ")
-        sb.append(keyCol)
-        sb.append("=?")
+        sb.append(" WHERE $keyCol =?")
         return sb.toString()
     }
 
     fun inClause(col: String, size: Int): String {
-        if (size == 0) { return "" }
-        val sb = StringBuilder(size * 2 * 2)
-        sb.append(col)
-        sb.append(" IN (")
-        sb.append(StringUtils.repeat("?", ",", size))
-        sb.append(") ")
-        return sb.toString()
+        return when {
+            size <=0 -> ""
+            size == 1 -> "$col = ?"
+            else -> {
+                val sb = StringBuilder(128)
+                sb.append("$col IN (")
+                sb.append(StringUtils.repeat("?", ",", size))
+                sb.append(") ")
+                sb.toString()
+            }
+        }
     }
 
     fun inClause(col: String, size: Int, cast: String): String {
-        if (size == 0) { return "" }
         val repeat = "?::$cast"
-        val sb = StringBuilder(size * 2 * 2)
-        sb.append(col)
-        sb.append(" IN (")
-        sb.append(StringUtils.repeat(repeat, ",", size))
-        sb.append(") ")
-        return sb.toString()
+        return when {
+            size<=0 -> ""
+            size== 1-> "$col = $repeat"
+            else -> {
+                val sb = StringBuilder(128)
+                sb.append("$col IN (")
+                sb.append(StringUtils.repeat(repeat, ",", size))
+                sb.append(") ")
+                return sb.toString()
+            }
+        }
     }
 
     /**
