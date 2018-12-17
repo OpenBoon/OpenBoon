@@ -11,7 +11,7 @@ import java.util.*
 import java.sql.SQLException
 import java.sql.PreparedStatement
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
-
+import org.springframework.jdbc.core.RowCallbackHandler
 
 
 interface FileQueueDao {
@@ -19,6 +19,7 @@ interface FileQueueDao {
     fun get(id: UUID) : QueuedFile
     fun getAll(limit: Int) : List<QueuedFile>
     fun delete(files: List<QueuedFile>) : Int
+    fun getOrganizationMeters() : Map<String, Long>
 
 }
 
@@ -46,6 +47,14 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
 
     override fun get(id: UUID) : QueuedFile {
         return jdbc.queryForObject("$GET WHERE pk_queued_file=?", MAPPER, id)
+    }
+
+    override fun getOrganizationMeters() : Map<String, Long> {
+        val result = mutableMapOf<String, Long>()
+        jdbc.query(ORG_METERS) { rs->
+            result.put(rs.getString(1), rs.getLong(2))
+        }
+        return result
     }
 
     override fun create(spec: QueuedFileSpec): QueuedFile {
@@ -102,5 +111,14 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
                 "json_metadata",
                 "str_path",
                 "time_created")
+
+        private const val ORG_METERS =
+                "SELECT " +
+                    "org.str_name, " +
+                    "COUNT(1) " +
+                "FROM " +
+                    "queued_file qf INNER JOIN organization org ON (qf.pk_organization = org.pk_organization) " +
+                "GROUP BY " +
+                    "org.str_name"
     }
 }

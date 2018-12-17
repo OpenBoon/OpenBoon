@@ -6,8 +6,10 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
+import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -93,9 +95,12 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                    .antMatcher("/api/**")
                     .addFilterBefore(jwtAuthorizationFilter(), CsrfFilter::class.java)
                     .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
+                    .requestMatcher(EndpointRequest.to("metrics")).authorizeRequests()
+                    .anyRequest().hasRole(Groups.SUPERADMIN)
+                    .and()
+                    .antMatcher("/api/**")
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
                     .antMatchers("/api/v1/who").permitAll()
