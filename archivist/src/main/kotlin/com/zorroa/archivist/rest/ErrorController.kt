@@ -5,7 +5,10 @@ import com.zorroa.common.domain.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController
 import org.springframework.boot.web.servlet.error.ErrorAttributes
+import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.util.*
+import javax.servlet.RequestDispatcher
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -104,4 +108,27 @@ class RestApiExceptionHandler {
     companion object {
         private val logger = LoggerFactory.getLogger(RestApiExceptionHandler::class.java)
     }
+}
+
+@RestController
+@RequestMapping("/error")
+class CustomErrorController @Autowired constructor(private val errorAttributes: ErrorAttributes) :
+        AbstractErrorController(errorAttributes), ErrorController {
+
+    @Value("\${archivist.debug-mode.enabled}")
+    var debug : Boolean = false
+
+    override fun getErrorPath(): String {
+        return "/error"
+    }
+
+    @RequestMapping
+    @ResponseBody
+    fun error(request: HttpServletRequest): ResponseEntity<Map<String, Any>> {
+        val body = this.getErrorAttributes(request, debug)
+        val status = this.getStatus(request)
+        return ResponseEntity(body, status)
+    }
+
+
 }
