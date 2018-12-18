@@ -100,11 +100,11 @@ class JobServiceImpl @Autowired constructor(
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 
-        tx.afterCommit(false) {
-            meterRegistrty.counter("zorroa.jobs.created",
-                    "organizationId", getOrgId().toString(),
-                    "type", type.toString()).increment()
-        }
+
+        meterRegistrty.counter("zorroa.jobs.created",
+                "organizationId", getOrgId().toString(),
+                "type", type.toString()).increment()
+
 
         logger.event("launched Job",
                 mapOf("jobName" to job.name, "jobId" to job.id))
@@ -138,10 +138,8 @@ class JobServiceImpl @Autowired constructor(
 
     override fun createTask(job: JobId, spec: TaskSpec) : Task {
         val result = taskDao.create(job, spec)
-        tx.afterCommit(false) {
-            meterRegistrty.counter("zorroa.tasks.created",
-                    "organizationId", getOrgId().toString()).increment()
-        }
+        meterRegistrty.counter("zorroa.tasks.created",
+                "organizationId", getOrgId().toString()).increment()
         return result
     }
 
