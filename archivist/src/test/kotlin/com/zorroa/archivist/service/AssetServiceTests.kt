@@ -4,7 +4,6 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
-import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
@@ -61,6 +60,20 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(asset1.id, asset2.id)
         assertEquals(asset1.getAttr("source.path", String::class.java),
                 asset2.getAttr("source.path", String::class.java))
+    }
+
+    @Test
+    fun testBatchUpdate() {
+        val assets = searchService.search(Pager.first(), AssetSearch()).map { it.id }
+        val rsp = assetService.batchUpdate(assets, mapOf("foos" to "ball"))
+        assertEquals(2, rsp.updatedAssetIds.size)
+        refreshIndex()
+
+        val search =  searchService.search(Pager.first(), AssetSearch())
+        assertEquals(2, search.size())
+        for (doc: Document in search.list) {
+            assertEquals("ball", doc.getAttr("foos", String::class.java))
+        }
     }
 
     @Test
