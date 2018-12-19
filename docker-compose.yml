@@ -26,6 +26,10 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
+      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
   # Postgres instance used for local development servers.
