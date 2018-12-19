@@ -18,8 +18,8 @@ import java.util.regex.Pattern
  * The attributes property should be in dot notation, for example:
  * { "foo.bar" : 1, "source.ext": "png"}
  *
- * @oroperty assetIds : Any array of asset ids.
- * @oroperty attrs : A map of attributes to update.
+ * @property assetIds : Any array of asset ids.
+ * @property attrs : A map of attributes to update.
  */
 class BatchUpdateAssetsRequest(
         val assetIds: List<String>,
@@ -36,8 +36,8 @@ class BatchUpdateAssetsRequest(
  * Batch updates are able to edit individual attributes however the entire
  * document is rewritten.
  *
- * @oroperty updatedAssetIds : The asset Ids updated
- * @oroperty erroredAssetIds : The missing or errored asset Ids
+ * @property updatedAssetIds : The asset Ids updated
+ * @property erroredAssetIds : The missing or errored asset Ids
  *
  */
 class BatchUpdateAssetsResponse {
