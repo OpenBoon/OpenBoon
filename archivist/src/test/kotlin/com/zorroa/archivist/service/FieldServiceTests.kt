@@ -20,7 +20,6 @@ class FieldServiceTests : AbstractTest() {
         val fields = fieldService.getQueryFields()
 
         println(fields)
-        assertTrue(fields.containsKey("media.content"))
         assertTrue(fields.containsKey("media.title"))
         assertTrue(fields.containsKey("media.description"))
         assertTrue(fields.containsKey("source.keywords"))
