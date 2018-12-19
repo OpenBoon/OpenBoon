@@ -38,7 +38,7 @@ interface AssetService {
     fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
-    fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any>) : BatchUpdateAssetsResponse
+    fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any?>) : BatchUpdateAssetsResponse
     fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
@@ -431,7 +431,7 @@ open abstract class AbstractAssetService : AssetService {
      * thing about this method is that is slower with CDV since it doesn't have any
      * batch operations.
      */
-    override fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any>): BatchUpdateAssetsResponse {
+    override fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any?>): BatchUpdateAssetsResponse {
 
         if (assetIds.size > 1000) {
             throw java.lang.IllegalArgumentException("Cannot batch update more than 1000 assets at one time.")
@@ -464,7 +464,7 @@ open abstract class AbstractAssetService : AssetService {
                     attrs.forEach { t, u -> doc.setAttr(t, u) }
                     doc.setAttr("system.timeModified", now)
                 }
-                val updated = batchUpdate(docs)
+                val updated = batchUpdate(docs, reindex = true, taxons = false)
                 updated
             }
         }

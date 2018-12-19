@@ -267,6 +267,11 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
     }
 
+    @PutMapping(value = ["/api/v1/assets"])
+    fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
+        return assetService.batchUpdate(req.assetIds, req.attrs)
+    }
+
     @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
     @Throws(IOException::class)
     fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {
