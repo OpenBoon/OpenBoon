@@ -13,6 +13,29 @@ import java.util.*
 import java.util.regex.Pattern
 
 /**
+ * A response object for batch updating large numbers of assets via REST API.
+ * Batch updates are able to edit individual attributes however the entire
+ * document is rewritten.
+ *
+ * @oroperty updatedAssetIds : The asset Ids updated
+ * @oroperty erroredAssetIds : The missing or errored asset Ids
+ *
+ */
+class BatchUpdateAssetsResponse {
+    val updatedAssetIds = mutableSetOf<String>()
+    val erroredAssetIds = mutableSetOf<String>()
+
+    operator fun plus(other: BatchUpdateAssetsResponse) {
+        updatedAssetIds.addAll(other.updatedAssetIds)
+        erroredAssetIds.addAll(other.erroredAssetIds)
+    }
+
+    override fun toString() : String {
+        return "<BatchUpdateAssetsResponse updated=${updatedAssetIds.size} errored=${erroredAssetIds.size}>"
+    }
+}
+
+/**
  * Request to update selected assets with new permissions.  If replace=true, then
  * all permissions are replaced,otherwise they are updated.
  *

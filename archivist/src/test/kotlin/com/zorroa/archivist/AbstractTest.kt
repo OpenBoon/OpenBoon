@@ -124,23 +124,18 @@ open abstract class AbstractTest {
     @Throws(IOException::class)
     fun setup() {
 
-        /*
-          * Now that folders are created using what is essentially a nested transaction,
-          * we can't rely on the unittests to roll them back.  For this, we manually delete
-          * every folder not created by the SQL schema migration.
-          *
-          * Eventually we need a different way to do this because it relies on the created
-          * time, which just happens to be the same for all schema created folders.
-          *
-          * //TODO: find a more robust way to handle deleting folders created by a test.
-          * Maybe use naming conventions (test_) or utilize a new field on the table.
-          *
+        /**
+         * Clean out any committed data we left around for co-routihes and threads
+         * to be tested.
          */
         val tmpl = TransactionTemplate(transactionManager)
         tmpl.propagationBehavior = Propagation.NOT_SUPPORTED.ordinal
         tmpl.execute(object : TransactionCallbackWithoutResult() {
             override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
                 jdbc.update("DELETE FROM folder WHERE time_created !=1450709321000")
+                jdbc.update("DELETE FROM asset")
+                jdbc.update("DELETE FROM auditlog")
+
             }
         })
 
@@ -315,7 +310,19 @@ open abstract class AbstractTest {
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-            assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)).apply { isUpload=true })
+
+            /**
+             * Co-routines and threads need to see committed data, so assets are committed for
+             * that purpose but cleaned up before each test.
+             */
+            val tmpl = TransactionTemplate(transactionManager)
+            tmpl.propagationBehavior = Propagation.REQUIRES_NEW.value()
+            tmpl.execute(object : TransactionCallbackWithoutResult() {
+                override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
+                    assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)).apply { isUpload=true })
+                }
+            })
+
         }
         refreshIndex()
     }
