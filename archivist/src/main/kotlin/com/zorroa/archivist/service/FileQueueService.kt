@@ -8,7 +8,6 @@ import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.resetAuthentication
 import com.zorroa.common.domain.JobSpec
 import io.micrometer.core.instrument.MeterRegistry
-import io.micrometer.core.instrument.search.MeterNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -17,11 +16,6 @@ import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.timerTask
-import org.springframework.boot.actuate.endpoint.annotation.Endpoint
-import org.springframework.boot.actuate.endpoint.annotation.ReadOperation
-import org.springframework.boot.actuate.endpoint.annotation.Selector
-import org.springframework.stereotype.Component
-import java.util.concurrent.atomic.LongAdder
 
 
 /**
@@ -99,7 +93,7 @@ class FileQueueServiceImpl @Autowired constructor(
                     // Launch the job
                     total+=makeJob(orgId, pipelineId, batch)
 
-                    meterRegistrty.counter("file-queue.processed",
+                    meterRegistrty.counter("zorroa.file-queue.processed",
                             "organizationId", qf.organizationId.toString()).increment(total.toDouble())
 
                     // delete batch from DB
