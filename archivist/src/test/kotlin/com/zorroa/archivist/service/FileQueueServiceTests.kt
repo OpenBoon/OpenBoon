@@ -45,6 +45,6 @@ class FileQueueServiceTests : AbstractTest() {
         fileQueueService.create(spec)
 
         assertEquals(2, fileQueueService.processQueue())
-        assertEquals(2, meterRegistry.get("file-queue.total").counter().count().toInt())
+        assertEquals(2, meterRegistry.get("zorroa.file-queue.created").counter().count().toInt())
     }
 }

@@ -25,15 +25,21 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import org.springframework.security.web.util.matcher.RequestMatcher
-import org.springframework.web.cors.CorsUtils
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.security.web.csrf.CsrfFilter
+import org.springframework.security.web.util.matcher.RequestMatcher
+import org.springframework.web.cors.CorsUtils
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
+/**
+ * MultipleWebSecurityConfig sets up all the endpoint security.
+ *
+ * The secret to doing this is that the configure method in each WebSecurityConfigurerAdapter
+ * must start off with a .antMatcher(pattern) function.  Each WebSecurityConfigurerAdapter
+ * instance handles configuring a different groups of endpoints.
+ *
+ */
 @EnableWebSecurity
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class MultipleWebSecurityConfig {
@@ -43,7 +49,7 @@ class MultipleWebSecurityConfig {
 
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class LoginSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
@@ -70,7 +76,7 @@ class MultipleWebSecurityConfig {
 
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
@@ -95,19 +101,15 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
+                    .antMatcher("/api/**")
                     .addFilterBefore(jwtAuthorizationFilter(), CsrfFilter::class.java)
                     .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
-                    .requestMatcher(EndpointRequest.to("metrics")).authorizeRequests()
-                    .anyRequest().hasRole(Groups.SUPERADMIN)
-                    .and()
-                    .antMatcher("/api/**")
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
                     .antMatchers("/api/v1/who").permitAll()
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
                     .antMatchers("/api/v1/send-onboard-email").permitAll()
-                    .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable().cacheControl().disable()
                     .and().csrf().csrfTokenRepository(csrfTokenRepository)
@@ -128,26 +130,43 @@ class MultipleWebSecurityConfig {
 
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE + 2)
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class WorkerSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
         internal lateinit var properties: ApplicationProperties
 
         @Autowired
-        internal lateinit var analystAuthenticationFilter: AnalystAuthenticationFilter
+        lateinit var analystAuthenticationFilter : AnalystAuthenticationFilter
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/cluster/**")
-                    .addFilterAfter(analystAuthenticationFilter, BasicAuthenticationFilter::class.java)
-                    .authorizeRequests()
-                    .anyRequest().authenticated()
-                    .and().sessionManagement().disable()
+                    .addFilterBefore(analystAuthenticationFilter, CsrfFilter::class.java)
+                    .sessionManagement().disable()
                     .csrf().disable()
+                    .authorizeRequests()
+                    .anyRequest().hasAuthority("ANALYST")
+
         }
     }
+
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 3)
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+    class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Throws(Exception::class)
+        override fun configure(http: HttpSecurity) {
+            http
+                    .antMatcher("/actuator/**")
+                    .authorizeRequests()
+                    .requestMatchers(EndpointRequest.to("metrics")).hasAuthority(Groups.SUPERADMIN)
+                    .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
+        }
+    }
+
 
     @Autowired
     @Throws(Exception::class)

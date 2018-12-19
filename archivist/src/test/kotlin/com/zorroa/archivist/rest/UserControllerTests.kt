@@ -38,8 +38,6 @@ class UserControllerTests : MockMvcTest() {
     fun testApiKey() {
         val session = admin()
         val currentKey = userService.getApiKey(userService.get("admin"))
-
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/users/api-key")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)
@@ -55,7 +53,6 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val currentKey = userService.getApiKey(userService.get("admin"))
 
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/users/api-key?replace=true")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)
@@ -72,7 +69,6 @@ class UserControllerTests : MockMvcTest() {
         val user = userService.get("user")
         emailService.sendPasswordResetEmail(user)
 
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/send-password-reset-email")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -102,7 +98,6 @@ class UserControllerTests : MockMvcTest() {
         val token = emailService.sendPasswordResetEmail(user)
         assertTrue(token.isEmailSent)
 
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/reset-password")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

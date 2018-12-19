@@ -12,6 +12,8 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -55,8 +57,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
                     job.id,
                     emptyMap<String,String>())
 
-            SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
+                    .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
@@ -84,8 +86,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
                     job.id,
                     TaskStoppedEvent(0, null))
 
-            SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
+                    .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
@@ -113,8 +115,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
                     job.id,
                     TaskStoppedEvent(1, null))
 
-            SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
+                    .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
@@ -143,8 +145,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
                     job.id,
                     emptyZpsScript("bob"))
 
-            SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
+                    .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
@@ -176,8 +178,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
                     job.id,
                     tev)
 
-            SecurityContextHolder.getContext().authentication = null
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
+                    .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .header(ANALYST_HEADER_STRING, "5000")
                     .content(Json.serialize(te)))
@@ -210,6 +212,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 null)
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
+                .session(analyst())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(ANALYST_HEADER_STRING, "5000")
                 .content(Json.serialize(spec)))
@@ -239,8 +242,10 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 null)
 
         analystService.upsert(aspec)
+        val analyst = analyst()
 
         mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
+                .session(analyst)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(ANALYST_HEADER_STRING, "5000"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -248,6 +253,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         // This should be 404
         mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
+                .session(analyst)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(ANALYST_HEADER_STRING, "5000"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)

@@ -9,6 +9,7 @@ import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
