@@ -6,12 +6,17 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.copyInputToOuput
 import com.zorroa.common.domain.TaskFilter
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.CacheControl
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
+import javax.servlet.http.HttpServletResponse
 
 
 @RestController
@@ -58,6 +63,21 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun getScript(@PathVariable id: UUID): ZpsScript {
         return jobService.getZpsScript(id)
+    }
+
+    @GetMapping(value = ["/api/v1/tasks/{id}/_log"])
+    @ResponseBody
+    @Throws(ExecutionException::class, IOException::class)
+    fun getLog(@PathVariable id: UUID, rsp: HttpServletResponse) {
+        val sf = jobService.getTaskLog(id)
+        if (sf.exists()) {
+            rsp.contentType = "text/plain"
+            rsp.setContentLengthLong(sf.getStat().size)
+            copyInputToOuput(sf.getInputStream(), rsp.outputStream)
+        }
+        else {
+            rsp.status = HttpStatus.NOT_FOUND.value()
+        }
     }
 
     @RequestMapping(value = ["/api/v1/tasks/{id}/taskerrors"], method=[RequestMethod.GET, RequestMethod.POST])

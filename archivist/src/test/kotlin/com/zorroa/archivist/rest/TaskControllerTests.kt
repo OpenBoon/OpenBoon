@@ -3,6 +3,7 @@ package com.zorroa.archivist.rest
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
@@ -15,6 +16,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.nio.file.Files
 import java.util.*
 import kotlin.test.assertEquals
 
@@ -26,6 +28,9 @@ class TaskControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var taskErrorDao: TaskErrorDao
+
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
 
     lateinit var task: Task
 
@@ -169,6 +174,36 @@ class TaskControllerTests : MockMvcTest() {
 
         val script = deserialize(result, ZpsScript::class.java)
         assertEquals("bar", script.name)
+    }
+
+    @Test
+    fun testGetLogFile() {
+
+        val log = task.getLogSpec()
+        val fs = fileStorageService.get(log).getServableFile()
+        Files.write(fs.getLocalFile(), "boom!".toByteArray())
+
+        val session = admin()
+        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val data = req.response.contentAsString
+        assertEquals("boom!", data)
+    }
+
+    @Test
+    fun testGetLogFile404() {
+        val session = admin()
+        mvc.perform(MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+                .andReturn()
     }
 
 

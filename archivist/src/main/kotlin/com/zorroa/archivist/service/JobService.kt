@@ -14,6 +14,7 @@ import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
@@ -34,6 +35,7 @@ interface JobService {
     fun updateJob(job: Job, spec: JobUpdateSpec) : Boolean
     fun getTaskErrors(filter: TaskErrorFilter) : KPagedList<TaskError>
     fun deleteTaskError(id: UUID): Boolean
+    fun getTaskLog(id: UUID) : ServableFile
 }
 
 @Service
@@ -43,13 +45,15 @@ class JobServiceImpl @Autowired constructor(
         private val jobDao: JobDao,
         private val taskDao: TaskDao,
         private val taskErrorDao: TaskErrorDao,
-        private val meterRegistrty: MeterRegistry,
-        private val tx: TransactionEventManager
-
+        private val meterRegistrty: MeterRegistry
 ): JobService {
 
     @Autowired
     private lateinit var pipelineService: PipelineService
+
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
+
 
     override fun create(spec: JobSpec) : Job {
         if (spec.script != null) {
@@ -134,6 +138,13 @@ class JobServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getZpsScript(id: UUID) : ZpsScript {
         return taskDao.getScript(id)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getTaskLog(id: UUID) : ServableFile {
+        val task = getTask(id)
+        val st = fileStorageService.get(task.getLogSpec())
+        return st.getServableFile()
     }
 
     override fun createTask(job: JobId, spec: TaskSpec) : Task {
