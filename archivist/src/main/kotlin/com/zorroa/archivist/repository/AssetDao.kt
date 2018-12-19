@@ -4,7 +4,7 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.JdbcUtils.inClause
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
@@ -21,6 +21,8 @@ interface AssetDao {
     fun get(id: UUID) : Document
     fun get(id: String): Document
     fun getMap(ids: List<String>): Map<String, Document>
+    fun getAll(ids: List<String>): List<Document>
+    fun batchUpdate(docs: List<Document>) : IntArray
 }
 
 @Repository
@@ -72,6 +74,28 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
         return result.sum()
     }
 
+    override fun batchUpdate(docs: List<Document>) : IntArray {
+        val time = extractTime(docs[0])
+        val user = getUser()
+        return jdbc.batchUpdate(UPDATE, object : BatchPreparedStatementSetter {
+
+            @Throws(SQLException::class)
+            override fun setValues(ps: PreparedStatement, i: Int) {
+                val doc = docs[i]
+                ps.setObject(1, user.id)
+                ps.setLong(2, time.time)
+                ps.setString(3, Json.serializeToString(doc.document, "{}"))
+                ps.setObject(4, UUID.fromString(doc.id))
+                ps.setObject(5, user.organizationId)
+                ps
+            }
+
+            override fun getBatchSize(): Int {
+                return docs.size
+            }
+        })
+    }
+
     override fun get(id: String): Document {
         return get(UUID.fromString(id))
     }
@@ -80,6 +104,19 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
         return jdbc.queryForObject(
                 "SELECT pk_asset, json_document FROM asset WHERE pk_asset=? AND pk_organization=?",
                 MAPPER, id, getOrgId())
+    }
+
+    override fun getAll(ids: List<String>): List<Document> {
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+        val where = inClause("pk_asset", ids.size, "uuid")
+        val values = mutableListOf<Any>()
+        values.add(getOrgId())
+        values.addAll(ids)
+
+        return jdbc.query("SELECT pk_asset, json_document FROM asset WHERE pk_organization=?::uuid AND $where",
+                MAPPER, *values.toTypedArray())
     }
 
     override fun getMap(ids: List<String>): Map<String, Document> {
@@ -118,6 +155,12 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
                     rs.getString(1),
                     Json.deserialize(rs.getString(2), Json.GENERIC_MAP))
         }
+
+        private val UPDATE = JdbcUtils.update("asset",
+                "pk_asset",
+                "pk_user_modified",
+                "time_modified",
+                "json_document::jsonb").plus(" AND pk_organization=?")
 
         private val INSERT = JdbcUtils.insert("asset",
                 "pk_asset",
