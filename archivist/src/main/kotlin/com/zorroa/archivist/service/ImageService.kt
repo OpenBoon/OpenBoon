@@ -56,7 +56,7 @@ interface ImageService {
     fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean)
 
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy)
+    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?)
 
     fun watermark(req: HttpServletRequest, inputStream: InputStream): BufferedImage
 }
@@ -103,7 +103,6 @@ class ImageServiceImpl @Autowired constructor(
             ImageIO.write(image, "jpg", rsp.outputStream)
 
         } else {
-            logger.event("serve Image", mapOf("mimeType" to stat.mediaType, "size" to stat.size))
             rsp.contentType = stat.mediaType
             rsp.setContentLengthLong(stat.size)
             rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
@@ -112,7 +111,11 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy) {
+    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?) {
+        if (proxy == null) {
+            rsp.status = HttpStatus.NOT_FOUND.value()
+            return
+        }
         val isWatermarkSize = (proxy.width <= watermarkMinProxySize && proxy.height <= watermarkMinProxySize)
         val st = fileStorageService.get(proxy.id!!)
         serveImage(req, rsp, st, isWatermarkSize)
