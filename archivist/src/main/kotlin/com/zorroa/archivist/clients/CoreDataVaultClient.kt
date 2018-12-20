@@ -170,9 +170,12 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
         return try {
             val response = client.put("/companies/$companyId/documents/$assetId/es", doc,
                     Json.GENERIC_MAP, headers = getRequestHeaders())
-            client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED", null, Json.GENERIC_MAP,
-                    headers = getRequestHeaders())
-            response["status"] == "PASSED"
+            val updated = response["status"] == "PASSED"
+            if (updated) {
+                client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED",
+                        null, Json.GENERIC_MAP, headers = getRequestHeaders())
+            }
+            updated
         } catch (e: Exception) {
             logger.warnEvent("updateIndexMetadata Asset", e.message ?: "No error message",
                     mapOf("companyId" to companyId, "assetId" to assetId))

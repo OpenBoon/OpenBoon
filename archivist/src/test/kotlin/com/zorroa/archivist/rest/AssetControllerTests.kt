@@ -492,4 +492,36 @@ class AssetControllerTests : MockMvcTest() {
                 .andExpect(status().is4xxClientError)
                 .andReturn()
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchUpdate() {
+
+        val session = admin()
+        addTestAssets("set04/standard")
+        refreshIndex()
+
+        var assets = indexDao.getAll(Pager.first())
+        val ids = assets.stream().map { a -> a.id }.toList()
+        val req = BatchUpdateAssetsRequest(ids, mapOf("foos" to "ball"))
+
+        val result = mvc.perform(put("/api/v1/assets")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serializeToString(req))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val rsp = Json.Mapper.readValue(result.response.contentAsString,
+                BatchUpdateAssetsResponse::class.java)
+        assertEquals(2, rsp.updatedAssetIds.size)
+        assertEquals(0, rsp.erroredAssetIds.size)
+
+        refreshIndex()
+        authenticate()
+        for (asset in indexDao.getAll(Pager.first())) {
+            assertEquals("ball", asset.getAttr("foos", String::class.java))
+        }
+    }
 }

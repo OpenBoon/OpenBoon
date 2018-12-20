@@ -49,15 +49,24 @@ object JdbcUtils {
         return sb.toString()
     }
 
+    /**
+     * Create and return an update query.  Supports the postgres cast
+     * operator (::) for on column names.   For example:
+     *
+     * update("foo", "pk_foo", "json::jsonb") would return "UPDATE foo SET json=?::jsonb WHERE pk_foo=?"
+     */
     fun update(table: String, keyCol: String, vararg cols: String): String {
         val sb = StringBuilder(1024)
         sb.append("UPDATE $table SET ")
         for (col in cols) {
-            sb.append(col)
-            if (col.contains("=")) {
-                sb.append(",")
-            } else {
-                sb.append("=?,")
+            val cast = col.contains("::")
+            val parts = col.split("::")
+
+            sb.append(parts[0])
+            when {
+                col.contains("=") -> sb.append(",")
+                cast -> sb.append("=?::${parts[1]},")
+                else -> sb.append("=?,")
             }
         }
         sb.deleteCharAt(sb.length - 1)

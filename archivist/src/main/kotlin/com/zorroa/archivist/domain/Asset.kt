@@ -13,6 +13,48 @@ import java.util.*
 import java.util.regex.Pattern
 
 /**
+ * BatchUpdateAssetsRequest defines how to batch update a list of assets.
+ *
+ * The attributes property should be in dot notation, for example:
+ * { "foo.bar" : 1, "source.ext": "png"}
+ *
+ * @property assetIds : Any array of asset ids.
+ * @property attrs : A map of attributes to update.
+ */
+class BatchUpdateAssetsRequest(
+        val assetIds: List<String>,
+        val attrs: Map<String, Any?>
+)
+{
+    override fun toString() : String {
+        return "<BatchUpdateAssetRequet assetIds=$assetIds attrs=${attrs.keys}"
+    }
+}
+
+/**
+ * A response object for batch updating large numbers of assets via REST API.
+ * Batch updates are able to edit individual attributes however the entire
+ * document is rewritten.
+ *
+ * @property updatedAssetIds : The asset Ids updated
+ * @property erroredAssetIds : The missing or errored asset Ids
+ *
+ */
+class BatchUpdateAssetsResponse {
+    val updatedAssetIds = mutableSetOf<String>()
+    val erroredAssetIds = mutableSetOf<String>()
+
+    operator fun plus(other: BatchUpdateAssetsResponse) {
+        updatedAssetIds.addAll(other.updatedAssetIds)
+        erroredAssetIds.addAll(other.erroredAssetIds)
+    }
+
+    override fun toString() : String {
+        return "<BatchUpdateAssetsResponse updated=${updatedAssetIds.size} errored=${erroredAssetIds.size}>"
+    }
+}
+
+/**
  * Request to update selected assets with new permissions.  If replace=true, then
  * all permissions are replaced,otherwise they are updated.
  *

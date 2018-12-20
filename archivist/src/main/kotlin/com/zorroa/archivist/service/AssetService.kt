@@ -16,6 +16,9 @@ import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,8 +35,11 @@ import java.util.*
  */
 interface AssetService {
     fun get(assetId: String): Document
+    fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
+    fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any?>) : BatchUpdateAssetsResponse
+    fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
@@ -419,6 +425,71 @@ open abstract class AbstractAssetService : AssetService {
     }
 
     /**
+     * Batch update a list of assetIds with the given attributes.
+     *
+     * The nice thing about this method is that it works for both CDV and Postgres. The not nice
+     * thing about this method is that is slower with CDV since it doesn't have any
+     * batch operations.
+     */
+    override fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any?>): BatchUpdateAssetsResponse {
+
+        if (assetIds.size > 1000) {
+            throw java.lang.IllegalArgumentException("Cannot batch update more than 1000 assets at one time.")
+        }
+
+        if (assetIds.isEmpty() || attrs.isEmpty()) {
+            throw java.lang.IllegalArgumentException("No asset IDs or attrs to update.")
+        }
+
+        attrs.forEach {
+            if (it.key.startsWith("system")) {
+                throw java.lang.IllegalArgumentException("Cannot update system values manually")
+            }
+        }
+
+        /**
+         * For setting modified time
+         */
+        val now = Date()
+
+        /**
+         * Iterate over our list of assets and grab the hard copy of each one.
+         * Modify the copy and push it back into the DB.
+         */
+
+        val futures = assetIds.chunked(50).map { ids->
+            GlobalScope.async {
+                val docs = getAll(ids)
+                docs.forEach { doc->
+                    attrs.forEach { t, u -> doc.setAttr(t, u) }
+                    doc.setAttr("system.timeModified", now)
+                }
+                val updated = batchUpdate(docs, reindex = true, taxons = false)
+                updated
+            }
+        }
+
+        /**
+         * Setup our response object
+         */
+        val rsp = BatchUpdateAssetsResponse()
+
+        /**
+         * Wait for all the batches to complete, then combine results.
+         */
+        runBlocking {
+            futures.map {
+                val r = it.await()
+                logger.info("Updated batch of assets: $r")
+                rsp.plus(r)
+            }
+        }
+
+        runDyhiAndTaxons()
+        return rsp
+    }
+
+    /**
      * Return true if the parent is validated.  Each implementation can choose
      * how the parent is validated.
      */
@@ -518,12 +589,37 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         return get(doc.id)
     }
 
+    override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
+        val rsp = BatchUpdateAssetsResponse()
+        for (asset in assets) {
+            try {
+                if (cdvClient.updateIndexedMetadata(getCompanyId(), asset)) {
+                    rsp.updatedAssetIds.add(asset.id)
+                }
+                else {
+                    logger.warnEvent("batchUpdate", "Asset not found", mapOf("assetId" to asset.id))
+                }
+            } catch(e: Exception) {
+                logger.warnEvent("batchUpdate", "Error updating asset", mapOf("assetId" to asset.id))
+                rsp.erroredAssetIds.add(asset.id)
+            }
+        }
+        if (reindex) {
+            indexService.index(assets)
+        }
+        if (taxons) {
+            runDyhiAndTaxons()
+        }
+        return rsp
+    }
+
     override fun update(assetId: String, attrs: Map<String, Any>): Document {
 
         val asset = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
         if (!hasPermission("write", asset)) {
-            throw ArchivistWriteException("update access denied")
+            throw ArchivistSecurityException("update access denied")
         }
+
         val updated = indexService.update(asset, attrs)
         cdvClient.updateIndexedMetadata(getCompanyId(), updated)
         runDyhiAndTaxons()
@@ -618,7 +714,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         searchService.scanAndScroll(spec.search, false) { hits->
             val ids = hits.map { it.id }
 
-            val req = BatchCreateAssetsRequest(getAllAssets(ids).map { doc ->
+            val req = BatchCreateAssetsRequest(getAll(ids).map { doc ->
                 applyAcl(doc, spec.replace, rAcl)
                 doc
             }, skipAssetPrep = true, scope="setPermissions")
@@ -627,7 +723,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         return combinedRsp
     }
 
-    private fun getAllAssets(ids: List<String>) : List<Document> {
+    override fun getAll(ids: List<String>) : List<Document> {
         return ids.map { cdvClient.getIndexedMetadata(getCompanyId(), it) }
     }
 
@@ -637,7 +733,6 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         }
         return cdvClient.assetExists(getCompanyId(), doc.getAttr("media.clip.parent", String::class.java))
     }
-
 }
 
 @Transactional
@@ -648,6 +743,10 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     override fun get(assetId: String): Document {
         return assetDao.get(assetId)
+    }
+
+    override fun getAll(assetIds: List<String>): List<Document> {
+        return assetDao.getAll(assetIds)
     }
 
     override fun delete(id: String): Boolean {
@@ -704,6 +803,31 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         assetDao.createOrReplace(updated)
         runDyhiAndTaxons()
         return asset
+    }
+
+    override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
+        val rsp = BatchUpdateAssetsResponse()
+        val updated = assetDao.batchUpdate(assets)
+
+        val batch = assets.filterIndexed { index, doc ->
+            val r = updated[index] == 1
+            if (r) {
+                rsp.updatedAssetIds.add(doc.id)
+
+            }
+            else {
+                rsp.erroredAssetIds.add(doc.id)
+            }
+            r
+        }
+
+        if (reindex) {
+            indexService.index(batch)
+        }
+        if (taxons) {
+            runDyhiAndTaxons()
+        }
+        return rsp
     }
 
     override fun removeLinks(type: LinkType, target: UUID, assets: List<String>): ModifyLinksResponse {
