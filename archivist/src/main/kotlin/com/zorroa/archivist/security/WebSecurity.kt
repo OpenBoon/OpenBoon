@@ -41,14 +41,12 @@ import javax.servlet.http.HttpServletResponse
  * must start off with a .antMatcher(pattern) function.  Each WebSecurityConfigurerAdapter
  * instance handles configuring a different groups of endpoints.
  *
+ * Warning: using this setting messes up tests.
+ * SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL)
  */
 @EnableWebSecurity
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class MultipleWebSecurityConfig {
-
-    init {
-        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL)
-    }
 
     @Autowired
     internal lateinit var properties: ApplicationProperties

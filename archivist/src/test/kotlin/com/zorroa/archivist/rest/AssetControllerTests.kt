@@ -10,12 +10,14 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
@@ -35,6 +37,11 @@ class AssetControllerTests : MockMvcTest() {
     @Before
     fun init() {
         fieldService.invalidateFields()
+    }
+
+    @After
+    fun after() {
+        SecurityContextHolder.getContext().authentication = null
     }
 
     @Test
@@ -100,7 +107,6 @@ class AssetControllerTests : MockMvcTest() {
                 })
         assertTrue(status["success"] as Boolean)
 
-        authenticate("admin")
         val stringFields = fieldService.getFields("asset")
         assertNotEquals(fields, stringFields)
     }
@@ -333,7 +339,6 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testSetFolders() {
-        authenticate("admin")
         addTestAssets("set04/canyon")
 
         val folders = Lists.newArrayList<UUID>()
@@ -496,15 +501,19 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testBatchUpdate() {
-
-        val session = admin()
         addTestAssets("set04/standard")
         refreshIndex()
 
+        authenticate("admin")
         var assets = indexDao.getAll(Pager.first())
-        val ids = assets.stream().map { a -> a.id }.toList()
-        val req = BatchUpdateAssetsRequest(ids, mapOf("foos" to "ball"))
+        val batch = mutableMapOf<String, Map<String, Any?>>()
 
+        assets.list.map { doc->
+            batch[doc.id] = mapOf("foos" to "ball")
+        }
+
+        val session = admin()
+        val req = BatchUpdateAssetsRequest(batch)
         val result = mvc.perform(put("/api/v1/assets")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)
@@ -519,7 +528,8 @@ class AssetControllerTests : MockMvcTest() {
         assertEquals(0, rsp.erroredAssetIds.size)
 
         refreshIndex()
-        authenticate()
+
+        authenticate("admin")
         for (asset in indexDao.getAll(Pager.first())) {
             assertEquals("ball", asset.getAttr("foos", String::class.java))
         }

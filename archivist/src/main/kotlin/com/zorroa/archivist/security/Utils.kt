@@ -31,6 +31,21 @@ fun resetAuthentication(auth: Authentication?) : Authentication?   {
     return oldAuth
 }
 
+/**
+ * Execute the given code using the provided Authentication object.  If Authentication
+ * is null, then just execute with no authentication.
+ *
+ */
+fun <T> withAuth(auth: Authentication?, body: () -> T) : T {
+    val hold = SecurityContextHolder.getContext().authentication
+    SecurityContextHolder.getContext().authentication = auth
+    try {
+        return body()
+    }
+    finally {
+        SecurityContextHolder.getContext().authentication = hold
+    }
+}
 
 object SecurityLogger {
     val logger = LoggerFactory.getLogger(SecurityLogger::class.java)
@@ -110,7 +125,6 @@ fun hasPermission(vararg perms: String): Boolean {
 
 fun hasPermission(perms: Collection<String>): Boolean {
     val auth = SecurityContextHolder.getContext().authentication
-
     auth?.authorities?.let{
         for (g in it) {
             if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
