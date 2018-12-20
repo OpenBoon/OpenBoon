@@ -232,7 +232,7 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
         }
         else if (spec.category == "log") {
             Preconditions.checkNotNull(spec.jobId, "Log locations must have a job Id")
-            Preconditions.checkNotNull(spec.jobId, "Log locations must have a task Id")
+            Preconditions.checkNotNull(spec.taskId, "Log locations must have a task Id")
             val path = root.resolve("logs")
                     .resolve(spec.jobId.toString())
                     .resolve("${spec.name}.${spec.type}")
