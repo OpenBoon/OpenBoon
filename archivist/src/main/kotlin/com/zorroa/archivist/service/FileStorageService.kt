@@ -15,6 +15,7 @@ import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.archivist.util.event
+import com.zorroa.common.domain.Task
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.FileInputStream
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 
 /**
- * The FileStorageService is for determining the location of files assocaiated with
+ * The FileStorageService is for determining the location of files associated with
  * assets, exports, etc.
  */
 interface FileStorageService {
@@ -229,6 +230,15 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
             path.toFile().parentFile.mkdirs()
             path.toUri().toString()
         }
+        else if (spec.category == "log") {
+            Preconditions.checkNotNull(spec.jobId, "Log locations must have a job Id")
+            Preconditions.checkNotNull(spec.taskId, "Log locations must have a task Id")
+            val path = root.resolve("logs")
+                    .resolve(spec.jobId.toString())
+                    .resolve("${spec.name}.${spec.type}")
+            path.toFile().parentFile.mkdirs()
+            path.toUri().toString()
+        }
         else {
             val name = spec.assetId ?: spec.name
             val ofile = ofs.prepare(spec.category, name, spec.type, spec.variants)
@@ -322,5 +332,3 @@ private inline fun unslashed(id: String) : String {
 private inline fun slashed(id: String) : String {
     return id.replace("___", "/")
 }
-
-

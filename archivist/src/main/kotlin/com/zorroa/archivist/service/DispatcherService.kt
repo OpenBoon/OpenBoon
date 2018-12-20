@@ -49,6 +49,9 @@ class DispatcherServiceImpl @Autowired constructor(
     @Autowired
     lateinit var jobService: JobService
 
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
+
     @PostConstruct
     fun init() {
         // Register for event bus
@@ -65,14 +68,18 @@ class DispatcherServiceImpl @Autowired constructor(
             val tasks = dispatchTaskDao.getNext(5)
             for (task in tasks) {
                 if (queueTask(task, endpoint)) {
+
                     task.env["ZORROA_TASK_ID"] = task.id.toString()
                     task.env["ZORROA_JOB_ID"] = task.jobId.toString()
                     task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(userDao.getApiKey(task.userId))
                     if (properties.getBoolean("archivist.debug-mode.enabled")) {
                         task.env["ZORROA_DEBUG_MODE"] = "true"
                     }
+                    val fs = fileStorageService.get(task.getLogSpec())
+                    task.logFile = fs.getServableFile().getSignedUrl().toString()
                     // Set the time started on the job if its not set already.
                     jobDao.setTimeStarted(task)
+
                     return task
                 }
             }
@@ -105,7 +112,14 @@ class DispatcherServiceImpl @Autowired constructor(
             exitStatus != 0 -> TaskState.Failure
             else -> TaskState.Success
         }
-        val result =  if (taskDao.setState(task, newState, TaskState.Running)) {
+
+        val stopped = when {
+            taskDao.setState(task, newState, TaskState.Running) -> true
+            taskDao.setState(task, newState, TaskState.Queued) -> true
+            else -> false
+        }
+
+        if (stopped) {
             taskDao.setExitStatus(task, exitStatus)
             try {
                 val endpoint = getAnalystEndpoint()
@@ -114,14 +128,10 @@ class DispatcherServiceImpl @Autowired constructor(
             catch(e: Exception) {
                 logger.warn("Failed to clear taskId from Analyst")
             }
-            true
-        }
-        else {
-            false
         }
 
-        logger.info("Stopping task: {}, newState={}, result={}", task.taskId, newState, result)
-        return result
+        logger.info("Stopping task: {}, newState={}, result={}", task.taskId, newState, stopped)
+        return stopped
     }
 
     override fun expand(parentTask: Task, script: ZpsScript) : Task {
