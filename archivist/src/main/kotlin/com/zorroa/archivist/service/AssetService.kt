@@ -5,9 +5,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.security.*
 import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
@@ -38,7 +36,7 @@ interface AssetService {
     fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
-    fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any?>) : BatchUpdateAssetsResponse
+    fun batchUpdate(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
     fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
@@ -431,20 +429,10 @@ open abstract class AbstractAssetService : AssetService {
      * thing about this method is that is slower with CDV since it doesn't have any
      * batch operations.
      */
-    override fun batchUpdate(assetIds: List<String>, attrs: Map<String, Any?>): BatchUpdateAssetsResponse {
+    override fun batchUpdate(assets: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
 
-        if (assetIds.size > 1000) {
+        if (assets.size() > 1000) {
             throw java.lang.IllegalArgumentException("Cannot batch update more than 1000 assets at one time.")
-        }
-
-        if (assetIds.isEmpty() || attrs.isEmpty()) {
-            throw java.lang.IllegalArgumentException("No asset IDs or attrs to update.")
-        }
-
-        attrs.forEach {
-            if (it.key.startsWith("system")) {
-                throw java.lang.IllegalArgumentException("Cannot update system values manually")
-            }
         }
 
         /**
@@ -457,15 +445,35 @@ open abstract class AbstractAssetService : AssetService {
          * Modify the copy and push it back into the DB.
          */
 
-        val futures = assetIds.chunked(50).map { ids->
+        val auth = getAuthentication()
+
+        val futures = assets.batch.keys.chunked(50).map { ids->
             GlobalScope.async {
-                val docs = getAll(ids)
-                docs.forEach { doc->
-                    attrs.forEach { t, u -> doc.setAttr(t, u) }
-                    doc.setAttr("system.timeModified", now)
+                withAuth(auth) {
+                    val docs = getAll(ids)
+                    docs.forEach { doc ->
+                        assets.batch.getValue(doc.id).forEach { t, u ->
+                            if (!hasPermission("write", doc)) {
+                                logger.warnEvent("batchUpdate Asset",
+                                        "Skipping setting $t, access denied",
+                                        mapOf("assetId" to doc.id))
+                            } else if (t.startsWith("system.")) {
+                                logger.warnEvent("batchUpdate Asset",
+                                        "Skipping setting $t, cannot set system values on batch update",
+                                        mapOf("assetId" to doc.id))
+                            } else {
+                                if (u == null) {
+                                    doc.removeAttr(t)
+                                } else {
+                                    doc.setAttr(t, u)
+                                }
+                            }
+                        }
+                        doc.setAttr("system.timeModified", now)
+                    }
+                    val updated = batchUpdate(docs, reindex = true, taxons = false)
+                    updated
                 }
-                val updated = batchUpdate(docs, reindex = true, taxons = false)
-                updated
             }
         }
 

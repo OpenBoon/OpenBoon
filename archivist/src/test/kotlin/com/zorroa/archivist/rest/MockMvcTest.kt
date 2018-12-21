@@ -57,7 +57,6 @@ abstract class MockMvcTest : AbstractTest() {
     @JvmOverloads
     protected fun user(name: String = "user"): MockHttpSession {
         val user = userRegistryService.getUser(name)
-        println(user.authorities)
         return buildSession(UnitTestAuthentication(user, user.authorities))
     }
 

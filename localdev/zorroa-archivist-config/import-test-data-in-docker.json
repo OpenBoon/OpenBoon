@@ -10,7 +10,7 @@
   "execute": [
     {
       "className": "zplugins.image.ImageIngestor",
-      "args": { "extract_extended_metadata": true }
+      "args": { "extract_extended_metadata": true, "extract_pages": true }
     },
     {
       "className": "zplugins.video.processors.VideoIngestor",

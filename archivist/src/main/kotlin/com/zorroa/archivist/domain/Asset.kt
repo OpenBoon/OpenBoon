@@ -18,16 +18,16 @@ import java.util.regex.Pattern
  * The attributes property should be in dot notation, for example:
  * { "foo.bar" : 1, "source.ext": "png"}
  *
- * @property assetIds : Any array of asset ids.
- * @property attrs : A map of attributes to update.
+ * @property batch : Any array of asset ids.
  */
 class BatchUpdateAssetsRequest(
-        val assetIds: List<String>,
-        val attrs: Map<String, Any?>
+        val batch: Map<String, Map<String, Any?>>
 )
 {
+    fun size(): Int = batch.size
+
     override fun toString() : String {
-        return "<BatchUpdateAssetRequet assetIds=$assetIds attrs=${attrs.keys}"
+        return "<BatchUpdateAssetRequet assetIds=${batch.keys}"
     }
 }
 

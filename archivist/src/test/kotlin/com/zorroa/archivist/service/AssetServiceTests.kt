@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
@@ -64,8 +65,12 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchUpdate() {
-        val assets = searchService.search(Pager.first(), AssetSearch()).map { it.id }
-        val rsp = assetService.batchUpdate(assets, mapOf("foos" to "ball"))
+        val batch = mutableMapOf<String, Map<String, Any?>>()
+
+        searchService.search(Pager.first(), AssetSearch()).map {
+            batch[it.id] =  mapOf("foos" to "ball")}
+
+        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(batch))
         assertEquals(2, rsp.updatedAssetIds.size)
         refreshIndex()
 
@@ -73,6 +78,24 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(2, search.size())
         for (doc: Document in search.list) {
             assertEquals("ball", doc.getAttr("foos", String::class.java))
+        }
+    }
+
+    @Test
+    fun testBatchUpdateWithNulls() {
+        val batch = mutableMapOf<String, Map<String, Any?>>()
+
+        searchService.search(Pager.first(), AssetSearch()).map {
+            batch[it.id] =  mapOf("source.path" to null)}
+
+        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(batch))
+        assertEquals(2, rsp.updatedAssetIds.size)
+        refreshIndex()
+
+        val search =  searchService.search(Pager.first(), AssetSearch())
+        assertEquals(2, search.size())
+        for (doc: Document in search.list) {
+            assertNull(doc.getAttr("source.path"))
         }
     }
 

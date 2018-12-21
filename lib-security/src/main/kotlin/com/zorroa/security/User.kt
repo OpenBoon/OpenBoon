@@ -61,4 +61,8 @@ class UserAuthed(
     override fun isAccountNonLocked(): Boolean {
         return true
     }
+
+    override fun toString() : String {
+        return "<UserAuthed username=$user organization=$organizationId>"
+    }
 }

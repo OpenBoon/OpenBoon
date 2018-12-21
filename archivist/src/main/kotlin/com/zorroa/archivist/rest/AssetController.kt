@@ -270,7 +270,7 @@ class AssetController @Autowired constructor(
 
     @PutMapping(value = ["/api/v1/assets"])
     fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
-        return assetService.batchUpdate(req.assetIds, req.attrs)
+        return assetService.batchUpdate(req)
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
