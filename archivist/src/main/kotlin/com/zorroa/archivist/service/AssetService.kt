@@ -447,12 +447,12 @@ open abstract class AbstractAssetService : AssetService {
 
         val auth = getAuthentication()
 
-        val futures = assets.batch.keys.chunked(50).map { ids->
+        val futures = assets.update.keys.chunked(50).map { ids->
             GlobalScope.async {
                 withAuth(auth) {
                     val docs = getAll(ids)
                     docs.forEach { doc ->
-                        assets.batch.getValue(doc.id).forEach { t, u ->
+                        assets.update.getValue(doc.id).forEach { t, u ->
                             if (!hasPermission("write", doc)) {
                                 logger.warnEvent("batchUpdate Asset",
                                         "Skipping setting $t, access denied",

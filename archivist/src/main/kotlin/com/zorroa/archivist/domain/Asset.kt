@@ -21,13 +21,13 @@ import java.util.regex.Pattern
  * @property batch : Any array of asset ids.
  */
 class BatchUpdateAssetsRequest(
-        val batch: Map<String, Map<String, Any?>>
+        val update: Map<String, Map<String, Any?>>
 )
 {
-    fun size(): Int = batch.size
+    fun size(): Int = update.size
 
     override fun toString() : String {
-        return "<BatchUpdateAssetRequet assetIds=${batch.keys}"
+        return "<BatchUpdateAssetRequet assetIds=${update.keys}"
     }
 }
 
