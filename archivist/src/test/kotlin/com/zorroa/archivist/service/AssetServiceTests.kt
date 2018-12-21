@@ -65,12 +65,12 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchUpdate() {
-        val batch = mutableMapOf<String, Map<String, Any?>>()
 
-        searchService.search(Pager.first(), AssetSearch()).map {
-            batch[it.id] =  mapOf("foos" to "ball")}
-
-        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(batch))
+        var updates= mutableMapOf<String, UpdateAssetRequest>()
+        searchService.search(Pager.first(), AssetSearch()).forEach {doc ->
+            updates[doc.id] = UpdateAssetRequest(mapOf("foos" to "ball"))
+        }
+        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(updates))
         assertEquals(2, rsp.updatedAssetIds.size)
         refreshIndex()
 
@@ -82,20 +82,21 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchUpdateWithNulls() {
+    fun testBatchUpdateRemove() {
         val batch = mutableMapOf<String, Map<String, Any?>>()
 
-        searchService.search(Pager.first(), AssetSearch()).map {
-            batch[it.id] =  mapOf("source.path" to null)}
-
-        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(batch))
+        var updates= mutableMapOf<String, UpdateAssetRequest>()
+        searchService.search(Pager.first(), AssetSearch()).forEach {doc ->
+            updates[doc.id] = UpdateAssetRequest(null, listOf("source"))
+        }
+        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(updates))
         assertEquals(2, rsp.updatedAssetIds.size)
         refreshIndex()
 
         val search =  searchService.search(Pager.first(), AssetSearch())
         assertEquals(2, search.size())
         for (doc: Document in search.list) {
-            assertNull(doc.getAttr("source.path"))
+            assertNull(doc.getAttr("source"))
         }
     }
 

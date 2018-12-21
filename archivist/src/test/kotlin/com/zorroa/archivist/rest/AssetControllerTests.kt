@@ -506,14 +506,14 @@ class AssetControllerTests : MockMvcTest() {
 
         authenticate("admin")
         var assets = indexDao.getAll(Pager.first())
-        val batch = mutableMapOf<String, Map<String, Any?>>()
+        var updates= mutableMapOf<String, UpdateAssetRequest>()
 
-        assets.list.map { doc->
-            batch[doc.id] = mapOf("foos" to "ball")
+        assets.list.forEach { doc->
+            updates[doc.id] = UpdateAssetRequest(mapOf("foos" to "ball"))
         }
 
         val session = admin()
-        val req = BatchUpdateAssetsRequest(batch)
+        val req = BatchUpdateAssetsRequest(updates)
         val result = mvc.perform(put("/api/v1/assets")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)

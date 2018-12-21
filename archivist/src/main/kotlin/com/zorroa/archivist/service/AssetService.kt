@@ -431,7 +431,7 @@ open abstract class AbstractAssetService : AssetService {
      */
     override fun batchUpdate(assets: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
 
-        if (assets.size() > 1000) {
+        if (assets.batch.size > 1000) {
             throw java.lang.IllegalArgumentException("Cannot batch update more than 1000 assets at one time.")
         }
 
@@ -447,30 +447,45 @@ open abstract class AbstractAssetService : AssetService {
 
         val auth = getAuthentication()
 
-        val futures = assets.update.keys.chunked(50).map { ids->
+        val futures = assets.batch.keys.chunked(50).map { ids->
             GlobalScope.async {
                 withAuth(auth) {
-                    val docs = getAll(ids)
-                    docs.forEach { doc ->
-                        assets.update.getValue(doc.id).forEach { t, u ->
-                            if (!hasPermission("write", doc)) {
-                                logger.warnEvent("batchUpdate Asset",
-                                        "Skipping setting $t, access denied",
-                                        mapOf("assetId" to doc.id))
-                            } else if (t.startsWith("system.")) {
-                                logger.warnEvent("batchUpdate Asset",
-                                        "Skipping setting $t, cannot set system values on batch update",
-                                        mapOf("assetId" to doc.id))
-                            } else {
-                                if (u == null) {
-                                    doc.removeAttr(t)
+                    val docs : List<Document> = getAll(ids).mapNotNull { doc->
+
+                        if (!hasPermission("write", doc)) {
+                            logger.warnEvent("batchUpdate Asset",
+                                    "Skipping updating asset, access denied",
+                                    mapOf("assetId" to doc.id))
+                            null
+                        }
+                        else {
+
+                            val req = assets.batch.getValue(doc.id)
+                            req.update?.forEach { t, u ->
+                                if (t.startsWith("system.", ignoreCase = true)) {
+                                    logger.warnEvent("batchUpdate Asset",
+                                            "Skipping setting $t, cannot set system values on batch update",
+                                            mapOf("assetId" to doc.id))
                                 } else {
                                     doc.setAttr(t, u)
                                 }
                             }
+
+                            req.remove?.forEach {
+                                if (it.startsWith("system.", ignoreCase = true)) {
+                                    logger.warnEvent("batchUpdate Asset",
+                                            "Skipping removing $it, cannot set system values on batch update",
+                                            mapOf("assetId" to doc.id))
+                                } else {
+                                    doc.removeAttr(it)
+                                }
+                            }
+
+                            doc.setAttr("system.timeModified", now)
+                            doc
                         }
-                        doc.setAttr("system.timeModified", now)
                     }
+
                     val updated = batchUpdate(docs, reindex = true, taxons = false)
                     updated
                 }

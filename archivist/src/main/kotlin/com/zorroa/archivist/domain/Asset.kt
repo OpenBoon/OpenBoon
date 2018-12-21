@@ -13,6 +13,17 @@ import java.util.*
 import java.util.regex.Pattern
 
 /**
+ * A class to define updates to a single Asset
+ *
+ * @property update: key/value pairs to be updated.
+ * @peoperty remove: an array of fields to remove.
+ */
+class UpdateAssetRequest(
+        val update : Map<String, Any>?=null,
+        val remove: List<String>?=null
+)
+
+/**
  * BatchUpdateAssetsRequest defines how to batch update a list of assets.
  *
  * The attributes property should be in dot notation, for example:
@@ -21,13 +32,11 @@ import java.util.regex.Pattern
  * @property batch : Any array of asset ids.
  */
 class BatchUpdateAssetsRequest(
-        val update: Map<String, Map<String, Any?>>
+        val batch: Map<String, UpdateAssetRequest>
 )
 {
-    fun size(): Int = update.size
-
     override fun toString() : String {
-        return "<BatchUpdateAssetRequet assetIds=${update.keys}"
+        return "<BatchUpdateAssetRequest update='$batch'>"
     }
 }
 
