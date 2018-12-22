@@ -6,9 +6,7 @@ import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
-import com.zorroa.archivist.security.generateUserToken
-import com.zorroa.archivist.security.getAnalystEndpoint
-import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.*
 import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
@@ -75,8 +73,10 @@ class DispatcherServiceImpl @Autowired constructor(
                     if (properties.getBoolean("archivist.debug-mode.enabled")) {
                         task.env["ZORROA_DEBUG_MODE"] = "true"
                     }
-                    val fs = fileStorageService.get(task.getLogSpec())
-                    task.logFile = fs.getServableFile().getSignedUrl().toString()
+                    withAuth(SuperAdminAuthentication(task.organizationId)) {
+                        val fs = fileStorageService.get(task.getLogSpec())
+                        task.logFile = fs.getServableFile().getSignedUrl().toString()
+                    }
                     // Set the time started on the job if its not set already.
                     jobDao.setTimeStarted(task)
 
