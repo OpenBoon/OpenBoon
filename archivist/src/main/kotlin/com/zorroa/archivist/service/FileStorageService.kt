@@ -18,6 +18,7 @@ import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.Task
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import java.io.FileInputStream
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
@@ -281,13 +282,21 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
 class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
 
     override fun buildUri(id: String): String {
-        val org = getOrgId()
+        val org = try {
+            val org = getOrgId()
+        } catch (e: AuthenticationCredentialsNotFoundException) {
+            "none"
+        }
         val slashed = slashed(id)
         return "gs://$bucket/orgs/$org/ofs/$slashed"
     }
 
     override fun buildUri(spec: FileStorageSpec) : String {
-        val org = getOrgId()
+        val org = try {
+            getOrgId()
+        } catch (e: AuthenticationCredentialsNotFoundException) {
+            "none"
+        }
         var variant = spec.variants?.joinToString("_", prefix="_") ?: ""
         if (variant == "_") {
             variant = ""
