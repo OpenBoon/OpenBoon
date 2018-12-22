@@ -283,7 +283,7 @@ class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
 
     override fun buildUri(id: String): String {
         val org = try {
-            val org = getOrgId()
+            getOrgId()
         } catch (e: AuthenticationCredentialsNotFoundException) {
             "none"
         }

@@ -109,6 +109,17 @@ class DefaultGcsLayoutProviderTests : AbstractTest() {
     val layout = GcsLayoutProvider("foo")
 
     @Test
+    fun testAnalystUser() {
+        authenticateAsAnalyst()
+        val spec = FileStorageSpec(
+                "proxy",
+        "so_urgent",
+        "jpg")
+        val id1 = layout.buildId(spec)
+        val uri = layout.buildUri(id1)
+    }
+
+    @Test
     fun testGenerateId() {
         val spec = FileStorageSpec(
                 "proxy",
