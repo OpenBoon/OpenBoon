@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.PermissionDao
+import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
@@ -14,14 +15,13 @@ import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.atomic.LongAdder
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -41,8 +41,8 @@ interface AssetService {
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
-    fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
-    fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
+    fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
+    fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
 }
 
@@ -512,6 +512,100 @@ open abstract class AbstractAssetService : AssetService {
         return rsp
     }
 
+    override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse {
+
+        val auth = getAuthentication()
+        val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
+        val successCount = LongAdder()
+
+        runBlocking {
+            assets.chunked(50) {
+                launch {
+                    withAuth(auth) {
+                        val docs = getAll(it).mapNotNull { doc ->
+                            if (removeLink(doc, type, value)) {
+                                doc
+                            } else {
+                                // already removed
+                                null
+                            }
+                        }
+                        val update = batchUpdate(docs, reindex = true, taxons = false)
+                        if (update.erroredAssetIds.isNotEmpty()) {
+                            errorAssetIds.addAll(update.erroredAssetIds)
+                        }
+                        successCount.add(update.updatedAssetIds.size.toLong())
+                    }
+                }
+            }
+        }
+
+        val result = UpdateLinksResponse()
+        result.successCount = successCount.toLong()
+        result.erroredAssetIds.addAll(errorAssetIds)
+        return result
+    }
+
+    override fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse {
+        val auth = getAuthentication()
+        val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
+        val successCount = LongAdder()
+
+        runBlocking {
+            req.assetIds?.chunked(50) {
+                launch {
+                    withAuth(auth) {
+                        val docs = getAll(it).mapNotNull { doc ->
+                            if (addLink(doc, type, value)) {
+                                doc
+                            } else {
+                                null
+                            }
+                        }
+                        val update = batchUpdate(docs, reindex = true, taxons = false)
+                        if (update.erroredAssetIds.isNotEmpty()) {
+                            errorAssetIds.addAll(update.erroredAssetIds)
+                        }
+                        successCount.add(update.updatedAssetIds.size.toLong())
+                    }
+                }
+            }
+
+            req.search?.let {
+                val search = req.search
+                search.addToFilter().must = mutableListOf(AssetFilter()
+                        .addToTerms("media.clip.parentId", req.parentIds))
+
+                logger.info(Json.prettyString(search))
+
+                searchService.scanAndScroll(search, false) { hits->
+                    launch {
+                        withAuth(auth) {
+                            val ids = hits.hits.map { hit -> hit.id }
+                            val docs = getAll(ids).mapNotNull { doc ->
+                                if (addLink(doc, type, value)) {
+                                    doc
+                                } else {
+
+                                    null
+                                }
+                            }
+                            val update = batchUpdate(docs, reindex = true, taxons = false)
+                            if (update.erroredAssetIds.isNotEmpty()) {
+                                errorAssetIds.addAll(update.erroredAssetIds)
+                            }
+                            successCount.add(update.updatedAssetIds.size.toLong())
+                        }
+                    }
+                }
+            }
+        }
+        val result = UpdateLinksResponse()
+        result.successCount = successCount.toLong()
+        result.erroredAssetIds.addAll(errorAssetIds)
+        return result
+    }
+
     /**
      * Return true if the parent is validated.  Each implementation can choose
      * how the parent is validated.
@@ -670,59 +764,6 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         }
     }
 
-    override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val docs = mutableListOf<Document>()
-
-        for (assetId in assets) {
-            val doc = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
-            if (addLink(doc, type, value)) {
-                result.success.add(doc.id)
-                docs.add(doc)
-
-                if (docs.size >=50) {
-                    indexService.index(docs)
-                    docs.clear()
-                }
-            }
-            else {
-                result.missing.add(doc.id)
-            }
-        }
-        if (docs.isNotEmpty()) {
-            indexService.index(docs)
-            docs.clear()
-        }
-
-        return result
-    }
-
-    override fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val docs = mutableListOf<Document>()
-
-        for (assetId in assets) {
-            val doc = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
-            if (removeLink(doc, type, value)) {
-                result.success.add(doc.id)
-                docs.add(doc)
-
-                if (docs.size >=50) {
-                    indexService.index(docs)
-                    docs.clear()
-                }
-            }
-            else {
-                result.missing.add(doc.id)
-            }
-        }
-        if (docs.isNotEmpty()) {
-            indexService.index(docs)
-            docs.clear()
-        }
-
-        return result
-    }
 
     override fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
         val rAcl = permissionDao.resolveAcl(spec.acl, false)
@@ -851,36 +892,6 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
             runDyhiAndTaxons()
         }
         return rsp
-    }
-
-    override fun removeLinks(type: LinkType, target: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val req = BatchCreateAssetsRequest(assetDao.getMap(assets).map {
-            val doc = it.value
-            if (removeLink(doc, type, target)) {
-                result.success.add(it.key)
-            } else {
-                result.missing.add(it.key)
-            }
-            it.value
-        }, skipAssetPrep = true, scope = "removeLinks")
-        batchCreateOrReplace(req)
-        return result
-    }
-
-    override fun addLinks(type: LinkType, target: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val req = BatchCreateAssetsRequest(assetDao.getMap(assets).map {
-            val doc = it.value
-            if (addLink(doc, type, target)) {
-                result.success.add(it.key)
-            } else {
-                result.missing.add(it.key)
-            }
-            it.value
-        }, skipAssetPrep = true, scope = "addLinks")
-        batchCreateOrReplace(req)
-        return result
     }
 
     override fun setPermissions(spec: BatchUpdatePermissionsRequest): BatchUpdatePermissionsResponse {

@@ -75,6 +75,7 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
     }
 
     override fun batchUpdate(docs: List<Document>) : IntArray {
+        if (docs.isEmpty()) { return IntArray(0) }
         val time = extractTime(docs[0])
         val user = getUser()
         return jdbc.batchUpdate(UPDATE, object : BatchPreparedStatementSetter {

@@ -162,7 +162,7 @@ class SearchServiceTests : AbstractTest() {
         val asset1 = assetService.createOrReplace(source)
         refreshIndex(100)
 
-        folderService.addAssets(folder1, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder1, listOf(asset1.id))
         refreshIndex(100)
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
@@ -182,7 +182,7 @@ class SearchServiceTests : AbstractTest() {
         val asset1 = assetService.createOrReplace(source)
         refreshIndex(100)
 
-        folderService.addAssets(folder1, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder1, listOf(asset1.id))
         refreshIndex(100)
 
         assertEquals(1, searchService.count(folder1))
@@ -206,7 +206,7 @@ class SearchServiceTests : AbstractTest() {
         val asset1 = assetService.createOrReplace(source)
         refreshIndex(100)
 
-        folderService.addAssets(folder3, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder3, listOf(asset1.id))
         refreshIndex(100)
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
@@ -238,8 +238,8 @@ class SearchServiceTests : AbstractTest() {
         val asset2 = assetService.createOrReplace(source2)
         refreshIndex()
 
-        folderService.addAssets(folder2, Lists.newArrayList(asset2.id))
-        folderService.addAssets(folder3, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder2, listOf(asset2.id))
+        folderService.addAssets(folder3, listOf(asset1.id))
         refreshIndex(100)
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
@@ -496,11 +496,11 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryMultipleExactWithAnd() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("test.keywords", Lists.newArrayList("RA", "pencil", "O'Connor"))
+        source.setAttr("test.keywords", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplace(source)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("test.keywords", Lists.newArrayList("RA", "Cock O'the Walk"))
+        source2.setAttr("test.keywords", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplace(source2)
 
         refreshIndex()
@@ -514,11 +514,11 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryExactTermWithSpaces() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("test.keywords", Lists.newArrayList("RA", "pencil", "O'Connor"))
+        source.setAttr("test.keywords", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplace(source)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("test.keywords", Lists.newArrayList("RA", "Cock O'the Walk"))
+        source2.setAttr("test.keywords", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplace(source2)
 
         refreshIndex()
@@ -885,7 +885,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testHammingDistanceFilterWithQuery() {
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source1.setAttr("media.keywords", Lists.newArrayList("beer_kettle_01.jpg"))
+        source1.setAttr("media.keywords", listOf("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", "afafafaf")
 
@@ -912,7 +912,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testHammingDistanceFilterWithAssetId() {
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source1.setAttr("media.keywords", Lists.newArrayList("beer"))
+        source1.setAttr("media.keywords", listOf("beer"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", "afafafaf")
 

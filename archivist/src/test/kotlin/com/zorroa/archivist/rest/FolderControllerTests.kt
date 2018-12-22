@@ -2,10 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
-import com.zorroa.archivist.domain.Folder
-import com.zorroa.archivist.domain.FolderSpec
-import com.zorroa.archivist.domain.FolderUpdate
-import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.common.util.Json
 import org.junit.Before
@@ -379,8 +376,8 @@ class FolderControllerTests : MockMvcTest() {
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map({ it.id}).collect(Collectors.toList()))))
-                .andExpect(status().isOk())
+                .content(Json.serialize(assets.stream().map { it.id}.collect(Collectors.toList()))))
+                .andExpect(status().isOk)
                 .andReturn()
 
         refreshIndex()
@@ -403,7 +400,7 @@ class FolderControllerTests : MockMvcTest() {
         var assets = assetDao.getAll(Pager.first())
 
         val folder1 = folderService.create(FolderSpec("foo"))
-        folderService.addAssets(folder1, assets.stream().map( { it.id.toString() }).collect(Collectors.toList()))
+        folderService.addAssets(folder1, BatchUpdateAssetLinks(assets.map { it.id }.toList()))
         refreshIndex()
 
         val session = admin()
@@ -411,8 +408,8 @@ class FolderControllerTests : MockMvcTest() {
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map({ it.id }).collect(Collectors.toList()))))
-                .andExpect(status().isOk())
+                .content(Json.serialize(assets.stream().map { it.id } .collect(Collectors.toList()))))
+                .andExpect(status().isOk)
                 .andReturn()
 
         refreshIndex()
