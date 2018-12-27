@@ -14,12 +14,10 @@ import java.util.concurrent.TimeUnit
  */
 interface MaintenanceService {
 
-    fun removeExpiredSharedLinks(): Int
 }
 
 @Service
 class MaintenanceServiceImpl @Autowired constructor(
-        private val sharedLinkDao: SharedLinkDao
 ) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
 
 
@@ -27,21 +25,8 @@ class MaintenanceServiceImpl @Autowired constructor(
         this.startAsync()
     }
 
-    override fun removeExpiredSharedLinks(): Int {
-        val result = sharedLinkDao.deleteExpired(System.currentTimeMillis())
-        if (result > 0) {
-            logger.info("deleted {} shared link records", result)
-        }
-        return result
-    }
-
     @Throws(Exception::class)
     override fun runOneIteration() {
-
-        /**
-         * Remove expired shared links.
-         */
-        removeExpiredSharedLinks()
 
     }
 
