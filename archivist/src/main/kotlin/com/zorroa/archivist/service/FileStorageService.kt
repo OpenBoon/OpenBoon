@@ -54,9 +54,11 @@ interface FileStorageService {
      * In order to read/write this image, callers need a signed URL.
      * @param[id] The unique id of the storage element
      * @param[method] The http method (put to write, get to read)
+     * @param[duration] The duration the signed URL is active
+     * @param[unit] The unit of time passed for duration
      * @return a FileStorage object detailing the location of the storage
      */
-    fun getSignedUrl(id: String, method: HttpMethod) : String
+    fun getSignedUrl(id: String, method: HttpMethod, duration: Long=10, unit: TimeUnit=TimeUnit.MINUTES) : String
 
 }
 
@@ -141,7 +143,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         return storage
     }
 
-    override fun getSignedUrl(id: String, method: HttpMethod) : String {
+    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit) : String {
         val uri = URI(dlp.buildUri(id))
         val path = uri.path
         val contentType = StaticUtils.tika.detect(path)
@@ -150,7 +152,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
                 mapOf("contentType" to contentType, "storageId" to uri, "bucket" to bucket, "path" to path))
 
         val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
-        return gcs.signUrl(info, 10, TimeUnit.MINUTES,
+        return gcs.signUrl(info, duration, unit,
                 SignUrlOption.withContentType(), SignUrlOption.httpMethod(method)).toString()
     }
 
@@ -194,7 +196,7 @@ class LocalFileStorageService constructor(
         return buildFileStorage(id, url)
     }
 
-    override fun getSignedUrl(id: String, method: HttpMethod) : String  {
+    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit) : String  {
         return dlp.buildUri(id)
     }
 
