@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.google.cloud.storage.HttpMethod
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
@@ -75,7 +77,9 @@ class DispatcherServiceImpl @Autowired constructor(
                     }
                     withAuth(SuperAdminAuthentication(task.organizationId)) {
                         val fs = fileStorageService.get(task.getLogSpec())
-                        task.logFile = fs.getServableFile().getSignedUrl().toString()
+                        val logFile = fileStorageService.getSignedUrl(
+                                fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
+                        task.logFile = logFile
                     }
                     // Set the time started on the job if its not set already.
                     jobDao.setTimeStarted(task)
