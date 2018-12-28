@@ -135,6 +135,7 @@ open abstract class AbstractTest {
                 jdbc.update("DELETE FROM folder WHERE time_created !=1450709321000")
                 jdbc.update("DELETE FROM asset")
                 jdbc.update("DELETE FROM auditlog")
+                jdbc.update("DELETE FROM cluster_lock")
 
             }
         })
