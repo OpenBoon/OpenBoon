@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
@@ -47,8 +48,9 @@ class ExportServiceTests : AbstractTest() {
     @Test
     fun testCreatExportFile() {
         assertEquals(0, exportService.getAllExportFiles(job).size)
-        val storage = fileStorageService.get(FileStorageSpec("export",
-                "foo", "txt", jobId=job.id))
+        val storage = fileStorageService.get(FileStorageSpec("job",
+                job.id, "exported/foo.txt"))
+        fileStorageService.getSignedUrl(storage.id, HttpMethod.PUT)
 
         Files.write(storage.getServableFile().getLocalFile(), "a-team".toByteArray())
         val ex1 = exportService.createExportFile(job, ExportFileSpec(storage.id, "bing.txt"))

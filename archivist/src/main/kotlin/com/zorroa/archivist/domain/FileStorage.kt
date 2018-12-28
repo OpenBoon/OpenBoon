@@ -14,18 +14,16 @@ import java.util.*
  * @property variants Additional naming variants
  */
 class FileStorageSpec(
-        val category: String,
-        val name: String,
-        val type: String,
-        val variants: List<String>?=null,
-        var assetId: UUID?=null,
-        var jobId: UUID?=null,
-        var taskId: UUID?=null,
-        var create: Boolean=true
+        val parentType: String,
+        val parentId: String,
+        val name: String
 
 ) {
+
+    constructor(parentType: String, parentId: UUID, name: String) : this(parentType, parentId.toString(), name)
+
     override fun toString(): String {
-        return "FileStorageSpec(category='$category', name='$name', type='$type', variants=$variants)"
+        return "FileStorageSpec(parentType='$parentType', parentId='$parentId', name='$name')"
     }
 }
 

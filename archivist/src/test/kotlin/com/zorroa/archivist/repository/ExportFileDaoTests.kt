@@ -13,6 +13,7 @@ import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 import kotlin.test.assertEquals
 
 class ExportFileDaoTests : AbstractTest() {
@@ -38,8 +39,7 @@ class ExportFileDaoTests : AbstractTest() {
                 mutableMapOf("foo" to "bar"))
         export = exportService.create(espec, resolve = false)
 
-        val spec = FileStorageSpec("export", "foox", "bar",
-                jobId=export.id)
+        val spec = FileStorageSpec("job", export.id, "exported/foo.bar")
         val storage = fileStorageService.get(spec)
         exportFile = exportFileDao.create(export, storage.getServableFile(),
                 ExportFileSpec(storage.id, "foo.bar"))
@@ -57,9 +57,9 @@ class ExportFileDaoTests : AbstractTest() {
 
     @Test
     fun testGetAll() {
+        val id = UUID.randomUUID()
         for (i in 1 .. 10) {
-            val spec = FileStorageSpec("export", "foo$i", "bar",
-                    jobId=export.id)
+            val spec = FileStorageSpec("job", id, "exported/foo$i.bar")
             val storage = fileStorageService.get(spec)
             exportFileDao.create(export, storage.getServableFile(), ExportFileSpec(storage.id, "foo$i.bar"))
         }
