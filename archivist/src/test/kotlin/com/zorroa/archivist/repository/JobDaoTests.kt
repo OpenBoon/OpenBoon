@@ -9,6 +9,7 @@ import com.zorroa.common.domain.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -146,5 +147,33 @@ class JobDaoTests : AbstractTest() {
         jobs = jobDao.getAll(filter)
         assertEquals(10, jobs.size())
         assertEquals(10, jobs.page.totalCount)
+    }
+
+    @Test
+    fun testDelete() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+
+        val job = jobDao.create(spec, PipelineType.Import)
+        assertTrue(jobDao.delete(job))
+        assertFalse(jobDao.delete(job))
+
+    }
+    @Test
+    fun testGetExpired() {
+        assertTrue(jobDao.getExpired(1, TimeUnit.DAYS, 100).isEmpty())
+
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+
+        val job = jobDao.create(spec, PipelineType.Import)
+        assertTrue(jobDao.setState(job, JobState.Finished, null))
+        Thread.sleep(100)
+        assertTrue(jobDao.getExpired(101, TimeUnit.MILLISECONDS, 100).isNotEmpty())
+        assertTrue(jobDao.getExpired(1, TimeUnit.DAYS, 100).isEmpty())
     }
 }

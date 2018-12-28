@@ -2,8 +2,6 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.util.event
@@ -16,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 interface JobDao {
     fun create(spec: JobSpec, type: PipelineType): Job
@@ -25,6 +24,8 @@ interface JobDao {
     fun getAll(filt: JobFilter?): KPagedList<Job>
     fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean
     fun setTimeStarted(job: JobId): Boolean
+    fun getExpired(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
+    fun delete(job: JobId): Boolean
 }
 
 @Repository
@@ -58,7 +59,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps
         }
 
-        jdbc.update("INSERT INTO job_count (pk_job) VALUES (?)", id)
+        jdbc.update("INSERT INTO job_count (pk_job, time_updated) VALUES (?, ?)", id, time)
         jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", id)
 
         logger.event("create Job", mapOf("jobId" to id, "jobName" to spec.name))
@@ -69,6 +70,19 @@ class JobDaoImpl : AbstractDao(), JobDao {
     override fun update(job: JobId, update: JobUpdateSpec): Boolean {
         return jdbc.update("UPDATE job SET str_name=?, int_priority=? WHERE pk_job=?",
                 update.name, update.priority, job.jobId) == 1
+    }
+
+    override fun delete(job: JobId): Boolean {
+        val result = listOf(
+                "DELETE FROM export_file WHERE pk_job=?",
+                "DELETE FROM task_stat WHERE pk_job=?",
+                "DELETE FROM task_error WHERE pk_job=?",
+                "DELETE FROM task WHERE pk_job=?",
+                "DELETE FROM job_count WHERE pk_job=?",
+                "DELETE FROM job_stat WHERE pk_job=?",
+                "DELETE FROM job WHERE pk_job=?"
+        ).map { jdbc.update(it, job.jobId) }
+        return result.last() == 1
     }
 
     override fun get(id: UUID, forClient: Boolean): Job {
@@ -84,12 +98,17 @@ class JobDaoImpl : AbstractDao(), JobDao {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER_FOR_CLIENT, *values))
-
     }
 
     override fun setTimeStarted(job: JobId): Boolean {
         return jdbc.update("UPDATE job SET time_started=? WHERE pk_job=? AND time_started=-1",
                 System.currentTimeMillis(), job.jobId) == 1
+    }
+
+    override fun getExpired(duration: Long, unit: TimeUnit, limit: Int) : List<Job> {
+        val cutOff = System.currentTimeMillis() - unit.toMillis(duration)
+        return jdbc.query("$GET_EXPIRED LIMIT ?", MAPPER,
+                JobState.Cancelled.ordinal, JobState.Finished.ordinal, cutOff, limit)
     }
 
     override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
@@ -133,11 +152,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
     private fun count(filter: JobFilter): Long {
         val query = filter.getQuery(COUNT, true)
         return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
-    }
-
-    private fun setCount(filter: JobFilter) {
-        filter?.page?.totalCount = jdbc.queryForObject(filter.getCountQuery(COUNT),
-                Long::class.java, *filter.getValues(forCount = true))
     }
 
     private val MAPPER_FOR_CLIENT = RowMapper { rs, row ->
@@ -194,6 +208,14 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "INNER JOIN job_count ON job.pk_job=job_count.pk_job "
 
         private const val COUNT = "SELECT COUNT(1) FROM job"
+
+        private val GET_EXPIRED = "$GET " +
+                "WHERE " +
+                "job.pk_job = job_count.pk_job " +
+                "AND " +
+                "job.int_state IN (?,?) " +
+                "AND " +
+                "job_count.time_updated < ? "
 
         private const val INC_STATS = "UPDATE " +
                 "job_stat " +
