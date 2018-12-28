@@ -1,14 +1,13 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.google.cloud.storage.HttpMethod
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
-import com.zorroa.archivist.security.generateUserToken
-import com.zorroa.archivist.security.getAnalystEndpoint
-import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.*
 import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
@@ -19,6 +18,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
@@ -75,8 +75,12 @@ class DispatcherServiceImpl @Autowired constructor(
                     if (properties.getBoolean("archivist.debug-mode.enabled")) {
                         task.env["ZORROA_DEBUG_MODE"] = "true"
                     }
-                    val fs = fileStorageService.get(task.getLogSpec())
-                    task.logFile = fs.getServableFile().getSignedUrl().toString()
+                    withAuth(SuperAdminAuthentication(task.organizationId)) {
+                        val fs = fileStorageService.get(task.getLogSpec())
+                        val logFile = fileStorageService.getSignedUrl(
+                                fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
+                        task.logFile = logFile
+                    }
                     // Set the time started on the job if its not set already.
                     jobDao.setTimeStarted(task)
 
