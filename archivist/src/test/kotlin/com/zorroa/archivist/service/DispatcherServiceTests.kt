@@ -1,22 +1,59 @@
 package com.zorroa.archivist.service
 
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.LockState
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.TestPropertySource
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+
+@TestPropertySource(locations=["classpath:gcs-test.properties"])
+class GCPDispatcherServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var dispatcherService: DispatcherService
+
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
+
+    @Test
+    fun testGetNext() {
+
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        jobService.create(spec)
+
+        val storage = FileStorage(
+                "foo", "gs://foo/bar/bing.jpg", "fs", "image/jpeg", fileServerProvider)
+
+        whenever(fileStorageService.get(zany(FileStorageSpec::class.java))).thenReturn(storage)
+        whenever(fileStorageService.getSignedUrl(zany(), zany(), anyLong(), zany())).thenReturn("https://foo/bar")
+
+        authenticateAsAnalyst()
+        val next = dispatcherService.getNext()
+        assertNotNull(next)
+        assertEquals(next?.logFile, "https://foo/bar")
+    }
+}
 
 class DispatcherServiceTests : AbstractTest() {
 
