@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 interface JobService {
     fun create(spec: JobSpec) : Job
@@ -36,6 +37,8 @@ interface JobService {
     fun getTaskErrors(filter: TaskErrorFilter) : KPagedList<TaskError>
     fun deleteTaskError(id: UUID): Boolean
     fun getTaskLog(id: UUID) : ServableFile
+    fun deleteJob(job: JobId) : Boolean
+    fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
 }
 
 @Service
@@ -118,6 +121,15 @@ class JobServiceImpl @Autowired constructor(
 
     override fun updateJob(job: Job, spec: JobUpdateSpec) : Boolean {
         return jobDao.update(job, spec)
+    }
+
+    override fun deleteJob(job: JobId) : Boolean {
+        return jobDao.delete(job)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int) : List<Job> {
+        return jobDao.getExpired(duration, unit, limit)
     }
 
     @Transactional(readOnly = true)
