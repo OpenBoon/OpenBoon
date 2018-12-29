@@ -3,6 +3,8 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.AbstractTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -14,10 +16,11 @@ class ClusterLockDaoTests : AbstractTest() {
     lateinit var clusterLockDao: ClusterLockDao
 
     @Test
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun testLock() {
         assertTrue(clusterLockDao.lock("foo", 1, TimeUnit.MINUTES))
         assertFalse(clusterLockDao.lock("foo", 1, TimeUnit.MINUTES))
-        assertEquals(0, clusterLockDao.clearExpired())
+        // Can't have calls to JDBC after this, TX is dead.
     }
 
     @Test
