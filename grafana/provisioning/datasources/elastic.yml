@@ -1,0 +1,15 @@
+apiVersion: 1
+
+datasources:
+  - name: "Archivist Metrics"
+    type: elasticsearch
+    isDefault: true
+    readOnly: true
+    access: proxy
+    database: "[metrics-]YYYY-MM"
+    url: http://es:9200
+    jsonData:
+      esVersion: 60
+      maxConcurrentShardRequests: 256
+      interval: Monthly
+      timeField: "@timestamp"

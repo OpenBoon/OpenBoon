@@ -32,6 +32,22 @@ services:
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
+  # Grafana server connected to elasticsearch instance
+  grafana:
+    links:
+       - "es"
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_DEFAULT_THEME: dark
+      # GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+    volumes:
+      - "./grafana/provisioning:/etc/grafana/provisioning"
+      - "./grafana/dashboards:/var/lib/grafana/dashboards"
+
   # Postgres instance used for local development servers.
   postgres:
     image: "postgres:9.6.9"
@@ -79,4 +95,3 @@ services:
          NODE_ENV: "production"
          ARCHIVIST_API_URL: "http://archivist:8080"
          CURATOR_PORT_SECURE: "8443"
-
