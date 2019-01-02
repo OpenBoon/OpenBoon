@@ -20,12 +20,13 @@ interface JobDao {
     fun create(spec: JobSpec, type: PipelineType): Job
     fun update(job: JobId, update: JobUpdateSpec): Boolean
     fun get(id: UUID, forClient:Boolean=false): Job
-    fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean
+    fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean
     fun getAll(filt: JobFilter?): KPagedList<Job>
     fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean
     fun setTimeStarted(job: JobId): Boolean
     fun getExpired(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
     fun delete(job: JobId): Boolean
+    fun hasPendingFrames(job: JobId) : Boolean
 }
 
 @Repository
@@ -111,22 +112,26 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 JobState.Cancelled.ordinal, JobState.Finished.ordinal, cutOff, limit)
     }
 
-    override fun setState(job: Job, newState: JobState, oldState: JobState?): Boolean {
+    override fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean {
         val time = System.currentTimeMillis()
         val result =  if (oldState != null) {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=? AND int_state=?",
-                    newState.ordinal, time, job.id, oldState.ordinal) == 1
+                    newState.ordinal, time, job.jobId, oldState.ordinal) == 1
         } else {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=?",
-                    newState.ordinal, time, job.id) == 1
+                    newState.ordinal, time, job.jobId) == 1
         }
         logger.event("update Job",
-                mapOf("jobId" to job.id,
+                mapOf("jobId" to job.jobId,
                         "newState" to newState.name,
                         "oldState" to oldState?.name,
                         "status" to result))
         return result
 
+    }
+
+    override fun hasPendingFrames(job: JobId) : Boolean {
+        return jdbc.queryForObject(HAS_PENDING, Int::class.java, JobState.Active.ordinal, job.jobId) == 1
     }
 
     override fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean {
@@ -243,6 +248,19 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "json_args",
                 "json_env",
                 "int_priority")
+
+        private const val HAS_PENDING = "SELECT " +
+                "COUNT(1) " +
+                "FROM " +
+                    "job, job_count " +
+                "WHERE " +
+                    "job.pk_job = job_count.pk_job " +
+                "AND " +
+                    "job_count.int_task_state_4 + job_count.int_task_state_2 != job_count.int_task_total_count " +
+                "AND " +
+                    "job.int_state = ? " +
+                "AND " +
+                    "job.pk_job = ?"
     }
 }
 

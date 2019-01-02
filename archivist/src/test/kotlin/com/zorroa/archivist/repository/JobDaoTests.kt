@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +20,9 @@ class JobDaoTests : AbstractTest() {
 
     @Autowired
     internal lateinit var jobDao: JobDao
+
+    @Autowired
+    internal lateinit var jobService: JobService
 
     @Test
     fun testCreate() {
@@ -161,6 +165,21 @@ class JobDaoTests : AbstractTest() {
         assertFalse(jobDao.delete(job))
 
     }
+
+    @Test
+    fun testHasPendingFrames() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+
+        TaskState.Skipped
+        val job = jobService.create(spec, PipelineType.Import)
+        assertTrue(jobDao.hasPendingFrames(job))
+        jdbc.update("UPDATE job_count SET int_task_state_0=0, int_task_state_4=1")
+        assertFalse(jobDao.hasPendingFrames(job))
+    }
+
     @Test
     fun testGetExpired() {
         assertTrue(jobDao.getExpired(1, TimeUnit.DAYS, 100).isEmpty())
