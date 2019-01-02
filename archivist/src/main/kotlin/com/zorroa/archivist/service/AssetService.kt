@@ -571,14 +571,13 @@ open abstract class AbstractAssetService : AssetService {
                 }
             }
 
-            req.search?.let {
+            if (!req.parentIds.isNullOrEmpty() && req.search != null) {
+
                 val search = req.search
                 search.addToFilter().must = mutableListOf(AssetFilter()
                         .addToTerms("media.clip.parentId", req.parentIds))
 
-                logger.info(Json.prettyString(search))
-
-                searchService.scanAndScroll(search, false) { hits->
+                searchService.scanAndScroll(search, false) { hits ->
                     launch {
                         withAuth(auth) {
                             val ids = hits.hits.map { hit -> hit.id }
