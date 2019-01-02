@@ -221,4 +221,12 @@ class LocalFileStorageServiceTests : AbstractTest() {
         assertEquals("image/jpeg", fs.mediaType)
         assertEquals("file", fs.scheme)
     }
+
+    @Test
+    fun testWrite() {
+        val spec = FileStorageSpec("asset", UUID.randomUUID(), "foo.jpg")
+        val fs = fileStorage.get(spec)
+        fileStorage.write(fs.id, "Foo".toByteArray())
+        assertTrue(Files.exists(Paths.get(fs.uri)))
+    }
 }

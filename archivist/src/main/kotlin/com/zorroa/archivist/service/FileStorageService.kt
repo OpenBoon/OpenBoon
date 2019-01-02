@@ -3,8 +3,6 @@ package com.zorroa.archivist.service
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.*
 import com.google.cloud.storage.Storage.SignUrlOption
-import com.google.common.base.Preconditions
-import com.google.rpc.PreconditionFailure
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
@@ -12,19 +10,18 @@ import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.archivist.util.event
-import com.zorroa.common.domain.Task
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.FileInputStream
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
 import java.util.concurrent.TimeUnit
 
+/**
+ * The allowed parent types for file storage.
+ */
 private val allowedParentTypes = setOf(
         "asset",
         "folder",
@@ -168,6 +165,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
     override fun write(id: String, input: ByteArray) {
         val uri = URI(dlp.buildUri(id))
         val blobId = BlobId.of(bucket, uri.path.substring(1))
+        logger.event("write FileStorage", mapOf("uri" to uri))
         gcs.create(BlobInfo.newBuilder(blobId).build(), input)
     }
 
@@ -214,9 +212,10 @@ class LocalFileStorageService constructor(
     }
 
     override fun write(id: String, input: ByteArray) {
-        val uri = Paths.get(dlp.buildUri(id))
-        val parent = uri.toFile().parentFile
-        parent.mkdirs()
+        val uri = Paths.get(URI(dlp.buildUri(id)))
+        val parent = uri.parent
+        Files.createDirectories(parent)
+        logger.event("write FileStorage", mapOf("uri" to uri))
         Files.write(uri, input)
     }
 
