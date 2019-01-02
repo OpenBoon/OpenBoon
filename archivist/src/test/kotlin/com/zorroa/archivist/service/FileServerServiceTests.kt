@@ -19,13 +19,15 @@ class GcpFileServerServiceTests : AbstractTest() {
     val bucketName = "zorroa-evi-dev-integration-tests"
     lateinit var fileStorage: GcsFileStorageService
 
-    val fileServer = GcpFileServerService(Paths.get("unittest/config/data-credentials.json"))
-
+    /**
+     * For this tests we use our own evi dev creds.
+     */
+    val creds = Paths.get("unittest/config/zorroa-credentials.json")
+    val fileServer = GcpFileServerService(creds)
 
     @Before
     fun init() {
-        fileStorage = GcsFileStorageService(bucketName,
-                Paths.get("unittest/config/data-credentials.json"))
+        fileStorage = GcsFileStorageService(bucketName, creds)
         fileStorage.fileServerProvider = fileServerProvider
     }
 

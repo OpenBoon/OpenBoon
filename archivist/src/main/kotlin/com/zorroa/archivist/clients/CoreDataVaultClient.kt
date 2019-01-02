@@ -1,13 +1,21 @@
 package com.zorroa.common.clients
 
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.security.getUserOrNull
+import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
+import java.io.FileInputStream import java.net.URI
+import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 
@@ -124,14 +132,35 @@ interface CoreDataVaultClient {
      * @return a boolean result, true if deleted.
      */
     fun delete(companyId: Int, assetId: String): Boolean
+
+    /**
+     * Upload the source media to the given URI
+     *
+     * @param uri: the file upload url returned from the call to create the asset.
+     * @param bytes: the array of bytes representing the file.
+     */
+    fun uploadSource(uri: URI, bytes: ByteArray)
+
 }
 
-class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : CoreDataVaultClient {
+class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, dataKey: Path) : CoreDataVaultClient {
 
     override val client = RestClient(url, GcpJwtSigner(serviceKey))
 
+    private val gcs: Storage
+
     init {
+        gcs = if (Files.exists(dataKey)) {
+            StorageOptions.newBuilder()
+                    .setCredentials(
+                            GoogleCredentials.fromStream(FileInputStream(dataKey.toFile()))).build().service
+        }
+        else {
+            StorageOptions.newBuilder().build().service
+        }
+
         logger.info("Initialized CDV REST client $url")
+
     }
 
     override fun assetExists(companyId: Int, assetId: String) : Boolean {
@@ -229,6 +258,12 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path) : Co
         return result["data"] as List<Map<String, Any>>
     }
 
+    override fun uploadSource(uri: URI, bytes: ByteArray) {
+        val (bucket, path) = uri.path.substring(1).split('/', limit=2)
+        val blobId = BlobId.of(bucket, path)
+        logger.event("uploadSource CDV", mapOf("uri" to uri))
+        gcs.create(BlobInfo.newBuilder(blobId).build(), bytes)
+    }
 
     private inline fun getRequestHeaders() : Map<String, String>? {
         getUserOrNull()?.let {

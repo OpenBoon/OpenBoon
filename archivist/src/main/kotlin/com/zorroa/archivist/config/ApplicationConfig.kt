@@ -153,7 +153,9 @@ class ArchivistConfiguration {
         if (props.getString("archivist.pubsub.type") == "gcp") {
             val network = networkEnvironment()
             return GcpPubSubServiceImpl(IrmCoreDataVaultClientImpl(
-                    network.getPublicUrl("core-data-vault-api"), serviceCredentials()))
+                    network.getPublicUrl("core-data-vault-api"),
+                    serviceCredentials(),
+                    dataCredentials()))
         }
         logger.info("No PubSub service configured")
         return null
@@ -167,7 +169,10 @@ class ArchivistConfiguration {
         return when(type) {
             "irm"-> {
                 IrmAssetServiceImpl(
-                    IrmCoreDataVaultClientImpl(network.getPublicUrl("core-data-vault-api"), serviceCredentials()))
+                    IrmCoreDataVaultClientImpl(
+                            network.getPublicUrl("core-data-vault-api"),
+                            serviceCredentials(),
+                            dataCredentials()))
             }
             else->AssetServiceImpl()
         }

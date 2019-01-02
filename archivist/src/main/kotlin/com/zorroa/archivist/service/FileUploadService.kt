@@ -11,15 +11,14 @@ import java.util.*
 
 interface FileUploadService {
     fun ingest(spec: FileUploadSpec, files: Array<MultipartFile>): Job
-
-
 }
 
 @Component
 class FileUploadServiceImpl @Autowired constructor(
         val fileStorageService: FileStorageService,
         val jobService: JobService,
-        val pipelineService: PipelineService
+        val pipelineService: PipelineService,
+        val assetService: AssetService
 
 ) : FileUploadService {
 
@@ -33,12 +32,9 @@ class FileUploadServiceImpl @Autowired constructor(
          */
         val filePaths = files.mapNotNull { file ->
             if (file.originalFilename != null) {
-                // TODO: check original file name for badness.
-                val id = UUID.randomUUID()
-                val fss =  fileStorageService.get(
-                        FileStorageSpec("asset", id, file.originalFilename as String))
-                fileStorageService.write(fss.id, file.bytes)
-                mapOf("id" to id.toString(), "path" to fss.uri)
+                val rsp = assetService.handleAssetUpload(
+                        file.originalFilename as String, file.bytes)
+                mapOf("id" to rsp.assetId.toString(), "path" to rsp.uri.toURL())
             }
             else {
                 null
