@@ -58,7 +58,7 @@ services:
       - "./archivist/target:/service"
       - "../zorroa-test-data:/zorroa-test-data"
 
-  # Local Archivist server.
+  # Local Analyst server.
   analyst:
     build: ../zorroa-plugin-sdk
     links:
