@@ -150,16 +150,16 @@ class GcsFileStorageServiceTests : AbstractTest() {
     @Test
     fun testGetId() {
         val pid = UUID.randomUUID()
-        val spec = FileStorageSpec("proxy", pid, "foo_bar.jpg")
+        val spec = FileStorageSpec("asset", pid, "foo_bar.jpg")
         val id = fileStorage.dlp.buildId(spec)
         println(id)
-        assertTrue(id.startsWith("proxy_"))
+        assertTrue(id.startsWith("asset_"))
         assertTrue(id.endsWith("_foo_bar.jpg"))
     }
 
     @Test
     fun testSignUrl() {
-        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")
         val id = fileStorage.dlp.buildId(spec)
         println(fileStorage.getSignedUrl(id, HttpMethod.PUT))
     }
@@ -167,14 +167,14 @@ class GcsFileStorageServiceTests : AbstractTest() {
     @Test
     fun testGetGetBySpec() {
         val pid = UUID.randomUUID()
-        val spec = FileStorageSpec("proxy", pid, "foo_bar.jpg")
+        val spec = FileStorageSpec("asset", pid, "foo_bar.jpg")
         val storage = fileStorage.get(spec)
         assertEquals(storage.mediaType, "image/jpeg")
     }
 
     @Test
     fun testGetGetById() {
-        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")
         val storage1 = fileStorage.get(spec)
         val storage2 = fileStorage.get(storage1.id)
         assertEquals(storage1.uri, storage2.uri)
@@ -199,25 +199,25 @@ class LocalFileStorageServiceTests : AbstractTest() {
     @Test
     fun testCreateWithDirectory() {
         val pid = UUID.randomUUID()
-        val spec = FileStorageSpec("proxy", pid, "thing/abc123.jpg")
+        val spec = FileStorageSpec("asset", pid, "thing/abc123.jpg")
         val fs = fileStorage.get(spec)
 
-        assertTrue(FileUtils.filename(fs.uri).endsWith("abc123.jpg"))
+        assertTrue(FileUtils.filename(fs.uri.toString()).endsWith("abc123.jpg"))
         assertEquals("image/jpeg", fs.mediaType)
     }
 
     @Test
     fun testGetById() {
-        val spec = FileStorageSpec("proxy", UUID.randomUUID(), "jpg")
+        val spec = FileStorageSpec("asset", UUID.randomUUID(), "jpg")
         val fs = fileStorage.get(spec)
         println(fs.id)
     }
 
     @Test
     fun testCreate() {
-        val spec = FileStorageSpec("proxy", UUID.randomUUID(), "foo.jpg")
+        val spec = FileStorageSpec("asset", UUID.randomUUID(), "foo.jpg")
         val fs = fileStorage.get(spec)
-        assertTrue(FileUtils.filename(fs.uri).endsWith(".jpg"))
+        assertTrue(FileUtils.filename(fs.uri.toString()).endsWith(".jpg"))
         assertEquals("image/jpeg", fs.mediaType)
         assertEquals("file", fs.scheme)
     }

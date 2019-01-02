@@ -2,14 +2,13 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.event
-import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
@@ -20,7 +19,6 @@ import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
-import java.net.URI
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -38,7 +36,7 @@ class AssetController @Autowired constructor(
         private val fieldService: FieldService,
         private val fileServerProvider: FileServerProvider,
         private val fileStorageService: FileStorageService,
-        private val meterRegistry: MeterRegistry
+        meterRegistry: MeterRegistry
 ){
 
     private val proxyLookupCache = CacheBuilder.newBuilder()
@@ -76,7 +74,7 @@ class AssetController @Autowired constructor(
         if (forceProxy) {
             val proxy = getProxyStream(asset)
              if (proxy != null) {
-                 return fileServerProvider.getServableFile(URI(proxy.uri))
+                 return fileServerProvider.getServableFile(proxy.uri)
              }
 
         } else  {

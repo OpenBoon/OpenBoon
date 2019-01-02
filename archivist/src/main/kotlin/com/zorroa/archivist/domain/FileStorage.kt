@@ -3,15 +3,15 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.ServableFile
+import java.net.URI
 import java.util.*
 
 /**
  * The attributes needed to register storage.
  *
- * @property category The name of the file category
- * @property name A globally unique name for the file.
- * @property type The file type
- * @property variants Additional naming variants
+ * @property parentType The parent type the file is associated with.
+ * @property parentId The parent ID the file is associated with.
+ * @property name A name for the file.
  */
 class FileStorageSpec(
         val parentType: String,
@@ -37,11 +37,15 @@ class FileStorageSpec(
  */
 class FileStorage(
         val id: String,
-        val uri: String,
+        val uri: URI,
         val scheme: String,
         val mediaType: String,
         @JsonIgnore val fileServerProvider: FileServerProvider
 ) {
+
+    constructor(id: String, uri: String, scheme: String, mediaType: String, fileServerProvider: FileServerProvider) :
+            this(id, URI(uri), scheme, mediaType, fileServerProvider)
+
     override fun toString(): String {
         return "FileStorage(uri='$uri', id='$id', scheme='$scheme', mimeType='$mediaType')"
     }
