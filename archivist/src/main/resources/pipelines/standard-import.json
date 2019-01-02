@@ -1,0 +1,19 @@
+{
+  "name": "standard-import",
+  "type": "Import",
+  "description": "The standard import pipeline",
+  "processors": [
+    {
+      "className": "zplugins.image.ImageIngestor"
+    },
+    {
+      "className": "zplugins.video.processors.VideoIngestor"
+    },
+    {
+      "className": "zplugins.office.processors.OfficeIngestor"
+    },
+    {
+      "className": "zplugins.proxies.ProxyIngestor"
+    }
+  ]
+}
