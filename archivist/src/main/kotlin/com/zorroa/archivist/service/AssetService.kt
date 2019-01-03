@@ -575,7 +575,9 @@ open abstract class AbstractAssetService : AssetService {
 
                 val search = req.search
                 search.addToFilter().must = mutableListOf(AssetFilter()
-                        .addToTerms("media.clip.parentId", req.parentIds))
+                        .addToTerms("media.clip.parent", req.parentIds))
+
+                logger.info(Json.prettyString(search))
 
                 searchService.scanAndScroll(search, false) { hits ->
                     launch {
@@ -589,6 +591,7 @@ open abstract class AbstractAssetService : AssetService {
                                     null
                                 }
                             }
+                            logger.info("updating docs with links: {}", docs.size)
                             val update = batchUpdate(docs, reindex = true, taxons = false)
                             if (update.erroredAssetIds.isNotEmpty()) {
                                 errorAssetIds.addAll(update.erroredAssetIds)

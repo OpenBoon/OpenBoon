@@ -145,7 +145,7 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testAddChildLinks() {
         val page = searchService.search(Pager.first(), AssetSearch())
-        assetService.update(page[0].id, mapOf("media.clip.parentId" to page[1].id))
+        assetService.update(page[0].id, mapOf("media.clip.parent" to page[1].id))
         refreshIndex()
 
         val folderId = UUID.randomUUID()
