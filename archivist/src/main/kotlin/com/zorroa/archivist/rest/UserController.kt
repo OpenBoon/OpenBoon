@@ -140,11 +140,14 @@ class UserController @Autowired constructor(
 
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/users"])
-    fun create(@Valid @RequestBody builder: UserSpec, bindingResult: BindingResult): User {
-        if (bindingResult.hasErrors()) {
-            throw RuntimeException("Failed to add user")
-        }
+    fun create(@RequestBody builder: UserSpec): User {
         return userService.create(builder)
+    }
+
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PostMapping(value = ["/api/v2/users"])
+    fun createV2(@RequestBody spec: LocalUserSpec): User {
+        return userService.create(spec)
     }
 
     @RequestMapping(value = ["/api/v1/users/{id}"])

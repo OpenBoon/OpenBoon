@@ -92,17 +92,40 @@ class UserProfileUpdate (
         var lastName: String? = "")
 
 
+/**
+ * LocalUserSpec is a new version of the UserSpec for the v2 create
+ * user endpoint.  It accepts a organizationId but only pays attention to it
+ * if the user is a super admin.
+ *
+ * This spec also enforces the username as the email address.
+ *
+ * @property email - the email address of the user
+ * @property password - a password for the user.
+ * @property name - A name for the user
+ * @property organizationId - An optional organization ID
+ * @property permissionIds - An optional set of permissions.
+ */
+class LocalUserSpec (
+        val email: String,
+        val password: String,
+        val name: String,
+        var organizationId: UUID? = null,
+        var permissionIds: List<UUID>? = null
+)
+
 class UserSpec (
         val username: String,
         val password: String,
         val email: String,
         var source : String = "local",
-        var organizationId: UUID? = null,
         var firstName: String? = null,
         var lastName: String? = null,
         var permissionIds: List<UUID>? = null,
+        @JsonIgnore
         var homeFolderId: UUID? = null,
+        @JsonIgnore
         var userPermissionId: UUID? = null,
+        @JsonIgnore
         var authAttrs :Map<String,String>? =  null) {
 
     fun hashedPassword(): String {
