@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import org.springframework.session.web.http.SessionRepositoryFilter
 import java.io.IOException
 import java.util.*
 import javax.servlet.FilterChain
@@ -45,7 +44,6 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
         val claims = validator.validate(token.replace(TOKEN_PREFIX, ""))
         SecurityContextHolder.getContext().authentication = JwtAuthenticationToken(claims)
         req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
-        req.setAttribute(SessionRepositoryFilter::class.java.name.plus(".FILTERED"), "true")
         chain.doFilter(req, res)
     }
 }
