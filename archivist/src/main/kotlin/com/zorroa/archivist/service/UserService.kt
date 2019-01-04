@@ -14,9 +14,13 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.security.Groups
+import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -41,7 +45,9 @@ interface UserService {
 
     fun getCount(): Long
 
-    fun create(builder: UserSpec): User
+    fun create(spec: UserSpec): User
+
+    fun create(spec: LocalUserSpec): User
 
     fun get(username: String): User
 
@@ -271,7 +277,6 @@ class UserServiceImpl @Autowired constructor(
                 UUID.randomUUID().toString(),
                 "$username@zorroa.com",
                 UserSource.INTERNAL,
-                org.id,
                 "Batch",
                 "Job")
 
@@ -284,37 +289,66 @@ class UserServiceImpl @Autowired constructor(
         userDao.addPermission(batchUser, permissionDao.get(Groups.WRITE), true)
     }
 
-    override fun create(builder: UserSpec): User {
-
-        if (builder.source == null) {
-            builder.source = UserSource.LOCAL
+    override fun create(spec: LocalUserSpec): User {
+        if (!EmailValidator().isValid(spec.email, null)) {
+            throw java.lang.IllegalArgumentException("Invalid email address: ${spec.email}")
         }
 
-        if (builder.username.length < MIN_USERNAME_SIZE) {
+        val name = spec.name.split(Regex("\\s+"), limit=2)
+        val orgId = if (hasPermission(Groups.SUPERADMIN)) {
+            spec.organizationId ?: getOrgId()
+        }
+        else {
+            getOrgId()
+        }
+
+        return withAuth(SuperAdminAuthentication(orgId)) {
+            create(UserSpec(
+                    spec.email,
+                    spec.password,
+                    spec.email,
+                    UserSource.LOCAL,
+                    name.first(),
+                    if (name.size == 1) {
+                        ""
+                    } else {
+                        name.last()
+                    },
+                    spec.permissionIds))
+        }
+    }
+
+    override fun create(spec: UserSpec): User {
+
+        if (spec.source == null) {
+            spec.source = UserSource.LOCAL
+        }
+
+        if (spec.username.length < MIN_USERNAME_SIZE) {
             throw IllegalArgumentException("User names must be at least $MIN_USERNAME_SIZE characters")
         }
 
-        if (userDao.exists(builder.username, null)) {
+        if (userDao.exists(spec.username, null)) {
             throw DuplicateEntityException("The user '" +
-                    builder.username + "' already exists.")
+                    spec.username + "' already exists.")
         }
 
         val userPerm = permissionDao.create(
-                PermissionSpec("user", builder.username), true)
+                PermissionSpec("user", spec.username), true)
         val userFolder = folderService.createUserFolder(
-                builder.username, userPerm)
+                spec.username, userPerm)
 
 
-        builder.homeFolderId = userFolder.id
-        builder.userPermissionId = userPerm.id
+        spec.homeFolderId = userFolder.id
+        spec.userPermissionId = userPerm.id
 
-        val user = userDao.create(builder)
+        val user = userDao.create(spec)
 
         /*
          * Get the permissions specified with the builder and add our
          * user permission to the list.
          */
-        val perms = Sets.newHashSet(permissionDao.getAll(builder.permissionIds))
+        val perms = permissionDao.getAll(spec.permissionIds).toSet()
         if (!perms.isEmpty()) {
             setPermissions(user, perms)
         }

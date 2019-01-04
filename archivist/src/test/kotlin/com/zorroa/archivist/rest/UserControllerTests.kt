@@ -3,10 +3,7 @@ package com.zorroa.archivist.rest
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
-import com.zorroa.archivist.domain.Permission
-import com.zorroa.archivist.domain.User
-import com.zorroa.archivist.domain.UserProfileUpdate
-import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
@@ -61,6 +58,31 @@ class UserControllerTests : MockMvcTest() {
                 .andReturn()
         val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
         assertNotEquals(currentKey.key, content["key"])
+    }
+
+
+    @Test
+    fun testCreateV2() {
+        val session = admin()
+        val currentKey = userService.getApiKey(userService.get("admin"))
+
+        val spec = LocalUserSpec(
+                "bilbo@baggins.com",
+                "passw123",
+                "Bilbo Baggins")
+
+        val result = mvc.perform(post("/api/v2/users")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals(spec.email, content["username"])
+        assertEquals(spec.email, content["email"])
+        assertEquals("Bilbo", content["firstName"])
+        assertEquals("Baggins", content["lastName"])
     }
 
     @Test
