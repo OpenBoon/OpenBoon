@@ -136,8 +136,22 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.addLinks(LinkType.Folder, folderId, ids).success.size)
-        assertEquals(2, assetService.addLinks(LinkType.Folder, folderId, ids).missing.size)
+        assertEquals(2, assetService.addLinks(
+                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).successCount)
+        assertEquals(0, assetService.addLinks(
+                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).erroredAssetIds.size)
+    }
+
+    @Test
+    fun testAddChildLinks() {
+        val page = searchService.search(Pager.first(), AssetSearch())
+        assetService.update(page[0].id, mapOf("media.clip.parent" to page[1].id))
+        refreshIndex()
+
+        val folderId = UUID.randomUUID()
+        assertEquals(1,
+                assetService.addLinks(LinkType.Folder, folderId,
+                        BatchUpdateAssetLinks(null, listOf(page[1].id), AssetSearch())).successCount)
     }
 
     @Test
@@ -145,9 +159,10 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.addLinks(LinkType.Folder, folderId, ids).success.size)
-        assertEquals(2, assetService.removeLinks(LinkType.Folder, folderId, ids).success.size)
-        assertEquals(0, assetService.removeLinks(LinkType.Folder, folderId, ids).success.size)
+        assertEquals(2, assetService.addLinks(
+                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).successCount)
+        assertEquals(2, assetService.removeLinks(LinkType.Folder, folderId, ids).successCount)
+        assertEquals(0, assetService.removeLinks(LinkType.Folder, folderId, ids).successCount)
     }
 
     @Test
