@@ -21,10 +21,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.context.SecurityContextHolderStrategy
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
@@ -62,6 +61,7 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
+                    .antMatcher("/api/**/login")
                     .antMatcher("/api/**/login")
                     .authorizeRequests()
                     .anyRequest().authenticated()
@@ -148,11 +148,11 @@ class MultipleWebSecurityConfig {
             http
                     .antMatcher("/cluster/**")
                     .addFilterBefore(analystAuthenticationFilter, CsrfFilter::class.java)
-                    .sessionManagement().disable()
                     .csrf().disable()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
                     .authorizeRequests()
                     .anyRequest().hasAuthority("ANALYST")
-
         }
     }
 
@@ -161,10 +161,14 @@ class MultipleWebSecurityConfig {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
 
+        @Autowired
+        internal lateinit var jwtAuthorizationFilter : JWTAuthorizationFilter
+
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/actuator/**")
+                    .addFilterBefore(jwtAuthorizationFilter, CsrfFilter::class.java)
                     .authorizeRequests()
                     .requestMatchers(EndpointRequest.to("metrics")).hasAuthority(Groups.SUPERADMIN)
                     .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
@@ -177,6 +181,7 @@ class MultipleWebSecurityConfig {
     fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService) {
 
         auth
+                .authenticationProvider(jwtAuthenticationProvider())
                 .authenticationProvider(zorroaAuthenticationProvider())
                 .authenticationEventPublisher(authenticationEventPublisher(userService))
 
@@ -220,6 +225,14 @@ class MultipleWebSecurityConfig {
     @Bean
     fun zorroaAuthenticationProvider(): ZorroaAuthenticationProvider {
         return ZorroaAuthenticationProvider()
+    }
+
+    /**
+     * An AuthenticationProvider that handles previously validated JWT claims.
+     */
+    @Bean
+    fun jwtAuthenticationProvider(): JwtAuthenticationProvider {
+        return JwtAuthenticationProvider()
     }
 
     companion object {
