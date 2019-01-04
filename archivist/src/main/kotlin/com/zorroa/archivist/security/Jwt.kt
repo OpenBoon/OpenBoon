@@ -4,7 +4,9 @@ import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
@@ -21,8 +23,6 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
     @Autowired
     private lateinit var validator: JwtValidator
 
-    @Autowired
-    private lateinit var userRegistryService: UserRegistryService
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(req: HttpServletRequest,
@@ -35,18 +35,56 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
             chain.doFilter(req, res)
             return
         }
-
-        val authentication = getAuthentication(token.replace(TOKEN_PREFIX, ""))
-        SecurityContextHolder.getContext().authentication = authentication
+        /**
+         * Validate the JWT claims. Asumming they are valid, create a JwtAuthenticationToken which
+         * will be converted into a proper UsernamePasswordAuthenticationToken by the JwtAuthenticationProvider
+         *
+         * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
+         */
+        val claims = validator.validate(token.replace(TOKEN_PREFIX, ""))
+        SecurityContextHolder.getContext().authentication = JwtAuthenticationToken(claims)
         req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
         chain.doFilter(req, res)
     }
+}
 
-    private fun getAuthentication(token: String): Authentication? {
-        val claims = validator.validate(token)
-        val userId = claims.getValue("userId")
+/**
+ * JwtAuthenticationToken stores the validated claims
+ */
+class JwtAuthenticationToken constructor(
+        claims: Map<String, String>
+) : AbstractAuthenticationToken(listOf()) {
 
-        val user = userRegistryService.getUser(UUID.fromString(userId))
+    val userId = claims.getValue("userId")
+
+    override fun getCredentials(): Any {
+        return userId
+    }
+
+    override fun getPrincipal(): Any {
+       return userId
+    }
+
+    override fun isAuthenticated(): Boolean = false
+}
+
+/**
+ * An AuthenticationProvider that specifically looks for JwtAuthenticationToken.  Pulls
+ * the userId from the JwtAuthenticationToken and returns a UsernamePasswordAuthenticationToken.
+ */
+class JwtAuthenticationProvider: AuthenticationProvider {
+
+    @Autowired
+    private lateinit var userRegistryService: UserRegistryService
+
+    override fun authenticate(auth: Authentication): Authentication {
+        val token = auth as JwtAuthenticationToken
+        val user = userRegistryService.getUser(UUID.fromString(token.userId))
         return UsernamePasswordAuthenticationToken(user, "", user.authorities)
     }
+
+    override fun supports(cls: Class<*>): Boolean {
+        return cls == JwtAuthenticationToken::class.java
+    }
 }
+
