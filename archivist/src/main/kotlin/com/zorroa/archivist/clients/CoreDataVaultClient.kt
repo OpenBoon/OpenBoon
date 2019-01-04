@@ -14,7 +14,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
-import java.io.FileInputStream import java.net.URI
+import java.io.FileInputStream
+import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
