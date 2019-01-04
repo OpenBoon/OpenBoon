@@ -20,6 +20,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
+import java.net.URI
 import java.util.*
 import java.util.concurrent.atomic.LongAdder
 
@@ -44,6 +45,7 @@ interface AssetService {
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
+    fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse
 }
 
 /**
@@ -626,7 +628,8 @@ open abstract class AbstractAssetService : AssetService {
  * IrmAssetServiceImpl is a higher level wrapper around the CoreDataVaultClient. Authentication
  * is required.
  */
-class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
+class IrmAssetServiceImpl constructor(
+        private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
 
     @Autowired
     lateinit var organizationService: OrganizationService
@@ -672,23 +675,9 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
         val prepped = prepAssets(spec)
         val parentsOnly = prepped.assets.filter { !it.attrExists("media.clip.parent") }
-        val types = cdvClient.getDocumentTypes(getCompanyId())
-
-        /**
-         * If there is an upload then register with the CDV, then replace the ID
-         */
-        if (spec.isUpload) {
-            for (parent in parentsOnly) {
-                val id = parent.id
-                cdvClient.createAsset(getCompanyId(),
-                        CoreDataVaultAssetSpec(parent.getAttr("source.path", String::class.java),
-                                id, types[0]["documentTypeId"] as String))
-            }
-        }
 
         // Only parents go into the CDV
         val result = cdvClient.batchUpdateIndexedMetadata(getCompanyId(), parentsOnly)
-
         return indexAssets(spec, prepped, result)
     }
 
@@ -799,6 +788,16 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         }
         return cdvClient.assetExists(getCompanyId(), doc.getAttr("media.clip.parent", String::class.java))
     }
+
+    override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
+        val types = cdvClient.getDocumentTypes(getCompanyId())
+        val id = UUID.randomUUID()
+        val spec = CoreDataVaultAssetSpec(id, types[0]["documentTypeId"] as String, name)
+        val result = cdvClient.createAsset(getCompanyId(), spec)
+        val uri = URI(result["imageUploadURL"] as String)
+        cdvClient.uploadSource(uri, bytes)
+        return AssetUploadedResponse(id, uri)
+    }
 }
 
 @Transactional
@@ -806,6 +805,9 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     @Autowired
     lateinit var assetDao: AssetDao
+
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
 
     override fun get(assetId: String): Document {
         return assetDao.get(assetId)
@@ -924,6 +926,13 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     override fun isParentValidated(doc: Document) : Boolean {
         return true
+    }
+
+    override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
+        val id = UUID.randomUUID()
+        val fss = fileStorageService.get(FileStorageSpec("asset", id, name))
+        fileStorageService.write(fss.id, bytes)
+        return AssetUploadedResponse(id, fss.uri)
     }
 }
 

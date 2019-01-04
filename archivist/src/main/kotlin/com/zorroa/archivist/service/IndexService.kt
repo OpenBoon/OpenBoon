@@ -7,7 +7,9 @@ import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
+import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.AbstractAssetService.Companion.PROTECTED_NAMESPACES
 import com.zorroa.archivist.util.event
 import com.zorroa.archivist.util.warnEvent
@@ -196,10 +198,14 @@ class IndexServiceImpl  @Autowired  constructor (
             // add the batch results to the overall result.
             rsp.plus(batchRsp)
 
+            val auth = getAuthentication()
+
             GlobalScope.launch {
-                docs.forEach {
-                    if (it.id in batchRsp.deletedAssetIds) {
-                        deleteAssociatedFiles(it)
+                withAuth(auth) {
+                    docs.forEach {
+                        if (it.id in batchRsp.deletedAssetIds) {
+                            deleteAssociatedFiles(it)
+                        }
                     }
                 }
             }
@@ -223,12 +229,16 @@ class IndexServiceImpl  @Autowired  constructor (
 
     fun deleteAssociatedFiles(doc: Document) {
         logger.event("deleteAll assetProxy", mapOf("assetId" to doc.id))
+
         doc.getAttr("proxies", ProxySchema::class.java)?.let {
             it.proxies?.forEach { pr ->
                 try {
                     val storage = fileStorageService.get(pr.id)
                     val ofile = fileServerProvider.getServableFile(storage.uri)
-                    if (!ofile.delete()) {
+                    if (ofile.delete()) {
+                        logger.event("delete Proxy", mapOf("proxyId" to pr.id, "assetId" to doc.id))
+                    }
+                    else {
                         logger.warnEvent("delete Proxy", "file did not exist", mapOf("proxyId" to pr.id))
                     }
                 } catch (e: Exception) {

@@ -9,6 +9,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -18,10 +19,9 @@ class FileStorageControllerTests : MockMvcTest() {
     fun testCreate() {
         val session = admin()
         val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg",
-                listOf("x", "100", "y", "100"))
+                "asset",
+                UUID.randomUUID().toString(),
+                "so_urgent_x_100_y_100.jpg")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
                 .session(session)
@@ -41,10 +41,9 @@ class FileStorageControllerTests : MockMvcTest() {
     fun testGetById() {
         val session = admin()
         val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg",
-                listOf("x", "100", "y", "100"))
+                "asset",
+                UUID.randomUUID().toString(),
+                "so_urgent_x_100_y_100.jpg")
 
         val req1 = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
                 .session(session)
@@ -70,11 +69,9 @@ class FileStorageControllerTests : MockMvcTest() {
     fun testStat() {
         val session = admin()
         val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg",
-                listOf("x", "100", "y", "100"))
-
+                "asset",
+                UUID.randomUUID().toString(),
+                "so_urgent_x_100_y_100.jpg")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
                 .session(session)

@@ -2,16 +2,14 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.security.getAnalystEndpoint
-import com.zorroa.common.domain.Analyst
-import com.zorroa.common.domain.AnalystFilter
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.LockState
+import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 interface AnalystService {
     fun upsert(spec: AnalystSpec) : Analyst
@@ -19,6 +17,9 @@ interface AnalystService {
     fun getAll(filter: AnalystFilter) : KPagedList<Analyst>
     fun get(id: UUID) : Analyst
     fun setLockState(analyst: Analyst, state: LockState) : Boolean
+    fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst>
+    fun delete(analyst: Analyst) : Boolean
+    fun setState(analyst: Analyst, state: AnalystState) : Boolean
 }
 
 @Service
@@ -46,12 +47,26 @@ class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): Anal
         return analystDao.get(id)
     }
 
+    @Transactional(readOnly = true)
     override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
         return analystDao.getAll(filter)
     }
 
     override fun setLockState(analyst: Analyst, state: LockState) : Boolean {
         return analystDao.setLockState(analyst, state)
+    }
+
+    override fun setState(analyst: Analyst, state: AnalystState) : Boolean {
+        return analystDao.setState(analyst, state)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit): List<Analyst> {
+        return analystDao.getUnresponsive(state, duration, unit)
+    }
+
+    override fun delete(analyst: Analyst): Boolean {
+        return analystDao.delete(analyst)
     }
 
     companion object {

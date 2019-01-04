@@ -1,12 +1,17 @@
 package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
-import com.zorroa.archivist.repository.SharedLinkDao
+import com.zorroa.archivist.repository.AnalystDao
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.withAuth
+import com.zorroa.common.domain.AnalystState
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationListener
+import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ContextRefreshedEvent
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
 /**
@@ -14,42 +19,130 @@ import java.util.concurrent.TimeUnit
  */
 interface MaintenanceService {
 
-    fun removeExpiredSharedLinks(): Int
+    /**
+     * Handles removing of expired jobs jobs.  Expired jobs have not had any
+     * activity for some time. See MaintenanceConfiguration
+     */
+    fun handleExpiredJobs()
+
+    /**
+     * Handles setting Analysts to the down state, and removing analysts that haven't
+     * pinged in for some time.
+     */
+    fun handleUnresponsiveAnalysts()
+
+    /**
+     * Run all Maintenance.  Return true if lock was obtained, false if not.
+     */
+    fun runAll() : Boolean
 }
 
-@Service
+@Configuration
+@ConfigurationProperties("archivist.maintenance")
+class MaintenanceConfiguration {
+
+    /**
+     * If maintenance is enabled or not.  Multiple archivists doing maintenance will
+     * be an issue until a locking mechanism is created.
+     */
+    val enabled: Boolean = true
+
+    /**
+     * Number of days before inactive jobs are removed.
+     */
+    var archiveJobsAfterDays: Long = 90
+}
+
+
+@Component
 class MaintenanceServiceImpl @Autowired constructor(
-        private val sharedLinkDao: SharedLinkDao
-) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
+        val storageService: FileStorageService,
+        val jobService: JobService,
+        val analystService: AnalystService,
+        val clusterLockService: ClusterLockService,
+        val config: MaintenanceConfiguration) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
 
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
-        this.startAsync()
-    }
-
-    override fun removeExpiredSharedLinks(): Int {
-        val result = sharedLinkDao.deleteExpired(System.currentTimeMillis())
-        if (result > 0) {
-            logger.info("deleted {} shared link records", result)
+        logger.info("MaintenanceService is enabled: {}", config.enabled)
+        if (config.enabled) {
+            logger.info("MaintenanceService archiving jobs after {}  days", config.archiveJobsAfterDays)
+            this.startAsync()
         }
-        return result
     }
 
     @Throws(Exception::class)
     override fun runOneIteration() {
+        // Don't let anything bubble out of here of the thread dies
+        try {
+            runAll()
+        } catch (e: Exception) {
+            logger.warn("Failed to run data maintenance, ", e)
+        }
+    }
 
-        /**
-         * Remove expired shared links.
-         */
-        removeExpiredSharedLinks()
+    override fun runAll() : Boolean {
+        clusterLockService.clearExpired()
 
+        val locked = clusterLockService.lock(lockName, 90, TimeUnit.MINUTES)
+        if (locked) {
+            try {
+                handleExpiredJobs()
+                handleUnresponsiveAnalysts()
+            }
+            finally {
+                clusterLockService.unlock(lockName)
+            }
+        }
+        return locked
+    }
+
+    override fun handleExpiredJobs() {
+        try {
+            for (job in jobService.getExpiredJobs(config.archiveJobsAfterDays, TimeUnit.DAYS, 100)) {
+                logger.info("Deleting expired job {},", job.id)
+                if (jobService.deleteJob(job)) {
+                    withAuth(SuperAdminAuthentication(job.organizationId)) {
+                        val storage = storageService.get(job.getStorageId())
+                        storage.getServableFile().delete()
+                    }
+                }
+                else {
+                    logger.warn("Failed to delete job $job from DB, did not exist.")
+                }
+            }
+        } catch (e: Exception) {
+            logger.warn("Unable to handle expired job data, ", e)
+        }
+    }
+
+    override fun handleUnresponsiveAnalysts() {
+        try {
+            //  get Analysts that are Up but haven't pinged in
+            for (analyst in analystService.getUnresponsive(AnalystState.Up, 5, TimeUnit.MINUTES)) {
+                logger.info("Setting $analyst to down, unresponsive")
+                analystService.setState(analyst, AnalystState.Down)
+            }
+
+            // first get ones that have been down for a long time.
+            for (analyst in analystService.getUnresponsive(AnalystState.Down, 24, TimeUnit.HOURS)) {
+                logger.info("Removing $analyst, unresponsive")
+                analystService.delete(analyst)
+            }
+
+        } catch (e: Exception) {
+            logger.warn("Unable to handle unresponsive analysts, ", e)
+        }
     }
 
     override fun scheduler(): AbstractScheduledService.Scheduler {
-        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(1, 60, TimeUnit.MINUTES)
+        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(5, 60, TimeUnit.MINUTES)
     }
 
     companion object {
+
+        private const val lockName = "maintenance"
+
         private val logger = LoggerFactory.getLogger(MaintenanceServiceImpl::class.java)
     }
 }

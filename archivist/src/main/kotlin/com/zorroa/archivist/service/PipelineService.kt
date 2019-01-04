@@ -9,9 +9,12 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.FileInputStream
+import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -105,7 +108,7 @@ class PipelineServiceImpl @Autowired constructor(
         val result = mutableListOf<ProcessorRef>()
 
         refs?.forEach { ref->
-            if (ref.className.startsWith("pipeline:")) {
+            if (ref.className.startsWith("pipeline:", ignoreCase = true)) {
                 val name = ref.className.split(":", limit = 2)[1]
 
                 val pl = try {
@@ -131,30 +134,44 @@ class PipelineServiceImpl @Autowired constructor(
         return result
     }
 
-
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         val searchPath = properties.getList("archivist.pipeline.search-path")
+        val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
+
         searchPath.forEach {
-            val path = Paths.get(it.trim())
-            if (Files.exists(path)) {
-                for (file in Files.list(path)) {
-                    val spec = Json.Mapper.readValue<PipelineSpec>(file.toFile())
-                    try {
-                        val pipe = pipelineDao.get(spec.name)
-                        logger.info("Updating embedded pipeline: {} [{}]", spec.name, spec.type)
-                        pipelineDao.update(pipe)
-                    } catch (e: EmptyResultDataAccessException) {
-                        logger.info("Creating embedded pipeline: {} [{}]", spec.name, spec.type)
-                        val created = pipelineDao.create(spec)
-                        logger.info("Created embedded pipeline: {}", created)
-                    }
-                    catch (e: Exception) {
-                        logger.warn("Failed to load pipeline file:", e)
+
+            if (it.startsWith("classpath:")) {
+                val resources = resolver.getResources("$it/*.json")
+                for (resource in resources) {
+                    loadPipeline(resource.inputStream, "classpath")
+                }
+            }
+            else {
+                val path = Paths.get(it.trim())
+                if (Files.exists(path)) {
+                    for (file in Files.list(path)) {
+                        loadPipeline(FileInputStream(file.toFile()), "external")
                     }
                 }
             }
         }
     }
+
+    private fun loadPipeline(stream: InputStream, source: String) {
+        val spec = Json.Mapper.readValue<PipelineSpec>(stream)
+        try {
+            val pipe = pipelineDao.get(spec.name)
+            logger.info("Updating ${spec.type} pipeline '${spec.name}' from $source")
+            pipelineDao.update(pipe)
+        } catch (e: EmptyResultDataAccessException) {
+            logger.info("Creating ${spec.type} pipeline '${spec.name}' from $source")
+            pipelineDao.create(spec)
+        }
+        catch (e: Exception) {
+            logger.warn("Failed to load pipeline file:", e)
+        }
+    }
+
 
     companion object {
         private val logger = LoggerFactory.getLogger(PipelineServiceImpl::class.java)

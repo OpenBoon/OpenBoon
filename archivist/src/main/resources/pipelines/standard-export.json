@@ -1,0 +1,10 @@
+{
+  "name": "standard-export",
+  "type": "Export",
+  "description": "The standard export pipeline",
+  "processors": [
+    {
+      "className": "zplugins.export.processors.ImageExporter"
+    }
+  ]
+}

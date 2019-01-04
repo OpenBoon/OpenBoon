@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct
 interface DispatcherService {
     fun getNext() : DispatchTask?
     fun startTask(task: TaskId) : Boolean
-    fun stopTask(task: TaskId, exitStatus: Int, overrideState: TaskState?=null) : Boolean
+    fun stopTask(task: Task, exitStatus: Int, overrideState: TaskState?=null) : Boolean
     fun handleEvent(event: TaskEvent)
     fun expand(parentTask: Task, script: ZpsScript) : Task
     fun expand(job: JobId, script: ZpsScript) : Task
@@ -109,7 +109,7 @@ class DispatcherServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun stopTask(task: TaskId, exitStatus: Int, overrideState: TaskState?) : Boolean {
+    override fun stopTask(task: Task, exitStatus: Int, overrideState: TaskState?) : Boolean {
 
         val newState = when {
             overrideState != null -> overrideState
@@ -117,9 +117,13 @@ class DispatcherServiceImpl @Autowired constructor(
             else -> TaskState.Success
         }
 
+        /**
+         * TODO: make sure the task is the right instance of the task, in
+         * case it was orphaned and then relaunched, but the orphan came back.
+         */
         val stopped = when {
-            taskDao.setState(task, newState, TaskState.Running) -> true
-            taskDao.setState(task, newState, TaskState.Queued) -> true
+            jobService.setTaskState(task, newState, TaskState.Running) -> true
+            jobService.setTaskState(task, newState, TaskState.Queued) -> true
             else -> false
         }
 
@@ -132,6 +136,7 @@ class DispatcherServiceImpl @Autowired constructor(
             catch(e: Exception) {
                 logger.warn("Failed to clear taskId from Analyst")
             }
+
         }
 
         logger.info("Stopping task: {}, newState={}, result={}", task.taskId, newState, stopped)

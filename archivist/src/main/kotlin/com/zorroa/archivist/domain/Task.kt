@@ -45,7 +45,7 @@ open class Task (
      */
     @JsonIgnore
     fun getLogSpec() : FileStorageSpec {
-        return FileStorageSpec("log", id.toString(), "log", jobId = jobId, taskId = id)
+        return FileStorageSpec("job", jobId, "logs/$taskId.log")
     }
 
 }

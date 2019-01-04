@@ -14,9 +14,9 @@ import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 interface JobService {
     fun create(spec: JobSpec) : Job
@@ -26,7 +26,7 @@ interface JobService {
     fun createTask(job: JobId, spec: TaskSpec) : Task
     fun getAll(filter: JobFilter?): KPagedList<Job>
     fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse)
-    fun setJobState(job: Job, newState: JobState, oldState: JobState?): Boolean
+    fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean
     fun setTaskState(task: Task, newState: TaskState, oldState: TaskState?): Boolean
     fun cancelJob(job: Job) : Boolean
     fun restartCanceledJob(job: Job) : Boolean
@@ -36,6 +36,9 @@ interface JobService {
     fun getTaskErrors(filter: TaskErrorFilter) : KPagedList<TaskError>
     fun deleteTaskError(id: UUID): Boolean
     fun getTaskLog(id: UUID) : ServableFile
+    fun deleteJob(job: JobId) : Boolean
+    fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
+    fun checkAndSetJobFinished(job: JobId): Boolean
 }
 
 @Service
@@ -120,6 +123,15 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.update(job, spec)
     }
 
+    override fun deleteJob(job: JobId) : Boolean {
+        return jobDao.delete(job)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int) : List<Job> {
+        return jobDao.getExpired(duration, unit, limit)
+    }
+
     @Transactional(readOnly = true)
     override fun get(id: UUID, forClient:Boolean) : Job {
         return jobDao.get(id, forClient)
@@ -159,10 +171,10 @@ class JobServiceImpl @Autowired constructor(
         jobDao.incrementAssetStats(task, counts)
     }
 
-    override fun setJobState(job: Job, newState: JobState, oldState: JobState?): Boolean  {
+    override fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean  {
         val result = jobDao.setState(job, newState, oldState)
         if (result) {
-            eventBus.post(JobStateChangeEvent(job, newState, oldState))
+            eventBus.post(JobStateChangeEvent(get(job.jobId), newState, oldState))
         }
         return result
     }
@@ -170,6 +182,9 @@ class JobServiceImpl @Autowired constructor(
     override fun setTaskState(task: Task, newState: TaskState, oldState: TaskState?): Boolean  {
         val result =  taskDao.setState(task, newState, oldState)
         if (result) {
+            if (newState == TaskState.Success || newState == TaskState.Skipped) {
+                checkAndSetJobFinished(task)
+            }
             eventBus.post(TaskStateChangeEvent(task, newState, oldState))
         }
         return result
@@ -203,6 +218,12 @@ class JobServiceImpl @Autowired constructor(
         return taskErrorDao.delete(id)
     }
 
+    override fun checkAndSetJobFinished(job: JobId): Boolean  {
+        if (!jobDao.hasPendingFrames(job)) {
+            return setJobState(job, JobState.Finished, JobState.Active)
+        }
+        return false
+    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(JobServiceImpl::class.java)

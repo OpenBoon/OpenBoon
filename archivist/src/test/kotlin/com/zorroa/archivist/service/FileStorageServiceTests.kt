@@ -19,19 +19,6 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
 
     val layout : LayoutProvider
 
-    val pspec = FileStorageSpec(
-            "proxy",
-            "a_proxy",
-            "jpg",
-            listOf("x", "100", "y", "100"),
-            assetId=UUID.fromString("E415845C-E2F5-441B-A36E-36103D231169"))
-
-    val espec = FileStorageSpec(
-            "export",
-            "some_export",
-            "zip",
-            jobId=UUID.fromString("E415845C-E2F5-441B-A36E-36103D231169"))
-
     init {
         val shared = Paths.get("unittest/shared")
         layout =  LocalLayoutProvider(shared, UUIDFileSystem(shared.resolve("ofs")))
@@ -39,149 +26,97 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
 
     @Test
     fun testBuildIdFromSpec() {
-        assertEquals("proxy___e415845c-e2f5-441b-a36e-36103d231169_x_100_y_100.jpg",
-                layout.buildId(pspec))
-        assertEquals("export___e415845c-e2f5-441b-a36e-36103d231169___some_export.zip",
-                layout.buildId(espec))
-    }
-
-    @Test
-    fun testProxyBuildFrom39Spec() {
         val spec = FileStorageSpec(
-                "proxy",
-                "testing123",
-                "jpg")
+                "asset",
+                "e415845c-e2f5-441b-a36e-36103d231169",
+                "proxy/100x200.jpg")
 
-        assertEquals("proxy___c0eaa63b-36a2-5962-9dc5-3b560800251c.jpg", layout.buildId(spec))
-        val uri = layout.buildUri(spec)
-        assertTrue(uri.startsWith("file:///"))
-        assertTrue(uri.endsWith(
-                "archivist/unittest/shared/ofs/proxy/c/0/e/a/a/6/3/b/c0eaa63b-36a2-5962-9dc5-3b560800251c.jpg"))
-    }
-
-    @Test
-    fun testProxyBuildFromUUIDName() {
-        val spec = FileStorageSpec(
-                "proxy",
-                "c0eaa63b-36a2-5962-9dc5-3b560800251c",
-                "jpg")
-
-        assertEquals("proxy___c0eaa63b-36a2-5962-9dc5-3b560800251c.jpg", layout.buildId(spec))
-        val uri = layout.buildUri(spec)
-        assertTrue(uri.startsWith("file:///"))
-        assertTrue(uri.endsWith(
-                "archivist/unittest/shared/ofs/proxy/c/0/e/a/a/6/3/b/c0eaa63b-36a2-5962-9dc5-3b560800251c.jpg"))
+        assertEquals("asset___e415845c-e2f5-441b-a36e-36103d231169___proxy___100x200.jpg", layout.buildId(spec))
     }
 
     @Test
     fun testBuildUriFromSpec() {
-        val proxyUri = layout.buildUri(pspec)
+        val spec = FileStorageSpec(
+                "job",
+                "e415845c-e2f5-441b-a36e-36103d231169",
+                "export/exported_files.zip")
+
+        val proxyUri = layout.buildUri(spec)
+        println(proxyUri)
         assertTrue(proxyUri.startsWith("file:///"))
         assertTrue(proxyUri.endsWith(
-                "archivist/unittest/shared/ofs/proxy/e/4/1/5/8/4/5/c/e415845c-e2f5-441b-a36e-36103d231169_x_100_y_100.jpg"))
-
-        val exportUri = layout.buildUri(espec)
-        assertTrue(exportUri.startsWith("file:///"))
-        assertTrue(exportUri.endsWith(
-                "archivist/unittest/shared/exports/e415845c-e2f5-441b-a36e-36103d231169/some_export.zip"))
+                "shared/orgs/00000000-9998-8888-7777-666666666666/job/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169/export/exported_files.zip"))
     }
 
     @Test
     fun testBuildUriFromId() {
-        val pid = "proxy___4df4d729-f3fc-5008-8373-0438c1968470_x_100_y_100.jpg"
-        val export = "export___e415845c-e2f5-441b-a36e-36103d231169___some_export.zip"
+        val id = "asset___e415845c-e2f5-441b-a36e-36103d231169___proxy___100x200.jpg"
 
-        val proxyUri = layout.buildUri(pid)
+        val proxyUri = layout.buildUri(id)
+        println(proxyUri)
         assertTrue(proxyUri.startsWith("file:///"))
         assertTrue(proxyUri.endsWith(
-                "archivist/unittest/shared/ofs/proxy/4/d/f/4/d/7/2/9/4df4d729-f3fc-5008-8373-0438c1968470_x_100_y_100.jpg"))
+                "shared/orgs/00000000-9998-8888-7777-666666666666/asset/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169/proxy/100x200.jpg"))
 
-        val exportUri = layout.buildUri(export)
-        assertTrue(exportUri.startsWith("file:///"))
-        assertTrue(exportUri.endsWith(
-                "archivist/unittest/shared/exports/e415845c-e2f5-441b-a36e-36103d231169/some_export.zip"))
+    }
+
+    @Test
+    fun testBuildUriFromShortId() {
+        val id = "job___e415845c-e2f5-441b-a36e-36103d231169"
+        val uri = layout.buildUri(id)
+        assertTrue(uri.endsWith("job/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169"))
+    }
+
+    @Test
+    fun testBuildUriFrom39SlugId() {
+        val id = "proxy/c0eaa63b-36a2-5962-9dc5-3b560800251c_1024x768.jpg"
+        val uri = layout.buildUri(id)
+        assertTrue(uri.endsWith("shared/ofs/proxy/c/0/e/a/a/6/3/b/c0eaa63b-36a2-5962-9dc5-3b560800251c_1024x768.jpg"))
     }
 }
 
 
-class DefaultGcsLayoutProviderTests : AbstractTest() {
+class GcsLayoutProviderTests : AbstractTest() {
 
     val layout = GcsLayoutProvider("foo")
 
     @Test
-    fun testGenerateId() {
+    fun testBuildIdFromSpec() {
+        val pid = UUID.randomUUID()
         val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg",
-                listOf("x", "100", "y", "100"))
+                "asset",
+                pid,
+                "so_urgent_x_100_y_100.jpg")
 
         val id = layout.buildId(spec)
-        assertEquals("proxy___f920837e-9d15-5963-998b-38bd44b17468___so_urgent_x_100_y_100.jpg", id)
+        assertEquals("asset___${pid}___so_urgent_x_100_y_100.jpg", id)
     }
 
     @Test
-    fun testGenerateIdNoVariants() {
+    fun testBuildUriFromId() {
+        val pid = UUID.randomUUID()
         val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg")
-
-        val id = layout.buildId(spec)
-        assertEquals("proxy___f920837e-9d15-5963-998b-38bd44b17468___so_urgent.jpg", id)
-    }
-
-    @Test
-    fun testGetUri() {
-        val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg")
+                "asset",
+                pid,
+                "proxy/500x500.jpg")
 
         val id1 = layout.buildId(spec)
         val uri = layout.buildUri(id1)
-        println(id1)
-        println(uri)
+        assertEquals(uri, layout.buildUri(id1))
     }
 
     @Test
-    fun testUseAssetId() {
-        val assetId = UUID.fromString("16C13597-CE2F-4CB2-8EB0-F01AEA1702D0")
+    fun testBuildUriFromSpec() {
+        val pid = UUID.randomUUID()
         val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg",
-                listOf("x", "200", "y", "200"),assetId=assetId)
-
-        val id = layout.buildId(spec)
-        assertEquals("proxy___16c13597-ce2f-4cb2-8eb0-f01aea1702d0___so_urgent_x_200_y_200.jpg", id)
-    }
-
-    @Test
-    fun getUri() {
-        val assetId = UUID.fromString("16C13597-CE2F-4CB2-8EB0-F01AEA1702D0")
-        val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg",
-                listOf("x", "200", "y", "200"),assetId=assetId)
+                "asset",
+                pid,
+                "proxy/500x500.jpg")
 
         val uri = layout.buildUri(spec)
-        println(uri)
-    }
-
-    @Test
-    fun getIdFromPath() {
-        val assetId = UUID.fromString("16C13597-CE2F-4CB2-8EB0-F01AEA1702D0")
-        val spec = FileStorageSpec(
-                "proxy",
-                "so_urgent",
-                "jpg",
-                listOf("x", "200", "y", "200"),assetId=assetId)
-
-        val uri = layout.buildUri(spec)
-
-        println(uri)
+        val id1 = layout.buildId(spec)
+        assertEquals(uri, layout.buildUri(id1))
+        assertTrue(uri.startsWith("gs://"))
     }
 
 }
@@ -200,10 +135,11 @@ class GcsFileStorageServiceTests : AbstractTest() {
 
     @Test
     fun testGetUri() {
-        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val pid = UUID.randomUUID()
+        val spec = FileStorageSpec("asset", pid, "foo_bar.jpg")
         val uri = fileStorage.dlp.buildUri(spec)
 
-        val expectedPath = "/orgs/00000000-9998-8888-7777-666666666666/ofs/proxy/38f154c7-e214-551b-9374-075c2bac63a1/foo_bar.jpg"
+        val expectedPath = "/orgs/00000000-9998-8888-7777-666666666666/asset/${pid}/foo_bar.jpg"
         val auri = URI.create(uri)
 
         assertEquals(bucketName,  auri.authority)
@@ -213,29 +149,32 @@ class GcsFileStorageServiceTests : AbstractTest() {
 
     @Test
     fun testGetId() {
-        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val pid = UUID.randomUUID()
+        val spec = FileStorageSpec("asset", pid, "foo_bar.jpg")
         val id = fileStorage.dlp.buildId(spec)
-        assertTrue(id.startsWith("proxy_"))
+        println(id)
+        assertTrue(id.startsWith("asset_"))
         assertTrue(id.endsWith("_foo_bar.jpg"))
     }
 
     @Test
     fun testSignUrl() {
-        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")
         val id = fileStorage.dlp.buildId(spec)
         println(fileStorage.getSignedUrl(id, HttpMethod.PUT))
     }
 
     @Test
     fun testGetGetBySpec() {
-        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val pid = UUID.randomUUID()
+        val spec = FileStorageSpec("asset", pid, "foo_bar.jpg")
         val storage = fileStorage.get(spec)
         assertEquals(storage.mediaType, "image/jpeg")
     }
 
     @Test
     fun testGetGetById() {
-        val spec = FileStorageSpec("proxy", "foo_bar", "jpg")
+        val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")
         val storage1 = fileStorage.get(spec)
         val storage2 = fileStorage.get(storage1.id)
         assertEquals(storage1.uri, storage2.uri)
@@ -258,29 +197,36 @@ class LocalFileStorageServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testCreateWithVariants() {
-        val spec = FileStorageSpec("proxy", "abc123", "jpg",
-                listOf("x", "100", "y", "100"))
+    fun testCreateWithDirectory() {
+        val pid = UUID.randomUUID()
+        val spec = FileStorageSpec("asset", pid, "thing/abc123.jpg")
         val fs = fileStorage.get(spec)
-        assertTrue(FileUtils.filename(fs.uri).endsWith("x_100_y_100.jpg"))
+
+        assertTrue(FileUtils.filename(fs.uri.toString()).endsWith("abc123.jpg"))
         assertEquals("image/jpeg", fs.mediaType)
     }
 
-
     @Test
     fun testGetById() {
-        val spec = FileStorageSpec("proxy", "abc123", "jpg",
-                listOf("x", "100", "y", "100"))
+        val spec = FileStorageSpec("asset", UUID.randomUUID(), "jpg")
         val fs = fileStorage.get(spec)
         println(fs.id)
     }
 
     @Test
     fun testCreate() {
-        val spec = FileStorageSpec("proxy", "abc123", "jpg", null)
+        val spec = FileStorageSpec("asset", UUID.randomUUID(), "foo.jpg")
         val fs = fileStorage.get(spec)
-        assertTrue(FileUtils.filename(fs.uri).endsWith(".jpg"))
+        assertTrue(FileUtils.filename(fs.uri.toString()).endsWith(".jpg"))
         assertEquals("image/jpeg", fs.mediaType)
         assertEquals("file", fs.scheme)
+    }
+
+    @Test
+    fun testWrite() {
+        val spec = FileStorageSpec("asset", UUID.randomUUID(), "foo.jpg")
+        val fs = fileStorage.get(spec)
+        fileStorage.write(fs.id, "Foo".toByteArray())
+        assertTrue(Files.exists(Paths.get(fs.uri)))
     }
 }

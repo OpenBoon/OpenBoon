@@ -9,14 +9,25 @@ import com.google.common.base.MoreObjects
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
+import java.net.URI
 import java.util.*
 import java.util.regex.Pattern
+
+/**
+ * The response from a request to create an asset from an uploaded source.
+ * @property assetId: The assetId that was created
+ * @property uri: The URI where the source file was placed.
+ */
+class AssetUploadedResponse(
+        val assetId: UUID,
+        val uri: URI
+)
 
 /**
  * A class to define updates to a single Asset
  *
  * @property update: key/value pairs to be updated.
- * @peoperty remove: an array of fields to remove.
+ * @property remove: an array of fields to remove.
  */
 class UpdateAssetRequest(
         val update : Map<String, Any>?=null,

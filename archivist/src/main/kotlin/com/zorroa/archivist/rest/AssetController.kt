@@ -2,15 +2,15 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.event
-import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
+import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,8 +19,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
-import java.net.URI
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -38,7 +38,8 @@ class AssetController @Autowired constructor(
         private val fieldService: FieldService,
         private val fileServerProvider: FileServerProvider,
         private val fileStorageService: FileStorageService,
-        private val meterRegistry: MeterRegistry
+        private val fileUploadService: FileUploadService,
+        meterRegistry: MeterRegistry
 ){
 
     private val proxyLookupCache = CacheBuilder.newBuilder()
@@ -76,7 +77,7 @@ class AssetController @Autowired constructor(
         if (forceProxy) {
             val proxy = getProxyStream(asset)
              if (proxy != null) {
-                 return fileServerProvider.getServableFile(URI(proxy.uri))
+                 return fileServerProvider.getServableFile(proxy.uri)
              }
 
         } else  {
@@ -307,6 +308,14 @@ class AssetController @Autowired constructor(
     @Throws(Exception::class)
     fun setPermissionsV2(@RequestBody req: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
         return assetService.setPermissions(req)
+    }
+
+    @PostMapping(value = ["/api/v1/assets/_upload", "/api/v1/imports/_upload"], consumes = ["multipart/form-data"])
+    @ResponseBody
+    fun upload(@RequestParam("files") files: Array<MultipartFile>,
+               @RequestParam("body") body: String): Any {
+        val spec = Json.deserialize(body, FileUploadSpec::class.java)
+        return fileUploadService.ingest(spec, files)
     }
 
     @PutMapping(value = ["/api/v1/refresh"])

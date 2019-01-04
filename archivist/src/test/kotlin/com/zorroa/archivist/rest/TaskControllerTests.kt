@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.FileStorageService
@@ -180,8 +181,10 @@ class TaskControllerTests : MockMvcTest() {
     fun testGetLogFile() {
 
         val log = task.getLogSpec()
-        val fs = fileStorageService.get(log).getServableFile()
-        Files.write(fs.getLocalFile(), "boom!".toByteArray())
+        val fs = fileStorageService.get(log)
+        fileStorageService.getSignedUrl(fs.id, HttpMethod.PUT)
+
+        Files.write(fs.getServableFile().getLocalFile(), "boom!".toByteArray())
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
