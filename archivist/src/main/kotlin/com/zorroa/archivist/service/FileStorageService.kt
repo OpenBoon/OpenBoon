@@ -62,6 +62,12 @@ interface FileStorageService {
      */
     fun getSignedUrl(id: String, method: HttpMethod, duration: Long=10, unit: TimeUnit=TimeUnit.MINUTES) : String
 
+    /**
+     * Write the given type array to location of th given ID.
+     *
+     * @param[id] The unique ID of the file.
+     * @param[input] The array of bytes to write.
+     */
     fun write(id: String, input: ByteArray)
 }
 
