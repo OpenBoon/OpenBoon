@@ -86,6 +86,21 @@ services:
     depends_on:
       - "es"
 
+  filebeat:
+    image: "docker.elastic.co/beats/filebeat:6.5.4"
+    command: filebeat -e -strict.perms=false
+    user: root
+    secrets:
+      - source: filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+    depends_on:
+      - "es"
+    ports:
+      - "5066:5066"
+    volumes:
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
   # Local Archivist server.
   archivist:
     links:
@@ -128,3 +143,5 @@ secrets:
     file: ./config/logstash.conf
   kibana.yml:
     file: ./config/kibana.yml
+  filebeat.yml:
+    file: ./config/filebeat.yml
