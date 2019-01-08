@@ -57,7 +57,6 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
         assertTrue(proxyUri.startsWith("file:///"))
         assertTrue(proxyUri.endsWith(
                 "shared/orgs/00000000-9998-8888-7777-666666666666/asset/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169/proxy/100x200.jpg"))
-
     }
 
     @Test
@@ -119,6 +118,14 @@ class GcsLayoutProviderTests : AbstractTest() {
         assertTrue(uri.startsWith("gs://"))
     }
 
+
+    @Test
+    fun testBuildUriFromDeprecatedIdStyle() {
+        val id = "proxy___098c296c-33dd-594a-827c-26118ff62882___098c296c-33dd-594a-827c-26118ff62882_256x144.jpg"
+        val uri = layout.buildUri(id)
+        val expected = "gs://foo/orgs/00000000-9998-8888-7777-666666666666/proxy/098c296c-33dd-594a-827c-26118ff62882/098c296c-33dd-594a-827c-26118ff62882_256x144.jpg"
+        assertEquals(expected, uri)
+    }
 }
 
 class GcsFileStorageServiceTests : AbstractTest() {

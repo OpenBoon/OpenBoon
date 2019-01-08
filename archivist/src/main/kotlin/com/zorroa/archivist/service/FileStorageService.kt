@@ -62,6 +62,12 @@ interface FileStorageService {
      */
     fun getSignedUrl(id: String, method: HttpMethod, duration: Long=10, unit: TimeUnit=TimeUnit.MINUTES) : String
 
+    /**
+     * Write the given type array to location of th given ID.
+     *
+     * @param[id] The unique ID of the file.
+     * @param[input] The array of bytes to write.
+     */
     fun write(id: String, input: ByteArray)
 }
 
@@ -288,6 +294,15 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
 class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
 
     override fun buildUri(id: String): String {
+        if (id.startsWith("proxy___")) {
+            /**
+             * Handle the old style GCS slugs
+             *
+             * proxy___098c296c-33dd-594a-827c-26118ff62882___098c296c-33dd-594a-827c-26118ff62882_256x144.jpg
+             */
+            return "${getOrgRoot()}/${slashed(id)}"
+        }
+
         if (id.contains('/')) {
             throw IllegalArgumentException("Id '$id' cannot contain a slash")
         }
