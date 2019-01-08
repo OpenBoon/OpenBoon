@@ -33,11 +33,27 @@ class TaskErrorDaoTests : AbstractTest() {
         val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
                 "it broke", "com.zorroa.ImageIngestor", true, "execute")
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
-        val result = taskErrorDao.create(event, error)
+        val result = taskErrorDao.create(task, error)
         assertEquals(error.message, result.message)
         assertEquals(event.jobId, result.jobId)
         assertEquals(event.taskId, result.taskId)
         assertEquals(error.phase, result.phase)
+    }
+
+    @Test
+    fun testBatchCreate() {
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        val job = jobService.create(spec)
+        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+
+        authenticateAsAnalyst()
+        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
+                "it broke", "com.zorroa.ImageIngestor", true, "execute")
+        val result = taskErrorDao.batchCreate(task, listOf(error, error, error))
+        assertEquals(3, result)
     }
 
     @Test
@@ -53,7 +69,7 @@ class TaskErrorDaoTests : AbstractTest() {
         val error = TaskErrorEvent(null, null,
                 "it broke", "com.zorroa.ImageIngestor", true, "execute")
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
-        val result = taskErrorDao.create(event, error)
+        val result = taskErrorDao.create(task, error)
         assertEquals(error.message, result.message)
         assertEquals(error.phase, result.phase)
         assertEquals(event.jobId, result.jobId)
@@ -73,7 +89,7 @@ class TaskErrorDaoTests : AbstractTest() {
         val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
                 "it broke", "com.zorroa.ImageIngestor", true, "execute")
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
-        taskErrorDao.create(event, error)
+        taskErrorDao.create(task, error)
         authenticate("admin")
         return task
     }
@@ -167,7 +183,7 @@ class TaskErrorDaoTests : AbstractTest() {
             val error = TaskErrorEvent(UUID.randomUUID(), String.format("%04d", num),
                     "it broke", "foo", true, "teardown")
             val event = TaskEvent(TaskEventType.ERROR, task.id, task.jobId, error)
-            taskErrorDao.create(event, error)
+            taskErrorDao.create(task, error)
         }
 
         // Fetch them sorted

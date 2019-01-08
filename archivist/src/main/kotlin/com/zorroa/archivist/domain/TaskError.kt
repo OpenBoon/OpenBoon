@@ -8,7 +8,7 @@ import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
-class TaskError(
+class TaskError (
         val id: UUID,
         val taskId: UUID,
         val jobId: UUID,
