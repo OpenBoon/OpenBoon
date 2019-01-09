@@ -137,7 +137,7 @@ class AssetServiceTests : AbstractTest() {
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
         assertEquals(2, assetService.addLinks(
-                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).successCount)
+                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
         assertEquals(0, assetService.addLinks(
                 LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).erroredAssetIds.size)
     }
@@ -151,7 +151,7 @@ class AssetServiceTests : AbstractTest() {
         val folderId = UUID.randomUUID()
         assertEquals(1,
                 assetService.addLinks(LinkType.Folder, folderId,
-                        BatchUpdateAssetLinks(null, listOf(page[1].id), AssetSearch())).successCount)
+                        BatchUpdateAssetLinks(null, listOf(page[1].id), AssetSearch())).updatedAssetIds.size)
     }
 
     @Test
@@ -160,9 +160,9 @@ class AssetServiceTests : AbstractTest() {
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
         assertEquals(2, assetService.addLinks(
-                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).successCount)
-        assertEquals(2, assetService.removeLinks(LinkType.Folder, folderId, ids).successCount)
-        assertEquals(0, assetService.removeLinks(LinkType.Folder, folderId, ids).successCount)
+                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
+        assertEquals(2, assetService.removeLinks(LinkType.Folder, folderId, ids).updatedAssetIds.size)
+        assertEquals(0, assetService.removeLinks(LinkType.Folder, folderId, ids).updatedAssetIds.size)
     }
 
     @Test

@@ -181,9 +181,9 @@ class FolderController @Autowired constructor(
             @PathVariable id: UUID): Any {
         val folder = folderService.get(id)
         val req = BatchUpdateAssetLinks(assetIds, null, null)
-        return folderService.addAssets(folder, req)
+        val result =  folderService.addAssets(folder, req)
+        return mapOf("success" to result.updatedAssetIds, "missing" to result.erroredAssetIds)
     }
-
 
     companion object {
 
