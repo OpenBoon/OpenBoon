@@ -518,7 +518,7 @@ open abstract class AbstractAssetService : AssetService {
 
         val auth = getAuthentication()
         val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
-        val successCount = LongAdder()
+        val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
 
         runBlocking {
             assets.chunked(50) {
@@ -536,22 +536,19 @@ open abstract class AbstractAssetService : AssetService {
                         if (update.erroredAssetIds.isNotEmpty()) {
                             errorAssetIds.addAll(update.erroredAssetIds)
                         }
-                        successCount.add(update.updatedAssetIds.size.toLong())
+                        successAssetIds.addAll(update.updatedAssetIds)
                     }
                 }
             }
         }
 
-        val result = UpdateLinksResponse()
-        result.successCount = successCount.toLong()
-        result.erroredAssetIds.addAll(errorAssetIds)
-        return result
+        return UpdateLinksResponse(successAssetIds, errorAssetIds)
     }
 
     override fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse {
         val auth = getAuthentication()
-        val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
-        val successCount = LongAdder()
+        val errors = Collections.synchronizedSet(mutableSetOf<String>())
+        val success = Collections.synchronizedSet(mutableSetOf<String>())
 
         runBlocking {
             req.assetIds?.chunked(50) {
@@ -566,9 +563,9 @@ open abstract class AbstractAssetService : AssetService {
                         }
                         val update = batchUpdate(docs, reindex = true, taxons = false)
                         if (update.erroredAssetIds.isNotEmpty()) {
-                            errorAssetIds.addAll(update.erroredAssetIds)
+                            errors.addAll(update.erroredAssetIds)
                         }
-                        successCount.add(update.updatedAssetIds.size.toLong())
+                        success.addAll(update.updatedAssetIds)
                     }
                 }
             }
@@ -596,18 +593,15 @@ open abstract class AbstractAssetService : AssetService {
                             logger.info("updating docs with links: {}", docs.size)
                             val update = batchUpdate(docs, reindex = true, taxons = false)
                             if (update.erroredAssetIds.isNotEmpty()) {
-                                errorAssetIds.addAll(update.erroredAssetIds)
+                                errors.addAll(update.erroredAssetIds)
                             }
-                            successCount.add(update.updatedAssetIds.size.toLong())
+                            success.addAll(update.updatedAssetIds)
                         }
                     }
                 }
             }
         }
-        val result = UpdateLinksResponse()
-        result.successCount = successCount.toLong()
-        result.erroredAssetIds.addAll(errorAssetIds)
-        return result
+        return UpdateLinksResponse(success, errors)
     }
 
     /**

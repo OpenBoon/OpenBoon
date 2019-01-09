@@ -164,7 +164,8 @@ class FolderController @Autowired constructor(
     @Throws(Exception::class)
     fun addAssets(@PathVariable id: UUID, @RequestBody req: BatchUpdateAssetLinks): Any {
         val folder = folderService.get(id)
-        return folderService.addAssets(folder, req)
+        val result = folderService.addAssets(folder, req)
+        return mapOf("successCount" to result.updatedAssetIds.size, "erroredAssetIds" to result.erroredAssetIds)
     }
 
     /**
@@ -181,9 +182,9 @@ class FolderController @Autowired constructor(
             @PathVariable id: UUID): Any {
         val folder = folderService.get(id)
         val req = BatchUpdateAssetLinks(assetIds, null, null)
-        return folderService.addAssets(folder, req)
+        val result =  folderService.addAssets(folder, req)
+        return mapOf("success" to result.updatedAssetIds, "missing" to result.erroredAssetIds)
     }
-
 
     companion object {
 

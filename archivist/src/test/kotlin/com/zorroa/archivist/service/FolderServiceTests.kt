@@ -80,7 +80,7 @@ class FolderServiceTests : AbstractTest() {
 
         logger.info(Json.prettyString(results))
         assertTrue(results.erroredAssetIds.isEmpty())
-        assertTrue(results.successCount > 0)
+        assertTrue(results.updatedAssetIds.isNotEmpty())
     }
 
     @Test
@@ -113,7 +113,7 @@ class FolderServiceTests : AbstractTest() {
                 indexService.getAll(Pager.first()).map { a -> a.id })
 
         assertTrue(results.erroredAssetIds.isEmpty())
-        assertTrue(results.successCount > 0)
+        assertTrue(results.updatedAssetIds.isNotEmpty())
 
         var s = AssetSearch()
         s.addToFilter().addToLinks("folder", folder.id)
@@ -123,7 +123,7 @@ class FolderServiceTests : AbstractTest() {
         results = folderService.removeAssets(folder,
                 indexService.getAll(Pager.first()).map { a -> a.id })
         assertTrue(results.erroredAssetIds.isEmpty())
-        assertTrue(results.successCount > 0)
+        assertTrue(results.updatedAssetIds.isNotEmpty())
 
         s = AssetSearch()
         s.addToFilter().addToLinks("folder", folder.id)
@@ -166,11 +166,11 @@ class FolderServiceTests : AbstractTest() {
         assertEquals(2, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
 
         assertTrue(results.erroredAssetIds.isEmpty())
-        assertTrue(results.successCount > 0)
+        assertTrue(results.updatedAssetIds.isNotEmpty())
 
         results = folderService.removeAssets(folder, indexService.getAll(Pager.first()).map { a -> a.id })
         assertTrue(results.erroredAssetIds.isEmpty())
-        assertTrue(results.successCount > 0)
+        assertTrue(results.updatedAssetIds.isNotEmpty())
         refreshIndex()
 
         assertEquals(0, searchService.search(AssetSearch(

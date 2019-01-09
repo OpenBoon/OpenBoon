@@ -30,13 +30,10 @@ class BatchUpdateAssetLinks(
 /**
  * The response sent back when Links are updated.
  *
- * @property successCount: The number of links added.  A duplicate link is considered success.
+ * @property updatedAssetIds: The number of links added.  A duplicate link is considered success.
  * @peoperty erroredAssetIds: Assets that were not linked due to some type of error.
  */
-class UpdateLinksResponse {
-        var successCount = 0L
-        val erroredAssetIds = mutableSetOf<String>()
-}
+class UpdateLinksResponse(val updatedAssetIds : Set<String>, val erroredAssetIds : Set<String>)
 
 class LinkSchema : HashMap<String, MutableSet<UUID>>() {
 
