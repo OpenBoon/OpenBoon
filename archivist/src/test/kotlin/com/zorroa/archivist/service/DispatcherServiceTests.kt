@@ -2,13 +2,11 @@ package com.zorroa.archivist.service
 
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.LockState
@@ -16,6 +14,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.TestPropertySource
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -62,6 +61,9 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var taskDao: TaskDao
+
+    @Autowired
+    lateinit var taskErrorDao: TaskErrorDao
 
     @Autowired
     lateinit var jobService: JobService
@@ -133,8 +135,49 @@ class DispatcherServiceTests : AbstractTest() {
         next?.let {
             assertTrue(dispatcherService.startTask(it))
             assertNotNull(analystDao.get(analyst).taskId)
-            assertTrue(dispatcherService.stopTask(it, 0))
+            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(0)))
             assertNull(analystDao.get(analyst).taskId)
+        }
+    }
+
+    // make run
+    @Test
+    fun testStopErrorTask() {
+        val id1 = UUID.randomUUID().toString()
+        val id2 = UUID.randomUUID().toString()
+
+        val doc1 = Document(id1)
+        doc1.setAttr("source.path", "/foo/bar.jpg")
+
+        val doc2 = Document(id2)
+        doc2.setAttr("source.path", "/flim/flam.jpg")
+
+        val spec = JobSpec("test_job",
+                ZpsScript("foo",
+                        generate = null,
+                        execute = null,
+                        over=listOf(doc1, doc2)))
+        jobService.create(spec)
+
+        authenticateAsAnalyst()
+        val analyst = "https://127.0.0.1:5000"
+        val aspec = AnalystSpec(
+                1024,
+                648,
+                1024,
+                0.5f,
+                null).apply { endpoint = analyst }
+
+        val next = dispatcherService.getNext()
+        assertNotNull(next)
+        next?.let {
+            assertTrue(dispatcherService.startTask(it))
+            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(1)))
+
+            authenticate()
+            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(jobIds=listOf(next.jobId))).size())
+            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(taskIds=listOf(next.taskId))).size())
+            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter()).size())
         }
     }
 

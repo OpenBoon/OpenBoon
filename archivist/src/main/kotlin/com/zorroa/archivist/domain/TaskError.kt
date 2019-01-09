@@ -22,7 +22,7 @@ class TaskError(
         val timeCreated: Long)
 
 
-class TaskErrorFilter (
+class TaskErrorFilter(
         var ids : List<UUID>? = null,
         var jobIds: List<UUID>? = null,
         var taskIds: List<UUID>? = null,

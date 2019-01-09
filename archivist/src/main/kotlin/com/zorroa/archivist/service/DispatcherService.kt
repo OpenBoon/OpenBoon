@@ -18,13 +18,14 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
     fun getNext() : DispatchTask?
     fun startTask(task: TaskId) : Boolean
-    fun stopTask(task: Task, exitStatus: Int, overrideState: TaskState?=null) : Boolean
+    fun stopTask(task: Task, event: TaskStoppedEvent) : Boolean
     fun handleEvent(event: TaskEvent)
     fun expand(parentTask: Task, script: ZpsScript) : Task
     fun expand(job: JobId, script: ZpsScript) : Task
@@ -109,11 +110,11 @@ class DispatcherServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun stopTask(task: Task, exitStatus: Int, overrideState: TaskState?) : Boolean {
+    override fun stopTask(task: Task, event: TaskStoppedEvent) : Boolean {
 
         val newState = when {
-            overrideState != null -> overrideState
-            exitStatus != 0 -> TaskState.Failure
+            event.newState != null -> event.newState
+            event.exitStatus != 0 -> TaskState.Failure
             else -> TaskState.Success
         }
 
@@ -128,7 +129,7 @@ class DispatcherServiceImpl @Autowired constructor(
         }
 
         if (stopped) {
-            taskDao.setExitStatus(task, exitStatus)
+            taskDao.setExitStatus(task, event.exitStatus)
             try {
                 val endpoint = getAnalystEndpoint()
                 analystDao.setTaskId(endpoint, null)
@@ -137,6 +138,18 @@ class DispatcherServiceImpl @Autowired constructor(
                 logger.warn("Failed to clear taskId from Analyst")
             }
 
+            if (!event.manualKill) {
+                val script = taskDao.getScript(task.id)
+                taskErrorDao.batchCreate(task, script.over?.map {
+                    TaskErrorEvent(UUID.fromString(it.id),
+                            it.getAttr("source.path"),
+                            "Hard Task failure, exit ${event.exitStatus}",
+                            "unknown",
+                            true,
+                            "unknown")
+
+                }.orEmpty())
+            }
         }
 
         logger.info("Stopping task: {}, newState={}, result={}", task.taskId, newState, stopped)
@@ -171,13 +184,13 @@ class DispatcherServiceImpl @Autowired constructor(
         when(event.type) {
             TaskEventType.STOPPED -> {
                 val payload = Json.Mapper.convertValue<TaskStoppedEvent>(event.payload)
-                stopTask(task, payload.exitStatus, payload.newState)
+                stopTask(task, payload)
             }
             TaskEventType.STARTED -> startTask(task)
             TaskEventType.ERROR-> {
                 // Might have to queue and submit in batches
                 val payload = Json.Mapper.convertValue<TaskErrorEvent>(event.payload)
-                taskErrorDao.create(event, payload)
+                taskErrorDao.create(task, payload)
             }
             TaskEventType.EXPAND -> {
                 val task = taskDao.get(task.id)

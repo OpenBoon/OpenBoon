@@ -41,7 +41,7 @@ class TaskErrorControllerTests : MockMvcTest() {
         val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
                 "it broke", "com.zorroa.OfficeIngestor", true, "execute")
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
-        taskErrorDao.create(event, error)
+        taskErrorDao.create(task, error)
         authenticate("admin")
     }
 

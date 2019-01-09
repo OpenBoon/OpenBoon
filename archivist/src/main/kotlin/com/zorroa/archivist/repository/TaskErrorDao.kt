@@ -5,15 +5,22 @@ import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.archivist.util.event
+import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
+import com.zorroa.common.util.Json
+import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
+import java.sql.SQLException
 import java.util.*
 
 interface TaskErrorDao {
-    fun create(event: TaskEvent, error: TaskErrorEvent): TaskError
+    fun create(task: Task, error: TaskErrorEvent): TaskError
+    fun batchCreate(task: Task, specs: List<TaskErrorEvent>): Int
     fun get(id: UUID) : TaskError
     fun getLast() : TaskError
     fun count(filter: TaskErrorFilter): Long
@@ -25,7 +32,7 @@ interface TaskErrorDao {
 @Repository
 class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
-    override fun create(event: TaskEvent, spec: TaskErrorEvent): TaskError {
+    override fun create(task: Task, spec: TaskErrorEvent): TaskError {
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
@@ -33,8 +40,8 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setObject(2, event.taskId)
-            ps.setObject(3, event.jobId)
+            ps.setObject(2, task.taskId)
+            ps.setObject(3, task.jobId)
             ps.setObject(4, spec.assetId)
             ps.setString(5, spec.message)
             ps.setString(6, spec.path)
@@ -47,10 +54,12 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             ps
         }
 
+        warnEvent(task, spec)
+
         return TaskError(
                 id,
-                event.taskId,
-                event.jobId,
+                task.taskId,
+                task.jobId,
                 spec.assetId,
                 spec.path,
                 spec.message,
@@ -59,6 +68,43 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 getAnalystEndpoint(),
                 spec.phase,
                 time)
+    }
+
+    override fun batchCreate(task: Task, specs: List<TaskErrorEvent>): Int {
+        if (specs.isEmpty()) {
+            return 0
+        }
+
+        val time = System.currentTimeMillis()
+        val result = jdbc.batchUpdate(INSERT, object : BatchPreparedStatementSetter {
+
+            @Throws(SQLException::class)
+            override fun setValues(ps: PreparedStatement, i: Int) {
+                val spec = specs[i]
+                val id = uuid1.generate()
+                ps.setObject(1, id)
+                ps.setObject(2, task.taskId)
+                ps.setObject(3, task.jobId)
+                ps.setObject(4, spec.assetId)
+                ps.setString(5, spec.message)
+                ps.setString(6, spec.path)
+                ps.setString(7, spec.processor)
+                ps.setString(8, getAnalystEndpoint())
+                ps.setString(9, FileUtils.extension(spec.path))
+                ps.setBoolean(10, spec.fatal)
+                ps.setString(11, spec.phase)
+                ps.setLong(12, time)
+                ps
+            }
+
+            override fun getBatchSize(): Int {
+                return specs.size
+            }
+        })
+
+        specs.forEach { warnEvent(task, it) }
+        return result.sum()
+
     }
 
     override fun count(filter: TaskErrorFilter): Long {
@@ -98,6 +144,15 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
     override fun deleteAll(job: JobId): Int {
         return jdbc.update("DELETE FROM task_error WHERE pk_job=?", job.jobId)
+    }
+
+    fun warnEvent(task: Task, spec: TaskErrorEvent) {
+        logger.warnEvent("TaskError", spec.message,
+                mapOf("assetId" to spec.assetId,
+                        "taskId" to task.id,
+                        "organizationId" to task.organizationId,
+                        "processor" to spec.processor,
+                        "jobId" to task.jobId))
     }
 
     companion object {

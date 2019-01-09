@@ -19,7 +19,8 @@ open class TaskEvent(
 
 class TaskStoppedEvent(
         val exitStatus: Int,
-        val newState: TaskState?
+        val newState: TaskState?= null,
+        val manualKill: Boolean = false
 )
 
 class TaskErrorEvent(
