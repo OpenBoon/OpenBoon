@@ -32,10 +32,18 @@ services:
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
+  prometheus:
+    image: "prom/prometheus"
+    ports:
+        - "9090:9090"
+    secrets:
+      - source: prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+
   # Grafana server connected to elasticsearch instance
   grafana:
     links:
-       - "es"
+      - "prometheus"
     image: "grafana/grafana"
     ports:
       - "3000:3000"
@@ -145,3 +153,5 @@ secrets:
     file: ./config/kibana.yml
   filebeat.yml:
     file: ./config/filebeat.yml
+  prometheus.yml:
+    file: ./config/prometheus.yml
