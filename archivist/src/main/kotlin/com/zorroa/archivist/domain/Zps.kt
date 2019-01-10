@@ -53,7 +53,7 @@ data class ZpsError (
         var skipped : Boolean = false)
 
 
-data class ProcessorFilter(
+data class ZpsFilter(
         var expr: String? = null,
         var drop : Boolean = false
 )
@@ -62,7 +62,7 @@ data class ProcessorRef(
         var className: String,
         var args: Map<String, Any>? = mutableMapOf(),
         var execute: List<ProcessorRef>? = mutableListOf(),
-        var filters: List<ProcessorFilter>? = mutableListOf(),
+        var filters: List<ZpsFilter>? = mutableListOf(),
         var fileTypes: Set<String>? = mutableSetOf(),
         val language : String = "python"
 )
