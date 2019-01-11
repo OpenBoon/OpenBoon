@@ -75,6 +75,8 @@ services:
       interval: 60s
       timeout: 50s
       retries: 5
+    environment:
+        LS_JAVA_OPTS: "-Xms256m -Xmx512m"
 
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:6.2.4
