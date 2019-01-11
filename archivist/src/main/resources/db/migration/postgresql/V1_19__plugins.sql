@@ -16,3 +16,4 @@ CREATE TABLE processor(
 CREATE UNIQUE INDEX processor_str_name_idx ON processor(str_name);
 CREATE INDEX processor_fti_keywords_idx ON processor USING gin(fti_keywords);
 
+ALTER TABLE analyst ADD COLUMN str_version TEXT NOT NULL DEFAULT '0.41.0-1547158402';

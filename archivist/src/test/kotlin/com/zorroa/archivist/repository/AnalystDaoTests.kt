@@ -27,6 +27,7 @@ class AnalystDaoTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "unknown",
                 null)
         analyst = analystDao.create(spec)
     }
@@ -118,6 +119,7 @@ class AnalystDaoTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "unknown",
                 UUID.randomUUID())
         assertTrue(analystDao.update(spec2))
         assertEquals(1, analystDao.getAll(AnalystFilter(taskIds=listOf(spec2.taskId!!))).size())
@@ -133,6 +135,7 @@ class AnalystDaoTests : AbstractTest() {
                     648,
                     1024,
                     i.toFloat(),
+                    "unknown",
                     null).apply { endpoint="https://analyst$i:5000" })
         }
         var last = 0.0f

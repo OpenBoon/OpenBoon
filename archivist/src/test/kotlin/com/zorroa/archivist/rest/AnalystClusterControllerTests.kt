@@ -209,6 +209,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 648,
                 1024,
                 0.5f,
+                "0.41.0",
                 null)
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
@@ -239,6 +240,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 648,
                 1024,
                 0.5f,
+                "0.41.0",
                 null)
 
         analystService.upsert(aspec)
