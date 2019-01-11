@@ -171,7 +171,7 @@ class MultipleWebSecurityConfig {
                     .addFilterBefore(jwtAuthorizationFilter, CsrfFilter::class.java)
                     .authorizeRequests()
                     .requestMatchers(EndpointRequest.to("metrics")).hasAuthority(Groups.SUPERADMIN)
-                    .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
+                    .requestMatchers(EndpointRequest.to("health", "info", "prometheus")).permitAll()
         }
     }
 
