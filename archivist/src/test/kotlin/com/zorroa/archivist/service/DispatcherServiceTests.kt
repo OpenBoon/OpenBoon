@@ -104,6 +104,7 @@ class DispatcherServiceTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "0.41.0",
                 null).apply { endpoint = analyst }
 
         val node = analystDao.create(aspec)
@@ -126,6 +127,7 @@ class DispatcherServiceTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "0.41.0",
                 null).apply { endpoint = analyst }
 
         val node = analystDao.create(aspec)
@@ -166,6 +168,7 @@ class DispatcherServiceTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "0.41.0",
                 null).apply { endpoint = analyst }
 
         val next = dispatcherService.getNext()

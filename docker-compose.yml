@@ -123,8 +123,8 @@ services:
       - 5000:5000
     volumes:
       - "./localdev/shared:/shared"
+      - "./localdev/zorroa:/zorroa"
       - "../zorroa-test-data:/zorroa-test-data"
-
   curator:
      build: ../zorroa-js-curator
      user: node

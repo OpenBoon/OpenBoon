@@ -3,12 +3,13 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.common.domain.AnalystSpec
-import org.junit.Before
+import com.zorroa.common.domain.ArchivistException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 import kotlin.test.assertEquals
+
 
 class AnalystServiceTests : AbstractTest() {
 
@@ -23,6 +24,7 @@ class AnalystServiceTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "0.41.0",
                 null)
         analystService.upsert(spec1)
 
@@ -31,10 +33,16 @@ class AnalystServiceTests : AbstractTest() {
                 1024,
                 1024,
                 1.0f,
+                "0.41.0",
                 UUID.fromString("EF3B1E5A-31B5-4AEB-8C4E-7DA50F2AC592"))
         val a2 = analystService.upsert(spec2)
         assertEquals(spec2.totalRamMb, a2.totalRamMb)
         assertEquals(spec2.freeRamMb, a2.freeRamMb)
         assertEquals(spec2.load, a2.load)
+    }
+
+    @Test(expected = ArchivistException::class)
+    fun doProcessorScanFailure() {
+        analystService.doProcessorScan()
     }
 }

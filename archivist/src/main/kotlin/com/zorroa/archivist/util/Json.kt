@@ -16,33 +16,16 @@ import java.util.*
 
 object Json {
 
-    var GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {
-
-    }
-    var STRING_MAP: TypeReference<Map<String, String>> = object : TypeReference<Map<String, String>>() {
-
-    }
-    var SET_OF_INTS: TypeReference<Set<Int>> = object : TypeReference<Set<Int>>() {
-
-    }
-    var SET_OF_STRINGS: TypeReference<Set<String>> = object : TypeReference<Set<String>>() {
-
-    }
-    var LIST_OF_INTS: TypeReference<List<Int>> = object : TypeReference<List<Int>>() {
-
-    }
-    var LIST_OF_STRINGS: TypeReference<List<String>> = object : TypeReference<List<String>>() {
-
-    }
-    var LIST_OF_OBJECTS: TypeReference<List<Any>> = object : TypeReference<List<Any>>() {
-
-    }
-    var SET_OF_UUIDS: TypeReference<Set<UUID>> = object : TypeReference<Set<UUID>>() {
-
-    }
-    var LIST_OF_UUIDS: TypeReference<List<UUID>> = object : TypeReference<List<UUID>>() {
-
-    }
+    val GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {}
+    val LIST_OF_GENERIC_MAP: TypeReference<List<Map<String, Any>>> = object : TypeReference<List<Map<String, Any>>>() {}
+    val STRING_MAP: TypeReference<Map<String, String>> = object : TypeReference<Map<String, String>>() {}
+    val SET_OF_INTS: TypeReference<Set<Int>> = object : TypeReference<Set<Int>>() {}
+    val SET_OF_STRINGS: TypeReference<Set<String>> = object : TypeReference<Set<String>>() {}
+    val LIST_OF_INTS: TypeReference<List<Int>> = object : TypeReference<List<Int>>() {}
+    val LIST_OF_STRINGS: TypeReference<List<String>> = object : TypeReference<List<String>>() {}
+    val LIST_OF_OBJECTS: TypeReference<List<Any>> = object : TypeReference<List<Any>>() {}
+    val SET_OF_UUIDS: TypeReference<Set<UUID>> = object : TypeReference<Set<UUID>>() {}
+    val LIST_OF_UUIDS: TypeReference<List<UUID>> = object : TypeReference<List<UUID>>() {}
 
     val Mapper = ObjectMapper()
 

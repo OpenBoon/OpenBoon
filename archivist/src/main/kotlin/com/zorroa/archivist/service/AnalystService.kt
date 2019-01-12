@@ -1,8 +1,12 @@
 package com.zorroa.archivist.service
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.zorroa.archivist.domain.ProcessorSpec
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
+import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 
 interface AnalystService {
     fun upsert(spec: AnalystSpec) : Analyst
@@ -20,13 +25,33 @@ interface AnalystService {
     fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst>
     fun delete(analyst: Analyst) : Boolean
     fun setState(analyst: Analyst, state: AnalystState) : Boolean
+    fun doProcessorScan() : List<ProcessorSpec>
+    fun getClient(endpoint: String) : RestClient
 }
 
 @Service
 @Transactional
-class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): AnalystService {
+class AnalystServicImpl @Autowired constructor(
+        val analystDao: AnalystDao,
+        val txm: TransactionEventManager): AnalystService {
+
+    @Autowired
+    lateinit var processorService: ProcessorService
+
+    /**
+     * If the firstPing is true, then do a processor scan once
+     * the transaction has committed.
+     */
+    val firstPing = AtomicBoolean(true)
 
     override fun upsert(spec: AnalystSpec) : Analyst {
+        // First ping of any analyst we'll do a scan.
+        if (firstPing.compareAndSet(true, false)) {
+            txm.afterCommit(false) {
+                doProcessorScan()
+            }
+        }
+
         return if (analystDao.update(spec)) {
             val endpoint = getAnalystEndpoint()
             analystDao.get(endpoint)
@@ -36,7 +61,6 @@ class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): Anal
             logger.info("Created analyst: {}", analyst.endpoint)
             analyst
         }
-
     }
 
     override fun exists(endpoint: String) : Boolean {
@@ -69,7 +93,37 @@ class AnalystServicImpl @Autowired constructor(val analystDao: AnalystDao): Anal
         return analystDao.delete(analyst)
     }
 
+    override fun doProcessorScan(): List<ProcessorSpec> {
+        logger.info("Scanning analysts for processors")
+        val filter = AnalystFilter(states=listOf(AnalystState.Up))
+        filter.apply {
+            this.page = KPage(0, 5)
+            this.sort = listOf("timePing:d", "load:a")
+        }
+
+        val analysts = analystDao.getAll(filter)
+        for (analyst in analysts) {
+            logger.info("Scanning Analyst ${analyst.endpoint}")
+            val client = getClient(analyst.endpoint)
+            try {
+                val processors = client.get("/processors",
+                        object: TypeReference<List<ProcessorSpec>>() {})
+                processorService.replaceAll(processors)
+                return processors
+            }
+            catch (e:Exception) {
+                logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
+            }
+        }
+
+        throw ArchivistException("Failed to initiate processor scan, no ")
+    }
+
+    override fun getClient(endpoint: String): RestClient {
+        return RestClient(endpoint)
+    }
+
     companion object {
-        private val logger = LoggerFactory.getLogger(DispatcherServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(AnalystServicImpl::class.java)
     }
 }

@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController
-import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController
 import org.springframework.boot.web.servlet.error.ErrorAttributes
 import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.core.annotation.AnnotationUtils
@@ -84,11 +83,11 @@ class RestApiExceptionHandler {
 
         if (doExtraLogging.contains(status)) {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.toString(), errorId, e)
+                    req.servletPath, getUserOrNull()?.username, errorId, e)
         }
         else {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.toString(), errorId)
+                    req.servletPath, getUserOrNull()?.username, errorId)
         }
         
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)

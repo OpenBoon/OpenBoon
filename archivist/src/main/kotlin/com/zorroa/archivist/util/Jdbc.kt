@@ -104,6 +104,42 @@ object JdbcUtils {
     }
 
     /**
+     * Constuct an array overlap clause
+     *
+     * @param col: The column name
+     * @param type: The column type
+     * @param size: The number of elements the array to be compared.
+     *
+     * @return: An Postgres array overlap clause.
+     *
+     */
+    fun arrayOverlapClause(col: String, type: String, size: Int): String {
+        return when {
+            size<=0 -> ""
+            else -> {
+                val sb = StringBuilder(128)
+                sb.append("$col && ARRAY[")
+                sb.append(StringUtils.repeat("?", ",", size))
+                sb.append("]::$type[]")
+                return sb.toString()
+            }
+        }
+    }
+
+    /**
+     * Analyze a string and return a vector of words as a space delimited string.
+     * Handles splitting words by periods, camel case.  TsWordVectors are used
+     * for Postgres full text indexing.
+     *
+     * @param original The original text
+     * @return The vectorized version.
+     */
+    fun getTsWordVector(original: String): String {
+        return original.split(Regex("[_\\.-]+")).flatMap {
+            it.split(Regex("(?<=[a-z])(?=[A-Z])"))
+        }.joinToString(" ").toLowerCase()
+    }
+    /**
      * Create a WHERE clause fragment using a LongRangeFilter
      *
      * @param col The column name.
