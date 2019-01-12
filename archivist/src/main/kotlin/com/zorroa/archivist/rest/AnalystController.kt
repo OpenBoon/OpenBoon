@@ -35,7 +35,7 @@ class AnalystController @Autowired constructor(
         return HttpUtils.updated("analyst", analyst.id, analystService.setLockState(analyst, newState))
     }
 
-    @RequestMapping(value = ["/api/v1/analysts/_processor_scan"], method = [RequestMethod.GET, RequestMethod.POST])
+    @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
     fun processorScan(): Any {
         // background the scan
         GlobalScope.launch {
