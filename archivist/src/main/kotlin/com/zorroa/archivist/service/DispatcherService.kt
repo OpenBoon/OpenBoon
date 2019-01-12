@@ -138,7 +138,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 logger.warn("Failed to clear taskId from Analyst")
             }
 
-            if (!event.manualKill) {
+            if (!event.manualKill && event.exitStatus != 0) {
                 val script = taskDao.getScript(task.id)
                 taskErrorDao.batchCreate(task, script.over?.map {
                     TaskErrorEvent(UUID.fromString(it.id),
