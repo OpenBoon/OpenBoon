@@ -120,7 +120,7 @@ class AnalystControllerTests : MockMvcTest() {
     @Test
     fun testProcessorScan() {
         val session = admin()
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/analysts/_processor_scan")
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
