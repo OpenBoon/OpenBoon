@@ -7,7 +7,6 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import io.micrometer.core.instrument.MeterRegistry
@@ -107,15 +106,6 @@ class JobServiceImpl @Autowired constructor(
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 
-
-        meterRegistrty.counter("zorroa.jobs.created",
-                "organizationId", getOrgId().toString(),
-                "type", type.toString()).increment()
-
-
-        logger.event("launched Job",
-                mapOf("jobName" to job.name, "jobId" to job.id))
-
         return get(job.id)
     }
 
@@ -199,7 +189,6 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun retryAllTaskFailures(job: JobId) : Int {
-        logger.event("Job retryAllTaskFailures", mapOf("jobId" to job.jobId))
         var count = 0
         for (task in taskDao.getAll(job.jobId, TaskState.Failure)) {
             if (setTaskState(task, TaskState.Waiting, TaskState.Failure)) {

@@ -1,12 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Sets
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.domain.Acl
-import com.zorroa.archivist.domain.Folder
-import com.zorroa.archivist.domain.TrashedFolder
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.service.event
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -128,6 +127,9 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             ps.setString(17, Json.serializeToString(folder.attrs, "{}"))
             ps
         }
+
+        logger.event(LogObject.TRASH_FOLDER, LogAction.CREATE,
+                mapOf("folderId" to folder.id, "trashFolderId" to id))
         return id
     }
 

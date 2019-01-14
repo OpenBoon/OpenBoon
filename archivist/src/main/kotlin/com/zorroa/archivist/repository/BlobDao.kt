@@ -7,6 +7,7 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getPermissionIds
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.service.event
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.springframework.jdbc.core.RowCallbackHandler
@@ -56,6 +57,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
             ps
         }
 
+        logger.event(LogObject.TRASH_FOLDER, LogAction.CREATE, mapOf("blobId" to id))
         return get(id)
     }
 

@@ -8,7 +8,6 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.*
-import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
@@ -23,15 +22,15 @@ import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
-    fun getNext() : DispatchTask?
-    fun startTask(task: TaskId) : Boolean
-    fun stopTask(task: Task, event: TaskStoppedEvent) : Boolean
+    fun getNext(): DispatchTask?
+    fun startTask(task: TaskId): Boolean
+    fun stopTask(task: Task, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
-    fun expand(parentTask: Task, script: ZpsScript) : Task
-    fun expand(job: JobId, script: ZpsScript) : Task
+    fun expand(parentTask: Task, script: ZpsScript): Task
+    fun expand(job: JobId, script: ZpsScript): Task
     fun retryTask(task: Task): Boolean
     fun skipTask(task: Task): Boolean
-    fun queueTask(task: TaskId, endpoint: String) : Boolean
+    fun queueTask(task: TaskId, endpoint: String): Boolean
 }
 
 @Service
@@ -65,7 +64,7 @@ class DispatcherServiceImpl @Autowired constructor(
             return null
         }
 
-        if (endpoint != null ) {
+        if (endpoint != null) {
             val tasks = dispatchTaskDao.getNext(5)
             for (task in tasks) {
                 if (queueTask(task, endpoint)) {
@@ -92,25 +91,24 @@ class DispatcherServiceImpl @Autowired constructor(
         return null
     }
 
-    override fun queueTask(task: TaskId, endpoint: String) : Boolean {
+    override fun queueTask(task: TaskId, endpoint: String): Boolean {
         val result = taskDao.setState(task, TaskState.Queued, TaskState.Waiting)
         return if (result) {
             taskDao.setHostEndpoint(task, endpoint)
             analystDao.setTaskId(endpoint, task.taskId)
             true
-        }
-        else {
+        } else {
             false
         }
     }
 
-    override fun startTask(task: TaskId) : Boolean {
-        val result =  taskDao.setState(task, TaskState.Running, TaskState.Queued)
+    override fun startTask(task: TaskId): Boolean {
+        val result = taskDao.setState(task, TaskState.Running, TaskState.Queued)
         logger.info("Starting task: {}, {}", task.taskId, result)
         return result
     }
 
-    override fun stopTask(task: Task, event: TaskStoppedEvent) : Boolean {
+    override fun stopTask(task: Task, event: TaskStoppedEvent): Boolean {
 
         val newState = when {
             event.newState != null -> event.newState
@@ -133,8 +131,7 @@ class DispatcherServiceImpl @Autowired constructor(
             try {
                 val endpoint = getAnalystEndpoint()
                 analystDao.setTaskId(endpoint, null)
-            }
-            catch(e: Exception) {
+            } catch (e: Exception) {
                 logger.warn("Failed to clear taskId from Analyst")
             }
 
@@ -156,7 +153,7 @@ class DispatcherServiceImpl @Autowired constructor(
         return stopped
     }
 
-    override fun expand(parentTask: Task, script: ZpsScript) : Task {
+    override fun expand(parentTask: Task, script: ZpsScript): Task {
 
         val parentScript = taskDao.getScript(parentTask.id)
         script.globals = parentScript.globals
@@ -168,26 +165,26 @@ class DispatcherServiceImpl @Autowired constructor(
             script.execute = parentScript.execute
         }
 
-        val newTask =  taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
+        val newTask = taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
         logger.info("Expanding parent task: {} with task: {}", parentTask.id, newTask.id)
         return newTask
     }
 
-    override fun expand(job: JobId, script: ZpsScript) : Task {
-        val newTask =  taskDao.create(job, TaskSpec(zpsTaskName(script), script))
+    override fun expand(job: JobId, script: ZpsScript): Task {
+        val newTask = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         logger.info("Expanding job: {} with task: {}", job.jobId, newTask.id)
         return newTask
     }
 
     override fun handleEvent(event: TaskEvent) {
         val task = taskDao.get(event.taskId)
-        when(event.type) {
+        when (event.type) {
             TaskEventType.STOPPED -> {
                 val payload = Json.Mapper.convertValue<TaskStoppedEvent>(event.payload)
                 stopTask(task, payload)
             }
             TaskEventType.STARTED -> startTask(task)
-            TaskEventType.ERROR-> {
+            TaskEventType.ERROR -> {
                 // Might have to queue and submit in batches
                 val payload = Json.Mapper.convertValue<TaskErrorEvent>(event.payload)
                 taskErrorDao.create(task, payload)
@@ -204,28 +201,29 @@ class DispatcherServiceImpl @Autowired constructor(
         }
     }
 
-    fun killRunningTaskOnAnalyst(task: Task, newState: TaskState, reason: String) : Boolean {
+    fun killRunningTaskOnAnalyst(task: Task, newState: TaskState, reason: String): Boolean {
         if (task.host == null) {
             logger.warn("Failed to kill running task, no host is set")
             return false
         }
         try {
-            logger.event("Task kill",
-                    mapOf("reason" to reason, "taskId" to task.id, "jobId" to task.jobId))
             val client = RestClient(task.host)
             val result = client.delete("/kill/" + task.id,
                     mapOf("reason" to reason + getUsername(), "state" to newState.name), Json.GENERIC_MAP)
 
             return if (result["status"] as Boolean) {
+                logger.event(LogObject.TASK, LogAction.KILL,
+                        mapOf("reason" to reason, "taskId" to task.id, "jobId" to task.jobId))
                 true
-            }
-            else {
-                logger.warn("Failed to kill task {} on host {}, result: {}", task.id, task.host, result)
+            } else {
+                logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
+                        mapOf("taskId" to task.id, "host" to task.host))
                 false
             }
 
         } catch (e: Exception) {
-            logger.warn("Failed to kill running task an analyst {}", task.host, e)
+            logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
+                    mapOf("taskId" to task.id, "host" to task.host), e)
         }
         return false
     }
@@ -237,21 +235,19 @@ class DispatcherServiceImpl @Autowired constructor(
             }
             // just assuming true here as the call to the analyst is backgrounded
             true
-        }
-        else {
+        } else {
             jobService.setTaskState(task, TaskState.Waiting, null)
         }
     }
 
-    override fun skipTask(task: Task) : Boolean {
+    override fun skipTask(task: Task): Boolean {
         return if (task.state.isDispatched()) {
             GlobalScope.launch {
                 killRunningTaskOnAnalyst(task, TaskState.Skipped, "Task skipped by ")
             }
             // just assuming true here as the call to the analyst is backgrounded
             true
-        }
-        else {
+        } else {
             jobService.setTaskState(task, TaskState.Skipped, null)
         }
     }
@@ -266,12 +262,14 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     fun handleJobCanceled(job: Job) {
-        for (task in  taskDao.getAll(job.id, TaskState.Running)) {
+        for (task in taskDao.getAll(job.id, TaskState.Running)) {
             killRunningTaskOnAnalyst(task, TaskState.Waiting, "Job canceled by ")
         }
     }
 
     companion object {
         private val logger = LoggerFactory.getLogger(DispatcherServiceImpl::class.java)
+
+        private val EVENT_TASK = "task"
     }
 }

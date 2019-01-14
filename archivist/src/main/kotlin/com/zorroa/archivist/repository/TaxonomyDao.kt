@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.event
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
@@ -31,6 +32,8 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
             ps.setObject(3, getUser().organizationId)
             ps
         }, keyHolder)
+
+        logger.event(LogObject.TAXONOMY, LogAction.CREATE, mapOf("taxonomyId" to id))
         return get(id)
     }
 

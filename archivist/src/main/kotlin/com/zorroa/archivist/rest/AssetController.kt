@@ -8,7 +8,6 @@ import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.archivist.util.event
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
@@ -124,7 +123,7 @@ class AssetController @Autowired constructor(
             }
             else {
                 try {
-                    logger.event("view Asset", mapOf("assetId" to asset.id))
+                    logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to asset.id))
                     if (!ofile.isLocal()) {
                         ofile.copyTo(response)
                     } else {

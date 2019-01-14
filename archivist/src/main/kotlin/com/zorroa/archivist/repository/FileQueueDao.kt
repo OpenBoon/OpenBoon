@@ -1,17 +1,18 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.QueuedFile
+import com.zorroa.archivist.domain.QueuedFileSpec
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.event
 import com.zorroa.common.util.Json
+import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
-import java.sql.SQLException
 import java.sql.PreparedStatement
-import org.springframework.jdbc.core.BatchPreparedStatementSetter
-import org.springframework.jdbc.core.RowCallbackHandler
+import java.sql.SQLException
+import java.util.*
 
 
 interface FileQueueDao {
@@ -73,7 +74,7 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
             ps
         }
 
-        logger.event("created QueuedFile",
+        logger.event(LogObject.FILEQ, LogAction.CREATE,
                 mapOf("assetPath" to spec.path,
                     "assetId" to spec.assetId,
                     "pipelineId" to spec.pipelineId))

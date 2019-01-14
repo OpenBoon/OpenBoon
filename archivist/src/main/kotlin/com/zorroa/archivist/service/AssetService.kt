@@ -7,8 +7,6 @@ import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.security.*
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.domain.ArchivistSecurityException
@@ -22,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import java.net.URI
 import java.util.*
-import java.util.concurrent.atomic.LongAdder
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -323,8 +320,9 @@ open abstract class AbstractAssetService : AssetService {
                    isParentValidated(doc)
                 }
                 if (!result) {
-                    logger.event("skipped Assset, invalid parent", mapOf("assetId" to doc.id,
-                            "parentId" to parentId))
+                    logger.warnEvent(LogObject.ASSET, LogAction.BATCH_INDEX,
+                            "Skipped, invalid parent not in CDV",
+                            mapOf("assetId" to doc.id, "parentId" to parentId))
                 }
             }
             result
@@ -455,7 +453,8 @@ open abstract class AbstractAssetService : AssetService {
                     val docs : List<Document> = getAll(ids).mapNotNull { doc->
 
                         if (!hasPermission("write", doc)) {
-                            logger.warnEvent("batchUpdate Asset",
+                            logger.warnEvent(LogObject.ASSET,
+                                    LogAction.BATCH_UPDATE,
                                     "Skipping updating asset, access denied",
                                     mapOf("assetId" to doc.id))
                             null
@@ -465,7 +464,8 @@ open abstract class AbstractAssetService : AssetService {
                             val req = assets.batch.getValue(doc.id)
                             req.update?.forEach { t, u ->
                                 if (t.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent("batchUpdate Asset",
+                                    logger.warnEvent(LogObject.ASSET,
+                                            LogAction.BATCH_UPDATE,
                                             "Skipping setting $t, cannot set system values on batch update",
                                             mapOf("assetId" to doc.id))
                                 } else {
@@ -475,7 +475,8 @@ open abstract class AbstractAssetService : AssetService {
 
                             req.remove?.forEach {
                                 if (it.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent("batchUpdate Asset",
+                                    logger.warnEvent(LogObject.ASSET,
+                                            LogAction.BATCH_UPDATE,
                                             "Skipping removing $it, cannot set system values on batch update",
                                             mapOf("assetId" to doc.id))
                                 } else {
@@ -575,8 +576,6 @@ open abstract class AbstractAssetService : AssetService {
                 val search = req.search
                 search.addToFilter().must = mutableListOf(AssetFilter()
                         .addToTerms("media.clip.parent", req.parentIds))
-
-                logger.info(Json.prettyString(search))
 
                 searchService.scanAndScroll(search, false) { hits ->
                     launch {
@@ -699,10 +698,12 @@ class IrmAssetServiceImpl constructor(
                     rsp.updatedAssetIds.add(asset.id)
                 }
                 else {
-                    logger.warnEvent("batchUpdate", "Asset not found", mapOf("assetId" to asset.id))
+                    logger.warnEvent(LogObject.ASSET,
+                            LogAction.BATCH_UPDATE, "Asset not found", mapOf("assetId" to asset.id))
                 }
             } catch(e: Exception) {
-                logger.warnEvent("batchUpdate", "Error updating asset", mapOf("assetId" to asset.id))
+                logger.warnEvent(LogObject.ASSET, LogAction.BATCH_UPDATE,
+                        "Error updating asset " + e.message, mapOf("assetId" to asset.id))
                 rsp.erroredAssetIds.add(asset.id)
             }
         }
@@ -790,6 +791,7 @@ class IrmAssetServiceImpl constructor(
         val result = cdvClient.createAsset(getCompanyId(), spec)
         val uri = URI(result["imageUploadURL"] as String)
         cdvClient.uploadSource(uri, bytes)
+        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to uri))
         return AssetUploadedResponse(id, uri)
     }
 }
@@ -840,7 +842,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         val txResult = assetDao.batchCreateOrReplace(prepped.assets)
 
         if (txResult != prepped.assets.size) {
-            logger.warnEvent("batchUpsert Asset",
+            logger.warnEvent(LogObject.ASSET, LogAction.BATCH_CREATE,
                     "Number of assets indexed did not match number in DB.",
                     mapOf())
         }
@@ -926,6 +928,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         val id = UUID.randomUUID()
         val fss = fileStorageService.get(FileStorageSpec("asset", id, name))
         fileStorageService.write(fss.id, bytes)
+        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to fss.uri))
         return AssetUploadedResponse(id, fss.uri)
     }
 }

@@ -8,7 +8,6 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.event
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -66,8 +65,6 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         val value = Json.serializeToString(spec.value, null)
         val message = spec.message ?: getLogMessage(user, spec, value)
 
-        logger.event(message, kvp, appendKeyValuePairs(user, spec, value))
-
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
@@ -103,8 +100,6 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
                 val spec = specs[i]
                 val value = Json.serializeToString(spec.value, null)
                 val message = spec.message ?: getLogMessage(user, spec, value)
-
-                logger.event(getEventMessage(spec), kvp, appendKeyValuePairs(user, spec, value))
 
                 ps.setObject(1, uuid1.generate())
                 ps.setObject(2, spec.assetId)
