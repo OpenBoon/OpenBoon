@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.service.event
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.JdbcUtils.isUUID
@@ -47,6 +48,8 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             ps.setLong(7, time)
             ps
         }
+        logger.event(LogObject.PIPELINE, LogAction.CREATE,
+                mapOf("pipelineId" to id, "pipelineName" to spec.name))
         return get(id)
     }
 

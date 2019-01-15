@@ -1,5 +1,8 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.service.event
 import com.zorroa.common.util.JdbcUtils
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.jdbc.core.RowCallbackHandler
@@ -31,7 +34,8 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                 ps.setLong(4, time + unit.toMillis(duration))
                 ps
             }
-            logger.info("$host obtained '$name' lock")
+            logger.event(LogObject.CLUSTER_LOCK, LogAction.LOCK,
+                    mapOf("lockName" to name))
             true
         } catch (e: DataIntegrityViolationException) {
             false
@@ -43,7 +47,8 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         val result = jdbc.update("DELETE FROM cluster_lock WHERE str_name=? AND str_host=?",
                 name, host) == 1
         if (result) {
-            logger.info("$host released '$name lock")
+            logger.event(LogObject.CLUSTER_LOCK, LogAction.UNLOCK,
+                    mapOf("lockName" to name))
         }
         return result
     }

@@ -2,9 +2,11 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.util.event
+import com.zorroa.archivist.service.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
@@ -63,7 +65,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         jdbc.update("INSERT INTO job_count (pk_job, time_updated) VALUES (?, ?)", id, time)
         jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", id)
 
-        logger.event("create Job", mapOf("jobId" to id, "jobName" to spec.name))
+        logger.event(LogObject.JOB, LogAction.CREATE, mapOf("jobId" to id, "jobName" to spec.name))
 
         return get(id)
     }
@@ -121,11 +123,13 @@ class JobDaoImpl : AbstractDao(), JobDao {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=?",
                     newState.ordinal, time, job.jobId) == 1
         }
-        logger.event("update Job",
-                mapOf("jobId" to job.jobId,
-                        "newState" to newState.name,
-                        "oldState" to oldState?.name,
-                        "status" to result))
+        if (result) {
+            logger.event(LogObject.JOB, LogAction.STATE_CHANGE,
+                    mapOf("jobId" to job.jobId,
+                            "newState" to newState.name,
+                            "oldState" to oldState?.name,
+                            "status" to result))
+        }
         return result
 
     }
@@ -143,14 +147,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 counts.replacedAssetIds.size,
                 job.jobId) == 1
 
-        if (updated) {
-            logger.event("update JobAssetStats",
-                    mapOf("taskId" to job.jobId,
-                            "assetsCreated" to counts.createdAssetIds.size,
-                            "assetsWarned" to counts.warningAssetIds.size,
-                            "assetErrors" to counts.erroredAssetIds.size,
-                            "assetsReplaced" to counts.replacedAssetIds.size))
-        }
         return updated
     }
 

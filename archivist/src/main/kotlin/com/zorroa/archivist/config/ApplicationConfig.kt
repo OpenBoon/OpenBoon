@@ -9,6 +9,7 @@ import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.*
+import io.micrometer.core.instrument.MeterRegistry
 import io.undertow.servlet.api.SecurityConstraint
 import io.undertow.servlet.api.SecurityInfo
 import io.undertow.servlet.api.TransportGuaranteeType
@@ -148,14 +149,15 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun pubSubService() : PubSubService? {
+    @Autowired
+    fun pubSubService(meterRegistry: MeterRegistry) : PubSubService? {
         val props = properties()
         if (props.getString("archivist.pubsub.type") == "gcp") {
             val network = networkEnvironment()
             return GcpPubSubServiceImpl(IrmCoreDataVaultClientImpl(
                     network.getPublicUrl("core-data-vault-api"),
                     serviceCredentials(),
-                    dataCredentials()))
+                    dataCredentials()), meterRegistry)
         }
         logger.info("No PubSub service configured")
         return null

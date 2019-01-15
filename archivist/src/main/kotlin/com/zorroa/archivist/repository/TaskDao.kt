@@ -2,10 +2,10 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.util.event
+import com.zorroa.archivist.service.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
@@ -47,12 +47,9 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps
         }
 
-        logger.event("create Task",
-                mapOf("taskId" to id,
-                        "jobId" to job.jobId,
-                        "taskName" to spec.name))
-
         jdbc.update("INSERT INTO task_stat (pk_task, pk_job) VALUES (?,?)", id, job.jobId)
+        logger.event(LogObject.TASK, LogAction.CREATE,
+                mapOf("taskId" to id, "taskName" to spec.name))
         return get(id)
     }
 
@@ -77,7 +74,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     newState.ordinal, time, task.taskId) == 1
         }
         if (updated) {
-            logger.event("update Task",
+            logger.event(LogObject.TASK, LogAction.STATE_CHANGE,
                     mapOf("taskId" to task.taskId,
                             "newState" to newState.name,
                             "oldState" to oldState?.name))
@@ -102,23 +99,13 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean {
-        val updated = jdbc.update(INC_STATS,
+        return jdbc.update(INC_STATS,
                 counts.total,
                 counts.createdAssetIds.size,
                 counts.warningAssetIds.size,
                 counts.erroredAssetIds.size,
                 counts.replacedAssetIds.size,
                 task.taskId) == 1
-
-        if (updated) {
-            logger.event("updated TaskAssetStats",
-                    mapOf("taskId" to task.taskId,
-                            "assetsCreated" to counts.createdAssetIds.size,
-                            "assetsWarned" to counts.warningAssetIds.size,
-                            "assetErrors" to counts.erroredAssetIds.size,
-                            "assetsReplaced" to counts.replacedAssetIds.size))
-        }
-        return updated
     }
 
     override fun getAll(tf: TaskFilter?): KPagedList<Task> {

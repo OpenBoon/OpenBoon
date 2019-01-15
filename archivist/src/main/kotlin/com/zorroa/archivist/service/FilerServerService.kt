@@ -1,25 +1,22 @@
 package com.zorroa.archivist.service
 
-import com.google.api.gax.paging.Page
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.*
 import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.EntityNotFoundException
-import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Component
 import org.springframework.util.FileSystemUtils
 import java.io.File
 import java.io.FileInputStream
@@ -246,7 +243,7 @@ class LocalFileServerService : FileServerService {
     }
 
     override fun delete(uri: URI): Boolean {
-        logger.event("delete $entity", mapOf("uri" to uri.toString()))
+        logger.event(LogObject.STORAGE, LogAction.DELETE, mapOf("uri" to uri.toString()))
         val path = Paths.get(uri)
         return if (path.toFile().isDirectory) {
             FileSystemUtils.deleteRecursively(path)
@@ -325,7 +322,7 @@ class GcpFileServerService constructor (
     override fun getSignedUrl(url: URI): URL {
         val blob = getBlob(url)
         if (blob != null) {
-            logger.event("sign $entity", mapOf("uri" to url.toString()))
+            logger.event(LogObject.STORAGE, LogAction.AUTHORIZE, mapOf("uri" to url.toString()))
             return blob.signUrl(60, TimeUnit.MINUTES,
                     Storage.SignUrlOption.httpMethod(HttpMethod.GET))
         }
@@ -347,7 +344,7 @@ class GcpFileServerService constructor (
             throw EntityNotFoundException("Invalid URI $uri")
         }
         val blobId = BlobId.of(bucket, path)
-        logger.event("get $entity", mapOf("uri" to uri.toString()))
+        logger.event(LogObject.STORAGE, LogAction.GET, mapOf("uri" to uri.toString()))
         return storage.get(blobId)
     }
 
@@ -380,10 +377,11 @@ class GcpFileServerService constructor (
 
         for (blob in blobs.iterateAll()) {
             if (blob.delete()) {
-                logger.event("delete $entity", mapOf("url" to url.toString()))
+                logger.event(LogObject.STORAGE, LogAction.DELETE, mapOf("url" to url.toString()))
             }
             else {
-                logger.warnEvent("delete $entity", "Failed to delete", mapOf("url" to url.toString()))
+                logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, "Did not exist",
+                        mapOf("url" to url.toString()))
                 result=false
             }
         }

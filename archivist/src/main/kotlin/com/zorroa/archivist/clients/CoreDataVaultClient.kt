@@ -6,9 +6,11 @@ import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getUserOrNull
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
+import com.zorroa.archivist.service.event
+import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -207,7 +209,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
             }
             updated
         } catch (e: Exception) {
-            logger.warnEvent("updateIndexMetadata Asset", e.message ?: "No error message",
+            logger.warnEvent(LogObject.ASSET, LogAction.UPDATE, e.message ?: "No error message",
                     mapOf("companyId" to companyId, "assetId" to assetId))
             false
         }
@@ -262,7 +264,6 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
     override fun uploadSource(uri: URI, bytes: ByteArray) {
         val (bucket, path) = uri.path.substring(1).split('/', limit=2)
         val blobId = BlobId.of(bucket, path)
-        logger.event("uploadSource CDV", mapOf("uri" to uri))
         gcs.create(BlobInfo.newBuilder(blobId).build(), bytes)
     }
 

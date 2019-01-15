@@ -113,9 +113,6 @@ class SearchServiceImpl @Autowired constructor(
     internal lateinit var folderService: FolderService
 
     @Autowired
-    internal lateinit var logService: EventLogService
-
-    @Autowired
     internal lateinit var fieldService: FieldService
 
     override fun count(builder: AssetSearch): Long {
@@ -272,14 +269,6 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun search(page: Pager, search: AssetSearch): PagedList<Document> {
-        /**
-         * If the search is not empty (its a valid search) and the page
-         * number is 1, then log the search.
-         */
-        if (isSearchLogged(page, search)) {
-            logService.logAsync(UserLogSpec.build(LogAction.Search, search))
-        }
-
         val rest = indexRoutingService[getOrgId()]
         if (search.scroll != null) {
             val scroll = search.scroll
@@ -299,14 +288,6 @@ class SearchServiceImpl @Autowired constructor(
 
     @Throws(IOException::class)
     override fun search(page: Pager, search: AssetSearch, stream: OutputStream) {
-        /**
-         * If the search is not empty (its a valid search) and the page
-         * number is 1, then log the search.
-         */
-        if (isSearchLogged(page, search)) {
-            logService.logAsync(UserLogSpec.build(LogAction.Search, search))
-        }
-
         indexDao.getAll(page, buildSearch(search, "asset"), stream)
     }
 

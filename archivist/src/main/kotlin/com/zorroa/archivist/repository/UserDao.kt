@@ -7,9 +7,8 @@ import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.event
+import com.zorroa.archivist.service.event
+import com.zorroa.archivist.util.*
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -149,9 +148,9 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps
         }
 
-        logger.event("created User",
-                mapOf("userName" to spec.username,
-                        "userOrg" to user.organizationId))
+        logger.event(LogObject.USER, LogAction.CREATE,
+                mapOf("createdUser" to spec.username,
+                        "createdOrgId" to user.organizationId))
         return get(id)
     }
 
@@ -218,7 +217,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun delete(user: User): Boolean {
         val result = jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
                 getOrgId(), user.id) == 1
-        logger.event("deleted User", mapOf("userName" to user.username, "opResult" to result))
+        logger.event(LogObject.USER, LogAction.DELETE, mapOf("userName" to user.username, "result" to result))
         return result
     }
 

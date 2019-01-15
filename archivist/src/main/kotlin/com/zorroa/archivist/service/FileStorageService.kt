@@ -6,10 +6,11 @@ import com.google.cloud.storage.Storage.SignUrlOption
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
-import com.zorroa.archivist.util.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.FileInputStream
@@ -135,7 +136,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val uri = dlp.buildUri(spec)
         val id = dlp.buildId(spec)
 
-        logger.event("getLocation FileStorage",
+        logger.event(LogObject.STORAGE, LogAction.GET,
                 mapOf("fileStorageId" to id,
                         "fileStorageUri" to uri))
 
@@ -149,7 +150,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
                 "gs",
                 StaticUtils.tika.detect(id),
                 fileServerProvider)
-        logger.event("getLocation FileStorage",
+        logger.event(LogObject.STORAGE, LogAction.GET,
                 mapOf("fileStorageId" to storage.id,
                         "fileStorageUri" to storage.uri))
         return storage
@@ -160,7 +161,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val path = uri.path
         val contentType = StaticUtils.tika.detect(path)
 
-        logger.event("sign FileStorage",
+        logger.event(LogObject.STORAGE, LogAction.AUTHORIZE,
                 mapOf("contentType" to contentType, "storageId" to uri, "bucket" to bucket, "path" to path))
 
         val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
@@ -171,7 +172,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
     override fun write(id: String, input: ByteArray) {
         val uri = URI(dlp.buildUri(id))
         val blobId = BlobId.of(bucket, uri.path.substring(1))
-        logger.event("write FileStorage", mapOf("uri" to uri))
+        logger.event(LogObject.STORAGE, LogAction.WRITE, mapOf("uri" to uri))
         gcs.create(BlobInfo.newBuilder(blobId).build(), input)
     }
 
@@ -221,22 +222,17 @@ class LocalFileStorageService constructor(
         val uri = Paths.get(URI(dlp.buildUri(id)))
         val parent = uri.parent
         Files.createDirectories(parent)
-        logger.event("write FileStorage", mapOf("uri" to uri))
+        logger.event(LogObject.STORAGE, LogAction.WRITE, mapOf("uri" to uri))
         Files.write(uri, input)
     }
 
     private fun buildFileStorage(id: String, url: String) : FileStorage {
-        val storage = FileStorage(
+        return FileStorage(
                 unslashed(id),
                 URI(url),
                 "file",
                 StaticUtils.tika.detect(url),
                 fileServerProvider)
-
-        logger.event("getLocation FileStorage",
-                mapOf("fileStorageId" to storage.id,
-                        "fileStorageUri" to storage.uri))
-        return storage
     }
 
     companion object {

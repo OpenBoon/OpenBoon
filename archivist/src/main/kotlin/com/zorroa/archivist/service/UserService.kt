@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
-import com.google.common.collect.Sets
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
@@ -17,7 +16,6 @@ import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.security.Groups
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
@@ -161,9 +159,6 @@ class UserRegistryServiceImpl @Autowired constructor(
             }
         }
 
-        logger.event("userAuthed",
-                mapOf("userId" to user.id,
-                "userSource" to source.authSourceId))
         return toUserAuthed(user)
     }
 
@@ -253,9 +248,6 @@ class UserServiceImpl @Autowired constructor(
 
     @Autowired
     internal lateinit var folderService: FolderService
-
-    @Autowired
-    internal lateinit var logService: EventLogService
 
     private val PASS_MIN_LENGTH = 8
 
@@ -425,10 +417,9 @@ class UserServiceImpl @Autowired constructor(
                 permissionDao.renameUserPermission(user, form.username)
                 folderService.renameUserFolder(user, form.username)
             }
-            tx.afterCommit(false, {
+            tx.afterCommit(false) {
                 userDaoCache.invalidate(user.id)
-                logService.logAsync(UserLogSpec.build(LogAction.Update, user))
-            })
+            }
         }
         return result
     }
@@ -462,24 +453,11 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun updateSettings(user: User, settings: UserSettings): Boolean {
-        val result = userDao.setSettings(user, settings)
-        if (result) {
-            tx.afterCommit(false, { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
-        }
-        return result
+        return userDao.setSettings(user, settings)
     }
 
     override fun setEnabled(user: User, value: Boolean): Boolean {
-        val result = userDao.setEnabled(user, value)
-
-        if (result) {
-            if (result) {
-                tx.afterCommit(false, {
-                    logService.logAsync(UserLogSpec.build(if (value) "enable" else "disable", user)) })
-            }
-        }
-
-        return result
+        return userDao.setEnabled(user, value)
     }
 
     override fun incrementLoginCounter(user: UserId) {
@@ -501,11 +479,6 @@ class UserServiceImpl @Autowired constructor(
          */
         val filtered = perms.stream().filter { p -> !PERMANENT_TYPES.contains(p.type) }.collect(Collectors.toList())
         userDao.setPermissions(user, filtered, source)
-
-        tx.afterCommit(true, {
-            logService.logAsync(UserLogSpec.build("set_permission", user)
-                    .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        })
     }
 
     override fun addPermissions(user: UserId, perms: Collection<Permission>) {
@@ -517,10 +490,6 @@ class UserServiceImpl @Autowired constructor(
                 userDao.addPermission(user, p, false)
             }
         }
-        tx.afterCommit(false, {
-            logService.logAsync(UserLogSpec.build("add_permission", user)
-                    .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        })
     }
 
     override fun removePermissions(user: UserId, perms: Collection<Permission>) {
@@ -534,10 +503,6 @@ class UserServiceImpl @Autowired constructor(
             }
             userDao.removePermission(user, p)
         }
-        tx.afterCommit(false, {
-            logService.logAsync(UserLogSpec.build("remove_permission", user)
-                    .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        })
     }
 
     override fun hasPermission(user: UserId, type: String, name: String): Boolean {

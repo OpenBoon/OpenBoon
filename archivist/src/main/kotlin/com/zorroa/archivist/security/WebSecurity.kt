@@ -2,10 +2,12 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.UserService
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
+import com.zorroa.archivist.service.event
+import com.zorroa.archivist.service.warnEvent
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -178,12 +180,12 @@ class MultipleWebSecurityConfig {
 
     @Autowired
     @Throws(Exception::class)
-    fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService) {
+    fun configureGlobal(auth: AuthenticationManagerBuilder) {
 
         auth
                 .authenticationProvider(jwtAuthenticationProvider())
                 .authenticationProvider(zorroaAuthenticationProvider())
-                .authenticationEventPublisher(authenticationEventPublisher(userService))
+                .authenticationEventPublisher(authenticationEventPublisher())
 
         /**
          * If its a unit test we add our rubber stamp authenticator.
@@ -194,30 +196,32 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
-    @Autowired
-    fun authenticationEventPublisher(userService: UserService): AuthenticationEventPublisher {
+    fun authenticationEventPublisher(): AuthenticationEventPublisher {
 
         return object : AuthenticationEventPublisher {
 
             override fun publishAuthenticationSuccess(authentication: Authentication) {
                 try {
                     val user = authentication.principal as UserAuthed
-                    userService.incrementLoginCounter(user)
-                    logger.event("authed User",
-                            mapOf("actorName" to user.username,
-                                    "orgId" to user.organizationId))
+                    // Authentication is not set yet, so we can't rely on the event method
+                    // to auto-add the username and org
+                    logger.event(LogObject.USER, LogAction.AUTHENTICATE,
+                            mapOf("username" to user.username, "orgId" to user.organizationId.toString()))
+
                 } catch (e: Exception) {
-                    // If we throw here, the authentication fails, so if we can't log
-                    // it then nobody can login.
                     logger.warn("Failed to log user authentication", e)
-                    throw SecurityException(e)
                 }
             }
 
             override fun publishAuthenticationFailure(
                     exception: AuthenticationException,
                     authentication: Authentication) {
-                logger.warnEvent("auth User", "failed to auth", mapOf("user" to authentication.principal.toString()))
+
+                if (properties.getBoolean("archivist.debug-mode.enabled")) {
+                    logger.warnEvent(LogObject.USER, LogAction.ERROR,
+                            "failed to authenticate", emptyMap(), exception)
+                }
+
             }
         }
     }

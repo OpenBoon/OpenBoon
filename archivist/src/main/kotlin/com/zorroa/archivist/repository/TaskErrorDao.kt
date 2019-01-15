@@ -4,9 +4,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.util.FileUtils
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
+import com.zorroa.archivist.service.warnEvent
+import com.zorroa.archivist.util.*
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
@@ -147,7 +146,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
     }
 
     fun warnEvent(task: Task, spec: TaskErrorEvent) {
-        logger.warnEvent("TaskError", spec.message,
+        logger.warnEvent(LogObject.TASK, LogAction.ERROR, spec.message,
                 mapOf("assetId" to spec.assetId,
                         "taskId" to task.id,
                         "organizationId" to task.organizationId,
