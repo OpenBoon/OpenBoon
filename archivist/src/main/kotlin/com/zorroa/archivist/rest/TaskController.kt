@@ -8,18 +8,18 @@ import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.copyInputToOuput
 import com.zorroa.common.domain.TaskFilter
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.ExecutionException
-import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
 
 
 @RestController
+@Timed
 class TaskController @Autowired constructor(
         val jobService: JobService,
         val dispatcherService: DispatcherService,

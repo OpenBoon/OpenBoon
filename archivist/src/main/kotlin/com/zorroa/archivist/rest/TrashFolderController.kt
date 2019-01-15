@@ -1,17 +1,19 @@
 package com.zorroa.archivist.rest
 
 import com.google.common.collect.Lists
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.TrashedFolder
 import com.zorroa.archivist.domain.TrashedFolderOp
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.FolderServiceImpl
+import com.zorroa.archivist.util.HttpUtils
+import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@Timed
 class TrashFolderController @Autowired constructor(
         private val folderService: FolderService
 ){

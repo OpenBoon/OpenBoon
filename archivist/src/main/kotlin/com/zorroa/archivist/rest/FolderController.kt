@@ -5,6 +5,7 @@ import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.SearchService
+import io.micrometer.core.annotation.Timed
 import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,7 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
+@Timed
 class FolderController @Autowired constructor(
         private val folderService: FolderService,
         private val searchService: SearchService

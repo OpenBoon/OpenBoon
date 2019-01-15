@@ -6,10 +6,12 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileStat
 import com.zorroa.archivist.service.FileStorageService
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@Timed
 class FileStorageController @Autowired constructor(
         private val fileStorageService: FileStorageService,
         private val fileServerProvider: FileServerProvider) {

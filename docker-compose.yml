@@ -41,8 +41,8 @@ services:
       GF_USERS_DEFAULT_THEME: dark
       # GF_PATHS_PROVISIONING: /etc/grafana/provisioning
     volumes:
-      - "./grafana/provisioning:/etc/grafana/provisioning"
-      - "./grafana/dashboards:/var/lib/grafana/dashboards"
+      - "./localdev/monitoring/grafana/provisioning:/etc/grafana/provisioning"
+      - "./localdev/monitoring/grafana/dashboards:/var/lib/grafana/dashboards"
 
   # Postgres instance used for local development servers.
   postgres:
@@ -138,10 +138,10 @@ services:
 
 secrets:
   logstash.conf:
-    file: ./config/logstash.conf
+    file: ./localdev/monitoring/logstash.conf
   kibana.yml:
-    file: ./config/kibana.yml
+    file: ./localdev/monitoring/kibana.yml
   filebeat.yml:
-    file: ./config/filebeat.yml
+    file: ./localdev/monitoring/filebeat.yml
   prometheus.yml:
-    file: ./config/prometheus.yml
+    file: ./localdev/monitoring/prometheus.yml

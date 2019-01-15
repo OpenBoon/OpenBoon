@@ -1,15 +1,17 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.Taxonomy
 import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.TaxonomyService
+import com.zorroa.archivist.util.HttpUtils
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@Timed
 class TaxonomyController @Autowired constructor(
         private val taxonomyService: TaxonomyService,
         private val folderService: FolderService

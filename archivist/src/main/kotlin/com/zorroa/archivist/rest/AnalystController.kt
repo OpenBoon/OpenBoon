@@ -5,6 +5,7 @@ import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystFilter
 import com.zorroa.common.domain.LockState
+import io.micrometer.core.annotation.Timed
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,7 @@ import java.util.*
 
 @PreAuthorize("hasAuthority(T( com.zorroa.security.Groups).SUPERADMIN)")
 @RestController
+@Timed
 class AnalystController @Autowired constructor(
         val analystService: AnalystService) {
 

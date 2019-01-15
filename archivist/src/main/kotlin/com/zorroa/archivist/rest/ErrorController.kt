@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.common.domain.*
+import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.util.*
-import javax.servlet.RequestDispatcher
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -111,6 +111,7 @@ class RestApiExceptionHandler {
 
 @RestController
 @RequestMapping("/error")
+@Timed
 class CustomErrorController @Autowired constructor(private val errorAttributes: ErrorAttributes) :
         AbstractErrorController(errorAttributes), ErrorController {
 

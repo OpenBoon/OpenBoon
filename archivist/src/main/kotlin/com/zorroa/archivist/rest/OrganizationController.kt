@@ -3,11 +3,13 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.service.OrganizationService
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@Timed
 class OrganizationController @Autowired constructor(
         val organizationService: OrganizationService
 ){

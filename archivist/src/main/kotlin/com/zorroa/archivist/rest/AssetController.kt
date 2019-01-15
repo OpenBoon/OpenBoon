@@ -10,6 +10,7 @@ import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
+import io.micrometer.core.annotation.Timed
 import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @RestController
+@Timed
 class AssetController @Autowired constructor(
         private val indexService: IndexService,
         private val assetService: AssetService,

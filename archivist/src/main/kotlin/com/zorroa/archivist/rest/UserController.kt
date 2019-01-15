@@ -2,13 +2,14 @@ package com.zorroa.archivist.rest
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.security.Groups
+import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
@@ -20,20 +21,16 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import java.util.stream.Collectors
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import javax.validation.Valid
-
-
-
 
 
 @RestController
+@Timed
 class UserController @Autowired constructor(
         private val userService: UserService,
         private val permissionService: PermissionService,
