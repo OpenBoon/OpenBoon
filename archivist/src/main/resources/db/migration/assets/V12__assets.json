@@ -106,11 +106,11 @@
           "properties": {
             "timeCreated": {
               "type": "date",
-              "format": "date_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
+              "format": "yyyy/MM/dd||yyyy/MM/dd Z||date_optional_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
             },
             "timeModified": {
               "type": "date",
-              "format": "date_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
+              "format": "yyyy/MM/dd||yyyy/MM/dd Z||date_optional_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
             },
             "organizationId": {
               "type": "keyword"

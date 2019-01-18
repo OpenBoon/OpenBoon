@@ -2,15 +2,16 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
-import com.zorroa.archivist.util.event
-import com.zorroa.common.schema.Proxy
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.schema.ProxySchema
+import com.zorroa.common.util.Json
+import io.micrometer.core.annotation.Timed
+import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl
@@ -18,8 +19,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
-import java.net.URI
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @RestController
+@Timed
 class AssetController @Autowired constructor(
         private val indexService: IndexService,
         private val assetService: AssetService,
@@ -36,8 +38,28 @@ class AssetController @Autowired constructor(
         private val imageService: ImageService,
         private val fieldService: FieldService,
         private val fileServerProvider: FileServerProvider,
-        private val fileStorageService: FileStorageService
+        private val fileStorageService: FileStorageService,
+        private val fileUploadService: FileUploadService,
+        meterRegistry: MeterRegistry
 ){
+
+    private val proxyLookupCache = CacheBuilder.newBuilder()
+            .maximumSize(10000)
+            .concurrencyLevel(10)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build(object : CacheLoader<String, ProxySchema>() {
+                @Throws(Exception::class)
+                override fun load(id: String): ProxySchema {
+                    return indexService.getProxies(id)
+                }
+            })
+
+
+    init {
+        meterRegistry.gauge("zorroa.cache.proxy-cache-size", proxyLookupCache) {
+            it.size().toDouble()
+        }
+    }
 
     @GetMapping(value = ["/api/v1/assets/_fields"])
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
@@ -56,7 +78,7 @@ class AssetController @Autowired constructor(
         if (forceProxy) {
             val proxy = getProxyStream(asset)
              if (proxy != null) {
-                 return fileServerProvider.getServableFile(URI(proxy.uri))
+                 return fileServerProvider.getServableFile(proxy.uri)
              }
 
         } else  {
@@ -103,7 +125,7 @@ class AssetController @Autowired constructor(
             }
             else {
                 try {
-                    logger.event("view Asset", mapOf("assetId" to asset.id))
+                    logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to asset.id))
                     if (!ofile.isLocal()) {
                         ofile.copyTo(response)
                     } else {
@@ -121,25 +143,6 @@ class AssetController @Autowired constructor(
         }
     }
 
-    private val proxyLookupCache = CacheBuilder.newBuilder()
-            .maximumSize(10000)
-            .expireAfterWrite(1, TimeUnit.HOURS)
-            .build(object : CacheLoader<String, Proxy>() {
-                @Throws(Exception::class)
-                override fun load(slug: String): Proxy? {
-                    val e = slug.split(":")
-                    val proxies = indexService.getProxies(e[1])
-
-                    return when {
-                        e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt(), e.last())
-                        e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt(), e.last())
-                        e[0] == "smallest" -> proxies.getSmallest(e.last())
-                        e[0] == "largest" -> proxies.getLargest(e.last())
-                        else -> proxies.getLargest(e.last())
-                    }
-                }
-            })
-
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{width:\\d+}x{height:\\d+}"])
     @Throws(IOException::class)
     fun getClosestProxy(req: HttpServletRequest,
@@ -149,7 +152,7 @@ class AssetController @Autowired constructor(
                         @PathVariable height: Int,
                         @RequestParam(value="type", defaultValue = "image") type: String)  {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("closest:$id:$width:$height:$type"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get(id)!!.getClosest(width, height, type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -163,7 +166,7 @@ class AssetController @Autowired constructor(
                    @PathVariable(required = true) size: Int,
                    @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("atLeast:$id:$size:$type"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get(id).atLeastThisSize(size, type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -176,7 +179,7 @@ class AssetController @Autowired constructor(
                         @PathVariable id: String,
                         @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("largest:$id:$type"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get(id).getLargest(type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -189,7 +192,7 @@ class AssetController @Autowired constructor(
                          @PathVariable id: String,
                          @RequestParam(value="type", defaultValue = "image") type: String) {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get("smallest:$id:$type"))
+            imageService.serveImage(req, rsp, proxyLookupCache.get(id).getSmallest(type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -267,6 +270,11 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
     }
 
+    @PutMapping(value = ["/api/v1/assets"])
+    fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
+        return assetService.batchUpdate(req)
+    }
+
     @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
     @Throws(IOException::class)
     fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {
@@ -301,6 +309,14 @@ class AssetController @Autowired constructor(
     @Throws(Exception::class)
     fun setPermissionsV2(@RequestBody req: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
         return assetService.setPermissions(req)
+    }
+
+    @PostMapping(value = ["/api/v1/assets/_upload", "/api/v1/imports/_upload"], consumes = ["multipart/form-data"])
+    @ResponseBody
+    fun upload(@RequestParam("files") files: Array<MultipartFile>,
+               @RequestParam("body") body: String): Any {
+        val spec = Json.deserialize(body, FileUploadSpec::class.java)
+        return fileUploadService.ingest(spec, files)
     }
 
     @PutMapping(value = ["/api/v1/refresh"])

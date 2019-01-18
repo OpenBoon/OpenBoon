@@ -33,6 +33,7 @@ abstract class KDaoFilter {
     abstract fun build()
 
     fun addToWhere(col: String) {
+        if (col.isBlank()) { return }
         this.where.add(col)
     }
 
@@ -82,7 +83,10 @@ abstract class KDaoFilter {
             sb.append(" LIMIT ? OFFSET ?")
         }
 
-        val s =  sb.toString()
+        val s =sb.toString()
+        if (logger.isDebugEnabled) {
+            logger.debug(s)
+        }
         return s
     }
 

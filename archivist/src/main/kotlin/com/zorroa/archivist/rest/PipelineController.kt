@@ -7,12 +7,14 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.util.Json
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.servlet.http.HttpServletResponse
 
 @RestController
+@Timed
 class PipelineController @Autowired constructor(
         val pipelineService: PipelineService
 ){

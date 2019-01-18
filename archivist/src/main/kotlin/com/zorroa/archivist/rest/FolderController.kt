@@ -1,13 +1,11 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.archivist.domain.Folder
-import com.zorroa.archivist.domain.FolderSpec
-import com.zorroa.archivist.domain.FolderUpdate
-import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.SearchService
+import io.micrometer.core.annotation.Timed
 import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +15,7 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
+@Timed
 class FolderController @Autowired constructor(
         private val folderService: FolderService,
         private val searchService: SearchService
@@ -141,7 +140,7 @@ class FolderController @Autowired constructor(
     }
 
     /**
-     * Remove the given list of asset Ids from a folder.
+     * Remove the given list of assetIds from a folder.
      *
      * @param assetIds
      * @param id
@@ -157,7 +156,22 @@ class FolderController @Autowired constructor(
     }
 
     /**
-     * Add a given list of asset Ids from a folder.
+     * Add a given list of assetIds to a folder.
+     *
+     * @param assetIds
+     * @param id
+     * @throws Exception
+     */
+    @PutMapping(value = ["/api/v2/folders/{id}/assets"])
+    @Throws(Exception::class)
+    fun addAssets(@PathVariable id: UUID, @RequestBody req: BatchUpdateAssetLinks): Any {
+        val folder = folderService.get(id)
+        val result = folderService.addAssets(folder, req)
+        return mapOf("successCount" to result.updatedAssetIds.size, "erroredAssetIds" to result.erroredAssetIds)
+    }
+
+    /**
+     * Add a given list of assetIds to a folder.
      *
      * @param assetIds
      * @param id
@@ -169,9 +183,10 @@ class FolderController @Autowired constructor(
             @RequestBody assetIds: List<String>,
             @PathVariable id: UUID): Any {
         val folder = folderService.get(id)
-        return folderService.addAssets(folder, assetIds)
+        val req = BatchUpdateAssetLinks(assetIds, null, null)
+        val result =  folderService.addAssets(folder, req)
+        return mapOf("success" to result.updatedAssetIds, "missing" to result.erroredAssetIds)
     }
-
 
     companion object {
 

@@ -47,9 +47,6 @@ class PermissionServiceImpl @Autowired constructor(
         private val txem: TransactionEventManager
 ) : PermissionService {
 
-    @Autowired
-    private lateinit var logService: EventLogService
-
     private val permissionCache = CacheBuilder.newBuilder()
             .maximumSize(200)
             .initialCapacity(100)
@@ -117,7 +114,6 @@ class PermissionServiceImpl @Autowired constructor(
 
     override fun createPermission(builder: PermissionSpec): Permission {
         val perm = permissionDao.create(builder, false)
-        txem.afterCommit(true, { logService.logAsync(UserLogSpec.build(LogAction.Create, perm)) })
         return perm
     }
 
@@ -138,10 +134,6 @@ class PermissionServiceImpl @Autowired constructor(
     }
 
     override fun deletePermission(permission: Permission): Boolean {
-        val result = permissionDao.delete(permission)
-        if (result) {
-            txem.afterCommit(true, { logService.logAsync(UserLogSpec.build(LogAction.Delete, permission)) })
-        }
-        return result
+        return permissionDao.delete(permission)
     }
 }

@@ -1,31 +1,22 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableMap
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.copyInputToOuput
-import com.zorroa.archivist.util.event
 import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.io.*
-import java.nio.ByteBuffer
-import java.nio.channels.Channels
-import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -34,7 +25,6 @@ import javax.annotation.PostConstruct
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import kotlin.math.roundToInt
 
 inline fun bufferedImageToInputStream(size: Int, img: BufferedImage) : InputStream {
     val ostream = object : ByteArrayOutputStream(size) {
@@ -56,7 +46,7 @@ interface ImageService {
     fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean)
 
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy)
+    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?)
 
     fun watermark(req: HttpServletRequest, inputStream: InputStream): BufferedImage
 }
@@ -103,7 +93,6 @@ class ImageServiceImpl @Autowired constructor(
             ImageIO.write(image, "jpg", rsp.outputStream)
 
         } else {
-            logger.event("serve Image", mapOf("mimeType" to stat.mediaType, "size" to stat.size))
             rsp.contentType = stat.mediaType
             rsp.setContentLengthLong(stat.size)
             rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
@@ -112,7 +101,11 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy) {
+    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?) {
+        if (proxy == null) {
+            rsp.status = HttpStatus.NOT_FOUND.value()
+            return
+        }
         val isWatermarkSize = (proxy.width <= watermarkMinProxySize && proxy.height <= watermarkMinProxySize)
         val st = fileStorageService.get(proxy.id!!)
         serveImage(req, rsp, st, isWatermarkSize)

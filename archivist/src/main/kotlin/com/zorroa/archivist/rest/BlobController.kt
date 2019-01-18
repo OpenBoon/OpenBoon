@@ -3,10 +3,12 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.service.BlobService
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@Timed
 class BlobController @Autowired constructor(
         private val blobService: BlobService
 ) {

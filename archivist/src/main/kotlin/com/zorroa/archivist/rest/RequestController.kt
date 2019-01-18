@@ -3,11 +3,13 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.service.RequestService
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@Timed
 class RequestController @Autowired constructor(
         val requestService: RequestService) {
 

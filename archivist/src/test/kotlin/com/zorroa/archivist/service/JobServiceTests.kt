@@ -3,14 +3,12 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskSpec
+import com.zorroa.common.domain.*
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class JobServiceTests : AbstractTest() {
@@ -73,5 +71,14 @@ class JobServiceTests : AbstractTest() {
         assertEquals(counts.erroredAssetIds.size, map2["int_asset_error_count"])
         assertEquals(counts.warningAssetIds.size, map2["int_asset_warning_count"])
         assertEquals(counts.total, map2["int_asset_total_count"])
+    }
+
+    @Test
+    fun checkAndSetJobFinished() {
+        assertFalse(jobService.checkAndSetJobFinished(job))
+        jdbc.update("UPDATE job_count SET int_task_state_0=0, int_task_state_4=2")
+        assertTrue(jobService.checkAndSetJobFinished(job))
+        val job2 = jobService.get(job.jobId)
+        assertEquals(JobState.Finished, job2.state)
     }
 }

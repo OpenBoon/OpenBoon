@@ -1,11 +1,9 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.domain.Organization
-import com.zorroa.archivist.domain.OrganizationSpec
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.service.event
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -32,6 +30,8 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
             ps.setString(2, spec.name)
             ps
         }
+        logger.event(LogObject.ORGANIZATION, LogAction.CREATE,
+                mapOf("newOrgId" to id, "orgName" to spec.name))
         return get(id)
     }
 

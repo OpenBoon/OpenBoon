@@ -60,6 +60,6 @@ class AfterCommit(private val sync: Boolean, body: () -> Unit) : BaseTransaction
         body()
     }
     else {
-        executor.execute({ body() })
+        executor.execute { body() }
     }
 }

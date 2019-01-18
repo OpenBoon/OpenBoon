@@ -1,11 +1,10 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.ExportFile
-import com.zorroa.archivist.domain.ExportFileSpec
-import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.ServableFile
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.domain.JobId
 import com.zorroa.common.util.JdbcUtils
@@ -41,6 +40,8 @@ class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
             ps
         }
 
+        logger.event(LogObject.EXPORT_FILE, LogAction.CREATE,
+                mapOf("jobId" to job.jobId, "storageId" to spec.storageId))
         return get(id)
     }
 

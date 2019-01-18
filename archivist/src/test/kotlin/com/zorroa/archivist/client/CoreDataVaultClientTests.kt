@@ -25,7 +25,8 @@ class CoreDataVaultClientTests {
     val docType = "1c494ffd-940b-496a-a7d8-f0bfadc9fa24"
 
     val client = IrmCoreDataVaultClientImpl("https://cdvapi.dit2.ironmountainconnect.com",
-            Paths.get("unittest/config/service-credentials.json"))
+            Paths.get("unittest/config/service-credentials.json"),
+            Paths.get("unittest/config/data-credentials.json"))
 
     @Test
     fun testAssetExists() {

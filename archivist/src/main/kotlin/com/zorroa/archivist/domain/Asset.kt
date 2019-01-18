@@ -9,8 +9,70 @@ import com.google.common.base.MoreObjects
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
+import java.net.URI
 import java.util.*
 import java.util.regex.Pattern
+
+/**
+ * The response from a request to create an asset from an uploaded source.
+ * @property assetId: The assetId that was created
+ * @property uri: The URI where the source file was placed.
+ */
+class AssetUploadedResponse(
+        val assetId: UUID,
+        val uri: URI
+)
+
+/**
+ * A class to define updates to a single Asset
+ *
+ * @property update: key/value pairs to be updated.
+ * @property remove: an array of fields to remove.
+ */
+class UpdateAssetRequest(
+        val update : Map<String, Any>?=null,
+        val remove: List<String>?=null
+)
+
+/**
+ * BatchUpdateAssetsRequest defines how to batch update a list of assets.
+ *
+ * The attributes property should be in dot notation, for example:
+ * { "foo.bar" : 1, "source.ext": "png"}
+ *
+ * @property batch : Any array of asset ids.
+ */
+class BatchUpdateAssetsRequest(
+        val batch: Map<String, UpdateAssetRequest>
+)
+{
+    override fun toString() : String {
+        return "<BatchUpdateAssetRequest update='$batch'>"
+    }
+}
+
+/**
+ * A response object for batch updating large numbers of assets via REST API.
+ * Batch updates are able to edit individual attributes however the entire
+ * document is rewritten.
+ *
+ * @property updatedAssetIds : The asset Ids updated
+ * @property erroredAssetIds : The missing or errored asset Ids
+ *
+ */
+class BatchUpdateAssetsResponse {
+    val updatedAssetIds = mutableSetOf<String>()
+    val erroredAssetIds = mutableSetOf<String>()
+
+    operator fun plus(other: BatchUpdateAssetsResponse) {
+        updatedAssetIds.addAll(other.updatedAssetIds)
+        erroredAssetIds.addAll(other.erroredAssetIds)
+    }
+
+    override fun toString() : String {
+        return "<BatchUpdateAssetsResponse updated=${updatedAssetIds.size} errored=${erroredAssetIds.size}>"
+    }
+}
 
 /**
  * Request to update selected assets with new permissions.  If replace=true, then

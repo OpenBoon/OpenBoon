@@ -1,6 +1,7 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DaoFilter
 import com.zorroa.common.repository.KDaoFilter
@@ -38,6 +39,15 @@ open class Task (
         val host: String?
 ) : TaskId, JobId {
     override val taskId = id
+
+    /**
+     * Return FileStorageSpec for where this tasks log file should go.
+     */
+    @JsonIgnore
+    fun getLogSpec() : FileStorageSpec {
+        return FileStorageSpec("job", jobId, "logs/$taskId.log")
+    }
+
 }
 
 class DispatchTask(
@@ -50,29 +60,11 @@ class DispatchTask(
         val script: ZpsScript,
         var env: MutableMap<String,String>,
         var args: MutableMap<String,Object>,
-        val userId: UUID) : Task(id, jobId, organizationId, name, state, host), TaskId {
+        val userId: UUID,
+        var logFile: String?=null) : Task(id, jobId, organizationId, name, state, host), TaskId {
 
     override val taskId = id
 }
-
-class TaskError(
-        val id: UUID,
-        val taskId: UUID,
-        val jobId: UUID,
-        val assetId: UUID?,
-        val path: String?,
-        val message: String,
-        val processor: String,
-        val fatal: Boolean,
-        val analyst: String,
-        val phase: String)
-
-class Expand(
-        val endpoint: String,
-        val jobId: UUID,
-        val taskId: UUID,
-        val script: ZpsScript)
-
 
 class TaskFilter (
         val ids : List<UUID>? = null,

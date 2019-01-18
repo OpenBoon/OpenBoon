@@ -7,11 +7,12 @@ import com.google.cloud.pubsub.v1.MessageReceiver
 import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.QueuedFileSpec
 import com.zorroa.archivist.repository.OrganizationDao
-import com.zorroa.archivist.util.event
 import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -39,7 +40,9 @@ class GooglePubSubSettings {
  * events and launches kubernetes jobs to process data as it comes in.
  */
 
-class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreDataVaultClient) : PubSubService {
+class GcpPubSubServiceImpl constructor(
+        private val coreDataVaultClient: CoreDataVaultClient,
+        private val meterRegistry: MeterRegistry) : PubSubService {
 
     @Autowired
     lateinit var settings: GooglePubSubSettings
@@ -120,20 +123,18 @@ class GcpPubSubServiceImpl constructor(private val coreDataVaultClient: CoreData
                         processAsset = true
                     }
                 }
-                if (processAsset == false) {
+                if (!processAsset) {
                     logger.info("Pubsub event ignored. It was not a DOCUMENT_UPLOADED event.")
                     return
                 }
-                logger.info("DOCUMENT_UPLOADED event detected. Processing new asset.")
+
                 val assetId = payload.getValue("key").toString()
                 val companyId = payload.getValue("companyId") as Int
                 val org = organizationDao.get("company-" + payload["companyId"])
 
-                logger.event("pubsub UPDATE",
-                        mapOf("companyId" to companyId, "assetId" to assetId, "orgId" to org.id))
-
-                logger.info("PubSub Payload")
-                logger.info(Json.prettyString(payload))
+                meterRegistry.counter(
+                        "zorroa.pubsub.document_uploaded",
+                        "orgId", org.id.toString(), "companyId", companyId.toString()).increment()
 
                 /**
                  * Grab the existing doc, otherise make a new one.

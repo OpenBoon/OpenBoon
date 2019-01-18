@@ -1,34 +1,38 @@
 package com.zorroa.archivist.service
 
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.storage.BlobInfo
-import com.google.cloud.storage.HttpMethod
-import com.google.cloud.storage.Storage
+import com.google.cloud.storage.*
 import com.google.cloud.storage.Storage.SignUrlOption
-import com.google.cloud.storage.StorageOptions
-import com.google.common.base.Preconditions
-import com.google.rpc.PreconditionFailure
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
-import com.zorroa.archivist.util.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.FileInputStream
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.*
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
+/**
+ * The allowed parent types for file storage.
+ */
+private val allowedParentTypes = setOf(
+        "asset",
+        "folder",
+        "job",
+        "pipeline",
+        "user"
+)
 
 /**
- * The FileStorageService is for determining the location of files assocaiated with
+ * The FileStorageService is for determining the location of files associated with
  * assets, exports, etc.
  */
 interface FileStorageService {
@@ -53,10 +57,19 @@ interface FileStorageService {
      * In order to read/write this image, callers need a signed URL.
      * @param[id] The unique id of the storage element
      * @param[method] The http method (put to write, get to read)
+     * @param[duration] The duration the signed URL is active
+     * @param[unit] The unit of time passed for duration
      * @return a FileStorage object detailing the location of the storage
      */
-    fun getSignedUrl(id: String, method: HttpMethod) : String
+    fun getSignedUrl(id: String, method: HttpMethod, duration: Long=10, unit: TimeUnit=TimeUnit.MINUTES) : String
 
+    /**
+     * Write the given type array to location of th given ID.
+     *
+     * @param[id] The unique ID of the file.
+     * @param[input] The array of bytes to write.
+     */
+    fun write(id: String, input: ByteArray)
 }
 
 /**
@@ -89,8 +102,9 @@ interface LayoutProvider {
      * @return the unique ID
      */
     fun buildId(spec: FileStorageSpec): String
-}
 
+
+}
 /**
  * The GcsFileStorageService handles the location and placement of files withing GCS.
  */
@@ -108,7 +122,9 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
 
     init {
         gcs = if (credsFile!= null && Files.exists(credsFile)) {
-            StorageOptions.newBuilder().setCredentials(
+            StorageOptions.newBuilder()
+                    .setProjectId("zorroa-evi-dev")
+                    .setCredentials(
                     GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))).build().service
         }
         else {
@@ -120,37 +136,44 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val uri = dlp.buildUri(spec)
         val id = dlp.buildId(spec)
 
-        logger.event("getLocation FileStorage",
+        logger.event(LogObject.STORAGE, LogAction.GET,
                 mapOf("fileStorageId" to id,
                         "fileStorageUri" to uri))
 
-        return FileStorage(id, uri,"gs", StaticUtils.tika.detect(uri), fileServerProvider)
+        return FileStorage(id, URI(uri),"gs", StaticUtils.tika.detect(uri), fileServerProvider)
     }
 
     override fun get(id: String): FileStorage {
         val storage =  FileStorage(
                 unslashed(id),
-                dlp.buildUri(id),
+                URI(dlp.buildUri(id)),
                 "gs",
                 StaticUtils.tika.detect(id),
                 fileServerProvider)
-        logger.event("getLocation FileStorage",
+        logger.event(LogObject.STORAGE, LogAction.GET,
                 mapOf("fileStorageId" to storage.id,
                         "fileStorageUri" to storage.uri))
         return storage
     }
 
-    override fun getSignedUrl(id: String, method: HttpMethod) : String {
+    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit) : String {
         val uri = URI(dlp.buildUri(id))
         val path = uri.path
         val contentType = StaticUtils.tika.detect(path)
 
-        logger.event("sign FileStorage",
+        logger.event(LogObject.STORAGE, LogAction.AUTHORIZE,
                 mapOf("contentType" to contentType, "storageId" to uri, "bucket" to bucket, "path" to path))
 
         val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
-        return gcs.signUrl(info, 10, TimeUnit.MINUTES,
+        return gcs.signUrl(info, duration, unit,
                 SignUrlOption.withContentType(), SignUrlOption.httpMethod(method)).toString()
+    }
+
+    override fun write(id: String, input: ByteArray) {
+        val uri = URI(dlp.buildUri(id))
+        val blobId = BlobId.of(bucket, uri.path.substring(1))
+        logger.event(LogObject.STORAGE, LogAction.WRITE, mapOf("uri" to uri))
+        gcs.create(BlobInfo.newBuilder(blobId).build(), input)
     }
 
     companion object {
@@ -175,13 +198,6 @@ class LocalFileStorageService constructor(
             logger.info("LocalFileStorageService creating directory: {}", root)
             Files.createDirectories(root)
         }
-        listOf("exports").forEach {
-            val p = root.resolve(it)
-            if (!Files.exists(p)) {
-                logger.info("LocalFileStorageService creating directory: {}", p)
-                Files.createDirectories(p)
-            }
-        }
     }
 
     override fun get(spec: FileStorageSpec) : FileStorage {
@@ -193,22 +209,30 @@ class LocalFileStorageService constructor(
         return buildFileStorage(id, url)
     }
 
-    override fun getSignedUrl(id: String, method: HttpMethod) : String  {
-        return dlp.buildUri(id)
+    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit) : String  {
+        val url = dlp.buildUri(id)
+        if (method == HttpMethod.PUT) {
+            val parent = Paths.get(URI(url)).toFile().parentFile
+            parent.mkdirs()
+        }
+        return url
+    }
+
+    override fun write(id: String, input: ByteArray) {
+        val uri = Paths.get(URI(dlp.buildUri(id)))
+        val parent = uri.parent
+        Files.createDirectories(parent)
+        logger.event(LogObject.STORAGE, LogAction.WRITE, mapOf("uri" to uri))
+        Files.write(uri, input)
     }
 
     private fun buildFileStorage(id: String, url: String) : FileStorage {
-        val storage = FileStorage(
+        return FileStorage(
                 unslashed(id),
-                url,
+                URI(url),
                 "file",
                 StaticUtils.tika.detect(url),
                 fileServerProvider)
-
-        logger.event("getLocation FileStorage",
-                mapOf("fileStorageId" to storage.id,
-                        "fileStorageUri" to storage.uri))
-        return storage
     }
 
     companion object {
@@ -220,50 +244,45 @@ class LocalFileStorageService constructor(
 class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : LayoutProvider {
 
     override fun buildUri(spec: FileStorageSpec): String {
-
-        return if (spec.category == "export") {
-            Preconditions.checkNotNull(spec.jobId, "Export locations must have a job Id")
-            val path = root.resolve("exports")
-                    .resolve(spec.jobId.toString())
-                    .resolve("${spec.name}.${spec.type}")
-            path.toFile().parentFile.mkdirs()
-            path.toUri().toString()
-        }
-        else {
-            val name = spec.assetId ?: spec.name
-            val ofile = ofs.prepare(spec.category, name, spec.type, spec.variants)
-            ofile.file.toPath().toUri().toString()
-        }
+        val id = buildId(spec)
+        return buildUri(id)
     }
 
     override fun buildUri(id: String): String {
-        if (id.contains('/')) {
-            throw IllegalArgumentException("Id '$id' cannot contain a slash")
+        // 0.39 backwards compatible.
+        if (id.startsWith("proxy/")) {
+            return ofs.get(id).path.toUri().toString()
         }
 
         val e = id.split("___")
-        return when (e[0]) {
-            "export" -> {
-                root.resolve("exports").resolve(e[1]).resolve(e[2]).toUri().toString()
-            }
-            else -> {
-                val sid = slashed(id)
-                ofs.get(sid).path.toUri().toString()
-            }
+        var path = getOrgRoot().resolve(e[0]).resolve(expandId(e[1]))
+        for (item in e.subList(2, e.size)) {
+            path = path.resolve(item)
         }
+        return path.toUri().toString()
     }
 
     override fun buildId(spec: FileStorageSpec): String {
-        return when(spec.category) {
-            "export" -> {
-                Preconditions.checkNotNull(spec.jobId, "Export locations must have a job Id")
-                "${spec.category}___${spec.jobId}___${spec.name}.${spec.type}"
-            }
-            else -> {
-                val name = spec.assetId ?: spec.name
-                unslashed(ofs.prepare(spec.category, name, spec.type, spec.variants).id)
-            }
+        val name = unslash_name(spec.name)
+
+        val parentType = spec.parentType.toLowerCase()
+        if (parentType !in allowedParentTypes) {
+            throw IllegalArgumentException("Invalid parent Type: $parentType")
         }
+        return "${parentType}___${spec.parentId.toLowerCase()}___$name"
+    }
+
+    private fun getOrgRoot() : Path  {
+        return root.resolve("orgs").resolve(getOrgId().toString())
+    }
+
+    private fun expandId(id: String) : String {
+        val sb = StringBuilder(16)
+        for (i in 0..3) {
+            sb.append("${id[i]}/")
+        }
+        sb.append(id)
+        return sb.toString()
     }
 }
 
@@ -271,42 +290,49 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
 class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
 
     override fun buildUri(id: String): String {
-        val org = getOrgId()
+        if (id.startsWith("proxy___")) {
+            /**
+             * Handle the old style GCS slugs
+             *
+             * proxy___098c296c-33dd-594a-827c-26118ff62882___098c296c-33dd-594a-827c-26118ff62882_256x144.jpg
+             */
+            return "${getOrgRoot()}/${slashed(id)}"
+        }
+
+        if (id.contains('/')) {
+            throw IllegalArgumentException("Id '$id' cannot contain a slash")
+        }
         val slashed = slashed(id)
-        return "gs://$bucket/orgs/$org/ofs/$slashed"
+        return "${getOrgRoot()}/$slashed"
     }
 
     override fun buildUri(spec: FileStorageSpec) : String {
-        val org = getOrgId()
-        var variant = spec.variants?.joinToString("_", prefix="_") ?: ""
-        if (variant == "_") {
-            variant = ""
-        }
-        val id = getElementId(spec)
-        return "gs://$bucket/orgs/$org/ofs/${spec.category}/$id/${spec.name}$variant.${spec.type}"
+        return "${getOrgRoot()}/${spec.parentType}/${spec.parentId}/${spec.name}"
     }
 
     override fun buildId(spec: FileStorageSpec) : String {
-        var variant = spec.variants?.joinToString("_", prefix="_") ?: ""
-        if (variant == "_") {
-            variant = ""
+        val name = unslash_name(spec.name)
+        val parentType = spec.parentType.toLowerCase()
+        if (parentType !in allowedParentTypes) {
+            throw IllegalArgumentException("Invalid parent Type: $parentType")
         }
-        val id = getElementId(spec)
-        return "${spec.category}___${id}___${spec.name}$variant.${spec.type}"
+        return "${spec.parentType}___${spec.parentId}___$name"
     }
 
-    inline fun getElementId(spec: FileStorageSpec) : UUID {
-        return if (spec.category == "export") {
-            spec.jobId?.let {
-                it
-            }
-            throw IllegalStateException("Cannot register export files without job id")
-        }
-        else {
-            spec.assetId ?: StaticUtils.uuid3.generate(spec.name)
-        }
+    private fun getOrgRoot() : String  {
+        val org = getOrgId()
+        return "gs://$bucket/orgs/$org"
     }
 
+}
+
+/**
+ * Utility function for cleaning up file slugs.
+ */
+private inline fun unslash_name(name: String) : String {
+    return name
+        .replace(Regex("[/]+"), "___")
+        .replace(Regex("\\.{2,}"), ".")
 }
 
 /**
@@ -322,5 +348,3 @@ private inline fun unslashed(id: String) : String {
 private inline fun slashed(id: String) : String {
     return id.replace("___", "/")
 }
-
-

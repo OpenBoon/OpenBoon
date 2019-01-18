@@ -5,6 +5,7 @@ import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.security.Groups
@@ -79,6 +80,8 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 ps.setBoolean(8, immutable)
                 ps
             }
+            logger.event(LogObject.PERMISSION, LogAction.CREATE,
+                    mapOf("permissionId" to id, "permissionName" to spec.name))
         } catch (e: DuplicateKeyException) {
             throw DuplicateKeyException("The permission " + spec.name + " already exists")
         }

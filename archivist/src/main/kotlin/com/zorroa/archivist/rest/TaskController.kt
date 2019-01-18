@@ -1,19 +1,25 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.copyInputToOuput
 import com.zorroa.common.domain.TaskFilter
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.ExecutionException
+import javax.servlet.http.HttpServletResponse
 
 
 @RestController
+@Timed
 class TaskController @Autowired constructor(
         val jobService: JobService,
         val dispatcherService: DispatcherService,
@@ -58,5 +64,33 @@ class TaskController @Autowired constructor(
     fun getScript(@PathVariable id: UUID): ZpsScript {
         return jobService.getZpsScript(id)
     }
+
+    @GetMapping(value = ["/api/v1/tasks/{id}/_log"])
+    @ResponseBody
+    @Throws(ExecutionException::class, IOException::class)
+    fun getLog(@PathVariable id: UUID, rsp: HttpServletResponse) {
+        val sf = jobService.getTaskLog(id)
+        if (sf.exists()) {
+            rsp.contentType = "text/plain"
+            rsp.setContentLengthLong(sf.getStat().size)
+            copyInputToOuput(sf.getInputStream(), rsp.outputStream)
+        }
+        else {
+            rsp.status = HttpStatus.NOT_FOUND.value()
+        }
+    }
+
+    @RequestMapping(value = ["/api/v1/tasks/{id}/taskerrors"], method=[RequestMethod.GET, RequestMethod.POST])
+    fun getTaskErrors(@PathVariable id: UUID, @RequestBody(required = false) filter: TaskErrorFilter?): Any {
+        val fixedFilter = if (filter == null) {
+            TaskErrorFilter(taskIds=listOf(id))
+        }
+        else {
+            filter.taskIds = listOf(id)
+            filter
+        }
+        return jobService.getTaskErrors(fixedFilter)
+    }
+
 }
 

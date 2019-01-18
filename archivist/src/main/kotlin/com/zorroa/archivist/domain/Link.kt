@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.zorroa.archivist.search.AssetSearch
 import java.util.*
 
 enum class LinkType {
@@ -12,11 +13,27 @@ enum class LinkType {
     }
 }
 
-class ModifyLinksResponse {
-        val success = mutableSetOf<String>()
-        val missing = mutableSetOf<String>()
-}
+/**
+ * BatchUpdateAssetLinks defines an arbitrarily large set of assets which need
+ * to be linked.
+ *
+ * @property: assetIds - the asset IDs to be linked.
+ * @property: parentIds - the parents IDs to be combined with the search.
+ * @property: search - a search which when combined with parentIds wil yield children
+ */
+class BatchUpdateAssetLinks(
+        val assetIds:  List<String>? = null,
+        val parentIds : List<String>? = null,
+        val search: AssetSearch?=null
+)
 
+/**
+ * The response sent back when Links are updated.
+ *
+ * @property updatedAssetIds: The number of links added.  A duplicate link is considered success.
+ * @peoperty erroredAssetIds: Assets that were not linked due to some type of error.
+ */
+class UpdateLinksResponse(val updatedAssetIds : Set<String>, val erroredAssetIds : Set<String>)
 
 class LinkSchema : HashMap<String, MutableSet<UUID>>() {
 

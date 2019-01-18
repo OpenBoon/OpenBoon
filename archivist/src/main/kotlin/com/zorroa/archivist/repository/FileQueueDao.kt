@@ -1,17 +1,18 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.QueuedFile
+import com.zorroa.archivist.domain.QueuedFileSpec
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.event
 import com.zorroa.common.util.Json
+import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
-import java.sql.SQLException
 import java.sql.PreparedStatement
-import org.springframework.jdbc.core.BatchPreparedStatementSetter
-
+import java.sql.SQLException
+import java.util.*
 
 
 interface FileQueueDao {
@@ -19,6 +20,7 @@ interface FileQueueDao {
     fun get(id: UUID) : QueuedFile
     fun getAll(limit: Int) : List<QueuedFile>
     fun delete(files: List<QueuedFile>) : Int
+    fun getOrganizationMeters() : Map<String, Long>
 
 }
 
@@ -48,6 +50,14 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
         return jdbc.queryForObject("$GET WHERE pk_queued_file=?", MAPPER, id)
     }
 
+    override fun getOrganizationMeters() : Map<String, Long> {
+        val result = mutableMapOf<String, Long>()
+        jdbc.query(ORG_METERS) { rs->
+            result.put(rs.getString(1), rs.getLong(2))
+        }
+        return result
+    }
+
     override fun create(spec: QueuedFileSpec): QueuedFile {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
@@ -64,7 +74,7 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
             ps
         }
 
-        logger.event("created QueuedFile",
+        logger.event(LogObject.FILEQ, LogAction.CREATE,
                 mapOf("assetPath" to spec.path,
                     "assetId" to spec.assetId,
                     "pipelineId" to spec.pipelineId))
@@ -102,5 +112,14 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
                 "json_metadata",
                 "str_path",
                 "time_created")
+
+        private const val ORG_METERS =
+                "SELECT " +
+                    "org.str_name, " +
+                    "COUNT(1) " +
+                "FROM " +
+                    "queued_file qf INNER JOIN organization org ON (qf.pk_organization = org.pk_organization) " +
+                "GROUP BY " +
+                    "org.str_name"
     }
 }

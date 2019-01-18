@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.QueuedFileSpec
 import com.zorroa.archivist.security.getOrgId
+import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +20,9 @@ class FileQueueServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var fileQueueService: FileQueueService
+
+    @Autowired
+    lateinit var meterRegistry: MeterRegistry
 
     lateinit var pipeline: Pipeline
 
@@ -38,8 +42,8 @@ class FileQueueServiceTests : AbstractTest() {
         val org = getOrgId()
         val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(), "/tmp/foo.jpg", mapOf("foo" to "bar"))
         fileQueueService.create(spec)
+        fileQueueService.create(spec)
 
-        assertEquals(1, fileQueueService.processQueue())
-
+        assertEquals(2, fileQueueService.processQueue())
     }
 }

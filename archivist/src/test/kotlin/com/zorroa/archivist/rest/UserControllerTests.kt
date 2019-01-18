@@ -3,10 +3,7 @@ package com.zorroa.archivist.rest
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
-import com.zorroa.archivist.domain.Permission
-import com.zorroa.archivist.domain.User
-import com.zorroa.archivist.domain.UserProfileUpdate
-import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
@@ -38,8 +35,6 @@ class UserControllerTests : MockMvcTest() {
     fun testApiKey() {
         val session = admin()
         val currentKey = userService.getApiKey(userService.get("admin"))
-
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/users/api-key")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)
@@ -55,7 +50,6 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val currentKey = userService.getApiKey(userService.get("admin"))
 
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/users/api-key?replace=true")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)
@@ -66,13 +60,37 @@ class UserControllerTests : MockMvcTest() {
         assertNotEquals(currentKey.key, content["key"])
     }
 
+
+    @Test
+    fun testCreateV2() {
+        val session = admin()
+        val currentKey = userService.getApiKey(userService.get("admin"))
+
+        val spec = LocalUserSpec(
+                "bilbo@baggins.com",
+                "passw123",
+                "Bilbo Baggins")
+
+        val result = mvc.perform(post("/api/v2/users")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals(spec.email, content["username"])
+        assertEquals(spec.email, content["email"])
+        assertEquals("Bilbo", content["firstName"])
+        assertEquals("Baggins", content["lastName"])
+    }
+
     @Test
     @Throws(Exception::class)
     fun testSendPasswordRecoveryEmail() {
         val user = userService.get("user")
         emailService.sendPasswordResetEmail(user)
 
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/send-password-reset-email")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -102,7 +120,6 @@ class UserControllerTests : MockMvcTest() {
         val token = emailService.sendPasswordResetEmail(user)
         assertTrue(token.isEmailSent)
 
-        SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/reset-password")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
