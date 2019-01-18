@@ -202,11 +202,11 @@ class MultipleWebSecurityConfig {
 
             override fun publishAuthenticationSuccess(authentication: Authentication) {
                 try {
-                    val user = authentication.principal as UserAuthed
-                    // Authentication is not set yet, so we can't rely on the event method
-                    // to auto-add the username and org
-                    logger.event(LogObject.USER, LogAction.AUTHENTICATE,
-                            mapOf("username" to user.username, "orgId" to user.organizationId.toString()))
+                    // TODO Move this into different auth plugin
+                    authentication.principal?.let {
+                        logger.event(LogObject.USER, LogAction.AUTHENTICATE,
+                                mapOf("principal" to it))
+                    }
 
                 } catch (e: Exception) {
                     logger.warn("Failed to log user authentication", e)
