@@ -27,11 +27,9 @@ interface UserDao {
 
     fun getByToken(token: String): User
 
-    fun getApiKey(user: UserId): ApiKey
+    fun getApiKey(spec: ApiKeySpec): ApiKey
 
-    fun getApiKey(id: UUID): ApiKey
-
-    fun generateApiKey(user: UserId): ApiKey
+    fun getHmacKey(userId: UUID): String
 
     fun generateAdminKey(): Boolean
 
@@ -226,22 +224,25 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 String::class.java, username, username, true)
     }
 
-    override fun getApiKey(user: UserId): ApiKey {
-        return getApiKey(user.id)
-    }
-
-    override fun getApiKey(id: UUID): ApiKey {
-        val key = jdbc.queryForObject("SELECT hmac_key FROM users WHERE pk_user=? AND bool_enabled=?",
-                String::class.java, id, true)
-        return ApiKey(id, key)
-    }
-
-    override fun generateApiKey(user: UserId): ApiKey {
-        val key = generateKey()
-        if (jdbc.update("UPDATE users SET hmac_key=? WHERE pk_user=? AND bool_enabled=?", key, user.id, true) != 1) {
-            throw EmptyResultDataAccessException("Unknown user", 1)
+    override fun getApiKey(spec: ApiKeySpec): ApiKey {
+        val hmacKey = if (spec.replace) {
+            val key = generateKey()
+            if (jdbc.update("UPDATE users SET hmac_key=? WHERE pk_user=? AND bool_enabled=?", key, spec.userId, true) != 1) {
+                throw EmptyResultDataAccessException("Unknown user", 1)
+            }
+            key
         }
-        return ApiKey(user.id, key)
+        else {
+            getHmacKey(spec.userId)
+        }
+
+        logger.event(LogObject.USER, LogAction.APIKEY, emptyMap())
+        return ApiKey(spec.userId, spec.user, hmacKey, spec.server)
+    }
+
+    override fun getHmacKey(id: UUID): String {
+        return jdbc.queryForObject("SELECT hmac_key FROM users WHERE pk_user=? AND bool_enabled=?",
+                String::class.java, id, true)
     }
 
     override fun generateAdminKey(): Boolean {

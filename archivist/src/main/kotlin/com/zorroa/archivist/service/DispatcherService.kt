@@ -71,7 +71,7 @@ class DispatcherServiceImpl @Autowired constructor(
 
                     task.env["ZORROA_TASK_ID"] = task.id.toString()
                     task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-                    task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(userDao.getApiKey(task.userId))
+                    task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(task.userId, userDao.getHmacKey(task.userId))
                     if (properties.getBoolean("archivist.debug-mode.enabled")) {
                         task.env["ZORROA_DEBUG_MODE"] = "true"
                     }

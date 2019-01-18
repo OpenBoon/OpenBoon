@@ -13,6 +13,7 @@ import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -22,6 +23,8 @@ import org.springframework.security.web.authentication.logout.CookieClearingLogo
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import java.security.Principal
 import java.util.*
 import java.util.stream.Collectors
 import javax.servlet.ServletException
@@ -42,8 +45,8 @@ class UserController @Autowired constructor(
     fun getAll() : List<User> = userService.getAll()
 
     @RequestMapping(value = ["/api/v1/who"])
-    fun getCurrent(): ResponseEntity<Any> {
-        return if (getUserOrNull() != null) {
+    fun getCurrent(user: Principal?): ResponseEntity<Any> {
+        return if (user != null) {
             ResponseEntity(userService.get(getUserId()), HttpStatus.OK)
         }
         else {
@@ -51,15 +54,32 @@ class UserController @Autowired constructor(
         }
     }
 
-    @PostMapping(value = ["/api/v1/users/api-key"])
-    fun getApiKey(@RequestParam(value = "replace", required = false, defaultValue = "false") replace: Boolean): Any {
-        return if (replace) {
-            userService.generateApiKey(getUser())
+    class ApiKeyReq(
+            val replace: Boolean = false,
+            val server: String? = null
+    )
+
+    @RequestMapping(value = ["/api/v1/users/api-key"], method=[RequestMethod.GET, RequestMethod.POST])
+    fun getApiKey(@RequestBody(required = false) kreq: ApiKeyReq?, hreq: HttpServletRequest): Any {
+        val req = kreq ?: ApiKeyReq(false, null)
+
+        /**
+         * Select where the URI in the key is going to come from.
+         */
+        val uri = when {
+            req.server != null -> req.server
+            hreq.getHeader( "X-Zorroa-Curator-Host") != null -> hreq.getHeader( "X-Zorroa-Curator-Protocol") + "://" + hreq.getHeader( "X-Zorroa-Curator-Host")
+            else -> {
+                val builder = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                builder.replacePath("/").build().toString()
+            }
         }
-        else {
-            userService.getApiKey(getUser())
-        }
+
+        val user = getUser()
+        val spec = ApiKeySpec(user.id, user.username, req.replace, uri)
+        return userService.getApiKey(spec)
     }
+
 
     /**
      * An HTTP auth based login endpoint.
@@ -74,7 +94,7 @@ class UserController @Autowired constructor(
         val user = getUser()
         val headers = HttpHeaders()
         headers.add("X-Zorroa-Auth-Token",
-                generateUserToken(userService.getApiKey(getUser())))
+                generateUserToken(user.id, userService.getHmacKey(user)))
 
         return ResponseEntity.ok()
                 .headers(headers)

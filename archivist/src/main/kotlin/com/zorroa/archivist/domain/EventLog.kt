@@ -26,7 +26,8 @@ enum class LogAction {
     KILL,
     STREAM,
     LOCK,
-    UNLOCK
+    UNLOCK,
+    APIKEY
 }
 
 

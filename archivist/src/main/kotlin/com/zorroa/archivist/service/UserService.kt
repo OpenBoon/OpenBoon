@@ -59,9 +59,9 @@ interface UserService {
 
     fun setPassword(user: User, password: String): Boolean
 
-    fun getApiKey(user: UserId): ApiKey
+    fun getHmacKey(user: UserId): String
 
-    fun generateApiKey(user: UserId): ApiKey
+    fun getApiKey(spec: ApiKeySpec): ApiKey
 
     fun update(user: User, builder: UserProfileUpdate): Boolean
 
@@ -386,12 +386,12 @@ class UserServiceImpl @Autowired constructor(
         }
     }
 
-    override fun getApiKey(user: UserId): ApiKey {
-        return userDao.getApiKey(user)
+    override fun getHmacKey(user: UserId): String {
+        return userDao.getHmacKey(user.id)
     }
 
-    override fun generateApiKey(user: UserId): ApiKey {
-        return userDao.generateApiKey(user)
+    override fun getApiKey(spec: ApiKeySpec): ApiKey {
+        return userDao.getApiKey(spec)
     }
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {
