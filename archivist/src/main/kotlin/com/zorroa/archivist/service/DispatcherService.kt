@@ -8,7 +8,6 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.*
-import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.GlobalScope
@@ -51,6 +50,9 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var fileStorageService: FileStorageService
+
+    @Autowired
+    lateinit var analystService: AnalystService
 
     @PostConstruct
     fun init() {
@@ -206,26 +208,7 @@ class DispatcherServiceImpl @Autowired constructor(
             logger.warn("Failed to kill running task, no host is set")
             return false
         }
-        try {
-            val client = RestClient(task.host)
-            val result = client.delete("/kill/" + task.id,
-                    mapOf("reason" to reason + getUsername(), "state" to newState.name), Json.GENERIC_MAP)
-
-            return if (result["status"] as Boolean) {
-                logger.event(LogObject.TASK, LogAction.KILL,
-                        mapOf("reason" to reason, "taskId" to task.id, "jobId" to task.jobId))
-                true
-            } else {
-                logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
-                        mapOf("taskId" to task.id, "host" to task.host))
-                false
-            }
-
-        } catch (e: Exception) {
-            logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
-                    mapOf("taskId" to task.id, "host" to task.host), e)
-        }
-        return false
+        return analystService.killTask(task.host, task.id, reason, newState)
     }
 
     override fun retryTask(task: Task): Boolean {
@@ -243,7 +226,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun skipTask(task: Task): Boolean {
         return if (task.state.isDispatched()) {
             GlobalScope.launch {
-                killRunningTaskOnAnalyst(task, TaskState.Skipped, "Task skipped by ")
+                killRunningTaskOnAnalyst(task, TaskState.Skipped, "Task skipped")
             }
             // just assuming true here as the call to the analyst is backgrounded
             true
@@ -254,9 +237,12 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Subscribe
     fun handleJobStateChangeEvent(event: JobStateChangeEvent) {
-        GlobalScope.launch {
-            if (event.newState == JobState.Cancelled) {
-                handleJobCanceled(event.job)
+        val auth = getAuthentication()
+        if (event.newState == JobState.Cancelled) {
+            GlobalScope.launch {
+                withAuth(auth) {
+                    handleJobCanceled(event.job)
+                }
             }
         }
     }
@@ -269,7 +255,5 @@ class DispatcherServiceImpl @Autowired constructor(
 
     companion object {
         private val logger = LoggerFactory.getLogger(DispatcherServiceImpl::class.java)
-
-        private val EVENT_TASK = "task"
     }
 }
