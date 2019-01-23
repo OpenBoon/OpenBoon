@@ -340,9 +340,6 @@ class GcpFileServerService constructor (
 
     private fun getBlob(uri: URI) : Blob? {
         var (bucket, path) =  splitGcpUrl(uri)
-        if (UUID.fromString(path.split("/")[1]) != getOrgId()) {
-            throw EntityNotFoundException("Invalid URI $uri")
-        }
         val blobId = BlobId.of(bucket, path)
         logger.event(LogObject.STORAGE, LogAction.GET, mapOf("uri" to uri.toString()))
         return storage.get(blobId)
