@@ -52,7 +52,7 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
     val user = getUserOrNull()
     val sb = StringBuilder(256)
 
-    sb.append("zorroa.object='${obj.toString().toLowerCase()}' zorroa.action='${action.toString().toLowerCase()}'")
+    sb.append("Z-EVENT zorroa.object='${obj.toString().toLowerCase()}' zorroa.action='${action.toString().toLowerCase()}'")
     if (user != null) {
         sb.append(" zorroa.username='${user.getName()}' zorroa.orgId='${user.organizationId}'")
     }

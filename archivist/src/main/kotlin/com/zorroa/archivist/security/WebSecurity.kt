@@ -198,19 +198,7 @@ class MultipleWebSecurityConfig {
 
         return object : AuthenticationEventPublisher {
 
-            override fun publishAuthenticationSuccess(authentication: Authentication) {
-                try {
-                    // TODO Move this into different auth plugin
-                    authentication.principal?.let {
-                        logger.event(LogObject.USER, LogAction.AUTHENTICATE,
-                                mapOf("principal" to it))
-                    }
-
-                } catch (e: Exception) {
-                    logger.warn("Failed to log user authentication", e)
-                }
-            }
-
+            override fun publishAuthenticationSuccess(authentication: Authentication) { }
             override fun publishAuthenticationFailure(
                     exception: AuthenticationException,
                     authentication: Authentication) {

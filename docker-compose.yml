@@ -61,7 +61,7 @@ services:
 
   # Local Logstash server.
   logstash:
-    image: docker.elastic.co/logstash/logstash-oss:6.2.4
+    image: docker.elastic.co/logstash/logstash-oss:6.5.4
     depends_on:
       - "es"
     ports:
