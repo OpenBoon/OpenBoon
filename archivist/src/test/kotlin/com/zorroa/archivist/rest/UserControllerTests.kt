@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
@@ -29,6 +30,22 @@ class UserControllerTests : MockMvcTest() {
                         .session(admin())
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk)
+    }
+
+    @Test
+    fun testGetAuthToken() {
+        val session = admin()
+
+        val key = userService.getHmacKey(userService.get("admin"))
+        val token = generateUserToken(getUserId(), key)
+        val result = mvc.perform(get("/api/v1/users/auth-token")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals(token, content["token"])
     }
 
     @Test

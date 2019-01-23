@@ -1,6 +1,7 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.domain.ApiKey
+import com.zorroa.archivist.domain.ApiKeySpec
 import com.zorroa.archivist.service.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
@@ -24,7 +25,7 @@ import java.util.*
 @TestPropertySource(locations = ["classpath:test.properties"])
 class MonitorAuthConfigTests {
 
-    @MockBean
+    @Autowired
     private lateinit var userService: UserService
 
     @Autowired
@@ -48,17 +49,14 @@ class MonitorAuthConfigTests {
             "archivist.monitor.username=$username"
         ).applyTo(appContext)
 
-        val uuid = UUID.fromString("7ec62c0a-e6eb-4141-bf8c-12876c445bff")
-
-        val hmacKey = "some_hmac_key"
-
-        given(userService.getApiKey(username)).willReturn(ApiKey(uuid, hmacKey))
+        val user = userService.get(username)
+        val apiKey = userService.getApiKey(ApiKeySpec(
+                user.id, user.username, false, "https://localhost"
+        ))
+        val token = generateUserToken(user.id, apiKey.key)
 
         monitorAuthConfig.writeMonitorKeyFile()
-
-        val token = generateUserToken(ApiKey(uuid, hmacKey))
         val actual = FileCopyUtils.copyToString(FileReader(keyfile))
-
         assertThat(actual).isEqualTo(token)
     }
 

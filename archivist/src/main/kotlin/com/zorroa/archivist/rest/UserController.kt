@@ -80,6 +80,12 @@ class UserController @Autowired constructor(
         return userService.getApiKey(spec)
     }
 
+    @GetMapping(value = ["/api/v1/users/auth-token"])
+    fun getAuthToken(): Any {
+        val user = getUser()
+        val key = userService.getHmacKey(user)
+        return mapOf("token" to generateUserToken(user.id, key))
+    }
 
     /**
      * An HTTP auth based login endpoint.

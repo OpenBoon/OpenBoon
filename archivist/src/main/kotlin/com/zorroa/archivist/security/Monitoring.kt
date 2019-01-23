@@ -16,7 +16,8 @@ class MonitorAuthConfig(val properties: ApplicationProperties, val userService: 
     fun writeMonitorKeyFile() {
         try {
             val username = properties.getString("archivist.monitor.username", "monitor")
-            val token = generateUserToken(userService.getApiKey(username))
+            val user = userService.get(username)
+            val token = generateUserToken(user.id, userService.getHmacKey(user))
 
             val pathname = properties.getString("archivist.monitor.key.path", "/monitoring/monitor.auth.key")
             val file = File(pathname)
