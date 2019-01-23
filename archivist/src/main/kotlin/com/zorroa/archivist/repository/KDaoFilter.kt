@@ -83,7 +83,7 @@ abstract class KDaoFilter {
             sb.append(" LIMIT ? OFFSET ?")
         }
 
-        val s =sb.toString()
+        val s = sb.toString()
         if (logger.isDebugEnabled) {
             logger.debug(s)
         }
