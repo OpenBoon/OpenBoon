@@ -278,9 +278,9 @@ open abstract class AbstractTest {
 
                     val id = UUID.randomUUID().toString()
                     val proxies = Lists.newArrayList<Proxy>()
-                    proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimeType = "image/jpeg"))
-                    proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimeType = "image/jpeg"))
-                    proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimeType = "image/jpeg"))
+                    proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
+                    proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
+                    proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
 
                     val p = ProxySchema()
                     p.proxies = proxies
