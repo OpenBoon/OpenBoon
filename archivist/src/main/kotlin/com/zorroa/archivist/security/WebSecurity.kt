@@ -5,10 +5,8 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
-import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
@@ -172,8 +170,8 @@ class MultipleWebSecurityConfig {
                     .antMatcher("/actuator/**")
                     .addFilterBefore(jwtAuthorizationFilter, CsrfFilter::class.java)
                     .authorizeRequests()
-                    .requestMatchers(EndpointRequest.to("metrics")).hasAuthority(Groups.SUPERADMIN)
-                    .requestMatchers(EndpointRequest.to("health", "info", "prometheus")).permitAll()
+                    .requestMatchers(EndpointRequest.to("metrics", "prometheus")).hasAuthority("zorroa::monitor")
+                    .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
 

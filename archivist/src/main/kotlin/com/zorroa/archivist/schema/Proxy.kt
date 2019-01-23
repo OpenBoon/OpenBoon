@@ -10,7 +10,7 @@ data class Proxy(
          * Some older versions don't have a mimetype but they
          * are all image/jpeg, so we'll default to that.
          */
-        var mimeType: String = "image/jpeg",
+        var mimetype: String = "image/jpeg",
         var format: String? = null
 )
 
@@ -36,7 +36,7 @@ data class ProxySchema (
 
         return try {
             for (p in proxies!!) {
-                if (!p.mimeType.startsWith(type, ignoreCase = true)) {
+                if (!p.mimetype.startsWith(type, ignoreCase = true)) {
                     continue
                 }
                 val pDim = p.width + p.height
@@ -71,7 +71,7 @@ data class ProxySchema (
     @JsonIgnore
     fun getLargest(type: String="image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p-> p.mimeType.startsWith(type, ignoreCase = true) }
+                ?.filter { p-> p.mimetype.startsWith(type, ignoreCase = true) }
                 ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
                 ?.findFirst()
                 ?.orElse(null)
@@ -85,7 +85,7 @@ data class ProxySchema (
     @JsonIgnore
     fun getSmallest(type: String="image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p-> p.mimeType.startsWith(type, ignoreCase = true) }
+                ?.filter { p-> p.mimetype.startsWith(type, ignoreCase = true) }
                 ?.sorted{ o1, o2 -> Integer.compare(o1.width, o2.width) }
                 ?.findFirst()
                 ?.orElse(null)
@@ -103,7 +103,7 @@ data class ProxySchema (
     fun atLeastThisSize(minDim: Int, type: String="image"): Proxy? {
         return proxies?.stream()
                 ?.filter { p -> (p.width >= minDim || p.height >= minDim)
-                        && p.mimeType.startsWith(type, ignoreCase = true) }
+                        && p.mimetype.startsWith(type, ignoreCase = true) }
                 ?.sorted {o1, o2 -> Integer.compare(o1.width, o2.width) }
                 ?.findFirst()
                 ?.orElse(null)
@@ -120,7 +120,7 @@ data class ProxySchema (
     fun thisSizeOrBelow(minDim: Int, type: String="image"): Proxy? {
         return proxies?.stream()
                 ?.filter { p -> (p.width <= minDim || p.width <= minDim)
-                        && p.mimeType.startsWith(type, ignoreCase = true) }
+                        && p.mimetype.startsWith(type, ignoreCase = true) }
                 ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
                 ?.findFirst()
                 ?.orElse(null)

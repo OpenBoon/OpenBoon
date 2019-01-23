@@ -64,15 +64,15 @@ class ProxySchemaTests {
         val p = ProxySchema()
         p.proxies = proxies
 
-        assertEquals("image/jpeg", p.getClosest(100, 100)!!.mimeType)
-        assertEquals("image/jpeg", p.getClosest(149, 150)!!.mimeType)
-        assertEquals("image/jpeg", p.getClosest(151, 150)!!.mimeType)
-        assertEquals("image/jpeg", p.getClosest(1000, 1000)!!.mimeType)
+        assertEquals("image/jpeg", p.getClosest(100, 100)!!.mimetype)
+        assertEquals("image/jpeg", p.getClosest(149, 150)!!.mimetype)
+        assertEquals("image/jpeg", p.getClosest(151, 150)!!.mimetype)
+        assertEquals("image/jpeg", p.getClosest(1000, 1000)!!.mimetype)
 
-        assertEquals("video/mp4", p.getClosest(100, 100, "video/mp4")!!.mimeType)
-        assertEquals("video/mp4", p.getClosest(149, 150,"video/mp4")!!.mimeType)
-        assertEquals("video/mp4", p.getClosest(151, 150,"video/mp4")!!.mimeType)
-        assertEquals("video/mp4", p.getClosest(1000, 1000,"video/mp4")!!.mimeType)
+        assertEquals("video/mp4", p.getClosest(100, 100, "video/mp4")!!.mimetype)
+        assertEquals("video/mp4", p.getClosest(149, 150,"video/mp4")!!.mimetype)
+        assertEquals("video/mp4", p.getClosest(151, 150,"video/mp4")!!.mimetype)
+        assertEquals("video/mp4", p.getClosest(1000, 1000,"video/mp4")!!.mimetype)
     }
 
     @Test

@@ -8,7 +8,8 @@ import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
-import com.zorroa.archivist.util.*
+import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -29,7 +30,7 @@ interface UserDao {
 
     fun getApiKey(spec: ApiKeySpec): ApiKey
 
-    fun getHmacKey(userId: UUID): String
+    fun getHmacKey(id: UUID): String
 
     fun generateAdminKey(): Boolean
 

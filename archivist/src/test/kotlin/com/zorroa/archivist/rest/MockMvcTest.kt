@@ -68,6 +68,13 @@ abstract class MockMvcTest : AbstractTest() {
     }
 
     /**
+     * @return a session for a monitor user.
+     */
+    protected fun monitor(): MockHttpSession {
+        return user("monitor")
+    }
+
+    /**
      * @return a session for an admin with the id 1.
      */
     protected fun analyst(): MockHttpSession {
