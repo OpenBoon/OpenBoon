@@ -8,7 +8,8 @@ import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
-import com.zorroa.archivist.util.*
+import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -30,6 +31,8 @@ interface UserDao {
     fun getApiKey(user: UserId): ApiKey
 
     fun getApiKey(id: UUID): ApiKey
+
+    fun getApiKey(username: String): ApiKey
 
     fun generateApiKey(user: UserId): ApiKey
 
@@ -234,6 +237,12 @@ class UserDaoImpl : AbstractDao(), UserDao {
         val key = jdbc.queryForObject("SELECT hmac_key FROM users WHERE pk_user=? AND bool_enabled=?",
                 String::class.java, id, true)
         return ApiKey(id, key)
+    }
+
+    override fun getApiKey(username: String): ApiKey {
+        val id = jdbc.queryForObject("SELECT pk_user FROM users WHERE str_username=? AND bool_enabled=?",
+            String::class.java, username, true)
+        return getApiKey(UUID.fromString(id))
     }
 
     override fun generateApiKey(user: UserId): ApiKey {

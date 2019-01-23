@@ -61,6 +61,8 @@ interface UserService {
 
     fun getApiKey(user: UserId): ApiKey
 
+    fun getApiKey(username: String): ApiKey
+
     fun generateApiKey(user: UserId): ApiKey
 
     fun update(user: User, builder: UserProfileUpdate): Boolean
@@ -388,6 +390,10 @@ class UserServiceImpl @Autowired constructor(
 
     override fun getApiKey(user: UserId): ApiKey {
         return userDao.getApiKey(user)
+    }
+
+    override fun getApiKey(username: String): ApiKey {
+        return userDao.getApiKey(username)
     }
 
     override fun generateApiKey(user: UserId): ApiKey {
