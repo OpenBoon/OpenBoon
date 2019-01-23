@@ -114,6 +114,7 @@ services:
       - 8080:8080
     volumes:
       - "./localdev/shared:/shared"
+      - "./localdev/monitoring:/monitoring"
       - "./localdev/zorroa-archivist-config:/config"
       - "./archivist/target:/service"
       - "../zorroa-test-data:/zorroa-test-data"
