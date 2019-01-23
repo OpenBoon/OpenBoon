@@ -22,11 +22,15 @@ services:
 
   prometheus:
     image: "prom/prometheus"
+    depends_on:
+      - "archivist"
     ports:
         - "9090:9090"
     secrets:
       - source: prometheus.yml
         target: /etc/prometheus/prometheus.yml
+      - source: monitor.auth.key
+        target: /etc/prometheus/monitor.auth.key
 
   # Grafana server connected to elasticsearch instance
   grafana:
@@ -57,7 +61,7 @@ services:
 
   # Local Logstash server.
   logstash:
-    image: docker.elastic.co/logstash/logstash-oss:6.2.4
+    image: docker.elastic.co/logstash/logstash-oss:6.5.4
     depends_on:
       - "es"
     ports:
@@ -110,6 +114,7 @@ services:
       - 8080:8080
     volumes:
       - "./localdev/shared:/shared"
+      - "./localdev/monitoring:/monitoring"
       - "./localdev/zorroa-archivist-config:/config"
       - "./archivist/target:/service"
       - "../zorroa-test-data:/zorroa-test-data"
@@ -145,3 +150,5 @@ secrets:
     file: ./localdev/monitoring/filebeat.yml
   prometheus.yml:
     file: ./localdev/monitoring/prometheus.yml
+  monitor.auth.key:
+    file: ./localdev/monitoring/monitor.auth.key

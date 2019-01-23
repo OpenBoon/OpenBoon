@@ -13,6 +13,16 @@ filebeat.autodiscover:
 
 processors:
 - add_docker_metadata: ~
+- drop_event:
+    when:
+      equals:
+        docker.container.labels.com.docker.compose.service: "logstash"
+- drop_event:
+    when:
+      not:
+        contains:
+          message: "ZEVENT"
+
 
 output.logstash:
   hosts:

@@ -41,7 +41,7 @@ class ActuatorTests : MockMvcTest() {
 
     @Test
     fun testMetrics() {
-        val session = admin()
+        val session = monitor()
         val rsp = mvc.perform(MockMvcRequestBuilders.get("/actuator/metrics")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))

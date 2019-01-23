@@ -61,20 +61,20 @@ class UserDaoTests : AbstractTest() {
 
     @Test
     fun testAll() {
-        assertEquals(4, userDao.getAll().size.toLong())
+        assertEquals(5, userDao.getAll().size.toLong())
 
         val builder = testUserSpec("foo")
         builder.homeFolderId = UUID.randomUUID()
         builder.userPermissionId = permissionDao.get("zorroa", "manager").id
         userService.create(builder)
 
-        assertEquals(5, userDao.getAll().size.toLong())
+        assertEquals(6, userDao.getAll().size.toLong())
     }
 
     @Test
     fun testAllPageable() {
-        assertEquals(4, userDao.getAll(Pager.first()).size().toLong())
-        assertEquals(0, userDao.getAll(Pager(2, 4)).size().toLong())
+        assertEquals(5, userDao.getAll(Pager.first()).size().toLong())
+        assertEquals(0, userDao.getAll(Pager(2, 5)).size().toLong())
     }
 
     @Test(expected = EmptyResultDataAccessException::class)

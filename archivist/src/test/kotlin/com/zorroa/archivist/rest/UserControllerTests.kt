@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
@@ -32,9 +33,26 @@ class UserControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testGetAuthToken() {
+        val session = admin()
+
+        val key = userService.getHmacKey(userService.get("admin"))
+        val token = generateUserToken(getUserId(), key)
+        val result = mvc.perform(get("/api/v1/users/auth-token")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals(token, content["token"])
+    }
+
+    @Test
     fun testApiKey() {
         val session = admin()
-        val currentKey = userService.getApiKey(userService.get("admin"))
+
+        val currentKey = userService.getHmacKey(userService.get("admin"))
         val result = mvc.perform(post("/api/v1/users/api-key")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .session(session)
@@ -42,29 +60,30 @@ class UserControllerTests : MockMvcTest() {
                 .andExpect(status().isOk)
                 .andReturn()
         val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
-        assertEquals(currentKey.key, content["key"])
+        assertEquals(currentKey, content["key"])
     }
 
     @Test
     fun testApiKeyRegen() {
         val session = admin()
-        val currentKey = userService.getApiKey(userService.get("admin"))
+        val currentKey = userService.getHmacKey(userService.get("admin"))
 
-        val result = mvc.perform(post("/api/v1/users/api-key?replace=true")
+        val spec = UserController.ApiKeyReq(replace = true)
+        val result = mvc.perform(post("/api/v1/users/api-key")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serialize(spec))
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
         val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
-        assertNotEquals(currentKey.key, content["key"])
+        assertNotEquals(currentKey, content["key"].toString())
     }
 
 
     @Test
     fun testCreateV2() {
         val session = admin()
-        val currentKey = userService.getApiKey(userService.get("admin"))
 
         val spec = LocalUserSpec(
                 "bilbo@baggins.com",

@@ -134,10 +134,22 @@ class UserSpec (
 }
 
 /**
+ * Necessary properties for creating an API key.
+ */
+class ApiKeySpec(
+        val userId: UUID,
+        val user: String,
+        val replace: Boolean,
+        var server: String
+)
+
+/**
  * Structure for storing a users API key.
  */
 class ApiKey(
         val userId: UUID,
-        val key: String
+        val user: String,
+        val key: String,
+        val server: String
 )
 

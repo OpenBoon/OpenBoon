@@ -1,8 +1,11 @@
 package com.zorroa.archivist.security
 
 import com.google.common.collect.ImmutableSet
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.archivist.service.event
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,6 +41,9 @@ class ZorroaAuthenticationProvider : AuthenticationProvider {
         }
         userService.checkPassword(username, authentication.credentials.toString())
         val authed = userRegistryService.getUser(username)
+        logger.event(LogObject.USER, LogAction.AUTHENTICATE,
+                mapOf("authType" to "password", "username" to username))
+
         return UsernamePasswordAuthenticationToken(authed, "", authed.authorities)
     }
 
