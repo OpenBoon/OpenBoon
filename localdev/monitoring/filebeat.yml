@@ -21,7 +21,7 @@ processors:
     when:
       not:
         contains:
-          message: "Z-EVENT"
+          message: "ZEVENT"
 
 
 output.logstash:
