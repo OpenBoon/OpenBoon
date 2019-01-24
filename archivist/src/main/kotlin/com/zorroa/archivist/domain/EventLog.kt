@@ -51,6 +51,7 @@ enum class LogObject {
     TASK,
     TAXONOMY,
     TRASH_FOLDER,
-    USER
+    USER,
+    ANALYST
 }
 

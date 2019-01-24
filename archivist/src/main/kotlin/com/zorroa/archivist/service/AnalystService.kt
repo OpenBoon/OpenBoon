@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ProcessorSpec
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.security.getAnalystEndpoint
@@ -8,6 +10,7 @@ import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -27,6 +30,8 @@ interface AnalystService {
     fun setState(analyst: Analyst, state: AnalystState) : Boolean
     fun doProcessorScan() : List<ProcessorSpec>
     fun getClient(endpoint: String) : RestClient
+    fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState) : Boolean
+    fun setTaskId(analyst: Analyst, taskId: UUID?) : Boolean
 }
 
 @Service
@@ -80,8 +85,35 @@ class AnalystServicImpl @Autowired constructor(
         return analystDao.setLockState(analyst, state)
     }
 
+    override fun setTaskId(analyst: Analyst, taskId: UUID?) : Boolean {
+        return analystDao.setTaskId(analyst.endpoint, taskId)
+    }
+
     override fun setState(analyst: Analyst, state: AnalystState) : Boolean {
         return analystDao.setState(analyst, state)
+    }
+
+    override fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState) : Boolean {
+        return try {
+            val client = RestClient(endpoint)
+            val result = client.delete("/kill/$taskId",
+                    mapOf("reason" to reason, "newState" to newState.name), Json.GENERIC_MAP)
+
+            return if (result["status"] as Boolean) {
+               logger.event(LogObject.TASK, LogAction.KILL,
+                        mapOf("reason" to reason, "taskId" to taskId))
+                true
+            } else {
+                logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
+                        mapOf("taskId" to taskId, "analyst" to endpoint))
+                false
+            }
+
+        } catch (e: Exception) {
+            logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
+                    mapOf("taskId" to taskId, "analyst" to endpoint), e)
+            false
+        }
     }
 
     @Transactional(readOnly = true)

@@ -39,7 +39,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, job.jobId)
-            ps.setString(3, spec.name)
+            ps.setString(3, spec.name.trim())
             ps.setLong(4, time)
             ps.setLong(5, time)
             ps.setLong(6, time)

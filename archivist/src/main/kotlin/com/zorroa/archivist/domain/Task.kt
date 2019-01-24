@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DaoFilter
+import com.zorroa.archivist.rest.UserController
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import org.slf4j.LoggerFactory
 import java.util.*
 
 enum class TaskState {
@@ -73,10 +75,20 @@ class TaskFilter (
 ) : KDaoFilter() {
 
     @JsonIgnore
-    override val sortMap: Map<String, String> = mapOf()
+    override val sortMap: Map<String, String> =
+            mapOf("taskId" to "task.pk_task",
+                    "id" to "task.pk_task",
+                    "jobId" to "task.pk_job",
+                    "state" to "task.int_state",
+                    "timeCreated" to "task.time_created",
+                    "timeStarted" to "task.time_started")
 
     @JsonIgnore
     override fun build() {
+
+        if (sort == null) {
+            sort = listOf("taskId:a")
+        }
 
         ids?.let  {
             addToWhere(JdbcUtils.inClause("task.pk_task", it.size))
