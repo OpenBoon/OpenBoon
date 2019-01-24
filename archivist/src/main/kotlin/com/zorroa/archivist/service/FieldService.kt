@@ -65,6 +65,7 @@ class FieldServiceImpl @Autowired constructor(
         result["similarity"] = mutableSetOf()
         result["id"] = mutableSetOf()
         result["path"] = mutableSetOf()
+        result["suggest"] = mutableSetOf()
 
         result.getValue("keywords-boost")
                 .addAll(properties.getString(PROP_BOOST_KEYWORD_FIELD)
@@ -159,7 +160,7 @@ class FieldServiceImpl @Autowired constructor(
 
             if (item.containsKey("type")) {
                 var type = item["type"] as String
-                val analyzer = item["analyzer"] as String?
+                var hasSuggest = false
 
                 type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
                 if (type == "text") {
@@ -169,10 +170,14 @@ class FieldServiceImpl @Autowired constructor(
                     type = "id"
                 }
 
+
                 if (item.containsKey("fields")) {
                     val subFields = item["fields"] as Map<String, Any>
                     if (subFields.containsKey("paths")) {
                         type = "path"
+                    }
+                    else if (subFields.containsKey("suggest")) {
+                        hasSuggest = true
                     }
                 }
 
@@ -186,6 +191,9 @@ class FieldServiceImpl @Autowired constructor(
                     continue
                 }
                 fields.add(fqfn)
+                if (hasSuggest) {
+                    result["suggest"]?.add("$fqfn.suggest")
+                }
 
                 if (key in AUTO_KEYWORDS_FIELDS) {
                     result.getValue("keywords").add(fqfn)
