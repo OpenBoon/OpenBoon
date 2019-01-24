@@ -181,10 +181,10 @@ class SearchServiceImpl @Autowired constructor(
                         .setBoost(1)
                         .setPrefix(false).build()))
 
-        val fields = fieldService.getFields("asset")["keywords"] ?: return mutableListOf()
+        val fields = fieldService.getFields("asset")["suggest"] ?: return mutableListOf()
 
         for ((idx, field) in fields.withIndex()) {
-            val completion = SuggestBuilders.completionSuggestion("$field.suggest")
+            val completion = SuggestBuilders.completionSuggestion("$field")
                     .text(text).contexts(ctx)
             suggestBuilder.addSuggestion("suggest$idx", completion)
         }

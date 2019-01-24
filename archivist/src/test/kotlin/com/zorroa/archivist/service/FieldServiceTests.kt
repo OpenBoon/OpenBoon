@@ -18,10 +18,16 @@ class FieldServiceTests : AbstractTest() {
         // fails in travis, need to find out why.
         fieldService.invalidateFields()
         val fields = fieldService.getQueryFields()
-
-        println(fields)
         assertTrue(fields.containsKey("media.title"))
         assertTrue(fields.containsKey("media.description"))
         assertTrue(fields.containsKey("source.keywords"))
+    }
+
+    @Test
+    fun testGetSuggestFields() {
+        fieldService.invalidateFields()
+        val fields = fieldService.getFields("asset")["suggest"]
+        assertTrue(fields!!.contains("location.keywords.suggest"))
+        assertTrue(fields!!.contains("source.keywords.suggest"))
     }
 }
