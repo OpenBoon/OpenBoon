@@ -296,7 +296,7 @@ class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
              *
              * proxy___098c296c-33dd-594a-827c-26118ff62882___098c296c-33dd-594a-827c-26118ff62882_256x144.jpg
              */
-            return "${getOrgRoot()}/${slashed(id)}"
+            return "${getOrgRoot()}/ofs/${slashed(id)}"
         }
 
         if (id.contains('/')) {
