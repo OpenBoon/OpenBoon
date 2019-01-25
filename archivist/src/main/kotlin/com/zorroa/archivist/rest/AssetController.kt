@@ -270,7 +270,7 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
     }
 
-    @PutMapping(value = ["/api/v2/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping(value = ["/api/v2/assets/{id}"])
     @Throws(IOException::class)
     fun updateV2(@PathVariable id: String, @RequestBody req: UpdateAssetRequest): Any {
         val rsp =  assetService.update(id, req)
