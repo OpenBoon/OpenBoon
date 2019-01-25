@@ -40,6 +40,7 @@ interface AssetService {
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
+    fun update(assetId: String, req: UpdateAssetRequest) : Boolean
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
@@ -515,6 +516,13 @@ open abstract class AbstractAssetService : AssetService {
         runDyhiAndTaxons()
         return rsp
     }
+
+    override fun update(assetId: String, req: UpdateAssetRequest): Boolean {
+        val breq = BatchUpdateAssetsRequest(mapOf(assetId to req))
+        val rsp = batchUpdate(breq)
+        return rsp.updatedAssetIds.contains(assetId)
+    }
+
 
     override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse {
 

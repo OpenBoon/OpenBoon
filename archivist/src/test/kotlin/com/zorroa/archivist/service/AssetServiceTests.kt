@@ -111,6 +111,19 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testUpdateWithUpdateAssetRequest() {
+        val asset1 = searchService.search(Pager.first(), AssetSearch())[0]
+        val updated = assetService.update(asset1.id, UpdateAssetRequest(
+                mapOf("foo" to "bar"),
+                listOf("source.fileSize"))
+        )
+        assertTrue(updated)
+        val asset2 = assetService.get(asset1.id)
+        assertEquals(asset2.getAttr("foo", String::class.java), "bar")
+        assertNull(asset2.getAttr("source.fileSize"))
+    }
+
+    @Test
     fun testDelete() {
 
         val page = searchService.search(Pager.first(), AssetSearch())
