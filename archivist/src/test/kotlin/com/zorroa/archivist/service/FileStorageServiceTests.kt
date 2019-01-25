@@ -168,7 +168,16 @@ class GcsFileStorageServiceTests : AbstractTest() {
     fun testSignUrl() {
         val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")
         val id = fileStorage.dlp.buildId(spec)
-        println(fileStorage.getSignedUrl(id, HttpMethod.PUT))
+        val url = fileStorage.getSignedUrl(id, HttpMethod.PUT)
+        assertTrue(url.startsWith("https://storage.googleapis.com/"))
+    }
+
+    @Test
+    fun testSignUrlGet() {
+        val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")
+        val id = fileStorage.dlp.buildId(spec)
+        val url = fileStorage.getSignedUrl(id, HttpMethod.GET)
+        assertTrue(url.startsWith("https://storage.googleapis.com/"))
     }
 
     @Test
