@@ -9,6 +9,7 @@ import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.security.*
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.CoreDataVaultClient
+import com.zorroa.common.clients.RestClientException
 import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
@@ -693,18 +694,19 @@ class IrmAssetServiceImpl constructor(
     override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
         val rsp = BatchUpdateAssetsResponse()
         for (asset in assets) {
-            try {
-                if (cdvClient.updateIndexedMetadata(getCompanyId(), asset)) {
-                    rsp.updatedAssetIds.add(asset.id)
-                }
-                else {
-                    logger.warnEvent(LogObject.ASSET,
-                            LogAction.BATCH_UPDATE, "Asset not found", mapOf("assetId" to asset.id))
-                }
-            } catch(e: Exception) {
-                logger.warnEvent(LogObject.ASSET, LogAction.BATCH_UPDATE,
-                        "Error updating asset " + e.message, mapOf("assetId" to asset.id))
+            // Skip assets with a parent.
+            if (asset.attrExists("media.clip.parent")) {
+                rsp.updatedAssetIds.add(asset.id)
+                continue
+            }
+            // doesn't throw any exceptions.
+            if (cdvClient.updateIndexedMetadata(getCompanyId(), asset)) {
+                rsp.updatedAssetIds.add(asset.id)
+            }
+            else {
                 rsp.erroredAssetIds.add(asset.id)
+                logger.warnEvent(LogObject.ASSET,
+                        LogAction.BATCH_UPDATE, "Asset not found", mapOf("assetId" to asset.id))
             }
         }
         if (reindex) {
@@ -774,7 +776,16 @@ class IrmAssetServiceImpl constructor(
     }
 
     override fun getAll(ids: List<String>) : List<Document> {
-        return ids.map { cdvClient.getIndexedMetadata(getCompanyId(), it) }
+        return ids.map {
+            try {
+                cdvClient.getIndexedMetadata(getCompanyId(), it)
+            }
+            catch (e: RestClientException) {
+                // ATTENTION: The CDV does not have child assets, but we can get them from ES.
+                // TODO: Check that organization ID is passed here.
+                indexService.get(it)
+            }
+        }
     }
 
     override fun isParentValidated(doc: Document) : Boolean {

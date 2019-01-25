@@ -100,6 +100,7 @@ interface CoreDataVaultClient {
     /**
      * Update the indexed metadata for a given asset.  Return True if the metadata was updated,
      * false if not.  The id embedded in the Document object is used to call CDV server.
+     * Will not throw any exceptions.
      *
      * @param companyId The id of the company
      * @param doc The document to use.
