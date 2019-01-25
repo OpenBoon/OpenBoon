@@ -161,11 +161,18 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val contentType = StaticUtils.tika.detect(path)
 
         logger.event(LogObject.STORAGE, LogAction.AUTHORIZE,
-                mapOf("contentType" to contentType, "storageId" to uri, "bucket" to bucket, "path" to path))
+                mapOf("method" to method.toString(), "contentType" to contentType,
+                        "storageId" to uri, "bucket" to bucket, "path" to path))
 
         val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
-        return gcs.signUrl(info, duration, unit,
-                SignUrlOption.withContentType(), SignUrlOption.httpMethod(method)).toString()
+        val opts = if (method == HttpMethod.PUT) {
+            arrayOf(SignUrlOption.withContentType(), SignUrlOption.httpMethod(method))
+        }
+        else {
+            arrayOf(SignUrlOption.httpMethod(method))
+        }
+
+        return gcs.signUrl(info, duration, unit, *opts).toString()
     }
 
     override fun write(id: String, input: ByteArray) {
