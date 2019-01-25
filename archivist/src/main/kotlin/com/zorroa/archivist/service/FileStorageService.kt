@@ -123,7 +123,6 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
     init {
         gcs = if (credsFile!= null && Files.exists(credsFile)) {
             StorageOptions.newBuilder()
-                    .setProjectId("zorroa-evi-dev")
                     .setCredentials(
                     GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))).build().service
         }
