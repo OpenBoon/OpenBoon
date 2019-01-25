@@ -31,7 +31,6 @@ class GcpFileServerServiceTests : AbstractTest() {
         fileStorage.fileServerProvider = fileServerProvider
     }
 
-
     @Test
     fun testGetSignedUrl() {
         val u = fileServer.getSignedUrl(
