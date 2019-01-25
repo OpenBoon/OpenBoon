@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.ANALYST_HEADER_STRING
 import com.zorroa.archivist.service.AnalystService
+import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.*
@@ -35,6 +36,9 @@ class AnalystClusterControllerTests : MockMvcTest() {
     lateinit var dispatcherService: DispatcherService
 
     @Autowired
+    lateinit var dispatchQueueManager: DispatchQueueManager
+
+    @Autowired
     lateinit var taskErrorDao: TaskErrorDao
 
     fun launchJob() : Job {
@@ -49,7 +53,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun testStartedEvent() {
         val job = launchJob()
         authenticateAsAnalyst()
-        val task = dispatcherService.getNext()
+        val task = dispatchQueueManager.getNext()
 
         if (task != null) {
             val te = TaskEvent(TaskEventType.STARTED,
@@ -77,7 +81,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun testStoppedEventSuccess() {
         val job = launchJob()
         authenticateAsAnalyst()
-        val task = dispatcherService.getNext()
+        val task = dispatchQueueManager.getNext()
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
@@ -106,7 +110,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun testStoppedEventFailure() {
         val job = launchJob()
         authenticateAsAnalyst()
-        val task = dispatcherService.getNext()
+        val task = dispatchQueueManager.getNext()
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
@@ -135,7 +139,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun testExpandEvent() {
         val job = launchJob()
         authenticateAsAnalyst()
-        val task = dispatcherService.getNext()
+        val task = dispatchQueueManager.getNext()
 
         if (task != null) {
 
@@ -166,7 +170,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun testErrorEvent() {
         val job = launchJob()
         authenticateAsAnalyst()
-        val task = dispatcherService.getNext()
+        val task = dispatchQueueManager.getNext()
 
         if (task != null) {
 

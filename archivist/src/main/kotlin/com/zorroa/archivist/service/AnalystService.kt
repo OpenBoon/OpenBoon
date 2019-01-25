@@ -25,6 +25,7 @@ interface AnalystService {
     fun getAll(filter: AnalystFilter) : KPagedList<Analyst>
     fun get(id: UUID) : Analyst
     fun setLockState(analyst: Analyst, state: LockState) : Boolean
+    fun isLocked(endpoint: String) : Boolean
     fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst>
     fun delete(analyst: Analyst) : Boolean
     fun setState(analyst: Analyst, state: AnalystState) : Boolean
@@ -83,6 +84,11 @@ class AnalystServicImpl @Autowired constructor(
 
     override fun setLockState(analyst: Analyst, state: LockState) : Boolean {
         return analystDao.setLockState(analyst, state)
+    }
+
+    @Transactional(readOnly = true)
+    override fun isLocked(endpoint: String) : Boolean {
+        return analystDao.isInLockState(endpoint, LockState.Locked)
     }
 
     override fun setTaskId(analyst: Analyst, taskId: UUID?) : Boolean {

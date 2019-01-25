@@ -14,6 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -21,15 +22,60 @@ import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
-    fun getNext(): DispatchTask?
-    fun startTask(task: TaskId): Boolean
+    fun getWaitingTasks(limit: Int) : List<DispatchTask>
+    fun startTask(task: Task): Boolean
     fun stopTask(task: Task, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
     fun expand(parentTask: Task, script: ZpsScript): Task
     fun expand(job: JobId, script: ZpsScript): Task
     fun retryTask(task: Task): Boolean
     fun skipTask(task: Task): Boolean
-    fun queueTask(task: TaskId, endpoint: String): Boolean
+    fun queueTask(task: DispatchTask, endpoint: String): Boolean
+}
+
+/**
+ * A non-transactional class for queuing tasks.
+ */
+@Component
+class DispatchQueueManager @Autowired constructor(
+        val dispatcherService: DispatcherService,
+        val analystService: AnalystService,
+        val fileStorageService: FileStorageService,
+        val userDao: UserDao,
+        val properties: ApplicationProperties
+)
+{
+
+    fun getNext(): DispatchTask? {
+        val endpoint = getAnalystEndpoint()
+        if (analystService.isLocked(endpoint)) {
+            return null
+        }
+
+        if (endpoint != null) {
+            val tasks = dispatcherService.getWaitingTasks(10)
+            for (task in tasks) {
+                if (dispatcherService.queueTask(task, endpoint)) {
+
+                    task.env["ZORROA_TASK_ID"] = task.id.toString()
+                    task.env["ZORROA_JOB_ID"] = task.jobId.toString()
+                    task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(task.userId, userDao.getHmacKey(task.userId))
+                    if (properties.getBoolean("archivist.debug-mode.enabled")) {
+                        task.env["ZORROA_DEBUG_MODE"] = "true"
+                    }
+                    withAuth(SuperAdminAuthentication(task.organizationId)) {
+                        val fs = fileStorageService.get(task.getLogSpec())
+                        val logFile = fileStorageService.getSignedUrl(
+                                fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
+                        task.logFile = logFile
+                    }
+
+                    return task
+                }
+            }
+        }
+        return null
+    }
 }
 
 @Service
@@ -39,8 +85,6 @@ class DispatcherServiceImpl @Autowired constructor(
         private val taskDao: TaskDao,
         private val jobDao: JobDao,
         private val taskErrorDao: TaskErrorDao,
-        private val properties: ApplicationProperties,
-        private val userDao: UserDao,
         private val analystDao: AnalystDao,
         private val eventBus: EventBus) : DispatcherService {
 
@@ -60,40 +104,13 @@ class DispatcherServiceImpl @Autowired constructor(
         eventBus.register(this)
     }
 
-    override fun getNext(): DispatchTask? {
-        val endpoint = getAnalystEndpoint()
-        if (analystDao.isInLockState(endpoint, LockState.Locked)) {
-            return null
-        }
 
-        if (endpoint != null) {
-            val tasks = dispatchTaskDao.getNext(5)
-            for (task in tasks) {
-                if (queueTask(task, endpoint)) {
-
-                    task.env["ZORROA_TASK_ID"] = task.id.toString()
-                    task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-                    task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(task.userId, userDao.getHmacKey(task.userId))
-                    if (properties.getBoolean("archivist.debug-mode.enabled")) {
-                        task.env["ZORROA_DEBUG_MODE"] = "true"
-                    }
-                    withAuth(SuperAdminAuthentication(task.organizationId)) {
-                        val fs = fileStorageService.get(task.getLogSpec())
-                        val logFile = fileStorageService.getSignedUrl(
-                                fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
-                        task.logFile = logFile
-                    }
-                    // Set the time started on the job if its not set already.
-                    jobDao.setTimeStarted(task)
-
-                    return task
-                }
-            }
-        }
-        return null
+    @Transactional(readOnly = true)
+    override fun getWaitingTasks(limit: Int) : List<DispatchTask> {
+        return dispatchTaskDao.getNext(limit)
     }
 
-    override fun queueTask(task: TaskId, endpoint: String): Boolean {
+    override fun queueTask(task: DispatchTask, endpoint: String): Boolean {
         val result = taskDao.setState(task, TaskState.Queued, TaskState.Waiting)
         return if (result) {
             taskDao.setHostEndpoint(task, endpoint)
@@ -104,8 +121,11 @@ class DispatcherServiceImpl @Autowired constructor(
         }
     }
 
-    override fun startTask(task: TaskId): Boolean {
+    override fun startTask(task: Task): Boolean {
         val result = taskDao.setState(task, TaskState.Running, TaskState.Queued)
+        if (result) {
+            jobDao.setTimeStarted(task)
+        }
         logger.info("Starting task: {}, {}", task.taskId, result)
         return result
     }
