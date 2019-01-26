@@ -318,7 +318,8 @@ class IndexDaoImpl @Autowired constructor(
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
 
         docs.forEach { doc->
-            if (doc.attrExists("system.hold") && doc.getAttr("system.hold", Boolean::class.java)) {
+            val hold = doc.getAttr("system.hold", Boolean::class.java) ?: false
+            if (doc.attrExists("system.hold") && hold) {
                 rsp.onHoldAssetIds.add(doc.id)
             }
             else if (!hasPermission("write", doc)) {

@@ -322,7 +322,7 @@ open class Document {
      * @param <T>
      * @return
     </T> */
-    fun <T> getAttr(attr: String, type: Class<T>): T {
+    fun <T> getAttr(attr: String, type: Class<T>): T? {
         val current = getContainer(attr, false)
         return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
     }
@@ -387,7 +387,7 @@ open class Document {
         val key = Attr.name(attr)
 
         try {
-            (current as MutableMap<String, Any>)[key] = Json.Mapper.convertValue(value as Any)
+            (current as MutableMap<String, Any?>)[key] = Json.Mapper.convertValue(value as Any)
         } catch (ex: ClassCastException) {
             throw IllegalArgumentException("Invalid attribute: $attr", ex)
         }
@@ -553,7 +553,7 @@ object IdGen {
      * @param source
      * @return
      */
-    fun getRef(source: Document): String {
+    fun getRef(source: Document): String? {
         val idkey = source.getAttr("source.idkey", String::class.java)
         var key = source.getAttr("source.path", String::class.java)
 

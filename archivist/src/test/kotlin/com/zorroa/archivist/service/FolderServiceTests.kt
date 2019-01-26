@@ -66,7 +66,7 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
 
         doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
+        assertEquals(10, doc.getAttr("system.links.folder", List::class.java)!!.size.toLong())
     }
 
     @Test
