@@ -35,9 +35,6 @@ class CoreDataVaultAssetSpec (
     val fileName: String
 
 ) {
-    constructor(doc: Document, documentTypeId: String) :
-            this(doc.id, documentTypeId, doc.getAttr("source.path", String::class.java))
-
     constructor(documentGUID: UUID, documentTypeId: String, fileName: String) :
             this(documentGUID.toString(), documentTypeId, fileName)
 }

@@ -229,10 +229,10 @@ class SearchServiceTests : AbstractTest() {
         val folder3 = folderService.create(builder)
 
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source1.addToKeywords("media", source1.getAttr("source", SourceSchema::class.java).filename)
+        source1.addToKeywords("media", source1.getAttr("source", SourceSchema::class.java)!!.filename)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.addToKeywords("media", source2.getAttr("source", SourceSchema::class.java).filename)
+        source2.addToKeywords("media", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
         val asset1 = assetService.createOrReplace(source1)
         val asset2 = assetService.createOrReplace(source2)
@@ -309,7 +309,7 @@ class SearchServiceTests : AbstractTest() {
         source1.setAttr("media.keywords", ImmutableList.of("captain"))
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java).filename)
+        source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplace(source1)
         assetService.createOrReplace(source2)
@@ -338,7 +338,7 @@ class SearchServiceTests : AbstractTest() {
         refreshIndex()
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", source.getAttr("source", SourceSchema::class.java).filename)
+        source.setAttr("media.keywords", source.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplace(source)
         refreshIndex()

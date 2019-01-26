@@ -364,7 +364,7 @@ class AssetControllerTests : MockMvcTest() {
         refreshIndex()
         authenticate("admin")
         doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
+        assertEquals(10, doc.getAttr("system.links.folder", List::class.java)!!.size.toLong())
 
     }
 
@@ -389,9 +389,9 @@ class AssetControllerTests : MockMvcTest() {
         val assets = indexService.getAll(Pager.first(1))
         for (asset in assets) {
             val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
-            assertTrue(perm.id in perms.read)
-            assertTrue(perm.id in perms.write)
-            assertTrue(perm.id in perms.export)
+            assertTrue(perm.id in perms!!.read)
+            assertTrue(perm.id in perms!!.write)
+            assertTrue(perm.id in perms!!.export)
         }
     }
 

@@ -117,7 +117,7 @@ class TaxonomyServiceTests : AbstractTest() {
         refreshIndex()
 
         val a = indexService.get(d.id)
-        assertEquals(0, a.getAttr("system.taxonomy", List::class.java).size.toLong())
+        assertEquals(0, a.getAttr("system.taxonomy", List::class.java)!!.size.toLong())
     }
 
     @Test

@@ -213,16 +213,11 @@ open abstract class AbstractAssetService : AssetService {
      * @param newAsset the new asset
      */
     private fun handleLinks(oldAsset: Document, newAsset: Document) {
-        if (newAsset.links != null) {
-            var links = oldAsset.getAttr("system.links", LinkSchema::class.java)
-            if (links == null) {
-                links = LinkSchema()
-            }
-            newAsset.links?.forEach {
-                links.addLink(it.left, it.right.toString())
-            }
-            newAsset.setAttr("system.links", links)
+        var links = oldAsset.getAttr("system.links", LinkSchema::class.java) ?: LinkSchema()
+        newAsset.links?.forEach {
+            links.addLink(it.left, it.right.toString())
         }
+        newAsset.setAttr("system.links", links)
     }
 
     /**
@@ -234,12 +229,8 @@ open abstract class AbstractAssetService : AssetService {
      */
     private fun handlePermissions(oldAsset: Document, newAsset: Document, defaultPermissions: Map<String, Any>?) {
 
-        var existingPerms = oldAsset.getAttr("system.permissions",
-                PermissionSchema::class.java)
-
-        if (existingPerms == null) {
-            existingPerms = PermissionSchema()
-        }
+        val existingPerms = oldAsset.getAttr("system.permissions",
+                PermissionSchema::class.java) ?: PermissionSchema()
 
         if (newAsset.permissions != null) {
             newAsset.permissions?.forEach {
@@ -508,7 +499,9 @@ open abstract class AbstractAssetService : AssetService {
         runBlocking {
             futures.map {
                 val r = it.await()
-                logger.info("Updated batch of assets: $r")
+                logger.event(LogObject.ASSET, LogAction.BATCH_UPDATE,
+                        mapOf("updatCount" to r.updatedAssetIds.size,
+                                "errorCount" to r.erroredAssetIds.size))
                 rsp.plus(r)
             }
         }
@@ -797,10 +790,10 @@ class IrmAssetServiceImpl constructor(
     }
 
     override fun isParentValidated(doc: Document) : Boolean {
-        if (!doc.attrExists("media.clip.parent")) {
-            return true
+        doc.getAttr("media.clip.parent", String::class.java)?.let {
+            return cdvClient.assetExists(getCompanyId(), it)
         }
-        return cdvClient.assetExists(getCompanyId(), doc.getAttr("media.clip.parent", String::class.java))
+        return true
     }
 
     override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
