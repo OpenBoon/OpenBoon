@@ -188,13 +188,17 @@ class DispatcherServiceImpl @Autowired constructor(
         }
 
         val newTask = taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
-        logger.info("Expanding parent task: {} with task: {}", parentTask.id, newTask.id)
+        logger.event(LogObject.JOB, LogAction.EXPAND,
+                mapOf("parentTaskId" to parentTask.id,
+                        "taskId" to newTask.id,
+                        "jobId" to newTask.jobId))
         return newTask
     }
 
     override fun expand(job: JobId, script: ZpsScript): Task {
         val newTask = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
-        logger.info("Expanding job: {} with task: {}", job.jobId, newTask.id)
+        logger.event(LogObject.JOB, LogAction.EXPAND,
+                mapOf("jobId" to newTask.jobId, "taskId" to newTask.id))
         return newTask
     }
 
