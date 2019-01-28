@@ -34,8 +34,6 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                 ps.setLong(4, time + unit.toMillis(duration))
                 ps
             }
-            logger.event(LogObject.CLUSTER_LOCK, LogAction.LOCK,
-                    mapOf("lockName" to name))
             true
         } catch (e: DataIntegrityViolationException) {
             false
@@ -44,13 +42,8 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
 
     override fun unlock(name: String): Boolean {
         val host = InetAddress.getLocalHost().hostAddress
-        val result = jdbc.update("DELETE FROM cluster_lock WHERE str_name=? AND str_host=?",
+        return jdbc.update("DELETE FROM cluster_lock WHERE str_name=? AND str_host=?",
                 name, host) == 1
-        if (result) {
-            logger.event(LogObject.CLUSTER_LOCK, LogAction.UNLOCK,
-                    mapOf("lockName" to name))
-        }
-        return result
     }
 
     override fun clearExpired(): Int {
