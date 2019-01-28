@@ -73,7 +73,7 @@ class JobController @Autowired constructor(
     @PutMapping(value = ["/api/v1/jobs/{id}/_restart"])
     @Throws(IOException::class)
     fun restart(@PathVariable id: UUID): Any {
-        return HttpUtils.status("Job", id, "restart", jobService.restartCanceledJob(jobService.get(id)))
+        return HttpUtils.status("Job", id, "restart", jobService.restartJob(jobService.get(id)))
     }
 
     @PutMapping(value = ["/api/v1/jobs/{id}/_retryAllFailures"])
