@@ -32,7 +32,7 @@ class DyHierarchyController @Autowired constructor(
         return dyHierarchyService.create(spec)
     }
 
-    @PostMapping(value = ["/api/v1/dyhi/{id}"])
+    @DeleteMapping(value = ["/api/v1/dyhi/{id}"])
     fun delete(@PathVariable id: UUID): Map<String, Any> {
         val dh = dyHierarchyService.get(id)
         val result = dyHierarchyService.delete(dh)
