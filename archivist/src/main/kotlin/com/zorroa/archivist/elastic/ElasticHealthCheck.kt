@@ -11,16 +11,11 @@ class ElasticHealthCheck @Autowired constructor(val indexRoutingService: IndexRo
 
     override fun health(): Health {
         val client = indexRoutingService.getEsRestClient()
-        return if (check()) {
+        return if (client.isAvailable()) {
             Health.up().build()
         }
         else {
-            Health.down().withDetail("Elasticsearch down or not ready", client.route).build()
+            Health.down().withDetail("ElasticSearch down or not ready", client.route).build()
         }
     }
-
-    fun check() : Boolean {
-        return indexRoutingService.getEsRestClient().isAvailable()
-    }
-
 }
