@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component
 class ElasticHealthCheck @Autowired constructor(val indexRoutingService: IndexRoutingService) : HealthIndicator {
 
     override fun health(): Health {
-        val healthy = check()
-        return if (!healthy) {
-            val client = indexRoutingService.getEsRestClient()
-            Health.down().withDetail("Elasticsearch down or not ready", client.route).build()
+        val client = indexRoutingService.getEsRestClient()
+        return if (check()) {
+            Health.up().build()
         }
         else {
-            Health.up().build()
+            Health.down().withDetail("Elasticsearch down or not ready", client.route).build()
         }
     }
 
