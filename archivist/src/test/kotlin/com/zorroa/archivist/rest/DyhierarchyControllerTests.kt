@@ -12,6 +12,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import java.text.ParseException
 
 import org.junit.Assert.assertEquals
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -37,7 +38,7 @@ class DyhierarchyControllerTests : MockMvcTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testCreate() {
+    fun testCreateAndDelete() {
         val session = admin()
 
         val (id) = folderService.create(FolderSpec("foo"), false)
@@ -62,5 +63,8 @@ class DyhierarchyControllerTests : MockMvcTest() {
 
                 })
         assertEquals(4, dh.levels.size.toLong())
+
+        mvc.perform(delete("/api/v1/dyhi/${dh.id}"))
+
     }
 }
