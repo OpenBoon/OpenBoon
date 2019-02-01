@@ -210,20 +210,6 @@ class AssetController @Autowired constructor(
         searchService.search(Pager(search.from, search.size, 0), search, out)
     }
 
-    @PutMapping(value = ["/api/v1/assets/_fields/hide"])
-    @Throws(IOException::class)
-    fun unhideField(@RequestBody update: HideField): Any {
-        return HttpUtils.status("field", "hide",
-                fieldService.updateField(update.setHide(true).setManual(true)))
-    }
-
-    @DeleteMapping(value = ["/api/v1/assets/_fields/hide"])
-    @Throws(IOException::class)
-    fun hideField(@RequestBody update: HideField): Any {
-        return HttpUtils.status("field", "unhide",
-                fieldService.updateField(update.setHide(false)))
-    }
-
     @PostMapping(value = ["/api/v2/assets/_count"])
     @Throws(IOException::class)
     fun count(@RequestBody search: AssetSearch): Any {

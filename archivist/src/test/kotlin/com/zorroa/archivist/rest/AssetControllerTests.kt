@@ -68,51 +68,6 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testHideAndUnhideField() {
-        val session = admin()
-        addTestAssets("set04/standard")
-
-        val result = mvc.perform(put("/api/v1/assets/_fields/hide")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
-
-        var status = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-
-                })
-        assertTrue(status["success"] as Boolean)
-
-        authenticate("admin")
-        fieldService.invalidateFields()
-        val fields = fieldService.getFields("asset")
-        for (field in fields["string"]!!) {
-            assertFalse(field.startsWith("source"))
-        }
-
-        mvc.perform(delete("/api/v1/assets/_fields/hide")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
-
-        status = Json.Mapper.readValue(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-
-                })
-        assertTrue(status["success"] as Boolean)
-
-        val stringFields = fieldService.getFields("asset")
-        assertNotEquals(fields, stringFields)
-    }
-
-    @Test
-    @Throws(Exception::class)
     fun testSearchV3() {
 
         val session = admin()
