@@ -617,40 +617,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    fun getFieldsWithHidden() {
-
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("location", LocationSchema(doubleArrayOf(1.0, 2.0)).setCountry("USA"))
-        source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"))
-        source.setAttr("foo.shash", "AAFFGG")
-
-        assetService.createOrReplace(source)
-        refreshIndex()
-        fieldService.updateField(HideField("foo.keywords", true))
-
-        val fields = fieldService.getFields("asset")
-        assertFalse(fields["keywords-boost"]!!.contains("foo.keywords"))
-        assertFalse(fields["string"]!!.contains("foo.keywords"))
-    }
-
-    @Test
-    fun getFieldsWithHiddenNameSpace() {
-
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("location", LocationSchema(doubleArrayOf(1.0, 2.0)).setCountry("USA"))
-        source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"))
-        source.setAttr("foo.shash", "AAFFGG")
-
-        assetService.createOrReplace(source)
-        refreshIndex()
-        fieldService.updateField(HideField("foo.", true))
-
-        val fields = fieldService.getFields("asset")
-        assertFalse(fields["keywords-boost"]!!.contains("foo.keywords"))
-        assertFalse(fields["string"]!!.contains("foo.keywords"))
-    }
-
-    @Test
     @Throws(IOException::class)
     fun testScrollSearch() {
         assetService.createOrReplace(Source(getTestImagePath().resolve("beer_kettle_01.jpg")))

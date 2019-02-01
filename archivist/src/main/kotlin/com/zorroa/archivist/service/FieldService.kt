@@ -25,8 +25,6 @@ interface FieldService {
 
     fun invalidateFields()
 
-    fun updateField(value: HideField): Boolean
-
     fun dotRaw(field: String): String
 
     fun getFieldType(field: String): String?
@@ -35,9 +33,7 @@ interface FieldService {
 @Service
 class FieldServiceImpl @Autowired constructor(
         val indexRoutingService: IndexRoutingService,
-        val properties: ApplicationProperties,
-        val fieldDao: FieldDao
-
+        val properties: ApplicationProperties
 ): FieldService {
 
     private val fieldMapCache = CacheBuilder.newBuilder()
@@ -53,7 +49,6 @@ class FieldServiceImpl @Autowired constructor(
             })
 
     override fun getFieldMap(type: String): Map<String, Set<String>> {
-        val hiddenFields = fieldDao.getHiddenFields()
         val result = mutableMapOf<String, MutableSet<String>>()
         result["string"] = mutableSetOf()
         result["date"] = mutableSetOf()
@@ -80,7 +75,7 @@ class FieldServiceImpl @Autowired constructor(
                 "GET", "/${rest.route.indexName}").entity.content
 
         val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
-        getList(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!, hiddenFields)
+        getList(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!)
         return result
     }
 
@@ -90,18 +85,6 @@ class FieldServiceImpl @Autowired constructor(
 
     override fun invalidateFields() {
         fieldMapCache.invalidateAll()
-    }
-
-    override fun updateField(value: HideField): Boolean {
-        try {
-            return if (value.isHide) {
-                fieldDao.hideField(value.field, value.isManual)
-            } else {
-                fieldDao.unhideField(value.field)
-            }
-        } finally {
-            invalidateFields()
-        }
     }
 
     override fun getFieldType(field: String): String? {
@@ -144,19 +127,12 @@ class FieldServiceImpl @Autowired constructor(
      */
     private fun getList(result: MutableMap<String, MutableSet<String>>,
                         fieldName: String?,
-                        mapProperties: Map<String, Any>,
-                        hiddenFieldNames: Set<String>) {
+                        mapProperties: Map<String, Any>) {
 
         if (fieldName == null) {  return }
         val map = mapProperties["properties"] as Map<String, Any>
         for (key in map.keys) {
             val item = map[key] as Map<String, Any>
-
-            if (!fieldName.isEmpty()) {
-                if (hiddenFieldNames.contains(fieldName)) {
-                    continue
-                }
-            }
 
             if (item.containsKey("type")) {
                 var type = item["type"] as String
@@ -187,9 +163,6 @@ class FieldServiceImpl @Autowired constructor(
                     result[type] = fields
                 }
                 val fqfn = arrayOf(fieldName, key).joinToString("")
-                if (hiddenFieldNames.contains(fqfn)) {
-                    continue
-                }
                 fields.add(fqfn)
                 if (hasSuggest) {
                     result["suggest"]?.add("$fqfn.suggest")
@@ -200,8 +173,7 @@ class FieldServiceImpl @Autowired constructor(
                 }
 
             } else {
-                getList(result, arrayOf(fieldName, key, ".").joinToString(""),
-                        item, hiddenFieldNames)
+                getList(result, arrayOf(fieldName, key, ".").joinToString(""), item)
             }
         }
     }

@@ -53,6 +53,7 @@ enum class LogObject {
     TAXONOMY,
     TRASH_FOLDER,
     USER,
-    ANALYST
+    ANALYST,
+    FIELD
 }
 

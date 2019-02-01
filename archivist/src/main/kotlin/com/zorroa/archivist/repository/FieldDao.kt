@@ -1,35 +1,128 @@
 package com.zorroa.archivist.repository
-
-import com.google.common.collect.ImmutableSet
+import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.event
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.util.JdbcUtils
+import com.zorroa.common.util.Json
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface FieldDao {
 
-    fun getHiddenFields(): Set<String>
-
-    fun hideField(name: String, manual: Boolean): Boolean
-
-    fun unhideField(name: String): Boolean
+    fun allocate(type: AttrType) : String
+    fun create(spec: FieldSpec) : Field
+    fun get(id: UUID) : Field
+    fun getAll(filter: FieldFilter?): KPagedList<Field>
+    fun count(filter: FieldFilter): Long
 }
 
 @Repository
 class FieldDaoImpl : AbstractDao(), FieldDao {
 
-    override fun hideField(name: String, manual: Boolean): Boolean {
-        return if (isDbVendor("postgresql")) {
-            jdbc.update(
-                    "INSERT INTO field_hide (pk_field, bool_manual) VALUES (?, ?) ON CONFLICT(pk_field) DO NOTHING",
-                    name, manual) == 1
-        } else {
-            jdbc.update("MERGE INTO field_hide (pk_field, bool_manual) KEY(pk_field) VALUES (?, ?)", name, manual) == 1
+    override fun create(spec: FieldSpec) : Field {
+
+        val time = System.currentTimeMillis()
+        val id = uuid1.generate()
+        val user = getUser()
+
+        jdbc.update { connection ->
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, user.organizationId)
+            ps.setObject(3, user.id)
+            ps.setObject(4, user.id)
+            ps.setLong(5, time)
+            ps.setLong(6, time)
+            ps.setString(7, spec.name)
+            ps.setString(8, spec.attrName)
+            ps.setInt(9, spec.attrType!!.ordinal)
+            ps.setBoolean(10, spec.editable)
+            ps.setBoolean(11, spec.custom)
+            ps
         }
+
+        logger.event(LogObject.FIELD, LogAction.CREATE, mapOf("fieldId" to id,
+                "custom" to spec.custom))
+        return Field(id, user.organizationId, spec.name, spec!!.attrName as String,
+                spec.attrType as AttrType, spec.editable, spec.custom)
     }
 
-    override fun unhideField(name: String): Boolean {
-        return jdbc.update("DELETE from field_hide WHERE pk_field=?", name) == 1
+    override fun get(id: UUID) : Field {
+        return jdbc.queryForObject("$GET WHERE pk_field=? AND pk_organization=?",
+                MAPPER, id, getOrgId())
     }
 
-    override fun getHiddenFields(): Set<String> {
-        return ImmutableSet.copyOf(jdbc.queryForList("SELECT pk_field from field_hide", String::class.java))
+    override fun getAll(filter: FieldFilter?): KPagedList<Field> {
+        val filt = filter ?: FieldFilter()
+        val query = filt.getQuery(GET, false)
+        val values = filt.getValues(false)
+        return KPagedList(count(filt), filt.page, jdbc.query(query, MAPPER, *values))
     }
+
+    override fun count(filter: FieldFilter): Long {
+        val query = filter.getQuery(COUNT, true)
+        return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
+    }
+
+    override fun allocate(type: AttrType) : String {
+        val user = getUser()
+        val num= if (jdbc.update(ALLOC_UPDATE, user.organizationId, type.ordinal) == 1) {
+            jdbc.queryForObject(
+                    "SELECT int_count FROM field_alloc WHEREpk_organization=? AND int_attr_type=?",
+                    Int::class.java, user.organizationId, type.ordinal)
+        }
+        else {
+            val id = uuid1.generate()
+            jdbc.update(ALLOC_INSERT, id, user.organizationId, type.ordinal, 0)
+            0
+        }
+        return type.fieldName(num)
+    }
+
+    companion object {
+
+
+        private val MAPPER = RowMapper { rs, _ ->
+            Field(rs.getObject("pk_field") as UUID,
+                    rs.getObject("pk_organization") as UUID,
+                    rs.getString("str_name"),
+                    rs.getString("str_attr_name"),
+                    AttrType.values()[rs.getInt("int_attr_type")],
+                    rs.getBoolean("bool_editable"),
+                    rs.getBoolean("bool_custom"))
+        }
+
+        private const val GET = "SELECT * FROM field"
+        private const val COUNT = "SELECT COUNT(1) FROM field"
+
+        private val INSERT = JdbcUtils.insert("field",
+                "pk_field",
+                "pk_organization",
+                "pk_user_created",
+                "pk_user_modified",
+                "time_created",
+                "time_modified",
+                "str_name",
+                "str_attr_name",
+                "int_attr_type",
+                "bool_editable",
+                "bool_custom")
+
+        private const val ALLOC_UPDATE = "UPDATE field_alloc " +
+                "SET int_count=int_count + 1 " +
+                "WHERE pk_organization=? " +
+                "AND int_attr_type=?"
+
+        private val ALLOC_INSERT = JdbcUtils.insert("field_alloc",
+                "pk_field_alloc",
+                "pk_organization",
+                "int_attr_type",
+                "int_count")
+    }
+
 }
