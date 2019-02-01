@@ -294,32 +294,11 @@ open abstract class AbstractAssetService : AssetService {
     fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets,
                     batchUpdateResult:Map<String, Boolean> = mapOf()) : BatchCreateAssetsResponse {
 
-        val checkedParents = mutableMapOf<String, Boolean>()
-
         // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
         val docsToIndex = prepped.assets.filter {
             batchUpdateResult.getOrDefault(it.id, true)
-        }.filter {doc ->
-            /**
-             * Filter out any assets where the parent does not exist.  Uses the
-             * isParentValidated() method where the implementation can vary. For
-             * IRM, it checks the CDV.  For plain old Zorroa it just returns true.
-             */
-            var result = true
-            val parentId : String? = doc.getAttr("media.clip.parent", String::class.java)
-            if (parentId != null) {
-                // Determine and cache if the parent is validated.
-                result = checkedParents.computeIfAbsent(parentId) {
-                   isParentValidated(doc)
-                }
-                if (!result) {
-                    logger.warnEvent(LogObject.ASSET, LogAction.BATCH_INDEX,
-                            "Skipped, invalid parent not in CDV",
-                            mapOf("assetId" to doc.id, "parentId" to parentId))
-                }
-            }
-            result
         }
+
         val rsp = indexService.index(docsToIndex)
         if (req != null) {
             incrementJobCounters(req, rsp)
@@ -605,12 +584,6 @@ open abstract class AbstractAssetService : AssetService {
         return UpdateLinksResponse(success, errors)
     }
 
-    /**
-     * Return true if the parent is validated.  Each implementation can choose
-     * how the parent is validated.
-     */
-    abstract fun isParentValidated(doc: Document) : Boolean
-
     companion object {
 
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
@@ -789,13 +762,6 @@ class IrmAssetServiceImpl constructor(
         }
     }
 
-    override fun isParentValidated(doc: Document) : Boolean {
-        doc.getAttr("media.clip.parent", String::class.java)?.let {
-            return cdvClient.assetExists(getCompanyId(), it)
-        }
-        return true
-    }
-
     override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
         val types = cdvClient.getDocumentTypes(getCompanyId())
         val id = UUID.randomUUID()
@@ -930,10 +896,6 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         }
 
         return combinedRep
-    }
-
-    override fun isParentValidated(doc: Document) : Boolean {
-        return true
     }
 
     override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
