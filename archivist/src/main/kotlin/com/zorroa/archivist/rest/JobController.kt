@@ -17,8 +17,7 @@ import java.util.*
 @RestController
 @Timed
 class JobController @Autowired constructor(
-        val jobService: JobService,
-        val dispatcherService: DispatcherService
+        val jobService: JobService
 ) {
 
     @PostMapping(value = ["/api/v1/jobs/_search"])
