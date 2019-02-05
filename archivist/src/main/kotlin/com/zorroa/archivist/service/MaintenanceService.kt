@@ -1,10 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
-import com.zorroa.archivist.repository.AnalystDao
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
+import com.zorroa.common.domain.TaskState
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -120,13 +122,27 @@ class MaintenanceServiceImpl @Autowired constructor(
         try {
             //  get Analysts that are Up but haven't pinged in
             for (analyst in analystService.getUnresponsive(AnalystState.Up, 5, TimeUnit.MINUTES)) {
-                logger.info("Setting $analyst to down, unresponsive")
-                analystService.setState(analyst, AnalystState.Down)
+                if (analystService.setState(analyst, AnalystState.Down)) {
+                    logger.event(LogObject.ANALYST, LogAction.STATE_CHANGE,
+                            mapOf("newState" to AnalystState.Down,
+                                    "oldState" to AnalystState.Up,
+                                    "reason" to "unresponsive"))
+
+                    // Try to talk to the analyst anyway
+                    analyst.taskId?.let {
+                        if (!analystService.killTask(analyst.endpoint, it, "Analyst went down", TaskState.Waiting)) {
+                            val task = jobService.getTask(analyst.taskId)
+                            jobService.setTaskState(task, TaskState.Waiting, TaskState.Running)
+                            analystService.setTaskId(analyst, null)
+                        }
+                    }
+                }
             }
 
-            // first get ones that have been down for a long time.
-            for (analyst in analystService.getUnresponsive(AnalystState.Down, 24, TimeUnit.HOURS)) {
-                logger.info("Removing $analyst, unresponsive")
+            // get ones that have been down for a long time.
+            for (analyst in analystService.getUnresponsive(AnalystState.Down, 1, TimeUnit.HOURS)) {
+                logger.event(LogObject.ANALYST, LogAction.DELETE,
+                        mapOf("reason" to "unresponsive"))
                 analystService.delete(analyst)
             }
 
@@ -136,7 +152,7 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun scheduler(): AbstractScheduledService.Scheduler {
-        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(5, 60, TimeUnit.MINUTES)
+        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(5, 1, TimeUnit.MINUTES)
     }
 
     companion object {

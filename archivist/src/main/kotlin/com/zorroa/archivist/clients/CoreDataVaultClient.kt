@@ -35,9 +35,6 @@ class CoreDataVaultAssetSpec (
     val fileName: String
 
 ) {
-    constructor(doc: Document, documentTypeId: String) :
-            this(doc.id, documentTypeId, doc.getAttr("source.path", String::class.java))
-
     constructor(documentGUID: UUID, documentTypeId: String, fileName: String) :
             this(documentGUID.toString(), documentTypeId, fileName)
 }
@@ -100,6 +97,7 @@ interface CoreDataVaultClient {
     /**
      * Update the indexed metadata for a given asset.  Return True if the metadata was updated,
      * false if not.  The id embedded in the Document object is used to call CDV server.
+     * Will not throw any exceptions.
      *
      * @param companyId The id of the company
      * @param doc The document to use.

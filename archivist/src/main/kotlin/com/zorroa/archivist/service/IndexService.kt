@@ -91,7 +91,7 @@ class IndexServiceImpl  @Autowired  constructor (
                     .addToTerms("media.clip.parent", id))
                     .setFields(arrayOf("proxies"))
                     .setOrder(ImmutableList.of(AssetSearchOrder("_id"))))) {
-                return hit.getAttr("proxies", ProxySchema::class.java)
+                return hit.getAttr("proxies", ProxySchema::class.java) ?: ProxySchema()
             }
 
             return ProxySchema()

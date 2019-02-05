@@ -27,7 +27,7 @@ class GCPDispatcherServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var dispatcherService: DispatcherService
+    lateinit var dispatchQueueManager: DispatchQueueManager
 
     @Autowired
     lateinit var fileStorageService: FileStorageService
@@ -48,7 +48,7 @@ class GCPDispatcherServiceTests : AbstractTest() {
         whenever(fileStorageService.getSignedUrl(zany(), zany(), anyLong(), zany())).thenReturn("https://foo/bar")
 
         authenticateAsAnalyst()
-        val next = dispatcherService.getNext()
+        val next = dispatchQueueManager.getNext()
         assertNotNull(next)
         assertEquals(next?.logFile, "https://foo/bar")
     }
@@ -71,6 +71,9 @@ class DispatcherServiceTests : AbstractTest() {
     @Autowired
     lateinit var dispatcherService: DispatcherService
 
+    @Autowired
+    lateinit var dispatchQueueManager: DispatchQueueManager
+
     @Test
     fun testGetNext() {
         val analyst = "https://127.0.0.1:5000"
@@ -81,7 +84,7 @@ class DispatcherServiceTests : AbstractTest() {
         val job = jobService.create(spec)
 
         authenticateAsAnalyst()
-        val next = dispatcherService.getNext()
+        val next = dispatchQueueManager.getNext()
         assertNotNull(next)
         next?.let {
             assertEquals(job.id, it.jobId)
@@ -110,7 +113,7 @@ class DispatcherServiceTests : AbstractTest() {
         val node = analystDao.create(aspec)
         assertTrue(analystDao.setLockState(node, LockState.Locked))
 
-        val next = dispatcherService.getNext()
+        val next = dispatchQueueManager.getNext()
         assertNull(next)
     }
 
@@ -132,7 +135,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         val node = analystDao.create(aspec)
 
-        val next = dispatcherService.getNext()
+        val next = dispatchQueueManager.getNext()
         assertNotNull(next)
         next?.let {
             assertTrue(dispatcherService.startTask(it))
@@ -171,7 +174,7 @@ class DispatcherServiceTests : AbstractTest() {
                 "0.41.0",
                 null).apply { endpoint = analyst }
 
-        val next = dispatcherService.getNext()
+        val next = dispatchQueueManager.getNext()
         assertNotNull(next)
         next?.let {
             assertTrue(dispatcherService.startTask(it))

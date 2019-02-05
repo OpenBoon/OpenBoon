@@ -30,7 +30,8 @@ class ExportServiceImpl @Autowired constructor(
         private val indexDao: IndexDao,
         private val exportFileDao: ExportFileDao,
         private val fileStorageService: FileStorageService,
-        private val jobService: JobService
+        private val jobService: JobService,
+        private val pipelineService: PipelineService
         ) : ExportService {
 
     @Autowired
@@ -100,7 +101,7 @@ class ExportServiceImpl @Autowired constructor(
         val execute=  mutableListOf<ProcessorRef>()
         val generate =  mutableListOf<ProcessorRef>()
 
-        execute.addAll(spec.processors)
+        execute.addAll(pipelineService.resolve(PipelineType.Export, spec.processors))
         execute.add(ProcessorRef("zplugins.export.collectors.ExportCollector"))
 
         /**

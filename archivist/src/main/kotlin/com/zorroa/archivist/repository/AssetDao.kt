@@ -141,12 +141,7 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
     }
 
     fun extractTime(doc : Document) : Date {
-        return if (doc.attrExists("system.timeModified")) {
-            doc.getAttr("system.timeModified", Date::class.java)
-        }
-        else {
-            Date()
-        }
+        return  doc.getAttr("system.timeModified", Date::class.java) ?: Date()
     }
 
     companion object {

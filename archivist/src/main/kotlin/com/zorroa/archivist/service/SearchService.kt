@@ -181,10 +181,10 @@ class SearchServiceImpl @Autowired constructor(
                         .setBoost(1)
                         .setPrefix(false).build()))
 
-        val fields = fieldService.getFields("asset")["keywords"] ?: return mutableListOf()
+        val fields = fieldService.getFields("asset")["suggest"] ?: return mutableListOf()
 
         for ((idx, field) in fields.withIndex()) {
-            val completion = SuggestBuilders.completionSuggestion("$field.suggest")
+            val completion = SuggestBuilders.completionSuggestion("$field")
                     .text(text).contexts(ctx)
             suggestBuilder.addSuggestion("suggest$idx", completion)
         }
@@ -637,17 +637,17 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         if (filter.mustNot != null) {
-            for (f in filter.mustNot) {
+            for (assetFilter in filter.mustNot) {
                 val mustNot = QueryBuilders.boolQuery()
-                this.applyFilterToQuery(f, mustNot, linkedFolders)
+                this.applyFilterToQuery(assetFilter, mustNot, linkedFolders)
                 query.mustNot(mustNot)
             }
         }
 
         if (filter.should != null) {
-            for (f in filter.should) {
+            for (assetFilter in filter.should) {
                 val should = QueryBuilders.boolQuery()
-                this.applyFilterToQuery(f, should, linkedFolders)
+                this.applyFilterToQuery(assetFilter, should, linkedFolders)
                 query.should(should)
             }
         }

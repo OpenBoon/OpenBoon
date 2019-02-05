@@ -169,6 +169,8 @@ class MultipleWebSecurityConfig {
             http
                     .antMatcher("/actuator/**")
                     .addFilterBefore(jwtAuthorizationFilter, CsrfFilter::class.java)
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
                     .authorizeRequests()
                     .requestMatchers(EndpointRequest.to("metrics", "prometheus")).hasAuthority("zorroa::monitor")
                     .requestMatchers(EndpointRequest.to("health", "info")).permitAll()

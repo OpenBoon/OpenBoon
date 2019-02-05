@@ -47,6 +47,26 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchCreateOrReplaceWithLinks() {
+        var assets = searchService.search(Pager.first(), AssetSearch())
+        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+
+        val ids = assets.map { it.id }
+        val folderId = UUID.randomUUID()
+        assertEquals(2, assetService.addLinks(
+                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
+
+
+        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        assets = searchService.search(Pager.first(), AssetSearch())
+        assertTrue(assets.size() > 0)
+        assets.list.forEach {
+            assertTrue(it.attrExists("system.links"))
+        }
+    }
+
+
+    @Test
     fun testCreateOrReplace() {
         val asset = searchService.search(Pager.first(), AssetSearch())[0]
         asset.setAttr("foo", "bar")
@@ -108,6 +128,19 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(asset1.getAttr("source.path", String::class.java),
                 asset2.getAttr("source.path", String::class.java))
         assertEquals(asset2.getAttr("foo", String::class.java), "bar")
+    }
+
+    @Test
+    fun testUpdateWithUpdateAssetRequest() {
+        val asset1 = searchService.search(Pager.first(), AssetSearch())[0]
+        val updated = assetService.update(asset1.id, UpdateAssetRequest(
+                mapOf("foo" to "bar"),
+                listOf("source.fileSize"))
+        )
+        assertTrue(updated)
+        val asset2 = assetService.get(asset1.id)
+        assertEquals(asset2.getAttr("foo", String::class.java), "bar")
+        assertNull(asset2.getAttr("source.fileSize"))
     }
 
     @Test
@@ -174,7 +207,7 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
             val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
-            assertTrue(perms.export.contains(perm.id))
+            assertTrue(perms!!.export.contains(perm.id))
         }
     }
 
@@ -187,9 +220,9 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
             val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
-            assertTrue(perms.export.contains(perm.id))
-            assertTrue(perms.read.isEmpty())
-            assertTrue(perms.write.isEmpty())
+            assertTrue(perms!!.export.contains(perm.id))
+            assertTrue(perms!!.read.isEmpty())
+            assertTrue(perms!!.write.isEmpty())
         }
     }
 }

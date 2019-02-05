@@ -9,6 +9,7 @@ import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.security.*
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.CoreDataVaultClient
+import com.zorroa.common.clients.RestClientException
 import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
@@ -39,6 +40,7 @@ interface AssetService {
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
+    fun update(assetId: String, req: UpdateAssetRequest) : Boolean
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
@@ -211,16 +213,11 @@ open abstract class AbstractAssetService : AssetService {
      * @param newAsset the new asset
      */
     private fun handleLinks(oldAsset: Document, newAsset: Document) {
-        if (newAsset.links != null) {
-            var links = oldAsset.getAttr("system.links", LinkSchema::class.java)
-            if (links == null) {
-                links = LinkSchema()
-            }
-            newAsset.links?.forEach {
-                links.addLink(it.left, it.right.toString())
-            }
-            newAsset.setAttr("system.links", links)
+        var links = oldAsset.getAttr("system.links", LinkSchema::class.java) ?: LinkSchema()
+        newAsset.links?.forEach {
+            links.addLink(it.left, it.right.toString())
         }
+        newAsset.setAttr("system.links", links)
     }
 
     /**
@@ -232,12 +229,8 @@ open abstract class AbstractAssetService : AssetService {
      */
     private fun handlePermissions(oldAsset: Document, newAsset: Document, defaultPermissions: Map<String, Any>?) {
 
-        var existingPerms = oldAsset.getAttr("system.permissions",
-                PermissionSchema::class.java)
-
-        if (existingPerms == null) {
-            existingPerms = PermissionSchema()
-        }
+        val existingPerms = oldAsset.getAttr("system.permissions",
+                PermissionSchema::class.java) ?: PermissionSchema()
 
         if (newAsset.permissions != null) {
             newAsset.permissions?.forEach {
@@ -301,32 +294,11 @@ open abstract class AbstractAssetService : AssetService {
     fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets,
                     batchUpdateResult:Map<String, Boolean> = mapOf()) : BatchCreateAssetsResponse {
 
-        val checkedParents = mutableMapOf<String, Boolean>()
-
         // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
         val docsToIndex = prepped.assets.filter {
             batchUpdateResult.getOrDefault(it.id, true)
-        }.filter {doc ->
-            /**
-             * Filter out any assets where the parent does not exist.  Uses the
-             * isParentValidated() method where the implementation can vary. For
-             * IRM, it checks the CDV.  For plain old Zorroa it just returns true.
-             */
-            var result = true
-            val parentId : String? = doc.getAttr("media.clip.parent", String::class.java)
-            if (parentId != null) {
-                // Determine and cache if the parent is validated.
-                result = checkedParents.computeIfAbsent(parentId) {
-                   isParentValidated(doc)
-                }
-                if (!result) {
-                    logger.warnEvent(LogObject.ASSET, LogAction.BATCH_INDEX,
-                            "Skipped, invalid parent not in CDV",
-                            mapOf("assetId" to doc.id, "parentId" to parentId))
-                }
-            }
-            result
         }
+
         val rsp = indexService.index(docsToIndex)
         if (req != null) {
             incrementJobCounters(req, rsp)
@@ -506,7 +478,9 @@ open abstract class AbstractAssetService : AssetService {
         runBlocking {
             futures.map {
                 val r = it.await()
-                logger.info("Updated batch of assets: $r")
+                logger.event(LogObject.ASSET, LogAction.BATCH_UPDATE,
+                        mapOf("updatCount" to r.updatedAssetIds.size,
+                                "errorCount" to r.erroredAssetIds.size))
                 rsp.plus(r)
             }
         }
@@ -514,6 +488,13 @@ open abstract class AbstractAssetService : AssetService {
         runDyhiAndTaxons()
         return rsp
     }
+
+    override fun update(assetId: String, req: UpdateAssetRequest): Boolean {
+        val breq = BatchUpdateAssetsRequest(mapOf(assetId to req))
+        val rsp = batchUpdate(breq)
+        return rsp.updatedAssetIds.contains(assetId)
+    }
+
 
     override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse {
 
@@ -603,12 +584,6 @@ open abstract class AbstractAssetService : AssetService {
         return UpdateLinksResponse(success, errors)
     }
 
-    /**
-     * Return true if the parent is validated.  Each implementation can choose
-     * how the parent is validated.
-     */
-    abstract fun isParentValidated(doc: Document) : Boolean
-
     companion object {
 
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
@@ -693,18 +668,19 @@ class IrmAssetServiceImpl constructor(
     override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
         val rsp = BatchUpdateAssetsResponse()
         for (asset in assets) {
-            try {
-                if (cdvClient.updateIndexedMetadata(getCompanyId(), asset)) {
-                    rsp.updatedAssetIds.add(asset.id)
-                }
-                else {
-                    logger.warnEvent(LogObject.ASSET,
-                            LogAction.BATCH_UPDATE, "Asset not found", mapOf("assetId" to asset.id))
-                }
-            } catch(e: Exception) {
-                logger.warnEvent(LogObject.ASSET, LogAction.BATCH_UPDATE,
-                        "Error updating asset " + e.message, mapOf("assetId" to asset.id))
+            // Skip assets with a parent.
+            if (asset.attrExists("media.clip.parent")) {
+                rsp.updatedAssetIds.add(asset.id)
+                continue
+            }
+            // doesn't throw any exceptions.
+            if (cdvClient.updateIndexedMetadata(getCompanyId(), asset)) {
+                rsp.updatedAssetIds.add(asset.id)
+            }
+            else {
                 rsp.erroredAssetIds.add(asset.id)
+                logger.warnEvent(LogObject.ASSET,
+                        LogAction.BATCH_UPDATE, "Asset not found", mapOf("assetId" to asset.id))
             }
         }
         if (reindex) {
@@ -774,14 +750,16 @@ class IrmAssetServiceImpl constructor(
     }
 
     override fun getAll(ids: List<String>) : List<Document> {
-        return ids.map { cdvClient.getIndexedMetadata(getCompanyId(), it) }
-    }
-
-    override fun isParentValidated(doc: Document) : Boolean {
-        if (!doc.attrExists("media.clip.parent")) {
-            return true
+        return ids.map {
+            try {
+                cdvClient.getIndexedMetadata(getCompanyId(), it)
+            }
+            catch (e: RestClientException) {
+                // ATTENTION: The CDV does not have child assets, but we can get them from ES.
+                // TODO: Check that organization ID is passed here.
+                indexService.get(it)
+            }
         }
-        return cdvClient.assetExists(getCompanyId(), doc.getAttr("media.clip.parent", String::class.java))
     }
 
     override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
@@ -918,10 +896,6 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         }
 
         return combinedRep
-    }
-
-    override fun isParentValidated(doc: Document) : Boolean {
-        return true
     }
 
     override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {

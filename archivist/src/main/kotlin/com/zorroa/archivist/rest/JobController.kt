@@ -17,8 +17,7 @@ import java.util.*
 @RestController
 @Timed
 class JobController @Autowired constructor(
-        val jobService: JobService,
-        val dispatcherService: DispatcherService
+        val jobService: JobService
 ) {
 
     @PostMapping(value = ["/api/v1/jobs/_search"])
@@ -73,7 +72,7 @@ class JobController @Autowired constructor(
     @PutMapping(value = ["/api/v1/jobs/{id}/_restart"])
     @Throws(IOException::class)
     fun restart(@PathVariable id: UUID): Any {
-        return HttpUtils.status("Job", id, "restart", jobService.restartCanceledJob(jobService.get(id)))
+        return HttpUtils.status("Job", id, "restart", jobService.restartJob(jobService.get(id)))
     }
 
     @PutMapping(value = ["/api/v1/jobs/{id}/_retryAllFailures"])

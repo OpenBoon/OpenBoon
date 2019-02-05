@@ -270,6 +270,13 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
     }
 
+    @PutMapping(value = ["/api/v2/assets/{id}"])
+    @Throws(IOException::class)
+    fun updateV2(@PathVariable id: String, @RequestBody req: UpdateAssetRequest): Any {
+        val rsp =  assetService.update(id, req)
+        return HttpUtils.updated("asset", id, rsp, assetService.get(id))
+    }
+
     @PutMapping(value = ["/api/v1/assets"])
     fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
         return assetService.batchUpdate(req)

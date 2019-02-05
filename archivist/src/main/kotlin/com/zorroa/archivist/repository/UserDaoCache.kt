@@ -60,8 +60,8 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
             UserBase(rs.getObject("pk_user") as UUID,
                     rs.getString("str_username"),
                     rs.getString("str_email"),
-                    rs.getObject("pk_permission") as UUID,
-                    rs.getObject("pk_folder") as UUID,
+                    rs.getObject("pk_permission") as UUID?,
+                    rs.getObject("pk_folder") as UUID?,
                     rs.getObject("pk_organization") as UUID)
         }
 

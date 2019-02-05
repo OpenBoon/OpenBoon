@@ -27,7 +27,8 @@ enum class LogAction {
     STREAM,
     LOCK,
     UNLOCK,
-    APIKEY
+    APIKEY,
+    EXPAND
 }
 
 
@@ -51,6 +52,7 @@ enum class LogObject {
     TASK,
     TAXONOMY,
     TRASH_FOLDER,
-    USER
+    USER,
+    ANALYST
 }
 

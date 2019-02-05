@@ -28,7 +28,7 @@ interface JobService {
     fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean
     fun setTaskState(task: Task, newState: TaskState, oldState: TaskState?): Boolean
     fun cancelJob(job: Job) : Boolean
-    fun restartCanceledJob(job: Job) : Boolean
+    fun restartJob(job: Job) : Boolean
     fun retryAllTaskFailures(job: JobId) : Int
     fun getZpsScript(id: UUID) : ZpsScript
     fun updateJob(job: Job, spec: JobUpdateSpec) : Boolean
@@ -184,8 +184,8 @@ class JobServiceImpl @Autowired constructor(
         return setJobState(job, JobState.Cancelled, JobState.Active)
     }
 
-    override fun restartCanceledJob(job: Job) : Boolean {
-        return setJobState(job, JobState.Active, JobState.Cancelled)
+    override fun restartJob(job: Job) : Boolean {
+        return setJobState(job, JobState.Active, null)
     }
 
     override fun retryAllTaskFailures(job: JobId) : Int {

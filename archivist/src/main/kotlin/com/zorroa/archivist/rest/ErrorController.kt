@@ -55,7 +55,7 @@ class RestApiExceptionHandler {
             HttpStatus.CONFLICT
         }
         else if (e is ArchivistSecurityException) {
-            HttpStatus.UNAUTHORIZED
+            HttpStatus.FORBIDDEN
         }
         else if (e is HttpRequestMethodNotSupportedException ||
                 e is MethodArgumentTypeMismatchException) {
