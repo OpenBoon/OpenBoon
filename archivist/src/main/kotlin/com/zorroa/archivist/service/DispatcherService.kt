@@ -59,6 +59,8 @@ class DispatchQueueManager @Autowired constructor(
 
                     task.env["ZORROA_TASK_ID"] = task.id.toString()
                     task.env["ZORROA_JOB_ID"] = task.jobId.toString()
+                    task.env["ZORROA_ORGANIZATION_ID"] = task.organizationId.toString()
+                    task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
                     task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(task.userId, userDao.getHmacKey(task.userId))
                     if (properties.getBoolean("archivist.debug-mode.enabled")) {
                         task.env["ZORROA_DEBUG_MODE"] = "true"
