@@ -24,6 +24,10 @@ class FieldSystemServiceTests : AbstractTest() {
     fun createRegular() {
         val spec = FieldSpec("File Path", "source.path", null,false)
         val field = fieldSystemService.create(spec)
+        assertEquals("source.path", field.attrName)
+        assertEquals("File Path", field.name)
+        assertEquals(field.attrType, AttrType.STRING)
+        assertEquals(false, field.editable)
     }
 
     @Test
@@ -32,7 +36,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val field = fieldSystemService.create(spec)
         assertEquals(AttrType.CONTENT, field.attrType)
         assertTrue(field.custom)
-        assertEquals("content__0", field.attrName)
+        assertEquals("custom.content__0", field.attrName)
         assertEquals("Notes", field.name)
     }
 

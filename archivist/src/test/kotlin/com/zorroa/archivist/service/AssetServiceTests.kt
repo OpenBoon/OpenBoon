@@ -7,12 +7,16 @@ import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var fieldSystemService: FieldSystemService
 
     @Before
     fun init() {
@@ -223,6 +227,31 @@ class AssetServiceTests : AbstractTest() {
             assertTrue(perms!!.export.contains(perm.id))
             assertTrue(perms!!.read.isEmpty())
             assertTrue(perms!!.write.isEmpty())
+        }
+    }
+
+    @Test
+    fun edit() {
+        val field = fieldSystemService.create(FieldSpec("File Ext",
+                "source.extension", null, true))
+
+        val page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            assetService.edit(asset.id, FieldEditSpec(field.id, null,"bilbo"))
+        }
+
+
+    }
+
+    @Test
+    fun undo() {
+        val field = fieldSystemService.create(FieldSpec("File Ext",
+                "source.extension", null, true))
+
+        val page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            val edit = assetService.edit(asset.id, FieldEditSpec(field.id, null, "bilbo"))
+            assertTrue(assetService.undo(edit))
         }
     }
 }

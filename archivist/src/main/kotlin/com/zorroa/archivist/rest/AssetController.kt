@@ -8,6 +8,8 @@ import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.common.repository.KPage
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
@@ -16,7 +18,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -40,8 +41,8 @@ class AssetController @Autowired constructor(
         private val fileServerProvider: FileServerProvider,
         private val fileStorageService: FileStorageService,
         private val fileUploadService: FileUploadService,
-        meterRegistry: MeterRegistry
-){
+        private val fieldSystemService: FieldSystemService,
+        meterRegistry: MeterRegistry) {
 
     private val proxyLookupCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
@@ -250,7 +251,7 @@ class AssetController @Autowired constructor(
         return assetService.batchDelete(batch.assetIds)
     }
 
-    @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
@@ -316,6 +317,24 @@ class AssetController @Autowired constructor(
     fun refresh() {
         logger.warn("Refresh called.")
     }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/edits"])
+    fun getFieldEdits(@PathVariable id: UUID): KPagedList<FieldEdit>  {
+        return fieldSystemService.getFieldEdits(
+                FieldEditFilter(assetIds=listOf(id)).apply { page = KPage(0, 100) })
+    }
+
+    @PostMapping(value = ["/api/v1/assets/{id}/edits"])
+    fun createtFieldEdit(@PathVariable id: String, @RequestBody spec: FieldEditSpec): FieldEdit {
+        return assetService.edit(id, spec)
+    }
+
+    @DeleteMapping(value = ["/api/v1/assets/{id}/edits/{editId}"])
+    fun deleteFieldEdit(@PathVariable id: String, @PathVariable editId:UUID): Any {
+        val edit = fieldSystemService.getFieldEdit(editId)
+        return HttpUtils.updated("asset", id, assetService.undo(edit), assetService.get(id))
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(AssetController::class.java)

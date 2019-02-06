@@ -14,11 +14,21 @@ import java.util.*
 
 interface FieldDao {
 
+    /**
+     * Allocate a brand new field attribute.  This function picks a new custom
+     * ES field name for the given attribute.  Once a field name is allocated,
+     * it can never be reused.
+     *
+     * @param type: The field type to allocate for.
+     */
     fun allocate(type: AttrType) : String
+
+
     fun create(spec: FieldSpec) : Field
     fun get(id: UUID) : Field
     fun getAll(filter: FieldFilter?): KPagedList<Field>
     fun count(filter: FieldFilter): Long
+    fun get(attrName: String) : Field
 }
 
 @Repository
@@ -57,6 +67,11 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 MAPPER, id, getOrgId())
     }
 
+    override fun get(attrName: String) : Field {
+        return jdbc.queryForObject("$GET WHERE str_attr_name=? AND pk_organization=?",
+                MAPPER, attrName, getOrgId())
+    }
+
     override fun getAll(filter: FieldFilter?): KPagedList<Field> {
         val filt = filter ?: FieldFilter()
         val query = filt.getQuery(GET, false)
@@ -73,7 +88,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         val user = getUser()
         val num= if (jdbc.update(ALLOC_UPDATE, user.organizationId, type.ordinal) == 1) {
             jdbc.queryForObject(
-                    "SELECT int_count FROM field_alloc WHEREpk_organization=? AND int_attr_type=?",
+                    "SELECT int_count FROM field_alloc WHERE pk_organization=? AND int_attr_type=?",
                     Int::class.java, user.organizationId, type.ordinal)
         }
         else {
@@ -85,7 +100,6 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
     }
 
     companion object {
-
 
         private val MAPPER = RowMapper { rs, _ ->
             Field(rs.getObject("pk_field") as UUID,

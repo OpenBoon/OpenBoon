@@ -7,6 +7,8 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.service.FieldSystemService
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
@@ -19,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
@@ -32,7 +36,7 @@ class AssetControllerTests : MockMvcTest() {
     lateinit var indexDao: IndexDao
 
     @Autowired
-    lateinit var assetController: AssetController
+    lateinit var fieldSystemService: FieldSystemService
 
     @Before
     fun init() {
@@ -488,5 +492,78 @@ class AssetControllerTests : MockMvcTest() {
         for (asset in indexDao.getAll(Pager.first())) {
             assertEquals("ball", asset.getAttr("foos", String::class.java))
         }
+    }
+
+    @Test
+    fun testGetManualEdits() {
+        val session = admin()
+        addTestAssets("set04/standard")
+        var asset = indexDao.getAll(Pager.first())[0]
+
+        val field = fieldSystemService.create(FieldSpec("File Ext",
+                "source.extension", null, true))
+        assetService.edit(asset.id, FieldEditSpec(field.id,
+                "source.extension", "gandalf"))
+
+        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/assets/${asset.id}/edits")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val result = Json.Mapper.readValue<KPagedList<FieldEdit>>(
+                req.response.contentAsString, FieldEdit.Companion.TypeRefKList)
+        assertEquals(1, result.size())
+    }
+
+    @Test
+    fun testCreateManualEdit() {
+        val session = admin()
+        addTestAssets("set04/standard")
+        var asset = indexDao.getAll(Pager.first())[0]
+
+        val field = fieldSystemService.create(FieldSpec("File Ext",
+                "source.extension", null, true))
+        val spec = FieldEditSpec(field.id, null, newValue="bob")
+
+        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/assets/${asset.id}/edits")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serializeToString(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val result = Json.Mapper.readValue<FieldEdit>(req.response.contentAsString, FieldEdit::class.java)
+        assertEquals(field.id, result.fieldId)
+        assertEquals(UUID.fromString(asset.id), result.assetId)
+        assertEquals(spec.newValue, result.newValue)
+        assertEquals("jpg", result.oldValue)
+    }
+
+    @Test
+    fun testDeleteManualEdit() {
+
+        val session = admin()
+        addTestAssets("set04/standard")
+        var asset = indexDao.getAll(Pager.first())[0]
+
+        val field = fieldSystemService.create(FieldSpec("File Ext",
+                "source.extension", null, true))
+        val edit = assetService.edit(asset.id, FieldEditSpec(field.id,
+                "source.extension", "gandalf"))
+
+        val req = mvc.perform(MockMvcRequestBuilders.delete(
+                "/api/v1/assets/${asset.id}/edits/${edit.id}")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serializeToString(edit))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+        val result = Json.Mapper.readValue<Map<String,Any>>(req.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals("update", result["op"])
+        assertEquals(true, result["success"])
     }
 }

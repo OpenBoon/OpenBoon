@@ -5,8 +5,6 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.HideField
-import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -166,6 +164,7 @@ class FieldServiceImpl @Autowired constructor(
                 fields.add(fqfn)
                 if (hasSuggest) {
                     result["suggest"]?.add("$fqfn.suggest")
+                    result.getValue("keywords").add(fqfn)
                 }
 
                 if (key in AUTO_KEYWORDS_FIELDS) {

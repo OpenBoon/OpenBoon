@@ -64,9 +64,6 @@
   },
   "mappings": {
     "asset": {
-      "_all": {
-        "enabled": false
-      },
       "dynamic": true,
       "dynamic_date_formats": [
         "yyyy/MM/dd HH:mm:ss Z",
@@ -159,7 +156,8 @@
 
           "keywords_template": {
             "match_mapping_type": "string",
-            "match": "keywords",
+            "match_pattern": "regex",
+            "match": "^keywords$|keywords__.*",
             "mapping": {
               "type": "text",
               "fields": {
@@ -260,6 +258,15 @@
             "match": "id",
             "mapping": {
               "type": "keyword"
+            }
+          }
+        },
+        {
+          "integer_template": {
+            "match_mapping_type": "long",
+            "match": "int__*",
+            "mapping": {
+              "type": "long"
             }
           }
         },

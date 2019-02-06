@@ -28,7 +28,8 @@ enum class LogAction {
     LOCK,
     UNLOCK,
     APIKEY,
-    EXPAND
+    EXPAND,
+    EDIT
 }
 
 
@@ -54,6 +55,7 @@ enum class LogObject {
     TRASH_FOLDER,
     USER,
     ANALYST,
-    FIELD
+    FIELD,
+    FIELD_EDIT
 }
 

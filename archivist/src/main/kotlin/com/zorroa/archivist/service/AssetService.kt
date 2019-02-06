@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
+import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.search.AssetFilter
@@ -19,6 +20,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalStateException
 import java.net.URI
 import java.util.*
 
@@ -34,6 +36,8 @@ interface AssetService {
     fun get(assetId: String): Document
     fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
+    fun edit(assetId: String, spec: FieldEditSpec): FieldEdit
+    fun undo(edit: FieldEdit): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
     fun batchUpdate(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
     fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
@@ -71,6 +75,9 @@ open abstract class AbstractAssetService : AssetService {
     lateinit var permissionDao: PermissionDao
 
     @Autowired
+    lateinit var fieldEditDao: FieldEditDao
+
+    @Autowired
     lateinit var dyHierarchyService: DyHierarchyService
 
     @Autowired
@@ -84,6 +91,12 @@ open abstract class AbstractAssetService : AssetService {
 
     @Autowired
     lateinit var searchService: SearchService
+
+    @Autowired
+    lateinit var fieldSystemService: FieldSystemService
+
+    @Autowired
+    lateinit var fieldService: FieldService
 
     /**
      * Prepare a list of assets to be replaced or replaced.  Handles:
@@ -582,6 +595,69 @@ open abstract class AbstractAssetService : AssetService {
             }
         }
         return UpdateLinksResponse(success, errors)
+    }
+
+    override fun undo(edit: FieldEdit) : Boolean {
+        val asset = get(edit.assetId.toString())
+        val field = fieldSystemService.get(edit.fieldId)
+
+        val updateReq = if (edit.oldValue == null) {
+            UpdateAssetRequest(remove = listOf(field.attrName))
+        }
+        else {
+            UpdateAssetRequest(mapOf(field.attrName to edit.oldValue))
+        }
+
+        if (fieldEditDao.delete(edit.id)) {
+            val rsp = update(asset.id, updateReq)
+            if (!rsp) {
+                throw ArchivistWriteException(
+                        "Failed to remove edit from asset ${asset.id}, update failed")
+            }
+            return true
+        }
+
+        // something already removed edit.
+        return false
+    }
+
+    override fun edit(assetId: String, spec: FieldEditSpec) : FieldEdit {
+        val asset = get(assetId)
+        val field = fieldSystemService.get(spec)
+
+        if (!field.editable) {
+            throw IllegalStateException("The field ${field.name} is not editable")
+        }
+
+        val valid = when(field.attrType) {
+            AttrType.STRING, AttrType.STRING_EXACT, AttrType.CONTENT, AttrType.KEYWORDS -> spec.newValue is String
+            AttrType.INTEGER -> (spec.newValue is Int || spec.newValue is Long)
+            AttrType.DECIMAL -> (spec.newValue is Float || spec.newValue is Double)
+        }
+
+        if (!valid) {
+            throw java.lang.IllegalArgumentException("The value ${spec.newValue} " +
+                    "for field ${field.name} is not the correct type")
+        }
+
+        val updateReq = if (spec.newValue == null) {
+            UpdateAssetRequest(remove = listOf(field.attrName))
+        }
+        else {
+            UpdateAssetRequest(mapOf(field.attrName to spec.newValue))
+        }
+
+        val rsp = update(assetId, updateReq)
+        if (rsp) {
+            val ispec = FieldEditSpecInternal(
+                    UUID.fromString(asset.id),
+                    field.id,
+                    spec.newValue,
+                    asset.getAttr(field.attrName, Any::class.java))
+            return fieldEditDao.create(ispec)
+        }
+
+        throw ArchivistWriteException("Failed to edit asset $assetId, update failed")
     }
 
     companion object {
