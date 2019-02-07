@@ -3,11 +3,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
-import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -29,6 +26,8 @@ interface FieldDao {
     fun getAll(filter: FieldFilter?): KPagedList<Field>
     fun count(filter: FieldFilter): Long
     fun get(attrName: String) : Field
+    fun exists(attrName: String) : Boolean
+    fun deleteAll() : Int
 }
 
 @Repository
@@ -56,9 +55,9 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps
         }
 
-        logger.event(LogObject.FIELD, LogAction.CREATE, mapOf("fieldId" to id,
-                "custom" to spec.custom))
-        return Field(id, user.organizationId, spec.name, spec!!.attrName as String,
+        logger.event(LogObject.FIELD, LogAction.CREATE,
+                mapOf("fieldId" to id, "fieldName" to spec.name, "fieldAttrType" to spec.attrType))
+        return Field(id, spec.name, spec!!.attrName as String,
                 spec.attrType as AttrType, spec.editable, spec.custom)
     }
 
@@ -70,6 +69,11 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
     override fun get(attrName: String) : Field {
         return jdbc.queryForObject("$GET WHERE str_attr_name=? AND pk_organization=?",
                 MAPPER, attrName, getOrgId())
+    }
+
+    override fun exists(attrName: String) : Boolean {
+        return jdbc.queryForObject("$COUNT WHERE str_attr_name=? AND pk_organization=?",
+                Int::class.java, attrName, getOrgId()) == 1
     }
 
     override fun getAll(filter: FieldFilter?): KPagedList<Field> {
@@ -84,6 +88,10 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
     }
 
+    override fun deleteAll() : Int {
+        return jdbc.update("DELETE FROM field WHERE pk_organization=?", getOrgId())
+    }
+
     override fun allocate(type: AttrType) : String {
         val user = getUser()
         val num= if (jdbc.update(ALLOC_UPDATE, user.organizationId, type.ordinal) == 1) {
@@ -96,14 +104,13 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             jdbc.update(ALLOC_INSERT, id, user.organizationId, type.ordinal, 0)
             0
         }
-        return type.fieldName(num)
+        return type.attrName(num)
     }
 
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
             Field(rs.getObject("pk_field") as UUID,
-                    rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
                     rs.getString("str_attr_name"),
                     AttrType.values()[rs.getInt("int_attr_type")],

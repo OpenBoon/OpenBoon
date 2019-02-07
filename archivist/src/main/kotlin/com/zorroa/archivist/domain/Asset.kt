@@ -423,6 +423,26 @@ open class Document {
     }
 
     /**
+     * Return true if the given element is empty.
+     *
+     * @param attr
+     * @return
+     */
+    fun isEmpty(attr: String): Boolean {
+        val container = getContainer(attr, false)
+        val child = getChild(container, Attr.name(attr))
+
+        return try {
+            val map = child as MutableMap<String, Any>?
+            map?.isEmpty() ?: true
+        }
+        catch (e: Exception) {
+            false
+        }
+    }
+
+
+    /**
      * Return true if the value of an attribute contains the given value.
      *
      * @param attr

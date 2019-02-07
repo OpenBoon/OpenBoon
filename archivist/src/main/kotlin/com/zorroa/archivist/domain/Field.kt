@@ -9,14 +9,14 @@ import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
 enum class AttrType {
-    STRING,
-    STRING_EXACT,
-    KEYWORDS,
-    CONTENT,
-    INTEGER,
-    DECIMAL;
+    String,
+    StringExact,
+    StringKeywords,
+    StringContent,
+    NumberInteger,
+    NumberDecimal;
 
-    fun fieldName(num: Int) : String {
+    fun attrName(num: Int) : kotlin.String {
         return "custom.${name}__$num".toLowerCase()
     }
 
@@ -35,17 +35,65 @@ class FieldSpec(
 
 class Field (
         val id: UUID,
-        val organizationId: UUID,
         val name: String,
         val attrName: String,
         val attrType: AttrType,
         val editable: Boolean,
-        val custom: Boolean
+        val custom: Boolean,
+        val value: Any?=null,
+        val fieldEditId: UUID?=null
 )
 {
     companion object {
 
         object TypeRefKList : TypeReference<KPagedList<Field>>()
+    }
+}
+
+class FieldSetSpec(
+        val name: String,
+        val linkExpression: String? = null,
+        var fieldIds : List<UUID>? = null,
+        var fieldSpecs : List<FieldSpec>? = null
+)
+
+class FieldSet(
+        val id: UUID,
+        val name: String,
+        val linkExpression: String?=null,
+        var fields: MutableList<Field>?=null
+) {
+    object FieldSetList : TypeReference<List<FieldSet>>()
+}
+
+class FieldSetFilter (
+    val ids : List<UUID>? = null,
+    val names: List<String>? = null
+) : KDaoFilter() {
+
+    @JsonIgnore
+    override val sortMap: Map<String, String> =
+            mapOf("id" to "field_set.pk_field_set",
+                    "name" to "field_set.str_name")
+
+    override fun build() {
+
+        if (sort == null) {
+            sort = listOf("name:a")
+        }
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("field_set.pk_field_set", it.size))
+            addToValues(it)
+        }
+
+        names?.let {
+            addToWhere(JdbcUtils.inClause("field_set.str_name", it.size))
+            addToValues(it)
+        }
+
+        addToWhere("field.pk_organization=?")
+        addToValues(getOrgId())
     }
 }
 

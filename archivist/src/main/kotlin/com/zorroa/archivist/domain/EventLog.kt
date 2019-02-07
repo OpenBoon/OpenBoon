@@ -56,6 +56,7 @@ enum class LogObject {
     USER,
     ANALYST,
     FIELD,
-    FIELD_EDIT
+    FIELD_EDIT,
+    FIELD_SET
 }
 
