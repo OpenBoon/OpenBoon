@@ -182,7 +182,6 @@ class DispatcherServiceImpl @Autowired constructor(
         val parentScript = taskDao.getScript(parentTask.id)
         script.globals = parentScript.globals
         script.type = parentScript.type
-        script.inline = true
         script.settings = parentScript.settings
 
         if (script.execute.orEmpty().isEmpty()) {
