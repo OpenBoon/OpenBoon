@@ -20,7 +20,7 @@
     {
       "name": "File Size",
       "attrName": "source.fileSize",
-      "attrType": "Integer"
+      "attrType": "NumberInteger"
     }
   ]
 }

@@ -67,7 +67,7 @@ class OrganizationServiceImpl @Autowired constructor (
     override fun getOnlyOne(): Organization =  organizationDao.getOnlyOne()
 
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        if (!properties.getBoolean("unittest", true)) {
+        if (!properties.getBoolean("unittest", false)) {
             createDefaultOrganizationFieldSets()
         }
     }
