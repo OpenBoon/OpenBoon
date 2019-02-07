@@ -229,9 +229,14 @@ class AssetController @Autowired constructor(
         return searchService.getSuggestTerms(suggest.text)
     }
 
-    @GetMapping(value = ["/api/v2/assets/{id}"])
+    @GetMapping(value = ["/api/v2/assets/{id}", "/api/v1/assets/{id}"])
     fun get(@PathVariable id: String): Any {
         return indexService.get(id)
+    }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/fields"])
+    fun getFieldSets(@PathVariable id: String): List<FieldSet> {
+        return assetService.getFieldSets(id)
     }
 
     @GetMapping(value = ["/api/v1/assets/_path"])
@@ -267,12 +272,6 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v1/assets"])
     fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
         return assetService.batchUpdate(req)
-    }
-
-    @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
-    @Throws(IOException::class)
-    fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {
-        FlipbookSender(id, searchService).serveResource(rsp)
     }
 
     @PostMapping(value = ["/api/v1/assets/_index"])
@@ -318,18 +317,18 @@ class AssetController @Autowired constructor(
         logger.warn("Refresh called.")
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/edits"])
+    @GetMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
     fun getFieldEdits(@PathVariable id: UUID): KPagedList<FieldEdit>  {
         return fieldSystemService.getFieldEdits(
                 FieldEditFilter(assetIds=listOf(id)).apply { page = KPage(0, 100) })
     }
 
-    @PostMapping(value = ["/api/v1/assets/{id}/edits"])
+    @PostMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
     fun createtFieldEdit(@PathVariable id: String, @RequestBody spec: FieldEditSpec): FieldEdit {
         return assetService.edit(id, spec)
     }
 
-    @DeleteMapping(value = ["/api/v1/assets/{id}/edits/{editId}"])
+    @DeleteMapping(value = ["/api/v1/assets/{id}/fieldEdits/{editId}"])
     fun deleteFieldEdit(@PathVariable id: String, @PathVariable editId:UUID): Any {
         val edit = fieldSystemService.getFieldEdit(editId)
         return HttpUtils.updated("asset", id, assetService.undo(edit), assetService.get(id))

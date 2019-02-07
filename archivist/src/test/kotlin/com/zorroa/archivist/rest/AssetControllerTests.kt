@@ -35,9 +35,6 @@ class AssetControllerTests : MockMvcTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
-    @Autowired
-    lateinit var fieldSystemService: FieldSystemService
-
     @Before
     fun init() {
         fieldService.invalidateFields()
@@ -500,12 +497,12 @@ class AssetControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.create(FieldSpec("File Ext",
+        val field = fieldSystemService.createField(FieldSpec("File Ext",
                 "source.extension", null, true))
         assetService.edit(asset.id, FieldEditSpec(field.id,
                 "source.extension", "gandalf"))
 
-        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/assets/${asset.id}/edits")
+        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/assets/${asset.id}/fieldEdits")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -523,11 +520,11 @@ class AssetControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.create(FieldSpec("File Ext",
+        val field = fieldSystemService.createField(FieldSpec("File Ext",
                 "source.extension", null, true))
         val spec = FieldEditSpec(field.id, null, newValue="bob")
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/assets/${asset.id}/edits")
+        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/assets/${asset.id}/fieldEdits")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(spec))
@@ -549,13 +546,13 @@ class AssetControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.create(FieldSpec("File Ext",
+        val field = fieldSystemService.createField(FieldSpec("File Ext",
                 "source.extension", null, true))
         val edit = assetService.edit(asset.id, FieldEditSpec(field.id,
                 "source.extension", "gandalf"))
 
         val req = mvc.perform(MockMvcRequestBuilders.delete(
-                "/api/v1/assets/${asset.id}/edits/${edit.id}")
+                "/api/v1/assets/${asset.id}/fieldEdits/${edit.id}")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(edit))
@@ -565,5 +562,30 @@ class AssetControllerTests : MockMvcTest() {
         val result = Json.Mapper.readValue<Map<String,Any>>(req.response.contentAsString, Json.GENERIC_MAP)
         assertEquals("update", result["op"])
         assertEquals(true, result["success"])
+    }
+
+    @Test
+    fun testGetFieldSets() {
+
+        val session = admin()
+        addTestAssets("set04/standard")
+        var asset = indexDao.getAll(Pager.first())[0]
+
+        logger.info(Json.prettyString(fieldSystemService.getAllFieldSets()))
+
+        val field = fieldSystemService.getField("media.title")
+        val spec = FieldEditSpec(field.id, null, newValue="The Hobbit 2")
+        assetService.edit(asset.id, spec)
+
+        val req = mvc.perform(MockMvcRequestBuilders.get(
+                "/api/v1/assets/${asset.id}/fields")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+        val result = Json.Mapper.readValue<Any>(req.response.contentAsString, Json.LIST_OF_GENERIC_MAP)
+        println(Json.prettyString(result))
+
     }
 }

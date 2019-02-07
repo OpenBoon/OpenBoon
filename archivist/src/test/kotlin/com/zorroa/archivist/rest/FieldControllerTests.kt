@@ -4,11 +4,9 @@ import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldFilter
 import com.zorroa.archivist.domain.FieldSpec
-import com.zorroa.archivist.service.FieldSystemService
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -16,10 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 
 
-class FieldSystemControllerTests : MockMvcTest() {
-
-    @Autowired
-    lateinit var fieldSystemService: FieldSystemService
+class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateField() {
@@ -36,14 +31,14 @@ class FieldSystemControllerTests : MockMvcTest() {
 
         val field = Json.Mapper.readValue<Field>(req.response.contentAsString, Field::class.java)
         assertEquals(spec.name, field.name)
-        assertEquals(AttrType.STRING_EXACT, field.attrType)
+        assertEquals(AttrType.StringExact, field.attrType)
         assertEquals(spec.attrName, field.attrName)
     }
 
     @Test
     fun testGet() {
         val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
-        val field = fieldSystemService.create(spec)
+        val field = fieldSystemService.createField(spec)
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/${field.id}")
@@ -60,7 +55,7 @@ class FieldSystemControllerTests : MockMvcTest() {
     @Test
     fun testSearch() {
         val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
-        val field = fieldSystemService.create(spec)
+        val field = fieldSystemService.createField(spec)
 
         val filter = FieldFilter(ids=listOf(field.id))
 
