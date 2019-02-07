@@ -16,15 +16,12 @@ class FieldEditDaoTests : AbstractTest() {
     @Autowired
     lateinit var fieldEditDao: FieldEditDao
 
-    @Autowired
-    lateinit var fieldSystemService: FieldSystemService
-
     lateinit var field : Field
 
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        field = fieldSystemService.create(FieldSpec(
+        field = fieldSystemService.createField(FieldSpec(
                 "File Extension", "source.extension", null, true))
         refreshIndex()
     }

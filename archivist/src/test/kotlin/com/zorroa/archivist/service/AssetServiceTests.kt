@@ -15,9 +15,6 @@ import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
 
-    @Autowired
-    lateinit var fieldSystemService: FieldSystemService
-
     @Before
     fun init() {
         addTestAssets("set04/standard")
@@ -232,7 +229,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun edit() {
-        val field = fieldSystemService.create(FieldSpec("File Ext",
+        val field = fieldSystemService.createField(FieldSpec("File Ext",
                 "source.extension", null, true))
 
         val page = searchService.search(Pager.first(), AssetSearch())
@@ -245,7 +242,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun undo() {
-        val field = fieldSystemService.create(FieldSpec("File Ext",
+        val field = fieldSystemService.createField(FieldSpec("File Ext",
                 "source.extension", null, true))
 
         val page = searchService.search(Pager.first(), AssetSearch())

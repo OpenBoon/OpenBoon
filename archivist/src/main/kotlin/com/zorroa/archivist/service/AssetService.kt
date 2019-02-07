@@ -3,8 +3,8 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
-import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.AuditLogDao
+import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.security.*
@@ -15,12 +15,14 @@ import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalStateException
 import java.net.URI
 import java.util.*
 
@@ -49,6 +51,7 @@ interface AssetService {
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
     fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse
+    fun getFieldSets(assetId: String) : List<FieldSet>
 }
 
 /**
@@ -407,6 +410,10 @@ open abstract class AbstractAssetService : AssetService {
         doc.setAttr("system.permissions", perms)
     }
 
+    override fun getFieldSets(assetId: String) : List<FieldSet>  {
+        return fieldSystemService.getAllFieldSets(get(assetId))
+    }
+
     /**
      * Batch update a list of assetIds with the given attributes.
      *
@@ -599,7 +606,7 @@ open abstract class AbstractAssetService : AssetService {
 
     override fun undo(edit: FieldEdit) : Boolean {
         val asset = get(edit.assetId.toString())
-        val field = fieldSystemService.get(edit.fieldId)
+        val field = fieldSystemService.getField(edit.fieldId)
 
         val updateReq = if (edit.oldValue == null) {
             UpdateAssetRequest(remove = listOf(field.attrName))
@@ -623,16 +630,16 @@ open abstract class AbstractAssetService : AssetService {
 
     override fun edit(assetId: String, spec: FieldEditSpec) : FieldEdit {
         val asset = get(assetId)
-        val field = fieldSystemService.get(spec)
+        val field = fieldSystemService.getField(spec)
 
         if (!field.editable) {
             throw IllegalStateException("The field ${field.name} is not editable")
         }
 
         val valid = when(field.attrType) {
-            AttrType.STRING, AttrType.STRING_EXACT, AttrType.CONTENT, AttrType.KEYWORDS -> spec.newValue is String
-            AttrType.INTEGER -> (spec.newValue is Int || spec.newValue is Long)
-            AttrType.DECIMAL -> (spec.newValue is Float || spec.newValue is Double)
+            AttrType.String, AttrType.StringExact, AttrType.StringContent, AttrType.StringKeywords -> spec.newValue is String
+            AttrType.NumberInteger -> (spec.newValue is Int || spec.newValue is Long)
+            AttrType.NumberDecimal -> (spec.newValue is Float || spec.newValue is Double)
         }
 
         if (!valid) {
