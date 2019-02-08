@@ -284,7 +284,7 @@ open abstract class AbstractTest {
                     b.setAttr("location.keywords", listOf("boring", "tourist", "attraction"))
                     b.setAttr("media.width", 1024)
                     b.setAttr("media.height", 1024)
-                    b.setAttr("media.title", "Picuture of ${f.name}")
+                    b.setAttr("media.title", "Picture of ${f.name}")
                     val id = UUID.randomUUID().toString()
                     val proxies = Lists.newArrayList<Proxy>()
                     proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))

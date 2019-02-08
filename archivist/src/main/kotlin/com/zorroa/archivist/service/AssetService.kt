@@ -130,8 +130,6 @@ open abstract class AbstractAssetService : AssetService {
         val watchedFields = properties.getList("archivist.auditlog.watched-fields")
         val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
-        logger.info("Prepping ${assets.size} assets")
-
         return PreppedAssets(assets.map { newSource->
 
             val existingSource : Document = try {
@@ -151,6 +149,7 @@ open abstract class AbstractAssetService : AssetService {
             handleHold(existingSource, newSource)
             handlePermissions(existingSource, newSource, defaultPermissions)
             handleLinks(existingSource, newSource)
+            fieldSystemService.applyFieldEdits(newSource)
 
             if (watchedFields.isNotEmpty()) {
                 watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))

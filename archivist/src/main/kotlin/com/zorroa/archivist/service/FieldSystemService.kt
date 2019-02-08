@@ -36,6 +36,8 @@ interface FieldSystemService {
     fun getAllFieldSets(doc: Document) : List<FieldSet>
     fun getFieldSet(id: UUID) : FieldSet
 
+    fun applyFieldEdits(doc: Document)
+
     fun setupDefaultFieldSets(org: Organization)
 }
 
@@ -144,6 +146,13 @@ class FieldSystemServiceImpl @Autowired constructor(
     @Transactional(readOnly=true)
     override fun getAllFieldSets(doc: Document) : List<FieldSet> {
         return fieldSetDao.getAll(doc)
+    }
+
+    @Transactional(readOnly=true)
+    override fun applyFieldEdits(doc: Document) {
+        fieldEditDao.getAssetUpdateMap(UUID.fromString(doc.id)).forEach { t, u ->
+            doc.setAttr(t, u)
+        }
     }
 
     fun detectAttrType(attrName : String) : AttrType {

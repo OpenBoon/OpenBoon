@@ -66,6 +66,23 @@ class AssetServiceTests : AbstractTest() {
         }
     }
 
+    @Test
+    fun testBatchCreateOrReplaceWithManualEdits() {
+
+        val field = fieldSystemService.getField("media.title")
+
+        var assets = searchService.search(Pager.first(), AssetSearch())
+        assets.list.forEach {
+            assetService.edit(it.id, FieldEditSpec(field.id, null,"bilbo"))
+        }
+
+        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        assets = searchService.search(Pager.first(), AssetSearch())
+        assertTrue(assets.size() > 0)
+        assets.list.forEach {
+            assertEquals("bilbo", it.getAttr("media.title", String::class.java))
+        }
+    }
 
     @Test
     fun testCreateOrReplace() {
@@ -236,8 +253,6 @@ class AssetServiceTests : AbstractTest() {
         for (asset in page) {
             assetService.edit(asset.id, FieldEditSpec(field.id, null,"bilbo"))
         }
-
-
     }
 
     @Test

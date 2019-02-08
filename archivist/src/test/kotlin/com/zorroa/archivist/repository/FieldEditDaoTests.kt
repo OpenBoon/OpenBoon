@@ -44,4 +44,13 @@ class FieldEditDaoTests : AbstractTest() {
         assertEquals(edit1.id, edit2.id)
     }
 
+    @Test
+    fun testGetAssetUpdateMap() {
+        val spec = FieldEditSpecInternal(UUID.randomUUID(), field.id, "pig", "jpg")
+        val edit = fieldEditDao.create(spec)
+
+        val map = fieldEditDao.getAssetUpdateMap(spec.assetId)
+        assertEquals("pig", map[field.attrName])
+    }
+
 }
