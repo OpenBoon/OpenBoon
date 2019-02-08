@@ -333,11 +333,18 @@ public class AssetFilter {
 
     @JsonIgnore
     public boolean isEmpty() {
-        return ((links == null ? 0 : links.size()) +
+        return (links == null ? 0 : links.size()) +
                 (exists == null ? 0 : exists.size()) +
                 (missing == null ? 0 : missing.size()) +
                 (terms == null ? 0 : terms.size()) +
                 (range == null ? 0 : range.size()) +
-                (scripts == null ? 0 : scripts.size())) == 0;
+                (scripts == null ? 0 : scripts.size()) +
+                (prefix == null ? 0 : prefix.size()) +
+                (similarity == null ? 0 : similarity.size()) +
+                (kwconf == null ? 0 : kwconf.size()) +
+                (geo_bounding_box == null ? 0 : geo_bounding_box.size()) +
+                (mustNot == null ? 0 : mustNot.size()) +
+                (must == null ? 0 : must.size()) +
+                (should == null ? 0 :should.size()) == 0;
     }
 }
