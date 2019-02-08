@@ -61,13 +61,6 @@ class ExportServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testValidateExportAssetSearch() {
-        val search = AssetSearch()
-        search.addToFilter().addToLinks("export", job.id)
-        assertTrue(searchService.count(search) > 0)
-    }
-
-    @Test
     fun testResolvePipeline() {
         val spec = ExportSpec("foo",
                 AssetSearch(),

@@ -198,14 +198,11 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
     override fun updateIndexedMetadata(companyId: Int, doc: Document) : Boolean {
         val assetId = doc.id
         return try {
-            val response = client.put("/companies/$companyId/documents/$assetId/es", doc,
+            client.put("/companies/$companyId/documents/$assetId/es", doc,
                     Json.GENERIC_MAP, headers = getRequestHeaders())
-            val updated = response["status"] == "PASSED"
-            if (updated) {
-                client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED",
-                        null, Json.GENERIC_MAP, headers = getRequestHeaders())
-            }
-            updated
+            client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED",
+                    null, Json.GENERIC_MAP, headers = getRequestHeaders())
+            true
         } catch (e: Exception) {
             logger.warnEvent(LogObject.ASSET, LogAction.UPDATE, e.message ?: "No error message",
                     mapOf("companyId" to companyId, "assetId" to assetId))
