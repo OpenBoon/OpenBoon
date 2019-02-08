@@ -55,6 +55,12 @@ interface IndexRoutingService {
     fun getEsRestClient(route: IndexRoute): EsRestClient
 
     /**
+     * Get a EsRestClient using the default cluster, no shard route.
+     * @return: EsRestClient
+     */
+    fun getEsRestClient(): EsRestClient
+
+    /**
      * Return a route for the given ES mapping file using the default cluster.
      *
      * @parm mapping: An ElasticMapping file named in the V<version>__<name>.json format.
@@ -203,12 +209,15 @@ class IndexRoutingServiceImpl @Autowired
          * Eventually this implementation should handle custom org ES servers.  For
          * now this assumes a single ES cluster, single index, single alias.
          */
-
         return esClientCache.get(defaultRoute.withKey(orgId))
     }
 
     override fun getEsRestClient(route: IndexRoute): EsRestClient {
         return esClientCache.get(route)
+    }
+
+    override fun getEsRestClient(): EsRestClient {
+        return esClientCache.get(defaultRoute)
     }
 
     fun waitForElasticSearch(client: EsRestClient) {

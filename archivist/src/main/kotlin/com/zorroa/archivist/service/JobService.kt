@@ -95,8 +95,11 @@ class JobServiceImpl @Autowired constructor(
                 PipelineType.Import-> {
                     execute.add(ProcessorRef("zplugins.core.collector.ImportCollector"))
                 }
-                PipelineType.Export->{
-                    script.inline = true
+                PipelineType.Export-> {
+                    script.setSettting("inline", true)
+                    script.setGlobalArg("exportArgs", mapOf(
+                            "exportId" to job.id,
+                            "exportName" to job.name))
                     execute.add(ProcessorRef("zplugins.export.collectors.ExportCollector"))
                 }
                 PipelineType.Batch,PipelineType.Generate-> { }
