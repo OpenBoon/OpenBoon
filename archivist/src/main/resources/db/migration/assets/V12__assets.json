@@ -112,6 +112,9 @@
             "organizationId": {
               "type": "keyword"
             },
+            "fieldEdits": {
+              "type": "keyword"
+            },
             "links": {
               "properties": {
                 "import": {
