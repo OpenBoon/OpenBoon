@@ -116,8 +116,11 @@ class SearchServiceImpl @Autowired constructor(
     internal lateinit var fieldService: FieldService
 
     override fun count(builder: AssetSearch): Long {
-        val rest = indexRoutingService[getOrgId()]
-        return rest.client.search(buildSearch(builder, "asset").request).hits.totalHits
+        val orgId = getOrgId()
+        val rest = indexRoutingService[orgId]
+        val totalHits = rest.client.search(buildSearch(builder, "asset").request).hits.totalHits
+        logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(builder))
+        return totalHits
     }
 
     override fun count(ids: List<UUID>, search: AssetSearch?): List<Long> {
@@ -204,6 +207,10 @@ class SearchServiceImpl @Autowired constructor(
 
         val result = unique.toList()
         result.sorted()
+
+        // todo: log fields used?
+        logger.event(LogObject.ASSET, LogAction.SUGGEST, mapOf("suggest" to text, "results" to result.size))
+
         return result
     }
 
@@ -217,12 +224,15 @@ class SearchServiceImpl @Autowired constructor(
 
         var rsp = rest.client.search(builder.request)
         try {
+            var totalHits: Long = 0
             do {
                 func(rsp.hits)
+                totalHits += rsp.hits.totalHits
                 val sr = SearchScrollRequest(rsp.scrollId)
                 sr.scroll(TimeValue.timeValueSeconds(30))
                 rsp = rest.client.searchScroll(sr)
             } while (rsp.hits.hits.isNotEmpty())
+            logger.event(LogObject.ASSET, LogAction.SCROLL, searchParams(search).plus("totalHits" to totalHits) )
         } finally {
             try {
                 val cs = ClearScrollRequest()
@@ -245,6 +255,7 @@ class SearchServiceImpl @Autowired constructor(
         if (!clamp && maxResults > 0 && rsp.hits.totalHits > maxResults) {
             throw IllegalArgumentException("Asset search has returned more than $maxResults results.")
         }
+        logger.event(LogObject.ASSET, LogAction.SCROLL, searchParams(search).plus("totalHits" to rsp.hits.totalHits) )
 
         return ScanAndScrollAssetIterator(rest.client, rsp, maxResults)
     }
@@ -265,7 +276,9 @@ class SearchServiceImpl @Autowired constructor(
 
     override fun search(search: AssetSearch): SearchResponse {
         val rest = indexRoutingService[getOrgId()]
-        return rest.client.search(buildSearch(search, "asset").request)
+        val result = rest.client.search(buildSearch(search, "asset").request)
+        logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(search))
+        return result
     }
 
     override fun search(page: Pager, search: AssetSearch): PagedList<Document> {
@@ -279,15 +292,30 @@ class SearchServiceImpl @Autowired constructor(
                     req.addScrollId(scroll.id)
                     rest.client.clearScroll(req)
                 }
+                logger.event(
+                    LogObject.ASSET,
+                    LogAction.SCROLL,
+                    searchParams(search).plus("scroll.id" to scroll.id).plus("result.size" to result.size())
+                )
                 return result
             }
         }
-
-        return indexDao.getAll(page, buildSearch(search, "asset"))
+        val result = indexDao.getAll(page, buildSearch(search, "asset"))
+        logger.event(
+            LogObject.ASSET,
+            LogAction.SCROLL,
+            searchParams(search).plus("page.from" to page.from).plus("page.total_pages" to page.totalPages)
+        )
+        return result
     }
 
     @Throws(IOException::class)
     override fun search(page: Pager, search: AssetSearch, stream: OutputStream) {
+        logger.event(
+            LogObject.ASSET,
+            LogAction.SEARCH,
+            searchParams(search).plus("page.from" to page.from).plus("page.size" to page.size)
+        )
         indexDao.getAll(page, buildSearch(search, "asset"), stream)
     }
 
@@ -303,6 +331,11 @@ class SearchServiceImpl @Autowired constructor(
             req.addScrollId(id)
             rest.client.clearScroll(req)
         }
+        logger.event(
+            LogObject.ASSET,
+            LogAction.SCROLL,
+            mapOf("scroll.id" to id, "result.size" to result.size())
+        )
         return result
     }
 

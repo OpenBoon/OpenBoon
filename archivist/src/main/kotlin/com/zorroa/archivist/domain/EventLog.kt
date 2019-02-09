@@ -30,6 +30,11 @@ enum class LogAction {
     APIKEY,
     EXPAND,
     EDIT
+    SEARCH,
+    SEARCH_STREAM,
+    SCROLL,
+    SUGGEST
+
 }
 
 

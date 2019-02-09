@@ -729,6 +729,7 @@ class IrmAssetServiceImpl constructor(
     lateinit var organizationService: OrganizationService
 
     override fun get(assetId: String): Document {
+        logger.event(LogObject.ASSET, LogAction.GET, mapOf("assetId" to assetId, "datastore" to "CDV"))
         return cdvClient.getIndexedMetadata(getCompanyId(), assetId)
     }
 
@@ -876,6 +877,7 @@ class IrmAssetServiceImpl constructor(
     }
 
     override fun getAll(ids: List<String>) : List<Document> {
+        logger.event(LogObject.ASSET, LogAction.SEARCH, mapOf("requested_count" to ids.size, "datastore" to "CDV"))
         return ids.map {
             try {
                 cdvClient.getIndexedMetadata(getCompanyId(), it)
@@ -910,11 +912,19 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
     lateinit var fileStorageService: FileStorageService
 
     override fun get(assetId: String): Document {
+        logger.event(LogObject.ASSET, LogAction.GET, mapOf("assetId" to assetId))
         return assetDao.get(assetId)
     }
 
     override fun getAll(assetIds: List<String>): List<Document> {
-        return assetDao.getAll(assetIds)
+
+        val list = assetDao.getAll(assetIds)
+        logger.event(
+            LogObject.ASSET,
+            LogAction.SEARCH,
+            mapOf("requested_count" to assetIds.size, "result_count" to list.size)
+        )
+        return list
     }
 
     override fun delete(id: String): Boolean {

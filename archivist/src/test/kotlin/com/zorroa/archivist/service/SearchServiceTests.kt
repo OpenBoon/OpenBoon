@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
-import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
@@ -10,17 +9,15 @@ import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.schema.LocationSchema
 import com.zorroa.archivist.schema.SourceSchema
 import com.zorroa.archivist.search.*
+import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-
 import java.io.IOException
-
-import com.zorroa.archivist.security.getPermissionsFilter
-import org.junit.Assert.*
 import java.util.*
 
 /**
@@ -982,4 +979,13 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, result.size().toLong())
     }
 
+    @Test
+    fun testCountEventLog() {
+
+        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        assetService.createOrReplace(source)
+
+        assertEquals(1, searchService.count(AssetSearch()))
+        //logger.event()
+    }
 }
