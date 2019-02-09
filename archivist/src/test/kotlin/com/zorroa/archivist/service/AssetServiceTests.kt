@@ -4,12 +4,14 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -246,24 +248,32 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun edit() {
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val title = "khaaaaaan"
+        val field = fieldSystemService.getField("media.title")
 
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
-            assetService.edit(asset.id, FieldEditSpec(field.id, null,"bilbo"))
+            assetService.edit(asset.id, FieldEditSpec(field.id, null,title))
+        }
+        for (asset in searchService.search(Pager.first(), AssetSearch()).list) {
+            assertEquals(title, asset.getAttr("media.title", String::class.java))
         }
     }
 
     @Test
     fun undo() {
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val title = "khaaaaaan"
+        val field = fieldSystemService.getField("media.title")
 
-        val page = searchService.search(Pager.first(), AssetSearch())
+        var page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
-            val edit = assetService.edit(asset.id, FieldEditSpec(field.id, null, "bilbo"))
+            val edit = assetService.edit(asset.id, FieldEditSpec(field.id, null, title))
             assertTrue(assetService.undo(edit))
+        }
+
+        page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            assertNotEquals(title, asset.getAttr("media.title", String::class.java))
         }
     }
 }

@@ -427,6 +427,23 @@ open abstract class AbstractAssetService : AssetService {
         }
 
         /**
+         * A utility function for checking if the attribute is not protected.
+         * @param attr The attribute name in dot notation.
+         * @param assetId The ID of the asset.
+         * @param allowSystem If setting system attrs is allowed.
+         */
+        fun checkAttr(attr: String, assetId: String, allowSystem: Boolean) : Boolean {
+            if (!allowSystem && (attr == "system" || attr.startsWith("system."))) {
+                logger.warnEvent(LogObject.ASSET,
+                        LogAction.BATCH_UPDATE,
+                        "Skipping setting $attr, cannot set system values on batch update",
+                        mapOf("assetId" to assetId))
+                return false
+            }
+            return true
+        }
+
+        /**
          * For setting modified time
          */
         val now = Date()
@@ -453,30 +470,49 @@ open abstract class AbstractAssetService : AssetService {
                         else {
 
                             val req = assets.batch.getValue(doc.id)
+                            var updated = false
                             req.update?.forEach { t, u ->
-                                if (t.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent(LogObject.ASSET,
-                                            LogAction.BATCH_UPDATE,
-                                            "Skipping setting $t, cannot set system values on batch update",
-                                            mapOf("assetId" to doc.id))
-                                } else {
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
                                     doc.setAttr(t, u)
+                                    updated = true
                                 }
                             }
 
                             req.remove?.forEach {
-                                if (it.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent(LogObject.ASSET,
-                                            LogAction.BATCH_UPDATE,
-                                            "Skipping removing $it, cannot set system values on batch update",
-                                            mapOf("assetId" to doc.id))
-                                } else {
+                                if (checkAttr(it, doc.id, req.allowSystem)) {
                                     doc.removeAttr(it)
+                                    updated = true
                                 }
                             }
 
-                            doc.setAttr("system.timeModified", now)
-                            doc
+                            req.appendToList?.forEach { t, u->
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
+                                    doc.addToAttr(t, u, unique = false)
+                                    updated = true
+                                }
+                            }
+
+                            req.appendToUniqueList?.forEach { t, u->
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
+                                    doc.addToAttr(t, u, unique = true)
+                                    updated = true
+                                }
+                            }
+
+                            req.removeFromList?.forEach { t, u->
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
+                                    doc.removeFromAttr(t, u)
+                                    updated = true
+                                }
+                            }
+
+                            if (updated ) {
+                                doc.setAttr("system.timeModified", now)
+                                doc
+                            }
+                            else {
+                                null
+                            }
                         }
                     }
 
@@ -608,10 +644,14 @@ open abstract class AbstractAssetService : AssetService {
         val field = fieldSystemService.getField(edit.fieldId)
 
         val updateReq = if (edit.oldValue == null) {
-            UpdateAssetRequest(remove = listOf(field.attrName))
+            UpdateAssetRequest(remove = listOf(field.attrName),
+                    removeFromList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
         }
         else {
-            UpdateAssetRequest(mapOf(field.attrName to edit.oldValue))
+            UpdateAssetRequest(mapOf(field.attrName to edit.oldValue),
+                    removeFromList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
         }
 
         if (fieldEditDao.delete(edit.id)) {
@@ -647,10 +687,14 @@ open abstract class AbstractAssetService : AssetService {
         }
 
         val updateReq = if (spec.newValue == null) {
-            UpdateAssetRequest(remove = listOf(field.attrName))
-        }
+            UpdateAssetRequest(remove = listOf(field.attrName),
+        appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
+        allowSystem = true)
+    }
         else {
-            UpdateAssetRequest(mapOf(field.attrName to spec.newValue))
+            UpdateAssetRequest(mapOf(field.attrName to spec.newValue),
+                    appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
         }
 
         val rsp = update(assetId, updateReq)
