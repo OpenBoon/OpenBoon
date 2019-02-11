@@ -347,6 +347,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.extension.raw"),
                 DyHierarchyLevel("source.filename.raw"))
         val dyhi = dyhiService.create(spec)
+
         folder = folderService.get(folder.id)
         assertTrue(folder.search!!.filter.exists.contains("source.date"))
         assertEquals("beer", folder.search!!.query)

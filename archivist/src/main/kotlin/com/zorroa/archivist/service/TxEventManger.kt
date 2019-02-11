@@ -1,12 +1,16 @@
 package com.zorroa.archivist.service
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.service.TransactionEventManager.Companion.executor
+import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.security.getAuthentication
+import com.zorroa.archivist.security.withAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.Authentication
 import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class TransactionEventManager {
 
@@ -14,7 +18,7 @@ class TransactionEventManager {
      * Immediate mode ensures synchronizations are executed immediately upon
      * registration.
      */
-    var isImmediateMode = false
+    var isImmediateMode = ArchivistConfiguration.unittest
 
     /**
      * Queue up and AfterCommit runnable.
@@ -39,8 +43,6 @@ class TransactionEventManager {
     }
     companion object {
         private val logger = LoggerFactory.getLogger(TransactionEventManager::class.java)
-
-        val executor :ExecutorService = Executors.newFixedThreadPool(4)
     }
 }
 
@@ -56,10 +58,17 @@ open class BaseTransactionSynchronization(val body: () -> Unit) : TransactionSyn
 
 class AfterCommit(private val sync: Boolean, body: () -> Unit) : BaseTransactionSynchronization(body) {
 
-    override fun afterCommit() = if (sync) {
-        body()
-    }
-    else {
-        executor.execute { body() }
+    val auth: Authentication? = getAuthentication()
+
+    override fun afterCommit() {
+        if (sync) {
+            body()
+        } else {
+            GlobalScope.launch(Dispatchers.Default) {
+                withAuth(auth) {
+                    body()
+                }
+            }
+        }
     }
 }

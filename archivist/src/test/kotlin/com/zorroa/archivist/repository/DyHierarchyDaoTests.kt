@@ -53,15 +53,6 @@ class DyHierarchyDaoTests : AbstractTest() {
         assertEquals(dyhi, d2)
     }
 
-    @Test
-    fun testGetSetWorking() {
-        assertFalse(dyHierarchyDao!!.isWorking(dyhi))
-        assertTrue(dyHierarchyDao!!.setWorking(dyhi, true))
-        assertTrue(dyHierarchyDao!!.isWorking(dyhi))
-        assertFalse(dyHierarchyDao!!.setWorking(dyhi, true))
-        assertTrue(dyHierarchyDao!!.isWorking(dyhi))
-        assertTrue(dyHierarchyDao!!.setWorking(dyhi, false))
-    }
 
     @Test
     fun testDelete() {

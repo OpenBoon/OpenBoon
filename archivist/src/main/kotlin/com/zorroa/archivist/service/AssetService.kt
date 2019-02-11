@@ -117,8 +117,6 @@ open abstract class AbstractAssetService : AssetService {
         val watchedFields = properties.getList("archivist.auditlog.watched-fields")
         val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
-        logger.info("Prepping ${assets.size} assets")
-
         return PreppedAssets(assets.map { newSource->
 
             val existingSource : Document = try {
@@ -277,8 +275,13 @@ open abstract class AbstractAssetService : AssetService {
      * Run Dyhis and taxons. This should be called if assets are added, removed, or updated.
      */
     fun runDyhiAndTaxons() {
-        dyHierarchyService.submitGenerateAll(true)
-        taxonomyService.runAllAsync()
+        val auth = getAuthentication()
+        GlobalScope.launch {
+            withAuth(auth) {
+                dyHierarchyService.generateAll()
+                taxonomyService.runAll()
+            }
+        }
     }
 
     /**
