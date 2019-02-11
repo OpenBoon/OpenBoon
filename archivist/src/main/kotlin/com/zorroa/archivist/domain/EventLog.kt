@@ -29,7 +29,7 @@ enum class LogAction {
     UNLOCK,
     APIKEY,
     EXPAND,
-    EDIT
+    EDIT,
     SEARCH,
     SEARCH_STREAM,
     SCROLL,
