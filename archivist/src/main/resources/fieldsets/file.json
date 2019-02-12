@@ -5,17 +5,17 @@
     {
       "name": "Path",
       "attrName": "source.path",
-      "attrType": "String"
+      "attrType": "StringPath"
     },
     {
       "name": "File Name",
       "attrName": "source.filename",
-      "attrType": "String"
+      "attrType": "StringAnalyzed"
     },
     {
       "name": "Media Type",
       "attrName": "source.mediaType",
-      "attrType": "String"
+      "attrType": "StringAnalyzed"
     },
     {
       "name": "File Size",

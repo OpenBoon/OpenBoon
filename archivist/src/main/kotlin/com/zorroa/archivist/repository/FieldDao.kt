@@ -104,7 +104,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             jdbc.update(ALLOC_INSERT, id, user.organizationId, type.ordinal, 0)
             0
         }
-        return type.attrName(num)
+        return type.getCustomAttrName(num)
     }
 
     companion object {

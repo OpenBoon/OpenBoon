@@ -675,13 +675,7 @@ open abstract class AbstractAssetService : AssetService {
             throw IllegalStateException("The field ${field.name} is not editable")
         }
 
-        val valid = when(field.attrType) {
-            AttrType.String, AttrType.StringExact, AttrType.StringContent, AttrType.StringKeywords -> spec.newValue is String
-            AttrType.NumberInteger -> (spec.newValue is Int || spec.newValue is Long)
-            AttrType.NumberDecimal -> (spec.newValue is Float || spec.newValue is Double)
-        }
-
-        if (!valid) {
+        if (!field.attrType.isValid(spec.newValue)) {
             throw java.lang.IllegalArgumentException("The value ${spec.newValue} " +
                     "for field ${field.name} is not the correct type")
         }

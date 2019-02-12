@@ -8,19 +8,57 @@ import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import java.util.*
 
-enum class AttrType {
-    String,
-    StringExact,
-    StringKeywords,
-    StringContent,
-    NumberInteger,
-    NumberDecimal;
+/**
+ * The valid Attribute Types for the field system.
+ */
+enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
+    StringAnalyzed("string_analyzed", true),
+    StringExact("string_exact",true),
+    StringSuggest("string_suggest", true),
+    StringContent("string_content", true),
+    StringPath("string_path", true),
+    NumberInteger("number_integer", true),
+    NumberFloat("number_float", true),
+    Bool("boolean", true),
+    DateTime("date_time", true),
+    GeoPoint("geo_point", false),
+    HashSimilarity("hash_similarity", false);
 
-    fun attrName(num: Int) : kotlin.String {
-        return "custom.${name}__$num".toLowerCase()
+    /**
+     * Return the name of the custom file name.
+     */
+    fun getCustomAttrName(num: Int) : kotlin.String {
+        return "custom.${prefix}__$num".toLowerCase()
     }
 
+    /**
+     * Check a value against this AttrType to make sure ES won't reject it.  Null always
+     * returns true
+     *
+     * @param value the value to check.
+     * @return True if the value is ok, otherwise false.
+     */
+    fun isValid(value: Any?) : Boolean {
+        if (value == null) {
+            return true
+        }
+
+        return when(this) {
+            AttrType.NumberInteger-> { value is Int || value is Long }
+            AttrType.NumberFloat-> { value is Double || value is Float }
+            AttrType.StringExact,
+            AttrType.StringContent,
+            AttrType.StringAnalyzed,
+            AttrType.StringSuggest,
+            AttrType.StringPath -> { value is CharSequence }
+            AttrType.Bool -> { value is Boolean }
+            AttrType.HashSimilarity -> { value is String }
+            AttrType.DateTime -> { value is Long || value is String || value is Date }
+            AttrType.GeoPoint -> { value is List<*> }
+        }
+    }
 }
+
 
 /**
  * The properties required to create a new field.

@@ -1,12 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.common.base.Preconditions
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.FieldSetDao
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -21,6 +21,7 @@ import java.nio.file.Paths
 import java.util.*
 
 interface FieldSystemService {
+
     fun createField(spec: FieldSpec) : Field
     fun getField(id: UUID) : Field
     fun getField(spec: FieldEditSpec) : Field
@@ -38,6 +39,10 @@ interface FieldSystemService {
 
     fun applyFieldEdits(doc: Document)
 
+    fun getEsTypeMap(): Map<String, AttrType>
+    fun getEsMapping() : Map<String, Any?>
+    fun getEsAttrType(attrName: String): AttrType?
+
     fun setupDefaultFieldSets(org: Organization)
 }
 
@@ -47,11 +52,9 @@ class FieldSystemServiceImpl @Autowired constructor(
         val fieldDao: FieldDao,
         val fieldEditDao: FieldEditDao,
         val fieldSetDao: FieldSetDao,
+        val indexRoutingService: IndexRoutingService,
         val properties: ApplicationProperties
 ): FieldSystemService {
-
-    @Autowired
-    lateinit var fieldService: FieldService
 
     override fun createField(spec: FieldSpec) : Field {
 
@@ -61,7 +64,7 @@ class FieldSystemServiceImpl @Autowired constructor(
                  * The user has provided a field name, so the type should be known
                  */
                 val attrName = spec.attrName as String
-                spec.attrType = spec.attrType ?: detectAttrType(attrName)
+                spec.attrType = spec.attrType ?: getEsAttrType(attrName)
             }
             spec.attrType != null -> {
                 /*
@@ -74,8 +77,6 @@ class FieldSystemServiceImpl @Autowired constructor(
             }
             else -> throw IllegalStateException("Invalid FieldSpec, not enough information to createField a field.")
         }
-
-        fieldService.invalidateFields()
         return fieldDao.create(spec)
     }
 
@@ -155,28 +156,65 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
-    fun detectAttrType(attrName : String) : AttrType {
-        val esType = fieldService.getFieldType(attrName)
-
-        Preconditions.checkNotNull(esType,
-                "Unable to find attribute in index: $attrName")
-
-        /**
-         * These ES types needs to be mapped to the ZVI type.
-         * TODO: add Keywords and other fields
-         */
-        return when (esType) {
-            "string" -> AttrType.String
-            "integer" -> AttrType.NumberInteger
-            "long" -> AttrType.NumberInteger
-            "id" -> AttrType.StringExact
-            else -> AttrType.String
-        }
-    }
-
     fun createFieldSet(stream: InputStream) {
         val fs = Json.Mapper.readValue<FieldSetSpec>(stream)
         createFieldSet(fs)
+    }
+
+    override fun getEsMapping() : Map<String, Any> {
+        val rest = indexRoutingService[getOrgId()]
+        val stream = rest.client.lowLevelClient.performRequest(
+                "GET", "/${rest.route.indexName}").entity.content
+        return  Json.Mapper.readValue(stream, Json.GENERIC_MAP)
+    }
+
+    override fun getEsTypeMap(): Map<String, AttrType> {
+        val result = mutableMapOf<String, AttrType>()
+        val rest = indexRoutingService[getOrgId()]
+        val map : Map<String, Any> = getEsMapping()
+        getMap(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!)
+        return result
+    }
+
+    override fun getEsAttrType(attrName: String): AttrType? {
+        return getEsTypeMap()[attrName]
+    }
+
+    /**
+     * Builds a list of field names, recursively walking each object.
+     */
+    private fun getMap(result: MutableMap<String, AttrType>,
+                        fieldName: String?,
+                        mapProperties: Map<String, Any>) {
+
+        if (fieldName == null) {  return }
+        val map = mapProperties["properties"] as Map<String, Any>
+        for (key in map.keys) {
+            val item = map[key] as Map<String, Any>
+            if (item.containsKey("type")) {
+                var type = item["type"] as String
+                var attrType = NAME_TYPE_OVERRRIDES.getOrDefault(type, AttrType.StringAnalyzed)
+
+                if ("analyzer" in item) {
+                    attrType = ANALYZER_OVERRIDES.getOrDefault(item["analyzer"] as String, attrType)
+                }
+                else if ("fields" in item) {
+                    val subFields = item["fields"] as Map<String, Any>
+                    if (subFields.containsKey("paths")) {
+                        attrType = AttrType.StringPath
+                    }
+                    else if (subFields.containsKey("suggest")) {
+                        attrType = AttrType.StringSuggest
+                    }
+                }
+
+                val fqfn ="$fieldName$key"
+                result[fqfn] = attrType
+
+            } else {
+                getMap(result, arrayOf(fieldName, key, ".").joinToString(""), item)
+            }
+        }
     }
 
     override fun setupDefaultFieldSets(org: Organization) {
@@ -203,6 +241,26 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     companion object {
+
+        /**
+         * Maps a particular type or column configuration to our own set of attribute types.
+         */
+        private val NAME_TYPE_OVERRRIDES = mapOf("shash" to AttrType.HashSimilarity,
+                        "long" to AttrType.NumberInteger,
+                        "integer" to AttrType.NumberInteger,
+                        "double" to AttrType.NumberFloat,
+                        "float" to AttrType.NumberFloat,
+                        "geo_point" to AttrType.GeoPoint,
+                        "boolean" to AttrType.Bool,
+                        "date" to AttrType.DateTime,
+                        "text" to AttrType.StringAnalyzed,
+                        "keyword" to AttrType.StringExact)
+
+
+        /**
+         * Maps a particular ES analyzer to a type of column
+         */
+        private val ANALYZER_OVERRIDES = mapOf("content" to AttrType.StringContent)
 
         private val logger = LoggerFactory.getLogger(FieldSystemServiceImpl::class.java)
     }

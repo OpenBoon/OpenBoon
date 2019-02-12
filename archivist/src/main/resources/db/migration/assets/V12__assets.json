@@ -74,6 +74,10 @@
         "yyyy-MM-dd Z",
         "yyyy-MM-dd HH:mm:ss",
         "yyyy-MM-dd",
+        "MM/dd/yyyy HH:mm:ss",
+        "MM/dd/yyyy HH:mm:ss Z",
+        "MM-dd-yyyy HH:mm:ss",
+        "MM-dd-yyyy HH:mm:ss Z",
         "MM/dd/yyyy",
         "MM-dd-yyyy",
         "date_time"
@@ -160,7 +164,7 @@
           "keywords_template": {
             "match_mapping_type": "string",
             "match_pattern": "regex",
-            "match": "^keywords$|keywords__.*",
+            "match": "^keywords$|^string_suggest__.*$",
             "mapping": {
               "type": "text",
               "fields": {
@@ -180,18 +184,9 @@
           }
         },
         {
-          "links_template": {
-            "path_match": "system.links.*",
-            "match_mapping_type": "string",
-            "mapping": {
-              "type": "keyword"
-            }
-          }
-        },
-        {
           "shape_template": {
             "match_pattern": "regex",
-            "match": "^.+Shape$|^shape$",
+            "match": "^.+Shape$|^shape$|^geo_shape__.*$",
             "mapping": {
               "type": "geo_shape"
             }
@@ -200,7 +195,7 @@
         {
           "point_template": {
             "match_pattern": "regex",
-            "match": "^.+Point|^point$",
+            "match": "^.+Point|^point$|^geo_point__.*$",
             "mapping": {
               "type": "geo_point"
             }
@@ -210,7 +205,7 @@
           "path_template": {
             "match_pattern": "regex",
             "match_mapping_type": "string",
-            "match": "^*.+Path|^path$|^directory$|^tree$",
+            "match": "^*.+Path|^path$|^directory$|^tree$|^string_path__.*$",
             "mapping": {
               "type": "text",
               "analyzer": "default",
@@ -230,7 +225,8 @@
         {
           "content_template": {
             "match_mapping_type": "string",
-            "match": "content",
+            "match_pattern": "regex",
+            "match": "^content$|^string_content__.*$",
             "mapping": {
               "analyzer": "content",
               "type": "text"
@@ -238,38 +234,44 @@
           }
         },
         {
-          "similarity_template": {
-            "match_mapping_type": "string",
-            "match": "shash",
-            "mapping": {
-              "type": "keyword"
-            }
-          }
-        },
-        {
-          "byte_hash_template": {
-            "match_mapping_type": "string",
-            "match": "byte*",
-            "mapping": {
-              "type": "keyword"
-            }
-          }
-        },
-        {
           "id_template": {
             "match_mapping_type": "string",
-            "match": "id",
+            "match_pattern": "regex",
+            "match": "^id$|^string_exact__.*$",
             "mapping": {
               "type": "keyword"
             }
           }
         },
         {
-          "integer_template": {
-            "match_mapping_type": "long",
-            "match": "int__*",
+          "similarity_template": {
+            "match_mapping_type": "string",
+            "match_pattern": "regex",
+            "match": "^shash$|^hash_similarity__.*$",
             "mapping": {
-              "type": "long"
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "date_template_custom": {
+            "match_mapping_type": "long",
+            "match_pattern": "regex",
+            "match": "^date_time__.*$",
+            "mapping": {
+              "type": "date",
+              "format": "epoch_millis"
+            }
+          }
+        },
+        {
+          "date_template_custom": {
+            "match_mapping_type": "string",
+            "match_pattern": "regex",
+            "match": "^date_time__.*$",
+            "mapping": {
+              "type": "date",
+              "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss Z||MM-dd-yyyy HH:mm:ss||MM-dd-yyyy HH:mm:ss Z||date_time"
             }
           }
         },
@@ -279,7 +281,16 @@
             "match_mapping_type": "date",
             "mapping": {
               "type": "date",
-              "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy||date_time||epoch_millis"
+              "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss Z||MM-dd-yyyy HH:mm:ss||MM-dd-yyyy HH:mm:ss Z||date_time||epoch_millis"
+            }
+          }
+        },
+        {
+          "links_template": {
+            "path_match": "system.links.*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "keyword"
             }
           }
         },

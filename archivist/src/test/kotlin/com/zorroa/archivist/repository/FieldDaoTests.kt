@@ -16,7 +16,7 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.String, false)
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
         val field = fieldDao.create(spec)
         assertEquals(spec.name, field.name)
         assertEquals(spec.attrType, field.attrType)
@@ -27,7 +27,7 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testGet() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.String, false)
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
         val field1 = fieldDao.create(spec)
         val field2 = fieldDao.get(field1.id)
         assertEquals(field1.id, field2.id)
@@ -43,9 +43,9 @@ class FieldDaoTests : AbstractTest() {
         // Clear out existing fields to make filters easier.
         fieldDao.deleteAll()
 
-        val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.String, false))
+        val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false))
         val f2 = fieldDao.create(FieldSpec("Boats", "document.number", AttrType.NumberInteger, false))
-        val f3 = fieldDao.create(FieldSpec("Moats", "document.float", AttrType.NumberDecimal, false))
+        val f3 = fieldDao.create(FieldSpec("Moats", "document.float", AttrType.NumberFloat, false))
 
         var filter = FieldFilter(ids = listOf(f1.id, f2.id))
         assertEquals(2, fieldDao.getAll(filter).size())
@@ -59,11 +59,11 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testAllocate() {
-        var field = fieldDao.allocate(AttrType.String)
+        var field = fieldDao.allocate(AttrType.StringAnalyzed)
         println(field)
         assertTrue(field.endsWith("__0"))
 
-        field = fieldDao.allocate(AttrType.String)
+        field = fieldDao.allocate(AttrType.StringAnalyzed)
         assertTrue(field.endsWith("__1"))
 
         field = fieldDao.allocate(AttrType.NumberInteger)

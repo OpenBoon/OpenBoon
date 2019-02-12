@@ -5,7 +5,7 @@
     {
       "name": "Title",
       "attrName": "media.title",
-      "attrType": "String",
+      "attrType": "StringAnalyzed",
       "editable": true
     },
     {
