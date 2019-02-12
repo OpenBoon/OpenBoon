@@ -68,12 +68,16 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
  * @property attrType The type of attribute.
  * @property editable If the field is editable or not.
  * @property custom If the field is a custom field or a Zorroa standard.
+ * @property keywords Set to true if this field should be considered a keyword.
+ * @property keywordsBoost The keywords boost level for the field.
  */
 class FieldSpec(
         val name: String,
         var attrName: String?,
         var attrType: AttrType?,
-        val editable: Boolean,
+        val editable: Boolean=false,
+        val keywords: Boolean=false,
+        val keywordsBoost: Float=1.0f,
         @JsonIgnore var custom: Boolean=false)
 
 
@@ -87,6 +91,8 @@ class FieldSpec(
  * @property attrType The type of attribute.
  * @property editable If the field is editable or not.
  * @property custom If the field is a custom field or a Zorroa standard.
+ * @property keywords Set to true if this field should be considered a keyword.
+ * @property keywordsBoost The keywords boost level for the field.
  * @property value The value of the field, if the field is resolved against an asset.
  * @property fieldEditId Will be the unique ID of an edit, if the field has been edited on a given asset.
  */
@@ -97,6 +103,8 @@ class Field (
         val attrType: AttrType,
         val editable: Boolean,
         val custom: Boolean,
+        val keywords: Boolean,
+        val keywordsBoost: Float,
         val value: Any?=null,
         val fieldEditId: UUID?=null
 )
@@ -175,8 +183,8 @@ class FieldSetFilter (
 class FieldFilter (
         val ids : List<UUID>? = null,
         val attrTypes: List<AttrType>? = null,
-        val attrNames: List<String>? = null
-
+        val attrNames: List<String>? = null,
+        val keywords: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -205,6 +213,11 @@ class FieldFilter (
         attrNames?.let {
             addToWhere(JdbcUtils.inClause("field.str_attr_name", it.size))
             addToValues(it)
+        }
+
+        keywords?.let {
+            addToWhere("field.bool_keywords=?")
+            addToValues(keywords)
         }
 
         addToWhere("field.pk_organization=?")

@@ -6,7 +6,15 @@
       "name": "Title",
       "attrName": "media.title",
       "attrType": "StringAnalyzed",
-      "editable": true
+      "editable": true,
+      "keywords": true
+    },
+    {
+      "name": "Keywords",
+      "attrName": "media.keywords",
+      "attrType": "StringSuggest",
+      "editable": true,
+      "keywords": true
     },
     {
       "name": "Width",

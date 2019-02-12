@@ -1,10 +1,9 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.FieldEditSpecInternal
 import com.zorroa.archivist.domain.Field
+import com.zorroa.archivist.domain.FieldEditSpecInternal
 import com.zorroa.archivist.domain.FieldSpec
-import com.zorroa.archivist.service.FieldSystemService
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

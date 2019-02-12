@@ -96,6 +96,8 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao  {
                             AttrType.values()[rs.getInt("field_attr_type")],
                             rs.getBoolean("field_editable"),
                             rs.getBoolean("field_custom"),
+                            rs.getBoolean("field_keywords"),
+                            rs.getFloat("field_keywords_boost"),
                             doc.getAttr(rs.getString("field_attr_name"), Any::class.java),
                             rs.getObject("pk_field_edit") as UUID?))
                 }
@@ -198,6 +200,8 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao  {
                 "field.int_attr_type AS field_attr_type, " +
                 "field.bool_custom AS field_custom," +
                 "field.bool_editable AS field_editable, " +
+                "field.bool_keywords AS field_keywords, " +
+                "field.float_keywords_boost AS field_keywords_boost, " +
                 "field_edit.pk_field_edit " +
                 "FROM " +
                     "field_set " +

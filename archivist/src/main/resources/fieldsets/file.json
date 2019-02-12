@@ -10,7 +10,8 @@
     {
       "name": "File Name",
       "attrName": "source.filename",
-      "attrType": "StringAnalyzed"
+      "attrType": "StringAnalyzed",
+      "keywords": true
     },
     {
       "name": "Media Type",

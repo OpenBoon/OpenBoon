@@ -60,14 +60,6 @@ class FieldServiceImpl @Autowired constructor(
         result["path"] = mutableSetOf()
         result["suggest"] = mutableSetOf()
 
-        result.getValue("keywords-boost")
-                .addAll(properties.getString(PROP_BOOST_KEYWORD_FIELD)
-                        .splitToSequence(",")
-                        .map { it.trim() }
-                        .filter { it.isNotEmpty() }
-                        .map { it }
-                )
-
         val rest = indexRoutingService[getOrgId()]
         val stream = rest.client.lowLevelClient.performRequest(
                 "GET", "/${rest.route.indexName}").entity.content

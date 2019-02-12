@@ -5,11 +5,20 @@ import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
+import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
 
 interface FieldDao {
+
+    fun create(spec: FieldSpec) : Field
+    fun get(id: UUID) : Field
+    fun getAll(filter: FieldFilter?): KPagedList<Field>
+    fun count(filter: FieldFilter): Long
+    fun get(attrName: String) : Field
+    fun exists(attrName: String) : Boolean
+    fun deleteAll() : Int
 
     /**
      * Allocate a brand new field attribute.  This function picks a new custom
@@ -20,14 +29,8 @@ interface FieldDao {
      */
     fun allocate(type: AttrType) : String
 
+    fun getKeywordFieldNames(): Map<String, Float>
 
-    fun create(spec: FieldSpec) : Field
-    fun get(id: UUID) : Field
-    fun getAll(filter: FieldFilter?): KPagedList<Field>
-    fun count(filter: FieldFilter): Long
-    fun get(attrName: String) : Field
-    fun exists(attrName: String) : Boolean
-    fun deleteAll() : Int
 }
 
 @Repository
@@ -52,13 +55,15 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps.setInt(9, spec.attrType!!.ordinal)
             ps.setBoolean(10, spec.editable)
             ps.setBoolean(11, spec.custom)
+            ps.setBoolean(12, spec.keywords)
+            ps.setFloat(13, spec.keywordsBoost)
             ps
         }
 
         logger.event(LogObject.FIELD, LogAction.CREATE,
                 mapOf("fieldId" to id, "fieldName" to spec.name, "fieldAttrType" to spec.attrType))
         return Field(id, spec.name, spec!!.attrName as String,
-                spec.attrType as AttrType, spec.editable, spec.custom)
+                spec.attrType as AttrType, spec.editable, spec.custom, spec.keywords, spec.keywordsBoost)
     }
 
     override fun get(id: UUID) : Field {
@@ -81,6 +86,13 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         val query = filt.getQuery(GET, false)
         val values = filt.getValues(false)
         return KPagedList(count(filt), filt.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun getKeywordFieldNames(): Map<String, Float> {
+        val result = mutableMapOf<String, Float>()
+        jdbc.query("SELECT str_attr_name, float_keywords_boost FROM field WHERE pk_organization=? AND bool_keywords='t'",
+                RowCallbackHandler { rs-> result[rs.getString(1)] = rs.getFloat(2) }, getOrgId())
+        return result
     }
 
     override fun count(filter: FieldFilter): Long {
@@ -115,7 +127,9 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                     rs.getString("str_attr_name"),
                     AttrType.values()[rs.getInt("int_attr_type")],
                     rs.getBoolean("bool_editable"),
-                    rs.getBoolean("bool_custom"))
+                    rs.getBoolean("bool_custom"),
+                    rs.getBoolean("bool_keywords"),
+                    rs.getFloat("float_keywords_boost"))
         }
 
         private const val GET = "SELECT * FROM field"
@@ -132,7 +146,9 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "str_attr_name",
                 "int_attr_type",
                 "bool_editable",
-                "bool_custom")
+                "bool_custom",
+                "bool_keywords",
+                "float_keywords_boost")
 
         private const val ALLOC_UPDATE = "UPDATE field_alloc " +
                 "SET int_count=int_count + 1 " +

@@ -28,7 +28,9 @@ CREATE TABLE field (
   str_attr_name TEXT NOT NULL,
   int_attr_type SMALLINT NOT NULL,
   bool_editable BOOLEAN NOT NULL,
-  bool_custom BOOLEAN NOT NULL
+  bool_custom BOOLEAN NOT NULL,
+  bool_keywords BOOLEAN NOT NULL DEFAULT 'f',
+  float_keywords_boost FLOAT NOT NULL DEFAULT 1.0
 );
 
 CREATE UNIQUE INDEX field_uniq_idx ON field(pk_organization, str_attr_name);
@@ -82,4 +84,3 @@ CREATE TABLE field_set_member (
 
 CREATE UNIQUE INDEX field_set_member_uniq_idx ON field_set_member(pk_field, pk_field_set);
 CREATE INDEX field_set_member_pk_field_set_idx ON field_set_member(pk_field_set);
-

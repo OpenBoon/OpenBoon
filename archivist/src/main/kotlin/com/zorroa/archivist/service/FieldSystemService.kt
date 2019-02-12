@@ -30,6 +30,7 @@ interface FieldSystemService {
     fun getFieldEdits(filter: FieldEditFilter) : KPagedList<FieldEdit>
     fun getFieldEdits(assetId: UUID) : List<FieldEdit>
     fun getFieldEdit(editId: UUID) : FieldEdit
+    fun getKeywordFieldNames() : Map<String, Float>
 
     fun createFieldSet(spec: FieldSetSpec) : FieldSet
     fun getAllFieldSets(filter: FieldSetFilter) : KPagedList<FieldSet>
@@ -80,30 +81,42 @@ class FieldSystemServiceImpl @Autowired constructor(
         return fieldDao.create(spec)
     }
 
+    @Transactional(readOnly=true)
     override fun getFieldEdit(editId: UUID) : FieldEdit {
         return fieldEditDao.get(editId)
     }
 
+    @Transactional(readOnly=true)
     override fun getFieldEdits(assetId: UUID) : List<FieldEdit> {
         return fieldEditDao.getAll(assetId)
     }
 
+    @Transactional(readOnly=true)
     override fun getFieldEdits(filter: FieldEditFilter) : KPagedList<FieldEdit> {
         return fieldEditDao.getAll(filter)
     }
 
+    @Transactional(readOnly=true)
     override fun getField(id: UUID) : Field {
         return fieldDao.get(id)
     }
 
+    @Transactional(readOnly=true)
     override fun getAllFields(filter: FieldFilter) : KPagedList<Field> {
         return fieldDao.getAll(filter)
     }
 
+    @Transactional(readOnly=true)
     override fun getField(attrName: String) : Field {
         return fieldDao.get(attrName)
     }
 
+    @Transactional(readOnly=true)
+    override fun getKeywordFieldNames() : Map<String, Float> {
+        return fieldDao.getKeywordFieldNames()
+    }
+
+    @Transactional(readOnly=true)
     override fun getField(spec: FieldEditSpec) : Field {
         return when {
             spec.fieldId != null -> fieldDao.get(spec.fieldId)
