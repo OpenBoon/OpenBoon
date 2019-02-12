@@ -23,7 +23,13 @@ enum class AttrType {
 }
 
 /**
+ * The properties required to create a new field.
  *
+ * @property name The name of the field, aka the label.
+ * @property attrName The ES attribute name.
+ * @property attrType The type of attribute.
+ * @property editable If the field is editable or not.
+ * @property custom If the field is a custom field or a Zorroa standard.
  */
 class FieldSpec(
         val name: String,
@@ -33,6 +39,19 @@ class FieldSpec(
         @JsonIgnore var custom: Boolean=false)
 
 
+/**
+ * A Field describes the display properties for a given ES attribute.  Each ES attribute
+ * can be exposed as a Field, which defines what users can see.
+ *
+ * @property id The UUID of the field.
+ * @property name The name of the field, aka the label.
+ * @property attrName The ES attribute name.
+ * @property attrType The type of attribute.
+ * @property editable If the field is editable or not.
+ * @property custom If the field is a custom field or a Zorroa standard.
+ * @property value The value of the field, if the field is resolved against an asset.
+ * @property fieldEditId Will be the unique ID of an edit, if the field has been edited on a given asset.
+ */
 class Field (
         val id: UUID,
         val name: String,
@@ -50,6 +69,15 @@ class Field (
     }
 }
 
+/**
+ * The properties required to create a FieldSet.
+ *
+ * @property name The name or label of field set.
+ * @property linkExpression A query string expression used by the server to determine
+ *  if an asset should display a field set.
+ * @property fieldIds Unique field ids in the field set. Optional.
+ * @property fieldSpecs A set of field specs which will add fields and then assign them to the field set.
+ */
 class FieldSetSpec(
         val name: String,
         val linkExpression: String? = null,
@@ -57,6 +85,15 @@ class FieldSetSpec(
         var fieldSpecs : List<FieldSpec>? = null
 )
 
+/**
+ * A FieldSet is a collection of fields grouped together under a name.
+ *
+ * @property id The unique ID of the field set.
+ * @property name The name or label of field set.
+ * @property linkExpression A query string expression used by the server to determine
+ *  if an asset should display a field set.
+ * @property fields The fields in the field set. Only populated in some cases.
+ */
 class FieldSet(
         val id: UUID,
         val name: String,
