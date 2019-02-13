@@ -659,6 +659,9 @@ class SearchServiceImpl @Autowired constructor(
             handleKwConfFilter(filter.kwconf, query)
         }
 
+        if(filter.query != null) {
+            query.must(getQueryStringQuery(filter.query))
+        }
 
         // Recursively add bool sub-filters for must, must_not and should
         if (filter.must != null) {
