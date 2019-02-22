@@ -1,20 +1,8 @@
 
-version: '3'
+version: '3.6'
 services:
 
   ## Unit testing services.
-
-  # Elastic Search instance used by the unit tests.
-  test-es:
-    build:
-      context: elasticsearch
-      args:
-        node_type: single
-    ports:
-      - "39200:9200"
-      - "39300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
 
   # Elastic Search instance used for local development servers.
   es:
@@ -26,7 +14,39 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
+      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+
+  prometheus:
+    image: "prom/prometheus"
+    depends_on:
+      - "archivist"
+    ports:
+        - "9090:9090"
+    secrets:
+      - source: prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+      - source: monitor.auth.key
+        target: /etc/prometheus/monitor.auth.key
+
+  # Grafana server connected to elasticsearch instance
+  grafana:
+    links:
+      - "prometheus"
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_DEFAULT_THEME: dark
+      # GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+    volumes:
+      - "./localdev/monitoring/grafana/provisioning:/etc/grafana/provisioning"
+      - "./localdev/monitoring/grafana/dashboards:/var/lib/grafana/dashboards"
 
   # Postgres instance used for local development servers.
   postgres:
@@ -39,6 +59,50 @@ services:
       POSTGRES_DB: zorroa
       PGDATA: /var/lib/postgresql/data/pgdata
 
+  # Local Logstash server.
+  logstash:
+    image: docker.elastic.co/logstash/logstash-oss:6.5.4
+    depends_on:
+      - "es"
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    secrets:
+      - source: logstash.conf
+        target: /usr/share/logstash/pipeline/logstash.conf
+    healthcheck:
+      test: bin/logstash -t
+      interval: 60s
+      timeout: 50s
+      retries: 5
+    volumes:
+       - "./localdev/monitoring/logstash.options:/usr/share/logstash/config/jvm.options"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.2.4
+    secrets:
+      - source: kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    depends_on:
+      - "es"
+
+  filebeat:
+    image: "docker.elastic.co/beats/filebeat:6.5.4"
+    command: filebeat -e -strict.perms=false
+    user: root
+    secrets:
+      - source: filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+    depends_on:
+      - "es"
+    ports:
+      - "5066:5066"
+    volumes:
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
   # Local Archivist server.
   archivist:
     links:
@@ -50,11 +114,12 @@ services:
       - 8080:8080
     volumes:
       - "./localdev/shared:/shared"
+      - "./localdev/monitoring:/monitoring"
       - "./localdev/zorroa-archivist-config:/config"
       - "./archivist/target:/service"
       - "../zorroa-test-data:/zorroa-test-data"
 
-  # Local Archivist server.
+  # Local Analyst server.
   analyst:
     build: ../zorroa-plugin-sdk
     links:
@@ -63,8 +128,8 @@ services:
       - 5000:5000
     volumes:
       - "./localdev/shared:/shared"
+      - "./localdev/zorroa:/zorroa"
       - "../zorroa-test-data:/zorroa-test-data"
-
   curator:
      build: ../zorroa-js-curator
      user: node
@@ -76,3 +141,14 @@ services:
          ARCHIVIST_API_URL: "http://archivist:8080"
          CURATOR_PORT_SECURE: "8443"
 
+secrets:
+  logstash.conf:
+    file: ./localdev/monitoring/logstash.conf
+  kibana.yml:
+    file: ./localdev/monitoring/kibana.yml
+  filebeat.yml:
+    file: ./localdev/monitoring/filebeat.yml
+  prometheus.yml:
+    file: ./localdev/monitoring/prometheus.yml
+  monitor.auth.key:
+    file: ./localdev/monitoring/monitor.auth.key

@@ -6,16 +6,18 @@ import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
-import com.zorroa.archivist.util.event
-import org.apache.tika.Tika
+import com.zorroa.common.domain.EntityNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Component
+import org.springframework.util.FileSystemUtils
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -26,6 +28,7 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
 
@@ -34,6 +37,8 @@ import javax.servlet.http.HttpServletResponse
  */
 
 private const val defaultContentType = "application/octet-steam"
+
+private const val entity = "FileStorage"
 
 data class FileStat(val size: Long, val mediaType: String, val exists: Boolean)
 
@@ -80,11 +85,8 @@ class ServableFile (
         return fileServerService.getStat(uri)
     }
 
-    /**
-     * Currently unsupported
-     */
     fun delete() : Boolean {
-        return false
+        return fileServerService.delete(uri)
     }
 }
 
@@ -104,7 +106,7 @@ interface FileServerProvider {
         }
     }
 
-    fun getServableFile(storage: FileStorage): ServableFile = getServableFile(URI(storage.uri))
+    fun getServableFile(storage: FileStorage): ServableFile = getServableFile(storage.uri)
     fun getServableFile(uri: URI): ServableFile
     fun getServableFile(doc: Document): ServableFile
     fun getServableFile(uri: String) : ServableFile = getServableFile(URI(uri))
@@ -121,15 +123,15 @@ class FileServerProviderImpl @Autowired constructor (
         val internalStorageType = properties.getString("archivist.storage.type")
 
         if (internalStorageType== "gcs") {
-            services["gcs"] = GcpFileServerService(properties, credentials)
+            services["gcs"] = GcpFileServerService(credentials)
         }
         else {
-            services["local"] = LocalFileServerService(properties)
+            services["local"] = LocalFileServerService()
         }
 
     }
 
-    fun getStorageService(uri: URI) : FileServerService {
+    fun getServerService(uri: URI) : FileServerService {
         val type = when(uri.scheme) {
             "gs" -> "gcs"
             "file" -> "local"
@@ -141,7 +143,7 @@ class FileServerProviderImpl @Autowired constructor (
     }
 
     override fun getServableFile(uri: URI): ServableFile {
-        val service = getStorageService(uri)
+        val service = getServerService(uri)
         return ServableFile(service, uri)
     }
 
@@ -178,10 +180,11 @@ interface FileServerService {
     fun getLocalPath(url: URI) : Path?
 
     fun getStat(url: URI) : FileStat
+
+    fun delete(url: URI): Boolean
 }
 
-class LocalFileServerService @Autowired constructor (
-        val properties: ApplicationProperties) : FileServerService {
+class LocalFileServerService : FileServerService {
 
     override val storedLocally: Boolean
         get() = true
@@ -239,13 +242,23 @@ class LocalFileServerService @Autowired constructor (
        }
     }
 
+    override fun delete(uri: URI): Boolean {
+        logger.event(LogObject.STORAGE, LogAction.DELETE, mapOf("uri" to uri.toString()))
+        val path = Paths.get(uri)
+        return if (path.toFile().isDirectory) {
+            FileSystemUtils.deleteRecursively(path)
+        }
+        else {
+            Files.deleteIfExists(path)
+        }
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(LocalFileServerService::class.java)
     }
 }
 
 class GcpFileServerService constructor (
-        val properties: ApplicationProperties,
         val credentials: Path?) : FileServerService {
 
     private val storage: Storage
@@ -259,7 +272,6 @@ class GcpFileServerService constructor (
         else {
             StorageOptions.newBuilder().build().service
         }
-
     }
 
     override val storedLocally: Boolean
@@ -310,7 +322,7 @@ class GcpFileServerService constructor (
     override fun getSignedUrl(url: URI): URL {
         val blob = getBlob(url)
         if (blob != null) {
-            logger.event("sign StorageFile", mapOf("uri" to url.toString()))
+            logger.event(LogObject.STORAGE, LogAction.AUTHORIZE, mapOf("uri" to url.toString()))
             return blob.signUrl(60, TimeUnit.MINUTES,
                     Storage.SignUrlOption.httpMethod(HttpMethod.GET))
         }
@@ -326,17 +338,17 @@ class GcpFileServerService constructor (
         return storage.exists()
     }
 
-    private fun getBlob(url: URI) : Blob? {
-        var (bucket, path) =  splitGcpUrl(url)
-        val blobId = BlobId.of(bucket, path.substring(1))
-        logger.event("get StorageFile", mapOf("uri" to url.toString()))
+    private fun getBlob(uri: URI) : Blob? {
+        var (bucket, path) =  splitGcpUrl(uri)
+        val blobId = BlobId.of(bucket, path)
+        logger.event(LogObject.STORAGE, LogAction.GET, mapOf("uri" to uri.toString()))
         return storage.get(blobId)
     }
 
     private fun splitGcpUrl(url: URI) : Array<String> {
         return arrayOf (
             url.authority,
-            url.path
+            url.path.removePrefix("/")
         )
     }
 
@@ -352,6 +364,25 @@ class GcpFileServerService constructor (
         else {
             FileStat(0, defaultContentType, false)
         }
+    }
+
+    override fun delete(url: URI): Boolean {
+        var result = true
+        var (bucket, path) =  splitGcpUrl(url)
+        val blobs = storage.list(bucket, Storage.BlobListOption.pageSize(100),
+                Storage.BlobListOption.prefix(path))
+
+        for (blob in blobs.iterateAll()) {
+            if (blob.delete()) {
+                logger.event(LogObject.STORAGE, LogAction.DELETE, mapOf("url" to url.toString()))
+            }
+            else {
+                logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, "Did not exist",
+                        mapOf("url" to url.toString()))
+                result=false
+            }
+        }
+        return result
     }
 
     companion object {

@@ -7,10 +7,10 @@ import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
+import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.AbstractAssetService.Companion.PROTECTED_NAMESPACES
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
 import kotlinx.coroutines.GlobalScope
@@ -91,7 +91,7 @@ class IndexServiceImpl  @Autowired  constructor (
                     .addToTerms("media.clip.parent", id))
                     .setFields(arrayOf("proxies"))
                     .setOrder(ImmutableList.of(AssetSearchOrder("_id"))))) {
-                return hit.getAttr("proxies", ProxySchema::class.java)
+                return hit.getAttr("proxies", ProxySchema::class.java) ?: ProxySchema()
             }
 
             return ProxySchema()
@@ -140,11 +140,11 @@ class IndexServiceImpl  @Autowired  constructor (
                     doc.setAttr(it.key, it.value)
                     auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed, field = it.key, value = it.value))
                 } else {
-                    logger.warnEvent("update Asset",
+                    logger.warnEvent(LogObject.ASSET, LogAction.UPDATE,
                             "Attempted to set protected namespace ${it.key}", emptyMap())
                 }
             } catch (e: Exception) {
-                logger.warnEvent("update Asset",
+                logger.warnEvent(LogObject.ASSET, LogAction.UPDATE,
                         "Attempted to set invalid namespace ${it.key}", emptyMap())
             }
         }
@@ -196,10 +196,14 @@ class IndexServiceImpl  @Autowired  constructor (
             // add the batch results to the overall result.
             rsp.plus(batchRsp)
 
+            val auth = getAuthentication()
+
             GlobalScope.launch {
-                docs.forEach {
-                    if (it.id in batchRsp.deletedAssetIds) {
-                        deleteAssociatedFiles(it)
+                withAuth(auth) {
+                    docs.forEach {
+                        if (it.id in batchRsp.deletedAssetIds) {
+                            deleteAssociatedFiles(it)
+                        }
                     }
                 }
             }
@@ -222,17 +226,23 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     fun deleteAssociatedFiles(doc: Document) {
-        logger.event("deleteAll assetProxy", mapOf("assetId" to doc.id))
+
         doc.getAttr("proxies", ProxySchema::class.java)?.let {
             it.proxies?.forEach { pr ->
                 try {
                     val storage = fileStorageService.get(pr.id)
                     val ofile = fileServerProvider.getServableFile(storage.uri)
-                    if (!ofile.delete()) {
-                        logger.warnEvent("delete Proxy", "file did not exist", mapOf("proxyId" to pr.id))
+                    if (ofile.delete()) {
+                        logger.event(LogObject.STORAGE, LogAction.DELETE,
+                                mapOf("proxyId" to pr.id, "assetId" to doc.id))
+                    }
+                    else {
+                        logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, "file did not exist",
+                                mapOf("proxyId" to pr.id))
                     }
                 } catch (e: Exception) {
-                    logger.warnEvent("delete Proxy", e.message!!, mapOf("proxyId" to pr.id), e)
+                    logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, e.message ?: e.javaClass.name,
+                            mapOf("proxyId" to pr.id), e)
                 }
             }
         }

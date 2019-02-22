@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.lang.IllegalArgumentException
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 interface AnalystDao {
     fun create(spec: AnalystSpec) : Analyst
@@ -24,6 +25,8 @@ interface AnalystDao {
     fun setLockState(analyst: Analyst, state: LockState) : Boolean
     fun isInLockState(endpoint: String, state: LockState) : Boolean
     fun setTaskId(endpoint: String, taskId: UUID?): Boolean
+    fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst>
+    fun delete(analyst: Analyst) : Boolean
 }
 
 @Repository
@@ -79,6 +82,15 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         return jdbc.update("UPDATE analyst SET pk_task=? WHERE str_endpoint=?", taskId, endpoint) == 1
     }
 
+    override fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst> {
+        val time = System.currentTimeMillis() - unit.toMillis(duration)
+        return jdbc.query(GET_DOWN, MAPPER, state.ordinal, time)
+    }
+
+    override fun delete(analyst: Analyst) : Boolean {
+        return jdbc.update("DELETE FROM analyst WHERE pk_analyst=?", analyst.id) == 1
+    }
+
     override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
@@ -109,6 +121,9 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         }
 
         private const val GET = "SELECT * FROM analyst"
+
+        private const val GET_DOWN = "SELECT * FROM analyst " +
+                "WHERE int_state=? AND time_ping < ?"
 
         private const val COUNT = "SELECT COUNT(1) FROM analyst"
 

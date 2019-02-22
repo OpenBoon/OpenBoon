@@ -10,7 +10,6 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.archivist.util.event
 import com.zorroa.common.domain.ArchivistWriteException
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
@@ -221,7 +220,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             return 0
         }
 
-        logger.event("running DyHierarchy", mapOf("dyhiId" to dyhi.id))
+        logger.event(LogObject.DYHI, LogAction.EXECUTE, mapOf("dyhiId" to dyhi.id))
         val rf = folderService.get(dyhi.folderId)
         val rest = indexRoutingService[getOrgId()]
 

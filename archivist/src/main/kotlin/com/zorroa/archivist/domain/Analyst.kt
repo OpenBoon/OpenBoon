@@ -2,6 +2,7 @@ package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonValue
+import com.zorroa.archivist.domain.ProcessorSpec
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import java.util.*
@@ -21,6 +22,7 @@ class AnalystSpec (
         val freeRamMb: Int,
         val freeDiskMb: Int,
         val load: Float,
+        val version: String,
         val taskId: UUID?=null)
 {
     @JsonIgnore

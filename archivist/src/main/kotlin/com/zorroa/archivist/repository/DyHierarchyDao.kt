@@ -7,7 +7,7 @@ import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
-import com.zorroa.archivist.util.event
+import com.zorroa.archivist.service.event
 import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
@@ -62,7 +62,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
             ps
         }
 
-        logger.event("create DyHierarchy",
+        logger.event(LogObject.DYHI, LogAction.CREATE,
                 mapOf("dyhiId" to id, "folderId" to spec.folderId))
 
         return get(id)

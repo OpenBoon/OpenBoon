@@ -7,9 +7,9 @@ import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.event
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -28,11 +28,9 @@ interface UserDao {
 
     fun getByToken(token: String): User
 
-    fun getApiKey(user: UserId): ApiKey
+    fun getApiKey(spec: ApiKeySpec): ApiKey
 
-    fun getApiKey(id: UUID): ApiKey
-
-    fun generateApiKey(user: UserId): ApiKey
+    fun getHmacKey(id: UUID): String
 
     fun generateAdminKey(): Boolean
 
@@ -119,12 +117,12 @@ class UserDaoImpl : AbstractDao(), UserDao {
                         MAPPER, getOrgId(), paging.size, paging.from))
     }
 
-    override fun create(builder: UserSpec): User {
-        Preconditions.checkNotNull(builder.username, "The Username cannot be null")
-        Preconditions.checkNotNull(builder.password, "The Password cannot be null")
+    override fun create(spec: UserSpec): User {
+        Preconditions.checkNotNull(spec.username, "The Username cannot be null")
+        Preconditions.checkNotNull(spec.password, "The Password cannot be null")
 
-        if (builder.source == null) {
-            builder.source = SOURCE_LOCAL
+        if (spec.source == null) {
+            spec.source = UserSource.LOCAL
         }
 
         val id = uuid1.generate()
@@ -133,25 +131,25 @@ class UserDaoImpl : AbstractDao(), UserDao {
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setString(2, builder.username)
-            ps.setString(3, builder.hashedPassword())
-            ps.setString(4, builder.email)
-            ps.setString(5, builder.firstName)
-            ps.setString(6, builder.lastName)
+            ps.setString(2, spec.username)
+            ps.setString(3, spec.hashedPassword())
+            ps.setString(4, spec.email)
+            ps.setString(5, spec.firstName)
+            ps.setString(6, spec.lastName)
             ps.setBoolean(7, true)
             ps.setObject(8, generateKey())
             ps.setString(9, "{}")
-            ps.setString(10, builder.source)
-            ps.setObject(11, builder.userPermissionId)
-            ps.setObject(12, builder.homeFolderId)
+            ps.setString(10, spec.source)
+            ps.setObject(11, spec.userPermissionId)
+            ps.setObject(12, spec.homeFolderId)
             ps.setObject(13, user.organizationId)
-            ps.setString(14, Json.serializeToString(builder.authAttrs, "{}"))
+            ps.setString(14, Json.serializeToString(spec.authAttrs, "{}"))
             ps
         }
 
-        logger.event("created User",
-                mapOf("userName" to builder.username,
-                        "userOrg" to user.organizationId))
+        logger.event(LogObject.USER, LogAction.CREATE,
+                mapOf("createdUser" to spec.username,
+                        "createdOrgId" to user.organizationId))
         return get(id)
     }
 
@@ -218,7 +216,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun delete(user: User): Boolean {
         val result = jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
                 getOrgId(), user.id) == 1
-        logger.event("deleted User", mapOf("userName" to user.username, "opResult" to result))
+        logger.event(LogObject.USER, LogAction.DELETE, mapOf("userName" to user.username, "result" to result))
         return result
     }
 
@@ -227,22 +225,25 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 String::class.java, username, username, true)
     }
 
-    override fun getApiKey(user: UserId): ApiKey {
-        return getApiKey(user.id)
-    }
-
-    override fun getApiKey(id: UUID): ApiKey {
-        val key = jdbc.queryForObject("SELECT hmac_key FROM users WHERE pk_user=? AND bool_enabled=?",
-                String::class.java, id, true)
-        return ApiKey(id, key)
-    }
-
-    override fun generateApiKey(user: UserId): ApiKey {
-        val key = generateKey()
-        if (jdbc.update("UPDATE users SET hmac_key=? WHERE pk_user=? AND bool_enabled=?", key, user.id, true) != 1) {
-            throw EmptyResultDataAccessException("Unknown user", 1)
+    override fun getApiKey(spec: ApiKeySpec): ApiKey {
+        val hmacKey = if (spec.replace) {
+            val key = generateKey()
+            if (jdbc.update("UPDATE users SET hmac_key=? WHERE pk_user=? AND bool_enabled=?", key, spec.userId, true) != 1) {
+                throw EmptyResultDataAccessException("Unknown user", 1)
+            }
+            key
         }
-        return ApiKey(user.id, key)
+        else {
+            getHmacKey(spec.userId)
+        }
+
+        logger.event(LogObject.USER, LogAction.APIKEY, emptyMap())
+        return ApiKey(spec.userId, spec.user, hmacKey, spec.server)
+    }
+
+    override fun getHmacKey(id: UUID): String {
+        return jdbc.queryForObject("SELECT hmac_key FROM users WHERE pk_user=? AND bool_enabled=?",
+                String::class.java, id, true)
     }
 
     override fun generateAdminKey(): Boolean {
@@ -300,8 +301,6 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     companion object {
-
-        const val SOURCE_LOCAL = "local"
 
         private val MAPPER = RowMapper { rs, _ ->
             User(rs.getObject("pk_user") as UUID,

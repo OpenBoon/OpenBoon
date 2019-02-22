@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
-import com.google.common.collect.Sets
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
@@ -14,9 +13,12 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.archivist.util.event
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.security.Groups
+import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -41,7 +43,9 @@ interface UserService {
 
     fun getCount(): Long
 
-    fun create(builder: UserSpec): User
+    fun create(spec: UserSpec): User
+
+    fun create(spec: LocalUserSpec): User
 
     fun get(username: String): User
 
@@ -55,9 +59,9 @@ interface UserService {
 
     fun setPassword(user: User, password: String): Boolean
 
-    fun getApiKey(user: UserId): ApiKey
+    fun getHmacKey(user: UserId): String
 
-    fun generateApiKey(user: UserId): ApiKey
+    fun getApiKey(spec: ApiKeySpec): ApiKey
 
     fun update(user: User, builder: UserProfileUpdate): Boolean
 
@@ -155,9 +159,6 @@ class UserRegistryServiceImpl @Autowired constructor(
             }
         }
 
-        logger.event("userAuthed",
-                mapOf("userId" to user.id,
-                "userSource" to source.authSourceId))
         return toUserAuthed(user)
     }
 
@@ -248,9 +249,6 @@ class UserServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var folderService: FolderService
 
-    @Autowired
-    internal lateinit var logService: EventLogService
-
     private val PASS_MIN_LENGTH = 8
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
@@ -271,7 +269,6 @@ class UserServiceImpl @Autowired constructor(
                 UUID.randomUUID().toString(),
                 "$username@zorroa.com",
                 UserSource.INTERNAL,
-                org.id,
                 "Batch",
                 "Job")
 
@@ -284,37 +281,66 @@ class UserServiceImpl @Autowired constructor(
         userDao.addPermission(batchUser, permissionDao.get(Groups.WRITE), true)
     }
 
-    override fun create(builder: UserSpec): User {
-
-        if (builder.source == null) {
-            builder.source = UserSource.LOCAL
+    override fun create(spec: LocalUserSpec): User {
+        if (!EmailValidator().isValid(spec.email, null)) {
+            throw java.lang.IllegalArgumentException("Invalid email address: ${spec.email}")
         }
 
-        if (builder.username.length < MIN_USERNAME_SIZE) {
+        val name = spec.name.split(Regex("\\s+"), limit=2)
+        val orgId = if (hasPermission(Groups.SUPERADMIN)) {
+            spec.organizationId ?: getOrgId()
+        }
+        else {
+            getOrgId()
+        }
+
+        return withAuth(SuperAdminAuthentication(orgId)) {
+            create(UserSpec(
+                    spec.email,
+                    spec.password,
+                    spec.email,
+                    UserSource.LOCAL,
+                    name.first(),
+                    if (name.size == 1) {
+                        ""
+                    } else {
+                        name.last()
+                    },
+                    spec.permissionIds))
+        }
+    }
+
+    override fun create(spec: UserSpec): User {
+
+        if (spec.source == null) {
+            spec.source = UserSource.LOCAL
+        }
+
+        if (spec.username.length < MIN_USERNAME_SIZE) {
             throw IllegalArgumentException("User names must be at least $MIN_USERNAME_SIZE characters")
         }
 
-        if (userDao.exists(builder.username, null)) {
+        if (userDao.exists(spec.username, null)) {
             throw DuplicateEntityException("The user '" +
-                    builder.username + "' already exists.")
+                    spec.username + "' already exists.")
         }
 
         val userPerm = permissionDao.create(
-                PermissionSpec("user", builder.username), true)
+                PermissionSpec("user", spec.username), true)
         val userFolder = folderService.createUserFolder(
-                builder.username, userPerm)
+                spec.username, userPerm)
 
 
-        builder.homeFolderId = userFolder.id
-        builder.userPermissionId = userPerm.id
+        spec.homeFolderId = userFolder.id
+        spec.userPermissionId = userPerm.id
 
-        val user = userDao.create(builder)
+        val user = userDao.create(spec)
 
         /*
          * Get the permissions specified with the builder and add our
          * user permission to the list.
          */
-        val perms = Sets.newHashSet(permissionDao.getAll(builder.permissionIds))
+        val perms = permissionDao.getAll(spec.permissionIds).toSet()
         if (!perms.isEmpty()) {
             setPermissions(user, perms)
         }
@@ -360,12 +386,12 @@ class UserServiceImpl @Autowired constructor(
         }
     }
 
-    override fun getApiKey(user: UserId): ApiKey {
-        return userDao.getApiKey(user)
+    override fun getHmacKey(user: UserId): String {
+        return userDao.getHmacKey(user.id)
     }
 
-    override fun generateApiKey(user: UserId): ApiKey {
-        return userDao.generateApiKey(user)
+    override fun getApiKey(spec: ApiKeySpec): ApiKey {
+        return userDao.getApiKey(spec)
     }
 
     override fun update(user: User, form: UserProfileUpdate): Boolean {
@@ -391,10 +417,9 @@ class UserServiceImpl @Autowired constructor(
                 permissionDao.renameUserPermission(user, form.username)
                 folderService.renameUserFolder(user, form.username)
             }
-            tx.afterCommit(false, {
+            tx.afterCommit(false) {
                 userDaoCache.invalidate(user.id)
-                logService.logAsync(UserLogSpec.build(LogAction.Update, user))
-            })
+            }
         }
         return result
     }
@@ -428,24 +453,11 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun updateSettings(user: User, settings: UserSettings): Boolean {
-        val result = userDao.setSettings(user, settings)
-        if (result) {
-            tx.afterCommit(false, { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
-        }
-        return result
+        return userDao.setSettings(user, settings)
     }
 
     override fun setEnabled(user: User, value: Boolean): Boolean {
-        val result = userDao.setEnabled(user, value)
-
-        if (result) {
-            if (result) {
-                tx.afterCommit(false, {
-                    logService.logAsync(UserLogSpec.build(if (value) "enable" else "disable", user)) })
-            }
-        }
-
-        return result
+        return userDao.setEnabled(user, value)
     }
 
     override fun incrementLoginCounter(user: UserId) {
@@ -467,11 +479,6 @@ class UserServiceImpl @Autowired constructor(
          */
         val filtered = perms.stream().filter { p -> !PERMANENT_TYPES.contains(p.type) }.collect(Collectors.toList())
         userDao.setPermissions(user, filtered, source)
-
-        tx.afterCommit(true, {
-            logService.logAsync(UserLogSpec.build("set_permission", user)
-                    .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        })
     }
 
     override fun addPermissions(user: UserId, perms: Collection<Permission>) {
@@ -483,10 +490,6 @@ class UserServiceImpl @Autowired constructor(
                 userDao.addPermission(user, p, false)
             }
         }
-        tx.afterCommit(false, {
-            logService.logAsync(UserLogSpec.build("add_permission", user)
-                    .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        })
     }
 
     override fun removePermissions(user: UserId, perms: Collection<Permission>) {
@@ -500,10 +503,6 @@ class UserServiceImpl @Autowired constructor(
             }
             userDao.removePermission(user, p)
         }
-        tx.afterCommit(false, {
-            logService.logAsync(UserLogSpec.build("remove_permission", user)
-                    .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        })
     }
 
     override fun hasPermission(user: UserId, type: String, name: String): Boolean {

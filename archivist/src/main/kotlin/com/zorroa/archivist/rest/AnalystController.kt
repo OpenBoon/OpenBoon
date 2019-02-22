@@ -5,6 +5,9 @@ import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystFilter
 import com.zorroa.common.domain.LockState
+import io.micrometer.core.annotation.Timed
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -13,6 +16,7 @@ import java.util.*
 
 @PreAuthorize("hasAuthority(T( com.zorroa.security.Groups).SUPERADMIN)")
 @RestController
+@Timed
 class AnalystController @Autowired constructor(
         val analystService: AnalystService) {
 
@@ -31,5 +35,14 @@ class AnalystController @Autowired constructor(
         val newState = LockState.valueOf(state.toLowerCase().capitalize())
         val analyst = analystService.get(id)
         return HttpUtils.updated("analyst", analyst.id, analystService.setLockState(analyst, newState))
+    }
+
+    @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
+    fun processorScan(): Any {
+        // background the scan
+        GlobalScope.launch {
+            analystService.doProcessorScan()
+        }
+        return HttpUtils.status("processor", "scan", true)
     }
 }

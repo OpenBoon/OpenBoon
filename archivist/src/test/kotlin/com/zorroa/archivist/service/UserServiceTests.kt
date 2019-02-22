@@ -2,9 +2,9 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.User
-import com.zorroa.archivist.domain.UserProfileUpdate
-import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
@@ -27,6 +27,54 @@ class UserServiceTests : AbstractTest() {
                 lastName = "Rodriquez")
         testUser = userService.create(builder)
     }
+
+    @Test
+    fun createLocalUserWithOrg() {
+        val org = organizationService.create(OrganizationSpec("Mordor Inc"))
+        val spec = LocalUserSpec("bilbo@shire.com",
+                "123password",
+                "Bilbo Baggins Jr",
+                organizationId = org.id)
+
+        val user = userService.create(spec)
+        assertEquals(org.id, user.organizationId)
+        assertEquals("Bilbo", user.firstName)
+        assertEquals("Baggins Jr", user.lastName)
+
+        withAuth(SuperAdminAuthentication(user.organizationId)) {
+            val folder = folderService.get("/Users/bilbo@shire.com")
+            assertEquals(org.id, folder!!.organizationId)
+        }
+    }
+
+    @Test
+    fun createLocalUser() {
+        val spec = LocalUserSpec("bilbo@shire.com",
+                "123password",
+                "Bilbo Baggins")
+
+        val user = userService.create(spec)
+
+        /*
+         * Re-authenticate this test as the user we just made.  Otherwise we can't
+         * access the user folder.
+         */
+        authenticate(user.username)
+
+        /*
+         * Get the user's personal folder.
+         */
+        val folder = folderService.get("/Users/bilbo@shire.com")
+        assertEquals(folder!!.name, user.username)
+
+        /*
+         * Get the permissions for the user.  This should contain the user's
+         * personal permission and the user group
+         */
+        val perms = userService.getPermissions(user)
+        assertTrue(userService.hasPermission(user, permissionService.getPermission("user::bilbo@shire.com")))
+    }
+
 
     @Test
     fun createUser() {

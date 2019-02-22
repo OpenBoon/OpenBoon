@@ -2,16 +2,18 @@ package com.zorroa.archivist.rest
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.security.Groups
+import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -20,20 +22,18 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import java.security.Principal
 import java.util.*
 import java.util.stream.Collectors
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import javax.validation.Valid
-
-
-
 
 
 @RestController
+@Timed
 class UserController @Autowired constructor(
         private val userService: UserService,
         private val permissionService: PermissionService,
@@ -45,8 +45,8 @@ class UserController @Autowired constructor(
     fun getAll() : List<User> = userService.getAll()
 
     @RequestMapping(value = ["/api/v1/who"])
-    fun getCurrent(): ResponseEntity<Any> {
-        return if (getUserOrNull() != null) {
+    fun getCurrent(user: Principal?): ResponseEntity<Any> {
+        return if (user != null) {
             ResponseEntity(userService.get(getUserId()), HttpStatus.OK)
         }
         else {
@@ -54,14 +54,37 @@ class UserController @Autowired constructor(
         }
     }
 
-    @PostMapping(value = ["/api/v1/users/api-key"])
-    fun getApiKey(@RequestParam(value = "replace", required = false, defaultValue = "false") replace: Boolean): Any {
-        return if (replace) {
-            userService.generateApiKey(getUser())
+    class ApiKeyReq(
+            val replace: Boolean = false,
+            val server: String? = null
+    )
+
+    @RequestMapping(value = ["/api/v1/users/api-key"], method=[RequestMethod.GET, RequestMethod.POST])
+    fun getApiKey(@RequestBody(required = false) kreq: ApiKeyReq?, hreq: HttpServletRequest): Any {
+        val req = kreq ?: ApiKeyReq(false, null)
+
+        /**
+         * Select where the URI in the key is going to come from.
+         */
+        val uri = when {
+            req.server != null -> req.server
+            hreq.getHeader( "X-Zorroa-Curator-Host") != null -> hreq.getHeader( "X-Zorroa-Curator-Protocol") + "://" + hreq.getHeader( "X-Zorroa-Curator-Host")
+            else -> {
+                val builder = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                builder.replacePath("/").build().toString()
+            }
         }
-        else {
-            userService.getApiKey(getUser())
-        }
+
+        val user = getUser()
+        val spec = ApiKeySpec(user.id, user.username, req.replace, uri)
+        return userService.getApiKey(spec)
+    }
+
+    @GetMapping(value = ["/api/v1/users/auth-token"])
+    fun getAuthToken(): Any {
+        val user = getUser()
+        val key = userService.getHmacKey(user)
+        return mapOf("token" to generateUserToken(user.id, key))
     }
 
     /**
@@ -77,7 +100,7 @@ class UserController @Autowired constructor(
         val user = getUser()
         val headers = HttpHeaders()
         headers.add("X-Zorroa-Auth-Token",
-                generateUserToken(userService.getApiKey(getUser())))
+                generateUserToken(user.id, userService.getHmacKey(user)))
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -140,11 +163,14 @@ class UserController @Autowired constructor(
 
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/users"])
-    fun create(@Valid @RequestBody builder: UserSpec, bindingResult: BindingResult): User {
-        if (bindingResult.hasErrors()) {
-            throw RuntimeException("Failed to add user")
-        }
+    fun create(@RequestBody builder: UserSpec): User {
         return userService.create(builder)
+    }
+
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PostMapping(value = ["/api/v2/users"])
+    fun createV2(@RequestBody spec: LocalUserSpec): User {
+        return userService.create(spec)
     }
 
     @RequestMapping(value = ["/api/v1/users/{id}"])

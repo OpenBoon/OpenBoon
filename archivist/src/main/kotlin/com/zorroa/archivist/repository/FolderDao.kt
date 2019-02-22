@@ -1,11 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.*
-import com.zorroa.archivist.util.event
+import com.zorroa.archivist.service.event
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.springframework.beans.factory.annotation.Autowired
@@ -267,7 +267,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps
         }
 
-        logger.event("create Folder", mapOf(
+        logger.event(LogObject.FOLDER, LogAction.CREATE, mapOf(
                 "folderId" to id,
                 "folderName" to spec.name))
 
@@ -297,6 +297,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps
         }
 
+        logger.event(LogObject.TRASH_FOLDER, LogAction.CREATE, mapOf(
+                "folderId" to spec.folderId,
+                "folderName" to spec.name))
+
         return getAfterCreate(spec.folderId)
     }
 
@@ -315,6 +319,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
          * Skip updating the search if its a dyhi so the exists statement
          * doesn't get automatically updated.  Its also
          */
+        logger.event(LogObject.FOLDER, LogAction.UPDATE, mapOf(
+                "folderId" to id,
+                "folderName" to folder.name))
+
         return if (isDyHi(id)) {
             jdbc.update("$UPDATE_IS_DYHI AND pk_organization=?",
                     System.currentTimeMillis(),

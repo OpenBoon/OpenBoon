@@ -6,6 +6,7 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -26,6 +27,7 @@ class AnalystDaoTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "unknown",
                 null)
         analyst = analystDao.create(spec)
     }
@@ -117,6 +119,7 @@ class AnalystDaoTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
+                "unknown",
                 UUID.randomUUID())
         assertTrue(analystDao.update(spec2))
         assertEquals(1, analystDao.getAll(AnalystFilter(taskIds=listOf(spec2.taskId!!))).size())
@@ -132,6 +135,7 @@ class AnalystDaoTests : AbstractTest() {
                     648,
                     1024,
                     i.toFloat(),
+                    "unknown",
                     null).apply { endpoint="https://analyst$i:5000" })
         }
         var last = 0.0f
@@ -142,4 +146,19 @@ class AnalystDaoTests : AbstractTest() {
         assertTrue(last > 5)
     }
 
+    @Test
+    fun testGetUnresponsive() {
+        val time = System.currentTimeMillis() - 10000
+        jdbc.update("UPDATE analyst SET time_ping=?", time)
+
+        // Get Analyst that hasn't pinged in 1 second
+        assertTrue(analystDao.getUnresponsive(AnalystState.Up, 1, TimeUnit.SECONDS).isNotEmpty())
+        assertTrue(analystDao.getUnresponsive(AnalystState.Up, 20, TimeUnit.SECONDS).isEmpty())
+    }
+
+    @Test
+    fun testDelete() {
+        assertTrue(analystDao.delete(analyst))
+        assertFalse(analystDao.delete(analyst))
+    }
 }

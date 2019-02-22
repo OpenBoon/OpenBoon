@@ -55,12 +55,26 @@ interface IndexRoutingService {
     fun getEsRestClient(route: IndexRoute): EsRestClient
 
     /**
+     * Get a EsRestClient using the default cluster, no shard route.
+     * @return: EsRestClient
+     */
+    fun getEsRestClient(): EsRestClient
+
+    /**
      * Return a route for the given ES mapping file using the default cluster.
      *
      * @parm mapping: An ElasticMapping file named in the V<version>__<name>.json format.
      * @return IndexRoute
      */
     fun getIndexRoute(mapping: ElasticMapping): IndexRoute
+
+    /**
+     * Return te current index name.
+     *
+     * @param mapping: The ES mapping
+     * @return the index name
+     */
+    fun getIndexName(mapping: ElasticMapping) : String
 
     /**
      * Create the default index using the latest highest mapping version found.
@@ -86,6 +100,7 @@ class ElasticSearchConfiguration {
     var shards: Int = 5
     var replicas: Int = 2
     lateinit var defaultUrl : String
+    lateinit var indexName: String
 }
 
 @Component
@@ -118,7 +133,7 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun createIndex(clusterUrl: String, mapfile: ElasticMapping) : IndexRoute {
-        val route = IndexRoute(clusterUrl, mapfile.indexName)
+        val route = IndexRoute(clusterUrl, getIndexName(mapfile))
         val es = getEsRestClient(route)
         waitForElasticSearch(es)
 
@@ -128,11 +143,12 @@ class IndexRoutingServiceImpl @Autowired
             return route
         }
 
-        logger.info("Creating index '${mapfile.indexName}'")
+        val indexName = getIndexName(mapfile)
+        logger.info("Creating index '$indexName'")
 
         // This code still has to handle multiple archivists attempting to do this at the same time.
         val req = CreateIndexRequest()
-        req.index(mapfile.indexName)
+        req.index(indexName)
 
         val settings = mapfile.mapping["settings"] as MutableMap<String, Any>?
         if (settings != null) {
@@ -145,7 +161,16 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun getIndexRoute(mapping: ElasticMapping) : IndexRoute {
-        return IndexRoute(config.defaultUrl, mapping.indexName, mapping.alias)
+        return IndexRoute(config.defaultUrl, getIndexName(mapping), mapping.alias)
+    }
+
+    override fun getIndexName(mapping: ElasticMapping) : String {
+        return if (config.indexName == "auto") {
+            mapping.indexName
+        }
+        else {
+            config.indexName
+        }
     }
 
     /**
@@ -184,7 +209,6 @@ class IndexRoutingServiceImpl @Autowired
          * Eventually this implementation should handle custom org ES servers.  For
          * now this assumes a single ES cluster, single index, single alias.
          */
-
         return esClientCache.get(defaultRoute.withKey(orgId))
     }
 
@@ -192,10 +216,14 @@ class IndexRoutingServiceImpl @Autowired
         return esClientCache.get(route)
     }
 
+    override fun getEsRestClient(): EsRestClient {
+        return esClientCache.get(defaultRoute)
+    }
+
     fun waitForElasticSearch(client: EsRestClient) {
         while(!client.isAvailable()) {
             logger.info("Waiting for ES to be available.....")
-            Thread.sleep(2000)
+            Thread.sleep(1000)
         }
     }
 

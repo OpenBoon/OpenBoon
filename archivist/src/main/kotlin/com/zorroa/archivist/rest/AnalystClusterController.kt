@@ -3,10 +3,12 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.service.AnalystService
+import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.DispatchTask
+import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -19,10 +21,11 @@ import java.io.IOException
 
 
 @RestController
+@Timed
 class AnalystClusterController @Autowired constructor(
         val analystService: AnalystService,
-        val dispatcherService: DispatcherService) {
-
+        val dispatcherService: DispatcherService,
+        val dispatchQueueManager: DispatchQueueManager) {
 
     @PostMapping(value = ["/cluster/_ping"])
     fun ping(@RequestBody spec: AnalystSpec) : Any {
@@ -34,9 +37,10 @@ class AnalystClusterController @Autowired constructor(
     @PutMapping(value = ["/cluster/_queue"])
     @Throws(IOException::class)
     fun queue() : ResponseEntity<DispatchTask> {
-        val endpoint = getAnalystEndpoint() ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+        // Will throw if not a valid Analyst
+        getAnalystEndpoint()
 
-        val task = dispatcherService.getNext()
+        val task = dispatchQueueManager.getNext()
         return if (task == null) {
             ResponseEntity(HttpStatus.NOT_FOUND)
         } else {

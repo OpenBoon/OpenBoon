@@ -37,7 +37,7 @@ class TaxonomyServiceTests : AbstractTest() {
         assetService.createOrReplace(d)
         refreshIndex()
 
-        folderService.addAssets(folder4, Lists.newArrayList(d.id))
+        folderService.addAssets(folder4, listOf(d.id))
         refreshIndex()
         taxonomyService.create(TaxonomySpec(folder1))
         refreshIndex()
@@ -106,7 +106,7 @@ class TaxonomyServiceTests : AbstractTest() {
         assetService.createOrReplace(d)
         refreshIndex()
 
-        folderService.addAssets(folder1, Lists.newArrayList(d.id))
+        folderService.addAssets(folder1, listOf(d.id))
         refreshIndex()
         taxonomyService.tagTaxonomy(tax1, folder1, true)
         refreshIndex()
@@ -117,7 +117,7 @@ class TaxonomyServiceTests : AbstractTest() {
         refreshIndex()
 
         val a = indexService.get(d.id)
-        assertEquals(0, a.getAttr("system.taxonomy", List::class.java).size.toLong())
+        assertEquals(0, a.getAttr("system.taxonomy", List::class.java)!!.size.toLong())
     }
 
     @Test
@@ -133,7 +133,7 @@ class TaxonomyServiceTests : AbstractTest() {
         assertEquals(0, searchService.search(
                 AssetSearch("ships")).hits.getTotalHits())
 
-        folderService.addAssets(folder1, Lists.newArrayList(d.id))
+        folderService.addAssets(folder1, listOf(d.id))
         refreshIndex()
         taxonomyService.tagTaxonomy(tax1, folder1, false)
         refreshIndex()
@@ -161,7 +161,7 @@ class TaxonomyServiceTests : AbstractTest() {
         assetService.createOrReplace(d)
         refreshIndex()
 
-        folderService.addAssets(folder1, Lists.newArrayList(d.id))
+        folderService.addAssets(folder1, listOf(d.id))
         refreshIndex()
         taxonomyService.tagTaxonomy(tax1, folder1, false)
         refreshIndex()
@@ -187,7 +187,7 @@ class TaxonomyServiceTests : AbstractTest() {
         assetService.createOrReplace(d)
         refreshIndex()
 
-        folderService.addAssets(folder1, Lists.newArrayList(d.id))
+        folderService.addAssets(folder1, listOf(d.id))
         fieldService.invalidateFields()
         refreshIndex()
 

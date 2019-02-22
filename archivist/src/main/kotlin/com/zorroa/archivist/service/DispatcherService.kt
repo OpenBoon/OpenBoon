@@ -1,36 +1,83 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.google.cloud.storage.HttpMethod
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
-import com.zorroa.archivist.security.generateUserToken
-import com.zorroa.archivist.security.getAnalystEndpoint
-import com.zorroa.archivist.security.getUsername
-import com.zorroa.archivist.util.event
-import com.zorroa.common.clients.RestClient
+import com.zorroa.archivist.security.*
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
-    fun getNext() : DispatchTask?
-    fun startTask(task: TaskId) : Boolean
-    fun stopTask(task: TaskId, exitStatus: Int, overrideState: TaskState?=null) : Boolean
+    fun getWaitingTasks(limit: Int) : List<DispatchTask>
+    fun startTask(task: Task): Boolean
+    fun stopTask(task: Task, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
-    fun expand(parentTask: Task, script: ZpsScript) : Task
-    fun expand(job: JobId, script: ZpsScript) : Task
+    fun expand(parentTask: Task, script: ZpsScript): Task
+    fun expand(job: JobId, script: ZpsScript): Task
     fun retryTask(task: Task): Boolean
     fun skipTask(task: Task): Boolean
-    fun queueTask(task: TaskId, endpoint: String) : Boolean
+    fun queueTask(task: DispatchTask, endpoint: String): Boolean
+}
+
+/**
+ * A non-transactional class for queuing tasks.
+ */
+@Component
+class DispatchQueueManager @Autowired constructor(
+        val dispatcherService: DispatcherService,
+        val analystService: AnalystService,
+        val fileStorageService: FileStorageService,
+        val userDao: UserDao,
+        val properties: ApplicationProperties
+)
+{
+
+    fun getNext(): DispatchTask? {
+        val endpoint = getAnalystEndpoint()
+        if (analystService.isLocked(endpoint)) {
+            return null
+        }
+
+        if (endpoint != null) {
+            val tasks = dispatcherService.getWaitingTasks(10)
+            for (task in tasks) {
+                if (dispatcherService.queueTask(task, endpoint)) {
+
+                    task.env["ZORROA_TASK_ID"] = task.id.toString()
+                    task.env["ZORROA_JOB_ID"] = task.jobId.toString()
+                    task.env["ZORROA_ORGANIZATION_ID"] = task.organizationId.toString()
+                    task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
+                    task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(task.userId, userDao.getHmacKey(task.userId))
+                    if (properties.getBoolean("archivist.debug-mode.enabled")) {
+                        task.env["ZORROA_DEBUG_MODE"] = "true"
+                    }
+                    withAuth(SuperAdminAuthentication(task.organizationId)) {
+                        val fs = fileStorageService.get(task.getLogSpec())
+                        val logFile = fileStorageService.getSignedUrl(
+                                fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
+                        task.logFile = logFile
+                    }
+
+                    return task
+                }
+            }
+        }
+        return null
+    }
 }
 
 @Service
@@ -40,8 +87,6 @@ class DispatcherServiceImpl @Autowired constructor(
         private val taskDao: TaskDao,
         private val jobDao: JobDao,
         private val taskErrorDao: TaskErrorDao,
-        private val properties: ApplicationProperties,
-        private val userDao: UserDao,
         private val analystDao: AnalystDao,
         private val eventBus: EventBus) : DispatcherService {
 
@@ -49,116 +94,127 @@ class DispatcherServiceImpl @Autowired constructor(
     @Autowired
     lateinit var jobService: JobService
 
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
+
+    @Autowired
+    lateinit var analystService: AnalystService
+
     @PostConstruct
     fun init() {
         // Register for event bus
         eventBus.register(this)
     }
 
-    override fun getNext(): DispatchTask? {
-        val endpoint = getAnalystEndpoint()
-        if (analystDao.isInLockState(endpoint, LockState.Locked)) {
-            return null
-        }
 
-        if (endpoint != null ) {
-            val tasks = dispatchTaskDao.getNext(5)
-            for (task in tasks) {
-                if (queueTask(task, endpoint)) {
-                    task.env["ZORROA_TASK_ID"] = task.id.toString()
-                    task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-                    task.env["ZORROA_AUTH_TOKEN"] = generateUserToken(userDao.getApiKey(task.userId))
-                    if (properties.getBoolean("archivist.debug-mode.enabled")) {
-                        task.env["ZORROA_DEBUG_MODE"] = "true"
-                    }
-                    // Set the time started on the job if its not set already.
-                    jobDao.setTimeStarted(task)
-                    return task
-                }
-            }
-        }
-        return null
+    @Transactional(readOnly = true)
+    override fun getWaitingTasks(limit: Int) : List<DispatchTask> {
+        return dispatchTaskDao.getNext(limit)
     }
 
-    override fun queueTask(task: TaskId, endpoint: String) : Boolean {
+    override fun queueTask(task: DispatchTask, endpoint: String): Boolean {
         val result = taskDao.setState(task, TaskState.Queued, TaskState.Waiting)
         return if (result) {
             taskDao.setHostEndpoint(task, endpoint)
             analystDao.setTaskId(endpoint, task.taskId)
             true
-        }
-        else {
+        } else {
             false
         }
     }
 
-    override fun startTask(task: TaskId) : Boolean {
-        val result =  taskDao.setState(task, TaskState.Running, TaskState.Queued)
+    override fun startTask(task: Task): Boolean {
+        val result = taskDao.setState(task, TaskState.Running, TaskState.Queued)
+        if (result) {
+            jobDao.setTimeStarted(task)
+        }
         logger.info("Starting task: {}, {}", task.taskId, result)
         return result
     }
 
-    override fun stopTask(task: TaskId, exitStatus: Int, overrideState: TaskState?) : Boolean {
+    override fun stopTask(task: Task, event: TaskStoppedEvent): Boolean {
 
         val newState = when {
-            overrideState != null -> overrideState
-            exitStatus != 0 -> TaskState.Failure
+            event.newState != null -> event.newState
+            event.exitStatus != 0 -> TaskState.Failure
             else -> TaskState.Success
         }
-        val result =  if (taskDao.setState(task, newState, TaskState.Running)) {
-            taskDao.setExitStatus(task, exitStatus)
+
+        /**
+         * TODO: make sure the task is the right instance of the task, in
+         * case it was orphaned and then relaunched, but the orphan came back.
+         */
+        val stopped = when {
+            jobService.setTaskState(task, newState, TaskState.Running) -> true
+            jobService.setTaskState(task, newState, TaskState.Queued) -> true
+            else -> false
+        }
+
+        if (stopped) {
+            taskDao.setExitStatus(task, event.exitStatus)
             try {
                 val endpoint = getAnalystEndpoint()
                 analystDao.setTaskId(endpoint, null)
-            }
-            catch(e: Exception) {
+            } catch (e: Exception) {
                 logger.warn("Failed to clear taskId from Analyst")
             }
-            true
-        }
-        else {
-            false
+
+            if (!event.manualKill && event.exitStatus != 0) {
+                val script = taskDao.getScript(task.id)
+                taskErrorDao.batchCreate(task, script.over?.map {
+                    TaskErrorEvent(UUID.fromString(it.id),
+                            it.getAttr("source.path"),
+                            "Hard Task failure, exit ${event.exitStatus}",
+                            "unknown",
+                            true,
+                            "unknown")
+
+                }.orEmpty())
+            }
         }
 
-        logger.info("Stopping task: {}, newState={}, result={}", task.taskId, newState, result)
-        return result
+        logger.info("Stopping task: {}, newState={}, result={}", task.taskId, newState, stopped)
+        return stopped
     }
 
-    override fun expand(parentTask: Task, script: ZpsScript) : Task {
+    override fun expand(parentTask: Task, script: ZpsScript): Task {
 
         val parentScript = taskDao.getScript(parentTask.id)
         script.globals = parentScript.globals
         script.type = parentScript.type
-        script.inline = true
         script.settings = parentScript.settings
 
         if (script.execute.orEmpty().isEmpty()) {
             script.execute = parentScript.execute
         }
 
-        val newTask =  taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
-        logger.info("Expanding parent task: {} with task: {}", parentTask.id, newTask.id)
+        val newTask = taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
+        logger.event(LogObject.JOB, LogAction.EXPAND,
+                mapOf("parentTaskId" to parentTask.id,
+                        "taskId" to newTask.id,
+                        "jobId" to newTask.jobId))
         return newTask
     }
 
-    override fun expand(job: JobId, script: ZpsScript) : Task {
-        val newTask =  taskDao.create(job, TaskSpec(zpsTaskName(script), script))
-        logger.info("Expanding job: {} with task: {}", job.jobId, newTask.id)
+    override fun expand(job: JobId, script: ZpsScript): Task {
+        val newTask = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
+        logger.event(LogObject.JOB, LogAction.EXPAND,
+                mapOf("jobId" to newTask.jobId, "taskId" to newTask.id))
         return newTask
     }
 
     override fun handleEvent(event: TaskEvent) {
         val task = taskDao.get(event.taskId)
-        when(event.type) {
+        when (event.type) {
             TaskEventType.STOPPED -> {
                 val payload = Json.Mapper.convertValue<TaskStoppedEvent>(event.payload)
-                stopTask(task, payload.exitStatus, payload.newState)
+                stopTask(task, payload)
             }
             TaskEventType.STARTED -> startTask(task)
-            TaskEventType.ERROR-> {
+            TaskEventType.ERROR -> {
                 // Might have to queue and submit in batches
                 val payload = Json.Mapper.convertValue<TaskErrorEvent>(event.payload)
-                taskErrorDao.create(event, payload)
+                taskErrorDao.create(task, payload)
             }
             TaskEventType.EXPAND -> {
                 val task = taskDao.get(task.id)
@@ -172,30 +228,12 @@ class DispatcherServiceImpl @Autowired constructor(
         }
     }
 
-    fun killRunningTaskOnAnalyst(task: Task, newState: TaskState, reason: String) : Boolean {
+    fun killRunningTaskOnAnalyst(task: Task, newState: TaskState, reason: String): Boolean {
         if (task.host == null) {
             logger.warn("Failed to kill running task, no host is set")
             return false
         }
-        try {
-            logger.event("Task kill",
-                    mapOf("reason" to reason, "taskId" to task.id, "jobId" to task.jobId))
-            val client = RestClient(task.host)
-            val result = client.delete("/kill/" + task.id,
-                    mapOf("reason" to reason + getUsername(), "state" to newState.name), Json.GENERIC_MAP)
-
-            return if (result["status"] as Boolean) {
-                true
-            }
-            else {
-                logger.warn("Failed to kill task {} on host {}, result: {}", task.id, task.host, result)
-                false
-            }
-
-        } catch (e: Exception) {
-            logger.warn("Failed to kill running task an analyst {}", task.host, e)
-        }
-        return false
+        return analystService.killTask(task.host, task.id, reason, newState)
     }
 
     override fun retryTask(task: Task): Boolean {
@@ -205,36 +243,37 @@ class DispatcherServiceImpl @Autowired constructor(
             }
             // just assuming true here as the call to the analyst is backgrounded
             true
-        }
-        else {
+        } else {
             jobService.setTaskState(task, TaskState.Waiting, null)
         }
     }
 
-    override fun skipTask(task: Task) : Boolean {
+    override fun skipTask(task: Task): Boolean {
         return if (task.state.isDispatched()) {
             GlobalScope.launch {
-                killRunningTaskOnAnalyst(task, TaskState.Skipped, "Task skipped by ")
+                killRunningTaskOnAnalyst(task, TaskState.Skipped, "Task skipped")
             }
             // just assuming true here as the call to the analyst is backgrounded
             true
-        }
-        else {
+        } else {
             jobService.setTaskState(task, TaskState.Skipped, null)
         }
     }
 
     @Subscribe
     fun handleJobStateChangeEvent(event: JobStateChangeEvent) {
-        GlobalScope.launch {
-            if (event.newState == JobState.Cancelled) {
-                handleJobCanceled(event.job)
+        val auth = getAuthentication()
+        if (event.newState == JobState.Cancelled) {
+            GlobalScope.launch {
+                withAuth(auth) {
+                    handleJobCanceled(event.job)
+                }
             }
         }
     }
 
     fun handleJobCanceled(job: Job) {
-        for (task in  taskDao.getAll(job.id, TaskState.Running)) {
+        for (task in taskDao.getAll(job.id, TaskState.Running)) {
             killRunningTaskOnAnalyst(task, TaskState.Waiting, "Job canceled by ")
         }
     }

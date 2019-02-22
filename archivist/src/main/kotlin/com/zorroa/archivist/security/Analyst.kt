@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.stereotype.Component
@@ -67,7 +68,7 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
 class AnalystAuthentication(private val endpoint: String): Authentication {
 
     override fun getAuthorities(): Collection<out GrantedAuthority> {
-        return listOf()
+        return setOf(SimpleGrantedAuthority("ANALYST"))
     }
 
     override fun setAuthenticated(p0: Boolean) { }

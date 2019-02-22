@@ -11,6 +11,7 @@ import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Assert.*
 import org.junit.Before
@@ -65,7 +66,7 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
 
         doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("system.links.folder", List::class.java).size.toLong())
+        assertEquals(10, doc.getAttr("system.links.folder", List::class.java)!!.size.toLong())
     }
 
     @Test
@@ -74,11 +75,12 @@ class FolderServiceTests : AbstractTest() {
         val builder = FolderSpec("Folder")
         val folder = folderService.create(builder)
 
-        val results = folderService.addAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
+        val results = folderService.addAssets(folder,
+                BatchUpdateAssetLinks(indexService.getAll(Pager.first()).map { a -> a.id }))
 
-        assertTrue(results.missing.isEmpty())
-        assertFalse(results.success.isEmpty())
+        logger.info(Json.prettyString(results))
+        assertTrue(results.erroredAssetIds.isEmpty())
+        assertTrue(results.updatedAssetIds.isNotEmpty())
     }
 
     @Test
@@ -87,13 +89,11 @@ class FolderServiceTests : AbstractTest() {
         val builder = FolderSpec("Folder")
         val folder = folderService.create(builder)
 
-        folderService.addAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
+        folderService.addAssets(folder, indexService.getAll(Pager.first()).map { a -> a.id })
 
         refreshIndex()
 
-        folderService.addAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
+        folderService.addAssets(folder, indexService.getAll(Pager.first()).map { a -> a.id })
 
         refreshIndex()
 
@@ -109,21 +109,21 @@ class FolderServiceTests : AbstractTest() {
         val builder = FolderSpec("Folder")
         val folder = folderService.create(builder)
 
-        var results = folderService.addAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
+        var results = folderService.addAssets(folder,
+                indexService.getAll(Pager.first()).map { a -> a.id })
 
-        assertTrue(results.missing.isEmpty())
-        assertFalse(results.success.isEmpty())
+        assertTrue(results.erroredAssetIds.isEmpty())
+        assertTrue(results.updatedAssetIds.isNotEmpty())
 
         var s = AssetSearch()
         s.addToFilter().addToLinks("folder", folder.id)
         assertEquals(2, searchService.count(s))
         assertEquals(2, searchService.count(folder))
 
-        results = folderService.removeAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results.missing.isEmpty())
-        assertFalse(results.success.isEmpty())
+        results = folderService.removeAssets(folder,
+                indexService.getAll(Pager.first()).map { a -> a.id })
+        assertTrue(results.erroredAssetIds.isEmpty())
+        assertTrue(results.updatedAssetIds.isNotEmpty())
 
         s = AssetSearch()
         s.addToFilter().addToLinks("folder", folder.id)
@@ -140,8 +140,8 @@ class FolderServiceTests : AbstractTest() {
         taxonomyService!!.create(TaxonomySpec(folder))
         folder = folderService.get(folder.id)
 
-        val results = folderService.addAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
+        val results = folderService.addAssets(folder,
+                indexService.getAll( Pager.first()).map { a -> a.id })
         refreshIndex(2000)
 
         assertEquals(2, searchService.count(AssetSearch().setQuery("bilbo")))
@@ -155,8 +155,8 @@ class FolderServiceTests : AbstractTest() {
         taxonomyService!!.create(TaxonomySpec(folder))
         folder = folderService.get(folder.id)
 
-        var results = folderService.addAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id })
+        var results = folderService.addAssets(folder,
+                indexService.getAll(Pager.first()).map { a -> a.id })
         refreshIndex()
 
         assertEquals(2, searchService.search(AssetSearch(
@@ -165,13 +165,12 @@ class FolderServiceTests : AbstractTest() {
         refreshIndex()
         assertEquals(2, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
 
-        assertTrue(results.missing.isEmpty())
-        assertFalse(results.success.isEmpty())
+        assertTrue(results.erroredAssetIds.isEmpty())
+        assertTrue(results.updatedAssetIds.isNotEmpty())
 
-        results = folderService.removeAssets(folder, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
-        assertTrue(results.missing.isEmpty())
-        assertFalse(results.success.isEmpty())
+        results = folderService.removeAssets(folder, indexService.getAll(Pager.first()).map { a -> a.id })
+        assertTrue(results.erroredAssetIds.isEmpty())
+        assertTrue(results.updatedAssetIds.isNotEmpty())
         refreshIndex()
 
         assertEquals(0, searchService.search(AssetSearch(
@@ -273,8 +272,8 @@ class FolderServiceTests : AbstractTest() {
         val folder = folderService.create(builder)
         val acl = Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write)
         folderService.setAcl(folder, acl, false, false)
-        folderService.addAssets(folderService.get(folder), indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
+        folderService.addAssets(folderService.get(folder),
+                indexService.getAll(Pager.first()).map { a -> a.id })
     }
 
     @Test(expected = ArchivistWriteException::class)
@@ -437,8 +436,8 @@ class FolderServiceTests : AbstractTest() {
         val builder2 = FolderSpec("baggins")
         val folder2 = folderService.create(builder2)
 
-        val results = folderService.addAssets(folder2, indexService.getAll(
-                Pager.first()).map { a -> a.id }.toList())
+        val results = folderService.addAssets(folder2,
+                indexService.getAll(Pager.first()).map { a -> a.id })
         refreshIndex(1000)
 
         assertEquals(0, searchService.count(AssetSearch().setQuery("bilbo")))

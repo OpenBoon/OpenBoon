@@ -1,32 +1,25 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableMap
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.copyInputToOuput
-import com.zorroa.archivist.util.event
 import com.zorroa.common.schema.Proxy
+import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.io.*
-import java.nio.ByteBuffer
-import java.nio.channels.Channels
-import java.nio.file.Files
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
@@ -34,7 +27,7 @@ import javax.annotation.PostConstruct
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import kotlin.math.roundToInt
+import io.micrometer.core.instrument.Timer as MeterTimer
 
 inline fun bufferedImageToInputStream(size: Int, img: BufferedImage) : InputStream {
     val ostream = object : ByteArrayOutputStream(size) {
@@ -56,7 +49,7 @@ interface ImageService {
     fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean)
 
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy)
+    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?)
 
     fun watermark(req: HttpServletRequest, inputStream: InputStream): BufferedImage
 }
@@ -69,7 +62,8 @@ class ImageServiceImpl @Autowired constructor(
         private val fileStorageService: FileStorageService,
         private val fileServerProvider: FileServerProvider,
         private val properties: ApplicationProperties,
-        private val eventBus: EventBus
+        private val eventBus: EventBus,
+        private val meterRegistry: MeterRegistry
 
 ) : ImageService {
 
@@ -80,12 +74,16 @@ class ImageServiceImpl @Autowired constructor(
     private var watermarkImage: BufferedImage? = null
     private var watermarkImageScale: Double = 0.2
     private var watermarkFontName : String = "Arial"
+    private var timerBuilder = MeterTimer.builder("zorroa.ImageService.timer")
+        .publishPercentileHistogram()
+        .maximumExpectedValue(Duration.ofSeconds(5))
 
     @PostConstruct
     fun init() {
         setupWaterMarkResources(null)
         eventBus.register(this)
     }
+
     @Throws(IOException::class)
     override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean) {
         if (storage == null) {
@@ -97,22 +95,30 @@ class ImageServiceImpl @Autowired constructor(
         rsp.setHeader("Pragma", "")
         rsp.bufferSize = BUFFER_SIZE
         if (watermarkEnabled && isWatermarkSize) {
-            val image = watermark(req, file.getInputStream())
-            rsp.contentType = MediaType.IMAGE_JPEG_VALUE
-            rsp.setHeader("Cache-Control", CacheControl.maxAge(1, TimeUnit.DAYS).cachePrivate().headerValue)
-            ImageIO.write(image, "jpg", rsp.outputStream)
-
+            val timer = timerBuilder.tags("watermark", "true").register(meterRegistry)
+            timer.record {
+                val image = watermark(req, file.getInputStream())
+                rsp.contentType = MediaType.IMAGE_JPEG_VALUE
+                rsp.setHeader("Cache-Control", CacheControl.maxAge(1, TimeUnit.DAYS).cachePrivate().headerValue)
+                ImageIO.write(image, "jpg", rsp.outputStream)
+            }
         } else {
-            logger.event("serve Image", mapOf("mimeType" to stat.mediaType, "size" to stat.size))
-            rsp.contentType = stat.mediaType
-            rsp.setContentLengthLong(stat.size)
-            rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
-            copyInputToOuput(file.getInputStream(), rsp.outputStream)
+            val timer = timerBuilder.tags("watermark", "false").register(meterRegistry)
+            timer.record {
+                rsp.contentType = stat.mediaType
+                rsp.setContentLengthLong(stat.size)
+                rsp.setHeader("Cache-Control", CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate().headerValue)
+                copyInputToOuput(file.getInputStream(), rsp.outputStream)
+            }
         }
     }
 
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy) {
+    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?) {
+        if (proxy == null) {
+            rsp.status = HttpStatus.NOT_FOUND.value()
+            return
+        }
         val isWatermarkSize = (proxy.width <= watermarkMinProxySize && proxy.height <= watermarkMinProxySize)
         val st = fileStorageService.get(proxy.id!!)
         serveImage(req, rsp, st, isWatermarkSize)

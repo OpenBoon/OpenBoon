@@ -4,16 +4,18 @@ package com.zorroa.archivist.rest
  * Created by chambers on 10/28/15.
  */
 
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PermissionService
+import com.zorroa.archivist.util.HttpUtils
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@Timed
 class PermissionController @Autowired constructor(
         val permissionService: PermissionService,
         val indexService: IndexService

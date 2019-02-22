@@ -2,10 +2,13 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.common.domain.*
+import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController
 import org.springframework.boot.web.servlet.error.ErrorAttributes
+import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
@@ -52,7 +55,7 @@ class RestApiExceptionHandler {
             HttpStatus.CONFLICT
         }
         else if (e is ArchivistSecurityException) {
-            HttpStatus.UNAUTHORIZED
+            HttpStatus.FORBIDDEN
         }
         else if (e is HttpRequestMethodNotSupportedException ||
                 e is MethodArgumentTypeMismatchException) {
@@ -80,11 +83,11 @@ class RestApiExceptionHandler {
 
         if (doExtraLogging.contains(status)) {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.toString(), errorId, e)
+                    req.servletPath, getUserOrNull()?.username, errorId, e)
         }
         else {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.toString(), errorId)
+                    req.servletPath, getUserOrNull()?.username, errorId)
         }
         
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
@@ -104,4 +107,28 @@ class RestApiExceptionHandler {
     companion object {
         private val logger = LoggerFactory.getLogger(RestApiExceptionHandler::class.java)
     }
+}
+
+@RestController
+@RequestMapping("/error")
+@Timed
+class CustomErrorController @Autowired constructor(private val errorAttributes: ErrorAttributes) :
+        AbstractErrorController(errorAttributes), ErrorController {
+
+    @Value("\${archivist.debug-mode.enabled}")
+    var debug : Boolean = false
+
+    override fun getErrorPath(): String {
+        return "/error"
+    }
+
+    @RequestMapping
+    @ResponseBody
+    fun error(request: HttpServletRequest): ResponseEntity<Map<String, Any>> {
+        val body = this.getErrorAttributes(request, debug)
+        val status = this.getStatus(request)
+        return ResponseEntity(body, status)
+    }
+
+
 }

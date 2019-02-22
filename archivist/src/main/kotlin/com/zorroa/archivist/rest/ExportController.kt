@@ -2,8 +2,12 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.ExportService
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.FileStorageService
+import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.copyInputToOuput
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServletResponse
 
 
 @RestController
+@Timed
 class ExportController @Autowired constructor(
         private val exportService: ExportService,
         private val jobService: JobService,

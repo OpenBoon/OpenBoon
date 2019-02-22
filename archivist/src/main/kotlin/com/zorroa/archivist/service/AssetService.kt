@@ -5,21 +5,24 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.security.*
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.CoreDataVaultClient
+import com.zorroa.common.clients.RestClientException
 import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
+import java.net.URI
 import java.util.*
 
 /**
@@ -32,14 +35,19 @@ import java.util.*
  */
 interface AssetService {
     fun get(assetId: String): Document
+    fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
+    fun batchUpdate(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
+    fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
-    fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
-    fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse
+    fun update(assetId: String, req: UpdateAssetRequest) : Boolean
+    fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
+    fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
+    fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse
 }
 
 /**
@@ -208,16 +216,11 @@ open abstract class AbstractAssetService : AssetService {
      * @param newAsset the new asset
      */
     private fun handleLinks(oldAsset: Document, newAsset: Document) {
-        if (newAsset.links != null) {
-            var links = oldAsset.getAttr("system.links", LinkSchema::class.java)
-            if (links == null) {
-                links = LinkSchema()
-            }
-            newAsset.links?.forEach {
-                links.addLink(it.left, it.right.toString())
-            }
-            newAsset.setAttr("system.links", links)
+        var links = oldAsset.getAttr("system.links", LinkSchema::class.java) ?: LinkSchema()
+        newAsset.links?.forEach {
+            links.addLink(it.left, it.right.toString())
         }
+        newAsset.setAttr("system.links", links)
     }
 
     /**
@@ -229,12 +232,8 @@ open abstract class AbstractAssetService : AssetService {
      */
     private fun handlePermissions(oldAsset: Document, newAsset: Document, defaultPermissions: Map<String, Any>?) {
 
-        var existingPerms = oldAsset.getAttr("system.permissions",
-                PermissionSchema::class.java)
-
-        if (existingPerms == null) {
-            existingPerms = PermissionSchema()
-        }
+        val existingPerms = oldAsset.getAttr("system.permissions",
+                PermissionSchema::class.java) ?: PermissionSchema()
 
         if (newAsset.permissions != null) {
             newAsset.permissions?.forEach {
@@ -298,31 +297,11 @@ open abstract class AbstractAssetService : AssetService {
     fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets,
                     batchUpdateResult:Map<String, Boolean> = mapOf()) : BatchCreateAssetsResponse {
 
-        val checkedParents = mutableMapOf<String, Boolean>()
-
         // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
         val docsToIndex = prepped.assets.filter {
             batchUpdateResult.getOrDefault(it.id, true)
-        }.filter {doc ->
-            /**
-             * Filter out any assets where the parent does not exist.  Uses the
-             * isParentValidated() method where the implementation can vary. For
-             * IRM, it checks the CDV.  For plain old Zorroa it just returns true.
-             */
-            var result = true
-            val parentId : String? = doc.getAttr("media.clip.parent", String::class.java)
-            if (parentId != null) {
-                // Determine and cache if the parent is validated.
-                result = checkedParents.computeIfAbsent(parentId) {
-                   isParentValidated(doc)
-                }
-                if (!result) {
-                    logger.event("skipped Assset, invalid parent", mapOf("assetId" to doc.id,
-                            "parentId" to parentId))
-                }
-            }
-            result
         }
+
         val rsp = indexService.index(docsToIndex)
         if (req != null) {
             incrementJobCounters(req, rsp)
@@ -419,10 +398,194 @@ open abstract class AbstractAssetService : AssetService {
     }
 
     /**
-     * Return true if the parent is validated.  Each implementation can choose
-     * how the parent is validated.
+     * Batch update a list of assetIds with the given attributes.
+     *
+     * The nice thing about this method is that it works for both CDV and Postgres. The not nice
+     * thing about this method is that is slower with CDV since it doesn't have any
+     * batch operations.
      */
-    abstract fun isParentValidated(doc: Document) : Boolean
+    override fun batchUpdate(assets: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
+
+        if (assets.batch.size > 1000) {
+            throw java.lang.IllegalArgumentException("Cannot batch update more than 1000 assets at one time.")
+        }
+
+        /**
+         * For setting modified time
+         */
+        val now = Date()
+
+        /**
+         * Iterate over our list of assets and grab the hard copy of each one.
+         * Modify the copy and push it back into the DB.
+         */
+
+        val auth = getAuthentication()
+
+        val futures = assets.batch.keys.chunked(50).map { ids->
+            GlobalScope.async {
+                withAuth(auth) {
+                    val docs : List<Document> = getAll(ids).mapNotNull { doc->
+
+                        if (!hasPermission("write", doc)) {
+                            logger.warnEvent(LogObject.ASSET,
+                                    LogAction.BATCH_UPDATE,
+                                    "Skipping updating asset, access denied",
+                                    mapOf("assetId" to doc.id))
+                            null
+                        }
+                        else {
+
+                            val req = assets.batch.getValue(doc.id)
+                            req.update?.forEach { t, u ->
+                                if (t.startsWith("system.", ignoreCase = true)) {
+                                    logger.warnEvent(LogObject.ASSET,
+                                            LogAction.BATCH_UPDATE,
+                                            "Skipping setting $t, cannot set system values on batch update",
+                                            mapOf("assetId" to doc.id))
+                                } else {
+                                    doc.setAttr(t, u)
+                                }
+                            }
+
+                            req.remove?.forEach {
+                                if (it.startsWith("system.", ignoreCase = true)) {
+                                    logger.warnEvent(LogObject.ASSET,
+                                            LogAction.BATCH_UPDATE,
+                                            "Skipping removing $it, cannot set system values on batch update",
+                                            mapOf("assetId" to doc.id))
+                                } else {
+                                    doc.removeAttr(it)
+                                }
+                            }
+
+                            doc.setAttr("system.timeModified", now)
+                            doc
+                        }
+                    }
+
+                    val updated = batchUpdate(docs, reindex = true, taxons = false)
+                    updated
+                }
+            }
+        }
+
+        /**
+         * Setup our response object
+         */
+        val rsp = BatchUpdateAssetsResponse()
+
+        /**
+         * Wait for all the batches to complete, then combine results.
+         */
+        runBlocking {
+            futures.map {
+                val r = it.await()
+                logger.event(LogObject.ASSET, LogAction.BATCH_UPDATE,
+                        mapOf("updatCount" to r.updatedAssetIds.size,
+                                "errorCount" to r.erroredAssetIds.size))
+                rsp.plus(r)
+            }
+        }
+
+        runDyhiAndTaxons()
+        return rsp
+    }
+
+    override fun update(assetId: String, req: UpdateAssetRequest): Boolean {
+        val breq = BatchUpdateAssetsRequest(mapOf(assetId to req))
+        val rsp = batchUpdate(breq)
+        return rsp.updatedAssetIds.contains(assetId)
+    }
+
+
+    override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse {
+
+        val auth = getAuthentication()
+        val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
+        val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
+
+        runBlocking {
+            assets.chunked(50) {
+                launch {
+                    withAuth(auth) {
+                        val docs = getAll(it).mapNotNull { doc ->
+                            if (removeLink(doc, type, value)) {
+                                doc
+                            } else {
+                                // already removed
+                                null
+                            }
+                        }
+                        val update = batchUpdate(docs, reindex = true, taxons = false)
+                        if (update.erroredAssetIds.isNotEmpty()) {
+                            errorAssetIds.addAll(update.erroredAssetIds)
+                        }
+                        successAssetIds.addAll(update.updatedAssetIds)
+                    }
+                }
+            }
+        }
+
+        return UpdateLinksResponse(successAssetIds, errorAssetIds)
+    }
+
+    override fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse {
+        val auth = getAuthentication()
+        val errors = Collections.synchronizedSet(mutableSetOf<String>())
+        val success = Collections.synchronizedSet(mutableSetOf<String>())
+
+        runBlocking {
+            req.assetIds?.chunked(50) {
+                launch {
+                    withAuth(auth) {
+                        val docs = getAll(it).mapNotNull { doc ->
+                            if (addLink(doc, type, value)) {
+                                doc
+                            } else {
+                                null
+                            }
+                        }
+                        val update = batchUpdate(docs, reindex = true, taxons = false)
+                        if (update.erroredAssetIds.isNotEmpty()) {
+                            errors.addAll(update.erroredAssetIds)
+                        }
+                        success.addAll(update.updatedAssetIds)
+                    }
+                }
+            }
+
+            if (!req.parentIds.isNullOrEmpty() && req.search != null) {
+
+                val search = req.search
+                search.addToFilter().must = mutableListOf(AssetFilter()
+                        .addToTerms("media.clip.parent", req.parentIds))
+
+                searchService.scanAndScroll(search, false) { hits ->
+                    launch {
+                        withAuth(auth) {
+                            val ids = hits.hits.map { hit -> hit.id }
+                            val docs = getAll(ids).mapNotNull { doc ->
+                                if (addLink(doc, type, value)) {
+                                    doc
+                                } else {
+
+                                    null
+                                }
+                            }
+                            logger.info("updating docs with links: {}", docs.size)
+                            val update = batchUpdate(docs, reindex = true, taxons = false)
+                            if (update.erroredAssetIds.isNotEmpty()) {
+                                errors.addAll(update.erroredAssetIds)
+                            }
+                            success.addAll(update.updatedAssetIds)
+                        }
+                    }
+                }
+            }
+        }
+        return UpdateLinksResponse(success, errors)
+    }
 
     companion object {
 
@@ -436,12 +599,14 @@ open abstract class AbstractAssetService : AssetService {
  * IrmAssetServiceImpl is a higher level wrapper around the CoreDataVaultClient. Authentication
  * is required.
  */
-class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
+class IrmAssetServiceImpl constructor(
+        private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
 
     @Autowired
     lateinit var organizationService: OrganizationService
 
     override fun get(assetId: String): Document {
+        logger.event(LogObject.ASSET, LogAction.GET, mapOf("assetId" to assetId, "datastore" to "CDV"))
         return cdvClient.getIndexedMetadata(getCompanyId(), assetId)
     }
 
@@ -482,23 +647,9 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
     override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
         val prepped = prepAssets(spec)
         val parentsOnly = prepped.assets.filter { !it.attrExists("media.clip.parent") }
-        val types = cdvClient.getDocumentTypes(getCompanyId())
-
-        /**
-         * If there is an upload then register with the CDV, then replace the ID
-         */
-        if (spec.isUpload) {
-            for (parent in parentsOnly) {
-                val id = parent.id
-                cdvClient.createAsset(getCompanyId(),
-                        CoreDataVaultAssetSpec(parent.getAttr("source.path", String::class.java),
-                                id, types[0]["documentTypeId"] as String))
-            }
-        }
 
         // Only parents go into the CDV
         val result = cdvClient.batchUpdateIndexedMetadata(getCompanyId(), parentsOnly)
-
         return indexAssets(spec, prepped, result)
     }
 
@@ -518,12 +669,40 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         return get(doc.id)
     }
 
+    override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
+        val rsp = BatchUpdateAssetsResponse()
+        for (asset in assets) {
+            // Skip assets with a parent.
+            if (asset.attrExists("media.clip.parent")) {
+                rsp.updatedAssetIds.add(asset.id)
+                continue
+            }
+            // doesn't throw any exceptions.
+            if (cdvClient.updateIndexedMetadata(getCompanyId(), asset)) {
+                rsp.updatedAssetIds.add(asset.id)
+            }
+            else {
+                rsp.erroredAssetIds.add(asset.id)
+                logger.warnEvent(LogObject.ASSET,
+                        LogAction.BATCH_UPDATE, "Asset not found", mapOf("assetId" to asset.id))
+            }
+        }
+        if (reindex) {
+            indexService.index(assets)
+        }
+        if (taxons) {
+            runDyhiAndTaxons()
+        }
+        return rsp
+    }
+
     override fun update(assetId: String, attrs: Map<String, Any>): Document {
 
         val asset = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
         if (!hasPermission("write", asset)) {
-            throw ArchivistWriteException("update access denied")
+            throw ArchivistSecurityException("update access denied")
         }
+
         val updated = indexService.update(asset, attrs)
         cdvClient.updateIndexedMetadata(getCompanyId(), updated)
         runDyhiAndTaxons()
@@ -551,59 +730,6 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         }
     }
 
-    override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val docs = mutableListOf<Document>()
-
-        for (assetId in assets) {
-            val doc = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
-            if (addLink(doc, type, value)) {
-                result.success.add(doc.id)
-                docs.add(doc)
-
-                if (docs.size >=50) {
-                    indexService.index(docs)
-                    docs.clear()
-                }
-            }
-            else {
-                result.missing.add(doc.id)
-            }
-        }
-        if (docs.isNotEmpty()) {
-            indexService.index(docs)
-            docs.clear()
-        }
-
-        return result
-    }
-
-    override fun addLinks(type: LinkType, value: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val docs = mutableListOf<Document>()
-
-        for (assetId in assets) {
-            val doc = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
-            if (removeLink(doc, type, value)) {
-                result.success.add(doc.id)
-                docs.add(doc)
-
-                if (docs.size >=50) {
-                    indexService.index(docs)
-                    docs.clear()
-                }
-            }
-            else {
-                result.missing.add(doc.id)
-            }
-        }
-        if (docs.isNotEmpty()) {
-            indexService.index(docs)
-            docs.clear()
-        }
-
-        return result
-    }
 
     override fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
         val rAcl = permissionDao.resolveAcl(spec.acl, false)
@@ -618,7 +744,7 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         searchService.scanAndScroll(spec.search, false) { hits->
             val ids = hits.map { it.id }
 
-            val req = BatchCreateAssetsRequest(getAllAssets(ids).map { doc ->
+            val req = BatchCreateAssetsRequest(getAll(ids).map { doc ->
                 applyAcl(doc, spec.replace, rAcl)
                 doc
             }, skipAssetPrep = true, scope="setPermissions")
@@ -627,17 +753,30 @@ class IrmAssetServiceImpl constructor(private val cdvClient: CoreDataVaultClient
         return combinedRsp
     }
 
-    private fun getAllAssets(ids: List<String>) : List<Document> {
-        return ids.map { cdvClient.getIndexedMetadata(getCompanyId(), it) }
-    }
-
-    override fun isParentValidated(doc: Document) : Boolean {
-        if (!doc.attrExists("media.clip.parent")) {
-            return true
+    override fun getAll(ids: List<String>) : List<Document> {
+        logger.event(LogObject.ASSET, LogAction.SEARCH, mapOf("requested_count" to ids.size, "datastore" to "CDV"))
+        return ids.map {
+            try {
+                cdvClient.getIndexedMetadata(getCompanyId(), it)
+            }
+            catch (e: RestClientException) {
+                // ATTENTION: The CDV does not have child assets, but we can get them from ES.
+                // TODO: Check that organization ID is passed here.
+                indexService.get(it)
+            }
         }
-        return cdvClient.assetExists(getCompanyId(), doc.getAttr("media.clip.parent", String::class.java))
     }
 
+    override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
+        val types = cdvClient.getDocumentTypes(getCompanyId())
+        val id = UUID.randomUUID()
+        val spec = CoreDataVaultAssetSpec(id, types[0]["documentTypeId"] as String, name)
+        val result = cdvClient.createAsset(getCompanyId(), spec)
+        val uri = URI(result["imageUploadURL"] as String)
+        cdvClient.uploadSource(uri, bytes)
+        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to uri))
+        return AssetUploadedResponse(id, uri)
+    }
 }
 
 @Transactional
@@ -646,8 +785,23 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
     @Autowired
     lateinit var assetDao: AssetDao
 
+    @Autowired
+    lateinit var fileStorageService: FileStorageService
+
     override fun get(assetId: String): Document {
+        logger.event(LogObject.ASSET, LogAction.GET, mapOf("assetId" to assetId))
         return assetDao.get(assetId)
+    }
+
+    override fun getAll(assetIds: List<String>): List<Document> {
+
+        val list = assetDao.getAll(assetIds)
+        logger.event(
+            LogObject.ASSET,
+            LogAction.SEARCH,
+            mapOf("requested_count" to assetIds.size, "result_count" to list.size)
+        )
+        return list
     }
 
     override fun delete(id: String): Boolean {
@@ -679,7 +833,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         val txResult = assetDao.batchCreateOrReplace(prepped.assets)
 
         if (txResult != prepped.assets.size) {
-            logger.warnEvent("batchUpsert Asset",
+            logger.warnEvent(LogObject.ASSET, LogAction.BATCH_CREATE,
                     "Number of assets indexed did not match number in DB.",
                     mapOf())
         }
@@ -706,34 +860,29 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         return asset
     }
 
-    override fun removeLinks(type: LinkType, target: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val req = BatchCreateAssetsRequest(assetDao.getMap(assets).map {
-            val doc = it.value
-            if (removeLink(doc, type, target)) {
-                result.success.add(it.key)
-            } else {
-                result.missing.add(it.key)
-            }
-            it.value
-        }, skipAssetPrep = true, scope = "removeLinks")
-        batchCreateOrReplace(req)
-        return result
-    }
+    override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
+        val rsp = BatchUpdateAssetsResponse()
+        val updated = assetDao.batchUpdate(assets)
 
-    override fun addLinks(type: LinkType, target: UUID, assets: List<String>): ModifyLinksResponse {
-        val result = ModifyLinksResponse()
-        val req = BatchCreateAssetsRequest(assetDao.getMap(assets).map {
-            val doc = it.value
-            if (addLink(doc, type, target)) {
-                result.success.add(it.key)
-            } else {
-                result.missing.add(it.key)
+        val batch = assets.filterIndexed { index, doc ->
+            val r = updated[index] == 1
+            if (r) {
+                rsp.updatedAssetIds.add(doc.id)
+
             }
-            it.value
-        }, skipAssetPrep = true, scope = "addLinks")
-        batchCreateOrReplace(req)
-        return result
+            else {
+                rsp.erroredAssetIds.add(doc.id)
+            }
+            r
+        }
+
+        if (reindex) {
+            indexService.index(batch)
+        }
+        if (taxons) {
+            runDyhiAndTaxons()
+        }
+        return rsp
     }
 
     override fun setPermissions(spec: BatchUpdatePermissionsRequest): BatchUpdatePermissionsResponse {
@@ -762,8 +911,12 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         return combinedRep
     }
 
-    override fun isParentValidated(doc: Document) : Boolean {
-        return true
+    override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
+        val id = UUID.randomUUID()
+        val fss = fileStorageService.get(FileStorageSpec("asset", id, name))
+        fileStorageService.write(fss.id, bytes)
+        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to fss.uri))
+        return AssetUploadedResponse(id, fss.uri)
     }
 }
 

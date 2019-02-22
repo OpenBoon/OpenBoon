@@ -51,6 +51,11 @@ class Job (
         var priority: Int
 ) : JobId {
     override val jobId = id
+
+    @JsonIgnore
+    fun getStorageId() : String {
+        return "job___${jobId}"
+    }
 }
 
 class JobFilter (

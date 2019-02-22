@@ -115,9 +115,11 @@ interface FolderService {
 
     fun updateAcl(folder: Folder, acl: Acl?)
 
-    fun addAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse
+    fun addAssets(folder: Folder, req: BatchUpdateAssetLinks): UpdateLinksResponse
 
-    fun removeAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse
+    fun addAssets(folder: Folder, assetIds: List<String>): UpdateLinksResponse
+
+    fun removeAssets(folder: Folder, assetIds: List<String>): UpdateLinksResponse
 
     fun setFoldersForAsset(assetId: String, folders: List<UUID>)
 
@@ -553,7 +555,12 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun addAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse {
+    override fun addAssets(folder: Folder, assetIds: List<String>): UpdateLinksResponse {
+        return addAssets(folder, BatchUpdateAssetLinks(assetIds))
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    override fun addAssets(folder: Folder, req: BatchUpdateAssetLinks): UpdateLinksResponse {
 
         if (!hasPermission(folder.acl, Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
@@ -563,7 +570,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("Cannot add assets to a smart folder.  Remove the search first.")
         }
 
-        val result = assetService.addLinks(LinkType.Folder, folder.id, assetIds)
+        val result = assetService.addLinks(LinkType.Folder, folder.id, req)
         invalidate(folder)
 
         val tax = getParentTaxonomy(folder)
@@ -575,7 +582,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun removeAssets(folder: Folder, assetIds: List<String>): ModifyLinksResponse {
+    override fun removeAssets(folder: Folder, assetIds: List<String>): UpdateLinksResponse {
 
         if (!hasPermission(folder.acl, Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")

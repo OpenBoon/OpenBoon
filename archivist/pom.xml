@@ -14,7 +14,7 @@
         <relativePath>../pom.xml</relativePath>
         <groupId>com.zorroa</groupId>
         <artifactId>zorroa-server</artifactId>
-        <version>0.40.2</version>
+        <version>0.40.3-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -167,6 +167,11 @@
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
         <!-- 2.5x faster at loading jpegs in watermark case -->
         <dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
@@ -232,6 +237,13 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
             <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nhaarman</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>1.6.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -4,19 +4,20 @@ import com.fasterxml.jackson.core.type.TypeReference
 
 fun zpsTaskName(zps: ZpsScript) : String {
     if (zps.name == null) {
-        val sb = StringBuffer(128)
-        if (zps.generate != null) {
-            sb.append("Generator")
+        val list = mutableListOf<String>()
+
+        zps.generate?.let {
+            list.add("Generators=${it.size}")
         }
-        else if (zps.over != null) {
-            val size = zps.execute?.size
-            sb.append(" asset count=$size")
+
+        zps.execute?.let {
+            list.add("Processors=${it.size}")
         }
-        if (zps.execute != null) {
-            val size = zps.execute?.size
-            sb.append(" processors=$size")
+
+        zps.over?.let {
+            list.add("Assets=${it.size}" )
         }
-        return sb.toString()
+        return list.joinToString(" ")
     }
     else {
         return zps.name!!
@@ -29,18 +30,50 @@ fun emptyZpsScript(name: String) : ZpsScript {
 }
 
 
-data class ZpsScript(
+class ZpsScript(
         var name: String?,
         var generate : List<ProcessorRef>?,
         var over: List<Document>?,
         var execute : List<ProcessorRef>?,
         var globals:  MutableMap<String, Any>? = mutableMapOf(),
-        var inline: Boolean = true,
         var type: PipelineType = PipelineType.Import,
-        var settings: Map<String,Any>?=null
+        var settings: MutableMap<String, Any>?=null
 )
+{
+    /**
+     * Set a key/value in the settings map.  If the settings map is
+     * null then one is created.
+     *
+     * @param key: The name of the setting
+     * @param value: value for the setting.
+     */
+    fun setSettting(key: String, value: Any) {
+        if (settings == null) {
+            settings = mutableMapOf()
+        }
+        settings?.let {
+            it[key] = value
+        }
+    }
 
-data class ZpsError (
+    /**
+     * Set a key/value in the global arg map.  If the arg map is
+     * null then one is created.
+     *
+     * @param key: The name of the arg
+     * @param value: value for the arg.
+     */
+    fun setGlobalArg(key: String, value: Any) {
+        if (globals == null) {
+            globals = mutableMapOf()
+        }
+        globals?.let {
+            it[key] = value
+        }
+    }
+}
+
+class ZpsError (
         var id: String? = null,
         var path: String? = null,
         var phase: String? = null,
@@ -53,16 +86,16 @@ data class ZpsError (
         var skipped : Boolean = false)
 
 
-data class ProcessorFilter(
+class ZpsFilter(
         var expr: String? = null,
         var drop : Boolean = false
 )
 
-data class ProcessorRef(
+class ProcessorRef(
         var className: String,
         var args: Map<String, Any>? = mutableMapOf(),
         var execute: List<ProcessorRef>? = mutableListOf(),
-        var filters: List<ProcessorFilter>? = mutableListOf(),
+        var filters: List<ZpsFilter>? = mutableListOf(),
         var fileTypes: Set<String>? = mutableSetOf(),
         val language : String = "python"
 )

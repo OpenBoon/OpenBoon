@@ -49,47 +49,96 @@ object JdbcUtils {
         return sb.toString()
     }
 
+    /**
+     * Create and return an update query.  Supports the postgres cast
+     * operator (::) for on column names.   For example:
+     *
+     * update("foo", "pk_foo", "json::jsonb") would return "UPDATE foo SET json=?::jsonb WHERE pk_foo=?"
+     */
     fun update(table: String, keyCol: String, vararg cols: String): String {
         val sb = StringBuilder(1024)
-        sb.append("UPDATE ")
-        sb.append(table)
-        sb.append(" SET ")
+        sb.append("UPDATE $table SET ")
         for (col in cols) {
-            sb.append(col)
-            if (col.contains("=")) {
-                sb.append(",")
-            } else {
-                sb.append("=?,")
+            val cast = col.contains("::")
+            val parts = col.split("::")
+
+            sb.append(parts[0])
+            when {
+                col.contains("=") -> sb.append(",")
+                cast -> sb.append("=?::${parts[1]},")
+                else -> sb.append("=?,")
             }
         }
         sb.deleteCharAt(sb.length - 1)
-        sb.append(" WHERE ")
-        sb.append(keyCol)
-        sb.append("=?")
+        sb.append(" WHERE $keyCol =?")
         return sb.toString()
     }
 
     fun inClause(col: String, size: Int): String {
-        if (size == 0) { return "" }
-        val sb = StringBuilder(size * 2 * 2)
-        sb.append(col)
-        sb.append(" IN (")
-        sb.append(StringUtils.repeat("?", ",", size))
-        sb.append(") ")
-        return sb.toString()
+        return when {
+            size <=0 -> ""
+            size == 1 -> "$col = ?"
+            else -> {
+                val sb = StringBuilder(128)
+                sb.append("$col IN (")
+                sb.append(StringUtils.repeat("?", ",", size))
+                sb.append(") ")
+                sb.toString()
+            }
+        }
     }
 
     fun inClause(col: String, size: Int, cast: String): String {
-        if (size == 0) { return "" }
         val repeat = "?::$cast"
-        val sb = StringBuilder(size * 2 * 2)
-        sb.append(col)
-        sb.append(" IN (")
-        sb.append(StringUtils.repeat(repeat, ",", size))
-        sb.append(") ")
-        return sb.toString()
+        return when {
+            size<=0 -> ""
+            size== 1-> "$col = $repeat"
+            else -> {
+                val sb = StringBuilder(128)
+                sb.append("$col IN (")
+                sb.append(StringUtils.repeat(repeat, ",", size))
+                sb.append(") ")
+                return sb.toString()
+            }
+        }
     }
 
+    /**
+     * Constuct an array overlap clause
+     *
+     * @param col: The column name
+     * @param type: The column type
+     * @param size: The number of elements the array to be compared.
+     *
+     * @return: An Postgres array overlap clause.
+     *
+     */
+    fun arrayOverlapClause(col: String, type: String, size: Int): String {
+        return when {
+            size<=0 -> ""
+            else -> {
+                val sb = StringBuilder(128)
+                sb.append("$col && ARRAY[")
+                sb.append(StringUtils.repeat("?", ",", size))
+                sb.append("]::$type[]")
+                return sb.toString()
+            }
+        }
+    }
+
+    /**
+     * Analyze a string and return a vector of words as a space delimited string.
+     * Handles splitting words by periods, camel case.  TsWordVectors are used
+     * for Postgres full text indexing.
+     *
+     * @param original The original text
+     * @return The vectorized version.
+     */
+    fun getTsWordVector(original: String): String {
+        return original.split(Regex("[_\\.-]+")).flatMap {
+            it.split(Regex("(?<=[a-z])(?=[A-Z])"))
+        }.joinToString(" ").toLowerCase()
+    }
     /**
      * Create a WHERE clause fragment using a LongRangeFilter
      *

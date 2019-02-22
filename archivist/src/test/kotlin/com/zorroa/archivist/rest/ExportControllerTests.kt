@@ -1,5 +1,7 @@
 package com.zorroa.archivist.rest
 
+import com.google.api.Http
+import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
 import com.zorroa.archivist.domain.ExportSpec
@@ -65,7 +67,9 @@ class ExportControllerTests : MockMvcTest() {
         val export = exportService.create(espec)
 
         val storage = fileStorageService.get(FileStorageSpec(
-                "export", "foo", "txt", jobId=export.id))
+                "job", export.id.toString(), "exported/foo.txt"))
+        fileStorageService.getSignedUrl(storage.id, HttpMethod.PUT)
+
         Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
 
         val fspec = ExportFileSpec(storage.id, "foo.txt")
@@ -79,7 +83,7 @@ class ExportControllerTests : MockMvcTest() {
 
         val file = Json.Mapper.readValue(req.response.contentAsString, ExportFile::class.java)
         println(Json.prettyString(file))
-        assertEquals("export___${export.id}___foo.txt", file.path)
+        assertEquals("job___${export.id}___exported___foo.txt", file.path)
         assertEquals("text/plain", file.mimeType)
         assertEquals(4, file.size)
 
@@ -98,9 +102,10 @@ class ExportControllerTests : MockMvcTest() {
                 mutableMapOf("foo" to "bar"))
         val export = exportService.create(espec)
 
-
         val storage = fileStorageService.get(FileStorageSpec(
-                "export", "foo", "txt", jobId=export.id))
+                "job", export.id.toString(), "exported/foo.txt"))
+        fileStorageService.getSignedUrl(storage.id, HttpMethod.PUT)
+
         Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")

@@ -9,6 +9,7 @@ import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -34,6 +35,7 @@ class AnalystControllerTests : MockMvcTest() {
                 648,
                 1024,
                 0.5f,
+                "0.40.3",
                 null)
         analyst = analystDao.create(spec)
     }
@@ -113,5 +115,17 @@ class AnalystControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError)
                 .andReturn()
+    }
+
+    @Test
+    fun testProcessorScan() {
+        val session = admin()
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
     }
 }

@@ -9,8 +9,8 @@ import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.util.event
-import com.zorroa.archivist.util.warnEvent
+import com.zorroa.archivist.service.event
+import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.DocWriteRequest
@@ -145,12 +145,8 @@ class IndexDaoImpl @Autowired constructor(
         val bulkRequest = BulkRequest()
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
-        val debug = properties.getBoolean("archivist.debug-mode.enabled")
         for (source in sources) {
             bulkRequest.add(prepareInsert(source))
-            if (debug) {
-                logger.info(Json.prettyString(source))
-            }
         }
 
         val rest = getClient()
@@ -166,7 +162,7 @@ class IndexDaoImpl @Autowired constructor(
                     result.warningAssetIds.add(asset.id)
                     retries.add(sources[index])
                 } else {
-                    logger.warnEvent("index Asset", message,
+                    logger.warnEvent(LogObject.ASSET, LogAction.BATCH_INDEX, message,
                             mapOf("assetId" to response.id,
                                     "index" to response.index))
                     result.erroredAssetIds.add(asset.id)
@@ -322,7 +318,8 @@ class IndexDaoImpl @Autowired constructor(
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
 
         docs.forEach { doc->
-            if (doc.attrExists("system.hold") && doc.getAttr("system.hold", Boolean::class.java)) {
+            val hold = doc.getAttr("system.hold", Boolean::class.java) ?: false
+            if (doc.attrExists("system.hold") && hold) {
                 rsp.onHoldAssetIds.add(doc.id)
             }
             else if (!hasPermission("write", doc)) {
@@ -342,19 +339,19 @@ class IndexDaoImpl @Autowired constructor(
         for (br in bulk.items) {
             when {
                 br.isFailed -> {
-                    logger.warnEvent("batchDelete Asset", br.failureMessage,
+                    logger.warnEvent(LogObject.ASSET, LogAction.BATCH_DELETE, br.failureMessage,
                             mapOf("assetId" to br.id, "index" to br.index))
                     rsp.errors[br.id] = br.failureMessage
                 }
                 else ->  {
                     val deleted =  br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
                     if (deleted) {
-                        logger.event("batch delete Asset", mapOf("assetId" to br.id, "index" to br.index))
+                        logger.event(LogObject.ASSET, LogAction.BATCH_DELETE, mapOf("assetId" to br.id, "index" to br.index))
                         rsp.deletedAssetIds.add(br.id)
                     }
                     else {
                         rsp.missingAssetIds.add(br.id)
-                        logger.warnEvent("batch delete Asset", "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
+                        logger.warnEvent(LogObject.ASSET, LogAction.BATCH_DELETE,  "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
                     }
                 }
             }

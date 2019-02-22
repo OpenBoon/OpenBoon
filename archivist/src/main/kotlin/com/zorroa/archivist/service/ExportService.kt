@@ -12,7 +12,9 @@ import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalArgumentException
 import java.util.*
+import kotlin.math.max
 
 interface ExportService {
 
@@ -30,7 +32,8 @@ class ExportServiceImpl @Autowired constructor(
         private val indexDao: IndexDao,
         private val exportFileDao: ExportFileDao,
         private val fileStorageService: FileStorageService,
-        private val jobService: JobService
+        private val jobService: JobService,
+        private val pipelineService: PipelineService
         ) : ExportService {
 
     @Autowired
@@ -59,6 +62,9 @@ class ExportServiceImpl @Autowired constructor(
 
     private inner class ExportParams(var search: AssetSearch)
 
+    /**
+     * TODO: Rethink this method, might not be needed. Audit-log is probably better.
+     */
     private fun resolveExportSearch(search: AssetSearch, exportId: UUID): ExportParams {
         search.fields = arrayOf("source")
 
@@ -86,57 +92,33 @@ class ExportServiceImpl @Autowired constructor(
         val env = mutableMapOf<String, String>()
         env.putAll(spec.env)
 
-        val jspec = JobSpec(spec.name!!, script=null, env=env)
-        val job =  jobService.create(jspec, PipelineType.Export)
-        jobService.createTask(job, TaskSpec("export file generator", buildZpsSciript(job, spec, resolve)))
-        return job
+        val jspec = JobSpec(spec.name!!, script=buildZpsSciript(spec), env=env)
+        return jobService.create(jspec, PipelineType.Export)
     }
 
-    private fun buildZpsSciript(job: Job, spec: ExportSpec, resolve:Boolean) : ZpsScript {
-
+    private fun buildZpsSciript(spec: ExportSpec) : ZpsScript {
         /**
          * Now start to build the script for the task.
          */
-        val execute=  mutableListOf<ProcessorRef>()
+
+        val maxAssets = properties.getInt("archivist.export.maxAssetCount").toLong()
+        if (searchService.count(spec.search) > maxAssets) {
+            throw IllegalArgumentException("Cannot export more than $maxAssets assets at a time")
+        }
+
         val generate =  mutableListOf<ProcessorRef>()
+        generate.add(ProcessorRef(
+                "zplugins.asset.generators.AssetSearchGenerator",
+                mapOf<String, Any>(
+                        "search" to spec.search
+                )
+        ))
 
-        execute.addAll(spec.processors)
-        execute.add(ProcessorRef("zplugins.export.collectors.ExportCollector"))
-
-        /**
-         * Replace the search the user supplied with our own search so we ensure
-         * we get the exact assets during the export and new data
-         * added that might match their search change the export.
-         */
-        if (resolve) {
-            val params = resolveExportSearch(spec.search, job.id)
-            generate.add(ProcessorRef(
-                    "zplugins.asset.generators.AssetSearchGenerator",
-                    mapOf<String, Any>(
-                            "search" to params.search
-                    )
-            ))
-        }
-        else {
-            generate.add(ProcessorRef(
-                    "zplugins.asset.generators.AssetSearchGenerator",
-                    mapOf<String, Any>(
-                            "search" to spec.search
-                    )
-            ))
-        }
-
-        val globals : MutableMap<String, Any> = mutableMapOf(
-                "exportArgs" to mapOf(
-                        "exportId" to job.id,
-                        "exportName" to job.name))
-
-        return ZpsScript(spec.name!!,
+        return ZpsScript(spec.name,
+                type = PipelineType.Export,
                 generate=generate ,
-                execute=execute,
-                inline=true,
-                over=null,
-                globals=globals)
+                execute=spec.processors,
+                over=null)
     }
 }
 

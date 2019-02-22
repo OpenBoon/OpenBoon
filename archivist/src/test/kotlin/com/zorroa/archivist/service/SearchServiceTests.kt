@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
-import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
@@ -10,17 +9,15 @@ import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.schema.LocationSchema
 import com.zorroa.archivist.schema.SourceSchema
 import com.zorroa.archivist.search.*
+import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-
 import java.io.IOException
-
-import com.zorroa.archivist.security.getPermissionsFilter
-import org.junit.Assert.*
 import java.util.*
 
 /**
@@ -162,7 +159,7 @@ class SearchServiceTests : AbstractTest() {
         val asset1 = assetService.createOrReplace(source)
         refreshIndex(100)
 
-        folderService.addAssets(folder1, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder1, listOf(asset1.id))
         refreshIndex(100)
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
@@ -182,7 +179,7 @@ class SearchServiceTests : AbstractTest() {
         val asset1 = assetService.createOrReplace(source)
         refreshIndex(100)
 
-        folderService.addAssets(folder1, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder1, listOf(asset1.id))
         refreshIndex(100)
 
         assertEquals(1, searchService.count(folder1))
@@ -206,7 +203,7 @@ class SearchServiceTests : AbstractTest() {
         val asset1 = assetService.createOrReplace(source)
         refreshIndex(100)
 
-        folderService.addAssets(folder3, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder3, listOf(asset1.id))
         refreshIndex(100)
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
@@ -229,17 +226,17 @@ class SearchServiceTests : AbstractTest() {
         val folder3 = folderService.create(builder)
 
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source1.addToKeywords("media", source1.getAttr("source", SourceSchema::class.java).filename)
+        source1.addToKeywords("media", source1.getAttr("source", SourceSchema::class.java)!!.filename)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.addToKeywords("media", source2.getAttr("source", SourceSchema::class.java).filename)
+        source2.addToKeywords("media", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
         val asset1 = assetService.createOrReplace(source1)
         val asset2 = assetService.createOrReplace(source2)
         refreshIndex()
 
-        folderService.addAssets(folder2, Lists.newArrayList(asset2.id))
-        folderService.addAssets(folder3, Lists.newArrayList(asset1.id))
+        folderService.addAssets(folder2, listOf(asset2.id))
+        folderService.addAssets(folder3, listOf(asset1.id))
         refreshIndex(100)
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
@@ -309,7 +306,7 @@ class SearchServiceTests : AbstractTest() {
         source1.setAttr("media.keywords", ImmutableList.of("captain"))
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java).filename)
+        source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplace(source1)
         assetService.createOrReplace(source2)
@@ -338,7 +335,7 @@ class SearchServiceTests : AbstractTest() {
         refreshIndex()
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", source.getAttr("source", SourceSchema::class.java).filename)
+        source.setAttr("media.keywords", source.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplace(source)
         refreshIndex()
@@ -496,11 +493,11 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryMultipleExactWithAnd() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("test.keywords", Lists.newArrayList("RA", "pencil", "O'Connor"))
+        source.setAttr("test.keywords", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplace(source)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("test.keywords", Lists.newArrayList("RA", "Cock O'the Walk"))
+        source2.setAttr("test.keywords", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplace(source2)
 
         refreshIndex()
@@ -514,11 +511,11 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryExactTermWithSpaces() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("test.keywords", Lists.newArrayList("RA", "pencil", "O'Connor"))
+        source.setAttr("test.keywords", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplace(source)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("test.keywords", Lists.newArrayList("RA", "Cock O'the Walk"))
+        source2.setAttr("test.keywords", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplace(source2)
 
         refreshIndex()
@@ -885,7 +882,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testHammingDistanceFilterWithQuery() {
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source1.setAttr("media.keywords", Lists.newArrayList("beer_kettle_01.jpg"))
+        source1.setAttr("media.keywords", listOf("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", "afafafaf")
 
@@ -912,7 +909,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testHammingDistanceFilterWithAssetId() {
         val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source1.setAttr("media.keywords", Lists.newArrayList("beer"))
+        source1.setAttr("media.keywords", listOf("beer"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", "afafafaf")
 
@@ -1016,4 +1013,13 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, result.size().toLong())
     }
 
+    @Test
+    fun testCountEventLog() {
+
+        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        assetService.createOrReplace(source)
+
+        assertEquals(1, searchService.count(AssetSearch()))
+        //logger.event()
+    }
 }

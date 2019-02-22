@@ -35,6 +35,29 @@ class AssetDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchUpdate() {
+        val docs = mutableListOf<Document>()
+        for (i in 1 .. 10) {
+            val doc = Document(UUID.randomUUID())
+            doc.setAttr("foo", "bar")
+            docs.add(doc)
+        }
+
+        var res = assetDao.batchUpdate(docs)
+        assertEquals(10, res.size)
+        for (i in res) {
+            assertEquals(0, i)
+        }
+
+        assetDao.batchCreateOrReplace(docs)
+        res = assetDao.batchUpdate(docs)
+        assertEquals(10, res.size)
+        for (i in res) {
+            assertEquals(1, i)
+        }
+    }
+
+    @Test
     fun testGet() {
         val doc = Document(UUID.randomUUID())
         doc.setAttr("foo", "bar")
@@ -43,6 +66,19 @@ class AssetDaoTests : AbstractTest() {
         val doc2 = assetDao.get(doc.id)
         assertEquals(doc.id, doc2.id)
         assertEquals(doc.getAttr("foo", String::class.java), doc2.getAttr("foo", String::class.java))
+    }
+
+    @Test
+    fun testGetAll() {
+        val docs = mutableListOf<Document>()
+        for (i in 1 .. 10) {
+            val doc = Document(UUID.randomUUID())
+            doc.setAttr("foo", "bar")
+            docs.add(doc)
+        }
+        assetDao.batchCreateOrReplace(docs)
+        val map = assetDao.getAll(docs.map{it.id})
+        assertEquals(10, map.size)
     }
 
     @Test

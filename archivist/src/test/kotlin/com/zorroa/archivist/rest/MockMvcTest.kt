@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.common.util.Json
 import org.junit.Before
@@ -65,6 +66,21 @@ abstract class MockMvcTest : AbstractTest() {
     protected fun admin(): MockHttpSession {
         return user("admin")
     }
+
+    /**
+     * @return a session for a monitor user.
+     */
+    protected fun monitor(): MockHttpSession {
+        return user("monitor")
+    }
+
+    /**
+     * @return a session for an admin with the id 1.
+     */
+    protected fun analyst(): MockHttpSession {
+        return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
+    }
+
 
     class StatusResult<T> {
         var `object`: T? = null

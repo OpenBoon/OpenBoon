@@ -1,10 +1,13 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DaoFilter
+import com.zorroa.archivist.rest.UserController
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import org.slf4j.LoggerFactory
 import java.util.*
 
 enum class TaskState {
@@ -38,6 +41,15 @@ open class Task (
         val host: String?
 ) : TaskId, JobId {
     override val taskId = id
+
+    /**
+     * Return FileStorageSpec for where this tasks log file should go.
+     */
+    @JsonIgnore
+    fun getLogSpec() : FileStorageSpec {
+        return FileStorageSpec("job", jobId, "logs/$taskId.log")
+    }
+
 }
 
 class DispatchTask(
@@ -50,29 +62,11 @@ class DispatchTask(
         val script: ZpsScript,
         var env: MutableMap<String,String>,
         var args: MutableMap<String,Object>,
-        val userId: UUID) : Task(id, jobId, organizationId, name, state, host), TaskId {
+        val userId: UUID,
+        var logFile: String?=null) : Task(id, jobId, organizationId, name, state, host), TaskId {
 
     override val taskId = id
 }
-
-class TaskError(
-        val id: UUID,
-        val taskId: UUID,
-        val jobId: UUID,
-        val assetId: UUID?,
-        val path: String?,
-        val message: String,
-        val processor: String,
-        val fatal: Boolean,
-        val analyst: String,
-        val phase: String)
-
-class Expand(
-        val endpoint: String,
-        val jobId: UUID,
-        val taskId: UUID,
-        val script: ZpsScript)
-
 
 class TaskFilter (
         val ids : List<UUID>? = null,
@@ -81,10 +75,20 @@ class TaskFilter (
 ) : KDaoFilter() {
 
     @JsonIgnore
-    override val sortMap: Map<String, String> = mapOf()
+    override val sortMap: Map<String, String> =
+            mapOf("taskId" to "task.pk_task",
+                    "id" to "task.pk_task",
+                    "jobId" to "task.pk_job",
+                    "state" to "task.int_state",
+                    "timeCreated" to "task.time_created",
+                    "timeStarted" to "task.time_started")
 
     @JsonIgnore
     override fun build() {
+
+        if (sort == null) {
+            sort = listOf("taskId:a")
+        }
 
         ids?.let  {
             addToWhere(JdbcUtils.inClause("task.pk_task", it.size))

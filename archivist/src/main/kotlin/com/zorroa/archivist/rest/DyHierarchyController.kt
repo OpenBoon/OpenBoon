@@ -1,10 +1,11 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.domain.DyHierarchy
 import com.zorroa.archivist.domain.DyHierarchySpec
 import com.zorroa.archivist.service.DyHierarchyService
 import com.zorroa.archivist.service.FolderService
+import com.zorroa.archivist.util.HttpUtils
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -13,6 +14,7 @@ import java.util.*
  * Created by chambers on 8/10/16.
  */
 @RestController
+@Timed
 class DyHierarchyController @Autowired constructor(
         val folderService : FolderService,
         val dyHierarchyService: DyHierarchyService
