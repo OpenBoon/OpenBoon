@@ -416,7 +416,7 @@ open class Document {
             }
         }
         catch (e: Exception) {
-            logger.warn("Unable to append to attr '$attr', it maybe not be a collection")
+            logger.warn("Unable to remove from attr '$attr', it maybe not be a collection")
         }
 
         return false
