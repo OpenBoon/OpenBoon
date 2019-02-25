@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.FieldSystemService
 import com.zorroa.common.repository.KPagedList
@@ -109,6 +110,55 @@ class AssetControllerTests : MockMvcTest() {
                 })
         val count = counts["count"] as Int
         assertEquals(1, count.toLong())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCountWithNullQueryFilter() {
+
+        val filter = null
+        assertEquals(5, countWithAssetSearch(filter).toLong())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCountWithQueryFilter() {
+
+        val filter= AssetFilter().setQuery(AssetSearch("hyena"))
+        assertEquals(1, countWithAssetSearch(filter).toLong())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCountWithNotQueryFilter() {
+
+        val filter = AssetFilter().setMustNot(mutableListOf(AssetFilter().setQuery(AssetSearch("toucan"))))
+        assertEquals(4, countWithAssetSearch(filter).toLong())
+    }
+
+    private fun countWithAssetSearch(filter: AssetFilter?): Int {
+        val session = admin()
+        addTestAssets("set01")
+
+        val search = AssetSearch("jpg")
+        search.filter = filter
+
+        val result = mvc.perform(
+            post("/api/v2/assets/_count")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(search)))
+            .andExpect(status().isOk)
+            .andReturn()
+
+        val counts = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
+            object : TypeReference<Map<String, Any>>() {
+
+            })
+
+        val count = counts["count"] as Int
+        return count
     }
 
     @Test
