@@ -116,7 +116,7 @@ class Field (
 }
 
 /**
- * A FieldUpdateSpec describes the properties which can updated on a Field.  
+ * A FieldUpdateSpec describes the properties which can updated on a Field.
  *
  * @property name The name of the field, aka the label.
  * @property editable If the field is editable or not.

@@ -4,11 +4,9 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
-import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -75,7 +73,7 @@ class AssetServiceTests : AbstractTest() {
 
         var assets = searchService.search(Pager.first(), AssetSearch())
         assets.list.forEach {
-            assetService.edit(it.id, FieldEditSpec(field.id, null,"bilbo"))
+            assetService.createFieldEdit(FieldEditSpec(UUID.fromString(it.id), field.id, null,"bilbo"))
         }
 
         assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
@@ -253,7 +251,7 @@ class AssetServiceTests : AbstractTest() {
 
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
-            assetService.edit(asset.id, FieldEditSpec(field.id, null,title))
+            assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id, null,title))
         }
         for (asset in searchService.search(Pager.first(), AssetSearch()).list) {
             assertEquals(title, asset.getAttr("media.title", String::class.java))
@@ -267,8 +265,8 @@ class AssetServiceTests : AbstractTest() {
 
         var page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
-            val edit = assetService.edit(asset.id, FieldEditSpec(field.id, null, title))
-            assertTrue(assetService.undo(edit))
+            val edit = assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+            assertTrue(assetService.deleteFieldEdit(edit))
         }
 
         page = searchService.search(Pager.first(), AssetSearch())

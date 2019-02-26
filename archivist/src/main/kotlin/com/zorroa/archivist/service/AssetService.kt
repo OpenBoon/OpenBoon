@@ -38,8 +38,8 @@ interface AssetService {
     fun get(assetId: String): Document
     fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
-    fun edit(assetId: String, spec: FieldEditSpec): FieldEdit
-    fun undo(edit: FieldEdit): Boolean
+    fun createFieldEdit(spec: FieldEditSpec): FieldEdit
+    fun deleteFieldEdit(edit: FieldEdit): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
     fun batchUpdate(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
     fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
@@ -639,7 +639,7 @@ open abstract class AbstractAssetService : AssetService {
         return UpdateLinksResponse(success, errors)
     }
 
-    override fun undo(edit: FieldEdit) : Boolean {
+    override fun deleteFieldEdit(edit: FieldEdit) : Boolean {
         val asset = get(edit.assetId.toString())
         val field = fieldSystemService.getField(edit.fieldId)
 
@@ -667,7 +667,8 @@ open abstract class AbstractAssetService : AssetService {
         return false
     }
 
-    override fun edit(assetId: String, spec: FieldEditSpec) : FieldEdit {
+    override fun createFieldEdit(spec: FieldEditSpec) : FieldEdit {
+        val assetId = spec.assetId.toString()
         val asset = get(assetId)
         val field = fieldSystemService.getField(spec)
 

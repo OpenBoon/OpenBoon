@@ -34,10 +34,14 @@ class FieldEditSpecInternal(
  * @property newValue The new value of the field.
  */
 class FieldEditSpec(
+        val assetId: UUID,
         val fieldId: UUID?,
         val attrName: String?,
         val newValue: Any?
-)
+) {
+    constructor(assetId: String, fieldId: UUID?, attrName: String?, newValue: Any?) : this(
+            UUID.fromString(assetId), fieldId, attrName, newValue)
+}
 
 /**
  * A FieldEdit entry describes manual edit to a specific attribute.

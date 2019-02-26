@@ -318,20 +318,8 @@ class AssetController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
-    fun getFieldEdits(@PathVariable id: UUID): KPagedList<FieldEdit>  {
-        return fieldSystemService.getFieldEdits(
-                FieldEditFilter(assetIds=listOf(id)).apply { page = KPage(0, 100) })
-    }
-
-    @PostMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
-    fun createtFieldEdit(@PathVariable id: String, @RequestBody spec: FieldEditSpec): FieldEdit {
-        return assetService.edit(id, spec)
-    }
-
-    @DeleteMapping(value = ["/api/v1/assets/{id}/fieldEdits/{editId}"])
-    fun deleteFieldEdit(@PathVariable id: String, @PathVariable editId:UUID): Any {
-        val edit = fieldSystemService.getFieldEdit(editId)
-        return HttpUtils.updated("asset", id, assetService.undo(edit), assetService.get(id))
+    fun getFieldEdits(@PathVariable id: UUID): List<FieldEdit>  {
+        return fieldSystemService.getFieldEdits(id)
     }
 
     companion object {
