@@ -19,6 +19,7 @@ interface FieldDao {
     fun get(attrName: String) : Field
     fun exists(attrName: String) : Boolean
     fun deleteAll() : Int
+    fun delete(field: Field): Boolean
 
     /**
      * Allocate a brand new field attribute.  This function picks a new custom
@@ -102,6 +103,10 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
 
     override fun deleteAll() : Int {
         return jdbc.update("DELETE FROM field WHERE pk_organization=?", getOrgId())
+    }
+
+    override fun delete(field: Field): Boolean {
+        return jdbc.update("DELETE FROM field WHERE pk_field=?", field.id) == 1
     }
 
     override fun allocate(type: AttrType) : String {

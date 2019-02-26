@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldFilter
@@ -12,6 +13,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 
 class FieldControllerTests : MockMvcTest() {
@@ -34,6 +36,25 @@ class FieldControllerTests : MockMvcTest() {
         assertEquals(AttrType.StringExact, field.attrType)
         assertEquals(spec.attrName, field.attrName)
     }
+
+    @Test
+    fun testDeleteField() {
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val field = fieldSystemService.createField(spec)
+        val session = admin()
+
+        val req = mvc.perform(MockMvcRequestBuilders.delete("/api/v1/fields/${field.id}")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(spec)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val rsp = Json.Mapper.readValue<Map<String, Any>>(req.response.contentAsString)
+        assertTrue(rsp["success"] as Boolean)
+    }
+
 
     @Test
     fun testGet() {

@@ -26,6 +26,7 @@ interface FieldSystemService {
     fun getField(id: UUID) : Field
     fun getField(spec: FieldEditSpec) : Field
     fun getField(attrName: String) : Field
+    fun deleteField(field: Field) : Boolean
     fun getAllFields(filter: FieldFilter) : KPagedList<Field>
     fun getFieldEdits(filter: FieldEditFilter) : KPagedList<FieldEdit>
     fun getFieldEdits(assetId: UUID) : List<FieldEdit>
@@ -109,6 +110,10 @@ class FieldSystemServiceImpl @Autowired constructor(
     @Transactional(readOnly=true)
     override fun getField(attrName: String) : Field {
         return fieldDao.get(attrName)
+    }
+
+    override fun deleteField(field: Field): Boolean {
+        return fieldDao.delete(field)
     }
 
     @Transactional(readOnly=true)

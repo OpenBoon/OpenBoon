@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldFilter
 import com.zorroa.archivist.domain.FieldSpec
 import com.zorroa.archivist.service.FieldSystemService
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -24,6 +25,13 @@ class FieldController @Autowired constructor(
     @Throws(Exception::class)
     fun get(@PathVariable id: UUID): Field {
         return fieldSystemService.getField(id)
+    }
+
+    @DeleteMapping(value = ["/api/v1/fields/{id}"])
+    @Throws(Exception::class)
+    fun delete(@PathVariable id: UUID): Any {
+        return  HttpUtils.status("field", id, "delete",
+                fieldSystemService.deleteField(fieldSystemService.getField(id)))
     }
 
     @PostMapping(value = ["/api/v1/fields/_search"])

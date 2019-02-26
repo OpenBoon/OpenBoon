@@ -26,6 +26,14 @@ class FieldDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testDelete() {
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val field = fieldDao.create(spec)
+        assertTrue(fieldDao.delete(field))
+        assertFalse(fieldDao.delete(field))
+    }
+
+    @Test
     fun testGet() {
         val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
         val field1 = fieldDao.create(spec)
