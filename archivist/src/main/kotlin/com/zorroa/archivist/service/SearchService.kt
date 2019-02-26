@@ -574,6 +574,7 @@ class SearchServiceImpl @Autowired constructor(
                 qstring.field(field, boost)
             }
         }
+        qstring.field("system.taxonomy.keywords")
         return qstring
     }
 
