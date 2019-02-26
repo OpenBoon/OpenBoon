@@ -99,7 +99,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         val folder1 = folderService.get("/foo/" + base + "_video")
         val folder2 = folderService.get("/foo/" + base + "_office")
         val folder3 = folderService.get("/foo/" + base + "_images_set01")
-        assertEquals(6, searchService.count(folder1!!.search!!))
+        assertEquals(7, searchService.count(folder1!!.search!!))
     }
 
     @Test
@@ -118,14 +118,14 @@ class DyHierarchyServiceTests : AbstractTest() {
         assertEquals(1, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video$testDataPath/video")
-        assertEquals(6, searchService.count(folder!!.search!!))
+        assertEquals(7, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video$testDataPath")
         println(Json.prettyString(folder!!.search!!))
-        assertEquals(6, searchService.count(folder!!.search!!))
+        assertEquals(7, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video")
-        assertEquals(6, searchService.count(folder!!.search!!))
+        assertEquals(7, searchService.count(folder!!.search!!))
     }
 
     @Test
