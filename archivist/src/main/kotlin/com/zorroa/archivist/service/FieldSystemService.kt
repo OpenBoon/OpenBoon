@@ -27,6 +27,7 @@ interface FieldSystemService {
     fun getField(spec: FieldEditSpec) : Field
     fun getField(attrName: String) : Field
     fun deleteField(field: Field) : Boolean
+    fun updateField(field: Field, spec: FieldUpdateSpec): Boolean
     fun getAllFields(filter: FieldFilter) : KPagedList<Field>
     fun getFieldEdits(filter: FieldEditFilter) : KPagedList<FieldEdit>
     fun getFieldEdits(assetId: UUID) : List<FieldEdit>
@@ -116,6 +117,10 @@ class FieldSystemServiceImpl @Autowired constructor(
         return fieldDao.delete(field)
     }
 
+    override fun updateField(field: Field, spec: FieldUpdateSpec): Boolean {
+        return fieldDao.update(field, spec)
+    }
+
     @Transactional(readOnly=true)
     override fun getKeywordFieldNames() : Map<String, Float> {
         return fieldDao.getKeywordFieldNames()
@@ -148,6 +153,7 @@ class FieldSystemServiceImpl @Autowired constructor(
         return fieldSetDao.create(spec)
     }
 
+    @Transactional(readOnly=true)
     override fun getFieldSet(id: UUID) : FieldSet {
         return fieldSetDao.get(id)
     }

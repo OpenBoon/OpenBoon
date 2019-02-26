@@ -20,6 +20,7 @@ interface FieldDao {
     fun exists(attrName: String) : Boolean
     fun deleteAll() : Int
     fun delete(field: Field): Boolean
+    fun update(field: Field, spec: FieldUpdateSpec) : Boolean
 
     /**
      * Allocate a brand new field attribute.  This function picks a new custom
@@ -65,6 +66,24 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 mapOf("fieldId" to id, "fieldName" to spec.name, "fieldAttrType" to spec.attrType))
         return Field(id, spec.name, spec!!.attrName as String,
                 spec.attrType as AttrType, spec.editable, spec.custom, spec.keywords, spec.keywordsBoost)
+    }
+
+    override fun update(field: Field, spec: FieldUpdateSpec) : Boolean {
+        val time = System.currentTimeMillis()
+        val user = getUser()
+
+        return jdbc.update { connection ->
+            val ps = connection.prepareStatement("$UPDATE AND pk_organization=?")
+            ps.setLong(1, time)
+            ps.setObject(2, user.id)
+            ps.setString(3, spec.name)
+            ps.setBoolean(4, spec.editable)
+            ps.setBoolean(5, spec.keywords)
+            ps.setFloat(6, spec.keywordsBoost)
+            ps.setObject(7, field.id)
+            ps.setObject(8, user.organizationId)
+            ps
+        } == 1
     }
 
     override fun get(id: UUID) : Field {
@@ -152,6 +171,14 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "int_attr_type",
                 "bool_editable",
                 "bool_custom",
+                "bool_keywords",
+                "float_keywords_boost")
+
+        private val UPDATE = JdbcUtils.update("field","pk_field",
+                "time_modified",
+                "pk_user_modified",
+                "str_name",
+                "bool_editable",
                 "bool_keywords",
                 "float_keywords_boost")
 

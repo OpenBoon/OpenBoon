@@ -1,9 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AttrType
-import com.zorroa.archivist.domain.FieldFilter
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -31,6 +29,22 @@ class FieldDaoTests : AbstractTest() {
         val field = fieldDao.create(spec)
         assertTrue(fieldDao.delete(field))
         assertFalse(fieldDao.delete(field))
+    }
+
+    @Test
+    fun testUpdate() {
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val field = fieldDao.create(spec)
+
+        val updateSpec = FieldUpdateSpec("test", true, true, 2.0f)
+
+        assertTrue(fieldDao.update(field, updateSpec))
+        val result = fieldDao.get(field.id)
+
+        assertEquals(updateSpec.name, result.name)
+        assertEquals(updateSpec.editable, result.editable)
+        assertEquals(updateSpec.keywords, result.keywords)
+        assertEquals(updateSpec.keywordsBoost, result.keywordsBoost)
     }
 
     @Test

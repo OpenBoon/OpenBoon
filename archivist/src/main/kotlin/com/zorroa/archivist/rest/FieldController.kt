@@ -3,6 +3,7 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldFilter
 import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
 import com.zorroa.archivist.service.FieldSystemService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
@@ -25,6 +26,14 @@ class FieldController @Autowired constructor(
     @Throws(Exception::class)
     fun get(@PathVariable id: UUID): Field {
         return fieldSystemService.getField(id)
+    }
+
+    @PutMapping(value = ["/api/v1/fields/{id}"])
+    @Throws(Exception::class)
+    fun update(@RequestBody spec: FieldUpdateSpec, @PathVariable id: UUID): Any {
+        val field = fieldSystemService.getField(id)
+        val updated = fieldSystemService.updateField(field, spec)
+        return HttpUtils.updated("field", id, updated, fieldSystemService.getField(id))
     }
 
     @DeleteMapping(value = ["/api/v1/fields/{id}"])

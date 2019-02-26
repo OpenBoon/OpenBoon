@@ -116,6 +116,21 @@ class Field (
 }
 
 /**
+ * A FieldUpdateSpec describes the properties which can updated on a Field.  
+ *
+ * @property name The name of the field, aka the label.
+ * @property editable If the field is editable or not.
+ * @property keywords Set to true if this field should be considered a keyword.
+ * @property keywordsBoost The keywords boost level for the field.
+ */
+class FieldUpdateSpec (
+        val name: String,
+        val editable: Boolean,
+        val keywords: Boolean,
+        val keywordsBoost: Float
+)
+
+/**
  * The properties required to create a FieldSet.
  *
  * @property name The name or label of field set.

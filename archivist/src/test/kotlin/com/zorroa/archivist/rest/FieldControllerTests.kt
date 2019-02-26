@@ -1,12 +1,11 @@
 package com.zorroa.archivist.rest
 
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.archivist.domain.AttrType
-import com.zorroa.archivist.domain.Field
-import com.zorroa.archivist.domain.FieldFilter
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
+import org.junit.Assert
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
@@ -53,6 +52,34 @@ class FieldControllerTests : MockMvcTest() {
 
         val rsp = Json.Mapper.readValue<Map<String, Any>>(req.response.contentAsString)
         assertTrue(rsp["success"] as Boolean)
+    }
+
+    @Test
+    fun testUpdateField() {
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val field = fieldSystemService.createField(spec)
+        val updateSpec = FieldUpdateSpec("test", true, true, 2.0f)
+
+        val session = admin()
+        val req = mvc.perform(MockMvcRequestBuilders.put("/api/v1/fields/${field.id}")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(updateSpec)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val rsp = Json.Mapper.readValue<Map<String, Any>>(req.response.contentAsString)
+        assertTrue(rsp["success"] as Boolean)
+
+        val updatedField = Json.Mapper.convertValue<Field>(rsp.getValue("object"))
+
+        Assert.assertEquals(updateSpec.name, updatedField.name)
+        Assert.assertEquals(updateSpec.editable, updatedField.editable)
+        Assert.assertEquals(updateSpec.keywords, updatedField.keywords)
+        Assert.assertEquals(updateSpec.keywordsBoost, updatedField.keywordsBoost)
+
+
     }
 
 
