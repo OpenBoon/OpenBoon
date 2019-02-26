@@ -234,7 +234,7 @@ class AssetController @Autowired constructor(
         return indexService.get(id)
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/fields"])
+    @GetMapping(value = ["/api/v1/assets/{id}/fieldSets"])
     fun getFieldSets(@PathVariable id: String): List<FieldSet> {
         return assetService.getFieldSets(id)
     }

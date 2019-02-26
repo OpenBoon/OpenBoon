@@ -554,7 +554,7 @@ class AssetControllerTests : MockMvcTest() {
         assetService.createFieldEdit(spec)
 
         val req = mvc.perform(MockMvcRequestBuilders.get(
-                "/api/v1/assets/${asset.id}/fields")
+                "/api/v1/assets/${asset.id}/fieldSets")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
