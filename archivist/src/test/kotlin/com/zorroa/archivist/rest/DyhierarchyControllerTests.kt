@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.domain.*
 import com.zorroa.common.util.Json
@@ -58,13 +59,17 @@ class DyhierarchyControllerTests : MockMvcTest() {
                 .andExpect(status().isOk)
                 .andReturn()
 
-        val dh = Json.Mapper.readValue<DyHierarchy>(result.response.contentAsString,
-                object : TypeReference<DyHierarchy>() {
-
-                })
+        val dh = Json.Mapper.readValue<DyHierarchy>(result.response.contentAsString)
         assertEquals(4, dh.levels.size.toLong())
 
-        mvc.perform(delete("/api/v1/dyhi/${dh.id}"))
+        val delRsp = mvc.perform(delete("/api/v1/dyhi/${dh.id}")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
 
+        val delBody = Json.Mapper.readValue<Map<String,Any>>(delRsp.response.contentAsString)
+        assertEquals(delBody["success"], true)
     }
 }
