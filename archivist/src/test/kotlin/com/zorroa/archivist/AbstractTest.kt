@@ -102,6 +102,9 @@ open abstract class AbstractTest {
     internal lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
+    internal lateinit var fieldSystemService: FieldSystemService
+
+    @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
 
     @Autowired
@@ -136,7 +139,6 @@ open abstract class AbstractTest {
                 jdbc.update("DELETE FROM asset")
                 jdbc.update("DELETE FROM auditlog")
                 jdbc.update("DELETE FROM cluster_lock")
-
             }
         })
 
@@ -156,6 +158,7 @@ open abstract class AbstractTest {
          * We need to be authed to clean elastic.
          */
         cleanElastic()
+        setupDefaultOrganization()
 
         val spec1 = UserSpec(
                 "user",
@@ -210,6 +213,10 @@ open abstract class AbstractTest {
         indexRoutingService.setupDefaultIndex()
     }
 
+    fun setupDefaultOrganization() {
+        val org = organizationService.get(getOrgId())
+        fieldSystemService.setupDefaultFieldSets(org)
+    }
     /**
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
@@ -275,7 +282,9 @@ open abstract class AbstractTest {
                     b.setAttr("location.state", "New Mexico")
                     b.setAttr("location.country", "USA")
                     b.setAttr("location.keywords", listOf("boring", "tourist", "attraction"))
-
+                    b.setAttr("media.width", 1024)
+                    b.setAttr("media.height", 1024)
+                    b.setAttr("media.title", "Picture of ${f.name}")
                     val id = UUID.randomUUID().toString()
                     val proxies = Lists.newArrayList<Proxy>()
                     proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
@@ -328,12 +337,7 @@ open abstract class AbstractTest {
         refreshIndex()
     }
 
-    fun refreshIndex() {
-        val rest = indexRoutingService[UUID.randomUUID()]
-        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
-    }
-
-    fun refreshIndex(sleep: Long) {
+    fun refreshIndex(sleep: Long=0) {
         val rest = indexRoutingService[UUID.randomUUID()]
         rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }

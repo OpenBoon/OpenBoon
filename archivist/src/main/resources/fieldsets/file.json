@@ -1,0 +1,27 @@
+{
+  "name": "File Properties",
+  "linkExpression": "_exists_:source.path",
+  "fieldSpecs": [
+    {
+      "name": "Path",
+      "attrName": "source.path",
+      "attrType": "StringPath"
+    },
+    {
+      "name": "File Name",
+      "attrName": "source.filename",
+      "attrType": "StringAnalyzed",
+      "keywords": true
+    },
+    {
+      "name": "Media Type",
+      "attrName": "source.mediaType",
+      "attrType": "StringAnalyzed"
+    },
+    {
+      "name": "File Size",
+      "attrName": "source.fileSize",
+      "attrType": "NumberInteger"
+    }
+  ]
+}

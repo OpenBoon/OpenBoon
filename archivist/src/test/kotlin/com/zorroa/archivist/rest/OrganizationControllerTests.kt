@@ -38,10 +38,7 @@ class OrganizationControllerTests: MockMvcTest() {
                 .content(Json.serialize(organizationSpec)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn()
-        val (id, name) = Json.Mapper.readValue<Organization>(result.response.contentAsString,
-                object : TypeReference<Organization>() {
-
-                })
-        assertEquals(organizationName, name)
+        val org = Json.Mapper.readValue<Organization>(result.response.contentAsString, Organization::class.java)
+        assertEquals(organizationName, org.name)
     }
 }

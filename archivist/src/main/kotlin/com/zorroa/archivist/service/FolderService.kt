@@ -394,9 +394,8 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         if (result) {
-            transactionEventManager.afterCommit(true, {
+            transactionEventManager.afterCommit(true) {
                 invalidate(current, current.parentId)
-                //logService.logAsync(UserLogSpec.build(LogAction.Update, updated))
 
                 val folder = get(folderId)
                 val tax = getParentTaxonomy(folder)
@@ -406,7 +405,7 @@ class FolderServiceImpl @Autowired constructor(
                      */
                     taxonomyService.tagTaxonomyAsync(tax, folder, true)
                 }
-            })
+            }
         }
         return result
     }
