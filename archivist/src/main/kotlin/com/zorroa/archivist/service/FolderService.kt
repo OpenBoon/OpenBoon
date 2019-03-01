@@ -38,7 +38,7 @@ interface FolderService {
 
     fun get(folder: Folder): Folder
 
-    fun get(id: UUID?): Folder
+    fun get(id: UUID?, cached:Boolean=false): Folder
 
     fun get(parent: UUID?, name: String): Folder
 
@@ -241,8 +241,6 @@ class FolderServiceImpl @Autowired constructor(
 
         transactionEventManager.afterCommit(true) {
             invalidate(folder)
-            //logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
-            //        .setMessage("permissions set"))
         }
     }
 
@@ -258,8 +256,6 @@ class FolderServiceImpl @Autowired constructor(
 
         transactionEventManager.afterCommit(true) {
             invalidate(folder)
-            //logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
-            //        .setMessage("permissions updated"))
         }
     }
 
@@ -267,18 +263,22 @@ class FolderServiceImpl @Autowired constructor(
         return get(folder.id)
     }
 
+    override fun get(id: UUID?, cached:Boolean): Folder {
+        if (!cached) {
+            return folderDao.get(id)
+        }
+        else {
+            val f: Folder
+            try {
+                f = folderCache.get(id)
+                if (!hasPermission(f.acl, Access.Read)) {
+                    throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
+                }
+                return f
 
-    override fun get(id: UUID?): Folder {
-        val f: Folder
-        try {
-            f = folderCache.get(id)
-            if (!hasPermission(f.acl, Access.Read)) {
+            } catch (e: Exception) {
                 throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
             }
-            return f
-
-        } catch (e: Exception) {
-            throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
         }
     }
 
@@ -394,9 +394,8 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         if (result) {
-            transactionEventManager.afterCommit(true, {
+            transactionEventManager.afterCommit(true) {
                 invalidate(current, current.parentId)
-                //logService.logAsync(UserLogSpec.build(LogAction.Update, updated))
 
                 val folder = get(folderId)
                 val tax = getParentTaxonomy(folder)
@@ -406,7 +405,7 @@ class FolderServiceImpl @Autowired constructor(
                      */
                     taxonomyService.tagTaxonomyAsync(tax, folder, true)
                 }
-            })
+            }
         }
         return result
     }
@@ -460,10 +459,9 @@ class FolderServiceImpl @Autowired constructor(
             if (folderDao.delete(child)) {
                 order++
                 trashFolderDao.create(child, op, false, order)
-                transactionEventManager.afterCommit(false, {
+                transactionEventManager.afterCommit(false) {
                     invalidate(child)
-                    //logService.logAsync(UserLogSpec.build(LogAction.Delete, child))
-                })
+                }
             }
         }
 
@@ -475,20 +473,19 @@ class FolderServiceImpl @Autowired constructor(
         val result = folderDao.delete(folder)
 
         if (result) {
-            transactionEventManager.afterCommit(true, {
+            transactionEventManager.afterCommit(true) {
                 invalidate(folder)
-                //logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
-            })
+            }
 
             if (tax != null) {
-                transactionEventManager.afterCommit(false, {
+                transactionEventManager.afterCommit(false) {
                     if (folder.taxonomyRoot) {
                         taxonomyService.untagTaxonomyAsync(tax, 0)
                     } else {
                         taxonomyService.untagTaxonomyFoldersAsync(tax, children)
-                        taxonomyService.untagTaxonomyFoldersAsync(tax, Lists.newArrayList(folder))
+                        taxonomyService.untagTaxonomyFoldersAsync(tax, listOf(folder))
                     }
-                })
+                }
             }
 
             order++
@@ -775,9 +772,8 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     private fun emitFolderCreated(folder: Folder) {
-        transactionEventManager.afterCommit(true, {
+        transactionEventManager.afterCommit(true) {
             invalidate(null, folder.parentId)
-            //logService.logAsync(UserLogSpec.build(LogAction.Create, folder))
 
             if (folder.dyhiId == null && folder.search != null) {
                 val tax = getParentTaxonomy(folder)
@@ -785,7 +781,7 @@ class FolderServiceImpl @Autowired constructor(
                     taxonomyService.tagTaxonomy(tax, folder, true)
                 }
             }
-        })
+        }
     }
 
     override fun create(spec: FolderSpec, errorIfExists: Boolean): Folder {
