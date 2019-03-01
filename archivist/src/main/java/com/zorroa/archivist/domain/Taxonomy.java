@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
@@ -59,6 +60,16 @@ public class Taxonomy {
     public Taxonomy setTimeStopped(long timeStopped) {
         this.timeStopped = timeStopped;
         return this;
+    }
+
+    /**
+     * Used for locking the taxon during processing.
+     *
+     * @return
+     */
+    @JsonIgnore
+    public String clusterLockId() {
+        return "taxi-" + taxonomyId.toString();
     }
 
     @Override
