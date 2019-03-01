@@ -4,6 +4,7 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
+import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.security.*
@@ -37,6 +38,8 @@ interface AssetService {
     fun get(assetId: String): Document
     fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
+    fun createFieldEdit(spec: FieldEditSpec): FieldEdit
+    fun deleteFieldEdit(edit: FieldEdit): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
     fun batchUpdate(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
     fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
@@ -48,6 +51,7 @@ interface AssetService {
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
     fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse
+    fun getFieldSets(assetId: String) : List<FieldSet>
 }
 
 /**
@@ -74,6 +78,9 @@ open abstract class AbstractAssetService : AssetService {
     lateinit var permissionDao: PermissionDao
 
     @Autowired
+    lateinit var fieldEditDao: FieldEditDao
+
+    @Autowired
     lateinit var dyHierarchyService: DyHierarchyService
 
     @Autowired
@@ -87,6 +94,12 @@ open abstract class AbstractAssetService : AssetService {
 
     @Autowired
     lateinit var searchService: SearchService
+
+    @Autowired
+    lateinit var fieldSystemService: FieldSystemService
+
+    @Autowired
+    lateinit var fieldService: FieldService
 
     /**
      * Prepare a list of assets to be replaced or replaced.  Handles:
@@ -136,6 +149,7 @@ open abstract class AbstractAssetService : AssetService {
             handleHold(existingSource, newSource)
             handlePermissions(existingSource, newSource, defaultPermissions)
             handleLinks(existingSource, newSource)
+            fieldSystemService.applyFieldEdits(newSource)
 
             if (watchedFields.isNotEmpty()) {
                 watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
@@ -400,6 +414,10 @@ open abstract class AbstractAssetService : AssetService {
         doc.setAttr("system.permissions", perms)
     }
 
+    override fun getFieldSets(assetId: String) : List<FieldSet>  {
+        return fieldSystemService.getAllFieldSets(get(assetId))
+    }
+
     /**
      * Batch update a list of assetIds with the given attributes.
      *
@@ -411,6 +429,23 @@ open abstract class AbstractAssetService : AssetService {
 
         if (assets.batch.size > 1000) {
             throw java.lang.IllegalArgumentException("Cannot batch update more than 1000 assets at one time.")
+        }
+
+        /**
+         * A utility function for checking if the attribute is not protected.
+         * @param attr The attribute name in dot notation.
+         * @param assetId The ID of the asset.
+         * @param allowSystem If setting system attrs is allowed.
+         */
+        fun checkAttr(attr: String, assetId: String, allowSystem: Boolean) : Boolean {
+            if (!allowSystem && (attr == "system" || attr.startsWith("system."))) {
+                logger.warnEvent(LogObject.ASSET,
+                        LogAction.BATCH_UPDATE,
+                        "Skipping setting $attr, cannot set system values on batch update",
+                        mapOf("assetId" to assetId))
+                return false
+            }
+            return true
         }
 
         /**
@@ -440,30 +475,49 @@ open abstract class AbstractAssetService : AssetService {
                         else {
 
                             val req = assets.batch.getValue(doc.id)
+                            var updated = false
                             req.update?.forEach { t, u ->
-                                if (t.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent(LogObject.ASSET,
-                                            LogAction.BATCH_UPDATE,
-                                            "Skipping setting $t, cannot set system values on batch update",
-                                            mapOf("assetId" to doc.id))
-                                } else {
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
                                     doc.setAttr(t, u)
+                                    updated = true
                                 }
                             }
 
                             req.remove?.forEach {
-                                if (it.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent(LogObject.ASSET,
-                                            LogAction.BATCH_UPDATE,
-                                            "Skipping removing $it, cannot set system values on batch update",
-                                            mapOf("assetId" to doc.id))
-                                } else {
+                                if (checkAttr(it, doc.id, req.allowSystem)) {
                                     doc.removeAttr(it)
+                                    updated = true
                                 }
                             }
 
-                            doc.setAttr("system.timeModified", now)
-                            doc
+                            req.appendToList?.forEach { t, u->
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
+                                    doc.addToAttr(t, u, unique = false)
+                                    updated = true
+                                }
+                            }
+
+                            req.appendToUniqueList?.forEach { t, u->
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
+                                    doc.addToAttr(t, u, unique = true)
+                                    updated = true
+                                }
+                            }
+
+                            req.removeFromList?.forEach { t, u->
+                                if (checkAttr(t, doc.id, req.allowSystem)) {
+                                    doc.removeFromAttr(t, u)
+                                    updated = true
+                                }
+                            }
+
+                            if (updated ) {
+                                doc.setAttr("system.timeModified", now)
+                                doc
+                            }
+                            else {
+                                null
+                            }
                         }
                     }
 
@@ -588,6 +642,72 @@ open abstract class AbstractAssetService : AssetService {
             }
         }
         return UpdateLinksResponse(success, errors)
+    }
+
+    override fun deleteFieldEdit(edit: FieldEdit) : Boolean {
+        val asset = get(edit.assetId.toString())
+        val field = fieldSystemService.getField(edit.fieldId)
+
+        val updateReq = if (edit.oldValue == null) {
+            UpdateAssetRequest(remove = listOf(field.attrName),
+                    removeFromList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
+        }
+        else {
+            UpdateAssetRequest(mapOf(field.attrName to edit.oldValue),
+                    removeFromList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
+        }
+
+        if (fieldEditDao.delete(edit.id)) {
+            val rsp = update(asset.id, updateReq)
+            if (!rsp) {
+                throw ArchivistWriteException(
+                        "Failed to remove edit from asset ${asset.id}, update failed")
+            }
+            return true
+        }
+
+        // something already removed edit.
+        return false
+    }
+
+    override fun createFieldEdit(spec: FieldEditSpec) : FieldEdit {
+        val assetId = spec.assetId.toString()
+        val asset = get(assetId)
+        val field = fieldSystemService.getField(spec)
+
+        if (!field.editable) {
+            throw IllegalStateException("The field ${field.name} is not editable")
+        }
+
+        if (!field.attrType.isValid(spec.newValue)) {
+            throw java.lang.IllegalArgumentException("The value ${spec.newValue} " +
+                    "for field ${field.name} is not the correct type")
+        }
+
+        val updateReq = if (spec.newValue == null) {
+            UpdateAssetRequest(remove = listOf(field.attrName),
+        appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
+        allowSystem = true)
+    }
+        else {
+            UpdateAssetRequest(mapOf(field.attrName to spec.newValue),
+                    appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
+        }
+
+        val rsp = update(assetId, updateReq)
+        if (rsp) {
+            val ispec = FieldEditSpecInternal(
+                    UUID.fromString(asset.id),
+                    field.id,
+                    spec.newValue,
+                    asset.getAttr(field.attrName, Any::class.java))
+            return fieldEditDao.create(ispec)
+        }
+
+        throw ArchivistWriteException("Failed to edit asset $assetId, update failed")
     }
 
     companion object {

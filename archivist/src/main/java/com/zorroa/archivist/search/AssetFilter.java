@@ -25,6 +25,7 @@ public class AssetFilter {
     private Map<String, KwConfFilter> kwconf;
     private Boolean recursive;
     private Map<String, GeoBoundingBox> geo_bounding_box;
+    private AssetSearch query;
 
     @Deprecated
     private Object hamming;
@@ -179,6 +180,15 @@ public class AssetFilter {
             scripts = new ArrayList();
         }
         scripts.add(script);
+        return this;
+    }
+
+    public AssetSearch getQuery() {
+        return query;
+    }
+
+    public AssetFilter setQuery(AssetSearch query) {
+        this.query = query;
         return this;
     }
 

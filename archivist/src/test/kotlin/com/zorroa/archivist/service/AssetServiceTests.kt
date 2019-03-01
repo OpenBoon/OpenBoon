@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -65,6 +66,23 @@ class AssetServiceTests : AbstractTest() {
         }
     }
 
+    @Test
+    fun testBatchCreateOrReplaceWithManualEdits() {
+
+        val field = fieldSystemService.getField("media.title")
+
+        var assets = searchService.search(Pager.first(), AssetSearch())
+        assets.list.forEach {
+            assetService.createFieldEdit(FieldEditSpec(UUID.fromString(it.id), field.id, null,"bilbo"))
+        }
+
+        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        assets = searchService.search(Pager.first(), AssetSearch())
+        assertTrue(assets.size() > 0)
+        assets.list.forEach {
+            assertEquals("bilbo", it.getAttr("media.title", String::class.java))
+        }
+    }
 
     @Test
     fun testCreateOrReplace() {
@@ -223,6 +241,37 @@ class AssetServiceTests : AbstractTest() {
             assertTrue(perms!!.export.contains(perm.id))
             assertTrue(perms!!.read.isEmpty())
             assertTrue(perms!!.write.isEmpty())
+        }
+    }
+
+    @Test
+    fun edit() {
+        val title = "khaaaaaan"
+        val field = fieldSystemService.getField("media.title")
+
+        val page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id, null,title))
+        }
+        for (asset in searchService.search(Pager.first(), AssetSearch()).list) {
+            assertEquals(title, asset.getAttr("media.title", String::class.java))
+        }
+    }
+
+    @Test
+    fun undo() {
+        val title = "khaaaaaan"
+        val field = fieldSystemService.getField("media.title")
+
+        var page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            val edit = assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+            assertTrue(assetService.deleteFieldEdit(edit))
+        }
+
+        page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            assertNotEquals(title, asset.getAttr("media.title", String::class.java))
         }
     }
 }

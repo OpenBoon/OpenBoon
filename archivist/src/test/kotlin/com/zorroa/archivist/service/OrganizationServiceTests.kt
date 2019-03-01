@@ -44,7 +44,7 @@ class OrganizationServiceTests : AbstractTest() {
     @Test
     fun testGet() {
         val org = organizationService.create(organizationSpec)
-        assertEquals(org, organizationService.get(org.id))
+        assertEquals(org.id, organizationService.get(org.id).id)
     }
 
     @Test

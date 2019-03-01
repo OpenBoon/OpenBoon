@@ -13,6 +13,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import java.text.ParseException
 
 import org.junit.Assert.assertEquals
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -38,7 +39,7 @@ class DyhierarchyControllerTests : MockMvcTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testCreate() {
+    fun testCreateAndDelete() {
         val session = admin()
 
         val (id) = folderService.create(FolderSpec("foo"), false)
@@ -58,5 +59,15 @@ class DyhierarchyControllerTests : MockMvcTest() {
 
         val dh = Json.Mapper.readValue<DyHierarchy>(result.response.contentAsString)
         assertEquals(4, dh.levels.size.toLong())
+
+        val delRsp = mvc.perform(delete("/api/v1/dyhi/${dh.id}")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val delBody = Json.Mapper.readValue<Map<String,Any>>(delRsp.response.contentAsString)
+        assertEquals(delBody["success"], true)
     }
 }

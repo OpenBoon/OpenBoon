@@ -8,6 +8,8 @@ import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.common.repository.KPage
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
@@ -16,7 +18,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -40,8 +41,8 @@ class AssetController @Autowired constructor(
         private val fileServerProvider: FileServerProvider,
         private val fileStorageService: FileStorageService,
         private val fileUploadService: FileUploadService,
-        meterRegistry: MeterRegistry
-){
+        private val fieldSystemService: FieldSystemService,
+        meterRegistry: MeterRegistry) {
 
     private val proxyLookupCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
@@ -210,20 +211,6 @@ class AssetController @Autowired constructor(
         searchService.search(Pager(search.from, search.size, 0), search, out)
     }
 
-    @PutMapping(value = ["/api/v1/assets/_fields/hide"])
-    @Throws(IOException::class)
-    fun unhideField(@RequestBody update: HideField): Any {
-        return HttpUtils.status("field", "hide",
-                fieldService.updateField(update.setHide(true).setManual(true)))
-    }
-
-    @DeleteMapping(value = ["/api/v1/assets/_fields/hide"])
-    @Throws(IOException::class)
-    fun hideField(@RequestBody update: HideField): Any {
-        return HttpUtils.status("field", "unhide",
-                fieldService.updateField(update.setHide(false)))
-    }
-
     @PostMapping(value = ["/api/v2/assets/_count"])
     @Throws(IOException::class)
     fun count(@RequestBody search: AssetSearch): Any {
@@ -242,9 +229,14 @@ class AssetController @Autowired constructor(
         return searchService.getSuggestTerms(suggest.text)
     }
 
-    @GetMapping(value = ["/api/v2/assets/{id}"])
+    @GetMapping(value = ["/api/v2/assets/{id}", "/api/v1/assets/{id}"])
     fun get(@PathVariable id: String): Any {
         return indexService.get(id)
+    }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/fieldSets"])
+    fun getFieldSets(@PathVariable id: String): List<FieldSet> {
+        return assetService.getFieldSets(id)
     }
 
     @GetMapping(value = ["/api/v1/assets/_path"])
@@ -264,7 +256,7 @@ class AssetController @Autowired constructor(
         return assetService.batchDelete(batch.assetIds)
     }
 
-    @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
@@ -280,12 +272,6 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v1/assets"])
     fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
         return assetService.batchUpdate(req)
-    }
-
-    @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
-    @Throws(IOException::class)
-    fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {
-        FlipbookSender(id, searchService).serveResource(rsp)
     }
 
     @PostMapping(value = ["/api/v1/assets/_index"])
@@ -330,6 +316,12 @@ class AssetController @Autowired constructor(
     fun refresh() {
         logger.warn("Refresh called.")
     }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
+    fun getFieldEdits(@PathVariable id: UUID): List<FieldEdit>  {
+        return fieldSystemService.getFieldEdits(id)
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(AssetController::class.java)

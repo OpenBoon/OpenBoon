@@ -6,7 +6,9 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
@@ -19,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
@@ -30,9 +34,6 @@ class AssetControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var indexDao: IndexDao
-
-    @Autowired
-    lateinit var assetController: AssetController
 
     @Before
     fun init() {
@@ -64,51 +65,6 @@ class AssetControllerTests : MockMvcTest() {
         assertTrue(fields["date"]!!.isNotEmpty())
         assertTrue(fields["string"]!!.isNotEmpty())
         assertTrue(fields.containsKey("integer"))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testHideAndUnhideField() {
-        val session = admin()
-        addTestAssets("set04/standard")
-
-        val result = mvc.perform(put("/api/v1/assets/_fields/hide")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
-
-        var status = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-
-                })
-        assertTrue(status["success"] as Boolean)
-
-        authenticate("admin")
-        fieldService.invalidateFields()
-        val fields = fieldService.getFields("asset")
-        for (field in fields["string"]!!) {
-            assertFalse(field.startsWith("source"))
-        }
-
-        mvc.perform(delete("/api/v1/assets/_fields/hide")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
-
-        status = Json.Mapper.readValue(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-
-                })
-        assertTrue(status["success"] as Boolean)
-
-        val stringFields = fieldService.getFields("asset")
-        assertNotEquals(fields, stringFields)
     }
 
     @Test
@@ -153,6 +109,55 @@ class AssetControllerTests : MockMvcTest() {
                 })
         val count = counts["count"] as Int
         assertEquals(1, count.toLong())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCountWithNullQueryFilter() {
+
+        val filter = null
+        assertEquals(5, countWithAssetSearch(filter).toLong())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCountWithQueryFilter() {
+
+        val filter= AssetFilter().setQuery(AssetSearch("hyena"))
+        assertEquals(1, countWithAssetSearch(filter).toLong())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCountWithNotQueryFilter() {
+
+        val filter = AssetFilter().setMustNot(mutableListOf(AssetFilter().setQuery(AssetSearch("toucan"))))
+        assertEquals(4, countWithAssetSearch(filter).toLong())
+    }
+
+    private fun countWithAssetSearch(filter: AssetFilter?): Int {
+        val session = admin()
+        addTestAssets("set01")
+
+        val search = AssetSearch("jpg")
+        search.filter = filter
+
+        val result = mvc.perform(
+            post("/api/v2/assets/_count")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(search)))
+            .andExpect(status().isOk)
+            .andReturn()
+
+        val counts = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
+            object : TypeReference<Map<String, Any>>() {
+
+            })
+
+        val count = counts["count"] as Int
+        return count
     }
 
     @Test
@@ -533,5 +538,30 @@ class AssetControllerTests : MockMvcTest() {
         for (asset in indexDao.getAll(Pager.first())) {
             assertEquals("ball", asset.getAttr("foos", String::class.java))
         }
+    }
+
+    @Test
+    fun testGetFieldSets() {
+
+        val session = admin()
+        addTestAssets("set04/standard")
+        var asset = indexDao.getAll(Pager.first())[0]
+
+        logger.info(Json.prettyString(fieldSystemService.getAllFieldSets()))
+
+        val field = fieldSystemService.getField("media.title")
+        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue="The Hobbit 2")
+        assetService.createFieldEdit(spec)
+
+        val req = mvc.perform(MockMvcRequestBuilders.get(
+                "/api/v1/assets/${asset.id}/fieldSets")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+        val result = Json.Mapper.readValue<Any>(req.response.contentAsString, Json.LIST_OF_GENERIC_MAP)
+        println(Json.prettyString(result))
+
     }
 }
