@@ -29,8 +29,6 @@ services:
     secrets:
       - source: prometheus.yml
         target: /etc/prometheus/prometheus.yml
-      - source: monitor.auth.key
-        target: /etc/prometheus/monitor.auth.key
 
   # Grafana server connected to elasticsearch instance
   grafana:
@@ -150,5 +148,3 @@ secrets:
     file: ./localdev/monitoring/filebeat.yml
   prometheus.yml:
     file: ./localdev/monitoring/prometheus.yml
-  monitor.auth.key:
-    file: ./localdev/monitoring/monitor.auth.key

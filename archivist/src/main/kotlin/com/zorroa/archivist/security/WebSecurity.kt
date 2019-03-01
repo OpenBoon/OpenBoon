@@ -9,6 +9,7 @@ import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -24,6 +25,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
@@ -168,6 +171,8 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/actuator/**")
+                    .httpBasic()
+                    .and()
                     .addFilterBefore(jwtAuthorizationFilter, CsrfFilter::class.java)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
@@ -177,22 +182,32 @@ class MultipleWebSecurityConfig {
         }
     }
 
+    @Value("\${management.endpoints.password}")
+    lateinit var monitorPassword: String
 
     @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
-
         auth
                 .authenticationProvider(jwtAuthenticationProvider())
                 .authenticationProvider(zorroaAuthenticationProvider())
                 .authenticationEventPublisher(authenticationEventPublisher())
+                .inMemoryAuthentication()
+                .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
+                .authorities("zorroa::monitor")
 
+        logger.info("Setting up monitoring with password: $monitorPassword")
         /**
          * If its a unit test we add our rubber stamp authenticator.
          */
         if (ArchivistConfiguration.unittest) {
             auth.authenticationProvider(UnitTestAuthenticationProvider())
         }
+    }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 
     @Bean
