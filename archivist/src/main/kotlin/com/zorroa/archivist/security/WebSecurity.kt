@@ -196,7 +196,6 @@ class MultipleWebSecurityConfig {
                 .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
                 .authorities("zorroa::monitor")
 
-        logger.info("Setting up monitoring with password: $monitorPassword")
         /**
          * If its a unit test we add our rubber stamp authenticator.
          */
