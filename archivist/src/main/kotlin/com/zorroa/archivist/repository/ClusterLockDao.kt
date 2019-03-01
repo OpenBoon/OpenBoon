@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.JdbcUtils
-import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.stereotype.Repository
