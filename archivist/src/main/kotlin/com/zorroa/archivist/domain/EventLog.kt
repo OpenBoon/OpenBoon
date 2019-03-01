@@ -32,7 +32,9 @@ enum class LogAction {
     SEARCH,
     SEARCH_STREAM,
     SCROLL,
-    SUGGEST
+    SUGGEST,
+    TAG,
+    UNTAG
 }
 
 

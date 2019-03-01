@@ -279,7 +279,7 @@ open abstract class AbstractAssetService : AssetService {
         GlobalScope.launch {
             withAuth(auth) {
                 dyHierarchyService.generateAll()
-                taxonomyService.runAll()
+                taxonomyService.tagAll()
             }
         }
     }

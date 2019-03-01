@@ -2,12 +2,12 @@ package com.zorroa.archivist.service
 
 import com.google.common.base.Splitter
 import com.google.common.collect.*
+import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.domain.ArchivistWriteException
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalStateException
 import java.util.*
 
 interface DyHierarchyService {
@@ -49,6 +50,7 @@ interface DyHierarchyService {
      * Generate folders for the given DyHi
      *
      * @param dyhi The DyHierarchy to generate folders for.
+     * @param clearFirst Set to true if any of the dyhi levels have changed.
      */
     fun generate(dyhi: DyHierarchy, clearFirst: Boolean=false) : Int
 
@@ -105,7 +107,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
          * Queue up an event where after this transaction commits.
          */
         transactionEventManager.afterCommit(false) {
-            generate(dyHierarchyDao.get(current.id))
+            generate(dyHierarchyDao.get(current.id), clearFirst = true)
         }
 
         return true
@@ -139,8 +141,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
         val dyhi = dyHierarchyDao.create(spec)
         folderService.setDyHierarchyRoot(folder, spec.levels[0].field)
 
-        transactionEventManager.afterCommit(false) {
-            generate(dyhi, false)
+        if (spec.generate) {
+            transactionEventManager.afterCommit(false) {
+                generate(dyhi, false)
+            }
         }
 
         return dyhi
@@ -159,33 +163,36 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     override fun generate(dyhi: DyHierarchy, clearFirst: Boolean) : Int {
-        val result = clusterLockExecutor.runAsync(dyhi.lockName) {
-            try {
-                generateInternal(dyhi, clearFirst)
-            } catch (e: Exception) {
-                logger.warn("Failed to generate dyhi ${dyhi.id}", e)
-                null
+        val result = if (ArchivistConfiguration.unittest) {
+            generateInternal(dyhi, clearFirst)
+        }
+        else {
+            clusterLockExecutor.async(dyhi.lockName, 1) {
+                try {
+                    generateInternal(dyhi, clearFirst)
+                } catch (e: Exception) {
+                    logger.warn("Failed to generate dyhi ${dyhi.id}", e)
+                    null
+                }
             }
         }
-
         return result ?: -1
     }
 
     /**
      * Only the run() method should call this function.
      */
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.REQUIRED)
     private fun generateInternal(dyhi: DyHierarchy, clearFirst: Boolean): Int {
-        if (dyhi.levels == null || dyhi.levels.isEmpty()) {
+        if (dyhi.levels.isNullOrEmpty()) {
             return 0
         }
 
-        logger.event(LogObject.DYHI, LogAction.EXECUTE, mapOf("dyhiId" to dyhi.id))
         if (clearFirst) {
             folderService.deleteAll(dyhi)
         }
 
-        val rf = folderService.get(dyhi.folderId)
+        val rf = folderService.get(dyhi.folderId, cached = false)
         val rest = indexRoutingService[getOrgId()]
 
         try {
@@ -200,6 +207,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             /**
              * Fix the field name to take into account raw.
              */
+            fieldService.invalidateFields()
             dyhi.levels.forEach { resolveFieldName(it) }
 
             /**
@@ -231,7 +239,12 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 logger.warn("Failed to delete unused folders: {}, {}", unusedFolders, e)
             }
 
-            logger.info("{} created by {}, {} folders", dyhi, getUsername(), folders.count)
+            logger.event(LogObject.DYHI, LogAction.EXECUTE,
+                    mapOf("dyhiId" to dyhi.id,
+                            "dyhiLevels" to dyhi.levels.size,
+                            "folderId" to dyhi.folderId,
+                            "folderCount" to folders.count))
+
             return folders.count
         } catch (e: Exception) {
             logger.warn("Failed to generate dynamic hierarchy,", e)
@@ -450,10 +463,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
          * @return
          */
         fun getFolderName(value: String, level: DyHierarchyLevel): String {
-            when (level.type) {
-                DyHierarchyLevelType.Attr, DyHierarchyLevelType.Year, DyHierarchyLevelType.Day -> return value
-                DyHierarchyLevelType.Month -> return java.text.DateFormatSymbols().months[Integer.parseInt(value) - 1]
-                else -> return value
+            return when (level.type) {
+                DyHierarchyLevelType.Attr, DyHierarchyLevelType.Year, DyHierarchyLevelType.Day -> value
+                DyHierarchyLevelType.Month -> java.text.DateFormatSymbols().months[Integer.parseInt(value) - 1]
+                else -> value
             }
         }
 
@@ -489,7 +502,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
     private fun resolveFieldName(level: DyHierarchyLevel) {
         val type = fieldService.getFieldType(level.field)
-        if (type == "path") {
+        if (type == null) {
+            throw IllegalStateException("Attempting to agg on a invalid field ${level.field}")
+        }
+        else if (type == "path") {
             level.field = level.field + ".paths"
         }
         else if (type ==  "string") {

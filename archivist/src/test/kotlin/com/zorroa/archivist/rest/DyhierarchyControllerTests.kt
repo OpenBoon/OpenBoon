@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.domain.*
 import com.zorroa.common.util.Json
@@ -41,13 +42,11 @@ class DyhierarchyControllerTests : MockMvcTest() {
         val session = admin()
 
         val (id) = folderService.create(FolderSpec("foo"), false)
-        val spec = DyHierarchySpec()
-        spec.folderId = id
-        spec.levels = ImmutableList.of(
+        val spec = DyHierarchySpec(id, listOf(
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day),
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
-                DyHierarchyLevel("source.filename.raw"))
+                DyHierarchyLevel("source.filename.raw")))
 
         val result = mvc.perform(post("/api/v1/dyhi")
                 .session(session)
@@ -57,10 +56,7 @@ class DyhierarchyControllerTests : MockMvcTest() {
                 .andExpect(status().isOk)
                 .andReturn()
 
-        val dh = Json.Mapper.readValue<DyHierarchy>(result.response.contentAsString,
-                object : TypeReference<DyHierarchy>() {
-
-                })
+        val dh = Json.Mapper.readValue<DyHierarchy>(result.response.contentAsString)
         assertEquals(4, dh.levels.size.toLong())
     }
 }

@@ -18,7 +18,6 @@ interface ClusterLockDao {
     fun clearExpired() : Int
     fun lock(name: String, duration: Long, unit: TimeUnit) : Boolean
     fun unlock(name: String) : Boolean
-    fun shouldRunAgain(name: String): Boolean
     fun isLocked(name: String): Boolean
 }
 
@@ -31,25 +30,20 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
 
         logger.event(LogObject.CLUSTER_LOCK, LogAction.LOCK, mapOf("lockName" to name))
 
-        return if (jdbc.update(INCREMENT, name) > 0) {
-            false
-        }
-        else {
-            try {
-                jdbc.update { connection ->
-                    val ps = connection.prepareStatement(INSERT)
-                    ps.setString(1, name)
-                    ps.setString(2, host)
-                    ps.setLong(3, time)
-                    ps.setLong(4, time + unit.toMillis(duration))
-                    ps
-                }
-            } catch (e: DuplicateKeyException) {
-                logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.LOCK,
-                        "Failure obtaining lock", mapOf("lockName" to name))
-                false
+        return try {
+            jdbc.update { connection ->
+                val ps = connection.prepareStatement(INSERT)
+                ps.setString(1, name)
+                ps.setString(2, host)
+                ps.setLong(3, time)
+                ps.setLong(4, time + unit.toMillis(duration))
+                ps
             }
             true
+        } catch (e: DuplicateKeyException) {
+            logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.LOCK,
+                    "Failure obtaining lock", mapOf("lockName" to name))
+            false
         }
     }
 
@@ -62,10 +56,6 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
 
     override fun isLocked(name: String): Boolean {
         return jdbc.queryForObject("SELECT COUNT(1) FROM cluster_lock WHERE str_name=?", Int::class.java, name) == 1
-    }
-
-    override fun shouldRunAgain(name: String): Boolean {
-        return jdbc.update("UPDATE cluster_lock SET int_rerun=0 WHERE str_name=? AND int_rerun > 0", name) == 1
     }
 
     override fun clearExpired(): Int {
@@ -82,8 +72,6 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
     }
 
     companion object {
-
-        private const val INCREMENT = "UPDATE cluster_lock SET int_rerun=int_rerun+1 WHERE str_name=?"
 
         private val INSERT = JdbcUtils.insert("cluster_lock",
                 "str_name",

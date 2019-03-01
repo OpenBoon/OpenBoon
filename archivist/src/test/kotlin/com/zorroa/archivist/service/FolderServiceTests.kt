@@ -536,10 +536,8 @@ class FolderServiceTests : AbstractTest() {
     @Test
     fun testDeleteWithDyhi() {
         val folder = folderService.create(FolderSpec("foo"), false)
-        val spec = DyHierarchySpec()
-        spec.folderId = folder.id
-        spec.levels = ImmutableList.of(
-                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
+        val spec = DyHierarchySpec(folder.id, listOf(
+                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)))
         dyhiService!!.create(spec)
         assertTrue(folderService.delete(folder))
     }

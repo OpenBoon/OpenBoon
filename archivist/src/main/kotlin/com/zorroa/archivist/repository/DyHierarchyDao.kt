@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.security.getOrgId
