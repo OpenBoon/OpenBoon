@@ -144,7 +144,7 @@ class TaxonomyServiceImpl @Autowired constructor(
             return tax
         } else {
             throw ArchivistWriteException(
-                    "Failed to create taxonomy, unable to set taxonomy on folder: " + folder)
+                    "Failed to create taxonomy, unable to set taxonomy on folder: $folder")
         }
     }
 
@@ -167,7 +167,8 @@ class TaxonomyServiceImpl @Autowired constructor(
             tagTaxonomyInternal(tax, start, force)
         }
         else {
-            val result = clusterLockExecutor.async(tax.clusterLockId(), -1) {
+            val lock = ClusterLockSpec.combineLock(tax.clusterLockId()).apply { timeout = 5 }
+            val result = clusterLockExecutor.async(lock) {
                 try {
                     tagTaxonomyInternal(tax, start, force)
                 } catch (e: Exception) {
@@ -507,7 +508,8 @@ class TaxonomyServiceImpl @Autowired constructor(
         var rsp = rsp
         val rest = indexRoutingService[getOrgId()]
 
-        clusterLockExecutor.async(tax.clusterLockId(), -1) {
+        // Use a non combined hard lock but the same lock ID.
+        clusterLockExecutor.async(ClusterLockSpec.hardLock(tax.clusterLockId())) {
             withAuth(auth) {
                 try {
                     do {

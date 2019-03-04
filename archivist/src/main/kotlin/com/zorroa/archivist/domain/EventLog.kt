@@ -35,7 +35,9 @@ enum class LogAction {
     SCROLL,
     SUGGEST,
     TAG,
-    UNTAG
+    UNTAG,
+    COMBINE,
+    BACKOFF
 }
 
 

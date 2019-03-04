@@ -167,7 +167,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
             generateInternal(dyhi, clearFirst)
         }
         else {
-            clusterLockExecutor.async(dyhi.lockName, 1) {
+            val lock = ClusterLockSpec.combineLock(dyhi.lockName).apply { timeout = 5 }
+            clusterLockExecutor.async(lock) {
                 try {
                     generateInternal(dyhi, clearFirst)
                 } catch (e: Exception) {

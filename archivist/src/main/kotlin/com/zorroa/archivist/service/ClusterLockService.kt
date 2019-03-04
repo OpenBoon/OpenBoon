@@ -1,5 +1,9 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.domain.ClusterLockSpec
+import com.zorroa.archivist.domain.LockStatus
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.repository.ClusterLockDao
 import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
@@ -8,7 +12,6 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
 
@@ -16,20 +19,18 @@ interface ClusterLockExecutor {
     /**
      * Execute the given function with the named cluster lock.
      *
-     * @param name The name of the cluster lock.
-     * @param maxTries The number of tries to make if its locked, -1 to try forever.
+     * @param spec  A ClusterLock spec
      * @param body The code to execute
      */
-    fun <T : Any?> async(name: String, maxTries: Int, body: () -> T?) : T?
+    fun <T : Any?> async(spec: ClusterLockSpec, body: () -> T?) : T?
 
     /**
      * Execute the given function with the named cluster lock.
      *
-     * @param name The name of the cluster lock.
-     * @param maxTries The number of tries to make if its locked, -1 to try forever.
+     * @param spec A ClusterLock spec
      * @param body The code to execute
      */
-    fun launch(name: String, maxTries: Int, body: () -> Unit) : Job
+    fun launch(spec: ClusterLockSpec, body: () -> Unit) : Job
 }
 
 
@@ -39,11 +40,9 @@ interface ClusterLockService {
      * Take out a lock on the given name. The lock will persist until it times out or
      * released.
      *
-     * @param name The name of the lock
-     * @param timeout The length of the timeout
-     * @param unit The TimeUnit of the time out, defaults to Minutes.
+     * @param spec The lock specification
      */
-    fun lock(name: String, timeout: Long=1, unit: TimeUnit=TimeUnit.MINUTES) : Boolean
+    fun lock(spec: ClusterLockSpec) : LockStatus
 
     /**
      * Unlock the given lock.
@@ -54,6 +53,8 @@ interface ClusterLockService {
 
     /**
      * Return true if the given lock is locked
+     *
+     * @param name The name of the lock
      */
     fun isLocked(name: String) : Boolean
 
@@ -63,6 +64,14 @@ interface ClusterLockService {
      * @return The number of locks cleared.
      */
     fun clearExpired() : Int
+
+    /**
+     * Return true of the given lock is combined with a lock with the same name.  If
+     * a combine lock cannot be combine once, then it's no longer able to be combined.
+     *
+     * @param spec The lock specification
+     */
+    fun combineLocks(spec : ClusterLockSpec): Boolean
 }
 
 @Component
@@ -70,54 +79,72 @@ class ClusterLockExecutorImpl @Autowired constructor(
         val clusterLockService : ClusterLockService
 ): ClusterLockExecutor {
 
-    val maxBackoff = 1000L
+    val maxBackoff = 10000L
     val backoffIncrement = 100L
 
-    override fun launch(name: String, maxTries:Int, body: () -> Unit)= GlobalScope.launch {
-        if(obtainLock(name, coroutineContext, maxTries)) {
+    override fun launch(spec: ClusterLockSpec, body: () -> Unit)= GlobalScope.launch {
+        if(obtainLock(spec, coroutineContext)) {
             try {
-                body()
-            } catch (e: Exception) {
-                logger.warn("Failed cluster task: $name", e)
-            } finally {
-                clusterLockService.unlock(name)
+                do {
+                    try {
+                        body()
+                    } catch (e: Exception) {
+                        logger.warn("Failed background cluster task: ${spec.name}", e)
+                    }
+                } while(clusterLockService.combineLocks(spec))
+            }
+            finally {
+                clusterLockService.unlock(spec.name)
             }
         }
     }
 
-    override fun <T> async(name: String, maxTries: Int, body: () -> T?) = runBlocking {
+    override fun <T> async(spec: ClusterLockSpec, body: () -> T?) = runBlocking {
         val res = async {
-            if (!obtainLock(name, coroutineContext, maxTries)) {
+            if (!obtainLock(spec, coroutineContext)) {
                null
             }
-            val result = try {
-                body()
+            var result : T?
+            try {
+                do {
+                    result = body()
+                } while(clusterLockService.combineLocks(spec))
             }
             finally {
-                clusterLockService.unlock(name)
+                clusterLockService.unlock(spec.name)
             }
+
             result
         }
         res.await()
     }
 
-    suspend fun obtainLock(name: String, context: CoroutineContext, maxTries:Int) : Boolean {
+    suspend fun obtainLock(spec: ClusterLockSpec, context: CoroutineContext) : Boolean {
         return withContext(context) {
             var tryNum = 0
             var backOff = backoffIncrement
-            // Put a lock in with a timeout of 60 seconds, so the lock will disappear
-            // eventually if the server crashes.
-            while(!clusterLockService.lock(name, 60, TimeUnit.SECONDS)) {
-                tryNum+=1
-                if (maxTries != -1 && tryNum > maxTries) {
-                    logger.warn("Unable to obtain lock $name after $tryNum tries")
-                    false
+
+            var lock : LockStatus
+            while (true) {
+                lock = clusterLockService.lock(spec)
+                if (lock == LockStatus.Wait) {
+                    tryNum+=1
+                    if (spec.maxTries != -1 && tryNum >= spec.maxTries) {
+                        logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.LOCK,
+                                "Unable to obtain lock ${spec.name} after $tryNum/${spec.maxTries} tries")
+                        break
+                    }
+                    logger.event(LogObject.CLUSTER_LOCK, LogAction.BACKOFF,
+                            mapOf("backoffMs" to backOff, "trynum" to tryNum))
+
+                    delay(backOff)
+                    backOff=min(maxBackoff, backOff+backoffIncrement)
                 }
-                logger.warn("Unable to obtain lock $name, backoff #$tryNum for ${backOff}ms")
-                delay(backOff)
-                backOff=min(maxBackoff, backOff+backoffIncrement)
+                else {
+                    break
+                }
             }
-            true
+            lock == LockStatus.Locked
         }
     }
 
@@ -138,9 +165,14 @@ class ClusterLockServiceImpl @Autowired constructor(
         return clusterLockDao.isLocked(name)
     }
 
+    override fun combineLocks(spec : ClusterLockSpec): Boolean {
+        if (!spec.combineMultiple) { return false }
+        return clusterLockDao.combineLocks(spec)
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
-    override fun lock(name: String, timeout: Long, unit: TimeUnit) : Boolean {
-        return clusterLockDao.lock(name, timeout, unit)
+    override fun lock(spec : ClusterLockSpec) : LockStatus {
+        return clusterLockDao.lock(spec)
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
