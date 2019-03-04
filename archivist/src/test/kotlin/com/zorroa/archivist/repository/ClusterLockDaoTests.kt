@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.LongAdder
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -57,5 +58,20 @@ class ClusterLockDaoTests : AbstractTest() {
         val count = jdbc.queryForObject("SELECT int_combine_count FROM cluster_lock WHERE str_name=?",
                 Int::class.java, "foo")
         assertEquals(3, count)
+    }
+
+    @Test
+    fun testHoldLock() {
+        assertEquals(LockStatus.Locked,
+                clusterLockDao.lock(ClusterLockSpec.combineLock("foo").apply {
+                    holdTillTimeout=true
+                    timeout = 500
+                    timeoutUnits = TimeUnit.MILLISECONDS
+                }))
+
+        assertTrue(clusterLockDao.isLocked("foo"))
+        Thread.sleep(1001)
+        clusterLockDao.clearExpired()
+        assertFalse(clusterLockDao.isLocked("counter"))
     }
 }

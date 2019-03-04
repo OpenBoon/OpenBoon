@@ -37,7 +37,8 @@ enum class LogAction {
     TAG,
     UNTAG,
     COMBINE,
-    BACKOFF
+    BACKOFF,
+    EXPIRED
 }
 
 

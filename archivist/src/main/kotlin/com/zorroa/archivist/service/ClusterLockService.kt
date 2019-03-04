@@ -94,7 +94,9 @@ class ClusterLockExecutorImpl @Autowired constructor(
                 } while(clusterLockService.combineLocks(spec))
             }
             finally {
-                clusterLockService.unlock(spec.name)
+                if (!spec.holdTillTimeout) {
+                    clusterLockService.unlock(spec.name)
+                }
             }
         }
     }
@@ -111,7 +113,9 @@ class ClusterLockExecutorImpl @Autowired constructor(
                 } while(clusterLockService.combineLocks(spec))
             }
             finally {
-                clusterLockService.unlock(spec.name)
+                if (!spec.holdTillTimeout) {
+                    clusterLockService.unlock(spec.name)
+                }
             }
 
             result

@@ -4,8 +4,11 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ClusterLockSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.LongAdder
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class ClusterLockExecutorTests : AbstractTest() {
 
@@ -69,5 +72,24 @@ class ClusterLockExecutorTests : AbstractTest() {
 
         Thread.sleep(500)
         assertEquals(2, count.toInt())
+    }
+
+    @Test
+    fun testAsyncLock() {
+
+        val count = LongAdder()
+
+        val value1 = clusterLockExecutor.async(ClusterLockSpec.hardLock("counter")) {
+            count.increment()
+            count.toInt()
+        }
+
+        val value2 = clusterLockExecutor.async(ClusterLockSpec.hardLock("counter")) {
+            count.increment()
+            count.toInt()
+        }
+
+        assertEquals(1, value1)
+        assertEquals(2, value2)
     }
 }

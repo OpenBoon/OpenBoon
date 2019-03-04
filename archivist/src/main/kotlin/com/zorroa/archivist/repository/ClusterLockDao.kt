@@ -29,11 +29,11 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
     override fun lock(spec: ClusterLockSpec): LockStatus {
         val host = InetAddress.getLocalHost().hostAddress
         val time = System.currentTimeMillis()
-
-        logger.event(LogObject.CLUSTER_LOCK, LogAction.LOCK, mapOf("lockName" to spec.name))
+        val expireTime = time + spec.timeoutUnits.toMillis(spec.timeout)
 
         if (spec.combineMultiple &&
                 jdbc.update(INCREMENT_COMBINE_COUNT, spec.name) == 1) {
+            logger.event(LogObject.CLUSTER_LOCK, LogAction.COMBINE, mapOf("lockName" to spec.name))
             return LockStatus.Combined
         }
 
@@ -43,10 +43,12 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                 ps.setString(1, spec.name)
                 ps.setString(2, host)
                 ps.setLong(3, time)
-                ps.setLong(4, time + spec.timeoutUnits.toMillis(spec.timeout))
+                ps.setLong(4, expireTime)
                 ps.setBoolean(5, spec.combineMultiple)
                 ps
             }
+            logger.event(LogObject.CLUSTER_LOCK, LogAction.LOCK,
+                    mapOf("lockName" to spec.name, "expireTime" to expireTime))
             LockStatus.Locked
         } catch (e: DuplicateKeyException) {
             logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.LOCK,
@@ -67,11 +69,10 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
     override fun clearExpired(): Int {
         val time = System.currentTimeMillis()
         var removed = 0
-        jdbc.query("SELECT str_name, time_expired FROM cluster_lock WHERE time_expired < ?", RowCallbackHandler { rs->
+        jdbc.query(GET_EXPIRED, RowCallbackHandler { rs->
             val name = rs.getString("str_name")
-            val date = Date.from(Instant.ofEpochMilli(rs.getLong("time_expired")))
-            logger.warn("Removing expired lock '$name', expired at {}", date)
             jdbc.update("DELETE FROM cluster_lock WHERE str_name=?", name)
+            logger.event(LogObject.CLUSTER_LOCK, LogAction.EXPIRED, mapOf("lockName" to name))
             removed+=1
         }, time)
         return removed
@@ -90,14 +91,10 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         val newTimeout = System.currentTimeMillis() + spec.timeoutUnits.toMillis(spec.timeout)
         val combine =  jdbc.update(HAS_COMBINED, newTimeout, spec.name) == 1
 
-        if (combine) {
-            logger.event(LogObject.CLUSTER_LOCK, LogAction.COMBINE, mapOf("lockName" to spec.name))
-        }
-        else {
-            // If there is nothing to combine, set bool_allow_combine to false so threads can't
-            // increment combine later on.
+        if (!combine) {
             jdbc.update("UPDATE cluster_lock SET bool_allow_combine='f' WHERE str_name=?", spec.name)
         }
+
         return combine
     }
 
@@ -128,5 +125,13 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                 "int_combine_count > 0 " +
             "AND " +
                 "bool_allow_combine = 't'"
+
+        private const val GET_EXPIRED = "SELECT " +
+                "str_name, " +
+                "time_expired " +
+            "FROM " +
+                "cluster_lock " +
+            "WHERE " +
+                "time_expired < ? ORDER BY str_name ASC"
     }
 }

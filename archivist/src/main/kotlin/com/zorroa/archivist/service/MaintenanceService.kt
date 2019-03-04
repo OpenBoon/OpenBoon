@@ -87,8 +87,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun runAll() {
-        clusterLockService.clearExpired()
-
         val lock = ClusterLockSpec.softLock(lockName).apply {
             timeout = 10
             timeoutUnits = TimeUnit.MINUTES
@@ -96,6 +94,7 @@ class MaintenanceServiceImpl @Autowired constructor(
         }
 
         clusterLockExecutor.async(lock) {
+            clusterLockService.clearExpired()
             handleExpiredJobs()
             handleUnresponsiveAnalysts()
         }

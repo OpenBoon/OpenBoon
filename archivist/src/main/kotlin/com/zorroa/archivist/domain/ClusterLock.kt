@@ -18,6 +18,7 @@ enum class LockStatus {
  * @property combineMultiple Combine this lock with an active combine lock of the same name
  * @property timeout The overall timeout for the lock.
  * @property timeoutUnits The unit of time for the timeout value.
+ * @property holdTillTimeout Hold the lock until it times out, even if the work is done.
  * @property dispatcher The Coroutine dispatcher to use.
  *
  */
@@ -27,6 +28,7 @@ class ClusterLockSpec(
         var combineMultiple: Boolean = false,
         var timeout : Long = 1,
         var timeoutUnits : TimeUnit = TimeUnit.MINUTES,
+        var holdTillTimeout: Boolean = false,
         var dispatcher: CoroutineDispatcher = Dispatchers.Default) {
 
     companion object {
