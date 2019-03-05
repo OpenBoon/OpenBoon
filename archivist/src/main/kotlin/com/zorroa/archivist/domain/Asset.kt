@@ -15,8 +15,8 @@ import java.util.regex.Pattern
 
 /**
  * The response from a request to create an asset from an uploaded source.
- * @property assetId: The assetId that was created
- * @property uri: The URI where the source file was placed.
+ * @property assetId The assetId that was created
+ * @property uri The URI where the source file was placed.
  */
 class AssetUploadedResponse(
         val assetId: UUID,
@@ -26,12 +26,20 @@ class AssetUploadedResponse(
 /**
  * A class to define updates to a single Asset
  *
- * @property update: key/value pairs to be updated.
- * @property remove: an array of fields to remove.
+ * @property update key/value pairs to be updated.
+ * @property remove An array of fields to remove.
+ * @property appendToList Append values to a list attribute.
+ * @property appendToUniqueList Append values to a list attribute and ensure the result is unique.
+ * @property removeFromList Remove values from a list attribute.
+ * @property allowSystem Allow systems vars to be set. Default to false. Cannot be set over wire.
  */
 class UpdateAssetRequest(
         val update : Map<String, Any>?=null,
-        val remove: List<String>?=null
+        val remove: List<String>?=null,
+        val appendToList: Map<String, Any>?=null,
+        val appendToUniqueList: Map<String, Any>?=null,
+        val removeFromList: Map<String, Any>?=null,
+        @JsonIgnore val allowSystem: Boolean=false
 )
 
 /**
@@ -345,35 +353,73 @@ open class Document {
      * Assumes the target attribute is a collection of some sort and tries to add
      * the given value.
      *
-     * @param attr
-     * @param value
+     * @param attr The attr name in dot notation, must point to a collection.
+     * @param value The value to append to the collection.
+     * @param unique If true, uniquify the collection.
+     * @return Return true if the value was added to the collection.
      */
-    fun addToAttr(attr: String, value: Any) {
-        val current = getContainer(attr, true)
+    fun addToAttr(attr: String, value: Any, unique: Boolean=true) : Boolean {
         val key = Attr.name(attr)
 
-
-        /**
-         * Handle the case where the object is a standard map.
-         */
         try {
-            val map = current as MutableMap<String, Any>?
-            var collection: MutableCollection<Nothing>? = map!![key] as MutableCollection<Nothing>
+            var container = getContainer(attr, true) as MutableMap<String, Any>
+            var collection = container[key] as MutableCollection<Any?>?
             if (collection == null) {
                 collection = mutableListOf()
-                map[key] = collection
+                container[key] = collection
             }
-            if (value is Collection<*>) {
-                collection!!.addAll(value as Collection<Nothing>)
-            } else {
-                collection!!.add(value as Nothing)
+
+            val res =  if (value is Collection<*>) {
+                collection.addAll(value)
             }
-            return
-        } catch (ex2: Exception) {
-            logger.warn("The parent attribute {} of type {} is not valid.",
-                    attr, current!!.javaClass.name)
+            else {
+                collection.add(value)
+            }
+
+            if (unique) {
+                val uniqList = collection.distinct()
+                collection.clear()
+                collection.addAll(uniqList)
+            }
+
+            return res
+        }
+        catch (e: Exception) {
+            logger.warn("Unable to append to attr '$attr', it maybe not be a collection")
         }
 
+        return false
+    }
+
+    /**
+     * Assumes the target attribute is a collection of some sort and tries to remove
+     * the given value.
+     *
+     * @param attr The attr name in dot notation, must point to a collection.
+     * @param value The value to remove from the collection.
+     */
+    fun removeFromAttr(attr: String, value: Any, unique: Boolean=true) : Boolean {
+        val key = Attr.name(attr)
+
+        try {
+            var container = getContainer(attr, true) as MutableMap<String, Any>
+            var collection = container[key] as MutableCollection<Any?>?
+            if (collection == null) {
+                collection = mutableListOf()
+                container[key] = collection
+            }
+
+            return if (value is Collection<*>) {
+                collection.removeAll(value)
+            } else {
+                collection.remove(value)
+            }
+        }
+        catch (e: Exception) {
+            logger.warn("Unable to remove from attr '$attr', it maybe not be a collection")
+        }
+
+        return false
     }
 
     /**
@@ -421,6 +467,26 @@ open class Document {
         val container = getContainer(attr, false)
         return getChild(container, Attr.name(attr)) != null
     }
+
+    /**
+     * Return true if the given element is empty.
+     *
+     * @param attr
+     * @return
+     */
+    fun isEmpty(attr: String): Boolean {
+        val container = getContainer(attr, false)
+        val child = getChild(container, Attr.name(attr))
+
+        return try {
+            val map = child as MutableMap<String, Any>?
+            map?.isEmpty() ?: true
+        }
+        catch (e: Exception) {
+            false
+        }
+    }
+
 
     /**
      * Return true if the value of an attribute contains the given value.

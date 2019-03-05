@@ -57,7 +57,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
             ps
         }
 
-        logger.event(LogObject.TRASH_FOLDER, LogAction.CREATE, mapOf("blobId" to id))
+        logger.event(LogObject.BLOB, LogAction.CREATE, mapOf("blobId" to id))
         return get(id)
     }
 

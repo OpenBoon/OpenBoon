@@ -29,8 +29,6 @@ services:
     secrets:
       - source: prometheus.yml
         target: /etc/prometheus/prometheus.yml
-      - source: monitor.auth.key
-        target: /etc/prometheus/monitor.auth.key
 
   # Grafana server connected to elasticsearch instance
   grafana:
@@ -140,6 +138,7 @@ services:
          NODE_ENV: "production"
          ARCHIVIST_API_URL: "http://archivist:8080"
          CURATOR_PORT_SECURE: "8443"
+         SSL_CERT_PATH: "./"
 
 secrets:
   logstash.conf:
@@ -150,5 +149,3 @@ secrets:
     file: ./localdev/monitoring/filebeat.yml
   prometheus.yml:
     file: ./localdev/monitoring/prometheus.yml
-  monitor.auth.key:
-    file: ./localdev/monitoring/monitor.auth.key

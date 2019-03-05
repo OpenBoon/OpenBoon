@@ -365,8 +365,6 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, searchService.search(
                 AssetSearch("captain baggins").setQueryFields(
                         ImmutableMap.of("foo.bar1", 1.0f, "foo.bar2", 2.0f))).hits.getTotalHits())
-
-
     }
 
     @Test
@@ -475,11 +473,11 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryExactWithQuotes() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("test.keywords", "ironMan17313.jpg")
+        source.setAttr("media.keywords", "ironMan17313.jpg")
         assetService.createOrReplace(source)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("test.keywords", "ironMan17314.jpg")
+        source2.setAttr("media.keywords", "ironMan17314.jpg")
         assetService.createOrReplace(source2)
 
         refreshIndex()
@@ -493,11 +491,11 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryMultipleExactWithAnd() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("test.keywords", listOf("RA", "pencil", "O'Connor"))
+        source.setAttr("media.keywords", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplace(source)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("test.keywords", listOf("RA", "Cock O'the Walk"))
+        source2.setAttr("media.keywords", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplace(source2)
 
         refreshIndex()
@@ -511,11 +509,11 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryExactTermWithSpaces() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("test.keywords", listOf("RA", "pencil", "O'Connor"))
+        source.setAttr("media.title", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplace(source)
 
         val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
-        source2.setAttr("test.keywords", listOf("RA", "Cock O'the Walk"))
+        source2.setAttr("media.title", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplace(source2)
 
         refreshIndex()
@@ -543,7 +541,7 @@ class SearchServiceTests : AbstractTest() {
     fun testQueryPlusTerm() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", ImmutableList.of("zoolander", "beer"))
+        source.setAttr("media.title", "Zoolander")
         assetService.createOrReplace(source)
         refreshIndex()
 
@@ -580,19 +578,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBoostFields() {
-        try {
-            settingsService.set("archivist.search.keywords.boost", "foo:1,bar:2")
-            fieldService.invalidateFields()
-            val fields = fieldService.getFields("asset")
-            assertTrue(fields["keywords-boost"]!!.contains("foo:1"))
-            assertTrue(fields["keywords-boost"]!!.contains("bar:2"))
-        } finally {
-            settingsService.set("archivist.search.keywords.boost", null)
-        }
-    }
-
-    @Test
     fun getFields() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
@@ -611,40 +596,6 @@ class SearchServiceTests : AbstractTest() {
         assertTrue(fields["similarity"]!!.size > 0)
         assertTrue(fields["id"]!!.size > 0)
         assertTrue(fields["keywords"]!!.contains("foo.keywords"))
-    }
-
-    @Test
-    fun getFieldsWithHidden() {
-
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("location", LocationSchema(doubleArrayOf(1.0, 2.0)).setCountry("USA"))
-        source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"))
-        source.setAttr("foo.shash", "AAFFGG")
-
-        assetService.createOrReplace(source)
-        refreshIndex()
-        fieldService.updateField(HideField("foo.keywords", true))
-
-        val fields = fieldService.getFields("asset")
-        assertFalse(fields["keywords-boost"]!!.contains("foo.keywords"))
-        assertFalse(fields["string"]!!.contains("foo.keywords"))
-    }
-
-    @Test
-    fun getFieldsWithHiddenNameSpace() {
-
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("location", LocationSchema(doubleArrayOf(1.0, 2.0)).setCountry("USA"))
-        source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"))
-        source.setAttr("foo.shash", "AAFFGG")
-
-        assetService.createOrReplace(source)
-        refreshIndex()
-        fieldService.updateField(HideField("foo.", true))
-
-        val fields = fieldService.getFields("asset")
-        assertFalse(fields["keywords-boost"]!!.contains("foo.keywords"))
-        assertFalse(fields["string"]!!.contains("foo.keywords"))
     }
 
     @Test

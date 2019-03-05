@@ -208,7 +208,7 @@ class IndexDaoTests : AbstractTest() {
 
         val assets = ImmutableList.of<Document>(
                 Source(getTestImagePath("set01/standard/faces.jpg")))
-        assets[0].setAttr("foo.bar", 1000)
+        assets[0].setAttr("custom.foobar", 1000)
         var result = indexDao.index(assets)
         refreshIndex()
 
@@ -218,10 +218,9 @@ class IndexDaoTests : AbstractTest() {
                 Source(getTestImagePath("set01/standard/visa.jpg")),
                 Source(getTestImagePath("set01/standard/visa12.jpg")))
         for (s in next) {
-            s.setAttr("foo.bar", "bob")
+            s.setAttr("custom.foobar", "bob")
         }
         result = indexDao.index(next)
-        logger.info("{}", result)
 
         assertEquals(4, result.createdAssetIds.size)
         assertEquals(4, result.warningAssetIds.size)
