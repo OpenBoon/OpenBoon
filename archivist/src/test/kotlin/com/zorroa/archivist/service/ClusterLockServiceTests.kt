@@ -96,6 +96,8 @@ class ClusterLockExecutorTests : AbstractTest() {
             val value1 = lock1.await()
             val value2 = lock2.await()
 
+            assertTrue(value1 ?: 0 > 0)
+            assertTrue(value2 ?: 0 > 0)
             assertEquals(2, count.toInt())
         }
     }
