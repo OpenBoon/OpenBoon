@@ -138,6 +138,7 @@ services:
          NODE_ENV: "production"
          ARCHIVIST_API_URL: "http://archivist:8080"
          CURATOR_PORT_SECURE: "8443"
+         SSL_CERT_PATH: "./"
 
 secrets:
   logstash.conf:
