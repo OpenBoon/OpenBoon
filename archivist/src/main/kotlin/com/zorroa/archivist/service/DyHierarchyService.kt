@@ -9,6 +9,7 @@ import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.ArchivistWriteException
+import kotlinx.coroutines.runBlocking
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -167,14 +168,16 @@ class DyHierarchyServiceImpl @Autowired constructor (
             generateInternal(dyhi, clearFirst)
         }
         else {
-            val lock = ClusterLockSpec.combineLock(dyhi.lockName).apply { timeout = 5 }
-            clusterLockExecutor.async(lock) {
-                try {
-                    generateInternal(dyhi, clearFirst)
-                } catch (e: Exception) {
-                    logger.warn("Failed to generate dyhi ${dyhi.id}", e)
-                    null
-                }
+            runBlocking {
+                val lock = ClusterLockSpec.combineLock(dyhi.lockName).apply { timeout = 5 }
+                clusterLockExecutor.async(lock) {
+                    try {
+                        generateInternal(dyhi, clearFirst)
+                    } catch (e: Exception) {
+                        logger.warn("Failed to generate dyhi ${dyhi.id}", e)
+                        null
+                    }
+                }.await()
             }
         }
         return result ?: -1

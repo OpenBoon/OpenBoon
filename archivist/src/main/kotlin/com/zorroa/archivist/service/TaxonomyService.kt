@@ -16,6 +16,7 @@ import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.search.SearchResponse
@@ -163,21 +164,23 @@ class TaxonomyServiceImpl @Autowired constructor(
     }
 
     override fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean) : Map<String, Long> {
-        return if (ArchivistConfiguration.unittest) {
+        val result = if (ArchivistConfiguration.unittest) {
             tagTaxonomyInternal(tax, start, force)
         }
         else {
-            val lock = ClusterLockSpec.combineLock(tax.clusterLockId()).apply { timeout = 5 }
-            val result = clusterLockExecutor.async(lock) {
-                try {
-                    tagTaxonomyInternal(tax, start, force)
-                } catch (e: Exception) {
-                    logger.warn("Failed to run taxon ${tax.taxonomyId}", e)
-                    null
-                }
+            runBlocking {
+                val lock = ClusterLockSpec.combineLock(tax.clusterLockId()).apply { timeout = 5 }
+                clusterLockExecutor.async(lock) {
+                    try {
+                        tagTaxonomyInternal(tax, start, force)
+                    } catch (e: Exception) {
+                        logger.warn("Failed to run taxon ${tax.taxonomyId}", e)
+                        null
+                    }
+                }.await()
             }
-            result ?: emptyMap()
         }
+        return result ?: emptyMap()
     }
 
     override fun tagTaxonomyAsync(tax: Taxonomy, start: Folder?, force: Boolean) {

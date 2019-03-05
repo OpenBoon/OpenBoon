@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 import kotlin.math.min
 
 interface ClusterLockExecutor {
@@ -22,7 +23,7 @@ interface ClusterLockExecutor {
      * @param spec  A ClusterLock spec
      * @param body The code to execute
      */
-    fun <T : Any?> async(spec: ClusterLockSpec, body: () -> T?) : T?
+    fun <T : Any?> async(spec: ClusterLockSpec, body: () -> T?) : Deferred<T?>
 
     /**
      * Execute the given function with the named cluster lock.
@@ -101,8 +102,8 @@ class ClusterLockExecutorImpl @Autowired constructor(
         }
     }
 
-    override fun <T> async(spec: ClusterLockSpec, body: () -> T?) = runBlocking {
-        val res = async {
+    override fun <T> async(spec: ClusterLockSpec, body: () -> T?) : Deferred<T?> {
+        return GlobalScope.async {
             if (!obtainLock(spec, coroutineContext)) {
                null
             }
@@ -120,7 +121,6 @@ class ClusterLockExecutorImpl @Autowired constructor(
 
             result
         }
-        res.await()
     }
 
     suspend fun obtainLock(spec: ClusterLockSpec, context: CoroutineContext) : Boolean {

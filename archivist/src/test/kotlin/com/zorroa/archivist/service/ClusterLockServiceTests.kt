@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ClusterLockSpec
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.concurrent.TimeUnit
@@ -25,7 +26,7 @@ class ClusterLockExecutorTests : AbstractTest() {
             Thread.sleep(200)
         }
 
-        // Will be skipped because counter is already
+        // Will be skipped because counter is already running.
         clusterLockExecutor.launch(ClusterLockSpec.softLock("counter")) {
             count.increment()
         }
@@ -39,11 +40,12 @@ class ClusterLockExecutorTests : AbstractTest() {
 
         val count = LongAdder()
 
+        // Both of these run serially, one after another.
+
         clusterLockExecutor.launch(ClusterLockSpec.hardLock("counter")) {
             count.increment()
         }
 
-        // Will be skipped because counter is already
         clusterLockExecutor.launch(ClusterLockSpec.hardLock("counter")) {
             count.increment()
         }
@@ -65,7 +67,6 @@ class ClusterLockExecutorTests : AbstractTest() {
         // Sleep here so the first launch is running
         Thread.sleep(50)
 
-        // Will be skipped because counter is already
         clusterLockExecutor.launch(ClusterLockSpec.combineLock("counter")) {
             // look mom, no code!
         }
@@ -79,17 +80,23 @@ class ClusterLockExecutorTests : AbstractTest() {
 
         val count = LongAdder()
 
-        val value1 = clusterLockExecutor.async(ClusterLockSpec.hardLock("counter")) {
+        val lock1 = clusterLockExecutor.async(ClusterLockSpec.hardLock("counter")) {
             count.increment()
             count.toInt()
         }
 
-        val value2 = clusterLockExecutor.async(ClusterLockSpec.hardLock("counter")) {
+        val lock2 = clusterLockExecutor.async(ClusterLockSpec.hardLock("counter")) {
             count.increment()
             count.toInt()
         }
 
-        assertEquals(1, value1)
-        assertEquals(2, value2)
+        // long tasks
+
+        runBlocking {
+            val value1 = lock1.await()
+            val value2 = lock2.await()
+
+            assertEquals(2, count.toInt())
+        }
     }
 }
