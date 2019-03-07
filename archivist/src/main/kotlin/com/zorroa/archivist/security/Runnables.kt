@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.concurrent.BlockingQueue
-import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
@@ -38,7 +37,9 @@ class InternalRunnable(private val auth: Authentication, private val body: () ->
     }
 }
 
-class SecureRunnable(private val context: SecurityContext, private val body: () -> Unit) : Runnable {
+class SecureRunnable(private val body: () -> Unit) : Runnable {
+
+    private val context: SecurityContext = SecurityContextHolder.getContext()
 
     override fun run() {
         try {
@@ -83,12 +84,6 @@ class SecureSingleThreadExecutor(corePoolSize: Int, maximumPoolSize: Int, keepAl
     companion object {
 
         private val logger = LoggerFactory.getLogger(SecureSingleThreadExecutor::class.java)
-
-        fun singleThreadExecutor(): SecureSingleThreadExecutor {
-            return SecureSingleThreadExecutor(1, 1,
-                    0L, TimeUnit.MILLISECONDS,
-                    LinkedBlockingQueue())
-        }
     }
 
 }
