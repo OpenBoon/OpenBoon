@@ -294,7 +294,7 @@ open abstract class AbstractAssetService : AssetService {
     fun runDyhiAndTaxons() {
         val orgId = getOrgId()
         clusterLockExecutor.execute(ClusterLockSpec.combineLock("dyhi-taxons-$orgId")
-                .apply { authentication= getAuthentication() }) {
+                .apply { authentication=getAuthentication() }) {
             dyHierarchyService.generateAll()
             taxonomyService.tagAll()
         }
