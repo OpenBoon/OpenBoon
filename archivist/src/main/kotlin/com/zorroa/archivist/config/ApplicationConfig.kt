@@ -145,7 +145,7 @@ class ArchivistConfiguration {
         val tpe = ThreadPoolTaskExecutor()
         tpe.corePoolSize = 8
         tpe.maxPoolSize = 8
-        tpe.threadNamePrefix = "[WORK-QUEUE]"
+        tpe.threadNamePrefix = "WORK-QUEUE-"
         tpe.isDaemon = true
         tpe.setQueueCapacity(1000)
         return tpe
