@@ -26,8 +26,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.core.io.ClassPathResource
+import org.springframework.core.task.*
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
@@ -139,8 +141,14 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun folderTaskExecutor(): UniqueTaskExecutor {
-        return UniqueTaskExecutor(unittest)
+    fun workQueue() : AsyncListenableTaskExecutor {
+        val tpe = ThreadPoolTaskExecutor()
+        tpe.corePoolSize = 8
+        tpe.maxPoolSize = 8
+        tpe.threadNamePrefix = "[WORK-QUEUE]"
+        tpe.isDaemon = true
+        tpe.setQueueCapacity(1000)
+        return tpe
     }
 
     @Bean
