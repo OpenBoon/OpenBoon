@@ -12,8 +12,6 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.stereotype.Repository
 import java.net.InetAddress
-import java.time.Instant
-import java.util.*
 
 interface ClusterLockDao {
     fun clearExpired() : Int
@@ -31,10 +29,11 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         val time = System.currentTimeMillis()
         val expireTime = time + spec.timeoutUnits.toMillis(spec.timeout)
 
-        if (spec.combineMultiple &&
-                jdbc.update(INCREMENT_COMBINE_COUNT, spec.name) == 1) {
+        if (spec.combineMultiple) {
             logger.event(LogObject.CLUSTER_LOCK, LogAction.COMBINE, mapOf("lockName" to spec.name))
-            return LockStatus.Combined
+            if (jdbc.update(INCREMENT_COMBINE_COUNT, spec.name) == 1) {
+                return LockStatus.Combined
+            }
         }
 
         return try {
