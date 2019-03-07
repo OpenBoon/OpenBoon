@@ -19,24 +19,13 @@ import java.util.concurrent.Callable
 import kotlin.math.min
 
 interface ClusterLockExecutor {
-    /*
+
     /**
-     * Execute the given function with the named cluster lock.
-     *
+     * Run the given code inline with the current thread.
+     * 
      * @param spec  A ClusterLock spec
      * @param body The code to execute
      */
-    fun <T : Any?> async(spec: ClusterLockSpec, body: () -> T?) : Deferred<T?>
-
-    /**
-     * Execute the given function with the named cluster lock.
-     *
-     * @param spec A ClusterLock spec
-     * @param body The code to execute
-     */
-    fun launch(spec: ClusterLockSpec, body: () -> Unit) : Job
-    */
-
     fun <T : Any?> inline(spec: ClusterLockSpec, body: () -> T?) : T?
 
     /**
