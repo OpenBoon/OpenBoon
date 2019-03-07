@@ -39,14 +39,4 @@ class TaxonomyDaoTests : AbstractTest() {
         val tax2 = taxonomyDao!![folder]
         assertEquals(tax1, tax2)
     }
-
-    @Test
-    fun testSetActive() {
-        val (id) = folderService.create(FolderSpec("foo"))
-        val tax1 = taxonomyDao.create(TaxonomySpec().setFolderId(id))
-        assertTrue(taxonomyDao.setActive(tax1, true))
-        assertFalse(taxonomyDao.setActive(tax1, true))
-        assertTrue(taxonomyDao.setActive(tax1, false))
-        assertFalse(taxonomyDao.setActive(tax1, false))
-    }
 }

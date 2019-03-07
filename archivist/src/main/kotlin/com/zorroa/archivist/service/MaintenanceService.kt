@@ -93,7 +93,7 @@ class MaintenanceServiceImpl @Autowired constructor(
             dispatcher = Dispatchers.IO
         }
 
-        clusterLockExecutor.async(lock) {
+        clusterLockExecutor.inline(lock) {
             clusterLockService.clearExpired()
             handleExpiredJobs()
             handleUnresponsiveAnalysts()

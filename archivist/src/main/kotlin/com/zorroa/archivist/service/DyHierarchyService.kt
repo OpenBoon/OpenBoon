@@ -2,14 +2,12 @@ package com.zorroa.archivist.service
 
 import com.google.common.base.Splitter
 import com.google.common.collect.*
-import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.ArchivistWriteException
-import kotlinx.coroutines.runBlocking
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
 import org.elasticsearch.search.aggregations.AggregationBuilders
@@ -22,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalStateException
 import java.util.*
 
 interface DyHierarchyService {
@@ -164,20 +161,13 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     override fun generate(dyhi: DyHierarchy, clearFirst: Boolean) : Int {
-        val result = if (ArchivistConfiguration.unittest) {
-            generateInternal(dyhi, clearFirst)
-        }
-        else {
-            runBlocking {
-                val lock = ClusterLockSpec.combineLock(dyhi.lockName).apply { timeout = 5 }
-                clusterLockExecutor.async(lock) {
-                    try {
-                        generateInternal(dyhi, clearFirst)
-                    } catch (e: Exception) {
-                        logger.warn("Failed to generate dyhi ${dyhi.id}", e)
-                        null
-                    }
-                }.await()
+        val lock = ClusterLockSpec.combineLock(dyhi.lockName).apply { timeout = 5 }
+        val result = clusterLockExecutor.inline(lock) {
+            try {
+                generateInternal(dyhi, clearFirst)
+            } catch (e: Exception) {
+                logger.warn("Failed to generate dyhi ${dyhi.id}", e)
+                null
             }
         }
         return result ?: -1

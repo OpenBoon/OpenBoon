@@ -101,6 +101,9 @@ open abstract class AbstractAssetService : AssetService {
     @Autowired
     lateinit var fieldService: FieldService
 
+    @Autowired
+    lateinit var clusterLockExecutor: ClusterLockExecutor
+
     /**
      * Prepare a list of assets to be replaced or replaced.  Handles:
      *
@@ -289,12 +292,11 @@ open abstract class AbstractAssetService : AssetService {
      * Run Dyhis and taxons. This should be called if assets are added, removed, or updated.
      */
     fun runDyhiAndTaxons() {
-        val auth = getAuthentication()
-        GlobalScope.launch {
-            withAuth(auth) {
-                dyHierarchyService.generateAll()
-                taxonomyService.tagAll()
-            }
+        val orgId = getOrgId()
+        clusterLockExecutor.execute(ClusterLockSpec.combineLock("dyhi-taxons-$orgId")
+                .apply { authentication= getAuthentication() }) {
+            dyHierarchyService.generateAll()
+            taxonomyService.tagAll()
         }
     }
 
@@ -457,73 +459,68 @@ open abstract class AbstractAssetService : AssetService {
          * Iterate over our list of assets and grab the hard copy of each one.
          * Modify the copy and push it back into the DB.
          */
-
-        val auth = getAuthentication()
-
         val futures = assets.batch.keys.chunked(50).map { ids->
-            GlobalScope.async {
-                withAuth(auth) {
-                    val docs : List<Document> = getAll(ids).mapNotNull { doc->
+            GlobalScope.async(CoroutineAuthentication(getSecurityContext())) {
+                val docs : List<Document> = getAll(ids).mapNotNull { doc->
 
-                        if (!hasPermission("write", doc)) {
-                            logger.warnEvent(LogObject.ASSET,
-                                    LogAction.BATCH_UPDATE,
-                                    "Skipping updating asset, access denied",
-                                    mapOf("assetId" to doc.id))
-                            null
+                    if (!hasPermission("write", doc)) {
+                        logger.warnEvent(LogObject.ASSET,
+                                LogAction.BATCH_UPDATE,
+                                "Skipping updating asset, access denied",
+                                mapOf("assetId" to doc.id))
+                        null
+                    }
+                    else {
+
+                        val req = assets.batch.getValue(doc.id)
+                        var updated = false
+                        req.update?.forEach { t, u ->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.setAttr(t, u)
+                                updated = true
+                            }
+                        }
+
+                        req.remove?.forEach {
+                            if (checkAttr(it, doc.id, req.allowSystem)) {
+                                doc.removeAttr(it)
+                                updated = true
+                            }
+                        }
+
+                        req.appendToList?.forEach { t, u->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.addToAttr(t, u, unique = false)
+                                updated = true
+                            }
+                        }
+
+                        req.appendToUniqueList?.forEach { t, u->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.addToAttr(t, u, unique = true)
+                                updated = true
+                            }
+                        }
+
+                        req.removeFromList?.forEach { t, u->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.removeFromAttr(t, u)
+                                updated = true
+                            }
+                        }
+
+                        if (updated ) {
+                            doc.setAttr("system.timeModified", now)
+                            doc
                         }
                         else {
-
-                            val req = assets.batch.getValue(doc.id)
-                            var updated = false
-                            req.update?.forEach { t, u ->
-                                if (checkAttr(t, doc.id, req.allowSystem)) {
-                                    doc.setAttr(t, u)
-                                    updated = true
-                                }
-                            }
-
-                            req.remove?.forEach {
-                                if (checkAttr(it, doc.id, req.allowSystem)) {
-                                    doc.removeAttr(it)
-                                    updated = true
-                                }
-                            }
-
-                            req.appendToList?.forEach { t, u->
-                                if (checkAttr(t, doc.id, req.allowSystem)) {
-                                    doc.addToAttr(t, u, unique = false)
-                                    updated = true
-                                }
-                            }
-
-                            req.appendToUniqueList?.forEach { t, u->
-                                if (checkAttr(t, doc.id, req.allowSystem)) {
-                                    doc.addToAttr(t, u, unique = true)
-                                    updated = true
-                                }
-                            }
-
-                            req.removeFromList?.forEach { t, u->
-                                if (checkAttr(t, doc.id, req.allowSystem)) {
-                                    doc.removeFromAttr(t, u)
-                                    updated = true
-                                }
-                            }
-
-                            if (updated ) {
-                                doc.setAttr("system.timeModified", now)
-                                doc
-                            }
-                            else {
-                                null
-                            }
+                            null
                         }
                     }
-
-                    val updated = batchUpdate(docs, reindex = true, taxons = false)
-                    updated
                 }
+
+                val updated = batchUpdate(docs, reindex = true, taxons = false)
+                updated
             }
         }
 
@@ -562,24 +559,23 @@ open abstract class AbstractAssetService : AssetService {
         val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
         val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking {
+        runBlocking(CoroutineAuthentication(getSecurityContext())) {
             assets.chunked(50) {
                 launch {
-                    withAuth(auth) {
-                        val docs = getAll(it).mapNotNull { doc ->
-                            if (removeLink(doc, type, value)) {
-                                doc
-                            } else {
-                                // already removed
-                                null
-                            }
+
+                    val docs = getAll(it).mapNotNull { doc ->
+                        if (removeLink(doc, type, value)) {
+                            doc
+                        } else {
+                            // already removed
+                            null
                         }
-                        val update = batchUpdate(docs, reindex = true, taxons = false)
-                        if (update.erroredAssetIds.isNotEmpty()) {
-                            errorAssetIds.addAll(update.erroredAssetIds)
-                        }
-                        successAssetIds.addAll(update.updatedAssetIds)
                     }
+                    val update = batchUpdate(docs, reindex = true, taxons = false)
+                    if (update.erroredAssetIds.isNotEmpty()) {
+                        errorAssetIds.addAll(update.erroredAssetIds)
+                    }
+                    successAssetIds.addAll(update.updatedAssetIds)
                 }
             }
         }
@@ -592,23 +588,21 @@ open abstract class AbstractAssetService : AssetService {
         val errors = Collections.synchronizedSet(mutableSetOf<String>())
         val success = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking {
+        runBlocking(CoroutineAuthentication(getSecurityContext())) {
             req.assetIds?.chunked(50) {
                 launch {
-                    withAuth(auth) {
-                        val docs = getAll(it).mapNotNull { doc ->
-                            if (addLink(doc, type, value)) {
-                                doc
-                            } else {
-                                null
-                            }
+                    val docs = getAll(it).mapNotNull { doc ->
+                        if (addLink(doc, type, value)) {
+                            doc
+                        } else {
+                            null
                         }
-                        val update = batchUpdate(docs, reindex = true, taxons = false)
-                        if (update.erroredAssetIds.isNotEmpty()) {
-                            errors.addAll(update.erroredAssetIds)
-                        }
-                        success.addAll(update.updatedAssetIds)
                     }
+                    val update = batchUpdate(docs, reindex = true, taxons = false)
+                    if (update.erroredAssetIds.isNotEmpty()) {
+                        errors.addAll(update.erroredAssetIds)
+                    }
+                    success.addAll(update.updatedAssetIds)
                 }
             }
 
@@ -620,23 +614,22 @@ open abstract class AbstractAssetService : AssetService {
 
                 searchService.scanAndScroll(search, false) { hits ->
                     launch {
-                        withAuth(auth) {
-                            val ids = hits.hits.map { hit -> hit.id }
-                            val docs = getAll(ids).mapNotNull { doc ->
-                                if (addLink(doc, type, value)) {
-                                    doc
-                                } else {
 
-                                    null
-                                }
+                        val ids = hits.hits.map { hit -> hit.id }
+                        val docs = getAll(ids).mapNotNull { doc ->
+                            if (addLink(doc, type, value)) {
+                                doc
+                            } else {
+
+                                null
                             }
-                            logger.info("updating docs with links: {}", docs.size)
-                            val update = batchUpdate(docs, reindex = true, taxons = false)
-                            if (update.erroredAssetIds.isNotEmpty()) {
-                                errors.addAll(update.erroredAssetIds)
-                            }
-                            success.addAll(update.updatedAssetIds)
                         }
+                        logger.info("updating docs with links: {}", docs.size)
+                        val update = batchUpdate(docs, reindex = true, taxons = false)
+                        if (update.erroredAssetIds.isNotEmpty()) {
+                            errors.addAll(update.erroredAssetIds)
+                        }
+                        success.addAll(update.updatedAssetIds)
                     }
                 }
             }

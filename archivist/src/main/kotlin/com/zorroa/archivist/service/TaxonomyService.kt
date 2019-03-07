@@ -1,8 +1,9 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.google.common.collect.*
-import com.zorroa.archivist.config.ArchivistConfiguration
+import com.google.common.collect.ImmutableMap
+import com.google.common.collect.ImmutableSet
+import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.CountingBulkListener
 import com.zorroa.archivist.elastic.ESUtils
@@ -14,8 +15,6 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.*
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkProcessor
@@ -27,7 +26,7 @@ import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
 import org.elasticsearch.search.sort.SortOrder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.Authentication
+import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -75,8 +74,9 @@ class TaxonomyServiceImpl @Autowired constructor(
         private val taxonomyDao: TaxonomyDao,
         private val folderDao: FolderDao,
         private val indexRoutingService: IndexRoutingService,
-        private val folderTaskExecutor: UniqueTaskExecutor,
-        private val clusterLockExecutor: ClusterLockExecutor
+        private val workQueue: AsyncListenableTaskExecutor,
+        private val clusterLockExecutor: ClusterLockExecutor,
+        private val transactionEventManager: TransactionEventManager
 ): TaxonomyService {
 
     @Autowired
@@ -93,12 +93,6 @@ class TaxonomyServiceImpl @Autowired constructor(
 
     internal var EXCLUDE_FOLDERS: Set<String> = ImmutableSet.of("Library", "Users")
 
-    private val auth: Authentication
-        get() {
-            val user = userRegistryService.getUser("admin")
-            return InternalAuthentication(user)
-        }
-
     override fun delete(tax: Taxonomy?, untag: Boolean): Boolean {
         tax?.let {
             if (taxonomyDao.delete(tax.taxonomyId)) {
@@ -109,7 +103,9 @@ class TaxonomyServiceImpl @Autowired constructor(
                 folderDao.setTaxonomyRoot(folder, false)
                 folderService.invalidate(folder)
                 if (untag) {
-                    untagTaxonomyAsync(tax, 0)
+                    transactionEventManager.afterCommit(sync=false) {
+                        untagTaxonomy(tax, 0)
+                    }
                 }
                 return true
             }
@@ -139,9 +135,9 @@ class TaxonomyServiceImpl @Autowired constructor(
         if (result) {
             folderService.invalidate(folder)
             folder.taxonomyRoot = true
-
-            // force is false because there won't be folders with this tax id.
-            tagTaxonomyAsync(tax, folder, false)
+            transactionEventManager.afterCommit(sync=false) {
+                tagTaxonomy(tax, folder, false)
+            }
             return tax
         } else {
             throw ArchivistWriteException(
@@ -164,37 +160,22 @@ class TaxonomyServiceImpl @Autowired constructor(
     }
 
     override fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean) : Map<String, Long> {
-        val result = if (ArchivistConfiguration.unittest) {
-            tagTaxonomyInternal(tax, start, force)
-        }
-        else {
-            runBlocking {
-                val lock = ClusterLockSpec.combineLock(tax.clusterLockId()).apply { timeout = 5 }
-                clusterLockExecutor.async(lock) {
-                    try {
-                        tagTaxonomyInternal(tax, start, force)
-                    } catch (e: Exception) {
-                        logger.warn("Failed to run taxon ${tax.taxonomyId}", e)
-                        null
-                    }
-                }.await()
+        val lock = ClusterLockSpec.combineLock(tax.clusterLockId).apply { timeout = 5 }
+        val result = clusterLockExecutor.inline(lock) {
+            try {
+                tagTaxonomyInternal(tax, start, force)
+            } catch (e: Exception) {
+                logger.warn("Failed to run taxon ${tax.taxonomyId}", e)
+                null
             }
         }
         return result ?: emptyMap()
     }
 
     override fun tagTaxonomyAsync(tax: Taxonomy, start: Folder?, force: Boolean) {
-        if (ArchivistConfiguration.unittest) {
+        workQueue.execute(SecureRunnable {
             tagTaxonomy(tax, start, force)
-        }
-        else {
-            val auth = getAuthentication()
-            GlobalScope.launch {
-                withAuth(auth) {
-                    tagTaxonomy(tax, start, force)
-                }
-            }
-        }
+        })
     }
 
     fun tagTaxonomyInternal(tax: Taxonomy, start: Folder?, force: Boolean): Map<String, Long> {
@@ -310,7 +291,7 @@ class TaxonomyServiceImpl @Autowired constructor(
             }
 
             if (force) {
-                untagTaxonomyAsync(tax, updateTime)
+                untagTaxonomy(tax, updateTime)
             }
 
         } finally {
@@ -328,19 +309,23 @@ class TaxonomyServiceImpl @Autowired constructor(
     }
 
     override fun untagTaxonomyAsync(tax: Taxonomy, timestamp: Long) {
-        folderTaskExecutor.execute(InternalRunnable(auth) { untagTaxonomy(tax, timestamp) })
+        val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
+        workQueue.execute(InternalRunnable(auth) { untagTaxonomy(tax, timestamp) })
     }
 
     override fun untagTaxonomyAsync(tax: Taxonomy) {
-        folderTaskExecutor.execute(InternalRunnable(auth) { untagTaxonomy(tax) })
+        val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
+        workQueue.execute(InternalRunnable(auth) { untagTaxonomy(tax) })
     }
 
     override fun untagTaxonomyFoldersAsync(tax: Taxonomy, folders: List<Folder>) {
-        folderTaskExecutor.execute(InternalRunnable(auth) { untagTaxonomyFolders(tax, folders) })
+        val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
+        workQueue.execute(InternalRunnable(auth) { untagTaxonomyFolders(tax, folders) })
     }
 
     override fun untagTaxonomyFoldersAsync(tax: Taxonomy, folder: Folder, assets: List<String>) {
-        folderTaskExecutor.execute(InternalRunnable(auth) { untagTaxonomyFolders(tax, folder, assets) })
+        val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
+        workQueue.execute(InternalRunnable(auth) {untagTaxonomyFolders(tax, folder, assets) })
     }
 
     /**
@@ -507,42 +492,45 @@ class TaxonomyServiceImpl @Autowired constructor(
         return mapOf()
     }
 
-    private fun processBulk(tax: Taxonomy, bulkProcessor: BulkProcessor, rsp: SearchResponse, pred: Predicate<TaxonomySchema>) {
+    private fun processBulk(tax: Taxonomy,
+                            bulkProcessor: BulkProcessor,
+                            rsp: SearchResponse,
+                            pred: Predicate<TaxonomySchema>) = runBlocking {
+
         var rsp = rsp
         val rest = indexRoutingService[getOrgId()]
 
+        logger.info("processing bulk taxon for: {}", getUser())
         // Use a non combined hard lock but the same lock ID.
-        clusterLockExecutor.async(ClusterLockSpec.hardLock(tax.clusterLockId())) {
-            withAuth(auth) {
-                try {
-                    do {
-                        for (hit in rsp.hits.hits) {
-                            val doc = Document(hit.sourceAsMap)
-                            val taxies =
-                                    doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
-                            if (taxies != null) {
-                                if (taxies.removeIf(pred)) {
-                                    doc.setAttr(ROOT_FIELD, taxies)
-                                    val indexReq = rest.newIndexRequest(hit.id)
-                                    indexReq.opType(DocWriteRequest.OpType.INDEX)
-                                    indexReq.source(Json.serialize(doc.document), XContentType.JSON)
-                                    bulkProcessor.add(indexReq)
-                                }
+        clusterLockExecutor.inline(ClusterLockSpec.hardLock(tax.clusterLockId)) {
+            try {
+                do {
+                    for (hit in rsp.hits.hits) {
+                        val doc = Document(hit.sourceAsMap)
+                        val taxies =
+                                doc.getAttr(ROOT_FIELD, object : TypeReference<MutableSet<TaxonomySchema>>() {})
+                        if (taxies != null) {
+                            if (taxies.removeIf(pred)) {
+                                doc.setAttr(ROOT_FIELD, taxies)
+                                val indexReq = rest.newIndexRequest(hit.id)
+                                indexReq.opType(DocWriteRequest.OpType.INDEX)
+                                indexReq.source(Json.serialize(doc.document), XContentType.JSON)
+                                bulkProcessor.add(indexReq)
                             }
                         }
-                        val scrollReq = SearchScrollRequest()
-                        scrollReq.scrollId(rsp.scrollId)
-                        scrollReq.scroll(SCROLL_TIME)
-                        rsp = rest.client.searchScroll(scrollReq)
+                    }
+                    val scrollReq = SearchScrollRequest()
+                    scrollReq.scrollId(rsp.scrollId)
+                    scrollReq.scroll(SCROLL_TIME)
+                    rsp = rest.client.searchScroll(scrollReq)
 
-                    } while (rsp.hits.hits.isNotEmpty())
+                } while (rsp.hits.hits.isNotEmpty())
 
-                } catch (e: Exception) {
-                    logger.warn("Failed to untag taxonomy assets, ", e)
+            } catch (e: Exception) {
+                logger.warn("Failed to untag taxonomy assets, ", e)
 
-                } finally {
-                    bulkProcessor.close()
-                }
+            } finally {
+                bulkProcessor.close()
             }
         }
     }

@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.springframework.security.core.Authentication
 import java.util.concurrent.TimeUnit
 
 enum class LockStatus {
@@ -29,7 +30,8 @@ class ClusterLockSpec(
         var timeout : Long = 1,
         var timeoutUnits : TimeUnit = TimeUnit.MINUTES,
         var holdTillTimeout: Boolean = false,
-        var dispatcher: CoroutineDispatcher = Dispatchers.Default) {
+        var dispatcher: CoroutineDispatcher = Dispatchers.Default,
+        var authentication: Authentication? = null) {
 
     companion object {
 

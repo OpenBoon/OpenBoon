@@ -8,8 +8,10 @@ import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.TaxonomySchema
 import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.security.CoroutineAuthentication
+import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.common.domain.ArchivistWriteException
-import org.assertj.core.util.Lists
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -112,6 +114,7 @@ class TaxonomyServiceTests : AbstractTest() {
         refreshIndex()
 
         val result = taxonomyService.untagTaxonomy(tax1, 1000)
+
         assertEquals(1, result["assetCount"]!!.toLong())
         assertEquals(0, result["errorCount"]!!.toLong())
         refreshIndex()
@@ -200,5 +203,6 @@ class TaxonomyServiceTests : AbstractTest() {
         refreshIndex()
         assertEquals(0, searchService.search(
                 AssetSearch("ships")).hits.getTotalHits())
+
     }
 }

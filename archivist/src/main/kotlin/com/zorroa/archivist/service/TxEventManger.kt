@@ -2,17 +2,18 @@ package com.zorroa.archivist.service
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.security.getAuthentication
-import com.zorroa.archivist.security.withAuth
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
-import org.springframework.security.core.Authentication
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.task.AsyncListenableTaskExecutor
+import org.springframework.security.concurrent.DelegatingSecurityContextRunnable
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
 
 class TransactionEventManager {
+
+    @Autowired
+    lateinit var workQueue: AsyncListenableTaskExecutor
 
     /**
      * Immediate mode ensures synchronizations are executed immediately upon
@@ -25,7 +26,7 @@ class TransactionEventManager {
      * @param body
      */
     fun afterCommit(sync: Boolean=true, body: () -> Unit) {
-        register(AfterCommit(sync, body))
+        register(AfterCommit(sync, workQueue, body))
     }
 
     fun register(txs: BaseTransactionSynchronization) {
@@ -56,19 +57,20 @@ open class BaseTransactionSynchronization(val body: () -> Unit) : TransactionSyn
     override fun afterCompletion(p0: Int) { }
 }
 
-class AfterCommit(private val sync: Boolean, body: () -> Unit) : BaseTransactionSynchronization(body) {
+class AfterCommit(private val sync: Boolean, val workQueue: AsyncListenableTaskExecutor, body: () -> Unit) : BaseTransactionSynchronization(body) {
 
-    val auth: Authentication? = getAuthentication()
+    val ctx = SecurityContextHolder.getContext()
 
     override fun afterCommit() {
         if (sync) {
             body()
-        } else {
-            GlobalScope.launch(Dispatchers.Default) {
-                withAuth(auth) {
-                    body()
-                }
-            }
         }
+        else {
+            workQueue.execute(DelegatingSecurityContextRunnable(Runnable {
+                body()
+            }, ctx))
+        }
+
+
     }
 }
