@@ -2,15 +2,12 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ClusterLockSpec
-import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.LongAdder
 import javax.annotation.PostConstruct
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ClusterLockExecutorTests : AbstractTest() {
@@ -133,6 +130,29 @@ class ClusterLockExecutorTests : AbstractTest() {
             }
         }
         Thread.sleep(1000)
+        assertEquals(2, count.toInt())
+    }
+
+
+    @Test
+    fun testInlineLock() {
+        val count = LongAdder()
+        val lock1 = textExecutor.inline(ClusterLockSpec.hardLock("counter")) {
+            count.increment()
+            count.toInt()
+        }
+        assertEquals(1, lock1)
+    }
+
+    @Test
+    fun testInlineReentrantock() {
+        val count = LongAdder()
+        textExecutor.inline(ClusterLockSpec.hardLock("counter")) {
+            count.increment()
+            textExecutor.inline(ClusterLockSpec.hardLock("counter")) {
+                count.increment()
+            }
+        }
         assertEquals(2, count.toInt())
     }
 }

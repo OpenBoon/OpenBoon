@@ -3,7 +3,7 @@ package com.zorroa.archivist.security
 import kotlinx.coroutines.ThreadContextElement
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import kotlin.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A Coroutine context for storing the Spring Security Context
@@ -12,6 +12,8 @@ import kotlin.coroutines.*
  */
 class CoroutineAuthentication(
         private var securityContext: SecurityContext) : ThreadContextElement<SecurityContext> {
+
+    constructor(): this(SecurityContextHolder.getContext())
 
     companion object Key : CoroutineContext.Key<CoroutineAuthentication>
 
@@ -28,5 +30,3 @@ class CoroutineAuthentication(
         SecurityContextHolder.setContext(oldState)
     }
 }
-
-

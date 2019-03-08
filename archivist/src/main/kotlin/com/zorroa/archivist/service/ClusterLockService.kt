@@ -7,6 +7,8 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.repository.ClusterLockDao
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
+import io.micrometer.core.instrument.MeterRegistry
+import kotlinx.coroutines.ThreadContextElement
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.AsyncListenableTaskExecutor
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.concurrent.ListenableFuture
 import java.util.concurrent.Callable
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
 
 interface ClusterLockExecutor {
@@ -86,6 +89,49 @@ interface ClusterLockService {
     fun combineLocks(spec : ClusterLockSpec): Boolean
 }
 
+/**
+ * ThreadLocal holder for storing per-thread cluster locks. Used for
+ * reentrant locking.
+ */
+object ClusterLockContext {
+    private val locks : ThreadLocal<MutableList<String>> =
+            ThreadLocal.withInitial { mutableListOf<String>() }
+
+    fun getLocks() : MutableList<String>  {
+        return locks.get()
+    }
+
+    fun setLocks(ctx: MutableList<String>) {
+        locks.set(ctx)
+    }
+}
+
+
+/**
+ * A Coroutine Context for passing around thread local cluster locks.
+ *
+ * @property locks: A list of cluster locks.
+ */
+class ClusterLocksCoroutineContext(
+        private var locks: MutableList<String>) : ThreadContextElement<MutableList<String>> {
+
+    companion object Key : CoroutineContext.Key<ClusterLocksCoroutineContext>
+
+    override val key: CoroutineContext.Key<ClusterLocksCoroutineContext>
+        get() = Key
+
+    override fun updateThreadContext(context: CoroutineContext): MutableList<String> {
+        val old = ClusterLockContext.getLocks()
+        ClusterLockContext.setLocks(locks)
+        return old
+    }
+
+    override fun restoreThreadContext(context: CoroutineContext, oldState: MutableList<String>) {
+        ClusterLockContext.setLocks(oldState)
+    }
+}
+
+
 @Component
 class ClusterLockExecutorImpl @Autowired constructor(
         val clusterLockService : ClusterLockService,
@@ -97,6 +143,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
 
     override fun <T> inline(spec: ClusterLockSpec, body: () -> T?) : T? {
         var result: T? = null
+
         if (obtainLock(spec)) {
             try {
                 do {
@@ -156,6 +203,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
 
     fun obtainLock(spec: ClusterLockSpec) : Boolean {
 
+
         var tryNum = 0
         var backOff = backoffIncrement
 
@@ -186,11 +234,11 @@ class ClusterLockExecutorImpl @Autowired constructor(
     }
 }
 
-
 @Service
 @Transactional
 class ClusterLockServiceImpl @Autowired constructor(
-        val clusterLockDao: ClusterLockDao
+        val clusterLockDao: ClusterLockDao,
+        val meterRegistry: MeterRegistry
 ): ClusterLockService {
 
     @Transactional(readOnly = true)
@@ -205,19 +253,21 @@ class ClusterLockServiceImpl @Autowired constructor(
 
     @Transactional(propagation = Propagation.REQUIRED)
     override fun lock(spec : ClusterLockSpec) : LockStatus {
-        if (threadLocks.get().contains(spec.name)) {
+        val ctx = ClusterLockContext.getLocks()
+        if (ctx.contains(spec.name)) {
+            meterRegistry.counter("zorroa-reentrant-lock", "lockName", spec.name)
             return LockStatus.Locked
         }
         val locked = clusterLockDao.lock(spec)
         if (locked == LockStatus.Locked) {
-            threadLocks.get().add(spec.name)
+            ctx.add(spec.name)
         }
         return locked
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     override fun unlock(spec: ClusterLockSpec) : Boolean {
-        threadLocks.get().remove(spec.name)
+        ClusterLockContext.getLocks().remove(spec.name)
         return if (!spec.holdTillTimeout) {
             clusterLockDao.unlock(spec.name)
         } else {
@@ -236,9 +286,6 @@ class ClusterLockServiceImpl @Autowired constructor(
     }
 
     companion object {
-
-        private val threadLocks : ThreadLocal<MutableList<String>> = ThreadLocal.withInitial { mutableListOf<String>() }
-
         private val logger = LoggerFactory.getLogger(ClusterLockServiceImpl::class.java)
     }
 }
