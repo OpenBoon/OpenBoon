@@ -113,7 +113,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
     @Transactional
     override fun delete(dyhi: DyHierarchy): Boolean {
-        return if (!clusterLockService.isLocked(dyhi.lockName)) {
+        val result = clusterLockExecutor.inline(ClusterLockSpec.hardLock(dyhi.lockName)) {
             if (dyHierarchyDao.delete(dyhi.id)) {
                 val folder = folderService.get(dyhi.folderId)
                 folderService.removeDyHierarchyRoot(folder)
@@ -121,12 +121,11 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 true
             }
             else {
+
                 false
             }
         }
-        else {
-            throw ArchivistWriteException("DyHi is running, cannot be deleted at this time.")
-        }
+        return result ?: false
     }
 
     @Transactional

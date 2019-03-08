@@ -1,14 +1,17 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LockStatus
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.repository.ClusterLockDao
+import com.zorroa.archivist.security.CoroutineAuthentication
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import io.micrometer.core.instrument.MeterRegistry
-import kotlinx.coroutines.ThreadContextElement
+import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.AsyncListenableTaskExecutor
@@ -144,7 +147,26 @@ class ClusterLockExecutorImpl @Autowired constructor(
     override fun <T> inline(spec: ClusterLockSpec, body: () -> T?) : T? {
         var result: T? = null
 
-        if (obtainLock(spec)) {
+        /**
+         * For inline locking, taking out the lock has to be forced into a different thread.
+         * This is to ensure the lock record gets committed and other transactions can see it.
+         * Otherwise, the row in the SQL table will be locked and hurt parallelism.
+         *
+         * For unittests, this doesn't work due to the fact the test is wrapped in an overall
+         * transaction.
+         */
+        val lock = if (ArchivistConfiguration.unittest) {
+            obtainLock(spec)
+        }
+        else {
+            runBlocking(
+                    ClusterLocksCoroutineContext(ClusterLockContext.getLocks())+
+                            CoroutineAuthentication() + Dispatchers.IO) {
+                withContext(Dispatchers.Default) { obtainLock(spec) }
+            }
+        }
+
+        if (lock) {
             try {
                 do {
                     try {
@@ -154,7 +176,15 @@ class ClusterLockExecutorImpl @Autowired constructor(
                     }
                 } while (clusterLockService.combineLocks(spec))
             } finally {
-                clusterLockService.unlock(spec)
+                if (ArchivistConfiguration.unittest) {
+                    clusterLockService.unlock(spec)
+                }
+                else {
+                    runBlocking(ClusterLocksCoroutineContext(ClusterLockContext.getLocks()) +
+                                    CoroutineAuthentication() + Dispatchers.IO) {
+                        withContext(Dispatchers.Default) { clusterLockService.unlock(spec) }
+                    }
+                }
             }
         }
         return result
