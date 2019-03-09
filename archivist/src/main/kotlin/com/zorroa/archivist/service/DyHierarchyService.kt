@@ -2,14 +2,11 @@ package com.zorroa.archivist.service
 
 import com.google.common.base.Splitter
 import com.google.common.collect.*
-import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.domain.ArchivistWriteException
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
@@ -20,7 +17,6 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -39,37 +35,23 @@ interface DyHierarchyService {
      */
     fun create(spec: DyHierarchySpec): DyHierarchy
 
-    /**
-     * Generate a dynamic hierarchy.
-     *
-     * @param agg
-     */
-    fun generate(dyhi: DyHierarchy): Int
-
     fun get(id: UUID): DyHierarchy
 
     fun get(folder: Folder): DyHierarchy
 
     /**
-     * Generate all hierarchies.
+     * Generate folders for all DyHis for the current user's organization.
      */
     fun generateAll()
 
     /**
-     * Submit command to generate folders on all hierarchies.  This command
-     * is throttled to a reasonable rate.  To bypass the throttle, set the
-     * 'force' argument to true.
+     * Generate folders for the given DyHi
      *
-     * @param refresh
+     * @param dyhi The DyHierarchy to generate folders for.
+     * @param clearFirst Set to true if any of the dyhi levels have changed.
      */
-    fun submitGenerateAll(refresh: Boolean)
+    fun generate(dyhi: DyHierarchy, clearFirst: Boolean=false) : Int
 
-    /**
-     * Generate a dynamic hierarchy.
-     *
-     * @param agg
-     */
-    fun submitGenerate(dyhi: DyHierarchy)
 }
 
 @Service
@@ -77,7 +59,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
     val indexRoutingService: IndexRoutingService,
     val transactionEventManager: TransactionEventManager,
-    val folderTaskExecutor: UniqueTaskExecutor
+    val clusterLockExecutor: ClusterLockExecutor,
+    val clusterLockService: ClusterLockService
 ) : DyHierarchyService {
 
     @Autowired
@@ -119,20 +102,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
         folderService.setDyHierarchyRoot(folderNew, field)
 
         /*
-         * If this returns true, the dyhi was working, it should stop
-         * pretty quickly.  Other transactions should be blocked at
-         * the update() call, but there might be some races in here.
-         */
-        if (dyHierarchyDao.setWorking(updated, false)) {
-            logger.info("DyHi {} was running, will wait on folders to be removed.")
-        }
-
-        /*
          * Queue up an event where after this transaction commits.
          */
         transactionEventManager.afterCommit(false) {
-            folderService.deleteAll(current)
-            submitGenerate(dyHierarchyDao.get(current.id))
+            generate(dyHierarchyDao.get(current.id), clearFirst = true)
         }
 
         return true
@@ -140,19 +113,19 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
     @Transactional
     override fun delete(dyhi: DyHierarchy): Boolean {
-
-        if (dyHierarchyDao.delete(dyhi.id)) {
-            val folder = folderService.get(dyhi.folderId)
-            folderService.removeDyHierarchyRoot(folder)
-
-            if (dyHierarchyDao.setWorking(dyhi, false)) {
-                logger.info("DyHi {} was running, will wait on folders to be removed.")
-            } else {
+        val result = clusterLockExecutor.inline(ClusterLockSpec.hardLock(dyhi.lockName)) {
+            if (dyHierarchyDao.delete(dyhi.id)) {
+                val folder = folderService.get(dyhi.folderId)
+                folderService.removeDyHierarchyRoot(folder)
                 folderService.deleteAll(dyhi)
+                true
             }
-            return true
+            else {
+
+                false
+            }
         }
-        return false
+        return result ?: false
     }
 
     @Transactional
@@ -165,15 +138,9 @@ class DyHierarchyServiceImpl @Autowired constructor (
         val dyhi = dyHierarchyDao.create(spec)
         folderService.setDyHierarchyRoot(folder, spec.levels[0].field)
 
-        if (ArchivistConfiguration.unittest) {
-            generate(dyhi)
-        } else {
-            /*
-             * Generate the hierarchy in another thread
-             * after this method returns.
-             */
-            transactionEventManager.afterCommit(true) {
-                submitGenerate(dyhi)
+        if (spec.generate) {
+            transactionEventManager.afterCommit(false) {
+                generate(dyhi, false)
             }
         }
 
@@ -189,46 +156,40 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     override fun generateAll() {
-        for (dyhi in dyHierarchyDao.getAll()) {
-            generate(dyhi)
+        dyHierarchyDao.getAll().forEach { generate(it) }
+    }
+
+    override fun generate(dyhi: DyHierarchy, clearFirst: Boolean) : Int {
+        val lock = ClusterLockSpec.combineLock(dyhi.lockName).apply { timeout = 5 }
+        val result = clusterLockExecutor.inline(lock) {
+            try {
+                generateInternal(dyhi, clearFirst)
+            } catch (e: Exception) {
+                logger.warn("Failed to generate dyhi ${dyhi.id}", e)
+                null
+            }
         }
+        return result ?: -1
     }
 
-    override fun submitGenerateAll(refresh: Boolean) {
-        folderTaskExecutor.execute(
-                UniqueRunnable("dyhi_run_all", SecureRunnable(SecurityContextHolder.getContext()) {
-                    if (refresh) {
-
-                    }
-                    generateAll()
-                }))
-    }
-
-    override fun submitGenerate(dyhi: DyHierarchy) {
-        folderTaskExecutor.execute(UniqueRunnable("dyhi_run_" + dyhi.id,
-                SecureRunnable(SecurityContextHolder.getContext(), { generate(dyhi) })))
-    }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-    override fun generate(dyhi: DyHierarchy): Int {
-        if (dyhi.levels == null || dyhi.levels.isEmpty()) {
+    /**
+     * Only the run() method should call this function.
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    private fun generateInternal(dyhi: DyHierarchy, clearFirst: Boolean): Int {
+        if (dyhi.levels.isNullOrEmpty()) {
             return 0
         }
 
-        if (!dyHierarchyDao.setWorking(dyhi, true)) {
-            logger.warn("DyHi {} already running, skipping.", dyhi)
-            return 0
+        if (clearFirst) {
+            folderService.deleteAll(dyhi)
         }
 
-        logger.event(LogObject.DYHI, LogAction.EXECUTE, mapOf("dyhiId" to dyhi.id))
-        val rf = folderService.get(dyhi.folderId)
+        val rf = folderService.get(dyhi.folderId, cached = false)
         val rest = indexRoutingService[getOrgId()]
 
-        /**
-         * TODO: allow some custom search options here, for example, maybe you
-         * want to agg for the last 24 hours.
-         */
         try {
+
             val sr = rest.newSearchBuilder()
             if (rf.search != null) {
                 sr.source.query(searchService.getQuery(rf.search))
@@ -239,7 +200,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
             /**
              * Fix the field name to take into account raw.
              */
-            dyhi.levels.forEach({ resolveFieldName(it)})
+            fieldService.invalidateFields()
+            dyhi.levels.forEach { resolveFieldName(it) }
 
             /**
              * Build a nested list of Elastic aggregations.
@@ -270,22 +232,17 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 logger.warn("Failed to delete unused folders: {}, {}", unusedFolders, e)
             }
 
-            logger.info("{} created by {}, {} folders", dyhi, getUsername(), folders.count)
+            logger.event(LogObject.DYHI, LogAction.EXECUTE,
+                    mapOf("dyhiId" to dyhi.id,
+                            "dyhiLevels" to dyhi.levels.size,
+                            "folderId" to dyhi.folderId,
+                            "folderCount" to folders.count))
+
             return folders.count
         } catch (e: Exception) {
             logger.warn("Failed to generate dynamic hierarchy,", e)
         } finally {
-            if (!dyHierarchyDao.isWorking(dyhi)) {
-                /*
-                 * If we get here and the dyhi is set to not working,then
-                 * that means someone deleted it while it was running.
-                 * That means we're responsible for deleting the folders.
-                 */
-                logger.warn("The dynamic hierarchy {} was stopped, removing all folders.", dyhi)
-                folderService.deleteAll(dyhi)
-            } else {
-                dyHierarchyDao.setWorking(dyhi, false)
-            }
+
         }
 
         return 0
@@ -344,12 +301,6 @@ class DyHierarchyServiceImpl @Autowired constructor (
      * @param queue
      */
     private fun createDynamicHierarchy(queue: Queue<Tuple<Aggregations, Int>>, folders: FolderStack) {
-        /*
-         * A fast in memory check.
-         */
-        if (!dyHierarchyDao.isWorking(folders.dyhi)) {
-            return
-        }
 
         val item = queue.poll()
         val aggs = item.left
@@ -364,10 +315,6 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
         val buckets = terms.buckets
         for (bucket in buckets) {
-
-            if (!dyHierarchyDao.isWorking(folders.dyhi)) {
-                return
-            }
 
             var popit = true
 
@@ -509,10 +456,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
          * @return
          */
         fun getFolderName(value: String, level: DyHierarchyLevel): String {
-            when (level.type) {
-                DyHierarchyLevelType.Attr, DyHierarchyLevelType.Year, DyHierarchyLevelType.Day -> return value
-                DyHierarchyLevelType.Month -> return java.text.DateFormatSymbols().months[Integer.parseInt(value) - 1]
-                else -> return value
+            return when (level.type) {
+                DyHierarchyLevelType.Attr, DyHierarchyLevelType.Year, DyHierarchyLevelType.Day -> value
+                DyHierarchyLevelType.Month -> java.text.DateFormatSymbols().months[Integer.parseInt(value) - 1]
+                else -> value
             }
         }
 
@@ -548,7 +495,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
     private fun resolveFieldName(level: DyHierarchyLevel) {
         val type = fieldService.getFieldType(level.field)
-        if (type == "path") {
+        if (type == null) {
+            throw IllegalStateException("Attempting to agg on a invalid field ${level.field}")
+        }
+        else if (type == "path") {
             level.field = level.field + ".paths"
         }
         else if (type ==  "string") {

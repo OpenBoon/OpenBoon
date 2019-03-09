@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.security.getOrgId
@@ -17,34 +16,24 @@ import java.util.*
 interface DyHierarchyDao : GenericDao<DyHierarchy, DyHierarchySpec> {
 
     operator fun get(folder: Folder): DyHierarchy
-
-    fun isWorking(d: DyHierarchy): Boolean
-
-    fun setWorking(d: DyHierarchy, value: Boolean): Boolean
 }
 
 @Repository
 class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
 
     @Autowired
-    private var userDaoCache: UserDaoCache? = null
-
-    /**
-     * The current list of working dyhi processes.
-     */
-    private val WORKING = Sets.newConcurrentHashSet<DyHierarchy>()
+    lateinit var userDaoCache: UserDaoCache
 
     private val MAPPER = RowMapper { rs, _ ->
         val h = DyHierarchy()
         h.folderId = rs.getObject("pk_folder") as UUID
         h.id = rs.getObject("pk_dyhi") as UUID
         h.timeCreated = rs.getLong("time_created")
-        h.user = userDaoCache!!.getUser(rs.getObject("pk_user_created") as UUID)
+        h.user = userDaoCache.getUser(rs.getObject("pk_user_created") as UUID)
         h.levels = Json.deserialize(rs.getString("json_levels"),
                 object : TypeReference<List<DyHierarchyLevel>>() {
 
                 })
-        h.isWorking = WORKING.contains(h)
         h
     }
 
@@ -103,18 +92,6 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
 
     override fun count(): Long {
         return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Long::class.java, getOrgId())
-    }
-
-    override fun isWorking(d: DyHierarchy): Boolean {
-        return WORKING.contains(d)
-    }
-
-    override fun setWorking(d: DyHierarchy, value: Boolean): Boolean {
-        return if (value) {
-            WORKING.add(d)
-        } else {
-            WORKING.remove(d)
-        }
     }
 
     companion object {

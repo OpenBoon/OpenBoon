@@ -2,7 +2,10 @@ package com.zorroa.archivist.security
 
 import com.google.common.collect.Sets
 import com.google.common.collect.Sets.intersection
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
@@ -13,9 +16,9 @@ import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
-import org.springframework.security.web.authentication.session.SessionAuthenticationException
 import java.util.*
 
 /**
@@ -53,6 +56,10 @@ object SecurityLogger {
 
 fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication
+}
+
+fun getSecurityContext(): SecurityContext {
+    return SecurityContextHolder.getContext()
 }
 
 fun createPasswordHash(plainPassword: String): String {

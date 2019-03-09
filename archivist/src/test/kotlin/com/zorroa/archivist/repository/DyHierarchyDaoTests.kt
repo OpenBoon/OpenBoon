@@ -25,13 +25,11 @@ class DyHierarchyDaoTests : AbstractTest() {
     @Before
     fun init() {
         folder = folderService.create(FolderSpec("foo"), false)
-        val spec = DyHierarchySpec()
-        spec.folderId = folder.id
-        spec.levels = ImmutableList.of(
+        val spec = DyHierarchySpec(folder.id, listOf(
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day),
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
-                DyHierarchyLevel("source.filename.raw"))
+                DyHierarchyLevel("source.filename.raw")))
         dyhi = dyHierarchyDao!!.create(spec)
     }
 
@@ -53,15 +51,6 @@ class DyHierarchyDaoTests : AbstractTest() {
         assertEquals(dyhi, d2)
     }
 
-    @Test
-    fun testGetSetWorking() {
-        assertFalse(dyHierarchyDao!!.isWorking(dyhi))
-        assertTrue(dyHierarchyDao!!.setWorking(dyhi, true))
-        assertTrue(dyHierarchyDao!!.isWorking(dyhi))
-        assertFalse(dyHierarchyDao!!.setWorking(dyhi, true))
-        assertTrue(dyHierarchyDao!!.isWorking(dyhi))
-        assertTrue(dyHierarchyDao!!.setWorking(dyhi, false))
-    }
 
     @Test
     fun testDelete() {
@@ -84,10 +73,7 @@ class DyHierarchyDaoTests : AbstractTest() {
         assertEquals(count, list.size.toLong())
 
         val (id) = folderService.create(FolderSpec("bar"), false)
-        val spec = DyHierarchySpec()
-        spec.folderId = id
-        spec.levels = ImmutableList.of(
-                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
+        val spec = DyHierarchySpec(id, listOf(DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)))
         dyHierarchyDao!!.create(spec)
         list = dyHierarchyDao!!.getAll()
         assertEquals(count + 1, list.size.toLong())
@@ -101,10 +87,7 @@ class DyHierarchyDaoTests : AbstractTest() {
         assertEquals(count, list.size().toLong())
 
         val (id) = folderService.create(FolderSpec("bar"), false)
-        val spec = DyHierarchySpec()
-        spec.folderId = id
-        spec.levels = ImmutableList.of(
-                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
+        val spec = DyHierarchySpec(id, listOf(DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)))
         dyHierarchyDao!!.create(spec)
         list = dyHierarchyDao!!.getAll(Pager.first())
         assertEquals(count + 1, list.size().toLong())

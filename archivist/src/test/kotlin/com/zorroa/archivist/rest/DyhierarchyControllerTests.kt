@@ -43,13 +43,11 @@ class DyhierarchyControllerTests : MockMvcTest() {
         val session = admin()
 
         val (id) = folderService.create(FolderSpec("foo"), false)
-        val spec = DyHierarchySpec()
-        spec.folderId = id
-        spec.levels = ImmutableList.of(
+        val spec = DyHierarchySpec(id, listOf(
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day),
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
-                DyHierarchyLevel("source.filename.raw"))
+                DyHierarchyLevel("source.filename.raw")))
 
         val result = mvc.perform(post("/api/v1/dyhi")
                 .session(session)

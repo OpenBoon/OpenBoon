@@ -437,7 +437,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getQuery(search: AssetSearch): QueryBuilder {
-        return getQuery(search, Sets.newHashSet(), true, false)
+        return getQuery(search, mutableSetOf(), true, false)
     }
 
     private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
