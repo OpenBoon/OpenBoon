@@ -8,6 +8,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.util.concurrent.atomic.LongAdder
 import javax.annotation.PostConstruct
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ClusterLockExecutorTests : AbstractTest() {
@@ -154,5 +155,24 @@ class ClusterLockExecutorTests : AbstractTest() {
             }
         }
         assertEquals(2, count.toInt())
+    }
+
+    @Test
+    fun testSubmitWithFailedLock() {
+
+        val count = LongAdder()
+
+        // Setup a lock that will be around for about 1 second.
+        textExecutor.execute(ClusterLockSpec.softLock("counter")) {
+            count.increment()
+            Thread.sleep(1000)
+        }
+
+        // Now, submit and async soft which fails immediately, thus returning null.
+        val result = textExecutor.submit(ClusterLockSpec.softLock("counter")) {
+            "test"
+        }.get()
+        
+        assertNull(result)
     }
 }

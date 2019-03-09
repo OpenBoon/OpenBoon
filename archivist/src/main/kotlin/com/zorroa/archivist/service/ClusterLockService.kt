@@ -217,16 +217,17 @@ class ClusterLockExecutorImpl @Autowired constructor(
             withAuth(authentication) {
                 if (!obtainLock(spec)) {
                     null
+                } else {
+                    var result: T?
+                    try {
+                        do {
+                            result = body()
+                        } while (clusterLockService.combineLocks(spec))
+                    } finally {
+                        clusterLockService.unlock(spec)
+                    }
+                    result
                 }
-                var result: T?
-                try {
-                    do {
-                        result = body()
-                    } while (clusterLockService.combineLocks(spec))
-                } finally {
-                    clusterLockService.unlock(spec)
-                }
-                result
             }
         })
     }
