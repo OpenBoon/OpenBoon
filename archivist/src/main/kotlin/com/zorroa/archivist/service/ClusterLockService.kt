@@ -159,10 +159,10 @@ class ClusterLockExecutorImpl @Autowired constructor(
             obtainLock(spec)
         }
         else {
-            runBlocking(
-                    ClusterLocksCoroutineContext(ClusterLockContext.getLocks())+
-                            CoroutineAuthentication() + Dispatchers.IO) {
-                withContext(Dispatchers.Default) { obtainLock(spec) }
+            runBlocking(ClusterLocksCoroutineContext(ClusterLockContext.getLocks()) +
+                            CoroutineAuthentication() +
+                            Dispatchers.IO) {
+                obtainLock(spec)
             }
         }
 
@@ -181,8 +181,9 @@ class ClusterLockExecutorImpl @Autowired constructor(
                 }
                 else {
                     runBlocking(ClusterLocksCoroutineContext(ClusterLockContext.getLocks()) +
-                                    CoroutineAuthentication() + Dispatchers.IO) {
-                        withContext(Dispatchers.Default) { clusterLockService.unlock(spec) }
+                                    CoroutineAuthentication() +
+                                    Dispatchers.IO) {
+                        clusterLockService.unlock(spec)
                     }
                 }
             }
