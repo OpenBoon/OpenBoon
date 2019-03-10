@@ -66,10 +66,21 @@ class JobFilter (
 ) : KDaoFilter() {
 
     @JsonIgnore
-    override val sortMap: Map<String, String> = mapOf()
+    override val sortMap: Map<String, String> =
+            mapOf("id" to "job.pk_job",
+                    "type" to "job.int_type",
+                    "name" to "job.str_name",
+                    "timeCreated" to "job.time_created",
+                    "state" to "job.int_state",
+                    "priority" to "job.int_priority",
+                    "organizationId" to "job.pk_organization")
 
     @JsonIgnore
     override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("timeCreated:desc")
+        }
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("job.pk_job", it.size))
