@@ -3,12 +3,12 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.ArchivistException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 
 class AnalystServiceTests : AbstractTest() {
@@ -41,8 +41,13 @@ class AnalystServiceTests : AbstractTest() {
         assertEquals(spec2.load, a2.load)
     }
 
-    @Test(expected = ArchivistException::class)
+    /**
+     * This is going to be empty since there are no analysts running
+     * in this environment.
+     */
+    @Test
     fun doProcessorScanFailure() {
-        analystService.doProcessorScan()
+        val procs = analystService.doProcessorScan()
+        assertTrue(procs.isEmpty())
     }
 }

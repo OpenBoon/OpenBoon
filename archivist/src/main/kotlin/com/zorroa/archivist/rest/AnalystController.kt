@@ -1,14 +1,14 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.service.AnalystService
+import com.zorroa.archivist.service.ClusterLockService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystFilter
 import com.zorroa.common.domain.LockState
 import io.micrometer.core.annotation.Timed
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -18,7 +18,9 @@ import java.util.*
 @RestController
 @Timed
 class AnalystController @Autowired constructor(
-        val analystService: AnalystService) {
+        val analystService: AnalystService,
+        val workQueue: AsyncListenableTaskExecutor,
+        val clusterLockService: ClusterLockService) {
 
     @PostMapping(value = ["/api/v1/analysts/_search"])
     fun search(@RequestBody filter: AnalystFilter) : Any {
@@ -37,12 +39,19 @@ class AnalystController @Autowired constructor(
         return HttpUtils.updated("analyst", analyst.id, analystService.setLockState(analyst, newState))
     }
 
+    /**
+     * Initiate a processor scan.  If the processor-scan key is locked, then
+     * success is set to false. If true, then a scan is kicked off.  Only
+     * 1 scan per minute can be run.
+     */
     @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
     fun processorScan(): Any {
-        // background the scan
-        GlobalScope.launch {
-            analystService.doProcessorScan()
+        val locked = clusterLockService.isLocked("processor-scan")
+        if (!locked) {
+            workQueue.execute {
+                analystService.doProcessorScan()
+            }
         }
-        return HttpUtils.status("processor", "scan", true)
+        return HttpUtils.status("processor", "scan", !locked)
     }
 }
