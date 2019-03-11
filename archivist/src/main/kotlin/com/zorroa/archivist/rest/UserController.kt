@@ -40,7 +40,7 @@ class UserController @Autowired constructor(
         private val emailService: EmailService
 ) {
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
 
@@ -161,13 +161,13 @@ class UserController @Autowired constructor(
         return HttpUtils.status("send-onboard-email", "update", true)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/users"])
     fun create(@RequestBody builder: UserSpec): User {
         return userService.create(builder)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v2/users"])
     fun createV2(@RequestBody spec: LocalUserSpec): User {
         return userService.create(spec)
@@ -179,7 +179,7 @@ class UserController @Autowired constructor(
         return userService.get(id)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users/{username}/_exists"])
     operator fun get(@PathVariable username: String): Map<*, *> {
         return ImmutableMap.of("result", userService.exists(username, null))
@@ -219,7 +219,7 @@ class UserController @Autowired constructor(
         return HttpUtils.updated("users", id, userService.updateSettings(user, settings), userService.get(id))
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/_enabled"])
     fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: UUID): Any {
         val user = userService.get(id)
@@ -257,7 +257,7 @@ class UserController @Autowired constructor(
      * @param id
      * @return
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions"])
     fun setPermissions(@RequestBody pids: List<UUID>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
@@ -266,7 +266,7 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_add"])
     fun addPermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
@@ -276,7 +276,7 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_remove"])
     fun removePermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
         val user = userService.get(id)
