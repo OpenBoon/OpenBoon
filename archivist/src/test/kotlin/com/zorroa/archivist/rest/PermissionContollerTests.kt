@@ -79,6 +79,27 @@ class PermissionContollerTests : MockMvcTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testFind() {
+
+        val b = PermissionSpec("project", "sw")
+        b.description = "Star Wars crew members"
+        val perm = permissionService.createPermission(b)
+
+        val session = admin()
+        val result = mvc.perform(post("/api/v1/permissions/_find")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serialize(mapOf("authorities" to listOf("project::sw"))))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val perm1 = Json.deserialize(result.response.contentAsByteArray, Permission::class.java)
+        assertEquals(perm, perm1)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testFoo() {
 
         val b = PermissionSpec("project", "sw")

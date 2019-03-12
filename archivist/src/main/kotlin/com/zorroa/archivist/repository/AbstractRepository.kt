@@ -5,10 +5,10 @@ import com.fasterxml.uuid.*
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.google.common.collect.Lists
-import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.util.JdbcUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,6 +56,9 @@ inline fun <T> throwWhenNotFound(msg:String, body: () -> T): T {
         return body()
     }
     catch (e: EmptyResultDataAccessException) {
+        throw EmptyResultDataAccessException(msg, 1)
+    }
+    catch (e: IndexOutOfBoundsException) {
         throw EmptyResultDataAccessException(msg, 1)
     }
 }
