@@ -86,7 +86,7 @@ class PermissionContollerTests : MockMvcTest() {
         val perm = permissionService.createPermission(b)
 
         val session = admin()
-        val result = mvc.perform(post("/api/v1/permissions/_find")
+        val result = mvc.perform(post("/api/v1/permissions/_findOne")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(mapOf("authorities" to listOf("project::sw"))))
