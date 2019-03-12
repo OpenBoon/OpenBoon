@@ -39,6 +39,13 @@ class DyHierarchyController @Autowired constructor(
         return HttpUtils.status("DyHierarchy", id, "delete", result)
     }
 
+    @PostMapping(value = ["/api/v1/dyhi/{id}/_run"])
+    @Throws(Exception::class)
+    fun run(@PathVariable id: UUID) : Any {
+        val dh = dyHierarchyService.get(id)
+        return HttpUtils.updated("DyHierarchy", "run", dyHierarchyService.generate(dh) > 0)
+    }
+
     @GetMapping(value = ["/api/v1/dyhi/{id}"])
     operator fun get(@PathVariable id: UUID): DyHierarchy {
         return dyHierarchyService.get(id)

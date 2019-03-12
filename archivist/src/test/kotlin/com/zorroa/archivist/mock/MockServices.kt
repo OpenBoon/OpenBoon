@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.core.annotation.Order
+import org.springframework.core.task.AsyncListenableTaskExecutor
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 
 class MockPubSubService : PubSubService
 
@@ -54,6 +56,15 @@ class MockServiceConfiguration {
     @Autowired
     fun mockFileStorageService(): FileStorageService {
         return mock()
+    }
+
+    /**
+     * Return a mock work queue which runs all tasks in the current thread.
+     */
+    @Bean
+    @Primary
+    fun mockWorkQueue() : AsyncListenableTaskExecutor {
+        return MockAsyncThreadExecutor()
     }
 
 }

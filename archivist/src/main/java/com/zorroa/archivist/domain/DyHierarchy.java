@@ -95,6 +95,11 @@ public class DyHierarchy implements Loggable<UUID> {
     }
 
     @JsonIgnore
+    public String getLockName() {
+        return "folder_lock:" + this.folderId;
+    }
+
+    @JsonIgnore
     public DyHierarchyLevel getLevel(int i) {
         return levels.get(i);
     }
