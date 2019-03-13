@@ -12,11 +12,9 @@ import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
-import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.security.withAuth
+import com.zorroa.archivist.security.*
 import com.zorroa.common.domain.DuplicateEntityException
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.security.Groups
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 import org.slf4j.LoggerFactory
@@ -249,6 +247,9 @@ class UserServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var folderService: FolderService
 
+    @Autowired
+    internal lateinit var emailService: EmailService
+
     private val PASS_MIN_LENGTH = 8
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
@@ -286,7 +287,8 @@ class UserServiceImpl @Autowired constructor(
             throw java.lang.IllegalArgumentException("Invalid email address: ${spec.email}")
         }
 
-        val name = spec.name.split(Regex("\\s+"), limit=2)
+        val name = spec.name ?: spec.email.split("@")[0]
+        val nameParts = name.split(Regex("\\s+"), limit=2)
         val orgId = if (hasPermission(Groups.SUPERADMIN)) {
             spec.organizationId ?: getOrgId()
         }
@@ -294,20 +296,26 @@ class UserServiceImpl @Autowired constructor(
             getOrgId()
         }
 
-        return withAuth(SuperAdminAuthentication(orgId)) {
+        val user =  withAuth(SuperAdminAuthentication(orgId)) {
             create(UserSpec(
                     spec.email,
-                    spec.password,
+                    spec.password ?: generateRandomPassword(10),
                     spec.email,
                     UserSource.LOCAL,
-                    name.first(),
-                    if (name.size == 1) {
+                    nameParts.first(),
+                    if (nameParts.size == 1) {
                         ""
                     } else {
-                        name.last()
+                        nameParts.last()
                     },
                     spec.permissionIds))
         }
+
+        tx.afterCommit(sync=false) {
+            emailService.sendPasswordResetEmail(user)
+        }
+
+        return user
     }
 
     override fun create(spec: UserSpec): User {

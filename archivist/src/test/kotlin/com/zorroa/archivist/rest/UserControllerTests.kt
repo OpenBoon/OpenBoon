@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.generateUserToken
-import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
@@ -87,7 +86,6 @@ class UserControllerTests : MockMvcTest() {
 
         val spec = LocalUserSpec(
                 "bilbo@baggins.com",
-                "passw123",
                 "Bilbo Baggins")
 
         val result = mvc.perform(post("/api/v2/users")

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.repository.KDaoFilter
 import org.hibernate.validator.constraints.Email
 import org.hibernate.validator.constraints.NotEmpty
 import java.util.*
@@ -100,15 +102,15 @@ class UserProfileUpdate (
  * This spec also enforces the username as the email address.
  *
  * @property email - the email address of the user
- * @property password - a password for the user.
  * @property name - A name for the user
- * @property organizationId - An optional organization ID
+ * @property password - an optional password for the user.
+ * @property organizationId - An optional organization ID, default's to the current users.
  * @property permissionIds - An optional set of permissions.
  */
 class LocalUserSpec (
         val email: String,
-        val password: String,
-        val name: String,
+        val name: String? = null,
+        val password: String? = null,
         var organizationId: UUID? = null,
         var permissionIds: List<UUID>? = null
 )
@@ -152,4 +154,3 @@ class ApiKey(
         val key: String,
         val server: String
 )
-

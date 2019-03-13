@@ -32,7 +32,6 @@ class UserServiceTests : AbstractTest() {
     fun createLocalUserWithOrg() {
         val org = organizationService.create(OrganizationSpec("Mordor Inc"))
         val spec = LocalUserSpec("bilbo@shire.com",
-                "123password",
                 "Bilbo Baggins Jr",
                 organizationId = org.id)
 
@@ -49,9 +48,9 @@ class UserServiceTests : AbstractTest() {
 
     @Test
     fun createLocalUser() {
-        val spec = LocalUserSpec("bilbo@shire.com",
-                "123password",
-                "Bilbo Baggins")
+        val currentUser = System.getenv("USER")
+        val email = "$currentUser@zorroa.com"
+        val spec = LocalUserSpec(email, "Bilbo Baggins")
 
         val user = userService.create(spec)
 
@@ -64,7 +63,7 @@ class UserServiceTests : AbstractTest() {
         /*
          * Get the user's personal folder.
          */
-        val folder = folderService.get("/Users/bilbo@shire.com")
+        val folder = folderService.get("/Users/$email")
         assertEquals(folder!!.name, user.username)
 
         /*
@@ -72,7 +71,7 @@ class UserServiceTests : AbstractTest() {
          * personal permission and the user group
          */
         val perms = userService.getPermissions(user)
-        assertTrue(userService.hasPermission(user, permissionService.getPermission("user::bilbo@shire.com")))
+        assertTrue(userService.hasPermission(user, permissionService.getPermission("user::$email")))
     }
 
 
