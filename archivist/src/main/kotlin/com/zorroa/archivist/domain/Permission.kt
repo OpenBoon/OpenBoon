@@ -24,30 +24,27 @@ class PermissionUpdateSpec(
         val description: String
 )
 
-class PermissionSpec {
+class PermissionSpec(
+    var type: String,
+    var name: String,
+    var description: String = "",
+    var source: String = "local") {
 
-    var name: String? = null
-    var type: String? = null
-    var source: String = "local"
-    var description: String? = null
-
-    constructor()
-
-    constructor(authority: String) {
-        val parts = authority.split(Permission.JOIN, limit=2).toTypedArray()
-        if (parts.size == 1) {
-            throw IllegalArgumentException("Invalid authority name: $authority")
-        }
-        this.name = parts[1]
-        this.type = parts[0]
-    }
-
-    constructor(type: String, name: String) {
-        this.name = name
-        this.type = type
-    }
+    constructor(authority: String) : this(authority.split(Permission.JOIN)[0],
+            authority.split(Permission.JOIN)[1])
 }
 
+/**
+ * A Permission describes a group or role.  Permission implements from GrantedAuthority which
+ * allows it to be used by Spring directly.
+ *
+ * @param id The unique ID of the permission
+ * @param name The name of the permission
+ * @param type The type of permission.
+ * @param description A description for the permission
+ * @param immutable True if the permission can be changed.
+ *
+ */
 class Permission constructor (
         val id: UUID,
         val name: String,
@@ -55,7 +52,7 @@ class Permission constructor (
         val description: String,
         @JsonIgnore val immutable: Boolean=false) : GrantedAuthority {
 
-    val fullName = "$type$JOIN$name"
+    val fullName = "$type${Permission.JOIN}$name"
 
     override fun getAuthority(): String {
         return fullName
@@ -77,6 +74,9 @@ class Permission constructor (
     }
 
     companion object {
+        /**
+         * A string for joining together the type + name
+         */
         const val JOIN = "::"
     }
 }
