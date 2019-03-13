@@ -1,8 +1,14 @@
 package com.zorroa.archivist.security
 
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
+import com.zorroa.archivist.security.JwtSecurityConstants.ORGID_HEADER
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
+import com.zorroa.archivist.service.event
+import com.zorroa.security.Groups
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.AuthenticationManager
@@ -42,7 +48,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
          * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
          */
         val claims = validator.validate(token.replace(TOKEN_PREFIX, ""))
-        SecurityContextHolder.getContext().authentication = JwtAuthenticationToken(claims)
+        SecurityContextHolder.getContext().authentication = JwtAuthenticationToken(claims, req.getHeader(ORGID_HEADER))
         req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
         chain.doFilter(req, res)
     }
@@ -52,7 +58,8 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
  * JwtAuthenticationToken stores the validated claims
  */
 class JwtAuthenticationToken constructor(
-        claims: Map<String, String>
+        claims: Map<String, String>,
+        val organizationId: String?=null
 ) : AbstractAuthenticationToken(listOf()) {
 
     val userId = claims.getValue("userId")
@@ -80,11 +87,27 @@ class JwtAuthenticationProvider: AuthenticationProvider {
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as JwtAuthenticationToken
         val user = userRegistryService.getUser(UUID.fromString(token.userId))
+
+        if (token.organizationId != null) {
+            if (user.authorities.map { it.authority == Groups.SUPERADMIN }.isNotEmpty()) {
+                user.organizationId = UUID.fromString(token.organizationId)
+                logger.event(LogObject.USER, LogAction.ORGSWAP,
+                        mapOf("username" to user.username,
+                                "newOrganizationId" to token.organizationId))
+            }
+        }
+
         return UsernamePasswordAuthenticationToken(user, "", user.authorities)
     }
 
     override fun supports(cls: Class<*>): Boolean {
         return cls == JwtAuthenticationToken::class.java
+    }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(JwtAuthenticationProvider::class.java)
+
     }
 }
 

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.util.Json
@@ -31,9 +32,10 @@ class UserServiceTests : AbstractTest() {
     @Test
     fun createLocalUserWithOrg() {
         val org = organizationService.create(OrganizationSpec("Mordor Inc"))
+        getUser().organizationId = org.id
+
         val spec = LocalUserSpec("bilbo@shire.com",
-                "Bilbo Baggins Jr",
-                organizationId = org.id)
+                "Bilbo Baggins Jr")
 
         val user = userService.create(spec)
         assertEquals(org.id, user.organizationId)

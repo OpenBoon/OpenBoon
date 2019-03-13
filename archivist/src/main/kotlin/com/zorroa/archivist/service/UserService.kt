@@ -12,7 +12,8 @@ import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.generateRandomPassword
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.security.Groups
@@ -295,27 +296,19 @@ class UserServiceImpl @Autowired constructor(
 
         val name = spec.name ?: spec.email.split("@")[0]
         val nameParts = name.split(Regex("\\s+"), limit=2)
-        val orgId = if (hasPermission(Groups.SUPERADMIN)) {
-            spec.organizationId ?: getOrgId()
-        }
-        else {
-            getOrgId()
-        }
+        val user = create(UserSpec(
+                spec.email,
+                spec.password ?: generateRandomPassword(10),
+                spec.email,
+                UserSource.LOCAL,
+                nameParts.first(),
+                if (nameParts.size == 1) {
+                    ""
+                } else {
+                    nameParts.last()
+                },
+                spec.permissionIds))
 
-        val user =  withAuth(SuperAdminAuthentication(orgId)) {
-            create(UserSpec(
-                    spec.email,
-                    spec.password ?: generateRandomPassword(10),
-                    spec.email,
-                    UserSource.LOCAL,
-                    nameParts.first(),
-                    if (nameParts.size == 1) {
-                        ""
-                    } else {
-                        nameParts.last()
-                    },
-                    spec.permissionIds))
-        }
 
         tx.afterCommit(sync=false) {
             emailService.sendPasswordResetEmail(user)

@@ -111,7 +111,6 @@ class LocalUserSpec (
         val email: String,
         val name: String? = null,
         val password: String? = null,
-        var organizationId: UUID? = null,
         var permissionIds: List<UUID>? = null
 )
 

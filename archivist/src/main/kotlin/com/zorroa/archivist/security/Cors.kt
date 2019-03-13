@@ -32,7 +32,8 @@ class CorsCredentialsFilter : GenericFilterBean() {
         val auth = req.getHeader("authorization")
         if (auth != null) {
             rsp.addHeader("Access-Control-Allow-Credentials", "true")
-            rsp.addHeader("Access-Control-Allow-Origin", req.getHeader("origin"))
+            rsp.addHeader("Access-Control-Allow-Origin",
+                    req.getHeader("origin") ?: "http://localhost:8066")
         } else {
             rsp.addHeader("Access-Control-Expose-Headers", "Content-Encoding, content-range, content-length, accept-ranges")
             rsp.addHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")

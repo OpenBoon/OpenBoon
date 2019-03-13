@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.repository.KPagedList
@@ -17,6 +18,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.*
 import java.util.stream.Collectors
 import kotlin.test.*
 
@@ -131,6 +133,31 @@ class UserControllerTests : MockMvcTest() {
         assertEquals(spec.email, content["email"])
         assertEquals("Bilbo", content["firstName"])
         assertEquals("Baggins", content["lastName"])
+    }
+
+    @Test
+    fun testCreateV2WithOrgIdHeader() {
+        val user = userService.get("admin")
+        val token = generateUserToken(user.id, userService.getHmacKey(user))
+        val org = organizationService.create(OrganizationSpec("Mordor Inc"))
+
+        val spec = LocalUserSpec(
+                "bilbo@baggins.com",
+                "Bilbo Baggins")
+
+        val rsp = mvc.perform(post("/api/v2/users")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .header(JwtSecurityConstants.HEADER_STRING,
+                        "${JwtSecurityConstants.TOKEN_PREFIX}$token")
+                .header(JwtSecurityConstants.ORGID_HEADER, org.id.toString())
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val result = Json.deserialize(rsp.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals(org.id, UUID.fromString(result["organizationId"] as String),
+                "The user's orgId is not the org ID sent with the request header")
     }
 
     @Test
