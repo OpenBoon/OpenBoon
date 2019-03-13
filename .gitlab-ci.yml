@@ -1,0 +1,49 @@
+stages:
+  - build
+  - test
+  - push
+  - deploy
+
+docker_hub_push:
+  stage: push
+  only:
+    - development
+    - qa
+    - master
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+  script:
+    - docker build -m 4g -t zorroaevi/archivist:$CI_COMMIT_REF_SLUG .
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker push zorroaevi/archivist:$CI_COMMIT_REF_SLUG
+
+deploy_dev:
+  image: google/cloud-sdk
+  stage: deploy
+  environment:
+    name: development
+    url: https://dev.zorroa.com
+  only:
+    - development
+  script:
+    - echo $DEV_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
+    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
+
+deploy_qa:
+  image: google/cloud-sdk
+  stage: deploy
+  environment:
+    name: qa
+    url: https://qa.zorroa.com
+  only:
+    - qa
+  script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $QA_SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-qa
+    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
