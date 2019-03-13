@@ -1,11 +1,13 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getUserId
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Test
@@ -79,6 +81,35 @@ class UserControllerTests : MockMvcTest() {
         assertNotEquals(currentKey, content["key"].toString())
     }
 
+    @Test
+    fun testSearch() {
+        val filter = UserFilter(usernames=listOf("admin"))
+        val session = admin()
+        val result = mvc.perform(post("/api/v1/users/_search")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val users = Json.Mapper.readValue<KPagedList<User>>(result.response.contentAsString)
+        assertEquals("admin", users[0].username)
+    }
+
+    @Test
+    fun testFindOne() {
+        val filter = UserFilter(usernames=listOf("admin"))
+        val session = admin()
+        val result = mvc.perform(post("/api/v1/users/_findOne")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val user = Json.Mapper.readValue<User>(result.response.contentAsString)
+        assertEquals("admin", user.username)
+    }
 
     @Test
     fun testCreateV2() {

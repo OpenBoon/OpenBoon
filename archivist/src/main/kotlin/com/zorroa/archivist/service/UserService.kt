@@ -37,6 +37,7 @@ import java.util.stream.Collectors
  */
 interface UserService {
 
+    @Deprecated("see getAll(filter: UserFilter)")
     fun getAll(): List<User>
 
     fun getCount(): Long
@@ -51,6 +52,7 @@ interface UserService {
 
     fun exists(username: String, source:String?): Boolean
 
+    @Deprecated("see getAll(filter: UserFilter)")
     fun getAll(page: Pager): PagedList<User>
 
     fun getPassword(username: String): String
@@ -98,6 +100,10 @@ interface UserService {
      * @param: Organization - the organization to create the user for.
      */
     fun createStandardUsers(org: Organization)
+
+    fun findOne(filter: UserFilter): User
+
+    fun getAll(filter: UserFilter): KPagedList<User>
 }
 
 
@@ -376,6 +382,16 @@ class UserServiceImpl @Autowired constructor(
 
     override fun getAll(page: Pager): PagedList<User> {
         return userDao.getAll(page)
+    }
+
+    @Transactional(readOnly=true)
+    override fun getAll(filter: UserFilter): KPagedList<User> {
+        return userDao.getAll(filter)
+    }
+
+    @Transactional(readOnly=true)
+    override fun findOne(filter: UserFilter): User {
+        return userDao.findOne(filter)
     }
 
     override fun getCount(): Long {

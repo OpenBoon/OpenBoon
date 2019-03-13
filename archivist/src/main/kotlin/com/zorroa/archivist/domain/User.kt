@@ -154,3 +154,43 @@ class ApiKey(
         val key: String,
         val server: String
 )
+
+/**
+ * A class for filtering users.
+ */
+class UserFilter constructor(
+        val ids : List<UUID>? = null,
+        val usernames: List<String>? = null,
+        val emails : List<String>? = null
+) : KDaoFilter() {
+
+    @JsonIgnore
+    override val sortMap: Map<String, String> = mapOf(
+            "id" to "users.pk_user",
+            "username" to "users.str_username",
+            "email" to "users.str_email")
+
+    override fun build() {
+        if (sort == null) {
+            sort = listOf("username:a")
+        }
+
+        addToWhere("users.pk_organization=?")
+        addToValues(getOrgId())
+
+        usernames?.let  {
+            addToWhere(com.zorroa.common.util.JdbcUtils.inClause("users.str_username", it.size))
+            addToValues(it)
+        }
+
+        emails?.let  {
+            addToWhere(com.zorroa.common.util.JdbcUtils.inClause("users.str_email", it.size))
+            addToValues(it)
+        }
+
+        ids?.let  {
+            addToWhere(com.zorroa.common.util.JdbcUtils.inClause("users.pk_user", it.size))
+            addToValues(it)
+        }
+    }
+}

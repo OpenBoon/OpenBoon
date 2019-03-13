@@ -8,12 +8,12 @@ import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.security.Groups
 import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -40,7 +40,7 @@ class UserController @Autowired constructor(
         private val emailService: EmailService
 ) {
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @Deprecated("See /api/v1/users/_search")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
 
@@ -286,13 +286,24 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
+    @PostMapping(value = ["/api/v1/users/_search"])
+    fun search(@RequestBody(required = false) req: UserFilter?,
+               @RequestParam(value = "from", required = false) from: Int?,
+               @RequestParam(value = "count", required = false) count: Int?) : KPagedList<User>  {
+        val filter = req ?: UserFilter()
+        from?.let { filter.page.from = it }
+        count?.let { filter.page.size = it }
+        return userService.getAll(filter)
+    }
+
+    @PostMapping(value = ["/api/v1/users/_findOne"])
+    fun findOne(@RequestBody(required = false) req: UserFilter?): User  {
+        return userService.findOne(req ?: UserFilter())
+    }
+
     private fun validatePermissions(id: UUID) {
         if (!Objects.equals(getUserId(),id) && !hasPermission(Groups.MANAGER, Groups.ADMIN)) {
             throw SecurityException("Access denied.")
         }
-    }
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(UserController::class.java)
     }
 }

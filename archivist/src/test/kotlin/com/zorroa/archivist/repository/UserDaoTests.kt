@@ -2,9 +2,7 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.domain.User
-import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.*
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
@@ -69,6 +67,45 @@ class UserDaoTests : AbstractTest() {
         userService.create(builder)
 
         assertEquals(6, userDao.getAll().size.toLong())
+    }
+
+    @Test
+    fun testAllFiltered() {
+        val filter = UserFilter(
+                ids = listOf(UUID.randomUUID()),
+                usernames = listOf("bob"),
+                emails = listOf("dole"))
+
+        // Checks that the columns are valid in the query
+        assertEquals(0, userDao.getAll(filter).size())
+
+        // Checks we can sort by all defined columsn
+        assertEquals(0, userDao.getAll(filter).size())
+    }
+
+    @Test
+    fun testGetAllSorted() {
+        // Just test the DB allows us to sort on each defined sortMap col
+        for (field in UserFilter().sortMap.keys) {
+            var filter = UserFilter().apply {
+                sort = listOf("$field:a")
+            }
+            val page = userDao.getAll(filter)
+            assertTrue(page.size() > 0)
+        }
+    }
+
+    @Test(expected=EmptyResultDataAccessException::class)
+    fun testFindOneFailure() {
+        val filter = UserFilter(usernames = listOf("bob_dole"))
+        userDao.findOne(filter)
+    }
+
+    @Test
+    fun testFindOne() {
+        val filter = UserFilter(usernames = listOf("admin"))
+        val user = userDao.findOne(filter)
+        assertEquals("admin", user.username)
     }
 
     @Test
