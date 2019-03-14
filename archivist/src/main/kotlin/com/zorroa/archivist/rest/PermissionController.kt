@@ -45,7 +45,7 @@ class PermissionController @Autowired constructor(
     /**
      * Find a particular permission record using a filter.
      */
-    @PostMapping(value = ["/api/v1/permissions/_findOne"])
+    @RequestMapping(value = ["/api/v1/permissions/_findOne"], method = [RequestMethod.POST, RequestMethod.GET])
     fun find(@RequestBody(required = false) filter: PermissionFilter?): Permission {
         return permissionService.findPermission(filter ?: PermissionFilter())
     }
