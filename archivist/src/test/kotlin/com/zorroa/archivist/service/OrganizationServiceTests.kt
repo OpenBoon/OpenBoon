@@ -47,8 +47,4 @@ class OrganizationServiceTests : AbstractTest() {
         assertEquals(org.id, organizationService.get(org.id).id)
     }
 
-    @Test
-    fun testGetOnlyOne() {
-        organizationService.getOnlyOne()
-    }
 }

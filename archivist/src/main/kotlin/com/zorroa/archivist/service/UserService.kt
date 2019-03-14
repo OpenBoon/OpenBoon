@@ -185,7 +185,7 @@ class UserRegistryServiceImpl @Autowired constructor(
                 throw BadCredentialsException("Unable to determine organization, organization was null")
             }
         } else {
-            organizationService.getOnlyOne()
+            organizationService.get(Organization.DEFAULT_ORG_ID)
         }
     }
 
