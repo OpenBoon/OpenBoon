@@ -27,6 +27,6 @@ class JwtTokenAuthenticationTests : MockMvcTest() {
                 .andReturn()
 
         val who = Json.Mapper.readValue<Map<String, Any>>(rsp.response.contentAsString)
-        assertEquals("admin", "username")
+        assertEquals("admin", who["username"])
     }
 }
