@@ -311,7 +311,10 @@ class UserServiceImpl @Autowired constructor(
 
 
         tx.afterCommit(sync=false) {
-            emailService.sendPasswordResetEmail(user)
+            // Email a password reset if no password was provided.
+            if (spec.password == null) {
+                emailService.sendPasswordResetEmail(user)
+            }
         }
 
         return user
