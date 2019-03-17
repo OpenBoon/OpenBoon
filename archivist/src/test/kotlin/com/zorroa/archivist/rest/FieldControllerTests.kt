@@ -58,7 +58,9 @@ class FieldControllerTests : MockMvcTest() {
     fun testUpdateField() {
         val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
         val field = fieldSystemService.createField(spec)
-        val updateSpec = FieldUpdateSpec("test", true, true, 2.0f)
+        val updateSpec = FieldUpdateSpec(
+                "test", true, true, 2.0f,
+                options=listOf("a", "b", "c"))
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.put("/api/v1/fields/${field.id}")
@@ -78,8 +80,7 @@ class FieldControllerTests : MockMvcTest() {
         Assert.assertEquals(updateSpec.editable, updatedField.editable)
         Assert.assertEquals(updateSpec.keywords, updatedField.keywords)
         Assert.assertEquals(updateSpec.keywordsBoost, updatedField.keywordsBoost)
-
-
+        Assert.assertEquals(updateSpec.options, updatedField.options)
     }
 
 
