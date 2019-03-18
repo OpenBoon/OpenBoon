@@ -22,7 +22,7 @@ class PermissionServiceTests : AbstractTest() {
     @Test
     fun testCreate() {
         val perm = permissionService.createPermission(
-                PermissionSpec().apply{description="foo"; name="shoe"; type="test"})
+                PermissionSpec("test", "shoe", description = "foo"))
         assertEquals(perm.fullName, "test::shoe")
         assertEquals(perm.name, "shoe")
         assertEquals(perm.type, "test")
@@ -31,7 +31,7 @@ class PermissionServiceTests : AbstractTest() {
     @Test
     fun testGet() {
         val perm1 = permissionService.createPermission(
-                PermissionSpec().apply{description="foo"; name="shoe"; type="test"})
+                PermissionSpec("test", "test", description = "foo"))
         val perm2 = permissionService.getPermission(perm1.id)
         assertEquals(perm1, perm2);
     }
@@ -51,7 +51,7 @@ class PermissionServiceTests : AbstractTest() {
     @Test(expected = EmptyResultDataAccessException::class)
     fun testDelete() {
         val perm1 = permissionService.createPermission(
-                PermissionSpec().apply{description="foo"; name="shoe"; type="test"})
+                PermissionSpec("test", "test", description = "foo"))
         assertTrue(permissionService.deletePermission(perm1))
         assertFalse(permissionService.deletePermission(perm1))
         permissionService.getPermission(perm1.id)

@@ -38,7 +38,10 @@ class RestApiExceptionHandler {
     /**
      * Do extra logging for these response statuses
      */
-    val doExtraLogging = setOf(HttpStatus.UNAUTHORIZED, HttpStatus.BAD_REQUEST, HttpStatus.INTERNAL_SERVER_ERROR)
+    val doExtraLogging =
+            setOf(HttpStatus.UNAUTHORIZED,
+                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.INTERNAL_SERVER_ERROR)
 
     @ExceptionHandler(Exception::class)
     fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception) : ResponseEntity<Any> {
@@ -81,7 +84,7 @@ class RestApiExceptionHandler {
          */
         val errorId = UUID.randomUUID().toString()
 
-        if (doExtraLogging.contains(status)) {
+        if (doExtraLogging.contains(status) || debug) {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
                     req.servletPath, getUserOrNull()?.username, errorId, e)
         }
