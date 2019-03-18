@@ -199,7 +199,8 @@ class FieldFilter (
         val ids : List<UUID>? = null,
         val attrTypes: List<AttrType>? = null,
         val attrNames: List<String>? = null,
-        val keywords: Boolean? = null
+        val keywords: Boolean? = null,
+        val editable: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -234,6 +235,12 @@ class FieldFilter (
             addToWhere("field.bool_keywords=?")
             addToValues(keywords)
         }
+
+        editable?.let {
+            addToWhere("field.bool_editable=?")
+            addToValues(editable)
+        }
+
 
         addToWhere("field.pk_organization=?")
         addToValues(getOrgId())
