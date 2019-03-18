@@ -1,8 +1,76 @@
 stages:
   - build
+  - pretest
   - test
   - push
   - deploy
+
+variables:
+  DOCKERHUB_IMAGE_ARCHIVIST: zorroaevi/archivist:$CI_COMMIT_REF_SLUG
+  DOCKERHUB_IMAGE_ELASTIC: zorroaevi/elasticsearch:$CI_COMMIT_REF_SLUG
+  LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+
+build_artifacts:
+  image: maven:3.6.0-jdk-8-slim
+  stage: build
+  script:
+      - cd es-similarity
+      - mvn package
+      - cd ../
+      - cp es-similarity/target/releases/es-similarity.zip elasticsearch
+      - cd es-kwconf
+      - mvn package
+      - cd ../
+      - cp es-kwconf/target/releases/es-kwconf.zip elasticsearch
+      - mvn clean install -Dmaven.test.skip=true
+  artifacts:
+    paths:
+      - archivist/target/*.jar
+      - elasticsearch/*.zip
+
+push_to_local_registry:
+  image: docker:stable
+  stage: pretest
+  services:
+    - docker:dind
+  script:
+    - cd elasticsearch
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker build -t $LOCAL_ES_NAME .
+    - docker push $LOCAL_ES_NAME
+
+linting:
+  image: alpine:latest
+  stage: test
+  allow_failure: true
+  script:
+    - curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
+    - chmod a+x ktlint
+    - sudo mv ktlint /usr/local/bin/
+    - DIFF=$(git diff --name-only --diff-filter=b $(git merge-base $CI_COMMIT_SHA development))
+    - echo $DIFF
+    - ktlint $DIFF
+
+unit_tests:
+  stage: test
+  image: maven:3.6.0-jdk-8-alpine
+  allow_failure: true
+  services:
+    - name: postgres:9.6.9
+      alias: postgres
+    - name: $LOCAL_ES_NAME
+      alias: elasticsearch
+      command: [ "bin/elasticsearch", "-Ediscovery.type=single-node"]
+  variables:
+    POSTGRES_PASSWORD: zorroa
+    POSTGRES_USER: zorroa
+    POSTGRES_DB: zorroa
+    PGDATA: /var/lib/postgresql/data/pgdata
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=unittest40"
+  script:
+    - mvn test -q
 
 docker_hub_push:
   stage: push
@@ -10,17 +78,20 @@ docker_hub_push:
     - development
     - qa
     - master
-  image: docker:latest
+  image: docker:stable
   services:
     - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
   script:
-    - docker build -m 4g -t zorroaevi/archivist:$CI_COMMIT_REF_SLUG .
+    - cd archivist
+    - docker build -t $DOCKERHUB_IMAGE_ARCHIVIST .
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-    - docker push zorroaevi/archivist:$CI_COMMIT_REF_SLUG
+    - docker push $DOCKERHUB_IMAGE_ARCHIVIST
+    - cd ../elasticsearch
+    - docker build -t $DOCKERHUB_IMAGE_ELASTIC .
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker push $DOCKERHUB_IMAGE_ELASTIC
 
-deploy_dev:
+deploy_archivist_dev:
   image: google/cloud-sdk
   stage: deploy
   environment:
@@ -34,7 +105,7 @@ deploy_dev:
     - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
     - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
 
-deploy_qa:
+deploy_archivist_qa:
   image: google/cloud-sdk
   stage: deploy
   environment:
@@ -47,3 +118,31 @@ deploy_qa:
     - gcloud auth activate-service-account $QA_SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-qa
     - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
+
+deploy_elasticsearch_dev:
+  image: google/cloud-sdk
+  stage: deploy
+  environment:
+    name: development
+    url: https://dev.zorroa.com
+  only:
+    - development
+  script:
+    - echo $DEV_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
+    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
+
+deploy_elasticsearch_qa:
+  image: google/cloud-sdk
+  stage: deploy
+  environment:
+    name: qa
+    url: https://qa.zorroa.com
+  only:
+    - qa
+  script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $QA_SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-qa
+    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
