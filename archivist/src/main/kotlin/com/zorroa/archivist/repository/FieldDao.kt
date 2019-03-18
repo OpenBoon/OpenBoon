@@ -1,10 +1,13 @@
 package com.zorroa.archivist.repository
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
+import com.zorroa.common.util.Json
+import com.zorroa.common.util.readValueOrNull
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -59,6 +62,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps.setBoolean(11, spec.custom)
             ps.setBoolean(12, spec.keywords)
             ps.setFloat(13, spec.keywordsBoost)
+            ps.setString(14, Json.serializeToString(spec.options, null))
             ps
         }
 
@@ -80,8 +84,9 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps.setBoolean(4, spec.editable)
             ps.setBoolean(5, spec.keywords)
             ps.setFloat(6, spec.keywordsBoost)
-            ps.setObject(7, field.id)
-            ps.setObject(8, user.organizationId)
+            ps.setString(7, Json.serializeToString(spec.options, null))
+            ps.setObject(8, field.id)
+            ps.setObject(9, user.organizationId)
             ps
         } == 1
     }
@@ -145,7 +150,11 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
 
     companion object {
 
+
+
+
         private val MAPPER = RowMapper { rs, _ ->
+
             Field(rs.getObject("pk_field") as UUID,
                     rs.getString("str_name"),
                     rs.getString("str_attr_name"),
@@ -153,7 +162,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                     rs.getBoolean("bool_editable"),
                     rs.getBoolean("bool_custom"),
                     rs.getBoolean("bool_keywords"),
-                    rs.getFloat("float_keywords_boost"))
+                    rs.getFloat("float_keywords_boost"),
+                    Json.Mapper.readValueOrNull(rs.getString("json_options")))
         }
 
         private const val GET = "SELECT * FROM field"
@@ -172,7 +182,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "bool_editable",
                 "bool_custom",
                 "bool_keywords",
-                "float_keywords_boost")
+                "float_keywords_boost",
+                "json_options::jsonb")
 
         private val UPDATE = JdbcUtils.update("field","pk_field",
                 "time_modified",
@@ -180,7 +191,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "str_name",
                 "bool_editable",
                 "bool_keywords",
-                "float_keywords_boost")
+                "float_keywords_boost",
+                "json_options::jsonb")
 
         private const val ALLOC_UPDATE = "UPDATE field_alloc " +
                 "SET int_count=int_count + 1 " +

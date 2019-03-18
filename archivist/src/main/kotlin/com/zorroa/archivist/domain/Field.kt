@@ -70,6 +70,7 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
  * @property custom If the field is a custom field or a Zorroa standard.
  * @property keywords Set to true if this field should be considered a keyword.
  * @property keywordsBoost The keywords boost level for the field.
+ * @property options The valid set of options for a field.
  */
 class FieldSpec(
         val name: String,
@@ -78,6 +79,7 @@ class FieldSpec(
         val editable: Boolean=false,
         val keywords: Boolean=false,
         val keywordsBoost: Float=1.0f,
+        val options: List<Any>?=null,
         @JsonIgnore var custom: Boolean=false)
 
 
@@ -105,6 +107,7 @@ class Field (
         val custom: Boolean,
         val keywords: Boolean,
         val keywordsBoost: Float,
+        val options: List<Any>?=null,
         val value: Any?=null,
         val fieldEditId: UUID?=null
 )
@@ -122,12 +125,14 @@ class Field (
  * @property editable If the field is editable or not.
  * @property keywords Set to true if this field should be considered a keyword.
  * @property keywordsBoost The keywords boost level for the field.
+ * @property options Available options.
  */
 class FieldUpdateSpec (
         val name: String,
         val editable: Boolean,
         val keywords: Boolean,
-        val keywordsBoost: Float
+        val keywordsBoost: Float,
+        val options: List<Any>?=null
 )
 
 /**
