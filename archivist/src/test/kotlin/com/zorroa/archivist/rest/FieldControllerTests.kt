@@ -121,4 +121,18 @@ class FieldControllerTests : MockMvcTest() {
         assertEquals(1, result.size())
         assertEquals(field.id, result[0].id)
     }
+
+    @Test
+    fun testGetWithNullBody() {
+        val session = admin()
+        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val result = Json.Mapper.readValue<KPagedList<Field>>(
+                req.response.contentAsString, Field.Companion.TypeRefKList)
+        assertTrue(result.size() > 0)
+    }
 }
