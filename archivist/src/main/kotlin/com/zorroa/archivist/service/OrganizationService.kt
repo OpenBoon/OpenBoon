@@ -2,10 +2,13 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Organization
+import com.zorroa.archivist.domain.OrganizationFilter
 import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.OrganizationUpdateSpec
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.resetAuthentication
+import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -18,7 +21,9 @@ interface OrganizationService {
     fun create(spec: OrganizationSpec) : Organization
     fun get(id: UUID) : Organization
     fun get(name: String): Organization
-    fun getOnlyOne(): Organization
+    fun findOne(filter: OrganizationFilter): Organization
+    fun getAll(filter: OrganizationFilter): KPagedList<Organization>
+    fun update(org: Organization, spec: OrganizationUpdateSpec): Boolean
 }
 
 @Service
@@ -60,11 +65,25 @@ class OrganizationServiceImpl @Autowired constructor (
         return org
     }
 
+    override fun update(org: Organization, spec: OrganizationUpdateSpec): Boolean {
+        return organizationDao.update(org, spec)
+    }
+
+    @Transactional(readOnly = true)
     override fun get(id: UUID): Organization =  organizationDao.get(id)
 
+    @Transactional(readOnly = true)
     override fun get(name: String): Organization =  organizationDao.get(name)
 
-    override fun getOnlyOne(): Organization =  organizationDao.getOnlyOne()
+    @Transactional(readOnly = true)
+    override fun findOne(filter: OrganizationFilter): Organization  {
+        return organizationDao.findOne(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAll(filter: OrganizationFilter): KPagedList<Organization> {
+        return organizationDao.getAll(filter)
+    }
 
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
         if (!properties.getBoolean("unittest", false)) {
@@ -72,6 +91,7 @@ class OrganizationServiceImpl @Autowired constructor (
         }
     }
 
+    // Only called once at startup if there are no field sets.
     fun createDefaultOrganizationFieldSets() {
         val org = Organization(UUID.fromString("00000000-9998-8888-7777-666666666666"), "Zorroa")
         val auth = resetAuthentication(SuperAdminAuthentication(org.id))

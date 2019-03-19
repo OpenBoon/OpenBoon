@@ -10,6 +10,8 @@ import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.common.repository.KPage
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -69,6 +71,12 @@ interface UserDao {
     fun removePermission(user: UserId, perm: Permission): Boolean
 
     fun incrementLoginCounter(user: UserId)
+
+    fun count(filter: UserFilter): Long
+
+    fun getAll(filter: UserFilter): KPagedList<User>
+
+    fun findOne(filter: UserFilter): User
 }
 
 @Repository
@@ -106,15 +114,34 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getAll(): List<User> {
-        return jdbc.query("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+        return jdbc.query("$GET WHERE pk_organization=? AND str_source!='internal' " +
                 "ORDER BY str_username", MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>("$GET_ALL WHERE pk_organization=? AND str_source!='internal' " +
+                jdbc.query<User>("$GET WHERE pk_organization=? AND str_source!='internal' " +
                         "ORDER BY str_username LIMIT ? OFFSET ?",
                         MAPPER, getOrgId(), paging.size, paging.from))
+    }
+
+    override fun findOne(filter: UserFilter): User {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return throwWhenNotFound("Permission not found") {
+            KPagedList(1L, KPage(0, 1), jdbc.query(query, MAPPER, *values))[0]
+        }
+    }
+
+    override fun getAll(filter: UserFilter): KPagedList<User> {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun count(filter: UserFilter): Long {
+        return jdbc.queryForObject(filter.getQuery(COUNT, forCount = true),
+                Long::class.java, *filter.getValues(forCount = true))
     }
 
     override fun create(spec: UserSpec): User {
@@ -319,7 +346,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     Json.deserialize(rs.getString("json_auth_attrs"), Json.GENERIC_MAP))
         }
 
-        private const val GET_ALL = "SELECT * FROM users"
+        private const val GET = "SELECT * FROM users"
 
         private const val COUNT = "SELECT COUNT(1) FROM users"
 

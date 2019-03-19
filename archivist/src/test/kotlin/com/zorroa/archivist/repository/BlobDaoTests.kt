@@ -86,7 +86,7 @@ class BlobDaoTests : AbstractTest() {
     fun testCheckPermissions() {
         var id = blobDao.getId("app", "feature", "name", Access.Write)
         val test = permissionDao.create(
-                PermissionSpec().apply{description="foo"; name="test"; type="test"}, false)
+                PermissionSpec("test", "test", description = "foo"), false)
 
         val _acl = Acl()
         _acl.addEntry(test, 7)

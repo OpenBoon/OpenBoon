@@ -66,6 +66,17 @@ fun createPasswordHash(plainPassword: String): String {
     return BCrypt.hashpw(plainPassword, BCrypt.gensalt())
 }
 
+/**
+ * Generate a alpha-numeric random password of the given length.
+ *
+ * @param length The password length
+ * @return A random password.
+ */
+fun generateRandomPassword(length: Int) : String {
+    val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    return (1..length).map { allowedChars.random() }.joinToString("")
+}
+
 fun getUser(): UserAuthed {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {

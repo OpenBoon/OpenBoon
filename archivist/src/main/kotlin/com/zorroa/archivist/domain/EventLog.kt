@@ -39,7 +39,8 @@ enum class LogAction {
     COMBINE,
     BACKOFF,
     EXPIRED,
-    SCAN
+    SCAN,
+    ORGSWAP
 }
 
 

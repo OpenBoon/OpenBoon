@@ -127,12 +127,14 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         if (id == null) {
             return getRootFolder()
         }
-        return jdbc.queryForObject<Folder>(appendReadAccess("$GET WHERE pk_organization=? AND pk_folder=?"),
-                MAPPER, *appendAclArgs(getOrgId(), id))
+        throwWhenNotFound("The folder Id `$id` was not found.") {
+            return jdbc.queryForObject<Folder>(appendReadAccess("$GET WHERE pk_organization=? AND pk_folder=?"),
+                    MAPPER, *appendAclArgs(getOrgId(), id))
+        }
     }
 
     override operator fun get(parent: UUID?, name: String, ignorePerms: Boolean): Folder {
-        val parentId =if (parent == null) {
+        val parentId = if (parent == null) {
             getRootFolder().id
         }
         else {
@@ -460,7 +462,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
      * @return
      */
     private fun appendAccess(query: String, access: Access): String {
-        if (hasPermission(Groups.ADMIN)) {
+        if (hasPermission(Groups.SUPERADMIN, Groups.ADMIN)) {
             return query
         }
 
@@ -496,7 +498,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     }
 
     fun appendAclArgs(vararg args: Any): Array<out Any> {
-        if (hasPermission(Groups.ADMIN)) {
+        if (hasPermission(Groups.ADMIN, Groups.SUPERADMIN)) {
             return args
         }
 
