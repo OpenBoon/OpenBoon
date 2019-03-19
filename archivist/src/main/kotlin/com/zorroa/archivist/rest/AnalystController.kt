@@ -40,9 +40,9 @@ class AnalystController @Autowired constructor(
     }
 
     /**
-     * Initiate a processor scan.  If the processor-scan key is locked, then
-     * success is set to false. If true, then a scan is kicked off.  Only
-     * 1 scan per minute can be run.
+     * Initiate a processor scan.  If the processor-scan key is locked, then the "success"
+     * property on the response body is set to False.  This means there is an active
+     * scan already running and the request was ignored.
      */
     @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
     fun processorScan(): Any {
