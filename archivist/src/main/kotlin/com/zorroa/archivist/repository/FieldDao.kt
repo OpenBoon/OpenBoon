@@ -17,7 +17,8 @@ interface FieldDao {
 
     fun create(spec: FieldSpec) : Field
     fun get(id: UUID) : Field
-    fun getAll(filter: FieldFilter?): KPagedList<Field>
+    fun getAll(filter: FieldFilter): KPagedList<Field>
+    fun findOne(filter: FieldFilter): Field
     fun count(filter: FieldFilter): Long
     fun get(attrName: String) : Field
     fun exists(attrName: String) : Boolean
@@ -106,11 +107,16 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 Int::class.java, attrName, getOrgId()) == 1
     }
 
-    override fun getAll(filter: FieldFilter?): KPagedList<Field> {
-        val filt = filter ?: FieldFilter()
-        val query = filt.getQuery(GET, false)
-        val values = filt.getValues(false)
-        return KPagedList(count(filt), filt.page, jdbc.query(query, MAPPER, *values))
+    override fun getAll(filter: FieldFilter): KPagedList<Field> {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun findOne(filter: FieldFilter) : Field {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     override fun getKeywordFieldNames(): Map<String, Float> {
@@ -149,9 +155,6 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
     }
 
     companion object {
-
-
-
 
         private val MAPPER = RowMapper { rs, _ ->
 

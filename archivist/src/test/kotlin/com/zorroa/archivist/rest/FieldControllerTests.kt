@@ -124,6 +124,27 @@ class FieldControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testFindOne() {
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val field = fieldSystemService.createField(spec)
+
+        val filter = FieldFilter(ids=listOf(field.id))
+
+        val session = admin()
+        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_findOne")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(filter)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val result = Json.Mapper.readValue<Field>(req.response.contentAsString)
+        assertEquals(field.id, result.id)
+    }
+
+
+    @Test
     fun testGetWithNullBody() {
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/_search")

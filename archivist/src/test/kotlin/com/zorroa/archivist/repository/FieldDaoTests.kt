@@ -6,6 +6,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 import org.junit.Assert.*
+import org.springframework.dao.IncorrectResultSizeDataAccessException
 
 class FieldDaoTests : AbstractTest() {
 
@@ -83,6 +84,23 @@ class FieldDaoTests : AbstractTest() {
 
         filter = FieldFilter(editable=false)
         assertEquals(2, fieldDao.getAll(filter).size())
+    }
+
+    @Test(expected= IncorrectResultSizeDataAccessException::class)
+    fun testFindOne() {
+        // Clear out existing fields to make filters easier.
+        fieldDao.deleteAll()
+
+        val f1 = fieldDao.create(FieldSpec("Notes",
+                "document.notes", AttrType.StringAnalyzed, false))
+        val f2 = fieldDao.create(FieldSpec("Boats",
+                "document.number", AttrType.NumberInteger, false))
+
+        var filter = FieldFilter(ids = listOf(f1.id))
+        val result1 = fieldDao.findOne(filter)
+        assertEquals(f1.id, result1.id)
+
+        fieldDao.findOne(FieldFilter(ids = listOf(f1.id, f2.id)))
     }
 
     @Test

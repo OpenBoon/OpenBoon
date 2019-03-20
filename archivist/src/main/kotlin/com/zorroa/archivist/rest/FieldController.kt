@@ -53,4 +53,10 @@ class FieldController @Autowired constructor(
         count?.let { filter.page.size = it }
         return fieldSystemService.getAllFields(filter)
     }
+
+    @RequestMapping(value = ["/api/v1/fields/_findOne"], method = [RequestMethod.GET, RequestMethod.POST])
+    @Throws(Exception::class)
+    fun findOne(@RequestBody(required = false) req: FieldFilter?): Field {
+        return fieldSystemService.findOneField(req ?: FieldFilter())
+    }
 }
