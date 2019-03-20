@@ -42,16 +42,16 @@ push_to_local_registry:
     - docker push $LOCAL_ES_NAME
 
 linting:
-  image: alpine:latest
+  image: java:latest
   stage: test
   allow_failure: true
   script:
-    - curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
+    - apk update && apk add ca-certificates wget && update-ca-certificates
+    - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
     - chmod a+x ktlint
-    - sudo mv ktlint /usr/local/bin/
     - DIFF=$(git diff --name-only --diff-filter=b $(git merge-base $CI_COMMIT_SHA development))
     - echo $DIFF
-    - ktlint $DIFF
+    - ./ktlint $DIFF
 
 unit_tests:
   stage: test
