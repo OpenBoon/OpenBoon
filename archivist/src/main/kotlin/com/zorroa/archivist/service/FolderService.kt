@@ -774,13 +774,6 @@ class FolderServiceImpl @Autowired constructor(
     private fun emitFolderCreated(folder: Folder) {
         transactionEventManager.afterCommit(true) {
             invalidate(null, folder.parentId)
-
-            if (folder.dyhiId == null && folder.search != null) {
-                val tax = getParentTaxonomy(folder)
-                if (tax != null) {
-                    taxonomyService.tagTaxonomy(tax, folder, true)
-                }
-            }
         }
     }
 

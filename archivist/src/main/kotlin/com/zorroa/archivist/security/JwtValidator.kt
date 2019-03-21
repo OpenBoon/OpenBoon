@@ -4,10 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
-import com.zorroa.archivist.domain.ApiKey
 import com.zorroa.archivist.repository.UserDao
-import com.zorroa.archivist.sdk.security.UserId
-import com.zorroa.archivist.service.UserService
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -34,6 +31,11 @@ fun generateUserToken(userId: UUID, key: String) : String {
 object JwtSecurityConstants {
     const val TOKEN_PREFIX = "Bearer "
     const val HEADER_STRING = "Authorization"
+
+    /**
+     * Used to override organization
+     */
+    const val ORGID_HEADER = "X-Zorroa-Organization"
 }
 
 interface JwtValidator {

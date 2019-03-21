@@ -205,9 +205,16 @@ open abstract class AbstractTest {
          */
 
         val rest = indexRoutingService[getOrgId()]
+        val reqDel = DeleteIndexRequest("unittest")
 
-        val reqDel = DeleteIndexRequest("_all")
-        rest.client.indices().delete(reqDel)
+        /*
+         * Delete will throw here if the index doesn't exist.
+         */
+        try {
+            rest.client.indices().delete(reqDel)
+        } catch (e: Exception) {
+            logger.warn("Failed to delete 'unittest' index, this is usually ok.")
+        }
 
         indexRoutingService.setupDefaultIndex()
     }

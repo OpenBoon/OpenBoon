@@ -2,10 +2,9 @@
 
 | Branch | Status |
 |--------|--------|
-|DEVELOPMENT | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=development)](https://travis-ci.com/Zorroa/zorroa-server) |
-| QA | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=qa)](https://travis-ci.com/Zorroa/zorroa-server) |
-| MASTER | [![Build Status](https://travis-ci.com/Zorroa/zorroa-server.svg?token=DkSE9z1EaP34PLjqWxX2&branch=master)](https://travis-ci.com/Zorroa/zorroa-server) |
-
+DEVELOPMENT | [![pipeline status](https://gitlab.com/zorroa-zvi/zorroa-server/badges/development/pipeline.svg)](https://gitlab.com/zorroa-zvi/zorroa-server/commits/development) |
+| QA | [![pipeline status](https://gitlab.com/zorroa-zvi/zorroa-server/badges/qa/pipeline.svg)](https://gitlab.com/zorroa-zvi/zorroa-server/commits/qa) |
+| MASTER | [![pipeline status](https://gitlab.com/zorroa-zvi/zorroa-server/badges/master/pipeline.svg)](https://gitlab.com/zorroa-zvi/zorroa-server/commits/master) |
 
 ## Quickstart Guide - Running the ZVI Backend services locally (if you are a frontend developer, this is for you).
 

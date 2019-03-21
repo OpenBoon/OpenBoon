@@ -14,6 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -90,6 +91,8 @@ class DispatcherServiceImpl @Autowired constructor(
         private val analystDao: AnalystDao,
         private val eventBus: EventBus) : DispatcherService {
 
+    @Autowired
+    lateinit var properties: ApplicationProperties
 
     @Autowired
     lateinit var jobService: JobService
@@ -136,7 +139,14 @@ class DispatcherServiceImpl @Autowired constructor(
 
         val newState = when {
             event.newState != null -> event.newState
-            event.exitStatus != 0 -> TaskState.Failure
+            event.exitStatus != 0 -> {
+                if (!event.manualKill && taskDao.isAutoRetryable(task)) {
+                    TaskState.Waiting
+                }
+                else {
+                    TaskState.Failure
+                }
+            }
             else -> TaskState.Success
         }
 
@@ -159,7 +169,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 logger.warn("Failed to clear taskId from Analyst")
             }
 
-            if (!event.manualKill && event.exitStatus != 0) {
+            if (!event.manualKill && event.exitStatus != 0 && newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.id)
                 taskErrorDao.batchCreate(task, script.over?.map {
                     TaskErrorEvent(UUID.fromString(it.id),

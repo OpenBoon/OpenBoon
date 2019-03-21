@@ -58,7 +58,9 @@ class FieldControllerTests : MockMvcTest() {
     fun testUpdateField() {
         val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
         val field = fieldSystemService.createField(spec)
-        val updateSpec = FieldUpdateSpec("test", true, true, 2.0f)
+        val updateSpec = FieldUpdateSpec(
+                "test", true, true, 2.0f,
+                options=listOf("a", "b", "c"))
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.put("/api/v1/fields/${field.id}")
@@ -78,8 +80,7 @@ class FieldControllerTests : MockMvcTest() {
         Assert.assertEquals(updateSpec.editable, updatedField.editable)
         Assert.assertEquals(updateSpec.keywords, updatedField.keywords)
         Assert.assertEquals(updateSpec.keywordsBoost, updatedField.keywordsBoost)
-
-
+        Assert.assertEquals(updateSpec.options, updatedField.options)
     }
 
 
@@ -120,5 +121,40 @@ class FieldControllerTests : MockMvcTest() {
                 req.response.contentAsString, Field.Companion.TypeRefKList)
         assertEquals(1, result.size())
         assertEquals(field.id, result[0].id)
+    }
+
+    @Test
+    fun testFindOne() {
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val field = fieldSystemService.createField(spec)
+
+        val filter = FieldFilter(ids=listOf(field.id))
+
+        val session = admin()
+        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_findOne")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(filter)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val result = Json.Mapper.readValue<Field>(req.response.contentAsString)
+        assertEquals(field.id, result.id)
+    }
+
+
+    @Test
+    fun testGetWithNullBody() {
+        val session = admin()
+        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val result = Json.Mapper.readValue<KPagedList<Field>>(
+                req.response.contentAsString, Field.Companion.TypeRefKList)
+        assertTrue(result.size() > 0)
     }
 }

@@ -1,8 +1,6 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.common.util.Json
@@ -63,7 +61,7 @@ class PermissionDaoTests : AbstractTest() {
         val b = PermissionSpec("foo", "bar")
         b.description = "foo bar"
         val p = permissionDao.create(b, true)
-        assertTrue(p.isImmutable)
+        assertTrue(p.immutable)
     }
 
     @Test
@@ -85,7 +83,7 @@ class PermissionDaoTests : AbstractTest() {
     @Test
     fun testGetByNameAndType() {
         val p = permissionDao.get("user", "test")
-        assertTrue(p.isImmutable)
+        assertTrue(p.immutable)
         assertEquals("user", p.type)
         assertEquals("test", p.name)
     }
@@ -100,13 +98,13 @@ class PermissionDaoTests : AbstractTest() {
 
     @Test
     fun testCountWithFilter() {
-        val count = permissionDao.count(PermissionFilter().setTypes(Sets.newHashSet("user")))
+        val count = permissionDao.count(PermissionFilter(types=listOf("user")))
         assertTrue(count > 0)
 
         val b = PermissionSpec("foo", "bar")
         permissionDao.create(b, true)
 
-        val newCount = permissionDao.count(PermissionFilter().setTypes(Sets.newHashSet("user")))
+        val newCount = permissionDao.count(PermissionFilter(types=listOf("user")))
         assertEquals(count, newCount)
     }
 
@@ -121,6 +119,18 @@ class PermissionDaoTests : AbstractTest() {
         val p = permissionDao.get(perm.id)
         assertEquals(perm.name, p.name)
         assertEquals(perm.description, p.description)
+    }
+
+    @Test
+    fun testFindOne() {
+        val p = permissionDao.findOne(PermissionFilter(authorities = listOf(perm.fullName)))
+        assertEquals(perm.name, p.name)
+        assertEquals(perm.description, p.description)
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testFindOneFailure() {
+        permissionDao.findOne(PermissionFilter(authorities = listOf("bob_dole")))
     }
 
     @Test
@@ -143,8 +153,8 @@ class PermissionDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testGetPagedEmptyFilter() {
-        val perms = permissionDao.getPaged(Pager.first(), PermissionFilter())
+    fun testGetAllFiltered() {
+        val perms = permissionDao.getAll(PermissionFilter())
         assertTrue(perms.size() > 0)
     }
 
@@ -154,37 +164,27 @@ class PermissionDaoTests : AbstractTest() {
         b.description = "test"
         permissionDao.create(b, false)
 
-        var perms = permissionDao.getPaged(Pager.first(),
-                PermissionFilter().setTypes(Sets.newHashSet("test1")))
+        var perms = permissionDao.getAll(
+                PermissionFilter(types=listOf("test1")))
         assertEquals(1, perms.size().toLong())
 
-        perms = permissionDao.getPaged(Pager.first(),
-                PermissionFilter().setNames(Sets.newHashSet("test2")))
+        perms = permissionDao.getAll(PermissionFilter(names=listOf("test2")))
         assertEquals(1, perms.size().toLong())
 
-        perms = permissionDao.getPaged(Pager.first(),
-                PermissionFilter().setNames(Sets.newHashSet("test2"))
-                        .setTypes(Sets.newHashSet("test1")))
+        perms = permissionDao.getAll(PermissionFilter(names=listOf("test2")))
         assertEquals(1, perms.size().toLong())
     }
 
     @Test
-    fun testGetPagedSorted() {
-        val b = PermissionSpec("test1", "test2")
-        b.description = "test"
-        permissionDao.create(b, false)
-
-        assertTrue(permissionDao.getPaged(Pager.first(),
-                PermissionFilter(ImmutableMap.of("id", "asc"))).size() > 0)
-
-        assertTrue(permissionDao.getPaged(Pager.first(),
-                PermissionFilter(ImmutableMap.of("name", "asc"))).size() > 0)
-
-        assertTrue(permissionDao.getPaged(Pager.first(),
-                PermissionFilter(ImmutableMap.of("type", "asc"))).size() > 0)
-
-        assertTrue(permissionDao.getPaged(Pager.first(),
-                PermissionFilter(ImmutableMap.of("description", "asc"))).size() > 0)
+    fun testGetAllSorted() {
+        // Just test the DB allows us to sort on each defined sortMap col
+        for (field in PermissionFilter().sortMap.keys) {
+            var filter = PermissionFilter().apply {
+                sort = listOf("$field:a")
+            }
+            val page = permissionDao.getAll(filter)
+            assertTrue(page.size() > 0)
+        }
     }
 
     @Test
@@ -224,11 +224,8 @@ class PermissionDaoTests : AbstractTest() {
         assertEquals("test", p.name)
         assertEquals("foo", p.description)
 
-        p.type = "foo"
-        p.name = "bar"
-        p.description = "bing"
-
-        p = permissionDao.update(p)
+        val update = PermissionUpdateSpec(p.id, "foo", "bar", "bing")
+        p = permissionDao.update(update)
         assertEquals("foo", p.type)
         assertEquals("bar", p.name)
         assertEquals("bing", p.description)
@@ -237,11 +234,9 @@ class PermissionDaoTests : AbstractTest() {
     @Test
     fun testAttemptUpdateImmutable() {
         var p = permissionDao.get("user", "test")
-        p.type = "foo"
-        p.name = "bar"
-        p.description = "bing"
+        val update = PermissionUpdateSpec(p.id, "foo", "bar", "bing")
 
-        p = permissionDao.update(p)
+        p = permissionDao.update(update)
         assertEquals("user", p.type)
         assertEquals("test", p.name)
     }

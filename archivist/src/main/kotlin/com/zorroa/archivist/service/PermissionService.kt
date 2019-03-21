@@ -1,31 +1,27 @@
 package com.zorroa.archivist.service
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
-import com.google.common.collect.ImmutableMap
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Organization
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.PermissionFilter
+import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.repository.PermissionDao
+import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
+import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 
 interface PermissionService {
+
+    fun findPermission(filter: PermissionFilter): Permission
 
     fun createStandardPermissions(org: Organization)
 
     fun getPermissions(): List<Permission>
 
-    fun getPermissions(page: Pager, filter: PermissionFilter): PagedList<Permission>
-
-    fun getPermissions(page: Pager): PagedList<Permission>
-
-    fun getUserAssignablePermissions(page: Pager): PagedList<Permission>
-
-    fun getObjAssignablePermissions(page: Pager): PagedList<Permission>
+    fun getPermissions(filter: PermissionFilter): KPagedList<Permission>
 
     fun getPermission(id: UUID): Permission
 
@@ -47,51 +43,21 @@ class PermissionServiceImpl @Autowired constructor(
         private val txem: TransactionEventManager
 ) : PermissionService {
 
-    private val permissionCache = CacheBuilder.newBuilder()
-            .maximumSize(200)
-            .initialCapacity(100)
-            .concurrencyLevel(4)
-            .expireAfterWrite(1, TimeUnit.HOURS)
-            .build(object : CacheLoader<String, Permission>() {
-                @Throws(Exception::class)
-                override fun load(key: String): Permission {
-                    return if (key.contains(Permission.JOIN)) {
-                        permissionDao.get(key)
-                    } else {
-                        permissionDao.get(UUID.fromString(key))
-                    }
-                }
-            })
-
+    @Transactional(readOnly = true)
+    override fun findPermission(filter: PermissionFilter): Permission {
+        return permissionDao.findOne(filter)
+    }
 
     override fun getPermissions(): List<Permission> {
         return permissionDao.getAll()
     }
 
-    override fun getPermissions(page: Pager): PagedList<Permission> {
-        return permissionDao.getPaged(page)
-    }
-
-    override fun getPermissions(page: Pager, filter: PermissionFilter): PagedList<Permission> {
-        return permissionDao.getPaged(page, filter)
-    }
-
-    override fun getUserAssignablePermissions(page: Pager): PagedList<Permission> {
-        return permissionDao.getPaged(page,
-                PermissionFilter()
-                        .setAssignableToUser(true)
-                        .forceSort(ImmutableMap.of("str_group", "asc", "str_type", "asc")))
-    }
-
-    override fun getObjAssignablePermissions(page: Pager): PagedList<Permission> {
-        return permissionDao.getPaged(page,
-                PermissionFilter()
-                        .setAssignableToObj(true)
-                        .forceSort(ImmutableMap.of("str_group", "asc", "str_type", "asc")))
+    override fun getPermissions(filter: PermissionFilter): KPagedList<Permission> {
+        return permissionDao.getAll(filter)
     }
 
     override fun getPermissionNames(): List<String> {
-        return permissionDao.getAll().stream().map({ p -> p.fullName }).collect(Collectors.toList<String>())
+        return permissionDao.getAll().stream().map { p -> p.fullName }.collect(Collectors.toList<String>())
     }
 
     override fun permissionExists(authority: String): Boolean {
@@ -99,15 +65,14 @@ class PermissionServiceImpl @Autowired constructor(
     }
 
     override fun getPermission(name: String): Permission {
-        try {
-            return permissionCache.get(name)
-        } catch (e: Exception) {
-            throw EmptyResultDataAccessException("The permission $name does not exist", 1)
+        return if (UUID_REGEXP.matches(name)) {
+            permissionDao.get(UUID.fromString(name))
         }
-
+        else {
+            permissionDao.get(name)
+        }
     }
 
-    // CACHE
     override fun getPermission(id: UUID): Permission {
         return permissionDao.get(id)
     }

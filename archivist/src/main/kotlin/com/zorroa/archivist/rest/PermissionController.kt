@@ -5,6 +5,7 @@ package com.zorroa.archivist.rest
  */
 
 import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.PermissionFilter
 import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PermissionService
@@ -13,6 +14,7 @@ import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @Timed
@@ -36,8 +38,16 @@ class PermissionController @Autowired constructor(
      * Get a particular permission record.
      */
     @RequestMapping(value = ["/api/v1/permissions/{id}"])
-    fun get(@PathVariable id: String): Permission {
+    fun get(@PathVariable id: UUID): Permission {
         return permissionService.getPermission(id)
+    }
+
+    /**
+     * Find a particular permission record using a filter.
+     */
+    @RequestMapping(value = ["/api/v1/permissions/_findOne"], method = [RequestMethod.POST, RequestMethod.GET])
+    fun find(@RequestBody(required = false) filter: PermissionFilter?): Permission {
+        return permissionService.findPermission(filter ?: PermissionFilter())
     }
 
     /**
@@ -51,7 +61,7 @@ class PermissionController @Autowired constructor(
     /**
      * Create a new permission.
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/permissions"])
     fun create(@RequestBody builder: PermissionSpec): Permission {
         return permissionService.createPermission(builder)
@@ -60,7 +70,7 @@ class PermissionController @Autowired constructor(
     /**
      * Delete a permission.
      */
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @DeleteMapping(value = ["/api/v1/permissions/{id}"])
     fun delete(@PathVariable id: String): Any {
         val p = permissionService.getPermission(id)

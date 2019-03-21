@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ProcessorSpec
@@ -39,7 +40,8 @@ interface AnalystService {
 @Transactional
 class AnalystServicImpl @Autowired constructor(
         val analystDao: AnalystDao,
-        val txm: TransactionEventManager): AnalystService {
+        val txm: TransactionEventManager,
+        val clusterLockExecutor: ClusterLockExecutor): AnalystService {
 
     @Autowired
     lateinit var processorService: ProcessorService
@@ -132,29 +134,44 @@ class AnalystServicImpl @Autowired constructor(
     }
 
     override fun doProcessorScan(): List<ProcessorSpec> {
-        logger.info("Scanning analysts for processors")
-        val filter = AnalystFilter(states=listOf(AnalystState.Up))
-        filter.apply {
-            this.page = KPage(0, 5)
-            this.sort = listOf("timePing:d", "load:a")
+        /**
+         * Take a soft lock and hold for the full timeout to stop over-scanning.
+         */
+        val lock = ClusterLockSpec.softLock("processor-scan").apply {
+            holdTillTimeout = true
+            timeout = 1
+            timeoutUnits = TimeUnit.MINUTES
         }
 
-        val analysts = analystDao.getAll(filter)
-        for (analyst in analysts) {
-            logger.info("Scanning Analyst ${analyst.endpoint}")
-            val client = getClient(analyst.endpoint)
-            try {
-                val processors = client.get("/processors",
-                        object: TypeReference<List<ProcessorSpec>>() {})
-                processorService.replaceAll(processors)
-                return processors
+        val result = clusterLockExecutor.inline(lock) {
+            val filter = AnalystFilter(states = listOf(AnalystState.Up))
+            filter.apply {
+                this.page = KPage(0, 5)
+                this.sort = listOf("timePing:d", "load:a")
             }
-            catch (e:Exception) {
-                logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
+
+            val analysts = analystDao.getAll(filter)
+            var processors = mutableListOf<ProcessorSpec>()
+            for (analyst in analysts) {
+                logger.event(LogObject.ANALYST, LogAction.SCAN,
+                        mapOf("analystEndpoint" to analyst.endpoint))
+                val client = getClient(analyst.endpoint)
+                try {
+                    val procs = client.get("/processors",
+                            object : TypeReference<List<ProcessorSpec>>() {})
+                    if (procs.isNotEmpty()) {
+                        processorService.replaceAll(procs)
+                        processors.addAll(procs)
+                        break
+                    }
+                } catch (e: Exception) {
+                    logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
+                }
             }
+            processors
         }
 
-        throw ArchivistException("Failed to initiate processor scan, no ")
+        return result ?: listOf()
     }
 
     override fun getClient(endpoint: String): RestClient {

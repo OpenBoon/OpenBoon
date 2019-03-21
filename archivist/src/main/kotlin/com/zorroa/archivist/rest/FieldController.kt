@@ -43,9 +43,20 @@ class FieldController @Autowired constructor(
                 fieldSystemService.deleteField(fieldSystemService.getField(id)))
     }
 
-    @PostMapping(value = ["/api/v1/fields/_search"])
+    @RequestMapping(value = ["/api/v1/fields/_search"], method = [RequestMethod.GET, RequestMethod.POST])
     @Throws(Exception::class)
-    fun search(@RequestBody filter: FieldFilter): KPagedList<Field> {
+    fun search(@RequestBody(required = false) req: FieldFilter?,
+               @RequestParam(value = "from", required = false) from: Int?,
+               @RequestParam(value = "count", required = false) count: Int?): KPagedList<Field> {
+        val filter = req ?: FieldFilter()
+        from?.let { filter.page.from = it }
+        count?.let { filter.page.size = it }
         return fieldSystemService.getAllFields(filter)
+    }
+
+    @RequestMapping(value = ["/api/v1/fields/_findOne"], method = [RequestMethod.GET, RequestMethod.POST])
+    @Throws(Exception::class)
+    fun findOne(@RequestBody(required = false) req: FieldFilter?): Field {
+        return fieldSystemService.findOneField(req ?: FieldFilter())
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -38,7 +39,10 @@ class RestApiExceptionHandler {
     /**
      * Do extra logging for these response statuses
      */
-    val doExtraLogging = setOf(HttpStatus.UNAUTHORIZED, HttpStatus.BAD_REQUEST, HttpStatus.INTERNAL_SERVER_ERROR)
+    val doExtraLogging =
+            setOf(HttpStatus.UNAUTHORIZED,
+                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.INTERNAL_SERVER_ERROR)
 
     @ExceptionHandler(Exception::class)
     fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception) : ResponseEntity<Any> {
@@ -50,6 +54,10 @@ class RestApiExceptionHandler {
         }
         else if (e is EmptyResultDataAccessException || e is EntityNotFoundException) {
            HttpStatus.NOT_FOUND
+        }
+        else if (e is IncorrectResultSizeDataAccessException) {
+            // We're borrowing this http status
+            HttpStatus.METHOD_FAILURE
         }
         else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
             HttpStatus.CONFLICT
@@ -81,7 +89,7 @@ class RestApiExceptionHandler {
          */
         val errorId = UUID.randomUUID().toString()
 
-        if (doExtraLogging.contains(status)) {
+        if (doExtraLogging.contains(status) || debug) {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
                     req.servletPath, getUserOrNull()?.username, errorId, e)
         }
