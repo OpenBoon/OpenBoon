@@ -10,6 +10,7 @@ import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.LockState
+import com.zorroa.common.domain.TaskState
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
@@ -147,7 +148,7 @@ class DispatcherServiceTests : AbstractTest() {
 
     // make run
     @Test
-    fun testStopErrorTask() {
+    fun testStopErrorTaskManualKill() {
         val id1 = UUID.randomUUID().toString()
         val id2 = UUID.randomUUID().toString()
 
@@ -178,14 +179,93 @@ class DispatcherServiceTests : AbstractTest() {
         assertNotNull(next)
         next?.let {
             assertTrue(dispatcherService.startTask(it))
-            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(1)))
-
+            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(-9, manualKill = true)))
             authenticate()
+            assertEquals(TaskState.Failure, taskDao.get(next.taskId).state)
+        }
+    }
+
+    @Test
+    fun testStopErrorAutoRetry() {
+        val id1 = UUID.randomUUID().toString()
+        val id2 = UUID.randomUUID().toString()
+
+        val doc1 = Document(id1)
+        doc1.setAttr("source.path", "/foo/bar.jpg")
+
+        val doc2 = Document(id2)
+        doc2.setAttr("source.path", "/flim/flam.jpg")
+
+        val spec = JobSpec("test_job",
+                ZpsScript("foo",
+                        generate = null,
+                        execute = null,
+                        over=listOf(doc1, doc2)))
+        jobService.create(spec)
+
+        authenticateAsAnalyst()
+        val analyst = "https://127.0.0.1:5000"
+        val aspec = AnalystSpec(
+                1024,
+                648,
+                1024,
+                0.5f,
+                "0.41.0",
+                null).apply { endpoint = analyst }
+
+        val next = dispatchQueueManager.getNext()
+        assertNotNull(next)
+        next?.let {
+            assertTrue(dispatcherService.startTask(it))
+            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(1, manualKill = false)))
+            authenticate()
+            assertEquals(TaskState.Waiting, taskDao.get(next.taskId).state)
+        }
+    }
+
+    @Test
+    fun testStopErrorPastAutoRetryLimit() {
+        val id1 = UUID.randomUUID().toString()
+        val id2 = UUID.randomUUID().toString()
+
+        val doc1 = Document(id1)
+        doc1.setAttr("source.path", "/foo/bar.jpg")
+
+        val doc2 = Document(id2)
+        doc2.setAttr("source.path", "/flim/flam.jpg")
+
+        val spec = JobSpec("test_job",
+                ZpsScript("foo",
+                        generate = null,
+                        execute = null,
+                        over=listOf(doc1, doc2)))
+        jobService.create(spec)
+
+        authenticateAsAnalyst()
+        val analyst = "https://127.0.0.1:5000"
+        val aspec = AnalystSpec(
+                1024,
+                648,
+                1024,
+                0.5f,
+                "0.41.0",
+                null).apply { endpoint = analyst }
+
+        val next = dispatchQueueManager.getNext()
+        assertNotNull(next)
+        next?.let {
+            // Set run count above the retry limit.
+            jdbc.update("UPDATE task SET int_run_count=4 WHERE pk_task=?", next.taskId)
+            assertTrue(dispatcherService.startTask(it))
+            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(1, manualKill = false)))
+            authenticate()
+            assertEquals(TaskState.Failure, taskDao.get(next.taskId).state)
             assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(jobIds=listOf(next.jobId))).size())
             assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(taskIds=listOf(next.taskId))).size())
             assertEquals(2, taskErrorDao.getAll(TaskErrorFilter()).size())
         }
     }
+
 
     @Test
     fun testExpand() {
@@ -198,7 +278,6 @@ class DispatcherServiceTests : AbstractTest() {
         val task = dispatcherService.expand(job, emptyZpsScript("bar"))
         assertEquals(job.id, task.jobId)
     }
-
 
     @Test
     fun testExpandFromParentTask() {
