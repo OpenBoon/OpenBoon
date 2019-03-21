@@ -2,12 +2,12 @@ package com.zorroa.archivist.service
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.common.clients.ElasticMapping
 import com.zorroa.common.clients.EsRestClient
 import com.zorroa.common.clients.IndexRoute
 import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
-import org.elasticsearch.action.admin.indices.alias.Alias
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
@@ -107,6 +107,9 @@ class ElasticSearchConfiguration {
 class IndexRoutingServiceImpl @Autowired
     constructor(val config: ElasticSearchConfiguration): IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
 
+    @Autowired
+    lateinit var clusterLockExecutor: ClusterLockExecutor
+
     var esClientCache = EsClientCache()
 
     val defaultRoute: IndexRoute
@@ -137,26 +140,29 @@ class IndexRoutingServiceImpl @Autowired
         val es = getEsRestClient(route)
         waitForElasticSearch(es)
 
-        // Check if index exists already
-        if (es.indexExists()) {
-            logger.info("Not creating index already exists")
-            return route
-        }
-
         val indexName = getIndexName(mapfile)
-        logger.info("Creating index '$indexName'")
+        val lock = ClusterLockSpec.softLock("create-es-$indexName")
+        clusterLockExecutor.inline(lock) {
 
-        // This code still has to handle multiple archivists attempting to do this at the same time.
-        val req = CreateIndexRequest()
-        req.index(indexName)
+            if (!es.indexExists()) {
+                logger.info("Creating index '$indexName'")
 
-        val settings = mapfile.mapping["settings"] as MutableMap<String, Any>?
-        if (settings != null) {
-            settings["number_of_replicas"] = config.replicas
-            settings["number_of_shards"] = config.shards
+                val req = CreateIndexRequest()
+                req.index(indexName)
+
+                val settings = mapfile.mapping["settings"] as MutableMap<String, Any>?
+                if (settings != null) {
+                    settings["number_of_replicas"] = config.replicas
+                    settings["number_of_shards"] = config.shards
+                }
+
+                req.source(mapfile.mapping)
+                es.client.indices().create(req)
+            }
+            else {
+                logger.info("Not creating index already exists")
+            }
         }
-        req.source(mapfile.mapping)
-        es.client.indices().create(req)
         return route
     }
 
