@@ -14,33 +14,38 @@ object JdbcUtils {
     }
 
     /**
-     * Create and return an insert query.  Supports the postgres cast
-     * operator (::) for on column names.   For example:
+     * Create and return an insert query.  Supports the postgres cast operator (::)
+     * for on column names.
      *
+     * For example:
      * insert("foo", "pk_foo::uuid") would return "INSERT INTO foo (pk_foo) VALUES (?::uuid)"
+     *
+     * Supports calling a single function on a bind variable using the @ operator.
+     *
+     * Example:
+     * insert("table", words@to_tsvector") would return "INSERT INTO table (words) VALUES (to_tsvector(?));
+     *
      */
     fun insert(table: String, vararg cols: String): String {
         val sb = StringBuilder(1024)
         sb.append("INSERT INTO ")
         sb.append(table)
         sb.append("(")
-        for(col in  cols) {
-            if ("::" in col) {
-                sb.append(col.split("::").first())
-            }
-            else {
-                sb.append(col)
+        for(col in cols) {
+            when {
+                "::" in col -> sb.append(col.split("::").first())
+                "@" in col -> sb.append(col.split("@").first())
+                else -> sb.append(col)
             }
             sb.append(",")
         }
         sb.deleteCharAt(sb.lastIndex)
         sb.append(") VALUES (")
         for(col in  cols) {
-            if ("::" in col) {
-                sb.append("?::"+col.split("::").last())
-            }
-            else {
-                sb.append("?")
+            when {
+                "::" in col -> sb.append("?::"+col.split("::").last())
+                "@" in col -> sb.append(col.split("@").last() + "(?)")
+                else -> sb.append("?")
             }
             sb.append(",")
         }
