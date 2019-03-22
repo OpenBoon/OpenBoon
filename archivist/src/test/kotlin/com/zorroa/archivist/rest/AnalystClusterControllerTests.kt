@@ -107,13 +107,14 @@ class AnalystClusterControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testStoppedEventFailure() {
+    fun testStoppedEventTaskFailed() {
         val job = launchJob()
         authenticateAsAnalyst()
         val task = dispatchQueueManager.getNext()
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
+            jdbc.update("UPDATE task SET int_run_count=100 WHERE pk_task=?", task.id)
             val te = TaskEvent(TaskEventType.STOPPED,
                     task.id,
                     job.id,
