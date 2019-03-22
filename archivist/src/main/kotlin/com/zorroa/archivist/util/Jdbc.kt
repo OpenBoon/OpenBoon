@@ -43,7 +43,7 @@ object JdbcUtils {
         sb.append(") VALUES (")
         for(col in  cols) {
             when {
-                "::" in col -> sb.append("?::"+col.split("::").last())
+                "::" in col -> sb.append("?::" + col.split("::").last())
                 "@" in col -> sb.append(col.split("@").last() + "(?)")
                 else -> sb.append("?")
             }
