@@ -2,13 +2,15 @@ package com.zorroa.archivist.config
 
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
-import com.zorroa.archivist.domain.UniqueTaskExecutor
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.repository.UserDao
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.security.GcpJwtValidator
+import com.zorroa.archivist.security.JwtValidator
+import com.zorroa.archivist.security.MasterJwtValidator
+import com.zorroa.archivist.security.UserJwtValidator
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.clients.*
+import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import io.micrometer.core.instrument.MeterRegistry
 import io.undertow.servlet.api.SecurityConstraint
 import io.undertow.servlet.api.SecurityInfo
@@ -26,7 +28,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.core.io.ClassPathResource
-import org.springframework.core.task.*
+import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
@@ -34,7 +36,6 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
-import java.lang.IllegalStateException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*

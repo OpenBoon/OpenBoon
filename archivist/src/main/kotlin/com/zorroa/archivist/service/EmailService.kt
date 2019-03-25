@@ -7,7 +7,6 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.domain.PasswordResetToken
 import com.zorroa.archivist.domain.Request
-import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.repository.UserDao
 import org.slf4j.LoggerFactory
@@ -22,7 +21,6 @@ import javax.mail.MessagingException
 
 interface EmailService {
     fun sendOnboardEmail(user: User): PasswordResetToken
-    fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink)
     fun sendPasswordResetEmail(user: User): PasswordResetToken
     fun sendExportRequestEmail(user: User, req: Request)
 
@@ -39,46 +37,12 @@ class EmailServiceImpl @Autowired constructor(
     @Autowired
     private lateinit var folderService: FolderService
 
-
-    override fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink) {
-
-        val toName = toUser.firstName ?: toUser.username
-        val fromName = fromUser.firstName ?: fromUser.username
-        val url = networkEnv.getPublicUrl("zorroa-archivist") + "/search?id=" + link.id
-
-        val text = StringBuilder(1024)
-        text.append("Hello ")
-        text.append(toName)
-        text.append(",\n\n")
-        text.append(fromName)
-        text.append(" has sent you a link.")
-        text.append("\n\n" + url)
-
-        var htmlMsg: String? = null
-        try {
-            htmlMsg = getTextResourceFile("emails/SharedLink.html")
-            htmlMsg = htmlMsg.replace("*|URL|*", url)
-            htmlMsg = htmlMsg.replace("*|TO_USER|*", toName)
-            htmlMsg = htmlMsg.replace("*|FROM_USER|*", fromName)
-        } catch (e: IOException) {
-            logger.warn("Failed to open HTML template for sharing links.. Sending text only.", e)
-        }
-
-        try {
-            sendHTMLEmail(toUser.email, fromName + " has shared a link with you.",
-                    text.toString(), listOf(), htmlMsg)
-        } catch (e: MessagingException) {
-            logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e)
-        }
-
-    }
-
     override fun sendPasswordResetEmail(user: User): PasswordResetToken {
         val token = PasswordResetToken(userDao.setEnablePasswordRecovery(user))
 
         if (token != null) {
             val name = if (user.firstName == null) user.username else user.firstName
-            val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/password?token=" + token.toString()
+            val url = networkEnv.getPublicUrl("zorroa-archivist") + "/password?token=" + token.toString()
 
             val text = StringBuilder(1024)
             text.append("Hello ")
@@ -90,7 +54,7 @@ class EmailServiceImpl @Autowired constructor(
             var htmlMsg: String? = null
             try {
                 htmlMsg = getTextResourceFile("emails/PasswordReset.html")
-                htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server")
+                htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", "$url&source=file_server")
                 htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", name)
             } catch (e: IOException) {
                 logger.warn("Failed to open HTML template for onboarding. Sending text only.", e)
