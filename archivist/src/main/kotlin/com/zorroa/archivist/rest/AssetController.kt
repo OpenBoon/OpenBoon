@@ -8,8 +8,6 @@ import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.common.repository.KPage
-import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
@@ -96,7 +94,7 @@ class AssetController @Autowired constructor(
         if (proxies != null) {
             val largest = proxies.getLargest()
             if (largest != null) {
-                fileStorageService.get(largest.id!!)
+                return fileStorageService.get(largest.id!!)
             }
         }
         return null
