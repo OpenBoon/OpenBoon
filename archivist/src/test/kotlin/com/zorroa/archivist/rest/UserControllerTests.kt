@@ -247,8 +247,7 @@ class UserControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testUpdateSettings() {
         val user = userService.get("user")
-        val settings = UserSettings()
-        settings.search = ImmutableMap.of<String, Any>("foo", "bar")
+        val settings = UserSettings(search=ImmutableMap.of<String, Any>("foo", "bar"))
 
         val session = admin()
         val result = mvc.perform(put("/api/v1/users/${user.id}/_settings")
@@ -265,8 +264,8 @@ class UserControllerTests : MockMvcTest() {
         })
         val user2 = sr.`object`
         assertEquals(user.id, user2!!.id)
-        assertNotNull(settings.search["foo"])
-        assertEquals("bar", settings.search["foo"])
+        assertNotNull(settings.search!!["foo"])
+        assertEquals("bar", settings.search!!["foo"])
     }
 
     @Test
