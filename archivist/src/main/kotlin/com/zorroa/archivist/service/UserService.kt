@@ -199,6 +199,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         val perms = mutableListOf<Permission>()
         for (group in groups) {
 
+            // Maps the external permission to a standard one, if applicagle.
             val parts = if (mapping.containsKey(group)) {
                 mapping.getValue(group).split(Permission.JOIN, limit = 2)
             }
@@ -206,6 +207,7 @@ class UserRegistryServiceImpl @Autowired constructor(
                 group.split(Permission.JOIN, limit = 2)
             }
 
+            // Create a propert spec.
             val spec = if (parts.size == 1) {
                 PermissionSpec(source.permissionType, parts[0])
             } else {
