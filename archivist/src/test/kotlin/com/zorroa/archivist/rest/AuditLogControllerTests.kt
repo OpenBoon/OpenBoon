@@ -27,7 +27,8 @@ class AuditLogControllerTests : MockMvcTest() {
         val session = admin()
         val filter = AuditLogFilter(types=setOf(AuditLogType.Created))
 
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/auditlog/_search")
+        val result = mvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/auditlog/_search")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -38,6 +39,8 @@ class AuditLogControllerTests : MockMvcTest() {
         val content = result.response.contentAsString
         val log = Json.Mapper.readValue<KPagedList<AuditLogEntry>>(content,
                 object : TypeReference<KPagedList<AuditLogEntry>>() {})
+
+
         logger.info("{}", content)
     }
 }

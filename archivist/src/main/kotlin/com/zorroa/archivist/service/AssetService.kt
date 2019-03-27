@@ -176,14 +176,14 @@ open abstract class AbstractAssetService : AssetService {
                 AuditLogEntrySpec(
                         oldAsset.id,
                         AuditLogType.Changed,
-                        field=it,
-                        value=newAsset.getAttr(it))
+                        attrName = it,
+                        value = newAsset.getAttr(it))
             }
             else if (oldAsset.getAttr(it, Any::class.java) != newAsset.getAttr(it, Any::class.java)) {
                 AuditLogEntrySpec(
                         oldAsset.id,
                         AuditLogType.Changed,
-                        field=it,
+                        attrName = it,
                         value=newAsset.getAttr(it))
             }
             else {
@@ -692,12 +692,19 @@ open abstract class AbstractAssetService : AssetService {
 
         val rsp = update(assetId, updateReq)
         if (rsp) {
+            val oldValue = asset.getAttr(field.attrName, Any::class.java)
             val ispec = FieldEditSpecInternal(
                     UUID.fromString(asset.id),
                     field.id,
                     spec.newValue,
-                    asset.getAttr(field.attrName, Any::class.java))
-            return fieldEditDao.create(ispec)
+                    oldValue)
+            val res = fieldEditDao.create(ispec)
+
+            val msg = "The field '${field.name} (${field.attrName} " +
+                    "was changed from '$oldValue' to '${spec.newValue}'"
+
+            return res
+
         }
 
         throw ArchivistWriteException("Failed to edit asset $assetId, update failed")
