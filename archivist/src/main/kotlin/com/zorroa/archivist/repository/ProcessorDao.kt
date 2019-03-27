@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.domain.ProcessorSpec
-import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.JdbcUtils.getTsWordVector
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
@@ -94,7 +94,7 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
                 "time_updated",
                 "json_display::jsonb",
                 "list_file_types",
-                "fti_keywords::tsvector")
+                "fti_keywords@to_tsvector")
 
         private const val GET = "SELECT * FROM processor"
 

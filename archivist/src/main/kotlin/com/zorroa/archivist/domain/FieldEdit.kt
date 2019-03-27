@@ -107,11 +107,6 @@ class FieldEditFilter (
             addToValues(it)
         }
 
-        fieldIds?.let {
-            addToWhere(JdbcUtils.inClause("field_edit.pk_field", it.size))
-            addToValues(it)
-        }
-
         userCreatedIds?.let {
             addToWhere(JdbcUtils.inClause("field_edit.pk_user_created", it.size))
             addToValues(it)
