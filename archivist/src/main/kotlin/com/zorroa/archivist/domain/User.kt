@@ -193,3 +193,25 @@ class UserFilter constructor(
         }
     }
 }
+
+/**
+ * A loosely defined user-settings class for storing arbitrary user settings.
+ *
+ * @property search Search related settings.
+ * @property metadata Metadata related settings.
+ */
+class UserSettings(
+        var search: Map<String,Any>? = null,
+        var metadata: Map<String,Any>? = null
+)
+
+/**
+ * UserPasswordUpdate defines the properties required to chnage a user's password.
+ *
+ * @property newPassword The new password.
+ * @property oldPassword The old password.
+ */
+class UserPasswordUpdate(
+        val newPassword: String,
+        val oldPassword: String
+)
