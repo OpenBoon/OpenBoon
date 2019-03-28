@@ -42,7 +42,18 @@ enum class AuditLogType {
     Warning
 }
 
-
+/**
+ * An AuditLogFilter is used to filter an audit log query.  Most of the properties here
+ * should be self explanatory.  All properties are nullable.
+ *
+ * @property assetIds The unique assetIds to filter on.
+ * @property userIds The unique userIds to filter on.
+ * @property fieldIds The unique fieldIds to filter on.
+ * @property timeCreated The time to filter on, see the [LongRangeFilter] class.
+ * @property types The entry types to filter on. See [AuditLogType].
+ * @property attrNames The attribute names to filter on.
+ * @property sort The sort string. Formatted as field:direction, example ["timeCreated:desc"]
+ */
 class AuditLogFilter(
         val assetIds: List<UUID>?=null,
         val userIds: List<UUID>?=null,
@@ -55,9 +66,11 @@ class AuditLogFilter(
     @JsonIgnore
     override val sortMap: Map<String, String> =
             mapOf("timeCreated" to "time_created",
-                    "userIds" to "pk_user_created",
-                    "types" to "int_type",
-                    "attrName" to "str_attr_name")
+                    "userId" to "auditlog.pk_user_created",
+                    "assetId" to "auditlog.pk_asset",
+                    "fieldId" to "auditlog.pk_field",
+                    "types" to "auditlog.int_type",
+                    "attrName" to "auditlog.str_attr_name")
 
     override fun build() {
 
@@ -101,6 +114,19 @@ class AuditLogFilter(
     }
 }
 
+/**
+ * An entry into the AuditLog.
+ *
+ * @property id The unique ID of the entry
+ * @property assetId The assetId that was modified.
+ * @property fieldId The fieldId that was modified.  Can be null.
+ * @property user The user that generated the audit log entry.
+ * @property timeCreated The time the entry was created.
+ * @property type The entry type.  See AuditLogType enum.
+ * @property attrName The name of the attribute changed. Can be null.
+ * @property message A message associated with the log entry.
+ * @property value The new value of a field or property changed.  Can be null.
+ */
 class AuditLogEntry(
         val id: UUID,
         val assetId: UUID,
@@ -114,6 +140,18 @@ class AuditLogEntry(
 )
 
 
+/**
+ * The properties required to create an audit log entry.
+ *
+ * @property assetId The ID of the asset.
+ * @property type The type of entry. See the AuditLogType enum.
+ * @property fieldId The fieldId associated with the log entry.  Can be null.
+ * @property message The log message.  If null, a log message will be auto-generated.
+ * @property attrName The attribute name associated with the log entry.
+ * @property value The new value of a field or property changed.  Can be null.
+ * @property scope The scope/sub-type of the entry.  For example, type=Changed can happen in
+ * many different places, scope describes the place it occurred.
+ */
 class AuditLogEntrySpec(
         val assetId: UUID,
         val type: AuditLogType,
