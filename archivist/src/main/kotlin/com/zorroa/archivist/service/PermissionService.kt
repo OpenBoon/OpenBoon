@@ -10,6 +10,7 @@ import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalArgumentException
 import java.util.*
 import java.util.stream.Collectors
 
@@ -78,8 +79,11 @@ class PermissionServiceImpl @Autowired constructor(
     }
 
     override fun createPermission(builder: PermissionSpec): Permission {
-        val perm = permissionDao.create(builder, false)
-        return perm
+        if (builder.type == "zorroa" || builder.name == "superadmin") {
+            throw IllegalArgumentException("Cannot create permission " +
+                    "'${builder.type}::${builder.name}' in the Zorroa namespace.")
+        }
+        return permissionDao.create(builder, false)
     }
 
     val standardPerms = listOf(

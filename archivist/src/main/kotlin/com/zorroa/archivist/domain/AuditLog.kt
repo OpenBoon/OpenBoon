@@ -42,23 +42,41 @@ enum class AuditLogType {
     Warning
 }
 
-
+/**
+ * An AuditLogFilter is used to filter an audit log query.  Most of the properties here
+ * should be self explanatory.  All properties are nullable.
+ *
+ * @property assetIds The unique assetIds to filter on.
+ * @property userIds The unique userIds to filter on.
+ * @property fieldIds The unique fieldIds to filter on.
+ * @property timeCreated The time to filter on, see the [LongRangeFilter] class.
+ * @property types The entry types to filter on. See [AuditLogType].
+ * @property attrNames The attribute names to filter on.
+ * @property sort The sort direction. Formatted as field:direction, defaults to ["timeCreated:desc"]
+ */
 class AuditLogFilter(
-        val assetIds: Set<UUID>?=null,
-        val userIds: Set<UUID>?=null,
+        val assetIds: List<UUID>?=null,
+        val userIds: List<UUID>?=null,
+        val fieldIds: List<UUID>?=null,
         val timeCreated: LongRangeFilter?=null,
-        val types: Set<AuditLogType>?=null,
-        val fields: Set<String>?=null
+        val types: List<AuditLogType>?=null,
+        val attrNames: List<String>?=null
 ): KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
             mapOf("timeCreated" to "time_created",
-                    "userIds" to "pk_user_created",
-                    "types" to "int_type",
-                    "fields" to "str_field")
+                    "userId" to "auditlog.pk_user_created",
+                    "assetId" to "auditlog.pk_asset",
+                    "fieldId" to "auditlog.pk_field",
+                    "types" to "auditlog.int_type",
+                    "attrName" to "auditlog.str_attr_name")
 
     override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("timeCreated:desc")
+        }
 
         assetIds?.let {
             addToWhere(JdbcUtils.inClause("auditlog.pk_asset", it.size))
@@ -67,6 +85,11 @@ class AuditLogFilter(
 
         userIds?.let {
             addToWhere(JdbcUtils.inClause("auditlog.pk_user_created", it.size))
+            addToValues(it)
+        }
+
+        fieldIds?.let {
+            addToWhere(JdbcUtils.inClause("auditlog.pk_field", it.size))
             addToValues(it)
         }
 
@@ -80,8 +103,8 @@ class AuditLogFilter(
             addToValues(it.map { t-> t.ordinal })
         }
 
-        fields?.let {
-            addToWhere(JdbcUtils.inClause("auditlog.str_field", it.size))
+        attrNames?.let {
+            addToWhere(JdbcUtils.inClause("auditlog.str_attr_name", it.size))
             addToValues(it)
         }
 
@@ -91,32 +114,61 @@ class AuditLogFilter(
     }
 }
 
+/**
+ * An entry into the AuditLog.
+ *
+ * @property id The unique ID of the entry
+ * @property assetId The assetId that was modified.
+ * @property fieldId The fieldId that was modified.  Can be null.
+ * @property user The user that generated the audit log entry.
+ * @property timeCreated The time the entry was created.
+ * @property type The entry type.  See AuditLogType enum.
+ * @property attrName The name of the attribute changed. Can be null.
+ * @property message A message associated with the log entry.
+ * @property value The new value of a field or property changed.  Can be null.
+ */
 class AuditLogEntry(
         val id: UUID,
         val assetId: UUID,
+        val fieldId: UUID?,
         val user: UserBase,
         val timeCreated: Long,
         val type: AuditLogType,
+        val attrName: String?,
         val message: String?,
-        val field: String?,
         val value: Any?
 )
 
 
+/**
+ * The properties required to create an audit log entry.
+ *
+ * @property assetId The ID of the asset.
+ * @property type The type of entry. See the AuditLogType enum.
+ * @property fieldId The fieldId associated with the log entry.  Can be null.
+ * @property message The log message.  If null, a log message will be auto-generated.
+ * @property attrName The attribute name associated with the log entry.
+ * @property value The new value of a field or property changed.  Can be null.
+ * @property scope The scope/sub-type of the entry.  For example, type=Changed can happen in
+ * many different places, scope describes the place it occurred.
+ */
 class AuditLogEntrySpec(
         val assetId: UUID,
         val type: AuditLogType,
+        val fieldId: UUID?=null,
         val message: String?=null,
-        val field: String?=null,
+        val attrName: String?=null,
         val value: Any?=null,
         val scope: String?=null
 )
 {
     constructor(assetId: String,
                 type: AuditLogType,
+                fieldId: UUID?=null,
                 message: String?=null,
-                field: String?=null,
+                attrName: String?=null,
                 value: Any?=null,
                 scope: String?=null) :
-            this(UUID.fromString(assetId), type, message, field, value, scope)
+            this(UUID.fromString(assetId), type, fieldId, message, attrName, value, scope)
+
 }

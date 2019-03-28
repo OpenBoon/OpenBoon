@@ -69,24 +69,26 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, spec.assetId)
-            ps.setObject(3, user.organizationId)
-            ps.setObject(4, user.id)
-            ps.setLong(5, time)
-            ps.setInt(6, spec.type.ordinal)
-            ps.setString(7, spec.field)
-            ps.setString(8, value)
-            ps.setString(9, message)
+            ps.setObject(3, spec.fieldId)
+            ps.setObject(4, user.organizationId)
+            ps.setObject(5, user.id)
+            ps.setLong(6, time)
+            ps.setInt(7, spec.type.ordinal)
+            ps.setString(8, spec.attrName)
+            ps.setString(9, value)
+            ps.setString(10, message)
             ps
         }
 
         return AuditLogEntry(
                 id,
                 spec.assetId,
+                spec.fieldId,
                 userDaoCache.getUser(user.id),
                 time,
                 spec.type,
+                spec.attrName,
                 message,
-                spec.field,
                 value)
     }
 
@@ -103,13 +105,14 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
 
                 ps.setObject(1, uuid1.generate())
                 ps.setObject(2, spec.assetId)
-                ps.setObject(3, user.organizationId)
-                ps.setObject(4, user.id)
-                ps.setLong(5, time)
-                ps.setInt(6, spec.type.ordinal)
-                ps.setString(7, spec.field)
-                ps.setString(8, value)
-                ps.setString(9, message)
+                ps.setObject(3, spec.fieldId)
+                ps.setObject(4, user.organizationId)
+                ps.setObject(5, user.id)
+                ps.setLong(6, time)
+                ps.setInt(7, spec.type.ordinal)
+                ps.setString(8, spec.attrName)
+                ps.setString(9, value)
+                ps.setString(10, message)
             }
 
             override fun getBatchSize(): Int {
@@ -137,8 +140,8 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         map["index"] = client.route.indexName
         map["cluster"] = client.route.clusterUrl
         map["assetId"] = spec.assetId
-        if (spec.field != null) {
-            map["field"] = spec.field
+        if (spec.attrName != null) {
+            map["field"] = spec.attrName
         }
         if (fieldValue != null) {
             map["fieldValue"] = fieldValue
@@ -156,11 +159,15 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
 
     private inline fun getLogMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : String {
         val scope = spec.scope ?: "index"
-        return if (spec.field != null) {
-            "${user.username} ${spec.type} during $scope field '${spec.field}' to '$fieldValue' on Asset ${spec.assetId}"
+        return if (spec.attrName != null) {
+            /**
+             * TODO: A lot of this should move to a AuditLogService where spec.attrName
+             * can be resolved into a field name.
+             */
+            "${user.username} ${spec.type} field \"${spec.attrName}\" with a \"$scope\" to $fieldValue"
         }
         else {
-            "${user.username} ${spec.type} during $scope Asset ${spec.assetId}'"
+            "${user.username} ${spec.type} Asset ${spec.assetId}"
         }
     }
 
@@ -175,11 +182,12 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         AuditLogEntry(
                 rs.getObject("pk_auditlog") as UUID,
                 rs.getObject("pk_asset") as UUID,
+                rs.getObject("pk_field") as UUID?,
                 userDaoCache.getUser(rs.getObject("pk_user_created") as UUID),
                 rs.getLong("time_created"),
                 AuditLogType.values()[rs.getInt("int_type")],
+                rs.getString("str_attr_name"),
                 rs.getString("str_message"),
-                rs.getString("str_field"),
                 fieldValue)
     }
 
@@ -189,25 +197,27 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         private val GET = "SELECT " +
                 "pk_auditlog,"+
                 "pk_asset,"+
+                "pk_field,"+
                 "pk_user_created,"+
                 "time_created,"+
                 "int_type,"+
                 "str_message,"+
-                "str_field,"+
+                "str_attr_name,"+
                 "json_value " +
                 "FROM auditlog"
 
 
-        private val COUNT = "SELECT COUNT(1) FROM auditlog"
+        private const val COUNT = "SELECT COUNT(1) FROM auditlog"
 
         private val INSERT = JdbcUtils.insert("auditlog",
                 "pk_auditlog",
                 "pk_asset",
+                "pk_field",
                 "pk_organization",
                 "pk_user_created",
                 "time_created",
                 "int_type",
-                "str_field",
+                "str_attr_name",
                 "json_value::jsonb",
                 "str_message")
     }

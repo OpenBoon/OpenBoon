@@ -10,6 +10,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.core.context.SecurityContextHolder
+import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -26,6 +27,18 @@ class PermissionServiceTests : AbstractTest() {
         assertEquals(perm.fullName, "test::shoe")
         assertEquals(perm.name, "shoe")
         assertEquals(perm.type, "test")
+    }
+
+    @Test(expected=IllegalArgumentException::class)
+    fun testIllegalName() {
+        permissionService.createPermission(
+                PermissionSpec("ttest", "superadmin", description = "foo"))
+    }
+
+    @Test(expected=IllegalArgumentException::class)
+    fun testIllegalGroup() {
+        permissionService.createPermission(
+                PermissionSpec("zorroa", "mr-stubbins", description = "foo"))
     }
 
     @Test
