@@ -8,8 +8,6 @@ import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.common.repository.KPage
-import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
@@ -266,7 +264,12 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun updateV2(@PathVariable id: String, @RequestBody req: UpdateAssetRequest): Any {
         val rsp =  assetService.update(id, req)
-        return HttpUtils.updated("asset", id, rsp, assetService.get(id))
+        if (rsp.isSuccess()) {
+            return HttpUtils.updated("asset", id, true, assetService.get(id))
+        }
+        else {
+            throw rsp.getThrowableError()
+        }
     }
 
     @PutMapping(value = ["/api/v1/assets"])

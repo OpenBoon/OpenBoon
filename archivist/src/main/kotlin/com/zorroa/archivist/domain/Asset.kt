@@ -7,8 +7,12 @@ import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.common.domain.ArchivistException
+import com.zorroa.common.domain.ArchivistWriteException
+import com.zorroa.common.domain.EntityNotFoundException
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.AccessDeniedException
 import java.net.URI
 import java.util.*
 import java.util.regex.Pattern
@@ -66,20 +70,45 @@ class BatchUpdateAssetsRequest(
  *
  * @property updatedAssetIds : The asset Ids updated
  * @property erroredAssetIds : The missing or errored asset Ids
+ * @property accessDeniedAssetIds : The assetIds that were denied write access.
  *
  */
 class BatchUpdateAssetsResponse {
     val updatedAssetIds = mutableSetOf<String>()
     val erroredAssetIds = mutableSetOf<String>()
+    val accessDeniedAssetIds = mutableSetOf<String>()
 
     operator fun plus(other: BatchUpdateAssetsResponse) {
         updatedAssetIds.addAll(other.updatedAssetIds)
         erroredAssetIds.addAll(other.erroredAssetIds)
+        accessDeniedAssetIds.addAll(other.accessDeniedAssetIds)
     }
 
     override fun toString() : String {
-        return "<BatchUpdateAssetsResponse updated=${updatedAssetIds.size} errored=${erroredAssetIds.size}>"
+        return "<BatchUpdateAssetsResponse " +
+                "updated=${updatedAssetIds.size} " +
+                "errored=${erroredAssetIds.size} " +
+                "accessDenied=${erroredAssetIds.size}"
     }
+
+    @JsonIgnore
+    fun getThrowableError() : Throwable {
+        return when {
+            accessDeniedAssetIds.isNotEmpty() -> AccessDeniedException(
+                    "Access denied updating assets: $accessDeniedAssetIds")
+            erroredAssetIds.isNotEmpty() -> EntityNotFoundException(
+                    "Cannot update missing assets: $erroredAssetIds")
+            // Should never get here.
+            else-> ArchivistWriteException("Unspecified update exception")
+        }
+    }
+
+    @JsonIgnore
+    fun isSuccess() : Boolean {
+        return updatedAssetIds.isNotEmpty() &&
+                erroredAssetIds.isEmpty() && accessDeniedAssetIds.isEmpty()
+    }
+
 }
 
 /**
