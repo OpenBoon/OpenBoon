@@ -52,7 +52,7 @@ enum class AuditLogType {
  * @property timeCreated The time to filter on, see the [LongRangeFilter] class.
  * @property types The entry types to filter on. See [AuditLogType].
  * @property attrNames The attribute names to filter on.
- * @property sort The sort string. Formatted as field:direction, example ["timeCreated:desc"]
+ * @property sort The sort direction. Formatted as field:direction, defaults to ["timeCreated:desc"]
  */
 class AuditLogFilter(
         val assetIds: List<UUID>?=null,
