@@ -137,7 +137,8 @@ class IndexServiceImpl  @Autowired  constructor (
             try {
                 if (ns[0] !in PROTECTED_NAMESPACES) {
                     doc.setAttr(it.key, it.value)
-                    auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed, field = it.key, value = it.value))
+                    auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed,
+                            attrName = it.key, value = it.value))
                 } else {
                     logger.warnEvent(LogObject.ASSET, LogAction.UPDATE,
                             "Attempted to set protected namespace ${it.key}", emptyMap())

@@ -236,7 +236,12 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun updateV2(@PathVariable id: String, @RequestBody req: UpdateAssetRequest): Any {
         val rsp =  assetService.update(id, req)
-        return HttpUtils.updated("asset", id, rsp, assetService.get(id))
+        if (rsp.isSuccess()) {
+            return HttpUtils.updated("asset", id, true, assetService.get(id))
+        }
+        else {
+            throw rsp.getThrowableError()
+        }
     }
 
     @PutMapping(value = ["/api/v1/assets"])

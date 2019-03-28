@@ -61,7 +61,7 @@ class UserRegistryServiceTests : AbstractTest() {
                 groups=listOf("marketing", "sales", "pigman", "boo"))
         val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
         assertTrue(userService.hasPermission(user1, "zorroa", "librarian"))
-        assertTrue(userService.hasPermission(user1, "zorroa", "admin"))
+        assertTrue(userService.hasPermission(user1, "zorroa", "administrator"))
         assertTrue(userService.hasPermission(user1, "irm", "pigman"))
         assertTrue(userService.hasPermission(user1, "zorroa", "everyone"))
     }
