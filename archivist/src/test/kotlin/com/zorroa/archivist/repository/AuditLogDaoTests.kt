@@ -8,6 +8,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class AuditLogDaoTests : AbstractTest() {
 
@@ -145,5 +146,27 @@ class AuditLogDaoTests : AbstractTest() {
                 timeCreated = LongRangeFilter(0, System.currentTimeMillis()+1000))
         assertEquals(10, auditLogDao.batchCreate(specs))
         assertEquals(10, auditLogDao.getAll(filter).page.totalCount)
+    }
+
+    @Test
+    fun testGetAllSorted() {
+        val specs = mutableListOf<AuditLogEntrySpec>()
+        val assetId = "D585D35C-AF3D-4AEB-A78F-42C61C1077CB"
+        for (i in 1..10) {
+            specs.add(AuditLogEntrySpec(
+                    UUID.fromString(assetId),
+                    AuditLogType.Changed,
+                    attrName="irm.documentType",
+                    value="cat"))
+        }
+        auditLogDao.batchCreate(specs)
+        // Just test the DB allows us to sort on each defined sortMap col
+        for (field in AuditLogFilter().sortMap.keys) {
+            var filter = AuditLogFilter().apply {
+                sort = listOf("$field:a")
+            }
+            val page = auditLogDao.getAll(filter)
+            assertTrue(page.size() > 0)
+        }
     }
 }
