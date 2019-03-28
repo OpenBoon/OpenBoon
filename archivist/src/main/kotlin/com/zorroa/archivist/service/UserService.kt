@@ -207,7 +207,7 @@ class UserRegistryServiceImpl @Autowired constructor(
                 group.split(Permission.JOIN, limit = 2)
             }
 
-            // Create a propert spec.
+            // Create a permission spec.
             val spec = if (parts.size == 1) {
                 PermissionSpec(source.permissionType, parts[0])
             } else {
