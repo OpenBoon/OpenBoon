@@ -88,7 +88,7 @@ class BatchUpdateAssetsResponse {
         return "<BatchUpdateAssetsResponse " +
                 "updated=${updatedAssetIds.size} " +
                 "errored=${erroredAssetIds.size} " +
-                "accessDenied=${erroredAssetIds.size}"
+                "accessDenied=${accessDeniedAssetIds.size}"
     }
 
     @JsonIgnore
