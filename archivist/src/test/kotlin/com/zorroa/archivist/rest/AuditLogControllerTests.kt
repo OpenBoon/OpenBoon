@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.AuditLogEntry
 import com.zorroa.archivist.domain.AuditLogFilter
 import com.zorroa.archivist.domain.AuditLogType
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import kotlin.test.assertTrue
 
 class AuditLogControllerTests : MockMvcTest() {
 
@@ -37,10 +39,7 @@ class AuditLogControllerTests : MockMvcTest() {
                 .andReturn()
 
         val content = result.response.contentAsString
-        val log = Json.Mapper.readValue<KPagedList<AuditLogEntry>>(content,
-                object : TypeReference<KPagedList<AuditLogEntry>>() {})
-
-
-        logger.info("{}", content)
+        val log = Json.Mapper.readValue<KPagedList<AuditLogEntry>>(content)
+        assertTrue(log.size() > 0)
     }
 }
