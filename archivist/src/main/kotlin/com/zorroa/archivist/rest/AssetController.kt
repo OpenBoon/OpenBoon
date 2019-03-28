@@ -5,7 +5,6 @@ import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
-import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.schema.ProxySchema
@@ -30,17 +29,16 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 @Timed
 class AssetController @Autowired constructor(
-        private val indexService: IndexService,
-        private val assetService: AssetService,
-        private val searchService: SearchService,
-        private val folderService: FolderService,
-        private val imageService: ImageService,
-        private val fieldService: FieldService,
-        private val fileServerProvider: FileServerProvider,
-        private val fileStorageService: FileStorageService,
-        private val fileUploadService: FileUploadService,
-        private val fieldSystemService: FieldSystemService,
-        meterRegistry: MeterRegistry) {
+    private val indexService: IndexService,
+    private val assetService: AssetService,
+    private val searchService: SearchService,
+    private val folderService: FolderService,
+    private val imageService: ImageService,
+    private val assetStreamResolutionService: AssetStreamResolutionService,
+    private val fieldService: FieldService,
+    private val fileUploadService: FileUploadService,
+    private val fieldSystemService: FieldSystemService,
+    meterRegistry: MeterRegistry) {
 
     private val proxyLookupCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
@@ -73,72 +71,46 @@ class AssetController @Autowired constructor(
         get() = indexService.getMapping()
 
 
-    fun getPreferredFormat(asset: Document, forceProxy: Boolean): ServableFile? {
-        if (forceProxy) {
-            val proxy = getProxyStream(asset)
-             if (proxy != null) {
-                 return fileServerProvider.getServableFile(proxy.uri)
-             }
-
-        } else  {
-            return fileServerProvider.getServableFile(fileServerProvider.getStorageUri(asset))
-        }
-
-        return null
-    }
-
-    fun getProxyStream(asset: Document): FileStorage? {
-        // If the file doesn't have a proxy this will throw.
-        val proxies = asset.getAttr("proxies", ProxySchema::class.java)
-
-        if (proxies != null) {
-            val largest = proxies.getLargest()
-            if (largest != null) {
-                return fileStorageService.get(largest.id!!)
-            }
-        }
-        return null
-    }
-
-    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.GET, RequestMethod.HEAD])
+    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.HEAD] )
     @Throws(Exception::class)
     fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
-                    @RequestParam(value = "ext", required = false) ext: String?,
+                    @PathVariable id: String, response: HttpServletResponse) {
+
+        val servableFile = assetStreamResolutionService.getServableFile(id)
+        if (servableFile == null) {
+            response.status = 404
+        } else {
+            if (!servableFile.isLocal()) {
+                response.setHeader("X-Zorroa-Signed-URL", servableFile.getSignedUrl().toString())
+            }
+        }
+    }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
+    @Throws(Exception::class)
+    fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
+                    @RequestParam(value = "type", required = false) type: String?,
+                    @RequestHeader(value="Accept", required = false) accept: String?,
                     @PathVariable id: String, request: HttpServletRequest, response: HttpServletResponse) {
 
-        val asset = indexService.get(id)
-        val canExport = canExport(asset)
-        val ofile = getPreferredFormat(asset, !canExport)
-
-        if (ofile == null) {
-            response.status = 404
-        }
-        else {
-            if (request.method == "HEAD") {
-                /**
-                 * Only non-local files need to be signed.
-                 */
-                if (!ofile.isLocal()) {
-                    response.setHeader("X-Zorroa-Signed-URL", ofile.getSignedUrl().toString())
+        try {
+            val servableFile = assetStreamResolutionService.getServableFile(id, accept, type)
+            if (servableFile == null) {
+                response.status = 404
+            } else {
+                logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to id))
+                if (!servableFile.isLocal()) {
+                    servableFile.copyTo(response)
+                } else {
+                    MultipartFileSender.fromPath(servableFile.getLocalFile())
+                        .with(request)
+                        .with(response)
+                        .setContentType(servableFile.getStat().mediaType)
+                        .serveResource()
                 }
             }
-            else {
-                try {
-                    logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to asset.id))
-                    if (!ofile.isLocal()) {
-                        ofile.copyTo(response)
-                    } else {
-                        MultipartFileSender.fromPath(ofile.getLocalFile())
-                                .with(request)
-                                .with(response)
-                                .setContentType(ofile.getStat().mediaType)
-                                .serveResource()
-
-                    }
-                } catch (e: Exception) {
-                    response.sendError(404, "StorageSystem unable to find file")
-                }
-            }
+        } catch (e: Exception) {
+            response.sendError(404, "StorageSystem unable to find file")
         }
     }
 
