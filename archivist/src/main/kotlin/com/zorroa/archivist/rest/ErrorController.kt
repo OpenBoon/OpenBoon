@@ -17,6 +17,7 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.context.request.WebRequest
@@ -62,7 +63,7 @@ class RestApiExceptionHandler {
         else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
             HttpStatus.CONFLICT
         }
-        else if (e is ArchivistSecurityException) {
+        else if (e is ArchivistSecurityException || e is AccessDeniedException) {
             HttpStatus.FORBIDDEN
         }
         else if (e is HttpRequestMethodNotSupportedException ||

@@ -160,7 +160,7 @@ class AssetServiceTests : AbstractTest() {
                 mapOf("foo" to "bar"),
                 listOf("source.fileSize"))
         )
-        assertTrue(updated)
+        assertTrue(updated.isSuccess())
         val asset2 = assetService.get(asset1.id)
         assertEquals(asset2.getAttr("foo", String::class.java), "bar")
         assertNull(asset2.getAttr("source.fileSize"))

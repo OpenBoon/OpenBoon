@@ -46,7 +46,7 @@ interface AssetService {
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
-    fun update(assetId: String, req: UpdateAssetRequest) : Boolean
+    fun update(assetId: String, req: UpdateAssetRequest) : BatchUpdateAssetsResponse
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
@@ -121,21 +121,21 @@ open abstract class AbstractAssetService : AssetService {
      * @param assets The list of assets to prepare
      * @return PreppedAssets
      */
-    fun prepAssets(req: BatchCreateAssetsRequest) : PreppedAssets  {
+    fun prepAssets(req: BatchCreateAssetsRequest): PreppedAssets {
         if (req.skipAssetPrep) {
             return PreppedAssets(req.sources, listOf(), req.scope)
         }
 
         val assets = req.sources
         val orgId = getOrgId()
-        val defaultPermissions = Json.Mapper.convertValue<Map<String,Any>>(
+        val defaultPermissions = Json.Mapper.convertValue<Map<String, Any>>(
                 permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP)
         val watchedFields = properties.getList("archivist.auditlog.watched-fields")
         val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
-        return PreppedAssets(assets.map { newSource->
+        return PreppedAssets(assets.map { newSource ->
 
-            val existingSource : Document = try {
+            val existingSource: Document = try {
                 get(newSource.id)
             } catch (e: Exception) {
                 Document(newSource.id)
@@ -158,8 +158,8 @@ open abstract class AbstractAssetService : AssetService {
                 watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
             }
 
-             newSource
-         }, watchedFieldsLogs, req.scope)
+            newSource
+        }, watchedFieldsLogs, req.scope)
     }
 
     /**
@@ -178,15 +178,13 @@ open abstract class AbstractAssetService : AssetService {
                         AuditLogType.Changed,
                         attrName = it,
                         value = newAsset.getAttr(it))
-            }
-            else if (oldAsset.getAttr(it, Any::class.java) != newAsset.getAttr(it, Any::class.java)) {
+            } else if (oldAsset.getAttr(it, Any::class.java) != newAsset.getAttr(it, Any::class.java)) {
                 AuditLogEntrySpec(
                         oldAsset.id,
                         AuditLogType.Changed,
                         attrName = it,
-                        value=newAsset.getAttr(it))
-            }
-            else {
+                        value = newAsset.getAttr(it))
+            } else {
                 null
             }
         }.filterNotNull()
@@ -283,9 +281,11 @@ open abstract class AbstractAssetService : AssetService {
         })
         // Create audit logs for created and replaced entries.
         auditLogDao.batchCreate(rsp.createdAssetIds.map {
-            AuditLogEntrySpec(it, AuditLogType.Created, scope=prepped.scope) })
+            AuditLogEntrySpec(it, AuditLogType.Created, scope = prepped.scope)
+        })
         auditLogDao.batchCreate(rsp.replacedAssetIds.map {
-            AuditLogEntrySpec(it, AuditLogType.Replaced, scope=prepped.scope) })
+            AuditLogEntrySpec(it, AuditLogType.Replaced, scope = prepped.scope)
+        })
     }
 
     /**
@@ -294,7 +294,7 @@ open abstract class AbstractAssetService : AssetService {
     fun runDyhiAndTaxons() {
         val orgId = getOrgId()
         clusterLockExecutor.execute(ClusterLockSpec.combineLock("dyhi-taxons-$orgId")
-                .apply { authentication=getAuthentication() }) {
+                .apply { authentication = getAuthentication() }) {
             dyHierarchyService.generateAll()
             taxonomyService.tagAll()
         }
@@ -314,7 +314,7 @@ open abstract class AbstractAssetService : AssetService {
      * Index a batch of PreppedAssets
      */
     fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets,
-                    batchUpdateResult:Map<String, Boolean> = mapOf()) : BatchCreateAssetsResponse {
+                    batchUpdateResult: Map<String, Boolean> = mapOf()): BatchCreateAssetsResponse {
 
         // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
         val docsToIndex = prepped.assets.filter {
@@ -341,8 +341,7 @@ open abstract class AbstractAssetService : AssetService {
             perms.removeFromRead(permissionId)
             perms.removeFromWrite(permissionId)
             perms.removeFromExport(permissionId)
-        }
-        else {
+        } else {
             if (access and 1 == 1) {
                 perms.addToRead(permissionId)
             } else {
@@ -366,16 +365,15 @@ open abstract class AbstractAssetService : AssetService {
     /**
      * Add link to the given Document.
      */
-    fun addLink(doc: Document, type: LinkType, target: UUID) : Boolean {
-        var links : LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
+    fun addLink(doc: Document, type: LinkType, target: UUID): Boolean {
+        var links: LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
         if (links == null) {
             links = LinkSchema()
         }
         return if (links.addLink(type, target)) {
             doc.setAttr("system.links", links)
             true
-        }
-        else {
+        } else {
             false
         }
     }
@@ -383,16 +381,15 @@ open abstract class AbstractAssetService : AssetService {
     /**
      * Remove link to the given Document.
      */
-    fun removeLink(doc: Document, type: LinkType, target: UUID) : Boolean {
-        var links : LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
+    fun removeLink(doc: Document, type: LinkType, target: UUID): Boolean {
+        var links: LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
         if (links == null) {
             links = LinkSchema()
         }
         return if (links.removeLink(type, target)) {
             doc.setAttr("system.links", links)
             true
-        }
-        else {
+        } else {
             false
         }
     }
@@ -403,10 +400,8 @@ open abstract class AbstractAssetService : AssetService {
     fun applyAcl(doc: Document, replace: Boolean, acl: Acl) {
         val perms = if (replace) {
             PermissionSchema()
-        }
-        else {
-            var existingPerms: PermissionSchema?
-                    = doc.getAttr("system.permissions", PermissionSchema::class.java)
+        } else {
+            var existingPerms: PermissionSchema? = doc.getAttr("system.permissions", PermissionSchema::class.java)
             existingPerms ?: PermissionSchema()
         }
 
@@ -416,7 +411,7 @@ open abstract class AbstractAssetService : AssetService {
         doc.setAttr("system.permissions", perms)
     }
 
-    override fun getFieldSets(assetId: String) : List<FieldSet>  {
+    override fun getFieldSets(assetId: String): List<FieldSet> {
         return fieldSystemService.getAllFieldSets(get(assetId))
     }
 
@@ -439,7 +434,7 @@ open abstract class AbstractAssetService : AssetService {
          * @param assetId The ID of the asset.
          * @param allowSystem If setting system attrs is allowed.
          */
-        fun checkAttr(attr: String, assetId: String, allowSystem: Boolean) : Boolean {
+        fun checkAttr(attr: String, assetId: String, allowSystem: Boolean): Boolean {
             if (!allowSystem && (attr == "system" || attr.startsWith("system."))) {
                 logger.warnEvent(LogObject.ASSET,
                         LogAction.BATCH_UPDATE,
@@ -459,18 +454,19 @@ open abstract class AbstractAssetService : AssetService {
          * Iterate over our list of assets and grab the hard copy of each one.
          * Modify the copy and push it back into the DB.
          */
-        val futures = assets.batch.keys.chunked(50).map { ids->
+        val futures = assets.batch.keys.chunked(50).map { ids ->
             GlobalScope.async(CoroutineAuthentication(getSecurityContext())) {
-                val docs : List<Document> = getAll(ids).mapNotNull { doc->
+                val rsp = BatchUpdateAssetsResponse()
+                val docs: List<Document> = getAll(ids).mapNotNull { doc ->
 
                     if (!hasPermission("write", doc)) {
                         logger.warnEvent(LogObject.ASSET,
                                 LogAction.BATCH_UPDATE,
                                 "Skipping updating asset, access denied",
                                 mapOf("assetId" to doc.id))
+                        rsp.accessDeniedAssetIds.add(doc.id)
                         null
-                    }
-                    else {
+                    } else {
 
                         val req = assets.batch.getValue(doc.id)
                         var updated = false
@@ -488,39 +484,38 @@ open abstract class AbstractAssetService : AssetService {
                             }
                         }
 
-                        req.appendToList?.forEach { t, u->
+                        req.appendToList?.forEach { t, u ->
                             if (checkAttr(t, doc.id, req.allowSystem)) {
                                 doc.addToAttr(t, u, unique = false)
                                 updated = true
                             }
                         }
 
-                        req.appendToUniqueList?.forEach { t, u->
+                        req.appendToUniqueList?.forEach { t, u ->
                             if (checkAttr(t, doc.id, req.allowSystem)) {
                                 doc.addToAttr(t, u, unique = true)
                                 updated = true
                             }
                         }
 
-                        req.removeFromList?.forEach { t, u->
+                        req.removeFromList?.forEach { t, u ->
                             if (checkAttr(t, doc.id, req.allowSystem)) {
                                 doc.removeFromAttr(t, u)
                                 updated = true
                             }
                         }
 
-                        if (updated ) {
+                        if (updated) {
                             doc.setAttr("system.timeModified", now)
                             doc
-                        }
-                        else {
+                        } else {
                             null
                         }
                     }
                 }
 
-                val updated = batchUpdate(docs, reindex = true, taxons = false)
-                updated
+                rsp.plus(batchUpdate(docs, reindex = true, taxons = false))
+                rsp
             }
         }
 
@@ -536,7 +531,7 @@ open abstract class AbstractAssetService : AssetService {
             futures.map {
                 val r = it.await()
                 logger.event(LogObject.ASSET, LogAction.BATCH_UPDATE,
-                        mapOf("updatCount" to r.updatedAssetIds.size,
+                        mapOf("updateCount" to r.updatedAssetIds.size,
                                 "errorCount" to r.erroredAssetIds.size))
                 rsp.plus(r)
             }
@@ -546,10 +541,9 @@ open abstract class AbstractAssetService : AssetService {
         return rsp
     }
 
-    override fun update(assetId: String, req: UpdateAssetRequest): Boolean {
+    override fun update(assetId: String, req: UpdateAssetRequest): BatchUpdateAssetsResponse {
         val breq = BatchUpdateAssetsRequest(mapOf(assetId to req))
-        val rsp = batchUpdate(breq)
-        return rsp.updatedAssetIds.contains(assetId)
+        return batchUpdate(breq)
     }
 
 
@@ -637,16 +631,20 @@ open abstract class AbstractAssetService : AssetService {
         return UpdateLinksResponse(success, errors)
     }
 
-    override fun deleteFieldEdit(edit: FieldEdit) : Boolean {
+    @Transactional
+    override fun deleteFieldEdit(edit: FieldEdit): Boolean {
         val asset = get(edit.assetId.toString())
         val field = fieldSystemService.getField(edit.fieldId)
+
+        if (!hasPermission("write", asset)) {
+            throw ArchivistSecurityException("update access denied")
+        }
 
         val updateReq = if (edit.oldValue == null) {
             UpdateAssetRequest(remove = listOf(field.attrName),
                     removeFromList = mapOf("system.fieldEdits" to field.attrName),
                     allowSystem = true)
-        }
-        else {
+        } else {
             UpdateAssetRequest(mapOf(field.attrName to edit.oldValue),
                     removeFromList = mapOf("system.fieldEdits" to field.attrName),
                     allowSystem = true)
@@ -654,26 +652,26 @@ open abstract class AbstractAssetService : AssetService {
 
         if (fieldEditDao.delete(edit.id)) {
             val rsp = update(asset.id, updateReq)
-            if (!rsp) {
-                throw ArchivistWriteException(
-                        "Failed to remove edit from asset ${asset.id}, update failed")
+            if (rsp.isSuccess()) {
+                val aspec = AuditLogEntrySpec(asset.id,
+                        AuditLogType.Changed,
+                        fieldId = field.id,
+                        attrName = field.attrName,
+                        scope = "undo edit",
+                        value = edit.oldValue)
+                auditLogDao.create(aspec)
+                return true
             }
-            val aspec = AuditLogEntrySpec(asset.id,
-                    AuditLogType.Changed,
-                    fieldId=field.id,
-                    attrName=field.attrName,
-                    scope="undo edit",
-                    value=edit.oldValue)
-            auditLogDao.create(aspec)
-
-            return true
+            else {
+                throw rsp.getThrowableError()
+            }
         }
 
-        // something already removed edit.
-        return false
+        throw ArchivistWriteException("Unable to find field edit: ${edit.id}")
     }
 
-    override fun createFieldEdit(spec: FieldEditSpec) : FieldEdit {
+    @Transactional
+    override fun createFieldEdit(spec: FieldEditSpec): FieldEdit {
         val assetId = spec.assetId.toString()
         val asset = get(assetId)
         val field = fieldSystemService.getField(spec)
@@ -692,17 +690,15 @@ open abstract class AbstractAssetService : AssetService {
                     remove = listOf(field.attrName),
                     appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
                     allowSystem = true)
-    }
-        else {
+        } else {
             UpdateAssetRequest(mapOf(field.attrName to spec.newValue),
                     appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
                     allowSystem = true)
         }
 
         val rsp = update(assetId, updateReq)
-        if (rsp) {
+        if (rsp.isSuccess()) {
             val oldValue = asset.getAttr(field.attrName, Any::class.java)
-
             val ispec = FieldEditSpecInternal(
                     UUID.fromString(asset.id),
                     field.id,
@@ -712,17 +708,18 @@ open abstract class AbstractAssetService : AssetService {
 
             val aspec = AuditLogEntrySpec(assetId,
                     AuditLogType.Changed,
-                    fieldId=field.id,
-                    attrName=field.attrName,
-                    scope="manual edit",
-                    value=spec.newValue)
+                    fieldId = field.id,
+                    attrName = field.attrName,
+                    scope = "manual edit",
+                    value = spec.newValue)
             auditLogDao.create(aspec)
-
             return fieldEdit
         }
-
-        throw ArchivistWriteException("Failed to edit asset $assetId, update failed")
+        else {
+            throw rsp.getThrowableError()
+        }
     }
+
 
     companion object {
 

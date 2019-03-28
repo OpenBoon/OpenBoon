@@ -95,6 +95,25 @@ class FieldEditControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testCreateFieldEditAccessDenied() {
+        val session = user()
+        addTestAssets("set04/standard")
+        var asset = indexDao.getAll(Pager.first())[0]
+
+        val field = fieldSystemService.createField(FieldSpec("File Ext",
+                "source.extension", null, true))
+        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue="bob")
+
+        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serializeToString(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+                .andReturn()
+    }
+
+    @Test
     fun testDeleteFieldEdit() {
 
         val session = admin()
