@@ -160,7 +160,11 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
     private inline fun getLogMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : String {
         val scope = spec.scope ?: "index"
         return if (spec.attrName != null) {
-            "${user.username} ${spec.type} field '${spec.attrName} with a '$scope' to '$fieldValue'"
+            /**
+             * TODO: A lot of this should move to a AuditLogService where spec.attrName
+             * can be resolved into a field name.
+             */
+            "${user.username} ${spec.type} field \"${spec.attrName}\" with a \"$scope\" to $fieldValue"
         }
         else {
             "${user.username} ${spec.type} Asset ${spec.assetId}"
@@ -182,8 +186,8 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
                 userDaoCache.getUser(rs.getObject("pk_user_created") as UUID),
                 rs.getLong("time_created"),
                 AuditLogType.values()[rs.getInt("int_type")],
-                rs.getString("str_message"),
                 rs.getString("str_attr_name"),
+                rs.getString("str_message"),
                 fieldValue)
     }
 

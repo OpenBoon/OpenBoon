@@ -25,7 +25,7 @@ class AuditLogControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testSearch() {
         val session = admin()
-        val filter = AuditLogFilter(types=setOf(AuditLogType.Created))
+        val filter = AuditLogFilter(types=listOf(AuditLogType.Created))
 
         val result = mvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/auditlog/_search")

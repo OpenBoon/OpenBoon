@@ -658,6 +658,14 @@ open abstract class AbstractAssetService : AssetService {
                 throw ArchivistWriteException(
                         "Failed to remove edit from asset ${asset.id}, update failed")
             }
+            val aspec = AuditLogEntrySpec(asset.id,
+                    AuditLogType.Changed,
+                    fieldId=field.id,
+                    attrName=field.attrName,
+                    scope="undo edit",
+                    value=edit.oldValue)
+            auditLogDao.create(aspec)
+
             return true
         }
 
@@ -680,9 +688,10 @@ open abstract class AbstractAssetService : AssetService {
         }
 
         val updateReq = if (spec.newValue == null) {
-            UpdateAssetRequest(remove = listOf(field.attrName),
-        appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
-        allowSystem = true)
+            UpdateAssetRequest(
+                    remove = listOf(field.attrName),
+                    appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
     }
         else {
             UpdateAssetRequest(mapOf(field.attrName to spec.newValue),
@@ -693,18 +702,23 @@ open abstract class AbstractAssetService : AssetService {
         val rsp = update(assetId, updateReq)
         if (rsp) {
             val oldValue = asset.getAttr(field.attrName, Any::class.java)
+
             val ispec = FieldEditSpecInternal(
                     UUID.fromString(asset.id),
                     field.id,
                     spec.newValue,
                     oldValue)
-            val res = fieldEditDao.create(ispec)
+            val fieldEdit = fieldEditDao.create(ispec)
 
-            val msg = "The field '${field.name} (${field.attrName} " +
-                    "was changed from '$oldValue' to '${spec.newValue}'"
+            val aspec = AuditLogEntrySpec(assetId,
+                    AuditLogType.Changed,
+                    fieldId=field.id,
+                    attrName=field.attrName,
+                    scope="manual edit",
+                    value=spec.newValue)
+            auditLogDao.create(aspec)
 
-            return res
-
+            return fieldEdit
         }
 
         throw ArchivistWriteException("Failed to edit asset $assetId, update failed")

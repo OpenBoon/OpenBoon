@@ -2,11 +2,13 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -14,6 +16,9 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var auditLogDao: AuditLogDao
 
     @Before
     fun init() {
@@ -245,33 +250,49 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun edit() {
+    fun testCreateFieldEdit() {
         val title = "khaaaaaan"
         val field = fieldSystemService.getField("media.title")
 
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
-            assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id, null,title))
+            assetService.createFieldEdit(
+                    FieldEditSpec(UUID.fromString(asset.id), field.id, null,title))
         }
         for (asset in searchService.search(Pager.first(), AssetSearch()).list) {
             assertEquals(title, asset.getAttr("media.title", String::class.java))
         }
+
+        val result =
+                auditLogDao.getAll(AuditLogFilter(
+                        fieldIds=listOf(field.id),
+                        types=listOf(AuditLogType.Changed)))
+        assertTrue(result.size() > 0)
     }
 
     @Test
-    fun undo() {
+    fun testDeleteFieldEdit() {
         val title = "khaaaaaan"
         val field = fieldSystemService.getField("media.title")
 
         var page = searchService.search(Pager.first(), AssetSearch())
-        for (asset in page) {
-            val edit = assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
-            assertTrue(assetService.deleteFieldEdit(edit))
-        }
+        var asset = page.list[0]
+        val edit = assetService.createFieldEdit(
+                FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+        assertTrue(assetService.deleteFieldEdit(edit))
 
         page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
             assertNotEquals(title, asset.getAttr("media.title", String::class.java))
         }
+
+        val result =
+                auditLogDao.getAll(AuditLogFilter(
+                        fieldIds=listOf(field.id),
+                        types=listOf(AuditLogType.Changed)))
+
+        assertTrue(result[0].message!!.contains("undo"))
+        assertTrue(result[1].message!!.contains("manual edit"))
+
     }
 }
