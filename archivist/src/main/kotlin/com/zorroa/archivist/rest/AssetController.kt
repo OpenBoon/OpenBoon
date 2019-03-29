@@ -74,9 +74,10 @@ class AssetController @Autowired constructor(
     @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.HEAD] )
     @Throws(Exception::class)
     fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
+                    @RequestHeader(value="Accept", required = false) accept: String?,
                     @PathVariable id: String, response: HttpServletResponse) {
 
-        val servableFile = assetStreamResolutionService.getServableFile(id)
+        val servableFile = assetStreamResolutionService.getServableFile(id, accept)
         if (servableFile == null) {
             response.status = 404
         } else {
