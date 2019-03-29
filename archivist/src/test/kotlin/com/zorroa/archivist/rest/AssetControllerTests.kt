@@ -503,13 +503,8 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     fun testStreamProxy() {
         val session = admin()
-
-        addTestVideoAssets("video")
-        val assets = indexService.getAll(Pager.first())
-        val asset = assets.get(0)
-
+        val asset = videoAsset()
         val mediaType = "video/mp4"
-
         val tmpFile = createTempFile()
         val tmpFileUri = tmpFile.toURI()
         val fileStorage = FileStorage(asset.id, tmpFileUri, "file", mediaType, fileServerProvider)
@@ -547,6 +542,38 @@ class AssetControllerTests : MockMvcTest() {
             .andReturn()
 
         tmpFile.delete()
+    }
+
+    @Test
+    fun testStreamHeadWithAcceptHeaderForProxy() {
+        val session = admin()
+        val asset = videoAsset()
+        val mediaType = "video/mp4"
+        val tmpFile = createTempFile()
+        val tmpFileUri = tmpFile.toURI()
+        val fileStorage = FileStorage(asset.id, tmpFileUri, "file", mediaType, fileServerProvider)
+
+        doReturn(ServableFile(fileServerService, tmpFileUri)).`when`(fileServerProvider).getServableFile(tmpFileUri)
+
+        given(fileStorageService.get("proxy___${asset.getAttr<String>("proxy_id")}_transcode.mp4"))
+            .willReturn(fileStorage)
+        given(fileServerService.storedLocally).willReturn(true)
+
+        val url = String.format("/api/v1/assets/%s/_stream", asset.id)
+        val accept = "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
+        mvc.perform(head(url)
+            .session(session)
+            .header("Accept", accept)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.header().doesNotExist("X-Zorroa-Signed-URL"))
+            .andReturn()
+    }
+
+    private fun videoAsset(): Document {
+        addTestVideoAssets("video")
+        val assets = indexService.getAll(Pager.first())
+        return assets.get(0)
     }
 
     @Test
