@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Created by chambers on 7/14/16.
  */
-public class DyHierarchy implements Loggable<UUID> {
+public class DyHierarchy {
 
     /**
      * Id of the aggregation.
@@ -95,6 +95,11 @@ public class DyHierarchy implements Loggable<UUID> {
     }
 
     @JsonIgnore
+    public String getLockName() {
+        return "folder_lock:" + this.folderId;
+    }
+
+    @JsonIgnore
     public DyHierarchyLevel getLevel(int i) {
         return levels.get(i);
     }
@@ -118,10 +123,5 @@ public class DyHierarchy implements Loggable<UUID> {
                 .add("id", id)
                 .add("folderId", folderId)
                 .toString();
-    }
-
-    @Override
-    public UUID getTargetId() {
-        return id;
     }
 }

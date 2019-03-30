@@ -10,6 +10,7 @@ import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -24,10 +25,14 @@ interface TaskDao {
     fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean
     fun getAll(tf: TaskFilter?): KPagedList<Task>
     fun getAll(job: UUID, state: TaskState): List<Task>
+    fun isAutoRetryable(task: TaskId): Boolean
 }
 
 @Repository
 class TaskDaoImpl : AbstractDao(), TaskDao {
+
+    @Value("\${archivist.dispatcher.autoRetryLimit}")
+    lateinit var autoRetryLimit: Number
 
     override fun create(job: JobId, spec: TaskSpec): Task {
         Preconditions.checkNotNull(spec.name)
@@ -44,6 +49,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps.setLong(5, time)
             ps.setLong(6, time)
             ps.setString(7, Json.serializeToString(spec.script, "{}"))
+            ps.setInt(8, 0)
             ps
         }
 
@@ -80,7 +86,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                             "oldState" to oldState?.name))
 
             if (newState in START_STATES) {
-                jdbc.update("UPDATE task SET time_started=?, time_stopped=-1 WHERE pk_task=?", time, task.taskId)
+                jdbc.update("UPDATE task SET time_started=?, int_run_count=int_run_count+1, time_stopped=-1 WHERE pk_task=?", time, task.taskId)
             }
             else if (newState in STOP_STATES) {
                 jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
@@ -125,6 +131,11 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 MAPPER, job, state.ordinal)
     }
 
+    override fun isAutoRetryable(task: TaskId): Boolean {
+        return jdbc.queryForObject("SELECT int_run_count <= ? FROM task where pk_task=?",
+                Boolean::class.java, autoRetryLimit, task.taskId)
+    }
+
     companion object {
 
         private val START_STATES = setOf(TaskState.Running)
@@ -150,16 +161,18 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "int_asset_replace_count=int_asset_replace_count+? " +
                 "WHERE " +
                 "pk_task=?"
-
+    
         private const val GET = "SELECT " +
                 "job.pk_organization, " +
                 "task.pk_task," +
                 "task.pk_job," +
                 "task.str_name," +
                 "task.int_state, " +
-                "task.str_host " +
+                "task.str_host, " +
+                "task.int_run_count " +
                 "FROM " +
                 "task INNER JOIN job ON (job.pk_job=task.pk_job) "
+
 
         private const val COUNT = "SELECT COUNT(1) FROM task"
 
@@ -170,7 +183,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "time_created",
                 "time_modified",
                 "time_state_change",
-                "json_script::JSON")
+                "json_script::JSON",
+                "int_run_count")
 
         private const val GET_TASKS = "SELECT " +
                 "task.pk_task," +
@@ -185,6 +199,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task.time_state_change," +
                 "task.int_exit_status," +
                 "task.str_host, " +
+                "task.int_run_count, " +
                 "task_stat.int_asset_total_count," +
                 "task_stat.int_asset_create_count," +
                 "task_stat.int_asset_replace_count," +

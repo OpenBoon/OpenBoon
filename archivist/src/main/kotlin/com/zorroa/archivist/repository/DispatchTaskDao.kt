@@ -45,6 +45,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "task.pk_job,"+
                 "task.str_name,"+
                 "task.int_state,"+
+                "task.int_run_count,"+
                 "task.json_script, "+
                 "task.str_host " +
                 "FROM " +

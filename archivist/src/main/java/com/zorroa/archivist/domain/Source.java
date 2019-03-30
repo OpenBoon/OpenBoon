@@ -43,7 +43,7 @@ public class Source extends Document {
     }
 
     public void addToKeywords(String namespace, Collection<String> words) {
-        addToAttr(namespace + ".keywords",  words);
+        addToAttr(namespace + ".keywords",  words, true);
     }
 
     public void addToKeywords(String namespace, String ... words) {

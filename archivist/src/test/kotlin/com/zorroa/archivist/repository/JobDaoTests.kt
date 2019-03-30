@@ -11,6 +11,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -152,6 +153,31 @@ class JobDaoTests : AbstractTest() {
         assertEquals(10, jobs.size())
         assertEquals(10, jobs.page.totalCount)
     }
+
+    @Test
+    fun testAllSortColumns() {
+        for (i in 1..10) {
+            val random = Random.nextInt(1,100000)
+            val spec = JobSpec("run_some_stuff_$random",
+                    emptyZpsScript("test_script"))
+            jobDao.create(spec, PipelineType.Import)
+        }
+
+        // All the columns we can sort by.
+        val sortFields = listOf(
+            "id", "type", "name", "timeCreated", "state", "priority", "organizationId"
+        )
+
+        // Just test the DB allows us to sort
+        for (field in sortFields) {
+            var filter = JobFilter().apply {
+                sort = listOf("$field:a")
+            }
+            val page = jobDao.getAll(filter)
+            assertTrue(page.size() > 0)
+        }
+    }
+
 
     @Test
     fun testDelete() {

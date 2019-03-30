@@ -4,6 +4,7 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
+import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.security.*
@@ -37,17 +38,20 @@ interface AssetService {
     fun get(assetId: String): Document
     fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
+    fun createFieldEdit(spec: FieldEditSpec): FieldEdit
+    fun deleteFieldEdit(edit: FieldEdit): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
     fun batchUpdate(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
     fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
     fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
     fun createOrReplace(doc: Document) : Document
     fun update(assetId: String, attrs: Map<String, Any>) : Document
-    fun update(assetId: String, req: UpdateAssetRequest) : Boolean
+    fun update(assetId: String, req: UpdateAssetRequest) : BatchUpdateAssetsResponse
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
     fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse
+    fun getFieldSets(assetId: String) : List<FieldSet>
 }
 
 /**
@@ -74,6 +78,9 @@ open abstract class AbstractAssetService : AssetService {
     lateinit var permissionDao: PermissionDao
 
     @Autowired
+    lateinit var fieldEditDao: FieldEditDao
+
+    @Autowired
     lateinit var dyHierarchyService: DyHierarchyService
 
     @Autowired
@@ -87,6 +94,15 @@ open abstract class AbstractAssetService : AssetService {
 
     @Autowired
     lateinit var searchService: SearchService
+
+    @Autowired
+    lateinit var fieldSystemService: FieldSystemService
+
+    @Autowired
+    lateinit var fieldService: FieldService
+
+    @Autowired
+    lateinit var clusterLockExecutor: ClusterLockExecutor
 
     /**
      * Prepare a list of assets to be replaced or replaced.  Handles:
@@ -105,23 +121,21 @@ open abstract class AbstractAssetService : AssetService {
      * @param assets The list of assets to prepare
      * @return PreppedAssets
      */
-    fun prepAssets(req: BatchCreateAssetsRequest) : PreppedAssets  {
+    fun prepAssets(req: BatchCreateAssetsRequest): PreppedAssets {
         if (req.skipAssetPrep) {
             return PreppedAssets(req.sources, listOf(), req.scope)
         }
 
         val assets = req.sources
         val orgId = getOrgId()
-        val defaultPermissions = Json.Mapper.convertValue<Map<String,Any>>(
+        val defaultPermissions = Json.Mapper.convertValue<Map<String, Any>>(
                 permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP)
         val watchedFields = properties.getList("archivist.auditlog.watched-fields")
         val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
-        logger.info("Prepping ${assets.size} assets")
+        return PreppedAssets(assets.map { newSource ->
 
-        return PreppedAssets(assets.map { newSource->
-
-            val existingSource : Document = try {
+            val existingSource: Document = try {
                 get(newSource.id)
             } catch (e: Exception) {
                 Document(newSource.id)
@@ -138,13 +152,14 @@ open abstract class AbstractAssetService : AssetService {
             handleHold(existingSource, newSource)
             handlePermissions(existingSource, newSource, defaultPermissions)
             handleLinks(existingSource, newSource)
+            fieldSystemService.applyFieldEdits(newSource)
 
             if (watchedFields.isNotEmpty()) {
                 watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
             }
 
-             newSource
-         }, watchedFieldsLogs, req.scope)
+            newSource
+        }, watchedFieldsLogs, req.scope)
     }
 
     /**
@@ -161,17 +176,15 @@ open abstract class AbstractAssetService : AssetService {
                 AuditLogEntrySpec(
                         oldAsset.id,
                         AuditLogType.Changed,
-                        field=it,
-                        value=newAsset.getAttr(it))
-            }
-            else if (oldAsset.getAttr(it, Any::class.java) != newAsset.getAttr(it, Any::class.java)) {
+                        attrName = it,
+                        value = newAsset.getAttr(it))
+            } else if (oldAsset.getAttr(it, Any::class.java) != newAsset.getAttr(it, Any::class.java)) {
                 AuditLogEntrySpec(
                         oldAsset.id,
                         AuditLogType.Changed,
-                        field=it,
-                        value=newAsset.getAttr(it))
-            }
-            else {
+                        attrName = it,
+                        value = newAsset.getAttr(it))
+            } else {
                 null
             }
         }.filterNotNull()
@@ -268,17 +281,23 @@ open abstract class AbstractAssetService : AssetService {
         })
         // Create audit logs for created and replaced entries.
         auditLogDao.batchCreate(rsp.createdAssetIds.map {
-            AuditLogEntrySpec(it, AuditLogType.Created, scope=prepped.scope) })
+            AuditLogEntrySpec(it, AuditLogType.Created, scope = prepped.scope)
+        })
         auditLogDao.batchCreate(rsp.replacedAssetIds.map {
-            AuditLogEntrySpec(it, AuditLogType.Replaced, scope=prepped.scope) })
+            AuditLogEntrySpec(it, AuditLogType.Replaced, scope = prepped.scope)
+        })
     }
 
     /**
      * Run Dyhis and taxons. This should be called if assets are added, removed, or updated.
      */
     fun runDyhiAndTaxons() {
-        dyHierarchyService.submitGenerateAll(true)
-        taxonomyService.runAllAsync()
+        val orgId = getOrgId()
+        clusterLockExecutor.execute(ClusterLockSpec.combineLock("dyhi-taxons-$orgId")
+                .apply { authentication = getAuthentication() }) {
+            dyHierarchyService.generateAll()
+            taxonomyService.tagAll()
+        }
     }
 
     /**
@@ -295,7 +314,7 @@ open abstract class AbstractAssetService : AssetService {
      * Index a batch of PreppedAssets
      */
     fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets,
-                    batchUpdateResult:Map<String, Boolean> = mapOf()) : BatchCreateAssetsResponse {
+                    batchUpdateResult: Map<String, Boolean> = mapOf()): BatchCreateAssetsResponse {
 
         // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
         val docsToIndex = prepped.assets.filter {
@@ -322,8 +341,7 @@ open abstract class AbstractAssetService : AssetService {
             perms.removeFromRead(permissionId)
             perms.removeFromWrite(permissionId)
             perms.removeFromExport(permissionId)
-        }
-        else {
+        } else {
             if (access and 1 == 1) {
                 perms.addToRead(permissionId)
             } else {
@@ -347,16 +365,15 @@ open abstract class AbstractAssetService : AssetService {
     /**
      * Add link to the given Document.
      */
-    fun addLink(doc: Document, type: LinkType, target: UUID) : Boolean {
-        var links : LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
+    fun addLink(doc: Document, type: LinkType, target: UUID): Boolean {
+        var links: LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
         if (links == null) {
             links = LinkSchema()
         }
         return if (links.addLink(type, target)) {
             doc.setAttr("system.links", links)
             true
-        }
-        else {
+        } else {
             false
         }
     }
@@ -364,16 +381,15 @@ open abstract class AbstractAssetService : AssetService {
     /**
      * Remove link to the given Document.
      */
-    fun removeLink(doc: Document, type: LinkType, target: UUID) : Boolean {
-        var links : LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
+    fun removeLink(doc: Document, type: LinkType, target: UUID): Boolean {
+        var links: LinkSchema? = doc.getAttr("system.links", LinkSchema::class.java)
         if (links == null) {
             links = LinkSchema()
         }
         return if (links.removeLink(type, target)) {
             doc.setAttr("system.links", links)
             true
-        }
-        else {
+        } else {
             false
         }
     }
@@ -384,10 +400,8 @@ open abstract class AbstractAssetService : AssetService {
     fun applyAcl(doc: Document, replace: Boolean, acl: Acl) {
         val perms = if (replace) {
             PermissionSchema()
-        }
-        else {
-            var existingPerms: PermissionSchema?
-                    = doc.getAttr("system.permissions", PermissionSchema::class.java)
+        } else {
+            var existingPerms: PermissionSchema? = doc.getAttr("system.permissions", PermissionSchema::class.java)
             existingPerms ?: PermissionSchema()
         }
 
@@ -395,6 +409,10 @@ open abstract class AbstractAssetService : AssetService {
             applyAclToPermissions(e.permissionId, e.access, perms)
         }
         doc.setAttr("system.permissions", perms)
+    }
+
+    override fun getFieldSets(assetId: String): List<FieldSet> {
+        return fieldSystemService.getAllFieldSets(get(assetId))
     }
 
     /**
@@ -411,6 +429,23 @@ open abstract class AbstractAssetService : AssetService {
         }
 
         /**
+         * A utility function for checking if the attribute is not protected.
+         * @param attr The attribute name in dot notation.
+         * @param assetId The ID of the asset.
+         * @param allowSystem If setting system attrs is allowed.
+         */
+        fun checkAttr(attr: String, assetId: String, allowSystem: Boolean): Boolean {
+            if (!allowSystem && (attr == "system" || attr.startsWith("system."))) {
+                logger.warnEvent(LogObject.ASSET,
+                        LogAction.BATCH_UPDATE,
+                        "Skipping setting $attr, cannot set system values on batch update",
+                        mapOf("assetId" to assetId))
+                return false
+            }
+            return true
+        }
+
+        /**
          * For setting modified time
          */
         val now = Date()
@@ -419,54 +454,68 @@ open abstract class AbstractAssetService : AssetService {
          * Iterate over our list of assets and grab the hard copy of each one.
          * Modify the copy and push it back into the DB.
          */
+        val futures = assets.batch.keys.chunked(50).map { ids ->
+            GlobalScope.async(CoroutineAuthentication(getSecurityContext())) {
+                val rsp = BatchUpdateAssetsResponse()
+                val docs: List<Document> = getAll(ids).mapNotNull { doc ->
 
-        val auth = getAuthentication()
+                    if (!hasPermission("write", doc)) {
+                        logger.warnEvent(LogObject.ASSET,
+                                LogAction.BATCH_UPDATE,
+                                "Skipping updating asset, access denied",
+                                mapOf("assetId" to doc.id))
+                        rsp.accessDeniedAssetIds.add(doc.id)
+                        null
+                    } else {
 
-        val futures = assets.batch.keys.chunked(50).map { ids->
-            GlobalScope.async {
-                withAuth(auth) {
-                    val docs : List<Document> = getAll(ids).mapNotNull { doc->
-
-                        if (!hasPermission("write", doc)) {
-                            logger.warnEvent(LogObject.ASSET,
-                                    LogAction.BATCH_UPDATE,
-                                    "Skipping updating asset, access denied",
-                                    mapOf("assetId" to doc.id))
-                            null
+                        val req = assets.batch.getValue(doc.id)
+                        var updated = false
+                        req.update?.forEach { t, u ->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.setAttr(t, u)
+                                updated = true
+                            }
                         }
-                        else {
 
-                            val req = assets.batch.getValue(doc.id)
-                            req.update?.forEach { t, u ->
-                                if (t.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent(LogObject.ASSET,
-                                            LogAction.BATCH_UPDATE,
-                                            "Skipping setting $t, cannot set system values on batch update",
-                                            mapOf("assetId" to doc.id))
-                                } else {
-                                    doc.setAttr(t, u)
-                                }
+                        req.remove?.forEach {
+                            if (checkAttr(it, doc.id, req.allowSystem)) {
+                                doc.removeAttr(it)
+                                updated = true
                             }
+                        }
 
-                            req.remove?.forEach {
-                                if (it.startsWith("system.", ignoreCase = true)) {
-                                    logger.warnEvent(LogObject.ASSET,
-                                            LogAction.BATCH_UPDATE,
-                                            "Skipping removing $it, cannot set system values on batch update",
-                                            mapOf("assetId" to doc.id))
-                                } else {
-                                    doc.removeAttr(it)
-                                }
+                        req.appendToList?.forEach { t, u ->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.addToAttr(t, u, unique = false)
+                                updated = true
                             }
+                        }
 
+                        req.appendToUniqueList?.forEach { t, u ->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.addToAttr(t, u, unique = true)
+                                updated = true
+                            }
+                        }
+
+                        req.removeFromList?.forEach { t, u ->
+                            if (checkAttr(t, doc.id, req.allowSystem)) {
+                                doc.removeFromAttr(t, u)
+                                updated = true
+                            }
+                        }
+
+                        if (updated) {
                             doc.setAttr("system.timeModified", now)
                             doc
+                        } else {
+                            null
                         }
                     }
-
-                    val updated = batchUpdate(docs, reindex = true, taxons = false)
-                    updated
                 }
+
+                rsp.plus(batchUpdate(docs, reindex = true, taxons = false))
+                rsp
             }
         }
 
@@ -482,7 +531,7 @@ open abstract class AbstractAssetService : AssetService {
             futures.map {
                 val r = it.await()
                 logger.event(LogObject.ASSET, LogAction.BATCH_UPDATE,
-                        mapOf("updatCount" to r.updatedAssetIds.size,
+                        mapOf("updateCount" to r.updatedAssetIds.size,
                                 "errorCount" to r.erroredAssetIds.size))
                 rsp.plus(r)
             }
@@ -492,10 +541,9 @@ open abstract class AbstractAssetService : AssetService {
         return rsp
     }
 
-    override fun update(assetId: String, req: UpdateAssetRequest): Boolean {
+    override fun update(assetId: String, req: UpdateAssetRequest): BatchUpdateAssetsResponse {
         val breq = BatchUpdateAssetsRequest(mapOf(assetId to req))
-        val rsp = batchUpdate(breq)
-        return rsp.updatedAssetIds.contains(assetId)
+        return batchUpdate(breq)
     }
 
 
@@ -505,24 +553,23 @@ open abstract class AbstractAssetService : AssetService {
         val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
         val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking {
+        runBlocking(CoroutineAuthentication(getSecurityContext())) {
             assets.chunked(50) {
                 launch {
-                    withAuth(auth) {
-                        val docs = getAll(it).mapNotNull { doc ->
-                            if (removeLink(doc, type, value)) {
-                                doc
-                            } else {
-                                // already removed
-                                null
-                            }
+
+                    val docs = getAll(it).mapNotNull { doc ->
+                        if (removeLink(doc, type, value)) {
+                            doc
+                        } else {
+                            // already removed
+                            null
                         }
-                        val update = batchUpdate(docs, reindex = true, taxons = false)
-                        if (update.erroredAssetIds.isNotEmpty()) {
-                            errorAssetIds.addAll(update.erroredAssetIds)
-                        }
-                        successAssetIds.addAll(update.updatedAssetIds)
                     }
+                    val update = batchUpdate(docs, reindex = true, taxons = false)
+                    if (update.erroredAssetIds.isNotEmpty()) {
+                        errorAssetIds.addAll(update.erroredAssetIds)
+                    }
+                    successAssetIds.addAll(update.updatedAssetIds)
                 }
             }
         }
@@ -535,23 +582,21 @@ open abstract class AbstractAssetService : AssetService {
         val errors = Collections.synchronizedSet(mutableSetOf<String>())
         val success = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking {
+        runBlocking(CoroutineAuthentication(getSecurityContext())) {
             req.assetIds?.chunked(50) {
                 launch {
-                    withAuth(auth) {
-                        val docs = getAll(it).mapNotNull { doc ->
-                            if (addLink(doc, type, value)) {
-                                doc
-                            } else {
-                                null
-                            }
+                    val docs = getAll(it).mapNotNull { doc ->
+                        if (addLink(doc, type, value)) {
+                            doc
+                        } else {
+                            null
                         }
-                        val update = batchUpdate(docs, reindex = true, taxons = false)
-                        if (update.erroredAssetIds.isNotEmpty()) {
-                            errors.addAll(update.erroredAssetIds)
-                        }
-                        success.addAll(update.updatedAssetIds)
                     }
+                    val update = batchUpdate(docs, reindex = true, taxons = false)
+                    if (update.erroredAssetIds.isNotEmpty()) {
+                        errors.addAll(update.erroredAssetIds)
+                    }
+                    success.addAll(update.updatedAssetIds)
                 }
             }
 
@@ -563,29 +608,118 @@ open abstract class AbstractAssetService : AssetService {
 
                 searchService.scanAndScroll(search, false) { hits ->
                     launch {
-                        withAuth(auth) {
-                            val ids = hits.hits.map { hit -> hit.id }
-                            val docs = getAll(ids).mapNotNull { doc ->
-                                if (addLink(doc, type, value)) {
-                                    doc
-                                } else {
 
-                                    null
-                                }
+                        val ids = hits.hits.map { hit -> hit.id }
+                        val docs = getAll(ids).mapNotNull { doc ->
+                            if (addLink(doc, type, value)) {
+                                doc
+                            } else {
+
+                                null
                             }
-                            logger.info("updating docs with links: {}", docs.size)
-                            val update = batchUpdate(docs, reindex = true, taxons = false)
-                            if (update.erroredAssetIds.isNotEmpty()) {
-                                errors.addAll(update.erroredAssetIds)
-                            }
-                            success.addAll(update.updatedAssetIds)
                         }
+                        logger.info("updating docs with links: {}", docs.size)
+                        val update = batchUpdate(docs, reindex = true, taxons = false)
+                        if (update.erroredAssetIds.isNotEmpty()) {
+                            errors.addAll(update.erroredAssetIds)
+                        }
+                        success.addAll(update.updatedAssetIds)
                     }
                 }
             }
         }
         return UpdateLinksResponse(success, errors)
     }
+
+    @Transactional
+    override fun deleteFieldEdit(edit: FieldEdit): Boolean {
+        val asset = get(edit.assetId.toString())
+        val field = fieldSystemService.getField(edit.fieldId)
+
+        if (!hasPermission("write", asset)) {
+            throw ArchivistSecurityException("update access denied")
+        }
+
+        val updateReq = if (edit.oldValue == null) {
+            UpdateAssetRequest(remove = listOf(field.attrName),
+                    removeFromList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
+        } else {
+            UpdateAssetRequest(mapOf(field.attrName to edit.oldValue),
+                    removeFromList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
+        }
+
+        if (fieldEditDao.delete(edit.id)) {
+            val rsp = update(asset.id, updateReq)
+            if (rsp.isSuccess()) {
+                val aspec = AuditLogEntrySpec(asset.id,
+                        AuditLogType.Changed,
+                        fieldId = field.id,
+                        attrName = field.attrName,
+                        scope = "undo edit",
+                        value = edit.oldValue)
+                auditLogDao.create(aspec)
+                return true
+            }
+            else {
+                throw rsp.getThrowableError()
+            }
+        }
+
+        throw ArchivistWriteException("Unable to find field edit: ${edit.id}")
+    }
+
+    @Transactional
+    override fun createFieldEdit(spec: FieldEditSpec): FieldEdit {
+        val assetId = spec.assetId.toString()
+        val asset = get(assetId)
+        val field = fieldSystemService.getField(spec)
+
+        if (!field.editable) {
+            throw IllegalStateException("The field ${field.name} is not editable")
+        }
+
+        if (!field.attrType.isValid(spec.newValue)) {
+            throw java.lang.IllegalArgumentException("The value ${spec.newValue} " +
+                    "for field ${field.name} is not the correct type")
+        }
+
+        val updateReq = if (spec.newValue == null) {
+            UpdateAssetRequest(
+                    remove = listOf(field.attrName),
+                    appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
+        } else {
+            UpdateAssetRequest(mapOf(field.attrName to spec.newValue),
+                    appendToUniqueList = mapOf("system.fieldEdits" to field.attrName),
+                    allowSystem = true)
+        }
+
+        val rsp = update(assetId, updateReq)
+        if (rsp.isSuccess()) {
+            val oldValue = asset.getAttr(field.attrName, Any::class.java)
+            val ispec = FieldEditSpecInternal(
+                    UUID.fromString(asset.id),
+                    field.id,
+                    spec.newValue,
+                    oldValue)
+            val fieldEdit = fieldEditDao.create(ispec)
+
+            val aspec = AuditLogEntrySpec(assetId,
+                    AuditLogType.Changed,
+                    fieldId = field.id,
+                    attrName = field.attrName,
+                    scope = "manual edit",
+                    value = spec.newValue)
+            auditLogDao.create(aspec)
+            return fieldEdit
+        }
+        else {
+            throw rsp.getThrowableError()
+        }
+    }
+
 
     companion object {
 

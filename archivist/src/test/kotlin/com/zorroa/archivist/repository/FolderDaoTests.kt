@@ -319,10 +319,9 @@ class FolderDaoTests : AbstractTest() {
         val spec1 = FolderSpec("foo")
         val (id) = folderDao.create(spec1)
 
-        val spec = DyHierarchySpec().setFolderId(id)
-        spec.levels = ImmutableList.of(
+        val spec = DyHierarchySpec(id, listOf(
                 DyHierarchyLevel("source.type.raw"),
-                DyHierarchyLevel("source.extension.raw"))
+                DyHierarchyLevel("source.extension.raw")))
         val dyhi = dyHierarchyDao.create(spec)
 
         val spec2 = FolderSpec("bar")

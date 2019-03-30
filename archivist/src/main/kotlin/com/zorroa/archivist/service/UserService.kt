@@ -13,10 +13,9 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.security.withAuth
+import com.zorroa.archivist.security.generateRandomPassword
 import com.zorroa.common.domain.DuplicateEntityException
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.security.Groups
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 import org.slf4j.LoggerFactory
@@ -39,6 +38,7 @@ import java.util.stream.Collectors
  */
 interface UserService {
 
+    @Deprecated("see getAll(filter: UserFilter)")
     fun getAll(): List<User>
 
     fun getCount(): Long
@@ -53,6 +53,7 @@ interface UserService {
 
     fun exists(username: String, source:String?): Boolean
 
+    @Deprecated("see getAll(filter: UserFilter)")
     fun getAll(page: Pager): PagedList<User>
 
     fun getPassword(username: String): String
@@ -100,6 +101,10 @@ interface UserService {
      * @param: Organization - the organization to create the user for.
      */
     fun createStandardUsers(org: Organization)
+
+    fun findOne(filter: UserFilter): User
+
+    fun getAll(filter: UserFilter): KPagedList<User>
 }
 
 
@@ -180,7 +185,7 @@ class UserRegistryServiceImpl @Autowired constructor(
                 throw BadCredentialsException("Unable to determine organization, organization was null")
             }
         } else {
-            organizationService.getOnlyOne()
+            organizationService.get(Organization.DEFAULT_ORG_ID)
         }
     }
 
@@ -194,6 +199,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         val perms = mutableListOf<Permission>()
         for (group in groups) {
 
+            // Maps the external permission to a standard one, if applicagle.
             val parts = if (mapping.containsKey(group)) {
                 mapping.getValue(group).split(Permission.JOIN, limit = 2)
             }
@@ -201,6 +207,7 @@ class UserRegistryServiceImpl @Autowired constructor(
                 group.split(Permission.JOIN, limit = 2)
             }
 
+            // Create a permission spec.
             val spec = if (parts.size == 1) {
                 PermissionSpec(source.permissionType, parts[0])
             } else {
@@ -249,6 +256,9 @@ class UserServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var folderService: FolderService
 
+    @Autowired
+    internal lateinit var emailService: EmailService
+
     private val PASS_MIN_LENGTH = 8
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
@@ -286,28 +296,30 @@ class UserServiceImpl @Autowired constructor(
             throw java.lang.IllegalArgumentException("Invalid email address: ${spec.email}")
         }
 
-        val name = spec.name.split(Regex("\\s+"), limit=2)
-        val orgId = if (hasPermission(Groups.SUPERADMIN)) {
-            spec.organizationId ?: getOrgId()
-        }
-        else {
-            getOrgId()
+        val name = spec.name ?: spec.email.split("@")[0]
+        val nameParts = name.split(Regex("\\s+"), limit=2)
+        val user = create(UserSpec(
+                spec.email,
+                spec.password ?: generateRandomPassword(10),
+                spec.email,
+                UserSource.LOCAL,
+                nameParts.first(),
+                if (nameParts.size == 1) {
+                    ""
+                } else {
+                    nameParts.last()
+                },
+                spec.permissionIds))
+
+
+        tx.afterCommit(sync=false) {
+            // Email a password reset if no password was provided.
+            if (spec.password == null) {
+                emailService.sendPasswordResetEmail(user)
+            }
         }
 
-        return withAuth(SuperAdminAuthentication(orgId)) {
-            create(UserSpec(
-                    spec.email,
-                    spec.password,
-                    spec.email,
-                    UserSource.LOCAL,
-                    name.first(),
-                    if (name.size == 1) {
-                        ""
-                    } else {
-                        name.last()
-                    },
-                    spec.permissionIds))
-        }
+        return user
     }
 
     override fun create(spec: UserSpec): User {
@@ -368,6 +380,16 @@ class UserServiceImpl @Autowired constructor(
 
     override fun getAll(page: Pager): PagedList<User> {
         return userDao.getAll(page)
+    }
+
+    @Transactional(readOnly=true)
+    override fun getAll(filter: UserFilter): KPagedList<User> {
+        return userDao.getAll(filter)
+    }
+
+    @Transactional(readOnly=true)
+    override fun findOne(filter: UserFilter): User {
+        return userDao.findOne(filter)
     }
 
     override fun getCount(): Long {

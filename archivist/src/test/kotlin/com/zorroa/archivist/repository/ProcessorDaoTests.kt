@@ -71,6 +71,11 @@ class ProcessorDaoTests : AbstractTest() {
         procs = processorDao.getAll(filter)
         assertEquals(procs.size(), 4)
 
+        // keywords
+        filter = ProcessorFilter(keywords = "google")
+        procs = processorDao.getAll(filter)
+        assertEquals(procs.size(), 7)
+
         // ids
         filter = ProcessorFilter(ids = listOf(
                 UUID.fromString("642462df-8c96-5688-8f1d-c13ac327832c"),

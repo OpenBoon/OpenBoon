@@ -1,12 +1,14 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.generateUserToken
-import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Test
@@ -16,6 +18,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.*
 import java.util.stream.Collectors
 import kotlin.test.*
 
@@ -80,6 +83,35 @@ class UserControllerTests : MockMvcTest() {
         assertNotEquals(currentKey, content["key"].toString())
     }
 
+    @Test
+    fun testSearch() {
+        val filter = UserFilter(usernames=listOf("admin"))
+        val session = admin()
+        val result = mvc.perform(post("/api/v1/users/_search")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val users = Json.Mapper.readValue<KPagedList<User>>(result.response.contentAsString)
+        assertEquals("admin", users[0].username)
+    }
+
+    @Test
+    fun testFindOne() {
+        val filter = UserFilter(usernames=listOf("admin"))
+        val session = admin()
+        val result = mvc.perform(post("/api/v1/users/_findOne")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .session(session)
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+        val user = Json.Mapper.readValue<User>(result.response.contentAsString)
+        assertEquals("admin", user.username)
+    }
 
     @Test
     fun testCreateV2() {
@@ -87,7 +119,6 @@ class UserControllerTests : MockMvcTest() {
 
         val spec = LocalUserSpec(
                 "bilbo@baggins.com",
-                "passw123",
                 "Bilbo Baggins")
 
         val result = mvc.perform(post("/api/v2/users")
@@ -102,6 +133,31 @@ class UserControllerTests : MockMvcTest() {
         assertEquals(spec.email, content["email"])
         assertEquals("Bilbo", content["firstName"])
         assertEquals("Baggins", content["lastName"])
+    }
+
+    @Test
+    fun testCreateV2WithOrgIdHeader() {
+        val user = userService.get("admin")
+        val token = generateUserToken(user.id, userService.getHmacKey(user))
+        val org = organizationService.create(OrganizationSpec("Mordor Inc"))
+
+        val spec = LocalUserSpec(
+                "bilbo@baggins.com",
+                "Bilbo Baggins")
+
+        val rsp = mvc.perform(post("/api/v2/users")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .header(JwtSecurityConstants.HEADER_STRING,
+                        "${JwtSecurityConstants.TOKEN_PREFIX}$token")
+                .header(JwtSecurityConstants.ORGID_HEADER, org.id.toString())
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val result = Json.deserialize(rsp.response.contentAsString, Json.GENERIC_MAP)
+        assertEquals(org.id, UUID.fromString(result["organizationId"] as String),
+                "The user's orgId is not the org ID sent with the request header")
     }
 
     @Test
@@ -191,8 +247,7 @@ class UserControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testUpdateSettings() {
         val user = userService.get("user")
-        val settings = UserSettings()
-        settings.search = ImmutableMap.of<String, Any>("foo", "bar")
+        val settings = UserSettings(search=ImmutableMap.of<String, Any>("foo", "bar"))
 
         val session = admin()
         val result = mvc.perform(put("/api/v1/users/${user.id}/_settings")
@@ -209,8 +264,8 @@ class UserControllerTests : MockMvcTest() {
         })
         val user2 = sr.`object`
         assertEquals(user.id, user2!!.id)
-        assertNotNull(settings.search["foo"])
-        assertEquals("bar", settings.search["foo"])
+        assertNotNull(settings.search!!["foo"])
+        assertEquals("bar", settings.search!!["foo"])
     }
 
     @Test

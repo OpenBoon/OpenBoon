@@ -8,9 +8,7 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.util.StaticUtils
-import com.zorroa.common.domain.EntityNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -28,7 +26,6 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
 
@@ -112,7 +109,7 @@ interface FileServerProvider {
     fun getServableFile(uri: String) : ServableFile = getServableFile(URI(uri))
 }
 
-class FileServerProviderImpl @Autowired constructor (
+open class FileServerProviderImpl @Autowired constructor (
         val properties: ApplicationProperties,
         val credentials: Path?) : FileServerProvider {
 

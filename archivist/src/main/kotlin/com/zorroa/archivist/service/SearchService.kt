@@ -115,6 +115,9 @@ class SearchServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var fieldService: FieldService
 
+    @Autowired
+    internal lateinit var fieldSystemService: FieldSystemService
+
     override fun count(builder: AssetSearch): Long {
         val orgId = getOrgId()
         val rest = indexRoutingService[orgId]
@@ -434,7 +437,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getQuery(search: AssetSearch): QueryBuilder {
-        return getQuery(search, Sets.newHashSet(), true, false)
+        return getQuery(search, mutableSetOf(), true, false)
     }
 
     private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
@@ -555,20 +558,24 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     private fun getQueryStringQuery(search: AssetSearch): QueryBuilder {
-        val queryFields = if (JdbcUtils.isValid(search.queryFields)) {
-            search.queryFields
-        } else {
-            fieldService.getQueryFields()
-        }
-
+        val queryFields = fieldSystemService.getKeywordFieldNames()
         val qstring = QueryBuilders.queryStringQuery(search.query)
+
         qstring.allowLeadingWildcard(false)
         qstring.lenient(true) // ignores qstring errors
-        for ((key, value) in queryFields) {
-            qstring.field(key, value)
-        }
-        return qstring
 
+        if (search.queryFields != null) {
+            search.queryFields.forEach { field, boost ->
+                qstring.field(field, boost)
+            }
+        }
+        else {
+            queryFields.forEach { field, boost ->
+                qstring.field(field, boost)
+            }
+        }
+        qstring.field("system.taxonomy.keywords")
+        return qstring
     }
 
     /**

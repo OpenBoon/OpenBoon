@@ -430,7 +430,7 @@ class FolderServiceTests : AbstractTest() {
 
         val builder1 = FolderSpec("bilbo")
         var folder1 = folderService.create(builder1)
-        taxonomyService!!.create(TaxonomySpec(folder1))
+        taxonomyService.create(TaxonomySpec(folder1))
         folder1 = folderService.get(folder1.id)
 
         val builder2 = FolderSpec("baggins")
@@ -448,6 +448,7 @@ class FolderServiceTests : AbstractTest() {
         folderService.update(folder2.id, update)
         refreshIndex(1000)
 
+        fieldService.invalidateFields()
         assertEquals(2, searchService.count(AssetSearch().setQuery("bilbo")))
         assertEquals(2, searchService.count(AssetSearch().setQuery("baggins")))
     }
@@ -536,10 +537,8 @@ class FolderServiceTests : AbstractTest() {
     @Test
     fun testDeleteWithDyhi() {
         val folder = folderService.create(FolderSpec("foo"), false)
-        val spec = DyHierarchySpec()
-        spec.folderId = folder.id
-        spec.levels = ImmutableList.of(
-                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day))
+        val spec = DyHierarchySpec(folder.id, listOf(
+                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)))
         dyhiService!!.create(spec)
         assertTrue(folderService.delete(folder))
     }

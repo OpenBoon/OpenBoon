@@ -111,4 +111,11 @@ class TaskDaoTests : AbstractTest() {
         assertEquals(counts.warningAssetIds.size, map["int_asset_warning_count"])
         assertEquals(counts.total, map["int_asset_total_count"])
     }
+
+    @Test
+    fun testIsAutoRetryable() {
+        assertTrue(taskDao.isAutoRetryable(task))
+        jdbc.update("UPDATE task SET int_run_count=4 WHERE pk_task=?", task.taskId)
+        assertFalse(taskDao.isAutoRetryable(task))
+    }
 }

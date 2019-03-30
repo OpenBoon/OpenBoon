@@ -10,6 +10,7 @@ import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
+import com.zorroa.common.util.readValueOrNull
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -50,6 +51,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             ps.setBoolean(10, spec.fatal)
             ps.setString(11, spec.phase)
             ps.setLong(12, time)
+            ps.setString(13, Json.serializeToString(spec.stackTrace, null))
             ps
         }
 
@@ -66,7 +68,8 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 spec.fatal,
                 getAnalystEndpoint(),
                 spec.phase,
-                time)
+                time,
+                spec.stackTrace)
     }
 
     override fun batchCreate(task: Task, specs: List<TaskErrorEvent>): Int {
@@ -93,7 +96,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 ps.setBoolean(10, spec.fatal)
                 ps.setString(11, spec.phase)
                 ps.setLong(12, time)
-                ps
+                ps.setString(13, Json.serializeToString(spec.stackTrace, null))
             }
 
             override fun getBatchSize(): Int {
@@ -167,7 +170,9 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                     rs.getBoolean("bool_fatal"),
                     rs.getString("str_endpoint"),
                     rs.getString("str_phase"),
-                    rs.getLong("time_created"))
+                    rs.getLong("time_created"),
+                    Json.Mapper.readValueOrNull(rs.getString("json_stack_trace")))
+
         }
 
         private const val COUNT = "SELECT COUNT(1) FROM task_error INNER JOIN job ON (job.pk_job = task_error.pk_job)"
@@ -186,6 +191,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 "str_extension",
                 "bool_fatal",
                 "str_phase",
-                "time_created")
+                "time_created",
+                "json_stack_trace::jsonb")
     }
 }

@@ -70,6 +70,9 @@ abstract class KDaoFilter {
                     order.append(col + " " + if (dir.startsWith("a", ignoreCase = true)) "asc " else "desc ")
                     order.append(",")
                 }
+                else {
+                    throw IllegalArgumentException("Invalid sort column: '$col'")
+                }
             }
 
             if (order.isNotEmpty()) {

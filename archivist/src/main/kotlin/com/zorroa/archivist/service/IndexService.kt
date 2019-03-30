@@ -7,16 +7,14 @@ import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
-import com.zorroa.archivist.security.getAuthentication
+import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.AbstractAssetService.Companion.PROTECTED_NAMESPACES
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.stereotype.Component
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -60,7 +58,8 @@ class IndexServiceImpl  @Autowired  constructor (
         private val indexDao: IndexDao,
         private val auditLogDao: AuditLogDao,
         private val fileServerProvider: FileServerProvider,
-        private val fileStorageService: FileStorageService
+        private val fileStorageService: FileStorageService,
+        private val workQueue: AsyncListenableTaskExecutor
 
 ) : IndexService {
 
@@ -138,7 +137,8 @@ class IndexServiceImpl  @Autowired  constructor (
             try {
                 if (ns[0] !in PROTECTED_NAMESPACES) {
                     doc.setAttr(it.key, it.value)
-                    auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed, field = it.key, value = it.value))
+                    auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed,
+                            attrName = it.key, value = it.value))
                 } else {
                     logger.warnEvent(LogObject.ASSET, LogAction.UPDATE,
                             "Attempted to set protected namespace ${it.key}", emptyMap())
@@ -196,17 +196,13 @@ class IndexServiceImpl  @Autowired  constructor (
             // add the batch results to the overall result.
             rsp.plus(batchRsp)
 
-            val auth = getAuthentication()
-
-            GlobalScope.launch {
-                withAuth(auth) {
-                    docs.forEach {
-                        if (it.id in batchRsp.deletedAssetIds) {
-                            deleteAssociatedFiles(it)
-                        }
+            workQueue.execute(SecureRunnable {
+                docs.forEach {
+                    if (it.id in batchRsp.deletedAssetIds) {
+                        deleteAssociatedFiles(it)
                     }
                 }
-            }
+            })
         }
         return rsp
     }

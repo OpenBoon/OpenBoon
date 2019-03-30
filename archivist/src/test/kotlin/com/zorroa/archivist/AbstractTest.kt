@@ -18,7 +18,6 @@ import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -102,6 +101,9 @@ open abstract class AbstractTest {
     internal lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
+    internal lateinit var fieldSystemService: FieldSystemService
+
+    @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
 
     @Autowired
@@ -136,7 +138,6 @@ open abstract class AbstractTest {
                 jdbc.update("DELETE FROM asset")
                 jdbc.update("DELETE FROM auditlog")
                 jdbc.update("DELETE FROM cluster_lock")
-
             }
         })
 
@@ -156,6 +157,7 @@ open abstract class AbstractTest {
          * We need to be authed to clean elastic.
          */
         cleanElastic()
+        setupDefaultOrganization()
 
         val spec1 = UserSpec(
                 "user",
@@ -203,13 +205,24 @@ open abstract class AbstractTest {
          */
 
         val rest = indexRoutingService[getOrgId()]
+        val reqDel = DeleteIndexRequest("unittest")
 
-        val reqDel = DeleteIndexRequest("_all")
-        rest.client.indices().delete(reqDel)
+        /*
+         * Delete will throw here if the index doesn't exist.
+         */
+        try {
+            rest.client.indices().delete(reqDel)
+        } catch (e: Exception) {
+            logger.warn("Failed to delete 'unittest' index, this is usually ok.")
+        }
 
         indexRoutingService.setupDefaultIndex()
     }
 
+    fun setupDefaultOrganization() {
+        val org = organizationService.get(getOrgId())
+        fieldSystemService.setupDefaultFieldSets(org)
+    }
     /**
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
@@ -275,7 +288,9 @@ open abstract class AbstractTest {
                     b.setAttr("location.state", "New Mexico")
                     b.setAttr("location.country", "USA")
                     b.setAttr("location.keywords", listOf("boring", "tourist", "attraction"))
-
+                    b.setAttr("media.width", 1024)
+                    b.setAttr("media.height", 1024)
+                    b.setAttr("media.title", "Picture of ${f.name}")
                     val id = UUID.randomUUID().toString()
                     val proxies = Lists.newArrayList<Proxy>()
                     proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
@@ -303,6 +318,34 @@ open abstract class AbstractTest {
         addTestAssets(getTestAssets(subdir))
     }
 
+    fun addTestVideoAssets(subdir: String) {
+        // note: does not recurse into subdirectories
+        val videoAssets = mutableListOf<Source>()
+        val path = resources.resolve(subdir)
+        for (f in path.toFile().listFiles()!!) {
+
+            if (f.isFile) {
+                    logger.info("adding test file: {}", f)
+                    val source = Source(f)
+                    source.setAttr("test.path", path.toAbsolutePath().toString())
+                    val id = UUID.randomUUID().toString()
+                    val proxies = Lists.newArrayList<Proxy>()
+                    proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
+                    proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
+                    proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
+                    proxies.add(Proxy(width=1920, height=1080, id="proxy___${id}_transcode.mp4", mimetype = "video/mp4"))
+
+                    val proxySchema = ProxySchema()
+                    proxySchema.proxies = proxies
+                    source.setAttr("proxies", proxySchema)
+                    source.setAttr("proxy_id", id)
+                    videoAssets.add(source)
+            }
+        }
+        addTestAssets(videoAssets)
+    }
+
+
     fun addTestAssets(builders: List<Source>) {
         for (source in builders) {
             val schema = source.sourceSchema
@@ -328,12 +371,7 @@ open abstract class AbstractTest {
         refreshIndex()
     }
 
-    fun refreshIndex() {
-        val rest = indexRoutingService[UUID.randomUUID()]
-        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
-    }
-
-    fun refreshIndex(sleep: Long) {
+    fun refreshIndex(sleep: Long=0) {
         val rest = indexRoutingService[UUID.randomUUID()]
         rest.client.lowLevelClient.performRequest("POST", "/_refresh")
     }

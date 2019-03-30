@@ -29,10 +29,18 @@ enum class LogAction {
     UNLOCK,
     APIKEY,
     EXPAND,
+    EDIT,
     SEARCH,
     SEARCH_STREAM,
     SCROLL,
-    SUGGEST
+    SUGGEST,
+    TAG,
+    UNTAG,
+    COMBINE,
+    BACKOFF,
+    EXPIRED,
+    SCAN,
+    ORGSWAP
 }
 
 
@@ -57,6 +65,9 @@ enum class LogObject {
     TAXONOMY,
     TRASH_FOLDER,
     USER,
-    ANALYST
+    ANALYST,
+    FIELD,
+    FIELD_EDIT,
+    FIELD_SET
 }
 

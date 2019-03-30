@@ -9,10 +9,19 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.zorroa.archivist.search.AssetSearch
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
+inline fun <reified T: Any> ObjectMapper.readValueOrNull(content: String?): T?  {
+    return if (content == null) {
+        null
+    }
+    else {
+        readValue(content, jacksonTypeRef<T>())
+    }
+}
 
 object Json {
 
@@ -42,6 +51,7 @@ object Json {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false)
+        mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
         mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
         return mapper
     }

@@ -8,21 +8,28 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.service.*
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
+import org.mockito.BDDMockito.given
+import org.mockito.Mockito.doReturn
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.net.URL
 import java.util.*
 import java.util.stream.Collectors
 import kotlin.streams.toList
@@ -32,8 +39,14 @@ class AssetControllerTests : MockMvcTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
-    @Autowired
-    lateinit var assetController: AssetController
+    @MockBean
+    lateinit var fileStorageService: FileStorageService
+
+    @MockBean
+    lateinit var fileServerService: FileServerService
+
+    @SpyBean
+    override lateinit var fileServerProvider: FileServerProvider
 
     @Before
     fun init() {
@@ -65,51 +78,6 @@ class AssetControllerTests : MockMvcTest() {
         assertTrue(fields["date"]!!.isNotEmpty())
         assertTrue(fields["string"]!!.isNotEmpty())
         assertTrue(fields.containsKey("integer"))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testHideAndUnhideField() {
-        val session = admin()
-        addTestAssets("set04/standard")
-
-        val result = mvc.perform(put("/api/v1/assets/_fields/hide")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
-
-        var status = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-
-                })
-        assertTrue(status["success"] as Boolean)
-
-        authenticate("admin")
-        fieldService.invalidateFields()
-        val fields = fieldService.getFields("asset")
-        for (field in fields["string"]!!) {
-            assertFalse(field.startsWith("source"))
-        }
-
-        mvc.perform(delete("/api/v1/assets/_fields/hide")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
-
-        status = Json.Mapper.readValue(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-
-                })
-        assertTrue(status["success"] as Boolean)
-
-        val stringFields = fieldService.getFields("asset")
-        assertNotEquals(fields, stringFields)
     }
 
     @Test
@@ -487,31 +455,37 @@ class AssetControllerTests : MockMvcTest() {
         }
     }
 
-    /**
-     * Ignoring until we have good way to test this.
-     */
     @Test
-    @Ignore
     @Throws(Exception::class)
     fun testStreamHeadRequest() {
         val session = admin()
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("source.stream", "https://foo/bar")
         indexService.index(source)
         refreshIndex()
 
+        val uri = source.path.toUri()
+        val servableFile = ServableFile(fileServerService, uri)
+
+        val anyDocument = object: Document() {override fun equals(other: Any?): Boolean = true}
+        doReturn(servableFile).`when`(fileServerProvider).getServableFile(anyDocument)
+
+        given(fileServerService.storedLocally).willReturn(false)
+
+        val signedUrl = "https://signed/url"
+        given(fileServerService.getSignedUrl(uri)).willReturn(URL(signedUrl))
+
         val url = String.format("/api/v1/assets/%s/_stream", source.id)
         mvc.perform(head(url)
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andExpect(header().string("X-Zorroa-Signed-URL", "https://foo/bar"))
-                .andReturn()
+            .session(session)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.header().string("X-Zorroa-Signed-URL", signedUrl))
+            .andReturn()
     }
 
     @Test
     @Throws(Exception::class)
-    fun testStream() {
+    fun testStreamSource() {
         val session = admin()
         addTestAssets("set04/standard")
         refreshIndex()
@@ -524,28 +498,55 @@ class AssetControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
-
     }
 
-    /**
-     * Bring this back when we support alternative extensions
-     */
     @Test
-    @Ignore
-    @Throws(Exception::class)
-    fun testStream404() {
+    fun testStreamProxy() {
         val session = admin()
-        addTestAssets("set04/standard")
-        refreshIndex()
 
+        addTestVideoAssets("video")
         val assets = indexService.getAll(Pager.first())
+        val asset = assets.get(0)
 
-        val url = String.format("/api/v1/assets/%s/_stream?ext=foo", assets.get(0).id)
-        val result = mvc.perform(get(url)
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().is4xxClientError)
-                .andReturn()
+        val mediaType = "video/mp4"
+
+        val tmpFile = createTempFile()
+        val tmpFileUri = tmpFile.toURI()
+        val fileStorage = FileStorage(asset.id, tmpFileUri, "file", mediaType, fileServerProvider)
+
+        doReturn(ServableFile(fileServerService, tmpFileUri)).`when`(fileServerProvider).getServableFile(tmpFileUri)
+
+        given(fileStorageService.get("proxy___${asset.getAttr<String>("proxy_id")}_transcode.mp4"))
+            .willReturn(fileStorage)
+        given(fileServerService.storedLocally).willReturn(true)
+        given(fileServerService.getLocalPath(tmpFileUri)).willReturn(tmpFile.toPath())
+        given(fileServerService.getStat(tmpFileUri)).willReturn(FileStat(0, mediaType, true))
+
+        val url = String.format("/api/v1/assets/%s/_stream", asset.id)
+
+        val accept = "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
+        mvc.perform(get(url)
+            .session(session)
+            .header("Accept", accept)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType(mediaType))
+            .andReturn()
+
+        mvc.perform(get(url + "?type=video")
+            .session(session)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType(mediaType))
+            .andReturn()
+
+        mvc.perform(get(url + "?type=foo")
+            .session(session)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isNotFound)
+            .andReturn()
+
+        tmpFile.delete()
     }
 
     @Test
@@ -583,5 +584,30 @@ class AssetControllerTests : MockMvcTest() {
         for (asset in indexDao.getAll(Pager.first())) {
             assertEquals("ball", asset.getAttr("foos", String::class.java))
         }
+    }
+
+    @Test
+    fun testGetFieldSets() {
+
+        val session = admin()
+        addTestAssets("set04/standard")
+        var asset = indexDao.getAll(Pager.first())[0]
+
+        logger.info(Json.prettyString(fieldSystemService.getAllFieldSets()))
+
+        val field = fieldSystemService.getField("media.title")
+        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue="The Hobbit 2")
+        assetService.createFieldEdit(spec)
+
+        val req = mvc.perform(MockMvcRequestBuilders.get(
+                "/api/v1/assets/${asset.id}/fieldSets")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+        val result = Json.Mapper.readValue<Any>(req.response.contentAsString, Json.LIST_OF_GENERIC_MAP)
+        println(Json.prettyString(result))
+
     }
 }

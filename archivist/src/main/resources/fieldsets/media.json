@@ -1,0 +1,30 @@
+{
+  "name": "Media Properties",
+  "linkExpression": "_not_empty_:media",
+  "fieldSpecs": [
+    {
+      "name": "Title",
+      "attrName": "media.title",
+      "attrType": "StringAnalyzed",
+      "editable": true,
+      "keywords": true
+    },
+    {
+      "name": "Keywords",
+      "attrName": "media.keywords",
+      "attrType": "StringSuggest",
+      "editable": true,
+      "keywords": true
+    },
+    {
+      "name": "Width",
+      "attrName": "media.width",
+      "attrType": "NumberInteger"
+    },
+    {
+      "name": "Height",
+      "attrName": "media.height",
+      "attrType": "NumberInteger"
+    }
+  ]
+}

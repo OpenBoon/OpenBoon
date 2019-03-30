@@ -2,17 +2,23 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var auditLogDao: AuditLogDao
 
     @Before
     fun init() {
@@ -65,6 +71,23 @@ class AssetServiceTests : AbstractTest() {
         }
     }
 
+    @Test
+    fun testBatchCreateOrReplaceWithManualEdits() {
+
+        val field = fieldSystemService.getField("media.title")
+
+        var assets = searchService.search(Pager.first(), AssetSearch())
+        assets.list.forEach {
+            assetService.createFieldEdit(FieldEditSpec(UUID.fromString(it.id), field.id, null,"bilbo"))
+        }
+
+        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        assets = searchService.search(Pager.first(), AssetSearch())
+        assertTrue(assets.size() > 0)
+        assets.list.forEach {
+            assertEquals("bilbo", it.getAttr("media.title", String::class.java))
+        }
+    }
 
     @Test
     fun testCreateOrReplace() {
@@ -137,7 +160,7 @@ class AssetServiceTests : AbstractTest() {
                 mapOf("foo" to "bar"),
                 listOf("source.fileSize"))
         )
-        assertTrue(updated)
+        assertTrue(updated.isSuccess())
         val asset2 = assetService.get(asset1.id)
         assertEquals(asset2.getAttr("foo", String::class.java), "bar")
         assertNull(asset2.getAttr("source.fileSize"))
@@ -224,5 +247,52 @@ class AssetServiceTests : AbstractTest() {
             assertTrue(perms!!.read.isEmpty())
             assertTrue(perms!!.write.isEmpty())
         }
+    }
+
+    @Test
+    fun testCreateFieldEdit() {
+        val title = "khaaaaaan"
+        val field = fieldSystemService.getField("media.title")
+
+        val page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            assetService.createFieldEdit(
+                    FieldEditSpec(UUID.fromString(asset.id), field.id, null,title))
+        }
+        for (asset in searchService.search(Pager.first(), AssetSearch()).list) {
+            assertEquals(title, asset.getAttr("media.title", String::class.java))
+        }
+
+        val result =
+                auditLogDao.getAll(AuditLogFilter(
+                        fieldIds=listOf(field.id),
+                        types=listOf(AuditLogType.Changed)))
+        assertTrue(result.size() > 0)
+    }
+
+    @Test
+    fun testDeleteFieldEdit() {
+        val title = "khaaaaaan"
+        val field = fieldSystemService.getField("media.title")
+
+        var page = searchService.search(Pager.first(), AssetSearch())
+        var asset = page.list[0]
+        val edit = assetService.createFieldEdit(
+                FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+        assertTrue(assetService.deleteFieldEdit(edit))
+
+        page = searchService.search(Pager.first(), AssetSearch())
+        for (asset in page) {
+            assertNotEquals(title, asset.getAttr("media.title", String::class.java))
+        }
+
+        val result =
+                auditLogDao.getAll(AuditLogFilter(
+                        fieldIds=listOf(field.id),
+                        types=listOf(AuditLogType.Changed)))
+
+        assertTrue(result[0].message!!.contains("undo"))
+        assertTrue(result[1].message!!.contains("manual edit"))
+
     }
 }

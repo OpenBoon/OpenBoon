@@ -17,6 +17,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class AnalystControllerTests : MockMvcTest() {
@@ -120,12 +121,27 @@ class AnalystControllerTests : MockMvcTest() {
     @Test
     fun testProcessorScan() {
         val session = admin()
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
+        val rsp = mvc.perform(MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
+
+        val status =  Json.Mapper.readValue<Map<String, Any>>(
+                rsp.response.contentAsString, Json.GENERIC_MAP)
+        assertTrue(status["success"] as Boolean)
+
+        val rsp2 = mvc.perform(MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val status2 =  Json.Mapper.readValue<Map<String, Any>>(
+                rsp2.response.contentAsString, Json.GENERIC_MAP)
+        assertFalse(status2["success"] as Boolean)
 
     }
 }

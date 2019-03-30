@@ -5,7 +5,6 @@ import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
-import com.zorroa.archivist.security.canExport
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.schema.ProxySchema
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -31,17 +29,16 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 @Timed
 class AssetController @Autowired constructor(
-        private val indexService: IndexService,
-        private val assetService: AssetService,
-        private val searchService: SearchService,
-        private val folderService: FolderService,
-        private val imageService: ImageService,
-        private val fieldService: FieldService,
-        private val fileServerProvider: FileServerProvider,
-        private val fileStorageService: FileStorageService,
-        private val fileUploadService: FileUploadService,
-        meterRegistry: MeterRegistry
-){
+    private val indexService: IndexService,
+    private val assetService: AssetService,
+    private val searchService: SearchService,
+    private val folderService: FolderService,
+    private val imageService: ImageService,
+    private val assetStreamResolutionService: AssetStreamResolutionService,
+    private val fieldService: FieldService,
+    private val fileUploadService: FileUploadService,
+    private val fieldSystemService: FieldSystemService,
+    meterRegistry: MeterRegistry) {
 
     private val proxyLookupCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
@@ -74,72 +71,46 @@ class AssetController @Autowired constructor(
         get() = indexService.getMapping()
 
 
-    fun getPreferredFormat(asset: Document, forceProxy: Boolean): ServableFile? {
-        if (forceProxy) {
-            val proxy = getProxyStream(asset)
-             if (proxy != null) {
-                 return fileServerProvider.getServableFile(proxy.uri)
-             }
-
-        } else  {
-            return fileServerProvider.getServableFile(fileServerProvider.getStorageUri(asset))
-        }
-
-        return null
-    }
-
-    fun getProxyStream(asset: Document): FileStorage? {
-        // If the file doesn't have a proxy this will throw.
-        val proxies = asset.getAttr("proxies", ProxySchema::class.java)
-
-        if (proxies != null) {
-            val largest = proxies.getLargest()
-            if (largest != null) {
-                fileStorageService.get(largest.id!!)
-            }
-        }
-        return null
-    }
-
-    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.GET, RequestMethod.HEAD])
+    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.HEAD] )
     @Throws(Exception::class)
     fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
-                    @RequestParam(value = "ext", required = false) ext: String?,
+                    @PathVariable id: String, response: HttpServletResponse) {
+
+        val servableFile = assetStreamResolutionService.getServableFile(id)
+        if (servableFile == null) {
+            response.status = 404
+        } else {
+            if (!servableFile.isLocal()) {
+                response.setHeader("X-Zorroa-Signed-URL", servableFile.getSignedUrl().toString())
+            }
+        }
+    }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
+    @Throws(Exception::class)
+    fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
+                    @RequestParam(value = "type", required = false) type: String?,
+                    @RequestHeader(value="Accept", required = false) accept: String?,
                     @PathVariable id: String, request: HttpServletRequest, response: HttpServletResponse) {
 
-        val asset = indexService.get(id)
-        val canExport = canExport(asset)
-        val ofile = getPreferredFormat(asset, !canExport)
-
-        if (ofile == null) {
-            response.status = 404
-        }
-        else {
-            if (request.method == "HEAD") {
-                /**
-                 * Only non-local files need to be signed.
-                 */
-                if (!ofile.isLocal()) {
-                    response.setHeader("X-Zorroa-Signed-URL", ofile.getSignedUrl().toString())
+        try {
+            val servableFile = assetStreamResolutionService.getServableFile(id, accept, type)
+            if (servableFile == null) {
+                response.status = 404
+            } else {
+                logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to id))
+                if (!servableFile.isLocal()) {
+                    servableFile.copyTo(response)
+                } else {
+                    MultipartFileSender.fromPath(servableFile.getLocalFile())
+                        .with(request)
+                        .with(response)
+                        .setContentType(servableFile.getStat().mediaType)
+                        .serveResource()
                 }
             }
-            else {
-                try {
-                    logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to asset.id))
-                    if (!ofile.isLocal()) {
-                        ofile.copyTo(response)
-                    } else {
-                        MultipartFileSender.fromPath(ofile.getLocalFile())
-                                .with(request)
-                                .with(response)
-                                .setContentType(ofile.getStat().mediaType)
-                                .serveResource()
-
-                    }
-                } catch (e: Exception) {
-                    response.sendError(404, "StorageSystem unable to find file")
-                }
-            }
+        } catch (e: Exception) {
+            response.sendError(404, "StorageSystem unable to find file")
         }
     }
 
@@ -210,20 +181,6 @@ class AssetController @Autowired constructor(
         searchService.search(Pager(search.from, search.size, 0), search, out)
     }
 
-    @PutMapping(value = ["/api/v1/assets/_fields/hide"])
-    @Throws(IOException::class)
-    fun unhideField(@RequestBody update: HideField): Any {
-        return HttpUtils.status("field", "hide",
-                fieldService.updateField(update.setHide(true).setManual(true)))
-    }
-
-    @DeleteMapping(value = ["/api/v1/assets/_fields/hide"])
-    @Throws(IOException::class)
-    fun hideField(@RequestBody update: HideField): Any {
-        return HttpUtils.status("field", "unhide",
-                fieldService.updateField(update.setHide(false)))
-    }
-
     @PostMapping(value = ["/api/v2/assets/_count"])
     @Throws(IOException::class)
     fun count(@RequestBody search: AssetSearch): Any {
@@ -242,9 +199,14 @@ class AssetController @Autowired constructor(
         return searchService.getSuggestTerms(suggest.text)
     }
 
-    @GetMapping(value = ["/api/v2/assets/{id}"])
+    @GetMapping(value = ["/api/v2/assets/{id}", "/api/v1/assets/{id}"])
     fun get(@PathVariable id: String): Any {
         return indexService.get(id)
+    }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/fieldSets"])
+    fun getFieldSets(@PathVariable id: String): List<FieldSet> {
+        return assetService.getFieldSets(id)
     }
 
     @GetMapping(value = ["/api/v1/assets/_path"])
@@ -264,7 +226,7 @@ class AssetController @Autowired constructor(
         return assetService.batchDelete(batch.assetIds)
     }
 
-    @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
         return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
@@ -274,18 +236,17 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun updateV2(@PathVariable id: String, @RequestBody req: UpdateAssetRequest): Any {
         val rsp =  assetService.update(id, req)
-        return HttpUtils.updated("asset", id, rsp, assetService.get(id))
+        if (rsp.isSuccess()) {
+            return HttpUtils.updated("asset", id, true, assetService.get(id))
+        }
+        else {
+            throw rsp.getThrowableError()
+        }
     }
 
     @PutMapping(value = ["/api/v1/assets"])
     fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
         return assetService.batchUpdate(req)
-    }
-
-    @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
-    @Throws(IOException::class)
-    fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {
-        FlipbookSender(id, searchService).serveResource(rsp)
     }
 
     @PostMapping(value = ["/api/v1/assets/_index"])
@@ -330,6 +291,12 @@ class AssetController @Autowired constructor(
     fun refresh() {
         logger.warn("Refresh called.")
     }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
+    fun getFieldEdits(@PathVariable id: UUID): List<FieldEdit>  {
+        return fieldSystemService.getFieldEdits(id)
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(AssetController::class.java)

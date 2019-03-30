@@ -1,12 +1,13 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.collect.ImmutableMap
-import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.event
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
+import com.zorroa.common.repository.KPage
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.security.Groups
 import org.springframework.dao.DuplicateKeyException
@@ -21,7 +22,7 @@ interface PermissionDao {
 
     fun create(builder: PermissionSpec, immutable: Boolean): Permission
 
-    fun update(permission: Permission): Permission
+    fun update(permission: PermissionUpdateSpec): Permission
 
     fun renameUserPermission(user:User, newName: String): Boolean
 
@@ -31,15 +32,15 @@ interface PermissionDao {
 
     fun get(authority: String): Permission
 
+    fun findOne(filter: PermissionFilter): Permission
+
     fun resolveAcl(acl: Acl?, createMissing: Boolean): Acl
 
-    fun getPaged(page: Pager, filter: DaoFilter): PagedList<Permission>
-
-    fun getPaged(page: Pager): PagedList<Permission>
+    fun getAll(filter: PermissionFilter): KPagedList<Permission>
 
     fun count(): Long
 
-    fun count(filter: DaoFilter): Long
+    fun count(filter: PermissionFilter): Long
 
     fun exists(name: String): Boolean
 
@@ -89,7 +90,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         return get(id)
     }
 
-    override fun update(permission: Permission): Permission {
+    override fun update(permission: PermissionUpdateSpec): Permission {
         val authority = arrayOf(permission.type, permission.name).joinToString(Permission.JOIN)
         jdbc.update("UPDATE permission SET str_type=?, str_name=?,str_description=?,str_authority=? WHERE pk_organization=? AND pk_permission=? AND bool_immutable=?",
                 permission.type, permission.name, permission.description, authority, getOrgId(), permission.id, false)
@@ -106,6 +107,15 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         return throwWhenNotFound("Permission '$id' was not found for '$orgId'") {
             jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND pk_permission=?",
                     MAPPER, orgId, id)
+        }
+    }
+
+    override fun findOne(filter: PermissionFilter): Permission {
+        filter.apply { page = KPage(0, 1) }
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return throwWhenNotFound("Permission not found") {
+            return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
         }
     }
 
@@ -174,27 +184,19 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         return jdbc.query(GET, MAPPER)
     }
 
-    override fun getPaged(page: Pager): PagedList<Permission> {
-        return getPaged(page, PermissionFilter())
-    }
-
-    override fun getPaged(page: Pager, filter: DaoFilter): PagedList<Permission> {
-        if (filter.sort.isEmpty()) {
-            filter.sort = ImmutableMap.of("type", "asc", "name", "asc")
-        }
-        return PagedList(page.setTotalCount(count(filter)),
-                jdbc.query(filter.getQuery(
-                        GET, page),
-                        MAPPER, *filter.getValues(page)))
+    override fun getAll(filter: PermissionFilter): KPagedList<Permission> {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
     override fun count(): Long {
         return jdbc.queryForObject("$COUNT WHERE pk_organization=?", Long::class.java, getOrgId())
     }
 
-    override fun count(filter: DaoFilter): Long {
-        return jdbc.queryForObject(filter.getCountQuery(GET),
-                Long::class.java, *filter.getValues())
+    override fun count(filter: PermissionFilter): Long {
+        return jdbc.queryForObject(filter.getQuery(COUNT,forCount = true),
+                Long::class.java, *filter.getValues(forCount = true))
     }
 
     override fun exists(name: String): Boolean {
@@ -269,16 +271,16 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 "bool_immutable")
 
         private val MAPPER = RowMapper { rs, _ ->
-            val p = Permission()
-            p.id = rs.getObject("pk_permission") as UUID
-            p.name = rs.getString("str_name")
-            p.type = rs.getString("str_type")
-            p.description = rs.getString("str_description")
-            p.isImmutable = rs.getBoolean("bool_immutable")
-            p
+            Permission(
+                    rs.getObject("pk_permission") as UUID,
+                    rs.getString("str_name"),
+                    rs.getString("str_type"),
+                    rs.getString("str_description"),
+                    rs.getBoolean("bool_immutable"))
         }
 
         private const val COUNT = "SELECT COUNT(1) FROM permission"
+
         private const val GET = "SELECT * FROM permission "
 
         private const val GET_BY_USER = "SELECT p.* " +

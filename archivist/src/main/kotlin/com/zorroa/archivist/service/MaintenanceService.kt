@@ -1,12 +1,14 @@
 package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
+import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.TaskState
+import kotlinx.coroutines.Dispatchers
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -36,7 +38,7 @@ interface MaintenanceService {
     /**
      * Run all Maintenance.  Return true if lock was obtained, false if not.
      */
-    fun runAll() : Boolean
+    fun runAll()
 }
 
 @Configuration
@@ -62,6 +64,7 @@ class MaintenanceServiceImpl @Autowired constructor(
         val jobService: JobService,
         val analystService: AnalystService,
         val clusterLockService: ClusterLockService,
+        val clusterLockExecutor: ClusterLockExecutor,
         val config: MaintenanceConfiguration) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
 
 
@@ -83,20 +86,18 @@ class MaintenanceServiceImpl @Autowired constructor(
         }
     }
 
-    override fun runAll() : Boolean {
-        clusterLockService.clearExpired()
-
-        val locked = clusterLockService.lock(lockName, 90, TimeUnit.MINUTES)
-        if (locked) {
-            try {
-                handleExpiredJobs()
-                handleUnresponsiveAnalysts()
-            }
-            finally {
-                clusterLockService.unlock(lockName)
-            }
+    override fun runAll() {
+        val lock = ClusterLockSpec.softLock(lockName).apply {
+            timeout = 10
+            timeoutUnits = TimeUnit.MINUTES
+            dispatcher = Dispatchers.IO
         }
-        return locked
+
+        clusterLockExecutor.inline(lock) {
+            clusterLockService.clearExpired()
+            handleExpiredJobs()
+            handleUnresponsiveAnalysts()
+        }
     }
 
     override fun handleExpiredJobs() {

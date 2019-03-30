@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.AuditLogEntry
 import com.zorroa.archivist.domain.AuditLogFilter
 import com.zorroa.archivist.domain.AuditLogType
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import kotlin.test.assertTrue
 
 class AuditLogControllerTests : MockMvcTest() {
 
@@ -25,9 +27,10 @@ class AuditLogControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testSearch() {
         val session = admin()
-        val filter = AuditLogFilter(types=setOf(AuditLogType.Created))
+        val filter = AuditLogFilter(types=listOf(AuditLogType.Created))
 
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/auditlog/_search")
+        val result = mvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/auditlog/_search")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -36,8 +39,7 @@ class AuditLogControllerTests : MockMvcTest() {
                 .andReturn()
 
         val content = result.response.contentAsString
-        val log = Json.Mapper.readValue<KPagedList<AuditLogEntry>>(content,
-                object : TypeReference<KPagedList<AuditLogEntry>>() {})
-        logger.info("{}", content)
+        val log = Json.Mapper.readValue<KPagedList<AuditLogEntry>>(content)
+        assertTrue(log.size() > 0)
     }
 }
