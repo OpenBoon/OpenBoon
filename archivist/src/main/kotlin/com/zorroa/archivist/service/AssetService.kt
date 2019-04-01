@@ -733,7 +733,7 @@ open abstract class AbstractAssetService : AssetService {
  * IrmAssetServiceImpl is a higher level wrapper around the CoreDataVaultClient. Authentication
  * is required.
  */
-class IrmAssetServiceImpl constructor(
+open class IrmAssetServiceImpl constructor(
         private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
 
     @Autowired
