@@ -33,7 +33,7 @@ build_artifacts:
 push_to_local_registry:
   image: docker:stable
   stage: pretest
-  retry: 3
+  retry: 2
   services:
     - docker:dind
   script:
