@@ -72,8 +72,13 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps
         }
 
-        logger.event(LogObject.FIELD, LogAction.CREATE,
-                mapOf("fieldId" to id, "fieldName" to spec.name, "fieldAttrType" to spec.attrType))
+        logger.event(LogObject.FIELD, LogAction.CREATE, mapOf("fieldId" to id,
+                "fieldName" to spec.name,
+                "attrType" to spec.attrType,
+                "attrName" to spec.attrName,
+                "isKeywords" to spec.keywords,
+                "isSuggest" to spec.suggest))
+
         return Field(id, spec.name, spec!!.attrName as String,
                 spec.attrType as AttrType, spec.editable,
                 spec.custom, spec.keywords, spec.keywordsBoost,
