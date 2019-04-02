@@ -210,10 +210,7 @@ class SearchServiceImpl @Autowired constructor(
 
         val result = unique.toList()
         result.sorted()
-
-        // todo: log fields used?
-        logger.event(LogObject.ASSET, LogAction.SUGGEST, mapOf("suggest" to text, "results" to result.size))
-
+        
         return result
     }
 
