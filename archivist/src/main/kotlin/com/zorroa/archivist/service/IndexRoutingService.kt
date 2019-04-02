@@ -203,7 +203,9 @@ class IndexRoutingServiceImpl @Autowired
         }
 
         allVersions.sortWith(Comparator { o1, o2 -> Integer.compare(o2.version, o1.version) })
-        return allVersions[0]
+        val latest = allVersions[0]
+        logger.info("Selected latest mapping file: {} v{}", latest.name, latest.version)
+        return latest
     }
 
     override operator fun get(orgId: UUID): EsRestClient {

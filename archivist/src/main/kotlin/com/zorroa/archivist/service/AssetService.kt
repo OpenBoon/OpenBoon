@@ -22,7 +22,6 @@ import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.transaction.annotation.Transactional
 import java.net.URI
 import java.util.*
 
@@ -153,6 +152,7 @@ open abstract class AbstractAssetService : AssetService {
             handlePermissions(existingSource, newSource, defaultPermissions)
             handleLinks(existingSource, newSource)
             fieldSystemService.applyFieldEdits(newSource)
+            fieldSystemService.applySuggestions(newSource)
 
             if (watchedFields.isNotEmpty()) {
                 watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
@@ -631,7 +631,6 @@ open abstract class AbstractAssetService : AssetService {
         return UpdateLinksResponse(success, errors)
     }
 
-    @Transactional
     override fun deleteFieldEdit(edit: FieldEdit): Boolean {
         val asset = get(edit.assetId.toString())
         val field = fieldSystemService.getField(edit.fieldId)
@@ -670,7 +669,6 @@ open abstract class AbstractAssetService : AssetService {
         throw ArchivistWriteException("Unable to find field edit: ${edit.id}")
     }
 
-    @Transactional
     override fun createFieldEdit(spec: FieldEditSpec): FieldEdit {
         val assetId = spec.assetId.toString()
         val asset = get(assetId)
@@ -913,7 +911,7 @@ class IrmAssetServiceImpl constructor(
     }
 }
 
-@Transactional
+
 class AssetServiceImpl : AbstractAssetService(), AssetService {
 
     @Autowired

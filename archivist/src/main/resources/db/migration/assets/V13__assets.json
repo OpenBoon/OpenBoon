@@ -1,0 +1,299 @@
+{
+  "migration": {
+    "reindex": false,
+    "reingest": false,
+    "patch": 0
+  },
+  "settings": {
+    "index": {
+      "mapping": {
+        "coerce": false,
+        "ignore_malformed": false
+      }
+    },
+    "analysis": {
+      "analyzer": {
+        "default": {
+          "tokenizer": "keyword",
+          "filter": [
+            "trim",
+            "delimiter_filter",
+            "lowercase",
+            "porter_stem"
+          ]
+        },
+        "content": {
+          "tokenizer": "standard",
+          "filter": [
+            "trim",
+            "lowercase",
+            "stop"
+          ]
+        },
+        "path_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "path_tokenizer"
+        },
+        "package_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "package_tokenizer"
+        },
+        "trim_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "keyword",
+          "filter" : ["trim"]
+        }
+      },
+      "filter": {
+        "delimiter_filter": {
+          "type": "word_delimiter",
+          "preserve_original": "true"
+        }
+      },
+      "tokenizer": {
+        "path_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "/"
+        },
+        "package_tokenizer" : {
+          "type": "path_hierarchy",
+          "delimiter": "."
+        }
+      }
+    }
+  },
+  "mappings": {
+    "asset": {
+      "dynamic": true,
+      "dynamic_date_formats": [
+        "yyyy/MM/dd HH:mm:ss Z",
+        "yyyy/MM/dd Z",
+        "yyyy/MM/dd HH:mm:ss",
+        "yyyy/MM/dd",
+        "yyyy-MM-dd HH:mm:ss Z",
+        "yyyy-MM-dd Z",
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-dd",
+        "MM/dd/yyyy HH:mm:ss",
+        "MM/dd/yyyy HH:mm:ss Z",
+        "MM-dd-yyyy HH:mm:ss",
+        "MM-dd-yyyy HH:mm:ss Z",
+        "MM/dd/yyyy",
+        "MM-dd-yyyy",
+        "date_time"
+      ],
+      "properties": {
+        "media": {
+          "properties": {
+            "clip": {
+              "properties": {
+                "parent": {
+                  "type": "keyword"
+                },
+                "start": {
+                  "type": "double"
+                },
+                "stop": {
+                  "type": "double"
+                },
+                "length": {
+                  "type": "double"
+                }
+              }
+            }
+          }
+        },
+        "system": {
+          "properties": {
+            "timeCreated": {
+              "type": "date",
+              "format": "yyyy/MM/dd||yyyy/MM/dd Z||date_optional_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
+            },
+            "timeModified": {
+              "type": "date",
+              "format": "yyyy/MM/dd||yyyy/MM/dd Z||date_optional_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
+            },
+            "organizationId": {
+              "type": "keyword"
+            },
+            "fieldEdits": {
+              "type": "keyword"
+            },
+            "links": {
+              "properties": {
+                "import": {
+                  "type": "keyword"
+                },
+                "export": {
+                  "type": "keyword"
+                },
+                "folder": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "taxonomy": {
+              "properties": {
+                "folderId": {
+                  "type": "keyword"
+                },
+                "taxId": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "permissions": {
+              "properties": {
+                  "read": {
+                    "type": "keyword"
+                  },
+                  "export": {
+                    "type": "keyword"
+                  },
+                  "write": {
+                    "type": "keyword"
+                  }
+              }
+            },
+            "suggestions": {
+              "type": "completion",
+              "contexts": {
+                "name": "organization",
+                "type": "category",
+                "path": "system.organizationId"
+              }
+            }
+          }
+        }
+      },
+      "dynamic_templates": [
+        {
+          "shape_template": {
+            "match_pattern": "regex",
+            "match": "^.+Shape$|^shape$|^geo_shape__.*$",
+            "mapping": {
+              "type": "geo_shape"
+            }
+          }
+        },
+        {
+          "point_template": {
+            "match_pattern": "regex",
+            "match": "^.+Point|^point$|^geo_point__.*$",
+            "mapping": {
+              "type": "geo_point"
+            }
+          }
+        },
+        {
+          "path_template": {
+            "match_pattern": "regex",
+            "match_mapping_type": "string",
+            "match": "^*.+Path|^path$|^directory$|^tree$|^string_path__.*$",
+            "mapping": {
+              "type": "text",
+              "analyzer": "default",
+              "fields": {
+                "raw": {
+                  "type": "keyword"
+                },
+                "paths": {
+                  "type": "text",
+                  "analyzer": "path_analyzer",
+                  "fielddata": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "content_template": {
+            "match_mapping_type": "string",
+            "match_pattern": "regex",
+            "match": "^content$|^string_content__.*$",
+            "mapping": {
+              "analyzer": "content",
+              "type": "text"
+            }
+          }
+        },
+        {
+          "id_template": {
+            "match_mapping_type": "string",
+            "match_pattern": "regex",
+            "match": "^id$|^string_exact__.*$",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "similarity_template": {
+            "match_mapping_type": "string",
+            "match_pattern": "regex",
+            "match": "^shash$|^hash_similarity__.*$",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "date_template_custom": {
+            "match_mapping_type": "long",
+            "match_pattern": "regex",
+            "match": "^date_time__.*$",
+            "mapping": {
+              "type": "date",
+              "format": "epoch_millis"
+            }
+          }
+        },
+        {
+          "date_template_custom": {
+            "match_mapping_type": "string",
+            "match_pattern": "regex",
+            "match": "^date_time__.*$",
+            "mapping": {
+              "type": "date",
+              "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss Z||MM-dd-yyyy HH:mm:ss||MM-dd-yyyy HH:mm:ss Z||date_time"
+            }
+          }
+        },
+        {
+          "date_template": {
+            "match": "*",
+            "match_mapping_type": "date",
+            "mapping": {
+              "type": "date",
+              "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss Z||MM-dd-yyyy HH:mm:ss||MM-dd-yyyy HH:mm:ss Z||date_time||epoch_millis"
+            }
+          }
+        },
+        {
+          "links_template": {
+            "path_match": "system.links.*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "string_template": {
+            "match": "*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "text",
+              "coerce": false,
+              "fields": {
+                "raw": {
+                  "type": "keyword"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

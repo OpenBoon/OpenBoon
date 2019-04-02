@@ -20,12 +20,4 @@ class FieldServiceTests : AbstractTest() {
         val fields = fieldService.getQueryFields()
         assertTrue(fields.containsKey("source.keywords"))
     }
-
-    @Test
-    fun testGetSuggestFields() {
-        fieldService.invalidateFields()
-        val fields = fieldService.getFields("asset")["suggest"]
-        assertTrue(fields!!.contains("location.keywords.suggest"))
-        assertTrue(fields!!.contains("source.keywords.suggest"))
-    }
 }

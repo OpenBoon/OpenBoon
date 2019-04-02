@@ -43,6 +43,7 @@ interface FieldSystemService {
     fun getFieldSet(id: UUID) : FieldSet
 
     fun applyFieldEdits(doc: Document)
+    fun applySuggestions(doc: Document)
 
     fun getEsTypeMap(): Map<String, AttrType>
     fun getEsMapping() : Map<String, Any?>
@@ -193,6 +194,22 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
+    @Transactional(readOnly=true)
+    override fun applySuggestions(doc: Document) {
+        val values = fieldDao.getSuggestAttrNames().flatMap {
+            val attr = doc.getAttr(it, Any::class.java)
+            when (attr) {
+                is Collection<*> -> {
+                    attr.map { v -> v.toString() }
+                }
+                else -> {
+                    listOf(attr.toString())
+                }
+            }
+        }
+        doc.setAttr(SUGGEST_FIELD, values)
+    }
+
     fun createFieldSet(stream: InputStream) {
         val fs = Json.Mapper.readValue<FieldSetSpec>(stream)
         createFieldSet(fs)
@@ -240,9 +257,6 @@ class FieldSystemServiceImpl @Autowired constructor(
                     if (subFields.containsKey("paths")) {
                         attrType = AttrType.StringPath
                     }
-                    else if (subFields.containsKey("suggest")) {
-                        attrType = AttrType.StringSuggest
-                    }
                 }
 
                 val fqfn ="$fieldName$key"
@@ -278,6 +292,11 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     companion object {
+
+        /**
+         * The name of the field used to aggregate suggest fields into a single value.
+         */
+       const  val SUGGEST_FIELD = "system.suggestions"
 
         /**
          * Maps a particular type or column configuration to our own set of attribute types.

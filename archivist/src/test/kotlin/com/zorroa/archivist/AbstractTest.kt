@@ -345,27 +345,35 @@ open abstract class AbstractTest {
         addTestAssets(videoAssets)
     }
 
-
-    fun addTestAssets(builders: List<Source>) {
+    /**
+     * Create a batch of test assets.
+     *
+     * @param builders: A list of Source objects describing the assets.
+     * @param commitToDb: Set to true if the assets should be committed in a separate TX.
+     *
+     */
+    fun addTestAssets(builders: List<Source>, commitToDb:Boolean=true) {
         for (source in builders) {
-            val schema = source.sourceSchema
 
             logger.info("Adding test asset: {}", source.path.toString())
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
 
-            /**
-             * Co-routines and threads need to see committed data, so assets are committed for
-             * that purpose but cleaned up before each test.
-             */
-            val tmpl = TransactionTemplate(transactionManager)
-            tmpl.propagationBehavior = Propagation.REQUIRES_NEW.value()
-            tmpl.execute(object : TransactionCallbackWithoutResult() {
-                override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
-                    assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)).apply { isUpload=true })
-                }
-            })
+
+            val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
+
+            if (commitToDb) {
+                val tmpl = TransactionTemplate(transactionManager)
+                tmpl.propagationBehavior = Propagation.REQUIRES_NEW.value()
+                tmpl.execute(object : TransactionCallbackWithoutResult() {
+                    override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
+                        assetService.batchCreateOrReplace(req)
+                    }
+                })
+            } else {
+                assetService.batchCreateOrReplace(req)
+            }
 
         }
         refreshIndex()

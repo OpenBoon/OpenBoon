@@ -7,7 +7,10 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.*
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getOrganizationFilter
+import com.zorroa.archivist.security.getPermissionsFilter
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
@@ -36,7 +39,6 @@ import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
 import org.elasticsearch.search.sort.SortOrder
-import org.elasticsearch.search.suggest.Suggest
 import org.elasticsearch.search.suggest.SuggestBuilder
 import org.elasticsearch.search.suggest.SuggestBuilders
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion
@@ -175,43 +177,31 @@ class SearchServiceImpl @Autowired constructor(
 
     override fun getSuggestTerms(text: String): List<String> {
         val rest = indexRoutingService[getOrgId()]
-        val builder = SearchSourceBuilder()
+        val searchBuilder = SearchSourceBuilder()
         val suggestBuilder = SuggestBuilder()
         val req = rest.newSearchRequest()
-        req.source(builder)
-        builder.suggest(suggestBuilder)
 
         val ctx = mapOf("organization" to
                 listOf<ToXContent>(CategoryQueryContext.builder()
-                        .setCategory(getUser().organizationId.toString())
+                        .setCategory(getOrgId().toString())
                         .setBoost(1)
                         .setPrefix(false).build()))
 
-        val fields = fieldService.getFields("asset")["suggest"] ?: return mutableListOf()
+        val completion = SuggestBuilders.completionSuggestion("system.suggestions")
+                .text(text)
+                .contexts(ctx)
+        suggestBuilder.addSuggestion("suggest", completion)
+        searchBuilder.suggest(suggestBuilder)
+        req.source(searchBuilder)
 
-        for ((idx, field) in fields.withIndex()) {
-            val completion = SuggestBuilders.completionSuggestion("$field")
-                    .text(text).contexts(ctx)
-            suggestBuilder.addSuggestion("suggest$idx", completion)
-        }
+        val response = rest.client.search(req).suggest
+        val comp : CompletionSuggestion? = response.getSuggestion("suggest")
 
-        val unique = Sets.newTreeSet<String>()
-        val suggest = rest.client.search(req).suggest
-
-        for ((idx, _) in fields.withIndex()) {
-            val comp : CompletionSuggestion = suggest.getSuggestion("suggest$idx") ?: continue
-            for (e in comp) {
-                for (o in e.options) {
-                    val opt = o as Suggest.Suggestion.Entry.Option
-                    unique.add(opt.text.toString())
-                }
+        return comp?.flatMap {
+            it.options.map { opt ->
+                opt.text.string()
             }
-        }
-
-        val result = unique.toList()
-        result.sorted()
-        
-        return result
+        }.orEmpty()
     }
 
     override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit) {

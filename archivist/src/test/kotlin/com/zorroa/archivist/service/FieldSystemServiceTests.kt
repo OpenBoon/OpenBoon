@@ -57,22 +57,6 @@ class FieldSystemServiceTests : AbstractTest() {
     }
 
     @Test
-    fun createCustomStringSuggestField() {
-        val attrName = "custom.string_suggest__0"
-        val attrType = AttrType.StringSuggest
-
-        val spec = FieldSpec("SomeField", null, attrType, true)
-        val field = fieldSystemService.createField(spec)
-        assertEquals(attrType, field.attrType)
-        assertTrue(field.custom)
-        assertEquals(attrName, field.attrName)
-
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
-        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
-        assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
-    }
-
-    @Test
     fun createCustomStringAnalyzedField() {
         val attrName = "custom.string_analyzed__0"
         val attrType = AttrType.StringAnalyzed

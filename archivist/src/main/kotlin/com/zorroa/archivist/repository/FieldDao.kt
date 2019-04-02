@@ -48,6 +48,16 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
 
     override fun create(spec: FieldSpec) : Field {
 
+        /**
+         * AttrType.StringSuggest is deprecated, when used just
+         * convert it to a suggest + keywords field.
+         */
+        if (spec.attrType == AttrType.StringSuggest) {
+            spec.attrType = AttrType.StringAnalyzed
+            spec.suggest = true
+            spec.keywords = true
+        }
+
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
         val user = getUser()
