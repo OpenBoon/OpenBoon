@@ -34,6 +34,7 @@ interface FieldSystemService {
     fun getFieldEdits(assetId: UUID) : List<FieldEdit>
     fun getFieldEdit(editId: UUID) : FieldEdit
     fun getKeywordFieldNames() : Map<String, Float>
+    fun getSuggestAttrNames() : List<String>
 
     fun createFieldSet(spec: FieldSetSpec) : FieldSet
     fun getAllFieldSets(filter: FieldSetFilter) : KPagedList<FieldSet>
@@ -127,9 +128,15 @@ class FieldSystemServiceImpl @Autowired constructor(
         return fieldDao.update(field, spec)
     }
 
+
     @Transactional(readOnly=true)
     override fun getKeywordFieldNames() : Map<String, Float> {
         return fieldDao.getKeywordFieldNames()
+    }
+
+    @Transactional(readOnly=true)
+    override fun getSuggestAttrNames() : List<String> {
+        return fieldDao.getSuggestAttrNames()
     }
 
     @Transactional(readOnly=true)

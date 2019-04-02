@@ -1,0 +1,3 @@
+
+ALTER TABLE field ADD COLUMN bool_suggest BOOLEAN NOT NULL DEFAULT 'f';
+

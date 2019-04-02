@@ -79,6 +79,7 @@ class FieldSpec(
         val editable: Boolean=false,
         val keywords: Boolean=false,
         val keywordsBoost: Float=1.0f,
+        val suggest: Boolean=false,
         val options: List<Any>?=null,
         @JsonIgnore var custom: Boolean=false)
 
@@ -107,6 +108,7 @@ class Field (
         val custom: Boolean,
         val keywords: Boolean,
         val keywordsBoost: Float,
+        val suggest: Boolean,
         val options: List<Any>?=null,
         val value: Any?=null,
         val fieldEditId: UUID?=null
@@ -132,6 +134,7 @@ class FieldUpdateSpec (
         val editable: Boolean,
         val keywords: Boolean,
         val keywordsBoost: Float,
+        val suggest: Boolean,
         val options: List<Any>?=null
 )
 
