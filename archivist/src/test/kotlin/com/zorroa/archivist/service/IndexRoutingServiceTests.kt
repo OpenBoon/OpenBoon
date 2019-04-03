@@ -3,6 +3,8 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.ElasticMapping
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobState
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,6 +12,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var jobService : JobService
 
     @Autowired
     lateinit var elasticSearchConfiguration : ElasticSearchConfiguration
@@ -77,5 +82,21 @@ class IndexRoutingServiceTests : AbstractTest() {
         finally {
             elasticSearchConfiguration.indexName = orignalName
         }
+    }
+
+    @Test
+    fun testLaunchReindexJob() {
+        var job = indexRoutingService.launchReindexJob()
+        var jobCount = jobService.getAll(JobFilter(names=listOf(job.name))).size()
+        assertEquals(1, jobCount)
+
+        job = indexRoutingService.launchReindexJob()
+        jobCount = jobService.getAll(JobFilter(names=listOf(job.name))).size()
+        assertEquals(2, jobCount)
+
+        jobCount = jobService.getAll(JobFilter(
+                states=listOf(JobState.Active),
+                names=listOf(job.name))).size()
+        assertEquals(1, jobCount)
     }
 }

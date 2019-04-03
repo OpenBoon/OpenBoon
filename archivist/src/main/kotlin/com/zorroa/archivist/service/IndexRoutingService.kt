@@ -3,10 +3,17 @@ package com.zorroa.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.ClusterLockSpec
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.ElasticMapping
 import com.zorroa.common.clients.EsRestClient
 import com.zorroa.common.clients.IndexRoute
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.client.RestClient
@@ -90,6 +97,12 @@ interface IndexRoutingService {
      */
     fun createIndex(clusterUrl: String, mapfile: ElasticMapping) : IndexRoute
 
+    /**
+     * Launch a reindex job for the current authorized user's organization.  The job
+     * will kill any existing reindex job.
+     */
+    fun launchReindexJob() : Job
+
 }
 
 @Configuration
@@ -109,6 +122,9 @@ class IndexRoutingServiceImpl @Autowired
 
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
+
+    @Autowired
+    lateinit var jobService: JobService
 
     var esClientCache = EsClientCache()
 
@@ -179,6 +195,29 @@ class IndexRoutingServiceImpl @Autowired
         }
     }
 
+    override fun launchReindexJob() : Job {
+        val name = "Reindexing All Assets"
+        val script = ZpsScript(name,
+                type = PipelineType.Import,
+                settings = mutableMapOf("inline" to true),
+                over = listOf(),
+                execute = listOf(),
+                generate = listOf(
+                ProcessorRef(
+                        "zplugins.asset.generators.AssetSearchGenerator",
+                        mapOf("search" to mapOf<String,Any>()))
+                ))
+
+        val spec = JobSpec(name,
+                script,
+                priority = 10000,
+                replace = true,
+                paused = true,
+                pauseDurationSeconds = REINDEX_JOB_DELAY_SEC)
+
+        return jobService.create(spec, PipelineType.Import)
+    }
+
     /**
      * Get the latest ES Mapping for Assets.
      */
@@ -239,6 +278,13 @@ class IndexRoutingServiceImpl @Autowired
         private val logger = LoggerFactory.getLogger(IndexRoutingServiceImpl::class.java)
 
         private val MAP_FILE_REGEX = Regex("^V(\\d+)__(.*?).json$")
+
+        /**
+         * Number of seconds to delay a reindex job, which allows users to make more selections
+         * which might kick off another reindex job to happen.
+         */
+        const val REINDEX_JOB_DELAY_SEC = 20L
+
     }
 
 }
