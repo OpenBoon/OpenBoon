@@ -22,7 +22,7 @@ import java.util.*
 
 interface FieldSystemService {
 
-    fun createField(spec: FieldSpec) : Field
+    fun createField(spec: FieldSpec, reindexSuggest:Boolean=true) : Field
     fun getField(id: UUID) : Field
     fun getField(spec: FieldEditSpec) : Field
     fun getField(attrName: String) : Field
@@ -36,7 +36,7 @@ interface FieldSystemService {
     fun getKeywordFieldNames() : Map<String, Float>
     fun getSuggestAttrNames() : List<String>
 
-    fun createFieldSet(spec: FieldSetSpec) : FieldSet
+    fun createFieldSet(spec: FieldSetSpec, regenSuggest:Boolean=true) : FieldSet
     fun getAllFieldSets(filter: FieldSetFilter) : KPagedList<FieldSet>
     fun getAllFieldSets() : List<FieldSet>
     fun getAllFieldSets(doc: Document) : List<FieldSet>
@@ -59,10 +59,14 @@ class FieldSystemServiceImpl @Autowired constructor(
         val fieldEditDao: FieldEditDao,
         val fieldSetDao: FieldSetDao,
         val indexRoutingService: IndexRoutingService,
-        val properties: ApplicationProperties
+        val properties: ApplicationProperties,
+        val txevent: TransactionEventManager
 ): FieldSystemService {
 
-    override fun createField(spec: FieldSpec) : Field {
+    @Autowired
+    lateinit var jobService: JobService
+
+    override fun createField(spec: FieldSpec, reindexSuggest:Boolean) : Field {
 
         when {
             spec.attrName != null -> {
@@ -74,14 +78,21 @@ class FieldSystemServiceImpl @Autowired constructor(
             }
             spec.attrType != null -> {
                 /*
-                 * The user has provided a type but no attribtue name, so it's a dynamic
+                 * The user has provided a type but no attribute name, so it's a dynamic
                  * field.
                  */
                 spec.attrName = fieldDao.allocate(spec.attrType!!)
                 spec.custom = true
 
             }
-            else -> throw IllegalStateException("Invalid FieldSpec, not enough information to createField a field.")
+            else -> throw IllegalStateException(
+                    "Invalid FieldSpec, not enough information to createField a field.")
+        }
+
+        if (spec.suggest && reindexSuggest) {
+            txevent.afterCommit(sync=false) {
+                indexRoutingService.launchReindexJob()
+            }
         }
         return fieldDao.create(spec)
     }
@@ -126,9 +137,18 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     override fun updateField(field: Field, spec: FieldUpdateSpec): Boolean {
-        return fieldDao.update(field, spec)
+        val updated = fieldDao.update(field, spec)
+        /**
+         * If the row was updated and spec.sugggest is not the same as field.suggest
+         * then kick off regenerating suggestions.
+         */
+        if (updated && spec.suggest != field.suggest) {
+            txevent.afterCommit(sync=false) {
+                indexRoutingService.launchReindexJob()
+            }
+        }
+        return updated
     }
-
 
     @Transactional(readOnly=true)
     override fun getKeywordFieldNames() : Map<String, Float> {
@@ -149,7 +169,7 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
-    override fun createFieldSet(spec: FieldSetSpec) : FieldSet {
+    override fun createFieldSet(spec: FieldSetSpec, regenSuggest: Boolean) : FieldSet {
         val fieldIds = spec.fieldSpecs?.mapNotNull { fs->
             val field = fs.attrName?.let {
                 val field = if (fieldDao.exists(it)) {
@@ -157,7 +177,7 @@ class FieldSystemServiceImpl @Autowired constructor(
 
                 }
                 else {
-                    createField(fs)
+                    createField(fs, regenSuggest)
                 }
                 field.id
             }
@@ -197,22 +217,22 @@ class FieldSystemServiceImpl @Autowired constructor(
     @Transactional(readOnly=true)
     override fun applySuggestions(doc: Document) {
         val values = fieldDao.getSuggestAttrNames().flatMap {
-            val attr = doc.getAttr(it, Any::class.java)
+            val attr : Any? = doc.getAttr(it, Any::class.java)
             when (attr) {
                 is Collection<*> -> {
                     attr.map { v -> v.toString() }
                 }
                 else -> {
-                    listOf(attr.toString())
+                    listOf(attr?.toString())
                 }
             }
-        }
+        }.filterNotNull()
         doc.setAttr(SUGGEST_FIELD, values)
     }
 
     fun createFieldSet(stream: InputStream) {
         val fs = Json.Mapper.readValue<FieldSetSpec>(stream)
-        createFieldSet(fs)
+        createFieldSet(fs, false)
     }
 
     override fun getEsMapping() : Map<String, Any> {
@@ -296,7 +316,7 @@ class FieldSystemServiceImpl @Autowired constructor(
         /**
          * The name of the field used to aggregate suggest fields into a single value.
          */
-       const  val SUGGEST_FIELD = "system.suggestions"
+       const val SUGGEST_FIELD = "system.suggestions"
 
         /**
          * Maps a particular type or column configuration to our own set of attribute types.
