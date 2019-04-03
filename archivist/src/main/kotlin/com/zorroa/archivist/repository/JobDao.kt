@@ -49,7 +49,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             -1
         }
         else {
-            spec.pauseDurationSeconds + time;
+            time + (spec.pauseDurationSeconds * 1000L)
         }
 
         jdbc.update { connection ->
