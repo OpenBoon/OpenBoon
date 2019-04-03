@@ -87,7 +87,10 @@ class JobServiceImpl @Autowired constructor(
              * the old job.
              */
             txevent.afterCommit(sync=false) {
-                val filter= JobFilter(states=listOf(JobState.Active), names=listOf(job.name))
+                val filter = JobFilter(
+                        states=listOf(JobState.Active),
+                        names=listOf(job.name),
+                        organizationIds=listOf(getOrgId()))
                 val oldJobs = jobDao.getAll(filter)
                 for (oldJob in oldJobs) {
                     // Don't kill one we just made
