@@ -57,50 +57,6 @@ services:
       POSTGRES_DB: zorroa
       PGDATA: /var/lib/postgresql/data/pgdata
 
-  # Local Logstash server.
-  logstash:
-    image: docker.elastic.co/logstash/logstash-oss:6.5.4
-    depends_on:
-      - "es"
-    ports:
-      - "5044:5044"
-      - "9600:9600"
-    secrets:
-      - source: logstash.conf
-        target: /usr/share/logstash/pipeline/logstash.conf
-    healthcheck:
-      test: bin/logstash -t
-      interval: 60s
-      timeout: 50s
-      retries: 5
-    volumes:
-       - "./localdev/monitoring/logstash.options:/usr/share/logstash/config/jvm.options"
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana-oss:6.2.4
-    secrets:
-      - source: kibana.yml
-        target: /usr/share/kibana/config/kibana.yml
-    ports:
-      - "5601:5601"
-    depends_on:
-      - "es"
-
-  filebeat:
-    image: "docker.elastic.co/beats/filebeat:6.5.4"
-    command: filebeat -e -strict.perms=false
-    user: root
-    secrets:
-      - source: filebeat.yml
-        target: /usr/share/filebeat/filebeat.yml
-    depends_on:
-      - "es"
-    ports:
-      - "5066:5066"
-    volumes:
-      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
   # Local Archivist server.
   archivist:
     links:
@@ -141,11 +97,5 @@ services:
          SSL_CERT_PATH: "./"
 
 secrets:
-  logstash.conf:
-    file: ./localdev/monitoring/logstash.conf
-  kibana.yml:
-    file: ./localdev/monitoring/kibana.yml
-  filebeat.yml:
-    file: ./localdev/monitoring/filebeat.yml
   prometheus.yml:
     file: ./localdev/monitoring/prometheus.yml
