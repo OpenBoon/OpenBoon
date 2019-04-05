@@ -15,14 +15,12 @@ import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
+import org.elasticsearch.common.Strings
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
-import org.elasticsearch.common.xcontent.NamedXContentRegistry
-import org.elasticsearch.common.xcontent.ToXContent
-import org.elasticsearch.common.xcontent.XContentFactory
-import org.elasticsearch.common.xcontent.XContentType
+import org.elasticsearch.common.xcontent.*
 import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -120,7 +118,7 @@ class SearchServiceImpl @Autowired constructor(
 
     override fun count(builder: AssetSearch): Long {
         val orgId = getOrgId()
-        val rest = indexRoutingService[orgId]
+        val rest = indexRoutingService.getEsRestClient()
         val totalHits = rest.client.search(buildSearch(builder, "asset").request).hits.totalHits
         logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(builder))
         return totalHits
@@ -174,7 +172,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getSuggestTerms(text: String): List<String> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val builder = SearchSourceBuilder()
         val suggestBuilder = SuggestBuilder()
         val req = rest.newSearchRequest()
@@ -218,7 +216,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit) {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
         builder.source.fetchSource(fetchSource)
@@ -247,7 +245,7 @@ class SearchServiceImpl @Autowired constructor(
         }
     }
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
         builder.source.size(100)
@@ -278,14 +276,14 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun search(search: AssetSearch): SearchResponse {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val result = rest.client.search(buildSearch(search, "asset").request)
         logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(search))
         return result
     }
 
     override fun search(page: Pager, search: AssetSearch): PagedList<Document> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         if (search.scroll != null) {
             val scroll = search.scroll
             if (scroll.id != null) {
@@ -327,7 +325,7 @@ class SearchServiceImpl @Autowired constructor(
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val result = indexDao.getAll(id, timeout)
         if (result.size() == 0) {
             val req = ClearScrollRequest()
@@ -343,7 +341,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun buildSearch(search: AssetSearch, type: String): SearchBuilder {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
 
         val ssb = SearchSourceBuilder()
         ssb.query(getQuery(search))
@@ -376,7 +374,8 @@ class SearchServiceImpl @Autowired constructor(
 
             val searchModule = SearchModule(Settings.EMPTY, false, Collections.emptyList())
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-                     NamedXContentRegistry(searchModule.namedXContents), json)
+                     NamedXContentRegistry(searchModule.namedXContents),
+                    DeprecationHandler.THROW_UNSUPPORTED_OPERATION, json)
 
             val ssb2 = SearchSourceBuilder.fromXContent(parser)
             ssb2.aggregations().aggregatorFactories.forEach { ssb.aggregation(it) }
@@ -440,7 +439,7 @@ class SearchServiceImpl @Autowired constructor(
         return getQuery(search, mutableSetOf(), true, false)
     }
 
-    private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
+    private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<String>, perms: Boolean, postFilter: Boolean): QueryBuilder {
         val query = QueryBuilders.boolQuery()
         query.filter(getOrganizationFilter())
 
@@ -453,6 +452,10 @@ class SearchServiceImpl @Autowired constructor(
 
         if (search == null || (search.filter == null && search.query == null)) {
             query.must(QueryBuilders.matchAllQuery())
+
+            if (properties.getBoolean("archivist.debug-mode.enabled")) {
+                logger.debug("SEARCH : {}", Strings.toString(query, true, true))
+            }
             return query
         }
 
@@ -481,16 +484,14 @@ class SearchServiceImpl @Autowired constructor(
             query.should(assetBool)
         }
 
+
         if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            XContentFactory.jsonBuilder().use { builder->
-                query.toXContent(builder, ToXContent.EMPTY_PARAMS)
-                logger.info("SEARCH: {}", builder.string())
-            }
+            logger.debug("SEARCH : {}", Strings.toString(query, true, true))
         }
         return query
     }
 
-    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<UUID>) {
+    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<String>) {
 
         val staticBool = QueryBuilders.boolQuery()
 
@@ -499,7 +500,7 @@ class SearchServiceImpl @Autowired constructor(
             if (key == "folder") {
                 continue
             }
-            staticBool.should(QueryBuilders.termsQuery("system.links.$key", value))
+            staticBool.should(QueryBuilders.termsQuery("system.links.$key", value.toString()))
         }
 
         /*
@@ -510,21 +511,21 @@ class SearchServiceImpl @Autowired constructor(
             val folders = links["folder"]!!
                     .stream()
                     .map { f -> UUID.fromString(f.toString()) }
-                    .filter { f -> !linkedFolders.contains(f) }
+                    .filter { f -> !linkedFolders.contains(f.toString()) }
                     .collect(Collectors.toSet())
 
             val recursive = if (filter.recursive == null) true else filter.recursive
 
             if (recursive) {
-                val childFolders = Sets.newHashSetWithExpectedSize<UUID>(32)
+                val childFolders = mutableSetOf<String>()
 
                 for (folder in folderService.getAllDescendants(
                         folderService.getAll(folders), true, true)) {
 
-                    if (linkedFolders.contains(folder.id)) {
+                    if (linkedFolders.contains(folder.id.toString())) {
                         continue
                     }
-                    linkedFolders.add(folder.id)
+                    linkedFolders.add(folder.id.toString())
 
                     /**
                      * Not going to allow people to add assets manually
@@ -539,7 +540,7 @@ class SearchServiceImpl @Autowired constructor(
                      * We don't allow dyhi folders to have manual entries.
                      */
                     if (folder.dyhiId == null && !folder.dyhiRoot) {
-                        childFolders.add(folder.id)
+                        childFolders.add(folder.id.toString())
                         if (childFolders.size >= 1024) {
                             break
                         }
@@ -585,7 +586,7 @@ class SearchServiceImpl @Autowired constructor(
      * @param query;
      * @return
      */
-    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<UUID>) {
+    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<String>) {
 
         if (filter.links != null) {
             linkQuery(query, filter, linkedFolders)
@@ -623,8 +624,15 @@ class SearchServiceImpl @Autowired constructor(
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
                 val values = value.orEmpty().filterNotNull()
+                        .map {
+                            if (it is UUID) {
+                                it.toString()
+                            } else {
+                                it
+                            }
+                        }
                 if (values.isNotEmpty()) {
-                    val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), value)
+                    val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), values)
                     query.must(termsQuery)
                 }
             }

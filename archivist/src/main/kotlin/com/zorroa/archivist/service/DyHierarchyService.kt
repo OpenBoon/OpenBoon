@@ -186,7 +186,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         }
 
         val rf = folderService.get(dyhi.folderId, cached = false)
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
 
         try {
 

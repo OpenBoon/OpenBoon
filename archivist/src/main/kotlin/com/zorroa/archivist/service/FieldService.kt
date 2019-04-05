@@ -60,7 +60,7 @@ class FieldServiceImpl @Autowired constructor(
         result["path"] = mutableSetOf()
         result["suggest"] = mutableSetOf()
 
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val stream = rest.client.lowLevelClient.performRequest(
                 "GET", "/${rest.route.indexName}").entity.content
 

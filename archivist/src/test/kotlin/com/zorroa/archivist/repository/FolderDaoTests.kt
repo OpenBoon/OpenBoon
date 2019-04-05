@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository
 
 
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
@@ -26,6 +25,9 @@ class FolderDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var organizationDao: OrganizationDao
+
+    @Autowired
+    lateinit var indexRouteDao: IndexRouteDao
 
     @Test
     fun testCreateAndGet() {
@@ -76,7 +78,8 @@ class FolderDaoTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun createRootFolder() {
-        val org = organizationDao.create(OrganizationSpec("test"))
+        val org = organizationDao.create(OrganizationSpec("test",
+                indexRouteDao.getRandomDefaultRoute().id))
         val root = folderDao.createRootFolder(org)
         assertEquals("/", root.name)
         assertNull(root.parentId)

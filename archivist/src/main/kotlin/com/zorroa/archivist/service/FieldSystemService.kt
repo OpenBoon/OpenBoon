@@ -192,7 +192,7 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     override fun getEsMapping() : Map<String, Any> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val stream = rest.client.lowLevelClient.performRequest(
                 "GET", "/${rest.route.indexName}").entity.content
         return  Json.Mapper.readValue(stream, Json.GENERIC_MAP)
@@ -200,7 +200,7 @@ class FieldSystemServiceImpl @Autowired constructor(
 
     override fun getEsTypeMap(): Map<String, AttrType> {
         val result = mutableMapOf<String, AttrType>()
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val map : Map<String, Any> = getEsMapping()
         getMap(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!)
         return result

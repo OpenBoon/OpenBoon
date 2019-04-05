@@ -2,10 +2,12 @@ package com.zorroa.archivist.service
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.ClusterLockSpec
-import com.zorroa.common.clients.ElasticMapping
+import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.EsClientCacheKey
+import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.common.clients.EsRestClient
-import com.zorroa.common.clients.IndexRoute
 import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
@@ -13,15 +15,21 @@ import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationListener
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ContextRefreshedEvent
+import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 import java.net.URI
 import java.util.*
 import java.util.concurrent.TimeUnit
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
+import org.elasticsearch.client.Request
+import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.common.xcontent.DeprecationHandler
+import org.elasticsearch.common.xcontent.XContentType
+import org.springframework.boot.actuate.health.Health
+
 
 /**
  * Manages the creation and usage of ES indexes.  Currently this implementation only supports
@@ -31,212 +39,202 @@ import java.util.concurrent.TimeUnit
 interface IndexRoutingService {
 
     /**
-     * Get an EsRestClient for a given Org Id.
+     * Get an EsRestClient for the current users organization.
      *
-     * @param orgId: The UUID of the org.
      * @return: EsRestClient
      */
-    operator fun get(orgId: UUID): EsRestClient
-
-    /**
-     * Get an EsRestClient for a given Org Id.
-     *
-     * @param orgId: The UUID of the org.
-     * @return: EsRestClient
-     */
-    fun getEsRestClient(orgId: UUID) : EsRestClient
+    fun getEsRestClient() : EsRestClient
 
     /**
      * Get an EsRestClient for a given IndexRoute
      *
      * @param route: The IndexRoute to get a client for.
+     *
      * @return: EsRestClient
      */
     fun getEsRestClient(route: IndexRoute): EsRestClient
 
-    /**
-     * Get a EsRestClient using the default cluster, no shard route.
-     * @return: EsRestClient
-     */
-    fun getEsRestClient(): EsRestClient
+    fun syncIndexRoute(route: IndexRoute)
 
-    /**
-     * Return a route for the given ES mapping file using the default cluster.
-     *
-     * @parm mapping: An ElasticMapping file named in the V<version>__<name>.json format.
-     * @return IndexRoute
-     */
-    fun getIndexRoute(mapping: ElasticMapping): IndexRoute
+    fun syncAllIndexRoutes()
 
-    /**
-     * Return te current index name.
-     *
-     * @param mapping: The ES mapping
-     * @return the index name
-     */
-    fun getIndexName(mapping: ElasticMapping) : String
+    fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping>
 
-    /**
-     * Create the default index using the latest highest mapping version found.
-     */
-    fun setupDefaultIndex() : IndexRoute
+    fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping
 
-    /**
-     * Create an index using the given mapping file and cluster url.
-     *
-     * @param clusterUrl: The url to the cluster
-     * @param mapfile: A parsed ES mapping file
-     * @return: An IndexRoute to the new index.
-     */
-    fun createIndex(clusterUrl: String, mapfile: ElasticMapping) : IndexRoute
+    fun applyMinorVersionMappingFile(route: IndexRoute, patchFile: ElasticMapping)
 
+    fun refreshAll()
+    /**
+     * Setup the default index configured in application.properties.
+     */
+    fun setupDefaultIndexRoute()
+
+    fun performHealthCheck() : Health
 }
 
-@Configuration
-@ConfigurationProperties("archivist.index")
-class ElasticSearchConfiguration {
-
-    var autoCreateIndex: Boolean = false
-    var shards: Int = 5
-    var replicas: Int = 2
-    lateinit var defaultUrl : String
-    lateinit var indexName: String
-}
+/**
+ * Represents a versioned ElasticSearch mapping.
+ */
+class ElasticMapping(
+        val name: String,
+        val majorVersion: Int,
+        val minorVersion: Int,
+        val mapping: Map<String, Any>
+)
 
 @Component
 class IndexRoutingServiceImpl @Autowired
-    constructor(val config: ElasticSearchConfiguration): IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
+    constructor(val indexRouteDao: IndexRouteDao,
+                val properties: ApplicationProperties): IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
 
     var esClientCache = EsClientCache()
 
-    val defaultRoute: IndexRoute
-
-    val defaultMapFile : ElasticMapping
-
-    init {
-        defaultMapFile = getEmbeddedMappingVersion()
-        defaultRoute = getIndexRoute(defaultMapFile)
-    }
-
     override fun onApplicationEvent(cre: ContextRefreshedEvent) {
+        setupDefaultIndexRoute()
+    }
 
-        if (!config.autoCreateIndex) {
-            logger.info("Not auto-creating ES index: disabled")
-            return
+    override fun setupDefaultIndexRoute() {
+        val defaultUrl = properties.getString("archivist.index.default-url")
+        indexRouteDao.updateDefaultIndexRoutes(defaultUrl)
+    }
+
+    override fun syncAllIndexRoutes() {
+        indexRouteDao.getAll().forEach { syncIndexRoute(it) }
+    }
+
+    override fun refreshAll() {
+        indexRouteDao.getAll().forEach {
+            getEsRestClient(it).client.lowLevelClient.performRequest(
+                    Request("POST", "/_refresh"))
         }
-
-        setupDefaultIndex()
     }
 
-    override fun setupDefaultIndex() : IndexRoute {
-        return createIndex(config.defaultUrl, defaultMapFile)
-    }
-
-    override fun createIndex(clusterUrl: String, mapfile: ElasticMapping) : IndexRoute {
-        val route = IndexRoute(clusterUrl, getIndexName(mapfile))
+    override fun syncIndexRoute(route: IndexRoute) {
         val es = getEsRestClient(route)
         waitForElasticSearch(es)
 
-        val indexName = getIndexName(mapfile)
-        val lock = ClusterLockSpec.softLock("create-es-$indexName")
+        val lock = ClusterLockSpec.softLock("create-es-${route.indexName}")
         clusterLockExecutor.inline(lock) {
-
             if (!es.indexExists()) {
-                logger.info("Creating index '$indexName'")
+                logger.info("Creating index: ${route.indexName}")
 
+                val mappingFile = getMajorVersionMappingFile(
+                        route.mappingType, route.mappingMajorVer)
                 val req = CreateIndexRequest()
-                req.index(indexName)
-
-                val settings = mapfile.mapping["settings"] as MutableMap<String, Any>?
-                if (settings != null) {
-                    settings["number_of_replicas"] = config.replicas
-                    settings["number_of_shards"] = config.shards
-                }
-
-                req.source(mapfile.mapping)
-                es.client.indices().create(req)
+                req.index(route.indexName)
+                req.source(mappingFile.mapping, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
+                es.client.indices().create(req, RequestOptions.DEFAULT)
             }
             else {
-                logger.info("Not creating index already exists")
+                logger.info("Not creating ${route.indexUrl}, already exists")
+            }
+
+            val patches = getMinorVersionMappingFiles(route.mappingType, route.mappingMajorVer)
+            for (patch in patches) {
+                // Skip over patches we have.
+                if (route.mappingMinorVer >= patch.minorVersion) {
+                    continue
+                }
+                applyMinorVersionMappingFile(route, patch)
             }
         }
-        return route
     }
 
-    override fun getIndexRoute(mapping: ElasticMapping) : IndexRoute {
-        return IndexRoute(config.defaultUrl, getIndexName(mapping), mapping.alias)
-    }
+    override fun applyMinorVersionMappingFile(route: IndexRoute, patchFile: ElasticMapping) {
+        val es = getEsRestClient(route)
+        try {
+            val patch = patchFile.mapping
+            val request = PutMappingRequest(route.indexName)
+            request.type(route.mappingType)
+            request.source(Json.serializeToString(patch.getValue("patch")), XContentType.JSON)
 
-    override fun getIndexName(mapping: ElasticMapping) : String {
-        return if (config.indexName == "auto") {
-            mapping.indexName
+            logger.info("Applying ES patch '{} {}.{}' - '{}' to index '{}'",
+                    patchFile.name, patchFile.majorVersion, patchFile.minorVersion,
+                    patch["description"], route.indexUrl)
+
+            val response = es.client.indices().putMapping(request)
+            if (response.isAcknowledged) {
+                indexRouteDao.setMinorVersion(route, patchFile.minorVersion)
+            }
         }
-        else {
-            config.indexName
+        catch (e:Exception) {
+            logger.warn("Failed to apply patch: {}.{}",
+                    patchFile.majorVersion, patchFile.minorVersion, e)
         }
     }
 
-    /**
-     * Get the latest ES Mapping for Assets.
-     */
-    fun getEmbeddedMappingVersion(): ElasticMapping {
+    override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {
+        val path = "db/migration/elasticsearch/V${majorVersion}__$mappingType.json"
+        val resource = ClassPathResource(path)
+        val mapping = Json.Mapper.readValue<Map<String, Any>>(
+                resource.inputStream, Json.GENERIC_MAP)
+        return ElasticMapping(mappingType, majorVersion, 0, mapping)
+    }
 
+
+    override fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping> {
+        val result = mutableListOf<ElasticMapping>()
         val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
-        val resources = resolver.getResources("classpath:/db/migration/assets/*.json")
-        val allVersions = mutableListOf<ElasticMapping>()
+        val resources = resolver.getResources("classpath:/db/migration/elasticsearch/*.json")
 
         for (resource in resources) {
-            val matcher = MAP_FILE_REGEX.matchEntire(resource.filename)
+            val matcher = MAP_PATCH_REGEX.matchEntire(resource.filename)
             matcher?.let {
-                val version = it.groupValues[1].toInt()
-                val name = it.groupValues[2]
-                val mapping = Json.Mapper.readValue<Map<String, Any>>(
-                        resource.inputStream, Json.GENERIC_MAP)
+                val major = it.groupValues[1].toInt()
+                val minor = it.groupValues[2].toInt()
+                val type = it.groupValues[3]
 
-                logger.info("Found embedded mapping in {} version {}", resource.filename, version)
-                val esmapping = ElasticMapping(name, version, mapping)
-                allVersions.add(esmapping)
+                if (major == majorVersion && type == mappingType) {
+                    val json = Json.Mapper.readValue<Map<String, Any>>(
+                            resource.inputStream, Json.GENERIC_MAP)
+                    result.add(ElasticMapping(mappingType, major, minor, json))
+                }
             }
         }
-
-        allVersions.sortWith(Comparator { o1, o2 -> Integer.compare(o2.version, o1.version) })
-        return allVersions[0]
-    }
-
-    override operator fun get(orgId: UUID): EsRestClient {
-        return getEsRestClient(orgId)
-    }
-
-    override fun getEsRestClient(orgId: UUID): EsRestClient {
-        /**
-         * Eventually this implementation should handle custom org ES servers.  For
-         * now this assumes a single ES cluster, single index, single alias.
-         */
-        return esClientCache.get(defaultRoute.withKey(orgId))
-    }
-
-    override fun getEsRestClient(route: IndexRoute): EsRestClient {
-        return esClientCache.get(route)
+        result.sortWith(Comparator { o1, o2 -> Integer.compare(o2.majorVersion, o1.minorVersion) })
+        return result
     }
 
     override fun getEsRestClient(): EsRestClient {
-        return esClientCache.get(defaultRoute)
+        val route = indexRouteDao.getOrgRoute()
+        return esClientCache.get(route.esClientCacheKey())
+    }
+
+    override fun getEsRestClient(route: IndexRoute): EsRestClient {
+        return esClientCache.get(route.esClientCacheKey())
     }
 
     fun waitForElasticSearch(client: EsRestClient) {
         while(!client.isAvailable()) {
-            logger.info("Waiting for ES to be available.....")
+            logger.info("Waiting for ES to be available.....{}", client.route.clusterUrl)
             Thread.sleep(1000)
         }
+    }
+
+    override fun performHealthCheck() : Health {
+        for (route in indexRouteDao.getAll()) {
+            if (route.closed) { continue }
+            val client = getEsRestClient(route)
+            if (!client.isAvailable()) {
+                return Health.down().withDetail(
+                        "ElasticSearch ${route.clusterUrl }down or not ready", client.route).build()
+            }
+
+        }
+        return Health.up().build()
+
     }
 
     companion object {
         private val logger = LoggerFactory.getLogger(IndexRoutingServiceImpl::class.java)
 
         private val MAP_FILE_REGEX = Regex("^V(\\d+)__(.*?).json$")
+
+        private val MAP_PATCH_REGEX = Regex("^V(\\d+)\\.(\\d{8})__(.*?).json$")
     }
 
 }
@@ -246,7 +244,7 @@ class EsClientCache {
     private val cache = CacheBuilder.newBuilder()
             .maximumSize(20)
             .initialCapacity(5)
-            .concurrencyLevel(2)
+            .concurrencyLevel(1)
             .expireAfterWrite(1, TimeUnit.HOURS)
             .removalListener<String, RestHighLevelClient> {
                 try {
@@ -263,7 +261,7 @@ class EsClientCache {
                 }
             })
 
-    fun get(route: IndexRoute): EsRestClient {
+    fun get(route: EsClientCacheKey): EsRestClient {
         return EsRestClient(route, cache.get(route.clusterUrl))
     }
 }
