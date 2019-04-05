@@ -11,6 +11,7 @@ import com.zorroa.common.util.Json
 import org.elasticsearch.action.index.IndexRequestBuilder
 import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchScrollRequest
+import org.elasticsearch.common.Strings
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.rest.action.search.RestSearchAction
@@ -24,7 +25,7 @@ import java.io.OutputStream
 class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
 
     fun <T> queryForObject(id: String, type: String?, mapper: SearchHitRowMapper<T>): T {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         val req = rest.newGetRequest(id)
                 .fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
 
@@ -42,7 +43,7 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
     }
 
     fun <T> queryForObject(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): T {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         rest.routeSearchRequest(builder.request)
 
         val r = rest.client.search(builder.request)
@@ -59,7 +60,7 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
     }
 
     fun <T> scroll(id: String, timeout: String, mapper: SearchHitRowMapper<T>): PagedList<T> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         // already routed
         val req = SearchScrollRequest(id).scroll(timeout)
         val rsp = rest.client.searchScroll(req)
@@ -81,7 +82,7 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
     }
 
     fun <T> query(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): List<T> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         rest.routeSearchRequest(builder.request)
 
         val r = rest.client.search(builder.request)
@@ -100,7 +101,7 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
     }
 
     fun <T> page(builder: SearchBuilder, paging: Pager, mapper: SearchHitRowMapper<T>): PagedList<T> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         rest.routeSearchRequest(builder.request)
         builder.source.size(paging.size)
         builder.source.from(paging.from)
@@ -120,20 +121,18 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
         val result = PagedList(paging, list)
         result.scroll = Scroll(r.scrollId)
 
+
         if (r.aggregations != null) {
-            /**
-             * Due to a bug in the ES client, The 'xContentParams' option ignore and the
-             * agg names are prefixed with the type.  For now, we just strip the type
-             * back out.
-             */
             try {
                 val aggregations = r.aggregations
-                val json = XContentFactory.jsonBuilder().use { jb ->
+                val builder = XContentFactory.jsonBuilder().use { jb ->
                     jb.startObject()
                     aggregations.toXContent(jb, xContentParams)
                     jb.endObject()
-                }.string().replace(Regex("\"[\\w+.]+#([\\w+.]+)\":"), "\"$1\":")
+                }
+                var json = Strings.toString(builder).replace(REGEX_AGG_NAME_FIX, "\"$1\":")
                 result.aggregations = Json.Mapper.readValue(json, Json.GENERIC_MAP)
+
             } catch (e: IOException) {
                 logger.warn("Failed to deserialize aggregations.", e)
             }
@@ -144,7 +143,7 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
 
     @Throws(IOException::class)
     fun page(builder: SearchBuilder, paging: Pager, out: OutputStream) {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getEsRestClient()
         rest.routeSearchRequest(builder.request)
         builder.source.size(paging.size)
         builder.source.from(paging.from)
@@ -207,6 +206,12 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
     companion object {
 
         private val logger = LoggerFactory.getLogger(ElasticTemplate::class.java)
+
+        /**
+         * Replace the new fangled type/name agg.  The highLevelRestClient forces
+         * this new naming convention.
+         */
+        private val REGEX_AGG_NAME_FIX = Regex("\"[\\w+.]+#([\\w+.]+)\":")
 
         /**
          * Instructs Agg system to not prefx agg names with the agg type.

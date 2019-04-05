@@ -6,6 +6,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.plugins.ScriptPlugin;
+import org.elasticsearch.script.ScoreScript;
 import org.elasticsearch.script.ScriptContext;
 import org.elasticsearch.script.ScriptEngine;
 import org.elasticsearch.script.SearchScript;
@@ -35,12 +36,9 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
 
         @Override
         public <FactoryType> FactoryType compile(String name, String code, ScriptContext<FactoryType> context, Map<String, String> params) {
-            if (context.equals(SearchScript.CONTEXT) == false) {
-                throw new IllegalArgumentException(getType() + " scripts cannot be used for context [" + context.name + "]");
-            }
 
             if ("similarity".equals(code)) {
-                SearchScript.Factory factory = (p, lookup) -> new SearchScript.LeafFactory() {
+                ScoreScript.Factory factory = (p, lookup) -> new ScoreScript.LeafFactory() {
 
                     private static final double NORM = 100.0;
 
@@ -143,11 +141,11 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                     }
 
                     @Override
-                    public SearchScript newInstance(LeafReaderContext ctx) throws IOException {
-                        return new SearchScript(p, lookup, ctx) {
+                    public ScoreScript newInstance(LeafReaderContext ctx) throws IOException {
+                        return new ScoreScript(p, lookup, ctx) {
 
                             @Override
-                            public double runAsDouble() {
+                            public double execute() {
 
                                 ScriptDocValues.Strings strings;
 
@@ -158,21 +156,22 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                                     return NO_SCORE;
                                 }
 
-                                double score = charHashesComparison(strings.getBytesValue());
+                                double score = charHashesComparison(strings.getValue());
                                 return score >= minScore ? score : NO_SCORE;
                             }
 
-                            public final double charHashesComparison(BytesRef fieldValue) {
+                            public final double charHashesComparison(String fieldValue) {
                                 double score = 0;
                                 if (possibleScore == 0) {
                                     return NO_SCORE;
                                 }
 
-                                if (fieldValue == null || fieldValue.length == 0) {
+                                if (fieldValue == null || fieldValue.length() == 0) {
                                     return NO_SCORE;
                                 }
 
-                                byte ver = fieldValue.bytes[1];
+                                char[] bytes = fieldValue.toCharArray();
+                                char ver = bytes[1];
                                 for (int i = 0; i < numHashes; ++i) {
                                     String hash = charHashes.get(i);
                                     if (hash == null) {
@@ -184,11 +183,11 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                                         }
                                     }
                                     else {
-                                        if (fieldValue.length != hash.length()) {
+                                        if (bytes.length != hash.length()) {
                                             continue;
                                         }
                                     }
-                                    score += (weights.get(i) * hammingDistance(fieldValue, hash));
+                                    score += (weights.get(i) * hammingDistance(bytes, hash));
                                 }
                                 score = normalize(score);
                                 return score;
@@ -199,10 +198,10 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                                 return score;
                             }
 
-                            public final double hammingDistance(final BytesRef lhs, final String rhs) {
+                            public final double hammingDistance(final char[] lhs, final String rhs) {
                                 double score = singleScore;
                                 for (int i = dataPos; i < length; i++) {
-                                    score -= Math.abs(lhs.bytes[i] - rhs.charAt(i));
+                                    score -= Math.abs(lhs[i] - rhs.charAt(i));
                                 }
                                 return score;
                             }

@@ -4,6 +4,7 @@ import org.apache.lucene.index.LeafReaderContext
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.plugins.Plugin
 import org.elasticsearch.plugins.ScriptPlugin
+import org.elasticsearch.script.ScoreScript
 import org.elasticsearch.script.ScriptContext
 import org.elasticsearch.script.ScriptEngine
 import org.elasticsearch.script.SearchScript
@@ -49,21 +50,21 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
      */
     private class KwConfLeafFactory constructor(
             val params: MutableMap<String, Any>,
-            val lookup: SearchLookup) : SearchScript.LeafFactory {
+            val lookup: SearchLookup) : ScoreScript.LeafFactory {
 
         private val field: String = params["field"] as String
         private val keywords: Set<String> = (params["keywords"] as List<String>?).orEmpty().toSet()
         private val range: List<Double> = (params["range"] as List<Double>?) ?: listOf(.75, 1.0)
 
-        override fun newInstance(ctx: LeafReaderContext?): SearchScript {
+        override fun newInstance(ctx: LeafReaderContext?): ScoreScript {
 
             /**
              * This object expression returns and anonymous subclass of SearchScript with
              * runAsDouble implemented.
              */
-            return object : SearchScript(params, lookup, ctx) {
+            return object : ScoreScript(params, lookup, ctx) {
 
-                override fun runAsDouble(): Double {
+                override fun execute(): Double {
                     var score = 0.0
 
                     try {
@@ -109,8 +110,8 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
     }
 
 
-    private class KwConfFactory : SearchScript.Factory {
-        override fun newFactory(params: MutableMap<String, Any>, lookup: SearchLookup): SearchScript.LeafFactory {
+    private class KwConfFactory : ScoreScript.Factory {
+        override fun newFactory(params: MutableMap<String, Any>, lookup: SearchLookup): ScoreScript.LeafFactory {
             return KwConfLeafFactory(params, lookup)
         }
     }
@@ -120,9 +121,6 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
         override fun getType(): String = scriptType
 
         override fun <T> compile(name: String, code: String, context: ScriptContext<T>, params: Map<String, String>): T {
-            if (context != SearchScript.CONTEXT) {
-                throw IllegalArgumentException(type + " scripts cannot be used for context [" + context.name + "]")
-            }
 
             if (scriptId == code) {
                 return context.factoryClazz.cast(KwConfFactory()) as T

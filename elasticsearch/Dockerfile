@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
+FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.4.3
 
 COPY es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 COPY es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
