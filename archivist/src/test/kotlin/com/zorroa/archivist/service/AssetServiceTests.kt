@@ -46,14 +46,21 @@ class AssetServiceTests : AbstractTest() {
         var assets = searchService.search(Pager.first(), AssetSearch())
         for (asset in assets) {
             validateSystemAttrsExist(asset)
+            assertEquals(asset.getAttr("system.timeCreated",
+                    String::class.java),
+                    asset.getAttr("system.timeModified", String::class.java))
         }
 
         val rsp = assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
         assertEquals(2, rsp.replacedAssetIds.size)
         assertEquals(0, rsp.createdAssetIds.size)
         assets = searchService.search(Pager.first(), AssetSearch())
+
         for (asset in assets) {
             validateSystemAttrsExist(asset)
+            assertNotEquals(asset.getAttr("system.timeCreated",
+                    String::class.java),
+                    asset.getAttr("system.timeModified", String::class.java))
         }
     }
 
