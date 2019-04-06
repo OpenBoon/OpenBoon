@@ -94,7 +94,9 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
  */
 fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?) {
     MeterRegistryHolder.increment("zorroa.$obj.$action")
-    this.info(formatLogMessage(obj, action, *kvp))
+    if (this.isInfoEnabled) {
+        this.info(formatLogMessage(obj, action, *kvp))
+    }
 }
 
 /**
@@ -107,7 +109,9 @@ fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?
  */
 fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Map<String, Any?>?=null, ex: Exception?=null) {
     MeterRegistryHolder.increment("zorroa.$obj.$action.warn")
-    this.warn(formatLogMessage(obj, action, kvp, mapOf("message" to message)), ex)
+    if (this.isWarnEnabled) {
+        this.warn(formatLogMessage(obj, action, kvp, mapOf("message" to message)), ex)
+    }
 }
 
 /**
