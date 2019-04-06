@@ -65,7 +65,6 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                     .antMatcher("/api/**/login")
-                    .antMatcher("/api/**/login")
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable()
@@ -177,10 +176,36 @@ class MultipleWebSecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .requestMatchers(EndpointRequest.to("metrics", "prometheus")).hasAuthority("zorroa::monitor")
+                    .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
+                        .hasAnyAuthority("zorroa::superadmin", "zorroa::monitor")
                     .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
+
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 4)
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+    class RootSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Autowired
+        internal lateinit var jwtAuthorizationFilter : JWTAuthorizationFilter
+
+        @Throws(Exception::class)
+        override fun configure(http: HttpSecurity) {
+            http
+                    .antMatcher("/*")
+                    .authorizeRequests()
+                    .antMatchers("/v2/api-docs").hasAuthority("zorroa::superadmin")
+                    .antMatchers("/configuration/**").hasAuthority("zorroa::superadmin")
+                    .antMatchers("/swagger-resources/**").hasAuthority("zorroa::superadmin")
+                    .antMatchers("/swagger-ui.html").hasAuthority("zorroa::superadmin")
+                    .antMatchers("/webjars/**").hasAuthority("zorroa::superadmin")
+                    .anyRequest().authenticated()
+                    .and()
+                    .csrf().disable()
+        }
+    }
+
 
     @Value("\${management.endpoints.password}")
     lateinit var monitorPassword: String
