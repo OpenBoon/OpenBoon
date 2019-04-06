@@ -204,6 +204,7 @@ open abstract class AbstractAssetService : AssetService {
 
         if (oldAsset.attrExists("system.timeCreated")) {
             newAsset.setAttr("system.timeModified", time)
+            newAsset.setAttr("system.timeCreated", oldAsset.getAttr("system.timeCreated"))
         } else {
             newAsset.setAttr("system.timeModified", time)
             newAsset.setAttr("system.timeCreated", time)
@@ -248,26 +249,36 @@ open abstract class AbstractAssetService : AssetService {
         val existingPerms = oldAsset.getAttr("system.permissions",
                 PermissionSchema::class.java) ?: PermissionSchema()
 
-        if (newAsset.permissions != null) {
-            newAsset.permissions?.forEach {
-                val key = it.key
-                val value = it.value
-                try {
-                    val perm = permissionDao.get(key)
-                    applyAclToPermissions(perm.id, value, existingPerms)
-                } catch (e: Exception) {
-                    logger.warn("Permission not found: {}", key)
-                }
-            }
-            newAsset.setAttr("system.permissions",
-                    Json.Mapper.convertValue<Map<String, Any>>(existingPerms, Json.GENERIC_MAP))
-
-        } else if (existingPerms.isEmpty) {
+        when {
             /**
-             * If the source didn't come with any permissions and the current perms
-             * on the asset are empty, we apply the default permissions.
+             * Merge new permissions with existing permissions.
              */
-            newAsset.setAttr("system.permissions", defaultPermissions)
+            newAsset.permissions != null -> {
+                newAsset.permissions?.forEach {
+                    val key = it.key
+                    val value = it.value
+                    try {
+                        val perm = permissionDao.get(key)
+                        applyAclToPermissions(perm.id, value, existingPerms)
+                    } catch (e: Exception) {
+                        logger.warn("Permission not found: {}", key)
+                    }
+                }
+                newAsset.setAttr("system.permissions",
+                        Json.Mapper.convertValue<Map<String, Any>>(existingPerms, Json.GENERIC_MAP))
+
+            }
+            existingPerms.isEmpty ->
+                /**
+                 * If the source didn't come with any permissions and the current perms
+                 * on the asset are empty, we apply the default permissions.
+                 */
+                newAsset.setAttr("system.permissions", defaultPermissions)
+            else ->
+                /**
+                 * Re-apply the existing permissions.
+                 */
+                newAsset.setAttr("system.permissions", existingPerms)
         }
     }
 
