@@ -10,7 +10,8 @@ CREATE TABLE index_route (
   int_replicas SMAllINT NOT NULL,
   int_shards SMAllINT NOT NULL,
   bool_closed BOOLEAN NOT NULL,
-  bool_default_pool BOOLEAN NOT NULL
+  bool_default_pool BOOLEAN NOT NULL,
+  bool_use_rkey BOOLEAN NOT NULL
 );
 
 CREATE UNIQUE INDEX index_route_idx_uniq ON index_route (str_url, str_index);
@@ -26,6 +27,7 @@ INSERT INTO index_route VALUES (
   2,
   5,
   'f',
+  't',
   't'
 );
 

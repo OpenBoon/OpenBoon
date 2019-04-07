@@ -4,17 +4,24 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.ClusterLockSpec
-import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.EsClientCacheKey
+import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.repository.IndexRouteDao
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsRestClient
 import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
+import org.elasticsearch.client.Request
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.xcontent.DeprecationHandler
+import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.actuate.health.Health
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.core.io.ClassPathResource
@@ -23,12 +30,6 @@ import org.springframework.stereotype.Component
 import java.net.URI
 import java.util.*
 import java.util.concurrent.TimeUnit
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
-import org.elasticsearch.client.Request
-import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.common.xcontent.DeprecationHandler
-import org.elasticsearch.common.xcontent.XContentType
-import org.springframework.boot.actuate.health.Health
 
 
 /**
@@ -39,23 +40,31 @@ import org.springframework.boot.actuate.health.Health
 interface IndexRoutingService {
 
     /**
-     * Get an EsRestClient for the current users organization.
+     * Get an [EsRestClient] for the current users organization.
      *
      * @return: EsRestClient
      */
-    fun getEsRestClient() : EsRestClient
+    fun getOrgRestClient() : EsRestClient
 
     /**
-     * Get an EsRestClient for a given IndexRoute
+     * Get an non-routed [EsRestClient] for cluster wide operations.
      *
-     * @param route: The IndexRoute to get a client for.
+     * @param route: The [IndexRoute] to get a client for.
      *
      * @return: EsRestClient
      */
-    fun getEsRestClient(route: IndexRoute): EsRestClient
+    fun getClusterRestClient(route: IndexRoute): EsRestClient
 
-    fun syncIndexRoute(route: IndexRoute)
+    /**
+     * Apply any outstanding mapping patches to the given [IndexRoute]
+     *
+     * @param route The IndexRoute to version up.
+     */
+    fun syncIndexRouteVersion(route: IndexRoute)
 
+    /**
+     * Apply all outstanding mapping patches to all active IndexRoutes.
+     */
     fun syncAllIndexRoutes()
 
     fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping>
@@ -103,18 +112,18 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun syncAllIndexRoutes() {
-        indexRouteDao.getAll().forEach { syncIndexRoute(it) }
+        indexRouteDao.getAll().forEach { syncIndexRouteVersion(it) }
     }
 
     override fun refreshAll() {
         indexRouteDao.getAll().forEach {
-            getEsRestClient(it).client.lowLevelClient.performRequest(
+            getClusterRestClient(it).client.lowLevelClient.performRequest(
                     Request("POST", "/_refresh"))
         }
     }
 
-    override fun syncIndexRoute(route: IndexRoute) {
-        val es = getEsRestClient(route)
+    override fun syncIndexRouteVersion(route: IndexRoute) {
+        val es = getClusterRestClient(route)
         waitForElasticSearch(es)
 
         val lock = ClusterLockSpec.softLock("create-es-${route.indexName}")
@@ -145,7 +154,7 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun applyMinorVersionMappingFile(route: IndexRoute, patchFile: ElasticMapping) {
-        val es = getEsRestClient(route)
+        val es = getClusterRestClient(route)
         try {
             val patch = patchFile.mapping
             val request = PutMappingRequest(route.indexName)
@@ -199,12 +208,12 @@ class IndexRoutingServiceImpl @Autowired
         return result
     }
 
-    override fun getEsRestClient(): EsRestClient {
+    override fun getOrgRestClient(): EsRestClient {
         val route = indexRouteDao.getOrgRoute()
-        return esClientCache.get(route.esClientCacheKey())
+        return esClientCache.get(route.esClientCacheKey(getOrgId().toString()))
     }
 
-    override fun getEsRestClient(route: IndexRoute): EsRestClient {
+    override fun getClusterRestClient(route: IndexRoute): EsRestClient {
         return esClientCache.get(route.esClientCacheKey())
     }
 
@@ -218,7 +227,7 @@ class IndexRoutingServiceImpl @Autowired
     override fun performHealthCheck() : Health {
         for (route in indexRouteDao.getAll()) {
             if (route.closed) { continue }
-            val client = getEsRestClient(route)
+            val client = getClusterRestClient(route)
             if (!client.isAvailable()) {
                 return Health.down().withDetail(
                         "ElasticSearch ${route.clusterUrl }down or not ready", client.route).build()

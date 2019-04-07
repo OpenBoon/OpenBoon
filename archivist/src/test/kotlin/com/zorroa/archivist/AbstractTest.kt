@@ -205,7 +205,7 @@ open abstract class AbstractTest {
          * which adds some standard data to both databases.
          */
 
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val reqDel = DeleteIndexRequest("unittest")
 
         /*

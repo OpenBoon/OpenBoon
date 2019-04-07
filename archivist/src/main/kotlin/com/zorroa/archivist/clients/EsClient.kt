@@ -49,7 +49,9 @@ class SearchBuilder {
 class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient) {
 
     fun newSearchRequest() : SearchRequest {
-        return SearchRequest(route.indexName)
+        return SearchRequest(route.indexName).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newSearchBuilder() : SearchBuilder {
@@ -65,22 +67,33 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
     }
 
     fun newGetRequest(id: String) : GetRequest {
-        return GetRequest(route.indexName).id(id)
+        return GetRequest(route.indexName).id(id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newUpdateRequest(id: String) : UpdateRequest {
-        return UpdateRequest(route.indexName, "asset", id)
+        return UpdateRequest(route.indexName, "asset", id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newIndexRequest(id: String) : IndexRequest {
-        return IndexRequest(route.indexName, "asset", id)
+        return IndexRequest(route.indexName, "asset", id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newDeleteRequest(id:String) : DeleteRequest {
-        return DeleteRequest(route.indexName, "asset", id)
+        return DeleteRequest(route.indexName, "asset", id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun routeSearchRequest(req: SearchRequest) : SearchRequest {
+        if (route.routingKey != null) {
+            req.routing(route.routingKey)
+        }
         return req.indices(route.indexName)
     }
 

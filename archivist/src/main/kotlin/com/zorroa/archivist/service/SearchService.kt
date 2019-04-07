@@ -118,7 +118,7 @@ class SearchServiceImpl @Autowired constructor(
 
     override fun count(builder: AssetSearch): Long {
         val orgId = getOrgId()
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val totalHits = rest.client.search(buildSearch(builder, "asset").request).hits.totalHits
         logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(builder))
         return totalHits
@@ -172,7 +172,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getSuggestTerms(text: String): List<String> {
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val builder = SearchSourceBuilder()
         val suggestBuilder = SuggestBuilder()
         val req = rest.newSearchRequest()
@@ -216,7 +216,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit) {
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
         builder.source.fetchSource(fetchSource)
@@ -245,7 +245,7 @@ class SearchServiceImpl @Autowired constructor(
         }
     }
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
         builder.source.size(100)
@@ -276,14 +276,14 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun search(search: AssetSearch): SearchResponse {
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val result = rest.client.search(buildSearch(search, "asset").request)
         logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(search))
         return result
     }
 
     override fun search(page: Pager, search: AssetSearch): PagedList<Document> {
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         if (search.scroll != null) {
             val scroll = search.scroll
             if (scroll.id != null) {
@@ -325,7 +325,7 @@ class SearchServiceImpl @Autowired constructor(
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val result = indexDao.getAll(id, timeout)
         if (result.size() == 0) {
             val req = ClearScrollRequest()
@@ -341,7 +341,7 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun buildSearch(search: AssetSearch, type: String): SearchBuilder {
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
 
         val ssb = SearchSourceBuilder()
         ssb.query(getQuery(search))

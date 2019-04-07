@@ -19,6 +19,7 @@ import java.util.*
  * @property shards Number of shards.
  * @property defaultPool True if the index route is in the default Pool.
  * @property indexUrl The ES index URL, or the cluster URL and index name combined.
+ * @property useRouteKey Store all of an Organizations data into a single shard.
  */
 class IndexRoute(
         val id: UUID,
@@ -30,17 +31,25 @@ class IndexRoute(
         val closed: Boolean,
         val replicas: Int,
         val shards: Int,
-        val defaultPool: Boolean)
+        val defaultPool: Boolean,
+        val useRouteKey: Boolean)
 {
 
     var orgCount: Int = 0
     val indexUrl = "$clusterUrl/$indexName"
 
+    /**
+     * Return a
+     */
     @JsonIgnore
     fun esClientCacheKey() : EsClientCacheKey {
         return EsClientCacheKey(clusterUrl, indexName)
     }
 
+    @JsonIgnore
+    fun esClientCacheKey(rkey: String) : EsClientCacheKey {
+        return EsClientCacheKey(clusterUrl, indexName, rkey)
+    }
 }
 
 /**
@@ -70,11 +79,13 @@ class IndexRouteSpec(
  *
  * @property clusterUrl The url to the cluster
  * @property indexName The name of the index.
- * @param indexUrl The URL to the index.
+ * @property routingKey A shard routing key string.
+ * @property indexUrl The full URL to the index.
  */
 class EsClientCacheKey(
         val clusterUrl: String,
-        val indexName: String) {
+        val indexName: String,
+        val routingKey: String?=null) {
 
     val indexUrl = "$clusterUrl/$indexName"
 }

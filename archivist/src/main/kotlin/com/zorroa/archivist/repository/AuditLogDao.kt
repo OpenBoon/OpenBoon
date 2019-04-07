@@ -135,7 +135,7 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
     }
 
     private fun appendKeyValuePairs(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : Map<String, Any> {
-        val client = indexRoutingService.getEsRestClient()
+        val client = indexRoutingService.getOrgRestClient()
         val map = mutableMapOf<String,Any>()
         map["index"] = client.route.indexName
         map["cluster"] = client.route.clusterUrl

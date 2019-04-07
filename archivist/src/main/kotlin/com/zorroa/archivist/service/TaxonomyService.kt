@@ -12,7 +12,10 @@ import com.zorroa.archivist.repository.TaxonomyDao
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.security.InternalAuthentication
+import com.zorroa.archivist.security.InternalRunnable
+import com.zorroa.archivist.security.SecureRunnable
+import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.runBlocking
@@ -188,7 +191,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val folderTotal = LongAdder()
         val assetTotal = LongAdder()
 
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -341,7 +344,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG,
                 mapOf("untagType" to "asset", "taxonomyId" to tax.taxonomyId))
 
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -378,7 +381,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG,
                 mapOf("untagType" to "folder", "taxonomyId" to tax.taxonomyId))
 
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val folderIds = folders.stream().map { f -> f.id }.collect(Collectors.toList())
         for (list in Lists.partition(folderIds, 500)) {
 
@@ -417,7 +420,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy): Map<String, Long> {
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG, mapOf("taxonomyId" to tax.taxonomyId))
 
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -458,7 +461,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     override fun untagTaxonomy(tax: Taxonomy, timestamp: Long): Map<String, Long> {
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG,
                 mapOf("untagType" to "time", "taxonomyId" to tax.taxonomyId))
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val cbl = CountingBulkListener()
         val bulkProcessor = ESUtils.create(rest.client, cbl)
                 .setBulkActions(BULK_SIZE)
@@ -499,7 +502,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                             pred: Predicate<TaxonomySchema>) = runBlocking {
 
         var rsp = rsp
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
 
         logger.info("processing bulk taxon for: {}", getUser())
         // Use a non combined hard lock but the same lock ID.

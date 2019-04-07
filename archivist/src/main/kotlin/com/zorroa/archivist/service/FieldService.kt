@@ -5,7 +5,6 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -60,7 +59,7 @@ class FieldServiceImpl @Autowired constructor(
         result["path"] = mutableSetOf()
         result["suggest"] = mutableSetOf()
 
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val stream = rest.client.lowLevelClient.performRequest(
                 "GET", "/${rest.route.indexName}").entity.content
 

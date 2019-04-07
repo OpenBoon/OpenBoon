@@ -73,7 +73,8 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                     rs.getBoolean("bool_closed"),
                     rs.getInt("int_replicas"),
                     rs.getInt("int_shards"),
-                    rs.getBoolean("bool_default_pool"))
+                    rs.getBoolean("bool_default_pool"),
+                    rs.getBoolean("bool_use_rkey"))
         }
 
         const val GET = "SELECT * FROM index_route"

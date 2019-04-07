@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.FieldSetDao
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -192,7 +191,7 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     override fun getEsMapping() : Map<String, Any> {
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val stream = rest.client.lowLevelClient.performRequest(
                 "GET", "/${rest.route.indexName}").entity.content
         return  Json.Mapper.readValue(stream, Json.GENERIC_MAP)
@@ -200,7 +199,7 @@ class FieldSystemServiceImpl @Autowired constructor(
 
     override fun getEsTypeMap(): Map<String, AttrType> {
         val result = mutableMapOf<String, AttrType>()
-        val rest = indexRoutingService.getEsRestClient()
+        val rest = indexRoutingService.getOrgRestClient()
         val map : Map<String, Any> = getEsMapping()
         getMap(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!)
         return result
