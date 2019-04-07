@@ -36,6 +36,16 @@ import java.util.concurrent.TimeUnit
  * Manages the creation and usage of ES indexes.  Currently this implementation only supports
  * a default ES server and index, but eventually will support large customers with their
  * own dedicated ES index.
+ *
+ * Most of this thing could be broken out into a new service eventually.
+ *
+ * The ES migration files naming convention.
+ *
+ * Major Version: V<major version>__<name>.json
+ * Minor Version: V<major version>.<year><month><day>__<name>.json
+ *
+ * Updating a major version will always kick off a reindex.
+ *
  */
 interface IndexRoutingService {
 
@@ -67,18 +77,47 @@ interface IndexRoutingService {
      */
     fun syncAllIndexRoutes()
 
+    /**
+     * Return a list of all [ElasticMapping] patches for the given mappingType and major version.
+     *
+     * @param mappingType The type of mapping.
+     *
+     */
     fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping>
 
+    /**
+     * Return the [ElasticMapping] for the given type and major version.
+     *
+     * @param mappingType The type of mapping.
+     * @param majorVersion The major version of the mapping.
+     */
     fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping
 
+    /**
+     * Apply a minor version patch to the given [IndexRoute]
+     *
+     * @param route The route to update.
+     * @param patchFile The [ElasticMapping] patch version.
+     *
+     */
     fun applyMinorVersionMappingFile(route: IndexRoute, patchFile: ElasticMapping)
 
-    fun refreshAll()
     /**
-     * Setup the default index configured in application.properties.
+     * Refresh all index routes, this flushes all changes from memory to disk. This
+     * is mainly used for testing, or something to run after a reindex.
+     */
+    fun refreshAll()
+
+    /**
+     * Setup the default index configured in application.properties.  This will update any
+     * route that is marked as being in the public pool with the value of the
+     * archivist.index.default-url property.
      */
     fun setupDefaultIndexRoute()
 
+    /**
+     * Perform a health check on all active [IndexRoute]s
+     */
     fun performHealthCheck() : Health
 }
 
@@ -232,10 +271,8 @@ class IndexRoutingServiceImpl @Autowired
                 return Health.down().withDetail(
                         "ElasticSearch ${route.clusterUrl }down or not ready", client.route).build()
             }
-
         }
         return Health.up().build()
-
     }
 
     companion object {
@@ -248,6 +285,9 @@ class IndexRoutingServiceImpl @Autowired
 
 }
 
+/**
+ *
+ */
 class EsClientCache {
 
     private val cache = CacheBuilder.newBuilder()
