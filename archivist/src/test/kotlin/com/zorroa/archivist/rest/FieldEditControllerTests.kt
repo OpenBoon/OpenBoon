@@ -23,6 +23,10 @@ class FieldEditControllerTests : MockMvcTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Test
     fun testGetFieldEdit() {
         val session = admin()
