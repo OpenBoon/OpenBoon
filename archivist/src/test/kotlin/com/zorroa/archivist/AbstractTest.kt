@@ -117,6 +117,10 @@ open abstract class AbstractTest {
         ArchivistConfiguration.unittest = true
     }
 
+    fun requiresElasticSearch() : Boolean {
+        return false
+    }
+
     @Autowired
     fun setDataSource(dataSource: DataSource) {
         this.jdbc = JdbcTemplate(dataSource)
@@ -157,7 +161,9 @@ open abstract class AbstractTest {
         /**
          * We need to be authed to clean elastic.
          */
-        cleanElastic()
+        if (requiresElasticSearch()) {
+            cleanElastic()
+        }
         setupDefaultOrganization()
 
         val spec1 = UserSpec(
@@ -218,6 +224,7 @@ open abstract class AbstractTest {
         }
 
         indexRoutingService.syncAllIndexRoutes()
+        refreshIndex()
     }
 
     fun setupDefaultOrganization() {

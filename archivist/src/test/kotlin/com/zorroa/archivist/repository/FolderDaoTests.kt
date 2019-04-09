@@ -29,6 +29,10 @@ class FolderDaoTests : AbstractTest() {
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Test
     fun testCreateAndGet() {
         val name = "Foobar the folder"

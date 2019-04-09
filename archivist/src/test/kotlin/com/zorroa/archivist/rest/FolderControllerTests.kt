@@ -30,6 +30,10 @@ class FolderControllerTests : MockMvcTest() {
 
     internal lateinit var session: MockHttpSession
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     @Throws(Exception::class)
     fun init() {

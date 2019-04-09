@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
@@ -39,10 +38,13 @@ class FolderServiceTests : AbstractTest() {
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
     }
 
     @Test

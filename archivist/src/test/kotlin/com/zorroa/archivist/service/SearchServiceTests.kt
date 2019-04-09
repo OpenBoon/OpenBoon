@@ -30,9 +30,12 @@ class SearchServiceTests : AbstractTest() {
     @Autowired
     internal var fieldDao: FieldDao? = null
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
-        cleanElastic()
         fieldService.invalidateFields()
     }
 

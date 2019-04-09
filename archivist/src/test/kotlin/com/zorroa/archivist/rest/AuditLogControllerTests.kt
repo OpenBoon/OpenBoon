@@ -20,7 +20,10 @@ class AuditLogControllerTests : MockMvcTest() {
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
+    }
+
+    override fun requiresElasticSearch() : Boolean {
+        return true
     }
 
     @Test
