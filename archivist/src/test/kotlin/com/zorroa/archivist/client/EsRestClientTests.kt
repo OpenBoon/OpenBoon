@@ -9,6 +9,10 @@ import kotlin.test.assertTrue
 
 class EsRestClientTests : AbstractTest() {
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Test
     fun testIsAvailable() {
         val client1 = indexRoutingService[getOrgId()]

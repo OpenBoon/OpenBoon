@@ -25,6 +25,10 @@ class TaxonomyServiceTests : AbstractTest() {
     @Autowired
     lateinit var taxonomyService: TaxonomyService
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Test
     @Throws(InterruptedException::class)
     fun testCreateAndRun() {

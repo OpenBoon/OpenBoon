@@ -51,6 +51,10 @@ class AssetControllerTests : MockMvcTest() {
         SecurityContextHolder.getContext().authentication = null
     }
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Test
     @Throws(Exception::class)
     fun testGetFields() {

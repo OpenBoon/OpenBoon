@@ -10,20 +10,20 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class AssetServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var auditLogDao: AuditLogDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
     }
 
     @Test
@@ -46,10 +46,25 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateOrReplace() {
-        val assets = searchService.search(Pager.first(), AssetSearch())
+        var assets = searchService.search(Pager.first(), AssetSearch())
+        for (asset in assets) {
+            validateSystemAttrsExist(asset)
+            assertEquals(asset.getAttr("system.timeCreated",
+                    String::class.java),
+                    asset.getAttr("system.timeModified", String::class.java))
+        }
+
         val rsp = assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
         assertEquals(2, rsp.replacedAssetIds.size)
         assertEquals(0, rsp.createdAssetIds.size)
+        assets = searchService.search(Pager.first(), AssetSearch())
+
+        for (asset in assets) {
+            validateSystemAttrsExist(asset)
+            assertNotEquals(asset.getAttr("system.timeCreated",
+                    String::class.java),
+                    asset.getAttr("system.timeModified", String::class.java))
+        }
     }
 
     @Test
@@ -109,7 +124,7 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testBatchUpdate() {
 
-        var updates= mutableMapOf<String, UpdateAssetRequest>()
+        var updates = mutableMapOf<String, UpdateAssetRequest>()
         searchService.search(Pager.first(), AssetSearch()).forEach {doc ->
             updates[doc.id] = UpdateAssetRequest(mapOf("foos" to "ball"))
         }
@@ -294,5 +309,16 @@ class AssetServiceTests : AbstractTest() {
         assertTrue(result[0].message!!.contains("undo"))
         assertTrue(result[1].message!!.contains("manual edit"))
 
+    }
+
+    /**
+     * Just checks we didn't lose any system attributes after
+     * reprocessing, does not validate any values.
+     */
+    fun validateSystemAttrsExist(asset: Document) {
+        assertNotNull(asset.getAttr("system.permissions"))
+        assertNotNull(asset.getAttr("system.timeCreated"))
+        assertNotNull(asset.getAttr("system.timeModified"))
+        assertNotNull(asset.getAttr("system.links"))
     }
 }
