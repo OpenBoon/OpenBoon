@@ -17,10 +17,13 @@ class AssetServiceTests : AbstractTest() {
     @Autowired
     lateinit var auditLogDao: AuditLogDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
     }
 
     @Test

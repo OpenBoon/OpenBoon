@@ -35,10 +35,13 @@ class FolderServiceTests : AbstractTest() {
     @Autowired
     lateinit var organizationDao: OrganizationDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
     }
 
     @Test

@@ -18,10 +18,13 @@ class IndexServiceTests : AbstractTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
     }
 
     @Test

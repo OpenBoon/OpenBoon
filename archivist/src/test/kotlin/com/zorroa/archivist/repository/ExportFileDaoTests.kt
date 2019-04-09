@@ -30,6 +30,10 @@ class ExportFileDaoTests : AbstractTest() {
     lateinit var export : Job
     lateinit var exportFile : ExportFile
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         val espec = ExportSpec("foo",

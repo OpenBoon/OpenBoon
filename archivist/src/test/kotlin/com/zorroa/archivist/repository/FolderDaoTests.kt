@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository
 
 
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
@@ -26,6 +25,10 @@ class FolderDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var organizationDao: OrganizationDao
+
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
 
     @Test
     fun testCreateAndGet() {

@@ -26,6 +26,10 @@ class IndexDaoTests : AbstractTest() {
     internal lateinit var indexDao: IndexDao
     internal lateinit var asset1: Document
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         val builder = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
