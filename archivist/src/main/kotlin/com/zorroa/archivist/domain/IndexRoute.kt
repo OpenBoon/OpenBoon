@@ -39,13 +39,16 @@ class IndexRoute(
     val indexUrl = "$clusterUrl/$indexName"
 
     /**
-     * Return a
+     * Return an [EsClientCacheKey] which will apply writes across all shards.
      */
     @JsonIgnore
     fun esClientCacheKey() : EsClientCacheKey {
         return EsClientCacheKey(clusterUrl, indexName)
     }
 
+    /**
+     * Return an [EsClientCacheKey] for use with per-organization shards.
+     */
     @JsonIgnore
     fun esClientCacheKey(rkey: String) : EsClientCacheKey {
         return EsClientCacheKey(clusterUrl, indexName, rkey)
