@@ -39,7 +39,7 @@ class Organization(
  * All properties available for updating an organization.
  *
  * @property name Will renames the organization.
- *  @property indexRouteId Will update the Organizations's ES cluster address. Will not move files.
+ * @property indexRouteId Will update the Organizations's ES cluster address. Will not move files.
  */
 class OrganizationUpdateSpec(
         var name: String,
