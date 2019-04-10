@@ -22,6 +22,7 @@ import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.transaction.annotation.Transactional
 import java.net.URI
 import java.util.*
@@ -145,8 +146,6 @@ open abstract class AbstractAssetService : AssetService {
              * Remove parts protected by API.
              */
             PROTECTED_NAMESPACES.forEach { n -> newSource.removeAttr(n) }
-
-            newSource.setAttr("system.organizationId", orgId)
 
             handleTimes(existingSource, newSource)
             handleHold(existingSource, newSource)
@@ -901,13 +900,13 @@ open class IrmAssetServiceImpl constructor(
     override fun getAll(ids: List<String>) : List<Document> {
         logger.event(LogObject.ASSET, LogAction.SEARCH, mapOf("requested_count" to ids.size, "datastore" to "CDV"))
         return ids.map {
-            try {
-                cdvClient.getIndexedMetadata(getCompanyId(), it)
-            }
-            catch (e: RestClientException) {
-                // ATTENTION: The CDV does not have child assets, but we can get them from ES.
-                // TODO: Check that organization ID is passed here.
+            // Will return empty document if not in CDV
+            val doc = cdvClient.getIndexedMetadata(getCompanyId(), it)
+            if (doc.document.isEmpty()) {
                 indexService.get(it)
+            }
+            else {
+                doc
             }
         }
     }

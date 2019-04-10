@@ -61,7 +61,8 @@ interface CoreDataVaultClient {
     fun getAsset(companyId: Int, assetId: String): Map<String, Any>
 
     /**
-     * Return the hard copy of indexed metadata from CDV.
+     * Return the hard copy of indexed metadata from CDV.  If the asset
+     * does not exist, an empty document is returned.
      *
      * @param companyId the company ID
      * @param assetId: the asset ID, same as the zorroa doc id.
@@ -191,8 +192,11 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
     }
 
     override fun getIndexedMetadata(companyId: Int, assetId: String): Document {
-        return client.get("/companies/$companyId/documents/$assetId/es", Document::class.java,
+        // This will return 200OK even if the asset doesn't exist.
+        val doc =  client.get("/companies/$companyId/documents/$assetId/es", Document::class.java,
                 headers=getRequestHeaders())
+        doc.id = assetId
+        return doc
     }
 
     override fun updateIndexedMetadata(companyId: Int, doc: Document) : Boolean {
