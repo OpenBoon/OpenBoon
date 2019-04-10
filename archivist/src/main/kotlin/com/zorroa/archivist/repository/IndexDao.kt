@@ -8,6 +8,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getOrganizationFilter
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
@@ -193,20 +195,12 @@ class IndexDaoImpl @Autowired constructor(
         return result
     }
 
-    private fun prepareUpsert(source: Document): UpdateRequest {
-        val rest = getClient()
-        val upd = rest.newUpdateRequest(source.id)
-                .docAsUpsert(true)
-                .doc(Json.serialize(source.document), XContentType.JSON)
-        return upd
-    }
-
     private fun prepareInsert(source: Document): IndexRequest {
+        source.setAttr("system.organizationId", getOrgId().toString())
         val rest = getClient()
-        val idx = rest.newIndexRequest(source.id)
+        return rest.newIndexRequest(source.id)
                 .opType(DocWriteRequest.OpType.INDEX)
                 .source(Json.serialize(source.document), XContentType.JSON)
-        return idx
     }
 
     private fun removeBrokenField(asset: Document, error: String): Boolean {
@@ -360,9 +354,16 @@ class IndexDaoImpl @Autowired constructor(
         return rsp
     }
 
-
     override fun get(id: String): Document {
-        return elastic.queryForObject(id, "asset", MAPPER)
+        val rest = getClient()
+        val req = rest.newSearchBuilder()
+        val query = QueryBuilders.boolQuery()
+                .must(QueryBuilders.termQuery("_id", id))
+                .must(getOrganizationFilter())
+        req.source.size(1)
+        req.source.query(query)
+
+        return elastic.queryForObject(req,  MAPPER)
     }
 
     override fun exists(path: Path): Boolean {
@@ -384,8 +385,11 @@ class IndexDaoImpl @Autowired constructor(
     override fun get(path: Path): Document {
         val rest = getClient()
         val req = rest.newSearchBuilder()
-        req.source.query(QueryBuilders.termQuery("source.path.raw", path.toString()))
+        val query = QueryBuilders.boolQuery()
+                .must(QueryBuilders.termQuery("source.path.raw", path.toString()))
+                .must(getOrganizationFilter())
         req.source.size(1)
+        req.source.query(query)
 
         val assets = elastic.query(req, MAPPER)
 
