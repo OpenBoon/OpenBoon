@@ -9,6 +9,9 @@ ENV GCS_CONFIG ${gcs_config}
 
 RUN mkdir /service
 
+RUN groupadd -r archivist && useradd --no-log-init -r -g archivist archivist
+USER archivist
+
 COPY target/archivist.jar /service/archivist.jar
 COPY run_server.sh run_server.sh
 
