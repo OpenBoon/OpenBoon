@@ -47,7 +47,7 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
 
         val r = rest.client.search(builder.request)
         if (r.hits.totalHits == 0L) {
-            throw EmptyResultDataAccessException("Expected 1 result from " + builder.toString() + ", got: ", 0)
+            throw EmptyResultDataAccessException("Expected 1 asset, got: 0", 0)
         }
         val hit = r.hits.getAt(0)
         try {

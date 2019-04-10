@@ -137,14 +137,10 @@ class GcpPubSubServiceImpl constructor(
                         "orgId", org.id.toString(), "companyId", companyId.toString()).increment()
 
                 /**
-                 * Grab the existing doc, otherise make a new one.
+                 * Grab the existing doc. If the doc doesn't exist, a blank doc with
+                 * the proper ID is returned.
                  */
-                val doc = try {
-                    coreDataVaultClient.getIndexedMetadata(companyId, assetId)
-                } catch (e: Exception) {
-                    Document(assetId)
-                }
-
+                val doc = coreDataVaultClient.getIndexedMetadata(companyId, assetId)
                 doc.setAttr("system.organizationId", org.id)
                 doc.setAttr("tmp.copy_attrs_to_clip", listOf("irm"))
 
