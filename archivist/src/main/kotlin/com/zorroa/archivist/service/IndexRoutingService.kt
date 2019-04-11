@@ -27,6 +27,7 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
+import java.lang.RuntimeException
 import java.net.URI
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -94,15 +95,6 @@ interface IndexRoutingService {
     fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping
 
     /**
-     * Apply a minor version patch to the given [IndexRoute]
-     *
-     * @param route The route to update.
-     * @param patchFile The [ElasticMapping] patch version.
-     *
-     */
-    fun applyMinorVersionMappingFile(route: IndexRoute, patchFile: ElasticMapping)
-
-    /**
      * Refresh all index routes, this flushes all changes from memory to disk. This
      * is mainly used for testing, or something to run after a reindex.
      */
@@ -112,6 +104,8 @@ interface IndexRoutingService {
      * Setup the default index configured in application.properties.  This will update any
      * route that is marked as being in the public pool with the value of the
      * archivist.index.default-url property.
+     *
+     * This method will be removed as part of index routing phase 2
      */
     fun setupDefaultIndexRoute()
 
@@ -192,29 +186,6 @@ class IndexRoutingServiceImpl @Autowired
         }
     }
 
-    override fun applyMinorVersionMappingFile(route: IndexRoute, patchFile: ElasticMapping) {
-        val es = getClusterRestClient(route)
-        try {
-            val patch = patchFile.mapping
-            val request = PutMappingRequest(route.indexName)
-            request.type(route.mappingType)
-            request.source(Json.serializeToString(patch.getValue("patch")), XContentType.JSON)
-
-            logger.info("Applying ES patch '{} {}.{}' - '{}' to index '{}'",
-                    patchFile.name, patchFile.majorVersion, patchFile.minorVersion,
-                    patch["description"], route.indexUrl)
-
-            val response = es.client.indices().putMapping(request)
-            if (response.isAcknowledged) {
-                indexRouteDao.setMinorVersion(route, patchFile.minorVersion)
-            }
-        }
-        catch (e:Exception) {
-            logger.warn("Failed to apply patch: {}.{}",
-                    patchFile.majorVersion, patchFile.minorVersion, e)
-        }
-    }
-
     override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {
         val path = "db/migration/elasticsearch/V${majorVersion}__$mappingType.json"
         val resource = ClassPathResource(path)
@@ -243,7 +214,7 @@ class IndexRoutingServiceImpl @Autowired
                 }
             }
         }
-        result.sortWith(Comparator { o1, o2 -> Integer.compare(o2.majorVersion, o1.minorVersion) })
+        result.sortWith(Comparator { o1, o2 -> Integer.compare(o1.minorVersion, o2.minorVersion) })
         return result
     }
 
@@ -275,10 +246,42 @@ class IndexRoutingServiceImpl @Autowired
         return Health.up().build()
     }
 
+    /**
+     * Apply the given [ElasticMapping] file to the [IndexRoute].  This is a private function
+     * because only the syncIndexRouteVersion() function should call this method.
+     * This should only be called from within the context of syncing index routes.
+     *
+     * No version checking is done to ensure the patch file isn't already applied.
+     */
+    private fun applyMinorVersionMappingFile(route: IndexRoute, patchFile: ElasticMapping) {
+        val es = getClusterRestClient(route)
+        try {
+            val patch = patchFile.mapping
+            val request = PutMappingRequest(route.indexName)
+            request.type("asset")
+            request.source(Json.serializeToString(patch.getValue("patch")), XContentType.JSON)
+
+            logger.info("Applying ES patch '{} {}.{}' - '{}' to index '{}'",
+                    patchFile.name, patchFile.majorVersion, patchFile.minorVersion,
+                    patch["description"], route.indexUrl)
+
+            val response = es.client.indices().putMapping(request, RequestOptions.DEFAULT)
+            if (response.isAcknowledged) {
+                indexRouteDao.setMinorVersion(route, patchFile.minorVersion)
+            }
+            else {
+                throw RuntimeException("ES server did not ack patch.")
+            }
+        }
+        catch (e:Exception) {
+            logger.warn("Failed to apply patch: {}.{}",
+                    patchFile.majorVersion, patchFile.minorVersion, e)
+            indexRouteDao.setErrorVersion(route, patchFile.minorVersion)
+        }
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(IndexRoutingServiceImpl::class.java)
-
-        private val MAP_FILE_REGEX = Regex("^V(\\d+)__(.*?).json$")
 
         private val MAP_PATCH_REGEX = Regex("^V(\\d+)\\.(\\d{8})__(.*?).json$")
     }
@@ -286,7 +289,7 @@ class IndexRoutingServiceImpl @Autowired
 }
 
 /**
- *
+ * Caches one client per cluster URL.
  */
 class EsClientCache {
 
