@@ -2,39 +2,24 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
-<<<<<<< HEAD
-import com.zorroa.common.clients.ElasticMapping
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobState
-=======
-import com.zorroa.common.util.Json
->>>>>>> development
-import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.ClassPathResource
-import java.nio.file.Files
-import java.nio.file.Paths
-import kotlin.test.AfterTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
 
     @Autowired
-<<<<<<< HEAD
     lateinit var jobService : JobService
 
     @Autowired
-    lateinit var elasticSearchConfiguration : ElasticSearchConfiguration
-=======
     lateinit var indexRouteDao: IndexRouteDao
->>>>>>> development
 
     @Autowired
     lateinit var indexDao: IndexDao
@@ -138,7 +123,6 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals(1, indexDao.getAll(Pager.first()).size())
 
     }
-<<<<<<< HEAD
 
     @Test
     fun testLaunchReindexJob() {
@@ -156,7 +140,4 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals(1, jobCount)
     }
 }
-=======
-}
 
->>>>>>> development
