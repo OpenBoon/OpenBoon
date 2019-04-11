@@ -270,6 +270,7 @@ class IndexRoutingServiceImpl @Autowired
                 indexRouteDao.setMinorVersion(route, patchFile.minorVersion)
             }
             else {
+                indexRouteDao.setErrorVersion(route, patchFile.minorVersion)
                 throw RuntimeException("ES server did not ack patch.")
             }
         }

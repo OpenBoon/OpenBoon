@@ -13,7 +13,8 @@ CREATE TABLE index_route (
   bool_default_pool BOOLEAN NOT NULL,
   bool_use_rkey BOOLEAN NOT NULL,
   time_created BIGINT NOT NULL,
-  time_modified BIGINT NOT NULL
+  time_modified BIGINT NOT NULL,
+  int_mapping_error_ver INTEGER NOT NULL DEFAULT -1
 );
 
 CREATE UNIQUE INDEX index_route_idx_uniq ON index_route (str_url, str_index);

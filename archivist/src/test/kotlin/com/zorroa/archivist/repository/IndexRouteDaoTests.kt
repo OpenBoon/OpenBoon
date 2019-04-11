@@ -58,4 +58,13 @@ class IndexRouteDaoTests : AbstractTest() {
         assertEquals(ver, jdbc.queryForObject(
                 "SELECT int_mapping_minor_ver FROM index_route", Int::class.java))
     }
+
+    @Test
+    fun testErrorVersion() {
+        val ver = 666
+        val route = indexRouteDao.getOrgRoute()
+        assertTrue(indexRouteDao.setErrorVersion(route, ver))
+        assertEquals(ver, jdbc.queryForObject(
+                "SELECT int_mapping_error_ver FROM index_route", Int::class.java))
+    }
 }

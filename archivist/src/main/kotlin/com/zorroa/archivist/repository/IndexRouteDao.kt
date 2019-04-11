@@ -61,14 +61,13 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         return jdbc.query(GET_DEFAULTS, MAPPER).random()
     }
 
-    override fun setMinorVersion( route: IndexRoute, version: Int) : Boolean {
+    override fun setMinorVersion(route: IndexRoute, version: Int) : Boolean {
         return jdbc.update(UPDATE_MINOR_VER, version, System.currentTimeMillis(), route.id) == 1
     }
 
-    override fun setErrorVersion( route: IndexRoute, version: Int) : Boolean {
+    override fun setErrorVersion(route: IndexRoute, version: Int) : Boolean {
         return jdbc.update(UPDATE_ERROR_VER, version, System.currentTimeMillis(), route.id) == 1
     }
-
 
     companion object {
 
@@ -103,6 +102,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                         "index_route " +
                 "SET " +
                     "int_mapping_minor_ver=?, " +
+                    "int_mapping_error_ver=-1, " +
                     "time_modified=? " +
                 "WHERE " +
                     "pk_index_route=?"
@@ -111,7 +111,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                 "UPDATE " +
                     "index_route " +
                 "SET " +
-                    "int_mapping_minor_ver=?, " +
+                    "int_mapping_error_ver=?, " +
                     "time_modified=? " +
                 "WHERE " +
                     "pk_index_route=?"
