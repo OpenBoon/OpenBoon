@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.archivist.domain.IndexRoute
@@ -151,16 +152,7 @@ class IndexRoutingServiceImpl @Autowired
             if (!it.closed) {
                 val req = Request("POST", "/_refresh")
                 val client =  getClusterRestClient(it).client.lowLevelClient
-
-                client.performRequestAsync(req,  object : ResponseListener {
-                    override fun onSuccess(response: Response) {
-                        logger.info("Refreshed ES Route {}", it.indexUrl)
-                    }
-
-                    override fun onFailure(exception: Exception) {
-                        logger.warn("Failed to refresh ES Route: {}", it.indexUrl, exception)
-                    }
-                })
+                client.performRequest(req)
             }
         }
     }

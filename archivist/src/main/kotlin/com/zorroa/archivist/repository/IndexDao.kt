@@ -103,18 +103,13 @@ interface IndexDao {
      */
     fun index(sources: List<Document>): BatchCreateAssetsResponse
 
-    fun index(sources: List<Document>, refresh: Boolean): BatchCreateAssetsResponse
+    fun index(sources: List<Document>, refresh: Boolean=true): BatchCreateAssetsResponse
 }
 
 @Repository
 class IndexDaoImpl @Autowired constructor(
         private val properties: ApplicationProperties
 ) : AbstractElasticDao(), IndexDao {
-
-    /**
-     * Allows us to flush the first batch.
-     */
-    private val flushTime = AtomicLong(0)
 
     override fun <T> getFieldValue(id: String, field: String): T? {
         val rest = getClient()
@@ -127,11 +122,11 @@ class IndexDaoImpl @Autowired constructor(
 
     override fun index(source: Document, refresh:Boolean): Document {
         index(listOf(source), refresh)
-        return get(source.id!!)
+        return get(source.id)
     }
 
     override fun index(sources: List<Document>): BatchCreateAssetsResponse {
-        return index(sources, false)
+        return index(sources, true)
     }
 
     override fun index(sources: List<Document>, refresh: Boolean): BatchCreateAssetsResponse {
