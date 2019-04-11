@@ -197,7 +197,7 @@ fun getPermissionIds(): Set<UUID> {
 }
 
 fun getOrganizationFilter(): QueryBuilder {
-    return  QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
+    return QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
 }
 
 fun getPermissionsFilter(access: Access?): QueryBuilder? {
@@ -208,26 +208,30 @@ fun getPermissionsFilter(access: Access?): QueryBuilder? {
             return if (hasPermission(Groups.READ)) {
                 null
             } else {
-                QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.read",
+                        getPermissionIds().map { it.toString() })
             }
         }
         else if (access == Access.Write) {
             return if (hasPermission(Groups.WRITE)) {
                 null
             } else {
-                QueryBuilders.termsQuery("system.permissions.write", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.write",
+                        getPermissionIds().map { it.toString() })
             }
         }
         else if (access == Access.Export) {
             return if (hasPermission(Groups.EXPORT)) {
                 null
             } else {
-                QueryBuilders.termsQuery("system.permissions.export", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.export",
+                        getPermissionIds().map { it.toString() })
             }
         }
     }
 
-    return QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
+    return QueryBuilders.termsQuery("system.permissions.read",
+            getPermissionIds().map { it.toString() })
 }
 
 fun setWritePermissions(source: Document, perms: Collection<Permission>) {

@@ -142,6 +142,7 @@ open abstract class AbstractTest {
                 jdbc.update("DELETE FROM asset")
                 jdbc.update("DELETE FROM auditlog")
                 jdbc.update("DELETE FROM cluster_lock")
+                jdbc.update("UPDATE index_route SET str_index='unittest'")
             }
         })
 
@@ -210,7 +211,7 @@ open abstract class AbstractTest {
          * which adds some standard data to both databases.
          */
 
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getOrgRestClient()
         val reqDel = DeleteIndexRequest("unittest")
 
         /*
@@ -222,7 +223,7 @@ open abstract class AbstractTest {
             logger.warn("Failed to delete 'unittest' index, this is usually ok.")
         }
 
-        indexRoutingService.setupDefaultIndex()
+        indexRoutingService.syncAllIndexRoutes()
         refreshIndex()
     }
 
@@ -255,7 +256,8 @@ open abstract class AbstractTest {
                     permissionService.getPermission("zorroa::administrator"))
         }
 
-        SecurityContextHolder.getContext().authentication = authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
+        SecurityContextHolder.getContext().authentication =
+                authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
     }
 
     fun logout() {
@@ -379,7 +381,6 @@ open abstract class AbstractTest {
     }
 
     fun refreshIndex(sleep: Long=0) {
-        val rest = indexRoutingService[UUID.randomUUID()]
-        rest.client.lowLevelClient.performRequest("POST", "/_refresh")
+        indexRoutingService.refreshAll()
     }
 }

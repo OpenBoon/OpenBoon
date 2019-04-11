@@ -1,7 +1,6 @@
 package com.zorroa.archivist.elastic
 
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.common.clients.EsRestClient
 import org.slf4j.LoggerFactory
@@ -28,6 +27,6 @@ abstract class AbstractElasticDao {
     fun refreshIndex() { }
 
     fun getClient() : EsRestClient {
-        return indexRoutingService[getOrgId()]
+        return indexRoutingService.getOrgRestClient()
     }
 }

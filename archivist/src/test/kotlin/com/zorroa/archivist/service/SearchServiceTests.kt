@@ -9,7 +9,9 @@ import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.schema.LocationSchema
 import com.zorroa.archivist.schema.SourceSchema
 import com.zorroa.archivist.search.*
+import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.getPermissionsFilter
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Assert.*
@@ -897,10 +899,21 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testOrgFilter() {
+        addTestAssets("set01")
+        val org = organizationService.create(OrganizationSpec("Test"))
+        withAuth(SuperAdminAuthentication(org.id)) {
+            refreshIndex()
+            assertEquals(0, searchService.search(Pager.first(), AssetSearch()).size().toLong())
+        }
+    }
+
+    @Test
     fun testEmptySearch() {
         addTestAssets("set01")
         refreshIndex()
         assertEquals(5, searchService.search(Pager.first(), AssetSearch()).size().toLong())
+
     }
 
     @Test

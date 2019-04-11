@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.OrganizationFilter
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.OrganizationUpdateSpec
+import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -17,6 +18,14 @@ class OrganizationDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var organizationDao: OrganizationDao
+
+    @Autowired
+    lateinit var indexRouteDao: IndexRouteDao
+
+    @Before
+    fun init() {
+        organizationSpec.indexRouteId = indexRouteDao.getRandomDefaultRoute().id
+    }
 
     @Test
     fun testCreate() {
@@ -36,7 +45,7 @@ class OrganizationDaoTests : AbstractTest() {
     @Test
     fun testUpdate() {
         val org1 = organizationDao.create(organizationSpec)
-        val updateSpec = OrganizationUpdateSpec("Bilbo")
+        val updateSpec = OrganizationUpdateSpec("Bilbo", indexRouteDao.getRandomDefaultRoute().id)
         assertTrue(organizationDao.update(org1, updateSpec))
         val org2 =  organizationDao.get(org1.id)
         assertEquals(updateSpec.name, org2.name)

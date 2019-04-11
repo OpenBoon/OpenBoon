@@ -1,56 +1,16 @@
 package com.zorroa.common.clients
 
-import com.zorroa.archivist.service.IndexRoutingServiceImpl
+import com.zorroa.archivist.domain.EsClientCacheKey
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.update.UpdateRequest
+import org.elasticsearch.client.Request
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import java.io.IOException
-import java.util.*
 
-/**
- * An IndexRoute contains all the properties needed to route an organization's
- * ES requests to the right cluster, index, and shards.
- */
-class IndexRoute (
-        val clusterUrl: String,
-        val indexName: String,
-        val routingKey : String?=null
-)
-{
-    val indexUrl = "$clusterUrl/$indexName"
-
-    fun withKey(key: UUID) : IndexRoute {
-        return IndexRoute(clusterUrl, indexName, key.toString())
-    }
-
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val route = o as IndexRoute
-        return indexUrl == route.indexUrl
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hash(indexUrl)
-    }
-}
-
-/**
- * Represents a versioned ElasticSearch mapping.
- */
-class ElasticMapping(
-        val name: String,
-        val version: Int,
-        val mapping: Map<String, Any>
-)
-{
-    val indexName = "${name}_v$version"
-    val alias = name
-}
 
 /**
  * ES 6.x took away the SearchBuilder class which was a convenient way to
@@ -86,13 +46,12 @@ class SearchBuilder {
  * EsRestClient is used for building pre-rerouted ES requests based on the
  * organization's routing settings.
  */
-class EsRestClient(val route: IndexRoute, val client: RestHighLevelClient) {
+class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient) {
 
     fun newSearchRequest() : SearchRequest {
-        return SearchRequest(route.indexName)
-                .apply {
-                    if (route.routingKey != null) { this.routing(route.routingKey) }
-                }
+        return SearchRequest(route.indexName).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newSearchBuilder() : SearchBuilder {
@@ -108,39 +67,34 @@ class EsRestClient(val route: IndexRoute, val client: RestHighLevelClient) {
     }
 
     fun newGetRequest(id: String) : GetRequest {
-        return GetRequest(route.indexName).id(id)
-                .apply {
-                    if (route.routingKey != null) { this.routing(route.routingKey) }
-                }
+        return GetRequest(route.indexName).id(id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newUpdateRequest(id: String) : UpdateRequest {
-        return UpdateRequest(route.indexName, "asset", id)
-                .apply {
-                    if (route.routingKey != null) { this.routing(route.routingKey) }
-                }
+        return UpdateRequest(route.indexName, "asset", id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newIndexRequest(id: String) : IndexRequest {
-        return IndexRequest(route.indexName, "asset", id)
-                .apply {
-                    if (route.routingKey != null) { this.routing(route.routingKey) }
-                }
+        return IndexRequest(route.indexName, "asset", id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun newDeleteRequest(id:String) : DeleteRequest {
-        return DeleteRequest(route.indexName, "asset", id)
-                .apply {
-                    if (route.routingKey != null) { this.routing(route.routingKey) }
-                }
+        return DeleteRequest(route.indexName, "asset", id).apply {
+            route.routingKey?.let { routing(it) }
+        }
     }
 
     fun routeSearchRequest(req: SearchRequest) : SearchRequest {
-        req.indices(route.indexName)
         if (route.routingKey != null) {
             req.routing(route.routingKey)
         }
-        return req
+        return req.indices(route.indexName)
     }
 
     /**
@@ -149,7 +103,8 @@ class EsRestClient(val route: IndexRoute, val client: RestHighLevelClient) {
      * @return Boolean: true on exists
      */
     fun indexExists(): Boolean {
-        return client.lowLevelClient.performRequest("HEAD", route.indexUrl).statusLine.statusCode == 200
+        return client.lowLevelClient.performRequest(
+                Request("HEAD", route.indexUrl)).statusLine.statusCode == 200
     }
 
     /**
@@ -159,7 +114,8 @@ class EsRestClient(val route: IndexRoute, val client: RestHighLevelClient) {
      */
     fun isAvailable(): Boolean {
         return try {
-            client.lowLevelClient.performRequest("HEAD", route.clusterUrl).statusLine.statusCode == 200
+            client.lowLevelClient.performRequest(
+                    Request("HEAD", route.clusterUrl)).statusLine.statusCode == 200
         } catch (e: IOException) {
             false
         }
