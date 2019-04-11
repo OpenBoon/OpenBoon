@@ -41,7 +41,6 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testGetFieldValue() {
         assertEquals("dog", indexDao.getFieldValue(asset1.id, "bar.str"))
         assertEquals(100, (indexDao.getFieldValue<Any>(asset1.id, "bar.int") as Int).toLong())

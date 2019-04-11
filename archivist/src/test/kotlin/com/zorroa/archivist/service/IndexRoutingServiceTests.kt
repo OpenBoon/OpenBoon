@@ -1,7 +1,10 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.util.Json
@@ -19,6 +22,13 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
+
+    @Autowired
+    lateinit var indexDao: IndexDao
+
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
 
     @Test
     fun setupDefaultIndexRoute() {
@@ -46,6 +56,7 @@ class IndexRoutingServiceTests : AbstractTest() {
     fun syncIndexRouteVersion() {
         jdbc.update("UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
                 "int_mapping_minor_ver=0, str_index='test123'")
+
         var route = indexRouteDao.getRandomDefaultRoute()
         indexRoutingService.syncIndexRouteVersion(route)
 
@@ -97,6 +108,22 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         val bad = indexRoutingService.performHealthCheck()
         assertEquals("DOWN", bad.status.code)
+    }
+
+    @Test
+    fun refreshAll() {
+        /**
+         * Create a document with refresh=false, then try to search for it.
+         * It should not be found. Refresh the index and the doc should appear.
+         */
+        val doc = Document()
+        doc.setAttr("source.path", "/cat/dog.jpg")
+        indexDao.index(doc, false)
+        assertEquals(0, indexDao.getAll(Pager.first()).size())
+        indexRoutingService.refreshAll()
+        Thread.sleep(250)
+        assertEquals(1, indexDao.getAll(Pager.first()).size())
+
     }
 }
 

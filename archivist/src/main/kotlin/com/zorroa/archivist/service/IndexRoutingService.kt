@@ -13,10 +13,7 @@ import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
-import org.elasticsearch.client.Request
-import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.client.RestClient
-import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.client.*
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
@@ -31,7 +28,7 @@ import java.lang.RuntimeException
 import java.net.URI
 import java.util.*
 import java.util.concurrent.TimeUnit
-
+import org.elasticsearch.client.ResponseListener
 
 /**
  * Manages the creation and usage of ES indexes.  Currently this implementation only supports
@@ -142,6 +139,7 @@ class IndexRoutingServiceImpl @Autowired
     override fun setupDefaultIndexRoute() {
         val defaultUrl = properties.getString("archivist.index.default-url")
         indexRouteDao.updateDefaultIndexRoutes(defaultUrl)
+        esClientCache.invalidateAll()
     }
 
     override fun syncAllIndexRoutes() {
@@ -150,12 +148,27 @@ class IndexRoutingServiceImpl @Autowired
 
     override fun refreshAll() {
         indexRouteDao.getAll().forEach {
-            getClusterRestClient(it).client.lowLevelClient.performRequest(
-                    Request("POST", "/_refresh"))
+            if (!it.closed) {
+                val req = Request("POST", "/_refresh")
+                val client =  getClusterRestClient(it).client.lowLevelClient
+
+                client.performRequestAsync(req,  object : ResponseListener {
+                    override fun onSuccess(response: Response) {
+                        logger.info("Refreshed ES Route {}", it.indexUrl)
+                    }
+
+                    override fun onFailure(exception: Exception) {
+                        logger.warn("Failed to refresh ES Route: {}", it.indexUrl, exception)
+                    }
+                })
+            }
         }
     }
 
     override fun syncIndexRouteVersion(route: IndexRoute) {
+        // Invalidate any existing client before syncing.
+        esClientCache.invalidate(route.esClientCacheKey())
+
         val es = getClusterRestClient(route)
         waitForElasticSearch(es)
 
@@ -314,7 +327,24 @@ class EsClientCache {
                 }
             })
 
+    /**
+     * Return an [EsRestClient] instance for the given [EsClientCacheKey]
+     */
     fun get(route: EsClientCacheKey): EsRestClient {
         return EsRestClient(route, cache.get(route.clusterUrl))
+    }
+
+    /**
+     * Invalidate the [EsRestClient] for the given [EsClientCacheKey]
+     */
+    fun invalidate(route: EsClientCacheKey) {
+        cache.invalidate(route.clusterUrl)
+    }
+
+    /**
+     * Invalidate all [EsRestClient] entries.
+     */
+    fun invalidateAll() {
+        cache.invalidateAll()
     }
 }

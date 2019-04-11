@@ -1,7 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
@@ -22,6 +20,7 @@ import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.action.update.UpdateRequest
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
@@ -95,7 +94,7 @@ interface IndexDao {
 
     fun <T> getFieldValue(id: String, field: String): T?
 
-    fun index(source: Document): Document
+    fun index(source: Document, refresh:Boolean=true): Document
 
     /**
      * Index the given sources.  If any assets are created, attach a source link.
@@ -126,8 +125,8 @@ class IndexDaoImpl @Autowired constructor(
         return d.getAttr(field.removeSuffix(".raw"))
     }
 
-    override fun index(source: Document): Document {
-        index(ImmutableList.of(source), true)
+    override fun index(source: Document, refresh:Boolean): Document {
+        index(listOf(source), refresh)
         return get(source.id!!)
     }
 
@@ -143,14 +142,16 @@ class IndexDaoImpl @Autowired constructor(
 
         val retries = Lists.newArrayList<Document>()
         val bulkRequest = BulkRequest()
-        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+        if (refresh) {
+            bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+        }
 
         for (source in sources) {
             bulkRequest.add(prepareInsert(source))
         }
 
         val rest = getClient()
-        val bulk = rest.client.bulk(bulkRequest)
+        val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
 
         var index = -1
         for (response in bulk.items) {
@@ -245,7 +246,7 @@ class IndexDaoImpl @Autowired constructor(
         val bulk = rest.client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
-                result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
+                result["failed"]!!.add(mapOf("id" to rsp.id, "error" to rsp.failureMessage))
                 logger.warn("Failed to unlink asset: {}", rsp.failureMessage, rsp.failure.cause)
             } else {
                 result["success"]!!.add(rsp.id)
@@ -276,7 +277,7 @@ class IndexDaoImpl @Autowired constructor(
         val bulk = rest.client.bulk(bulkRequest)
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
-                result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
+                result["failed"]!!.add(mapOf("id" to rsp.id, "error" to rsp.failureMessage))
                 logger.warn("Failed to link asset: {}", rsp.failureMessage, rsp.failure.cause)
             } else {
                 result["success"]!!.add(rsp.id)
