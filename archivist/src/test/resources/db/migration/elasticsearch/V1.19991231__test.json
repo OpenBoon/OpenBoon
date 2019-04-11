@@ -1,0 +1,14 @@
+{
+  "description": "Test mapping patch",
+  "patch": {
+    "properties": {
+      "system": {
+        "properties": {
+          "testField": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
