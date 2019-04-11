@@ -26,6 +26,9 @@ class FolderDaoTests : AbstractTest() {
     @Autowired
     lateinit var organizationDao: OrganizationDao
 
+    @Autowired
+    lateinit var indexRouteDao: IndexRouteDao
+
     override fun requiresElasticSearch() : Boolean {
         return true
     }
@@ -79,7 +82,8 @@ class FolderDaoTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun createRootFolder() {
-        val org = organizationDao.create(OrganizationSpec("test"))
+        val org = organizationDao.create(OrganizationSpec("test",
+                indexRouteDao.getRandomDefaultRoute().id))
         val root = folderDao.createRootFolder(org)
         assertEquals("/", root.name)
         assertNull(root.parentId)

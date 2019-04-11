@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.ArchivistWriteException
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
@@ -186,7 +185,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         }
 
         val rf = folderService.get(dyhi.folderId, cached = false)
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getOrgRestClient()
 
         try {
 

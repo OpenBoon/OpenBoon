@@ -279,6 +279,10 @@ class SettingsServiceImpl @Autowired constructor(
                         SettingValidator(numericValue, emit=watermarkSettingsChanged))
                 .put("archivist.watermark.scale",
                         SettingValidator(decimalValue, emit=watermarkSettingsChanged))
+                .put("curator.lightbar.label-template",
+                        SettingValidator(null))
+                .put("curator.thumbnail.badge-template",
+                        SettingValidator(null))
                 .put("curator.thumbnails.drag-template",
                         SettingValidator(null))
                 .put("curator.lightbox.zoom-min",

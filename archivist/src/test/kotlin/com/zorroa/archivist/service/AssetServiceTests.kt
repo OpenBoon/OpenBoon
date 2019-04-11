@@ -59,6 +59,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(0, rsp.createdAssetIds.size)
         assets = searchService.search(Pager.first(), AssetSearch())
 
+        refreshIndex()
         for (asset in assets) {
             validateSystemAttrsExist(asset)
             assertNotEquals(asset.getAttr("system.timeCreated",

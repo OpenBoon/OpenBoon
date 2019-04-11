@@ -24,6 +24,7 @@ class OrganizationControllerTests: MockMvcTest() {
     private val organizationName = "Wendys"
     private val organizationSpec = OrganizationSpec(organizationName)
 
+
     internal lateinit var session: MockHttpSession
 
     @Before
@@ -92,7 +93,7 @@ class OrganizationControllerTests: MockMvcTest() {
     @Test
     fun testUpdate() {
         val org = organizationService.create(organizationSpec)
-        val update = OrganizationUpdateSpec(name="bob_dole")
+        val update = OrganizationUpdateSpec("bob_dole", org.indexRouteId)
 
         val rsp = mvc.perform(MockMvcRequestBuilders.put("/api/v1/organizations/${org.id}")
                 .session(session)

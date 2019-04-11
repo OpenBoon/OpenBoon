@@ -384,7 +384,6 @@ class FolderControllerTests : MockMvcTest() {
                 .andExpect(status().isOk)
                 .andReturn()
 
-        refreshIndex()
         authenticate("admin")
         assets = assetDao.getAll(Pager.first())
         for (asset in assets) {

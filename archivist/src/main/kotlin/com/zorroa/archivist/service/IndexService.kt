@@ -107,7 +107,7 @@ class IndexServiceImpl  @Autowired  constructor (
     }
 
     override fun index(assets: List<Document>): BatchCreateAssetsResponse {
-        return indexDao.index(assets)
+        return indexDao.index(assets, true)
     }
 
     override fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>> {
