@@ -11,7 +11,9 @@ CREATE TABLE index_route (
   int_shards SMAllINT NOT NULL,
   bool_closed BOOLEAN NOT NULL,
   bool_default_pool BOOLEAN NOT NULL,
-  bool_use_rkey BOOLEAN NOT NULL
+  bool_use_rkey BOOLEAN NOT NULL,
+  time_created BIGINT NOT NULL,
+  time_modified BIGINT NOT NULL
 );
 
 CREATE UNIQUE INDEX index_route_idx_uniq ON index_route (str_url, str_index);
@@ -28,7 +30,9 @@ INSERT INTO index_route VALUES (
   5,
   'f',
   't',
-  't'
+  't',
+  1554919886000,
+  1554919886000
 );
 
 --- All organizations need a route.

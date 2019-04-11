@@ -14,6 +14,11 @@ interface IndexRouteDao {
     fun setMinorVersion(route: IndexRoute, version: Int) : Boolean
 
     /**
+     * Set the version that the patch system stopped on as the error version.
+     */
+    fun setErrorVersion(route: IndexRoute, version: Int) : Boolean
+
+    /**
      * Return the [IndexRoute] assigned to the current user's organization.
      */
     fun getOrgRoute(): IndexRoute
@@ -57,8 +62,13 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     }
 
     override fun setMinorVersion( route: IndexRoute, version: Int) : Boolean {
-        return jdbc.update(UPDATE_MINOR_VER, version, route.id) == 1
+        return jdbc.update(UPDATE_MINOR_VER, version, System.currentTimeMillis(), route.id) == 1
     }
+
+    override fun setErrorVersion( route: IndexRoute, version: Int) : Boolean {
+        return jdbc.update(UPDATE_ERROR_VER, version, System.currentTimeMillis(), route.id) == 1
+    }
+
 
     companion object {
 
@@ -92,7 +102,17 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                 "UPDATE " +
                         "index_route " +
                 "SET " +
-                    "int_mapping_minor_ver=? " +
+                    "int_mapping_minor_ver=?, " +
+                    "time_modified=? " +
+                "WHERE " +
+                    "pk_index_route=?"
+
+        const val UPDATE_ERROR_VER =
+                "UPDATE " +
+                    "index_route " +
+                "SET " +
+                    "int_mapping_minor_ver=?, " +
+                    "time_modified=? " +
                 "WHERE " +
                     "pk_index_route=?"
     }
