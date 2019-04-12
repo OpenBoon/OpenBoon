@@ -19,6 +19,7 @@ import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.client.RequestOptions
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
@@ -210,7 +211,6 @@ open abstract class AbstractTest {
          * so each test has a clean index.  Once this is done we can call setupDataSources()
          * which adds some standard data to both databases.
          */
-
         val rest = indexRoutingService.getOrgRestClient()
         val reqDel = DeleteIndexRequest("unittest")
 
@@ -218,13 +218,13 @@ open abstract class AbstractTest {
          * Delete will throw here if the index doesn't exist.
          */
         try {
-            rest.client.indices().delete(reqDel)
+            rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
+            logger.info("unittest Elastic DB Removed")
         } catch (e: Exception) {
             logger.warn("Failed to delete 'unittest' index, this is usually ok.")
         }
 
         indexRoutingService.syncAllIndexRoutes()
-        refreshIndex()
     }
 
     fun setupDefaultOrganization() {

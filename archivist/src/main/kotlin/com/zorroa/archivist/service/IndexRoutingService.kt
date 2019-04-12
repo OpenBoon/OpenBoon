@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Component
 import java.net.URI
 import java.util.*
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 /**
@@ -118,7 +120,6 @@ interface IndexRoutingService {
      * Perform a health check on all active [IndexRoute]s
      */
     fun performHealthCheck() : Health
-
 }
 
 /**
@@ -134,7 +135,8 @@ class ElasticMapping(
 @Component
 class IndexRoutingServiceImpl @Autowired
     constructor(val indexRouteDao: IndexRouteDao,
-                val properties: ApplicationProperties): IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
+                val properties: ApplicationProperties):
+        IndexRoutingService, ApplicationListener<ContextRefreshedEvent>{
 
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
@@ -144,24 +146,32 @@ class IndexRoutingServiceImpl @Autowired
 
     var esClientCache = EsClientCache()
 
-    override fun onApplicationEvent(cre: ContextRefreshedEvent) {
+    val migrated = AtomicBoolean(false)
+
+    override fun onApplicationEvent(event: ContextRefreshedEvent) {
         setupDefaultIndexRoute()
-        syncAllIndexRoutes()
+        if (!ArchivistConfiguration.unittest) {
+            // This is run manually by unittests we can test it.
+            syncAllIndexRoutes()
+        }
     }
 
     override fun setupDefaultIndexRoute() {
         val defaultUrl = properties.getString("archivist.index.default-url")
         indexRouteDao.updateDefaultIndexRoutes(defaultUrl)
-        syncAllIndexRoutes()
     }
 
     override fun syncAllIndexRoutes() {
-        indexRouteDao.getAll().forEach { syncIndexRouteVersion(it) }
+        val routes = indexRouteDao.getAll()
+        logger.info("Syncing all ${routes.size} index routes.")
+        routes.forEach { syncIndexRouteVersion(it) }
+        migrated.set(true)
     }
 
     override fun refreshAll() {
         indexRouteDao.getAll().forEach {
             if (!it.closed) {
+                logger.info("refreshing index route ${it.indexUrl}")
                 val req = Request("POST", "/_refresh")
                 val client =  getClusterRestClient(it).client.lowLevelClient
                 client.performRequest(req)
@@ -170,13 +180,10 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun syncIndexRouteVersion(route: IndexRoute) {
-        // Invalidate any existing client before syncing.
-        esClientCache.invalidate(route.esClientCacheKey())
-
         val es = getClusterRestClient(route)
         waitForElasticSearch(es)
 
-        val lock = ClusterLockSpec.softLock("create-es-${route.indexName}")
+        val lock = ClusterLockSpec.softLock("create-es-${route.id}")
         clusterLockExecutor.inline(lock) {
             if (!es.indexExists()) {
                 logger.info("Creating index:" +
@@ -257,6 +264,7 @@ class IndexRoutingServiceImpl @Autowired
         }
 
         result.sortWith(Comparator { o1, o2 -> Integer.compare(o1.minorVersion, o2.minorVersion) })
+        logger.info("mapping '$mappingType v$majorVersion has ${result.size} available patches.")
         return result
     }
 
@@ -277,6 +285,10 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun performHealthCheck() : Health {
+        if (!migrated.get()) {
+            return Health.down().withDetail(
+                    "ElasticSearch routes have not been migrated", migrated).build()
+        }
         for (route in indexRouteDao.getAll()) {
             if (route.closed) { continue }
             val client = getClusterRestClient(route)
