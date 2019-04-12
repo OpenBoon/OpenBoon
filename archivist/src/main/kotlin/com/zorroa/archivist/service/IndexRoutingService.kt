@@ -152,6 +152,7 @@ class IndexRoutingServiceImpl @Autowired
     override fun setupDefaultIndexRoute() {
         val defaultUrl = properties.getString("archivist.index.default-url")
         indexRouteDao.updateDefaultIndexRoutes(defaultUrl)
+        syncAllIndexRoutes()
     }
 
     override fun syncAllIndexRoutes() {
