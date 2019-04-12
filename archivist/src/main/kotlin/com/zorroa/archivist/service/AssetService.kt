@@ -145,6 +145,7 @@ open abstract class AbstractAssetService : AssetService {
              */
             PROTECTED_NAMESPACES.forEach { n -> newSource.removeAttr(n) }
 
+            newSource.setAttr("system.organizationId", orgId.toString())
             handleTimes(existingSource, newSource)
             handleHold(existingSource, newSource)
             handlePermissions(existingSource, newSource, defaultPermissions)
