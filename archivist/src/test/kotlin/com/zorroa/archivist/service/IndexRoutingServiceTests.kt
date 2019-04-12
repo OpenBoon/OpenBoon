@@ -10,6 +10,7 @@ import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobState
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -116,7 +117,13 @@ class IndexRoutingServiceTests : AbstractTest() {
          */
         val doc = Document()
         doc.setAttr("source.path", "/cat/dog.jpg")
-        indexDao.index(doc, false)
+        var passed = false
+        try {
+            indexDao.index(doc, false)
+        } catch (e: EmptyResultDataAccessException) {
+            passed = true
+        }
+        assertTrue(passed)
         assertEquals(0, indexDao.getAll(Pager.first()).size())
         indexRoutingService.refreshAll()
         Thread.sleep(250)

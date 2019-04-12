@@ -54,12 +54,13 @@ class AssetServiceTests : AbstractTest() {
                     asset.getAttr("system.timeModified", String::class.java))
         }
 
+        Thread.sleep(1000)
         val rsp = assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
         assertEquals(2, rsp.replacedAssetIds.size)
         assertEquals(0, rsp.createdAssetIds.size)
-        assets = searchService.search(Pager.first(), AssetSearch())
 
         refreshIndex()
+        assets = searchService.search(Pager.first(), AssetSearch())
         for (asset in assets) {
             validateSystemAttrsExist(asset)
             assertNotEquals(asset.getAttr("system.timeCreated",
