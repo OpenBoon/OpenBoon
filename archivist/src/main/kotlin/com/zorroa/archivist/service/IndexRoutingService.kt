@@ -178,7 +178,9 @@ class IndexRoutingServiceImpl @Autowired
         val lock = ClusterLockSpec.softLock("create-es-${route.indexName}")
         clusterLockExecutor.inline(lock) {
             if (!es.indexExists()) {
-                logger.info("Creating index: ${route.indexName}")
+                logger.info("Creating index:" +
+                        "type: '${route.mappingType}'  index: '${route.indexName}' " +
+                        "ver: '${route.mappingMajorVer}'")
 
                 val mappingFile = getMajorVersionMappingFile(
                         route.mappingType, route.mappingMajorVer)
@@ -236,7 +238,7 @@ class IndexRoutingServiceImpl @Autowired
     override fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping> {
         val result = mutableListOf<ElasticMapping>()
         val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
-        val resources = resolver.getResources("classpath:/db/migration/elasticsearch/*.json")
+        val resources = resolver.getResources("classpath*:/db/migration/elasticsearch/*.json")
 
         for (resource in resources) {
             val matcher = MAP_PATCH_REGEX.matchEntire(resource.filename)
