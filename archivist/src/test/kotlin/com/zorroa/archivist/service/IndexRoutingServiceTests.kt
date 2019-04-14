@@ -118,7 +118,7 @@ class IndexRoutingServiceTests : AbstractTest() {
          */
         val doc = Document()
         doc.setAttr("source.path", "/cat/dog.jpg")
-        indexDao.index(doc, false)
+        indexDao.index(listOf(doc), false)
         assertEquals(0, indexDao.getAll(Pager.first()).size())
         indexRoutingService.refreshAll()
         Thread.sleep(250)
