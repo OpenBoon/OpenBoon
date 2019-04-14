@@ -139,15 +139,13 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean {
-        val updated =  jdbc.update(INC_STATS,
+        return jdbc.update(INC_STATS,
                 counts.total,
                 counts.createdAssetIds.size,
                 counts.warningAssetIds.size,
                 counts.erroredAssetIds.size,
                 counts.replacedAssetIds.size,
                 job.jobId) == 1
-
-        return updated
     }
 
     private fun count(filter: JobFilter): Long {
