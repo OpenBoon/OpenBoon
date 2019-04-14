@@ -750,7 +750,6 @@ open class IrmAssetServiceImpl constructor(
     lateinit var organizationService: OrganizationService
 
     override fun get(assetId: String): Document {
-        logger.event(LogObject.ASSET, LogAction.GET, mapOf("assetId" to assetId, "datastore" to "CDV"))
         return cdvClient.getIndexedMetadata(getCompanyId(), assetId)
     }
 
@@ -898,7 +897,6 @@ open class IrmAssetServiceImpl constructor(
     }
 
     override fun getAll(ids: List<String>) : List<Document> {
-        logger.event(LogObject.ASSET, LogAction.SEARCH, mapOf("requested_count" to ids.size, "datastore" to "CDV"))
         return ids.map {
             // Will return empty document if not in CDV
             val doc = cdvClient.getIndexedMetadata(getCompanyId(), it)
@@ -918,7 +916,6 @@ open class IrmAssetServiceImpl constructor(
         val result = cdvClient.createAsset(getCompanyId(), spec)
         val uri = URI(result["imageUploadURL"] as String)
         cdvClient.uploadSource(uri, bytes)
-        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to uri))
         return AssetUploadedResponse(id, uri)
     }
 }
@@ -938,14 +935,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
     }
 
     override fun getAll(assetIds: List<String>): List<Document> {
-
-        val list = assetDao.getAll(assetIds)
-        logger.event(
-            LogObject.ASSET,
-            LogAction.SEARCH,
-            mapOf("requested_count" to assetIds.size, "result_count" to list.size)
-        )
-        return list
+       return assetDao.getAll(assetIds)
     }
 
     override fun delete(id: String): Boolean {
@@ -1059,7 +1049,6 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         val id = UUID.randomUUID()
         val fss = fileStorageService.get(FileStorageSpec("asset", id, name))
         fileStorageService.write(fss.id, bytes)
-        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to fss.uri))
         return AssetUploadedResponse(id, fss.uri)
     }
 }
