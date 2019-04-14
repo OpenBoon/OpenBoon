@@ -47,7 +47,7 @@ class JobServiceImpl @Autowired constructor(
         private val jobDao: JobDao,
         private val taskDao: TaskDao,
         private val taskErrorDao: TaskErrorDao,
-        private val meterRegistrty: MeterRegistry
+        private val meterRegistry: MeterRegistry
 ): JobService {
 
     @Autowired
@@ -154,7 +154,7 @@ class JobServiceImpl @Autowired constructor(
 
     override fun createTask(job: JobId, spec: TaskSpec) : Task {
         val result = taskDao.create(job, spec)
-        meterRegistrty.counter("zorroa.tasks.created",
+        meterRegistry.counter("zorroa.tasks.created",
                 "organizationId", getOrgId().toString()).increment()
         return result
     }
