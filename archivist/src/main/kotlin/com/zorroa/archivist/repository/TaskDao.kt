@@ -5,15 +5,20 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.service.MeterRegistryHolder
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.*
+import javax.annotation.PostConstruct
 
 interface TaskDao {
     fun create(job: JobId, spec: TaskSpec): Task
@@ -26,6 +31,11 @@ interface TaskDao {
     fun getAll(tf: TaskFilter?): KPagedList<Task>
     fun getAll(job: UUID, state: TaskState): List<Task>
     fun isAutoRetryable(task: TaskId): Boolean
+
+    /**
+     * Return the total number of pending tasks.
+     */
+    fun getPendingTaskCount(): Long
 }
 
 @Repository
@@ -80,6 +90,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     newState.ordinal, time, task.taskId) == 1
         }
         if (updated) {
+            meterRegistry.counter("zorroa.task.state", getTags(newState.metricsTag())).increment()
             logger.event(LogObject.TASK, LogAction.STATE_CHANGE,
                     mapOf("taskId" to task.taskId,
                             "newState" to newState.name,
@@ -134,6 +145,11 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     override fun isAutoRetryable(task: TaskId): Boolean {
         return jdbc.queryForObject("SELECT int_run_count <= ? FROM task where pk_task=?",
                 Boolean::class.java, autoRetryLimit, task.taskId)
+    }
+
+    override fun getPendingTaskCount(): Long {
+        return jdbc.queryForObject(GET_PENDING_COUNT,
+                Long::class.java, JobState.Active.ordinal, TaskState.Waiting.ordinal)
     }
 
     companion object {
@@ -210,6 +226,19 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task " +
                 "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
                 "JOIN job ON task.pk_job = job.pk_job "
+
+        private const val GET_PENDING_COUNT =
+                "SELECT " +
+                    "COUNT(1) " +
+                "FROM " +
+                    "job," +
+                    "task " +
+                "WHERE " +
+                    "job.pk_job = task.pk_job " +
+                "AND " +
+                    "job.int_state = ? " +
+                "AND " +
+                    "task.int_state = ? "
 
     }
 }

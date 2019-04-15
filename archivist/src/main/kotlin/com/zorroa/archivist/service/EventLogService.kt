@@ -7,6 +7,7 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUserOrNull
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
@@ -28,22 +29,24 @@ class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry
  * A singleton for storing a MeterRegistry which is accessible from static functions.
  */
 object MeterRegistryHolder {
+
     lateinit var meterRegistrty : MeterRegistry
+
+    fun getTags(vararg tags: Tag) : MutableList<Tag> {
+        // TODO: Add organization name.
+        val result = mutableListOf<Tag>()
+
+        tags?.let {
+            result.addAll(it)
+        }
+        return result
+    }
 
     /**
      * Increment a counter for the action.
      */
-    fun increment(name: String) {
-        val user = getUserOrNull()
-
-        if (user != null) {
-            meterRegistrty.counter(name.toLowerCase(), "zorroa.username", user.username,
-                    "zorroa.orgId", user.organizationId.toString()).increment()
-        }
-        else {
-            meterRegistrty.counter(name.toLowerCase(),
-                    "zorroa.username", "unknown",  "zorroa.orgId", "unknown").increment()
-        }
+    fun increment(name: String, vararg tags: Tag) {
+        meterRegistrty.counter(name.toLowerCase(), getTags(*tags)).increment()
     }
 
     /**
@@ -93,7 +96,8 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
  * @param kvp: A map of key value pairs we want to associate with the line.
  */
 fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?) {
-    MeterRegistryHolder.increment("zorroa.$obj.$action")
+    // Don't ever pass kvp into MeterRegistryHolder for tags
+    MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "success"))
     if (this.isInfoEnabled) {
         this.info(formatLogMessage(obj, action, *kvp))
     }
@@ -108,7 +112,8 @@ fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?
  * @param kvp: A map of key value pairs we want to associate with the line.
  */
 fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Map<String, Any?>?=null, ex: Exception?=null) {
-    MeterRegistryHolder.increment("zorroa.$obj.$action.warn")
+    // Don't ever pass kvp into MeterRegistryHolder for tags
+    MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "warn"))
     if (this.isWarnEnabled) {
         this.warn(formatLogMessage(obj, action, kvp, mapOf("message" to message)), ex)
     }
@@ -141,47 +146,48 @@ fun incrementFilterCounters(filter: AssetFilter) {
     }
 
     MeterRegistryHolder.counter("zorroa.search.filter").increment()
+
     if (!filter.exists.isNullOrEmpty()) {
-        incrementCounter("search.exists")
+        incrementCounter("zorroa.search.filter.exists")
     }
     if (!filter.missing.isNullOrEmpty()) {
-        incrementCounter("search.missing")
+        incrementCounter("zorroa.search.filter.missing")
     }
     if (!filter.terms.isNullOrEmpty()) {
-        incrementCounter("search.terms")
+        incrementCounter("zorroa.search.filter.terms")
     }
     if (!filter.prefix.isNullOrEmpty()) {
-        incrementCounter("search.prefix")
+        incrementCounter("zorroa.search.filter.prefix")
     }
     if (!filter.range.isNullOrEmpty()) {
-        incrementCounter("search.range")
+        incrementCounter("zorroa.search.filter.range")
     }
     if (!filter.scripts.isNullOrEmpty()) {
-        incrementCounter("search.scripts")
+        incrementCounter("zorroa.search.filter.scripts")
     }
     if (!filter.links.isNullOrEmpty()) {
-        incrementCounter("search.links")
+        incrementCounter("zorroa.search.filter.links")
     }
     if (!filter.similarity.isNullOrEmpty()) {
-        incrementCounter("search.similarity")
+        incrementCounter("zorroa.search.filter.similarity")
     }
     if (!filter.kwconf.isNullOrEmpty()) {
-        incrementCounter("search.kwconf")
+        incrementCounter("zorroa.search.filter.kwconf")
     }
     if (!filter.geo_bounding_box.isNullOrEmpty()) {
-        incrementCounter("search.geo_bounding_box")
+        incrementCounter("zorroa.search.filter.geo_bounding_box")
     }
     if (!filter.mustNot.isNullOrEmpty()) {
-        incrementCounter("search.mustNot")
+        incrementCounter("zorroa.search.filter.mustNot")
     }
     if (!filter.must.isNullOrEmpty()) {
-        incrementCounter("search.must")
+        incrementCounter("zorroa.search.filter..must")
     }
     if (!filter.should.isNullOrEmpty()) {
-        incrementCounter("search.should")
+        incrementCounter("zorroa.search.filter..should")
     }
     if (filter.recursive == true) {
-        incrementCounter("search.recursive")
+        incrementCounter("zorroa.search.filter.recursive")
     }
 }
 

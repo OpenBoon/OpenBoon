@@ -7,6 +7,7 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import io.micrometer.core.instrument.MeterRegistry
@@ -55,7 +56,6 @@ class JobServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var fileStorageService: FileStorageService
-
 
     override fun create(spec: JobSpec) : Job {
         if (spec.script != null) {
@@ -153,13 +153,10 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun createTask(job: JobId, spec: TaskSpec) : Task {
-        val result = taskDao.create(job, spec)
-        meterRegistry.counter("zorroa.tasks.created",
-                "organizationId", getOrgId().toString()).increment()
-        return result
+        return taskDao.create(job, spec)
     }
 
-    override fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse) {
+    override fun incrementAssetCounts(task: Task, counts: BatchCreateAssetsResponse) {
         taskDao.incrementAssetStats(task, counts)
         jobDao.incrementAssetStats(task, counts)
     }
