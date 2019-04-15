@@ -3,6 +3,7 @@ package com.zorroa.archivist.elastic
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.common.clients.EsRestClient
+import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
