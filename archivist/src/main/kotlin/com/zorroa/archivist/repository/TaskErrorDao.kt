@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.archivist.util.*
 import com.zorroa.common.domain.*
@@ -11,6 +12,7 @@ import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
 import com.zorroa.common.util.readValueOrNull
+import io.micrometer.core.instrument.Tag
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -148,11 +150,13 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return jdbc.update("DELETE FROM task_error WHERE pk_job=?", job.jobId)
     }
 
+
     fun warnEvent(task: Task, spec: TaskErrorEvent) {
-        logger.warnEvent(LogObject.TASK, LogAction.ERROR, spec.message,
+        meterRegistry.counter("zorroa.task_errors", getTags(Tag.of("processor", spec.processor)))
+
+        logger.warnEvent(LogObject.TASK_ERROR, LogAction.CREATE, spec.message,
                 mapOf("assetId" to spec.assetId,
                         "taskId" to task.id,
-                        "organizationId" to task.organizationId,
                         "processor" to spec.processor,
                         "jobId" to task.jobId))
     }
