@@ -8,15 +8,22 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import io.micrometer.core.instrument.Tag
 import java.util.*
 
 enum class JobState {
     Active,
     Cancelled,
     Finished,
-    Archived
-}
+    Archived;
 
+    /**
+     * Return a Micrometer tag for tagging metrics related to this state.
+     */
+    fun metricsTag(): Tag {
+        return Tag.of("job-state", this.toString())
+    }
+}
 
 interface JobId {
     val jobId: UUID
