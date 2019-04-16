@@ -28,12 +28,17 @@ class JobSpec (
         var script : ZpsScript?,
         val args: MutableMap<String, Any>? = mutableMapOf(),
         val env: MutableMap<String, String>? =  mutableMapOf(),
-        val priority: Int=100
+        val priority: Int=100,
+        var paused: Boolean=false,
+        val pauseDurationSeconds: Long?=null,
+        val replace:Boolean=false
 )
 
 class JobUpdateSpec (
         var name: String,
-        val priority: Int
+        val priority: Int,
+        val paused: Boolean,
+        val timePauseExpired: Long
 )
 
 class Job (
@@ -48,7 +53,9 @@ class Job (
         var timeStarted: Long,
         var timeUpdated: Long,
         var timeCreated: Long,
-        var priority: Int
+        var priority: Int,
+        val paused: Boolean,
+        val timePauseExpired: Long
 ) : JobId {
     override val jobId = id
 
@@ -62,7 +69,9 @@ class JobFilter (
         val ids : List<UUID>? = null,
         val type: PipelineType? = null,
         val states : List<JobState>? = null,
-        val organizationIds: List<UUID>? = null
+        val organizationIds: List<UUID>? = null,
+        val names: List<String>? = null,
+        val paused: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -95,6 +104,16 @@ class JobFilter (
         states?.let {
             addToWhere(JdbcUtils.inClause("job.int_state", it.size))
             addToValues(it.map{ s-> s.ordinal})
+        }
+
+        names?.let {
+            addToWhere(JdbcUtils.inClause("job.str_name", it.size))
+            addToValues(it)
+        }
+
+        paused?.let {
+            addToWhere("job.bool_paused=?")
+            addToValues(paused)
         }
 
         if (hasPermission("zorroa::superadmin")) {

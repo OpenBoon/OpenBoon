@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
@@ -57,6 +58,48 @@ class MaintenanceConfiguration {
     var archiveJobsAfterDays: Long = 90
 }
 
+/**
+ * A scheduler for resuming jobs where the job pause timer has expired.
+ */
+@Component
+class ResumePausedJobsScheduler @Autowired constructor(
+        val jobDao: JobDao,
+        val clusterLockExecutor: ClusterLockExecutor,
+        val config: MaintenanceConfiguration) : AbstractScheduledService(), ApplicationListener<ContextRefreshedEvent> {
+
+    override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
+        if (config.enabled) {
+            this.startAsync()
+        }
+    }
+
+    override fun runOneIteration() {
+        val lock = ClusterLockSpec.softLock(lockName).apply {
+            timeout = 1
+            timeoutUnits = TimeUnit.MINUTES
+            dispatcher = Dispatchers.IO
+        }
+        try {
+            clusterLockExecutor.inline(lock) {
+                jobDao.resumePausedJobs()
+            }
+        } catch (e: Exception) {
+            logger.warn("Failed to unlock paused jobs, ", e)
+        }
+    }
+
+    override fun scheduler(): AbstractScheduledService.Scheduler {
+        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(60, 5, TimeUnit.SECONDS)
+    }
+
+    companion object {
+
+        private const val lockName = "resume-jobs"
+
+        private val logger = LoggerFactory.getLogger(ResumePausedJobsScheduler::class.java)
+    }
+
+}
 
 @Component
 class MaintenanceServiceImpl @Autowired constructor(
@@ -153,7 +196,7 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun scheduler(): AbstractScheduledService.Scheduler {
-        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(5, 1, TimeUnit.MINUTES)
+        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(1, 1, TimeUnit.MINUTES)
     }
 
     companion object {

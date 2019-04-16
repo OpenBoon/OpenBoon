@@ -7,7 +7,6 @@ import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.common.domain.ArchivistException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.EntityNotFoundException
 import com.zorroa.common.util.Json
@@ -146,7 +145,7 @@ class BatchUpdatePermissionsResponse {
  *
  * @property sources: The source documents
  * @property jobId: The associated job Id
- * @property taskID: The associated task Id
+ * @property taskId: The associated task Id
  * @property skipAssetPrep: Skip over asset prep stage during create.
  */
 class BatchCreateAssetsRequest(
@@ -154,6 +153,10 @@ class BatchCreateAssetsRequest(
         val jobId: UUID?,
         val taskId: UUID?) {
 
+    /**
+     * A convenience constructor for unit tests.
+     */
+    constructor(doc: Document) : this(listOf(doc))
 
     @JsonIgnore
     var skipAssetPrep = false

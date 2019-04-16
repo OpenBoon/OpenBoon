@@ -3,15 +3,9 @@ package com.zorroa.archivist.service
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.FolderSpec
-import com.zorroa.archivist.domain.TaxonomySchema
-import com.zorroa.archivist.domain.TaxonomySpec
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.CoroutineAuthentication
-import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.common.domain.ArchivistWriteException
-import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,7 +34,7 @@ class TaxonomyServiceTests : AbstractTest() {
 
         val d = Document(UUID.randomUUID())
         d.setAttr("foo.keywords", "ships")
-        assetService.createOrReplace(d)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
         refreshIndex()
 
         folderService.addAssets(folder4, listOf(d.id))
@@ -109,8 +103,7 @@ class TaxonomyServiceTests : AbstractTest() {
 
         val d = Document(UUID.randomUUID())
         d.setAttr("foo.keywords", "ships")
-        assetService.createOrReplace(d)
-        refreshIndex()
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
 
         folderService.addAssets(folder1, listOf(d.id))
         refreshIndex()
@@ -134,8 +127,7 @@ class TaxonomyServiceTests : AbstractTest() {
         folder1 = folderService.get(folder1.id)
 
         val d = Document(UUID.randomUUID())
-        assetService.createOrReplace(d)
-        refreshIndex()
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
 
         assertEquals(0, searchService.search(
                 AssetSearch("ships")).hits.getTotalHits())
@@ -165,7 +157,7 @@ class TaxonomyServiceTests : AbstractTest() {
         folder1 = folderService.get(folder1.id)
 
         val d = Document(UUID.randomUUID())
-        assetService.createOrReplace(d)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
         refreshIndex()
 
         folderService.addAssets(folder1, listOf(d.id))
@@ -191,7 +183,7 @@ class TaxonomyServiceTests : AbstractTest() {
         folder1 = folderService.get(folder1.id)
 
         val d = Document(UUID.randomUUID())
-        assetService.createOrReplace(d)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
         refreshIndex()
 
         folderService.addAssets(folder1, listOf(d.id))
