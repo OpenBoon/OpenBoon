@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +27,6 @@ class AssetServiceTests : AbstractTest() {
         addTestAssets("set04/standard")
     }
 
-    @Test
     fun testBatchCreateOrReplace() {
         var assets = searchService.search(Pager.first(), AssetSearch())
         for (asset in assets) {
@@ -36,12 +36,12 @@ class AssetServiceTests : AbstractTest() {
                     asset.getAttr("system.timeModified", String::class.java))
         }
 
-        val rsp = assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        Thread.sleep(1000)
+        val rsp = assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))
         assertEquals(2, rsp.replacedAssetIds.size)
         assertEquals(0, rsp.createdAssetIds.size)
-        assets = searchService.search(Pager.first(), AssetSearch())
 
-        refreshIndex()
+        assets = searchService.search(Pager.first(), AssetSearch())
         for (asset in assets) {
             validateSystemAttrsExist(asset)
             assertNotEquals(asset.getAttr("system.timeCreated",
@@ -53,7 +53,7 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testBatchCreateOrReplaceWithLinks() {
         var assets = searchService.search(Pager.first(), AssetSearch())
-        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))
 
         val ids = assets.map { it.id }
         val folderId = UUID.randomUUID()
@@ -61,7 +61,7 @@ class AssetServiceTests : AbstractTest() {
                 LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
 
 
-        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))
         assets = searchService.search(Pager.first(), AssetSearch())
         assertTrue(assets.size() > 0)
         assets.list.forEach {
@@ -79,7 +79,7 @@ class AssetServiceTests : AbstractTest() {
             assetService.createFieldEdit(FieldEditSpec(UUID.fromString(it.id), field.id, null,"bilbo"))
         }
 
-        assetService.batchCreateOrReplace(BatchCreateAssetsRequest(assets.list))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))
         assets = searchService.search(Pager.first(), AssetSearch())
         assertTrue(assets.size() > 0)
         assets.list.forEach {
@@ -91,7 +91,8 @@ class AssetServiceTests : AbstractTest() {
     fun testCreateOrReplace() {
         val asset = searchService.search(Pager.first(), AssetSearch())[0]
         asset.setAttr("foo", "bar")
-        val newAsset = assetService.createOrReplace(asset)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(asset))
+        val newAsset = assetService.get(asset.id)
         assertEquals(newAsset.getAttr("foo", String::class.java), "bar")
     }
 
@@ -111,14 +112,34 @@ class AssetServiceTests : AbstractTest() {
         searchService.search(Pager.first(), AssetSearch()).forEach {doc ->
             updates[doc.id] = UpdateAssetRequest(mapOf("foos" to "ball"))
         }
-        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(updates))
+        val rsp = assetService.updateAssets(BatchUpdateAssetsRequest(updates))
         assertEquals(2, rsp.updatedAssetIds.size)
-        refreshIndex()
 
         val search =  searchService.search(Pager.first(), AssetSearch())
         assertEquals(2, search.size())
         for (doc: Document in search.list) {
             assertEquals("ball", doc.getAttr("foos", String::class.java))
+        }
+    }
+
+    @Test
+    fun testBatchUpdateCheckSuggestions() {
+
+        addTestAssets("set04/standard")
+
+        val word = "mr.stubbins"
+        var updates = mutableMapOf<String, UpdateAssetRequest>()
+        searchService.search(Pager.first(), AssetSearch()).forEach {doc ->
+            updates[doc.id] = UpdateAssetRequest(mapOf("media.title" to word))
+        }
+        val rsp = assetService.updateAssets(BatchUpdateAssetsRequest(updates))
+        assertEquals(2, rsp.updatedAssetIds.size)
+
+        val search =  searchService.search(Pager.first(), AssetSearch())
+        assertEquals(2, search.size())
+        for (doc: Document in search.list) {
+            val suggest = doc.getAttr("system.suggestions", Json.LIST_OF_STRINGS)
+            assertTrue(suggest.contains(word))
         }
     }
 
@@ -130,38 +151,14 @@ class AssetServiceTests : AbstractTest() {
         searchService.search(Pager.first(), AssetSearch()).forEach {doc ->
             updates[doc.id] = UpdateAssetRequest(null, listOf("source"))
         }
-        val rsp = assetService.batchUpdate(BatchUpdateAssetsRequest(updates))
+        val rsp = assetService.updateAssets(BatchUpdateAssetsRequest(updates))
         assertEquals(2, rsp.updatedAssetIds.size)
-        refreshIndex()
 
         val search =  searchService.search(Pager.first(), AssetSearch())
         assertEquals(2, search.size())
         for (doc: Document in search.list) {
             assertNull(doc.getAttr("source"))
         }
-    }
-
-    @Test
-    fun testUpdate() {
-        val asset1 = searchService.search(Pager.first(), AssetSearch())[0]
-        val asset2 = assetService.update(asset1.id, mapOf("foo" to "bar"))
-        assertEquals(asset1.id, asset2.id)
-        assertEquals(asset1.getAttr("source.path", String::class.java),
-                asset2.getAttr("source.path", String::class.java))
-        assertEquals(asset2.getAttr("foo", String::class.java), "bar")
-    }
-
-    @Test
-    fun testUpdateWithUpdateAssetRequest() {
-        val asset1 = searchService.search(Pager.first(), AssetSearch())[0]
-        val updated = assetService.update(asset1.id, UpdateAssetRequest(
-                mapOf("foo" to "bar"),
-                listOf("source.fileSize"))
-        )
-        assertTrue(updated.isSuccess())
-        val asset2 = assetService.get(asset1.id)
-        assertEquals(asset2.getAttr("foo", String::class.java), "bar")
-        assertNull(asset2.getAttr("source.fileSize"))
     }
 
     @Test
@@ -199,8 +196,9 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testAddChildLinks() {
         val page = searchService.search(Pager.first(), AssetSearch())
-        assetService.update(page[0].id, mapOf("media.clip.parent" to page[1].id))
-        refreshIndex()
+        val batch = BatchUpdateAssetsRequest(
+                mapOf(page[0].id to UpdateAssetRequest(mapOf("media.clip.parent" to page[1].id))))
+        assetService.updateAssets(batch)
 
         val folderId = UUID.randomUUID()
         assertEquals(1,
@@ -222,7 +220,7 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testSetPermissions() {
         val perm = permissionService.getPermission(Groups.ADMIN)
-        val result = assetService.setPermissions(
+        assetService.setPermissions(
                 BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4)))
 
         val page = searchService.search(Pager.first(), AssetSearch())
@@ -235,7 +233,7 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testSetPermissionsWithReplace() {
         val perm = permissionService.getPermission(Groups.ADMIN)
-        val result = assetService.setPermissions(
+       assetService.setPermissions(
                 BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4), replace = true))
 
         val page = searchService.search(Pager.first(), AssetSearch())

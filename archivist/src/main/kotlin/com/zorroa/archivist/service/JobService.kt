@@ -44,11 +44,12 @@ interface JobService {
 @Service
 @Transactional
 class JobServiceImpl @Autowired constructor(
-        private val eventBus: EventBus,
-        private val jobDao: JobDao,
-        private val taskDao: TaskDao,
-        private val taskErrorDao: TaskErrorDao,
-        private val meterRegistry: MeterRegistry
+        val eventBus: EventBus,
+        val jobDao: JobDao,
+        val taskDao: TaskDao,
+        val taskErrorDao: TaskErrorDao,
+        val txevent: TransactionEventManager
+
 ): JobService {
 
     @Autowired
@@ -80,6 +81,27 @@ class JobServiceImpl @Autowired constructor(
         }
 
         val job = jobDao.create(spec, type)
+        if (spec.replace) {
+            /**
+             * If old job is being replaced, then add a commit hook to kill
+             * the old job.
+             */
+            txevent.afterCommit(sync=false) {
+                val filter = JobFilter(
+                        states=listOf(JobState.Active),
+                        names=listOf(job.name),
+                        organizationIds=listOf(getOrgId()))
+                val oldJobs = jobDao.getAll(filter)
+                for (oldJob in oldJobs) {
+                    // Don't kill one we just made
+                    if (oldJob.id != job.id) {
+                        logger.event(LogObject.JOB, LogAction.REPLACE,
+                                mapOf("jobId" to oldJob.id, "jobName" to oldJob.name))
+                        cancelJob(oldJob)
+                    }
+                }
+            }
+        }
 
         spec.script?.let { script->
 

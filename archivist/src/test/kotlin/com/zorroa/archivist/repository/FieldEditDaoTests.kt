@@ -17,12 +17,16 @@ class FieldEditDaoTests : AbstractTest() {
 
     lateinit var field : Field
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")
+        refreshIndex()
         field = fieldSystemService.createField(FieldSpec(
                 "File Extension", "source.extension", null, true))
-        refreshIndex()
     }
 
     @Test

@@ -53,7 +53,10 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "WHERE " +
                     "job.int_state=? " +
                 "AND " +
+                    "job.bool_paused='f' " +
+                "AND " +
                     "task.int_state=? " +
-                "ORDER BY job.int_priority,task.time_created LIMIT ?"
+                "ORDER BY " +
+                    "job.int_priority,task.time_created LIMIT ?"
     }
 }

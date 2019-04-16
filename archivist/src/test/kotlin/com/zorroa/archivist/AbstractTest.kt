@@ -7,18 +7,19 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.client.RequestOptions
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
@@ -142,7 +143,15 @@ open abstract class AbstractTest {
                 jdbc.update("DELETE FROM asset")
                 jdbc.update("DELETE FROM auditlog")
                 jdbc.update("DELETE FROM cluster_lock")
+                jdbc.update("DELETE FROM field_set")
+                jdbc.update("DELETE FROM field")
                 jdbc.update("UPDATE index_route SET str_index='unittest'")
+
+                /**
+                 * Need these in here so fields are visible by threads and coroutines.
+                 */
+                authenticate()
+                setupDefaultOrganization()
             }
         })
 
@@ -164,7 +173,7 @@ open abstract class AbstractTest {
         if (requiresElasticSearch()) {
             cleanElastic()
         }
-        setupDefaultOrganization()
+
 
         val spec1 = UserSpec(
                 "user",
@@ -210,7 +219,6 @@ open abstract class AbstractTest {
          * so each test has a clean index.  Once this is done we can call setupDataSources()
          * which adds some standard data to both databases.
          */
-
         val rest = indexRoutingService.getOrgRestClient()
         val reqDel = DeleteIndexRequest("unittest")
 
@@ -218,17 +226,17 @@ open abstract class AbstractTest {
          * Delete will throw here if the index doesn't exist.
          */
         try {
-            rest.client.indices().delete(reqDel)
+            rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
+            logger.info("unittest Elastic DB Removed")
         } catch (e: Exception) {
             logger.warn("Failed to delete 'unittest' index, this is usually ok.")
         }
 
         indexRoutingService.syncAllIndexRoutes()
-        refreshIndex()
     }
 
     fun setupDefaultOrganization() {
-        val org = organizationService.get(getOrgId())
+        val org = organizationService.get(Organization.DEFAULT_ORG_ID)
         fieldSystemService.setupDefaultFieldSets(org)
     }
     /**
@@ -354,27 +362,35 @@ open abstract class AbstractTest {
         addTestAssets(videoAssets)
     }
 
-
-    fun addTestAssets(builders: List<Source>) {
+    /**
+     * Create a batch of test assets.
+     *
+     * @param builders: A list of Source objects describing the assets.
+     * @param commitToDb: Set to true if the assets should be committed in a separate TX.
+     *
+     */
+    fun addTestAssets(builders: List<Source>, commitToDb:Boolean=true) {
         for (source in builders) {
-            val schema = source.sourceSchema
 
             logger.info("Adding test asset: {}", source.path.toString())
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
 
-            /**
-             * Co-routines and threads need to see committed data, so assets are committed for
-             * that purpose but cleaned up before each test.
-             */
-            val tmpl = TransactionTemplate(transactionManager)
-            tmpl.propagationBehavior = Propagation.REQUIRES_NEW.value()
-            tmpl.execute(object : TransactionCallbackWithoutResult() {
-                override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
-                    assetService.batchCreateOrReplace(BatchCreateAssetsRequest(listOf(source)).apply { isUpload=true })
-                }
-            })
+
+            val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
+
+            if (commitToDb) {
+                val tmpl = TransactionTemplate(transactionManager)
+                tmpl.propagationBehavior = Propagation.REQUIRES_NEW.value()
+                tmpl.execute(object : TransactionCallbackWithoutResult() {
+                    override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
+                        assetService.createOrReplaceAssets(req)
+                    }
+                })
+            } else {
+                assetService.createOrReplaceAssets(req)
+            }
 
         }
         refreshIndex()

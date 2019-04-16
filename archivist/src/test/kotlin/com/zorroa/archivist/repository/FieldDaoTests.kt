@@ -15,13 +15,18 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val spec = FieldSpec("Notes", "document.notes",
+                AttrType.StringAnalyzed, false, true,
+                2.0f, true)
         val field = fieldDao.create(spec)
         assertEquals(spec.name, field.name)
         assertEquals(spec.attrType, field.attrType)
         assertEquals(spec.attrName, field.attrName)
         assertEquals(spec.custom, field.custom)
         assertEquals(spec.editable, field.editable)
+        assertEquals(spec.keywords, field.keywords)
+        assertEquals(spec.keywordsBoost, field.keywordsBoost)
+        assertEquals(spec.suggest, field.suggest)
     }
 
     @Test
@@ -34,10 +39,13 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val spec = FieldSpec("Notes", "document.notes",
+                AttrType.StringAnalyzed, false, false,
+                1.0f, false)
         val field = fieldDao.create(spec)
 
-        val updateSpec = FieldUpdateSpec("test", true, true, 2.0f)
+        val updateSpec = FieldUpdateSpec(
+                "test", true, true, 2.0f, true)
 
         assertTrue(fieldDao.update(field, updateSpec))
         val result = fieldDao.get(field.id)
@@ -46,6 +54,7 @@ class FieldDaoTests : AbstractTest() {
         assertEquals(updateSpec.editable, result.editable)
         assertEquals(updateSpec.keywords, result.keywords)
         assertEquals(updateSpec.keywordsBoost, result.keywordsBoost)
+        assertEquals(updateSpec.suggest, result.suggest)
     }
 
     @Test
@@ -68,7 +77,8 @@ class FieldDaoTests : AbstractTest() {
 
         val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false))
         val f2 = fieldDao.create(FieldSpec("Boats", "document.number", AttrType.NumberInteger, false))
-        val f3 = fieldDao.create(FieldSpec("Moats", "document.float", AttrType.NumberFloat, true))
+        val f3 = fieldDao.create(FieldSpec("Moats", "document.float",
+                AttrType.NumberFloat, true, true, 1.0f, true))
 
         var filter = FieldFilter(ids = listOf(f1.id, f2.id))
         assertEquals(2, fieldDao.getAll(filter).size())
@@ -84,6 +94,12 @@ class FieldDaoTests : AbstractTest() {
 
         filter = FieldFilter(editable=false)
         assertEquals(2, fieldDao.getAll(filter).size())
+
+        filter = FieldFilter(editable=false)
+        assertEquals(2, fieldDao.getAll(filter).size())
+
+        filter = FieldFilter(suggest=true)
+        assertEquals(1, fieldDao.getAll(filter).size())
     }
 
     @Test(expected= IncorrectResultSizeDataAccessException::class)
