@@ -117,9 +117,11 @@ class IndexRoutingServiceTests : AbstractTest() {
          */
         val doc = Document()
         doc.setAttr("source.path", "/cat/dog.jpg")
+
+        indexDao.index(listOf(doc), false)
         var passed = false
         try {
-            indexDao.index(doc, false)
+            indexDao.get(doc.id)
         } catch (e: EmptyResultDataAccessException) {
             passed = true
         }

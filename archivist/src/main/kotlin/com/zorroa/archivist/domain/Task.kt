@@ -7,6 +7,7 @@ import com.zorroa.archivist.repository.DaoFilter
 import com.zorroa.archivist.rest.UserController
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import io.micrometer.core.instrument.Tag
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -19,7 +20,14 @@ enum class TaskState {
     Queued;
 
     fun isDispatched() : Boolean {
-        return this == TaskState.Running || this == TaskState.Queued
+        return this == Running || this == Queued
+    }
+
+    /**
+     * Return a Micrometer tag for tagging metrics related to this state.
+     */
+    fun metricsTag() : Tag {
+        return Tag.of("task-state", this.toString())
     }
 }
 

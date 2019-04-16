@@ -27,25 +27,6 @@ class AssetServiceTests : AbstractTest() {
         addTestAssets("set04/standard")
     }
 
-    @Test
-    fun testCreateWithWatchedField() {
-        System.setProperty("archivist.auditlog.watched-fields", "foo")
-        try {
-            val assets =  searchService.search(Pager.first(), AssetSearch())
-            assets[0].setAttr("foo", "bar")
-            assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))
-            val change = jdbc.queryForMap(
-                    "SELECT * FROM auditlog WHERE pk_asset=?::uuid AND int_type=?",
-                    assets[0].id, AuditLogType.Changed.ordinal)
-            assertEquals(assets[0].id, change["pk_asset"].toString())
-            assertEquals(AuditLogType.Changed.ordinal, change["int_type"] as Int)
-
-        } finally {
-            System.clearProperty("archivist.auditlog.watched-fields")
-        }
-    }
-
-    @Test
     fun testBatchCreateOrReplace() {
         var assets = searchService.search(Pager.first(), AssetSearch())
         for (asset in assets) {

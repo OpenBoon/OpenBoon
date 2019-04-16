@@ -4,9 +4,11 @@ import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LockStatus
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.JdbcUtils
+import io.micrometer.core.instrument.Tag
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowCallbackHandler
@@ -30,8 +32,9 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         val expireTime = time + spec.timeoutUnits.toMillis(spec.timeout)
 
         if (spec.combineMultiple) {
-            logger.event(LogObject.CLUSTER_LOCK, LogAction.COMBINE, mapOf("lockName" to spec.name))
             if (jdbc.update(INCREMENT_COMBINE_COUNT, spec.name) == 1) {
+                meterRegistry.counter("zorrra.cluster_lock",
+                        getTags(Tag.of("operation", "combine")))
                 return LockStatus.Combined
             }
         }
@@ -46,18 +49,20 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                 ps.setBoolean(5, spec.combineMultiple)
                 ps
             }
-            logger.event(LogObject.CLUSTER_LOCK, LogAction.LOCK,
-                    mapOf("lockName" to spec.name, "expireTime" to expireTime))
+            meterRegistry.counter("zorrra.cluster_lock",
+                    getTags(Tag.of("operation", "locked")))
             LockStatus.Locked
+
         } catch (e: DuplicateKeyException) {
             logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.LOCK,
                     "Failure obtaining lock", mapOf("lockName" to spec.name))
+            meterRegistry.counter("zorrra.cluster_lock",
+                    getTags(Tag.of("operation", "wait")))
             LockStatus.Wait
         }
     }
 
     override fun unlock(name: String): Boolean {
-        logger.event(LogObject.CLUSTER_LOCK, LogAction.UNLOCK, mapOf("lockName" to name))
         return jdbc.update("DELETE FROM cluster_lock WHERE str_name=?", name) == 1
     }
 
@@ -71,7 +76,8 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         jdbc.query(GET_EXPIRED, RowCallbackHandler { rs->
             val name = rs.getString("str_name")
             jdbc.update("DELETE FROM cluster_lock WHERE str_name=?", name)
-            logger.event(LogObject.CLUSTER_LOCK, LogAction.EXPIRED, mapOf("lockName" to name))
+            logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.EXPIRED, "Lock Expired",
+                    mapOf("lockName" to name))
             removed+=1
         }, time)
         return removed
