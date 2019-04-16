@@ -123,58 +123,52 @@ fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Ma
  */
 fun applyAssetSearchMetrics(search: AssetSearch) {
 
-    if (search.query != null) {
-         MeterRegistryHolder.increment("zorroa.asset.search.query", Tag.of("value", search.query))
-    }
-
-    val filter = search.filter
-    if(filter.isEmpty) {
+    if (search.filter == null || search.filter.isEmpty) {
         return
     }
-
-     MeterRegistryHolder.increment("zorroa.asset.search.filter")
-
+    val counter = "zorroa.asset.search.filter"
+    val filter = search.filter
     if (!filter.exists.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.exists")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "exists"))
     }
     if (!filter.missing.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.missing")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "missing"))
     }
     if (!filter.terms.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.terms")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "terms"))
     }
     if (!filter.prefix.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.prefix")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "prefix"))
     }
     if (!filter.range.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.range")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "range"))
     }
     if (!filter.scripts.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.scripts")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "scripts"))
     }
     if (!filter.links.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.links")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "links"))
     }
     if (!filter.similarity.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.similarity")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "similarity"))
     }
     if (!filter.kwconf.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.kwconf")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "kwconf"))
     }
     if (!filter.geo_bounding_box.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.geo_bounding_box")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "geo_bounding_box"))
     }
     if (!filter.mustNot.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.mustNot")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "must_not"))
     }
     if (!filter.must.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.must")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "must"))
     }
     if (!filter.should.isNullOrEmpty()) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.should")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "must_not"))
     }
     if (filter.recursive == true) {
-         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.recursive")
+        MeterRegistryHolder.increment(counter,Tag.of("type", "recursive"))
     }
 }
 
