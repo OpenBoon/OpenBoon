@@ -1,5 +1,5 @@
 package com.zorroa.archivist.repository
-import com.fasterxml.jackson.module.kotlin.readValue
+
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
@@ -37,12 +37,26 @@ interface FieldDao {
 
     fun getKeywordFieldNames(): Map<String, Float>
 
+    /**
+     * Return a list of the fields marked for suggestions.
+     */
+    fun getSuggestAttrNames(): List<String>
 }
 
 @Repository
 class FieldDaoImpl : AbstractDao(), FieldDao {
 
     override fun create(spec: FieldSpec) : Field {
+
+        /**
+         * AttrType.StringSuggest is deprecated, when used just
+         * convert it to a suggest + keywords field.
+         */
+        if (spec.attrType == AttrType.StringSuggest) {
+            spec.attrType = AttrType.StringAnalyzed
+            spec.suggest = true
+            spec.keywords = true
+        }
 
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
@@ -64,13 +78,21 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps.setBoolean(12, spec.keywords)
             ps.setFloat(13, spec.keywordsBoost)
             ps.setString(14, Json.serializeToString(spec.options, null))
+            ps.setBoolean(15, spec.suggest)
             ps
         }
 
-        logger.event(LogObject.FIELD, LogAction.CREATE,
-                mapOf("fieldId" to id, "fieldName" to spec.name, "fieldAttrType" to spec.attrType))
+        logger.event(LogObject.FIELD, LogAction.CREATE, mapOf("fieldId" to id,
+                "fieldName" to spec.name,
+                "attrType" to spec.attrType,
+                "attrName" to spec.attrName,
+                "isKeywords" to spec.keywords,
+                "isSuggest" to spec.suggest))
+
         return Field(id, spec.name, spec!!.attrName as String,
-                spec.attrType as AttrType, spec.editable, spec.custom, spec.keywords, spec.keywordsBoost)
+                spec.attrType as AttrType, spec.editable,
+                spec.custom, spec.keywords, spec.keywordsBoost,
+                spec.suggest)
     }
 
     override fun update(field: Field, spec: FieldUpdateSpec) : Boolean {
@@ -86,8 +108,9 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps.setBoolean(5, spec.keywords)
             ps.setFloat(6, spec.keywordsBoost)
             ps.setString(7, Json.serializeToString(spec.options, null))
-            ps.setObject(8, field.id)
-            ps.setObject(9, user.organizationId)
+            ps.setBoolean(8, spec.suggest)
+            ps.setObject(9, field.id)
+            ps.setObject(10, user.organizationId)
             ps
         } == 1
     }
@@ -124,6 +147,12 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         jdbc.query("SELECT str_attr_name, float_keywords_boost FROM field WHERE pk_organization=? AND bool_keywords='t'",
                 RowCallbackHandler { rs-> result[rs.getString(1)] = rs.getFloat(2) }, getOrgId())
         return result
+    }
+
+    override fun getSuggestAttrNames(): List<String> {
+        return jdbc.queryForList(
+                "SELECT str_attr_name FROM field WHERE pk_organization=? AND bool_suggest='t'",
+                String::class.java, getOrgId())
     }
 
     override fun count(filter: FieldFilter): Long {
@@ -166,6 +195,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                     rs.getBoolean("bool_custom"),
                     rs.getBoolean("bool_keywords"),
                     rs.getFloat("float_keywords_boost"),
+                    rs.getBoolean("bool_suggest"),
                     Json.Mapper.readValueOrNull(rs.getString("json_options")))
         }
 
@@ -186,7 +216,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "bool_custom",
                 "bool_keywords",
                 "float_keywords_boost",
-                "json_options::jsonb")
+                "json_options::jsonb",
+                "bool_suggest")
 
         private val UPDATE = JdbcUtils.update("field","pk_field",
                 "time_modified",
@@ -195,7 +226,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "bool_editable",
                 "bool_keywords",
                 "float_keywords_boost",
-                "json_options::jsonb")
+                "json_options::jsonb",
+                "bool_suggest")
 
         private const val ALLOC_UPDATE = "UPDATE field_alloc " +
                 "SET int_count=int_count + 1 " +

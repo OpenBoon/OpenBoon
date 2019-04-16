@@ -9,7 +9,6 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.archivist.service.AbstractAssetService.Companion.PROTECTED_NAMESPACES
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
 import org.slf4j.LoggerFactory
@@ -45,8 +44,6 @@ interface IndexService {
     fun exists(path: Path): Boolean
 
     fun exists(id: String): Boolean
-
-    fun update(doc: Document, attrs: Map<String, Any>): Document
 
     fun delete(assetId: String): Boolean
 
@@ -124,33 +121,6 @@ class IndexServiceImpl  @Autowired  constructor (
 
     override fun exists(id: String): Boolean {
         return indexDao.exists(id)
-    }
-
-    override fun update(doc: Document, attrs: Map<String, Any>): Document {
-        /**
-         * Make a copy and remove fields which are maintained via other methods.
-         */
-        PROTECTED_NAMESPACES.forEach { doc.removeAttr(it) }
-        val auditLogs = mutableListOf<AuditLogEntrySpec>()
-        attrs.forEach {
-            val ns = it.key.split('.')
-            try {
-                if (ns[0] !in PROTECTED_NAMESPACES) {
-                    doc.setAttr(it.key, it.value)
-                    auditLogs.add(AuditLogEntrySpec(doc.id, AuditLogType.Changed,
-                            attrName = it.key, value = it.value))
-                } else {
-                    logger.warnEvent(LogObject.ASSET, LogAction.UPDATE,
-                            "Attempted to set protected namespace ${it.key}", emptyMap())
-                }
-            } catch (e: Exception) {
-                logger.warnEvent(LogObject.ASSET, LogAction.UPDATE,
-                        "Attempted to set invalid namespace ${it.key}", emptyMap())
-            }
-        }
-        indexDao.update(doc)
-        auditLogDao.batchCreate(auditLogs)
-        return indexDao.get(doc.id)
     }
 
     /**

@@ -230,13 +230,21 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
-        return HttpUtils.updated("asset", id, true, assetService.update(id, attrs))
+        val rsp = assetService.updateAssets(
+                BatchUpdateAssetsRequest(mapOf(id to UpdateAssetRequest(attrs))))
+        if (rsp.isSuccess()) {
+            return HttpUtils.updated("asset", id, true, assetService.get(id))
+        }
+        else {
+            throw rsp.getThrowableError()
+        }
     }
 
     @PutMapping(value = ["/api/v2/assets/{id}"])
     @Throws(IOException::class)
     fun updateV2(@PathVariable id: String, @RequestBody req: UpdateAssetRequest): Any {
-        val rsp =  assetService.update(id, req)
+        val rsp = assetService.updateAssets(
+                BatchUpdateAssetsRequest(mapOf(id to req)))
         if (rsp.isSuccess()) {
             return HttpUtils.updated("asset", id, true, assetService.get(id))
         }
@@ -247,13 +255,13 @@ class AssetController @Autowired constructor(
 
     @PutMapping(value = ["/api/v1/assets"])
     fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
-        return assetService.batchUpdate(req)
+        return assetService.updateAssets(req)
     }
 
     @PostMapping(value = ["/api/v1/assets/_index"])
     @Throws(IOException::class)
     fun batchCreate(@RequestBody spec: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
-        return assetService.batchCreateOrReplace(spec)
+        return assetService.createOrReplaceAssets(spec)
     }
 
     class SetFoldersRequest {

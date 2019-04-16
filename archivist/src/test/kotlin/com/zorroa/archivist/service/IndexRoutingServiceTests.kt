@@ -2,23 +2,22 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.util.Json
-import org.junit.Before
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobState
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.ClassPathResource
-import java.nio.file.Files
-import java.nio.file.Paths
-import kotlin.test.AfterTest
+import org.springframework.dao.EmptyResultDataAccessException
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var jobService : JobService
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
@@ -118,12 +117,34 @@ class IndexRoutingServiceTests : AbstractTest() {
          */
         val doc = Document()
         doc.setAttr("source.path", "/cat/dog.jpg")
-        indexDao.index(doc, false)
+        var passed = false
+        try {
+            indexDao.index(doc, false)
+        } catch (e: EmptyResultDataAccessException) {
+            passed = true
+        }
+        assertTrue(passed)
         assertEquals(0, indexDao.getAll(Pager.first()).size())
         indexRoutingService.refreshAll()
         Thread.sleep(250)
         assertEquals(1, indexDao.getAll(Pager.first()).size())
 
+    }
+
+    @Test
+    fun testLaunchReindexJob() {
+        var job = indexRoutingService.launchReindexJob()
+        var jobCount = jobService.getAll(JobFilter(names=listOf(job.name))).size()
+        assertEquals(1, jobCount)
+
+        job = indexRoutingService.launchReindexJob()
+        jobCount = jobService.getAll(JobFilter(names=listOf(job.name))).size()
+        assertEquals(2, jobCount)
+
+        jobCount = jobService.getAll(JobFilter(
+                states=listOf(JobState.Active),
+                names=listOf(job.name))).size()
+        assertEquals(1, jobCount)
     }
 }
 

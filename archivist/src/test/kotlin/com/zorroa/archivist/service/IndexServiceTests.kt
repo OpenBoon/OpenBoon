@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.repository.IndexDao
@@ -67,8 +68,9 @@ class IndexServiceTests : AbstractTest() {
     fun testBatchDeleteWithChildren() {
         val assets = indexService.getAll(Pager.first())
         val child = assets[1]
-        indexService.update(child, mapOf("media.clip.parent" to assets[0].id))
-        refreshIndex()
+        child.setAttr("media.clip.parent", assets[0].id)
+        indexService.index(child)
+
         Thread.sleep(1000)
 
         val res = indexService.batchDelete(listOf(assets[0].id))
@@ -82,7 +84,6 @@ class IndexServiceTests : AbstractTest() {
         val assets = indexService.getAll(Pager.first())
         assets[0].setAttr("system.hold", true)
         indexDao.update(assets[0])
-        refreshIndex()
 
         val res = indexService.batchDelete(assets.map { it.id })
         assertEquals(1, res.totalRequested)
@@ -95,7 +96,8 @@ class IndexServiceTests : AbstractTest() {
     fun testBatchDeleteSkipChildren() {
         val assets = indexService.getAll(Pager.first())
         val child = assets[1]
-        indexService.update(child, mapOf("media.clip.parent" to assets[0].id))
+        child.setAttr("media.clip.parent", assets[0].id)
+        indexService.index(child)
         refreshIndex()
         Thread.sleep(1000)
 
@@ -106,17 +108,11 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testUpdate() {
-        val asset = indexService.getAll(Pager.first())[0]
-        val result = indexService.update(asset, mapOf("foo.bar.bing" to "bang"))
-        assertEquals("bang", result.getAttr("foo.bar.bing"))
-    }
-
-    @Test
     @Throws(InterruptedException::class)
     fun testIndexCheckOrigin() {
         val source = Source(getTestImagePath("set01/toucan.jpg"))
-        val asset1 = assetService.createOrReplace(source)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+        val asset1 = assetService.get(source.id)
 
         assertNotNull(asset1.getAttr("system.timeCreated"))
         assertNotNull(asset1.getAttr("system.timeModified"))
@@ -126,7 +122,8 @@ class IndexServiceTests : AbstractTest() {
         refreshIndex()
         Thread.sleep(1000)
         val source2 = Source(getTestImagePath("set01/toucan.jpg"))
-        val asset2 = assetService.createOrReplace(source2)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source2))
+        val asset2 = assetService.get(source2.id)
 
         refreshIndex()
         assertNotEquals(asset2.getAttr("system.timeCreated", String::class.java),

@@ -59,7 +59,7 @@ class FieldControllerTests : MockMvcTest() {
         val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
         val field = fieldSystemService.createField(spec)
         val updateSpec = FieldUpdateSpec(
-                "test", true, true, 2.0f,
+                "test", true, true, 2.0f, false,
                 options=listOf("a", "b", "c"))
 
         val session = admin()

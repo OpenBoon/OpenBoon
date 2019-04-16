@@ -75,7 +75,7 @@ class JobControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdate() {
-        val spec = JobUpdateSpec(name="silly_bazilly", priority = 5)
+        val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis())
 
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}")

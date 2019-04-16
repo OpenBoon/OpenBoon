@@ -1,7 +1,6 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
@@ -15,7 +14,6 @@ import com.zorroa.security.Groups
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.doReturn
@@ -47,11 +45,6 @@ class AssetControllerTests : MockMvcTest() {
 
     @SpyBean
     override lateinit var fileServerProvider: FileServerProvider
-
-    @Before
-    fun init() {
-        fieldService.invalidateFields()
-    }
 
     @After
     fun after() {
@@ -183,17 +176,16 @@ class AssetControllerTests : MockMvcTest() {
         val session = admin()
         val sources = getTestAssets("set04/canyon")
         for (source in sources) {
-            source.setAttr("media.keywords", ImmutableList.of("reflection"))
+            source.setAttr("media.keywords", listOf("reflection"))
         }
-        addTestAssets(sources)
-
+        addTestAssets(sources, commitToDb=false)
         refreshIndex()
 
         val result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"text\": \"re\" }".toByteArray()))
+                .content(Json.serialize(mapOf("text" to "re"))))
                 .andExpect(status().isOk)
                 .andReturn()
 
@@ -201,35 +193,6 @@ class AssetControllerTests : MockMvcTest() {
         val keywords = Json.Mapper.readValue<List<String>>(json, Json.LIST_OF_STRINGS)
 
         assertTrue("The list of keywords, '$json' does not contain 'reflection'",
-                keywords.contains("reflection"))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testSuggestV3MultipleFields() {
-        val session = admin()
-        val sources = getTestAssets("set04/canyon")
-        for (source in sources) {
-            source.setAttr("media.keywords", ImmutableList.of("reflection"))
-            source.setAttr("thing.suggest", "resume")
-        }
-        addTestAssets(sources)
-        refreshIndex()
-
-        val result = mvc.perform(post("/api/v3/assets/_suggest")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"text\": \"re\" }".toByteArray()))
-                .andExpect(status().isOk)
-                .andReturn()
-
-        val json = result.response.contentAsString
-        val keywords = Json.Mapper.readValue<List<String>>(json, Json.LIST_OF_STRINGS)
-
-        assertTrue("The list of keywords, '$json' does not contain 'reflection'",
-                keywords.contains("reflection"))
-        assertTrue("The list of keywords, '$json' does not contain 'resume'",
                 keywords.contains("reflection"))
     }
 

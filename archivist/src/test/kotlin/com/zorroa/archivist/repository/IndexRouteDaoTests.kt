@@ -11,6 +11,10 @@ class IndexRouteDaoTests : AbstractTest() {
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Test
     fun testUpdateDefaultIndexRoutes() {
         val url = "http://dog:1234"

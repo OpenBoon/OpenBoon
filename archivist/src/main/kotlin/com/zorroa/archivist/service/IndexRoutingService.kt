@@ -4,17 +4,20 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.ClusterLockSpec
-import com.zorroa.archivist.domain.EsClientCacheKey
-import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsRestClient
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
-import org.elasticsearch.client.*
+import org.elasticsearch.client.Request
+import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.client.RestClient
+import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
@@ -25,11 +28,11 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
-import java.lang.RuntimeException
 import java.net.URI
 import java.util.*
 import java.util.concurrent.TimeUnit
-import org.elasticsearch.client.ResponseListener
+import java.util.concurrent.atomic.AtomicBoolean
+
 
 /**
  * Manages the creation and usage of ES indexes.  Currently this implementation only supports
@@ -108,6 +111,12 @@ interface IndexRoutingService {
     fun setupDefaultIndexRoute()
 
     /**
+     * Launch a reindex job for the current authorized user's organization.  The job
+     * will kill any existing reindex job.
+     */
+    fun launchReindexJob() : Job
+
+    /**
      * Perform a health check on all active [IndexRoute]s
      */
     fun performHealthCheck() : Health
@@ -126,30 +135,43 @@ class ElasticMapping(
 @Component
 class IndexRoutingServiceImpl @Autowired
     constructor(val indexRouteDao: IndexRouteDao,
-                val properties: ApplicationProperties): IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
+                val properties: ApplicationProperties):
+        IndexRoutingService, ApplicationListener<ContextRefreshedEvent>{
 
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
 
+    @Autowired
+    lateinit var jobService: JobService
+
     var esClientCache = EsClientCache()
 
-    override fun onApplicationEvent(cre: ContextRefreshedEvent) {
+    val migrated = AtomicBoolean(false)
+
+    override fun onApplicationEvent(event: ContextRefreshedEvent) {
         setupDefaultIndexRoute()
+        if (!ArchivistConfiguration.unittest) {
+            // This is run manually by unittests we can test it.
+            syncAllIndexRoutes()
+        }
     }
 
     override fun setupDefaultIndexRoute() {
         val defaultUrl = properties.getString("archivist.index.default-url")
         indexRouteDao.updateDefaultIndexRoutes(defaultUrl)
-        syncAllIndexRoutes()
     }
 
     override fun syncAllIndexRoutes() {
-        indexRouteDao.getAll().forEach { syncIndexRouteVersion(it) }
+        val routes = indexRouteDao.getAll()
+        logger.info("Syncing all ${routes.size} index routes.")
+        routes.forEach { syncIndexRouteVersion(it) }
+        migrated.set(true)
     }
 
     override fun refreshAll() {
         indexRouteDao.getAll().forEach {
             if (!it.closed) {
+                logger.info("refreshing index route ${it.indexUrl}")
                 val req = Request("POST", "/_refresh")
                 val client =  getClusterRestClient(it).client.lowLevelClient
                 client.performRequest(req)
@@ -158,16 +180,15 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun syncIndexRouteVersion(route: IndexRoute) {
-        // Invalidate any existing client before syncing.
-        esClientCache.invalidate(route.esClientCacheKey())
-
         val es = getClusterRestClient(route)
         waitForElasticSearch(es)
 
-        val lock = ClusterLockSpec.softLock("create-es-${route.indexName}")
+        val lock = ClusterLockSpec.softLock("create-es-${route.id}")
         clusterLockExecutor.inline(lock) {
             if (!es.indexExists()) {
-                logger.info("Creating index: ${route.indexName}")
+                logger.info("Creating index:" +
+                        "type: '${route.mappingType}'  index: '${route.indexName}' " +
+                        "ver: '${route.mappingMajorVer}'")
 
                 val mappingFile = getMajorVersionMappingFile(
                         route.mappingType, route.mappingMajorVer)
@@ -199,11 +220,33 @@ class IndexRoutingServiceImpl @Autowired
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
     }
 
+    override fun launchReindexJob() : Job {
+        val name = "Reindexing All Assets"
+        val script = ZpsScript(name,
+                type = PipelineType.Import,
+                settings = mutableMapOf("inline" to true),
+                over = listOf(),
+                execute = listOf(),
+                generate = listOf(
+                ProcessorRef(
+                        "zplugins.asset.generators.AssetSearchGenerator",
+                        mapOf("search" to mapOf<String,Any>()))
+                ))
+
+        val spec = JobSpec(name,
+                script,
+                priority = 10000,
+                replace = true,
+                paused = true,
+                pauseDurationSeconds = REINDEX_JOB_DELAY_SEC)
+
+        return jobService.create(spec, PipelineType.Import)
+    }
 
     override fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping> {
         val result = mutableListOf<ElasticMapping>()
         val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
-        val resources = resolver.getResources("classpath:/db/migration/elasticsearch/*.json")
+        val resources = resolver.getResources("classpath*:/db/migration/elasticsearch/*.json")
 
         for (resource in resources) {
             val matcher = MAP_PATCH_REGEX.matchEntire(resource.filename)
@@ -219,7 +262,9 @@ class IndexRoutingServiceImpl @Autowired
                 }
             }
         }
+
         result.sortWith(Comparator { o1, o2 -> Integer.compare(o1.minorVersion, o2.minorVersion) })
+        logger.info("mapping '$mappingType v$majorVersion has ${result.size} available patches.")
         return result
     }
 
@@ -240,6 +285,10 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun performHealthCheck() : Health {
+        if (!migrated.get()) {
+            return Health.down().withDetail(
+                    "ElasticSearch routes have not been migrated", migrated).build()
+        }
         for (route in indexRouteDao.getAll()) {
             if (route.closed) { continue }
             val client = getClusterRestClient(route)
@@ -288,6 +337,12 @@ class IndexRoutingServiceImpl @Autowired
 
     companion object {
         private val logger = LoggerFactory.getLogger(IndexRoutingServiceImpl::class.java)
+
+        /**
+         * Number of seconds to delay a reindex job, which allows users to make more selections
+         * which might kick off another reindex job to happen.
+         */
+        const val REINDEX_JOB_DELAY_SEC = 20L
 
         private val MAP_PATCH_REGEX = Regex("^V(\\d+)\\.(\\d{8})__(.*?).json$")
     }

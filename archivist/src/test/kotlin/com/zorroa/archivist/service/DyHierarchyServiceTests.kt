@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
@@ -26,6 +25,10 @@ class DyHierarchyServiceTests : AbstractTest() {
 
     lateinit var testDataPath: String
 
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
     @Before
     @Throws(ParseException::class)
     fun init() {
@@ -40,7 +43,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"))
             ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"))
-            assetService.createOrReplace(ab)
+            assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
         for (f in getTestPath("office").toFile().listFiles()!!) {
             if (!f.isFile || f.isHidden) {
@@ -49,7 +52,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             val ab = Source(f)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("03-05-2013 09:11:14"))
-            assetService.createOrReplace(ab)
+            assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
         for (f in getTestPath("video").toFile().listFiles()!!) {
             if (!f.isFile || f.isHidden) {
@@ -58,7 +61,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             val ab = Source(f)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("11-12-2015 06:14:10"))
-            assetService.createOrReplace(ab)
+            assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
         refreshIndex()
     }
@@ -138,7 +141,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type"),
                 DyHierarchyLevel("source.extension"),
                 DyHierarchyLevel("source.filename"))
-        dyhiService.generate(agg)
+        assertTrue(dyhiService.generate(agg) > 0)
     }
 
     @Test
@@ -166,7 +169,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.extension")
                         .setAcl(Acl().addEntry("zorroa::%{name}", 3)))
 
-        dyhiService.generate(agg)
+        assertTrue(dyhiService.generate(agg) > 0)
         assertEquals("zorroa::jpg",
                 folderService.get("/foo/jpg")!!.acl!![0].permission)
         assertEquals(1,
@@ -175,6 +178,7 @@ class DyHierarchyServiceTests : AbstractTest() {
 
     @Test
     fun testDeleteEmptyFolders() {
+        refreshIndex()
         val (id) = folderService.create(FolderSpec("foo"), false)
         val agg = DyHierarchy()
         agg.folderId = id
@@ -182,15 +186,17 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type"),
                 DyHierarchyLevel("source.extension"))
 
-        dyhiService.generate(agg)
+        val result = dyhiService.generate(agg)
+        assertEquals(13, result)
 
         val assets = indexService.getAll(Pager.first(100))
+        assertTrue(assets.size() > 0)
         for (asset in assets) {
-            indexService.update(asset, ImmutableMap.of("source",
-                    ImmutableMap.of("extension", "abc")))
+            asset.setAttr("source.extension", "abc")
         }
+        assetService.updateAssets(assets.list)
         refreshIndex()
-        dyhiService.generate(agg)
+        assertEquals(6, dyhiService.generate(agg))
     }
 
     @Test
