@@ -58,8 +58,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
     val indexRoutingService: IndexRoutingService,
     val transactionEventManager: TransactionEventManager,
-    val clusterLockExecutor: ClusterLockExecutor,
-    val clusterLockService: ClusterLockService
+    val clusterLockExecutor: ClusterLockExecutor
 ) : DyHierarchyService {
 
     @Autowired
@@ -493,7 +492,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     private fun resolveFieldName(level: DyHierarchyLevel) {
-        val type = fieldService.getFieldType(level.field)
+        val type = fieldService.getFieldType(level.field.replace(".raw", ""))
         if (type == null) {
             throw IllegalStateException("Attempting to agg on a invalid field ${level.field}")
         }

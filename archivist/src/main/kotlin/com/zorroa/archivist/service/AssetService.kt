@@ -14,16 +14,12 @@ import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.URI
 import java.util.*
-
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -37,20 +33,39 @@ interface AssetService {
     fun get(assetId: String): Document
     fun getAll(assetIds: List<String>): List<Document>
     fun delete(assetId: String): Boolean
-    fun createFieldEdit(spec: FieldEditSpec): FieldEdit
-    fun deleteFieldEdit(edit: FieldEdit): Boolean
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
-    fun batchUpdate(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
-    fun batchUpdate(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
-    fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
-    fun createOrReplace(doc: Document) : Document
-    fun update(assetId: String, attrs: Map<String, Any>) : Document
-    fun update(assetId: String, req: UpdateAssetRequest) : BatchUpdateAssetsResponse
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
     fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
     fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse
     fun getFieldSets(assetId: String) : List<FieldSet>
+
+    fun createFieldEdit(spec: FieldEditSpec): FieldEdit
+    fun deleteFieldEdit(edit: FieldEdit): Boolean
+
+    /**
+     * Create or replace a batch of assets and return a [BatchCreateAssetsResponse]. Assets
+     * that exist already will be replaced with a new asset.
+     *
+     * @param batch A BatchCreateAssetsRequest with fully composed assets to create.
+     */
+    fun createOrReplaceAssets(batch: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
+
+    /**
+     * Update a batch of assets and return a [BatchUpdateAssetsResponse]
+     *
+     * @param batch A [BatchUpdateAssetsRequest] which contains modifications to each asset.
+     */
+    fun updateAssets(batch: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
+
+    /**
+     * Update a list of [Document] instances.
+     *
+     * @param assets The list of [Document]s to udpate.
+     * @param reindex Set true of docs should be reindexed. Defaults to true.
+     * @param taxons Set to true to run taxons and dyhis.  Defaults to true.
+     */
+    fun updateAssets(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
 }
 
 /**
@@ -104,7 +119,7 @@ open abstract class AbstractAssetService : AssetService {
     lateinit var clusterLockExecutor: ClusterLockExecutor
 
     /**
-     * Prepare a list of assets to be replaced or replaced.  Handles:
+     * Prepare a list of assets to be created.  Updated assets are not prepped.
      *
      * - Removing tmp/system namespaces
      * - Applying the organization Id
@@ -132,7 +147,7 @@ open abstract class AbstractAssetService : AssetService {
         val watchedFields = properties.getList("archivist.auditlog.watched-fields")
         val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
-        return PreppedAssets(assets.map { newSource ->
+        val prepped = PreppedAssets(assets.map { newSource ->
 
             val existingSource: Document = try {
                 get(newSource.id)
@@ -151,7 +166,6 @@ open abstract class AbstractAssetService : AssetService {
             handlePermissions(existingSource, newSource, defaultPermissions)
             handleLinks(existingSource, newSource)
             fieldSystemService.applyFieldEdits(newSource)
-            fieldSystemService.applySuggestions(newSource)
 
             if (watchedFields.isNotEmpty()) {
                 watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
@@ -159,6 +173,9 @@ open abstract class AbstractAssetService : AssetService {
 
             newSource
         }, watchedFieldsLogs, req.scope)
+
+        fieldSystemService.applySuggestions(prepped.assets)
+        return prepped
     }
 
     /**
@@ -323,12 +340,18 @@ open abstract class AbstractAssetService : AssetService {
     /**
      * Index a batch of PreppedAssets
      */
-    fun indexAssets(req: BatchCreateAssetsRequest?, prepped: PreppedAssets,
-                    batchUpdateResult: Map<String, Boolean> = mapOf()): BatchCreateAssetsResponse {
+    fun batchIndexAssets(req: BatchCreateAssetsRequest?,
+                         prepped: PreppedAssets,
+                         batchUpdateResult: Map<String, Boolean>?=null): BatchCreateAssetsResponse {
 
-        // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
-        val docsToIndex = prepped.assets.filter {
-            batchUpdateResult.getOrDefault(it.id, true)
+        val docsToIndex = if (batchUpdateResult != null) {
+            // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
+            prepped.assets.filter {
+                batchUpdateResult.getOrDefault(it.id, true)
+            }
+        }
+        else {
+            prepped.assets
         }
 
         val rsp = indexService.index(docsToIndex)
@@ -432,7 +455,7 @@ open abstract class AbstractAssetService : AssetService {
      * thing about this method is that is slower with CDV since it doesn't have any
      * batch operations.
      */
-    override fun batchUpdate(assets: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
+    override fun updateAssets(assets: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
 
         if (assets.batch.size > 1000) {
             throw java.lang.IllegalArgumentException("Cannot batch update more than 1000 assets at one time.")
@@ -465,7 +488,8 @@ open abstract class AbstractAssetService : AssetService {
          * Modify the copy and push it back into the DB.
          */
         val futures = assets.batch.keys.chunked(50).map { ids ->
-            GlobalScope.async(CoroutineAuthentication(getSecurityContext())) {
+
+            GlobalScope.async(Dispatchers.IO + CoroutineAuthentication(getSecurityContext())) {
                 val rsp = BatchUpdateAssetsResponse()
                 val docs: List<Document> = getAll(ids).mapNotNull { doc ->
 
@@ -479,43 +503,43 @@ open abstract class AbstractAssetService : AssetService {
                     } else {
 
                         val req = assets.batch.getValue(doc.id)
-                        var updated = false
+                        var changed = false
                         req.update?.forEach { t, u ->
                             if (checkAttr(t, doc.id, req.allowSystem)) {
                                 doc.setAttr(t, u)
-                                updated = true
+                                changed = true
                             }
                         }
 
                         req.remove?.forEach {
                             if (checkAttr(it, doc.id, req.allowSystem)) {
                                 doc.removeAttr(it)
-                                updated = true
+                                changed = true
                             }
                         }
 
                         req.appendToList?.forEach { t, u ->
                             if (checkAttr(t, doc.id, req.allowSystem)) {
                                 doc.addToAttr(t, u, unique = false)
-                                updated = true
+                                changed = true
                             }
                         }
 
                         req.appendToUniqueList?.forEach { t, u ->
                             if (checkAttr(t, doc.id, req.allowSystem)) {
                                 doc.addToAttr(t, u, unique = true)
-                                updated = true
+                                changed = true
                             }
                         }
 
                         req.removeFromList?.forEach { t, u ->
                             if (checkAttr(t, doc.id, req.allowSystem)) {
                                 doc.removeFromAttr(t, u)
-                                updated = true
+                                changed = true
                             }
                         }
 
-                        if (updated) {
+                        if (changed) {
                             doc.setAttr("system.timeModified", now)
                             doc
                         } else {
@@ -524,7 +548,8 @@ open abstract class AbstractAssetService : AssetService {
                     }
                 }
 
-                rsp.plus(batchUpdate(docs, reindex = true, taxons = false))
+                fieldSystemService.applySuggestions(docs)
+                rsp.plus(updateAssets(docs, reindex = true, taxons = false))
                 rsp
             }
         }
@@ -551,15 +576,8 @@ open abstract class AbstractAssetService : AssetService {
         return rsp
     }
 
-    override fun update(assetId: String, req: UpdateAssetRequest): BatchUpdateAssetsResponse {
-        val breq = BatchUpdateAssetsRequest(mapOf(assetId to req))
-        return batchUpdate(breq)
-    }
-
-
     override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse {
 
-        val auth = getAuthentication()
         val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
         val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
 
@@ -575,7 +593,7 @@ open abstract class AbstractAssetService : AssetService {
                             null
                         }
                     }
-                    val update = batchUpdate(docs, reindex = true, taxons = false)
+                    val update = updateAssets(docs, reindex = true, taxons = false)
                     if (update.erroredAssetIds.isNotEmpty()) {
                         errorAssetIds.addAll(update.erroredAssetIds)
                     }
@@ -588,7 +606,6 @@ open abstract class AbstractAssetService : AssetService {
     }
 
     override fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse {
-        val auth = getAuthentication()
         val errors = Collections.synchronizedSet(mutableSetOf<String>())
         val success = Collections.synchronizedSet(mutableSetOf<String>())
 
@@ -602,7 +619,7 @@ open abstract class AbstractAssetService : AssetService {
                             null
                         }
                     }
-                    val update = batchUpdate(docs, reindex = true, taxons = false)
+                    val update = updateAssets(docs, reindex = true, taxons = false)
                     if (update.erroredAssetIds.isNotEmpty()) {
                         errors.addAll(update.erroredAssetIds)
                     }
@@ -629,7 +646,7 @@ open abstract class AbstractAssetService : AssetService {
                             }
                         }
                         logger.info("updating docs with links: {}", docs.size)
-                        val update = batchUpdate(docs, reindex = true, taxons = false)
+                        val update = updateAssets(docs, reindex = true, taxons = false)
                         if (update.erroredAssetIds.isNotEmpty()) {
                             errors.addAll(update.erroredAssetIds)
                         }
@@ -660,7 +677,8 @@ open abstract class AbstractAssetService : AssetService {
         }
 
         if (fieldEditDao.delete(edit.id)) {
-            val rsp = update(asset.id, updateReq)
+            val req = BatchUpdateAssetsRequest(mapOf(asset.id to updateReq))
+            val rsp = updateAssets(req)
             if (rsp.isSuccess()) {
                 val aspec = AuditLogEntrySpec(asset.id,
                         AuditLogType.Changed,
@@ -704,7 +722,8 @@ open abstract class AbstractAssetService : AssetService {
                     allowSystem = true)
         }
 
-        val rsp = update(assetId, updateReq)
+        val req = BatchUpdateAssetsRequest(mapOf(asset.id to updateReq))
+        val rsp = updateAssets(req)
         if (rsp.isSuccess()) {
             val oldValue = asset.getAttr(field.attrName, Any::class.java)
             val ispec = FieldEditSpecInternal(
@@ -779,42 +798,27 @@ open class IrmAssetServiceImpl constructor(
          * Relying on IRM's security to know if the assets can be deleted.
          */
         val deleted = cdvClient.batchDelete(getCompanyId(), ids)
-        val result =  indexService.batchDelete(deleted.keys.toList())
+        val result = indexService.batchDelete(deleted.keys.toList())
         if (result.deletedAssetIds.isNotEmpty()) {
             runDyhiAndTaxons()
         }
         return result
     }
 
-    override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
+    override fun createOrReplaceAssets(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
         val prepped = prepAssets(spec)
         val parentsOnly = prepped.assets.filter { !it.attrExists("media.clip.parent") }
 
         // Only parents go into the CDV
         val result = cdvClient.batchUpdateIndexedMetadata(getCompanyId(), parentsOnly)
-        return indexAssets(spec, prepped, result)
+        return batchIndexAssets(spec, prepped, result)
     }
 
-    override fun createOrReplace(doc: Document) : Document {
-        val prepped = prepAssets(BatchCreateAssetsRequest(listOf(doc)))
-        // Only send parent assets to CDV
-
-        val updated = if (!doc.attrExists("media.clip.parent")) {
-            cdvClient.updateIndexedMetadata(getCompanyId(), prepped.assets[0])
-        }
-        else {
-            true
-        }
-        if (updated) {
-            indexAssets(null, prepped)
-        }
-        return get(doc.id)
-    }
-
-    override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
+    override fun updateAssets(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
         val rsp = BatchUpdateAssetsResponse()
+
         for (asset in assets) {
-            // Skip assets with a parent.
+
             if (asset.attrExists("media.clip.parent")) {
                 rsp.updatedAssetIds.add(asset.id)
                 continue
@@ -836,19 +840,6 @@ open class IrmAssetServiceImpl constructor(
             runDyhiAndTaxons()
         }
         return rsp
-    }
-
-    override fun update(assetId: String, attrs: Map<String, Any>): Document {
-
-        val asset = cdvClient.getIndexedMetadata(getCompanyId(), assetId)
-        if (!hasPermission("write", asset)) {
-            throw ArchivistSecurityException("update access denied")
-        }
-
-        val updated = indexService.update(asset, attrs)
-        cdvClient.updateIndexedMetadata(getCompanyId(), updated)
-        runDyhiAndTaxons()
-        return updated
     }
 
     /**
@@ -890,7 +881,7 @@ open class IrmAssetServiceImpl constructor(
                 applyAcl(doc, spec.replace, rAcl)
                 doc
             }, skipAssetPrep = true, scope="setPermissions")
-            combinedRsp.plus(batchCreateOrReplace(req))
+            combinedRsp.plus(createOrReplaceAssets(req))
         }
         return combinedRsp
     }
@@ -966,7 +957,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         return result
     }
 
-    override fun batchCreateOrReplace(spec: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
+    override fun createOrReplaceAssets(spec: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
         /**
          * We have to do this backwards here because we're relying on ES to
          * merge existing docs and updates together.
@@ -980,29 +971,10 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
                     mapOf())
         }
 
-        return indexAssets(spec, prepped)
+        return batchIndexAssets(spec, prepped)
     }
 
-    override fun createOrReplace(doc: Document): Document {
-        val prepped = prepAssets(BatchCreateAssetsRequest(listOf(doc)))
-        assetDao.createOrReplace(prepped.assets[0])
-        indexAssets(null, prepped)
-        return prepped.assets[0]
-    }
-
-    override fun update(assetId: String, attrs: Map<String, Any>): Document {
-        val asset = get(assetId)
-        if (!hasPermission("write", asset)) {
-            throw ArchivistWriteException("update access denied")
-        }
-
-        val updated = indexService.update(asset, attrs)
-        assetDao.createOrReplace(updated)
-        runDyhiAndTaxons()
-        return asset
-    }
-
-    override fun batchUpdate(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
+    override fun updateAssets(assets: List<Document>, reindex: Boolean, taxons: Boolean): BatchUpdateAssetsResponse {
         val rsp = BatchUpdateAssetsResponse()
         val updated = assetDao.batchUpdate(assets)
 
@@ -1047,7 +1019,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
                 applyAcl(doc, spec.replace, rAcl)
                 doc
             }, skipAssetPrep = true, scope = "setPermissions")
-            combinedRep.plus(batchCreateOrReplace(req))
+            combinedRep.plus(createOrReplaceAssets(req))
         }
 
         return combinedRep

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.io.FileInputStream
 import java.io.InputStream
@@ -42,7 +43,13 @@ interface FieldSystemService {
     fun getFieldSet(id: UUID) : FieldSet
 
     fun applyFieldEdits(doc: Document)
-    fun applySuggestions(doc: Document)
+
+    /**
+     * Pull the list of suggest fields and apply suggestions to the list of [Document]s
+     *
+     * @param docs The list of [Document]s
+     */
+    fun applySuggestions(docs: List<Document>)
 
     fun getEsTypeMap(): Map<String, AttrType>
     fun getEsMapping() : Map<String, Any?>
@@ -213,22 +220,26 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
-    @Transactional(readOnly=true)
-    override fun applySuggestions(doc: Document) {
-        val values = fieldDao.getSuggestAttrNames().flatMap {
-            val attr : Any? = doc.getAttr(it, Any::class.java)
-            when (attr) {
-                is Collection<*> -> {
-                    attr.map { v -> v.toString() }
+    override fun applySuggestions(docs: List<Document>) {
+        val fields = fieldDao.getSuggestAttrNames()
+        logger.info("FIELDS {}", fields)
+        for (doc in docs) {
+            val values = fields.flatMap {
+                val attr : Any? = doc.getAttr(it, Any::class.java)
+                when (attr) {
+                    is Collection<*> -> {
+                        attr.map { v -> v.toString() }
+                    }
+                    else -> {
+                        listOf(attr?.toString())
+                    }
                 }
-                else -> {
-                    listOf(attr?.toString())
-                }
-            }
-        }.filterNotNull()
-        doc.setAttr(SUGGEST_FIELD, values)
+            }.filterNotNull()
+            doc.setAttr(SUGGEST_FIELD, values)
+        }
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun createFieldSet(stream: InputStream) {
         val fs = Json.Mapper.readValue<FieldSetSpec>(stream)
         createFieldSet(fs, false)

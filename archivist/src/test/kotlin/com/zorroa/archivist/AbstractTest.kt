@@ -7,12 +7,12 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
@@ -143,7 +143,15 @@ open abstract class AbstractTest {
                 jdbc.update("DELETE FROM asset")
                 jdbc.update("DELETE FROM auditlog")
                 jdbc.update("DELETE FROM cluster_lock")
+                jdbc.update("DELETE FROM field_set")
+                jdbc.update("DELETE FROM field")
                 jdbc.update("UPDATE index_route SET str_index='unittest'")
+
+                /**
+                 * Need these in here so fields are visible by threads and coroutines.
+                 */
+                authenticate()
+                setupDefaultOrganization()
             }
         })
 
@@ -165,7 +173,7 @@ open abstract class AbstractTest {
         if (requiresElasticSearch()) {
             cleanElastic()
         }
-        setupDefaultOrganization()
+
 
         val spec1 = UserSpec(
                 "user",
@@ -228,7 +236,7 @@ open abstract class AbstractTest {
     }
 
     fun setupDefaultOrganization() {
-        val org = organizationService.get(getOrgId())
+        val org = organizationService.get(Organization.DEFAULT_ORG_ID)
         fieldSystemService.setupDefaultFieldSets(org)
     }
     /**
@@ -377,11 +385,11 @@ open abstract class AbstractTest {
                 tmpl.propagationBehavior = Propagation.REQUIRES_NEW.value()
                 tmpl.execute(object : TransactionCallbackWithoutResult() {
                     override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
-                        assetService.batchCreateOrReplace(req)
+                        assetService.createOrReplaceAssets(req)
                     }
                 })
             } else {
-                assetService.batchCreateOrReplace(req)
+                assetService.createOrReplaceAssets(req)
             }
 
         }

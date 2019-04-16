@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var jobService : JobService
+
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
 
     @Before
     fun init() {
@@ -261,5 +266,18 @@ class FieldSystemServiceTests : AbstractTest() {
                 field.keywords, field.keywordsBoost, true)))
         assertEquals(jobCount+1, jobService.getAll(JobFilter()).size(),
                 "reindex job was not created")
+    }
+
+    @Test
+    fun testApplySuggestFields() {
+        val spec = FieldSpec("File Extension", "source.extension", AttrType.StringAnalyzed,
+                keywords = true, suggest = true)
+        fieldSystemService.createField(spec, reindexSuggest = false)
+        val assets = searchService.search(Pager.first(), AssetSearch()).list
+        fieldSystemService.applySuggestions(assets)
+        for (asset in assets) {
+            assertTrue(asset.getAttr("system.suggestions", Json.LIST_OF_STRINGS).contains(
+                    asset.getAttr("source.extension", String::class.java)))
+        }
     }
 }
