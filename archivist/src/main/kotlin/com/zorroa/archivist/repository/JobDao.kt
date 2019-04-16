@@ -49,6 +49,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             -1
         }
         else {
+            spec.paused = true
             time + (spec.pauseDurationSeconds * 1000L)
         }
 

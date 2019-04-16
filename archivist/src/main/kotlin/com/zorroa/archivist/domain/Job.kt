@@ -29,7 +29,7 @@ class JobSpec (
         val args: MutableMap<String, Any>? = mutableMapOf(),
         val env: MutableMap<String, String>? =  mutableMapOf(),
         val priority: Int=100,
-        val paused: Boolean=false,
+        var paused: Boolean=false,
         val pauseDurationSeconds: Long?=null,
         val replace:Boolean=false
 )
