@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
-import com.google.common.collect.Sets
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.IndexDao
@@ -14,10 +13,12 @@ import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.Strings
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
@@ -119,11 +120,10 @@ class SearchServiceImpl @Autowired constructor(
     internal lateinit var fieldSystemService: FieldSystemService
 
     override fun count(builder: AssetSearch): Long {
-        val orgId = getOrgId()
         val rest = indexRoutingService.getOrgRestClient()
-        val totalHits = rest.client.search(buildSearch(builder, "asset").request).hits.totalHits
-        logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(builder))
-        return totalHits
+        val rsp = rest.client.search(
+                buildSearch(builder, "asset").request, RequestOptions.DEFAULT)
+        return rsp.hits.totalHits
     }
 
     override fun count(ids: List<UUID>, search: AssetSearch?): List<Long> {
@@ -140,7 +140,7 @@ class SearchServiceImpl @Autowired constructor(
                 links = Maps.newHashMap()
             }
             for (id in ids) {
-                links!!.put("folder", Arrays.asList<Any>(id))
+                links!!["folder"] = Arrays.asList<Any>(id)
                 filter.links = links
                 search.filter = filter
                 val count = count(search)
@@ -176,7 +176,6 @@ class SearchServiceImpl @Autowired constructor(
     override fun getSuggestTerms(text: String): List<String> {
         val rest = indexRoutingService.getOrgRestClient()
         val builder = SearchSourceBuilder()
-
         val suggestBuilder = SuggestBuilder()
         val req = rest.newSearchRequest()
 
@@ -193,8 +192,8 @@ class SearchServiceImpl @Autowired constructor(
         builder.suggest(suggestBuilder)
         req.source(builder)
 
-        val response = rest.client.search(req).suggest
-        val comp : CompletionSuggestion? = response.getSuggestion("suggest")
+        val response = rest.client.search(req, RequestOptions.DEFAULT).suggest
+        val comp: CompletionSuggestion? = response.getSuggestion("suggest")
 
         return comp?.flatMap {
             it.options.map { opt ->
@@ -211,7 +210,7 @@ class SearchServiceImpl @Autowired constructor(
         builder.source.size(100)
         builder.request.scroll(TimeValue(60000))
 
-        var rsp = rest.client.search(builder.request)
+        var rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
         try {
             var totalHits: Long = 0
             do {
@@ -219,14 +218,14 @@ class SearchServiceImpl @Autowired constructor(
                 totalHits += rsp.hits.totalHits
                 val sr = SearchScrollRequest(rsp.scrollId)
                 sr.scroll(TimeValue.timeValueSeconds(30))
-                rsp = rest.client.searchScroll(sr)
+                rsp = rest.client.scroll(sr, RequestOptions.DEFAULT)
             } while (rsp.hits.hits.isNotEmpty())
-            logger.event(LogObject.ASSET, LogAction.SCROLL, searchParams(search).plus("totalHits" to totalHits) )
+
         } finally {
             try {
                 val cs = ClearScrollRequest()
                 cs.addScrollId(rsp.scrollId)
-                rest.client.clearScroll(cs)
+                rest.client.clearScroll(cs, RequestOptions.DEFAULT)
             } catch (e: IOException) {
                 logger.warn("failed to clear scan/scroll request, ", e)
             }
@@ -239,35 +238,17 @@ class SearchServiceImpl @Autowired constructor(
         builder.source.size(100)
         builder.request.scroll(TimeValue(60000))
 
-        val rsp = rest.client.search(builder.request)
+        val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
 
         if (!clamp && maxResults > 0 && rsp.hits.totalHits > maxResults) {
             throw IllegalArgumentException("Asset search has returned more than $maxResults results.")
         }
-        logger.event(LogObject.ASSET, LogAction.SCROLL, searchParams(search).plus("totalHits" to rsp.hits.totalHits) )
-
         return ScanAndScrollAssetIterator(rest.client, rsp, maxResults)
-    }
-
-    private fun isSearchLogged(page: Pager, search: AssetSearch): Boolean {
-        if (!search.isEmpty && page.closestPage == 1) {
-            val scroll = search.scroll
-            if (scroll != null) {
-                // Don't log subsequent searchs.
-                if (scroll.id != null) {
-                    return false
-                }
-            }
-            return true
-        }
-        return false
     }
 
     override fun search(search: AssetSearch): SearchResponse {
         val rest = indexRoutingService.getOrgRestClient()
-        val result = rest.client.search(buildSearch(search, "asset").request)
-        logger.event(LogObject.ASSET, LogAction.SEARCH, searchParams(search))
-        return result
+        return rest.client.search(buildSearch(search, "asset").request, RequestOptions.DEFAULT)
     }
 
     override fun search(page: Pager, search: AssetSearch): PagedList<Document> {
@@ -279,32 +260,16 @@ class SearchServiceImpl @Autowired constructor(
                 if (result.size() == 0) {
                     val req = ClearScrollRequest()
                     req.addScrollId(scroll.id)
-                    rest.client.clearScroll(req)
+                    rest.client.clearScroll(req, RequestOptions.DEFAULT)
                 }
-                logger.event(
-                    LogObject.ASSET,
-                    LogAction.SCROLL,
-                    searchParams(search).plus("scroll.id" to scroll.id).plus("result.size" to result.size())
-                )
                 return result
             }
         }
-        val result = indexDao.getAll(page, buildSearch(search, "asset"))
-        logger.event(
-            LogObject.ASSET,
-            LogAction.SCROLL,
-            searchParams(search).plus("page.from" to page.from).plus("page.total_pages" to page.totalPages)
-        )
-        return result
+        return indexDao.getAll(page, buildSearch(search, "asset"))
     }
 
     @Throws(IOException::class)
     override fun search(page: Pager, search: AssetSearch, stream: OutputStream) {
-        logger.event(
-            LogObject.ASSET,
-            LogAction.SEARCH,
-            searchParams(search).plus("page.from" to page.from).plus("page.size" to page.size)
-        )
         indexDao.getAll(page, buildSearch(search, "asset"), stream)
     }
 
@@ -318,13 +283,8 @@ class SearchServiceImpl @Autowired constructor(
         if (result.size() == 0) {
             val req = ClearScrollRequest()
             req.addScrollId(id)
-            rest.client.clearScroll(req)
+            rest.client.clearScroll(req, RequestOptions.DEFAULT)
         }
-        logger.event(
-            LogObject.ASSET,
-            LogAction.SCROLL,
-            mapOf("scroll.id" to id, "result.size" to result.size())
-        )
         return result
     }
 
@@ -402,7 +362,7 @@ class SearchServiceImpl @Autowired constructor(
                 }
             } else {
                 ssb.sort("_score", SortOrder.DESC)
-                getDefaultSort().forEach { t, u ->
+                getDefaultSort().forEach { (t, u) ->
                     ssb.sort(t, u)
                 }
             }
@@ -411,23 +371,14 @@ class SearchServiceImpl @Autowired constructor(
         return rest.newSearchBuilder(req, ssb)
     }
 
-    private fun getAggregations(search: AssetSearch): Map<String, Any>? {
-        if (search.aggs == null) {
-            return null
-        }
-        val result = mutableMapOf<String, Any>()
-        for ((key, value) in search.aggs) {
-            result[key] = value
-        }
-
-        return result
-    }
-
     override fun getQuery(search: AssetSearch): QueryBuilder {
-        return getQuery(search, mutableSetOf(), true, false)
+        return getQuery(search, mutableSetOf(), perms = true, postFilter = false)
     }
 
-    private fun getQuery(search: AssetSearch, linkedFolders: MutableSet<String>, perms: Boolean, postFilter: Boolean): QueryBuilder {
+    private fun getQuery(search: AssetSearch,
+                         linkedFolders: MutableSet<String>,
+                         perms: Boolean, postFilter: Boolean): QueryBuilder {
+
         val query = QueryBuilders.boolQuery()
         query.filter(getOrganizationFilter())
 
@@ -472,6 +423,7 @@ class SearchServiceImpl @Autowired constructor(
             query.should(assetBool)
         }
 
+        applyAssetSearchMetrics(search)
 
         if (properties.getBoolean("archivist.debug-mode.enabled")) {
             logger.debug("SEARCH : {}", Strings.toString(query, true, true))
@@ -508,7 +460,8 @@ class SearchServiceImpl @Autowired constructor(
                 val childFolders = mutableSetOf<String>()
 
                 for (folder in folderService.getAllDescendants(
-                        folderService.getAll(folders), true, true)) {
+                        folderService.getAll(folders),
+                        includeStartFolders = true, forSearch = true)) {
 
                     if (linkedFolders.contains(folder.id.toString())) {
                         continue
@@ -521,7 +474,8 @@ class SearchServiceImpl @Autowired constructor(
                      */
                     if (folder.search != null) {
                         folder.search.aggs = null
-                        staticBool.should(getQuery(folder.search, linkedFolders, false, true))
+                        staticBool.should(getQuery(folder.search,
+                                linkedFolders, perms = false, postFilter = true))
                     }
 
                     /**
@@ -535,7 +489,7 @@ class SearchServiceImpl @Autowired constructor(
                     }
                 }
 
-                if (!childFolders.isEmpty()) {
+                if (childFolders.isNotEmpty()) {
                     staticBool.should(QueryBuilders.termsQuery("system.links.folder", childFolders))
                 }
             } else {
@@ -554,12 +508,12 @@ class SearchServiceImpl @Autowired constructor(
         qstring.lenient(true) // ignores qstring errors
 
         if (search.queryFields != null) {
-            search.queryFields.forEach { field, boost ->
+            search.queryFields.forEach { (field, boost) ->
                 qstring.field(field, boost)
             }
         }
         else {
-            queryFields.forEach { field, boost ->
+            queryFields.forEach { (field, boost) ->
                 qstring.field(field, boost)
             }
         }

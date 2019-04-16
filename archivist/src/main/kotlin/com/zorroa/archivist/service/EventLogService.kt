@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUserOrNull
 import io.micrometer.core.instrument.Counter
@@ -120,78 +119,62 @@ fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Ma
 }
 
 /**
- * Utility to generate a key-value map of parameters used in an AssetSearch for event logging.
- *
- * @param search an AssetSearch object
- * @return A map of key value pairs representing values for event logging.
+ * Increments metrics for the given asset Search.
  */
-fun searchParams(search: AssetSearch) : Map<String, Any?> {
-    val map: MutableMap<String, Any?> = mutableMapOf()
-    map["search.query"] = search.query
-    if(search.filter?.isEmpty == false) {
-        map["search.has_filter"] = true
-        incrementFilterCounters(search.filter)
-    }
-    if(search.aggs != null) {
-        map["search.has_aggs"] = true
-        MeterRegistryHolder.counter("search.aggs").increment()
-    }
-    return map
-}
+fun applyAssetSearchMetrics(search: AssetSearch) {
 
+    if (search.query != null) {
+         MeterRegistryHolder.increment("zorroa.asset.search.query", Tag.of("value", search.query))
+    }
 
-fun incrementFilterCounters(filter: AssetFilter) {
+    val filter = search.filter
     if(filter.isEmpty) {
         return
     }
 
-    MeterRegistryHolder.counter("zorroa.search.filter").increment()
+     MeterRegistryHolder.increment("zorroa.asset.search.filter")
 
     if (!filter.exists.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.exists")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.exists")
     }
     if (!filter.missing.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.missing")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.missing")
     }
     if (!filter.terms.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.terms")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.terms")
     }
     if (!filter.prefix.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.prefix")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.prefix")
     }
     if (!filter.range.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.range")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.range")
     }
     if (!filter.scripts.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.scripts")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.scripts")
     }
     if (!filter.links.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.links")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.links")
     }
     if (!filter.similarity.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.similarity")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.similarity")
     }
     if (!filter.kwconf.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.kwconf")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.kwconf")
     }
     if (!filter.geo_bounding_box.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.geo_bounding_box")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.geo_bounding_box")
     }
     if (!filter.mustNot.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter.mustNot")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.mustNot")
     }
     if (!filter.must.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter..must")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.must")
     }
     if (!filter.should.isNullOrEmpty()) {
-        incrementCounter("zorroa.search.filter..should")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.should")
     }
     if (filter.recursive == true) {
-        incrementCounter("zorroa.search.filter.recursive")
+         MeterRegistryHolder.increment("zorroa.asset.search.filter_type.recursive")
     }
-}
-
-fun incrementCounter(name: String) {
-    MeterRegistryHolder.counter("zorroa.search.filter.$name").increment()
 }
 
