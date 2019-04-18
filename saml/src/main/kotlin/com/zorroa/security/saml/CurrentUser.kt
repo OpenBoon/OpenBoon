@@ -16,7 +16,7 @@
 
 package com.zorroa.security.saml
 
-import java.lang.annotation.*
+import java.lang.annotation.Documented
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)

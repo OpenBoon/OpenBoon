@@ -18,8 +18,6 @@ package com.zorroa.security.saml
 
 import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserRegistryService
-import org.opensaml.saml2.core.Attribute
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -27,8 +25,6 @@ import org.springframework.security.saml.SAMLCredential
 import org.springframework.security.saml.metadata.MetadataManager
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService
 import org.springframework.stereotype.Service
-
-import java.util.*
 
 @Service
 class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {

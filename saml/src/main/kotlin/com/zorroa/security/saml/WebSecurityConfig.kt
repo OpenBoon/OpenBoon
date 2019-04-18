@@ -6,7 +6,6 @@ import org.apache.velocity.app.VelocityEngine
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider
 import org.opensaml.saml2.metadata.provider.MetadataProvider
 import org.opensaml.saml2.metadata.provider.MetadataProviderException
-import org.opensaml.xml.parse.ParserPool
 import org.opensaml.xml.parse.StaticBasicParserPool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
