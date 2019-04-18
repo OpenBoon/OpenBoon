@@ -34,7 +34,7 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         if (spec.combineMultiple) {
             if (jdbc.update(INCREMENT_COMBINE_COUNT, spec.name) == 1) {
                 meterRegistry.counter("zorrra.cluster_lock",
-                        getTags(Tag.of("operation", "combine")))
+                        getTags(Tag.of("status", "combine")))
                 return LockStatus.Combined
             }
         }
@@ -50,14 +50,14 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                 ps
             }
             meterRegistry.counter("zorrra.cluster_lock",
-                    getTags(Tag.of("operation", "locked")))
+                    getTags(Tag.of("status", "locked")))
             LockStatus.Locked
 
         } catch (e: DuplicateKeyException) {
             logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.LOCK,
                     "Failure obtaining lock", mapOf("lockName" to spec.name))
             meterRegistry.counter("zorrra.cluster_lock",
-                    getTags(Tag.of("operation", "wait")))
+                    getTags(Tag.of("status", "wait")))
             LockStatus.Wait
         }
     }
