@@ -34,10 +34,10 @@ import java.util.*
 class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
 
     @Autowired
-    internal var userRegistryService: UserRegistryService? = null
+    lateinit var userRegistryService: UserRegistryService
 
     @Autowired
-    internal var metadata: MetadataManager? = null
+    lateinit var metadata: MetadataManager
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserBySAML(credential: SAMLCredential): Any {
@@ -48,7 +48,7 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
 
         try {
 
-            val zd = metadata!!.getExtendedMetadata(issuer) as ZorroaExtendedMetadata
+            val zd = metadata.getExtendedMetadata(issuer) as ZorroaExtendedMetadata
 
             /**
              * if the username attr is set, then try to use that, otherwise
@@ -68,10 +68,10 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
             val orgId = credential.getAttributeAsString(zd.props.getProperty("organizationAttr"))
             val orgName: String
 
-            if (orgId != null) {
-                orgName = orgPrefix + orgId
+            orgName = if (orgId != null) {
+                orgPrefix + orgId
             } else {
-                orgName = "Zorroa"
+                "Zorroa"
             }
 
             LOG.info("Detected organization name from SAML metadata: $orgName")
@@ -90,7 +90,7 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
                     parseGroups(zd.props.getProperty("groupAttr"), credential))
 
             LOG.info("Loading SAML user: {} from {}", userId, issuer)
-            return userRegistryService!!.registerUser(userId!!, source)
+            return userRegistryService.registerUser(userId!!, source)
 
         } catch (e: Exception) {
             throw UsernameNotFoundException("Unable to authenticate user: " + userId!!, e)
@@ -98,19 +98,23 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
 
     }
 
-    fun parseGroups(groupAttrName: String?, credential: SAMLCredential): List<String>? {
+    fun parseGroups(groupAttrName: String?, credential: SAMLCredential): List<String> {
         LOG.info("Loading SAML group attribute {}", groupAttrName)
-        var groups: List<String>? = null
+        val groups = mutableListOf<String>()
         if (groupAttrName != null) {
             val groupAttrArray = credential.getAttributeAsStringArray(groupAttrName)
-            if (groupAttrArray != null || groupAttrArray!!.size == 0) {
-                LOG.info("Found Group array with length {}", groupAttrArray.size)
-                groups = Arrays.asList(*groupAttrArray)
+            LOG.info("Loading SAML group attribute {}", groupAttrArray)
+
+            if (groupAttrArray != null) {
+                if (groupAttrArray.isNotEmpty()) {
+                    LOG.info("Found Group array with length {}", groupAttrArray.size)
+                    groups.addAll(groupAttrArray)
+                }
             } else {
                 val groupAttrString = credential.getAttributeAsString(groupAttrName)
                 if (groupAttrString != null) {
                     LOG.info("Found Group string {}", groupAttrString)
-                    groups = Arrays.asList(*arrayOf(groupAttrString))
+                    groups.add(groupAttrString)
                 }
             }
         }
@@ -123,6 +127,7 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
         private val LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl::class.java)
 
         private fun trim(value: String?): String? {
+
             return if (value == null) {
                 null
             } else if (value.trim { it <= ' ' }.isEmpty()) {

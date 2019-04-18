@@ -16,24 +16,15 @@
 
 package com.zorroa.security.saml
 
-import com.zorroa.security.saml.SamlProperties
-import com.zorroa.security.saml.ZorroaExtendedMetadata
-import org.opensaml.saml2.metadata.provider.MetadataProviderException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.authentication.AnonymousAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.saml.metadata.MetadataManager
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
-
-import javax.servlet.http.HttpServletRequest
-import java.util.*
 
 @Controller
 @RequestMapping("/saml")
@@ -60,48 +51,11 @@ class SSOController {
         }
 
         val result = mutableMapOf<String, Any>()
-        result["logout"] = properties!!.isLogout
+        result["logout"] = properties.isLogout
         result["discovery"] = properties.discovery
         result["landing"] = properties.landingPage
         result["baseUrl"] = properties.baseUrl
-        result["proxyBase"] = properties.baseUrlIsProxy
         result["idps"] = urls
         return result
     }
-
-    /*
-    @RequestMapping(value = "/idpSelection")
-    @Throws(MetadataProviderException::class)
-    fun idpSelection(request: HttpServletRequest, model: Model): String {
-        if (SecurityContextHolder.getContext().authentication !is AnonymousAuthenticationToken) {
-            return "redirect:/"
-        } else {
-            if (isForwarded(request)) {
-                val idps = metadata!!.idpEntityNames
-                val props = mutableListOf<Properties>()
-
-                for (idp in idps) {
-                    val zd = metadata.getExtendedMetadata(idp) as ZorroaExtendedMetadata
-                    zd.props.setProperty("idpUrl", "/saml/login?disco=true&idp=$idp")
-                    props.add(zd.props)
-                }
-                model.addAttribute("idps", idps)
-                model.addAttribute("props", props)
-
-                return "saml/idpSelection"
-            } else {
-                //"Direct accesses to '/idpSelection' route are not allowed"
-                return "redirect:/"
-            }
-        }
-    }
-    */
-
-    /*
-	 * Checks if an HTTP request has been forwarded by a servlet.
-	 */
-    private fun isForwarded(request: HttpServletRequest): Boolean {
-        return request.getAttribute("javax.servlet.forward.request_uri") != null
-    }
-
 }

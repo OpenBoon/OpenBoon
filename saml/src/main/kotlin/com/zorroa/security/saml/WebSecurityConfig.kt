@@ -25,7 +25,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.saml.*
 import org.springframework.security.saml.context.SAMLContextProvider
-import org.springframework.security.saml.context.SAMLContextProviderImpl
 import org.springframework.security.saml.context.SAMLContextProviderLB
 import org.springframework.security.saml.key.JKSKeyManager
 import org.springframework.security.saml.key.KeyManager
@@ -70,10 +69,10 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     private var multiThreadedHttpConnectionManager: MultiThreadedHttpConnectionManager? = null
 
     @Autowired
-    private val properties: SamlProperties? = null
+    lateinit var properties: SamlProperties
 
     @Autowired
-    private val samlUserDetailsServiceImpl: SAMLUserDetailsServiceImpl? = null
+    lateinit var samlUserDetailsServiceImpl: SAMLUserDetailsServiceImpl
 
     @PostConstruct
     fun init() {
@@ -124,25 +123,22 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     // Provider of default SAML Context
     @Bean
     fun contextProvider(): SAMLContextProvider {
-        logger.info("BaseURL is proxy: {}", properties!!.baseUrlIsProxy)
+        logger.info("SAML Base URL {}", properties.baseUrl)
 
-        if (properties.baseUrlIsProxy) {
-            val uri = URI.create(properties.baseUrl)
-            val ctx = SAMLContextProviderLB()
-            ctx.setScheme(uri.scheme)
-            ctx.setServerName(uri.host)
-            ctx.setIncludeServerPortInRequestURL(false)
-            ctx.setContextPath("/")
+        val uri = URI.create(properties.baseUrl)
+        val ctx = SAMLContextProviderLB()
+        ctx.setScheme(uri.scheme)
+        ctx.setServerName(uri.host)
+        ctx.setIncludeServerPortInRequestURL(false)
+        ctx.setContextPath("/")
 
-            if (uri.scheme.endsWith("s")) {
-                ctx.setServerPort(443)
-            } else {
-                ctx.setServerPort(80)
-            }
-            return ctx
+        if (uri.scheme.endsWith("s")) {
+            ctx.setServerPort(443)
         } else {
-            return SAMLContextProviderImpl()
+            ctx.setServerPort(80)
         }
+
+        return ctx
     }
 
     // Logger for SAML messages and events
@@ -245,23 +241,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     // Setup advanced info about metadata
     @Bean
     fun extendedMetadata(): ExtendedMetadata {
-        val discovery = properties!!.discovery
-        logger.info("SAML discovery  {}", discovery)
         val extendedMetadata = ExtendedMetadata()
-        extendedMetadata.isIdpDiscoveryEnabled = discovery
         extendedMetadata.isSignMetadata = true
         extendedMetadata.isEcpEnabled = true
         return extendedMetadata
     }
-
-    /*
-    @Bean
-    fun samlIDPDiscovery(): SAMLDiscovery {
-        val idpDiscovery = SAMLDiscovery()
-        idpDiscovery.idpSelectionPath = "/saml/idpSelection"
-        return idpDiscovery
-    }
-     */
 
     // IDP Metadata configuration - paths to metadata of IDPs in circle of trust
     // is here
@@ -270,7 +254,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Qualifier("metadata")
     @Throws(MetadataProviderException::class, IOException::class)
     fun metadata(): CachingMetadataManager {
-        val discovery = properties!!.discovery
 
         val providers = mutableListOf<MetadataProvider>()
         Files.list(Paths.get("/config/saml"))
@@ -284,7 +267,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         val uri = props.getProperty("metadataUrl")
 
                         val extendedMetadata = ZorroaExtendedMetadata()
-                        extendedMetadata.isIdpDiscoveryEnabled = discovery
                         extendedMetadata.isSignMetadata = true
                         extendedMetadata.isEcpEnabled = true
                         extendedMetadata.props = props
@@ -330,8 +312,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     // Filter automatically generates default SP metadata
     @Bean
     fun metadataGenerator(): MetadataGenerator {
-        val baseURL = properties!!.baseUrl
-        logger.info("SAML base URL {}", baseURL)
+        val baseURL = properties.baseUrl
         val metadataGenerator = MetadataGenerator()
         metadataGenerator.entityId = "$baseURL/saml/metadata"
         metadataGenerator.extendedMetadata = extendedMetadata()
@@ -387,18 +368,14 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Bean
     fun metadataGeneratorFilter(): MetadataGeneratorFilter {
-        return if (properties!!.baseUrlIsProxy) {
-            ZorroaMetadataFilter(properties.baseUrl, metadataGenerator())
-        } else {
-            MetadataGeneratorFilter(metadataGenerator())
-        }
+        return ZorroaMetadataFilter(properties.baseUrl, metadataGenerator())
     }
 
     // Handler for successful logout
     @Bean
     fun successLogoutHandler(): SimpleUrlLogoutSuccessHandler {
         val successLogoutHandler = SimpleUrlLogoutSuccessHandler()
-        successLogoutHandler.setDefaultTargetUrl(properties!!.landingPage)
+        successLogoutHandler.setDefaultTargetUrl(properties.landingPage)
         return successLogoutHandler
     }
 
@@ -501,9 +478,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/SingleLogout/**"),
                 samlLogoutProcessingFilter()))
 
-        //chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/discovery/**"),
-        //        samlIDPDiscovery()))
-
         return FilterChainProxy(chains)
     }
 
@@ -533,7 +507,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         http
                 .logout()
-                .logoutSuccessUrl(properties!!.landingPage)
+                .logoutSuccessUrl(properties.landingPage)
     }
 
     /**

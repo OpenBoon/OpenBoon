@@ -11,7 +11,6 @@ class SamlProperties {
     var discovery = true
     lateinit var baseUrl: String
     lateinit var landingPage: String
-    var baseUrlIsProxy = false
     var isLogout = true
 
 }

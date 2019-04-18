@@ -16,7 +16,6 @@
 
 package com.zorroa.security.saml
 
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter
 import org.springframework.security.core.Authentication
@@ -27,8 +26,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
-
-import java.security.Principal
 
 @Component
 class CurrentUserHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
@@ -41,12 +38,12 @@ class CurrentUserHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
     override fun resolveArgument(methodParameter: MethodParameter,
                                  mavContainer: ModelAndViewContainer?, webRequest: NativeWebRequest,
                                  binderFactory: WebDataBinderFactory?): Any? {
-        if (this.supportsParameter(methodParameter)) {
+        return if (this.supportsParameter(methodParameter)) {
             logger.info("User principal: {}", webRequest.userPrincipal)
 
-            return (webRequest.userPrincipal as Authentication).principal as User
+            (webRequest.userPrincipal as Authentication).principal as User
         } else {
-            return WebArgumentResolver.UNRESOLVED
+            WebArgumentResolver.UNRESOLVED
         }
     }
 
