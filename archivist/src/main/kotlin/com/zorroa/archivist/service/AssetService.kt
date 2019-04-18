@@ -76,7 +76,6 @@ interface AssetService {
  */
 class PreppedAssets(
         val assets: List<Document>,
-        val auditLogs: List<AuditLogEntrySpec>,
         val scope: String)
 
 
@@ -126,7 +125,6 @@ open abstract class AbstractAssetService : AssetService {
      * - Applying modified / created times
      * - Applying default permissions
      * - Applying links
-     * - Detecting changes and watched fields
      *
      * Return a PreppedAssets object which contains the updated assets as well as
      * the field change audit logs.  The audit logs for successful assets are
@@ -137,15 +135,13 @@ open abstract class AbstractAssetService : AssetService {
      */
     fun prepAssets(req: BatchCreateAssetsRequest): PreppedAssets {
         if (req.skipAssetPrep) {
-            return PreppedAssets(req.sources, listOf(), req.scope)
+            return PreppedAssets(req.sources, req.scope)
         }
 
         val assets = req.sources
         val orgId = getOrgId()
         val defaultPermissions = Json.Mapper.convertValue<Map<String, Any>>(
                 permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP)
-        val watchedFields = properties.getList("archivist.auditlog.watched-fields")
-        val watchedFieldsLogs = mutableListOf<AuditLogEntrySpec>()
 
         val prepped = PreppedAssets(assets.map { newSource ->
 
@@ -167,43 +163,12 @@ open abstract class AbstractAssetService : AssetService {
             handleLinks(existingSource, newSource)
             fieldSystemService.applyFieldEdits(newSource)
 
-            if (watchedFields.isNotEmpty()) {
-                watchedFieldsLogs.addAll(handleWatchedFieldChanges(watchedFields, existingSource, newSource))
-            }
 
             newSource
-        }, watchedFieldsLogs, req.scope)
+        }, req.scope)
 
         fieldSystemService.applySuggestions(prepped.assets)
         return prepped
-    }
-
-    /**
-     * Detects if there are value changes on a watched field and returns them as a list of AuditLogEntrySpec
-     *
-     * @param fields the list of fields to watch
-     * @param oldAsset the original asset
-     * @param newAsset the new asset
-     * @return a list of AuditLogEntrySpec to describe the changes
-     */
-    private fun handleWatchedFieldChanges(fields: List<String>, oldAsset: Document, newAsset: Document): List<AuditLogEntrySpec> {
-        return fields.map {
-            if (oldAsset == null && newAsset.attrExists(it)) {
-                AuditLogEntrySpec(
-                        oldAsset.id,
-                        AuditLogType.Changed,
-                        attrName = it,
-                        value = newAsset.getAttr(it))
-            } else if (oldAsset.getAttr(it, Any::class.java) != newAsset.getAttr(it, Any::class.java)) {
-                AuditLogEntrySpec(
-                        oldAsset.id,
-                        AuditLogType.Changed,
-                        attrName = it,
-                        value = newAsset.getAttr(it))
-            } else {
-                null
-            }
-        }.filterNotNull()
     }
 
     /**
@@ -299,13 +264,9 @@ open abstract class AbstractAssetService : AssetService {
     }
 
     /**
-     * Apply the watched field audit logs for any asset that was created or replaced.
-     */
+     * Apply the audit logs for any asset that was created or replaced.
+    */
     fun auditLogChanges(prepped: PreppedAssets, rsp: BatchCreateAssetsResponse) {
-        auditLogDao.batchCreate(prepped.auditLogs.filter {
-            val strId = it.assetId.toString()
-            strId in rsp.createdAssetIds || strId in rsp.replacedAssetIds
-        })
         // Create audit logs for created and replaced entries.
         auditLogDao.batchCreate(rsp.createdAssetIds.map {
             AuditLogEntrySpec(it, AuditLogType.Created, scope = prepped.scope)
@@ -767,7 +728,6 @@ open class IrmAssetServiceImpl constructor(
     lateinit var organizationService: OrganizationService
 
     override fun get(assetId: String): Document {
-        logger.event(LogObject.ASSET, LogAction.GET, mapOf("assetId" to assetId, "datastore" to "CDV"))
         return cdvClient.getIndexedMetadata(getCompanyId(), assetId)
     }
 
@@ -887,7 +847,6 @@ open class IrmAssetServiceImpl constructor(
     }
 
     override fun getAll(ids: List<String>) : List<Document> {
-        logger.event(LogObject.ASSET, LogAction.SEARCH, mapOf("requested_count" to ids.size, "datastore" to "CDV"))
         return ids.map {
             // Will return empty document if not in CDV
             val doc = cdvClient.getIndexedMetadata(getCompanyId(), it)
@@ -907,7 +866,6 @@ open class IrmAssetServiceImpl constructor(
         val result = cdvClient.createAsset(getCompanyId(), spec)
         val uri = URI(result["imageUploadURL"] as String)
         cdvClient.uploadSource(uri, bytes)
-        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to uri))
         return AssetUploadedResponse(id, uri)
     }
 }
@@ -927,14 +885,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
     }
 
     override fun getAll(assetIds: List<String>): List<Document> {
-
-        val list = assetDao.getAll(assetIds)
-        logger.event(
-            LogObject.ASSET,
-            LogAction.SEARCH,
-            mapOf("requested_count" to assetIds.size, "result_count" to list.size)
-        )
-        return list
+       return assetDao.getAll(assetIds)
     }
 
     override fun delete(id: String): Boolean {
@@ -1029,7 +980,6 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         val id = UUID.randomUUID()
         val fss = fileStorageService.get(FileStorageSpec("asset", id, name))
         fileStorageService.write(fss.id, bytes)
-        logger.event(LogObject.ASSET, LogAction.UPLOAD, mapOf("uri" to fss.uri))
         return AssetUploadedResponse(id, fss.uri)
     }
 }

@@ -6,11 +6,13 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.MeterRegistryHolder
 import com.zorroa.archivist.service.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -135,6 +137,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     newState.ordinal, time, job.jobId) == 1
         }
         if (result) {
+            meterRegistry.counter("zorroa.job.state",
+                    MeterRegistryHolder.getTags(newState.metricsTag())).increment()
             logger.event(LogObject.JOB, LogAction.STATE_CHANGE,
                     mapOf("jobId" to job.jobId,
                             "newState" to newState.name,
@@ -150,15 +154,13 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean {
-        val updated =  jdbc.update(INC_STATS,
+        return jdbc.update(INC_STATS,
                 counts.total,
                 counts.createdAssetIds.size,
                 counts.warningAssetIds.size,
                 counts.erroredAssetIds.size,
                 counts.replacedAssetIds.size,
                 job.jobId) == 1
-
-        return updated
     }
 
     override fun resumePausedJobs() : Int {

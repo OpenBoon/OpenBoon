@@ -9,10 +9,14 @@ import com.zorroa.archivist.elastic.SingleHit
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.Counter
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.DocWriteResponse
 import org.elasticsearch.action.bulk.BulkRequest
@@ -109,9 +113,7 @@ interface IndexDao {
 }
 
 @Repository
-class IndexDaoImpl @Autowired constructor(
-        private val properties: ApplicationProperties
-) : AbstractElasticDao(), IndexDao {
+class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElasticDao(), IndexDao {
 
     override fun <T> getFieldValue(id: String, field: String): T? {
         val rest = getClient()
@@ -187,6 +189,22 @@ class IndexDaoImpl @Autowired constructor(
             result.retryCount++
             result.add(index(retries))
         }
+
+        meterRegistry.counter("zorroa.asset.index",
+                getTags(Tag.of("status", "created")))
+                .increment(result.createdAssetIds.size.toDouble())
+
+        meterRegistry.counter("zorroa.asset.index",
+                getTags(Tag.of("status", "replaced")))
+                .increment(result.replacedAssetIds.size.toDouble())
+
+        meterRegistry.counter("zorroa.asset.index",
+                getTags(Tag.of("status", "rejected")))
+                .increment(result.erroredAssetIds.size.toDouble())
+
+        meterRegistry.counter("zorroa.asset.index",
+                getTags(Tag.of("status", "warning")))
+                .increment(result.warningAssetIds.size.toDouble())
 
         return result
     }
@@ -346,6 +364,21 @@ class IndexDaoImpl @Autowired constructor(
                 }
             }
         }
+
+        meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "success")))
+                .increment(rsp.deletedAssetIds.size.toDouble())
+
+        meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "denied")))
+                .increment(rsp.accessDeniedAssetIds.size.toDouble())
+
+        meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "error")))
+                .increment(rsp.errors.size.toDouble())
+
+        meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "missing")))
+                .increment(rsp.missingAssetIds.size.toDouble())
+
+        meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "on-hold")))
+                .increment(rsp.onHoldAssetIds.size.toDouble())
 
         return rsp
     }
