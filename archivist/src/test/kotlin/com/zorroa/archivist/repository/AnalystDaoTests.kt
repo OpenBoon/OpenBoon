@@ -42,6 +42,27 @@ class AnalystDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testUpdate() {
+        assertEquals(1, jdbc.update("UPDATE analyst SET int_state=0 WHERE pk_analyst=?",
+                analyst.id))
+        val spec = AnalystSpec(
+                99,
+                99,
+                99,
+                0.1f,
+                "hello",
+                null)
+        assertTrue(analystDao.update(spec))
+        val a2 = analystDao.get(analyst.id)
+        assertEquals(spec.totalRamMb, a2.totalRamMb)
+        assertEquals(spec.freeRamMb, a2.freeRamMb)
+        assertEquals(spec.freeDiskMb, a2.freeDiskMb)
+        assertEquals(spec.load, a2.load)
+        assertEquals(AnalystState.Up, a2.state)
+    }
+
+
+    @Test
     fun testGet() {
         val a1 = analystDao.get(analyst.id)
         assertEquals(a1.endpoint, analyst.endpoint)

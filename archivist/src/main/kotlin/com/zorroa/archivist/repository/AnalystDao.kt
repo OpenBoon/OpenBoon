@@ -48,7 +48,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         val time = System.currentTimeMillis()
         val endpoint = getAnalystEndpoint()
         return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb,
-                spec.freeRamMb, spec.freeDiskMb, spec.load, endpoint) == 1
+                spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal,
+                endpoint) == 1
     }
 
     override fun get(id: UUID): Analyst {
@@ -146,7 +147,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                 "int_total_ram",
                 "int_free_ram",
                 "int_free_disk",
-                "flt_load")
+                "flt_load",
+                "int_state")
     }
 
 }
