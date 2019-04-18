@@ -1,12 +1,9 @@
 package com.zorroa.security.saml
 
-import org.apache.commons.httpclient.HttpClient
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager
 import org.apache.commons.httpclient.protocol.Protocol
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory
 import org.apache.velocity.app.VelocityEngine
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider
-import org.opensaml.saml2.metadata.provider.HTTPMetadataProvider
 import org.opensaml.saml2.metadata.provider.MetadataProvider
 import org.opensaml.saml2.metadata.provider.MetadataProviderException
 import org.opensaml.xml.parse.ParserPool
@@ -55,8 +52,6 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.MessageDigest
 import java.util.*
-import javax.annotation.PostConstruct
-import javax.annotation.PreDestroy
 import javax.xml.bind.DatatypeConverter
 
 
@@ -65,27 +60,11 @@ import javax.xml.bind.DatatypeConverter
 @EnableGlobalMethodSecurity(securedEnabled = true)
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
-    private var backgroundTaskTimer: Timer? = null
-    private var multiThreadedHttpConnectionManager: MultiThreadedHttpConnectionManager? = null
-
     @Autowired
     lateinit var properties: SamlProperties
 
     @Autowired
     lateinit var samlUserDetailsServiceImpl: SAMLUserDetailsServiceImpl
-
-    @PostConstruct
-    fun init() {
-        this.backgroundTaskTimer = Timer(true)
-        this.multiThreadedHttpConnectionManager = MultiThreadedHttpConnectionManager()
-    }
-
-    @PreDestroy
-    fun destroy() {
-        this.backgroundTaskTimer!!.purge()
-        this.backgroundTaskTimer!!.cancel()
-        this.multiThreadedHttpConnectionManager!!.shutdown()
-    }
 
     // Initialization of the velocity engine
     @Bean
@@ -102,12 +81,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean(name = ["parserPoolHolder"])
     fun parserPoolHolder(): ParserPoolHolder {
         return ParserPoolHolder()
-    }
-
-    // Bindings, encoders and decoders used for creating and parsing messages
-    @Bean
-    fun httpClient(): HttpClient {
-        return HttpClient(this.multiThreadedHttpConnectionManager!!)
     }
 
     // SAML Authentication Provider responsible for validating of received SAML
@@ -247,9 +220,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return extendedMetadata
     }
 
-    // IDP Metadata configuration - paths to metadata of IDPs in circle of trust
-    // is here
-    // Do no forget to call iniitalize method on providers
     @Bean
     @Qualifier("metadata")
     @Throws(MetadataProviderException::class, IOException::class)
@@ -271,34 +241,23 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         extendedMetadata.isEcpEnabled = true
                         extendedMetadata.props = props
 
-                        if (uri.startsWith("http")) {
-                            val httpMetadataProvider = HTTPMetadataProvider(
-                                    this.backgroundTaskTimer!!, httpClient(), uri)
-                            httpMetadataProvider.parserPool = parserPool()
-                            val emd = ExtendedMetadataDelegate(httpMetadataProvider, extendedMetadata)
-                            emd.isMetadataTrustCheck = false
-                            emd.isMetadataRequireSignature = false
-                            emd.setRequireValidMetadata(false)
-                            backgroundTaskTimer!!.purge()
-                            providers.add(emd)
-                        } else {
-                            try {
-                                val md5 = MessageDigest.getInstance("MD5")
-                                val bytes = Files.readAllBytes(Paths.get(uri))
-                                val hash = md5.digest(bytes)
-                                logger.info("Metdata MD5: {}", DatatypeConverter.printHexBinary(hash))
-                            } catch (e: Exception) {
-                                logger.warn("Unable to MD5 metadata")
-                            }
-
-                            val provider = FilesystemMetadataProvider(File(uri))
-                            provider.parserPool = parserPool()
-                            val emd = ExtendedMetadataDelegate(provider, extendedMetadata)
-                            emd.isMetadataTrustCheck = false
-                            emd.isMetadataRequireSignature = false
-                            emd.setRequireValidMetadata(false)
-                            providers.add(emd)
+                        try {
+                            val md5 = MessageDigest.getInstance("MD5")
+                            val bytes = Files.readAllBytes(Paths.get(uri))
+                            val hash = md5.digest(bytes)
+                            logger.info("Metdata MD5: {}", DatatypeConverter.printHexBinary(hash))
+                        } catch (e: Exception) {
+                            logger.warn("Unable to MD5 metadata")
                         }
+
+                        val provider = FilesystemMetadataProvider(File(uri))
+                        provider.parserPool = parserPool()
+                        val emd = ExtendedMetadataDelegate(provider, extendedMetadata)
+                        emd.isMetadataTrustCheck = false
+                        emd.isMetadataRequireSignature = false
+                        emd.setRequireValidMetadata(false)
+                        providers.add(emd)
+
                     } catch (e: IOException) {
                         logger.warn("Failed to open SAML file: ", e)
                     } catch (e: MetadataProviderException) {
@@ -406,18 +365,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 arrayOf<LogoutHandler>(logoutHandler()))
     }
 
-    // Bindings
-    private fun artifactResolutionProfile(): ArtifactResolutionProfile {
-        val artifactResolutionProfile = ArtifactResolutionProfileImpl(httpClient())
-        artifactResolutionProfile.setProcessor(SAMLProcessorImpl(soapBinding()))
-        return artifactResolutionProfile
-    }
-
-    @Bean
-    fun artifactBinding(parserPool: ParserPool, velocityEngine: VelocityEngine): HTTPArtifactBinding {
-        return HTTPArtifactBinding(parserPool, velocityEngine, artifactResolutionProfile())
-    }
-
     @Bean
     fun soapBinding(): HTTPSOAP11Binding {
         return HTTPSOAP11Binding(parserPool())
@@ -449,7 +396,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         val bindings = ArrayList<SAMLBinding>()
         bindings.add(httpRedirectDeflateBinding())
         bindings.add(httpPostBinding())
-        bindings.add(artifactBinding(parserPool(), velocityEngine()))
         bindings.add(httpSOAP11Binding())
         bindings.add(httpPAOS11Binding())
         return SAMLProcessorImpl(bindings)
