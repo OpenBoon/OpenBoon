@@ -17,7 +17,7 @@
 package com.zorroa.security.saml
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.saml.metadata.MetadataManager
+import org.springframework.security.saml.metadata.CachingMetadataManager
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.GetMapping
@@ -31,12 +31,12 @@ import org.springframework.web.servlet.ModelAndView
 class SSOController {
 
     @Autowired
-    lateinit var metadata: MetadataManager
+    lateinit var metadata: CachingMetadataManager
 
     @Autowired
     lateinit var properties: SamlProperties
 
-    @RequestMapping(value = ["/lannding"], method = [RequestMethod.POST, RequestMethod.GET])
+    @RequestMapping(value = ["/landing"], method = [RequestMethod.POST, RequestMethod.GET])
     fun landing(model: ModelMap): ModelAndView {
         return ModelAndView("redirect:" + properties.landingPage, model)
     }
@@ -44,10 +44,19 @@ class SSOController {
     @GetMapping(value = ["/options"], produces = ["application/json"])
     @ResponseBody
     fun samlOptions(): Any {
-        val idps = metadata!!.idpEntityNames
+        val idps = metadata.idpEntityNames
         val urls = mutableListOf<String>()
+        val propList = mutableListOf<Map<Any,Any>>()
+
         for (idp in idps) {
-            urls.add("/saml/login?disco=true&idp=$idp")
+            val url = "/saml/login?disco=true&idp=$idp"
+            urls.add(url)
+
+            val ext = metadata.getExtendedMetadata(idp) as ZorroaExtendedMetadata
+            val map = ext.props.toMutableMap()
+            map["loginUrl"] = url
+            map["entityId"] = idp
+            propList.add(map)
         }
 
         val result = mutableMapOf<String, Any>()
@@ -56,6 +65,7 @@ class SSOController {
         result["landing"] = properties.landingPage
         result["baseUrl"] = properties.baseUrl
         result["idps"] = urls
+        result["idp-props"] = propList
         return result
     }
 }
