@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration
 class SamlProperties {
 
     lateinit var keystore: MutableMap<String, String>
-    var discovery = true
     lateinit var baseUrl: String
     lateinit var landingPage: String
     var isLogout = true
