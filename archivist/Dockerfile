@@ -8,8 +8,13 @@ ARG gcs_config
 ENV GCS_CONFIG ${gcs_config}
 
 RUN mkdir /service
-
 COPY target/archivist.jar /service/archivist.jar
+
+# Create a couple directories for service extensions.
+RUN mkdir /service-ext
+RUN mkdir /service-ext-installed
+COPY ext/* /service-ext/
+
 COPY run_server.sh run_server.sh
 
 EXPOSE 8080

@@ -172,8 +172,10 @@ class SpringApplicationProperties : ApplicationProperties {
         val result = mutableMapOf<String, String>()
         val str = getString(key, "")
         for (item in str.split(',')) {
-            val (k,v) = item.split('=')
-            result[k.trim()]=v.trim()
+            if ("=" in item) {
+                val (k, v) = item.split('=', limit = 2)
+                result[k.trim()] = v.trim()
+            }
         }
         return result
     }

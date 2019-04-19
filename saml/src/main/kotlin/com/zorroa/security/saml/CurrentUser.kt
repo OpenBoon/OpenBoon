@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.zorroa.security.saml;
+package com.zorroa.security.saml
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented
 
-@Target(ElementType.PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
 @Documented
-public @interface CurrentUser {}
+annotation class CurrentUser
