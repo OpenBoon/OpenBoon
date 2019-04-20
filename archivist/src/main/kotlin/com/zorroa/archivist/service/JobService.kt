@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -39,6 +40,7 @@ interface JobService {
     fun deleteJob(job: JobId) : Boolean
     fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
     fun checkAndSetJobFinished(job: JobId): Boolean
+    fun getOrphanTasks(duration: Duration) : List<Task>
 }
 
 @Service
@@ -161,6 +163,12 @@ class JobServiceImpl @Autowired constructor(
     override fun getTask(id: UUID) : Task {
         return taskDao.get(id)
     }
+
+    @Transactional(readOnly = true)
+    override fun getOrphanTasks(duration: Duration) : List<Task> {
+        return taskDao.getOrphans(duration)
+    }
+
 
     @Transactional(readOnly = true)
     override fun getZpsScript(id: UUID) : ZpsScript {

@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ProcessorSpec
 import com.zorroa.archivist.repository.AnalystDao
+import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.domain.*
@@ -15,6 +16,7 @@ import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.util.*
@@ -41,6 +43,7 @@ interface AnalystService {
 @Transactional
 class AnalystServicImpl @Autowired constructor(
         val analystDao: AnalystDao,
+        val taskDao: TaskDao,
         val txm: TransactionEventManager,
         val clusterLockExecutor: ClusterLockExecutor): AnalystService {
 
@@ -60,9 +63,12 @@ class AnalystServicImpl @Autowired constructor(
                 doProcessorScan()
             }
         }
+        val endpoint = getAnalystEndpoint()
+        spec.taskId?.let {
+            taskDao.updatePingTime(it, endpoint)
+        }
 
         return if (analystDao.update(spec)) {
-            val endpoint = getAnalystEndpoint()
             analystDao.get(endpoint)
         }
         else {
@@ -102,6 +108,7 @@ class AnalystServicImpl @Autowired constructor(
         return analystDao.setState(analyst, state)
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     override fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState) : Boolean {
         return try {
             val client = RestClient(endpoint)

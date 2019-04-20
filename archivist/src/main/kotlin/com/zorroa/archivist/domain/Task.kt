@@ -58,6 +58,10 @@ open class Task (
         return FileStorageSpec("job", jobId, "logs/$taskId.log")
     }
 
+    override fun toString(): String {
+        return "<Task id='$id' name='$name'/>"
+    }
+
 }
 
 class DispatchTask(

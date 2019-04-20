@@ -6,6 +6,7 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
+import com.zorroa.common.domain.TaskState
 import kotlinx.coroutines.Dispatchers
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ContextRefreshedEvent
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.concurrent.TimeUnit
@@ -33,6 +35,11 @@ interface MaintenanceService {
      * pinged in for some time.
      */
     fun handleUnresponsiveAnalysts()
+
+    /**
+     * Handles retrying all tasks that have not pinged in for a set amount of time.
+     */
+    fun handleOrphanTasks()
 
     /**
      * Run all Maintenance.  Return true if lock was obtained, false if not.
@@ -66,6 +73,11 @@ class MaintenanceConfiguration {
     lateinit var analystRemoveInactivityTime : String
 
     /**
+     * The amount of time to wait for a ping before considering the task an orphan.
+     */
+    lateinit var taskOrphanTime : String
+
+    /**
      * Return a [Duration] instance from the analystInactivityTimeDown property.
      */
     fun getAnalystDownInactivityTime() : Duration {
@@ -77,6 +89,13 @@ class MaintenanceConfiguration {
      */
     fun getAnalystRemoveInactivityTime() : Duration {
         return Duration.parse("PT${analystRemoveInactivityTime.toUpperCase()}")
+    }
+
+    /**
+     * Return a [Duration] instance describing the task orphan time.
+     */
+    fun getTaskOrphanTime() : Duration {
+        return Duration.parse("PT${taskOrphanTime.toUpperCase()}")
     }
 
 }
@@ -128,6 +147,7 @@ class ResumePausedJobsScheduler @Autowired constructor(
 class MaintenanceServiceImpl @Autowired constructor(
         val storageService: FileStorageService,
         val jobService: JobService,
+        val dispatcherService: DispatcherService,
         val analystService: AnalystService,
         val clusterLockService: ClusterLockService,
         val clusterLockExecutor: ClusterLockExecutor,
@@ -163,6 +183,7 @@ class MaintenanceServiceImpl @Autowired constructor(
             clusterLockService.clearExpired()
             handleExpiredJobs()
             handleUnresponsiveAnalysts()
+            handleOrphanTasks()
         }
     }
 
@@ -205,6 +226,18 @@ class MaintenanceServiceImpl @Autowired constructor(
 
         } catch (e: Exception) {
             logger.warn("Unable to handle unresponsive analysts, ", e)
+        }
+    }
+
+    override fun handleOrphanTasks() {
+        try {
+            //  get Analysts that are Up but haven't pinged in
+            val orphanDuration = config.getTaskOrphanTime()
+            jobService.getOrphanTasks(orphanDuration).forEach {
+                dispatcherService.retryTask(it, "Orphaned Task")
+            }
+        } catch (e: Exception) {
+            logger.warn("Unable to handle orphan tasks, ", e)
         }
     }
 
