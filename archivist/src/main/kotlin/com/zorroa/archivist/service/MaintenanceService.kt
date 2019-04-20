@@ -2,13 +2,10 @@ package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.domain.ClusterLockSpec
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.TaskState
 import kotlinx.coroutines.Dispatchers
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +14,7 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 /**
@@ -56,6 +54,31 @@ class MaintenanceConfiguration {
      * Number of days before inactive jobs are removed.
      */
     var archiveJobsAfterDays: Long = 90
+
+    /**
+     * Mark Analyst down after being down for this period of time.
+     */
+    lateinit var analystDownInactivityTime: String
+
+    /**
+     * Remove Analyst from list after being down for this period of time.
+     */
+    lateinit var analystRemoveInactivityTime : String
+
+    /**
+     * Return a [Duration] instance from the analystInactivityTimeDown property.
+     */
+    fun getAnalystDownInactivityTime() : Duration {
+        return Duration.parse("PT${analystDownInactivityTime.toUpperCase()}")
+    }
+
+    /**
+     * Return a [Duration] instance from the analystInactivityTimeRemove property.
+     */
+    fun getAnalystRemoveInactivityTime() : Duration {
+        return Duration.parse("PT${analystRemoveInactivityTime.toUpperCase()}")
+    }
+
 }
 
 /**
@@ -165,29 +188,19 @@ class MaintenanceServiceImpl @Autowired constructor(
     override fun handleUnresponsiveAnalysts() {
         try {
             //  get Analysts that are Up but haven't pinged in
-            for (analyst in analystService.getUnresponsive(AnalystState.Up, 5, TimeUnit.MINUTES)) {
-                if (analystService.setState(analyst, AnalystState.Down)) {
-                    logger.event(LogObject.ANALYST, LogAction.STATE_CHANGE,
-                            mapOf("newState" to AnalystState.Down,
-                                    "oldState" to AnalystState.Up,
-                                    "reason" to "unresponsive"))
-
-                    // Try to talk to the analyst anyway
-                    analyst.taskId?.let {
-                        if (!analystService.killTask(analyst.endpoint, it, "Analyst went down", TaskState.Waiting)) {
-                            val task = jobService.getTask(analyst.taskId)
-                            jobService.setTaskState(task, TaskState.Waiting, TaskState.Running)
-                            analystService.setTaskId(analyst, null)
-                        }
-                    }
-                }
+            val downDuration = config.getAnalystDownInactivityTime()
+            analystService.getUnresponsive(AnalystState.Up, downDuration).forEach {
+                analystService.setState(it, AnalystState.Down)
             }
+        } catch (e: Exception) {
+            logger.warn("Unable to handle unresponsive analysts, ", e)
+        }
 
-            // get ones that have been down for a long time.
-            for (analyst in analystService.getUnresponsive(AnalystState.Down, 1, TimeUnit.HOURS)) {
-                logger.event(LogObject.ANALYST, LogAction.DELETE,
-                        mapOf("reason" to "unresponsive"))
-                analystService.delete(analyst)
+        try {
+            //  get Analysts that Down Up but haven't pinged in for a long time
+            val removeDuration = config.getAnalystRemoveInactivityTime()
+            analystService.getUnresponsive(AnalystState.Down, removeDuration).forEach {
+                analystService.delete(it)
             }
 
         } catch (e: Exception) {

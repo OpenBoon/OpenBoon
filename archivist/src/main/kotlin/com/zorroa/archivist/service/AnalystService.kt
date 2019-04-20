@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -27,7 +28,7 @@ interface AnalystService {
     fun get(id: UUID) : Analyst
     fun setLockState(analyst: Analyst, state: LockState) : Boolean
     fun isLocked(endpoint: String) : Boolean
-    fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst>
+    fun getUnresponsive(state: AnalystState, duration:Duration) : List<Analyst>
     fun delete(analyst: Analyst) : Boolean
     fun setState(analyst: Analyst, state: AnalystState) : Boolean
     fun doProcessorScan() : List<ProcessorSpec>
@@ -125,8 +126,8 @@ class AnalystServicImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit): List<Analyst> {
-        return analystDao.getUnresponsive(state, duration, unit)
+    override fun getUnresponsive(state: AnalystState, duration: Duration): List<Analyst> {
+        return analystDao.getUnresponsive(state, duration)
     }
 
     override fun delete(analyst: Analyst): Boolean {
