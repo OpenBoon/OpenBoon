@@ -212,6 +212,7 @@ class MaintenanceServiceImpl @Autowired constructor(
             val downDuration = config.getAnalystDownInactivityTime()
             analystService.getUnresponsive(AnalystState.Up, downDuration).forEach {
                 analystService.setState(it, AnalystState.Down)
+                analystService.setTaskId(it, null)
             }
         } catch (e: Exception) {
             logger.warn("Unable to handle unresponsive analysts, ", e)
