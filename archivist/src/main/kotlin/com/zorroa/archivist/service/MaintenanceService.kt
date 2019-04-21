@@ -7,6 +7,8 @@ import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.TaskState
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import kotlinx.coroutines.Dispatchers
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -151,8 +153,8 @@ class MaintenanceServiceImpl @Autowired constructor(
         val analystService: AnalystService,
         val clusterLockService: ClusterLockService,
         val clusterLockExecutor: ClusterLockExecutor,
+        val meterRegistry: MeterRegistry,
         val config: MaintenanceConfiguration) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
-
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         logger.info("MaintenanceService is enabled: {}", config.enabled)
@@ -180,15 +182,19 @@ class MaintenanceServiceImpl @Autowired constructor(
         }
 
         clusterLockExecutor.inline(lock) {
-            clusterLockService.clearExpired()
-            handleExpiredJobs()
-            handleUnresponsiveAnalysts()
-            handleOrphanTasks()
+            meterRegistry.timer(meterName, listOf(Tag.of("event", "execute"))).record {
+                clusterLockService.clearExpired()
+                handleExpiredJobs()
+                handleUnresponsiveAnalysts()
+                handleOrphanTasks()
+            }
         }
     }
 
     override fun handleExpiredJobs() {
         try {
+            val removedCounter = meterRegistry.counter(meterName,
+                    listOf(Tag.of("event", "job_removed")))
             for (job in jobService.getExpiredJobs(config.archiveJobsAfterDays, TimeUnit.DAYS, 100)) {
                 logger.info("Deleting expired job {},", job.id)
                 if (jobService.deleteJob(job)) {
@@ -196,6 +202,7 @@ class MaintenanceServiceImpl @Autowired constructor(
                         val storage = storageService.get(job.getStorageId())
                         storage.getServableFile().delete()
                     }
+                    removedCounter.increment()
                 }
                 else {
                     logger.warn("Failed to delete job $job from DB, did not exist.")
@@ -210,9 +217,12 @@ class MaintenanceServiceImpl @Autowired constructor(
         try {
             //  get Analysts that are Up but haven't pinged in
             val downDuration = config.getAnalystDownInactivityTime()
+            val downCounter = meterRegistry.counter(meterName,
+                    listOf(Tag.of("event", "analyst_down")))
             analystService.getUnresponsive(AnalystState.Up, downDuration).forEach {
                 analystService.setState(it, AnalystState.Down)
                 analystService.setTaskId(it, null)
+                downCounter.increment()
             }
         } catch (e: Exception) {
             logger.warn("Unable to handle unresponsive analysts, ", e)
@@ -221,8 +231,11 @@ class MaintenanceServiceImpl @Autowired constructor(
         try {
             //  get Analysts that Down Up but haven't pinged in for a long time
             val removeDuration = config.getAnalystRemoveInactivityTime()
+            val removeCounter = meterRegistry.counter(meterName,
+                    listOf(Tag.of("event", "analyst_removed")))
             analystService.getUnresponsive(AnalystState.Down, removeDuration).forEach {
                 analystService.delete(it)
+                removeCounter.increment()
             }
 
         } catch (e: Exception) {
@@ -232,10 +245,13 @@ class MaintenanceServiceImpl @Autowired constructor(
 
     override fun handleOrphanTasks() {
         try {
-            //  get Analysts that are Up but haven't pinged in
+            val orphanCounter = meterRegistry.counter(meterName,
+                    listOf(Tag.of("event", "task_orphan")))
+            // get tasks marked as queued or running but have not pinged in.
             val orphanDuration = config.getTaskOrphanTime()
             jobService.getOrphanTasks(orphanDuration).forEach {
                 dispatcherService.retryTask(it, "Orphaned Task")
+                orphanCounter.increment()
             }
         } catch (e: Exception) {
             logger.warn("Unable to handle orphan tasks, ", e)
@@ -248,7 +264,16 @@ class MaintenanceServiceImpl @Autowired constructor(
 
     companion object {
 
+        /**
+         * The Name of the cluster lock to take before executing.
+         */
         private const val lockName = "maintenance"
+
+        /**
+         * The Name of the meter for counting events.
+         */
+        private const val meterName = "zorroa.maintenance"
+
 
         private val logger = LoggerFactory.getLogger(MaintenanceServiceImpl::class.java)
     }
