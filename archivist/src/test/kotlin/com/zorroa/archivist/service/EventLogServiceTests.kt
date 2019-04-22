@@ -3,12 +3,8 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
-import io.micrometer.core.instrument.Counter
-import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
-import org.junit.Before
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 
 class EventLogServiceTests : AbstractTest() {
@@ -21,7 +17,7 @@ class EventLogServiceTests : AbstractTest() {
     fun testApplyAssetSearchMetricsFilter() {
         val counterName = "zorroa.asset.search.filter"
         var counter = MeterRegistryHolder
-                .meterRegisty.counter(counterName, listOf(Tag.of("type", "exists")))
+                .meterRegistry.counter(counterName, listOf(Tag.of("type", "exists")))
         val currentValue = counter.count()
 
         val search = AssetSearch()
@@ -29,7 +25,7 @@ class EventLogServiceTests : AbstractTest() {
         search.filter.addToExists("foo")
         applyAssetSearchMetrics(search)
         counter =  MeterRegistryHolder
-                .meterRegisty.counter(counterName, listOf(Tag.of("type", "exists")))
+                .meterRegistry.counter(counterName, listOf(Tag.of("type", "exists")))
 
         assertEquals(currentValue + 1, counter.count())
     }

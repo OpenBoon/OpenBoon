@@ -49,7 +49,7 @@ class DispatchQueueManager @Autowired constructor(
         val fileStorageService: FileStorageService,
         val userDao: UserDao,
         val properties: ApplicationProperties,
-        val meteterRegistry: MeterRegistry
+        val meterRegistry: MeterRegistry
 )
 {
 
@@ -60,7 +60,7 @@ class DispatchQueueManager @Autowired constructor(
         }
 
         if (endpoint != null) {
-            meteterRegistry.counter("zorroa.dispatcher.requests").increment()
+            meterRegistry.counter("zorroa.dispatcher.requests").increment()
             val tasks = dispatcherService.getWaitingTasks(10)
             for (task in tasks) {
                 if (dispatcherService.queueTask(task, endpoint)) {
