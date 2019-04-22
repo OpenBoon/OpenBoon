@@ -189,7 +189,6 @@ class UserControllerTests : MockMvcTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testResetPassword() {
         val user = userService.get("user")
         val token = emailService.sendPasswordResetEmail(user)
@@ -241,6 +240,26 @@ class UserControllerTests : MockMvcTest() {
         assertEquals(builder.email, user2.email)
         assertEquals(builder.firstName, user2.firstName)
         assertEquals(builder.lastName, user2.lastName)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testUpdatePassword() {
+        val user = userService.get("user")
+        val password = UserPasswordUpdate(newPassword = "catandDog!231")
+
+        val session = admin()
+        val result = mvc.perform(put("/api/v1/users/${user.id}/_password")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serialize(password))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val sr = Json.Mapper.readValue<StatusResult<User>>(result.response.contentAsByteArray)
+        assertTrue(sr.success)
+        userService.checkPassword("user", password.newPassword)
     }
 
     @Test
