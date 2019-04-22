@@ -181,7 +181,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override fun getAll(): List<Permission> {
-        return jdbc.query(GET, MAPPER)
+        return jdbc.query("SELECT * FROM permission WHERE pk_organization=? ", MAPPER, getOrgId())
     }
 
     override fun getAll(filter: PermissionFilter): KPagedList<Permission> {
