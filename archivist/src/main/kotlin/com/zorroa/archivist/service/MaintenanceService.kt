@@ -168,6 +168,7 @@ class MaintenanceServiceImpl @Autowired constructor(
     override fun runOneIteration() {
         // Don't let anything bubble out of here of the thread dies
         try {
+
             runAll()
         } catch (e: Exception) {
             logger.warn("Failed to run data maintenance, ", e)
@@ -176,14 +177,15 @@ class MaintenanceServiceImpl @Autowired constructor(
 
     override fun runAll() {
         val lock = ClusterLockSpec.softLock(lockName).apply {
-            timeout = 10
+            timeout = 5
             timeoutUnits = TimeUnit.MINUTES
             dispatcher = Dispatchers.IO
         }
-
+        // This has to be outside the lock since it needs to get the
+        // maintenance lock to clear expired locks.
+        clusterLockService.clearExpired()
         clusterLockExecutor.inline(lock) {
             meterRegistry.timer(meterName, listOf(Tag.of("event", "execute"))).record {
-                clusterLockService.clearExpired()
                 handleExpiredJobs()
                 handleUnresponsiveAnalysts()
                 handleOrphanTasks()
