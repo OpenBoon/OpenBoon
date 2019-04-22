@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry)  {
     init {
-        MeterRegistryHolder.meterRegistrty = meterRegistrty
+        MeterRegistryHolder.meterRegistry = meterRegistrty
     }
 
 }
@@ -29,7 +29,7 @@ class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry
  */
 object MeterRegistryHolder {
 
-    lateinit var meterRegistrty : MeterRegistry
+    lateinit var meterRegistry : MeterRegistry
 
     fun getTags(vararg tags: Tag) : MutableList<Tag> {
         // TODO: Add organization name.
@@ -45,7 +45,7 @@ object MeterRegistryHolder {
      * Increment a counter for the action.
      */
     fun increment(name: String, vararg tags: Tag) {
-        meterRegistrty.counter(name.toLowerCase(), getTags(*tags)).increment()
+        meterRegistry.counter(name.toLowerCase(), getTags(*tags)).increment()
     }
 
     /**
@@ -54,7 +54,7 @@ object MeterRegistryHolder {
      * @param name: Name of the counter
      * @return A counter counter that can be incremented
      */
-    fun counter(name: String): Counter = meterRegistrty.counter(name)
+    fun counter(name: String): Counter = meterRegistry.counter(name)
 }
 
 /**

@@ -5,8 +5,8 @@ import com.zorroa.common.domain.*
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Duration
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -173,8 +173,11 @@ class AnalystDaoTests : AbstractTest() {
         jdbc.update("UPDATE analyst SET time_ping=?", time)
 
         // Get Analyst that hasn't pinged in 1 second
-        assertTrue(analystDao.getUnresponsive(AnalystState.Up, 1, TimeUnit.SECONDS).isNotEmpty())
-        assertTrue(analystDao.getUnresponsive(AnalystState.Up, 20, TimeUnit.SECONDS).isEmpty())
+        println(Duration.parse("PT1S").toMillis())
+        assertTrue(analystDao.getUnresponsive(AnalystState.Up,
+                Duration.parse("PT1S")).isNotEmpty())
+        assertTrue(analystDao.getUnresponsive(AnalystState.Up,
+                Duration.parse("PT20S")).isEmpty())
     }
 
     @Test

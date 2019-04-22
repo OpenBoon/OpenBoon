@@ -9,16 +9,15 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.service.MeterRegistryHolder.meterRegistrty
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -35,7 +34,7 @@ interface DispatcherService {
     fun handleTaskError(task: Task, error: TaskErrorEvent)
     fun expand(parentTask: Task, script: ZpsScript): Task
     fun expand(job: JobId, script: ZpsScript): Task
-    fun retryTask(task: Task): Boolean
+    fun retryTask(task: Task, reason: String): Boolean
     fun skipTask(task: Task): Boolean
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
 }
@@ -50,7 +49,7 @@ class DispatchQueueManager @Autowired constructor(
         val fileStorageService: FileStorageService,
         val userDao: UserDao,
         val properties: ApplicationProperties,
-        val meteterRegistry: MeterRegistry
+        val meterRegistry: MeterRegistry
 )
 {
 
@@ -61,7 +60,7 @@ class DispatchQueueManager @Autowired constructor(
         }
 
         if (endpoint != null) {
-            meterRegistrty.counter("zorroa.dispatcher.requests").increment()
+            meterRegistry.counter("zorroa.dispatcher.requests").increment()
             val tasks = dispatcherService.getWaitingTasks(10)
             for (task in tasks) {
                 if (dispatcherService.queueTask(task, endpoint)) {
@@ -263,15 +262,18 @@ class DispatcherServiceImpl @Autowired constructor(
             logger.warn("Failed to kill running task, no host is set")
             return false
         }
+        // If we can't kill on the analyst for any reason, then set to Waiting.
         return analystService.killTask(task.host, task.id, reason, newState)
-
     }
 
-    override fun retryTask(task: Task): Boolean {
-        meteterRegistry.counter("zorroa.task.manual", getTags()).increment()
+    override fun retryTask(task: Task, reason: String): Boolean {
+        meteterRegistry.counter("zorroa.task.retry", getTags()).increment()
         return if (task.state.isDispatched()) {
-            GlobalScope.launch {
-                killRunningTaskOnAnalyst(task, TaskState.Waiting, "Task retried by ")
+            GlobalScope.launch(Dispatchers.IO) {
+                if(!killRunningTaskOnAnalyst(task, TaskState.Waiting, reason)) {
+                    logger.warn("Manually setting task {} to Waiting", task)
+                    jobService.setTaskState(task, TaskState.Waiting, null)
+                }
             }
             // just assuming true here as the call to the analyst is backgrounded
             true

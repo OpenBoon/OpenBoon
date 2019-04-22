@@ -10,6 +10,7 @@ import com.zorroa.common.repository.KPage
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Duration
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -117,5 +118,26 @@ class TaskDaoTests : AbstractTest() {
         assertTrue(taskDao.isAutoRetryable(task))
         jdbc.update("UPDATE task SET int_run_count=4 WHERE pk_task=?", task.taskId)
         assertFalse(taskDao.isAutoRetryable(task))
+    }
+
+    @Test
+    fun uptimePingTime() {
+        val endpoint = "http://localhost:5000"
+        assertFalse(taskDao.updatePingTime(task.id, endpoint))
+        jdbc.update("UPDATE task SET int_state=?, str_host=?",
+                TaskState.Running.ordinal, endpoint)
+        assertTrue(taskDao.updatePingTime(task.id, endpoint))
+    }
+
+    @Test
+    fun testGetOrphans() {
+        assertTrue(taskDao.getOrphans(Duration.ofMinutes(1)).isEmpty())
+
+        val endpoint = "http://localhost:5000"
+        val time = System.currentTimeMillis() - (86400 * 1000)
+        assertFalse(taskDao.updatePingTime(task.id, endpoint))
+        jdbc.update("UPDATE task SET time_ping=?, int_state=?, str_host=?",
+                time, TaskState.Running.ordinal, endpoint)
+        assertTrue(taskDao.getOrphans(Duration.ofMinutes(1)).isNotEmpty())
     }
 }
