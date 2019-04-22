@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before
@@ -10,10 +11,8 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import org.springframework.security.core.context.SecurityContextHolder
+import kotlin.test.*
 
 class PermissionDaoTests : AbstractTest() {
 
@@ -143,7 +142,21 @@ class PermissionDaoTests : AbstractTest() {
     @Test
     fun testGetAll() {
         val perms = permissionDao.getAll()
-        assertTrue(perms.isNotEmpty())
+
+        val org = organizationService.create(OrganizationSpec("new-org"))
+        SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+        val perms2 = permissionDao.getAll()
+
+        assertHaveDifferentAdministratorPermission(perms, perms2)
+    }
+
+    private fun assertHaveDifferentAdministratorPermission(perms: List<Permission>, perms2: List<Permission>) {
+        val administrator1 = perms.find { it.name == "administrator" }
+        val administrator2 = perms2.find { it.name == "administrator" }
+
+        assertNotNull(administrator2)
+        assertNotNull(administrator1)
+        assertNotEquals(administrator1.id, administrator2.id)
     }
 
     @Test
