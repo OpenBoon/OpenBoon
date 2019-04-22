@@ -1,8 +1,10 @@
 package com.zorroa.archivist.rest
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.ANALYST_HEADER_STRING
+import com.zorroa.archivist.security.AnalystAuthenticationFilter.Companion.ANALYST_HEADER_HOST
+import com.zorroa.archivist.security.AnalystAuthenticationFilter.Companion.ANALYST_HEADER_PORT
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
@@ -12,9 +14,6 @@ import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -64,7 +63,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_STRING, "5000")
+                    .header(ANALYST_HEADER_PORT, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -93,7 +92,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_STRING, "5000")
+                    .header(ANALYST_HEADER_PORT, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -123,7 +122,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_STRING, "5000")
+                    .header(ANALYST_HEADER_PORT, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -153,7 +152,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_STRING, "5000")
+                    .header(ANALYST_HEADER_PORT, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -186,7 +185,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_STRING, "5000")
+                    .header(ANALYST_HEADER_PORT, "5000")
                     .content(Json.serialize(te)))
                     .andExpect(MockMvcResultMatchers.status().isOk)
                     .andReturn()
@@ -220,14 +219,38 @@ class AnalystClusterControllerTests : MockMvcTest() {
         val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
                 .session(analyst())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_STRING, "5000")
+                .header(ANALYST_HEADER_PORT, "5000")
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
         val analyst = Json.Mapper.readValue<Analyst>(result.response.contentAsString, Analyst::class.java)
         assertTrue(analystService.exists(analyst.endpoint))
+    }
 
+    @Test
+    fun testPingWithHostname() {
+
+        val spec = AnalystSpec(
+                1024,
+                648,
+                1024,
+                0.5f,
+                "0.41.0",
+                null)
+
+        val host = "vrack2022"
+        val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
+
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(ANALYST_HEADER_PORT, "5000")
+                .header(ANALYST_HEADER_HOST, host)
+                .content(Json.serialize(spec)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+        val analyst = Json.Mapper.readValue<Analyst>(result.response.contentAsString)
+        assertEquals("https://$host:5000", analyst.endpoint)
     }
 
     @Test
@@ -254,7 +277,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
                 .session(analyst)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_STRING, "5000"))
+                .header(ANALYST_HEADER_PORT, "5000"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
@@ -262,7 +285,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
                 .session(analyst)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_STRING, "5000"))
+                .header(ANALYST_HEADER_PORT, "5000"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
                 .andReturn()
     }
