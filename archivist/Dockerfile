@@ -8,6 +8,10 @@ ARG gcs_config
 ENV GCS_CONFIG ${gcs_config}
 
 RUN mkdir /service
+
+RUN groupadd -r archivist && useradd --no-log-init -r -g archivist archivist
+USER archivist
+
 COPY target/archivist.jar /service/archivist.jar
 
 # Create a couple directories for service extensions.
