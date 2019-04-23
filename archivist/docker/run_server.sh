@@ -14,8 +14,12 @@ fi
 if [ -n "${GAE_SERVICE}" ]
 then
   echo "Downloading config files from GCS secret bucket."
-  /root/google-cloud-sdk/bin/gsutil cp -r "gs://${GCLOUD_PROJECT}-zorroa-configuration/${GAE_SERVICE}-config/*" /config
+  gsutil cp -r "gs://${GCLOUD_PROJECT}-zorroa-configuration/${GAE_SERVICE}-config/*" /config
 fi
 
-export ARCHIVIST_JAVA_OPTS=`./jvm_options_parser /config/jvm.options`
-java $JAVA_OPTS ${ARCHIVIST_JAVA_OPTS} -Djava.awt.headless=true -Dloader.path=/extensions/active -Djava.security.egd=file:/dev/./urandom -jar /service/archivist.jar "$@"
+export ZORROA_JAVA_OPTS=`./jvm_options_parser /config/jvm.options`
+java ${ZORROA_JAVA_OPTS} \
+-Djava.awt.headless=true \
+-Dloader.path=/extensions/active \
+-Djava.security.egd=file:/dev/./urandom \
+-jar /service/archivist.jar "$@"
