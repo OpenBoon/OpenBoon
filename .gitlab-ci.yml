@@ -28,6 +28,7 @@ build_artifacts:
     paths:
       - archivist/target/*.jar
       - elasticsearch/*.zip
+      - archivist/ext/*.jar
 
 push_to_local_registry:
   image: docker:stable
@@ -75,8 +76,8 @@ unit_tests:
 
 docker_hub_push:
   stage: push
-  only:
-    - development
+#  only:
+#    - development
   image: docker:stable
   services:
     - docker:dind
