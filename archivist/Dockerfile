@@ -29,6 +29,7 @@ COPY ./docker/jvm_options_parser /jvm_options_parser
 COPY ./docker/jvm.options /config/jvm.options
 COPY ./docker/run_server.sh /run_server.sh
 COPY ./docker/rotated_logs.xml /config/rotated_logs.xml
+COPY ./docker/application.properties /config/application.properties
 
 # Change ownership
 RUN chown -R archivist:archivist /extensions
