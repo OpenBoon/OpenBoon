@@ -2,11 +2,11 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUserOrNull
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry)  {
     init {
-        MeterRegistryHolder.meterRegistrty = meterRegistrty
+        MeterRegistryHolder.meterRegistry = meterRegistrty
     }
 
 }
@@ -28,22 +28,24 @@ class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry
  * A singleton for storing a MeterRegistry which is accessible from static functions.
  */
 object MeterRegistryHolder {
-    lateinit var meterRegistrty : MeterRegistry
+
+    lateinit var meterRegistry : MeterRegistry
+
+    fun getTags(vararg tags: Tag) : MutableList<Tag> {
+        // TODO: Add organization name.
+        val result = mutableListOf<Tag>()
+
+        tags?.let {
+            result.addAll(it)
+        }
+        return result
+    }
 
     /**
      * Increment a counter for the action.
      */
-    fun increment(name: String) {
-        val user = getUserOrNull()
-
-        if (user != null) {
-            meterRegistrty.counter(name.toLowerCase(), "zorroa.username", user.username,
-                    "zorroa.orgId", user.organizationId.toString()).increment()
-        }
-        else {
-            meterRegistrty.counter(name.toLowerCase(),
-                    "zorroa.username", "unknown",  "zorroa.orgId", "unknown").increment()
-        }
+    fun increment(name: String, vararg tags: Tag) {
+        meterRegistry.counter(name.toLowerCase(), getTags(*tags)).increment()
     }
 
     /**
@@ -52,7 +54,7 @@ object MeterRegistryHolder {
      * @param name: Name of the counter
      * @return A counter counter that can be incremented
      */
-    fun counter(name: String): Counter = meterRegistrty.counter(name)
+    fun counter(name: String): Counter = meterRegistry.counter(name)
 }
 
 /**
@@ -93,7 +95,8 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
  * @param kvp: A map of key value pairs we want to associate with the line.
  */
 fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?) {
-    MeterRegistryHolder.increment("zorroa.$obj.$action")
+    // Don't ever pass kvp into MeterRegistryHolder for tags
+    MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "success"))
     if (this.isInfoEnabled) {
         this.info(formatLogMessage(obj, action, *kvp))
     }
@@ -108,84 +111,64 @@ fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?
  * @param kvp: A map of key value pairs we want to associate with the line.
  */
 fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Map<String, Any?>?=null, ex: Exception?=null) {
-    MeterRegistryHolder.increment("zorroa.$obj.$action.warn")
+    // Don't ever pass kvp into MeterRegistryHolder for tags
+    MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "warn"))
     if (this.isWarnEnabled) {
         this.warn(formatLogMessage(obj, action, kvp, mapOf("message" to message)), ex)
     }
 }
 
 /**
- * Utility to generate a key-value map of parameters used in an AssetSearch for event logging.
- *
- * @param search an AssetSearch object
- * @return A map of key value pairs representing values for event logging.
+ * Increments metrics for the given asset Search.
  */
-fun searchParams(search: AssetSearch) : Map<String, Any?> {
-    val map: MutableMap<String, Any?> = mutableMapOf()
-    map["search.query"] = search.query
-    if(search.filter?.isEmpty == false) {
-        map["search.has_filter"] = true
-        incrementFilterCounters(search.filter)
-    }
-    if(search.aggs != null) {
-        map["search.has_aggs"] = true
-        MeterRegistryHolder.counter("search.aggs").increment()
-    }
-    return map
-}
+fun applyAssetSearchMetrics(search: AssetSearch) {
 
-
-fun incrementFilterCounters(filter: AssetFilter) {
-    if(filter.isEmpty) {
+    if (search.filter == null || search.filter.isEmpty) {
         return
     }
-
-    MeterRegistryHolder.counter("zorroa.search.filter").increment()
+    val counter = "zorroa.asset.search.filter"
+    val filter = search.filter
     if (!filter.exists.isNullOrEmpty()) {
-        incrementCounter("search.exists")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "exists"))
     }
     if (!filter.missing.isNullOrEmpty()) {
-        incrementCounter("search.missing")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "missing"))
     }
     if (!filter.terms.isNullOrEmpty()) {
-        incrementCounter("search.terms")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "terms"))
     }
     if (!filter.prefix.isNullOrEmpty()) {
-        incrementCounter("search.prefix")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "prefix"))
     }
     if (!filter.range.isNullOrEmpty()) {
-        incrementCounter("search.range")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "range"))
     }
     if (!filter.scripts.isNullOrEmpty()) {
-        incrementCounter("search.scripts")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "scripts"))
     }
     if (!filter.links.isNullOrEmpty()) {
-        incrementCounter("search.links")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "links"))
     }
     if (!filter.similarity.isNullOrEmpty()) {
-        incrementCounter("search.similarity")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "similarity"))
     }
     if (!filter.kwconf.isNullOrEmpty()) {
-        incrementCounter("search.kwconf")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "kwconf"))
     }
     if (!filter.geo_bounding_box.isNullOrEmpty()) {
-        incrementCounter("search.geo_bounding_box")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "geo_bounding_box"))
     }
     if (!filter.mustNot.isNullOrEmpty()) {
-        incrementCounter("search.mustNot")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "must_not"))
     }
     if (!filter.must.isNullOrEmpty()) {
-        incrementCounter("search.must")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "must"))
     }
     if (!filter.should.isNullOrEmpty()) {
-        incrementCounter("search.should")
+        MeterRegistryHolder.increment(counter, Tag.of("type", "must_not"))
     }
     if (filter.recursive == true) {
-        incrementCounter("search.recursive")
+        MeterRegistryHolder.increment(counter,Tag.of("type", "recursive"))
     }
-}
-
-fun incrementCounter(name: String) {
-    MeterRegistryHolder.counter("zorroa.search.filter.$name").increment()
 }
 

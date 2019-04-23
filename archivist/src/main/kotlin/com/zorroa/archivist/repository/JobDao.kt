@@ -6,11 +6,13 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.service.MeterRegistryHolder
 import com.zorroa.archivist.service.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -29,6 +31,7 @@ interface JobDao {
     fun getExpired(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
     fun delete(job: JobId): Boolean
     fun hasPendingFrames(job: JobId) : Boolean
+    fun resumePausedJobs() : Int
 }
 
 @Repository
@@ -43,6 +46,14 @@ class JobDaoImpl : AbstractDao(), JobDao {
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
         val user = getUser()
+
+        val pauseUntil = if (spec.pauseDurationSeconds == null) {
+            -1
+        }
+        else {
+            spec.paused = true
+            time + (spec.pauseDurationSeconds * 1000L)
+        }
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
@@ -59,6 +70,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setString(11, Json.serializeToString(spec.args, "{}"))
             ps.setString(12, Json.serializeToString(spec.env, "{}"))
             ps.setInt(13, spec.priority)
+            ps.setBoolean(14, spec.paused)
+            ps.setLong(15, pauseUntil)
             ps
         }
 
@@ -71,8 +84,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun update(job: JobId, update: JobUpdateSpec): Boolean {
-        return jdbc.update("UPDATE job SET str_name=?, int_priority=? WHERE pk_job=?",
-                update.name, update.priority, job.jobId) == 1
+        return jdbc.update(UPDATE,
+                update.name, update.priority, update.paused, update.timePauseExpired, job.jobId) == 1
     }
 
     override fun delete(job: JobId): Boolean {
@@ -124,6 +137,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     newState.ordinal, time, job.jobId) == 1
         }
         if (result) {
+            meterRegistry.counter("zorroa.job.state",
+                    MeterRegistryHolder.getTags(newState.metricsTag())).increment()
             logger.event(LogObject.JOB, LogAction.STATE_CHANGE,
                     mapOf("jobId" to job.jobId,
                             "newState" to newState.name,
@@ -139,15 +154,18 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean {
-        val updated =  jdbc.update(INC_STATS,
+        return jdbc.update(INC_STATS,
                 counts.total,
                 counts.createdAssetIds.size,
                 counts.warningAssetIds.size,
                 counts.erroredAssetIds.size,
                 counts.replacedAssetIds.size,
                 job.jobId) == 1
+    }
 
-        return updated
+    override fun resumePausedJobs() : Int {
+        val time = System.currentTimeMillis()
+        return jdbc.update(RESUME_PAUSED, JobState.Active.ordinal, time)
     }
 
     private fun count(filter: JobFilter): Long {
@@ -200,7 +218,9 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     rs.getLong("time_started"),
                     rs.getLong("time_modified"),
                     rs.getLong("time_created"),
-                    rs.getInt("int_priority")
+                    rs.getInt("int_priority"),
+                    rs.getBoolean("bool_paused"),
+                    rs.getLong("time_pause_expired")
             )
         }
 
@@ -210,7 +230,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private const val COUNT = "SELECT COUNT(1) FROM job"
 
-        private val GET_EXPIRED = "$GET " +
+        private const val GET_EXPIRED = "$GET " +
                 "WHERE " +
                 "job.pk_job = job_count.pk_job " +
                 "AND " +
@@ -229,6 +249,25 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "WHERE " +
                 "pk_job=?"
 
+        private const val RESUME_PAUSED =
+                "UPDATE " +
+                    "job " +
+                "SET " +
+                    "bool_paused='f' " +
+                "WHERE " +
+                    "int_state=? " +
+                "AND " +
+                    "bool_paused='t' " +
+                "AND " +
+                    "time_pause_expired < ? " +
+                "AND " +
+                    "time_pause_expired != -1"
+
+        private const val UPDATE = "UPDATE " +
+                "job " +
+            "SET " +
+                "str_name=?, int_priority=?, bool_paused=?, time_pause_expired=? " +
+            "WHERE pk_job=?"
 
         private val INSERT = insert("job",
                 "pk_job",
@@ -243,7 +282,9 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "pk_user_modified",
                 "json_args",
                 "json_env",
-                "int_priority")
+                "int_priority",
+                "bool_paused",
+                "time_pause_expired")
 
         private const val HAS_PENDING = "SELECT " +
                 "COUNT(1) " +

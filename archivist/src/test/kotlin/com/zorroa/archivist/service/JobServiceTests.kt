@@ -50,6 +50,28 @@ class JobServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testReplace() {
+        val name = "bilbo_baggins_v1"
+        val spec1 = JobSpec(name,
+                emptyZpsScript("foo"),
+                args=mutableMapOf("foo" to 1),
+                env=mutableMapOf("foo" to "bar"))
+        val job1 = jobService.create(spec1)
+        assertEquals(spec1.name, job1.name)
+
+        val spec2 = JobSpec(name,
+                emptyZpsScript("foo"),
+                replace = true)
+        val job2 = jobService.create(spec2)
+        assertEquals(job1.name, job2.name)
+
+        // Should only have 1 job.
+        assertEquals(1, jobService.getAll(JobFilter(
+                states=listOf(JobState.Active),
+                names=listOf(job1.name))).size())
+    }
+
+    @Test
     fun testIncrementAssetCounts() {
         val counts = BatchCreateAssetsResponse(6)
         counts.createdAssetIds.add("foo")

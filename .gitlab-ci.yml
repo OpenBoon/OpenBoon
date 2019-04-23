@@ -9,7 +9,6 @@ variables:
   DOCKERHUB_IMAGE_ARCHIVIST: zorroaevi/archivist:$CI_COMMIT_REF_SLUG
   DOCKERHUB_IMAGE_ELASTIC: zorroaevi/elasticsearch:$CI_COMMIT_REF_SLUG
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
-  DOCKER_HOST: tcp://localhost:2375/
   DOCKER_DRIVER: overlay2
 
 build_artifacts:
@@ -78,8 +77,6 @@ docker_hub_push:
   stage: push
   only:
     - development
-    - qa
-    - master
   image: docker:stable
   services:
     - docker:dind
@@ -107,20 +104,6 @@ deploy_archivist_dev:
     - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
     - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
 
-deploy_archivist_qa:
-  image: google/cloud-sdk
-  stage: deploy
-  environment:
-    name: qa
-    url: https://qa.zorroa.com
-  only:
-    - qa
-  script:
-    - echo $QA_SA_JSON > ./sa.json
-    - gcloud auth activate-service-account $QA_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-qa
-    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
-
 deploy_elasticsearch_dev:
   image: google/cloud-sdk
   stage: deploy
@@ -133,18 +116,4 @@ deploy_elasticsearch_dev:
     - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
-    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
-
-deploy_elasticsearch_qa:
-  image: google/cloud-sdk
-  stage: deploy
-  environment:
-    name: qa
-    url: https://qa.zorroa.com
-  only:
-    - qa
-  script:
-    - echo $QA_SA_JSON > ./sa.json
-    - gcloud auth activate-service-account $QA_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-qa
     - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default

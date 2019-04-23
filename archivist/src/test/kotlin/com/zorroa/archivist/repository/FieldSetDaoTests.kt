@@ -12,6 +12,10 @@ class FieldSetDaoTests : AbstractTest() {
     @Autowired
     lateinit var fieldSetDao: FieldSetDao
 
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
+
     @Test
     fun testCreate() {
         val spec = FieldSetSpec("The Shire")

@@ -1,17 +1,17 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.AuditLogEntry
-import com.zorroa.archivist.domain.AuditLogFilter
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.service.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.JdbcUtils.update
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.lang.IllegalArgumentException
+import java.time.Duration
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 interface AnalystDao {
     fun create(spec: AnalystSpec) : Analyst
@@ -25,7 +25,7 @@ interface AnalystDao {
     fun setLockState(analyst: Analyst, state: LockState) : Boolean
     fun isInLockState(endpoint: String, state: LockState) : Boolean
     fun setTaskId(endpoint: String, taskId: UUID?): Boolean
-    fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst>
+    fun getUnresponsive(state: AnalystState, duration: Duration) : List<Analyst>
     fun delete(analyst: Analyst) : Boolean
 }
 
@@ -48,7 +48,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         val time = System.currentTimeMillis()
         val endpoint = getAnalystEndpoint()
         return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb,
-                spec.freeRamMb, spec.freeDiskMb, spec.load, endpoint) == 1
+                spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal,
+                endpoint) == 1
     }
 
     override fun get(id: UUID): Analyst {
@@ -64,8 +65,13 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
     }
 
     override fun setState(analyst: Analyst, state: AnalystState) : Boolean {
-        return jdbc.update("UPDATE analyst SET int_state=? WHERE pk_analyst=? AND int_state != ?",
+        val result =  jdbc.update("UPDATE analyst SET int_state=? WHERE pk_analyst=? AND int_state != ?",
                 state.ordinal, analyst.id, state.ordinal) == 1
+        if (result) {
+            logger.event(LogObject.ANALYST, LogAction.STATE_CHANGE,
+                    mapOf("newState" to state, "oldState" to analyst.state))
+        }
+        return result
     }
 
     override fun setLockState(analyst: Analyst, state: LockState) : Boolean {
@@ -82,13 +88,17 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         return jdbc.update("UPDATE analyst SET pk_task=? WHERE str_endpoint=?", taskId, endpoint) == 1
     }
 
-    override fun getUnresponsive(state: AnalystState, duration: Long, unit: TimeUnit) : List<Analyst> {
-        val time = System.currentTimeMillis() - unit.toMillis(duration)
+    override fun getUnresponsive(state: AnalystState, duration: Duration) : List<Analyst> {
+        val time = System.currentTimeMillis() - duration.toMillis()
         return jdbc.query(GET_DOWN, MAPPER, state.ordinal, time)
     }
 
     override fun delete(analyst: Analyst) : Boolean {
-        return jdbc.update("DELETE FROM analyst WHERE pk_analyst=?", analyst.id) == 1
+        val result =  jdbc.update("DELETE FROM analyst WHERE pk_analyst=?", analyst.id) == 1
+        if (result) {
+            logger.event(LogObject.ANALYST, LogAction.DELETE)
+        }
+        return result
     }
 
     override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
@@ -146,7 +156,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                 "int_total_ram",
                 "int_free_ram",
                 "int_free_disk",
-                "flt_load")
+                "flt_load",
+                "int_state")
     }
 
 }

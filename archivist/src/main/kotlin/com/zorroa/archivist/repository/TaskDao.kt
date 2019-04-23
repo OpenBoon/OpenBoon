@@ -5,15 +5,21 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.service.MeterRegistryHolder
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.time.Duration
 import java.util.*
+import javax.annotation.PostConstruct
 
 interface TaskDao {
     fun create(job: JobId, spec: TaskSpec): Task
@@ -26,6 +32,21 @@ interface TaskDao {
     fun getAll(tf: TaskFilter?): KPagedList<Task>
     fun getAll(job: UUID, state: TaskState): List<Task>
     fun isAutoRetryable(task: TaskId): Boolean
+
+    /**
+     * Return the total number of pending tasks.
+     */
+    fun getPendingTaskCount(): Long
+
+    /**
+     * Update the task's ping time as long as it's running on the given endpoint.
+     */
+    fun updatePingTime(taskId: UUID, endpoint: String): Boolean
+
+    /**
+     * Return a list of [Task]s which have not seen a ping for the given [Duration]
+     */
+    fun getOrphans(duration: Duration) : List<Task>
 }
 
 @Repository
@@ -48,8 +69,9 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps.setLong(4, time)
             ps.setLong(5, time)
             ps.setLong(6, time)
-            ps.setString(7, Json.serializeToString(spec.script, "{}"))
-            ps.setInt(8, 0)
+            ps.setLong(7, time)
+            ps.setString(8, Json.serializeToString(spec.script, "{}"))
+            ps.setInt(9, 0)
             ps
         }
 
@@ -80,6 +102,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     newState.ordinal, time, task.taskId) == 1
         }
         if (updated) {
+            meterRegistry.counter("zorroa.task.state", getTags(newState.metricsTag())).increment()
             logger.event(LogObject.TASK, LogAction.STATE_CHANGE,
                     mapOf("taskId" to task.taskId,
                             "newState" to newState.name,
@@ -136,6 +159,24 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 Boolean::class.java, autoRetryLimit, task.taskId)
     }
 
+    override fun getPendingTaskCount(): Long {
+        return jdbc.queryForObject(GET_PENDING_COUNT,
+                Long::class.java, JobState.Active.ordinal, TaskState.Waiting.ordinal)
+    }
+
+    override fun updatePingTime(taskId: UUID, endpoint: String): Boolean {
+        return jdbc.update(UPDATE_PING,
+                System.currentTimeMillis(), taskId, endpoint, TaskState.Running.ordinal) == 1
+    }
+
+    override fun getOrphans(duration: Duration) : List<Task> {
+        val time = System.currentTimeMillis() - duration.toMillis()
+        return jdbc.query(GET_ORPHANS, MAPPER,
+                TaskState.Running.ordinal,
+                TaskState.Queued.ordinal,
+                time)
+    }
+
     companion object {
 
         private val START_STATES = setOf(TaskState.Running)
@@ -150,6 +191,18 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     TaskState.values()[rs.getInt("int_state")],
                     rs.getString("str_host"))
         }
+
+        private const val UPDATE_PING =
+                "UPDATE " +
+                    "task " +
+                "SET " +
+                    "time_ping=? " +
+                "WHERE " +
+                    "pk_task=? " +
+                "AND " +
+                    "str_host=? "+
+                "AND " +
+                    "int_state=?"
 
         private const val INC_STATS = "UPDATE " +
                 "task_stat " +
@@ -173,8 +226,12 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "FROM " +
                 "task INNER JOIN job ON (job.pk_job=task.pk_job) "
 
-
         private const val COUNT = "SELECT COUNT(1) FROM task"
+
+        private const val GET_ORPHANS =
+                "$GET " +
+                "WHERE " +
+                    "task.int_state IN (?,?) AND task.time_ping < ? LIMIT 15"
 
         private val INSERT = JdbcUtils.insert("task",
                 "pk_task",
@@ -183,6 +240,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "time_created",
                 "time_modified",
                 "time_state_change",
+                "time_ping",
                 "json_script::JSON",
                 "int_run_count")
 
@@ -210,6 +268,19 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task " +
                 "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
                 "JOIN job ON task.pk_job = job.pk_job "
+
+        private const val GET_PENDING_COUNT =
+                "SELECT " +
+                    "COUNT(1) " +
+                "FROM " +
+                    "job," +
+                    "task " +
+                "WHERE " +
+                    "job.pk_job = task.pk_job " +
+                "AND " +
+                    "job.int_state = ? " +
+                "AND " +
+                    "task.int_state = ? "
 
     }
 }

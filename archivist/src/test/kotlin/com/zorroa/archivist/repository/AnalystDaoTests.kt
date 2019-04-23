@@ -5,8 +5,8 @@ import com.zorroa.common.domain.*
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Duration
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -40,6 +40,27 @@ class AnalystDaoTests : AbstractTest() {
         assertEquals(spec.freeDiskMb, analyst.freeDiskMb)
         assertEquals(spec.load, analyst.load)
     }
+
+    @Test
+    fun testUpdate() {
+        assertEquals(1, jdbc.update("UPDATE analyst SET int_state=0 WHERE pk_analyst=?",
+                analyst.id))
+        val spec = AnalystSpec(
+                99,
+                99,
+                99,
+                0.1f,
+                "hello",
+                null)
+        assertTrue(analystDao.update(spec))
+        val a2 = analystDao.get(analyst.id)
+        assertEquals(spec.totalRamMb, a2.totalRamMb)
+        assertEquals(spec.freeRamMb, a2.freeRamMb)
+        assertEquals(spec.freeDiskMb, a2.freeDiskMb)
+        assertEquals(spec.load, a2.load)
+        assertEquals(AnalystState.Up, a2.state)
+    }
+
 
     @Test
     fun testGet() {
@@ -152,8 +173,11 @@ class AnalystDaoTests : AbstractTest() {
         jdbc.update("UPDATE analyst SET time_ping=?", time)
 
         // Get Analyst that hasn't pinged in 1 second
-        assertTrue(analystDao.getUnresponsive(AnalystState.Up, 1, TimeUnit.SECONDS).isNotEmpty())
-        assertTrue(analystDao.getUnresponsive(AnalystState.Up, 20, TimeUnit.SECONDS).isEmpty())
+        println(Duration.parse("PT1S").toMillis())
+        assertTrue(analystDao.getUnresponsive(AnalystState.Up,
+                Duration.parse("PT1S")).isNotEmpty())
+        assertTrue(analystDao.getUnresponsive(AnalystState.Up,
+                Duration.parse("PT20S")).isEmpty())
     }
 
     @Test

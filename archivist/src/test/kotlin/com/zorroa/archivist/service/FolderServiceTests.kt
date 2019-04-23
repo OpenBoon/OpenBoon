@@ -1,11 +1,11 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FolderDao
+import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
@@ -34,6 +34,9 @@ class FolderServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var organizationDao: OrganizationDao
+
+    @Autowired
+    lateinit var indexRouteDao: IndexRouteDao
 
     override fun requiresElasticSearch() : Boolean {
         return true
@@ -663,7 +666,8 @@ class FolderServiceTests : AbstractTest() {
 
     @Test
     fun createStandardfolders() {
-        val org = organizationDao.create(OrganizationSpec("test"))
+        val org = organizationDao.create(OrganizationSpec(
+                "test", indexRouteDao.getRandomDefaultRoute().id))
         SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
         permissionService.createStandardPermissions(org)
         folderService.createStandardFolders(org)

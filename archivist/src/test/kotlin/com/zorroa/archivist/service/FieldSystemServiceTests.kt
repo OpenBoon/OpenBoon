@@ -1,17 +1,24 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AttrType
-import com.zorroa.archivist.domain.FieldEditSpec
-import com.zorroa.archivist.domain.FieldSpec
-import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class FieldSystemServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var jobService : JobService
+
+    override fun requiresElasticSearch() : Boolean {
+        return true
+    }
 
     @Before
     fun init() {
@@ -54,22 +61,6 @@ class FieldSystemServiceTests : AbstractTest() {
         val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
         assertEquals(AttrType.StringExact, fieldSystemService.getEsAttrType("custom.string_exact__0"))
-    }
-
-    @Test
-    fun createCustomStringSuggestField() {
-        val attrName = "custom.string_suggest__0"
-        val attrType = AttrType.StringSuggest
-
-        val spec = FieldSpec("SomeField", null, attrType, true)
-        val field = fieldSystemService.createField(spec)
-        assertEquals(attrType, field.attrType)
-        assertTrue(field.custom)
-        assertEquals(attrName, field.attrName)
-
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
-        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
-        assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
 
     @Test
@@ -238,5 +229,55 @@ class FieldSystemServiceTests : AbstractTest() {
         // Not testing this 2 hard, the getEsAttrType and  getEsTypeMap are testing it more in depth.
         val mapping = fieldSystemService.getEsMapping()
         assertTrue("unittest" in mapping)
+    }
+
+    @Test
+    fun testCreateSuggestField() {
+        val jobCount = jobService.getAll(JobFilter()).size()
+        val spec = FieldSpec("File Extension", "foo.bar", AttrType.StringAnalyzed,
+                keywords = true, suggest = true)
+        val field = fieldSystemService.createField(spec)
+        assertEquals(true, field.suggest)
+        assertEquals(true, field.keywords)
+        assertEquals(jobCount+1, jobService.getAll(JobFilter()).size(),
+                "reindex job was not created")
+    }
+
+    @Test
+    fun testCreateSuggestFieldSkipReindex() {
+        val jobCount = jobService.getAll(JobFilter()).size()
+        val spec = FieldSpec("File Extension", "foo.bar", AttrType.StringAnalyzed,
+                keywords = true, suggest = true)
+        fieldSystemService.createField(spec, reindexSuggest = false)
+        assertEquals(jobCount, jobService.getAll(JobFilter()).size(),
+                "reindex job was created but was not needed")
+    }
+
+    @Test
+    fun testUpdateFieldSuggest() {
+        val jobCount = jobService.getAll(JobFilter()).size()
+        val spec = FieldSpec("File Extension", "foo.bar", AttrType.StringAnalyzed,
+                keywords = true, suggest = false)
+        val field = fieldSystemService.createField(spec)
+        assertEquals(jobCount, jobService.getAll(JobFilter()).size(),
+                "reindex job was created but was not needed")
+
+        assertTrue(fieldSystemService.updateField(field, FieldUpdateSpec(field.name, field.editable,
+                field.keywords, field.keywordsBoost, true)))
+        assertEquals(jobCount+1, jobService.getAll(JobFilter()).size(),
+                "reindex job was not created")
+    }
+
+    @Test
+    fun testApplySuggestFields() {
+        val spec = FieldSpec("File Extension", "source.extension", AttrType.StringAnalyzed,
+                keywords = true, suggest = true)
+        fieldSystemService.createField(spec, reindexSuggest = false)
+        val assets = searchService.search(Pager.first(), AssetSearch()).list
+        fieldSystemService.applySuggestions(assets)
+        for (asset in assets) {
+            assertTrue(asset.getAttr("system.suggestions", Json.LIST_OF_STRINGS).contains(
+                    asset.getAttr("source.extension", String::class.java)))
+        }
     }
 }

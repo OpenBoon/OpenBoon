@@ -256,7 +256,7 @@ class RestClient {
         var response: HttpResponse
         while (true) {
             try {
-                response = client!!.execute(host, req)
+                response = client.execute(host, req)
                 break
             } catch (e: Exception) {
                 if (retryConnectionTimeout) {

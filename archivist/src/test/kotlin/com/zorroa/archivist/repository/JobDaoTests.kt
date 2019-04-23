@@ -40,17 +40,37 @@ class JobDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testResumePausedJobs() {
+        assertEquals(0, jobDao.resumePausedJobs())
+
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                paused = true,
+                pauseDurationSeconds = 1L)
+        val job1 = jobDao.create(spec, PipelineType.Import)
+        assertTrue(job1.paused)
+
+        Thread.sleep(1001)
+        assertEquals(1, jobDao.resumePausedJobs())
+        val job2 = jobDao.get(job1.id)
+        assertEquals(job1.id, job2.id)
+        assertFalse(job2.paused)
+    }
+
+    @Test
     fun testUpdate() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
         val t1 = jobDao.create(spec, PipelineType.Import)
-        val update = JobUpdateSpec("bilbo_baggins", 5)
+        val update = JobUpdateSpec("bilbo_baggins", 5, true, System.currentTimeMillis())
         assertTrue(jobDao.update(t1, update))
         val t2 = jobDao.get(t1.id)
         assertEquals(update.name, t2.name)
         assertEquals(update.priority, t2.priority)
+        assertEquals(update.paused, t2.paused)
+        assertEquals(update.timePauseExpired, t2.timePauseExpired)
     }
 
     @Test
@@ -152,6 +172,15 @@ class JobDaoTests : AbstractTest() {
         jobs = jobDao.getAll(filter)
         assertEquals(10, jobs.size())
         assertEquals(10, jobs.page.totalCount)
+
+        filter = JobFilter(names=listOf("run_some_stuff_1"))
+        jobs = jobDao.getAll(filter)
+        assertEquals(1, jobs.size())
+        assertEquals(1, jobs.page.totalCount)
+
+        filter = JobFilter(paused=true)
+        jobs = jobDao.getAll(filter)
+        assertEquals(0, jobs.size())
     }
 
     @Test

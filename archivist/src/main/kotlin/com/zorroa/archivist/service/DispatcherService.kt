@@ -8,18 +8,22 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.*
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicLong
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
@@ -27,9 +31,10 @@ interface DispatcherService {
     fun startTask(task: Task): Boolean
     fun stopTask(task: Task, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
+    fun handleTaskError(task: Task, error: TaskErrorEvent)
     fun expand(parentTask: Task, script: ZpsScript): Task
     fun expand(job: JobId, script: ZpsScript): Task
-    fun retryTask(task: Task): Boolean
+    fun retryTask(task: Task, reason: String): Boolean
     fun skipTask(task: Task): Boolean
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
 }
@@ -43,7 +48,8 @@ class DispatchQueueManager @Autowired constructor(
         val analystService: AnalystService,
         val fileStorageService: FileStorageService,
         val userDao: UserDao,
-        val properties: ApplicationProperties
+        val properties: ApplicationProperties,
+        val meterRegistry: MeterRegistry
 )
 {
 
@@ -54,6 +60,7 @@ class DispatchQueueManager @Autowired constructor(
         }
 
         if (endpoint != null) {
+            meterRegistry.counter("zorroa.dispatcher.requests").increment()
             val tasks = dispatcherService.getWaitingTasks(10)
             for (task in tasks) {
                 if (dispatcherService.queueTask(task, endpoint)) {
@@ -89,7 +96,8 @@ class DispatcherServiceImpl @Autowired constructor(
         private val jobDao: JobDao,
         private val taskErrorDao: TaskErrorDao,
         private val analystDao: AnalystDao,
-        private val eventBus: EventBus) : DispatcherService {
+        private val eventBus: EventBus,
+        private val meteterRegistry: MeterRegistry) : DispatcherService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
@@ -107,6 +115,10 @@ class DispatcherServiceImpl @Autowired constructor(
     fun init() {
         // Register for event bus
         eventBus.register(this)
+
+        meteterRegistry.gauge("zorroa.task.pending", AtomicLong()) {
+            taskDao.getPendingTaskCount().toDouble()
+        }
     }
 
 
@@ -213,6 +225,15 @@ class DispatcherServiceImpl @Autowired constructor(
         return newTask
     }
 
+    override fun handleTaskError(task: Task, error: TaskErrorEvent) {
+        taskErrorDao.create(task, error)
+        val tags =  getTags()
+        if (error.processor != null) {
+            tags.add(Tag.of("processor", error.processor))
+        }
+        meteterRegistry.counter("zorroa.task_errors", tags).increment()
+    }
+
     override fun handleEvent(event: TaskEvent) {
         val task = taskDao.get(event.taskId)
         when (event.type) {
@@ -222,12 +243,10 @@ class DispatcherServiceImpl @Autowired constructor(
             }
             TaskEventType.STARTED -> startTask(task)
             TaskEventType.ERROR -> {
-                // Might have to queue and submit in batches
                 val payload = Json.Mapper.convertValue<TaskErrorEvent>(event.payload)
-                taskErrorDao.create(task, payload)
+                handleTaskError(task, payload)
             }
             TaskEventType.EXPAND -> {
-                val task = taskDao.get(task.id)
                 val script = Json.Mapper.convertValue<ZpsScript>(event.payload)
                 expand(task, script)
             }
@@ -243,13 +262,18 @@ class DispatcherServiceImpl @Autowired constructor(
             logger.warn("Failed to kill running task, no host is set")
             return false
         }
+        // If we can't kill on the analyst for any reason, then set to Waiting.
         return analystService.killTask(task.host, task.id, reason, newState)
     }
 
-    override fun retryTask(task: Task): Boolean {
+    override fun retryTask(task: Task, reason: String): Boolean {
+        meteterRegistry.counter("zorroa.task.retry", getTags()).increment()
         return if (task.state.isDispatched()) {
-            GlobalScope.launch {
-                killRunningTaskOnAnalyst(task, TaskState.Waiting, "Task retried by ")
+            GlobalScope.launch(Dispatchers.IO) {
+                if(!killRunningTaskOnAnalyst(task, TaskState.Waiting, reason)) {
+                    logger.warn("Manually setting task {} to Waiting", task)
+                    jobService.setTaskState(task, TaskState.Waiting, null)
+                }
             }
             // just assuming true here as the call to the analyst is backgrounded
             true

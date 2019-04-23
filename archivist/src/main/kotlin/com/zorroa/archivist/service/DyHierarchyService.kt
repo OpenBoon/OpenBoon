@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.ArchivistWriteException
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilder
@@ -59,8 +58,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
     val indexRoutingService: IndexRoutingService,
     val transactionEventManager: TransactionEventManager,
-    val clusterLockExecutor: ClusterLockExecutor,
-    val clusterLockService: ClusterLockService
+    val clusterLockExecutor: ClusterLockExecutor
 ) : DyHierarchyService {
 
     @Autowired
@@ -186,7 +184,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         }
 
         val rf = folderService.get(dyhi.folderId, cached = false)
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getOrgRestClient()
 
         try {
 
@@ -494,7 +492,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     private fun resolveFieldName(level: DyHierarchyLevel) {
-        val type = fieldService.getFieldType(level.field)
+        val type = fieldService.getFieldType(level.field.replace(".raw", ""))
         if (type == null) {
             throw IllegalStateException("Attempting to agg on a invalid field ${level.field}")
         }
