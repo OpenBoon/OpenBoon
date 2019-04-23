@@ -76,18 +76,18 @@ unit_tests:
 
 docker_hub_push:
   stage: push
-#  only:
-#    - development
+  only:
+    - development
   image: docker:stable
   services:
     - docker:dind
   script:
     - cd archivist
-    - docker build -t $DOCKERHUB_IMAGE_ARCHIVIST .
+    - docker build --pull -t $DOCKERHUB_IMAGE_ARCHIVIST .
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker push $DOCKERHUB_IMAGE_ARCHIVIST
     - cd ../elasticsearch
-    - docker build -t $DOCKERHUB_IMAGE_ELASTIC .
+    - docker build --pull -t $DOCKERHUB_IMAGE_ELASTIC .
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker push $DOCKERHUB_IMAGE_ELASTIC
 
