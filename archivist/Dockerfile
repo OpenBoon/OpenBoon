@@ -1,6 +1,7 @@
 FROM zorroaevi/8-jre-slim-gcloud
-VOLUME /tmp
 MAINTAINER Zorroa <support@zorroa.com>
+
+VOLUME /tmp
 
 ARG project
 ENV project ${project:-zorroa-evi-dev}
@@ -9,6 +10,8 @@ ENV GCS_CONFIG ${gcs_config}
 
 RUN groupadd -r archivist && useradd -m --no-log-init -r -g archivist archivist
 
+RUN mkdir /shared
+RUN mkdir /logs
 RUN mkdir /config
 RUN mkdir /service
 COPY target/archivist.jar /service/archivist.jar
@@ -25,10 +28,13 @@ COPY ext/*.jar /extensions/inactive/
 COPY ./docker/jvm_options_parser /jvm_options_parser
 COPY ./docker/jvm.options /config/jvm.options
 COPY ./docker/run_server.sh /run_server.sh
+COPY ./docker/rotated_logs.xml /config/rotated_logs.xml
 
 # Change ownership
 RUN chown -R archivist:archivist /extensions
 RUN chown -R archivist:archivist /config
+RUN chown -R archivist:archivist /logs
+RUN chown -R archivist:archivist /shared
 
 USER archivist
 EXPOSE 8080

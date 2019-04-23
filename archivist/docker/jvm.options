@@ -23,6 +23,14 @@
 -Xmx1g
 
 ################################################################
+## Logging
+################################################################
+
+# Logback rotated logs.
+# Mount the /logs directory if you uncomment this
+#-Dlogging.config=/config/rotated_logs.xml
+
+################################################################
 ## Expert settings
 ################################################################
 ##
@@ -46,9 +54,6 @@
 
 # explicitly set the stack size
 -Xss1m
-
-# set to headless, just in case
--Djava.awt.headless=true
 
 # ensure UTF-8 encoding by default (e.g. filenames)
 -Dfile.encoding=UTF-8
