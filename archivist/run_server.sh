@@ -7,7 +7,7 @@ then
    for ext in $extArray
    do
       echo "Activating Archivist ${ext} extension"
-      cp /service-ext/${ext} /service-ext-installed
+      cp /extensions/inactive/${ext} /extensions/active
    done
 fi
 
@@ -22,4 +22,4 @@ MEM=`cat /proc/meminfo | grep MemTotal | awk '{printf ("%0.fm", $2/2/1280)}'`
 JAVA_OPTS="$JAVA_OPTS -Xms$MEM"
 JAVA_OPTS="$JAVA_OPTS -Xmx$MEM"
 
-java $JAVA_OPTS -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=60 -Dloader.path=/service-ext-installed -Djava.security.egd=file:/dev/./urandom -jar /service/archivist.jar "$@"
+java $JAVA_OPTS -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=60 -Dloader.path=/extensions/active -Djava.security.egd=file:/dev/./urandom -jar /service/archivist.jar "$@"

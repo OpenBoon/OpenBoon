@@ -1,3 +1,3 @@
 #!/bin/bash
-docker build -t zorroa-archivist .
+docker build -t zorroaevi/archivist:localdev .
 
