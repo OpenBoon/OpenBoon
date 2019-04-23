@@ -5,3 +5,4 @@ __________
 /_______ \____/|__|   |__|   \____(____  /
         \/                             \/
 The Archivist - v${pom.version} - build ${git.commit.id.abbrev} by ${user.name} on ${timestamp}
+JVM Options: ${ARCHIVIST_JAVA_OPTS}

@@ -7,8 +7,9 @@ ENV project ${project:-zorroa-evi-dev}
 ARG gcs_config
 ENV GCS_CONFIG ${gcs_config}
 
-RUN groupadd -r archivist && useradd --no-log-init -r -g archivist archivist
+RUN groupadd -r archivist && useradd -m --no-log-init -r -g archivist archivist
 
+RUN mkdir /config
 RUN mkdir /service
 COPY target/archivist.jar /service/archivist.jar
 
@@ -19,10 +20,15 @@ RUN mkdir /extensions/active
 
 # Copy any build extensions to the inactive folder.
 COPY ext/*.jar /extensions/inactive/
-# Change ownership so startup script can copy files.
-RUN chown -R archivist:archivist /extensions
 
-COPY run_server.sh run_server.sh
+# Copy over startup scripts for docker.
+COPY ./docker/jvm_options_parser /jvm_options_parser
+COPY ./docker/jvm.options /config/jvm.options
+COPY ./docker/run_server.sh /run_server.sh
+
+# Change ownership
+RUN chown -R archivist:archivist /extensions
+RUN chown -R archivist:archivist /config
 
 USER archivist
 EXPOSE 8080
