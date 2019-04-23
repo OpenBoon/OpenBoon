@@ -19,8 +19,7 @@ def main():
     except Exception, e:
         options = [
             "-Xms512m",
-            "-Xmx1g",
-            "-Xss1m"
+            "-Xmx1g"
         ]
 
     print " ".join(options)
