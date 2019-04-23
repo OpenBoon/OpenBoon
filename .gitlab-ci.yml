@@ -28,6 +28,7 @@ build_artifacts:
     paths:
       - archivist/target/*.jar
       - elasticsearch/*.zip
+      - archivist/ext/*.jar
 
 push_to_local_registry:
   image: docker:stable
@@ -82,11 +83,11 @@ docker_hub_push:
     - docker:dind
   script:
     - cd archivist
-    - docker build -t $DOCKERHUB_IMAGE_ARCHIVIST .
+    - docker build --pull -t $DOCKERHUB_IMAGE_ARCHIVIST .
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker push $DOCKERHUB_IMAGE_ARCHIVIST
     - cd ../elasticsearch
-    - docker build -t $DOCKERHUB_IMAGE_ELASTIC .
+    - docker build --pull -t $DOCKERHUB_IMAGE_ELASTIC .
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker push $DOCKERHUB_IMAGE_ELASTIC
 
