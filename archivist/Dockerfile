@@ -31,6 +31,7 @@ COPY ./docker/run_server.sh /run_server.sh
 COPY ./docker/rotated_logs.xml /config/rotated_logs.xml
 COPY ./docker/application.properties /config/application.properties
 
+
 # Change ownership
 RUN chown -R archivist:archivist /extensions
 RUN chown -R archivist:archivist /config
@@ -38,5 +39,6 @@ RUN chown -R archivist:archivist /logs
 RUN chown -R archivist:archivist /shared
 
 USER archivist
+
 EXPOSE 8080
 ENTRYPOINT ["./run_server.sh"]
