@@ -200,7 +200,7 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/swagger-resources/**").hasAuthority("zorroa::superadmin")
                     .antMatchers("/swagger-ui.html").hasAuthority("zorroa::superadmin")
                     .antMatchers("/webjars/**").hasAuthority("zorroa::superadmin")
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                     .and()
                     .csrf().disable()
         }
