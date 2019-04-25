@@ -59,15 +59,20 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
                 userId = credential.nameID.value
             }
 
-            // TODO: make this the ID
-            val orgPrefix = zd.props.getProperty("organizationPrefix")
-            val orgId = credential.getAttributeAsString(zd.props.getProperty("organizationAttr"))
-            val orgName: String
+            // This Attribute is only used by IRM and can be removed in the future.
+            val orgPrefix = zd.props.getProperty("organizationPrefix") ?: ""
+            val orgId = if (zd.props.getProperty("organizationAttr") == null) {
+                credential.getAttributeAsString(zd.props.getProperty("organizationAttr"))
+            }
+            else {
+                null
+            }
 
-            orgName = if (orgId != null) {
+            val orgName = if (orgId != null) {
                 orgPrefix + orgId
             } else {
-                "Zorroa"
+                // A null organization ID will not be accepted on multi-tenant servers.
+                null
             }
 
             LOG.info("Detected organization name from SAML metadata: $orgName")
