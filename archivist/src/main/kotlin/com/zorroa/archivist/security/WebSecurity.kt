@@ -4,8 +4,6 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -183,7 +181,7 @@ class MultipleWebSecurityConfig {
     }
 
     @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE + 4)
+    @Order(Ordered.LOWEST_PRECEDENCE)
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class RootSecurityConfig : WebSecurityConfigurerAdapter() {
 
@@ -200,9 +198,11 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/swagger-resources/**").hasAuthority("zorroa::superadmin")
                     .antMatchers("/swagger-ui.html").hasAuthority("zorroa::superadmin")
                     .antMatchers("/webjars/**").hasAuthority("zorroa::superadmin")
+                    .antMatchers("/error").permitAll()
                     .anyRequest().permitAll()
                     .and()
                     .csrf().disable()
+
         }
     }
 
