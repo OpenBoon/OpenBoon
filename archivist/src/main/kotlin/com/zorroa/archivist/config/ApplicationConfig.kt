@@ -70,7 +70,7 @@ class ArchivistConfiguration {
             }
 
             builder.withDetail("archivist-plugins",
-                    File("config/ext").walkTopDown()
+                    File("/extensions/active").walkTopDown()
                     .map { it.toString() }
                     .filter { it.endsWith(".jar")}
                     .map { FileUtils.basename(it) }
