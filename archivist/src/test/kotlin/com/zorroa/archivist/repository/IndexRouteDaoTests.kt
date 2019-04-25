@@ -24,7 +24,6 @@ class IndexRouteDaoTests : AbstractTest() {
                 String::class.java))
         assertFalse(jdbc.queryForObject("SELECT bool_use_rkey FROM index_route",
                 Boolean::class.java))
-
     }
 
     @Test

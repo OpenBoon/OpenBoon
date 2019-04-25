@@ -18,6 +18,7 @@ import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
@@ -129,7 +130,7 @@ class ElasticMapping(
         val name: String,
         val majorVersion: Int,
         val minorVersion: Int,
-        val mapping: Map<String, Any>
+        val mapping: MutableMap<String, Any>
 )
 
 @Component
@@ -189,13 +190,19 @@ class IndexRoutingServiceImpl @Autowired
             if (!es.indexExists()) {
                 logger.info("Creating index:" +
                         "type: '${route.mappingType}'  index: '${route.indexName}' " +
-                        "ver: '${route.mappingMajorVer}'")
+                        "ver: '${route.mappingMajorVer}'" +
+                        "shards: '${route.shards}' replicas: '${route.replicas}'")
 
                 val mappingFile = getMajorVersionMappingFile(
                         route.mappingType, route.mappingMajorVer)
+
+                val mapping = Document(mappingFile.mapping)
+                mapping.setAttr("settings.index.number_of_shards", route.shards)
+                mapping.setAttr("settings.index.number_of_replicas", route.replicas)
+
                 val req = CreateIndexRequest()
                 req.index(route.indexName)
-                req.source(mappingFile.mapping, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
+                req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
                 es.client.indices().create(req, RequestOptions.DEFAULT)
             }
             else {
@@ -216,7 +223,7 @@ class IndexRoutingServiceImpl @Autowired
     override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {
         val path = "db/migration/elasticsearch/V${majorVersion}__$mappingType.json"
         val resource = ClassPathResource(path)
-        val mapping = Json.Mapper.readValue<Map<String, Any>>(
+        val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(
                 resource.inputStream, Json.GENERIC_MAP)
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
     }
@@ -257,7 +264,7 @@ class IndexRoutingServiceImpl @Autowired
                 val type = it.groupValues[3]
 
                 if (major == majorVersion && type == mappingType) {
-                    val json = Json.Mapper.readValue<Map<String, Any>>(
+                    val json = Json.Mapper.readValue<MutableMap<String, Any>>(
                             resource.inputStream, Json.GENERIC_MAP)
                     result.add(ElasticMapping(mappingType, major, minor, json))
                 }
