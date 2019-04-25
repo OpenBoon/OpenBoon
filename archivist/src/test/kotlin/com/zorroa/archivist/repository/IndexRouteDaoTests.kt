@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class IndexRouteDaoTests : AbstractTest() {
@@ -18,8 +19,12 @@ class IndexRouteDaoTests : AbstractTest() {
     @Test
     fun testUpdateDefaultIndexRoutes() {
         val url = "http://dog:1234"
-        indexRouteDao.updateDefaultIndexRoutes("http://dog:1234")
-        assertEquals(url, jdbc.queryForObject("SELECT str_url FROM index_route", String::class.java))
+        indexRouteDao.updateDefaultIndexRoutes("http://dog:1234", false)
+        assertEquals(url, jdbc.queryForObject("SELECT str_url FROM index_route",
+                String::class.java))
+        assertFalse(jdbc.queryForObject("SELECT bool_use_rkey FROM index_route",
+                Boolean::class.java))
+
     }
 
     @Test
