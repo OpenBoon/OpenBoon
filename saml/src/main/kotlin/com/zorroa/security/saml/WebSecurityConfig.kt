@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.core.io.FileSystemResource
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -28,6 +30,7 @@ import org.springframework.security.saml.log.SAMLDefaultLogger
 import org.springframework.security.saml.metadata.*
 import org.springframework.security.saml.parser.ParserPoolHolder
 import org.springframework.security.saml.processor.*
+import org.springframework.security.saml.storage.EmptyStorageFactory
 import org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer
 import org.springframework.security.saml.trust.httpclient.TLSProtocolSocketFactory
 import org.springframework.security.saml.util.VelocityFactory
@@ -53,7 +56,7 @@ import java.security.MessageDigest
 import java.util.*
 import javax.xml.bind.DatatypeConverter
 
-
+@Order(Ordered.HIGHEST_PRECEDENCE + 100)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -109,6 +112,13 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         } else {
             ctx.setServerPort(80)
         }
+
+        /**
+         * This is a workaround for the fact that spring creates
+         * a new session for authenticated users, which won't
+         * match the anonymous session used for SAML.
+         */
+        ctx.setStorageFactory(EmptyStorageFactory())
 
         return ctx
     }
@@ -290,7 +300,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean
     fun successRedirectHandler(): SavedRequestAwareAuthenticationSuccessHandler {
         val successRedirectHandler = SavedRequestAwareAuthenticationSuccessHandler()
-        successRedirectHandler.setDefaultTargetUrl(properties!!.landingPage)
+        successRedirectHandler.setDefaultTargetUrl(properties.landingPage)
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true)
         return successRedirectHandler
     }
@@ -434,25 +444,19 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
      */
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http
+        http.antMatcher("/saml/**")
+                .csrf().disable()
                 .httpBasic()
                 .authenticationEntryPoint(samlEntryPoint())
-
-        http
-                .csrf()
-                .disable()
-        http
+                .and()
                 .addFilterBefore(metadataGeneratorFilter(), ChannelProcessingFilter::class.java)
                 .addFilterAfter(samlFilter(), BasicAuthenticationFilter::class.java)
-        http
                 .authorizeRequests()
-                .antMatchers("/error").permitAll()
-                .antMatchers("/curator").permitAll()
-                .antMatchers("/saml/**").permitAll()
-
-        http
+                .antMatchers("/saml/*").permitAll()
+                .and()
                 .logout()
-                .logoutSuccessUrl(properties.landingPage)
+                .disable()
+
     }
 
     /**

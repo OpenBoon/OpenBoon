@@ -16,6 +16,7 @@ import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.generateRandomPassword
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.util.JdbcUtils
 import com.zorroa.security.Groups
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 import org.slf4j.LoggerFactory
@@ -177,13 +178,22 @@ class UserRegistryServiceImpl @Autowired constructor(
         return toUserAuthed(userService.get(id))
     }
 
-    fun getOrganization(source: AuthSource) : Organization {
+    fun getOrganization(source: AuthSource): Organization {
+        /**
+         * If the server is setup as multi-tenant then, you must have a valid organization
+         * ID or name.  Using the name is just temporary for IRM and will eventually
+         * be removed.
+         */
         return if (multiTentant) {
-            if (source.organizationName != null) {
-                organizationService.get(source.organizationName!!)
-            } else {
-                throw BadCredentialsException("Unable to determine organization, organization was null")
-            }
+            source.organizationName?.let {
+                if (JdbcUtils.isUUID(it)) {
+                    organizationService.get(UUID.fromString(it))
+                } else {
+                    organizationService.get(it)
+                }
+            } ?: throw BadCredentialsException(
+                    "Unable to determine organization, organization was null")
+
         } else {
             organizationService.get(Organization.DEFAULT_ORG_ID)
         }
