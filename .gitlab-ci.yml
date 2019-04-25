@@ -76,6 +76,7 @@ unit_tests:
 
 docker_hub_push:
   stage: push
+  retry: 2
   only:
     - development
   image: docker:stable

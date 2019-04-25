@@ -61,7 +61,7 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
 
             // This Attribute is only used by IRM and can be removed in the future.
             val orgPrefix = zd.props.getProperty("organizationPrefix") ?: ""
-            val orgId = if (zd.props.getProperty("organizationAttr") == null) {
+            val orgId = if (zd.props.getProperty("organizationAttr") != null) {
                 credential.getAttributeAsString(zd.props.getProperty("organizationAttr"))
             }
             else {
