@@ -8,10 +8,15 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobState
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest
+import org.elasticsearch.client.RequestOptions
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
@@ -39,6 +44,15 @@ class IndexRoutingServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testNoOrgRoutingKey() {
+        assertEquals(1, jdbc.update("UPDATE index_route SET bool_use_rkey='f'"))
+        val route = indexRouteDao.getOrgRoute()
+        // Make sure routing key is disabled.
+        assertFalse(route.useRouteKey)
+        assertNull(route.esClientCacheKey("test").routingKey)
+    }
+
+    @Test
     fun syncAllIndexRoutes() {
         jdbc.update("UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
                 "int_mapping_minor_ver=0, str_index='test123'")
@@ -63,6 +77,31 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals(route.mappingMinorVer, 20001231)
 
         assertTrue(indexRoutingService.getOrgRestClient().indexExists())
+    }
+
+    @Test
+    fun syncIndexRouteVersionShardsAndReplicas() {
+        val index = "test123"
+        jdbc.update("UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
+                "int_mapping_minor_ver=0, str_index=?, int_shards=1, int_replicas=0", index)
+
+        val rest = indexRoutingService.getOrgRestClient()
+        try {
+            val reqDel = DeleteIndexRequest(index)
+            rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
+        }
+        catch (e: Exception) {
+            //ignore
+        }
+
+        var route = indexRouteDao.getRandomDefaultRoute()
+        indexRoutingService.syncIndexRouteVersion(route)
+
+        // Validate the index has our settings.
+        val getIndex = GetIndexRequest().indices("test123")
+        val rsp = rest.client.indices().get(getIndex, RequestOptions.DEFAULT)
+        assertEquals(1, rsp.settings["test123"].get("index.number_of_shards").toInt())
+        assertEquals(0, rsp.settings["test123"].get("index.number_of_replicas").toInt())
     }
 
     @Test

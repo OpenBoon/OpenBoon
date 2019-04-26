@@ -37,16 +37,18 @@ interface IndexRouteDao {
      * Updates all default pool routes to the cluster URL defined in the
      * application.properties file.  This is called once at startup time.
      */
-    fun updateDefaultIndexRoutes(clusterUrl: String)
+    fun updateDefaultIndexRoutes(clusterUrl: String, useRoutingKey: Boolean)
 }
 
 @Repository
 class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
-    override fun updateDefaultIndexRoutes(clusterUrl: String) {
+    override fun updateDefaultIndexRoutes(clusterUrl: String, useRoutingKey: Boolean) {
         val count = jdbc.update(
-                "UPDATE index_route SET str_url=? WHERE bool_default_pool=?", clusterUrl, true)
-        logger.info("Updated $count default ES cluster URLs to '$clusterUrl'")
+                "UPDATE index_route SET str_url=?,bool_use_rkey=? WHERE pk_index_route=?",
+                clusterUrl, useRoutingKey, UUID.fromString("00000000-0000-0000-0000-000000000000"))
+        logger.info("Updated $count default ES cluster URLs to " +
+                "'$clusterUrl', use rkey $useRoutingKey")
     }
 
     override fun getAll(): List<IndexRoute> {

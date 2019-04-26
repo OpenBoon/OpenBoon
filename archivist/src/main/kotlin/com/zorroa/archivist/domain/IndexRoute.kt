@@ -47,11 +47,17 @@ class IndexRoute(
     }
 
     /**
-     * Return an [EsClientCacheKey] for use with per-organization shards.
+     * Return an [EsClientCacheKey] for use with per-organization shards, if an only if
+     * the route has useRouteKey enabled.
      */
     @JsonIgnore
     fun esClientCacheKey(rkey: String) : EsClientCacheKey {
-        return EsClientCacheKey(clusterUrl, indexName, rkey)
+        return if (useRouteKey) {
+            EsClientCacheKey(clusterUrl, indexName, rkey)
+        }
+        else {
+            EsClientCacheKey(clusterUrl, indexName)
+        }
     }
 }
 
