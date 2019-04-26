@@ -82,5 +82,18 @@ class UserRegistryServiceTests : AbstractTest() {
         }))
     }
 
+    @Test
+    fun testGetEamil() {
+        val registry = userRegistryService as UserRegistryServiceImpl
+
+        var source = AuthSource("test", "saml", "saml")
+
+        assertEquals("bob@zorroa.com", registry.getEmail("bob", source))
+        assertEquals("jim@spock.com", registry.getEmail("jim@spock.com", source))
+
+        // Username is email but the SAML 'mail' attribute overrides it.
+        source = AuthSource("test", "saml", "saml", attrs = mapOf("mail" to "kirk@spock.com"))
+        assertEquals("kirk@spock.com", registry.getEmail("bones@spock.com", source))
+    }
 
 }

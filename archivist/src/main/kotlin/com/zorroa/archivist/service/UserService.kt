@@ -126,6 +126,9 @@ class UserRegistryServiceImpl @Autowired constructor(
     @Value("\${archivist.organization.multiTenant}")
     var multiTentant: Boolean = false
 
+    @Value("\${archivist.organization.domain}")
+    lateinit var defaultEmailDomain: String
+
     /**
      * Register and external user from OAuth/SAML.
      */
@@ -143,7 +146,7 @@ class UserRegistryServiceImpl @Autowired constructor(
             val spec = UserSpec(
                     username,
                     UUID.randomUUID().toString() + UUID.randomUUID().toString(),
-                    source.attrs.getOrDefault("mail", "$username@zorroa.com"),
+                    getEmail(username, source),
                     source.authSourceId,
                     firstName = source.attrs.getOrDefault("first_name", "First"),
                     lastName = source.attrs.getOrDefault("last_name", "Last"),
@@ -176,6 +179,29 @@ class UserRegistryServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getUser(id: UUID): UserAuthed {
         return toUserAuthed(userService.get(id))
+    }
+
+    /**
+     * Return the detected email address.  Order of operations:
+     *
+     * 1. Check the 'mail' attribute.
+     * 2. Check to see if the username is actually an email.
+     * 3. Combine the username with archivist.organization.domain
+     */
+    fun getEmail(username: String, source: AuthSource): String {
+        // First use the SAML email
+        val samlEmail =  source.attrs["mail"]
+        if (samlEmail != null) {
+            return samlEmail
+        }
+
+        // username is an email
+        if (EMAIL_REGEXP.matches(username)) {
+            return username
+        }
+
+        // otherwise combine user with domain
+        return "$username@$defaultEmailDomain"
     }
 
     fun getOrganization(source: AuthSource): Organization {
@@ -247,6 +273,10 @@ class UserRegistryServiceImpl @Autowired constructor(
     }
 
     companion object {
+        /**
+         * Simple email address validation
+         */
+        val EMAIL_REGEXP = Regex(".+@.+\\.[a-z]+")
 
         private val logger = LoggerFactory.getLogger(UserRegistryServiceImpl::class.java)
 
