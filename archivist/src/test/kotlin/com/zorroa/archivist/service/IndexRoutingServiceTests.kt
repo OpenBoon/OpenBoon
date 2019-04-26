@@ -15,6 +15,8 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
@@ -39,6 +41,15 @@ class IndexRoutingServiceTests : AbstractTest() {
         indexRoutingService.setupDefaultIndexRoute()
         assertEquals("http://localhost:9200", jdbc.queryForObject(
                 "SELECT str_url FROM index_route", String::class.java))
+    }
+
+    @Test
+    fun testNoOrgRoutingKey() {
+        assertEquals(1, jdbc.update("UPDATE index_route SET bool_use_rkey='f'"))
+        val route = indexRouteDao.getOrgRoute()
+        // Make sure routing key is disabled.
+        assertFalse(route.useRouteKey)
+        assertNull(route.esClientCacheKey("test").routingKey)
     }
 
     @Test
