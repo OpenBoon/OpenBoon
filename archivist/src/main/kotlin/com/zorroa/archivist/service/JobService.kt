@@ -117,14 +117,14 @@ class JobServiceImpl @Autowired constructor(
 
             when(type) {
                 PipelineType.Import-> {
-                    execute.add(ProcessorRef("zplugins.core.collector.ImportCollector"))
+                    execute.add(ProcessorRef("zplugins.core.collectors.ImportCollector"))
                 }
                 PipelineType.Export-> {
                     script.setSettting("inline", true)
                     script.setGlobalArg("exportArgs", mapOf(
                             "exportId" to job.id,
                             "exportName" to job.name))
-                    execute.add(ProcessorRef("zplugins.export.collectors.ExportCollector"))
+                    execute.add(ProcessorRef("zplugins.core.collectors.ExportCollector"))
                 }
                 PipelineType.Batch,PipelineType.Generate-> { }
 
