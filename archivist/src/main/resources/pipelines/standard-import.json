@@ -4,16 +4,16 @@
   "description": "The standard import pipeline",
   "processors": [
     {
-      "className": "zplugins.image.ImageIngestor"
+      "className": "zplugins.image.importers.ImageImporter"
     },
     {
-      "className": "zplugins.video.processors.VideoIngestor"
+      "className": "zplugins.video.importers.VideoImporter"
     },
     {
-      "className": "zplugins.office.processors.OfficeIngestor"
+      "className": "zplugins.office.importers.OfficeImporter"
     },
     {
-      "className": "zplugins.proxies.ProxyIngestor"
+      "className": "zplugins.proxies.processors.ProxyProcessor"
     }
   ]
 }
