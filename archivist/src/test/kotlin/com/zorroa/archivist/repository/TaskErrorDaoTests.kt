@@ -210,7 +210,7 @@ class TaskErrorDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testGetAlByOrganizationId() {
+    fun testGetAllByOrganizationId() {
         createTaskErrors()
 
         var filter = TaskErrorFilter(organizationIds = listOf(getOrgId()))
@@ -222,7 +222,7 @@ class TaskErrorDaoTests : AbstractTest() {
 
 
     @Test
-    fun testGetAlByKeywords() {
+    fun testGetAllByKeywords() {
         createTaskErrors()
 
         var filter = TaskErrorFilter(keywords = "foo & bar")
