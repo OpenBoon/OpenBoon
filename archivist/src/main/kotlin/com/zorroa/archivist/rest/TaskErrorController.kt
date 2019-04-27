@@ -19,12 +19,13 @@ import java.util.*
 @Timed
 class TaskErrorController @Autowired constructor(val jobService: JobService) {
 
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value= ["/api/v1/taskerrors/_search"])
     fun getAll(@RequestBody filter: TaskErrorFilter) : KPagedList<TaskError> {
         return jobService.getTaskErrors(filter)
     }
 
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SUPERADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value= ["/api/v1/taskerrors/{id}"])
     fun delete(@PathVariable id: UUID) : Any {
         return HttpUtils.deleted("TaskError", id, jobService.deleteTaskError(id))
