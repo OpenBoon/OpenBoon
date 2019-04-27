@@ -28,4 +28,4 @@ java ${ZORROA_JAVA_OPTS} \
 -Djava.awt.headless=true \
 -Dloader.path=/extensions/active \
 -Djava.security.egd=file:/dev/./urandom \
--jar /service/archivist.jar "$@"
+${JVM_OPTIONS} -jar /service/archivist.jar "$@"
