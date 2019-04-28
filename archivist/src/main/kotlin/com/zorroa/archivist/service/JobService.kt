@@ -7,10 +7,8 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
-import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,11 +22,12 @@ interface JobService {
     fun create(spec: JobSpec, type: PipelineType) : Job
     fun get(id: UUID, forClient:Boolean=false) : Job
     fun getTask(id: UUID) : Task
+    fun getInternalTask(id: UUID) : InternalTask
     fun createTask(job: JobId, spec: TaskSpec) : Task
     fun getAll(filter: JobFilter?): KPagedList<Job>
     fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse)
     fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean
-    fun setTaskState(task: Task, newState: TaskState, oldState: TaskState?): Boolean
+    fun setTaskState(task: InternalTask, newState: TaskState, oldState: TaskState?): Boolean
     fun cancelJob(job: Job) : Boolean
     fun restartJob(job: Job) : Boolean
     fun retryAllTaskFailures(job: JobId) : Int
@@ -40,7 +39,7 @@ interface JobService {
     fun deleteJob(job: JobId) : Boolean
     fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
     fun checkAndSetJobFinished(job: JobId): Boolean
-    fun getOrphanTasks(duration: Duration) : List<Task>
+    fun getOrphanTasks(duration: Duration) : List<InternalTask>
 }
 
 @Service
@@ -165,7 +164,12 @@ class JobServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getOrphanTasks(duration: Duration) : List<Task> {
+    override fun getInternalTask(id: UUID) : InternalTask {
+        return taskDao.getInternal(id)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getOrphanTasks(duration: Duration) : List<InternalTask> {
         return taskDao.getOrphans(duration)
     }
 
@@ -199,7 +203,7 @@ class JobServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun setTaskState(task: Task, newState: TaskState, oldState: TaskState?): Boolean  {
+    override fun setTaskState(task: InternalTask, newState: TaskState, oldState: TaskState?): Boolean  {
         val result =  taskDao.setState(task, newState, oldState)
         if (result) {
             if (newState == TaskState.Success || newState == TaskState.Skipped) {

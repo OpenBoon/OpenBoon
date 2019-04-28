@@ -91,7 +91,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                     return score
                 }
 
-                private inline fun isWithinRange(conf : Double) : Boolean {
+                private fun isWithinRange(conf : Double) : Boolean {
                     return conf >= range[0] && conf <=range[1]
                 }
             }

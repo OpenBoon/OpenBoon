@@ -2,7 +2,6 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.common.domain.*
@@ -14,6 +13,7 @@ import java.time.Duration
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class TaskDaoTests : AbstractTest() {
@@ -72,6 +72,26 @@ class TaskDaoTests : AbstractTest() {
         val task2 = taskDao.get(task.id)
         assertEquals(task.id, task2.id)
         assertEquals(job.organizationId, task2.organizationId)
+    }
+
+    @Test
+    fun testGetInternal() {
+        val itask = taskDao.getInternal(task.id)
+        assertEquals(task.id, itask.taskId)
+        assertEquals(task.jobId, itask.jobId)
+        assertEquals(task.name, itask.name)
+        assertEquals(task.state, itask.state)
+    }
+
+    @Test
+    fun testGetHostEndpoint() {
+        val url = "https://foo.bar:1234"
+        var endpoint = taskDao.getHostEndpoint(task)
+        assertNull(endpoint)
+
+        jdbc.update("UPDATE task SET str_host=? WHERE pk_task=?", url, task.id)
+        endpoint = taskDao.getHostEndpoint(task)
+        assertEquals(url, endpoint)
     }
 
     @Test
