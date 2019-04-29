@@ -70,7 +70,7 @@ class ExportServiceTests : AbstractTest() {
         job = exportService.create(spec)
         val task = taskDao.getAll(job.id, TaskState.Waiting)[0]
         val script = taskDao.getScript(task.id)
-        assertEquals("zplugins.export.processors.ImageExporter", script.execute!![0].className)
+        assertEquals("zplugins.image.exporters.ImageExporter", script.execute!![0].className)
 
 
     }
