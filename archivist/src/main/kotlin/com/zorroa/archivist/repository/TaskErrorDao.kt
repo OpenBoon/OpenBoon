@@ -55,6 +55,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             ps.setString(11, spec.phase)
             ps.setLong(12, time)
             ps.setString(13, Json.serializeToString(spec.stackTrace, null))
+            ps.setObject(14, getKeywords(spec))
             ps
         }
 
@@ -100,6 +101,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 ps.setString(11, spec.phase)
                 ps.setLong(12, time)
                 ps.setString(13, Json.serializeToString(spec.stackTrace, null))
+                ps.setObject(14, getKeywords(spec))
             }
 
             override fun getBatchSize(): Int {
@@ -151,6 +153,14 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return jdbc.update("DELETE FROM task_error WHERE pk_job=?", job.jobId)
     }
 
+    fun getKeywords(spec: TaskErrorEvent) : String {
+        var keywords =  JdbcUtils.getTsWordVector(spec.path, spec.processor, spec.message)
+        spec.path?.let {
+            keywords += " ${FileUtils.filename(it)}"
+            keywords += " $it"
+        }
+        return keywords
+    }
 
     fun warnEvent(task: InternalTask, spec: TaskErrorEvent) {
         meterRegistry.counter("zorroa.task_errors", getTags(Tag.of("processor", spec.processor)))
@@ -197,6 +207,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 "bool_fatal",
                 "str_phase",
                 "time_created",
-                "json_stack_trace::jsonb")
+                "json_stack_trace::jsonb",
+                "fti_keywords@to_tsvector")
     }
 }

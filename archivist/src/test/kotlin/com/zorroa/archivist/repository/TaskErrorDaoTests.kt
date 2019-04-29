@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.Task
@@ -206,6 +207,35 @@ class TaskErrorDaoTests : AbstractTest() {
 
         filter = TaskErrorFilter(timeCreated = LongRangeFilter(System.currentTimeMillis()+1000, null))
         assertEquals(0, taskErrorDao.count(filter))
+    }
+
+    @Test
+    fun testGetAllByOrganizationId() {
+        createTaskErrors()
+
+        var filter = TaskErrorFilter(organizationIds = listOf(getOrgId()))
+        assertEquals(1, taskErrorDao.count(filter))
+
+        filter = TaskErrorFilter(organizationIds = listOf(UUID.randomUUID()))
+        assertEquals(0, taskErrorDao.count(filter))
+    }
+
+
+    @Test
+    fun testGetAllByKeywords() {
+        createTaskErrors()
+
+        var filter = TaskErrorFilter(keywords = "foo & bar")
+        assertEquals(1, taskErrorDao.count(filter))
+
+        filter = TaskErrorFilter(keywords = "foo & cat")
+        assertEquals(0, taskErrorDao.count(filter))
+
+        filter = TaskErrorFilter(keywords = "bar.jpg")
+        assertEquals(1, taskErrorDao.count(filter))
+
+        filter = TaskErrorFilter(keywords = "/foo/bar.jpg")
+        assertEquals(1, taskErrorDao.count(filter))
     }
 
     @Test
