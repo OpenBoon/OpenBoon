@@ -1,6 +1,11 @@
 #!/bin/bash
 #This script the docker file entrypoint.
 
+if [ -f "/config/archivist.env" ]
+then
+    source /config/archivist.env
+fi
+
 if [ -n "${ZORROA_ARCHIVIST_EXT}" ]
 then
    extArray=$(echo ${ZORROA_ARCHIVIST_EXT} | tr ";" "\n")
@@ -17,9 +22,10 @@ then
   gsutil cp -r "gs://${GCLOUD_PROJECT}-zorroa-configuration/${GAE_SERVICE}-config/*" /config
 fi
 
+
 export ZORROA_JAVA_OPTS=`./jvm_options_parser /config/jvm.options`
 java ${ZORROA_JAVA_OPTS} \
 -Djava.awt.headless=true \
 -Dloader.path=/extensions/active \
 -Djava.security.egd=file:/dev/./urandom \
--jar /service/archivist.jar "$@"
+${JVM_OPTIONS} -jar /service/archivist.jar "$@"
