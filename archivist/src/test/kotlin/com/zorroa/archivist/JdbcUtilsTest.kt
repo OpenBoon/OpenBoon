@@ -15,6 +15,12 @@ class JdbcUtilsTest {
     }
 
     @Test
+    fun testGetTsWordVectorMultiple() {
+        assertEquals("master generator foo bar image jpg",
+                getTsWordVector("MasterGenerator", "/foo/bar/image.jpg"))
+    }
+
+    @Test
     fun testInsertWithFunction() {
         val query = insert("table1", "words@to_tsvector")
         assertEquals("INSERT INTO table1(words) VALUES (to_tsvector(?))", query)
