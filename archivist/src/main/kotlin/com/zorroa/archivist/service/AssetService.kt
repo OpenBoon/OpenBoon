@@ -448,7 +448,7 @@ open abstract class AbstractAssetService : AssetService {
          * Iterate over our list of assets and grab the hard copy of each one.
          * Modify the copy and push it back into the DB.
          */
-        val futures = assets.batch.keys.chunked(50).map { ids ->
+        val futures = assets.batch.keys.chunked(UPDATE_BATCH_SIZE).map { ids ->
 
             GlobalScope.async(Dispatchers.IO + CoroutineAuthentication(getSecurityContext())) {
                 val rsp = BatchUpdateAssetsResponse()
@@ -542,8 +542,8 @@ open abstract class AbstractAssetService : AssetService {
         val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
         val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking(CoroutineAuthentication(getSecurityContext())) {
-            assets.chunked(50) {
+        runBlocking(Dispatchers.IO + CoroutineAuthentication(getSecurityContext())) {
+            assets.chunked(UPDATE_BATCH_SIZE) {
                 launch {
 
                     val docs = getAll(it).mapNotNull { doc ->
@@ -570,8 +570,8 @@ open abstract class AbstractAssetService : AssetService {
         val errors = Collections.synchronizedSet(mutableSetOf<String>())
         val success = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking(CoroutineAuthentication(getSecurityContext())) {
-            req.assetIds?.chunked(50) {
+        runBlocking(Dispatchers.IO + CoroutineAuthentication(getSecurityContext())) {
+            req.assetIds?.chunked(UPDATE_BATCH_SIZE) {
                 launch {
                     val docs = getAll(it).mapNotNull { doc ->
                         if (addLink(doc, type, value)) {
@@ -715,7 +715,11 @@ open abstract class AbstractAssetService : AssetService {
          * Namespaces that are protected or unable to be set via the API.
          */
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
-        
+
+        /**
+         * The number of assets each IO thread will handle during a batch update.
+         */
+        const val UPDATE_BATCH_SIZE = 10
 
         val logger : Logger = LoggerFactory.getLogger(AbstractAssetService::class.java)
     }
