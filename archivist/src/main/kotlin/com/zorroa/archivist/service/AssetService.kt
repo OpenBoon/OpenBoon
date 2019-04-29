@@ -711,7 +711,12 @@ open abstract class AbstractAssetService : AssetService {
 
     companion object {
 
+        /**
+         * Namespaces that are protected or unable to be set via the API.
+         */
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
+        
+
         val logger : Logger = LoggerFactory.getLogger(AbstractAssetService::class.java)
     }
 
