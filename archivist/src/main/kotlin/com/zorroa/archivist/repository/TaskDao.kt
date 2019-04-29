@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ZpsScript
@@ -28,7 +28,7 @@ interface TaskDao {
     fun getHostEndpoint(taskId: TaskId) : String?
     fun setExitStatus(task: TaskId, exitStatus: Int)
     fun getScript(id: UUID) : ZpsScript
-    fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean
+    fun incrementAssetCounters(task: TaskId, counts: AssetCounters) : Boolean
     fun getAll(tf: TaskFilter?): KPagedList<Task>
     fun getAll(job: UUID, state: TaskState): List<InternalTask>
     fun isAutoRetryable(task: TaskId): Boolean
@@ -48,8 +48,10 @@ interface TaskDao {
      */
     fun getOrphans(duration: Duration) : List<InternalTask>
 
-
-
+    /**
+     * Reset the asset stat counters for the given task back to 0.
+     */
+    fun resetAssetCounters(task: TaskId) : Boolean
 }
 
 @Repository
@@ -78,9 +80,11 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps
         }
 
-        jdbc.update("INSERT INTO task_stat (pk_task, pk_job) VALUES (?,?)", id, job.jobId)
+        val totalAssets = spec.script?.over?.size ?: 0
+        jdbc.update("INSERT INTO task_stat (pk_task, pk_job,int_asset_total_count) VALUES (?,?,?)",
+                id, job.jobId, totalAssets)
         logger.event(LogObject.TASK, LogAction.CREATE,
-                mapOf("taskId" to id, "taskName" to spec.name))
+                mapOf("taskId" to id, "taskName" to spec.name, "assetCount" to totalAssets))
         return get(id)
     }
 
@@ -109,6 +113,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=?",
                     newState.ordinal, time, task.taskId) == 1
         }
+
         if (updated) {
             meterRegistry.counter("zorroa.task.state", getTags(newState.metricsTag())).increment()
             logger.event(LogObject.TASK, LogAction.STATE_CHANGE,
@@ -145,14 +150,17 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.taskId)
     }
 
-    override fun incrementAssetStats(task: TaskId, counts: BatchCreateAssetsResponse) : Boolean {
-        return jdbc.update(INC_STATS,
-                counts.total,
-                counts.createdAssetIds.size,
-                counts.warningAssetIds.size,
-                counts.erroredAssetIds.size,
-                counts.replacedAssetIds.size,
+    override fun incrementAssetCounters(task: TaskId, counts: AssetCounters) : Boolean {
+        return jdbc.update(ASSET_COUNTS_INC,
+                counts.created,
+                counts.warnings,
+                counts.errors,
+                counts.replaced,
                 task.taskId) == 1
+    }
+
+    override fun resetAssetCounters(task: TaskId) : Boolean {
+        return jdbc.update(ASSET_COUNTS_RESET, task.taskId) == 1
     }
 
     override fun getAll(tf: TaskFilter?): KPagedList<Task> {
@@ -244,14 +252,23 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "AND " +
                     "int_state=?"
 
-        private const val INC_STATS = "UPDATE " +
+        private const val ASSET_COUNTS_INC = "UPDATE " +
                 "task_stat " +
                 "SET " +
-                "int_asset_total_count=int_asset_total_count+?," +
                 "int_asset_create_count=int_asset_create_count+?," +
                 "int_asset_warning_count=int_asset_warning_count+?," +
                 "int_asset_error_count=int_asset_error_count+?," +
                 "int_asset_replace_count=int_asset_replace_count+? " +
+                "WHERE " +
+                "pk_task=?"
+
+        private const val ASSET_COUNTS_RESET = "UPDATE " +
+                "task_stat " +
+                "SET " +
+                "int_asset_create_count=0," +
+                "int_asset_warning_count=0," +
+                "int_asset_error_count=0," +
+                "int_asset_replace_count=0 " +
                 "WHERE " +
                 "pk_task=?"
 

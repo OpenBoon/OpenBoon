@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PipelineType
@@ -12,7 +12,6 @@ import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
-import io.micrometer.core.instrument.MeterRegistry
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -26,7 +25,7 @@ interface JobDao {
     fun get(id: UUID, forClient:Boolean=false): Job
     fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean
     fun getAll(filt: JobFilter?): KPagedList<Job>
-    fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean
+    fun incrementAssetCounters(job: JobId, counts: AssetCounters) : Boolean
     fun setTimeStarted(job: JobId): Boolean
     fun getExpired(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
     fun delete(job: JobId): Boolean
@@ -153,13 +152,13 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return jdbc.queryForObject(HAS_PENDING, Int::class.java, JobState.Active.ordinal, job.jobId) == 1
     }
 
-    override fun incrementAssetStats(job: JobId, counts: BatchCreateAssetsResponse) : Boolean {
-        return jdbc.update(INC_STATS,
+    override fun incrementAssetCounters(job: JobId, counts: AssetCounters) : Boolean {
+        return jdbc.update(ASSET_COUNTS_INC,
                 counts.total,
-                counts.createdAssetIds.size,
-                counts.warningAssetIds.size,
-                counts.erroredAssetIds.size,
-                counts.replacedAssetIds.size,
+                counts.created,
+                counts.warnings,
+                counts.errors,
+                counts.replaced,
                 job.jobId) == 1
     }
 
@@ -201,7 +200,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
             result["assetReplacedCount"] = rs.getInt("int_asset_replace_count")
             result["assetWarningCount"] = rs.getInt("int_asset_warning_count")
             result["assetErrorCount"] = rs.getInt("int_asset_error_count")
-            result["assetTotalCount"] = rs.getInt("int_asset_total_count")
             return result
         }
 
@@ -238,7 +236,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "AND " +
                 "job_count.time_updated < ? "
 
-        private const val INC_STATS = "UPDATE " +
+        private const val ASSET_COUNTS_INC = "UPDATE " +
                 "job_stat " +
                 "SET " +
                 "int_asset_total_count=int_asset_total_count+?," +

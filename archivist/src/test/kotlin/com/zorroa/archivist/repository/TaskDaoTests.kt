@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
@@ -116,21 +117,45 @@ class TaskDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testIncrementAssetStats() {
-        val counts = BatchCreateAssetsResponse(6)
-        counts.createdAssetIds.add("foo")
-        counts.replacedAssetIds.addAll(listOf("foo", "bar"))
-        counts.erroredAssetIds.addAll(listOf("foo", "bar", "bing"))
-        counts.warningAssetIds.addAll(listOf("foo", "bar", "bing", "bang"))
-        assertTrue(taskDao.incrementAssetStats(task, counts))
+    fun testIncrementAssetCounters() {
+        val counters = AssetCounters(
+                errors = 6,
+                replaced = 4,
+                warnings = 2,
+                created = 6)
+
+        assertTrue(taskDao.incrementAssetCounters(task, counters))
 
         val map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
-        print(map)
-        assertEquals(counts.createdAssetIds.size, map["int_asset_create_count"])
-        assertEquals(counts.replacedAssetIds.size, map["int_asset_replace_count"])
-        assertEquals(counts.erroredAssetIds.size, map["int_asset_error_count"])
-        assertEquals(counts.warningAssetIds.size, map["int_asset_warning_count"])
-        assertEquals(counts.total, map["int_asset_total_count"])
+        assertEquals(counters.created, map["int_asset_create_count"])
+        assertEquals(counters.replaced, map["int_asset_replace_count"])
+        assertEquals(counters.errors, map["int_asset_error_count"])
+        assertEquals(counters.warnings, map["int_asset_warning_count"])
+    }
+
+    @Test
+    fun testResetAssetCounters() {
+        val counters = AssetCounters(
+                errors = 6,
+                replaced = 4,
+                warnings = 2,
+                created = 6)
+
+        assertTrue(taskDao.incrementAssetCounters(task, counters))
+
+        var map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
+        assertEquals(counters.created, map["int_asset_create_count"])
+        assertEquals(counters.replaced, map["int_asset_replace_count"])
+        assertEquals(counters.errors, map["int_asset_error_count"])
+        assertEquals(counters.warnings, map["int_asset_warning_count"])
+
+        taskDao.resetAssetCounters(task)
+
+        map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
+        assertEquals(0, map["int_asset_create_count"])
+        assertEquals(0, map["int_asset_replace_count"])
+        assertEquals(0, map["int_asset_error_count"])
+        assertEquals(0, map["int_asset_warning_count"])
     }
 
     @Test

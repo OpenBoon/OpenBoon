@@ -142,6 +142,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun startTask(task: InternalTask): Boolean {
         val result = taskDao.setState(task, TaskState.Running, TaskState.Queued)
         if (result) {
+            taskDao.resetAssetCounters(task)
             jobDao.setTimeStarted(task)
         }
         logger.info("Starting task: {}, {}", task.taskId, result)
@@ -184,6 +185,9 @@ class DispatcherServiceImpl @Autowired constructor(
 
             if (!event.manualKill && event.exitStatus != 0 && newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.taskId)
+                val assetCount = script.over?.size ?: 0
+                jobService.incrementAssetCounters(task, AssetCounters(errors=assetCount))
+
                 taskErrorDao.batchCreate(task, script.over?.map {
                     TaskErrorEvent(UUID.fromString(it.id),
                             it.getAttr("source.path"),
@@ -191,10 +195,6 @@ class DispatcherServiceImpl @Autowired constructor(
                             "unknown",
                             true,
                             "unknown")
-
-
-
-
                 }.orEmpty())
             }
         }
@@ -231,6 +231,7 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
         taskErrorDao.create(task, error)
+        jobService.incrementAssetCounters(task, AssetCounters(errors=1))
         val tags =  getTags()
         if (error.processor != null) {
             tags.add(Tag.of("processor", error.processor))

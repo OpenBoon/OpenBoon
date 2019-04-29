@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
@@ -137,21 +138,22 @@ class JobDaoTests : AbstractTest() {
                 args=mutableMapOf("foo" to 1),
                 env=mutableMapOf("foo" to "bar"))
 
-        val job1 = jobDao.create(spec, PipelineType.Import)
-        val counts = BatchCreateAssetsResponse(6)
-        counts.createdAssetIds.add("foo")
-        counts.replacedAssetIds.addAll(listOf("foo", "bar"))
-        counts.erroredAssetIds.addAll(listOf("foo", "bar", "bing"))
-        counts.warningAssetIds.addAll(listOf("foo", "bar", "bing", "bang"))
-        assertTrue(jobDao.incrementAssetStats(job1, counts))
+        val counters = AssetCounters(
+                total = 10,
+                errors = 6,
+                replaced = 4,
+                warnings = 2,
+                created = 6)
 
+        val job1 = jobDao.create(spec, PipelineType.Import)
+        assertTrue(jobDao.incrementAssetCounters(job1, counters))
         val map = jdbc.queryForMap("SELECT * FROM job_stat WHERE pk_job=?", job1.id)
-        print(map)
-        assertEquals(counts.createdAssetIds.size, map["int_asset_create_count"])
-        assertEquals(counts.replacedAssetIds.size, map["int_asset_replace_count"])
-        assertEquals(counts.erroredAssetIds.size, map["int_asset_error_count"])
-        assertEquals(counts.warningAssetIds.size, map["int_asset_warning_count"])
-        assertEquals(counts.total, map["int_asset_total_count"])
+
+        assertEquals(counters.created, map["int_asset_create_count"])
+        assertEquals(counters.replaced, map["int_asset_replace_count"])
+        assertEquals(counters.errors, map["int_asset_error_count"])
+        assertEquals(counters.warnings, map["int_asset_warning_count"])
+        assertEquals(counters.total, map["int_asset_total_count"])
     }
 
     @Test

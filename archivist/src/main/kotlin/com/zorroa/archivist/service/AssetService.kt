@@ -294,7 +294,7 @@ open abstract class AbstractAssetService : AssetService {
     fun incrementJobCounters(req: BatchCreateAssetsRequest, rsp: BatchCreateAssetsResponse) {
         req.taskId?.let {
             val task = jobService.getTask(it)
-            jobService.incrementAssetCounts(task, rsp)
+            jobService.incrementAssetCounters(task, rsp.getAssetCounters())
         }
     }
 

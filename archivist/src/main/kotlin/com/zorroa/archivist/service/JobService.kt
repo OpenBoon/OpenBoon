@@ -25,11 +25,11 @@ interface JobService {
     fun getInternalTask(id: UUID) : InternalTask
     fun createTask(job: JobId, spec: TaskSpec) : Task
     fun getAll(filter: JobFilter?): KPagedList<Job>
-    fun incrementAssetCounts(task: Task,  counts: BatchCreateAssetsResponse)
+    fun incrementAssetCounters(task: InternalTask, counts: AssetCounters)
     fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean
     fun setTaskState(task: InternalTask, newState: TaskState, oldState: TaskState?): Boolean
     fun cancelJob(job: Job) : Boolean
-    fun restartJob(job: Job) : Boolean
+    fun restartJob(job: JobId) : Boolean
     fun retryAllTaskFailures(job: JobId) : Int
     fun getZpsScript(id: UUID) : ZpsScript
     fun updateJob(job: Job, spec: JobUpdateSpec) : Boolean
@@ -190,9 +190,9 @@ class JobServiceImpl @Autowired constructor(
         return taskDao.create(job, spec)
     }
 
-    override fun incrementAssetCounts(task: Task, counts: BatchCreateAssetsResponse) {
-        taskDao.incrementAssetStats(task, counts)
-        jobDao.incrementAssetStats(task, counts)
+    override fun incrementAssetCounters(task: InternalTask, counts: AssetCounters) {
+        taskDao.incrementAssetCounters(task, counts)
+        jobDao.incrementAssetCounters(task, counts)
     }
 
     override fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean  {
@@ -218,11 +218,12 @@ class JobServiceImpl @Autowired constructor(
         return setJobState(job, JobState.Cancelled, JobState.Active)
     }
 
-    override fun restartJob(job: Job) : Boolean {
+    override fun restartJob(job: JobId) : Boolean {
         return setJobState(job, JobState.Active, null)
     }
 
     override fun retryAllTaskFailures(job: JobId) : Int {
+
         var count = 0
         for (task in taskDao.getAll(job.jobId, TaskState.Failure)) {
             if (setTaskState(task, TaskState.Waiting, TaskState.Failure)) {
