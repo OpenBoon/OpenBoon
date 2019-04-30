@@ -21,20 +21,44 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.saml.*
+import org.springframework.security.saml.SAMLAuthenticationProvider
+import org.springframework.security.saml.SAMLBootstrap
+import org.springframework.security.saml.SAMLEntryPoint
+import org.springframework.security.saml.SAMLLogoutFilter
+import org.springframework.security.saml.SAMLLogoutProcessingFilter
+import org.springframework.security.saml.SAMLProcessingFilter
+import org.springframework.security.saml.SAMLWebSSOHoKProcessingFilter
 import org.springframework.security.saml.context.SAMLContextProvider
 import org.springframework.security.saml.context.SAMLContextProviderLB
 import org.springframework.security.saml.key.JKSKeyManager
 import org.springframework.security.saml.key.KeyManager
 import org.springframework.security.saml.log.SAMLDefaultLogger
-import org.springframework.security.saml.metadata.*
+import org.springframework.security.saml.metadata.CachingMetadataManager
+import org.springframework.security.saml.metadata.ExtendedMetadata
+import org.springframework.security.saml.metadata.ExtendedMetadataDelegate
+import org.springframework.security.saml.metadata.MetadataDisplayFilter
+import org.springframework.security.saml.metadata.MetadataGenerator
+import org.springframework.security.saml.metadata.MetadataGeneratorFilter
 import org.springframework.security.saml.parser.ParserPoolHolder
-import org.springframework.security.saml.processor.*
+import org.springframework.security.saml.processor.HTTPPAOS11Binding
+import org.springframework.security.saml.processor.HTTPPostBinding
+import org.springframework.security.saml.processor.HTTPRedirectDeflateBinding
+import org.springframework.security.saml.processor.HTTPSOAP11Binding
+import org.springframework.security.saml.processor.SAMLBinding
+import org.springframework.security.saml.processor.SAMLProcessorImpl
 import org.springframework.security.saml.storage.EmptyStorageFactory
 import org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer
 import org.springframework.security.saml.trust.httpclient.TLSProtocolSocketFactory
 import org.springframework.security.saml.util.VelocityFactory
-import org.springframework.security.saml.websso.*
+import org.springframework.security.saml.websso.SingleLogoutProfile
+import org.springframework.security.saml.websso.SingleLogoutProfileImpl
+import org.springframework.security.saml.websso.WebSSOProfile
+import org.springframework.security.saml.websso.WebSSOProfileConsumer
+import org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl
+import org.springframework.security.saml.websso.WebSSOProfileConsumerImpl
+import org.springframework.security.saml.websso.WebSSOProfileECPImpl
+import org.springframework.security.saml.websso.WebSSOProfileImpl
+import org.springframework.security.saml.websso.WebSSOProfileOptions
 import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.SecurityFilterChain
@@ -53,7 +77,7 @@ import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.MessageDigest
-import java.util.*
+import java.util.Properties
 import javax.xml.bind.DatatypeConverter
 
 @Order(Ordered.HIGHEST_PRECEDENCE + 100)
@@ -266,7 +290,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         emd.isMetadataRequireSignature = false
                         emd.setRequireValidMetadata(false)
                         providers.add(emd)
-
                     } catch (e: IOException) {
                         logger.warn("Failed to open SAML file: ", e)
                     } catch (e: MetadataProviderException) {
@@ -456,7 +479,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .and()
                 .logout()
                 .disable()
-
     }
 
     /**
@@ -481,5 +503,4 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             return SAMLBootstrap()
         }
     }
-
 }

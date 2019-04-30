@@ -1,10 +1,9 @@
 package com.zorroa.security.saml
 
 import org.springframework.security.saml.metadata.ExtendedMetadata
-import java.util.*
+import java.util.Properties
 
 class ZorroaExtendedMetadata : ExtendedMetadata() {
 
     var props: Properties = Properties()
-
 }

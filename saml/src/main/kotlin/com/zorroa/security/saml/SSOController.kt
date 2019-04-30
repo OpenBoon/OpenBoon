@@ -46,7 +46,7 @@ class SSOController {
     fun samlOptions(): Any {
         val idps = metadata.idpEntityNames
         val urls = mutableListOf<String>()
-        val propList = mutableListOf<Map<Any,Any>>()
+        val propList = mutableListOf<Map<Any, Any>>()
 
         for (idp in idps) {
             val url = "/saml/login?disco=true&idp=$idp"
