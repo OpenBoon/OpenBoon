@@ -7,11 +7,9 @@ import org.elasticsearch.plugins.ScriptPlugin
 import org.elasticsearch.script.ScoreScript
 import org.elasticsearch.script.ScriptContext
 import org.elasticsearch.script.ScriptEngine
-import org.elasticsearch.script.SearchScript
 import org.elasticsearch.search.lookup.SearchLookup
 
 import java.util.logging.Logger
-
 
 /**
  *
@@ -49,8 +47,9 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
      * thread will create its own instance.
      */
     private class KwConfLeafFactory constructor(
-            val params: MutableMap<String, Any>,
-            val lookup: SearchLookup) : ScoreScript.LeafFactory {
+        val params: MutableMap<String, Any>,
+        val lookup: SearchLookup
+    ) : ScoreScript.LeafFactory {
 
         private val field: String = params["field"] as String
         private val keywords: Set<String> = (params["keywords"] as List<String>?).orEmpty().toSet()
@@ -80,7 +79,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                             if (keyword in keywords) {
                                 val conf = map.getValue("confidence") as Double
                                 if (isWithinRange(conf)) {
-                                    score+=conf
+                                    score += conf
                                 }
                             }
                         }
@@ -91,14 +90,13 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                     return score
                 }
 
-                private fun isWithinRange(conf : Double) : Boolean {
-                    return conf >= range[0] && conf <=range[1]
+                private fun isWithinRange(conf: Double): Boolean {
+                    return conf >= range[0] && conf <= range[1]
                 }
             }
         }
 
         override fun needs_score(): Boolean = false
-
     }
 
     /*
@@ -108,7 +106,6 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
     override fun getScriptEngine(settings: Settings?, ctx: Collection<ScriptContext<*>>?): ScriptEngine {
         return KwConfEngine()
     }
-
 
     private class KwConfFactory : ScoreScript.Factory {
         override fun newFactory(params: MutableMap<String, Any>, lookup: SearchLookup): ScoreScript.LeafFactory {
