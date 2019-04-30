@@ -11,7 +11,7 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.Dispatchers
+import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -145,7 +145,9 @@ interface CoreDataVaultClient {
 
 }
 
-class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, dataKey: Path) : CoreDataVaultClient {
+class IrmCoreDataVaultClientImpl constructor(
+        url: String, serviceKey: Path, dataKey: Path, val meterRegistry: MeterRegistry
+) : CoreDataVaultClient {
 
     override val client = RestClient(url, GcpJwtSigner(serviceKey))
 
@@ -155,14 +157,14 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
         gcs = if (Files.exists(dataKey)) {
             StorageOptions.newBuilder()
                     .setCredentials(
-                            GoogleCredentials.fromStream(FileInputStream(dataKey.toFile()))).build().service
+                            GoogleCredentials.fromStream(
+                                    FileInputStream(dataKey.toFile()))).build().service
         }
         else {
             StorageOptions.newBuilder().build().service
         }
 
         logger.info("Initialized CDV REST client $url")
-
     }
 
     override fun assetExists(companyId: Int, assetId: String) : Boolean {
@@ -176,88 +178,112 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
     }
 
     override fun createAsset(companyId: Int, spec: CoreDataVaultAssetSpec) : Map<String, Any> {
-        return client.post("/companies/$companyId/documents", spec, Json.GENERIC_MAP,
-                headers=getRequestHeaders())
+        return meterRegistry.timer(METRIC_KEY, "op", "create-asset").record<Map<String, Any>> {
+            client.post("/companies/$companyId/documents", spec, Json.GENERIC_MAP,
+                    headers=getRequestHeaders())
+        }
     }
 
     override fun updateAsset(companyId: Int, asset: Map<String, Any>) : Map<String, Any> {
-        val id = asset["documentGUID"]
-        return client.put("/companies/$companyId/documents/$id", asset, Json.GENERIC_MAP,
-                headers=getRequestHeaders())
+        return meterRegistry.timer(METRIC_KEY, "op", "update-asset").record<Map<String, Any>> {
+            val id = asset["documentGUID"]
+            client.put("/companies/$companyId/documents/$id", asset, Json.GENERIC_MAP,
+                    headers = getRequestHeaders())
+        }
     }
 
     override fun getAsset(companyId: Int, assetId: String): Map<String, Any> {
-        return client.get("/companies/$companyId/documents/$assetId", Json.GENERIC_MAP,
-                headers=getRequestHeaders())
+        return meterRegistry.timer(METRIC_KEY, "op", "get-asset").record<Map<String, Any>> {
+            client.get("/companies/$companyId/documents/$assetId", Json.GENERIC_MAP,
+                    headers = getRequestHeaders())
+        }
     }
 
     override fun getIndexedMetadata(companyId: Int, assetId: String): Document {
-        // This will return 200OK even if the asset doesn't exist.
-        val doc =  client.get("/companies/$companyId/documents/$assetId/es", Document::class.java,
-                headers=getRequestHeaders())
-        doc.id = assetId
-        return doc
+        return meterRegistry.timer(METRIC_KEY, "op", "get-metadata").record<Document> {
+            val doc = client.get("/companies/$companyId/documents/$assetId/es", Document::class.java,
+                    headers = getRequestHeaders())
+            doc.id = assetId
+            doc
+        }
     }
 
     override fun updateIndexedMetadata(companyId: Int, doc: Document) : Boolean {
-        val assetId = doc.id
-        return try {
-            client.put("/companies/$companyId/documents/$assetId/es", doc,
-                    Json.GENERIC_MAP, headers = getRequestHeaders())
-            client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED",
-                    null, Json.GENERIC_MAP, headers = getRequestHeaders())
-            true
-        } catch (e: Exception) {
-            logger.warnEvent(LogObject.ASSET, LogAction.UPDATE, e.message ?: "No error message",
-                    mapOf("companyId" to companyId, "assetId" to assetId))
-            false
+        return meterRegistry.timer(METRIC_KEY, "op", "update-metadata").record<Boolean> {
+            val assetId = doc.id
+            try {
+                client.put("/companies/$companyId/documents/$assetId/es", doc,
+                        Json.GENERIC_MAP, headers = getRequestHeaders())
+                client.put("/companies/$companyId/documents/$assetId/fields/state/INDEXED",
+                        null, Json.GENERIC_MAP, headers = getRequestHeaders())
+                true
+            } catch (e: Exception) {
+                logger.warnEvent(LogObject.ASSET, LogAction.UPDATE, e.message ?: "No error message",
+                        mapOf("companyId" to companyId, "assetId" to assetId))
+                false
+            }
         }
     }
 
-    override fun batchUpdateIndexedMetadata(companyId: Int, docs: List<Document>) : Map<String, Boolean> {
-        val result = mutableMapOf<String, Boolean>()
-        val deferred = docs.map {
-            GlobalScope.async(Dispatchers.IO) {
-                Pair(it.id, updateIndexedMetadata(companyId, it))
-            }
-        }
+    override fun batchUpdateIndexedMetadata(companyId: Int, docs: List<Document>)
+            : Map<String, Boolean> {
 
-        runBlocking {
-            deferred.map {
-                val r = it.await()
-                result.put(r.first, r.second)
+        return meterRegistry.timer(METRIC_KEY,
+                "op", "batch-update-metadata").record<Map<String, Boolean>> {
+
+            val result = mutableMapOf<String, Boolean>()
+            val deferred = docs.map {
+                GlobalScope.async {
+                    Pair(it.id, updateIndexedMetadata(companyId, it))
+                }
             }
+
+            runBlocking {
+                deferred.map {
+                    val r = it.await()
+                    result.put(r.first, r.second)
+                }
+            }
+            result
         }
-        return result
     }
 
     override fun batchDelete(companyId: Int, assetIds: List<String>): Map<String, Boolean> {
-        val result = mutableMapOf<String, Boolean>()
-        val deferred = assetIds.map {
-            GlobalScope.async(Dispatchers.IO) {
-                Pair(it, delete(companyId, it))
+        return meterRegistry.timer(METRIC_KEY,
+                "op", "batch-delete-asset").record<Map<String, Boolean>> {
+            val result = mutableMapOf<String, Boolean>()
+            val deferred = assetIds.map {
+                GlobalScope.async {
+                    Pair(it, delete(companyId, it))
+                }
             }
-        }
-        runBlocking {
-            deferred.map {
-                val r = it.await()
-                result.put(r.first, r.second)
+            runBlocking {
+                deferred.map {
+                    val r = it.await()
+                    result.put(r.first, r.second)
+                }
             }
+            result
         }
-        return result
     }
 
     override fun delete(companyId: Int, assetId: String): Boolean {
-        val result =
-                client.delete("/companies/$companyId/documents/$assetId", null, Json.GENERIC_MAP,
-                        headers=getRequestHeaders())
-        return result["status"].toString() == "PASSED"
+        return meterRegistry.timer(METRIC_KEY,
+                "op", "delete-asset").record<Boolean> {
+            val result = client.delete(
+                    "/companies/$companyId/documents/$assetId", null, Json.GENERIC_MAP,
+                    headers = getRequestHeaders())
+            result["status"].toString() == "PASSED"
+        }
     }
 
     override fun getDocumentTypes(companyId: Int): List<Map<String, Any>> {
-        val result =
-                client.get("/companies/$companyId/documentTypes", Json.GENERIC_MAP, headers=getRequestHeaders())
-        return result["data"] as List<Map<String, Any>>
+        return meterRegistry.timer(METRIC_KEY,
+                "op", "get-doc-types").record<List<Map<String, Any>>> {
+            val result = client.get("/companies/$companyId/documentTypes",
+                    Json.GENERIC_MAP, headers=getRequestHeaders())
+            result["data"] as List<Map<String, Any>>
+        }
     }
 
     override fun uploadSource(uri: URI, bytes: ByteArray) {
@@ -280,5 +306,10 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
          * IRM expects this header to be set to the value of the current username.
          */
         const val USER_HDR_KEY = "imcUserId"
+
+        /**
+         * The Micrometer key for CDV metrics
+         */
+        const val METRIC_KEY = "zorroa.cdv-api"
     }
 }

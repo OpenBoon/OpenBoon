@@ -166,14 +166,15 @@ class ArchivistConfiguration {
             return GcpPubSubServiceImpl(IrmCoreDataVaultClientImpl(
                     network.getPublicUrl("core-data-vault-api"),
                     serviceCredentials(),
-                    dataCredentials()), meterRegistry)
+                    dataCredentials(), meterRegistry), meterRegistry)
         }
         logger.info("No PubSub service configured")
         return null
     }
 
     @Bean
-    fun assetService() : AssetService {
+    @Autowired
+    fun assetService(meterRegistry: MeterRegistry) : AssetService {
         val network = networkEnvironment()
         val type = properties().getString("archivist.assetStore.type", "sql")
         logger.info("Initializing Core Asset Store: {}", type)
@@ -183,7 +184,7 @@ class ArchivistConfiguration {
                     IrmCoreDataVaultClientImpl(
                             network.getPublicUrl("core-data-vault-api"),
                             serviceCredentials(),
-                            dataCredentials()))
+                            dataCredentials(), meterRegistry))
             }
             else->AssetServiceImpl()
         }
