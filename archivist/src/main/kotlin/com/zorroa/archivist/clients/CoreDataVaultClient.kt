@@ -278,7 +278,8 @@ class IrmCoreDataVaultClientImpl constructor(
     }
 
     override fun getDocumentTypes(companyId: Int): List<Map<String, Any>> {
-        return meterRegistry.timer(METRIC_KEY, "get-doc-types").record<List<Map<String, Any>>> {
+        return meterRegistry.timer(METRIC_KEY,
+                "op", "get-doc-types").record<List<Map<String, Any>>> {
             val result = client.get("/companies/$companyId/documentTypes",
                     Json.GENERIC_MAP, headers=getRequestHeaders())
             result["data"] as List<Map<String, Any>>
