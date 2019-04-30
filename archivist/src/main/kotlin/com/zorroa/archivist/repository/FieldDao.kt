@@ -58,6 +58,14 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             spec.keywords = true
         }
 
+        /**
+         * If it's a suggestion, its also a keyword since it would be
+         * annoying to suggest something that doesn't produce a result.
+         */
+        if (spec.suggest) {
+            spec.keywords = true
+        }
+
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
         val user = getUser()
