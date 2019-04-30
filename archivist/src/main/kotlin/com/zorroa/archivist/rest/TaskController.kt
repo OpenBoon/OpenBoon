@@ -46,7 +46,7 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@PathVariable id: UUID) : Any {
         return HttpUtils.status("Task", id, "retry",
-                dispatcherService.retryTask(jobService.getTask(id),
+                dispatcherService.retryTask(jobService.getInternalTask(id),
                         "Retried by ${getUsername()}"))
 
     }
@@ -57,7 +57,7 @@ class TaskController @Autowired constructor(
     fun skip(@PathVariable id: UUID) : Any {
 
         return HttpUtils.status("Task", id, "skip",
-                dispatcherService.skipTask(jobService.getTask(id)))
+                dispatcherService.skipTask(jobService.getInternalTask(id)))
     }
 
     @GetMapping(value = ["/api/v1/tasks/{id}/_script"])

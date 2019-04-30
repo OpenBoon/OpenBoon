@@ -6,8 +6,9 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.warnEvent
-import com.zorroa.archivist.util.*
-import com.zorroa.common.domain.*
+import com.zorroa.archivist.util.FileUtils
+import com.zorroa.common.domain.InternalTask
+import com.zorroa.common.domain.JobId
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
@@ -21,8 +22,8 @@ import java.sql.SQLException
 import java.util.*
 
 interface TaskErrorDao {
-    fun create(task: Task, error: TaskErrorEvent): TaskError
-    fun batchCreate(task: Task, specs: List<TaskErrorEvent>): Int
+    fun create(task: InternalTask, error: TaskErrorEvent): TaskError
+    fun batchCreate(task: InternalTask, specs: List<TaskErrorEvent>): Int
     fun get(id: UUID) : TaskError
     fun getLast() : TaskError
     fun count(filter: TaskErrorFilter): Long
@@ -34,7 +35,7 @@ interface TaskErrorDao {
 @Repository
 class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
-    override fun create(task: Task, spec: TaskErrorEvent): TaskError {
+    override fun create(task: InternalTask, spec: TaskErrorEvent): TaskError {
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
@@ -75,7 +76,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 spec.stackTrace)
     }
 
-    override fun batchCreate(task: Task, specs: List<TaskErrorEvent>): Int {
+    override fun batchCreate(task: InternalTask, specs: List<TaskErrorEvent>): Int {
         if (specs.isEmpty()) {
             return 0
         }
@@ -161,12 +162,12 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return keywords
     }
 
-    fun warnEvent(task: Task, spec: TaskErrorEvent) {
+    fun warnEvent(task: InternalTask, spec: TaskErrorEvent) {
         meterRegistry.counter("zorroa.task_errors", getTags(Tag.of("processor", spec.processor)))
 
         logger.warnEvent(LogObject.TASK_ERROR, LogAction.CREATE, spec.message,
                 mapOf("assetId" to spec.assetId,
-                        "taskId" to task.id,
+                        "taskId" to task.taskId,
                         "processor" to spec.processor,
                         "jobId" to task.jobId))
     }

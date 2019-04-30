@@ -7,13 +7,11 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.TaskState
-import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.nio.file.Files
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 
 class ExportServiceTests : AbstractTest() {
@@ -69,9 +67,7 @@ class ExportServiceTests : AbstractTest() {
                 mutableMapOf("foo" to "bar"))
         job = exportService.create(spec)
         val task = taskDao.getAll(job.id, TaskState.Waiting)[0]
-        val script = taskDao.getScript(task.id)
+        val script = taskDao.getScript(task.taskId)
         assertEquals("zplugins.image.exporters.ImageExporter", script.execute!![0].className)
-
-
     }
 }

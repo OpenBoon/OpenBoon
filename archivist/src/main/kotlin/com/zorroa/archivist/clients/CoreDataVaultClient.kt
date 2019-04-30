@@ -9,7 +9,6 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getUserOrNull
-import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.Json
 import kotlinx.coroutines.GlobalScope
@@ -266,7 +265,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
         gcs.create(BlobInfo.newBuilder(blobId).build(), bytes)
     }
 
-    private inline fun getRequestHeaders() : Map<String, String>? {
+    private fun getRequestHeaders() : Map<String, String>? {
         getUserOrNull()?.let {
             return mapOf(USER_HDR_KEY to it.getName())
         }
