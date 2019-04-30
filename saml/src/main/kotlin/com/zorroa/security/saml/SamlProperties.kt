@@ -11,5 +11,4 @@ class SamlProperties {
     lateinit var baseUrl: String
     lateinit var landingPage: String
     var isLogout = true
-
 }

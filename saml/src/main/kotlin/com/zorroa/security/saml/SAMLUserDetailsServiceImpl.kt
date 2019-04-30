@@ -63,8 +63,7 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
             val orgPrefix = zd.props.getProperty("organizationPrefix") ?: ""
             val orgId = if (zd.props.getProperty("organizationAttr") != null) {
                 credential.getAttributeAsString(zd.props.getProperty("organizationAttr"))
-            }
-            else {
+            } else {
                 null
             }
 
@@ -92,11 +91,9 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
 
             LOG.info("Loading SAML user: {} from {}", userId, issuer)
             return userRegistryService.registerUser(userId!!, source)
-
         } catch (e: Exception) {
             throw UsernameNotFoundException("Unable to authenticate user: " + userId!!, e)
         }
-
     }
 
     fun parseGroups(groupAttrName: String?, credential: SAMLCredential): List<String> {

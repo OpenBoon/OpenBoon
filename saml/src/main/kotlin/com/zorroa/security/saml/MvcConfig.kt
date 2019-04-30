@@ -16,7 +16,4 @@ class MvcConfig : WebMvcConfigurer {
     override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
         argumentResolvers.add(currentUserHandlerMethodArgumentResolver)
     }
-
 }
-
-

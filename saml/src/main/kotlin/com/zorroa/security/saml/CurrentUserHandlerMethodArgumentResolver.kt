@@ -35,9 +35,12 @@ class CurrentUserHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
     }
 
     @Throws(Exception::class)
-    override fun resolveArgument(methodParameter: MethodParameter,
-                                 mavContainer: ModelAndViewContainer?, webRequest: NativeWebRequest,
-                                 binderFactory: WebDataBinderFactory?): Any? {
+    override fun resolveArgument(
+        methodParameter: MethodParameter,
+        mavContainer: ModelAndViewContainer?,
+        webRequest: NativeWebRequest,
+        binderFactory: WebDataBinderFactory?
+    ): Any? {
         return if (this.supportsParameter(methodParameter)) {
             logger.info("User principal: {}", webRequest.userPrincipal)
 
