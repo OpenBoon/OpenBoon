@@ -107,6 +107,14 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         val time = System.currentTimeMillis()
         val user = getUser()
 
+        /**
+         * If it's a suggestion, its also a keyword since it would be
+         * annoying to suggest something that doesn't produce a result.
+         */
+        if (spec.suggest) {
+            spec.keywords = true
+        }
+
         return jdbc.update { connection ->
             val ps = connection.prepareStatement("$UPDATE AND pk_organization=?")
             ps.setLong(1, time)

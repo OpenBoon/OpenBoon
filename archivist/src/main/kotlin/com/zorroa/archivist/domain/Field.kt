@@ -133,7 +133,7 @@ class Field (
 class FieldUpdateSpec (
         val name: String,
         val editable: Boolean,
-        val keywords: Boolean,
+        var keywords: Boolean,
         val keywordsBoost: Float,
         val suggest: Boolean,
         val options: List<Any>?=null
