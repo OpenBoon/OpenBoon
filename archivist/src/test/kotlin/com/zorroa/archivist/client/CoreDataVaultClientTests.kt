@@ -5,8 +5,11 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
+import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.nio.file.Paths
 import java.util.*
 import kotlin.test.*
@@ -23,9 +26,18 @@ class CoreDataVaultClientTests : AbstractTest() {
 
     val docType = "01059ec7-42e8-48f3-adcf-4fa726005ab4"
 
-    val client = IrmCoreDataVaultClientImpl("https://cdvapi.dit3-insight.com",
-            Paths.get("unittest/config/service-credentials.json"),
-            Paths.get("unittest/config/data-credentials.json"))
+    @Autowired
+    lateinit var meterRegistry : MeterRegistry
+
+    lateinit var client :  IrmCoreDataVaultClientImpl
+
+    @Before
+    fun init() {
+        client = IrmCoreDataVaultClientImpl("https://cdvapi.dit3-insight.com",
+                Paths.get("unittest/config/service-credentials.json"),
+                Paths.get("unittest/config/data-credentials.json"),
+                meterRegistry)
+    }
 
     @Test
     fun testAssetExists() {
