@@ -11,6 +11,7 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.Json
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -216,7 +217,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
     override fun batchUpdateIndexedMetadata(companyId: Int, docs: List<Document>) : Map<String, Boolean> {
         val result = mutableMapOf<String, Boolean>()
         val deferred = docs.map {
-            GlobalScope.async {
+            GlobalScope.async(Dispatchers.IO) {
                 Pair(it.id, updateIndexedMetadata(companyId, it))
             }
         }
@@ -233,7 +234,7 @@ class IrmCoreDataVaultClientImpl constructor(url: String, serviceKey: Path, data
     override fun batchDelete(companyId: Int, assetIds: List<String>): Map<String, Boolean> {
         val result = mutableMapOf<String, Boolean>()
         val deferred = assetIds.map {
-            GlobalScope.async {
+            GlobalScope.async(Dispatchers.IO) {
                 Pair(it, delete(companyId, it))
             }
         }

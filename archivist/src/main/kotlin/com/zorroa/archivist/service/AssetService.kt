@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.URI
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -450,7 +452,7 @@ open abstract class AbstractAssetService : AssetService {
          */
         val futures = assets.batch.keys.chunked(UPDATE_BATCH_SIZE).map { ids ->
 
-            GlobalScope.async(Dispatchers.IO + CoroutineAuthentication(getSecurityContext())) {
+            GlobalScope.async(getCoroutineContext()) {
                 val rsp = BatchUpdateAssetsResponse()
                 val docs: List<Document> = getAll(ids).mapNotNull { doc ->
 
@@ -537,15 +539,16 @@ open abstract class AbstractAssetService : AssetService {
         return rsp
     }
 
-    override fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse {
+    override fun removeLinks(type: LinkType,
+                             value: UUID, assets:
+                             List<String>): UpdateLinksResponse = runBlocking {
 
         val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
         val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking(Dispatchers.IO + CoroutineAuthentication(getSecurityContext())) {
+        async(getCoroutineContext()) {
             assets.chunked(UPDATE_BATCH_SIZE) {
                 launch {
-
                     val docs = getAll(it).mapNotNull { doc ->
                         if (removeLink(doc, type, value)) {
                             doc
@@ -563,14 +566,19 @@ open abstract class AbstractAssetService : AssetService {
             }
         }
 
-        return UpdateLinksResponse(successAssetIds, errorAssetIds)
+       UpdateLinksResponse(successAssetIds, errorAssetIds)
     }
 
-    override fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse {
+    override fun addLinks(
+            type: LinkType,
+            value: UUID,
+            req: BatchUpdateAssetLinks) : UpdateLinksResponse = runBlocking {
+
         val errors = Collections.synchronizedSet(mutableSetOf<String>())
         val success = Collections.synchronizedSet(mutableSetOf<String>())
 
-        runBlocking(Dispatchers.IO + CoroutineAuthentication(getSecurityContext())) {
+        async(getCoroutineContext()) {
+
             req.assetIds?.chunked(UPDATE_BATCH_SIZE) {
                 launch {
                     val docs = getAll(it).mapNotNull { doc ->
@@ -596,7 +604,6 @@ open abstract class AbstractAssetService : AssetService {
 
                 searchService.scanAndScroll(search, false) { hits ->
                     launch {
-
                         val ids = hits.hits.map { hit -> hit.id }
                         val docs = getAll(ids).mapNotNull { doc ->
                             if (addLink(doc, type, value)) {
@@ -615,8 +622,9 @@ open abstract class AbstractAssetService : AssetService {
                     }
                 }
             }
-        }
-        return UpdateLinksResponse(success, errors)
+        }.join()
+
+        UpdateLinksResponse(success, errors)
     }
 
     override fun deleteFieldEdit(edit: FieldEdit): Boolean {
@@ -708,6 +716,22 @@ open abstract class AbstractAssetService : AssetService {
         }
     }
 
+    /**
+     * Return a co-routine context specific to the particular runtime environment.
+     * For unittests, co-routines run in the main thread because other threads will
+     * block on the Transaction surrounding the unittest.
+     *
+     * For production mode, all IO is run in the Dispatchers.IO pool.
+     *
+     */
+    private fun getCoroutineContext() : CoroutineContext {
+        return if (ArchivistConfiguration.unittest) {
+            CoroutineAuthentication(getSecurityContext())
+        }
+        else {
+            Dispatchers.IO + CoroutineAuthentication(getSecurityContext())
+        }
+    }
 
     companion object {
 
