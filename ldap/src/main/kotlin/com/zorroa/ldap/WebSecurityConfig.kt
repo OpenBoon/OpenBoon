@@ -17,7 +17,6 @@ import org.springframework.security.ldap.authentication.BindAuthenticator
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch
 
-
 @Configuration
 @ConfigurationProperties("archivist.security.ldap")
 open class LdapProperties {
@@ -33,7 +32,7 @@ open class LdapProperties {
 open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
-    lateinit var properties : LdapProperties
+    lateinit var properties: LdapProperties
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -42,10 +41,10 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
     open fun configureGlobal(auth: AuthenticationManagerBuilder) {
-        if (!properties.enabled ){
+        if (!properties.enabled) {
             return
         }
-        logger.info("Adding LDAP authentication provider");
+        logger.info("Adding LDAP authentication provider")
         auth.authenticationProvider(ldapAuthenticationProvider())
     }
 
@@ -65,7 +64,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    open fun ldapUserDetailsService() : LdapUserDetailsServiceImpl  {
+    open fun ldapUserDetailsService(): LdapUserDetailsServiceImpl {
         return LdapUserDetailsServiceImpl()
     }
 
@@ -73,4 +72,3 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         private val logger = LoggerFactory.getLogger(WebSecurityConfig::class.java)
     }
 }
-

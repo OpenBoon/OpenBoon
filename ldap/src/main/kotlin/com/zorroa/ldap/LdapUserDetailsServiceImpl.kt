@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator
 import org.springframework.security.ldap.userdetails.UserDetailsContextMapper
 
-
 open class LdapUserDetailsServiceImpl : LdapAuthoritiesPopulator, UserDetailsContextMapper {
 
     @Autowired
@@ -22,7 +21,7 @@ open class LdapUserDetailsServiceImpl : LdapAuthoritiesPopulator, UserDetailsCon
     }
 
     override fun mapUserToContext(p0: UserDetails?, p1: DirContextAdapter?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     /**
@@ -30,8 +29,8 @@ open class LdapUserDetailsServiceImpl : LdapAuthoritiesPopulator, UserDetailsCon
      */
     override fun getGrantedAuthorities(ctx: DirContextOperations, username: String): MutableCollection<out GrantedAuthority> {
 
-         val authed = userRegistryService.registerUser(username,
-                 AuthSource("ldap", "ldap", "ldap"))
+        val authed = userRegistryService.registerUser(username,
+            AuthSource("ldap", "ldap", "ldap"))
 
         ctx.setAttributeValue("authorities", authed.authorities)
         ctx.setAttributeValue("user", authed)
