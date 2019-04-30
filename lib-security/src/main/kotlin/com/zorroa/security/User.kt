@@ -3,29 +3,29 @@ package com.zorroa.archivist.sdk.security
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
-import java.util.*
+import java.util.UUID
 
 interface UserId {
-    val id : UUID
-    fun getName() : String
+    val id: UUID
+    fun getName(): String
 }
 
 class UserAuthed(
-        override val id: UUID,
-        var organizationId: UUID,
-        username: String,
-        permissions: Set<out GrantedAuthority>,
-        attrs: Map<String,Any>) : UserId, UserDetails, Serializable {
+    override val id: UUID,
+    var organizationId: UUID,
+    username: String,
+    permissions: Set<out GrantedAuthority>,
+    attrs: Map<String, Any>
+) : UserId, UserDetails, Serializable {
 
-    val attrs : MutableMap<String, Any> = attrs.toMutableMap()
-    private val user : String = username
-    private val permissions : Set<out GrantedAuthority> = permissions
+    val attrs: MutableMap<String, Any> = attrs.toMutableMap()
+    private val user: String = username
+    private val permissions: Set<out GrantedAuthority> = permissions
 
     fun setAttr(key: String, value: Any?) {
         if (value == null) {
             attrs.remove(key)
-        }
-        else {
+        } else {
             attrs[key] = value
         }
     }
@@ -62,7 +62,7 @@ class UserAuthed(
         return true
     }
 
-    override fun toString() : String {
+    override fun toString(): String {
         return "<UserAuthed username=$user organization=$organizationId>"
     }
 }
