@@ -10,7 +10,10 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -25,7 +28,7 @@ class PipelineControllerTests : MockMvcTest() {
 
     @Before
     fun init() {
-        spec = PipelineSpec("Zorroa Test", PipelineType.Import, "test", processors=listOf())
+        spec = PipelineSpec("Zorroa Test", PipelineType.Import, "test", processors = listOf())
         pl = pipelineService.create(spec)
     }
 
@@ -33,7 +36,7 @@ class PipelineControllerTests : MockMvcTest() {
     fun testCreate() {
         val session = admin()
 
-        val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, "test", processors=listOf())
+        val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, "test", processors = listOf())
         val result = mvc.perform(post("/api/v1/pipelines")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -60,7 +63,6 @@ class PipelineControllerTests : MockMvcTest() {
 
         val rs = deserialize(result2, Json.GENERIC_MAP)
         println(rs)
-
     }
 
     @Test
@@ -97,7 +99,6 @@ class PipelineControllerTests : MockMvcTest() {
         val data = deserialize(result, Pipeline::class.java)
         assertEquals(pl.id, data.id)
     }
-
 
     @Test
     @Throws(Exception::class)

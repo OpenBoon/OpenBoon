@@ -1,12 +1,15 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.TaskError
+import com.zorroa.archivist.domain.TaskErrorEvent
+import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskEvent
+import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.Task
 import com.zorroa.common.domain.TaskSpec
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
@@ -17,7 +20,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class TaskErrorControllerTests : MockMvcTest() {
@@ -32,8 +35,8 @@ class TaskErrorControllerTests : MockMvcTest() {
     fun init() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
@@ -49,7 +52,7 @@ class TaskErrorControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testSearch() {
         val session = admin()
-        val filter = TaskErrorFilter(processors=listOf("com.zorroa.OfficeIngestor"))
+        val filter = TaskErrorFilter(processors = listOf("com.zorroa.OfficeIngestor"))
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/taskerrors/_search")
                 .session(session)

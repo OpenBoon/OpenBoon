@@ -4,7 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.LocalUserSpec
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserFilter
+import com.zorroa.archivist.domain.UserPasswordUpdate
+import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.UserSettings
 import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getUserId
@@ -16,11 +23,17 @@ import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.web.WebAppConfiguration
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.util.*
+import java.util.UUID
 import java.util.stream.Collectors
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 @WebAppConfiguration
 class UserControllerTests : MockMvcTest() {
@@ -85,7 +98,7 @@ class UserControllerTests : MockMvcTest() {
 
     @Test
     fun testSearch() {
-        val filter = UserFilter(usernames=listOf("admin"))
+        val filter = UserFilter(usernames = listOf("admin"))
         val session = admin()
         val result = mvc.perform(post("/api/v1/users/_search")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -100,7 +113,7 @@ class UserControllerTests : MockMvcTest() {
 
     @Test
     fun testFindOne() {
-        val filter = UserFilter(usernames=listOf("admin"))
+        val filter = UserFilter(usernames = listOf("admin"))
         val session = admin()
         val result = mvc.perform(post("/api/v1/users/_findOne")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -177,7 +190,7 @@ class UserControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testSendOnboardEmail() {
-        val user =  userService.get("user")
+        val user = userService.get("user")
 
         SecurityContextHolder.getContext().authentication = null
         val result = mvc.perform(post("/api/v1/send-onboard-email")
@@ -231,7 +244,6 @@ class UserControllerTests : MockMvcTest() {
 
         val sr = Json.deserialize(
                 result.response.contentAsByteArray, object : TypeReference<StatusResult<User>>() {
-
         })
         val user2 = sr.`object`
 
@@ -266,7 +278,7 @@ class UserControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testUpdateSettings() {
         val user = userService.get("user")
-        val settings = UserSettings(search=ImmutableMap.of<String, Any>("foo", "bar"))
+        val settings = UserSettings(search = ImmutableMap.of<String, Any>("foo", "bar"))
 
         val session = admin()
         val result = mvc.perform(put("/api/v1/users/${user.id}/_settings")
@@ -279,7 +291,6 @@ class UserControllerTests : MockMvcTest() {
 
         val sr = Json.deserialize(
                 result.response.contentAsByteArray, object : TypeReference<StatusResult<User>>() {
-
         })
         val user2 = sr.`object`
         assertEquals(user.id, user2!!.id)
@@ -315,7 +326,6 @@ class UserControllerTests : MockMvcTest() {
         assertTrue(user.enabled)
     }
 
-
     @Test
     @Throws(Exception::class)
     fun testDisableSelf() {
@@ -348,7 +358,6 @@ class UserControllerTests : MockMvcTest() {
 
         val response = Json.Mapper.readValue<List<Permission>>(result.response.contentAsString,
                 object : TypeReference<List<Permission>>() {
-
                 })
         assertEquals(response, userService.getPermissions(user))
     }
@@ -374,7 +383,6 @@ class UserControllerTests : MockMvcTest() {
 
         val response = Json.Mapper.readValue<List<Permission>>(result.response.contentAsString,
                 object : TypeReference<List<Permission>>() {
-
                 })
         assertEquals(response, userService.getPermissions(user))
     }

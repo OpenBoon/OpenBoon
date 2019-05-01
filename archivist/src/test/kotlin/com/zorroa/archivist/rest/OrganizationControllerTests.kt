@@ -1,17 +1,14 @@
 package com.zorroa.archivist.rest
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationFilter
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.OrganizationUpdateSpec
-import com.zorroa.archivist.service.OrganizationService
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
@@ -19,11 +16,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 
-class OrganizationControllerTests: MockMvcTest() {
+class OrganizationControllerTests : MockMvcTest() {
 
     private val organizationName = "Wendys"
     private val organizationSpec = OrganizationSpec(organizationName)
-
 
     internal lateinit var session: MockHttpSession
 
@@ -61,7 +57,7 @@ class OrganizationControllerTests: MockMvcTest() {
     @Test
     fun testSearch() {
         organizationService.create(organizationSpec)
-        val filter = OrganizationFilter(names=listOf(organizationName))
+        val filter = OrganizationFilter(names = listOf(organizationName))
 
         val rsp = mvc.perform(MockMvcRequestBuilders.post("/api/v1/organizations/_search")
                 .session(session)
@@ -77,7 +73,7 @@ class OrganizationControllerTests: MockMvcTest() {
     @Test
     fun testFindOne() {
         organizationService.create(organizationSpec)
-        val filter = OrganizationFilter(names=listOf(organizationName))
+        val filter = OrganizationFilter(names = listOf(organizationName))
 
         val rsp = mvc.perform(MockMvcRequestBuilders.post("/api/v1/organizations/_findOne")
                 .session(session)
@@ -102,7 +98,7 @@ class OrganizationControllerTests: MockMvcTest() {
                 .content(Json.serialize(update)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
-        val result = Json.Mapper.readValue<Map<String,Any>>(rsp.response.contentAsString)
+        val result = Json.Mapper.readValue<Map<String, Any>>(rsp.response.contentAsString)
         assertEquals(true, result["success"] as Boolean)
     }
 }
