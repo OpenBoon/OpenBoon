@@ -15,7 +15,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 /**
  *  Tests for {@link AssetStreamResolutionService}.
@@ -47,7 +47,6 @@ class AssetStreamResolutionServiceTests {
     private lateinit var videoProxyId: String
     private lateinit var imageProxyUri: URI
     private lateinit var videoProxyUri: URI
-
 
     @Before
     fun setUp() {
@@ -142,7 +141,7 @@ class AssetStreamResolutionServiceTests {
 
     @Test
     fun requestedType_ShouldReturnNullWhenAcceptIsNotValidForProxy() {
-        var acceptHeader:String? = "application/json, text/html"
+        var acceptHeader: String? = "application/json, text/html"
         var type: String? = null
         Assertions.assertThat(service.requestedType(acceptHeader, type)).isNull()
     }
@@ -171,7 +170,6 @@ class AssetStreamResolutionServiceTests {
         Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("image")
     }
 
-
     private fun testDocument(id: String): Document {
         val document = Document()
         val proxies = Lists.newArrayList<Proxy>()
@@ -185,6 +183,4 @@ class AssetStreamResolutionServiceTests {
         document.setAttr("proxy_id", id)
         return document
     }
-
-
 }

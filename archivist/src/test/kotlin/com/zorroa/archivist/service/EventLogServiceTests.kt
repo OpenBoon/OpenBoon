@@ -24,7 +24,7 @@ class EventLogServiceTests : AbstractTest() {
         search.filter = AssetFilter()
         search.filter.addToExists("foo")
         applyAssetSearchMetrics(search)
-        counter =  MeterRegistryHolder
+        counter = MeterRegistryHolder
                 .meterRegistry.counter(counterName, listOf(Tag.of("type", "exists")))
 
         assertEquals(currentValue + 1, counter.count())

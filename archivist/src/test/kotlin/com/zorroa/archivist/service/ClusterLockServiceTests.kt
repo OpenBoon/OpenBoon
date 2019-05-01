@@ -16,7 +16,7 @@ class ClusterLockExecutorTests : AbstractTest() {
     @Autowired
     lateinit var clusterLockService: ClusterLockService
 
-    lateinit var textExecutor : ClusterLockExecutor
+    lateinit var textExecutor: ClusterLockExecutor
 
     @PostConstruct
     fun init() {
@@ -32,7 +32,7 @@ class ClusterLockExecutorTests : AbstractTest() {
         tp.setQueueCapacity(1000)
         tp.initialize()
 
-        textExecutor =  ClusterLockExecutorImpl(clusterLockService, tp)
+        textExecutor = ClusterLockExecutorImpl(clusterLockService, tp)
     }
 
     @Test
@@ -116,7 +116,6 @@ class ClusterLockExecutorTests : AbstractTest() {
         assertTrue(value1 ?: 0 > 0)
         assertTrue(value2 ?: 0 > 0)
         assertEquals(2, count.toInt())
-
     }
 
     @Test
@@ -133,7 +132,6 @@ class ClusterLockExecutorTests : AbstractTest() {
         Thread.sleep(1000)
         assertEquals(2, count.toInt())
     }
-
 
     @Test
     fun testInlineLock() {
@@ -172,7 +170,7 @@ class ClusterLockExecutorTests : AbstractTest() {
         val result = textExecutor.submit(ClusterLockSpec.softLock("counter")) {
             "test"
         }.get()
-        
+
         assertNull(result)
     }
 }

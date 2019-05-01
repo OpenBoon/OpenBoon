@@ -2,7 +2,14 @@ package com.zorroa.archivist.service
 
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskStoppedEvent
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
@@ -15,13 +22,13 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.TestPropertySource
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-@TestPropertySource(locations=["classpath:gcs-test.properties"])
+@TestPropertySource(locations = ["classpath:gcs-test.properties"])
 class GCPDispatcherServiceTests : AbstractTest() {
 
     @Autowired
@@ -38,8 +45,8 @@ class GCPDispatcherServiceTests : AbstractTest() {
 
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         jobService.create(spec)
 
         val storage = FileStorage(
@@ -80,8 +87,8 @@ class DispatcherServiceTests : AbstractTest() {
         val analyst = "https://127.0.0.1:5000"
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         val job = jobService.create(spec)
 
         authenticateAsAnalyst()
@@ -89,7 +96,7 @@ class DispatcherServiceTests : AbstractTest() {
         assertNotNull(next)
         next?.let {
             assertEquals(job.id, it.jobId)
-            val host :String = this.jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
+            val host: String = this.jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
                     String::class.java, it.id)
             assertEquals(analyst, host)
         }
@@ -162,7 +169,8 @@ class DispatcherServiceTests : AbstractTest() {
                 ZpsScript("foo",
                         generate = null,
                         execute = null,
-                        over=listOf(doc1, doc2)))
+                        over = listOf(doc1, doc2))
+        )
         jobService.create(spec)
 
         authenticateAsAnalyst()
@@ -200,7 +208,7 @@ class DispatcherServiceTests : AbstractTest() {
                 ZpsScript("foo",
                         generate = null,
                         execute = null,
-                        over=listOf(doc1, doc2)))
+                        over = listOf(doc1, doc2)))
         jobService.create(spec)
 
         authenticateAsAnalyst()
@@ -238,7 +246,7 @@ class DispatcherServiceTests : AbstractTest() {
                 ZpsScript("foo",
                         generate = null,
                         execute = null,
-                        over=listOf(doc1, doc2)))
+                        over = listOf(doc1, doc2)))
         jobService.create(spec)
 
         authenticateAsAnalyst()
@@ -260,19 +268,18 @@ class DispatcherServiceTests : AbstractTest() {
             assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(1, manualKill = false)))
             authenticate()
             assertEquals(TaskState.Failure, taskDao.get(next.taskId).state)
-            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(jobIds=listOf(next.jobId))).size())
-            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(taskIds=listOf(next.taskId))).size())
+            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(jobIds = listOf(next.jobId))).size())
+            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(taskIds = listOf(next.taskId))).size())
             assertEquals(2, taskErrorDao.getAll(TaskErrorFilter()).size())
         }
     }
-
 
     @Test
     fun testExpand() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         val job = jobService.create(spec)
         val task = dispatcherService.expand(job, emptyZpsScript("bar"))
@@ -283,8 +290,8 @@ class DispatcherServiceTests : AbstractTest() {
     fun testExpandFromParentTask() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         val job = jobService.create(spec)
         val zps = emptyZpsScript("bar")

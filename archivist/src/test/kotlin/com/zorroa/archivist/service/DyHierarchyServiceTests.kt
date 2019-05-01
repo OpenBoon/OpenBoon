@@ -3,12 +3,23 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchyLevelType
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.util.Json
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -72,7 +83,8 @@ class DyHierarchyServiceTests : AbstractTest() {
         val agg = DyHierarchy()
         agg.folderId = id
         agg.levels = ImmutableList.of(
-                DyHierarchyLevel("tree.path", DyHierarchyLevelType.Path))
+                DyHierarchyLevel("tree.path", DyHierarchyLevelType.Path)
+        )
         val result = dyhiService.generate(agg)
 
         var folder = folderService.get("/foo/foo/bar")

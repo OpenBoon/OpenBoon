@@ -6,10 +6,9 @@ import com.zorroa.common.domain.AnalystSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-
 
 class AnalystServiceTests : AbstractTest() {
 
