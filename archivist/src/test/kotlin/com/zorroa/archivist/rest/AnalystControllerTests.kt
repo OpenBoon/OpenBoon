@@ -9,7 +9,6 @@ import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -46,7 +45,7 @@ class AnalystControllerTests : MockMvcTest() {
     fun testSearch() {
         // All filter options tested in DAO.
         val session = admin()
-        val filter = AnalystFilter(states=listOf(AnalystState.Up))
+        val filter = AnalystFilter(states = listOf(AnalystState.Up))
 
         val rsp = mvc.perform(MockMvcRequestBuilders.post("/api/v1/analysts/_search")
                 .session(session)
@@ -87,7 +86,7 @@ class AnalystControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
-        val status =  Json.Mapper.readValue<Map<String, Any>>(rsp.response.contentAsString, Json.GENERIC_MAP)
+        val status = Json.Mapper.readValue<Map<String, Any>>(rsp.response.contentAsString, Json.GENERIC_MAP)
         assertTrue(status["success"] as Boolean)
 
         val rsp2 = mvc.perform(MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=unlocked")
@@ -96,7 +95,7 @@ class AnalystControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
-        val status2 =  Json.Mapper.readValue<Map<String, Any>>(rsp2.response.contentAsString, Json.GENERIC_MAP)
+        val status2 = Json.Mapper.readValue<Map<String, Any>>(rsp2.response.contentAsString, Json.GENERIC_MAP)
         assertTrue(status2["success"] as Boolean)
     }
 
@@ -128,7 +127,7 @@ class AnalystControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val status =  Json.Mapper.readValue<Map<String, Any>>(
+        val status = Json.Mapper.readValue<Map<String, Any>>(
                 rsp.response.contentAsString, Json.GENERIC_MAP)
         assertTrue(status["success"] as Boolean)
 
@@ -139,9 +138,8 @@ class AnalystControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val status2 =  Json.Mapper.readValue<Map<String, Any>>(
+        val status2 = Json.Mapper.readValue<Map<String, Any>>(
                 rsp2.response.contentAsString, Json.GENERIC_MAP)
         assertFalse(status2["success"] as Boolean)
-
     }
 }

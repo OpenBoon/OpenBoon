@@ -3,11 +3,26 @@ package com.zorroa.archivist.rest
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FieldEditSpec
+import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Source
+import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.FileServerService
+import com.zorroa.archivist.service.FileStat
+import com.zorroa.archivist.service.FileStorageService
+import com.zorroa.archivist.service.ServableFile
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
@@ -24,11 +39,15 @@ import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.net.URL
-import java.util.*
+import java.util.UUID
 import java.util.stream.Collectors
 import kotlin.streams.toList
 
@@ -51,7 +70,7 @@ class AssetControllerTests : MockMvcTest() {
         SecurityContextHolder.getContext().authentication = null
     }
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -70,7 +89,6 @@ class AssetControllerTests : MockMvcTest() {
 
         val fields = Json.Mapper.readValue<Map<String, Set<String>>>(result.response.contentAsString,
                 object : TypeReference<Map<String, Set<String>>>() {
-
                 })
         assertTrue(fields["date"]!!.isNotEmpty())
         assertTrue(fields["string"]!!.isNotEmpty())
@@ -94,7 +112,6 @@ class AssetControllerTests : MockMvcTest() {
 
         val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
                 object : TypeReference<Map<String, Any>>() {
-
                 })
     }
 
@@ -115,7 +132,6 @@ class AssetControllerTests : MockMvcTest() {
 
         val counts = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
                 object : TypeReference<Map<String, Any>>() {
-
                 })
         val count = counts["count"] as Int
         assertEquals(1, count.toLong())
@@ -133,7 +149,7 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testCountWithQueryFilter() {
 
-        val filter= AssetFilter().setQuery(AssetSearch("hyena"))
+        val filter = AssetFilter().setQuery(AssetSearch("hyena"))
         assertEquals(1, countWithAssetSearch(filter).toLong())
     }
 
@@ -163,7 +179,6 @@ class AssetControllerTests : MockMvcTest() {
 
         val counts = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
             object : TypeReference<Map<String, Any>>() {
-
             })
 
         val count = counts["count"] as Int
@@ -178,7 +193,7 @@ class AssetControllerTests : MockMvcTest() {
         for (source in sources) {
             source.setAttr("media.keywords", listOf("reflection"))
         }
-        addTestAssets(sources, commitToDb=false)
+        addTestAssets(sources, commitToDb = false)
         refreshIndex()
 
         val result = mvc.perform(post("/api/v3/assets/_suggest")
@@ -214,7 +229,6 @@ class AssetControllerTests : MockMvcTest() {
                     .andReturn()
             val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
                     object : TypeReference<Map<String, Any>>() {
-
                     })
             assertEquals(true, json["success"])
             assertEquals("delete", json["op"])
@@ -255,7 +269,7 @@ class AssetControllerTests : MockMvcTest() {
         refreshIndex()
 
         val assets = indexDao.getAll(Pager.first())
-        val ids = assets.stream().map{ a -> a.id }.toList()
+        val ids = assets.stream().map { a -> a.id }.toList()
 
         val result = mvc.perform(delete("/api/v1/assets")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -290,7 +304,6 @@ class AssetControllerTests : MockMvcTest() {
                     .andReturn()
             val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
                     object : TypeReference<Map<String, Any>>() {
-
                     })
             assertEquals(asset.id, json["id"])
         }
@@ -315,7 +328,6 @@ class AssetControllerTests : MockMvcTest() {
                     .andReturn()
             val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
                     object : TypeReference<Map<String, Any>>() {
-
                     })
             assertEquals(asset.id, json["id"])
         }
@@ -350,7 +362,6 @@ class AssetControllerTests : MockMvcTest() {
         authenticate("admin")
         doc = indexService.get(doc.id)
         assertEquals(10, doc.getAttr("system.links.folder", List::class.java)!!.size.toLong())
-
     }
 
     @Test
@@ -395,7 +406,7 @@ class AssetControllerTests : MockMvcTest() {
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map{ it.id }.collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)
                 .andReturn()
 
@@ -403,7 +414,7 @@ class AssetControllerTests : MockMvcTest() {
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map{ it.id }.collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)
                 .andReturn()
         }
@@ -414,7 +425,6 @@ class AssetControllerTests : MockMvcTest() {
         for (asset in assets) {
             logger.info("{}", asset.document)
             val links = asset.getAttr("system.links.folder", object : TypeReference<List<String>>() {
-
             })
             assertEquals(2, links.size.toLong())
             assertTrue(
@@ -433,7 +443,7 @@ class AssetControllerTests : MockMvcTest() {
         val uri = source.path.toUri()
         val servableFile = ServableFile(fileServerService, uri)
 
-        val anyDocument = object: Document() {override fun equals(other: Any?): Boolean = true}
+        val anyDocument = object : Document() { override fun equals(other: Any?): Boolean = true }
         doReturn(servableFile).`when`(fileServerProvider).getServableFile(anyDocument)
 
         given(fileServerService.storedLocally).willReturn(false)
@@ -551,9 +561,9 @@ class AssetControllerTests : MockMvcTest() {
 
         authenticate("admin")
         var assets = indexDao.getAll(Pager.first())
-        var updates= mutableMapOf<String, UpdateAssetRequest>()
+        var updates = mutableMapOf<String, UpdateAssetRequest>()
 
-        assets.list.forEach { doc->
+        assets.list.forEach { doc ->
             updates[doc.id] = UpdateAssetRequest(mapOf("foos" to "ball"))
         }
 
@@ -590,7 +600,7 @@ class AssetControllerTests : MockMvcTest() {
         logger.info(Json.prettyString(fieldSystemService.getAllFieldSets()))
 
         val field = fieldSystemService.getField("media.title")
-        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue="The Hobbit 2")
+        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "The Hobbit 2")
         assetService.createFieldEdit(spec)
 
         val req = mvc.perform(MockMvcRequestBuilders.get(
@@ -602,6 +612,5 @@ class AssetControllerTests : MockMvcTest() {
                 .andReturn()
         val result = Json.Mapper.readValue<Any>(req.response.contentAsString, Json.LIST_OF_GENERIC_MAP)
         println(Json.prettyString(result))
-
     }
 }

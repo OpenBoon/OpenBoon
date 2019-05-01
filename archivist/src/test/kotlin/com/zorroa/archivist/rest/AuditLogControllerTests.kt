@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.AuditLogEntry
 import com.zorroa.archivist.domain.AuditLogFilter
@@ -22,7 +21,7 @@ class AuditLogControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
     }
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -30,7 +29,7 @@ class AuditLogControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testSearch() {
         val session = admin()
-        val filter = AuditLogFilter(types=listOf(AuditLogType.Created))
+        val filter = AuditLogFilter(types = listOf(AuditLogType.Created))
 
         val result = mvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/auditlog/_search")
