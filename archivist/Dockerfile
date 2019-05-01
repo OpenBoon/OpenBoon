@@ -32,11 +32,11 @@ COPY ./docker/rotated_logs.xml /config/rotated_logs.xml
 COPY ./docker/application.properties /config/application.properties
 
 
-# Change ownership
-RUN chown -R archivist:archivist /extensions
-RUN chown -R archivist:archivist /config
-RUN chown -R archivist:archivist /logs
-RUN chown -R archivist:archivist /shared
+# Change perms
+RUN chmod -R 777 /extensions
+RUN chmod -R 755 /config
+RUN chmod -R 777 /logs
+RUN chown -R 777 /shared
 
 USER archivist
 
