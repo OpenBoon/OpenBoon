@@ -74,11 +74,10 @@ class ProcessorControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val procs = deserialize(result, object: TypeReference<KPagedList<Processor>>() {})
+        val procs = deserialize(result, object : TypeReference<KPagedList<Processor>>() {})
         assertEquals(4, procs.size())
         procs.forEach {
             assertTrue(it.className.contains("ingestor", ignoreCase = true))
         }
     }
-
 }

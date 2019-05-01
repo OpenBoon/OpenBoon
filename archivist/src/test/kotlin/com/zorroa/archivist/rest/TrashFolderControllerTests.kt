@@ -16,7 +16,9 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 /**
@@ -99,7 +101,6 @@ class TrashFolderControllerTests : MockMvcTest() {
         assertEquals(0, folders.size.toLong())
     }
 
-
     @Test
     @Throws(Exception::class)
     fun testGetAll() {
@@ -110,7 +111,6 @@ class TrashFolderControllerTests : MockMvcTest() {
                 .andReturn()
 
         val data = deserialize(result, object : TypeReference<List<TrashedFolder>>() {
-
         })
         assertEquals(1, data.size.toLong())
     }

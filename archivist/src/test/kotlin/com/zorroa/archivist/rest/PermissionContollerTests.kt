@@ -50,7 +50,6 @@ class PermissionContollerTests : MockMvcTest() {
 
         val perms1 = Json.Mapper.readValue<List<Permission>>(result.response.contentAsByteArray,
                 object : TypeReference<List<Permission>>() {
-
                 })
         authenticate()
         val perms2 = permissionService.getPermissions()

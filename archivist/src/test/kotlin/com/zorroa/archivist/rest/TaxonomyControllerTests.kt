@@ -64,5 +64,4 @@ class TaxonomyControllerTests : MockMvcTest() {
         val m = deserialize(result, Map::class.java)
         assertTrue(m["success"] as Boolean)
     }
-
 }

@@ -81,7 +81,6 @@ abstract class MockMvcTest : AbstractTest() {
         return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
     }
 
-
     class StatusResult<T> {
         var `object`: T? = null
         var op: String? = null
