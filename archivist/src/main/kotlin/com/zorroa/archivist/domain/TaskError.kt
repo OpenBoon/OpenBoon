@@ -93,6 +93,21 @@ class TaskErrorFilter(
     @JsonIgnore
     override fun build() {
 
+        if (sort == null) {
+            sort = listOf("timeCreated:desc")
+        }
+
+        if (hasPermission("zorroa::superadmin")) {
+            organizationIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+                addToValues(it)
+            }
+        }
+        else {
+            addToWhere("job.pk_organization=?")
+            addToValues(getOrgId())
+        }
+
         ids?.let  {
             addToWhere(JdbcUtils.inClause("task_error.pk_task_error", it.size))
             addToValues(it)
@@ -132,19 +147,5 @@ class TaskErrorFilter(
             addToWhere("fti_keywords @@ to_tsquery(?)")
             addToValues(it)
         }
-
-        if (organizationIds != null && hasPermission("zorroa::superadmin")) {
-            addToWhere(JdbcUtils.inClause("job.pk_organization", organizationIds.size))
-            addToValues(organizationIds)
-        }
-        else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
-        }
-
-        if (sort == null) {
-            sort = listOf("timeCreated:desc")
-        }
-
     }
 }

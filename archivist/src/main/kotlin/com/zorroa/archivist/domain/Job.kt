@@ -98,6 +98,17 @@ class JobFilter (
             sort = listOf("timeCreated:desc")
         }
 
+        if (hasPermission("zorroa::superadmin")) {
+            organizationIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+                addToValues(it)
+            }
+        }
+        else {
+            addToWhere("job.pk_organization=?")
+            addToValues(getOrgId())
+        }
+
         ids?.let {
             addToWhere(JdbcUtils.inClause("job.pk_job", it.size))
             addToValues(it)
@@ -121,17 +132,6 @@ class JobFilter (
         paused?.let {
             addToWhere("job.bool_paused=?")
             addToValues(paused)
-        }
-
-        if (hasPermission("zorroa::superadmin")) {
-            organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
-                addToValues(it)
-            }
-        }
-        else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
         }
     }
 }

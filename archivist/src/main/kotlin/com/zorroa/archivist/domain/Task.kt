@@ -148,7 +148,8 @@ class TaskFilter (
         val ids : List<UUID>? = null,
         val states : List<TaskState>? = null,
         val jobIds: List<UUID>? = null,
-        val names: List<String>?=null
+        val names: List<String>?=null,
+        val organizationIds: List<UUID>? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -165,6 +166,17 @@ class TaskFilter (
 
         if (sort == null) {
             sort = listOf("taskId:a")
+        }
+
+        if (hasPermission("zorroa::superadmin")) {
+            organizationIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+                addToValues(it)
+            }
+        }
+        else {
+            addToWhere("job.pk_organization=?")
+            addToValues(getOrgId())
         }
 
         ids?.let  {
@@ -186,8 +198,5 @@ class TaskFilter (
             addToWhere(JdbcUtils.inClause("task.str_name", it.size))
             addToValues(it)
         }
-
-        addToWhere("job.pk_organization=?")
-        addToValues(getOrgId())
     }
 }
