@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.*
 import com.zorroa.common.repository.KPage
 import org.junit.Before
@@ -60,6 +61,12 @@ class TaskDaoTests : AbstractTest() {
 
         val filter4 = TaskFilter(states=listOf(TaskState.Skipped))
         assertEquals(0, taskDao.getAll(filter4).size())
+
+        val filter5 = TaskFilter(organizationIds= listOf(getOrgId()))
+        assertEquals(11, taskDao.getAll(filter5).size())
+
+        val filter6 = TaskFilter(organizationIds= listOf(UUID.randomUUID()))
+        assertEquals(0, taskDao.getAll(filter6).size())
     }
 
     @Test
