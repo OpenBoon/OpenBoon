@@ -22,7 +22,7 @@ import kotlin.test.assertTrue
 class IndexRoutingServiceTests : AbstractTest() {
 
     @Autowired
-    lateinit var jobService : JobService
+    lateinit var jobService: JobService
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
@@ -89,9 +89,8 @@ class IndexRoutingServiceTests : AbstractTest() {
         try {
             val reqDel = DeleteIndexRequest(index)
             rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
-        }
-        catch (e: Exception) {
-            //ignore
+        } catch (e: Exception) {
+            // ignore
         }
 
         var route = indexRouteDao.getRandomDefaultRoute()
@@ -169,23 +168,21 @@ class IndexRoutingServiceTests : AbstractTest() {
         indexRoutingService.refreshAll()
         Thread.sleep(250)
         assertEquals(1, indexDao.getAll(Pager.first()).size())
-
     }
 
     @Test
     fun testLaunchReindexJob() {
         var job = indexRoutingService.launchReindexJob()
-        var jobCount = jobService.getAll(JobFilter(names=listOf(job.name))).size()
+        var jobCount = jobService.getAll(JobFilter(names = listOf(job.name))).size()
         assertEquals(1, jobCount)
 
         job = indexRoutingService.launchReindexJob()
-        jobCount = jobService.getAll(JobFilter(names=listOf(job.name))).size()
+        jobCount = jobService.getAll(JobFilter(names = listOf(job.name))).size()
         assertEquals(2, jobCount)
 
         jobCount = jobService.getAll(JobFilter(
-                states=listOf(JobState.Active),
-                names=listOf(job.name))).size()
+                states = listOf(JobState.Active),
+                names = listOf(job.name))).size()
         assertEquals(1, jobCount)
     }
 }
-

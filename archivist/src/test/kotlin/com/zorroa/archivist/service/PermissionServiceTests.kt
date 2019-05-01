@@ -33,13 +33,13 @@ class PermissionServiceTests : AbstractTest() {
         assertEquals(perm.type, "test")
     }
 
-    @Test(expected=IllegalArgumentException::class)
+    @Test(expected = IllegalArgumentException::class)
     fun testIllegalName() {
         permissionService.createPermission(
                 PermissionSpec("ttest", "superadmin", description = "foo"))
     }
 
-    @Test(expected=IllegalArgumentException::class)
+    @Test(expected = IllegalArgumentException::class)
     fun testIllegalGroup() {
         permissionService.createPermission(
                 PermissionSpec("zorroa", "mr-stubbins", description = "foo"))
@@ -50,7 +50,7 @@ class PermissionServiceTests : AbstractTest() {
         val perm1 = permissionService.createPermission(
                 PermissionSpec("test", "test", description = "foo"))
         val perm2 = permissionService.getPermission(perm1.id)
-        assertEquals(perm1, perm2);
+        assertEquals(perm1, perm2)
     }
 
     @Test

@@ -2,9 +2,13 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
-import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.Task
+import com.zorroa.common.domain.TaskSpec
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,8 +29,8 @@ class JobServiceTests : AbstractTest() {
     fun init() {
         spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         job = jobService.create(spec)
         task = jobService.createTask(job, TaskSpec("bar", emptyZpsScript("bar")))
@@ -43,8 +47,8 @@ class JobServiceTests : AbstractTest() {
     fun testCreateWithAutoName() {
         val spec2 = JobSpec(null,
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         val job2 = jobService.create(spec2)
         assertTrue("admin" in job2.name)
         assertTrue("Import" in job2.name)
@@ -55,8 +59,8 @@ class JobServiceTests : AbstractTest() {
         val name = "bilbo_baggins_v1"
         val spec1 = JobSpec(name,
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         val job1 = jobService.create(spec1)
         assertEquals(spec1.name, job1.name)
 
@@ -67,9 +71,11 @@ class JobServiceTests : AbstractTest() {
         assertEquals(job1.name, job2.name)
 
         // Should only have 1 job.
-        assertEquals(1, jobService.getAll(JobFilter(
-                states=listOf(JobState.Active),
-                names=listOf(job1.name))).size())
+        assertEquals(1, jobService.getAll(
+            JobFilter(
+                states = listOf(JobState.Active),
+                names = listOf(job1.name))
+        ).size())
     }
 
     @Test

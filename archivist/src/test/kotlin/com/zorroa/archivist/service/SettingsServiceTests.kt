@@ -3,12 +3,13 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Setting
 import com.zorroa.archivist.domain.SettingsFilter
 import com.zorroa.common.domain.ArchivistWriteException
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 
 /**
  * Created by chambers on 5/30/17.
@@ -56,7 +57,6 @@ class SettingsServiceTests : AbstractTest() {
                 "curator.lightbox.zoom-min", "100"))
         val value = settingsService.get("curator.lightbox.zoom-min")
         assertEquals("100", value.currentValue)
-
     }
 
     @Test
