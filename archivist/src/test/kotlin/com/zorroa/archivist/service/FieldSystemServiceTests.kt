@@ -1,7 +1,11 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.FieldEditSpec
+import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.util.Json
@@ -14,9 +18,9 @@ import kotlin.test.assertTrue
 class FieldSystemServiceTests : AbstractTest() {
 
     @Autowired
-    lateinit var jobService : JobService
+    lateinit var jobService: JobService
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -28,7 +32,7 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createRegular() {
-        val spec = FieldSpec("File Extension", "source.extension", null,false)
+        val spec = FieldSpec("File Extension", "source.extension", null, false)
         val field = fieldSystemService.createField(spec)
         assertEquals("source.extension", field.attrName)
         assertEquals("File Extension", field.name)
@@ -45,7 +49,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertEquals("custom.string_content__0", field.attrName)
         assertEquals("Notes", field.name)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
         assertEquals(AttrType.StringContent, fieldSystemService.getEsAttrType("custom.string_content__0"))
     }
@@ -58,7 +62,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals("custom.string_exact__0", field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
         assertEquals(AttrType.StringExact, fieldSystemService.getEsAttrType("custom.string_exact__0"))
     }
@@ -74,7 +78,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals(attrName, field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
@@ -90,7 +94,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals(attrName, field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "/ABC/123"))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
@@ -106,7 +110,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals(attrName, field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, 2112))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
@@ -122,7 +126,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals(attrName, field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, 2.22))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
@@ -138,7 +142,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals(attrName, field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, true))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
@@ -154,7 +158,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals(attrName, field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, true))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
@@ -170,7 +174,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertTrue(field.custom)
         assertEquals(attrName, field.attrName)
 
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, System.currentTimeMillis()))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
@@ -188,14 +192,14 @@ class FieldSystemServiceTests : AbstractTest() {
 
         val date = "11/12/1974 10:14:52"
         println(date)
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, date))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
 
     @Test
     fun applyFieldEdits() {
-        val asset =  searchService.search(Pager.first(), AssetSearch()).list.first()
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         val field = fieldSystemService.getField("media.title")
         val edit = assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "bilbo"))
 
@@ -239,7 +243,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val field = fieldSystemService.createField(spec)
         assertEquals(true, field.suggest)
         assertEquals(true, field.keywords)
-        assertEquals(jobCount+1, jobService.getAll(JobFilter()).size(),
+        assertEquals(jobCount + 1, jobService.getAll(JobFilter()).size(),
                 "reindex job was not created")
     }
 
@@ -263,8 +267,9 @@ class FieldSystemServiceTests : AbstractTest() {
                 "reindex job was created but was not needed")
 
         assertTrue(fieldSystemService.updateField(field, FieldUpdateSpec(field.name, field.editable,
-                field.keywords, field.keywordsBoost, true)))
-        assertEquals(jobCount+1, jobService.getAll(JobFilter()).size(),
+                field.keywords, field.keywordsBoost, true)
+        ))
+        assertEquals(jobCount + 1, jobService.getAll(JobFilter()).size(),
                 "reindex job was not created")
     }
 

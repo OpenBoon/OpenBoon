@@ -10,7 +10,7 @@ import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class FileQueueServiceTests : AbstractTest() {
