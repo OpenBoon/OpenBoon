@@ -1,18 +1,17 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.AnalystSpec
+import com.zorroa.common.domain.AnalystState
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.TaskState
 import io.micrometer.core.instrument.MeterRegistry
-import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.Duration
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class MaintenanceServiceTests : AbstractTest() {
@@ -58,7 +57,8 @@ class MaintenanceServiceTests : AbstractTest() {
                 System.currentTimeMillis() - Duration.parse("PT3M1S").toMillis())
         maintenanceService.handleUnresponsiveAnalysts()
 
-        assertEquals(AnalystState.Down.ordinal,
+        assertEquals(
+            AnalystState.Down.ordinal,
                 jdbc.queryForObject("SELECT int_state FROM analyst", Int::class.java))
     }
 
@@ -89,8 +89,8 @@ class MaintenanceServiceTests : AbstractTest() {
                 MeterRegistryHolder.getTags()).count()
         val jspec = JobSpec("test_job",
                 emptyZpsScript("test_script"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         jobService.create(jspec)
 
@@ -103,6 +103,6 @@ class MaintenanceServiceTests : AbstractTest() {
         Thread.sleep(1000)
         val newRetryCount = meterRegistry.counter("zorroa.task.retry",
                 MeterRegistryHolder.getTags()).count()
-        assertEquals(retryCount+1, newRetryCount)
+        assertEquals(retryCount + 1, newRetryCount)
     }
 }

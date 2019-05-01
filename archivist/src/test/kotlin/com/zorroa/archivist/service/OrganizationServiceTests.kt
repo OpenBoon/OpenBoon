@@ -5,8 +5,11 @@ import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import org.junit.Test
 import org.springframework.security.core.context.SecurityContextHolder
-import kotlin.test.*
-
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class OrganizationServiceTests : AbstractTest() {
 
@@ -38,7 +41,6 @@ class OrganizationServiceTests : AbstractTest() {
         }
         assertTrue(perms!!.contains("zorroa::librarian"))
         assertTrue(perms!!.contains("zorroa::everyone"))
-
     }
 
     @Test
@@ -46,5 +48,4 @@ class OrganizationServiceTests : AbstractTest() {
         val org = organizationService.create(organizationSpec)
         assertEquals(org.id, organizationService.get(org.id).id)
     }
-
 }

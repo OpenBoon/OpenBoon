@@ -2,7 +2,11 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.LocalUserSpec
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.withAuth
@@ -24,7 +28,7 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec("billybob",
                 "123password!",
                 "testing@zorroa.com",
-                firstName="BillyBob",
+                firstName = "BillyBob",
                 lastName = "Rodriquez")
         testUser = userService.create(builder)
     }
@@ -76,13 +80,12 @@ class UserServiceTests : AbstractTest() {
         assertTrue(userService.hasPermission(user, permissionService.getPermission("user::$email")))
     }
 
-
     @Test
     fun createUser() {
         val builder = UserSpec("test",
                 "123password",
                 "test@test.com",
-                firstName="Bilbo",
+                firstName = "Bilbo",
                 lastName = "Baggins",
                 authAttrs = mapOf("foo" to "bar"))
 
@@ -117,7 +120,6 @@ class UserServiceTests : AbstractTest() {
         val map = Json.deserialize(jdbc.queryForObject("SELECT json_auth_attrs FROM users WHERE pk_user=?",
                 String::class.java, user.id), Json.STRING_MAP)
         assertEquals("bar", map["foo"])
-
     }
 
     @Test(expected = DuplicateEntityException::class)
@@ -125,7 +127,7 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec("test",
                 "123password",
                 "test@test.com",
-                firstName="Bilbo",
+                firstName = "Bilbo",
                 lastName = "Baggins")
         userService.create(builder)
         userService.create(builder)
@@ -136,8 +138,8 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec("test",
                 "123password",
                 "test@test.com",
-                firstName="Bilbo",
-                lastName="Baggins")
+                firstName = "Bilbo",
+                lastName = "Baggins")
         val user = userService.create(builder)
         assertTrue(userService.setEnabled(user, false))
     }
@@ -147,8 +149,8 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec("bilbob",
                 "123password",
                 "test@test.com",
-                firstName="Bilbo",
-                lastName="Baggins")
+                firstName = "Bilbo",
+                lastName = "Baggins")
         builder.permissionIds = listOf(permissionService.getPermission(Groups.MANAGER).id)
 
         val user = userService.create(builder)
@@ -169,7 +171,6 @@ class UserServiceTests : AbstractTest() {
             assertTrue(e.message!!.contains("or more characters"))
             throw e
         }
-
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -180,7 +181,6 @@ class UserServiceTests : AbstractTest() {
             assertTrue(e.message!!.contains("upper case"))
             throw e
         }
-
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -191,7 +191,6 @@ class UserServiceTests : AbstractTest() {
             assertTrue(e.message!!.contains("least 1 number."))
             throw e
         }
-
     }
 
     @Test
@@ -205,7 +204,7 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec("test",
                 "123password",
                 "test@test.com",
-                firstName="Bilbo",
+                firstName = "Bilbo",
                 lastName = "Baggins")
         val user = userService.create(builder)
 
@@ -228,13 +227,13 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec("bilbob",
                 "123password",
                 "test@test.com",
-                firstName="Bilbo",
+                firstName = "Bilbo",
                 lastName = "Baggins")
         val user = userService.create(builder)
 
         val update = UserProfileUpdate("gandalf",
                 "gandalf@zorroa.com",
-                "Bilbo","Baggins")
+                "Bilbo", "Baggins")
 
         assertTrue(folderService.exists("/Users/bilbob"))
         assertTrue(permissionService.permissionExists("user::bilbob"))
@@ -250,7 +249,7 @@ class UserServiceTests : AbstractTest() {
 
         val update = UserProfileUpdate("",
                 "gandalf@zorroa.com",
-                "Bilbo","Baggins")
+                "Bilbo", "Baggins")
 
         assertTrue(userService.update(testUser, update))
         assertEquals(testUser.username, userService.get(testUser.id).username)
@@ -263,7 +262,7 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec("test",
                 "123password",
                 "test@test.com",
-                firstName="Bilbo",
+                firstName = "Bilbo",
                 lastName = "Baggins")
         builder.permissionIds = listOf(permissionService.getPermission(Groups.ADMIN).id)
         val sup = permissionService.getPermission(Groups.ADMIN)
@@ -279,5 +278,4 @@ class UserServiceTests : AbstractTest() {
         }
         throw RuntimeException("The admin user was missing the user::admin permission")
     }
-
 }

@@ -3,13 +3,19 @@ package com.zorroa.archivist.service
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.TaxonomySchema
+import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.domain.ArchivistWriteException
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 
 /**
  * Created by chambers on 6/19/17.
@@ -19,7 +25,7 @@ class TaxonomyServiceTests : AbstractTest() {
     @Autowired
     lateinit var taxonomyService: TaxonomyService
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -46,12 +52,10 @@ class TaxonomyServiceTests : AbstractTest() {
                 searchService.search(AssetSearch()).hits.hits[0].sourceAsMap)
         assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("system.taxonomy",
                 object : TypeReference<List<TaxonomySchema>>() {
-
                 })[0].keywords)
 
         val search = AssetSearch("ships")
         assertEquals(1, searchService.search(search).hits.getTotalHits())
-
     }
 
     @Test(expected = ArchivistWriteException::class)
@@ -65,7 +69,6 @@ class TaxonomyServiceTests : AbstractTest() {
         taxonomyService.create(TaxonomySpec(folder1))
         taxonomyService.create(TaxonomySpec(folder1))
     }
-
 
     @Test(expected = ArchivistWriteException::class)
     fun testCreateFailureNested() {
@@ -199,6 +202,5 @@ class TaxonomyServiceTests : AbstractTest() {
         refreshIndex()
         assertEquals(0, searchService.search(
                 AssetSearch("ships")).hits.getTotalHits())
-
     }
 }

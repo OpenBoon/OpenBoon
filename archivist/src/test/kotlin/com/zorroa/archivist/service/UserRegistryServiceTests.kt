@@ -11,8 +11,8 @@ class UserRegistryServiceTests : AbstractTest() {
     @Test
     fun testGetUser() {
         val attrs = mutableMapOf("company_id" to "123")
-        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"),
-                attrs=attrs)
+        val authed = AuthSource("IRM", "saml", "saml", groups = listOf("marketing", "sales"),
+                attrs = attrs)
         val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
         val user2 = userRegistryService.getUser("billybob@bob.com")
         assertEquals(user1.username, user2.username)
@@ -23,10 +23,10 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testRegisterUserWithGroups() {
-        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("anim", "comp"))
+        val authed = AuthSource("IRM", "saml", "saml", groups = listOf("anim", "comp"))
         val user = userRegistryService.registerUser("billybob@bob.com", authed)
 
-        assertEquals(user.username,"billybob@bob.com")
+        assertEquals(user.username, "billybob@bob.com")
 
         // Test the core permissions exist.
         assertTrue(user.authorities.stream().anyMatch({
@@ -47,7 +47,7 @@ class UserRegistryServiceTests : AbstractTest() {
 
     @Test
     fun testRegisterUserWithGroupsTwice() {
-        val authed = AuthSource("IRM", "saml", "saml", groups=listOf("marketing", "sales"))
+        val authed = AuthSource("IRM", "saml", "saml", groups = listOf("marketing", "sales"))
         val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
         val user2 = userRegistryService.registerUser("billybob@bob.com", authed)
         assertEquals(user1.username, user2.username)
@@ -58,7 +58,7 @@ class UserRegistryServiceTests : AbstractTest() {
     @Test
     fun testRegisterWithMappedGroups() {
         val authed = AuthSource("IRM", "saml", "irm",
-                groups=listOf("marketing", "sales", "pigman", "boo"))
+                groups = listOf("marketing", "sales", "pigman", "boo"))
         val user1 = userRegistryService.registerUser("billybob@bob.com", authed)
         assertTrue(userService.hasPermission(user1, "zorroa", "librarian"))
         assertTrue(userService.hasPermission(user1, "zorroa", "administrator"))
@@ -71,7 +71,7 @@ class UserRegistryServiceTests : AbstractTest() {
         val authed = AuthSource("IRM", "saml", "saml")
         val user = userRegistryService.registerUser("billybob@bob.com", authed)
 
-        assertEquals(user.username,"billybob@bob.com")
+        assertEquals(user.username, "billybob@bob.com")
 
         // Test the core permissions exist.
         assertTrue(user.authorities.stream().anyMatch({
@@ -95,5 +95,4 @@ class UserRegistryServiceTests : AbstractTest() {
         source = AuthSource("test", "saml", "saml", attrs = mapOf("mail" to "kirk@spock.com"))
         assertEquals("kirk@spock.com", registry.getEmail("bones@spock.com", source))
     }
-
 }

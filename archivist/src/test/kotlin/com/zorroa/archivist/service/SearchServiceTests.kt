@@ -4,28 +4,46 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Maps
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.schema.LocationSchema
 import com.zorroa.archivist.schema.SourceSchema
-import com.zorroa.archivist.search.*
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetScript
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.search.GeoBoundingBox
+import com.zorroa.archivist.search.KwConfFilter
+import com.zorroa.archivist.search.RangeQuery
+import com.zorroa.archivist.search.Scroll
+import com.zorroa.archivist.search.SimilarityFilter
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import java.io.IOException
-import java.util.*
+import java.util.UUID
 
 /**
  * Created by chambers on 10/30/15.
  */
 class SearchServiceTests : AbstractTest() {
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -109,7 +127,6 @@ class SearchServiceTests : AbstractTest() {
                 .setQuery("source.filename:beer")
         assertNotNull(getPermissionsFilter(search.access))
         assertEquals(1, searchService.search(search).hits.getTotalHits())
-
     }
 
     @Test
@@ -170,7 +187,6 @@ class SearchServiceTests : AbstractTest() {
 
         assertEquals(1, searchService.count(folder1))
     }
-
 
     @Test
     @Throws(IOException::class)
@@ -261,7 +277,8 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         var count = 0
-        for (a in searchService.search(Pager.first(), AssetSearch().setFilter(
+        for (a in searchService.search(
+            Pager.first(), AssetSearch().setFilter(
                 AssetFilter().addToTerms("media.keywords", "captain")))) {
             count++
         }
@@ -483,7 +500,6 @@ class SearchServiceTests : AbstractTest() {
 
         assertEquals(1, searchService.search(
                 AssetSearch("\"Cock O'the Walk\"")).hits.getTotalHits())
-
     }
 
     @Test
@@ -684,7 +700,8 @@ class SearchServiceTests : AbstractTest() {
 
         val search = AssetSearch(
                 AssetFilter().addToSimilarity("test.jimbo.shash",
-                        SimilarityFilter("AFAFAFAF", 100)))
+                        SimilarityFilter("AFAFAFAF", 100)
+                ))
         assertEquals(0, searchService.search(search).hits.getTotalHits())
     }
 
@@ -735,7 +752,6 @@ class SearchServiceTests : AbstractTest() {
                         SimilarityFilter("APAPAPAP", 20)))
 
         assertEquals(2, searchService.search(search).hits.getTotalHits())
-
     }
 
     /**
@@ -765,7 +781,6 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, hits.getTotalHits())
         val doc = Document(hits.getAt(0).sourceAsMap)
         assertEquals(ImmutableList.of("AFAFAFAF", "AFAFAFA1"), doc.getAttr("test.hash1.shash"))
-
     }
 
     @Test
@@ -843,7 +858,6 @@ class SearchServiceTests : AbstractTest() {
     fun testEmptySearch() {
         addTestAssets("set01")
         assertEquals(5, searchService.search(Pager.first(), AssetSearch()).size().toLong())
-
     }
 
     @Test
@@ -865,7 +879,6 @@ class SearchServiceTests : AbstractTest() {
         asb = AssetSearch(AssetFilter().addToExists("source.dsdsdsds"))
         result = searchService.search(Pager.first(), asb)
         assertEquals(0, result.size().toLong())
-
     }
 
     @Test
@@ -915,6 +928,6 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         assertEquals(1, searchService.count(AssetSearch()))
-        //logger.event()
+        // logger.event()
     }
 }
