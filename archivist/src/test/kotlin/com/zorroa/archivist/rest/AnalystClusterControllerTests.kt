@@ -1,7 +1,11 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.TaskErrorEvent
+import com.zorroa.archivist.domain.TaskEvent
+import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.TaskStoppedEvent
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.AnalystAuthenticationFilter.Companion.ANALYST_HEADER_HOST
 import com.zorroa.archivist.security.AnalystAuthenticationFilter.Companion.ANALYST_HEADER_PORT
@@ -9,7 +13,11 @@ import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Analyst
+import com.zorroa.common.domain.AnalystSpec
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +25,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -40,11 +48,11 @@ class AnalystClusterControllerTests : MockMvcTest() {
     @Autowired
     lateinit var taskErrorDao: TaskErrorDao
 
-    fun launchJob() : Job {
+    fun launchJob(): Job {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         return jobService.create(spec)
     }
 
@@ -55,10 +63,11 @@ class AnalystClusterControllerTests : MockMvcTest() {
         val task = dispatchQueueManager.getNext()
 
         if (task != null) {
-            val te = TaskEvent(TaskEventType.STARTED,
+            val te = TaskEvent(
+                TaskEventType.STARTED,
                     task.id,
                     job.id,
-                    emptyMap<String,String>())
+                    emptyMap<String, String>())
 
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())
@@ -70,8 +79,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
             val rtask = jobService.getTask(task.id)
             assertEquals(TaskState.Running, rtask.state)
-        }
-        else {
+        } else {
             assertNotNull(task)
         }
     }
@@ -87,7 +95,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val te = TaskEvent(TaskEventType.STOPPED,
                     task.id,
                     job.id,
-                    TaskStoppedEvent(0, null))
+                    TaskStoppedEvent(0, null)
+            )
 
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())
@@ -99,8 +108,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
             val rtask = jobService.getTask(task.id)
             assertEquals(TaskState.Success, rtask.state)
-        }
-        else {
+        } else {
             assertNotNull(task)
         }
     }
@@ -129,8 +137,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
             val rtask = jobService.getTask(task.id)
             assertEquals(TaskState.Failure, rtask.state)
-        }
-        else {
+        } else {
             assertNotNull(task)
         }
     }
@@ -160,8 +167,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val count = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?",
                     Int::class.java, task.jobId)
             assertEquals(2, count)
-        }
-        else {
+        } else {
             assertNotNull(task)
         }
     }
@@ -175,7 +181,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
         if (task != null) {
 
             assertTrue(dispatcherService.startTask(task))
-            val tev = TaskErrorEvent(UUID.randomUUID(),"/foo/bar.jpg","it broke",
+            val tev = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg", "it broke",
                     "com.zorroa.ImageIngestor", true, "execute")
             val te = TaskEvent(TaskEventType.ERROR,
                     task.id,
@@ -198,8 +204,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             assertEquals(tev.path, terr.path)
             assertEquals(tev.message, terr.message)
             assertEquals(tev.processor, terr.processor)
-        }
-        else {
+        } else {
             assertNotNull(task)
         }
     }
@@ -257,8 +262,8 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun testQueue() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         jobService.create(spec)
 
@@ -289,5 +294,4 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
                 .andReturn()
     }
-
 }

@@ -9,7 +9,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -54,7 +54,6 @@ class FileStorageControllerTests : MockMvcTest() {
                 .andReturn()
         val rsp1 = Json.Mapper.readValue(req1.response.contentAsString, FileStorageResponse::class.java)
 
-
         val req2 = mvc.perform(MockMvcRequestBuilders.get("/api/v1/file-storage/${rsp1.id}")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -96,11 +95,11 @@ class FileStorageControllerTests : MockMvcTest() {
     }
 }
 
-class FileStorageResponse (
-        val id: String,
-        val uri: String,
-        val scheme: String,
-        val mediaType: String
+class FileStorageResponse(
+    val id: String,
+    val uri: String,
+    val scheme: String,
+    val mediaType: String
 ) {
     override fun toString(): String {
         return "FileStorage(uri='$uri', id='$id', scheme='$scheme', mimeType='$mediaType')"
