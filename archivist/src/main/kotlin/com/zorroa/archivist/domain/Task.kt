@@ -128,8 +128,8 @@ class DispatchTask(
         state: TaskState,
         val host: String?,
         val script: ZpsScript,
-        var env: MutableMap<String,String>,
-        var args: MutableMap<String,Object>,
+        var env: MutableMap<String, String>,
+        var args: MutableMap<String, Any>,
         val userId: UUID,
         var logFile: String?=null) : InternalTask(id, jobId, name, state), TaskId {
 

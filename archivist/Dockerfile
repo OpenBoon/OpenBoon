@@ -34,7 +34,7 @@ COPY ./docker/application.properties /config/application.properties
 
 # Change perms
 RUN chmod -R 777 /extensions
-RUN chmod -R 755 /config
+RUN chmod -R 777 /config
 RUN chmod -R 777 /logs
 RUN chown -R 777 /shared
 
