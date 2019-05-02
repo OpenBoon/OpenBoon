@@ -2,18 +2,13 @@ package com.zorroa.archivist.service
 
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.domain.TaskErrorFilter
-import com.zorroa.archivist.domain.TaskStoppedEvent
-import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.LockState
@@ -22,7 +17,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.TestPropertySource
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -81,6 +76,53 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var dispatchQueueManager: DispatchQueueManager
+
+    @Test
+    fun getTaskPriority() {
+        var priority = dispatcherService.getDispatchPriority()
+        assertTrue(priority.isEmpty())
+
+        val spec = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
+        jobService.create(spec)
+
+        priority = dispatcherService.getDispatchPriority()
+        assertEquals(1, priority.size)
+
+        jdbc.update("UPDATE job_count SET int_task_state_1=100")
+
+        // The org should have priority of 100 now.
+        priority = dispatcherService.getDispatchPriority()
+        assertEquals(100, priority[0].priority)
+    }
+
+    @Test
+    fun getTaskPriorityMultipleOrganizations() {
+        val org = organizationService.create(OrganizationSpec("kirk"))
+
+        val spec1 = JobSpec("test_job",
+                emptyZpsScript("foo"),
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
+        val job = jobService.create(spec1)
+        jdbc.update("UPDATE job_count SET int_task_state_1=100 WHERE pk_job=?",
+                job.id)
+
+        withAuth(SuperAdminAuthentication(org.id)) {
+            val spec2 = JobSpec("test_job",
+                    emptyZpsScript("foo"),
+                    args = mutableMapOf("foo" to 1),
+                    env = mutableMapOf("foo" to "bar"))
+            jobService.create(spec2)
+        }
+
+
+        val priority = dispatcherService.getDispatchPriority()
+        assertEquals(0, priority[0].priority)
+        assertEquals(100, priority[1].priority)
+    }
 
     @Test
     fun testGetNext() {
