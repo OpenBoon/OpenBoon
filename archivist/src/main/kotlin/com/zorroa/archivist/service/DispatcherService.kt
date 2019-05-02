@@ -92,6 +92,9 @@ class DispatchQueueManager @Autowired constructor(
             return null
         }
 
+        meterRegistry.counter(
+                METRICS_KEY, "op", "requests").increment()
+
         for (priority in cachedDispatchPriority.get()) {
 
             val tasks = dispatcherService.getWaitingTasks(
@@ -135,7 +138,7 @@ class DispatchQueueManager @Autowired constructor(
         /**
          * Metrics key used for Dispatch Queue metrics
          */
-        priviate const val METRICS_KEY = "zorroa.dispatch-queue"
+        private const val METRICS_KEY = "zorroa.dispatch-queue"
     }
 }
 
