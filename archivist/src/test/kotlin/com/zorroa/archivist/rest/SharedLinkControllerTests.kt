@@ -4,15 +4,14 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.SharedLinkSpec
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.service.SharedLinkService
 import com.zorroa.common.util.Json
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-
-import com.zorroa.archivist.security.getUserId
-import org.junit.Assert.assertEquals
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -32,10 +31,9 @@ class SharedLinkControllerTests : MockMvcTest() {
         val session = admin()
 
         val spec = SharedLinkSpec()
-        spec.isSendEmail = false
+        spec.sendEmail = false
         spec.state = mapOf("foo" to "bar")
         spec.userIds = setOf(getUserId())
-        spec.expireTimeMs = 1L
 
         val result = mvc.perform(post("/api/v1/shared_link")
                 .session(session)
@@ -55,10 +53,9 @@ class SharedLinkControllerTests : MockMvcTest() {
         val session = admin()
 
         val spec = SharedLinkSpec()
-        spec.isSendEmail = false
-        spec.state = ImmutableMap.of<String, Any>("foo", "bar")
-        spec.userIds = ImmutableSet.of<UUID>(getUserId())
-        spec.expireTimeMs = 1L
+        spec.sendEmail = false
+        spec.state = mapOf<String, Any>("foo" to "bar")
+        spec.userIds = setOf(getUserId())
         val link = sharedLinkService!!.create(spec)
 
         val result = mvc.perform(get("/api/v1/shared_link/" + link.id)

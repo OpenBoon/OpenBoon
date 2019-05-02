@@ -1,14 +1,20 @@
 package com.zorroa.archivist.service
 
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.SharedLinkSpec
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.TaskState
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
+import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.Duration
 import kotlin.test.assertEquals
@@ -29,7 +35,13 @@ class MaintenanceServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
+    lateinit var sharedLinkService: SharedLinkService
+
+    @Autowired
     lateinit var taskDao: TaskDao
+
+    @Autowired
+    lateinit var config : MaintenanceConfiguration
 
     @Test
     fun testRunAll() {
@@ -40,6 +52,28 @@ class MaintenanceServiceTests : AbstractTest() {
     fun testRemoveExpiredJobData() {
         maintenanceService.handleExpiredJobs()
     }
+
+    @Test
+    fun testHandleExpiredSharedLink() {
+        val spec = SharedLinkSpec()
+        spec.sendEmail = true
+        spec.state = mapOf("foo" to "bar")
+        spec.userIds = setOf(getUserId())
+        sharedLinkService.create(spec)
+
+        maintenanceService.handleExpiredSharedLinks()
+        val count1 = jdbc.queryForObject("SELECT COUNT(1) FROM shared_link", Int::class.java)
+        assertEquals(1, count1)
+
+        config.sharedLinksExpireTime = "1s"
+        Thread.sleep(1000)
+
+        // link should be removed
+        maintenanceService.handleExpiredSharedLinks()
+        val count2 = jdbc.queryForObject("SELECT COUNT(1) FROM shared_link", Int::class.java)
+        assertEquals(0, count2)
+    }
+
 
     @Test
     fun testHandleUnresponsiveAnalysts() {

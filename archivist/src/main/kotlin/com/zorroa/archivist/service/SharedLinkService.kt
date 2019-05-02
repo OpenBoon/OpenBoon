@@ -7,12 +7,35 @@ import com.zorroa.archivist.security.getUserId
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.Duration
 import java.util.*
 
+/**
+ * SharedLinkService allows users to create a Link to curator they can pass around.
+ *
+ * It is used.
+ */
 interface SharedLinkService {
+
+    /**
+     * Create and return a new [SharedLink]
+     *
+     * @param spec: A SharedLink specification.
+     */
     fun create(spec: SharedLinkSpec): SharedLink
 
-    operator fun get(id: UUID): SharedLink
+    /**
+     * Remove SharedLinks that have around for the given duration. Return
+     * the number of SharedLinks returned.
+     *
+     * @param duration a [Duration] which describes how old the link has to be,.
+     */
+    fun deleteExpired(duration: Duration) : Int
+
+    /**
+     * Return a SharedLink with the given Id.
+     */
+    fun get(id: UUID): SharedLink
 }
 
 @Service
@@ -31,16 +54,15 @@ class SharedLinkServiceImpl @Autowired constructor(
         val link = sharedLinkDao.create(spec)
         val fromUser = userService.get(getUserId())
 
-        if (spec.isSendEmail) {
+        if (spec.sendEmail) {
             transactionEventManager.afterCommit(false) {
-                for (userId in spec.userIds) {
+                spec.userIds?.forEach {
                     try {
-                        val toUser = userService.get(userId)
+                        val toUser = userService.get(it)
                         emailService.sendSharedLinkEmail(fromUser, toUser, link)
                     } catch (e: Exception) {
                         logger.warn("Failed to send shared link email, id {} ", link.id, e)
                     }
-
                 }
             }
         }
@@ -49,6 +71,10 @@ class SharedLinkServiceImpl @Autowired constructor(
 
     override fun get(id: UUID): SharedLink {
         return sharedLinkDao.get(id)
+    }
+
+    override fun deleteExpired(duration: Duration) : Int {
+        return sharedLinkDao.deleteExpired(duration)
     }
 
     companion object {
