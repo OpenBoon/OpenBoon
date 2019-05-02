@@ -19,9 +19,7 @@ class SharedLinkServiceTests : AbstractTest() {
     fun testSendEmail() {
         transactionEventManager.isImmediateMode = true
 
-        val spec = SharedLinkSpec()
-        spec.sendEmail = true
-        spec.state = mapOf("foo" to "bar")
+        val spec = SharedLinkSpec(mapOf("foo" to "bar"))
         spec.userIds = setOf(getUserId())
         sharedLinkService.create(spec)
     }

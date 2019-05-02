@@ -67,7 +67,6 @@ class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
     }
 
     override fun deleteExpired(duration: Duration): Int {
-        logger.info("dur: {}", duration)
         val time = System.currentTimeMillis() - duration.toMillis()
         return jdbc.update("DELETE FROM shared_link WHERE time_created < ?", time)
     }

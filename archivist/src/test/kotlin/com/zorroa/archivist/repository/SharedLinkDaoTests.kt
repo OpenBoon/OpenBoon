@@ -18,9 +18,7 @@ class SharedLinkDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = SharedLinkSpec()
-        spec.sendEmail = true
-        spec.state = mapOf("foo" to "bar")
+        val spec = SharedLinkSpec(mapOf("foo" to "bar"))
         spec.userIds = setOf(getUserId())
         val link = sharedLinkDao.create(spec)
         assertEquals(spec.state, link.state)
@@ -28,9 +26,7 @@ class SharedLinkDaoTests : AbstractTest() {
 
     @Test
     fun testGet() {
-        val spec = SharedLinkSpec()
-        spec.sendEmail = true
-        spec.state = mapOf("foo" to "bar")
+        val spec = SharedLinkSpec(mapOf("foo" to "bar"))
         spec.userIds = setOf(getUserId())
         val link1 = sharedLinkDao.create(spec)
         val link2 = sharedLinkDao.get(link1.id)
@@ -39,9 +35,7 @@ class SharedLinkDaoTests : AbstractTest() {
 
     @Test
     fun testDeleteExpiredMiss() {
-        val spec = SharedLinkSpec()
-        spec.sendEmail = true
-        spec.state = mapOf<String, Any>("foo" to "bar")
+        val spec = SharedLinkSpec(mapOf<String, Any>("foo" to "bar"))
         spec.userIds = setOf(getUserId())
         sharedLinkDao.create(spec)
 
@@ -52,9 +46,7 @@ class SharedLinkDaoTests : AbstractTest() {
 
     @Test
     fun testDeleteExpiredHit() {
-        val spec = SharedLinkSpec()
-        spec.sendEmail = true
-        spec.state = mapOf("foo" to "bar")
+        val spec = SharedLinkSpec(mapOf("foo" to "bar"))
         spec.userIds = setOf(getUserId())
         sharedLinkDao.create(spec)
 

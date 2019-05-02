@@ -30,9 +30,7 @@ class SharedLinkControllerTests : MockMvcTest() {
     fun testCreate() {
         val session = admin()
 
-        val spec = SharedLinkSpec()
-        spec.sendEmail = false
-        spec.state = mapOf("foo" to "bar")
+        val spec = SharedLinkSpec(mapOf("foo" to "bar"))
         spec.userIds = setOf(getUserId())
 
         val result = mvc.perform(post("/api/v1/shared_link")
@@ -52,9 +50,7 @@ class SharedLinkControllerTests : MockMvcTest() {
     fun testGet() {
         val session = admin()
 
-        val spec = SharedLinkSpec()
-        spec.sendEmail = false
-        spec.state = mapOf<String, Any>("foo" to "bar")
+        val spec = SharedLinkSpec(mapOf<String, Any>("foo" to "bar"))
         spec.userIds = setOf(getUserId())
         val link = sharedLinkService!!.create(spec)
 

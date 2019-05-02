@@ -54,18 +54,17 @@ class SharedLinkServiceImpl @Autowired constructor(
         val link = sharedLinkDao.create(spec)
         val fromUser = userService.get(getUserId())
 
-        if (spec.sendEmail) {
-            transactionEventManager.afterCommit(false) {
-                spec.userIds?.forEach {
-                    try {
-                        val toUser = userService.get(it)
-                        emailService.sendSharedLinkEmail(fromUser, toUser, link)
-                    } catch (e: Exception) {
-                        logger.warn("Failed to send shared link email, id {} ", link.id, e)
-                    }
+        transactionEventManager.afterCommit(false) {
+            spec.userIds?.forEach {
+                try {
+                    val toUser = userService.get(it)
+                    emailService.sendSharedLinkEmail(fromUser, toUser, link)
+                } catch (e: Exception) {
+                    logger.warn("Failed to send shared link email, id {} ", link.id, e)
                 }
             }
         }
+
         return link
     }
 
