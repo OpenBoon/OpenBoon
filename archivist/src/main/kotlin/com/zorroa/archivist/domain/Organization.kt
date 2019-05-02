@@ -85,3 +85,15 @@ class OrganizationFilter(
         }
     }
 }
+
+
+/**
+ * A simple class for determining the dispatch priority of organization.
+ *
+ * @property organizationId The Organization Id.
+ * @property priority The priority of the Organization, lower is higher priority.
+ */
+class DispatchPriority (
+        val organizationId: UUID,
+        val priority: Int
+)

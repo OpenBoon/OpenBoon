@@ -163,7 +163,8 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
     }
 
     fun warnEvent(task: InternalTask, spec: TaskErrorEvent) {
-        meterRegistry.counter("zorroa.task_errors", getTags(Tag.of("processor", spec.processor)))
+        meterRegistry.counter("zorroa.task_errors",
+                getTags(Tag.of("processor", spec.processor ?: "no-processor")))
 
         logger.warnEvent(LogObject.TASK_ERROR, LogAction.CREATE, spec.message,
                 mapOf("assetId" to spec.assetId,

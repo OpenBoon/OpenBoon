@@ -2,6 +2,8 @@ package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.google.cloud.storage.HttpMethod
+import com.google.common.base.Supplier
+import com.google.common.base.Suppliers
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
@@ -12,7 +14,6 @@ import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.common.domain.*
 import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
-import io.micrometer.core.instrument.Tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,8 +27,16 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
 import javax.annotation.PostConstruct
 
+
 interface DispatcherService {
-    fun getWaitingTasks(limit: Int) : List<DispatchTask>
+    /**
+     * Return a list of waiting [DispatchTask] instances for the given
+     * organization, sorted by highest priority first.
+     *
+     * @param organizationId: The organization ID.
+     * @param count: The maximium number of tasks to return.
+     */
+    fun getWaitingTasks(organizationId: UUID, count: Int) : List<DispatchTask>
     fun startTask(task: InternalTask): Boolean
     fun stopTask(task: InternalTask, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
@@ -37,6 +46,11 @@ interface DispatcherService {
     fun retryTask(task: InternalTask, reason: String): Boolean
     fun skipTask(task: InternalTask): Boolean
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
+
+    /**
+     * Return the [Organization] dispatch priority.
+     */
+    fun getDispatchPriority() : List<DispatchPriority>
 }
 
 /**
@@ -53,17 +67,46 @@ class DispatchQueueManager @Autowired constructor(
 )
 {
 
+    /**
+     * The number of tasks to poll per request.  A higher number lowers dispatch collisions.
+     */
+    val numberOfTasksToPoll = 5
+
+    /**
+     * The number of seconds before timing out the task priority.
+     */
+    val cachedDispatchPriorityTimeoutSeconds = 10L
+
+    /**
+     * Caches a task priority list which is currently just a list of organizations
+     * sorted by the least number of tasks running first.
+     */
+    val cachedDispatchPriority: Supplier<List<DispatchPriority>> = Suppliers.memoizeWithExpiration({
+        dispatcherService.getDispatchPriority()
+    }, cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS)
+
     fun getNext(): DispatchTask? {
+
         val endpoint = getAnalystEndpoint()
         if (analystService.isLocked(endpoint)) {
             return null
         }
 
-        if (endpoint != null) {
-            meterRegistry.counter("zorroa.dispatcher.requests").increment()
-            val tasks = dispatcherService.getWaitingTasks(10)
+        meterRegistry.counter(
+                METRICS_KEY, "op", "requests").increment()
+
+        for (priority in cachedDispatchPriority.get()) {
+
+            val tasks = dispatcherService.getWaitingTasks(
+                    priority.organizationId, numberOfTasksToPoll)
+
+            meterRegistry.counter(
+                    METRICS_KEY, "op", "tasks-polled").increment(tasks.size.toDouble())
+
             for (task in tasks) {
                 if (dispatcherService.queueTask(task, endpoint)) {
+                    meterRegistry.counter(
+                            METRICS_KEY, "op", "tasks-queued").increment()
 
                     task.env["ZORROA_TASK_ID"] = task.id.toString()
                     task.env["ZORROA_JOB_ID"] = task.jobId.toString()
@@ -80,12 +123,22 @@ class DispatchQueueManager @Autowired constructor(
                                 fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
                         task.logFile = logFile
                     }
-
                     return task
+                }
+                else {
+                    meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
                 }
             }
         }
         return null
+    }
+
+    companion object {
+
+        /**
+         * Metrics key used for Dispatch Queue metrics
+         */
+        private const val METRICS_KEY = "zorroa.dispatch-queue"
     }
 }
 
@@ -98,7 +151,7 @@ class DispatcherServiceImpl @Autowired constructor(
         private val taskErrorDao: TaskErrorDao,
         private val analystDao: AnalystDao,
         private val eventBus: EventBus,
-        private val meteterRegistry: MeterRegistry) : DispatcherService {
+        private val meterRegistry: MeterRegistry) : DispatcherService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
@@ -117,15 +170,22 @@ class DispatcherServiceImpl @Autowired constructor(
         // Register for event bus
         eventBus.register(this)
 
-        meteterRegistry.gauge("zorroa.task.pending", AtomicLong()) {
+        meterRegistry.gauge("zorroa.task.pending", AtomicLong()) {
             taskDao.getPendingTaskCount().toDouble()
         }
     }
 
+    @Transactional(readOnly = true)
+    override fun getDispatchPriority() : List<DispatchPriority> {
+        return meterRegistry.timer("zorroa.dispatch-service.prioritize")
+                .record<List<DispatchPriority>> {
+            dispatchTaskDao.getDispatchPriority()
+        }
+    }
 
     @Transactional(readOnly = true)
-    override fun getWaitingTasks(limit: Int) : List<DispatchTask> {
-        return dispatchTaskDao.getNext(limit)
+    override fun getWaitingTasks(organizationId: UUID, count: Int) : List<DispatchTask> {
+        return dispatchTaskDao.getNext(organizationId, count)
     }
 
     override fun queueTask(task: DispatchTask, endpoint: String): Boolean {
@@ -232,11 +292,6 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
         taskErrorDao.create(task, error)
         jobService.incrementAssetCounters(task, AssetCounters(errors=1))
-        val tags =  getTags()
-        if (error.processor != null) {
-            tags.add(Tag.of("processor", error.processor))
-        }
-        meteterRegistry.counter("zorroa.task_errors", tags).increment()
     }
 
     override fun handleEvent(event: TaskEvent) {
@@ -273,7 +328,7 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun retryTask(task: InternalTask, reason: String): Boolean {
-        meteterRegistry.counter("zorroa.task.retry", getTags()).increment()
+        meterRegistry.counter("zorroa.task.retry", getTags()).increment()
         return if (task.state.isDispatched()) {
             GlobalScope.launch(Dispatchers.IO) {
                 if(!killRunningTaskOnAnalyst(task, TaskState.Waiting, reason)) {

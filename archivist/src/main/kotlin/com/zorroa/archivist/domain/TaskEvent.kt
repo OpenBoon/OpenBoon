@@ -39,7 +39,7 @@ class TaskErrorEvent(
         val assetId: UUID?,
         val path: String?,
         val message: String,
-        val processor: String,
+        val processor: String?,
         val fatal: Boolean,
         val phase: String,
         val stackTrace: List<StackTraceElement>?=null
