@@ -82,8 +82,8 @@ class DispatchQueueManager @Autowired constructor(
      * sorted by the least number of tasks running first.
      */
     val cachedDispatchPriority: Supplier<List<DispatchPriority>> = Suppliers.memoizeWithExpiration({
-                dispatcherService.getDispatchPriority()
-            }, cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS)
+        dispatcherService.getDispatchPriority()
+    }, cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS)
 
     fun getNext(): DispatchTask? {
 
@@ -98,12 +98,12 @@ class DispatchQueueManager @Autowired constructor(
                     priority.organizationId, numberOfTasksToPoll)
 
             meterRegistry.counter(
-                    METRICS_KEY, "dispatch", "tasks-polled").increment(tasks.size.toDouble())
+                    METRICS_KEY, "op", "tasks-polled").increment(tasks.size.toDouble())
 
             for (task in tasks) {
                 if (dispatcherService.queueTask(task, endpoint)) {
                     meterRegistry.counter(
-                            METRICS_KEY, "dispatch", "tasks-queued").increment()
+                            METRICS_KEY, "op", "tasks-queued").increment()
 
                     task.env["ZORROA_TASK_ID"] = task.id.toString()
                     task.env["ZORROA_JOB_ID"] = task.jobId.toString()
@@ -123,7 +123,7 @@ class DispatchQueueManager @Autowired constructor(
                     return task
                 }
                 else {
-                    meterRegistry.counter(METRICS_KEY, "dispatch", "tasks-collided").increment()
+                    meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
                 }
             }
         }
@@ -135,7 +135,7 @@ class DispatchQueueManager @Autowired constructor(
         /**
          * Metrics key used for Dispatch Queue metrics
          */
-        private const val METRICS_KEY = "zorroa.dispatch-queue"
+        priviate const val METRICS_KEY = "zorroa.dispatch-queue"
     }
 }
 
@@ -174,7 +174,8 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun getDispatchPriority() : List<DispatchPriority> {
-        return meterRegistry.timer("zorroa.dispatcher.prioritize").record<List<DispatchPriority>> {
+        return meterRegistry.timer("zorroa.dispatch-service.prioritize")
+                .record<List<DispatchPriority>> {
             dispatchTaskDao.getDispatchPriority()
         }
     }
