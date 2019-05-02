@@ -248,6 +248,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean
     fun extendedMetadata(): ExtendedMetadata {
         val extendedMetadata = ExtendedMetadata()
+        extendedMetadata.isIdpDiscoveryEnabled = true
         extendedMetadata.isSignMetadata = true
         extendedMetadata.isEcpEnabled = true
         return extendedMetadata
@@ -270,6 +271,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         val uri = props.getProperty("metadataUrl")
 
                         val extendedMetadata = ZorroaExtendedMetadata()
+                        extendedMetadata.isIdpDiscoveryEnabled = true
                         extendedMetadata.isSignMetadata = true
                         extendedMetadata.isEcpEnabled = true
                         extendedMetadata.props = props
@@ -475,7 +477,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .addFilterBefore(metadataGeneratorFilter(), ChannelProcessingFilter::class.java)
                 .addFilterAfter(samlFilter(), BasicAuthenticationFilter::class.java)
                 .authorizeRequests()
-                .antMatchers("/saml/*").permitAll()
+                .antMatchers("/saml/**").permitAll()
                 .and()
                 .logout()
                 .disable()
