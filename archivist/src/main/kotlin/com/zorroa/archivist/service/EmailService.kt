@@ -44,7 +44,7 @@ class EmailServiceImpl @Autowired constructor(
 
         val toName = toUser.firstName ?: toUser.username
         val fromName = fromUser.firstName ?: fromUser.username
-        val url = networkEnv.getPublicUrl("zorroa-archivist") + "/search?id=" + link.id
+        val url = networkEnv.getPublicUrl("zorroa-archivist") + "/search?id=${link.id}"
 
         val text = StringBuilder(1024)
         text.append("Hello ")
