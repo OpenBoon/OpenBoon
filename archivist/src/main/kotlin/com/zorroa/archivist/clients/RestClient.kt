@@ -3,7 +3,11 @@ package com.zorroa.common.clients
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.common.util.Json
 import org.apache.commons.codec.binary.Hex
-import org.apache.http.*
+import org.apache.http.HttpEntity
+import org.apache.http.HttpHost
+import org.apache.http.HttpRequest
+import org.apache.http.HttpResponse
+import org.apache.http.HttpStatus
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
 import org.apache.http.client.methods.HttpGet
@@ -28,19 +32,21 @@ import java.nio.file.Paths
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import java.security.SignatureException
-import java.util.*
+import java.util.UUID
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-class RestClientException constructor(override val message :
-                                           String, override val cause : Throwable?) : RuntimeException(message, cause) {
+class RestClientException constructor(
+    override val message:
+         String,
+    override val cause: Throwable?
+) : RuntimeException(message, cause) {
 
     var status: Int = HttpStatus.SC_INTERNAL_SERVER_ERROR
     constructor(message: String) : this(message, null)
     constructor(message: String, status: Int) : this(message, null) {
         this.status = status
     }
-
 }
 
 /**
@@ -123,9 +129,7 @@ class RestClient {
                 key = Files.readAllLines(Paths.get(path))[0]
                 break
             } catch (e: IOException) {
-
             }
-
         }
 
         return key
@@ -190,7 +194,6 @@ class RestClient {
         val response = checkStatus(post, headers)
         return checkResponse(response, type)
     }
-
 
     fun download(url: String, headers: Map<String, String>? = null): HttpEntity {
         val get = HttpGetWithEntity(url)
@@ -265,7 +268,6 @@ class RestClient {
                     } catch (e1: InterruptedException) {
                         throw RestClientException("Failed to execute request: $req", e)
                     }
-
                 } else {
                     /*
                      * This would be some kind of communication error.
@@ -273,7 +275,6 @@ class RestClient {
                     throw RestClientException("Failed to execute request: $req", e)
                 }
             }
-
         }
 
         if (response.statusLine.statusCode != 200) {
