@@ -9,6 +9,7 @@ import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
+import org.springframework.dao.DataAccessException
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowCallbackHandler
@@ -32,9 +33,7 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         val expireTime = time + spec.timeoutUnits.toMillis(spec.timeout)
 
         if (spec.combineMultiple) {
-            if (jdbc.update(INCREMENT_COMBINE_COUNT, spec.name) == 1) {
-                meterRegistry.counter("zorrra.cluster_lock",
-                        getTags(Tag.of("status", "combine")))
+            if (incrementCombineLock(spec.name)) {
                 return LockStatus.Combined
             }
         }
@@ -62,6 +61,23 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         }
     }
 
+    fun incrementCombineLock(name: String): Boolean {
+        try {
+            jdbc.queryForObject("SELECT str_name FROM cluster_lock WHERE str_name=? FOR UPDATE NOWAIT",
+                String::class.java, name)
+            if (jdbc.update(INCREMENT_COMBINE_COUNT, name) == 1) {
+                meterRegistry.counter("zorrra.cluster_lock",
+                    getTags(Tag.of("status", "combine")))
+                return true
+            }
+        }
+        catch (e: DataAccessException) {
+            logger.debug("Could not increment combined lock for $name")
+        }
+        return false
+    }
+
+
     override fun unlock(name: String): Boolean {
         return jdbc.update("DELETE FROM cluster_lock WHERE str_name=?", name) == 1
     }
@@ -86,10 +102,10 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
     override fun combineLocks(spec: ClusterLockSpec) : Boolean {
         try {
             // Lock the row
-            jdbc.queryForObject("SELECT str_name FROM cluster_lock WHERE str_name=? FOR UPDATE",
+            jdbc.queryForObject("SELECT str_name FROM cluster_lock WHERE str_name=? FOR UPDATE NOWAIT",
                     String::class.java, spec.name)
-        } catch (e: EmptyResultDataAccessException) {
-            // Lock no longer exists.
+        } catch (e: DataAccessException) {
+            // Lock no longer exists or is being updated by something else.
             return false
         }
 
