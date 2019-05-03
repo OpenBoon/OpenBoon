@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.lang.IllegalArgumentException
-import java.util.*
+import java.util.UUID
 import java.util.stream.Collectors
 
 interface PermissionService {
@@ -40,8 +40,8 @@ interface PermissionService {
 @Service
 @Transactional
 class PermissionServiceImpl @Autowired constructor(
-        private val permissionDao: PermissionDao,
-        private val txem: TransactionEventManager
+    private val permissionDao: PermissionDao,
+    private val txem: TransactionEventManager
 ) : PermissionService {
 
     @Transactional(readOnly = true)
@@ -68,8 +68,7 @@ class PermissionServiceImpl @Autowired constructor(
     override fun getPermission(name: String): Permission {
         return if (UUID_REGEXP.matches(name)) {
             permissionDao.get(UUID.fromString(name))
-        }
-        else {
+        } else {
             permissionDao.get(name)
         }
     }
@@ -87,7 +86,7 @@ class PermissionServiceImpl @Autowired constructor(
     }
 
     val standardPerms = listOf(
-            mapOf("name" to  "administrator", "desc" to "Superuser, can do and access everything"),
+            mapOf("name" to "administrator", "desc" to "Superuser, can do and access everything"),
             mapOf("name" to "everyone", "desc" to "A standard user of the system"),
             mapOf("name" to "share", "desc" to "Modify all permissions"),
             mapOf("name" to "export", "desc" to "Export all files"),

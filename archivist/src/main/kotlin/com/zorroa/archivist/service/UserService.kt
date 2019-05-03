@@ -4,7 +4,21 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.ApiKey
+import com.zorroa.archivist.domain.ApiKeySpec
+import com.zorroa.archivist.domain.LocalUserSpec
+import com.zorroa.archivist.domain.Organization
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserFilter
+import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.archivist.domain.UserSource
+import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.domain.getOrgBatchUserName
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserDaoCache
@@ -30,7 +44,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.UUID
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 
@@ -52,7 +66,7 @@ interface UserService {
 
     fun get(id: UUID): User
 
-    fun exists(username: String, source:String?): Boolean
+    fun exists(username: String, source: String?): Boolean
 
     @Deprecated("see getAll(filter: UserFilter)")
     fun getAll(page: Pager): PagedList<User>
@@ -75,7 +89,7 @@ interface UserService {
 
     fun getPermissions(user: UserId): List<Permission>
 
-    fun setPermissions(user: UserId, perms: Collection<Permission>, source:String)
+    fun setPermissions(user: UserId, perms: Collection<Permission>, source: String)
 
     fun setPermissions(user: UserId, perms: Collection<Permission>)
 
@@ -108,11 +122,10 @@ interface UserService {
     fun getAll(filter: UserFilter): KPagedList<User>
 }
 
-
 @Service
 class UserRegistryServiceImpl @Autowired constructor(
-        private val properties: ApplicationProperties
-): UserRegistryService {
+    private val properties: ApplicationProperties
+) : UserRegistryService {
 
     @Autowired
     internal lateinit var organizationService: OrganizationService
@@ -158,7 +171,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         userService.incrementLoginCounter(user)
 
         if (properties.getBoolean("archivist.security.saml.permissions.import")) {
-            SecurityContextHolder.getContext().authentication  = SuperAdminAuthentication(org.id)
+            SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
             try {
                 source.groups?.let {
                     importAndAssignPermissions(user, source, it)
@@ -190,7 +203,7 @@ class UserRegistryServiceImpl @Autowired constructor(
      */
     fun getEmail(username: String, source: AuthSource): String {
         // First use the SAML email
-        val samlEmail =  source.attrs["mail"]
+        val samlEmail = source.attrs["mail"]
         if (samlEmail != null) {
             return samlEmail
         }
@@ -219,7 +232,6 @@ class UserRegistryServiceImpl @Autowired constructor(
                 }
             } ?: throw BadCredentialsException(
                     "Unable to determine organization, organization was null")
-
         } else {
             organizationService.get(Organization.DEFAULT_ORG_ID)
         }
@@ -230,7 +242,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         userService.setPermissions(user, perms, source.authSourceId)
     }
 
-    fun getAssignedPermissions(user: UserId, source: AuthSource, groups: List<String>) : List<Permission> {
+    fun getAssignedPermissions(user: UserId, source: AuthSource, groups: List<String>): List<Permission> {
         val mapping = properties.parseToMap("archivist.security.saml.permissions.map")
         val perms = mutableListOf<Permission>()
         for (group in groups) {
@@ -238,8 +250,7 @@ class UserRegistryServiceImpl @Autowired constructor(
             // Maps the external permission to a standard one, if applicagle.
             val parts = if (mapping.containsKey(group)) {
                 mapping.getValue(group).split(Permission.JOIN, limit = 2)
-            }
-            else {
+            } else {
                 group.split(Permission.JOIN, limit = 2)
             }
 
@@ -267,7 +278,7 @@ class UserRegistryServiceImpl @Autowired constructor(
      * @param user: The User who has been authed
      * @return UserAuthed The authed user object
      */
-    fun toUserAuthed(user: User) : UserAuthed {
+    fun toUserAuthed(user: User): UserAuthed {
         val perms = userService.getPermissions(user)
         return UserAuthed(user.id, user.organizationId, user.username, perms.toSet(), user.attrs)
     }
@@ -279,19 +290,18 @@ class UserRegistryServiceImpl @Autowired constructor(
         val EMAIL_REGEXP = Regex(".+@.+\\.[a-z]+")
 
         private val logger = LoggerFactory.getLogger(UserRegistryServiceImpl::class.java)
-
     }
 }
 
 @Service
 @Transactional
 class UserServiceImpl @Autowired constructor(
-        private val userDao: UserDao,
-        private val userDaoCache: UserDaoCache,
-        private val permissionDao: PermissionDao,
-        private val tx: TransactionEventManager,
-        private val properties: ApplicationProperties
-): UserService, ApplicationListener<ContextRefreshedEvent> {
+    private val userDao: UserDao,
+    private val userDaoCache: UserDaoCache,
+    private val permissionDao: PermissionDao,
+    private val tx: TransactionEventManager,
+    private val properties: ApplicationProperties
+) : UserService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     internal lateinit var folderService: FolderService
@@ -307,8 +317,7 @@ class UserServiceImpl @Autowired constructor(
             if (userDao.generateAdminKey()) {
                 logger.info("Regenerated admin key on first startup")
             }
-        }
-        catch (e:Exception) {
+        } catch (e: Exception) {
             logger.warn("Failed to generate admin HMAC key: {}", e.message)
         }
     }
@@ -337,7 +346,7 @@ class UserServiceImpl @Autowired constructor(
         }
 
         val name = spec.name ?: spec.email.split("@")[0]
-        val nameParts = name.split(Regex("\\s+"), limit=2)
+        val nameParts = name.split(Regex("\\s+"), limit = 2)
         val user = create(UserSpec(
                 spec.email,
                 spec.password ?: generateRandomPassword(10),
@@ -351,8 +360,7 @@ class UserServiceImpl @Autowired constructor(
                 },
                 spec.permissionIds))
 
-
-        tx.afterCommit(sync=false) {
+        tx.afterCommit(sync = false) {
             // Email a password reset if no password was provided.
             if (spec.password == null) {
                 emailService.sendPasswordResetEmail(user)
@@ -381,7 +389,6 @@ class UserServiceImpl @Autowired constructor(
                 PermissionSpec("user", spec.username), true)
         val userFolder = folderService.createUserFolder(
                 spec.username, userPerm)
-
 
         spec.homeFolderId = userFolder.id
         spec.userPermissionId = userPerm.id
@@ -422,12 +429,12 @@ class UserServiceImpl @Autowired constructor(
         return userDao.getAll(page)
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     override fun getAll(filter: UserFilter): KPagedList<User> {
         return userDao.getAll(filter)
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     override fun findOne(filter: UserFilter): User {
         return userDao.findOne(filter)
     }
@@ -467,9 +474,9 @@ class UserServiceImpl @Autowired constructor(
         }
 
         val updatePermsAndFolders = user.username != form.username
-        if (!userDao.exists(user.username, UserSource.LOCAL)
-                && (updatePermsAndFolders
-                || user.email != form.email)) {
+        if (!userDao.exists(user.username, UserSource.LOCAL) &&
+                (updatePermsAndFolders ||
+                user.email != form.email)) {
             throw IllegalArgumentException("Users from external sources cannot change their username or email address.")
         }
 
@@ -534,7 +541,7 @@ class UserServiceImpl @Autowired constructor(
         setPermissions(user, perms, "local")
     }
 
-    override fun setPermissions(user: UserId, perms: Collection<Permission>, source:String) {
+    override fun setPermissions(user: UserId, perms: Collection<Permission>, source: String) {
         /*
          * Don't let setPermissions set immutable permission types which can never
          * be added or removed via the external API.
@@ -638,4 +645,3 @@ class UserServiceImpl @Autowired constructor(
         private const val MIN_USERNAME_SIZE = 1
     }
 }
-

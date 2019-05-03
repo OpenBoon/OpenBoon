@@ -2,7 +2,12 @@ package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Pipeline
+import com.zorroa.archivist.domain.PipelineSpec
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -17,22 +22,22 @@ import java.io.FileInputStream
 import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 
 interface PipelineService {
-    fun resolve(name: String) : List<ProcessorRef>
-    fun resolve(id: UUID) : List<ProcessorRef>
-    fun resolveDefault(type: PipelineType) : List<ProcessorRef>
-    fun create(spec: PipelineSpec) : Pipeline
-    fun get(id: UUID) : Pipeline
-    fun get(name: String) : Pipeline
+    fun resolve(name: String): List<ProcessorRef>
+    fun resolve(id: UUID): List<ProcessorRef>
+    fun resolveDefault(type: PipelineType): List<ProcessorRef>
+    fun create(spec: PipelineSpec): Pipeline
+    fun get(id: UUID): Pipeline
+    fun get(name: String): Pipeline
     fun getAll(): List<Pipeline>
     fun getAll(type: PipelineType): List<Pipeline>
     fun getAll(page: Pager): PagedList<Pipeline>
-    fun update(pipeline: Pipeline) : Boolean
+    fun update(pipeline: Pipeline): Boolean
     fun delete(id: UUID): Boolean
-    fun getDefaultPipelineName(type: PipelineType) : String
-    fun resolve(type: PipelineType, refs: List<ProcessorRef>?) : List<ProcessorRef>
+    fun getDefaultPipelineName(type: PipelineType): String
+    fun resolve(type: PipelineType, refs: List<ProcessorRef>?): List<ProcessorRef>
 }
 
 /**
@@ -41,24 +46,24 @@ interface PipelineService {
 @Service
 @Transactional
 class PipelineServiceImpl @Autowired constructor(
-        private val pipelineDao : PipelineDao,
-        private val properties: ApplicationProperties
-): PipelineService, ApplicationListener<ContextRefreshedEvent> {
+    private val pipelineDao: PipelineDao,
+    private val properties: ApplicationProperties
+) : PipelineService, ApplicationListener<ContextRefreshedEvent> {
 
-    override fun create(spec: PipelineSpec) : Pipeline {
-        val p =  pipelineDao.create(spec)
+    override fun create(spec: PipelineSpec): Pipeline {
+        val p = pipelineDao.create(spec)
         return p
     }
 
-    override fun update(pipeline: Pipeline) : Boolean {
+    override fun update(pipeline: Pipeline): Boolean {
         return pipelineDao.update(pipeline)
     }
 
-    override fun get(id: UUID) : Pipeline {
+    override fun get(id: UUID): Pipeline {
         return pipelineDao.get(id)
     }
 
-    override fun get(name: String) : Pipeline {
+    override fun get(name: String): Pipeline {
         return pipelineDao.get(name)
     }
 
@@ -78,52 +83,50 @@ class PipelineServiceImpl @Autowired constructor(
         return pipelineDao.delete(id)
     }
 
-    override fun getDefaultPipelineName(type: PipelineType) : String {
+    override fun getDefaultPipelineName(type: PipelineType): String {
         val names = when (type) {
-            PipelineType.Import-> properties.getString("archivist.pipeline.default-import-pipeline")
-            PipelineType.Export-> properties.getString("archivist.pipeline.default-export-pipeline")
+            PipelineType.Import -> properties.getString("archivist.pipeline.default-import-pipeline")
+            PipelineType.Export -> properties.getString("archivist.pipeline.default-export-pipeline")
             else -> throw IllegalArgumentException("There are no default $type pipelines")
         }
         return names?.trim()
     }
 
-    override fun resolveDefault(type: PipelineType) : List<ProcessorRef> {
+    override fun resolveDefault(type: PipelineType): List<ProcessorRef> {
         val name = getDefaultPipelineName(type)
-        return resolve(type,  pipelineDao.get(name).processors)
+        return resolve(type, pipelineDao.get(name).processors)
     }
 
-    override fun resolve(name: String) : List<ProcessorRef> {
-        //val processors = mutableListOf<ProcessorRef>()
+    override fun resolve(name: String): List<ProcessorRef> {
+        // val processors = mutableListOf<ProcessorRef>()
         val pipeline = pipelineDao.get(name)
         return pipeline.processors
     }
 
-    override fun resolve(id: UUID) : List<ProcessorRef> {
+    override fun resolve(id: UUID): List<ProcessorRef> {
         val pipeline = pipelineDao.get(id)
         return resolve(pipeline.type, pipeline.processors)
     }
 
-
-    override fun resolve(type: PipelineType, refs: List<ProcessorRef>?) : MutableList<ProcessorRef>  {
+    override fun resolve(type: PipelineType, refs: List<ProcessorRef>?): MutableList<ProcessorRef> {
         val result = mutableListOf<ProcessorRef>()
 
-        refs?.forEach { ref->
+        refs?.forEach { ref ->
             if (ref.className.startsWith("pipeline:", ignoreCase = true)) {
                 val name = ref.className.split(":", limit = 2)[1]
 
                 val pl = try {
                     pipelineDao.get(UUID.fromString(name))
-                } catch (e:IllegalArgumentException) {
+                } catch (e: IllegalArgumentException) {
                     pipelineDao.get(name)
                 }
 
                 if (pl.type != type) {
-                    throw  throw IllegalArgumentException("Cannot have pipeline type " +
+                    throw throw IllegalArgumentException("Cannot have pipeline type " +
                             pl.type + " embedded in a " + type + " pipeline")
                 }
                 result.addAll(resolve(type, pl.processors))
-            }
-            else {
+            } else {
                 result.add(ref)
                 ref.execute?.let {
                     ref.execute = resolve(type, it)
@@ -145,8 +148,7 @@ class PipelineServiceImpl @Autowired constructor(
                 for (resource in resources) {
                     loadPipeline(resource.inputStream, "classpath")
                 }
-            }
-            else {
+            } else {
                 val path = Paths.get(it.trim())
                 if (Files.exists(path)) {
                     for (file in Files.list(path)) {
@@ -166,12 +168,10 @@ class PipelineServiceImpl @Autowired constructor(
         } catch (e: EmptyResultDataAccessException) {
             logger.info("Creating ${spec.type} pipeline '${spec.name}' from $source")
             pipelineDao.create(spec)
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             logger.warn("Failed to load pipeline file:", e)
         }
     }
-
 
     companion object {
         private val logger = LoggerFactory.getLogger(PipelineServiceImpl::class.java)
