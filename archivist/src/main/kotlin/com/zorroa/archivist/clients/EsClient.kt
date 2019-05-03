@@ -11,7 +11,6 @@ import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import java.io.IOException
 
-
 /**
  * ES 6.x took away the SearchBuilder class which was a convenient way to
  * build a search request.  This is similar class that just holds
@@ -48,49 +47,49 @@ class SearchBuilder {
  */
 class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient) {
 
-    fun newSearchRequest() : SearchRequest {
+    fun newSearchRequest(): SearchRequest {
         return SearchRequest(route.indexName).apply {
             route.routingKey?.let { routing(it) }
         }
     }
 
-    fun newSearchBuilder() : SearchBuilder {
+    fun newSearchBuilder(): SearchBuilder {
         val builder = SearchBuilder()
         routeSearchRequest(builder.request)
         return builder
     }
 
-    fun newSearchBuilder(req: SearchRequest, source: SearchSourceBuilder) : SearchBuilder {
+    fun newSearchBuilder(req: SearchRequest, source: SearchSourceBuilder): SearchBuilder {
         val builder = SearchBuilder(req, source)
         routeSearchRequest(builder.request)
         return builder
     }
 
-    fun newGetRequest(id: String) : GetRequest {
+    fun newGetRequest(id: String): GetRequest {
         return GetRequest(route.indexName).id(id).apply {
             route.routingKey?.let { routing(it) }
         }
     }
 
-    fun newUpdateRequest(id: String) : UpdateRequest {
+    fun newUpdateRequest(id: String): UpdateRequest {
         return UpdateRequest(route.indexName, "asset", id).apply {
             route.routingKey?.let { routing(it) }
         }
     }
 
-    fun newIndexRequest(id: String) : IndexRequest {
+    fun newIndexRequest(id: String): IndexRequest {
         return IndexRequest(route.indexName, "asset", id).apply {
             route.routingKey?.let { routing(it) }
         }
     }
 
-    fun newDeleteRequest(id:String) : DeleteRequest {
+    fun newDeleteRequest(id: String): DeleteRequest {
         return DeleteRequest(route.indexName, "asset", id).apply {
             route.routingKey?.let { routing(it) }
         }
     }
 
-    fun routeSearchRequest(req: SearchRequest) : SearchRequest {
+    fun routeSearchRequest(req: SearchRequest): SearchRequest {
         if (route.routingKey != null) {
             req.routing(route.routingKey)
         }
