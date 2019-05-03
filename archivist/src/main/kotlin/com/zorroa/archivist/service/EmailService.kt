@@ -65,7 +65,7 @@ class EmailServiceImpl @Autowired constructor(
         }
 
         try {
-            sendHTMLEmail(toUser.email, fromName + " has shared a link with you.",
+            sendHTMLEmail(toUser.email, "$fromName has shared a link with you.",
                     text.toString(), listOf(), htmlMsg)
         } catch (e: MessagingException) {
             logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e)
@@ -78,7 +78,7 @@ class EmailServiceImpl @Autowired constructor(
 
         if (token != null) {
             val name = if (user.firstName == null) user.username else user.firstName
-            val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/password?token=" + token.toString()
+            val url = networkEnv.getPublicUrl("zorroa-archivist") + "/password?token=$token"
 
             val text = StringBuilder(1024)
             text.append("Hello ")
@@ -90,7 +90,7 @@ class EmailServiceImpl @Autowired constructor(
             var htmlMsg: String? = null
             try {
                 htmlMsg = getTextResourceFile("emails/PasswordReset.html")
-                htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server")
+                htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", "$url&source=file_server")
                 htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", name)
             } catch (e: IOException) {
                 logger.warn("Failed to open HTML template for onboarding. Sending text only.", e)
@@ -111,7 +111,7 @@ class EmailServiceImpl @Autowired constructor(
         val name = if (user.firstName == null) user.username else user.firstName
 
         if (token != null) {
-            val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/onboard?token=" + token.toString()
+            val url = networkEnv.getPublicUrl("zorroa-archivist") + "/onboard?token=$token"
 
             val text = StringBuilder(1024)
             text.append("Hello ")
@@ -124,9 +124,9 @@ class EmailServiceImpl @Autowired constructor(
             try {
                 htmlMsg = getTextResourceFile("emails/Onboarding.html")
                 htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", name)
-                htmlMsg = htmlMsg.replace("*|FILE_SERVER_URL|*", url + "&source=file_server")
-                htmlMsg = htmlMsg.replace("*|MY_COMPUTER_URL|*", url + "&source=my_computer")
-                htmlMsg = htmlMsg.replace("*|CLOUD_SOURCE_URL|*", url + "&source=cloud")
+                htmlMsg = htmlMsg.replace("*|FILE_SERVER_URL|*", "$url&source=file_server")
+                htmlMsg = htmlMsg.replace("*|MY_COMPUTER_URL|*", "$url&source=my_computer")
+                htmlMsg = htmlMsg.replace("*|CLOUD_SOURCE_URL|*", "$url&source=cloud")
             } catch (e: IOException) {
                 logger.warn("Failed to open HTML template for onboarding, Sending text only.", e)
             }
@@ -150,7 +150,7 @@ class EmailServiceImpl @Autowired constructor(
         } else {
             name = user.username
         }
-        val url = networkEnv.getPublicUrl("zorroa-archivist").toString() + "/folder/" + req.folderId
+        val url = networkEnv.getPublicUrl("zorroa-archivist") + "/folder/${req.folderId}"
         val folderPath = folderService.getPath(folderService.get(req.folderId))
         val folderName = folderPath.split("/").last()
         val toEmail = properties.getString("archivist.requests.managerEmail")
