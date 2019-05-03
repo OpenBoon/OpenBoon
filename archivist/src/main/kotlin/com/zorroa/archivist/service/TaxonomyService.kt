@@ -170,7 +170,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     }
 
     override fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean): Map<String, Long> {
-        val lock = ClusterLockSpec.combineLock(tax.clusterLockId).apply { timeout = 5 }
+        val lock = ClusterLockSpec.combineLock(tax.clusterLockId).apply { timeout = 10 }
         val result = clusterLockExecutor.inline(lock) {
             try {
                 tagTaxonomyInternal(tax, start, force)
@@ -301,7 +301,7 @@ class TaxonomyServiceImpl @Autowired constructor(
             }
 
             if (force) {
-                untagTaxonomy(tax, updateTime)
+                untagTaxonomyAsync(tax, updateTime)
             }
         } finally {
             bulkProcessor.awaitClose(1000, TimeUnit.HOURS)
@@ -511,8 +511,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val rest = indexRoutingService.getOrgRestClient()
 
         logger.info("processing bulk taxon for: {}", getUser())
-        // Use a non combined hard lock but the same lock ID.
-        clusterLockExecutor.inline(ClusterLockSpec.hardLock(tax.clusterLockId)) {
+        clusterLockExecutor.inline(ClusterLockSpec.softLock(tax.clusterLockId).apply { timeout = 10 }) {
             try {
                 do {
                     for (hit in rsp.hits.hits) {

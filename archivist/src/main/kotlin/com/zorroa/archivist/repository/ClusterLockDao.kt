@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.ClusterLockExpired
 import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LockStatus
 import com.zorroa.archivist.domain.LogAction
@@ -13,15 +14,17 @@ import org.springframework.dao.DataAccessException
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowCallbackHandler
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.net.InetAddress
 
 interface ClusterLockDao {
-    fun clearExpired() : Int
     fun lock(spec: ClusterLockSpec) : LockStatus
     fun unlock(name: String) : Boolean
     fun isLocked(name: String): Boolean
     fun combineLocks(spec: ClusterLockSpec) : Boolean
+    fun getExpired(): List<ClusterLockExpired>
+    fun checkLock(name: String): Boolean
 }
 
 @Repository
@@ -86,23 +89,31 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         return jdbc.queryForObject("SELECT COUNT(1) FROM cluster_lock WHERE str_name=?", Int::class.java, name) == 1
     }
 
-    override fun clearExpired(): Int {
-        val time = System.currentTimeMillis()
-        var removed = 0
-        jdbc.query(GET_EXPIRED, RowCallbackHandler { rs->
-            val name = rs.getString("str_name")
-            jdbc.update("DELETE FROM cluster_lock WHERE str_name=?", name)
-            logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.EXPIRED, "Lock Expired",
-                    mapOf("lockName" to name))
-            removed+=1
-        }, time)
-        return removed
+    override fun checkLock(name: String): Boolean {
+        return try {
+            jdbc.queryForObject(
+                "SELECT str_name FROM cluster_lock WHERE str_name=? FOR UPDATE NOWAIT",
+                String::class.java, name)
+            true
+        } catch (e : DataAccessException) {
+            false
+        }
+    }
+
+    override fun getExpired(): List<ClusterLockExpired> {
+        return jdbc.query(GET_EXPIRED,
+            RowMapper { rs, _ ->
+                ClusterLockExpired(rs.getString("str_name"),
+                    rs.getString("str_host"),
+                    rs.getLong("time_expired"))
+            }, System.currentTimeMillis())
     }
 
     override fun combineLocks(spec: ClusterLockSpec) : Boolean {
         try {
             // Lock the row
-            jdbc.queryForObject("SELECT str_name FROM cluster_lock WHERE str_name=? FOR UPDATE NOWAIT",
+            jdbc.queryForObject(
+                "SELECT str_name FROM cluster_lock WHERE str_name=? AND bool_allow_combine='t' FOR UPDATE NOWAIT",
                     String::class.java, spec.name)
         } catch (e: DataAccessException) {
             // Lock no longer exists or is being updated by something else.
@@ -113,7 +124,8 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         val combine =  jdbc.update(HAS_COMBINED, newTimeout, spec.name) == 1
 
         if (!combine) {
-            jdbc.update("UPDATE cluster_lock SET bool_allow_combine='f' WHERE str_name=?", spec.name)
+            jdbc.update(
+                "UPDATE cluster_lock SET bool_allow_combine='f' WHERE bool_allow_combine='t' AND str_name=?", spec.name)
         }
 
         return combine
@@ -149,6 +161,7 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
 
         private const val GET_EXPIRED = "SELECT " +
                 "str_name, " +
+                "str_host, " +
                 "time_expired " +
             "FROM " +
                 "cluster_lock " +
