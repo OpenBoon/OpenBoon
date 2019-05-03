@@ -7,6 +7,7 @@ import com.zorroa.archivist.security.getUserId
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.util.*
 
@@ -39,6 +40,7 @@ interface SharedLinkService {
 }
 
 @Service
+@Transactional
 class SharedLinkServiceImpl @Autowired constructor(
         private val sharedLinkDao: SharedLinkDao,
         private val transactionEventManager: TransactionEventManager
