@@ -38,7 +38,6 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
         } catch (e: Exception) {
             throw DataRetrievalFailureException("Failed to parse record, $e", e)
         }
-
     }
 
     fun <T> queryForObject(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): T {
@@ -55,7 +54,6 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
         } catch (e: Exception) {
             throw DataRetrievalFailureException("Failed to parse record, $e", e)
         }
-
     }
 
     fun <T> scroll(id: String, timeout: String, mapper: SearchHitRowMapper<T>): PagedList<T> {
@@ -93,7 +91,6 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
             } catch (e: Exception) {
                 throw DataRetrievalFailureException("Failed to parse record, $e", e)
             }
-
         }
 
         return result
@@ -113,13 +110,11 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
             } catch (e: Exception) {
                 throw DataRetrievalFailureException("Failed to parse record, $e", e)
             }
-
         }
 
         paging.totalCount = r.hits.totalHits
         val result = PagedList(paging, list)
         result.scroll = Scroll(r.scrollId)
-
 
         if (r.aggregations != null) {
             try {
@@ -131,7 +126,6 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
                 }
                 var json = Strings.toString(builder).replace(REGEX_AGG_NAME_FIX, "\"$1\":")
                 result.aggregations = Json.Mapper.readValue(json, Json.GENERIC_MAP)
-
             } catch (e: IOException) {
                 logger.warn("Failed to deserialize aggregations.", e)
             }
@@ -216,6 +210,5 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
          * Instructs Agg system to not prefx agg names with the agg type.
          */
         private val xContentParams = ToXContent.MapParams(mapOf(RestSearchAction.TYPED_KEYS_PARAM to "false"))
-
     }
 }
