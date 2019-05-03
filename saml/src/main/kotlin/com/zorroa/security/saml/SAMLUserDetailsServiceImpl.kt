@@ -78,7 +78,10 @@ class SAMLUserDetailsServiceImpl : SAMLUserDetailsService {
 
             val attrs = mutableMapOf<String, String>()
             for (a in credential.attributes) {
-                attrs[a.name] = credential.getAttributeAsString(a.name)
+                val value : String? = credential.getAttributeAsString(a.name)
+                if (value != null) {
+                    attrs[a.name] = value
+                }
             }
 
             val source = AuthSource(
