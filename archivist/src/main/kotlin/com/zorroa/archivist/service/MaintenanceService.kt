@@ -6,7 +6,6 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.TaskState
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +15,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ContextRefreshedEvent
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.concurrent.TimeUnit
@@ -42,6 +40,11 @@ interface MaintenanceService {
      * Handles retrying all tasks that have not pinged in for a set amount of time.
      */
     fun handleOrphanTasks()
+
+    /**
+     * Handles removing expired shared links.
+     */
+    fun handleExpiredSharedLinks()
 
     /**
      * Run all Maintenance.  Return true if lock was obtained, false if not.
@@ -80,6 +83,11 @@ class MaintenanceConfiguration {
     lateinit var taskOrphanTime : String
 
     /**
+     * The amount of time before a shared link is removed.
+     */
+    lateinit var sharedLinksExpireTime : String
+
+    /**
      * Return a [Duration] instance from the analystInactivityTimeDown property.
      */
     fun getAnalystDownInactivityTime() : Duration {
@@ -100,6 +108,12 @@ class MaintenanceConfiguration {
         return Duration.parse("PT${taskOrphanTime.toUpperCase()}")
     }
 
+    /**
+     * Return a [Duration] instance describing the shared link expire time.
+     */
+    fun getSharedLinkExpiredTime() : Duration {
+        return Duration.parse("PT${sharedLinksExpireTime.toUpperCase()}")
+    }
 }
 
 /**
@@ -147,6 +161,7 @@ class ResumePausedJobsScheduler @Autowired constructor(
 
 @Component
 class MaintenanceServiceImpl @Autowired constructor(
+        val sharedLinkService: SharedLinkService,
         val storageService: FileStorageService,
         val jobService: JobService,
         val dispatcherService: DispatcherService,
@@ -257,6 +272,14 @@ class MaintenanceServiceImpl @Autowired constructor(
             }
         } catch (e: Exception) {
             logger.warn("Unable to handle orphan tasks, ", e)
+        }
+    }
+
+    override fun handleExpiredSharedLinks() {
+        try {
+            sharedLinkService.deleteExpired(config.getSharedLinkExpiredTime())
+        } catch (e: Exception) {
+            logger.warn("Unable to handle expired links ", e)
         }
     }
 
