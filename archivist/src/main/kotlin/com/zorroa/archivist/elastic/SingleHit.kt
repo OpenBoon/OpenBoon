@@ -3,13 +3,13 @@ package com.zorroa.archivist.elastic
 import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.search.SearchHit
 
-class SingleHit  {
+class SingleHit {
 
-    val id : String
+    val id: String
     val source: Map<String, Any>
-    val version : Long
-    val type : String
-    val score : Float
+    val version: Long
+    val type: String
+    val score: Float
 
     constructor(rsp: GetResponse) {
         id = rsp.id
@@ -26,5 +26,4 @@ class SingleHit  {
         type = rsp.type
         score = rsp.score
     }
-
 }

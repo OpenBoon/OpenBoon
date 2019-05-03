@@ -9,7 +9,6 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.UUID
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 /**
@@ -30,7 +29,7 @@ class UUIDFileSystem(root: Path) : ObjectFileSystem {
     }
 
     override operator fun get(category: String, value: Any, type: String, variants: List<String>?): OfsFile {
-        val uuid : UUID = when {
+        val uuid: UUID = when {
             value is UUID -> value
             StaticUtils.UUID_REGEXP.matches(value.toString()) -> UUID.fromString(value.toString())
             else -> nameBasedGenerator.generate(value.toString())
