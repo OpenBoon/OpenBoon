@@ -25,7 +25,7 @@ class TransactionEventManager {
      * Queue up and AfterCommit runnable.
      * @param body
      */
-    fun afterCommit(sync: Boolean=true, body: () -> Unit) {
+    fun afterCommit(sync: Boolean = true, body: () -> Unit) {
         register(AfterCommit(sync, workQueue, body))
     }
 
@@ -37,7 +37,6 @@ class TransactionEventManager {
             } catch (e: Exception) {
                 logger.warn("Failed to execute TransactionSynchronization in immediate mode, " + e.message, e)
             }
-
         } else {
             TransactionSynchronizationManager.registerSynchronization(txs)
         }
@@ -64,13 +63,10 @@ class AfterCommit(private val sync: Boolean, val workQueue: AsyncListenableTaskE
     override fun afterCommit() {
         if (sync) {
             body()
-        }
-        else {
+        } else {
             workQueue.execute(DelegatingSecurityContextRunnable(Runnable {
                 body()
             }, ctx))
         }
-
-
     }
 }

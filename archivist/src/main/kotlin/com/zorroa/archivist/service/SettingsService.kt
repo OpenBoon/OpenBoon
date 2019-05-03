@@ -46,21 +46,20 @@ interface SettingsService {
     companion object {
         val ListOfSettingsType: TypeReference<List<Setting>> = object : TypeReference<List<Setting>>() {}
     }
-
 }
 
 class SettingValidator(
-        var regex:Regex? = null,
-        var allowNull : Boolean = true,
-        var emit: Any? = null)
-
+    var regex: Regex? = null,
+    var allowNull: Boolean = true,
+    var emit: Any? = null
+)
 
 @Service
 class SettingsServiceImpl @Autowired constructor(
-        private val properties: ApplicationProperties,
-        private val settingsDao: SettingsDao,
-        private val eventBus: EventBus
-): SettingsService, ApplicationListener<ContextRefreshedEvent> {
+    private val properties: ApplicationProperties,
+    private val settingsDao: SettingsDao,
+    private val eventBus: EventBus
+) : SettingsService, ApplicationListener<ContextRefreshedEvent> {
 
     // a memoizer would be nicer but no good ones that allow manual invalidation
     private val settingsCache = CacheBuilder.newBuilder()
@@ -112,7 +111,6 @@ class SettingsServiceImpl @Autowired constructor(
         } catch (e: ExecutionException) {
             throw IllegalStateException(e)
         }
-
     }
 
     override fun getAll(): List<Setting> {
@@ -131,10 +129,9 @@ class SettingsServiceImpl @Autowired constructor(
         } catch (e: IndexOutOfBoundsException) {
             throw EntityNotFoundException("Setting not found: $key", e)
         }
-
     }
 
-    fun checkValid(key: String, value: String?) : SettingValidator {
+    fun checkValid(key: String, value: String?): SettingValidator {
         val validator = WHITELIST[key] ?: throw ArchivistWriteException(
                 "Cannot set key $key remotely")
 
@@ -143,8 +140,7 @@ class SettingsServiceImpl @Autowired constructor(
                 throw ArchivistWriteException(
                         "Invalid value for $key, cannot be null")
             }
-        }
-        else {
+        } else {
             validator.regex?.let {
                 if (!it.matches(value)) {
                     throw ArchivistWriteException(
@@ -197,7 +193,7 @@ class SettingsServiceImpl @Autowired constructor(
         try {
             InputStreamReader(resource.inputStream, Charset.forName("UTF-8")).use { isr ->
                 BufferedReader(isr).use { br ->
-                    br.forEachLine { line->
+                    br.forEachLine { line ->
                         if (line.startsWith("###")) {
                             description = if (description != null) {
                                 description + line.substring(3)
@@ -207,7 +203,6 @@ class SettingsServiceImpl @Autowired constructor(
                             description = description!!.trim { it <= ' ' }
                         } else if (line.startsWith("##")) {
                             category = line.substring(2).trim { it <= ' ' }
-
                         } else if (!line.startsWith("#") && line.contains("=")) {
                             val e = Splitter.on('=').trimResults().omitEmptyStrings().splitToList(line)
                             property = e[0]
@@ -219,7 +214,6 @@ class SettingsServiceImpl @Autowired constructor(
                                 } catch (ex: IndexOutOfBoundsException) {
                                     null
                                 }
-
                             }
 
                             val currentValue: String = if ("<HIDDEN>" == value) {
@@ -273,12 +267,12 @@ class SettingsServiceImpl @Autowired constructor(
                 .put("archivist.search.sortFields",
                         SettingValidator(Regex("([_\\w\\.]+:(ASC|DESC))(,[\\w\\.]+:(ASC|DESC))*")))
                 .put("archivist.watermark.enabled",
-                        SettingValidator(booleanValue, emit=watermarkSettingsChanged))
-                .put("archivist.watermark.template", SettingValidator(emit=watermarkSettingsChanged))
+                        SettingValidator(booleanValue, emit = watermarkSettingsChanged))
+                .put("archivist.watermark.template", SettingValidator(emit = watermarkSettingsChanged))
                 .put("archivist.watermark.min-proxy-size",
-                        SettingValidator(numericValue, emit=watermarkSettingsChanged))
+                        SettingValidator(numericValue, emit = watermarkSettingsChanged))
                 .put("archivist.watermark.scale",
-                        SettingValidator(decimalValue, emit=watermarkSettingsChanged))
+                        SettingValidator(decimalValue, emit = watermarkSettingsChanged))
                 .put("curator.lightbar.label-template",
                         SettingValidator(null))
                 .put("curator.thumbnail.badge-template",

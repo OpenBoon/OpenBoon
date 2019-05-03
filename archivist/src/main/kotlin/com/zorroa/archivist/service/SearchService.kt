@@ -3,9 +3,17 @@ package com.zorroa.archivist.service
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.ScanAndScrollAssetIterator
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.search.*
+import com.zorroa.archivist.search.AssetFilter
+import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.search.KwConfFilter
+import com.zorroa.archivist.search.RangeQuery
+import com.zorroa.archivist.search.SimilarityFilter
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
 import com.zorroa.archivist.security.getPermissionsFilter
@@ -13,7 +21,6 @@ import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
-import io.micrometer.core.instrument.MeterRegistry
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
@@ -24,7 +31,11 @@ import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
-import org.elasticsearch.common.xcontent.*
+import org.elasticsearch.common.xcontent.DeprecationHandler
+import org.elasticsearch.common.xcontent.NamedXContentRegistry
+import org.elasticsearch.common.xcontent.ToXContent
+import org.elasticsearch.common.xcontent.XContentFactory
+import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.BoolQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -47,7 +58,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
 import java.io.OutputStream
-import java.util.*
+import java.util.Arrays
+import java.util.Collections
+import java.util.UUID
 import java.util.stream.Collectors
 
 interface SearchService {
@@ -60,7 +73,7 @@ interface SearchService {
 
     fun getSuggestTerms(text: String): List<String>
 
-    fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean=false): Iterable<Document>
+    fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp: Boolean = false): Iterable<Document>
 
     /**
      * Execute a scan and scroll and for every hit, call the given function.
@@ -68,7 +81,7 @@ interface SearchService {
      * @param fetchSource Set to true if your function requires the full doc
      * @param func the function to call for each batch
      */
-    fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit)
+    fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits) -> Unit)
 
     /**
      * Execute the AssetSearch with the given Paging object.
@@ -98,18 +111,20 @@ interface SearchService {
     fun getQuery(search: AssetSearch): QueryBuilder
 }
 
-class SearchContext(val linkedFolders: MutableSet<UUID>,
-                    val perms: Boolean,
-                    val postFilter: Boolean,
-                    var score: Boolean=false)
+class SearchContext(
+    val linkedFolders: MutableSet<UUID>,
+    val perms: Boolean,
+    val postFilter: Boolean,
+    var score: Boolean = false
+)
 
 @Service
 class SearchServiceImpl @Autowired constructor(
-        val indexDao: IndexDao,
-        val indexRoutingService: IndexRoutingService,
-        val properties: ApplicationProperties
+    val indexDao: IndexDao,
+    val indexRoutingService: IndexRoutingService,
+    val properties: ApplicationProperties
 
-): SearchService {
+) : SearchService {
     @Autowired
     internal lateinit var folderService: FolderService
 
@@ -155,7 +170,6 @@ class SearchServiceImpl @Autowired constructor(
                     // probably don't have access to the folder.
                     counts.add(0L)
                 }
-
             }
         }
 
@@ -202,7 +216,7 @@ class SearchServiceImpl @Autowired constructor(
         }.orEmpty()
     }
 
-    override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits)-> Unit) {
+    override fun scanAndScroll(search: AssetSearch, fetchSource: Boolean, func: (hits: SearchHits) -> Unit) {
         val rest = indexRoutingService.getOrgRestClient()
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
@@ -220,7 +234,6 @@ class SearchServiceImpl @Autowired constructor(
                 sr.scroll(TimeValue.timeValueSeconds(30))
                 rsp = rest.client.scroll(sr, RequestOptions.DEFAULT)
             } while (rsp.hits.hits.isNotEmpty())
-
         } finally {
             try {
                 val cs = ClearScrollRequest()
@@ -231,7 +244,7 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
     }
-    override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
+    override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp: Boolean): Iterable<Document> {
         val rest = indexRoutingService.getOrgRestClient()
         val builder = rest.newSearchBuilder()
         builder.source.query(getQuery(search))
@@ -309,9 +322,9 @@ class SearchServiceImpl @Autowired constructor(
                      * ES no longer supports empty filter aggs, so if curator
                      * submits one, it gets replaced with a match_all query.
                      */
-                    val filter = agg["filter"] as Map<String,Any>
+                    val filter = agg["filter"] as Map<String, Any>
                     if (filter.isEmpty()) {
-                        agg["filter"] = mapOf<String,Map<String,Object>>("match_all" to mapOf())
+                        agg["filter"] = mapOf<String, Map<String, Object>>("match_all" to mapOf())
                     }
                 }
 
@@ -322,8 +335,8 @@ class SearchServiceImpl @Autowired constructor(
 
             val searchModule = SearchModule(Settings.EMPTY, false, Collections.emptyList())
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-                     NamedXContentRegistry(searchModule.namedXContents),
-                    DeprecationHandler.THROW_UNSUPPORTED_OPERATION, json)
+                NamedXContentRegistry(searchModule.namedXContents),
+                DeprecationHandler.THROW_UNSUPPORTED_OPERATION, json)
 
             val ssb2 = SearchSourceBuilder.fromXContent(parser)
             ssb2.aggregations().aggregatorFactories.forEach { ssb.aggregation(it) }
@@ -375,9 +388,12 @@ class SearchServiceImpl @Autowired constructor(
         return getQuery(search, mutableSetOf(), perms = true, postFilter = false)
     }
 
-    private fun getQuery(search: AssetSearch,
-                         linkedFolders: MutableSet<String>,
-                         perms: Boolean, postFilter: Boolean): QueryBuilder {
+    private fun getQuery(
+        search: AssetSearch,
+        linkedFolders: MutableSet<String>,
+        perms: Boolean,
+        postFilter: Boolean
+    ): QueryBuilder {
 
         val query = QueryBuilders.boolQuery()
         query.filter(getOrganizationFilter())
@@ -511,8 +527,7 @@ class SearchServiceImpl @Autowired constructor(
             search.queryFields.forEach { (field, boost) ->
                 qstring.field(field, boost)
             }
-        }
-        else {
+        } else {
             queryFields.forEach { (field, boost) ->
                 qstring.field(field, boost)
             }
@@ -525,7 +540,7 @@ class SearchServiceImpl @Autowired constructor(
      * Apply the given filter to the overall boolean query.
      *
      * @param filter
-     * @param query;
+     * @param query
      * @return
      */
     private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<String>) {
@@ -593,7 +608,6 @@ class SearchServiceImpl @Autowired constructor(
                         throw IllegalArgumentException(
                                 "RangeQueryBuilder has no '" + f.name + "' method")
                     }
-
                 }
                 query.must(rqb)
             }
@@ -616,7 +630,7 @@ class SearchServiceImpl @Autowired constructor(
             handleKwConfFilter(filter.kwconf, query)
         }
 
-        if(filter.query != null) {
+        if (filter.query != null) {
             query.must(getQueryStringQuery(filter.query))
         }
 
@@ -659,7 +673,7 @@ class SearchServiceImpl @Autowired constructor(
         }
     }
 
-    private fun handleKwConfFilter(filters: Map<String, KwConfFilter>,  query: BoolQueryBuilder) {
+    private fun handleKwConfFilter(filters: Map<String, KwConfFilter>, query: BoolQueryBuilder) {
         val bool = QueryBuilders.boolQuery()
         query.must(bool)
 
@@ -677,7 +691,7 @@ class SearchServiceImpl @Autowired constructor(
             fsqb.boostMode(CombineFunction.REPLACE)
             fsqb.scoreMode(FunctionScoreQuery.ScoreMode.MULTIPLY)
 
-            val fbool =  QueryBuilders.boolQuery()
+            val fbool = QueryBuilders.boolQuery()
             fbool.must(fsqb)
             fbool.must(QueryBuilders.termsQuery("$field.keyword.raw", filter.keywords))
             bool.should(fbool)
@@ -707,8 +721,7 @@ class SearchServiceImpl @Autowired constructor(
                 if (hashValue != null) {
                     hashes.add(hashValue)
                     weights.add(if (hash.weight == null) 1.0f else hash.weight)
-                }
-                else {
+                } else {
                     logger.warn("could not find value at: {} {}", hashValue, field)
                 }
             }
@@ -728,11 +741,10 @@ class SearchServiceImpl @Autowired constructor(
             fsqb.scoreMode(FunctionScoreQuery.ScoreMode.MULTIPLY)
 
             hammingBool.should(fsqb)
-
         }
     }
 
-    fun getDefaultSort() : Map<String, SortOrder> {
+    fun getDefaultSort(): Map<String, SortOrder> {
         val result = linkedMapOf<String, SortOrder>()
         val sortFields = properties.getList("archivist.search.sortFields")
 
@@ -741,7 +753,7 @@ class SearchServiceImpl @Autowired constructor(
                 .forEach {
                     val order = try {
                         SortOrder.valueOf(it[1])
-                    } catch(e:IllegalArgumentException) {
+                    } catch (e: IllegalArgumentException) {
                         SortOrder.ASC
                     }
                     result[it[0]] = order
