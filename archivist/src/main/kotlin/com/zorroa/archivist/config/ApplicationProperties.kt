@@ -9,7 +9,8 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
+import java.util.Arrays
+import java.util.Properties
 
 class ApplicationPropertiesException : RuntimeException {
 
@@ -51,7 +52,6 @@ interface ApplicationProperties {
     fun parseToMap(key: String): Map<String, String>
 }
 
-
 class SpringApplicationProperties : ApplicationProperties {
 
     @Autowired
@@ -90,7 +90,6 @@ class SpringApplicationProperties : ApplicationProperties {
                 throw ApplicationPropertiesException(
                         "Invalid file for '" + key + "', " + e.message, e)
             }
-
         } else {
             value.split(",").map { it.trim() }.filter { it.isNotBlank() }
         }
@@ -206,7 +205,6 @@ class SpringApplicationProperties : ApplicationProperties {
         } catch (t: Throwable) {
             value
         }
-
     }
 
     override fun max(key: String, value: Double): Double {
@@ -215,7 +213,6 @@ class SpringApplicationProperties : ApplicationProperties {
         } catch (t: Throwable) {
             value
         }
-
     }
 
     override fun min(key: String, value: Int): Int {
@@ -224,7 +221,6 @@ class SpringApplicationProperties : ApplicationProperties {
         } catch (t: Throwable) {
             value
         }
-
     }
 
     override fun min(key: String, value: Double): Double {
@@ -233,7 +229,6 @@ class SpringApplicationProperties : ApplicationProperties {
         } catch (t: Throwable) {
             value
         }
-
     }
 
     private fun walkPropertySource(result: MutableMap<String, Any>, prefix: String, propSource: PropertySource<*>) {

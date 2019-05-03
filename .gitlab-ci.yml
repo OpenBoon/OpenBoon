@@ -10,6 +10,7 @@ variables:
   DOCKERHUB_IMAGE_ELASTIC: zorroaevi/elasticsearch:$CI_COMMIT_REF_SLUG
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
   DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://localhost:2375
 
 build_artifacts:
   image: maven:3.6.0-jdk-8-slim

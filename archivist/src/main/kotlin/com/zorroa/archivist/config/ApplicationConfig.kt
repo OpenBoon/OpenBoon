@@ -8,7 +8,17 @@ import com.zorroa.archivist.security.GcpJwtValidator
 import com.zorroa.archivist.security.JwtValidator
 import com.zorroa.archivist.security.MasterJwtValidator
 import com.zorroa.archivist.security.UserJwtValidator
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.AssetServiceImpl
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.FileServerProviderImpl
+import com.zorroa.archivist.service.FileStorageService
+import com.zorroa.archivist.service.GcpPubSubServiceImpl
+import com.zorroa.archivist.service.GcsFileStorageService
+import com.zorroa.archivist.service.IrmAssetServiceImpl
+import com.zorroa.archivist.service.LocalFileStorageService
+import com.zorroa.archivist.service.PubSubService
+import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import io.micrometer.core.instrument.MeterRegistry
@@ -38,14 +48,14 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.*
+import java.util.Properties
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 class ArchivistConfiguration {
 
     @Bean
-    fun properties() : ApplicationProperties = SpringApplicationProperties()
+    fun properties(): ApplicationProperties = SpringApplicationProperties()
 
     @Bean
     fun transactionEventManager(): TransactionEventManager {
@@ -72,7 +82,7 @@ class ArchivistConfiguration {
             builder.withDetail("archivist-plugins",
                     File("/extensions/active").walkTopDown()
                     .map { it.toString() }
-                    .filter { it.endsWith(".jar")}
+                    .filter { it.endsWith(".jar") }
                     .map { FileUtils.basename(it) }
                     .toList())
         }
@@ -81,9 +91,9 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun servletWebServerFactory() : UndertowServletWebServerFactory {
-        val factory =  UndertowServletWebServerFactory()
-        factory.addBuilderCustomizers( UndertowBuilderCustomizer {
+    fun servletWebServerFactory(): UndertowServletWebServerFactory {
+        val factory = UndertowServletWebServerFactory()
+        factory.addBuilderCustomizers(UndertowBuilderCustomizer {
             it.addHttpListener(properties().getInt("server.http_port", 8080), "0.0.0.0")
         })
         if (properties().getBoolean("security.require_ssl", false)) {
@@ -111,7 +121,7 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun fileServerProvider() : FileServerProvider {
+    fun fileServerProvider(): FileServerProvider {
         return FileServerProviderImpl(properties(), dataCredentials())
     }
 
@@ -120,29 +130,28 @@ class ArchivistConfiguration {
      * NFS mount or "gcs" for Google Cloud Storage.
      */
     @Bean
-    fun fileStorageService() : FileStorageService {
+    fun fileStorageService(): FileStorageService {
         val props = properties()
         val type = props.getString("archivist.storage.type")
-        return when(type) {
-            "local"-> {
+        return when (type) {
+            "local" -> {
                 val path = properties().getPath("archivist.storage.path")
                 // OFS gets shoved into the OFS dir.
                 val ufs = UUIDFileSystem(path.resolve("ofs"))
                 LocalFileStorageService(path, ufs)
             }
-            "gcs"-> {
+            "gcs" -> {
                 val bucket = properties().getString("archivist.storage.bucket")
                 GcsFileStorageService(bucket, dataCredentials())
             }
             else -> {
                 throw IllegalStateException("Invalid storage type: $type")
-
             }
         }
     }
 
     @Bean
-    fun workQueue() : AsyncListenableTaskExecutor {
+    fun workQueue(): AsyncListenableTaskExecutor {
         val tpe = ThreadPoolTaskExecutor()
         tpe.corePoolSize = 8
         tpe.maxPoolSize = 8
@@ -153,13 +162,13 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun eventBus() : EventBus {
+    fun eventBus(): EventBus {
         return EventBus()
     }
 
     @Bean
     @Autowired
-    fun pubSubService(meterRegistry: MeterRegistry) : PubSubService? {
+    fun pubSubService(meterRegistry: MeterRegistry): PubSubService? {
         val props = properties()
         if (props.getString("archivist.pubsub.type") == "gcp") {
             val network = networkEnvironment()
@@ -174,25 +183,25 @@ class ArchivistConfiguration {
 
     @Bean
     @Autowired
-    fun assetService(meterRegistry: MeterRegistry) : AssetService {
+    fun assetService(meterRegistry: MeterRegistry): AssetService {
         val network = networkEnvironment()
         val type = properties().getString("archivist.assetStore.type", "sql")
         logger.info("Initializing Core Asset Store: {}", type)
-        return when(type) {
-            "irm"-> {
+        return when (type) {
+            "irm" -> {
                 IrmAssetServiceImpl(
                     IrmCoreDataVaultClientImpl(
                             network.getPublicUrl("core-data-vault-api"),
                             serviceCredentials(),
                             dataCredentials(), meterRegistry))
             }
-            else->AssetServiceImpl()
+            else -> AssetServiceImpl()
         }
     }
 
     @Bean
     @Autowired
-    fun jwtValidator(userDao: UserDao) : JwtValidator {
+    fun jwtValidator(userDao: UserDao): JwtValidator {
         val validators = mutableListOf<JwtValidator>()
         validators.add(UserJwtValidator(userDao))
 
@@ -213,26 +222,25 @@ class ArchivistConfiguration {
         logger.info("Host overrides: {}", override)
 
         return when (props.getString("env.type")) {
-            "app-engine"->  {
+            "app-engine" -> {
                 val project: String = System.getenv("GCLOUD_PROJECT")
                 GoogleAppEngineEnvironment(project, override)
             }
-            "static-vm"-> {
+            "static-vm" -> {
                 StaticVmEnvironment(props.getString("env.project", "dev"), override)
             }
             "docker-compose" -> {
                 DockerComposeEnvironment(override)
             }
-            else-> {
+            else -> {
                 DockerComposeEnvironment(override)
             }
         }
     }
 
-
     @Bean
-    @ConditionalOnProperty(name=["archivist.debug-mode.enabled"], havingValue = "true")
-    fun requestLoggingFilter() : CommonsRequestLoggingFilter  {
+    @ConditionalOnProperty(name = ["archivist.debug-mode.enabled"], havingValue = "true")
+    fun requestLoggingFilter(): CommonsRequestLoggingFilter {
         val filter = CommonsRequestLoggingFilter()
         filter.setIncludePayload(true)
         filter.setMaxPayloadLength(1024)
@@ -242,7 +250,7 @@ class ArchivistConfiguration {
     /**
      * The service credentials key.
      */
-    fun serviceCredentials() : Path {
+    fun serviceCredentials(): Path {
         return properties()
                 .getPath("archivist.config.path")
                 .resolve("service-credentials.json")
@@ -251,7 +259,7 @@ class ArchivistConfiguration {
     /**
      *  The data credentials key.
      */
-    fun dataCredentials() : Path {
+    fun dataCredentials(): Path {
         return properties()
                 .getPath("archivist.config.path")
                 .resolve("data-credentials.json")
@@ -264,5 +272,3 @@ class ArchivistConfiguration {
         var unittest = false
     }
 }
-
-

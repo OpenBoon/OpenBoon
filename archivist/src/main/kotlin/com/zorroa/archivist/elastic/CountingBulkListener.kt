@@ -15,7 +15,6 @@ class CountingBulkListener : BulkProcessor.Listener {
     val errorCount = LongAdder()
 
     override fun beforeBulk(l: Long, bulkRequest: BulkRequest) {
-
     }
 
     override fun afterBulk(l: Long, bulkRequest: BulkRequest, bulkResponse: BulkResponse) {

@@ -8,11 +8,12 @@ import org.apache.http.HttpRequest
 import java.io.FileInputStream
 import java.nio.file.Path
 import java.security.interfaces.RSAPrivateKey
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 interface JwtSigner {
 
-    fun sign(req: HttpRequest, host:String, claims: Map<String,String>?=null)
+    fun sign(req: HttpRequest, host: String, claims: Map<String, String>? = null)
 }
 
 /**
@@ -20,7 +21,7 @@ interface JwtSigner {
  */
 class GcpJwtSigner : JwtSigner {
 
-    private val credential : GoogleCredential
+    private val credential: GoogleCredential
 
     constructor(credential: GoogleCredential) {
         this.credential = credential
@@ -33,18 +34,17 @@ class GcpJwtSigner : JwtSigner {
     constructor() {
         if (System.getenv("GOOGLE_APPLICATION_CREDENTIALS") != null) {
             credential = GoogleCredential.getApplicationDefault()
-        }
-        else {
+        } else {
             throw IllegalStateException("Unable to determine path of google credentials")
         }
     }
 
-    override fun sign(req: HttpRequest, host:String, claims: Map<String,String>?)  {
-        val token =  getToken(host, claims)
+    override fun sign(req: HttpRequest, host: String, claims: Map<String, String>?) {
+        val token = getToken(host, claims)
         req.setHeader("Authorization", "Bearer $token")
     }
 
-    private fun getToken(host:String, claims: Map<String,String>?=null) : String {
+    private fun getToken(host: String, claims: Map<String, String>? = null): String {
         val now = Date()
         var expiration = Calendar.getInstance()
         expiration.add(Calendar.HOUR_OF_DAY, 1)
@@ -55,7 +55,7 @@ class GcpJwtSigner : JwtSigner {
                 .withAudience(host)
                 .withIssuedAt(now)
                 .withExpiresAt(expiration.time)
-        claims?.forEach { (k,v)->
+        claims?.forEach { (k, v) ->
             builder.withClaim(k, v)
         }
         return builder.sign(Algorithm.RSA256(null,
