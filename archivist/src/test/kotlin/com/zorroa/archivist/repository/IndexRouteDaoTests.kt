@@ -12,7 +12,7 @@ class IndexRouteDaoTests : AbstractTest() {
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 

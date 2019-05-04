@@ -2,7 +2,13 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.PermissionFilter
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.PermissionUpdateSpec
+import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
@@ -12,7 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.core.context.SecurityContextHolder
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class PermissionDaoTests : AbstractTest() {
 
@@ -97,13 +107,13 @@ class PermissionDaoTests : AbstractTest() {
 
     @Test
     fun testCountWithFilter() {
-        val count = permissionDao.count(PermissionFilter(types=listOf("user")))
+        val count = permissionDao.count(PermissionFilter(types = listOf("user")))
         assertTrue(count > 0)
 
         val b = PermissionSpec("foo", "bar")
         permissionDao.create(b, true)
 
-        val newCount = permissionDao.count(PermissionFilter(types=listOf("user")))
+        val newCount = permissionDao.count(PermissionFilter(types = listOf("user")))
         assertEquals(count, newCount)
     }
 
@@ -178,13 +188,13 @@ class PermissionDaoTests : AbstractTest() {
         permissionDao.create(b, false)
 
         var perms = permissionDao.getAll(
-                PermissionFilter(types=listOf("test1")))
+                PermissionFilter(types = listOf("test1")))
         assertEquals(1, perms.size().toLong())
 
-        perms = permissionDao.getAll(PermissionFilter(names=listOf("test2")))
+        perms = permissionDao.getAll(PermissionFilter(names = listOf("test2")))
         assertEquals(1, perms.size().toLong())
 
-        perms = permissionDao.getAll(PermissionFilter(names=listOf("test2")))
+        perms = permissionDao.getAll(PermissionFilter(names = listOf("test2")))
         assertEquals(1, perms.size().toLong())
     }
 

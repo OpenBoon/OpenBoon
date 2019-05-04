@@ -2,14 +2,17 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserFilter
+import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.crypto.bcrypt.BCrypt
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -95,7 +98,7 @@ class UserDaoTests : AbstractTest() {
         }
     }
 
-    @Test(expected=EmptyResultDataAccessException::class)
+    @Test(expected = EmptyResultDataAccessException::class)
     fun testFindOneFailure() {
         val filter = UserFilter(usernames = listOf("bob_dole"))
         userDao.findOne(filter)
@@ -237,6 +240,5 @@ class UserDaoTests : AbstractTest() {
         val t = userDao.get(user.id)
         assertTrue(t.timeLastLogin > 0)
         assertEquals(1, t.loginCount.toLong())
-
     }
 }

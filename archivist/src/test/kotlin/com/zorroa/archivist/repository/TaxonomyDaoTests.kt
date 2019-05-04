@@ -1,15 +1,12 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.FolderSpec
-import com.zorroa.archivist.domain.Taxonomy
 import com.zorroa.archivist.domain.TaxonomySpec
-import com.zorroa.archivist.service.FolderService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 
 class TaxonomyDaoTests : AbstractTest() {
 
@@ -30,7 +27,6 @@ class TaxonomyDaoTests : AbstractTest() {
         val tax2 = taxonomyDao.get(tax1.taxonomyId)
         assertEquals(tax1, tax2)
     }
-
 
     @Test
     fun testGetByFolder() {

@@ -2,8 +2,6 @@ package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.Maps
-import com.google.common.collect.Sets
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.PagedList
@@ -13,7 +11,11 @@ import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,7 +28,7 @@ class IndexDaoTests : AbstractTest() {
     internal lateinit var indexDao: IndexDao
     internal lateinit var asset1: Document
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -228,7 +230,5 @@ class IndexDaoTests : AbstractTest() {
         assertEquals(4, result.createdAssetIds.size)
         assertEquals(4, result.warningAssetIds.size)
         assertEquals(1, result.retryCount.toLong())
-
     }
-
 }
