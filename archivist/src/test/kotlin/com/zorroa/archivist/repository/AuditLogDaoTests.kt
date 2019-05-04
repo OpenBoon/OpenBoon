@@ -1,26 +1,30 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.AuditLogEntrySpec
+import com.zorroa.archivist.domain.AuditLogFilter
+import com.zorroa.archivist.domain.AuditLogType
+import com.zorroa.archivist.domain.FieldSpec
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class AuditLogDaoTests : AbstractTest() {
 
     @Autowired
-    lateinit var auditLogDao : AuditLogDao
+    lateinit var auditLogDao: AuditLogDao
 
     @Test
     fun testCreateNoField() {
         val spec = AuditLogEntrySpec(
                 UUID.fromString("D585D35C-AF3D-4AEB-A78F-42C61C1077CB"),
                 AuditLogType.Created,
-                message="The asset was created")
+                message = "The asset was created")
         val entry = auditLogDao.create(spec)
         assertEquals(spec.assetId, entry.assetId)
         assertEquals(spec.type, entry.type)
@@ -34,8 +38,8 @@ class AuditLogDaoTests : AbstractTest() {
         val spec = AuditLogEntrySpec(
                 UUID.fromString("D585D35C-AF3D-4AEB-A78F-42C61C1077CB"),
                 AuditLogType.Changed,
-                attrName="irm.documentType",
-                value="cat")
+                attrName = "irm.documentType",
+                value = "cat")
         val entry = auditLogDao.create(spec)
         assertEquals(spec.attrName, entry.attrName)
         assertEquals(Json.serializeToString("cat"), entry.value)
@@ -49,14 +53,13 @@ class AuditLogDaoTests : AbstractTest() {
         val spec = AuditLogEntrySpec(
                 UUID.fromString("D585D35C-AF3D-4AEB-A78F-42C61C1077CB"),
                 AuditLogType.Changed,
-                fieldId=field.id,
-                attrName=field.attrName,
-                value="cat")
+                fieldId = field.id,
+                attrName = field.attrName,
+                value = "cat")
         val entry = auditLogDao.create(spec)
         assertEquals(spec.attrName, entry.attrName)
 
-
-        val filter = AuditLogFilter(fieldIds=listOf(field.id))
+        val filter = AuditLogFilter(fieldIds = listOf(field.id))
         assertEquals(1, auditLogDao.getAll(filter).page.totalCount)
     }
 
@@ -67,8 +70,8 @@ class AuditLogDaoTests : AbstractTest() {
             specs.add(AuditLogEntrySpec(
                     UUID.fromString("D585D35C-AF3D-4AEB-A78F-42C61C1077CB"),
                     AuditLogType.Changed,
-                    attrName="irm.documentType",
-                    value="cat"))
+                    attrName = "irm.documentType",
+                    value = "cat"))
         }
 
         assertEquals(10, auditLogDao.batchCreate(specs))
@@ -83,10 +86,10 @@ class AuditLogDaoTests : AbstractTest() {
             specs.add(AuditLogEntrySpec(
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
-                    attrName="irm.documentType",
-                    value="cat"))
+                    attrName = "irm.documentType",
+                    value = "cat"))
         }
-        val filter = AuditLogFilter(assetIds=listOf(UUID.fromString(assetId)))
+        val filter = AuditLogFilter(assetIds = listOf(UUID.fromString(assetId)))
 
         assertEquals(10, auditLogDao.batchCreate(specs))
         assertEquals(10, auditLogDao.count(filter))
@@ -101,10 +104,10 @@ class AuditLogDaoTests : AbstractTest() {
             specs.add(AuditLogEntrySpec(
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
-                    attrName="irm.documentType",
-                    value="cat"))
+                    attrName = "irm.documentType",
+                    value = "cat"))
         }
-        val filter = AuditLogFilter(assetIds=listOf(UUID.fromString(assetId), UUID.randomUUID()))
+        val filter = AuditLogFilter(assetIds = listOf(UUID.fromString(assetId), UUID.randomUUID()))
         assertEquals(10, auditLogDao.batchCreate(specs))
         assertEquals(10, auditLogDao.getAll(filter).page.totalCount)
     }
@@ -118,10 +121,10 @@ class AuditLogDaoTests : AbstractTest() {
             specs.add(AuditLogEntrySpec(
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
-                    attrName="irm.documentType",
-                    value="cat"))
+                    attrName = "irm.documentType",
+                    value = "cat"))
         }
-        val filter = AuditLogFilter(userIds=listOf(getUserId()))
+        val filter = AuditLogFilter(userIds = listOf(getUserId()))
         assertEquals(10, auditLogDao.batchCreate(specs))
         assertEquals(10, auditLogDao.getAll(filter).page.totalCount)
     }
@@ -135,15 +138,15 @@ class AuditLogDaoTests : AbstractTest() {
             specs.add(AuditLogEntrySpec(
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
-                    attrName="irm.documentType",
-                    value="cat"))
+                    attrName = "irm.documentType",
+                    value = "cat"))
         }
         val filter = AuditLogFilter(
-                assetIds=listOf(UUID.fromString(assetId)),
-                userIds=listOf(getUserId()),
-                types=listOf(AuditLogType.Changed, AuditLogType.Created),
-                attrNames=listOf("irm.documentType"),
-                timeCreated = LongRangeFilter(0, System.currentTimeMillis()+1000))
+                assetIds = listOf(UUID.fromString(assetId)),
+                userIds = listOf(getUserId()),
+                types = listOf(AuditLogType.Changed, AuditLogType.Created),
+                attrNames = listOf("irm.documentType"),
+                timeCreated = LongRangeFilter(0, System.currentTimeMillis() + 1000))
         assertEquals(10, auditLogDao.batchCreate(specs))
         assertEquals(10, auditLogDao.getAll(filter).page.totalCount)
     }
@@ -156,8 +159,8 @@ class AuditLogDaoTests : AbstractTest() {
             specs.add(AuditLogEntrySpec(
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
-                    attrName="irm.documentType",
-                    value="cat"))
+                    attrName = "irm.documentType",
+                    value = "cat"))
         }
         auditLogDao.batchCreate(specs)
         // Just test the DB allows us to sort on each defined sortMap col

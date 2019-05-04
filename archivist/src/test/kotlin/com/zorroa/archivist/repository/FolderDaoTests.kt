@@ -1,12 +1,23 @@
 package com.zorroa.archivist.repository
 
-
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.AclEntry
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.security.Groups
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
@@ -29,7 +40,7 @@ class FolderDaoTests : AbstractTest() {
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -82,8 +93,10 @@ class FolderDaoTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun createRootFolder() {
-        val org = organizationDao.create(OrganizationSpec("test",
-                indexRouteDao.getRandomDefaultRoute().id))
+        val org = organizationDao.create(
+            OrganizationSpec("test",
+                indexRouteDao.getRandomDefaultRoute().id)
+        )
         val root = folderDao.createRootFolder(org)
         assertEquals("/", root.name)
         assertNull(root.parentId)
@@ -157,7 +170,6 @@ class FolderDaoTests : AbstractTest() {
         assertTrue(folderDao.setDyHierarchyRoot(folder, "source.extension"))
         assertTrue(folderDao.removeDyHierarchyRoot(folder))
     }
-
 
     @Test
     fun testGetChildrenInsecure() {

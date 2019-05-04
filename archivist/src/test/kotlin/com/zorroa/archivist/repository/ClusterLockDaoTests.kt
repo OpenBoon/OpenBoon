@@ -63,7 +63,7 @@ class ClusterLockDaoTests : AbstractTest() {
     fun testHoldLock() {
         assertEquals(LockStatus.Locked,
                 clusterLockDao.lock(ClusterLockSpec.combineLock("foo").apply {
-                    holdTillTimeout=true
+                    holdTillTimeout = true
                     timeout = 500
                     timeoutUnits = TimeUnit.MILLISECONDS
                 }))

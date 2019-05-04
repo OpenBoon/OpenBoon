@@ -1,11 +1,15 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.FieldFilter
+import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-
-import org.junit.Assert.*
 import org.springframework.dao.IncorrectResultSizeDataAccessException
 
 class FieldDaoTests : AbstractTest() {
@@ -83,26 +87,26 @@ class FieldDaoTests : AbstractTest() {
         var filter = FieldFilter(ids = listOf(f1.id, f2.id))
         assertEquals(2, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(attrTypes=listOf(AttrType.NumberInteger))
+        filter = FieldFilter(attrTypes = listOf(AttrType.NumberInteger))
         assertEquals(1, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(attrNames=listOf("document.float", "document.notes"))
+        filter = FieldFilter(attrNames = listOf("document.float", "document.notes"))
         assertEquals(2, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(editable=true, attrNames = listOf("document.float"))
+        filter = FieldFilter(editable = true, attrNames = listOf("document.float"))
         assertEquals(1, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(editable=false)
+        filter = FieldFilter(editable = false)
         assertEquals(2, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(editable=false)
+        filter = FieldFilter(editable = false)
         assertEquals(2, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(suggest=true)
+        filter = FieldFilter(suggest = true)
         assertEquals(1, fieldDao.getAll(filter).size())
     }
 
-    @Test(expected= IncorrectResultSizeDataAccessException::class)
+    @Test(expected = IncorrectResultSizeDataAccessException::class)
     fun testFindOne() {
         // Clear out existing fields to make filters easier.
         fieldDao.deleteAll()
@@ -131,5 +135,4 @@ class FieldDaoTests : AbstractTest() {
         field = fieldDao.allocate(AttrType.NumberInteger)
         assertTrue(field.endsWith("__0"))
     }
-
 }

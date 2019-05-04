@@ -22,8 +22,8 @@ class DispatchTaskDaoTests : AbstractTest() {
     fun testGetNext() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         jobService.create(spec)
         val tasks = dispatchTaskDao.getNext(getOrgId(), 5)
@@ -36,8 +36,8 @@ class DispatchTaskDaoTests : AbstractTest() {
     fun testGetTaskPriority() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         assertTrue(dispatchTaskDao.getDispatchPriority().isEmpty())
 

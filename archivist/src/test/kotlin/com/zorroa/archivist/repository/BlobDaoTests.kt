@@ -2,7 +2,11 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.Blob
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
@@ -16,10 +20,10 @@ import kotlin.test.assertTrue
 class BlobDaoTests : AbstractTest() {
 
     @Autowired
-    private lateinit var blobDao : BlobDao
+    private lateinit var blobDao: BlobDao
 
     @Autowired
-    private lateinit var permissionDao : PermissionDao
+    private lateinit var permissionDao: PermissionDao
 
     lateinit var blob: Blob
 
@@ -78,7 +82,7 @@ class BlobDaoTests : AbstractTest() {
 
         val _acl = Acl()
         _acl.addEntry(perm, 7)
-        blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=true })
+        blobDao.setPermissions(id, SetPermissions().apply { acl = _acl; replace = true })
         assertEquals(1, blobDao.getPermissions(id).size.toLong())
     }
 
@@ -91,7 +95,7 @@ class BlobDaoTests : AbstractTest() {
         val _acl = Acl()
         _acl.addEntry(test, 7)
 
-        blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=true })
+        blobDao.setPermissions(id, SetPermissions().apply { acl = _acl; replace = true })
 
         authenticate("user")
         id = blobDao.getId("app", "feature", "name", Access.Write)
@@ -104,7 +108,7 @@ class BlobDaoTests : AbstractTest() {
         val perm = permissionService.getPermission("zorroa::administrator")
         _acl.addEntry(perm, 7)
         _acl.addEntry(perm, 7)
-        blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=true })
+        blobDao.setPermissions(id, SetPermissions().apply { acl = _acl; replace = true })
     }
 
     @Test
@@ -113,20 +117,20 @@ class BlobDaoTests : AbstractTest() {
         var _acl = Acl()
         val perm = permissionService.getPermission(Groups.ADMIN)
         _acl.addEntry(perm, 7)
-        blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=false })
+        blobDao.setPermissions(id, SetPermissions().apply { acl = _acl; replace = false })
         assertEquals(1, blobDao.getPermissions(id).size)
 
         // add a new permission
         val p = permissionDao.get(Groups.MANAGER)
         _acl = Acl()
         _acl.addEntry(p, 7)
-        blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=false })
+        blobDao.setPermissions(id, SetPermissions().apply { acl = _acl; replace = false })
         assertEquals(2, blobDao.getPermissions(id).size.toLong())
 
         // remove permission
         _acl = Acl()
         _acl.addEntry(p, 0)
-        blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=false })
+        blobDao.setPermissions(id, SetPermissions().apply { acl = _acl; replace = false })
         assertEquals(1, blobDao.getPermissions(id).size.toLong())
     }
 }
