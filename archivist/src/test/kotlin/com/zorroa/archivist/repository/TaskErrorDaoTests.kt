@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.StackTraceElement
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.TaskEvent
@@ -13,6 +14,7 @@ import com.zorroa.common.domain.Task
 import com.zorroa.common.domain.TaskSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.Random
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
