@@ -511,7 +511,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val rest = indexRoutingService.getOrgRestClient()
 
         logger.info("processing bulk taxon for: {}", getUser())
-        clusterLockExecutor.inline(ClusterLockSpec.softLock(tax.clusterLockId).apply { timeout = 10 }) {
+        clusterLockExecutor.inline(ClusterLockSpec.hardLock(tax.clusterLockId).apply { timeout = 10 }) {
             try {
                 do {
                     for (hit in rsp.hits.hits) {
