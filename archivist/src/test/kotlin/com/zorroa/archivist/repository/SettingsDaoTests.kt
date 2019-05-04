@@ -41,6 +41,4 @@ class SettingsDaoTests : AbstractTest() {
         settingsDao!!.unset("foo.bar")
         settingsDao!!.get("foo.bar")
     }
-
-
 }

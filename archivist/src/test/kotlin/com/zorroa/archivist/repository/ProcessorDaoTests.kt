@@ -8,7 +8,7 @@ import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -43,7 +43,6 @@ class ProcessorDaoTests : AbstractTest() {
         println(procs.list[0].id)
         println(procs.list[1].id)
         assertTrue(procs.size() > 0)
-
     }
 
     @Test
