@@ -108,7 +108,7 @@ class ExportServiceImpl @Autowired constructor(
 
         val generate =  mutableListOf<ProcessorRef>()
         generate.add(ProcessorRef(
-                "zplugins.asset.generators.AssetSearchGenerator",
+                "zplugins.core.generators.AssetSearchGenerator",
                 mapOf<String, Any>(
                         "search" to spec.search
                 )

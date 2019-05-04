@@ -237,7 +237,7 @@ class IndexRoutingServiceImpl @Autowired
                 execute = listOf(),
                 generate = listOf(
                 ProcessorRef(
-                        "zplugins.asset.generators.AssetSearchGenerator",
+                        "zplugins.core.generators.AssetSearchGenerator",
                         mapOf("search" to mapOf<String,Any>()))
                 ))
 

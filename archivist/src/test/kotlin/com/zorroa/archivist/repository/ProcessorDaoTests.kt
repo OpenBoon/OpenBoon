@@ -53,7 +53,7 @@ class ProcessorDaoTests : AbstractTest() {
         processorDao.batchCreate(specs)
 
         // Class names
-        var filter = ProcessorFilter(classNames = listOf("zplugins.asset.generators.AssetSearchGenerator"))
+        var filter = ProcessorFilter(classNames = listOf("zplugins.core.generators.AssetSearchGenerator"))
         var procs = processorDao.getAll(filter)
         assertEquals(procs.size(), 1)
         // types names
