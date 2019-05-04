@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.FieldSpec
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class FieldEditDaoTests : AbstractTest() {
@@ -15,9 +15,9 @@ class FieldEditDaoTests : AbstractTest() {
     @Autowired
     lateinit var fieldEditDao: FieldEditDao
 
-    lateinit var field : Field
+    lateinit var field: Field
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 
@@ -55,5 +55,4 @@ class FieldEditDaoTests : AbstractTest() {
         val map = fieldEditDao.getAssetUpdateMap(spec.assetId)
         assertEquals("pig", map[field.attrName])
     }
-
 }

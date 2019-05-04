@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -12,7 +12,6 @@ class AssetDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var assetDao: AssetDao
-
 
     @Test
     fun testCreateOrReplace() {
@@ -24,7 +23,7 @@ class AssetDaoTests : AbstractTest() {
     @Test
     fun testBatchCreateOrReplace() {
         val docs = mutableListOf<Document>()
-        for (i in 1 .. 10) {
+        for (i in 1..10) {
             val doc = Document(UUID.randomUUID())
             doc.setAttr("foo", "bar")
             docs.add(doc)
@@ -37,7 +36,7 @@ class AssetDaoTests : AbstractTest() {
     @Test
     fun testBatchUpdate() {
         val docs = mutableListOf<Document>()
-        for (i in 1 .. 10) {
+        for (i in 1..10) {
             val doc = Document(UUID.randomUUID())
             doc.setAttr("foo", "bar")
             docs.add(doc)
@@ -71,26 +70,26 @@ class AssetDaoTests : AbstractTest() {
     @Test
     fun testGetAll() {
         val docs = mutableListOf<Document>()
-        for (i in 1 .. 10) {
+        for (i in 1..10) {
             val doc = Document(UUID.randomUUID())
             doc.setAttr("foo", "bar")
             docs.add(doc)
         }
         assetDao.batchCreateOrReplace(docs)
-        val map = assetDao.getAll(docs.map{it.id})
+        val map = assetDao.getAll(docs.map { it.id })
         assertEquals(10, map.size)
     }
 
     @Test
     fun testGetMap() {
         val docs = mutableListOf<Document>()
-        for (i in 1 .. 10) {
+        for (i in 1..10) {
             val doc = Document(UUID.randomUUID())
             doc.setAttr("foo", "bar")
             docs.add(doc)
         }
         assetDao.batchCreateOrReplace(docs)
-        val map = assetDao.getMap(docs.map{it.id})
+        val map = assetDao.getMap(docs.map { it.id })
         assertEquals(10, map.size)
         docs.forEach {
             assertTrue(it.id in map.keys)

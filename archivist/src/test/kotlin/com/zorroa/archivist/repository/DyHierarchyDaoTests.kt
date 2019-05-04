@@ -2,12 +2,17 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchyLevelType
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.Pager
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Assert.assertEquals
 
@@ -51,7 +56,6 @@ class DyHierarchyDaoTests : AbstractTest() {
         assertEquals(dyhi, d2)
     }
 
-
     @Test
     fun testDelete() {
         assertTrue(dyHierarchyDao!!.delete(dyhi.id))
@@ -78,7 +82,6 @@ class DyHierarchyDaoTests : AbstractTest() {
         list = dyHierarchyDao!!.getAll()
         assertEquals(count + 1, list.size.toLong())
     }
-
 
     @Test
     fun testGetAllPaged() {

@@ -1,12 +1,16 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Pipeline
+import com.zorroa.archivist.domain.PipelineSpec
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.QueuedFile
+import com.zorroa.archivist.domain.QueuedFileSpec
 import com.zorroa.archivist.security.getOrgId
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class FileQueueDaoTests : AbstractTest() {
@@ -41,13 +45,12 @@ class FileQueueDaoTests : AbstractTest() {
         val files = mutableListOf<QueuedFile>()
         val org = getOrgId()
         for (i in 1..count) {
-            val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(),"/tmp/foo$i.jpg", mapOf("foo" to "bar"))
+            val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(), "/tmp/foo$i.jpg", mapOf("foo" to "bar"))
             files.add(fileQueueDao.create(spec))
         }
         assertEquals(count, jdbc.queryForObject("SELECT COUNT(1) FROM queued_file", Int::class.java))
         assertEquals(count, fileQueueDao.delete(files))
         assertEquals(0, jdbc.queryForObject("SELECT COUNT(1) FROM queued_file", Int::class.java))
-
     }
 
     @Test
@@ -65,7 +68,7 @@ class FileQueueDaoTests : AbstractTest() {
         val org = getOrgId()
 
         for (i in 1..20) {
-            val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(),"/tmp/foo$i.jpg", mapOf("foo" to "bar"))
+            val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(), "/tmp/foo$i.jpg", mapOf("foo" to "bar"))
             fileQueueDao.create(spec)
         }
 
@@ -80,12 +83,12 @@ class FileQueueDaoTests : AbstractTest() {
         val org = getOrgId()
 
         for (i in 1..5) {
-            val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(),"/tmp/foo$i.jpg", mapOf("foo" to "bar"))
+            val spec = QueuedFileSpec(org, pipeline.id, UUID.randomUUID(), "/tmp/foo$i.jpg", mapOf("foo" to "bar"))
             fileQueueDao.create(spec)
         }
 
         for (i in 1..5) {
-            val spec = QueuedFileSpec(org, pipeline2.id, UUID.randomUUID(),"/tmp/foo$i.jpg", mapOf("foo" to "bar"))
+            val spec = QueuedFileSpec(org, pipeline2.id, UUID.randomUUID(), "/tmp/foo$i.jpg", mapOf("foo" to "bar"))
             fileQueueDao.create(spec)
         }
 
@@ -95,24 +98,22 @@ class FileQueueDaoTests : AbstractTest() {
         // Just validate the pipelines are grouped together.
 
         if (queued[0].pipelineId == pipeline.id) {
-            for (i in 0 .. 4)  {
+            for (i in 0..4) {
                 assertEquals(queued[i].pipelineId, pipeline.id)
             }
 
-            for (i in 5 .. 9)  {
+            for (i in 5..9) {
                 assertEquals(queued[i].pipelineId, pipeline2.id)
             }
-        }
-        else {
+        } else {
 
-            for (i in 0 .. 4)  {
+            for (i in 0..4) {
                 assertEquals(queued[i].pipelineId, pipeline2.id)
             }
 
-            for (i in 5 .. 9)  {
+            for (i in 5..9) {
                 assertEquals(queued[i].pipelineId, pipeline.id)
             }
         }
-
     }
 }
