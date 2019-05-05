@@ -22,7 +22,7 @@ interface DispatchTaskDao {
     fun getNextByOrg(organizationId: UUID, count: Int=10): List<DispatchTask>
 
     /**
-     * Return the next N tasks with an interactive priority or above.
+     * Return the next N tasks with a minimum priority.
      *
      * @param count The maximum number of tasks to return
      */
@@ -46,7 +46,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
     }
 
     override fun getNextByJobPriority(minPriority: Int, count: Int): List<DispatchTask> {
-        return jdbc.query(GET_PRIORITY, MAPPER,
+        return jdbc.query(GET_BY_PRIORITY, MAPPER,
             JobState.Active.ordinal,
             TaskState.Waiting.ordinal,
             minPriority,
@@ -136,7 +136,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
          * - job time created
          * - task time created
          */
-        private const val GET_PRIORITY = GET +
+        private const val GET_BY_PRIORITY = GET +
             "AND " +
                 "job.int_priority <= ? " +
             "ORDER BY " +
