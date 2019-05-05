@@ -19,7 +19,14 @@ interface DispatchTaskDao {
      * @param organizationId The unique Organization ID
      * @param count The maximum number of tasks to return
      */
-    fun getNext(organizationId: UUID, count: Int=10): List<DispatchTask>
+    fun getNextByOrg(organizationId: UUID, count: Int=10): List<DispatchTask>
+
+    /**
+     * Return the next N tasks with an interactive priority or above.
+     *
+     * @param count The maximum number of tasks to return
+     */
+    fun getNextByJobPriority(minPriority: Int, count: Int=10): List<DispatchTask>
 
     /**
      * Return a list of DispatchPriority instances, sorted by by highest priority first.
@@ -30,12 +37,20 @@ interface DispatchTaskDao {
 @Repository
 class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
-    override fun getNext(organizationId: UUID, count: Int): List<DispatchTask> {
-        return jdbc.query(GET, MAPPER,
+    override fun getNextByOrg(organizationId: UUID, count: Int): List<DispatchTask> {
+        return jdbc.query(GET_BY_ORG, MAPPER,
                 JobState.Active.ordinal,
                 TaskState.Waiting.ordinal,
                 organizationId,
                 count)
+    }
+
+    override fun getNextByJobPriority(minPriority: Int, count: Int): List<DispatchTask> {
+        return jdbc.query(GET_PRIORITY, MAPPER,
+            JobState.Active.ordinal,
+            TaskState.Waiting.ordinal,
+            minPriority,
+            count)
     }
 
     override fun getDispatchPriority(): List<DispatchPriority> {
@@ -78,7 +93,8 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "GROUP BY " +
                 "job.pk_organization"
 
-        private const val GET = "SELECT " +
+        private const val GET =
+            "SELECT " +
                 "job.pk_organization," +
                 "job.json_env," +
                 "job.json_args," +
@@ -90,17 +106,40 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "task.int_run_count,"+
                 "task.json_script, "+
                 "task.str_host " +
-                "FROM " +
-                    "task INNER JOIN job ON job.pk_job = task.pk_job " +
-                "WHERE " +
-                    "job.int_state=? " +
-                "AND " +
-                    "job.bool_paused='f' " +
-                "AND " +
-                    "task.int_state=? " +
-                "AND " +
-                    "job.pk_organization=? " +
-                "ORDER BY " +
-                    "job.int_priority,task.time_created LIMIT ?"
+            "FROM " +
+                "task INNER JOIN job ON job.pk_job = task.pk_job " +
+            "WHERE " +
+                "job.int_state=? " +
+            "AND " +
+                "job.bool_paused='f' " +
+            "AND " +
+                "task.int_state=? "
+
+
+        /**
+         * Provides FIFO scheduling by job. The order is:
+         *
+         * - job priority
+         * - job time created
+         * - task time created
+         */
+        private const val GET_BY_ORG = GET +
+            "AND " +
+                "job.pk_organization=? " +
+            "ORDER BY " +
+                "job.int_priority,job.time_created,task.time_created LIMIT ?"
+
+        /**
+         * Provides FIFO scheduling by high priority job, not org filtered.
+         *
+         * - job priority
+         * - job time created
+         * - task time created
+         */
+        private const val GET_PRIORITY = GET +
+            "AND " +
+                "job.int_priority <= ? " +
+            "ORDER BY " +
+                "job.int_priority,job.time_created,task.time_created LIMIT ?"
     }
 }

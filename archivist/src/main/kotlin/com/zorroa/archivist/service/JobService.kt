@@ -81,6 +81,13 @@ class JobServiceImpl @Autowired constructor(
             spec.name = "${type.name} job launched by ${user.getName()} on $date"
         }
 
+        /**
+         * Up the priority on export jobs to Interactive priority.
+         */
+        if (type == PipelineType.Export && spec.priority == JobPriority.Standard) {
+            spec.priority = JobPriority.Interactive
+        }
+
         val job = jobDao.create(spec, type)
         if (spec.replace) {
             /**

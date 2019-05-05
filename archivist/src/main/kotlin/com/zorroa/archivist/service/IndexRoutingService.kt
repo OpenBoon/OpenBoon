@@ -9,6 +9,7 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsRestClient
 import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobPriority
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
@@ -243,7 +244,7 @@ class IndexRoutingServiceImpl @Autowired
 
         val spec = JobSpec(name,
                 script,
-                priority = 10000,
+                priority = JobPriority.Reindex,
                 replace = true,
                 paused = true,
                 pauseDurationSeconds = REINDEX_JOB_DELAY_SEC)

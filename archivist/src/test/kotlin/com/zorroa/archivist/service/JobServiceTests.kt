@@ -2,9 +2,11 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobPriority
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.Task
@@ -41,6 +43,17 @@ class JobServiceTests : AbstractTest() {
         assertEquals(spec.name, job.name)
         val tcount = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?", Int::class.java, job.id)
         assertEquals(2, tcount)
+    }
+
+    @Test
+    fun testCreateExport() {
+        val spec2 = JobSpec(null,
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"))
+        val job2 = jobService.create(spec2, PipelineType.Export)
+        assertEquals(JobPriority.Interactive, job2.priority)
+        assertEquals(PipelineType.Export, job2.type)
     }
 
     @Test

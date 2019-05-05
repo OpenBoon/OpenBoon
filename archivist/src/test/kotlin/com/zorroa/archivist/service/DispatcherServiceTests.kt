@@ -10,6 +10,8 @@ import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystSpec
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobPriority
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.LockState
 import com.zorroa.common.domain.TaskState
@@ -34,6 +36,13 @@ class GCPDispatcherServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var fileStorageService: FileStorageService
+
+    fun launchJob(priority: Int) : Job {
+        val spec1 = JobSpec("test_job_p$priority",
+            emptyZpsScript("priority_$priority"),
+            priority = priority)
+        return jobService.create(spec1)
+    }
 
     @Test
     fun testGetNext() {
@@ -125,13 +134,14 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testGetNext() {
+    fun testGetNextWithInteractivePriortity() {
         val analyst = "https://127.0.0.1:5000"
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
-        val job = jobService.create(spec)
+
+        // Standard job is launched first, which should go first
+        launchJob(JobPriority.Standard)
+        Thread.sleep(2)
+        // A higher priority job is launched, now it goes first.
+        val job = launchJob(JobPriority.Interactive)
 
         authenticateAsAnalyst()
         val next = dispatchQueueManager.getNext()
@@ -140,6 +150,26 @@ class DispatcherServiceTests : AbstractTest() {
             assertEquals(job.id, it.jobId)
             val host: String = this.jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
                     String::class.java, it.id)
+            assertEquals(analyst, host)
+        }
+    }
+
+    @Test
+    fun testGetNext() {
+        val analyst = "https://127.0.0.1:5000"
+        val spec = JobSpec("test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"))
+        val job = jobService.create(spec)
+
+        authenticateAsAnalyst()
+        val next = dispatchQueueManager.getNext()
+        assertNotNull(next)
+        next?.let {
+            assertEquals(job.id, it.jobId)
+            val host: String = this.jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
+                String::class.java, it.id)
             assertEquals(analyst, host)
         }
     }
@@ -346,5 +376,12 @@ class DispatcherServiceTests : AbstractTest() {
         assertNotNull(zps2.execute)
         // Validate task2 inherited from task
         assertEquals(1, zps.execute!!.size)
+    }
+
+    fun launchJob(priority: Int) : Job {
+        val spec1 = JobSpec("test_job_p$priority",
+            emptyZpsScript("priority_$priority"),
+            priority = priority)
+        return jobService.create(spec1)
     }
 }
