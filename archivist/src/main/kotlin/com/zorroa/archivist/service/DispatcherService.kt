@@ -42,6 +42,9 @@ interface DispatcherService {
      * Return a list of waiting [DispatchTask] instances with at least
      * the minimum priority.  Organization is not taken into account.
      * Tasks are pre-sorted by highest priortity first.
+     *
+     * @param minPriority The minimum task priority.
+     * @param count The maximum number of tasks to return.
      */
     fun getWaitingTasks(minPriority : Int, count: Int) : List<DispatchTask>
 

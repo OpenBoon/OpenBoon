@@ -22,8 +22,9 @@ interface DispatchTaskDao {
     fun getNextByOrg(organizationId: UUID, count: Int=10): List<DispatchTask>
 
     /**
-     * Return the next N tasks with a minimum priority.
+     * Return the next N tasks with a minimum priority.  Lower is first.
      *
+     * @param minPriority The minimum priority value.
      * @param count The maximum number of tasks to return
      */
     fun getNextByJobPriority(minPriority: Int, count: Int=10): List<DispatchTask>
