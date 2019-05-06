@@ -110,7 +110,7 @@ class TaxonomyServiceTests : AbstractTest() {
 
         folderService.addAssets(folder1, listOf(d.id))
         refreshIndex()
-        taxonomyService.tagTaxonomy(tax1, folder1, true)
+        taxonomyService.tagTaxonomy(tax1, folder1, false)
         refreshIndex()
 
         val result = taxonomyService.untagTaxonomy(tax1, 1000)

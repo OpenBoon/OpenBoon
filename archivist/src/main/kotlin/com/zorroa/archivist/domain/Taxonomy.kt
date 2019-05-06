@@ -35,3 +35,17 @@ class Taxonomy(
         return taxonomyId.hashCode()
     }
 }
+
+/**
+ * The result of tagging a [Taxonomy]
+ *
+ * @param assetCount The number of assets tagged.
+ * @param folderCount The number of folders processed.
+ * @param timestamp The new timetamp for the [Taxonomy]
+ *
+ */
+class TagTaxonomyResult (
+    val assetCount : Long,
+    val folderCount: Long,
+    val timestamp : Long
+)
