@@ -29,13 +29,25 @@ interface JobId {
     val jobId: UUID
 }
 
+/**
+ * Standard Job priority values. A lower priority goes first.
+ *
+ * @property Standard Standard job priority.
+ * @property Interactive Interactive job priority.
+ * @property Reindex Reindex job priority.
+ */
+object JobPriority {
+    const val Standard = 100
+    const val Interactive = 1
+    const val Reindex = -32000
+}
 
 class JobSpec (
         var name: String?,
         var script : ZpsScript?,
         val args: MutableMap<String, Any>? = mutableMapOf(),
         val env: MutableMap<String, String>? =  mutableMapOf(),
-        val priority: Int=100,
+        var priority: Int=JobPriority.Standard,
         var paused: Boolean=false,
         val pauseDurationSeconds: Long?=null,
         val replace:Boolean=false

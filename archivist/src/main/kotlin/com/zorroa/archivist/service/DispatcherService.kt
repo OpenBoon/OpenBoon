@@ -37,6 +37,17 @@ interface DispatcherService {
      * @param count: The maximium number of tasks to return.
      */
     fun getWaitingTasks(organizationId: UUID, count: Int) : List<DispatchTask>
+
+    /**
+     * Return a list of waiting [DispatchTask] instances with at least
+     * the minimum priority.  Organization is not taken into account.
+     * Tasks are pre-sorted by highest priortity first.
+     *
+     * @param minPriority The minimum task priority.
+     * @param count The maximum number of tasks to return.
+     */
+    fun getWaitingTasks(minPriority : Int, count: Int) : List<DispatchTask>
+
     fun startTask(task: InternalTask): Boolean
     fun stopTask(task: InternalTask, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
@@ -85,16 +96,36 @@ class DispatchQueueManager @Autowired constructor(
         dispatcherService.getDispatchPriority()
     }, cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS)
 
+    /**
+     * Return the next available dispatchable [DispatchTask] or null if there are not any.
+     */
     fun getNext(): DispatchTask? {
 
-        val endpoint = getAnalystEndpoint()
-        if (analystService.isLocked(endpoint)) {
+        val analyst = getAnalystEndpoint()
+        if (analystService.isLocked(analyst)) {
             return null
         }
 
         meterRegistry.counter(
                 METRICS_KEY, "op", "requests").increment()
 
+        /**
+         * First check for interactive jobs.
+         */
+        val tasks = dispatcherService.getWaitingTasks(JobPriority.Interactive, numberOfTasksToPoll)
+        meterRegistry.counter(
+            METRICS_KEY, "op", "tasks-polled").increment(tasks.size.toDouble())
+
+        for (task in tasks) {
+            if (queueAndDispatchTask(task, analyst)) {
+                return task
+            }
+        }
+
+        /**
+         * If no interactive jobs can be found, pull tasks by organization with
+         * least number of running tasks first.
+         */
         for (priority in cachedDispatchPriority.get()) {
 
             val tasks = dispatcherService.getWaitingTasks(
@@ -104,33 +135,49 @@ class DispatchQueueManager @Autowired constructor(
                     METRICS_KEY, "op", "tasks-polled").increment(tasks.size.toDouble())
 
             for (task in tasks) {
-                if (dispatcherService.queueTask(task, endpoint)) {
-                    meterRegistry.counter(
-                            METRICS_KEY, "op", "tasks-queued").increment()
-
-                    task.env["ZORROA_TASK_ID"] = task.id.toString()
-                    task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-                    task.env["ZORROA_ORGANIZATION_ID"] = task.organizationId.toString()
-                    task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
-                    task.env["ZORROA_AUTH_TOKEN"] =
-                            generateUserToken(task.userId, userDao.getHmacKey(task.userId))
-                    if (properties.getBoolean("archivist.debug-mode.enabled")) {
-                        task.env["ZORROA_DEBUG_MODE"] = "true"
-                    }
-                    withAuth(SuperAdminAuthentication(task.organizationId)) {
-                        val fs = fileStorageService.get(task.getLogSpec())
-                        val logFile = fileStorageService.getSignedUrl(
-                                fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
-                        task.logFile = logFile
-                    }
-                    return task
-                }
-                else {
-                    meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
-                }
+               if (queueAndDispatchTask(task, analyst)) {
+                   return task
+               }
             }
         }
+
         return null
+    }
+
+    /**
+     * Attempt to queue and dispatch a given task. Return true
+     * if the task is dispatched, false if not.
+     *
+     * @param task The task to dispatch
+     * @param analyst The hostname for the [Analyst] asking for a task.
+     */
+    fun queueAndDispatchTask(task: DispatchTask, analyst: String) : Boolean {
+        if (dispatcherService.queueTask(task, analyst)) {
+            meterRegistry.counter(
+                METRICS_KEY, "op", "tasks-queued").increment()
+
+            task.env["ZORROA_TASK_ID"] = task.id.toString()
+            task.env["ZORROA_JOB_ID"] = task.jobId.toString()
+            task.env["ZORROA_ORGANIZATION_ID"] = task.organizationId.toString()
+            task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
+            task.env["ZORROA_AUTH_TOKEN"] =
+                generateUserToken(task.userId, userDao.getHmacKey(task.userId))
+            if (properties.getBoolean("archivist.debug-mode.enabled")) {
+                task.env["ZORROA_DEBUG_MODE"] = "true"
+            }
+            withAuth(SuperAdminAuthentication(task.organizationId)) {
+                val fs = fileStorageService.get(task.getLogSpec())
+                val logFile = fileStorageService.getSignedUrl(
+                    fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
+                task.logFile = logFile
+            }
+            return true
+        }
+        else {
+            meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
+        }
+
+        return false
     }
 
     companion object {
@@ -185,7 +232,12 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun getWaitingTasks(organizationId: UUID, count: Int) : List<DispatchTask> {
-        return dispatchTaskDao.getNext(organizationId, count)
+        return dispatchTaskDao.getNextByOrg(organizationId, count)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getWaitingTasks(minPriority : Int, count: Int) : List<DispatchTask> {
+        return dispatchTaskDao.getNextByJobPriority(minPriority, count)
     }
 
     override fun queueTask(task: DispatchTask, endpoint: String): Boolean {
