@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.TagTaxonomyResult
 import com.zorroa.archivist.domain.Taxonomy
 import com.zorroa.archivist.domain.TaxonomySchema
 import com.zorroa.archivist.domain.TaxonomySpec
@@ -59,7 +60,7 @@ interface TaxonomyService {
 
     fun tagTaxonomyAsync(tax: Taxonomy, start: Folder?, force: Boolean)
 
-    fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean): Map<String, Long>
+    fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean): TagTaxonomyResult
 
     fun untagTaxonomyAsync(tax: Taxonomy, updatedTime: Long)
 
@@ -169,8 +170,8 @@ class TaxonomyServiceImpl @Autowired constructor(
         }
     }
 
-    override fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean): Map<String, Long> {
-        val lock = ClusterLockSpec.combineLock(tax.clusterLockId).apply { timeout = 5 }
+    override fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean): TagTaxonomyResult {
+        val lock = ClusterLockSpec.combineLock(tax.clusterLockId).apply { timeout = 10 }
         val result = clusterLockExecutor.inline(lock) {
             try {
                 tagTaxonomyInternal(tax, start, force)
@@ -179,7 +180,12 @@ class TaxonomyServiceImpl @Autowired constructor(
                 null
             }
         }
-        return result ?: emptyMap()
+        result?.let {
+            if (force) {
+                untagTaxonomy(tax, it.timestamp)
+            }
+        }
+        return result ?: TagTaxonomyResult(0, 0, 0)
     }
 
     override fun tagTaxonomyAsync(tax: Taxonomy, start: Folder?, force: Boolean) {
@@ -188,7 +194,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         })
     }
 
-    fun tagTaxonomyInternal(tax: Taxonomy, start: Folder?, force: Boolean): Map<String, Long> {
+    fun tagTaxonomyInternal(tax: Taxonomy, start: Folder?, force: Boolean): TagTaxonomyResult {
         var start = start
 
         if (start == null) {
@@ -300,9 +306,6 @@ class TaxonomyServiceImpl @Autowired constructor(
                 }
             }
 
-            if (force) {
-                untagTaxonomy(tax, updateTime)
-            }
         } finally {
             bulkProcessor.awaitClose(1000, TimeUnit.HOURS)
         }
@@ -311,10 +314,10 @@ class TaxonomyServiceImpl @Autowired constructor(
             fieldService.invalidateFields()
         }
 
-        return ImmutableMap.of(
-                "assetCount", cbl.getSuccessCount(),
-                "folderCount", folderTotal.toLong(),
-                "timestamp", updateTime)
+        return TagTaxonomyResult(
+            cbl.getSuccessCount(),
+            folderTotal.toLong(),
+            updateTime)
     }
 
     override fun untagTaxonomyAsync(tax: Taxonomy, timestamp: Long) {
@@ -511,8 +514,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         val rest = indexRoutingService.getOrgRestClient()
 
         logger.info("processing bulk taxon for: {}", getUser())
-        // Use a non combined hard lock but the same lock ID.
-        clusterLockExecutor.inline(ClusterLockSpec.hardLock(tax.clusterLockId)) {
+        clusterLockExecutor.inline(ClusterLockSpec.hardLock(tax.clusterLockId).apply { timeout = 10 }) {
             try {
                 do {
                     for (hit in rsp.hits.hits) {

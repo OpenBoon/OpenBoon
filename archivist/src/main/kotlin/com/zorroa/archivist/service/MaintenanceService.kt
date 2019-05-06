@@ -166,7 +166,7 @@ class MaintenanceServiceImpl @Autowired constructor(
         val jobService: JobService,
         val dispatcherService: DispatcherService,
         val analystService: AnalystService,
-        val clusterLockService: ClusterLockService,
+        val clusterLockExpirationManager: ClusterLockExpirationManager,
         val clusterLockExecutor: ClusterLockExecutor,
         val meterRegistry: MeterRegistry,
         val config: MaintenanceConfiguration) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
@@ -198,7 +198,7 @@ class MaintenanceServiceImpl @Autowired constructor(
         }
         // This has to be outside the lock since it needs to get the
         // maintenance lock to clear expired locks.
-        clusterLockService.clearExpired()
+        clusterLockExpirationManager.clearExpired()
         clusterLockExecutor.inline(lock) {
             meterRegistry.timer(meterName, listOf(Tag.of("event", "execute"))).record {
                 handleExpiredJobs()

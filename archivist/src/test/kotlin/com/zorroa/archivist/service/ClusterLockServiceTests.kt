@@ -2,14 +2,70 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ClusterLockSpec
+import com.zorroa.archivist.domain.LockStatus
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.LongAdder
 import javax.annotation.PostConstruct
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+
+class ClusterLockExpirationManagerTests : AbstractTest() {
+
+    @Autowired
+    lateinit var clusterLockExpirationManager: ClusterLockExpirationManager
+
+    @Autowired
+    lateinit var clusterLockService: ClusterLockService
+
+    @Test
+    fun testClearExpired() {
+        assertEquals(0, clusterLockExpirationManager.clearExpired())
+        clusterLockService.lock(ClusterLockSpec("foo", timeout = 1, timeoutUnits = TimeUnit.MILLISECONDS))
+        Thread.sleep(5)
+        assertEquals(1, clusterLockExpirationManager.clearExpired())
+    }
+
+}
+
+
+class ClusterLockServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var clusterLockService: ClusterLockService
+
+    @Test
+    fun testGetExpired() {
+        val lock = "counter"
+        assertEquals(LockStatus.Locked, clusterLockService.lock(ClusterLockSpec.softLock(lock)))
+        val time = System.currentTimeMillis() - 1000
+
+        assertEquals(1, jdbc.update("UPDATE cluster_lock SET time_expired=? WHERE str_name=?", time, lock))
+
+        val expired = clusterLockService.getExpired()[0]
+        assertEquals(lock, expired.name)
+        assertEquals(time, expired.expiredTime)
+    }
+
+    @Test
+    fun testRemoveExpired() {
+        val lock = "counter2"
+        assertEquals(LockStatus.Locked, clusterLockService.lock(ClusterLockSpec.softLock(lock)))
+        val time = System.currentTimeMillis() - 1000
+
+
+        assertEquals(1, jdbc.update("UPDATE cluster_lock SET time_expired=? WHERE str_name=?", time, lock))
+
+        assertTrue(clusterLockService.isLocked(lock))
+        val expired = clusterLockService.getExpired()[0]
+        assertTrue(clusterLockService.clearExpired(expired))
+        assertFalse(clusterLockService.isLocked(lock))
+    }
+}
 
 class ClusterLockExecutorTests : AbstractTest() {
 

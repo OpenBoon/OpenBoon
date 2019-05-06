@@ -33,18 +33,25 @@ class ClusterLockDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testRemoveExpired() {
-        assertEquals(LockStatus.Locked, clusterLockDao.lock(ClusterLockSpec(
-                "foo", timeout = 1, timeoutUnits = TimeUnit.MILLISECONDS)))
-        Thread.sleep(2)
-        assertEquals(1, clusterLockDao.clearExpired())
-        assertEquals(0, clusterLockDao.clearExpired())
-    }
-
-    @Test
     fun testIsLocked() {
         clusterLockDao.lock(ClusterLockSpec("foo", timeout = 1, timeoutUnits = TimeUnit.MILLISECONDS))
         assertTrue(clusterLockDao.isLocked("foo"))
+    }
+
+    @Test
+    fun testCheckLock() {
+        clusterLockDao.lock(ClusterLockSpec("foo", timeout = 1, timeoutUnits = TimeUnit.MINUTES))
+        assertTrue(clusterLockDao.checkLock("foo"))
+        clusterLockDao.unlock("foo")
+        assertFalse(clusterLockDao.checkLock("foo"))
+    }
+
+    @Test
+    fun testGetExpired() {
+        assertTrue(clusterLockDao.getExpired().isEmpty())
+        clusterLockDao.lock(ClusterLockSpec("foo", timeout = 1, timeoutUnits = TimeUnit.MILLISECONDS))
+        Thread.sleep(5)
+        assertEquals(1, clusterLockDao.getExpired().size)
     }
 
     @Test
@@ -70,7 +77,7 @@ class ClusterLockDaoTests : AbstractTest() {
 
         assertTrue(clusterLockDao.isLocked("foo"))
         Thread.sleep(1001)
-        clusterLockDao.clearExpired()
+        clusterLockDao.unlock(clusterLockDao.getExpired()[0].name)
         assertFalse(clusterLockDao.isLocked("counter"))
     }
 }

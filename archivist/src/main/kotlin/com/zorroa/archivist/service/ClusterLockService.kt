@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.ClusterLockExpired
 import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LockStatus
 import com.zorroa.archivist.domain.LogAction
@@ -81,7 +81,9 @@ interface ClusterLockService {
      *
      * @return The number of locks cleared.
      */
-    fun clearExpired() : Int
+    fun clearExpired(expired: ClusterLockExpired) : Boolean
+
+    fun getExpired() : List<ClusterLockExpired>
 
     /**
      * Return true of the given lock is combined with a lock with the same name.  If
@@ -89,7 +91,7 @@ interface ClusterLockService {
      *
      * @param spec The lock specification
      */
-    fun combineLocks(spec : ClusterLockSpec): Boolean
+    fun hasCombineLocks(spec : ClusterLockSpec): Boolean
 }
 
 /**
@@ -174,7 +176,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
                     } catch (e: Exception) {
                         logger.warn("Failed background cluster task: ${spec.name}", e)
                     }
-                } while (clusterLockService.combineLocks(spec))
+                } while (clusterLockService.hasCombineLocks(spec))
             } finally {
                 if (ArchivistConfiguration.unittest) {
                     clusterLockService.unlock(spec)
@@ -203,7 +205,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
                             } catch (e: Exception) {
                                 logger.warn("Failed background cluster task: ${spec.name}", e)
                             }
-                        } while (clusterLockService.combineLocks(spec))
+                        } while (clusterLockService.hasCombineLocks(spec))
                     } finally {
                         clusterLockService.unlock(spec)
                     }
@@ -223,7 +225,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
                     try {
                         do {
                             result = body()
-                        } while (clusterLockService.combineLocks(spec))
+                        } while (clusterLockService.hasCombineLocks(spec))
                     } finally {
                         clusterLockService.unlock(spec)
                     }
@@ -278,16 +280,16 @@ class ClusterLockServiceImpl @Autowired constructor(
         return clusterLockDao.isLocked(name)
     }
 
-    override fun combineLocks(spec : ClusterLockSpec): Boolean {
+    override fun hasCombineLocks(spec : ClusterLockSpec): Boolean {
         if (!spec.combineMultiple) { return false }
-        return clusterLockDao.combineLocks(spec)
+        return clusterLockDao.hasCombineLocks(spec)
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     override fun lock(spec : ClusterLockSpec) : LockStatus {
         val ctx = ClusterLockContext.getLocks()
         if (ctx.contains(spec.name)) {
-            meterRegistry.counter("zorroa-reentrant-lock", "lockName", spec.name)
+            meterRegistry.counter("zorroa.cluster_lock.reentrant").increment()
             return LockStatus.Locked
         }
         val locked = clusterLockDao.lock(spec)
@@ -307,17 +309,46 @@ class ClusterLockServiceImpl @Autowired constructor(
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    override fun clearExpired() : Int {
-        return try {
-            clusterLockDao.clearExpired()
-        } catch (e: Exception) {
-            logger.warn("Failed to clear expired cluster locks, ", e)
-            0
+    @Transactional(readOnly = true)
+    override fun getExpired() : List<ClusterLockExpired> {
+        return clusterLockDao.getExpired()
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    override fun clearExpired(expired: ClusterLockExpired): Boolean {
+        return if (clusterLockDao.checkLock(expired.name)) {
+            clusterLockDao.unlock(expired.name)
+        }
+        else {
+            val time = System.currentTimeMillis() - expired.expiredTime
+            logger.warn("The lock ${expired.name} is still locked after $time ms")
+            meterRegistry.counter("zorroa.cluster_lock.expire_failure").increment()
+            false
         }
     }
 
     companion object {
         private val logger = LoggerFactory.getLogger(ClusterLockServiceImpl::class.java)
+    }
+}
+
+/**
+ * The ClusterLockExpirationManager attempts to delete each individual expired
+ * lock in its own transaction.
+ */
+@Component
+class ClusterLockExpirationManager @Autowired constructor(
+    val clusterLockService: ClusterLockService,
+    val meterRegistry: MeterRegistry
+) {
+
+    fun clearExpired() : Int {
+        var result = 0
+        for (expired in clusterLockService.getExpired()) {
+            if (clusterLockService.clearExpired(expired)) {
+                result += 1
+            }
+        }
+        return result
     }
 }
