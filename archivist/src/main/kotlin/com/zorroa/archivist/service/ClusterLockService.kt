@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.ClusterLockExpired
 import com.zorroa.archivist.domain.ClusterLockSpec
@@ -92,7 +91,7 @@ interface ClusterLockService {
      *
      * @param spec The lock specification
      */
-    fun combineLocks(spec : ClusterLockSpec): Boolean
+    fun hasCombineLocks(spec : ClusterLockSpec): Boolean
 }
 
 /**
@@ -177,7 +176,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
                     } catch (e: Exception) {
                         logger.warn("Failed background cluster task: ${spec.name}", e)
                     }
-                } while (clusterLockService.combineLocks(spec))
+                } while (clusterLockService.hasCombineLocks(spec))
             } finally {
                 if (ArchivistConfiguration.unittest) {
                     clusterLockService.unlock(spec)
@@ -206,7 +205,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
                             } catch (e: Exception) {
                                 logger.warn("Failed background cluster task: ${spec.name}", e)
                             }
-                        } while (clusterLockService.combineLocks(spec))
+                        } while (clusterLockService.hasCombineLocks(spec))
                     } finally {
                         clusterLockService.unlock(spec)
                     }
@@ -226,7 +225,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
                     try {
                         do {
                             result = body()
-                        } while (clusterLockService.combineLocks(spec))
+                        } while (clusterLockService.hasCombineLocks(spec))
                     } finally {
                         clusterLockService.unlock(spec)
                     }
@@ -281,9 +280,9 @@ class ClusterLockServiceImpl @Autowired constructor(
         return clusterLockDao.isLocked(name)
     }
 
-    override fun combineLocks(spec : ClusterLockSpec): Boolean {
+    override fun hasCombineLocks(spec : ClusterLockSpec): Boolean {
         if (!spec.combineMultiple) { return false }
-        return clusterLockDao.combineLocks(spec)
+        return clusterLockDao.hasCombineLocks(spec)
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

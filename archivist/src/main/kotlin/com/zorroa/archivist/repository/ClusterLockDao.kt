@@ -6,14 +6,11 @@ import com.zorroa.archivist.domain.LockStatus
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DuplicateKeyException
-import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.net.InetAddress
@@ -22,7 +19,7 @@ interface ClusterLockDao {
     fun lock(spec: ClusterLockSpec) : LockStatus
     fun unlock(name: String) : Boolean
     fun isLocked(name: String): Boolean
-    fun combineLocks(spec: ClusterLockSpec) : Boolean
+    fun hasCombineLocks(spec: ClusterLockSpec) : Boolean
     fun getExpired(): List<ClusterLockExpired>
     fun checkLock(name: String): Boolean
 }
@@ -80,7 +77,6 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
         return false
     }
 
-
     override fun unlock(name: String): Boolean {
         return jdbc.update("DELETE FROM cluster_lock WHERE str_name=?", name) == 1
     }
@@ -109,26 +105,19 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
             }, System.currentTimeMillis())
     }
 
-    override fun combineLocks(spec: ClusterLockSpec) : Boolean {
-        try {
+    override fun hasCombineLocks(spec: ClusterLockSpec) : Boolean {
+        return try {
             // Lock the row
             jdbc.queryForObject(
                 "SELECT str_name FROM cluster_lock WHERE str_name=? AND bool_allow_combine='t' FOR UPDATE NOWAIT",
-                    String::class.java, spec.name)
+                String::class.java, spec.name)
+
+            val newTimeout = System.currentTimeMillis() + spec.timeoutUnits.toMillis(spec.timeout)
+            jdbc.update(HAS_COMBINED, newTimeout, spec.name) == 1
         } catch (e: DataAccessException) {
             // Lock no longer exists or is being updated by something else.
-            return false
+            false
         }
-
-        val newTimeout = System.currentTimeMillis() + spec.timeoutUnits.toMillis(spec.timeout)
-        val combine =  jdbc.update(HAS_COMBINED, newTimeout, spec.name) == 1
-
-        if (!combine) {
-            jdbc.update(
-                "UPDATE cluster_lock SET bool_allow_combine='f' WHERE bool_allow_combine='t' AND str_name=?", spec.name)
-        }
-
-        return combine
     }
 
     companion object {
