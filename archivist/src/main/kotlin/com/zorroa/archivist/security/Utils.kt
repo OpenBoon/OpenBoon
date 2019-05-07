@@ -16,10 +16,11 @@ import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
-import java.util.*
+import java.util.UUID
 
 /**
  * Set a new Authentication value and return the previous one, or null in the case
@@ -141,12 +142,23 @@ fun hasPermission(vararg perms: String): Boolean {
     return hasPermission(perms.toSet())
 }
 
+private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
+    return perms.isNotEmpty() and perms.all { it == Groups.SUPERADMIN }
+}
+
+private fun containsSuperadmin(it: Collection<GrantedAuthority>) =
+    it.any { it.authority == Groups.SUPERADMIN }
+
 fun hasPermission(perms: Collection<String>): Boolean {
     val auth = SecurityContextHolder.getContext().authentication
-    auth?.authorities?.let{
-        for (g in it) {
-            if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
-                return true
+    auth?.authorities?.let { authorities ->
+        if (containsSuperadmin(authorities)) {
+            return true
+        } else if (!containsOnlySuperadmin(perms)) {
+            for (g in authorities) {
+                if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
+                    return true
+                }
             }
         }
     }
