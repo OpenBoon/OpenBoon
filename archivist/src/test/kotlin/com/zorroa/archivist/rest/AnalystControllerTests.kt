@@ -142,4 +142,15 @@ class AnalystControllerTests : MockMvcTest() {
                 rsp2.response.contentAsString, Json.GENERIC_MAP)
         assertFalse(status2["success"] as Boolean)
     }
+
+    @Test
+    fun testDownloadZsdk() {
+        val session = admin()
+        val rsp = mvc.perform(MockMvcRequestBuilders.get("/download-zsdk")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isNotFound)
+                .andReturn()
+    }
 }
