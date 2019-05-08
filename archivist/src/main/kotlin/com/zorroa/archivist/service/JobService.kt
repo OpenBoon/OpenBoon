@@ -84,7 +84,7 @@ class JobServiceImpl @Autowired constructor(
         /**
          * Up the priority on export jobs to Interactive priority.
          */
-        if (type == PipelineType.Export && spec.priority < JobPriority.Interactive) {
+        if (type == PipelineType.Export && spec.priority > JobPriority.Interactive) {
             spec.priority = JobPriority.Interactive
         }
 
