@@ -34,7 +34,7 @@ class ProcessorControllerTests : MockMvcTest() {
     @Test
     fun testGetById() {
         val session = admin()
-        val id = "642462df-8c96-5688-8f1d-c13ac327832c"
+        val id = "eebf2132-4b50-5eb0-a240-debfeaea2c6f"
         val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/processors/$id")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
