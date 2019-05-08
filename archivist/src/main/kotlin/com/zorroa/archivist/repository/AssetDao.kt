@@ -79,9 +79,6 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
         val time = extractTime(docs[0])
         val user = getUser()
 
-        // Sort by ID to avoid any Postgres deadlocks
-        docs.sortedBy { it.id }
-
         return jdbc.batchUpdate(UPDATE, object : BatchPreparedStatementSetter {
 
             @Throws(SQLException::class)
