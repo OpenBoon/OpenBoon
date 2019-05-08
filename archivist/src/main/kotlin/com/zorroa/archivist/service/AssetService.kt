@@ -547,7 +547,7 @@ open abstract class AbstractAssetService : AssetService {
         val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
 
         async(getCoroutineContext()) {
-            assets.chunked(UPDATE_BATCH_SIZE) {
+            assets.chunked(UPDATE_BATCH_SIZE).forEach {
                 launch {
                     val docs = getAll(it).mapNotNull { doc ->
                         if (removeLink(doc, type, value)) {
@@ -579,7 +579,7 @@ open abstract class AbstractAssetService : AssetService {
 
         async(getCoroutineContext()) {
 
-            req.assetIds?.chunked(UPDATE_BATCH_SIZE) {
+            req.assetIds?.chunked(UPDATE_BATCH_SIZE)?.forEach {
                 launch {
                     val docs = getAll(it).mapNotNull { doc ->
                         if (addLink(doc, type, value)) {
