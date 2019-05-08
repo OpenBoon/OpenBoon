@@ -280,12 +280,13 @@ class ClusterLockServiceImpl @Autowired constructor(
         return clusterLockDao.isLocked(name)
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun hasCombineLocks(spec : ClusterLockSpec): Boolean {
         if (!spec.combineMultiple) { return false }
         return clusterLockDao.hasCombineLocks(spec)
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun lock(spec : ClusterLockSpec) : LockStatus {
         val ctx = ClusterLockContext.getLocks()
         if (ctx.contains(spec.name)) {
@@ -299,7 +300,7 @@ class ClusterLockServiceImpl @Autowired constructor(
         return locked
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun unlock(spec: ClusterLockSpec) : Boolean {
         ClusterLockContext.getLocks().remove(spec.name)
         return if (!spec.holdTillTimeout) {

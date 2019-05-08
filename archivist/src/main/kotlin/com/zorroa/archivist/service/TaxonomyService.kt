@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -164,12 +165,14 @@ class TaxonomyServiceImpl @Autowired constructor(
         return taxonomyDao[folder]
     }
 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun tagAll() {
         for (tax in taxonomyDao.getAll()) {
             tagTaxonomy(tax, null, false)
         }
     }
 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean): TagTaxonomyResult {
         val lock = ClusterLockSpec.combineLock(tax.clusterLockId).apply { timeout = 10 }
         val result = clusterLockExecutor.inline(lock) {
@@ -188,6 +191,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         return result ?: TagTaxonomyResult(0, 0, 0)
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     override fun tagTaxonomyAsync(tax: Taxonomy, start: Folder?, force: Boolean) {
         workQueue.execute(SecureRunnable {
             tagTaxonomy(tax, start, force)
@@ -320,21 +324,25 @@ class TaxonomyServiceImpl @Autowired constructor(
             updateTime)
     }
 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomyAsync(tax: Taxonomy, timestamp: Long) {
         val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
         workQueue.execute(InternalRunnable(auth) { untagTaxonomy(tax, timestamp) })
     }
 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomyAsync(tax: Taxonomy) {
         val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
         workQueue.execute(InternalRunnable(auth) { untagTaxonomy(tax) })
     }
 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomyFoldersAsync(tax: Taxonomy, folders: List<Folder>) {
         val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
         workQueue.execute(InternalRunnable(auth) { untagTaxonomyFolders(tax, folders) })
     }
 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomyFoldersAsync(tax: Taxonomy, folder: Folder, assets: List<String>) {
         val auth = InternalAuthentication(userRegistryService.getUser(tax.createdUser))
         workQueue.execute(InternalRunnable(auth) { untagTaxonomyFolders(tax, folder, assets) })
@@ -348,6 +356,7 @@ class TaxonomyServiceImpl @Autowired constructor(
      * @param folder
      * @param assets
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomyFolders(tax: Taxonomy, folder: Folder, assets: List<String>) {
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG,
                 mapOf("untagType" to "asset", "taxonomyId" to tax.taxonomyId))
@@ -385,6 +394,7 @@ class TaxonomyServiceImpl @Autowired constructor(
      * @param tax
      * @param folders
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomyFolders(tax: Taxonomy, folders: List<Folder>) {
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG,
                 mapOf("untagType" to "folder", "taxonomyId" to tax.taxonomyId))
@@ -424,6 +434,7 @@ class TaxonomyServiceImpl @Autowired constructor(
      * @param tax
      * @return
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomy(tax: Taxonomy): Map<String, Long> {
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG, mapOf("taxonomyId" to tax.taxonomyId))
 
@@ -465,6 +476,7 @@ class TaxonomyServiceImpl @Autowired constructor(
      * @param timestamp
      * @return
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     override fun untagTaxonomy(tax: Taxonomy, timestamp: Long): Map<String, Long> {
         logger.event(LogObject.TAXONOMY, LogAction.UNTAG,
                 mapOf("untagType" to "time", "taxonomyId" to tax.taxonomyId))
