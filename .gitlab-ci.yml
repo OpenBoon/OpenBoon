@@ -15,6 +15,9 @@ variables:
 build_artifacts:
   image: maven:3.6.0-jdk-8-slim
   stage: build
+  only:
+    - merge_requests
+    - development
   script:
       - cd es-similarity
       - mvn package
@@ -34,6 +37,9 @@ build_artifacts:
 push_to_local_registry:
   image: docker:stable
   stage: pretest
+  only:
+    - merge_requests
+    - development
   retry: 2
   services:
     - docker:dind
@@ -46,6 +52,9 @@ push_to_local_registry:
 linting:
   image: java:latest
   stage: test
+  only:
+    - merge_requests
+    - development
   allow_failure: true
   script:
     - apk update && apk add ca-certificates wget && update-ca-certificates
@@ -58,6 +67,9 @@ linting:
 unit_tests:
   stage: test
   image: maven:3.6.0-jdk-8-alpine
+  only:
+    - merge_requests
+    - development
   allow_failure: true
   services:
     - name: postgres:9.6.9
