@@ -8,7 +8,9 @@ import com.zorroa.common.domain.AnalystFilter
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.LockState
 import io.micrometer.core.annotation.Timed
+import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.impl.client.HttpClients
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -74,10 +76,12 @@ class AnalystController @Autowired constructor(
         val acceptingTrustStrategy = { chain: Array<X509Certificate>, authType: String -> true }
         val sslContext = org.apache.http.ssl.SSLContexts.custom()
                 .loadTrustMaterial(null, acceptingTrustStrategy)
+                .loadTrustMaterial(null, TrustSelfSignedStrategy())
                 .build()
         val csf = SSLConnectionSocketFactory(sslContext)
         val httpClient = HttpClients.custom()
                 .setSSLSocketFactory(csf)
+                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                 .build()
         val requestFactory = HttpComponentsClientHttpRequestFactory()
         requestFactory.httpClient = httpClient
