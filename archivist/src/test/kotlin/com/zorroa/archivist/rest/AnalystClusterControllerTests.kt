@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.zorroa.archivist.domain.StackTraceElement
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
@@ -182,19 +183,19 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
             assertTrue(dispatcherService.startTask(task))
             val tev = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg", "it broke",
-                    "com.zorroa.ImageIngestor", true, "execute")
+                "com.zorroa.ImageIngestor", true, "execute")
             val te = TaskEvent(TaskEventType.ERROR,
-                    task.id,
-                    job.id,
-                    tev)
+                task.id,
+                job.id,
+                tev)
 
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
-                    .session(analyst())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_PORT, "5000")
-                    .content(Json.serialize(te)))
-                    .andExpect(MockMvcResultMatchers.status().isOk)
-                    .andReturn()
+                .session(analyst())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(ANALYST_HEADER_PORT, "5000")
+                .content(Json.serialize(te)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
 
             authenticate("admin")
             val terr = taskErrorDao.getLast()
@@ -204,6 +205,45 @@ class AnalystClusterControllerTests : MockMvcTest() {
             assertEquals(tev.path, terr.path)
             assertEquals(tev.message, terr.message)
             assertEquals(tev.processor, terr.processor)
+        } else {
+            assertNotNull(task)
+        }
+    }
+
+    @Test
+    fun testErrorEventWithStackTraceElements() {
+        val job = launchJob()
+        authenticateAsAnalyst()
+        val task = dispatchQueueManager.getNext()
+
+        if (task != null) {
+
+            assertTrue(dispatcherService.startTask(task))
+            val tev = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg", "it broke",
+                "com.zorroa.ImageIngestor", true, "execute", stackTrace = listOf(StackTraceElement()))
+
+            val te = TaskEvent(TaskEventType.ERROR,
+                task.id,
+                job.id,
+                tev)
+
+            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
+                .session(analyst())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(ANALYST_HEADER_PORT, "5000")
+                .content(Json.serialize(te)))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+            authenticate("admin")
+            val terr = taskErrorDao.getLast()
+            val stack = terr.stackTrace?.get(0)
+            assertNotNull(stack)
+            assertEquals(stack?.file, "Unknown File")
+            assertEquals(stack?.className, "Unknown Class")
+            assertEquals(stack?.methodName, "Unknown Method")
+            assertEquals(stack?.lineNumber, 0)
+
         } else {
             assertNotNull(task)
         }

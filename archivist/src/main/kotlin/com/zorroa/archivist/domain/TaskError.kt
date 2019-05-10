@@ -50,10 +50,10 @@ class TaskError(
  * @property methodName The name of the method containing the execution point.
  */
 class StackTraceElement(
-        val file: String,
-        val lineNumber: Int,
-        val className: String,
-        val methodName: String
+        val file: String?="Unknown File",
+        val lineNumber: Int=0,
+        val className: String?="Unknown Class",
+        val methodName: String?="Unknown Method"
 )
 
 /**
