@@ -15,12 +15,21 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
-import java.awt.*
+import java.awt.AlphaComposite
+import java.awt.Color
+import java.awt.Font
+import java.awt.Graphics2D
+import java.awt.Image
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
-import java.io.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.time.Duration
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import javax.annotation.PostConstruct
@@ -29,10 +38,11 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import io.micrometer.core.instrument.Timer as MeterTimer
 
-inline fun bufferedImageToInputStream(size: Int, img: BufferedImage) : InputStream {
+inline fun bufferedImageToInputStream(size: Int, img: BufferedImage): InputStream {
     val ostream = object : ByteArrayOutputStream(size) {
         // Overriding this to not create a copy
-        @Synchronized override fun toByteArray(): ByteArray {
+        @Synchronized
+        override fun toByteArray(): ByteArray {
             return this.buf
         }
     }
@@ -46,7 +56,7 @@ inline fun bufferedImageToInputStream(size: Int, img: BufferedImage) : InputStre
 interface ImageService {
 
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean)
+    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize: Boolean)
 
     @Throws(IOException::class)
     fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?)
@@ -59,11 +69,11 @@ interface ImageService {
  */
 @Service
 class ImageServiceImpl @Autowired constructor(
-        private val fileStorageService: FileStorageService,
-        private val fileServerProvider: FileServerProvider,
-        private val properties: ApplicationProperties,
-        private val eventBus: EventBus,
-        private val meterRegistry: MeterRegistry
+    private val fileStorageService: FileStorageService,
+    private val fileServerProvider: FileServerProvider,
+    private val properties: ApplicationProperties,
+    private val eventBus: EventBus,
+    private val meterRegistry: MeterRegistry
 
 ) : ImageService {
 
@@ -73,7 +83,7 @@ class ImageServiceImpl @Autowired constructor(
     private var watermarkScale: Double = 1.0
     private var watermarkImage: BufferedImage? = null
     private var watermarkImageScale: Double = 0.2
-    private var watermarkFontName : String = "Arial"
+    private var watermarkFontName: String = "Arial"
     private var timerBuilder = MeterTimer.builder("zorroa.ImageService.timer")
         .publishPercentileHistogram()
         .maximumExpectedValue(Duration.ofSeconds(5))
@@ -85,7 +95,12 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize:Boolean) {
+    override fun serveImage(
+        req: HttpServletRequest,
+        rsp: HttpServletResponse,
+        storage: FileStorage,
+        isWatermarkSize: Boolean
+    ) {
         if (storage == null) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -120,7 +135,7 @@ class ImageServiceImpl @Autowired constructor(
             return
         }
         val isWatermarkSize = (proxy.width <= watermarkMinProxySize && proxy.height <= watermarkMinProxySize)
-        val st = fileStorageService.get(proxy.id!!)
+        val st = fileStorageService.get(proxy.id)
         serveImage(req, rsp, st, isWatermarkSize)
     }
 
@@ -136,13 +151,13 @@ class ImageServiceImpl @Autowired constructor(
                     val ypos = src.height - image.getHeight(null) - 10
                     g2d.drawImage(image, xpos, ypos, null)
                 }
-            }
-            else {
+            } else {
                 val replacements = mapOf(
-                        "USER" to getUsername(),
-                        "DATE" to SimpleDateFormat("MM/dd/yyyy").format(Date()),
-                        "IP" to (req.getHeader("X-FORWARDED-FOR") ?: req.remoteAddr),
-                        "HOST" to req.remoteHost)
+                    "USER" to getUsername(),
+                    "DATE" to SimpleDateFormat("MM/dd/yyyy").format(Date()),
+                    "IP" to (req.getHeader("X-FORWARDED-FOR") ?: req.remoteAddr),
+                    "HOST" to req.remoteHost
+                )
 
                 val sb = StringBuffer(watermarkTemplate.length * 2)
                 val m = PATTERN.matcher(watermarkTemplate)
@@ -166,11 +181,10 @@ class ImageServiceImpl @Autowired constructor(
                 g2d.drawString(text, x - 1, y + 1)
                 g2d.drawString(text, x - 1, y - 1)
                 g2d.drawString(text, x + 1, y + 1)
-                g2d.drawString(text, x + 1, y -1)
+                g2d.drawString(text, x + 1, y - 1)
                 g2d.paint = Color.white
                 g2d.drawString(text, x, y)
             }
-
         } finally {
             g2d.dispose()
         }
@@ -187,7 +201,7 @@ class ImageServiceImpl @Autowired constructor(
         watermarkFontName = properties.getString("archivist.watermark.font-name")
         watermarkImageScale = properties.getDouble("archivist.watermark.image-scale")
 
-        val imagePath : String? = properties.getString("archivist.watermark.image-path")
+        val imagePath: String? = properties.getString("archivist.watermark.image-path")
         if (imagePath != null && imagePath.isNotBlank()) {
             try {
                 logger.info("loading watermark image: '{}'", imagePath)
@@ -195,8 +209,7 @@ class ImageServiceImpl @Autowired constructor(
             } catch (e: Exception) {
                 logger.warn("Failed to load watermark Image '{}'", imagePath, e)
             }
-        }
-        else {
+        } else {
             watermarkImage = null
         }
     }
@@ -208,7 +221,7 @@ class ImageServiceImpl @Autowired constructor(
      * @param g2d the current graphics2D instance
      * @param text the string to calculate the size of
      * @param imageWidth the full image width
-    */
+     */
     fun getWatermarkFont(g2d: Graphics2D, text: String, imageWidth: Int): Font {
         val baseFontSize = 20
         val baseFont = Font(watermarkFontName, Font.PLAIN, baseFontSize)
