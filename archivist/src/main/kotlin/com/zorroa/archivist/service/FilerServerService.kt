@@ -1,7 +1,11 @@
 package com.zorroa.archivist.service
 
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.storage.*
+import com.google.cloud.storage.Blob
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.HttpMethod
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
 import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Document
@@ -9,6 +13,7 @@ import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.util.StaticUtils
+import com.zorroa.archivist.util.copyInputToOuput
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -207,12 +212,12 @@ class LocalFileServerService : FileServerService {
         val path = Paths.get(url)
         response.setContentLengthLong(Files.size(path))
         response.contentType = StaticUtils.tika.detect(path)
-        FileInputStream(path.toFile()).copyTo(response.outputStream)
+        copyInputToOuput(FileInputStream(path.toFile()), response.outputStream)
     }
 
     override fun copyTo(url: URI, output: OutputStream) {
         val path = Paths.get(url)
-        FileInputStream(path.toFile()).copyTo(output)
+        copyInputToOuput(FileInputStream(path.toFile()), output)
     }
 
     override fun objectExists(url: URI): Boolean {

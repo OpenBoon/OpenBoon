@@ -15,8 +15,11 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.awt.AlphaComposite
 import java.awt.Color
+import java.awt.Dimension
 import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.Image
@@ -34,7 +37,7 @@ import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import javax.annotation.PostConstruct
 import javax.imageio.ImageIO
-import javax.servlet.http.HttpServletRequest
+import javax.imageio.stream.FileImageInputStream
 import javax.servlet.http.HttpServletResponse
 import io.micrometer.core.instrument.Timer as MeterTimer
 
@@ -55,13 +58,50 @@ inline fun bufferedImageToInputStream(size: Int, img: BufferedImage): InputStrea
  */
 interface ImageService {
 
+    /**
+     * Stream the given stored file to the [HttpServletResponse].
+     *
+     * @param rsp The [HttpServletResponse] to stream to.
+     * @param storage The stored file.
+     * @param isWatermarkSize Set to True if the image should be watermarked.
+     */
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize: Boolean)
+    fun serveImage(rsp: HttpServletResponse, storage: FileStorage, isWatermarkSize: Boolean)
 
+    /**
+     * Stream the given Proxy file to the provided [HttpServletResponse]
+     *
+     * @param rsp The [HttpServletResponse] to stream to.
+     * @param proxy The [Proxy] to stram.
+     */
     @Throws(IOException::class)
-    fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?)
+    fun serveImage(rsp: HttpServletResponse, proxy: Proxy?)
 
-    fun watermark(req: HttpServletRequest, inputStream: InputStream): BufferedImage
+    /**
+     * Stream the given stored file to the [HttpServletResponse]
+     *
+     * @param rsp The [HttpServletResponse] to stream to.
+     * @param storage The stored file.
+     */
+    @Throws(IOException::class)
+    fun serveImage(rsp: HttpServletResponse, storage: FileStorage)
+
+    /**
+     * Watermark the given [InputStream] and return a watermarked  BufferedImage.
+     *
+     * @param inputStream an [InputStream] pointing to an image.
+     * @return A watermarked [BufferedImage]
+     */
+    fun watermark(inputStream: InputStream): BufferedImage
+
+    /**
+     * Find the dimensions for the given image without loading the
+     * whole image into memory.
+     *
+     * @param imgFile A file pointing to an image.
+     * @return a [Dimension] representing the size of the image.
+     */
+    fun getImageDimension(imgFile: File): Dimension
 }
 
 /**
@@ -96,7 +136,24 @@ class ImageServiceImpl @Autowired constructor(
 
     @Throws(IOException::class)
     override fun serveImage(
-        req: HttpServletRequest,
+        rsp: HttpServletResponse,
+        storage: FileStorage
+    ) {
+
+        val file = fileServerProvider.getServableFile(storage)
+        val localFile = file.getLocalFile()
+        if (watermarkEnabled && localFile != null) {
+            val dim = getImageDimension(localFile.toFile())
+            val isWatermarkSize = (dim.width <= watermarkMinProxySize && dim.height <= watermarkMinProxySize)
+            serveImage(rsp, storage, isWatermarkSize)
+        }
+        else {
+            serveImage(rsp, storage, false)
+        }
+    }
+
+    @Throws(IOException::class)
+    override fun serveImage(
         rsp: HttpServletResponse,
         storage: FileStorage,
         isWatermarkSize: Boolean
@@ -112,7 +169,7 @@ class ImageServiceImpl @Autowired constructor(
         if (watermarkEnabled && isWatermarkSize) {
             val timer = timerBuilder.tags("watermark", "true").register(meterRegistry)
             timer.record {
-                val image = watermark(req, file.getInputStream())
+                val image = watermark(file.getInputStream())
                 rsp.contentType = MediaType.IMAGE_JPEG_VALUE
                 rsp.setHeader("Cache-Control", CacheControl.maxAge(1, TimeUnit.DAYS).cachePrivate().headerValue)
                 ImageIO.write(image, "jpg", rsp.outputStream)
@@ -129,17 +186,18 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     @Throws(IOException::class)
-    override fun serveImage(req: HttpServletRequest, rsp: HttpServletResponse, proxy: Proxy?) {
+    override fun serveImage(rsp: HttpServletResponse, proxy: Proxy?) {
         if (proxy == null) {
             rsp.status = HttpStatus.NOT_FOUND.value()
             return
         }
         val isWatermarkSize = (proxy.width <= watermarkMinProxySize && proxy.height <= watermarkMinProxySize)
         val st = fileStorageService.get(proxy.id)
-        serveImage(req, rsp, st, isWatermarkSize)
+        serveImage(rsp, st, isWatermarkSize)
     }
 
-    override fun watermark(req: HttpServletRequest, inputStream: InputStream): BufferedImage {
+    override fun watermark(inputStream: InputStream): BufferedImage {
+        val req = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
         val src = ImageIO.read(inputStream)
         val g2d = src.createGraphics()
         try {
@@ -189,6 +247,30 @@ class ImageServiceImpl @Autowired constructor(
             g2d.dispose()
         }
         return src
+    }
+
+    override fun getImageDimension(imgFile: File): Dimension {
+        val pos = imgFile.name.lastIndexOf(".")
+        if (pos == -1)
+            throw RuntimeException("No extension for file: " + imgFile.absolutePath)
+        val suffix = imgFile.name.substring(pos + 1)
+        val iter = ImageIO.getImageReadersBySuffix(suffix)
+        while (iter.hasNext()) {
+            val reader = iter.next()
+            try {
+                val stream = FileImageInputStream(imgFile)
+                reader.input = stream
+                val width = reader.getWidth(reader.minIndex)
+                val height = reader.getHeight(reader.minIndex)
+                return Dimension(width, height)
+            } catch (e: IOException) {
+                logger.warn("Error reading: ${imgFile.absolutePath}", e)
+            } finally {
+                reader.dispose()
+            }
+        }
+
+        throw IOException("Not a known image file: " + imgFile.absolutePath)
     }
 
     @Synchronized
