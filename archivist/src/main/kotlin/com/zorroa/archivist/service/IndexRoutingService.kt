@@ -73,8 +73,9 @@ interface IndexRoutingService {
      * Apply any outstanding mapping patches to the given [IndexRoute]
      *
      * @param route The IndexRoute to version up.
+     * @return the [ElasticMapping] the route was updated to.
      */
-    fun syncIndexRouteVersion(route: IndexRoute)
+    fun syncIndexRouteVersion(route: IndexRoute) : ElasticMapping?
 
     /**
      * Apply all outstanding mapping patches to all active IndexRoutes.
@@ -182,13 +183,17 @@ class IndexRoutingServiceImpl @Autowired
         }
     }
 
-    override fun syncIndexRouteVersion(route: IndexRoute) {
+    override fun syncIndexRouteVersion(route: IndexRoute) : ElasticMapping? {
+        var result : ElasticMapping? = null
+
         val es = getClusterRestClient(route)
         waitForElasticSearch(es)
 
         val lock = ClusterLockSpec.softLock("create-es-${route.id}")
         clusterLockExecutor.inline(lock) {
-            if (!es.indexExists()) {
+
+            val indexExisted = es.indexExists()
+            if (!indexExisted) {
                 logger.info("Creating index:" +
                         "type: '${route.mappingType}'  index: '${route.indexName}' " +
                         "ver: '${route.mappingMajorVer}'" +
@@ -205,6 +210,7 @@ class IndexRoutingServiceImpl @Autowired
                 req.index(route.indexName)
                 req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
                 es.client.indices().create(req, RequestOptions.DEFAULT)
+                result = mappingFile
             }
             else {
                 logger.info("Not creating ${route.indexUrl}, already exists")
@@ -212,13 +218,19 @@ class IndexRoutingServiceImpl @Autowired
 
             val patches = getMinorVersionMappingFiles(route.mappingType, route.mappingMajorVer)
             for (patch in patches) {
-                // Skip over patches we have.
-                if (route.mappingMinorVer >= patch.minorVersion) {
+                /**
+                 * If the index already existed, then only apply new patches. If
+                 * the index was just created, then apply all patches.
+                 */
+                if (indexExisted && route.mappingMinorVer >= patch.minorVersion) {
                     continue
                 }
                 applyMinorVersionMappingFile(route, patch)
+                result = patch
             }
         }
+
+        return result
     }
 
     override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {

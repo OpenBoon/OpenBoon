@@ -65,6 +65,31 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertTrue(indexRoutingService.getOrgRestClient().indexExists())
     }
 
+    /**
+     * Test the case where an index is deleted and has to be
+     * fully synced with the latest patches.
+     */
+    @Test
+    fun testSyncDeletedIndex() {
+        val rest = indexRoutingService.getOrgRestClient()
+        val reqDel = DeleteIndexRequest("unittest")
+
+        try {
+            rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
+            logger.info("unittest Elastic DB Removed")
+        } catch (e: Exception) {
+            logger.warn("Failed to delete 'unittest' index, this is usually ok.")
+        }
+
+        // The ES index is deleted but our route still shows an updated index
+        val route = indexRouteDao.getRandomDefaultRoute()
+        assertTrue(route.mappingMinorVer > 0)
+
+        val lastMapping = indexRoutingService.syncIndexRouteVersion(route)
+        assertEquals(route.mappingMinorVer, lastMapping!!.minorVersion)
+        assertTrue(indexRoutingService.getOrgRestClient().indexExists())
+    }
+
     @Test
     fun syncIndexRouteVersion() {
         jdbc.update("UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
