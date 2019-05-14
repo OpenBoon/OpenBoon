@@ -920,14 +920,4 @@ class SearchServiceTests : AbstractTest() {
         val result = searchService.search(Pager.first(), asb)
         assertEquals(1, result.size().toLong())
     }
-
-    @Test
-    fun testCountEventLog() {
-
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
-
-        assertEquals(1, searchService.count(AssetSearch()))
-        // logger.event()
-    }
 }
