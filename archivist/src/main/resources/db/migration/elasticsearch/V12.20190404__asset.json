@@ -6,6 +6,7 @@
         "properties": {
           "suggestions": {
             "type": "completion",
+            "analyzer":  "standard",
             "contexts": {
               "name": "organization",
               "type": "category",
