@@ -528,16 +528,20 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     @Throws(IOException::class)
-    fun testQueryExactTerm() {
+    fun testQueryExact() {
 
         val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", listOf("zooland"))
+        source.setAttr("media.keywords", listOf("Dog In the Street"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         assertEquals(0, searchService.search(
-                AssetSearch("zoolandar")).hits.getTotalHits())
+                AssetSearch("Dog In the").setExactQuery(true)).hits.getTotalHits())
+
+        assertEquals(0, searchService.search(
+            AssetSearch("dog in the street").setExactQuery(true)).hits.getTotalHits())
+
         assertEquals(1, searchService.search(
-                AssetSearch("zoolander")).hits.getTotalHits())
+                AssetSearch("Dog In the Street").setExactQuery(true)).hits.getTotalHits())
     }
 
     @Test

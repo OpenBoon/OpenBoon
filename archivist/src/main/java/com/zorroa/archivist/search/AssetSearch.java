@@ -28,9 +28,9 @@ public class AssetSearch {
     private String query;
 
     /**
-     * Search for exact terms as if each word was quoted.
+     * Search for exactQuery terms as if each word was quoted.
      */
-    private Boolean exact;
+    private Boolean exactQuery = false;
 
     /**
      * A map of query fields and boost values.
@@ -212,12 +212,12 @@ public class AssetSearch {
         return this;
     }
 
-    public Boolean isExact() {
-        return exact;
+    public Boolean isExactQuery() {
+        return exactQuery;
     }
 
-    public AssetSearch setExact(Boolean exact) {
-        this.exact = exact;
+    public AssetSearch setExactQuery(Boolean exactQuery) {
+        this.exactQuery = exactQuery;
         return this;
     }
 
