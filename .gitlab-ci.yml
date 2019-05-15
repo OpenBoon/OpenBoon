@@ -85,7 +85,7 @@ unit_tests:
     SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=unittest40"
     LOGGING_LEVEL_COM_ZORROA: WARN
   script:
-    - mvn test -q
+    - mvn test -Dtest=CoreDataVaultClientTests  -DfailIfNoTests=false -q
   after_script:
     - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% code coverage" }' archivist/target/site/jacoco/jacoco.csv
 
