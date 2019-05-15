@@ -16,10 +16,17 @@ then
    done
 fi
 
+# DEPRECATED: Should be removed once all instances are updated to use the next block of code.
 if [ -n "${GAE_SERVICE}" ]
 then
   echo "Downloading config files from GCS secret bucket."
   gsutil cp -r "gs://${GCLOUD_PROJECT}-zorroa-configuration/${GAE_SERVICE}-config/*" /config
+fi
+
+if [ -n "${GCS_CONFIGURATION_BUCKET}" ]
+then
+  echo "Downloading config files from GCS secret bucket."
+  gsutil cp -r "gs://${GCS_CONFIGURATION_BUCKET}/*" /config
 fi
 
 
