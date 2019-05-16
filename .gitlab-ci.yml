@@ -86,6 +86,9 @@ unit_tests:
     LOGGING_LEVEL_COM_ZORROA: WARN
   script:
     - mvn test -q
+  after_script:
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% code coverage" }' archivist/target/site/jacoco/jacoco.csv
+
 
 docker_hub_push:
   stage: push
