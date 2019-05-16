@@ -29,14 +29,20 @@ class AssetStreamResolutionService constructor(
         val canDisplay = canDisplaySource(asset, types)
         val forceProxy = !canExport(asset)
         val sourceFile = fileServerProvider.getServableFile(asset)
+        val isVideoClip = asset.attrExists("media.clip.parent") && asset.getAttr<String>("source.type") == "video"
 
         /**
          * Three things have to checkout or else the proxy is served.
          * 1. The proxy was forced by lack of permissions.
          * 2. The source file is not displayable by the application making request (set by accept header)
          * 3. The source file does not exist. (common M/E case)
+         * 4. If we have a video clip, then play the proxy because people often don't have faststart video.
          */
-        return if (forceProxy || !canDisplay || !sourceFile.exists()) {
+        if (logger.isDebugEnabled) {
+            logger.debug("Select playback media : hasAccess: {} clientCanDisplay: {} exists: {} isVideoClip: {}",
+                forceProxy, canDisplay, sourceFile.exists(), isVideoClip)
+        }
+        return if (forceProxy || !canDisplay || !sourceFile.exists() || isVideoClip) {
             getProxy(asset, types)
         } else {
             sourceFile

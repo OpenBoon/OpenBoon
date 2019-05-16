@@ -195,7 +195,13 @@ class AssetController @Autowired constructor(
                 rsp.status = 404
             }
         } catch (e: Exception) {
-            logger.warn("Failed to stream asset ID $id", e)
+            if (logger.isDebugEnabled) {
+                logger.debug("Interrupted while streaming $id", e)
+            }
+            else {
+                logger.warn("Interrupted while streaming Asset $id")
+            }
+
             rsp.status = 404
         }
     }

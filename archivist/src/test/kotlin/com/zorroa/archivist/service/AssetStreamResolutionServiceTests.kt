@@ -99,6 +99,16 @@ class AssetStreamResolutionServiceTests {
         assertThat(servableFile!!.uri).isEqualTo(sourceFileUri)
     }
 
+    @Test
+    fun getServableFileForceProxyByClip() {
+        val asset = mockIndexService.get(id)
+        asset.setAttr("media.clip.parent", "foo")
+
+        val servableFile = service.getServableFile(id, listOf())
+        assertThat(servableFile).isNotNull
+        assertThat(servableFile!!.uri).isEqualTo(videoProxyUri)
+    }
+
     /**
      * If source doesn't exist then fallback to proxy of same overall type.
      */
