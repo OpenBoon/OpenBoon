@@ -126,7 +126,6 @@ class FieldDaoTests : AbstractTest() {
     @Test
     fun testAllocate() {
         var field = fieldDao.allocate(AttrType.StringAnalyzed)
-        println(field)
         assertTrue(field.endsWith("__0"))
 
         field = fieldDao.allocate(AttrType.StringAnalyzed)
@@ -134,5 +133,20 @@ class FieldDaoTests : AbstractTest() {
 
         field = fieldDao.allocate(AttrType.NumberInteger)
         assertTrue(field.endsWith("__0"))
+    }
+
+    @Test
+    fun testGetKeywordAttrNames() {
+        var fields = fieldDao.getKeywordAttrNames()
+        assertTrue(fields.isNotEmpty())
+        for ((field, _) in fields) {
+            assertFalse(field.endsWith(".raw"))
+        }
+
+        var rawFields = fieldDao.getKeywordAttrNames(forExactMatch = true)
+        assertTrue(rawFields.isNotEmpty())
+        for ((field, _) in rawFields) {
+            assertTrue(field.endsWith(".raw"))
+        }
     }
 }

@@ -28,9 +28,9 @@ public class AssetSearch {
     private String query;
 
     /**
-     * Search for exact terms as if each word was quoted.
+     * Search for exactQuery terms as if each word was quoted.
      */
-    private Boolean exact;
+    private Boolean exactQuery = false;
 
     /**
      * A map of query fields and boost values.
@@ -72,6 +72,12 @@ public class AssetSearch {
 
 
     private Access access;
+
+    /**
+     * Allow for field collapsing.
+     * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-collapse.html
+     */
+    private Map<String, Object> collapse;
 
     /**
      * Aggregations to return with the search.  Map is name, then agg.
@@ -212,12 +218,12 @@ public class AssetSearch {
         return this;
     }
 
-    public Boolean isExact() {
-        return exact;
+    public Boolean isExactQuery() {
+        return exactQuery;
     }
 
-    public AssetSearch setExact(Boolean exact) {
-        this.exact = exact;
+    public AssetSearch setExactQuery(Boolean exactQuery) {
+        this.exactQuery = exactQuery;
         return this;
     }
 
@@ -228,6 +234,14 @@ public class AssetSearch {
     public AssetSearch setAccess(Access access) {
         this.access = access;
         return this;
+    }
+
+    public Map<String, Object> getCollapse() {
+        return collapse;
+    }
+
+    public void setCollapse(Map<String, Object> collapse) {
+        this.collapse = collapse;
     }
 
     @JsonIgnore

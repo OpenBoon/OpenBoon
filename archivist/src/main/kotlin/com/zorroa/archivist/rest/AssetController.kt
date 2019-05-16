@@ -209,7 +209,7 @@ class AssetController @Autowired constructor(
                         @PathVariable height: Int,
                         @RequestParam(value="type", defaultValue = "image") type: String)  {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id)!!.getClosest(width, height, type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).getClosest(width, height, type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -223,7 +223,7 @@ class AssetController @Autowired constructor(
                    @PathVariable(required = true) size: Int,
                    @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id).atLeastThisSize(size, type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).atLeastThisSize(size, type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -236,7 +236,7 @@ class AssetController @Autowired constructor(
                         @PathVariable id: String,
                         @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id).getLargest(type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).getLargest(type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -249,7 +249,7 @@ class AssetController @Autowired constructor(
                          @PathVariable id: String,
                          @RequestParam(value="type", defaultValue = "image") type: String) {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id).getSmallest(type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).getSmallest(type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
