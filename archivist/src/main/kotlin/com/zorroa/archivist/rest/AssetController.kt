@@ -2,11 +2,37 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
+import com.zorroa.archivist.domain.BatchUpdatePermissionsResponse
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FieldEdit
+import com.zorroa.archivist.domain.FieldSet
+import com.zorroa.archivist.domain.FileUploadSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.AssetStreamResolutionService
+import com.zorroa.archivist.service.FieldService
+import com.zorroa.archivist.service.FieldSystemService
+import com.zorroa.archivist.service.FileUploadService
+import com.zorroa.archivist.service.FolderService
+import com.zorroa.archivist.service.ImageService
+import com.zorroa.archivist.service.IndexService
+import com.zorroa.archivist.service.SearchService
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
@@ -14,13 +40,26 @@ import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
@@ -70,48 +109,94 @@ class AssetController @Autowired constructor(
         @Throws(IOException::class)
         get() = indexService.getMapping()
 
+    /**
+     * Handle a HEAD request which a client can use to fetch a singed URL for
+     * a file in bucket storage, such as GCS or S3.
+     *
+     * The Accept header should be used to specify media types that the requesting
+     * application can display.  For example if the application can display EXR
+     * files, it should send "image/x-exr" in the accept header.
+     *
+     * @param id The asset ID
+     * @param headers The request headers.
+     * @param rsp the HTTP response.
+     *
+     */
+    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.HEAD])
+    fun streamAsset(
+        @PathVariable id: String,
+        @RequestHeader headers: HttpHeaders,
+        rsp: HttpServletResponse) {
 
-    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.HEAD] )
-    @Throws(Exception::class)
-    fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
-                    @RequestHeader(value="Accept", required = false) accept: String?,
-                    @PathVariable id: String, response: HttpServletResponse) {
-
-        val servableFile = assetStreamResolutionService.getServableFile(id, accept)
+        val servableFile = assetStreamResolutionService.getServableFile(id, headers.accept)
         if (servableFile == null) {
-            response.status = 404
+            rsp.status = 404
         } else {
             if (!servableFile.isLocal()) {
-                response.setHeader("X-Zorroa-Signed-URL", servableFile.getSignedUrl().toString())
+                rsp.setHeader("X-Zorroa-Signed-URL", servableFile.getSignedUrl().toString())
             }
         }
     }
 
+    /**
+     * Stream the best possible representation for the asset.
+     *
+     * The ext parameter can be used to short circuit the content negotiation logic
+     * and ask for a specific file extension.
+     *
+     * The Accept header should be used to specify media types that the requesting
+     * application can display.  For example if the application can display EXR
+     * files, it should send "image/x-exr" in the accept header.
+     *
+     * @param id The asset Id.
+     * @param ext An optional file extension to serve.
+     * @param headers The HTTP request headers.
+     * @param req The HTTP request.
+     * @param rsp The HTTP response.
+     *
+     */
     @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
-    @Throws(Exception::class)
-    fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
-                    @RequestParam(value = "type", required = false) type: String?,
-                    @RequestHeader(value="Accept", required = false) accept: String?,
-                    @PathVariable id: String, request: HttpServletRequest, response: HttpServletResponse) {
+    fun streamAsset(
+        @PathVariable id: String,
+        @RequestParam(value = "ext", required = false) ext: String?,
+        @RequestHeader headers: HttpHeaders,
+        req: HttpServletRequest,
+        rsp: HttpServletResponse) {
 
         try {
-            val servableFile = assetStreamResolutionService.getServableFile(id, accept, type)
-            if (servableFile == null) {
-                response.status = 404
-            } else {
-                logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to id))
+            /**
+             * Handle converting the ext query param to a media type, otherwise
+             * default to accept headers.
+             */
+            val mediaTypes = if (ext != null) {
+                listOf(MediaType.parseMediaType(StaticUtils.tika.detect(".$ext")))
+            }
+            else {
+                headers.accept
+            }
+
+            val servableFile = assetStreamResolutionService.getServableFile(id, mediaTypes)
+            if (servableFile != null) {
+
+                logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to id, "url" to servableFile.uri))
+
                 if (!servableFile.isLocal()) {
-                    servableFile.copyTo(response)
+                    servableFile.copyTo(rsp)
                 } else {
                     MultipartFileSender.fromPath(servableFile.getLocalFile())
-                        .with(request)
-                        .with(response)
+                        .with(req)
+                        .with(rsp)
                         .setContentType(servableFile.getStat().mediaType)
                         .serveResource()
                 }
             }
+            else {
+                logger.warn("Failed to stream asset ID $id, with media types $mediaTypes")
+                rsp.status = 404
+            }
         } catch (e: Exception) {
-            response.sendError(404, "StorageSystem unable to find file")
+            logger.warn("Failed to stream asset ID $id", e)
+            rsp.status = 404
         }
     }
 

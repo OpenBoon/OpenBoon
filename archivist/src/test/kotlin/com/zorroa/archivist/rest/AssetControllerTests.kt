@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.Acl
@@ -177,12 +178,8 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(status().isOk)
             .andReturn()
 
-        val counts = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-            object : TypeReference<Map<String, Any>>() {
-            })
-
-        val count = counts["count"] as Int
-        return count
+        val counts = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString)
+        return counts["count"] as Int
     }
 
     @Test
@@ -447,6 +444,7 @@ class AssetControllerTests : MockMvcTest() {
         doReturn(servableFile).`when`(fileServerProvider).getServableFile(anyDocument)
 
         given(fileServerService.storedLocally).willReturn(false)
+        given(fileServerService.objectExists(uri)).willReturn(true)
 
         val signedUrl = "https://signed/url"
         given(fileServerService.getSignedUrl(uri)).willReturn(URL(signedUrl))
@@ -496,36 +494,21 @@ class AssetControllerTests : MockMvcTest() {
 
         val url = String.format("/api/v1/assets/%s/_stream", asset.id)
 
-        val accept = "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
         mvc.perform(get(url)
             .session(session)
-            .header("Accept", accept)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk)
             .andExpect(MockMvcResultMatchers.content().contentType(mediaType))
-            .andReturn()
-
-        mvc.perform(get(url + "?type=video")
-            .session(session)
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(mediaType))
-            .andReturn()
-
-        mvc.perform(get(url + "?type=foo")
-            .session(session)
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isNotFound)
             .andReturn()
 
         tmpFile.delete()
     }
 
     @Test
-    fun testStreamHeadWithAcceptHeaderForProxy() {
+    fun testStreamHeadWithAcceptHeaderNoValidOptions() {
         val session = admin()
         val asset = videoAsset()
-        val mediaType = "video/mp4"
+        val mediaType = "video/mov"
         val tmpFile = createTempFile()
         val tmpFileUri = tmpFile.toURI()
         val fileStorage = FileStorage(asset.id, tmpFileUri, "file", mediaType, fileServerProvider)
@@ -537,15 +520,45 @@ class AssetControllerTests : MockMvcTest() {
         given(fileServerService.storedLocally).willReturn(true)
 
         val url = String.format("/api/v1/assets/%s/_stream", asset.id)
-        val accept = "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
+        val accept = "video/webm,video/ogg"
         mvc.perform(head(url)
             .session(session)
             .header("Accept", accept)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isNotFound)
+            .andExpect(MockMvcResultMatchers.header().doesNotExist("X-Zorroa-Signed-URL"))
+            .andReturn()
+
+        tmpFile.delete()
+    }
+
+    @Test
+    fun testStreamHeadWithAcceptHeaderForProxy() {
+        val session = admin()
+        val asset = videoAsset()
+        val mediaType = "video/mov"
+        val tmpFile = createTempFile()
+        val tmpFileUri = tmpFile.toURI()
+        val fileStorage = FileStorage(asset.id, tmpFileUri, "file", mediaType, fileServerProvider)
+
+        doReturn(ServableFile(fileServerService, tmpFileUri)).`when`(fileServerProvider).getServableFile(tmpFileUri)
+
+        given(fileStorageService.get("proxy___${asset.getAttr<String>("proxy_id")}_transcode.mp4"))
+            .willReturn(fileStorage)
+        given(fileServerService.storedLocally).willReturn(true)
+
+        val url = String.format("/api/v1/assets/%s/_stream", asset.id)
+        val accept = "video/mp4,video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
+        mvc.perform(head(url)
+            .session(session)
+            .header("Accept", accept))
             .andExpect(status().isOk)
             .andExpect(MockMvcResultMatchers.header().doesNotExist("X-Zorroa-Signed-URL"))
             .andReturn()
+
+        tmpFile.delete()
     }
+
 
     private fun videoAsset(): Document {
         addTestVideoAssets("video")
