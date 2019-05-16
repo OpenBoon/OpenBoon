@@ -1,20 +1,41 @@
 package com.zorroa.archivist.service
 
 import com.google.common.eventbus.EventBus
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.JobStateChangeEvent
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.TaskError
+import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskStateChangeEvent
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.InternalTask
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobId
+import com.zorroa.common.domain.JobPriority
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.JobUpdateSpec
+import com.zorroa.common.domain.Task
+import com.zorroa.common.domain.TaskSpec
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
-import java.util.*
+import java.util.Date
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 interface JobService {
@@ -40,6 +61,9 @@ interface JobService {
     fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
     fun checkAndSetJobFinished(job: JobId): Boolean
     fun getOrphanTasks(duration: Duration) : List<InternalTask>
+    fun findOneJob(filter: JobFilter): Job
+    fun findOneTaskError(filter: TaskErrorFilter): TaskError
+
 }
 
 @Service
@@ -165,6 +189,10 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.getAll(filter)
     }
 
+    override fun findOneJob(filter: JobFilter): Job {
+        return jobDao.findOneJob(filter)
+    }
+
     @Transactional(readOnly = true)
     override fun getTask(id: UUID) : Task {
         return taskDao.get(id)
@@ -243,6 +271,10 @@ class JobServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getTaskErrors(filter: TaskErrorFilter): KPagedList<TaskError> {
         return taskErrorDao.getAll(filter)
+    }
+
+    override fun findOneTaskError(filter: TaskErrorFilter): TaskError {
+        return taskErrorDao.findOneTaskError(filter)
     }
 
     override fun deleteTaskError(id: UUID): Boolean {

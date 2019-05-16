@@ -1,6 +1,10 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.TaskError
+import com.zorroa.archivist.domain.TaskErrorEvent
+import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
@@ -19,7 +23,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
-import java.util.*
+import java.util.UUID
 
 interface TaskErrorDao {
     fun create(task: InternalTask, error: TaskErrorEvent): TaskError
@@ -28,6 +32,7 @@ interface TaskErrorDao {
     fun getLast() : TaskError
     fun count(filter: TaskErrorFilter): Long
     fun getAll(filter: TaskErrorFilter) : KPagedList<TaskError>
+    fun findOneTaskError(filter: TaskErrorFilter): TaskError
     fun delete(id: UUID) : Boolean
     fun deleteAll(job: JobId) : Int
 }
@@ -120,10 +125,16 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return jdbc.queryForObject(query, Long::class.java, *values)
     }
 
-    override fun getAll(filter: TaskErrorFilter) : KPagedList<TaskError> {
+    override fun getAll(filter: TaskErrorFilter): KPagedList<TaskError> {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun findOneTaskError(filter: TaskErrorFilter): TaskError {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     override fun get(id: UUID) : TaskError {

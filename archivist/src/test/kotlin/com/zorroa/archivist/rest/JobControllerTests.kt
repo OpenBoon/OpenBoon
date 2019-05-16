@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.JobUpdateSpec
@@ -191,5 +192,44 @@ class JobControllerTests : MockMvcTest() {
         val log = Json.Mapper.readValue<KPagedList<TaskError>>(content,
                 object : TypeReference<KPagedList<TaskError>>() {})
         assertEquals(1, log.size())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testSearch() {
+        val jobs = resultForPostContent<KPagedList<Job>>(
+            "/api/v1/jobs/_search",
+            JobFilter()
+        )
+        assertTrue(jobs.size() > 0)
+    }
+
+    @Test
+    fun testFindOneWithEmptyFilter() {
+        val job = resultForPostContent<Job>(
+            "/api/v1/jobs/_findOne",
+            JobFilter()
+        )
+        assertEquals("test_job", job.name)
+    }
+
+    @Test
+    fun testFindOneWithFilter() {
+        val spec = jobSpec("baz")
+        jobService.create(spec)
+        val job = resultForPostContent<Job>(
+            "/api/v1/jobs/_findOne",
+            JobFilter(names = listOf("baz_job"))
+        )
+        assertEquals(spec.name, job.name)
+    }
+
+    private fun jobSpec(name: String): JobSpec {
+        return JobSpec(
+            "${name}_job",
+            emptyZpsScript("${name}_script"),
+            args = mutableMapOf("${name}_arg" to 1),
+            env = mutableMapOf("${name}_env_var" to "${name}_env_value")
+        )
     }
 }

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystFilter
@@ -15,6 +14,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -30,34 +30,52 @@ class AnalystControllerTests : MockMvcTest() {
     @Before
     fun init() {
         authenticateAsAnalyst()
-        spec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.40.3",
-                null)
+        spec = defaultAnalystSpec()
         analyst = analystDao.create(spec)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearch() {
         // All filter options tested in DAO.
-        val session = admin()
         val filter = AnalystFilter(states = listOf(AnalystState.Up))
-
-        val rsp = mvc.perform(MockMvcRequestBuilders.post("/api/v1/analysts/_search")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serialize(filter))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
-
-        val list = Json.Mapper.readValue<KPagedList<Analyst>>(rsp.response.contentAsString,
-                object : TypeReference<KPagedList<Analyst>>() {})
+        val list = resultForPostContent<KPagedList<Analyst>>(
+            "/api/v1/analysts/_search",
+            filter)
         assertEquals(1, list.size())
+    }
+
+    @Test
+    fun testFindOneWithEmptyFilter() {
+        val result = resultForPostContent<Analyst>(
+            "/api/v1/analysts/_findOne",
+            AnalystFilter())
+        assertEquals(result.id, analyst.id)
+    }
+
+    @Test
+    fun testFindOneWithIdFilter() {
+        val result = resultForPostContent<Analyst>(
+            "/api/v1/analysts/_findOne",
+            AnalystFilter(ids = listOf(analyst.id)))
+        assertEquals(analyst.id, result.id)
+    }
+
+    @Test
+    fun testFindOneFailsOnNotFound() {
+        assertClientErrorForPostContent(
+            "/api/v1/analysts/_findOne",
+            AnalystFilter(ids = listOf(UUID.randomUUID())))
+    }
+
+    @Test
+    fun testFindOneFailsWhenMultipleFound() {
+        val spec2 = defaultAnalystSpec()
+        spec2.endpoint = "https://127.0.0.1:5001"
+        analystDao.create(spec2)
+
+        assertClientErrorForPostContent(
+            "/api/v1/analysts/_findOne",
+            AnalystFilter())
     }
 
     @Test
@@ -152,5 +170,16 @@ class AnalystControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
                 .andReturn()
+    }
+
+    private fun defaultAnalystSpec(): AnalystSpec {
+        return AnalystSpec(
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.40.3",
+            null
+        )
     }
 }

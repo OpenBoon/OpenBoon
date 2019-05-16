@@ -12,10 +12,15 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Timed
-class AuditLogController @Autowired constructor(val auditLogDao : AuditLogDao) {
+class AuditLogController @Autowired constructor(val auditLogDao: AuditLogDao) {
 
     @PostMapping(value= ["/api/v1/auditlog/_search"])
     fun getAll(@RequestBody filter: AuditLogFilter) : KPagedList<AuditLogEntry> {
         return auditLogDao.getAll(filter)
+    }
+
+    @PostMapping(value = ["/api/v1/auditlog/_findOne"])
+    fun findOne(@RequestBody filter: AuditLogFilter): AuditLogEntry {
+        return auditLogDao.findOne(filter)
     }
 }

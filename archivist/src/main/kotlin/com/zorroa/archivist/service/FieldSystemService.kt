@@ -2,7 +2,19 @@ package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Field
+import com.zorroa.archivist.domain.FieldEdit
+import com.zorroa.archivist.domain.FieldEditFilter
+import com.zorroa.archivist.domain.FieldEditSpec
+import com.zorroa.archivist.domain.FieldFilter
+import com.zorroa.archivist.domain.FieldSet
+import com.zorroa.archivist.domain.FieldSetFilter
+import com.zorroa.archivist.domain.FieldSetSpec
+import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
+import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.FieldSetDao
@@ -18,7 +30,7 @@ import java.io.FileInputStream
 import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 
 interface FieldSystemService {
 
@@ -27,6 +39,7 @@ interface FieldSystemService {
     fun getField(spec: FieldEditSpec) : Field
     fun getField(attrName: String) : Field
     fun findOneField(filter: FieldFilter): Field
+    fun findOneFieldSet(filter: FieldSetFilter): FieldSet
     fun deleteField(field: Field) : Boolean
     fun updateField(field: Field, spec: FieldUpdateSpec): Boolean
     fun getAllFields(filter: FieldFilter) : KPagedList<Field>
@@ -136,6 +149,11 @@ class FieldSystemServiceImpl @Autowired constructor(
     @Transactional(readOnly=true)
     override fun findOneField(filter: FieldFilter) : Field {
         return fieldDao.findOne(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findOneFieldSet(filter: FieldSetFilter): FieldSet {
+        return fieldSetDao.findOne(filter)
     }
 
     override fun deleteField(field: Field): Boolean {

@@ -67,4 +67,12 @@ class TaskErrorControllerTests : MockMvcTest() {
                 object : TypeReference<KPagedList<TaskError>>() {})
         assertEquals(1, log.size())
     }
+
+    @Test
+    fun testFindOne() {
+        val taskError = resultForPostContent<TaskError>(
+            "/api/v1/taskerrors/_findOne",
+            TaskErrorFilter(processors = listOf("com.zorroa.OfficeIngestor")))
+        assertEquals("/foo/bar.jpg", taskError.path)
+    }
 }

@@ -8,7 +8,13 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.MeterRegistryHolder
 import com.zorroa.archivist.service.event
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobId
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.JobUpdateSpec
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.Json
@@ -16,21 +22,22 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 interface JobDao {
     fun create(spec: JobSpec, type: PipelineType): Job
     fun update(job: JobId, update: JobUpdateSpec): Boolean
-    fun get(id: UUID, forClient:Boolean=false): Job
+    fun get(id: UUID, forClient: Boolean = false): Job
     fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean
     fun getAll(filt: JobFilter?): KPagedList<Job>
-    fun incrementAssetCounters(job: JobId, counts: AssetCounters) : Boolean
+    fun incrementAssetCounters(job: JobId, counts: AssetCounters): Boolean
     fun setTimeStarted(job: JobId): Boolean
-    fun getExpired(duration: Long, unit: TimeUnit, limit: Int) : List<Job>
+    fun getExpired(duration: Long, unit: TimeUnit, limit: Int): List<Job>
     fun delete(job: JobId): Boolean
-    fun hasPendingFrames(job: JobId) : Boolean
-    fun resumePausedJobs() : Int
+    fun hasPendingFrames(job: JobId): Boolean
+    fun resumePausedJobs(): Int
+    fun findOneJob(filter: JobFilter): Job
 }
 
 @Repository
@@ -113,6 +120,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER_FOR_CLIENT, *values))
+    }
+
+    override fun findOneJob(filter: JobFilter): Job {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return jdbc.queryForObject<Job>(query, MAPPER, *values)
     }
 
     override fun setTimeStarted(job: JobId): Boolean {

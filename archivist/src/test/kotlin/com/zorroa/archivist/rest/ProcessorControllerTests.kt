@@ -24,11 +24,13 @@ class ProcessorControllerTests : MockMvcTest() {
     @Autowired
     lateinit var processorService: ProcessorService
 
+    lateinit var testSpecs: List<ProcessorSpec>
+
     @Before
     fun init() {
-        val specs = Json.Mapper.readValue<List<ProcessorSpec>>(
+        testSpecs = Json.Mapper.readValue<List<ProcessorSpec>>(
                 ClassPathResource("processors.json").inputStream)
-        processorService.replaceAll(specs)
+        processorService.replaceAll(testSpecs)
     }
 
     @Test
@@ -79,5 +81,22 @@ class ProcessorControllerTests : MockMvcTest() {
         procs.forEach {
             assertTrue(it.className.contains("ingestor", ignoreCase = true))
         }
+    }
+
+    @Test
+    fun findOneTest() {
+        val processor = resultForPostContent<Processor>(
+            "/api/v1/processors/_findOne",
+            ProcessorFilter(classNames = listOf(testSpecs[0].className))
+        )
+        assertEquals(testSpecs[0].file, processor.file)
+    }
+
+    @Test
+    fun testFindOneFailsWhenMultipleFound() {
+        assertClientErrorForPostContent(
+            "/api/v1/processors/_findOne",
+            ProcessorFilter(classNames = testSpecs.map { it.className })
+        )
     }
 }

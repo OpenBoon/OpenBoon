@@ -1,7 +1,13 @@
 package com.zorroa.archivist.repository
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Field
+import com.zorroa.archivist.domain.FieldSet
+import com.zorroa.archivist.domain.FieldSetFilter
+import com.zorroa.archivist.domain.FieldSetSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
@@ -14,7 +20,7 @@ import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
-import java.util.*
+import java.util.UUID
 
 interface FieldSetDao {
 
@@ -23,13 +29,14 @@ interface FieldSetDao {
     fun setMembers(fieldSet: FieldSet, members: List<UUID>) : Int
     fun getAll() : List<FieldSet>
     fun getAll(doc: Document) : List<FieldSet>
+    fun findOne(filter: FieldSetFilter): FieldSet
     fun count(filter: FieldSetFilter): Long
     fun getAll(filter: FieldSetFilter?): KPagedList<FieldSet>
     fun deleteAll() : Int
 }
 
 @Repository
-class FieldSetDaoImpl : AbstractDao(), FieldSetDao  {
+class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
 
     override fun create(spec: FieldSetSpec) : FieldSet {
         val time = System.currentTimeMillis()
@@ -118,6 +125,12 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao  {
         val query = filt.getQuery(GET, false)
         val values = filt.getValues(false)
         return KPagedList(count(filt), filt.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun findOne(filter: FieldSetFilter): FieldSet {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     override fun count(filter: FieldSetFilter): Long {
