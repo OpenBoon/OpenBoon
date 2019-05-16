@@ -526,9 +526,11 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     private fun getQueryStringQuery(search: AssetSearch): QueryBuilder {
-        val queryFields = fieldSystemService.getKeywordFieldNames()
+        val queryFields = fieldSystemService.getKeywordAttrNames(search.isExactQuery)
         val qstring = QueryBuilders.queryStringQuery(search.query)
-
+        if (search.isExactQuery) {
+            qstring.analyzer("keyword")
+        }
         qstring.allowLeadingWildcard(false)
         qstring.lenient(true) // ignores qstring errors
 
@@ -540,8 +542,8 @@ class SearchServiceImpl @Autowired constructor(
             queryFields.forEach { (field, boost) ->
                 qstring.field(field, boost)
             }
+            qstring.field("system.taxonomy.keywords")
         }
-        qstring.field("system.taxonomy.keywords")
         return qstring
     }
 

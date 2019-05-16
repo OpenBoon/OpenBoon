@@ -35,7 +35,13 @@ interface FieldDao {
      */
     fun allocate(type: AttrType) : String
 
-    fun getKeywordFieldNames(): Map<String, Float>
+    /**
+     * Return a list of attribute names for use with keyword search.
+     *
+     * @param forExactMatch If the field type supports .raw, return that instead.
+     * @return a map of attr name / boost value
+     */
+    fun getKeywordAttrNames(forExactMatch: Boolean=false): Map<String, Float>
 
     /**
      * Return a list of the fields marked for suggestions.
@@ -158,10 +164,18 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         return jdbc.queryForObject(query, MAPPER, *values)
     }
 
-    override fun getKeywordFieldNames(): Map<String, Float> {
+    override fun getKeywordAttrNames(forExactMatch: Boolean): Map<String, Float> {
         val result = mutableMapOf<String, Float>()
-        jdbc.query("SELECT str_attr_name, float_keywords_boost FROM field WHERE pk_organization=? AND bool_keywords='t'",
-                RowCallbackHandler { rs-> result[rs.getString(1)] = rs.getFloat(2) }, getOrgId())
+        jdbc.query(GET_KEYWORD_FIELDS,
+            RowCallbackHandler { rs->
+                val type = AttrType.values()[rs.getInt("int_attr_type")]
+                if (forExactMatch && type == AttrType.StringAnalyzed) {
+                    result[rs.getString("str_attr_name") + ".raw"] = rs.getFloat("float_keywords_boost")
+                }
+                else {
+                    result[rs.getString("str_attr_name")] = rs.getFloat("float_keywords_boost")
+                }
+            }, getOrgId())
         return result
     }
 
@@ -255,6 +269,18 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "pk_organization",
                 "int_attr_type",
                 "int_count")
+
+        private const val GET_KEYWORD_FIELDS =
+            "SELECT " +
+                "str_attr_name, " +
+                "float_keywords_boost, " +
+                "int_attr_type " +
+            "FROM " +
+                "field " +
+            "WHERE " +
+                "pk_organization=? " +
+            "AND " +
+                "bool_keywords='t'"
     }
 
 }

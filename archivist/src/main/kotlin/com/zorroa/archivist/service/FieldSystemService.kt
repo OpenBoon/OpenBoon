@@ -33,7 +33,7 @@ interface FieldSystemService {
     fun getFieldEdits(filter: FieldEditFilter) : KPagedList<FieldEdit>
     fun getFieldEdits(assetId: UUID) : List<FieldEdit>
     fun getFieldEdit(editId: UUID) : FieldEdit
-    fun getKeywordFieldNames() : Map<String, Float>
+    fun getKeywordAttrNames(forRawMatch: Boolean) : Map<String, Float>
     fun getSuggestAttrNames() : List<String>
 
     fun createFieldSet(spec: FieldSetSpec, regenSuggest:Boolean=true) : FieldSet
@@ -157,8 +157,8 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly=true)
-    override fun getKeywordFieldNames() : Map<String, Float> {
-        return fieldDao.getKeywordFieldNames()
+    override fun getKeywordAttrNames(forRawMatch: Boolean) : Map<String, Float> {
+        return fieldDao.getKeywordAttrNames(forRawMatch)
     }
 
     @Transactional(readOnly=true)
