@@ -6,7 +6,8 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 /**
  * The valid Attribute Types for the field system.
@@ -197,7 +198,7 @@ class FieldSetFilter (
             addToValues(it)
         }
 
-        addToWhere("field.pk_organization=?")
+        addToWhere("field_set.pk_organization=?")
         addToValues(getOrgId())
     }
 }

@@ -6,8 +6,15 @@ import com.zorroa.archivist.service.ProcessorService
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
 import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 class ProcessorController @Autowired constructor(
@@ -21,6 +28,11 @@ class ProcessorController @Autowired constructor(
         from?.let { filter.page.from = it }
         count?.let { filter.page.size = it }
         return processorService.getAll(filter)
+    }
+
+    @PostMapping(value = ["/api/v1/processors/_findOne"])
+    fun findOne(@RequestBody filter: ProcessorFilter): Processor {
+        return processorService.findOne(filter)
     }
 
     @GetMapping(value = ["/api/v1/processors/{id:.+}"])

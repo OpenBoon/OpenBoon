@@ -9,7 +9,12 @@ import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.common.clients.RestClient
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Analyst
+import com.zorroa.common.domain.AnalystFilter
+import com.zorroa.common.domain.AnalystSpec
+import com.zorroa.common.domain.AnalystState
+import com.zorroa.common.domain.LockState
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
@@ -19,7 +24,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -37,6 +42,7 @@ interface AnalystService {
     fun getClient(endpoint: String) : RestClient
     fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState) : Boolean
     fun setTaskId(analyst: Analyst, taskId: UUID?) : Boolean
+    fun findOne(filter: AnalystFilter): Analyst
 }
 
 @Service
@@ -80,6 +86,10 @@ class AnalystServicImpl @Autowired constructor(
 
     override fun exists(endpoint: String) : Boolean {
         return analystDao.exists(endpoint)
+    }
+
+    override fun findOne(filter: AnalystFilter): Analyst {
+        return analystDao.findOne(filter)
     }
 
     override fun get(id: UUID) : Analyst {

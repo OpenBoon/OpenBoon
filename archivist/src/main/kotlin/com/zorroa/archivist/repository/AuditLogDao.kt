@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
-import java.util.*
+import java.util.UUID
 
 interface AuditLogDao {
 
@@ -47,6 +47,10 @@ interface AuditLogDao {
      */
     fun getAll(filter: AuditLogFilter) : KPagedList<AuditLogEntry>
 
+    /**
+     * Get a single matching AuditLogEntry
+     */
+    fun findOne(filter: AuditLogFilter): AuditLogEntry
 }
 
 @Repository
@@ -132,6 +136,12 @@ class AuditLogDaoImpl: AbstractDao(), AuditLogDao {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun findOne(filter: AuditLogFilter): AuditLogEntry {
+        val query = filter.getQuery(GET)
+        val values = filter.getValues()
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     private fun appendKeyValuePairs(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?) : Map<String, Any> {

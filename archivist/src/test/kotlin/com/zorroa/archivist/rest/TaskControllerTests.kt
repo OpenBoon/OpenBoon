@@ -108,6 +108,17 @@ class TaskControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testFindOne() {
+        val result = resultForPostContent<Task>(
+            "/api/v1/tasks/_findOne",
+            TaskFilter(ids = listOf(task.id))
+        )
+        assertEquals(task.id, result.id)
+        assertEquals(task.name, result.name)
+        assertEquals(task.organizationId, result.organizationId)
+    }
+
+    @Test
     fun testRetry() {
         jobService.setTaskState(task, TaskState.Failure, null)
 

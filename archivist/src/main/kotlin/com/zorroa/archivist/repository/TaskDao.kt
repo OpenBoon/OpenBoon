@@ -7,7 +7,14 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.InternalTask
+import com.zorroa.common.domain.JobId
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.Task
+import com.zorroa.common.domain.TaskFilter
+import com.zorroa.common.domain.TaskId
+import com.zorroa.common.domain.TaskSpec
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
@@ -17,7 +24,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 import java.time.Duration
-import java.util.*
+import java.util.UUID
 
 interface TaskDao {
     fun create(job: JobId, spec: TaskSpec): Task
@@ -52,6 +59,8 @@ interface TaskDao {
      * Reset the asset stat counters for the given task back to 0.
      */
     fun resetAssetCounters(task: TaskId) : Boolean
+
+    fun findOne(filter: TaskFilter): Task
 }
 
 @Repository
@@ -178,6 +187,12 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     override fun getAll(job: UUID, state: TaskState): List<InternalTask> {
         return jdbc.query("$GET_INTERNAL WHERE task.pk_job=? AND task.int_state=?",
                 INTERNAL_MAPPER, job, state.ordinal)
+    }
+
+    override fun findOne(filter: TaskFilter): Task {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     override fun isAutoRetryable(task: TaskId): Boolean {

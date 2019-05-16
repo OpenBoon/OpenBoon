@@ -1,17 +1,25 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.TaskErrorFilter
-import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobUpdateSpec
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
-import java.util.*
+import java.util.UUID
 
 
 @RestController
@@ -29,6 +37,11 @@ class JobController @Autowired constructor(
         from?.let { filter.page.from = it }
         count?.let { filter.page.size = it }
         return jobService.getAll(filter)
+    }
+
+    @PostMapping(value = ["/api/v1/jobs/_findOne"])
+    fun findOne(@RequestBody filter: JobFilter): Job {
+        return jobService.findOneJob(filter)
     }
 
     @PostMapping(value = ["/api/v1/jobs"])

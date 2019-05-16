@@ -15,6 +15,7 @@ interface ProcessorService {
     fun getAll(filter: ProcessorFilter): KPagedList<Processor>
     fun get(id: UUID): Processor
     fun get(name: String): Processor
+    fun findOne(filter: ProcessorFilter): Processor
 }
 
 @Service
@@ -26,6 +27,11 @@ class ProcessorServiceImpl @Autowired constructor(
     override fun replaceAll(processors: List<ProcessorSpec>): Int {
         processorDao.deleteAll()
         return processorDao.batchCreate(processors)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findOne(filter: ProcessorFilter): Processor {
+        return processorDao.findOne(filter)
     }
 
     @Transactional(readOnly = true)

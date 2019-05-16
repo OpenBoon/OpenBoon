@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
-import java.util.*
+import java.util.UUID
 
 interface ProcessorDao {
     fun batchCreate(specs: List<ProcessorSpec>) : Int
@@ -21,6 +21,7 @@ interface ProcessorDao {
     fun count(filter: ProcessorFilter): Long
     fun get(id: UUID) : Processor
     fun get(name: String) : Processor
+    fun findOne(filter: ProcessorFilter): Processor
 }
 
 @Repository
@@ -76,6 +77,12 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun findOne(filter: ProcessorFilter): Processor {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     override fun count(filter: ProcessorFilter): Long {

@@ -8,6 +8,7 @@ import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.copyInputToOuput
+import com.zorroa.common.domain.Task
 import com.zorroa.common.domain.TaskFilter
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,6 +34,11 @@ class TaskController @Autowired constructor(
                  @RequestParam(value = "from", required = false) from: Int?,
                  @RequestParam(value = "count", required = false) count: Int?): Any {
         return taskDao.getAll(filter)
+    }
+
+    @PostMapping(value = ["/api/v1/tasks/_findOne"])
+    fun findOne(@RequestBody filter: TaskFilter): Task {
+        return taskDao.findOne(filter)
     }
 
     @GetMapping(value = ["/api/v1/tasks/{id}"])

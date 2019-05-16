@@ -4,14 +4,18 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.service.event
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Analyst
+import com.zorroa.common.domain.AnalystFilter
+import com.zorroa.common.domain.AnalystSpec
+import com.zorroa.common.domain.AnalystState
+import com.zorroa.common.domain.LockState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.JdbcUtils.update
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.time.Duration
-import java.util.*
+import java.util.UUID
 
 interface AnalystDao {
     fun create(spec: AnalystSpec) : Analyst
@@ -27,6 +31,7 @@ interface AnalystDao {
     fun setTaskId(endpoint: String, taskId: UUID?): Boolean
     fun getUnresponsive(state: AnalystState, duration: Duration) : List<Analyst>
     fun delete(analyst: Analyst) : Boolean
+    fun findOne(filter: AnalystFilter): Analyst
 }
 
 @Repository
@@ -50,6 +55,12 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb,
                 spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal,
                 endpoint) == 1
+    }
+
+    override fun findOne(filter: AnalystFilter): Analyst {
+        val query = filter.getQuery(GET)
+        val values = filter.getValues()
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     override fun get(id: UUID): Analyst {
