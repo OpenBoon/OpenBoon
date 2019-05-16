@@ -922,12 +922,17 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testCountEventLog() {
+    fun testCollapse() {
+        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        source1.setAttr("media.clip.parent", "ABC")
+        source2.setAttr("media.clip.parent", "ABC")
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+        val search = AssetSearch()
+        search.collapse = mapOf("field" to "media.clip.parent")
 
-        assertEquals(1, searchService.count(AssetSearch()))
-        // logger.event()
+        val result = searchService.search(Pager.first(), search)
+        assertEquals(1, result.list.size)
     }
 }

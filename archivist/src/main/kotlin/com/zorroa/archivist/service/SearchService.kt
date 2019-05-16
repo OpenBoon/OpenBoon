@@ -27,6 +27,7 @@ import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.Strings
+import org.elasticsearch.common.io.stream.NamedWriteableRegistry
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
@@ -47,6 +48,7 @@ import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.SearchHits
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.elasticsearch.search.collapse.CollapseBuilder
 import org.elasticsearch.search.sort.FieldSortBuilder.DOC_FIELD_NAME
 import org.elasticsearch.search.sort.SortOrder
 import org.elasticsearch.search.suggest.SuggestBuilder
@@ -59,7 +61,6 @@ import org.springframework.stereotype.Service
 import java.io.IOException
 import java.io.OutputStream
 import java.util.Arrays
-import java.util.Collections
 import java.util.UUID
 import java.util.stream.Collectors
 
@@ -305,7 +306,9 @@ class SearchServiceImpl @Autowired constructor(
         val rest = indexRoutingService.getOrgRestClient()
 
         val ssb = SearchSourceBuilder()
+        applyCollapse(search, ssb)
         ssb.query(getQuery(search))
+
 
         val req = rest.newSearchRequest()
         req.indices("archivist")
@@ -324,7 +327,7 @@ class SearchServiceImpl @Autowired constructor(
                      */
                     val filter = agg["filter"] as Map<String, Any>
                     if (filter.isEmpty()) {
-                        agg["filter"] = mapOf<String, Map<String, Object>>("match_all" to mapOf())
+                        agg["filter"] = mapOf<String, Map<String, Any>>("match_all" to mapOf())
                     }
                 }
 
@@ -333,10 +336,8 @@ class SearchServiceImpl @Autowired constructor(
             val map = mutableMapOf("aggs" to search.aggs)
             val json = Json.serializeToString(map)
 
-            val searchModule = SearchModule(Settings.EMPTY, false, Collections.emptyList())
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-                NamedXContentRegistry(searchModule.namedXContents),
-                DeprecationHandler.THROW_UNSUPPORTED_OPERATION, json)
+                xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION, json)
 
             val ssb2 = SearchSourceBuilder.fromXContent(parser)
             ssb2.aggregations().aggregatorFactories.forEach { ssb.aggregation(it) }
@@ -386,6 +387,14 @@ class SearchServiceImpl @Autowired constructor(
 
     override fun getQuery(search: AssetSearch): QueryBuilder {
         return getQuery(search, mutableSetOf(), perms = true, postFilter = false)
+    }
+
+    fun applyCollapse(search: AssetSearch, ssb: SearchSourceBuilder) {
+        search.collapse?.let {
+            val parser = XContentFactory.xContent(XContentType.JSON).createParser(xContentRegistry,
+                DeprecationHandler.THROW_UNSUPPORTED_OPERATION, Json.serialize(search.collapse))
+            ssb.collapse(CollapseBuilder.fromXContent(parser))
+        }
     }
 
     private fun getQuery(
@@ -764,5 +773,15 @@ class SearchServiceImpl @Autowired constructor(
 
     companion object {
         private val logger = LoggerFactory.getLogger(SearchServiceImpl::class.java)
+
+        /**
+         * Used for ES XContentParsers
+         */
+        val searchModule =  SearchModule(Settings.EMPTY, false, emptyList())
+
+        /**
+         * Used for ES XContentParsers
+         */
+        val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
     }
 }

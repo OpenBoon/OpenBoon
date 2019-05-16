@@ -74,6 +74,12 @@ public class AssetSearch {
     private Access access;
 
     /**
+     * Allow for field collapsing.
+     * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-collapse.html
+     */
+    private Map<String, Object> collapse;
+
+    /**
      * Aggregations to return with the search.  Map is name, then agg.
      */
     private Map<String, Map<String, Object>> aggs;
@@ -228,6 +234,14 @@ public class AssetSearch {
     public AssetSearch setAccess(Access access) {
         this.access = access;
         return this;
+    }
+
+    public Map<String, Object> getCollapse() {
+        return collapse;
+    }
+
+    public void setCollapse(Map<String, Object> collapse) {
+        this.collapse = collapse;
     }
 
     @JsonIgnore
