@@ -29,20 +29,30 @@ class AssetStreamResolutionService constructor(
         val canDisplay = canDisplaySource(asset, types)
         val forceProxy = !canExport(asset)
         val sourceFile = fileServerProvider.getServableFile(asset)
-        val isVideoClip = asset.attrExists("media.clip.parent") && asset.getAttr<String>("source.type") == "video"
+
+        /**
+         * If the we have a video clip AND video proxies exist, then use video
+         * proxies because it's the only way to guarantee the movie is
+         * a fast-start movie.
+         */
+        val proxies = asset.getAttr("proxies", ProxySchema::class.java) ?: ProxySchema()
+        val forceVideoProxy = asset.attrExists("media.clip.parent")
+            && asset.getAttr<String>("source.type") == "video"
+            && proxies.getLargest("video") != null
 
         /**
          * Three things have to checkout or else the proxy is served.
          * 1. The proxy was forced by lack of permissions.
          * 2. The source file is not displayable by the application making request (set by accept header)
          * 3. The source file does not exist. (common M/E case)
-         * 4. If we have a video clip, then play the proxy because people often don't have faststart video.
+         * 4. If we have a video clip with video proxies, use the proxies.
          */
         if (logger.isDebugEnabled) {
-            logger.debug("Select playback media : hasAccess: {} clientCanDisplay: {} exists: {} isVideoClip: {}",
-                forceProxy, canDisplay, sourceFile.exists(), isVideoClip)
+            logger.debug("Select playback media : hasAccess: {} clientCanDisplay: {} exists: {} forceVideoProxy: {}",
+                forceProxy, canDisplay, sourceFile.exists(), forceVideoProxy)
         }
-        return if (forceProxy || !canDisplay || !sourceFile.exists() || isVideoClip) {
+
+        return if (forceProxy || !canDisplay || !sourceFile.exists() || forceVideoProxy) {
             getProxy(asset, types)
         } else {
             sourceFile
