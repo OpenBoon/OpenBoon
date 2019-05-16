@@ -2,10 +2,35 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
+import com.zorroa.archivist.domain.BatchUpdatePermissionsResponse
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FieldEdit
+import com.zorroa.archivist.domain.FieldSet
+import com.zorroa.archivist.domain.FileUploadSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSuggestBuilder
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.AssetStreamResolutionService
+import com.zorroa.archivist.service.FieldService
+import com.zorroa.archivist.service.FieldSystemService
+import com.zorroa.archivist.service.FileUploadService
+import com.zorroa.archivist.service.FolderService
+import com.zorroa.archivist.service.ImageService
+import com.zorroa.archivist.service.IndexService
+import com.zorroa.archivist.service.SearchService
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
@@ -16,11 +41,22 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
@@ -124,7 +160,7 @@ class AssetController @Autowired constructor(
                         @PathVariable height: Int,
                         @RequestParam(value="type", defaultValue = "image") type: String)  {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id)!!.getClosest(width, height, type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).getClosest(width, height, type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -138,7 +174,7 @@ class AssetController @Autowired constructor(
                    @PathVariable(required = true) size: Int,
                    @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id).atLeastThisSize(size, type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).atLeastThisSize(size, type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -151,7 +187,7 @@ class AssetController @Autowired constructor(
                         @PathVariable id: String,
                         @RequestParam(value="type", defaultValue = "image") type: String) {
         try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id).getLargest(type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).getLargest(type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
@@ -164,7 +200,7 @@ class AssetController @Autowired constructor(
                          @PathVariable id: String,
                          @RequestParam(value="type", defaultValue = "image") type: String) {
         return try {
-            imageService.serveImage(req, rsp, proxyLookupCache.get(id).getSmallest(type))
+            imageService.serveImage(rsp, proxyLookupCache.get(id).getSmallest(type))
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
