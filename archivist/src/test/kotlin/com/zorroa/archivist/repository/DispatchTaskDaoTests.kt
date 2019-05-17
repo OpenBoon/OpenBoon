@@ -25,8 +25,19 @@ class DispatchTaskDaoTests : AbstractTest() {
     lateinit var dispatchTaskDao: DispatchTaskDao
 
     @Test
+    fun testScriptGlobalArgsAreSet() {
+        // args from ztool get merged into script.
+        launchJob(JobPriority.Standard)
+        val tasks = dispatchTaskDao.getNextByJobPriority(JobPriority.Standard, 5)
+        assertTrue(tasks.isNotEmpty())
+        tasks.forEach {
+            assertEquals(it.script.globalArgs!!["captain"], "kirk")
+        }
+    }
+
+    @Test
     fun testGetByJobPriority() {
-        val job1 = launchJob(JobPriority.Standard)
+        launchJob(JobPriority.Standard)
         val job2 = launchJob(JobPriority.Interactive)
         val job3 = launchJob(JobPriority.Reindex)
 
@@ -112,6 +123,7 @@ class DispatchTaskDaoTests : AbstractTest() {
     fun launchJob(priority: Int) : Job {
         val spec1 = JobSpec("test_job_p$priority",
             emptyZpsScript("priority_$priority"),
+            args=mutableMapOf("captain" to "kirk"),
             priority = priority)
         return jobService.create(spec1)
     }

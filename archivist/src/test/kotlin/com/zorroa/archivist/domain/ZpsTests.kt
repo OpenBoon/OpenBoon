@@ -16,7 +16,7 @@ class ZpsTests {
     fun testSetGlobalArg() {
         val zps = ZpsScript("foo",null, null, null)
         zps.setGlobalArg("bilbo", "baggins")
-        assertEquals("baggins", zps.globals!!["bilbo"])
+        assertEquals("baggins", zps.globalArgs!!["bilbo"])
     }
 
 }

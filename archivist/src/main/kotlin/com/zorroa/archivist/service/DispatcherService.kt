@@ -318,7 +318,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun expand(parentTask: InternalTask, script: ZpsScript): Task {
 
         val parentScript = taskDao.getScript(parentTask.taskId)
-        script.globals = parentScript.globals
+        script.globalArgs = parentScript.globalArgs
         script.type = parentScript.type
         script.settings = parentScript.settings
 
