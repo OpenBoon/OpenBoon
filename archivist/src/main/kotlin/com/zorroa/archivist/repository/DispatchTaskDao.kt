@@ -1,6 +1,6 @@
 package com.zorroa.archivist.repository
 
-import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.common.domain.DispatchTask
@@ -9,7 +9,7 @@ import com.zorroa.common.domain.TaskState
 import com.zorroa.common.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface DispatchTaskDao {
 
@@ -67,17 +67,22 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
+
+            val script = Json.Mapper.readValue<ZpsScript>(rs.getString("json_script"))
+            val globalArgs = Json.Mapper.readValue<MutableMap<String, Any>>(rs.getString("json_args"))
+            for ((key, value) in globalArgs) {
+                script.setGlobalArg(key, value)
+            }
+
             DispatchTask(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")],
                     rs.getString("str_host"),
-                    Json.deserialize(rs.getString("json_script"), ZpsScript::class.java),
-                    Json.deserialize(rs.getString("json_env"),
-                            object : TypeReference<MutableMap<String, String>>(){}),
-                    Json.deserialize(rs.getString("json_args"),
-                            object : TypeReference<MutableMap<String, Any>>(){}),
+                    script,
+                    Json.Mapper.readValue(rs.getString("json_env")),
+                    globalArgs,
                     rs.getObject("pk_user_created") as UUID)
         }
 

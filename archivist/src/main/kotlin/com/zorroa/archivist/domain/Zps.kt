@@ -35,7 +35,7 @@ class ZpsScript(
         var generate : List<ProcessorRef>?,
         var over: List<Document>?,
         var execute : List<ProcessorRef>?,
-        var globals:  MutableMap<String, Any>? = mutableMapOf(),
+        var globalArgs: MutableMap<String, Any>? = mutableMapOf(),
         var type: PipelineType = PipelineType.Import,
         var settings: MutableMap<String, Any>?=null
 )
@@ -64,10 +64,10 @@ class ZpsScript(
      * @param value: value for the arg.
      */
     fun setGlobalArg(key: String, value: Any) {
-        if (globals == null) {
-            globals = mutableMapOf()
+        if (globalArgs == null) {
+            globalArgs = mutableMapOf()
         }
-        globals?.let {
+        globalArgs?.let {
             it[key] = value
         }
     }
