@@ -16,7 +16,6 @@ import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.util.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -114,7 +113,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         val folder1 = folderService.get("/foo/" + base + "_video")
         val folder2 = folderService.get("/foo/" + base + "_office")
         val folder3 = folderService.get("/foo/" + base + "_images_set01")
-        assertEquals(7, searchService.count(folder1!!.search!!))
+        assertEquals(8, searchService.count(folder1!!.search!!))
     }
 
     @Test
@@ -133,14 +132,14 @@ class DyHierarchyServiceTests : AbstractTest() {
         assertEquals(1, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video$testDataPath/video")
-        assertEquals(7, searchService.count(folder!!.search!!))
+        assertEquals(8, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video$testDataPath")
-        println(Json.prettyString(folder!!.search!!))
-        assertEquals(7, searchService.count(folder!!.search!!))
+
+        assertEquals(8, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video")
-        assertEquals(7, searchService.count(folder!!.search!!))
+        assertEquals(8, searchService.count(folder!!.search!!))
     }
 
     @Test

@@ -5,6 +5,7 @@ import com.zorroa.common.schema.ProxySchema
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
+import org.springframework.http.MediaType
 
 /**
  * Created by chambers on 2/26/16.
@@ -51,6 +52,14 @@ class ProxySchemaTests {
     fun testGetLargest() {
         val p = defaultProxySchema()
         assertEquals(400, p.getLargest()!!.width)
+    }
+
+    @Test
+    fun testGetLargestByMediaType() {
+        val p = defaultProxySchema()
+        assertEquals(400, p.getLargest(MediaType.IMAGE_JPEG)!!.width)
+        assertEquals(400, p.getLargest(MediaType.ALL)!!.width)
+        assertNull(p.getLargest(MediaType.IMAGE_PNG))
     }
 
     @Test

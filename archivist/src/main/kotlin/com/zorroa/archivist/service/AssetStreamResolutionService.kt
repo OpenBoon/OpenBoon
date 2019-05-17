@@ -1,73 +1,124 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.security.canExport
 import com.zorroa.common.schema.ProxySchema
+import org.slf4j.LoggerFactory
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 
 /**
- * Service that does Rudimentary content negotiation when returning a servable file.
+ * Service that does Rudimentary content negotiation when returning a [ServableFile].
  */
 @Service
-class AssetStreamResolutionService constructor (
+class AssetStreamResolutionService constructor(
     private val indexService: IndexService,
     private val fileServerProvider: FileServerProvider,
-    private val fileStorageService: FileStorageService) {
+    private val fileStorageService: FileStorageService
+) {
 
     /**
-     * Returns a ServableFile for an asset based on Accept header and `type` query parameter.
+     * Return a [ServableFile] for the given asset Id and list of [MediaType]s
+     *
+     * @param id The unique ID of the asset.
+     * @param types The acceptable [MediaType]s to serve.
+     * @return A [ServableFile] or null none could be found.
      */
-    fun getServableFile(id: String, accept: String? = null, type: String? = null): ServableFile? {
+    fun getServableFile(id: String, types: List<MediaType>): ServableFile? {
         val asset = indexService.get(id)
-        val requestedType = requestedType(accept, type)
-        val forceProxy = if (requestedType == null) {
-            !canExport(asset)
-        } else {
-            true
-        }
-        return if (forceProxy) {
-            getServableProxy(asset, requestedType)
-        } else {
-            fileServerProvider.getServableFile(asset)
-        }
-    }
+        val canDisplay = canDisplaySource(asset, types)
+        val forceProxy = !canExport(asset)
+        val sourceFile = fileServerProvider.getServableFile(asset)
 
-    fun requestedType(accept: String?, type: String?): String? {
-        /*
-           Curator asks for application/json, text/html, etc. even though it wants an image or video, so we can't just
-           resolve the type directly.  We filter down to either image or video.
-           If neither video or image was requested we just return the type query parameter or null if there wasn't one.
+        /**
+         * If the we have a video clip AND video proxies exist, then use video
+         * proxies because it's the only way to guarantee the movie is
+         * a fast-start movie.
          */
-        val allowedTypes = setOf("image", "video")
-        val types = accept?.split(Regex(",\\p{Blank}?")) ?: emptyList()
-        val resolvedType = types.firstOrNull { allowedTypes.contains(it.substringBefore("/")) } ?: type
-        return resolvedType?.substringBefore("/")
-    }
+        val proxies = asset.getAttr("proxies", ProxySchema::class.java) ?: ProxySchema()
+        val forceVideoProxy = asset.attrExists("media.clip.parent")
+            && asset.getAttr<String>("source.type") == "video"
+            && proxies.getLargest("video") != null
 
-    private fun getServableProxy(asset: Document, type: String?): ServableFile? {
-        /*
-            This preserves the original behavior, but is probably not ideal.
-            Users not having export permission will get an image proxy if allowed to `download`
-            from lightbox, even if the asset is not an `image`.
+        /**
+         * Three things have to checkout or else the proxy is served.
+         * 1. The proxy was forced by lack of permissions.
+         * 2. The source file is not displayable by the application making request (set by accept header)
+         * 3. The source file does not exist. (common M/E case)
+         * 4. If we have a video clip with video proxies, use the proxies.
          */
-        val proxy = getProxyStream(asset, type ?: "image")
-        if (proxy != null) {
-            return fileServerProvider.getServableFile(proxy.uri)
+        if (logger.isDebugEnabled) {
+            logger.debug("Select playback media : hasAccess: {} clientCanDisplay: {} exists: {} forceVideoProxy: {}",
+                forceProxy, canDisplay, sourceFile.exists(), forceVideoProxy)
         }
-        return null
+
+        return if (forceProxy || !canDisplay || !sourceFile.exists() || forceVideoProxy) {
+            getProxy(asset, types)
+        } else {
+            sourceFile
+        }
     }
 
-    private fun getProxyStream(asset: Document, type: String): FileStorage? {
-        // If the file doesn't have a proxy this will throw.
-        val proxies = asset.getAttr("proxies", ProxySchema::class.java)
-        if (proxies != null) {
-            val largest = proxies.getLargest(type)
-            if (largest != null) {
-                return fileStorageService.get(largest.id)
+    /**
+     * Return a [ServableFile] that points to a valid proxy of the given types.
+     *
+     * If the mimeTypes list is empty, then search for proxies with the same overall
+     * type as the source file, then fall back to an image proxy last.
+     *
+     * @param asset The document with the proxies.
+     * @param mimeTypes A list of [MimeType]s.
+     * @return A [ServableFile] or null if one can't be found.
+     *
+     */
+    fun getProxy(asset: Document, mimeTypes: List<MediaType>): ServableFile? {
+
+        /**
+         * Grab the proxies or return null.
+         */
+        val proxies = asset.getAttr("proxies", ProxySchema::class.java) ?: return null
+
+        if (mimeTypes.isEmpty()) {
+            for (type in linkedSetOf(asset.getAttr<String>("source.type") ?: "image", "image")) {
+                val proxy = proxies.getLargest(type)
+                if (proxy != null) {
+                    return fileStorageService.get(proxy.id).getServableFile()
+                }
             }
         }
+        else {
+            for (type in mimeTypes) {
+                val proxy = proxies.getLargest(type)
+                if (proxy != null) {
+                    return fileStorageService.get(proxy.id).getServableFile()
+                }
+            }
+        }
+
         return null
     }
 
+    /**
+     * Return true if the asset's mimeType is in the list of types.  If the mimeTypes
+     * list is empty or contains *, then return true.
+     *
+     * @param asset The asset to check.
+     * @param mimeTypes The accepted list of mimeTypes
+     * @return True if the asset's mimeType is in the list of types
+     */
+    fun canDisplaySource(asset: Document, mimeTypes: List<MediaType>): Boolean {
+        /**
+         * If no acceptable types are sent, or all types are allowed, then return true.
+         */
+        if (mimeTypes.isEmpty() || MediaType.ALL in mimeTypes) {
+            return true
+        }
+
+        val sourceMediaType = MediaType.parseMediaType(asset.getAttr("source.mediaType"))
+        return sourceMediaType in mimeTypes
+    }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(AssetStreamResolutionService::class.java)
+    }
 }

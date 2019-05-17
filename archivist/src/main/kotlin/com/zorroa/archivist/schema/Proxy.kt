@@ -1,6 +1,7 @@
 package com.zorroa.common.schema
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.springframework.http.MediaType
 
 data class Proxy(
         var id: String,
@@ -62,6 +63,20 @@ data class ProxySchema (
         return if (proxies == null) 0 else proxies!!.size
     }
 
+
+    /**
+     * Return the largest proxy of the specific mime type.
+     *
+     * @return
+     */
+    @JsonIgnore
+    fun getLargest(type: MediaType): Proxy? {
+        return proxies?.stream()
+            ?.filter { p-> type == MediaType.ALL || p.mimetype == type.toString() }
+            ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
+            ?.findFirst()
+            ?.orElse(null)
+    }
 
     /**
      * Return the largest proxy.

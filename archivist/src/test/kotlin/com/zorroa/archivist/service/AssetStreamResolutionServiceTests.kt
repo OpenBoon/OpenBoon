@@ -1,11 +1,10 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -14,8 +13,13 @@ import org.junit.rules.ExpectedException
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.springframework.http.MediaType
 import java.net.URI
 import java.util.UUID
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 /**
  *  Tests for {@link AssetStreamResolutionService}.
@@ -65,6 +69,7 @@ class AssetStreamResolutionServiceTests {
         given(mockIndexService.get(id)).willReturn(document)
 
         given(mockFileServerService.storedLocally).willReturn(true)
+        given(mockFileServerService.objectExists(sourceFileUri)).willReturn(true)
 
         given(mockFileStorageService.get(imageProxyId))
             .willReturn(FileStorage(id, imageProxyUri, "file", "image/jpg", mockFileServerProvider))
@@ -84,95 +89,76 @@ class AssetStreamResolutionServiceTests {
         service = AssetStreamResolutionService(mockIndexService, mockFileServerProvider, mockFileStorageService)
     }
 
+    /**
+     * Access to source is allowed, and source is online.
+     */
     @Test
-    fun getServableFileDirectlyFromFileServerService() {
-        val servableFile = service.getServableFile(id)
+    fun getServableFileAllowedSource() {
+        val servableFile = service.getServableFile(id, listOf())
         assertThat(servableFile).isNotNull
         assertThat(servableFile!!.uri).isEqualTo(sourceFileUri)
     }
 
     @Test
-    fun getServableFileWithAcceptVideo_GetsVideoProxy() {
-        val acceptHeader = "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
-        val servableFile = service.getServableFile(id, acceptHeader)
+    fun getServableFileForceProxyByClip() {
+        val asset = mockIndexService.get(id)
+        asset.setAttr("media.clip.parent", "foo")
 
+        val servableFile = service.getServableFile(id, listOf())
+        assertThat(servableFile).isNotNull
+        assertThat(servableFile!!.uri).isEqualTo(videoProxyUri)
+    }
+
+    /**
+     * If source doesn't exist then fallback to proxy of same overall type.
+     */
+    @Test
+    fun getServableFileSourceNotExist() {
+        given(mockFileServerService.objectExists(sourceFileUri)).willReturn(false)
+
+        val servableFile = service.getServableFile(id, listOf())
         assertThat(servableFile).isNotNull
         assertThat(servableFile!!.uri).isEqualTo(videoProxyUri)
     }
 
     @Test
-    fun getServableFileWithAcceptOther_GetsSourceAsset() {
-        val acceptHeader = "application/other;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
-        val servableFile = service.getServableFile(id, acceptHeader)
-
-        assertThat(servableFile).isNotNull
-        assertThat(servableFile!!.uri).isEqualTo(sourceFileUri)
+    fun testCanDisplaySource() {
+        val asset = mockIndexService.get(id)
+        assertFalse(service.canDisplaySource(asset, listOf(MediaType.parseMediaType("video/mp4"))))
+        assertTrue(service.canDisplaySource(asset, listOf(MediaType.parseMediaType("video/mov"))))
+        assertTrue(service.canDisplaySource(asset, listOf(MediaType.ALL)))
+        assertTrue(service.canDisplaySource(asset, listOf()))
     }
 
     @Test
-    fun getServableFileWithBadType_ReturnsNull() {
-        val acceptHeader = null
-        val type = "foo"
-        val servableFile = service.getServableFile(id, acceptHeader, type)
-
-        assertThat(servableFile).isNull()
+    fun testGetProxyAnyType() {
+        val asset = mockIndexService.get(id)
+        val proxy = service.getProxy(asset, listOf())
+        assertNotNull(proxy)
+        assertEquals(videoProxyUri, proxy?.uri)
     }
 
     @Test
-    fun requestedType_ReturnsVideo() {
-        val acceptHeader = "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
-        val type = null
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("video")
+    fun testGetProxyVideoType() {
+        val asset = mockIndexService.get(id)
+        val proxy = service.getProxy(asset, listOf(MediaType.parseMediaType("video/mp4")))
+        assertNotNull(proxy)
+        assertEquals(videoProxyUri, proxy?.uri)
     }
 
     @Test
-    fun requestedType_PrioritizesAcceptHeader() {
-        val acceptHeader = "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
-        val type = "image"
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("video")
-    }
-
-    @Test
-    fun requestedTypeWithoutAccept_ReturnsTypeParameter() {
-        val acceptHeader = null
-        val type = "foo"
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("foo")
-    }
-
-    @Test
-    fun requestedType_ShouldReturnNullWhenAcceptIsNotValidForProxy() {
-        var acceptHeader: String? = "application/json, text/html"
-        var type: String? = null
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isNull()
-    }
-
-    @Test
-    fun requestedType_ShouldReturnVideoIfAnywhereInAcceptHeader() {
-        val acceptHeader = "application/json, text/html, video/mp4"
-        val type = null
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("video")
-    }
-
-    @Test
-    fun requestedType_ShouldReturnImageIfAnywhereInAcceptHeader() {
-        val acceptHeader = "application/json, text/html, image/jpg"
-        val type = null
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("image")
-    }
-
-    @Test
-    fun requestedType_ShouldReturnFirstTypeFoundInAcceptHeader() {
-        val type = null
-        var acceptHeader = "application/json,video/webm,text/html,image/jpg"
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("video")
-
-        acceptHeader = "application/json,image/png,video/webm,text/html,image/jpg"
-        Assertions.assertThat(service.requestedType(acceptHeader, type)).isEqualTo("image")
+    fun testGetProxyImageType() {
+        val asset = mockIndexService.get(id)
+        val proxy = service.getProxy(asset, listOf(MediaType.IMAGE_JPEG))
+        assertNotNull(proxy)
+        assertEquals(imageProxyUri, proxy?.uri)
     }
 
     private fun testDocument(id: String): Document {
         val document = Document()
-        val proxies = Lists.newArrayList<Proxy>()
+        document.setAttr("source.mediaType", "video/mov")
+        document.setAttr("source.type", "video")
+        val proxies = mutableListOf<Proxy>()
 
         proxies.add(Proxy(width = 100, height = 100, id = imageProxyId, mimetype = "image/jpeg"))
         proxies.add(Proxy(width = 1920, height = 1080, id = videoProxyId, mimetype = "video/mp4"))
