@@ -19,7 +19,6 @@ import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
-import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory

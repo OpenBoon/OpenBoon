@@ -29,10 +29,7 @@ class DyhierarchyControllerTests : MockMvcTest() {
     @Before
     @Throws(ParseException::class)
     fun init() {
-        for (f in getTestImagePath("set01").toFile().listFiles()!!) {
-            if (!f.isFile || f.isHidden) {
-                continue
-            }
+        for (f in getTestImagePath("set01")) {
             val ab = Source(f)
             ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"))
             indexService.index(ab)

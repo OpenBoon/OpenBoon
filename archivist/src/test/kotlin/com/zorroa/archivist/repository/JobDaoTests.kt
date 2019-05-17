@@ -249,7 +249,7 @@ class JobDaoTests : AbstractTest() {
         val job = jobDao.create(spec, PipelineType.Import)
         assertTrue(jobDao.setState(job, JobState.Finished, null))
         Thread.sleep(100)
-        assertTrue(jobDao.getExpired(101, TimeUnit.MILLISECONDS, 100).isNotEmpty())
+        assertTrue(jobDao.getExpired(99, TimeUnit.MILLISECONDS, 100).isNotEmpty())
         assertTrue(jobDao.getExpired(1, TimeUnit.DAYS, 100).isEmpty())
     }
 }

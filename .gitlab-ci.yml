@@ -70,7 +70,6 @@ unit_tests:
   only:
     - merge_requests
     - development
-  allow_failure: true
   services:
     - name: postgres:9.6.9
       alias: postgres
@@ -84,11 +83,11 @@ unit_tests:
     PGDATA: /var/lib/postgresql/data/pgdata
     SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=unittest40"
     LOGGING_LEVEL_COM_ZORROA: WARN
+    USER: gitlab
   script:
     - mvn test -q
   after_script:
     - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% code coverage" }' archivist/target/site/jacoco/jacoco.csv
-
 
 docker_hub_push:
   stage: push

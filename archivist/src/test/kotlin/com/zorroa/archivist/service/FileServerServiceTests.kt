@@ -4,6 +4,7 @@ import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import java.net.URI
 import java.nio.file.Files
@@ -12,6 +13,7 @@ import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@Ignore
 class GcpFileServerServiceTests : AbstractTest() {
 
     val bucketName = "zorroa-evi-dev-integration-tests"
