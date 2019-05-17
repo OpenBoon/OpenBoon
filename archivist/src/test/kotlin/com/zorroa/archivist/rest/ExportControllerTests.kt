@@ -91,7 +91,6 @@ class ExportControllerTests : MockMvcTest() {
     fun testGetExportFile() {
         val session = admin()
         addTestAssets("set04/standard")
-        this.getTestImagePath()
         val espec = ExportSpec("foo",
                 AssetSearch(),
                 mutableListOf(),

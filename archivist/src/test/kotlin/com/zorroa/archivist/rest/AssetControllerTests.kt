@@ -47,6 +47,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.io.File
 import java.net.URL
 import java.util.UUID
 import java.util.stream.Collectors
@@ -433,9 +434,8 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testStreamHeadRequest() {
         val session = admin()
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         indexService.index(source)
-        refreshIndex()
 
         val uri = source.path.toUri()
         val servableFile = ServableFile(fileServerService, uri)
@@ -462,16 +462,16 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testStreamSource() {
         val session = admin()
-        addTestAssets("set04/standard")
-        refreshIndex()
 
-        val assets = indexService.getAll(Pager.first())
+        val source = Source(File("src/test/resources/test-data/toucan.jpg"))
+        indexService.index(source)
 
-        val url = String.format("/api/v1/assets/%s/_stream", assets.get(0).id)
+        val url = String.format("/api/v1/assets/%s/_stream", source.id)
         mvc.perform(get(url)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
+                .andExpect(MockMvcResultMatchers.content().contentType("image/jpeg"))
                 .andReturn()
     }
 
@@ -559,13 +559,6 @@ class AssetControllerTests : MockMvcTest() {
         tmpFile.delete()
     }
 
-
-    private fun videoAsset(): Document {
-        addTestVideoAssets("video")
-        val assets = indexService.getAll(Pager.first())
-        return assets.get(0)
-    }
-
     @Test
     @Throws(Exception::class)
     fun testBatchUpdate() {
@@ -625,5 +618,11 @@ class AssetControllerTests : MockMvcTest() {
                 .andReturn()
         val result = Json.Mapper.readValue<Any>(req.response.contentAsString, Json.LIST_OF_GENERIC_MAP)
         println(Json.prettyString(result))
+    }
+
+    private fun videoAsset(): Document {
+        addTestVideoAssets()
+        val assets = indexService.getAll(Pager.first())
+        return assets.get(0)
     }
 }

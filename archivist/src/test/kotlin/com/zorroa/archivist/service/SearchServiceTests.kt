@@ -26,7 +26,6 @@ import com.zorroa.archivist.search.SimilarityFilter
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -82,7 +81,7 @@ class SearchServiceTests : AbstractTest() {
 
         authenticate("user")
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, 1)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -102,7 +101,7 @@ class SearchServiceTests : AbstractTest() {
         userService.addPermissions(user, ImmutableList.of(
                 permissionService.getPermission("zorroa::export")))
         authenticate("user")
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         val search = AssetSearch().setQuery("source.filename:beer").setAccess(Access.Export)
@@ -118,7 +117,7 @@ class SearchServiceTests : AbstractTest() {
         userService.addPermissions(user, ImmutableList.of(perm))
         authenticate("user")
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, Access.Export.value)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -135,7 +134,7 @@ class SearchServiceTests : AbstractTest() {
 
         authenticate("user")
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, 1)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -147,7 +146,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testSearchPermissionsReadHit() {
         authenticate("user")
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("captain"))
         source.addToPermissions(Groups.EVERYONE, 1)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -163,7 +162,7 @@ class SearchServiceTests : AbstractTest() {
         val builder = FolderSpec("Avengers")
         val folder1 = folderService.create(builder)
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToKeywords("media", source.getAttr("source.filename", String::class.java))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
         folderService.addAssets(folder1, listOf(source.id))
@@ -180,7 +179,7 @@ class SearchServiceTests : AbstractTest() {
         val builder = FolderSpec("Beer")
         val folder1 = folderService.create(builder)
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToKeywords("media", source.getAttr("source.filename", String::class.java))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
         folderService.addAssets(folder1, listOf(source.id))
@@ -201,7 +200,7 @@ class SearchServiceTests : AbstractTest() {
         builder = FolderSpec("Characters", folder2)
         val folder3 = folderService.create(builder)
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
         folderService.addAssets(folder3, listOf(source.id))
 
@@ -224,10 +223,10 @@ class SearchServiceTests : AbstractTest() {
         builder = FolderSpec("Characters", folder2)
         val folder3 = folderService.create(builder)
 
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.addToKeywords("media", source1.getAttr("source", SourceSchema::class.java)!!.filename)
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.addToKeywords("media", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source1))
@@ -257,7 +256,7 @@ class SearchServiceTests : AbstractTest() {
         builder.search = AssetSearch("captain america")
         folderService.create(builder)
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("captain"))
 
         val a = assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -271,7 +270,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testTermSearch() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("captain", "america"))
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -299,10 +298,10 @@ class SearchServiceTests : AbstractTest() {
         builder.search = AssetSearch("captain america")
         val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search1, taxonomyRoot, attrs) = folderService.create(builder)
 
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("media.keywords", ImmutableList.of("captain"))
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
@@ -328,7 +327,7 @@ class SearchServiceTests : AbstractTest() {
 
         refreshIndex()
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", source.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -342,7 +341,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryWithCustomFields() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("foo.bar1", "captain kirk")
         source.setAttr("foo.bar2", "bilbo baggins")
         source.setAttr("foo.bar3", "pirate pete")
@@ -375,7 +374,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testHighConfidenceSearch() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("zipzoom"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -394,7 +393,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testNoConfidenceSearch() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("zipzoom"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -406,7 +405,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testSearchResponseFields() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("zooland"))
         source.addToLinks("folder", UUID.randomUUID())
         source.addToLinks("folder", UUID.randomUUID())
@@ -446,7 +445,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryWildcard() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("source", "zoolander"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -458,11 +457,11 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryExactWithQuotes() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", "ironMan17313.jpg")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("media.keywords", "ironMan17314.jpg")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source2))
 
@@ -474,11 +473,11 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryMultipleExactWithAnd() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("media.keywords", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source2))
 
@@ -490,11 +489,11 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryExactTermWithSpaces() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.title", listOf("RA", "pencil", "O'Connor"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("media.title", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source2))
 
@@ -506,7 +505,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryMinusTerm() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToKeywords("media", "zoolander", "beer")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -518,7 +517,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryPlusTerm() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.title", "Zoolander")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -530,7 +529,7 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testQueryExact() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", listOf("Dog In the Street"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -547,7 +546,7 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testQueryFuzzyTerm() {
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("zooland"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
@@ -558,7 +557,7 @@ class SearchServiceTests : AbstractTest() {
     @Test
     fun getFields() {
 
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("location", LocationSchema(doubleArrayOf(1.0, 2.0)).setCountry("USA"))
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"))
         source.setAttr("foo.shash", "AAFFGG")
@@ -578,8 +577,8 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testScrollSearch() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
         val result1 = searchService.search(Pager.first(1),
@@ -596,8 +595,8 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testAggregationSearch() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
         val page = searchService.search(Pager.first(1),
@@ -610,8 +609,8 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testAggregationSearchEmptyFilter() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
         val req = Maps.newHashMap<String, Any>()
@@ -627,10 +626,10 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testMustSearch() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
@@ -643,10 +642,10 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testMustNotSearch() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
@@ -659,10 +658,10 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testShouldSearch() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
@@ -675,7 +674,7 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class, InterruptedException::class)
     fun testKwConfSearch() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("kw_with_conf", listOf(
                 mapOf("keyword" to "dog", "confidence" to 0.5),
                 mapOf("keyword" to "cat", "confidence" to 0.1),
@@ -692,11 +691,11 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilterWithEmptyValue() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.jimbo.shash", "")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source2, source1)))
@@ -711,11 +710,11 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilterWithRaw() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.jimbo", "AFAFAFAF")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
         source2.setAttr("test.hash1.jimbo", "ADADADAD")
 
@@ -730,11 +729,11 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilter() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", "AFAFAFAF")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
         source2.setAttr("test.hash1.shash", "ADADADAD")
 
@@ -767,11 +766,11 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilterArray() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", ImmutableList.of("AFAFAFAF", "AFAFAFA1"))
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
         source2.setAttr("test.hash1.shash", ImmutableList.of("ADADADAD"))
 
@@ -789,12 +788,12 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testHammingDistanceFilterWithQuery() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("media.keywords", listOf("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", "afafafaf")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
         source2.setAttr("test.hash1.shash", "adadadad")
 
@@ -815,12 +814,12 @@ class SearchServiceTests : AbstractTest() {
     @Test
     @Throws(IOException::class)
     fun testHammingDistanceFilterWithAssetId() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("media.keywords", listOf("beer"))
         source1.setAttr("superhero", "captain")
         source1.setAttr("test.hash1.shash", "afafafaf")
 
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("superhero", "loki")
         source2.setAttr("test.hash1.shash", "adadadad")
 
@@ -840,7 +839,7 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testSuggest() {
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", listOf("zoolander"))
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -849,7 +848,7 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testSuggestLeadingNumbersWithSpaces() {
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", listOf("8990 1234 AbC"))
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -858,7 +857,7 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testSuggestWithLeadingPunctuation() {
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", listOf("-8990-1234@abc"))
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -890,7 +889,7 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testFilterExists() {
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         var asb = AssetSearch(AssetFilter().addToExists("source.path"))
@@ -904,7 +903,7 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testFilterMissing() {
-        val source = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         assertEquals(1, searchService.count(AssetSearch()))
@@ -918,11 +917,23 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, result.size().toLong())
     }
 
+    @Ignore
     @Test
     fun testFilterRange() {
         addTestAssets("set01")
+
+        val source1 = Source(getTestImagePath("toucan.jpg"))
+        source1.setAttr("source.fileSize", 100001)
+
+        val source2 = Source(getTestImagePath("faces.jpg"))
+        source2.setAttr("source.fileSize", 200000)
+
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+
         val asb = AssetSearch(AssetFilter()
                 .addRange("source.fileSize", RangeQuery().setGt(100000)))
+
+
         val result = searchService.search(Pager.first(), asb)
         assertEquals(2, result.size().toLong())
     }
@@ -930,6 +941,11 @@ class SearchServiceTests : AbstractTest() {
     @Test
     fun testFilterScript() {
         addTestAssets("set01")
+
+        val source1 = Source(getTestImagePath("faces.jpg"))
+        source1.setAttr("source.fileSize", 113333)
+
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1)))
 
         val text = "doc['source.fileSize'].value == params.size"
         val script = AssetScript(text,
@@ -944,8 +960,8 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testCollapse() {
-        val source1 = Source(getTestImagePath().resolve("beer_kettle_01.jpg"))
-        val source2 = Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"))
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source1.setAttr("media.clip.parent", "ABC")
         source2.setAttr("media.clip.parent", "ABC")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))

@@ -298,6 +298,26 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>check</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration><rules><rule>
+                            <element>BUNDLE</element>
+                            <limits>
+                                <limit>
+                                    <counter>INSTRUCTION</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.73</minimum>
+                                </limit>
+                            </limits>
+                            <excludes>
+                                <exclude></exclude>
+                            </excludes>
+                        </rule></rules></configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
