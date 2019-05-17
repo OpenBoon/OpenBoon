@@ -7,7 +7,6 @@ import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.common.domain.ArchivistException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.EntityNotFoundException
 import com.zorroa.common.util.Json
@@ -146,7 +145,7 @@ class BatchUpdatePermissionsResponse {
  *
  * @property sources: The source documents
  * @property jobId: The associated job Id
- * @property taskID: The associated task Id
+ * @property taskId: The associated task Id
  * @property skipAssetPrep: Skip over asset prep stage during create.
  */
 class BatchCreateAssetsRequest(
@@ -154,6 +153,10 @@ class BatchCreateAssetsRequest(
         val jobId: UUID?,
         val taskId: UUID?) {
 
+    /**
+     * A convenience constructor for unit tests.
+     */
+    constructor(doc: Document) : this(listOf(doc))
 
     @JsonIgnore
     var skipAssetPrep = false
@@ -203,10 +206,14 @@ class BatchCreateAssetsResponse(val total: Int) {
     }
 
     /**
-     * The total number of assets either created or replaced
+     * Return an AssetCounters instance for incrementing job and task counts.
      */
-    fun totalAssetsChanged() : Int {
-        return createdAssetIds.size + replacedAssetIds.size
+    fun getAssetCounters() : AssetCounters {
+        return AssetCounters(
+                created = createdAssetIds.size,
+                replaced = replacedAssetIds.size,
+                errors = erroredAssetIds.size,
+                warnings = warningAssetIds.size)
     }
 
     override fun toString(): String {
@@ -219,6 +226,24 @@ class BatchCreateAssetsResponse(val total: Int) {
                 .toString()
     }
 }
+
+/**
+ * AssetCounters stores the types of asset counters we keep track off.
+ *
+ * @property total The total number of assets.
+ * @property errors The total error count.
+ * @property warnings The total number of warnings.
+ * @property created The total number of assets created.
+ * @property replaced The total number of assets replaced.
+ */
+class AssetCounters (
+        val total: Int=0,
+        val errors: Int=0,
+        val warnings: Int=0,
+        val created: Int=0,
+        val replaced: Int=0
+)
+
 /**
  * A request to batch delete assets.
  *

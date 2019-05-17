@@ -7,16 +7,22 @@ import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
+import org.springframework.test.web.servlet.ResultMatcher
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
-
 import java.io.IOException
 
 abstract class MockMvcTest : AbstractTest() {
@@ -37,6 +43,41 @@ abstract class MockMvcTest : AbstractTest() {
                 .webAppContextSetup(this.wac!!)
                 .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain!!)
                 .build()
+    }
+
+    /**
+     * Assert successful post to API endpoint
+     * @return an an object of the
+     */
+    final inline fun <reified T> resultForPostContent(urlTemplate: String, `object`: Any,
+        session: MockHttpSession = admin()): T {
+        // MockMvc clears the security context when it returns, I don't know how to configure it otherwise.
+        val savedAuthentication = SecurityContextHolder.getContext().authentication
+        val result = this.mvc.perform(
+            MockMvcRequestBuilders
+                .post(urlTemplate)
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(`object`)))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+        SecurityContextHolder.getContext().authentication = savedAuthentication
+        return Json.Mapper.readValue<T>(result.response.contentAsString, T::class.java)
+    }
+
+    fun assertClientErrorForPostContent(urlTemplate: String, `object`: Any, session: MockHttpSession = admin()) {
+        val savedAuthentication = SecurityContextHolder.getContext().authentication
+        this.mvc.perform(
+            MockMvcRequestBuilders
+                .post(urlTemplate)
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(`object`)))
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andReturn()
+        SecurityContextHolder.getContext().authentication = savedAuthentication
     }
 
     private fun buildSession(authentication: Authentication): MockHttpSession {
@@ -80,7 +121,6 @@ abstract class MockMvcTest : AbstractTest() {
     protected fun analyst(): MockHttpSession {
         return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
     }
-
 
     class StatusResult<T> {
         var `object`: T? = null

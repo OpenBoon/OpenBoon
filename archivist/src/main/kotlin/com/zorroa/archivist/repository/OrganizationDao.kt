@@ -33,6 +33,7 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setString(2, spec.name)
+            ps.setObject(3, spec.indexRouteId)
             ps
         }
         logger.event(LogObject.ORGANIZATION, LogAction.CREATE,
@@ -41,8 +42,7 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     override fun update(org: Organization, spec: OrganizationUpdateSpec) : Boolean {
-        return jdbc.update("UPDATE organization SET str_name=? WHERE pk_organization=?",
-                spec.name, org.id) == 1
+        return jdbc.update(UPDATE, spec.name, spec.indexRouteId, org.id) == 1
     }
 
     override fun get(id: UUID): Organization {
@@ -101,20 +101,24 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     override fun exists(name: String): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM organization WHERE str_name=?", Integer::class.java, name) > 0
+        return jdbc.queryForObject("SELECT COUNT(1) FROM organization WHERE str_name=?",
+                Integer::class.java, name) > 0
     }
 
     companion object {
         private val MAPPER = RowMapper { rs, _ ->
             Organization(
                     rs.getObject("pk_organization") as UUID,
+                    rs.getObject("pk_index_route") as UUID,
                     rs.getString("str_name"))
         }
 
-        private const val GET = "SELECT pk_organization, str_name FROM organization"
+        private const val GET = "SELECT * FROM organization"
         private const val COUNT = "SELECT COUNT(1) FROM organization"
         private val INSERT = JdbcUtils.insert("organization",
-                "pk_organization", "str_name")
+                "pk_organization", "str_name", "pk_index_route")
+        private val UPDATE = "UPDATE organization SET str_name=?, " +
+                "pk_index_route=? WHERE pk_organization=?"
 }
 
 }

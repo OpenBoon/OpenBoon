@@ -1,11 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.FolderSpec
-import com.zorroa.archivist.domain.TrashedFolder
-import com.zorroa.archivist.security.*
-import com.zorroa.archivist.service.FolderService
+import com.zorroa.archivist.security.getUserId
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -81,7 +78,6 @@ class TrashFolderDaoTests : AbstractTest() {
         val folders = trashFolderDao.getAll(getUserId())
         assertEquals(1, folders.size.toLong())
     }
-
 
     @Test
     fun testCount() {

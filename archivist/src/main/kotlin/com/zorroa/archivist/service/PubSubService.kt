@@ -7,7 +7,6 @@ import com.google.cloud.pubsub.v1.MessageReceiver
 import com.google.cloud.pubsub.v1.Subscriber
 import com.google.pubsub.v1.ProjectSubscriptionName
 import com.google.pubsub.v1.PubsubMessage
-import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.QueuedFileSpec
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.common.clients.CoreDataVaultClient
@@ -22,7 +21,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
@@ -41,8 +40,9 @@ class GooglePubSubSettings {
  */
 
 class GcpPubSubServiceImpl constructor(
-        private val coreDataVaultClient: CoreDataVaultClient,
-        private val meterRegistry: MeterRegistry) : PubSubService {
+    private val coreDataVaultClient: CoreDataVaultClient,
+    private val meterRegistry: MeterRegistry
+) : PubSubService {
 
     @Autowired
     lateinit var settings: GooglePubSubSettings
@@ -59,7 +59,7 @@ class GcpPubSubServiceImpl constructor(
     @Value("\${archivist.config.path}")
     lateinit var configPath: String
 
-    private lateinit var subscription : ProjectSubscriptionName
+    private lateinit var subscription: ProjectSubscriptionName
     private lateinit var subscriber: Subscriber
 
     @PostConstruct
@@ -88,15 +88,14 @@ class GcpPubSubServiceImpl constructor(
          */
         override fun receiveMessage(message: PubsubMessage, consumer: AckReplyConsumer) {
             try {
-                val payload : Map<String, Any?> = Json.Mapper.readValue(message.data.toByteArray())
-                val type= payload["type"] as String?
-                when(type) {
+                val payload: Map<String, Any?> = Json.Mapper.readValue(message.data.toByteArray())
+                val type = payload["type"] as String?
+                when (type) {
                     "UPDATE" -> handleUpdate(payload)
                 }
             } catch (e: Exception) {
                 logger.warn("Failed to parse GPubSub payload: {}", String(message.data.toByteArray()))
-            }
-            finally {
+            } finally {
                 consumer.ack()
             }
         }
@@ -113,7 +112,7 @@ class GcpPubSubServiceImpl constructor(
             return pipeline.id
         }
 
-        fun handleUpdate(payload : Map<String, Any?>) {
+        fun handleUpdate(payload: Map<String, Any?>) {
 
             try {
                 var processAsset = false
@@ -137,19 +136,15 @@ class GcpPubSubServiceImpl constructor(
                         "orgId", org.id.toString(), "companyId", companyId.toString()).increment()
 
                 /**
-                 * Grab the existing doc, otherise make a new one.
+                 * Grab the existing doc. If the doc doesn't exist, a blank doc with
+                 * the proper ID is returned.
                  */
-                val doc = try {
-                    coreDataVaultClient.getIndexedMetadata(companyId, assetId)
-                } catch (e: Exception) {
-                    Document(assetId)
-                }
-
+                val doc = coreDataVaultClient.getIndexedMetadata(companyId, assetId)
                 doc.setAttr("system.organizationId", org.id)
                 doc.setAttr("tmp.copy_attrs_to_clip", listOf("irm"))
 
                 val md = coreDataVaultClient.getAsset(companyId, assetId)
-                val url =  md["imageURL"].toString().replace("https://storage.cloud.google.com/",
+                val url = md["imageURL"].toString().replace("https://storage.cloud.google.com/",
                         "gs://", true)
 
                 // Add IRM metadata
@@ -171,7 +166,6 @@ class GcpPubSubServiceImpl constructor(
                         UUID.fromString(assetId),
                         url,
                         doc.document))
-
             } catch (e: Exception) {
                 logger.warn("Error queueing file: {}", e.message, e)
             }

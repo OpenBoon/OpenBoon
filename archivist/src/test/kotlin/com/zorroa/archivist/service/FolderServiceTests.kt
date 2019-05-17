@@ -1,11 +1,22 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.BatchUpdateAssetLinks
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchyLevelType
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.repository.FolderDao
+import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
@@ -13,13 +24,16 @@ import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
+import java.util.UUID
 
 class FolderServiceTests : AbstractTest() {
 
@@ -35,10 +49,16 @@ class FolderServiceTests : AbstractTest() {
     @Autowired
     lateinit var organizationDao: OrganizationDao
 
+    @Autowired
+    lateinit var indexRouteDao: IndexRouteDao
+
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
     }
 
     @Test
@@ -76,7 +96,8 @@ class FolderServiceTests : AbstractTest() {
         val folder = folderService.create(builder)
 
         val results = folderService.addAssets(folder,
-                BatchUpdateAssetLinks(indexService.getAll(Pager.first()).map { a -> a.id }))
+                BatchUpdateAssetLinks(indexService.getAll(Pager.first()).map { a -> a.id })
+        )
 
         logger.info(Json.prettyString(results))
         assertTrue(results.erroredAssetIds.isEmpty())
@@ -129,7 +150,6 @@ class FolderServiceTests : AbstractTest() {
         s.addToFilter().addToLinks("folder", folder.id)
         assertEquals(0, searchService.count(s))
         assertEquals(0, searchService.count(folder))
-
     }
 
     @Test
@@ -141,7 +161,7 @@ class FolderServiceTests : AbstractTest() {
         folder = folderService.get(folder.id)
 
         val results = folderService.addAssets(folder,
-                indexService.getAll( Pager.first()).map { a -> a.id })
+                indexService.getAll(Pager.first()).map { a -> a.id })
         refreshIndex(2000)
 
         assertEquals(2, searchService.count(AssetSearch().setQuery("bilbo")))
@@ -176,7 +196,6 @@ class FolderServiceTests : AbstractTest() {
         assertEquals(0, searchService.search(AssetSearch(
                 AssetFilter().addToTerms("system.links.folder", folder.id))).hits.getTotalHits())
         assertEquals(0, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
-
     }
 
     @Test
@@ -538,7 +557,8 @@ class FolderServiceTests : AbstractTest() {
     fun testDeleteWithDyhi() {
         val folder = folderService.create(FolderSpec("foo"), false)
         val spec = DyHierarchySpec(folder.id, listOf(
-                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)))
+                DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)
+        ))
         dyhiService!!.create(spec)
         assertTrue(folderService.delete(folder))
     }
@@ -629,8 +649,7 @@ class FolderServiceTests : AbstractTest() {
 
         assertTrue(folderService.isDescendantOf(folder3, folder1))
         assertFalse(folderService.isDescendantOf(folder1, folder3))
-        //assertTrue(folderService.isDescendantOf(folder3, folderService.get(getRootFolderId())))
-
+        // assertTrue(folderService.isDescendantOf(folder3, folderService.get(getRootFolderId())))
     }
 
     @Test
@@ -660,7 +679,10 @@ class FolderServiceTests : AbstractTest() {
 
     @Test
     fun createStandardfolders() {
-        val org = organizationDao.create(OrganizationSpec("test"))
+        val org = organizationDao.create(
+            OrganizationSpec(
+                "test", indexRouteDao.getRandomDefaultRoute().id)
+        )
         SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
         permissionService.createStandardPermissions(org)
         folderService.createStandardFolders(org)
@@ -668,5 +690,4 @@ class FolderServiceTests : AbstractTest() {
         assertTrue(folderService.exists("/Users"))
         assertTrue(folderService.exists("/Library"))
     }
-
 }

@@ -3,10 +3,12 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.copyInputToOuput
+import com.zorroa.common.domain.Task
 import com.zorroa.common.domain.TaskFilter
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,6 +36,11 @@ class TaskController @Autowired constructor(
         return taskDao.getAll(filter)
     }
 
+    @PostMapping(value = ["/api/v1/tasks/_findOne"])
+    fun findOne(@RequestBody filter: TaskFilter): Task {
+        return taskDao.findOne(filter)
+    }
+
     @GetMapping(value = ["/api/v1/tasks/{id}"])
     @Throws(IOException::class)
     fun getTask(@PathVariable id: UUID): Any {
@@ -45,7 +52,8 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@PathVariable id: UUID) : Any {
         return HttpUtils.status("Task", id, "retry",
-                dispatcherService.retryTask(jobService.getTask(id)))
+                dispatcherService.retryTask(jobService.getInternalTask(id),
+                        "Retried by ${getUsername()}"))
 
     }
 
@@ -55,7 +63,7 @@ class TaskController @Autowired constructor(
     fun skip(@PathVariable id: UUID) : Any {
 
         return HttpUtils.status("Task", id, "skip",
-                dispatcherService.skipTask(jobService.getTask(id)))
+                dispatcherService.skipTask(jobService.getInternalTask(id)))
     }
 
     @GetMapping(value = ["/api/v1/tasks/{id}/_script"])

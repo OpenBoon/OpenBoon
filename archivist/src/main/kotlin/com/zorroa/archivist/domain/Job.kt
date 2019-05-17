@@ -8,32 +8,56 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import io.micrometer.core.instrument.Tag
 import java.util.*
 
 enum class JobState {
     Active,
     Cancelled,
     Finished,
-    Archived
-}
+    Archived;
 
+    /**
+     * Return a Micrometer tag for tagging metrics related to this state.
+     */
+    fun metricsTag(): Tag {
+        return Tag.of("job-state", this.toString())
+    }
+}
 
 interface JobId {
     val jobId: UUID
 }
 
+/**
+ * Standard Job priority values. A lower priority goes first.
+ *
+ * @property Standard Standard job priority.
+ * @property Interactive Interactive job priority.
+ * @property Reindex Reindex job priority.
+ */
+object JobPriority {
+    const val Standard = 100
+    const val Interactive = 1
+    const val Reindex = -32000
+}
 
 class JobSpec (
         var name: String?,
         var script : ZpsScript?,
         val args: MutableMap<String, Any>? = mutableMapOf(),
         val env: MutableMap<String, String>? =  mutableMapOf(),
-        val priority: Int=100
+        var priority: Int=JobPriority.Standard,
+        var paused: Boolean=false,
+        val pauseDurationSeconds: Long?=null,
+        val replace:Boolean=false
 )
 
 class JobUpdateSpec (
         var name: String,
-        val priority: Int
+        val priority: Int,
+        val paused: Boolean,
+        val timePauseExpired: Long
 )
 
 class Job (
@@ -48,7 +72,9 @@ class Job (
         var timeStarted: Long,
         var timeUpdated: Long,
         var timeCreated: Long,
-        var priority: Int
+        var priority: Int,
+        val paused: Boolean,
+        val timePauseExpired: Long
 ) : JobId {
     override val jobId = id
 
@@ -62,7 +88,9 @@ class JobFilter (
         val ids : List<UUID>? = null,
         val type: PipelineType? = null,
         val states : List<JobState>? = null,
-        val organizationIds: List<UUID>? = null
+        val organizationIds: List<UUID>? = null,
+        val names: List<String>? = null,
+        val paused: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -82,6 +110,17 @@ class JobFilter (
             sort = listOf("timeCreated:desc")
         }
 
+        if (hasPermission("zorroa::superadmin")) {
+            organizationIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+                addToValues(it)
+            }
+        }
+        else {
+            addToWhere("job.pk_organization=?")
+            addToValues(getOrgId())
+        }
+
         ids?.let {
             addToWhere(JdbcUtils.inClause("job.pk_job", it.size))
             addToValues(it)
@@ -97,15 +136,14 @@ class JobFilter (
             addToValues(it.map{ s-> s.ordinal})
         }
 
-        if (hasPermission("zorroa::superadmin")) {
-            organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
-                addToValues(it)
-            }
+        names?.let {
+            addToWhere(JdbcUtils.inClause("job.str_name", it.size))
+            addToValues(it)
         }
-        else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
+
+        paused?.let {
+            addToWhere("job.bool_paused=?")
+            addToValues(paused)
         }
     }
 }

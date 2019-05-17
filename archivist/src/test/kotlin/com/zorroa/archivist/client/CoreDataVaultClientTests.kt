@@ -1,16 +1,18 @@
 package com.zorroa.archivist.client
 
+import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import com.zorroa.common.util.Json
+import io.micrometer.core.instrument.MeterRegistry
+import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.nio.file.Paths
 import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 
 /**
@@ -18,15 +20,24 @@ import kotlin.test.assertTrue
  * will not pass.
  */
 @Ignore
-class CoreDataVaultClientTests {
+class CoreDataVaultClientTests : AbstractTest() {
 
     val companyId = 25274
 
-    val docType = "1c494ffd-940b-496a-a7d8-f0bfadc9fa24"
+    val docType = "01059ec7-42e8-48f3-adcf-4fa726005ab4"
 
-    val client = IrmCoreDataVaultClientImpl("https://cdvapi.dit2.ironmountainconnect.com",
-            Paths.get("unittest/config/service-credentials.json"),
-            Paths.get("unittest/config/data-credentials.json"))
+    @Autowired
+    lateinit var meterRegistry : MeterRegistry
+
+    lateinit var client :  IrmCoreDataVaultClientImpl
+
+    @Before
+    fun init() {
+        client = IrmCoreDataVaultClientImpl("https://cdvapi.dit3-insight.com",
+                Paths.get("unittest/config/service-credentials.json"),
+                Paths.get("unittest/config/data-credentials.json"),
+                meterRegistry)
+    }
 
     @Test
     fun testAssetExists() {
@@ -94,6 +105,14 @@ class CoreDataVaultClientTests {
         val doc2 = client.getIndexedMetadata(companyId, doc.id)
         assertEquals(doc.id, doc2.id)
         assertEquals(doc.getAttr("foo", String::class.java), doc2.getAttr("foo", String::class.java))
+    }
+
+    @Test
+    fun testGetMissingIndexedMetadataEmpty() {
+        val id = UUID.randomUUID().toString()
+        val doc = client.getIndexedMetadata(companyId, id)
+        assertEquals(id, doc.id)
+        assertTrue(doc.document.isEmpty())
     }
 
     @Test

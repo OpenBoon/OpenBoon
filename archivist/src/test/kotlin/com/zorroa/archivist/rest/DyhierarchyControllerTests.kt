@@ -1,9 +1,13 @@
 package com.zorroa.archivist.rest
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchyLevelType
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.Source
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
  * Created by chambers on 4/18/17.
  */
 class DyhierarchyControllerTests : MockMvcTest() {
-
 
     @Before
     @Throws(ParseException::class)
@@ -67,7 +70,7 @@ class DyhierarchyControllerTests : MockMvcTest() {
                 .andExpect(status().isOk)
                 .andReturn()
 
-        val delBody = Json.Mapper.readValue<Map<String,Any>>(delRsp.response.contentAsString)
+        val delBody = Json.Mapper.readValue<Map<String, Any>>(delRsp.response.contentAsString)
         assertEquals(delBody["success"], true)
     }
 }

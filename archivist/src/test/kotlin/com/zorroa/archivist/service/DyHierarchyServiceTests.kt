@@ -1,15 +1,24 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchyLevelType
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.util.Json
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +35,10 @@ class DyHierarchyServiceTests : AbstractTest() {
 
     lateinit var testDataPath: String
 
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
     @Before
     @Throws(ParseException::class)
     fun init() {
@@ -40,7 +53,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"))
             ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"))
-            assetService.createOrReplace(ab)
+            assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
         for (f in getTestPath("office").toFile().listFiles()!!) {
             if (!f.isFile || f.isHidden) {
@@ -49,7 +62,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             val ab = Source(f)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("03-05-2013 09:11:14"))
-            assetService.createOrReplace(ab)
+            assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
         for (f in getTestPath("video").toFile().listFiles()!!) {
             if (!f.isFile || f.isHidden) {
@@ -58,7 +71,7 @@ class DyHierarchyServiceTests : AbstractTest() {
             val ab = Source(f)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("11-12-2015 06:14:10"))
-            assetService.createOrReplace(ab)
+            assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
         refreshIndex()
     }
@@ -69,7 +82,8 @@ class DyHierarchyServiceTests : AbstractTest() {
         val agg = DyHierarchy()
         agg.folderId = id
         agg.levels = ImmutableList.of(
-                DyHierarchyLevel("tree.path", DyHierarchyLevelType.Path))
+                DyHierarchyLevel("tree.path", DyHierarchyLevelType.Path)
+        )
         val result = dyhiService.generate(agg)
 
         var folder = folderService.get("/foo/foo/bar")
@@ -99,7 +113,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         val folder1 = folderService.get("/foo/" + base + "_video")
         val folder2 = folderService.get("/foo/" + base + "_office")
         val folder3 = folderService.get("/foo/" + base + "_images_set01")
-        assertEquals(7, searchService.count(folder1!!.search!!))
+        assertEquals(8, searchService.count(folder1!!.search!!))
     }
 
     @Test
@@ -118,14 +132,14 @@ class DyHierarchyServiceTests : AbstractTest() {
         assertEquals(1, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video$testDataPath/video")
-        assertEquals(7, searchService.count(folder!!.search!!))
+        assertEquals(8, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video$testDataPath")
-        println(Json.prettyString(folder!!.search!!))
-        assertEquals(7, searchService.count(folder!!.search!!))
+
+        assertEquals(8, searchService.count(folder!!.search!!))
 
         folder = folderService.get("/foo/video")
-        assertEquals(7, searchService.count(folder!!.search!!))
+        assertEquals(8, searchService.count(folder!!.search!!))
     }
 
     @Test
@@ -138,7 +152,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type"),
                 DyHierarchyLevel("source.extension"),
                 DyHierarchyLevel("source.filename"))
-        dyhiService.generate(agg)
+        assertTrue(dyhiService.generate(agg) > 0)
     }
 
     @Test
@@ -166,7 +180,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.extension")
                         .setAcl(Acl().addEntry("zorroa::%{name}", 3)))
 
-        dyhiService.generate(agg)
+        assertTrue(dyhiService.generate(agg) > 0)
         assertEquals("zorroa::jpg",
                 folderService.get("/foo/jpg")!!.acl!![0].permission)
         assertEquals(1,
@@ -175,6 +189,7 @@ class DyHierarchyServiceTests : AbstractTest() {
 
     @Test
     fun testDeleteEmptyFolders() {
+        refreshIndex()
         val (id) = folderService.create(FolderSpec("foo"), false)
         val agg = DyHierarchy()
         agg.folderId = id
@@ -182,15 +197,17 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.type"),
                 DyHierarchyLevel("source.extension"))
 
-        dyhiService.generate(agg)
+        val result = dyhiService.generate(agg)
+        assertEquals(13, result)
 
         val assets = indexService.getAll(Pager.first(100))
+        assertTrue(assets.size() > 0)
         for (asset in assets) {
-            indexService.update(asset, ImmutableMap.of("source",
-                    ImmutableMap.of("extension", "abc")))
+            asset.setAttr("source.extension", "abc")
         }
+        assetService.updateAssets(assets.list)
         refreshIndex()
-        dyhiService.generate(agg)
+        assertEquals(6, dyhiService.generate(agg))
     }
 
     @Test

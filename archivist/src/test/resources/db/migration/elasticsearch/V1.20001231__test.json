@@ -1,0 +1,14 @@
+{
+  "description": "Test mapping patch 2",
+  "patch": {
+    "properties": {
+      "system": {
+        "properties": {
+          "booYaa": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

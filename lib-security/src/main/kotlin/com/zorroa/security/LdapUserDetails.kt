@@ -7,5 +7,4 @@ interface LdapUserDetailsPlugin {
     val emailDomain: String
 
     fun getGroups(username: String): List<String>
-
 }

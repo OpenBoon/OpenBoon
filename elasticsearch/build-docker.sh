@@ -1,2 +1,2 @@
 #!/bin/sh
-docker build -t zorroa-elasticsearch-single .
+docker build -t zorroaevi/elasticsearch:localdev .

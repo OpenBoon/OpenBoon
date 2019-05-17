@@ -1,11 +1,15 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.FieldFilter
+import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-
-import org.junit.Assert.*
 import org.springframework.dao.IncorrectResultSizeDataAccessException
 
 class FieldDaoTests : AbstractTest() {
@@ -15,13 +19,18 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val spec = FieldSpec("Notes", "document.notes",
+                AttrType.StringAnalyzed, false, true,
+                2.0f, true)
         val field = fieldDao.create(spec)
         assertEquals(spec.name, field.name)
         assertEquals(spec.attrType, field.attrType)
         assertEquals(spec.attrName, field.attrName)
         assertEquals(spec.custom, field.custom)
         assertEquals(spec.editable, field.editable)
+        assertEquals(spec.keywords, field.keywords)
+        assertEquals(spec.keywordsBoost, field.keywordsBoost)
+        assertEquals(spec.suggest, field.suggest)
     }
 
     @Test
@@ -34,10 +43,13 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val spec = FieldSpec("Notes", "document.notes",
+                AttrType.StringAnalyzed, false, false,
+                1.0f, false)
         val field = fieldDao.create(spec)
 
-        val updateSpec = FieldUpdateSpec("test", true, true, 2.0f)
+        val updateSpec = FieldUpdateSpec(
+                "test", true, true, 2.0f, true)
 
         assertTrue(fieldDao.update(field, updateSpec))
         val result = fieldDao.get(field.id)
@@ -46,6 +58,7 @@ class FieldDaoTests : AbstractTest() {
         assertEquals(updateSpec.editable, result.editable)
         assertEquals(updateSpec.keywords, result.keywords)
         assertEquals(updateSpec.keywordsBoost, result.keywordsBoost)
+        assertEquals(updateSpec.suggest, result.suggest)
     }
 
     @Test
@@ -68,25 +81,32 @@ class FieldDaoTests : AbstractTest() {
 
         val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false))
         val f2 = fieldDao.create(FieldSpec("Boats", "document.number", AttrType.NumberInteger, false))
-        val f3 = fieldDao.create(FieldSpec("Moats", "document.float", AttrType.NumberFloat, true))
+        val f3 = fieldDao.create(FieldSpec("Moats", "document.float",
+                AttrType.NumberFloat, true, true, 1.0f, true))
 
         var filter = FieldFilter(ids = listOf(f1.id, f2.id))
         assertEquals(2, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(attrTypes=listOf(AttrType.NumberInteger))
+        filter = FieldFilter(attrTypes = listOf(AttrType.NumberInteger))
         assertEquals(1, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(attrNames=listOf("document.float", "document.notes"))
+        filter = FieldFilter(attrNames = listOf("document.float", "document.notes"))
         assertEquals(2, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(editable=true, attrNames = listOf("document.float"))
+        filter = FieldFilter(editable = true, attrNames = listOf("document.float"))
         assertEquals(1, fieldDao.getAll(filter).size())
 
-        filter = FieldFilter(editable=false)
+        filter = FieldFilter(editable = false)
         assertEquals(2, fieldDao.getAll(filter).size())
+
+        filter = FieldFilter(editable = false)
+        assertEquals(2, fieldDao.getAll(filter).size())
+
+        filter = FieldFilter(suggest = true)
+        assertEquals(1, fieldDao.getAll(filter).size())
     }
 
-    @Test(expected= IncorrectResultSizeDataAccessException::class)
+    @Test(expected = IncorrectResultSizeDataAccessException::class)
     fun testFindOne() {
         // Clear out existing fields to make filters easier.
         fieldDao.deleteAll()
@@ -106,7 +126,6 @@ class FieldDaoTests : AbstractTest() {
     @Test
     fun testAllocate() {
         var field = fieldDao.allocate(AttrType.StringAnalyzed)
-        println(field)
         assertTrue(field.endsWith("__0"))
 
         field = fieldDao.allocate(AttrType.StringAnalyzed)
@@ -116,4 +135,18 @@ class FieldDaoTests : AbstractTest() {
         assertTrue(field.endsWith("__0"))
     }
 
+    @Test
+    fun testGetKeywordAttrNames() {
+        var fields = fieldDao.getKeywordAttrNames()
+        assertTrue(fields.isNotEmpty())
+        for ((field, _) in fields) {
+            assertFalse(field.endsWith(".raw"))
+        }
+
+        var rawFields = fieldDao.getKeywordAttrNames(forExactMatch = true)
+        assertTrue(rawFields.isNotEmpty())
+        for ((field, _) in rawFields) {
+            assertTrue(field.endsWith(".raw"))
+        }
+    }
 }

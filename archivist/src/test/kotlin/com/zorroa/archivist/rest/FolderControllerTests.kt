@@ -2,7 +2,11 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.BatchUpdateAssetLinks
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.common.util.Json
 import org.junit.Before
@@ -11,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.stream.Collectors
 import kotlin.test.assertEquals
@@ -30,11 +37,14 @@ class FolderControllerTests : MockMvcTest() {
 
     internal lateinit var session: MockHttpSession
 
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
     @Before
     @Throws(Exception::class)
     fun init() {
         session = admin()
-
 
         val spec = FolderSpec("TestFolder1")
         val s = Json.prettyString(spec)
@@ -51,7 +61,6 @@ class FolderControllerTests : MockMvcTest() {
 
         folder = Json.Mapper.readValue(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
     }
 
@@ -67,7 +76,6 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
         val (_, name) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
         assertEquals("TestFolder2", name)
     }
@@ -83,7 +91,6 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
         val folder = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         assertEquals(null, folder.parentId)
@@ -100,7 +107,6 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
         val (id, name, parentId, _, _, user) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         assertEquals(folder.id, id)
@@ -119,11 +125,10 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
         val (_, name, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         assertEquals("Users", name)
-        //assertEquals(getRootFolderId(), parentId)
+        // assertEquals(getRootFolderId(), parentId)
     }
 
     @Test
@@ -139,11 +144,10 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
         val (_, name, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         assertEquals("  foo  ", name)
-        //assertEquals(getRootFolderId(), parentId)
+        // assertEquals(getRootFolderId(), parentId)
     }
 
     @Test
@@ -159,7 +163,6 @@ class FolderControllerTests : MockMvcTest() {
         val rs = deserialize(result, MockMvcTest.StatusResult::class.java)
         assertTrue(rs.success)
     }
-
 
     @Test
     @Throws(Exception::class)
@@ -196,7 +199,6 @@ class FolderControllerTests : MockMvcTest() {
 
         val folders = Json.Mapper.readValue<List<Folder>>(result.response.contentAsString,
                 object : TypeReference<List<Folder>>() {
-
                 })
         assertTrue(folders.contains(folder))
     }
@@ -215,12 +217,11 @@ class FolderControllerTests : MockMvcTest() {
 
         val createdFolder = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
         val req = Json.Mapper.convertValue<Map<String, Any>>(createdFolder, Json.GENERIC_MAP)
 
         val up = FolderUpdate(createdFolder)
-        up.attrs =ImmutableMap.of("a", "b")
+        up.attrs = ImmutableMap.of("a", "b")
 
         result = mvc.perform(put("/api/v1/folders/" + createdFolder.id)
                 .session(session)
@@ -232,7 +233,6 @@ class FolderControllerTests : MockMvcTest() {
 
         val (_, name, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
         assertEquals(createdFolder.name, name)
         assertEquals(folder.parentId, parentId)
@@ -260,7 +260,6 @@ class FolderControllerTests : MockMvcTest() {
 
         val (id) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         mvc.perform(delete("/api/v1/folders/$id")
@@ -277,10 +276,9 @@ class FolderControllerTests : MockMvcTest() {
 
         val folders = Json.Mapper.readValue<List<Folder>>(result.response.contentAsString,
                 object : TypeReference<List<Folder>>() {
-
                 })
 
-        val names = folders.stream().map<String>( { it.name }).collect(Collectors.toSet())
+        val names = folders.stream().map<String>({ it.name }).collect(Collectors.toSet())
 
         assertTrue(names.contains("first"))
         assertFalse(names.contains("second"))
@@ -301,7 +299,6 @@ class FolderControllerTests : MockMvcTest() {
 
         val grandpa = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         result = mvc.perform(post("/api/v1/folders")
@@ -314,7 +311,6 @@ class FolderControllerTests : MockMvcTest() {
 
         val dad = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         mvc.perform(post("/api/v1/folders")
@@ -333,11 +329,10 @@ class FolderControllerTests : MockMvcTest() {
 
         val folders = Json.Mapper.readValue<List<Folder>>(result.response.contentAsString,
                 object : TypeReference<List<Folder>>() {
-
                 })
 
         assertEquals(2, folders.size.toLong())
-        val names = folders.map { it.name}
+        val names = folders.map { it.name }
 
         assertTrue(names.contains("daddy"))
         assertTrue(names.contains("uncly"))
@@ -354,7 +349,6 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
         val (id, _, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
                 object : TypeReference<Folder>() {
-
                 })
 
         assertEquals(grandpa.id, parentId)
@@ -376,16 +370,14 @@ class FolderControllerTests : MockMvcTest() {
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id}.collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)
                 .andReturn()
 
-        refreshIndex()
         authenticate("admin")
         assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
             val links = asset.getAttr("system.links.folder", object : TypeReference<List<Any>>() {
-
             })
             assertEquals(links[0], id.toString())
         }
@@ -408,7 +400,7 @@ class FolderControllerTests : MockMvcTest() {
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id } .collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
                 .andExpect(status().isOk)
                 .andReturn()
 
@@ -417,7 +409,6 @@ class FolderControllerTests : MockMvcTest() {
         assets = assetDao.getAll(Pager.first())
         for (asset in assets) {
             val links = asset.getAttr("system.links.folder", object : TypeReference<List<Any>>() {
-
             })
             assertEquals(0, links.size.toLong())
         }

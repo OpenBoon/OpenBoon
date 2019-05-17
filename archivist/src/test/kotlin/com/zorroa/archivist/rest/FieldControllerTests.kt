@@ -2,7 +2,11 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.Field
+import com.zorroa.archivist.domain.FieldFilter
+import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Assert
@@ -14,12 +18,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-
 class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateField() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
         val session = admin()
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields")
@@ -38,7 +41,7 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testDeleteField() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
         val field = fieldSystemService.createField(spec)
         val session = admin()
 
@@ -56,11 +59,11 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateField() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
         val field = fieldSystemService.createField(spec)
         val updateSpec = FieldUpdateSpec(
-                "test", true, true, 2.0f,
-                options=listOf("a", "b", "c"))
+                "test", true, true, 2.0f, false,
+                options = listOf("a", "b", "c"))
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.put("/api/v1/fields/${field.id}")
@@ -83,10 +86,9 @@ class FieldControllerTests : MockMvcTest() {
         Assert.assertEquals(updateSpec.options, updatedField.options)
     }
 
-
     @Test
     fun testGet() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
         val field = fieldSystemService.createField(spec)
 
         val session = admin()
@@ -103,10 +105,10 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testSearch() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
         val field = fieldSystemService.createField(spec)
 
-        val filter = FieldFilter(ids=listOf(field.id))
+        val filter = FieldFilter(ids = listOf(field.id))
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_search")
@@ -125,24 +127,15 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testFindOne() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null,false)
+        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
         val field = fieldSystemService.createField(spec)
 
-        val filter = FieldFilter(ids=listOf(field.id))
-
-        val session = admin()
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_findOne")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(filter)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
-
-        val result = Json.Mapper.readValue<Field>(req.response.contentAsString)
+        val result = resultForPostContent<Field>(
+            "/api/v1/fields/_findOne",
+            FieldFilter(ids = listOf(field.id))
+        )
         assertEquals(field.id, result.id)
     }
-
 
     @Test
     fun testGetWithNullBody() {

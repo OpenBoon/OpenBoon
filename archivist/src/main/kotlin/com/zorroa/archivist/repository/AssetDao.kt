@@ -78,6 +78,7 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
         if (docs.isEmpty()) { return IntArray(0) }
         val time = extractTime(docs[0])
         val user = getUser()
+
         return jdbc.batchUpdate(UPDATE, object : BatchPreparedStatementSetter {
 
             @Throws(SQLException::class)

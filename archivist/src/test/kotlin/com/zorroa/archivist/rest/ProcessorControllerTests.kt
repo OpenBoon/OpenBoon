@@ -24,17 +24,19 @@ class ProcessorControllerTests : MockMvcTest() {
     @Autowired
     lateinit var processorService: ProcessorService
 
+    lateinit var testSpecs: List<ProcessorSpec>
+
     @Before
     fun init() {
-        val specs = Json.Mapper.readValue<List<ProcessorSpec>>(
+        testSpecs = Json.Mapper.readValue<List<ProcessorSpec>>(
                 ClassPathResource("processors.json").inputStream)
-        processorService.replaceAll(specs)
+        processorService.replaceAll(testSpecs)
     }
 
     @Test
     fun testGetById() {
         val session = admin()
-        val id = "642462df-8c96-5688-8f1d-c13ac327832c"
+        val id = "eebf2132-4b50-5eb0-a240-debfeaea2c6f"
         val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/processors/$id")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -74,11 +76,27 @@ class ProcessorControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val procs = deserialize(result, object: TypeReference<KPagedList<Processor>>() {})
+        val procs = deserialize(result, object : TypeReference<KPagedList<Processor>>() {})
         assertEquals(4, procs.size())
         procs.forEach {
             assertTrue(it.className.contains("ingestor", ignoreCase = true))
         }
     }
 
+    @Test
+    fun findOneTest() {
+        val processor = resultForPostContent<Processor>(
+            "/api/v1/processors/_findOne",
+            ProcessorFilter(classNames = listOf(testSpecs[0].className))
+        )
+        assertEquals(testSpecs[0].file, processor.file)
+    }
+
+    @Test
+    fun testFindOneFailsWhenMultipleFound() {
+        assertClientErrorForPostContent(
+            "/api/v1/processors/_findOne",
+            ProcessorFilter(classNames = testSpecs.map { it.className })
+        )
+    }
 }

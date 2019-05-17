@@ -8,7 +8,7 @@ import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -43,7 +43,6 @@ class ProcessorDaoTests : AbstractTest() {
         println(procs.list[0].id)
         println(procs.list[1].id)
         assertTrue(procs.size() > 0)
-
     }
 
     @Test
@@ -53,7 +52,7 @@ class ProcessorDaoTests : AbstractTest() {
         processorDao.batchCreate(specs)
 
         // Class names
-        var filter = ProcessorFilter(classNames = listOf("zplugins.asset.generators.AssetSearchGenerator"))
+        var filter = ProcessorFilter(classNames = listOf("zplugins.core.generators.AssetSearchGenerator"))
         var procs = processorDao.getAll(filter)
         assertEquals(procs.size(), 1)
         // types names
@@ -78,7 +77,7 @@ class ProcessorDaoTests : AbstractTest() {
 
         // ids
         filter = ProcessorFilter(ids = listOf(
-                UUID.fromString("642462df-8c96-5688-8f1d-c13ac327832c"),
+                UUID.fromString("eebf2132-4b50-5eb0-a240-debfeaea2c6f"),
                 UUID.fromString("8bd78f42-ef43-506e-99c0-d65db28e92f7")))
         procs = processorDao.getAll(filter)
         assertEquals(procs.size(), 2)

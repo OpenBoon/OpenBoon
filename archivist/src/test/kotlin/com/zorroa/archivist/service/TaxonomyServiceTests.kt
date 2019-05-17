@@ -3,19 +3,19 @@ package com.zorroa.archivist.service
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.TaxonomySchema
 import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.CoroutineAuthentication
-import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.common.domain.ArchivistWriteException
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 
 /**
  * Created by chambers on 6/19/17.
@@ -24,6 +24,10 @@ class TaxonomyServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var taxonomyService: TaxonomyService
+
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
 
     @Test
     @Throws(InterruptedException::class)
@@ -36,7 +40,7 @@ class TaxonomyServiceTests : AbstractTest() {
 
         val d = Document(UUID.randomUUID())
         d.setAttr("foo.keywords", "ships")
-        assetService.createOrReplace(d)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
         refreshIndex()
 
         folderService.addAssets(folder4, listOf(d.id))
@@ -48,12 +52,10 @@ class TaxonomyServiceTests : AbstractTest() {
                 searchService.search(AssetSearch()).hits.hits[0].sourceAsMap)
         assertEquals(ImmutableList.of("federation", "ships"), doc.getAttr("system.taxonomy",
                 object : TypeReference<List<TaxonomySchema>>() {
-
                 })[0].keywords)
 
         val search = AssetSearch("ships")
         assertEquals(1, searchService.search(search).hits.getTotalHits())
-
     }
 
     @Test(expected = ArchivistWriteException::class)
@@ -67,7 +69,6 @@ class TaxonomyServiceTests : AbstractTest() {
         taxonomyService.create(TaxonomySpec(folder1))
         taxonomyService.create(TaxonomySpec(folder1))
     }
-
 
     @Test(expected = ArchivistWriteException::class)
     fun testCreateFailureNested() {
@@ -105,12 +106,11 @@ class TaxonomyServiceTests : AbstractTest() {
 
         val d = Document(UUID.randomUUID())
         d.setAttr("foo.keywords", "ships")
-        assetService.createOrReplace(d)
-        refreshIndex()
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
 
         folderService.addAssets(folder1, listOf(d.id))
         refreshIndex()
-        taxonomyService.tagTaxonomy(tax1, folder1, true)
+        taxonomyService.tagTaxonomy(tax1, folder1, false)
         refreshIndex()
 
         val result = taxonomyService.untagTaxonomy(tax1, 1000)
@@ -130,8 +130,7 @@ class TaxonomyServiceTests : AbstractTest() {
         folder1 = folderService.get(folder1.id)
 
         val d = Document(UUID.randomUUID())
-        assetService.createOrReplace(d)
-        refreshIndex()
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
 
         assertEquals(0, searchService.search(
                 AssetSearch("ships")).hits.getTotalHits())
@@ -161,7 +160,7 @@ class TaxonomyServiceTests : AbstractTest() {
         folder1 = folderService.get(folder1.id)
 
         val d = Document(UUID.randomUUID())
-        assetService.createOrReplace(d)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
         refreshIndex()
 
         folderService.addAssets(folder1, listOf(d.id))
@@ -187,7 +186,7 @@ class TaxonomyServiceTests : AbstractTest() {
         folder1 = folderService.get(folder1.id)
 
         val d = Document(UUID.randomUUID())
-        assetService.createOrReplace(d)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(d))
         refreshIndex()
 
         folderService.addAssets(folder1, listOf(d.id))
@@ -203,6 +202,5 @@ class TaxonomyServiceTests : AbstractTest() {
         refreshIndex()
         assertEquals(0, searchService.search(
                 AssetSearch("ships")).hits.getTotalHits())
-
     }
 }

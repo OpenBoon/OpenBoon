@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.security.Groups
@@ -20,6 +21,9 @@ class PermissionServiceTests : AbstractTest() {
     @Autowired
     lateinit var organizationDao: OrganizationDao
 
+    @Autowired
+    lateinit var indexRouteDao: IndexRouteDao
+
     @Test
     fun testCreate() {
         val perm = permissionService.createPermission(
@@ -29,13 +33,13 @@ class PermissionServiceTests : AbstractTest() {
         assertEquals(perm.type, "test")
     }
 
-    @Test(expected=IllegalArgumentException::class)
+    @Test(expected = IllegalArgumentException::class)
     fun testIllegalName() {
         permissionService.createPermission(
                 PermissionSpec("ttest", "superadmin", description = "foo"))
     }
 
-    @Test(expected=IllegalArgumentException::class)
+    @Test(expected = IllegalArgumentException::class)
     fun testIllegalGroup() {
         permissionService.createPermission(
                 PermissionSpec("zorroa", "mr-stubbins", description = "foo"))
@@ -46,7 +50,7 @@ class PermissionServiceTests : AbstractTest() {
         val perm1 = permissionService.createPermission(
                 PermissionSpec("test", "test", description = "foo"))
         val perm2 = permissionService.getPermission(perm1.id)
-        assertEquals(perm1, perm2);
+        assertEquals(perm1, perm2)
     }
 
     @Test
@@ -72,7 +76,8 @@ class PermissionServiceTests : AbstractTest() {
 
     @Test
     fun createStandardPermissions() {
-        val org = organizationDao.create(OrganizationSpec("test"))
+        val org = organizationDao.create(OrganizationSpec(
+                "test", indexRouteDao.getRandomDefaultRoute().id))
         SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
         permissionService.createStandardPermissions(org)
         assertTrue(permissionService.permissionExists(Groups.ADMIN))

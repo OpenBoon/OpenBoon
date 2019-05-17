@@ -4,11 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.common.util.Json
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-
-import org.junit.Assert.assertEquals
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -51,8 +50,8 @@ class PermissionContollerTests : MockMvcTest() {
 
         val perms1 = Json.Mapper.readValue<List<Permission>>(result.response.contentAsByteArray,
                 object : TypeReference<List<Permission>>() {
-
                 })
+        authenticate()
         val perms2 = permissionService.getPermissions()
         assertEquals(perms1, perms2)
     }

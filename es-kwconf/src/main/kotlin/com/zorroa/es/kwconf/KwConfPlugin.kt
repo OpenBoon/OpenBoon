@@ -4,13 +4,12 @@ import org.apache.lucene.index.LeafReaderContext
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.plugins.Plugin
 import org.elasticsearch.plugins.ScriptPlugin
+import org.elasticsearch.script.ScoreScript
 import org.elasticsearch.script.ScriptContext
 import org.elasticsearch.script.ScriptEngine
-import org.elasticsearch.script.SearchScript
 import org.elasticsearch.search.lookup.SearchLookup
 
 import java.util.logging.Logger
-
 
 /**
  *
@@ -48,22 +47,23 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
      * thread will create its own instance.
      */
     private class KwConfLeafFactory constructor(
-            val params: MutableMap<String, Any>,
-            val lookup: SearchLookup) : SearchScript.LeafFactory {
+        val params: MutableMap<String, Any>,
+        val lookup: SearchLookup
+    ) : ScoreScript.LeafFactory {
 
         private val field: String = params["field"] as String
         private val keywords: Set<String> = (params["keywords"] as List<String>?).orEmpty().toSet()
         private val range: List<Double> = (params["range"] as List<Double>?) ?: listOf(.75, 1.0)
 
-        override fun newInstance(ctx: LeafReaderContext?): SearchScript {
+        override fun newInstance(ctx: LeafReaderContext?): ScoreScript {
 
             /**
              * This object expression returns and anonymous subclass of SearchScript with
              * runAsDouble implemented.
              */
-            return object : SearchScript(params, lookup, ctx) {
+            return object : ScoreScript(params, lookup, ctx) {
 
-                override fun runAsDouble(): Double {
+                override fun execute(): Double {
                     var score = 0.0
 
                     try {
@@ -79,7 +79,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                             if (keyword in keywords) {
                                 val conf = map.getValue("confidence") as Double
                                 if (isWithinRange(conf)) {
-                                    score+=conf
+                                    score += conf
                                 }
                             }
                         }
@@ -90,14 +90,13 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                     return score
                 }
 
-                private inline fun isWithinRange(conf : Double) : Boolean {
-                    return conf >= range[0] && conf <=range[1]
+                private fun isWithinRange(conf: Double): Boolean {
+                    return conf >= range[0] && conf <= range[1]
                 }
             }
         }
 
         override fun needs_score(): Boolean = false
-
     }
 
     /*
@@ -108,9 +107,8 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
         return KwConfEngine()
     }
 
-
-    private class KwConfFactory : SearchScript.Factory {
-        override fun newFactory(params: MutableMap<String, Any>, lookup: SearchLookup): SearchScript.LeafFactory {
+    private class KwConfFactory : ScoreScript.Factory {
+        override fun newFactory(params: MutableMap<String, Any>, lookup: SearchLookup): ScoreScript.LeafFactory {
             return KwConfLeafFactory(params, lookup)
         }
     }
@@ -120,9 +118,6 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
         override fun getType(): String = scriptType
 
         override fun <T> compile(name: String, code: String, context: ScriptContext<T>, params: Map<String, String>): T {
-            if (context != SearchScript.CONTEXT) {
-                throw IllegalArgumentException(type + " scripts cannot be used for context [" + context.name + "]")
-            }
 
             if (scriptId == code) {
                 return context.factoryClazz.cast(KwConfFactory()) as T

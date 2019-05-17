@@ -2,7 +2,14 @@ package com.zorroa.archivist.repository
 
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.PermissionFilter
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.PermissionUpdateSpec
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Before
@@ -10,8 +17,10 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.security.core.context.SecurityContextHolder
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -98,13 +107,13 @@ class PermissionDaoTests : AbstractTest() {
 
     @Test
     fun testCountWithFilter() {
-        val count = permissionDao.count(PermissionFilter(types=listOf("user")))
+        val count = permissionDao.count(PermissionFilter(types = listOf("user")))
         assertTrue(count > 0)
 
         val b = PermissionSpec("foo", "bar")
         permissionDao.create(b, true)
 
-        val newCount = permissionDao.count(PermissionFilter(types=listOf("user")))
+        val newCount = permissionDao.count(PermissionFilter(types = listOf("user")))
         assertEquals(count, newCount)
     }
 
@@ -143,7 +152,21 @@ class PermissionDaoTests : AbstractTest() {
     @Test
     fun testGetAll() {
         val perms = permissionDao.getAll()
-        assertTrue(perms.isNotEmpty())
+
+        val org = organizationService.create(OrganizationSpec("new-org"))
+        SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+        val perms2 = permissionDao.getAll()
+
+        assertHaveDifferentAdministratorPermission(perms, perms2)
+    }
+
+    private fun assertHaveDifferentAdministratorPermission(perms: List<Permission>, perms2: List<Permission>) {
+        val administrator1 = perms.find { it.name == "administrator" }
+        val administrator2 = perms2.find { it.name == "administrator" }
+
+        assertNotNull(administrator2)
+        assertNotNull(administrator1)
+        assertNotEquals(administrator1.id, administrator2.id)
     }
 
     @Test
@@ -165,13 +188,13 @@ class PermissionDaoTests : AbstractTest() {
         permissionDao.create(b, false)
 
         var perms = permissionDao.getAll(
-                PermissionFilter(types=listOf("test1")))
+                PermissionFilter(types = listOf("test1")))
         assertEquals(1, perms.size().toLong())
 
-        perms = permissionDao.getAll(PermissionFilter(names=listOf("test2")))
+        perms = permissionDao.getAll(PermissionFilter(names = listOf("test2")))
         assertEquals(1, perms.size().toLong())
 
-        perms = permissionDao.getAll(PermissionFilter(names=listOf("test2")))
+        perms = permissionDao.getAll(PermissionFilter(names = listOf("test2")))
         assertEquals(1, perms.size().toLong())
     }
 

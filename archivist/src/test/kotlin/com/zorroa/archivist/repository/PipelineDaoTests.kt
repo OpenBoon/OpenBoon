@@ -16,7 +16,6 @@ class PipelineDaoTests : AbstractTest() {
 
     val pipelineName = "unit"
 
-
     @Test
     fun testCreateAndGetByName() {
         val pl1 = PipelineSpec(pipelineName, PipelineType.Import, "test")
@@ -38,7 +37,7 @@ class PipelineDaoTests : AbstractTest() {
         val pl1 = pipelineDao.create(PipelineSpec("import-test2", PipelineType.Import, "test"))
         pl1.name = "hello"
         pipelineDao.update(pl1)
-        val pl2 =  pipelineDao.get("hello")
+        val pl2 = pipelineDao.get("hello")
         assertEquals(pl1.id, pl2.id)
     }
 
@@ -49,11 +48,10 @@ class PipelineDaoTests : AbstractTest() {
         assertFalse(pipelineDao.exists("captain kirk"))
     }
 
-
     @Test
     fun testCount() {
         val count = pipelineDao.count()
         pipelineDao.create(PipelineSpec(pipelineName, PipelineType.Import, "test"))
-        assertEquals( pipelineDao.count(), count+1)
+        assertEquals(pipelineDao.count(), count + 1)
     }
 }

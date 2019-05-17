@@ -65,6 +65,5 @@ class BlobServiceTests : AbstractTest() {
         assertEquals(1, acl2.size)
         assertEquals(p.id, acl2[0].permissionId)
         assertEquals(3, acl2[0].access)
-
     }
 }

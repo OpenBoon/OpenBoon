@@ -4,7 +4,7 @@
   "description": "The standard export pipeline",
   "processors": [
     {
-      "className": "zplugins.export.processors.ImageExporter"
+      "className": "zplugins.image.exporters.ImageExporter"
     }
   ]
 }

@@ -13,22 +13,26 @@ import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class ExportFileDaoTests : AbstractTest() {
 
     @Autowired
-    private lateinit var exportService : ExportService
+    private lateinit var exportService: ExportService
 
     @Autowired
-    private lateinit var fileStorageService : FileStorageService
+    private lateinit var fileStorageService: FileStorageService
 
     @Autowired
-    private lateinit var exportFileDao : ExportFileDao
+    private lateinit var exportFileDao: ExportFileDao
 
-    lateinit var export : Job
-    lateinit var exportFile : ExportFile
+    lateinit var export: Job
+    lateinit var exportFile: ExportFile
+
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
 
     @Before
     fun init() {
@@ -58,7 +62,7 @@ class ExportFileDaoTests : AbstractTest() {
     @Test
     fun testGetAll() {
         val id = UUID.randomUUID()
-        for (i in 1 .. 10) {
+        for (i in 1..10) {
             val spec = FileStorageSpec("job", id, "exported/foo$i.bar")
             val storage = fileStorageService.get(spec)
             exportFileDao.create(export, storage.getServableFile(), ExportFileSpec(storage.id, "foo$i.bar"))

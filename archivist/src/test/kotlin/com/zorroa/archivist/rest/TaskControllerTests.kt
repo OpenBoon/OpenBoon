@@ -2,11 +2,21 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.cloud.storage.HttpMethod
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.TaskError
+import com.zorroa.archivist.domain.TaskErrorEvent
+import com.zorroa.archivist.domain.TaskEvent
+import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.Task
+import com.zorroa.common.domain.TaskFilter
+import com.zorroa.common.domain.TaskSpec
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Before
@@ -18,7 +28,7 @@ import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.nio.file.Files
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 @WebAppConfiguration
@@ -42,11 +52,11 @@ class TaskControllerTests : MockMvcTest() {
         task = jobService.createTask(job, TaskSpec("bar", emptyZpsScript("bar")))
     }
 
-    fun launchJob() : Job {
+    fun launchJob(): Job {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         return jobService.create(spec)
     }
@@ -67,7 +77,7 @@ class TaskControllerTests : MockMvcTest() {
     @Test
     fun testSearchByJobId() {
         val session = admin()
-        val filter = TaskFilter(jobIds=listOf(task.jobId))
+        val filter = TaskFilter(jobIds = listOf(task.jobId))
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/tasks/_search")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -76,14 +86,14 @@ class TaskControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val list = deserialize(result,  object : TypeReference<KPagedList<Task>>() {})
+        val list = deserialize(result, object : TypeReference<KPagedList<Task>>() {})
         assertEquals(2, list.size())
     }
 
     @Test
     fun testSearchByTaskId() {
         val session = admin()
-        val filter = TaskFilter(ids=listOf(task.id))
+        val filter = TaskFilter(ids = listOf(task.id))
         val body = Json.serializeToString(filter)
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/tasks/_search")
                 .session(session)
@@ -93,8 +103,19 @@ class TaskControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-        val list = deserialize(result,  object : TypeReference<KPagedList<Task>>() {})
+        val list = deserialize(result, object : TypeReference<KPagedList<Task>>() {})
         assertEquals(1, list.size())
+    }
+
+    @Test
+    fun testFindOne() {
+        val result = resultForPostContent<Task>(
+            "/api/v1/tasks/_findOne",
+            TaskFilter(ids = listOf(task.id))
+        )
+        assertEquals(task.id, result.id)
+        assertEquals(task.name, result.name)
+        assertEquals(task.organizationId, result.organizationId)
     }
 
     @Test
@@ -209,15 +230,14 @@ class TaskControllerTests : MockMvcTest() {
                 .andReturn()
     }
 
-
     @Test
     @Throws(Exception::class)
     fun testGetTaskErrors() {
 
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 

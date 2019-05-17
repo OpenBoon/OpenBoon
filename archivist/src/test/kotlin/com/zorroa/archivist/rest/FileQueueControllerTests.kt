@@ -13,9 +13,9 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-import java.util.*
+import java.util.UUID
 
-class FileQueueControllerTests :  MockMvcTest() {
+class FileQueueControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var pipelineService: PipelineService

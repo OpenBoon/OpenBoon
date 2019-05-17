@@ -10,18 +10,17 @@ import org.junit.Test
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-
 class DefaultLocalLayoutProviderTests : AbstractTest() {
 
-    val layout : LayoutProvider
+    val layout: LayoutProvider
 
     init {
         val shared = Paths.get("unittest/shared")
-        layout =  LocalLayoutProvider(shared, UUIDFileSystem(shared.resolve("ofs")))
+        layout = LocalLayoutProvider(shared, UUIDFileSystem(shared.resolve("ofs")))
     }
 
     @Test
@@ -74,7 +73,6 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
     }
 }
 
-
 class GcsLayoutProviderTests : AbstractTest() {
 
     val layout = GcsLayoutProvider("foo")
@@ -118,7 +116,6 @@ class GcsLayoutProviderTests : AbstractTest() {
         assertTrue(uri.startsWith("gs://"))
     }
 
-
     @Test
     fun testBuildUriFromDeprecatedIdStyle() {
         val id = "proxy___098c296c-33dd-594a-827c-26118ff62882___098c296c-33dd-594a-827c-26118ff62882_256x144.jpg"
@@ -146,10 +143,10 @@ class GcsFileStorageServiceTests : AbstractTest() {
         val spec = FileStorageSpec("asset", pid, "foo_bar.jpg")
         val uri = fileStorage.dlp.buildUri(spec)
 
-        val expectedPath = "/orgs/00000000-9998-8888-7777-666666666666/asset/${pid}/foo_bar.jpg"
+        val expectedPath = "/orgs/00000000-9998-8888-7777-666666666666/asset/$pid/foo_bar.jpg"
         val auri = URI.create(uri)
 
-        assertEquals(bucketName,  auri.authority)
+        assertEquals(bucketName, auri.authority)
         assertEquals(expectedPath, auri.path)
         assertEquals("gs", auri.scheme)
     }
@@ -197,7 +194,6 @@ class GcsFileStorageServiceTests : AbstractTest() {
         assertEquals(storage1.id, storage2.id)
         assertEquals(storage1.mediaType, storage2.mediaType)
     }
-
 }
 
 class LocalFileStorageServiceTests : AbstractTest() {

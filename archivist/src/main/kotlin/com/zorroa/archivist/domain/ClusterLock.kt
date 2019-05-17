@@ -68,4 +68,16 @@ class ClusterLockSpec(
     }
 }
 
+/**
+ * An expired cluster lock.
+ *
+ * @property name The name of the lock.
+ * @property host The host which took he lock out
+ * @property expiredTime The time the lock expired.
+ */
+class ClusterLockExpired(
+    val name: String,
+    val host: String,
+    val expiredTime: Long
+)
 

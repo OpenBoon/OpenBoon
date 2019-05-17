@@ -16,10 +16,11 @@ import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
-import java.util.*
+import java.util.UUID
 
 /**
  * Set a new Authentication value and return the previous one, or null in the case
@@ -141,12 +142,23 @@ fun hasPermission(vararg perms: String): Boolean {
     return hasPermission(perms.toSet())
 }
 
+private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
+    return perms.isNotEmpty() and perms.all { it == Groups.SUPERADMIN }
+}
+
+private fun containsSuperadmin(it: Collection<GrantedAuthority>) =
+    it.any { it.authority == Groups.SUPERADMIN }
+
 fun hasPermission(perms: Collection<String>): Boolean {
     val auth = SecurityContextHolder.getContext().authentication
-    auth?.authorities?.let{
-        for (g in it) {
-            if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
-                return true
+    auth?.authorities?.let { authorities ->
+        if (containsSuperadmin(authorities)) {
+            return true
+        } else if (!containsOnlySuperadmin(perms)) {
+            for (g in authorities) {
+                if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
+                    return true
+                }
             }
         }
     }
@@ -197,7 +209,7 @@ fun getPermissionIds(): Set<UUID> {
 }
 
 fun getOrganizationFilter(): QueryBuilder {
-    return  QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
+    return QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
 }
 
 fun getPermissionsFilter(access: Access?): QueryBuilder? {
@@ -208,26 +220,30 @@ fun getPermissionsFilter(access: Access?): QueryBuilder? {
             return if (hasPermission(Groups.READ)) {
                 null
             } else {
-                QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.read",
+                        getPermissionIds().map { it.toString() })
             }
         }
         else if (access == Access.Write) {
             return if (hasPermission(Groups.WRITE)) {
                 null
             } else {
-                QueryBuilders.termsQuery("system.permissions.write", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.write",
+                        getPermissionIds().map { it.toString() })
             }
         }
         else if (access == Access.Export) {
             return if (hasPermission(Groups.EXPORT)) {
                 null
             } else {
-                QueryBuilders.termsQuery("system.permissions.export", getPermissionIds())
+                QueryBuilders.termsQuery("system.permissions.export",
+                        getPermissionIds().map { it.toString() })
             }
         }
     }
 
-    return QueryBuilders.termsQuery("system.permissions.read", getPermissionIds())
+    return QueryBuilders.termsQuery("system.permissions.read",
+            getPermissionIds().map { it.toString() })
 }
 
 fun setWritePermissions(source: Document, perms: Collection<Permission>) {

@@ -206,12 +206,12 @@ class UserSettings(
 )
 
 /**
- * UserPasswordUpdate defines the properties required to chnage a user's password.
+ * UserPasswordUpdate defines the properties required to change a user's password.
  *
  * @property newPassword The new password.
- * @property oldPassword The old password.
+ * @property oldPassword The old password. Can be null. Currently unsed.
  */
 class UserPasswordUpdate(
         val newPassword: String,
-        val oldPassword: String
+        val oldPassword: String?=null
 )

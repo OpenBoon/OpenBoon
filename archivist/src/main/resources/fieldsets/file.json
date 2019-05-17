@@ -11,12 +11,15 @@
       "name": "File Name",
       "attrName": "source.filename",
       "attrType": "StringAnalyzed",
-      "keywords": true
+      "keywords": true,
+      "suggest": true
     },
     {
       "name": "Media Type",
       "attrName": "source.mediaType",
-      "attrType": "StringAnalyzed"
+      "attrType": "StringAnalyzed",
+      "keywords": true,
+      "suggest": true
     },
     {
       "name": "File Size",

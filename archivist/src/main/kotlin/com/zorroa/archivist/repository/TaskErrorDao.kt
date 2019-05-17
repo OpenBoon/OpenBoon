@@ -1,30 +1,38 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.TaskError
+import com.zorroa.archivist.domain.TaskErrorEvent
+import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.warnEvent
-import com.zorroa.archivist.util.*
-import com.zorroa.common.domain.*
+import com.zorroa.archivist.util.FileUtils
+import com.zorroa.common.domain.InternalTask
+import com.zorroa.common.domain.JobId
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import com.zorroa.common.util.Json
 import com.zorroa.common.util.readValueOrNull
+import io.micrometer.core.instrument.Tag
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
-import java.util.*
+import java.util.UUID
 
 interface TaskErrorDao {
-    fun create(task: Task, error: TaskErrorEvent): TaskError
-    fun batchCreate(task: Task, specs: List<TaskErrorEvent>): Int
+    fun create(task: InternalTask, error: TaskErrorEvent): TaskError
+    fun batchCreate(task: InternalTask, specs: List<TaskErrorEvent>): Int
     fun get(id: UUID) : TaskError
     fun getLast() : TaskError
     fun count(filter: TaskErrorFilter): Long
     fun getAll(filter: TaskErrorFilter) : KPagedList<TaskError>
+    fun findOneTaskError(filter: TaskErrorFilter): TaskError
     fun delete(id: UUID) : Boolean
     fun deleteAll(job: JobId) : Int
 }
@@ -32,7 +40,7 @@ interface TaskErrorDao {
 @Repository
 class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
-    override fun create(task: Task, spec: TaskErrorEvent): TaskError {
+    override fun create(task: InternalTask, spec: TaskErrorEvent): TaskError {
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
@@ -52,6 +60,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             ps.setString(11, spec.phase)
             ps.setLong(12, time)
             ps.setString(13, Json.serializeToString(spec.stackTrace, null))
+            ps.setObject(14, getKeywords(spec))
             ps
         }
 
@@ -72,7 +81,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 spec.stackTrace)
     }
 
-    override fun batchCreate(task: Task, specs: List<TaskErrorEvent>): Int {
+    override fun batchCreate(task: InternalTask, specs: List<TaskErrorEvent>): Int {
         if (specs.isEmpty()) {
             return 0
         }
@@ -97,6 +106,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 ps.setString(11, spec.phase)
                 ps.setLong(12, time)
                 ps.setString(13, Json.serializeToString(spec.stackTrace, null))
+                ps.setObject(14, getKeywords(spec))
             }
 
             override fun getBatchSize(): Int {
@@ -115,10 +125,16 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return jdbc.queryForObject(query, Long::class.java, *values)
     }
 
-    override fun getAll(filter: TaskErrorFilter) : KPagedList<TaskError> {
+    override fun getAll(filter: TaskErrorFilter): KPagedList<TaskError> {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun findOneTaskError(filter: TaskErrorFilter): TaskError {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return jdbc.queryForObject(query, MAPPER, *values)
     }
 
     override fun get(id: UUID) : TaskError {
@@ -148,11 +164,22 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return jdbc.update("DELETE FROM task_error WHERE pk_job=?", job.jobId)
     }
 
-    fun warnEvent(task: Task, spec: TaskErrorEvent) {
-        logger.warnEvent(LogObject.TASK, LogAction.ERROR, spec.message,
+    fun getKeywords(spec: TaskErrorEvent) : String {
+        var keywords =  JdbcUtils.getTsWordVector(spec.path, spec.processor, spec.message)
+        spec.path?.let {
+            keywords += " ${FileUtils.filename(it)}"
+            keywords += " $it"
+        }
+        return keywords
+    }
+
+    fun warnEvent(task: InternalTask, spec: TaskErrorEvent) {
+        meterRegistry.counter("zorroa.task_errors",
+                getTags(Tag.of("processor", spec.processor ?: "no-processor")))
+
+        logger.warnEvent(LogObject.TASK_ERROR, LogAction.CREATE, spec.message,
                 mapOf("assetId" to spec.assetId,
-                        "taskId" to task.id,
-                        "organizationId" to task.organizationId,
+                        "taskId" to task.taskId,
                         "processor" to spec.processor,
                         "jobId" to task.jobId))
     }
@@ -192,6 +219,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 "bool_fatal",
                 "str_phase",
                 "time_created",
-                "json_stack_trace::jsonb")
+                "json_stack_trace::jsonb",
+                "fti_keywords@to_tsvector")
     }
 }

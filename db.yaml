@@ -2,25 +2,20 @@
 version: '3'
 services:
 
-  # Elastic Search instance used for local devlopment servers.
   es:
-    image: "zorroa-elasticsearch-single:latest"
+    build:
+      context: elasticsearch
+      args:
+        node_type: single
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
       discovery.type: "single-node"
-
-  # Elastic Search instance used for unit tests
-  es-test:
-    image: "zorroa-elasticsearch-single:latest"
-    ports:
-      - "39200:9200"
-      - "39300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
-      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
   # Postgres instance used for local devleopment servers.
   postgres:

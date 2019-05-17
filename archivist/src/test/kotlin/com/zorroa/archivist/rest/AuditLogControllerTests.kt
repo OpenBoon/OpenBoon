@@ -1,18 +1,14 @@
 package com.zorroa.archivist.rest
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.AuditLogEntry
 import com.zorroa.archivist.domain.AuditLogFilter
 import com.zorroa.archivist.domain.AuditLogType
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
-import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.UUID
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class AuditLogControllerTests : MockMvcTest() {
@@ -20,26 +16,41 @@ class AuditLogControllerTests : MockMvcTest() {
     @Before
     fun init() {
         addTestAssets("set04/standard")
-        refreshIndex()
+    }
+
+    override fun requiresElasticSearch(): Boolean {
+        return true
     }
 
     @Test
     @Throws(Exception::class)
     fun testSearch() {
-        val session = admin()
-        val filter = AuditLogFilter(types=listOf(AuditLogType.Created))
+        val logs = resultForPostContent<KPagedList<AuditLogEntry>>(
+            "/api/v1/auditlog/_search",
+            AuditLogFilter(types = listOf(AuditLogType.Created)))
+        assertTrue(logs.size() > 0)
+    }
 
-        val result = mvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auditlog/_search")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(filter)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+    @Test
+    fun testFindOne() {
+        val asset = indexService.getAll(Pager.first(1)).list[0]
+        val auditLogEntry = resultForPostContent<AuditLogEntry>(
+            "/api/v1/auditlog/_findOne",
+            AuditLogFilter(assetIds = listOf(UUID.fromString(asset.id))))
+        assertEquals(asset.id, auditLogEntry.assetId.toString())
+    }
 
-        val content = result.response.contentAsString
-        val log = Json.Mapper.readValue<KPagedList<AuditLogEntry>>(content)
-        assertTrue(log.size() > 0)
+    @Test
+    fun testFindOneFailsWhenMultipleFound() {
+        assertClientErrorForPostContent(
+            "/api/v1/auditlog/_findOne",
+            AuditLogFilter())
+    }
+
+    @Test
+    fun testFindOneFailsOnNotFound() {
+        assertClientErrorForPostContent(
+            "/api/v1/auditlog/_findOne",
+            AuditLogFilter(assetIds = listOf(UUID.randomUUID())))
     }
 }

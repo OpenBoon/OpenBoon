@@ -34,7 +34,7 @@ class TaskError(
         val assetId: UUID?,
         val path: String?,
         val message: String,
-        val processor: String,
+        val processor: String?,
         val fatal: Boolean,
         val analyst: String,
         val phase: String,
@@ -50,14 +50,24 @@ class TaskError(
  * @property methodName The name of the method containing the execution point.
  */
 class StackTraceElement(
-        val file: String,
-        val lineNumber: Int,
-        val className: String,
-        val methodName: String
+        val file: String?="Unknown File",
+        val lineNumber: Int=0,
+        val className: String?="Unknown Class",
+        val methodName: String?="Unknown Method"
 )
 
 /**
  * Defines all the ways in which a TaskErrorFilter can be queried.
+ *
+ * @property ids An array of [TaskError] ids.
+ * @property jobIds: An array of [Job] ids.
+ * @property taskIds: An array of [Task] ids.
+ * @property assetIds: An array of [Asset] ids.
+ * @property processors: An array of [Processor] ids.
+ * @property timeCreated: A [LongRangeFilter] with millis since epoch.
+ * @property organizationIds: An array of [Organization] ids.
+ * @property keywords A keyword query string.
+ *
  */
 class TaskErrorFilter(
         var ids : List<UUID>? = null,
@@ -67,7 +77,8 @@ class TaskErrorFilter(
         val paths: List<String>? = null,
         val processors: List<String>? = null,
         val timeCreated: LongRangeFilter?=null,
-        val organizationIds : List<UUID>?=null) : KDaoFilter() {
+        val organizationIds : List<UUID>?=null,
+        val keywords:String?=null) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
@@ -81,6 +92,21 @@ class TaskErrorFilter(
 
     @JsonIgnore
     override fun build() {
+
+        if (sort == null) {
+            sort = listOf("timeCreated:desc")
+        }
+
+        if (hasPermission("zorroa::superadmin")) {
+            organizationIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+                addToValues(it)
+            }
+        }
+        else {
+            addToWhere("job.pk_organization=?")
+            addToValues(getOrgId())
+        }
 
         ids?.let  {
             addToWhere(JdbcUtils.inClause("task_error.pk_task_error", it.size))
@@ -117,20 +143,9 @@ class TaskErrorFilter(
             addToValues(it.getFilterValues())
         }
 
-        if (hasPermission("zorroa::superadmin")) {
-            organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
-                addToValues(it)
-            }
+        keywords?.let {
+            addToWhere("fti_keywords @@ to_tsquery(?)")
+            addToValues(it)
         }
-        else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
-        }
-
-        if (sort == null) {
-            sort = listOf("timeCreated:desc")
-        }
-
     }
 }

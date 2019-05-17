@@ -20,3 +20,9 @@ scrape_configs:
     basic_auth:
         username: monitor
         password: monitor
+
+  - job_name: 'ElasticSearch'
+    metrics_path: '_prometheus/metrics'
+    scrape_interval: 30s
+    static_configs:
+    - targets: ['es:9200']

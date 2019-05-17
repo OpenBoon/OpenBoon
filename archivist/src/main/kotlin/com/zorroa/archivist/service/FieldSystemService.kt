@@ -2,46 +2,67 @@ package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Field
+import com.zorroa.archivist.domain.FieldEdit
+import com.zorroa.archivist.domain.FieldEditFilter
+import com.zorroa.archivist.domain.FieldEditSpec
+import com.zorroa.archivist.domain.FieldFilter
+import com.zorroa.archivist.domain.FieldSet
+import com.zorroa.archivist.domain.FieldSetFilter
+import com.zorroa.archivist.domain.FieldSetSpec
+import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
+import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.FieldSetDao
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.io.FileInputStream
 import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 
 interface FieldSystemService {
 
-    fun createField(spec: FieldSpec) : Field
+    fun createField(spec: FieldSpec, reindexSuggest:Boolean=true) : Field
     fun getField(id: UUID) : Field
     fun getField(spec: FieldEditSpec) : Field
     fun getField(attrName: String) : Field
     fun findOneField(filter: FieldFilter): Field
+    fun findOneFieldSet(filter: FieldSetFilter): FieldSet
     fun deleteField(field: Field) : Boolean
     fun updateField(field: Field, spec: FieldUpdateSpec): Boolean
     fun getAllFields(filter: FieldFilter) : KPagedList<Field>
     fun getFieldEdits(filter: FieldEditFilter) : KPagedList<FieldEdit>
     fun getFieldEdits(assetId: UUID) : List<FieldEdit>
     fun getFieldEdit(editId: UUID) : FieldEdit
-    fun getKeywordFieldNames() : Map<String, Float>
+    fun getKeywordAttrNames(forRawMatch: Boolean) : Map<String, Float>
+    fun getSuggestAttrNames() : List<String>
 
-    fun createFieldSet(spec: FieldSetSpec) : FieldSet
+    fun createFieldSet(spec: FieldSetSpec, regenSuggest:Boolean=true) : FieldSet
     fun getAllFieldSets(filter: FieldSetFilter) : KPagedList<FieldSet>
     fun getAllFieldSets() : List<FieldSet>
     fun getAllFieldSets(doc: Document) : List<FieldSet>
     fun getFieldSet(id: UUID) : FieldSet
 
     fun applyFieldEdits(doc: Document)
+
+    /**
+     * Pull the list of suggest fields and apply suggestions to the list of [Document]s
+     *
+     * @param docs The list of [Document]s
+     */
+    fun applySuggestions(docs: List<Document>)
 
     fun getEsTypeMap(): Map<String, AttrType>
     fun getEsMapping() : Map<String, Any?>
@@ -57,10 +78,14 @@ class FieldSystemServiceImpl @Autowired constructor(
         val fieldEditDao: FieldEditDao,
         val fieldSetDao: FieldSetDao,
         val indexRoutingService: IndexRoutingService,
-        val properties: ApplicationProperties
+        val properties: ApplicationProperties,
+        val txevent: TransactionEventManager
 ): FieldSystemService {
 
-    override fun createField(spec: FieldSpec) : Field {
+    @Autowired
+    lateinit var jobService: JobService
+
+    override fun createField(spec: FieldSpec, reindexSuggest:Boolean) : Field {
 
         when {
             spec.attrName != null -> {
@@ -72,14 +97,21 @@ class FieldSystemServiceImpl @Autowired constructor(
             }
             spec.attrType != null -> {
                 /*
-                 * The user has provided a type but no attribtue name, so it's a dynamic
+                 * The user has provided a type but no attribute name, so it's a dynamic
                  * field.
                  */
                 spec.attrName = fieldDao.allocate(spec.attrType!!)
                 spec.custom = true
 
             }
-            else -> throw IllegalStateException("Invalid FieldSpec, not enough information to createField a field.")
+            else -> throw IllegalStateException(
+                    "Invalid FieldSpec, not enough information to createField a field.")
+        }
+
+        if (spec.suggest && reindexSuggest) {
+            txevent.afterCommit(sync=false) {
+                indexRoutingService.launchReindexJob()
+            }
         }
         return fieldDao.create(spec)
     }
@@ -119,17 +151,37 @@ class FieldSystemServiceImpl @Autowired constructor(
         return fieldDao.findOne(filter)
     }
 
+    @Transactional(readOnly = true)
+    override fun findOneFieldSet(filter: FieldSetFilter): FieldSet {
+        return fieldSetDao.findOne(filter)
+    }
+
     override fun deleteField(field: Field): Boolean {
         return fieldDao.delete(field)
     }
 
     override fun updateField(field: Field, spec: FieldUpdateSpec): Boolean {
-        return fieldDao.update(field, spec)
+        val updated = fieldDao.update(field, spec)
+        /**
+         * If the row was updated and spec.sugggest is not the same as field.suggest
+         * then kick off regenerating suggestions.
+         */
+        if (updated && spec.suggest != field.suggest) {
+            txevent.afterCommit(sync=false) {
+                indexRoutingService.launchReindexJob()
+            }
+        }
+        return updated
     }
 
     @Transactional(readOnly=true)
-    override fun getKeywordFieldNames() : Map<String, Float> {
-        return fieldDao.getKeywordFieldNames()
+    override fun getKeywordAttrNames(forRawMatch: Boolean) : Map<String, Float> {
+        return fieldDao.getKeywordAttrNames(forRawMatch)
+    }
+
+    @Transactional(readOnly=true)
+    override fun getSuggestAttrNames() : List<String> {
+        return fieldDao.getSuggestAttrNames()
     }
 
     @Transactional(readOnly=true)
@@ -141,7 +193,7 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
-    override fun createFieldSet(spec: FieldSetSpec) : FieldSet {
+    override fun createFieldSet(spec: FieldSetSpec, regenSuggest: Boolean) : FieldSet {
         val fieldIds = spec.fieldSpecs?.mapNotNull { fs->
             val field = fs.attrName?.let {
                 val field = if (fieldDao.exists(it)) {
@@ -149,7 +201,7 @@ class FieldSystemServiceImpl @Autowired constructor(
 
                 }
                 else {
-                    createField(fs)
+                    createField(fs, regenSuggest)
                 }
                 field.id
             }
@@ -186,13 +238,33 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
+    override fun applySuggestions(docs: List<Document>) {
+        val fields = fieldDao.getSuggestAttrNames()
+        logger.info("FIELDS {}", fields)
+        for (doc in docs) {
+            val values = fields.flatMap {
+                val attr : Any? = doc.getAttr(it, Any::class.java)
+                when (attr) {
+                    is Collection<*> -> {
+                        attr.map { v -> v.toString() }
+                    }
+                    else -> {
+                        listOf(attr?.toString())
+                    }
+                }
+            }.filterNotNull()
+            doc.setAttr(SUGGEST_FIELD, values)
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun createFieldSet(stream: InputStream) {
         val fs = Json.Mapper.readValue<FieldSetSpec>(stream)
-        createFieldSet(fs)
+        createFieldSet(fs, false)
     }
 
     override fun getEsMapping() : Map<String, Any> {
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getOrgRestClient()
         val stream = rest.client.lowLevelClient.performRequest(
                 "GET", "/${rest.route.indexName}").entity.content
         return  Json.Mapper.readValue(stream, Json.GENERIC_MAP)
@@ -200,7 +272,7 @@ class FieldSystemServiceImpl @Autowired constructor(
 
     override fun getEsTypeMap(): Map<String, AttrType> {
         val result = mutableMapOf<String, AttrType>()
-        val rest = indexRoutingService[getOrgId()]
+        val rest = indexRoutingService.getOrgRestClient()
         val map : Map<String, Any> = getEsMapping()
         getMap(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!)
         return result
@@ -232,9 +304,6 @@ class FieldSystemServiceImpl @Autowired constructor(
                     val subFields = item["fields"] as Map<String, Any>
                     if (subFields.containsKey("paths")) {
                         attrType = AttrType.StringPath
-                    }
-                    else if (subFields.containsKey("suggest")) {
-                        attrType = AttrType.StringSuggest
                     }
                 }
 
@@ -271,6 +340,11 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     companion object {
+
+        /**
+         * The name of the field used to aggregate suggest fields into a single value.
+         */
+       const val SUGGEST_FIELD = "system.suggestions"
 
         /**
          * Maps a particular type or column configuration to our own set of attribute types.

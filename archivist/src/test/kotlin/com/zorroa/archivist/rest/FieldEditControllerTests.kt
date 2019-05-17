@@ -15,13 +15,17 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class FieldEditControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var indexDao: IndexDao
+
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
 
     @Test
     fun testGetFieldEdit() {
@@ -44,7 +48,6 @@ class FieldEditControllerTests : MockMvcTest() {
         val result = Json.Mapper.readValue<FieldEdit>(req.response.contentAsString)
         assertEquals(edit.id, result.id)
     }
-
 
     @Test
     fun testSearchFieldEdits() {
@@ -77,7 +80,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
         val field = fieldSystemService.createField(FieldSpec("File Ext",
                 "source.extension", null, true))
-        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue="bob")
+        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits")
                 .session(session)
@@ -102,7 +105,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
         val field = fieldSystemService.createField(FieldSpec("File Ext",
                 "source.extension", null, true))
-        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue="bob")
+        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits")
                 .session(session)
@@ -133,7 +136,7 @@ class FieldEditControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
-        val result = Json.Mapper.readValue<Map<String,Any>>(req.response.contentAsString, Json.GENERIC_MAP)
+        val result = Json.Mapper.readValue<Map<String, Any>>(req.response.contentAsString, Json.GENERIC_MAP)
         Assert.assertEquals("delete", result["op"])
         Assert.assertEquals(true, result["success"])
     }

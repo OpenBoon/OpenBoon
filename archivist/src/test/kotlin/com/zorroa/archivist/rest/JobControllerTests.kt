@@ -1,10 +1,20 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.TaskError
+import com.zorroa.archivist.domain.TaskErrorEvent
+import com.zorroa.archivist.domain.TaskEvent
+import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
+import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.JobUpdateSpec
+import com.zorroa.common.domain.TaskSpec
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.junit.Before
@@ -14,7 +24,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -32,8 +42,8 @@ class JobControllerTests : MockMvcTest() {
     fun init() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         job = jobService.create(spec)
     }
@@ -55,8 +65,8 @@ class JobControllerTests : MockMvcTest() {
     fun testCreate() {
         val spec = JobSpec("test_job_2",
                 emptyZpsScript("test"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
 
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
@@ -75,7 +85,7 @@ class JobControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdate() {
-        val spec = JobUpdateSpec(name="silly_bazilly", priority = 5)
+        val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis())
 
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}")
@@ -158,8 +168,8 @@ class JobControllerTests : MockMvcTest() {
 
         val spec = JobSpec("test_job",
                 emptyZpsScript("foo"),
-                args=mutableMapOf("foo" to 1),
-                env=mutableMapOf("foo" to "bar"))
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar"))
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
@@ -182,5 +192,44 @@ class JobControllerTests : MockMvcTest() {
         val log = Json.Mapper.readValue<KPagedList<TaskError>>(content,
                 object : TypeReference<KPagedList<TaskError>>() {})
         assertEquals(1, log.size())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testSearch() {
+        val jobs = resultForPostContent<KPagedList<Job>>(
+            "/api/v1/jobs/_search",
+            JobFilter()
+        )
+        assertTrue(jobs.size() > 0)
+    }
+
+    @Test
+    fun testFindOneWithEmptyFilter() {
+        val job = resultForPostContent<Job>(
+            "/api/v1/jobs/_findOne",
+            JobFilter()
+        )
+        assertEquals("test_job", job.name)
+    }
+
+    @Test
+    fun testFindOneWithFilter() {
+        val spec = jobSpec("baz")
+        jobService.create(spec)
+        val job = resultForPostContent<Job>(
+            "/api/v1/jobs/_findOne",
+            JobFilter(names = listOf("baz_job"))
+        )
+        assertEquals(spec.name, job.name)
+    }
+
+    private fun jobSpec(name: String): JobSpec {
+        return JobSpec(
+            "${name}_job",
+            emptyZpsScript("${name}_script"),
+            args = mutableMapOf("${name}_arg" to 1),
+            env = mutableMapOf("${name}_env_var" to "${name}_env_value")
+        )
     }
 }

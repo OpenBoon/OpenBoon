@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.google.api.Http
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.domain.ExportFile
 import com.zorroa.archivist.domain.ExportFileSpec
@@ -52,7 +51,6 @@ class ExportControllerTests : MockMvcTest() {
         assertEquals(spec.name, export.name)
     }
 
-
     @Test
     @Throws(Exception::class)
     fun testCreateExportFile() {
@@ -86,7 +84,6 @@ class ExportControllerTests : MockMvcTest() {
         assertEquals("job___${export.id}___exported___foo.txt", file.path)
         assertEquals("text/plain", file.mimeType)
         assertEquals(4, file.size)
-
     }
 
     @Test

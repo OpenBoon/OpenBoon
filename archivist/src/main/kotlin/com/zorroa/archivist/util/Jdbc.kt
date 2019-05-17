@@ -139,10 +139,15 @@ object JdbcUtils {
      * @param original The original text
      * @return The vectorized version.
      */
-    fun getTsWordVector(original: String): String {
-        return original.split(Regex("[_\\.-]+")).flatMap {
-            it.split(Regex("(?<=[a-z])(?=[A-Z])"))
-        }.joinToString(" ").toLowerCase()
+    fun getTsWordVector(vararg keywords: String?): String {
+        var result = keywords.filterNotNull()
+                .flatMap {
+                    it.split(Regex("[:_\\.\\-/]+")).filter { it2 -> it2.isNotEmpty() }
+                .flatMap { it3 ->
+                    it3.split(Regex("(?<=[a-z])(?=[A-Z])"))
+                }
+        }.joinToString(" ")
+        return result.toLowerCase()
     }
     /**
      * Create a WHERE clause fragment using a LongRangeFilter

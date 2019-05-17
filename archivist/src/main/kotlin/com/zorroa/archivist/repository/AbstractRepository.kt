@@ -9,6 +9,7 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.util.JdbcUtils
+import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -109,6 +110,9 @@ open class AbstractDao {
     fun isDbVendor(vendor: String): Boolean {
         return dbVendor == vendor
     }
+
+    @Autowired
+    lateinit var meterRegistry: MeterRegistry
 
     @Autowired
     fun setApplicationProperties(properties: ApplicationProperties) {

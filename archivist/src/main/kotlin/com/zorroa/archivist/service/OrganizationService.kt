@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationFilter
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.OrganizationUpdateSpec
+import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.OrganizationDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.resetAuthentication
@@ -30,6 +31,7 @@ interface OrganizationService {
 @Transactional
 class OrganizationServiceImpl @Autowired constructor (
         val organizationDao: OrganizationDao,
+        val indexRouteDao: IndexRouteDao,
         val properties: ApplicationProperties
 ) : OrganizationService, ApplicationListener<ContextRefreshedEvent> {
 
@@ -49,6 +51,10 @@ class OrganizationServiceImpl @Autowired constructor (
     internal lateinit var fieldSystemService: FieldSystemService
 
     override fun create(spec: OrganizationSpec): Organization {
+        if (spec.indexRouteId == null) {
+            spec.indexRouteId = indexRouteDao.getRandomDefaultRoute().id
+        }
+
         val org = organizationDao.create(spec)
         val auth = resetAuthentication(SuperAdminAuthentication(org.id))
 
@@ -93,7 +99,7 @@ class OrganizationServiceImpl @Autowired constructor (
 
     // Only called once at startup if there are no field sets.
     fun createDefaultOrganizationFieldSets() {
-        val org = Organization(UUID.fromString("00000000-9998-8888-7777-666666666666"), "Zorroa")
+        val org = organizationDao.get(Organization.DEFAULT_ORG_ID)
         val auth = resetAuthentication(SuperAdminAuthentication(org.id))
         try {
             if (fieldSystemService.getAllFieldSets().isEmpty()) {

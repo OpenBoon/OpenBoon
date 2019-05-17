@@ -5,14 +5,32 @@ import com.zorroa.archivist.service.ClusterLockService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystFilter
+import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.LockState
 import io.micrometer.core.annotation.Timed
+import org.apache.http.conn.ssl.NoopHostnameVerifier
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy
+import org.apache.http.impl.client.HttpClients
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.AsyncListenableTaskExecutor
+import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
+import org.springframework.http.RequestEntity
+import org.springframework.http.ResponseEntity
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
-import java.util.*
-
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.client.RestTemplate
+import java.security.cert.X509Certificate
+import java.util.UUID
 
 @PreAuthorize("hasAuthority(T( com.zorroa.security.Groups).SUPERADMIN)")
 @RestController
@@ -25,6 +43,11 @@ class AnalystController @Autowired constructor(
     @PostMapping(value = ["/api/v1/analysts/_search"])
     fun search(@RequestBody filter: AnalystFilter) : Any {
         return analystService.getAll(filter)
+    }
+
+    @PostMapping(value = ["/api/v1/analysts/_findOne"])
+    fun findOne(@RequestBody(required = false) filter: AnalystFilter): Analyst {
+        return analystService.findOne(filter)
     }
 
     @GetMapping(value = ["/api/v1/analysts/{id}"])
@@ -53,5 +76,39 @@ class AnalystController @Autowired constructor(
             }
         }
         return HttpUtils.status("processor", "scan", !locked)
+    }
+
+    /**
+     * A request for this endpoint will download the ZSDK python wheel file.
+     */
+    @GetMapping(value = ["/download-zsdk"])
+    fun downloadZsdk(requestEntity: RequestEntity<Any>): Any {
+        val acceptingTrustStrategy = { chain: Array<X509Certificate>, authType: String -> true }
+        val sslContext = org.apache.http.ssl.SSLContexts.custom()
+                .loadTrustMaterial(null, acceptingTrustStrategy)
+                .loadTrustMaterial(null, TrustSelfSignedStrategy())
+                .build()
+        val csf = SSLConnectionSocketFactory(sslContext)
+        val httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                .build()
+        val requestFactory = HttpComponentsClientHttpRequestFactory()
+        requestFactory.httpClient = httpClient
+        val restTemplate = RestTemplate(requestFactory)
+        val analysts = analystService.getAll(AnalystFilter(states = listOf(AnalystState.Up)))
+        for (analyst in analysts) {
+            val url = analyst.endpoint + "/zsdk"
+            try {
+                return restTemplate.exchange(url, HttpMethod.GET, requestEntity, ByteArray::class.java)
+            } catch (e: Exception) {
+                logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
+            }
+        }
+        return ResponseEntity<Any>(HttpStatus.NOT_FOUND)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(AnalystController::class.java)
     }
 }

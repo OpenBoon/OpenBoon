@@ -9,12 +9,15 @@ variables:
   DOCKERHUB_IMAGE_ARCHIVIST: zorroaevi/archivist:$CI_COMMIT_REF_SLUG
   DOCKERHUB_IMAGE_ELASTIC: zorroaevi/elasticsearch:$CI_COMMIT_REF_SLUG
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
-  DOCKER_HOST: tcp://localhost:2375/
   DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://localhost:2375
 
 build_artifacts:
   image: maven:3.6.0-jdk-8-slim
   stage: build
+  only:
+    - merge_requests
+    - development
   script:
       - cd es-similarity
       - mvn package
@@ -29,10 +32,15 @@ build_artifacts:
     paths:
       - archivist/target/*.jar
       - elasticsearch/*.zip
+      - archivist/ext/*.jar
 
 push_to_local_registry:
   image: docker:stable
   stage: pretest
+  only:
+    - merge_requests
+    - development
+  retry: 2
   services:
     - docker:dind
   script:
@@ -44,6 +52,9 @@ push_to_local_registry:
 linting:
   image: java:latest
   stage: test
+  only:
+    - merge_requests
+    - development
   allow_failure: true
   script:
     - apk update && apk add ca-certificates wget && update-ca-certificates
@@ -56,6 +67,9 @@ linting:
 unit_tests:
   stage: test
   image: maven:3.6.0-jdk-8-alpine
+  only:
+    - merge_requests
+    - development
   allow_failure: true
   services:
     - name: postgres:9.6.9
@@ -69,25 +83,28 @@ unit_tests:
     POSTGRES_DB: zorroa
     PGDATA: /var/lib/postgresql/data/pgdata
     SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=unittest40"
+    LOGGING_LEVEL_COM_ZORROA: WARN
   script:
     - mvn test -q
+  after_script:
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% code coverage" }' archivist/target/site/jacoco/jacoco.csv
+
 
 docker_hub_push:
   stage: push
+  retry: 2
   only:
     - development
-    - qa
-    - master
   image: docker:stable
   services:
     - docker:dind
   script:
     - cd archivist
-    - docker build -t $DOCKERHUB_IMAGE_ARCHIVIST .
+    - docker build --pull -t $DOCKERHUB_IMAGE_ARCHIVIST .
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker push $DOCKERHUB_IMAGE_ARCHIVIST
     - cd ../elasticsearch
-    - docker build -t $DOCKERHUB_IMAGE_ELASTIC .
+    - docker build --pull -t $DOCKERHUB_IMAGE_ELASTIC .
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker push $DOCKERHUB_IMAGE_ELASTIC
 
@@ -105,20 +122,6 @@ deploy_archivist_dev:
     - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
     - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
 
-deploy_archivist_qa:
-  image: google/cloud-sdk
-  stage: deploy
-  environment:
-    name: qa
-    url: https://qa.zorroa.com
-  only:
-    - qa
-  script:
-    - echo $QA_SA_JSON > ./sa.json
-    - gcloud auth activate-service-account $QA_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-qa
-    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
-
 deploy_elasticsearch_dev:
   image: google/cloud-sdk
   stage: deploy
@@ -131,18 +134,4 @@ deploy_elasticsearch_dev:
     - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
-    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
-
-deploy_elasticsearch_qa:
-  image: google/cloud-sdk
-  stage: deploy
-  environment:
-    name: qa
-    url: https://qa.zorroa.com
-  only:
-    - qa
-  script:
-    - echo $QA_SA_JSON > ./sa.json
-    - gcloud auth activate-service-account $QA_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-qa
     - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default

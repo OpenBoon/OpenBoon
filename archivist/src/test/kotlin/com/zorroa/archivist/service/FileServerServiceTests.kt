@@ -8,11 +8,9 @@ import org.junit.Test
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-
 
 class GcpFileServerServiceTests : AbstractTest() {
 
@@ -42,7 +40,6 @@ class GcpFileServerServiceTests : AbstractTest() {
         assertTrue(u.query.contains("&Signature="))
     }
 
-
     @Test
     fun testDeleteDirectory() {
         val id = UUID.randomUUID()
@@ -51,7 +48,7 @@ class GcpFileServerServiceTests : AbstractTest() {
             fileStorage.write(fs.id, "Mamba!".toByteArray())
         }
 
-        val fs = fileStorage.get("job___${id}")
+        val fs = fileStorage.get("job___$id")
         assertTrue(fileServer.delete(fs.uri))
     }
 
@@ -66,8 +63,7 @@ class GcpFileServerServiceTests : AbstractTest() {
     }
 }
 
-
-class LocalFileServerServiceTests: AbstractTest() {
+class LocalFileServerServiceTests : AbstractTest() {
 
     val fileServer = LocalFileServerService()
 

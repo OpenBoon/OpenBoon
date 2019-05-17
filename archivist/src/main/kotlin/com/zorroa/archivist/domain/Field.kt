@@ -6,7 +6,8 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 /**
  * The valid Attribute Types for the field system.
@@ -14,6 +15,7 @@ import java.util.*
 enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
     StringAnalyzed("string_analyzed", true),
     StringExact("string_exact",true),
+    @Deprecated("Using this type simply marks the field as both keyword and suggest")
     StringSuggest("string_suggest", true),
     StringContent("string_content", true),
     StringPath("string_path", true),
@@ -76,10 +78,11 @@ class FieldSpec(
         val name: String,
         var attrName: String?,
         var attrType: AttrType?,
-        val editable: Boolean=false,
-        val keywords: Boolean=false,
-        val keywordsBoost: Float=1.0f,
-        val options: List<Any>?=null,
+        var editable: Boolean=false,
+        var keywords: Boolean=false,
+        var keywordsBoost: Float=1.0f,
+        var suggest: Boolean=false,
+        var options: List<Any>?=null,
         @JsonIgnore var custom: Boolean=false)
 
 
@@ -107,6 +110,7 @@ class Field (
         val custom: Boolean,
         val keywords: Boolean,
         val keywordsBoost: Float,
+        val suggest: Boolean,
         val options: List<Any>?=null,
         val value: Any?=null,
         val fieldEditId: UUID?=null
@@ -130,8 +134,9 @@ class Field (
 class FieldUpdateSpec (
         val name: String,
         val editable: Boolean,
-        val keywords: Boolean,
+        var keywords: Boolean,
         val keywordsBoost: Float,
+        val suggest: Boolean,
         val options: List<Any>?=null
 )
 
@@ -165,9 +170,7 @@ class FieldSet(
         val name: String,
         val linkExpression: String?=null,
         var fields: MutableList<Field>?=null
-) {
-    object FieldSetList : TypeReference<List<FieldSet>>()
-}
+)
 
 class FieldSetFilter (
     val ids : List<UUID>? = null,
@@ -195,7 +198,7 @@ class FieldSetFilter (
             addToValues(it)
         }
 
-        addToWhere("field.pk_organization=?")
+        addToWhere("field_set.pk_organization=?")
         addToValues(getOrgId())
     }
 }
@@ -205,7 +208,8 @@ class FieldFilter (
         val attrTypes: List<AttrType>? = null,
         val attrNames: List<String>? = null,
         val keywords: Boolean? = null,
-        val editable: Boolean? = null
+        val editable: Boolean? = null,
+        val suggest: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -246,6 +250,10 @@ class FieldFilter (
             addToValues(editable)
         }
 
+        suggest?.let {
+            addToWhere("field.bool_suggest=?")
+            addToValues(suggest)
+        }
 
         addToWhere("field.pk_organization=?")
         addToValues(getOrgId())
