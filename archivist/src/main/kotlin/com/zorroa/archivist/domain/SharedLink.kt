@@ -9,9 +9,9 @@ import java.util.UUID
  * @property state: The state of the UI
  * @property userIds: An optional set of UserIds to email.
  */
-class SharedLinkSpec (
-        var state: Map<String, Any>,
-        var userIds: Set<UUID>? = null
+class SharedLinkSpec(
+    var state: Map<String, Any>,
+    var userIds: Set<UUID>? = null
 )
 
 /**
@@ -22,9 +22,8 @@ class SharedLinkSpec (
  * @property state The State of the UI
  * @property userIds: Any users that were notified.
  */
-class SharedLink (
-        val id: UUID,
-        val state : Map<String, Any>,
-        val userIds : Set<UUID>? = null
+class SharedLink(
+    val id: UUID,
+    val state: Map<String, Any>,
+    val userIds: Set<UUID>? = null
 )
-

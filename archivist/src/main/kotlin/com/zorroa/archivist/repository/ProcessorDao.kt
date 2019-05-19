@@ -15,19 +15,19 @@ import java.sql.SQLException
 import java.util.UUID
 
 interface ProcessorDao {
-    fun batchCreate(specs: List<ProcessorSpec>) : Int
+    fun batchCreate(specs: List<ProcessorSpec>): Int
     fun deleteAll()
-    fun getAll(filter: ProcessorFilter) : KPagedList<Processor>
+    fun getAll(filter: ProcessorFilter): KPagedList<Processor>
     fun count(filter: ProcessorFilter): Long
-    fun get(id: UUID) : Processor
-    fun get(name: String) : Processor
+    fun get(id: UUID): Processor
+    fun get(name: String): Processor
     fun findOne(filter: ProcessorFilter): Processor
 }
 
 @Repository
 class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
 
-    override fun batchCreate(specs: List<ProcessorSpec>) : Int {
+    override fun batchCreate(specs: List<ProcessorSpec>): Int {
 
         val time = System.currentTimeMillis()
         val result = jdbc.batchUpdate(INSERT, object : BatchPreparedStatementSetter {
@@ -38,8 +38,7 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
                 val id = uuid3.generate(spec.className)
                 val types = if (spec.fileTypes == null) {
                     emptyArray()
-                }
-                else {
+                } else {
                     spec.fileTypes.toTypedArray()
                 }
 
@@ -65,15 +64,15 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
         jdbc.update("TRUNCATE processor")
     }
 
-    override fun get(id: UUID) : Processor {
+    override fun get(id: UUID): Processor {
         return jdbc.queryForObject("$GET WHERE pk_processor=?", MAPPER, id)
     }
 
-    override fun get(name: String) : Processor {
+    override fun get(name: String): Processor {
         return jdbc.queryForObject("$GET WHERE str_name=?", MAPPER, name)
     }
 
-    override fun getAll(filter: ProcessorFilter) : KPagedList<Processor> {
+    override fun getAll(filter: ProcessorFilter): KPagedList<Processor> {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))

@@ -55,8 +55,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         val pauseUntil = if (spec.pauseDurationSeconds == null) {
             -1
-        }
-        else {
+        } else {
             spec.paused = true
             time + (spec.pauseDurationSeconds * 1000L)
         }
@@ -133,7 +132,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 System.currentTimeMillis(), job.jobId) == 1
     }
 
-    override fun getExpired(duration: Long, unit: TimeUnit, limit: Int) : List<Job> {
+    override fun getExpired(duration: Long, unit: TimeUnit, limit: Int): List<Job> {
         val cutOff = System.currentTimeMillis() - unit.toMillis(duration)
         return jdbc.query("$GET_EXPIRED LIMIT ?", MAPPER,
                 JobState.Cancelled.ordinal, JobState.Finished.ordinal, cutOff, limit)
@@ -141,7 +140,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     override fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean {
         val time = System.currentTimeMillis()
-        val result =  if (oldState != null) {
+        val result = if (oldState != null) {
             jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=? AND int_state=?",
                     newState.ordinal, time, job.jobId, oldState.ordinal) == 1
         } else {
@@ -158,14 +157,13 @@ class JobDaoImpl : AbstractDao(), JobDao {
                             "status" to result))
         }
         return result
-
     }
 
-    override fun hasPendingFrames(job: JobId) : Boolean {
+    override fun hasPendingFrames(job: JobId): Boolean {
         return jdbc.queryForObject(HAS_PENDING, Int::class.java, JobState.Active.ordinal, job.jobId) == 1
     }
 
-    override fun incrementAssetCounters(job: JobId, counts: AssetCounters) : Boolean {
+    override fun incrementAssetCounters(job: JobId, counts: AssetCounters): Boolean {
         return jdbc.update(ASSET_COUNTS_INC,
                 counts.total,
                 counts.created,
@@ -175,7 +173,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 job.jobId) == 1
     }
 
-    override fun resumePausedJobs() : Int {
+    override fun resumePausedJobs(): Int {
         val time = System.currentTimeMillis()
         return jdbc.update(RESUME_PAUSED, JobState.Active.ordinal, time)
     }
@@ -187,7 +185,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     private val MAPPER_FOR_CLIENT = RowMapper { rs, row ->
         val job = MAPPER.mapRow(rs, row)
-        job.assetCounts =  buildAssetCounts(rs)
+        job.assetCounts = buildAssetCounts(rs)
         job.taskCounts = buildTaskCountMap(rs)
         job.createdUser = userDaoCache.getUser(rs.getObject("pk_user_created") as UUID)
         job
@@ -195,11 +193,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     companion object {
 
-        private inline fun getTaskStateCount(rs: ResultSet, state: TaskState) : Int {
+        private inline fun getTaskStateCount(rs: ResultSet, state: TaskState): Int {
             return rs.getInt("int_task_state_${state.ordinal}")
         }
 
-        private inline fun buildTaskCountMap(rs: ResultSet) : Map<String, Int> {
+        private inline fun buildTaskCountMap(rs: ResultSet): Map<String, Int> {
             val result = mutableMapOf("tasksTotal" to rs.getInt("int_task_total_count"))
             return TaskState.values().map {
                 "tasks" + it.toString() to getTaskStateCount(rs, it)
@@ -207,8 +205,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
             return result
         }
 
-        private inline fun buildAssetCounts(rs: ResultSet) : Map<String, Int> {
-            val result = mutableMapOf<String,Int>()
+        private inline fun buildAssetCounts(rs: ResultSet): Map<String, Int> {
+            val result = mutableMapOf<String, Int>()
             result["assetCreatedCount"] = rs.getInt("int_asset_create_count")
             result["assetReplacedCount"] = rs.getInt("int_asset_replace_count")
             result["assetWarningCount"] = rs.getInt("int_asset_warning_count")
@@ -217,7 +215,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         }
 
         private val MAPPER = RowMapper { rs, _ ->
-            val state =  JobState.values()[rs.getInt("int_state")]
+            val state = JobState.values()[rs.getInt("int_state")]
             Job(rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_organization") as UUID,
                     rs.getString("str_name"),
@@ -311,4 +309,3 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     "job.pk_job = ?"
     }
 }
-

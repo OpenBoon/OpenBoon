@@ -4,14 +4,12 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
-import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.security.getPermissionIds
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.security.Groups
-import com.zorroa.archivist.security.*
-import com.zorroa.archivist.service.UserService
 
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
-import java.util.UUID
 
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

@@ -309,7 +309,6 @@ class TaxonomyServiceImpl @Autowired constructor(
                             mapOf("taxonomyId" to tax.taxonomyId))
                 }
             }
-
         } finally {
             bulkProcessor.awaitClose(1000, TimeUnit.HOURS)
         }

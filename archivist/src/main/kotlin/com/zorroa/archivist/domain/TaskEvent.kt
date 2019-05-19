@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain
 
 import com.zorroa.common.domain.TaskState
-import java.util.*
+import java.util.UUID
 
 enum class TaskEventType {
     STOPPED,
@@ -12,15 +12,16 @@ enum class TaskEventType {
 }
 
 open class TaskEvent(
-        val type: TaskEventType,
-        val taskId: UUID,
-        val jobId: UUID,
-        val payload: Any)
+    val type: TaskEventType,
+    val taskId: UUID,
+    val jobId: UUID,
+    val payload: Any
+)
 
 class TaskStoppedEvent(
-        val exitStatus: Int,
-        val newState: TaskState?= null,
-        val manualKill: Boolean = false
+    val exitStatus: Int,
+    val newState: TaskState? = null,
+    val manualKill: Boolean = false
 )
 
 /**
@@ -36,15 +37,15 @@ class TaskStoppedEvent(
  * @property stackTrace The full stack trace from the error, if any. This is optional.
  */
 class TaskErrorEvent(
-        val assetId: UUID?,
-        val path: String?,
-        val message: String,
-        val processor: String?,
-        val fatal: Boolean,
-        val phase: String,
-        val stackTrace: List<StackTraceElement>?=null
+    val assetId: UUID?,
+    val path: String?,
+    val message: String,
+    val processor: String?,
+    val fatal: Boolean,
+    val phase: String,
+    val stackTrace: List<StackTraceElement>? = null
 )
 
 class TaskMessageEvent(
-        val message: String
+    val message: String
 )

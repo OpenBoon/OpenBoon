@@ -1,7 +1,15 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AuditLogEntrySpec
+import com.zorroa.archivist.domain.AuditLogType
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
@@ -51,12 +59,12 @@ interface IndexService {
 }
 
 @Component
-class IndexServiceImpl  @Autowired  constructor (
-        private val indexDao: IndexDao,
-        private val auditLogDao: AuditLogDao,
-        private val fileServerProvider: FileServerProvider,
-        private val fileStorageService: FileStorageService,
-        private val workQueue: AsyncListenableTaskExecutor
+class IndexServiceImpl @Autowired constructor (
+    private val indexDao: IndexDao,
+    private val auditLogDao: AuditLogDao,
+    private val fileServerProvider: FileServerProvider,
+    private val fileStorageService: FileStorageService,
+    private val workQueue: AsyncListenableTaskExecutor
 
 ) : IndexService {
 
@@ -152,7 +160,7 @@ class IndexServiceImpl  @Autowired  constructor (
          * Along the way queue up work to delete any files.
          */
         val rsp = BatchDeleteAssetsResponse()
-        searchService.scanAndScroll(search, true) { hits->
+        searchService.scanAndScroll(search, true) { hits ->
             /*
              * Determine if any documents are on hold.
              */
@@ -199,10 +207,10 @@ class IndexServiceImpl  @Autowired  constructor (
                     val storage = fileStorageService.get(pr.id)
                     val ofile = fileServerProvider.getServableFile(storage.uri)
                     if (ofile.delete()) {
-                        logger.event(LogObject.STORAGE, LogAction.DELETE,
+                        logger.event(
+                            LogObject.STORAGE, LogAction.DELETE,
                                 mapOf("proxyId" to pr.id, "assetId" to doc.id))
-                    }
-                    else {
+                    } else {
                         logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, "file did not exist",
                                 mapOf("proxyId" to pr.id))
                     }
@@ -222,5 +230,4 @@ class IndexServiceImpl  @Autowired  constructor (
 
         private val logger = LoggerFactory.getLogger(IndexServiceImpl::class.java)
     }
-
 }

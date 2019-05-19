@@ -86,7 +86,7 @@ class MultipleWebSecurityConfig {
         @Autowired
         internal lateinit var properties: ApplicationProperties
 
-        @Bean(name=["globalAuthenticationManager"])
+        @Bean(name = ["globalAuthenticationManager"])
         @Throws(Exception::class)
         fun globalAuthenticationManager(): AuthenticationManager {
             return super.authenticationManagerBean()
@@ -98,7 +98,7 @@ class MultipleWebSecurityConfig {
         }
 
         @Bean
-        fun jwtAuthorizationFilter() : JWTAuthorizationFilter {
+        fun jwtAuthorizationFilter(): JWTAuthorizationFilter {
             return JWTAuthorizationFilter(globalAuthenticationManager())
         }
 
@@ -141,7 +141,7 @@ class MultipleWebSecurityConfig {
         internal lateinit var properties: ApplicationProperties
 
         @Autowired
-        lateinit var analystAuthenticationFilter : AnalystAuthenticationFilter
+        lateinit var analystAuthenticationFilter: AnalystAuthenticationFilter
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -162,7 +162,7 @@ class MultipleWebSecurityConfig {
     class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
-        internal lateinit var jwtAuthorizationFilter : JWTAuthorizationFilter
+        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -186,7 +186,7 @@ class MultipleWebSecurityConfig {
     class RootSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
-        internal lateinit var jwtAuthorizationFilter : JWTAuthorizationFilter
+        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -202,10 +202,8 @@ class MultipleWebSecurityConfig {
                     .anyRequest().permitAll()
                     .and()
                     .csrf().disable()
-
         }
     }
-
 
     @Value("\${management.endpoints.password}")
     lateinit var monitorPassword: String
@@ -241,14 +239,14 @@ class MultipleWebSecurityConfig {
 
             override fun publishAuthenticationSuccess(authentication: Authentication) { }
             override fun publishAuthenticationFailure(
-                    exception: AuthenticationException,
-                    authentication: Authentication) {
+                exception: AuthenticationException,
+                authentication: Authentication
+            ) {
 
                 if (properties.getBoolean("archivist.debug-mode.enabled")) {
                     logger.warnEvent(LogObject.USER, LogAction.ERROR,
                             "failed to authenticate", emptyMap(), exception)
                 }
-
             }
         }
     }
@@ -274,8 +272,7 @@ class MultipleWebSecurityConfig {
         val csrfRequestMatcher = RequestMatcher {
             if (it.getAttribute("authType") == HttpServletRequest.CLIENT_CERT_AUTH) {
                 false
-            }
-            else {
+            } else {
                 it.method !in setOf("GET", "HEAD", "TRACE", "OPTIONS")
             }
         }
@@ -285,5 +282,3 @@ class MultipleWebSecurityConfig {
         private val logger = LoggerFactory.getLogger(MultipleWebSecurityConfig::class.java)
     }
 }
-
-

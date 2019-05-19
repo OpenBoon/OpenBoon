@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
-import java.util.*
+import java.util.UUID
 
 /**
  * SharedLinkService allows users to create a Link to curator they can pass around.
@@ -31,7 +31,7 @@ interface SharedLinkService {
      *
      * @param duration a [Duration] which describes how old the link has to be,.
      */
-    fun deleteExpired(duration: Duration) : Int
+    fun deleteExpired(duration: Duration): Int
 
     /**
      * Return a SharedLink with the given Id.
@@ -42,8 +42,8 @@ interface SharedLinkService {
 @Service
 @Transactional
 class SharedLinkServiceImpl @Autowired constructor(
-        private val sharedLinkDao: SharedLinkDao,
-        private val transactionEventManager: TransactionEventManager
+    private val sharedLinkDao: SharedLinkDao,
+    private val transactionEventManager: TransactionEventManager
 ) : SharedLinkService {
 
     @Autowired
@@ -74,7 +74,7 @@ class SharedLinkServiceImpl @Autowired constructor(
         return sharedLinkDao.get(id)
     }
 
-    override fun deleteExpired(duration: Duration) : Int {
+    override fun deleteExpired(duration: Duration): Int {
         return sharedLinkDao.deleteExpired(duration)
     }
 

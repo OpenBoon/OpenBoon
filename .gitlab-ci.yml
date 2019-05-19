@@ -55,14 +55,11 @@ linting:
   only:
     - merge_requests
     - development
-  allow_failure: true
   script:
     - apk update && apk add ca-certificates wget && update-ca-certificates
     - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
     - chmod a+x ktlint
-    - DIFF=$(git diff --name-only --diff-filter=b $(git merge-base $CI_COMMIT_SHA development))
-    - echo $DIFF
-    - ./ktlint $DIFF
+    - ./ktlint
 
 unit_tests:
   stage: test

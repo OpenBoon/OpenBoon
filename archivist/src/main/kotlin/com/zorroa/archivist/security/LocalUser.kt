@@ -29,7 +29,7 @@ class ZorroaAuthenticationProvider : AuthenticationProvider {
     private lateinit var userService: UserService
 
     @Autowired
-    private lateinit var  userRegistryService: UserRegistryService
+    private lateinit var userRegistryService: UserRegistryService
 
     @Throws(AuthenticationException::class)
     override fun authenticate(authentication: Authentication): Authentication? {
@@ -130,9 +130,8 @@ class ResetPasswordSecurityFilter : OncePerRequestFilter() {
                     try {
                         bufferedReader.close()
                     } catch (ignore: IOException) {
-                        //ignore
+                        // ignore
                     }
-
                 }
             }
 

@@ -19,7 +19,7 @@ interface DispatchTaskDao {
      * @param organizationId The unique Organization ID
      * @param count The maximum number of tasks to return
      */
-    fun getNextByOrg(organizationId: UUID, count: Int=10): List<DispatchTask>
+    fun getNextByOrg(organizationId: UUID, count: Int = 10): List<DispatchTask>
 
     /**
      * Return the next N tasks with a minimum priority.  Lower is first.
@@ -27,7 +27,7 @@ interface DispatchTaskDao {
      * @param minPriority The minimum priority value.
      * @param count The maximum number of tasks to return
      */
-    fun getNextByJobPriority(minPriority: Int, count: Int=10): List<DispatchTask>
+    fun getNextByJobPriority(minPriority: Int, count: Int = 10): List<DispatchTask>
 
     /**
      * Return a list of DispatchPriority instances, sorted by by highest priority first.
@@ -105,12 +105,12 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "job.json_env," +
                 "job.json_args," +
                 "job.pk_user_created," +
-                "task.pk_task,"+
-                "task.pk_job,"+
-                "task.str_name,"+
-                "task.int_state,"+
-                "task.int_run_count,"+
-                "task.json_script, "+
+                "task.pk_task," +
+                "task.pk_job," +
+                "task.str_name," +
+                "task.int_state," +
+                "task.int_run_count," +
+                "task.json_script, " +
                 "task.str_host " +
             "FROM " +
                 "task INNER JOIN job ON job.pk_job = task.pk_job " +
@@ -120,7 +120,6 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "job.bool_paused='f' " +
             "AND " +
                 "task.int_state=? "
-
 
         /**
          * Provides FIFO scheduling by job. The order is:

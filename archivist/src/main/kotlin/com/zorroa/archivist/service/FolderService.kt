@@ -5,8 +5,27 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.Lists
 import com.google.common.collect.Queues
-import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.BatchUpdateAssetLinks
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.LinkType
+import com.zorroa.archivist.domain.Organization
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.Taxonomy
+import com.zorroa.archivist.domain.TrashedFolder
+import com.zorroa.archivist.domain.TrashedFolderOp
+import com.zorroa.archivist.domain.UpdateLinksResponse
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.isRootFolder
+import com.zorroa.archivist.repository.FolderDao
+import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.repository.PermissionDao
+import com.zorroa.archivist.repository.TrashFolderDao
+import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
@@ -20,7 +39,9 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.Objects
+import java.util.Queue
+import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
@@ -38,7 +59,7 @@ interface FolderService {
 
     fun get(folder: Folder): Folder
 
-    fun get(id: UUID?, cached:Boolean=false): Folder
+    fun get(id: UUID?, cached: Boolean = false): Folder
 
     fun get(parent: UUID?, name: String): Folder
 
@@ -129,7 +150,7 @@ interface FolderService {
 
     fun create(spec: FolderSpec): Folder
 
-    fun create(spec: FolderSpec, errorIfExists: Boolean) : Folder
+    fun create(spec: FolderSpec, errorIfExists: Boolean): Folder
 
     fun create(parent: Folder, spec: FolderSpec, errorIfExists: Boolean = true): Folder
 
@@ -161,18 +182,18 @@ interface FolderService {
 
     fun isDescendantOf(target: Folder, moving: Folder): Boolean
 
-    fun renameUserFolder(user:User, newName: String): Boolean
+    fun renameUserFolder(user: User, newName: String): Boolean
 }
 
 @Service
 @Transactional
 class FolderServiceImpl @Autowired constructor(
-        val folderDao: FolderDao,
-        val trashFolderDao: TrashFolderDao,
-        val indexDao: IndexDao,
-        val userDao: UserDao,
-        val permissionDao: PermissionDao,
-        val transactionEventManager: TransactionEventManager
+    val folderDao: FolderDao,
+    val trashFolderDao: TrashFolderDao,
+    val indexDao: IndexDao,
+    val userDao: UserDao,
+    val permissionDao: PermissionDao,
+    val transactionEventManager: TransactionEventManager
 ) : FolderService {
 
     /**
@@ -263,11 +284,10 @@ class FolderServiceImpl @Autowired constructor(
         return get(folder.id)
     }
 
-    override fun get(id: UUID?, cached:Boolean): Folder {
+    override fun get(id: UUID?, cached: Boolean): Folder {
         if (!cached) {
             return folderDao.get(id)
-        }
-        else {
+        } else {
             val f: Folder
             try {
                 f = folderCache.get(id)
@@ -275,7 +295,6 @@ class FolderServiceImpl @Autowired constructor(
                     throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
                 }
                 return f
-
             } catch (e: Exception) {
                 throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
             }
@@ -285,7 +304,6 @@ class FolderServiceImpl @Autowired constructor(
     override fun getRoot(): Folder {
         return folderDao.getRootFolder()
     }
-
 
     override fun get(parent: UUID?, name: String): Folder {
         return folderDao.get(parent, name, false)
@@ -297,7 +315,7 @@ class FolderServiceImpl @Autowired constructor(
         var current: Folder? = null
 
         if ("/" == path) {
-            return  rootFolder
+            return rootFolder
         }
 
         // Just throw the exception to the caller,don't return null
@@ -316,7 +334,6 @@ class FolderServiceImpl @Autowired constructor(
         } catch (e: Exception) {
             false
         }
-
     }
 
     override fun count(): Int {
@@ -343,7 +360,7 @@ class FolderServiceImpl @Autowired constructor(
         return folderDao.getChildren(folder)
     }
 
-    override fun renameUserFolder(user:User, newName: String): Boolean {
+    override fun renameUserFolder(user: User, newName: String): Boolean {
         if (folderDao.renameUserFolder(user, newName)) {
             transactionEventManager.afterCommit(true) {
                 val folder = get(user.homeFolderId)
@@ -354,7 +371,7 @@ class FolderServiceImpl @Autowired constructor(
         return false
     }
 
-    override fun update(folderId : UUID, updated: FolderUpdate): Boolean {
+    override fun update(folderId: UUID, updated: FolderUpdate): Boolean {
         if (!hasPermission(folderDao.getAcl(folderId), Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
@@ -364,7 +381,7 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         var current = folderDao.get(folderId)
-        val parentSwap = !Objects.equals(current.parentId, updated.parentId);
+        val parentSwap = !Objects.equals(current.parentId, updated.parentId)
 
         if (parentSwap) {
 
@@ -662,7 +679,7 @@ class FolderServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun getPath(folder: Folder) : String {
+    override fun getPath(folder: Folder): String {
         val ancestors = getAllAncestors(folder, true, false)
 
         val sb = StringBuilder(256)
@@ -725,11 +742,9 @@ class FolderServiceImpl @Autowired constructor(
 
                 toQuery.addAll(children)
                 result.addAll(children)
-
             } catch (e: Exception) {
                 logger.warn("Failed to obtain child folders for {}", current, e)
             }
-
         }
     }
 
@@ -798,7 +813,7 @@ class FolderServiceImpl @Autowired constructor(
         val librarian = permissionDao.get("zorroa::librarian")
 
         val userFolder = create(userSpec)
-        setAcl(userFolder, Acl().addEntry(everyone.id, Access.Read),true, false)
+        setAcl(userFolder, Acl().addEntry(everyone.id, Access.Read), true, false)
 
         val libFolder = create(libSpec)
         setAcl(libFolder,
@@ -870,4 +885,3 @@ class FolderServiceImpl @Autowired constructor(
         private val logger = LoggerFactory.getLogger(FolderServiceImpl::class.java)
     }
 }
-

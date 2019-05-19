@@ -4,20 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.http.MediaType
 
 data class Proxy(
-        var id: String,
-        var width: Int,
-        var height: Int,
-        /**
-         * Some older versions don't have a mimetype but they
-         * are all image/jpeg, so we'll default to that.
-         */
-        var mimetype: String = "image/jpeg",
-        var format: String? = null
+    var id: String,
+    var width: Int,
+    var height: Int,
+    /**
+     * Some older versions don't have a mimetype but they
+     * are all image/jpeg, so we'll default to that.
+     */
+    var mimetype: String = "image/jpeg",
+    var format: String? = null
 )
 
-data class ProxySchema (
-        var proxies: MutableList<Proxy>? = null,
-        var tinyProxy : MutableList<String>? = null
+data class ProxySchema(
+    var proxies: MutableList<Proxy>? = null,
+    var tinyProxy: MutableList<String>? = null
 ) {
 
     /**
@@ -63,7 +63,6 @@ data class ProxySchema (
         return if (proxies == null) 0 else proxies!!.size
     }
 
-
     /**
      * Return the largest proxy of the specific mime type.
      *
@@ -72,7 +71,7 @@ data class ProxySchema (
     @JsonIgnore
     fun getLargest(type: MediaType): Proxy? {
         return proxies?.stream()
-            ?.filter { p-> type == MediaType.ALL || p.mimetype == type.toString() }
+            ?.filter { p -> type == MediaType.ALL || p.mimetype == type.toString() }
             ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
             ?.findFirst()
             ?.orElse(null)
@@ -84,9 +83,9 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun getLargest(type: String="image"): Proxy? {
+    fun getLargest(type: String = "image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p-> p.mimetype.startsWith(type, ignoreCase = true) }
+                ?.filter { p -> p.mimetype.startsWith(type, ignoreCase = true) }
                 ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
                 ?.findFirst()
                 ?.orElse(null)
@@ -98,14 +97,13 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun getSmallest(type: String="image"): Proxy? {
+    fun getSmallest(type: String = "image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p-> p.mimetype.startsWith(type, ignoreCase = true) }
-                ?.sorted{ o1, o2 -> Integer.compare(o1.width, o2.width) }
+                ?.filter { p -> p.mimetype.startsWith(type, ignoreCase = true) }
+                ?.sorted { o1, o2 -> Integer.compare(o1.width, o2.width) }
                 ?.findFirst()
                 ?.orElse(null)
     }
-
 
     /**
      * Return the first proxy greater than or equal to the minimum dimension.  If there is problem loading
@@ -115,11 +113,11 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun atLeastThisSize(minDim: Int, type: String="image"): Proxy? {
+    fun atLeastThisSize(minDim: Int, type: String = "image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p -> (p.width >= minDim || p.height >= minDim)
-                        && p.mimetype.startsWith(type, ignoreCase = true) }
-                ?.sorted {o1, o2 -> Integer.compare(o1.width, o2.width) }
+                ?.filter { p -> (p.width >= minDim || p.height >= minDim) &&
+                        p.mimetype.startsWith(type, ignoreCase = true) }
+                ?.sorted { o1, o2 -> Integer.compare(o1.width, o2.width) }
                 ?.findFirst()
                 ?.orElse(null)
     }
@@ -132,13 +130,12 @@ data class ProxySchema (
      * @return
      */
     @JsonIgnore
-    fun thisSizeOrBelow(minDim: Int, type: String="image"): Proxy? {
+    fun thisSizeOrBelow(minDim: Int, type: String = "image"): Proxy? {
         return proxies?.stream()
-                ?.filter { p -> (p.width <= minDim || p.width <= minDim)
-                        && p.mimetype.startsWith(type, ignoreCase = true) }
+                ?.filter { p -> (p.width <= minDim || p.width <= minDim) &&
+                        p.mimetype.startsWith(type, ignoreCase = true) }
                 ?.sorted { o1, o2 -> Integer.compare(o2.width, o1.width) }
                 ?.findFirst()
                 ?.orElse(null)
     }
-
 }

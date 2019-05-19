@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
  * unittests which makes things very hard to test.
  */
 
-class MockListenableFuture<T> constructor(private val value: T) : ListenableFuture <T>{
+class MockListenableFuture<T> constructor(private val value: T) : ListenableFuture <T> {
 
     override fun get(): T = value
 
@@ -24,29 +24,28 @@ class MockListenableFuture<T> constructor(private val value: T) : ListenableFutu
     // None of these are used, currently.
     //
     override fun addCallback(p0: ListenableFutureCallback<in T>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun addCallback(p0: SuccessCallback<in T>, p1: FailureCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun isDone(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun get(timeout: Long, unit: TimeUnit?): T {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun cancel(mayInterruptIfRunning: Boolean): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun isCancelled(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
-
 }
 
 class MockAsyncThreadExecutor : SyncTaskExecutor(), AsyncListenableTaskExecutor {
@@ -60,18 +59,18 @@ class MockAsyncThreadExecutor : SyncTaskExecutor(), AsyncListenableTaskExecutor 
     // None of these are used, currently.
     //
     override fun execute(p0: Runnable, p1: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun submit(p0: Runnable): Future<*> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun <T : Any?> submit(p0: Callable<T>): Future<T> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun submitListenable(p0: Runnable): ListenableFuture<*> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

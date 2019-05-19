@@ -12,35 +12,35 @@ import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface RequestDao {
-    fun create(spec: RequestSpec) : Request
-    fun get(id: UUID) : Request
+    fun create(spec: RequestSpec): Request
+    fun get(id: UUID): Request
 }
 
 @Repository
 class RequestDaoImpl : AbstractDao(), RequestDao {
 
     @Autowired
-    internal lateinit var userDaoCache: UserDaoCache;
+    internal lateinit var userDaoCache: UserDaoCache
 
     private val MAPPER = RowMapper { rs, _ ->
-         Request(
-                 rs.getObject("pk_request") as UUID,
-                 rs.getObject("pk_folder") as UUID,
-                 RequestType.values()[rs.getInt("int_type")],
-                 userDaoCache.getUser(rs.getObject("pk_user_created") as UUID),
-                 rs.getLong("time_created"),
-                 userDaoCache.getUser(rs.getObject("pk_user_modified") as UUID),
-                 rs.getLong("time_modified"),
-                 RequestState.values()[rs.getInt("int_state")],
-                 rs.getString("str_comment"),
-                 Json.deserialize(rs.getString("json_cc"), Json.LIST_OF_STRINGS)
-         )
+        Request(
+            rs.getObject("pk_request") as UUID,
+            rs.getObject("pk_folder") as UUID,
+            RequestType.values()[rs.getInt("int_type")],
+            userDaoCache.getUser(rs.getObject("pk_user_created") as UUID),
+            rs.getLong("time_created"),
+            userDaoCache.getUser(rs.getObject("pk_user_modified") as UUID),
+            rs.getLong("time_modified"),
+            RequestState.values()[rs.getInt("int_state")],
+            rs.getString("str_comment"),
+            Json.deserialize(rs.getString("json_cc"), Json.LIST_OF_STRINGS)
+        )
     }
 
-    override fun create(spec: RequestSpec) : Request {
+    override fun create(spec: RequestSpec): Request {
         val id = uuid1.generate()
         val userId = getUserId()
         val time = System.currentTimeMillis()
@@ -63,7 +63,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
         return get(id)
     }
 
-    override fun get(id: UUID) : Request {
+    override fun get(id: UUID): Request {
         return jdbc.queryForObject("$GET WHERE pk_organization=? AND pk_request=?",
                 MAPPER, getOrgId(), id)
     }
@@ -71,17 +71,17 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
     companion object {
 
         private val GET = "SELECT " +
-                "pk_request,"+
-                "pk_folder,"+
-                "pk_user_created,"+
-                "pk_user_modified,"+
-                "time_created,"+
-                "time_modified,"+
-                "int_type,"+
-                "int_state,"+
-                "str_comment, "+
-                "json_cc "+
-        "FROM "+
+                "pk_request," +
+                "pk_folder," +
+                "pk_user_created," +
+                "pk_user_modified," +
+                "time_created," +
+                "time_modified," +
+                "int_type," +
+                "int_state," +
+                "str_comment, " +
+                "json_cc " +
+        "FROM " +
             "request"
 
         private val INSERT = JdbcUtils.insert("request",

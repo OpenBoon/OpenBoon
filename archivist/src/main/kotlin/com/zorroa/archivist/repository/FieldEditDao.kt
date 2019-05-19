@@ -1,6 +1,10 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.FieldEdit
+import com.zorroa.archivist.domain.FieldEditFilter
+import com.zorroa.archivist.domain.FieldEditSpecInternal
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
@@ -11,15 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface FieldEditDao {
     fun create(spec: FieldEditSpecInternal): FieldEdit
     fun get(id: UUID): FieldEdit
-    fun get(assetId: UUID, fieldId: UUID) : FieldEdit
-    fun delete(id: UUID) : Boolean
-    fun getAll(assetId: UUID) : List<FieldEdit>
-    fun getAll(filter: FieldEditFilter) : KPagedList<FieldEdit>
+    fun get(assetId: UUID, fieldId: UUID): FieldEdit
+    fun delete(id: UUID): Boolean
+    fun getAll(assetId: UUID): List<FieldEdit>
+    fun getAll(filter: FieldEditFilter): KPagedList<FieldEdit>
     fun count(filter: FieldEditFilter): Long
 
     /**
@@ -28,7 +32,7 @@ interface FieldEditDao {
      * @param assetId The ID of the asset.
      * @return a map of manual edits with the attr as the key and value of the edit as the value.
      */
-    fun getAssetUpdateMap(assetId: UUID) : Map<String, Any?>
+    fun getAssetUpdateMap(assetId: UUID): Map<String, Any?>
 }
 
 @Repository
@@ -62,23 +66,24 @@ class FieldEditDaoImpl : AbstractDao(), FieldEditDao {
             ps
         }
 
-        logger.event(LogObject.FIELD_EDIT, LogAction.CREATE,
+        logger.event(
+            LogObject.FIELD_EDIT, LogAction.CREATE,
                 mapOf("fieldEditId" to id, "assetId" to spec.assetId, "fieldId" to spec.fieldId))
 
         return get(spec.assetId, spec.fieldId)
     }
 
-    override fun get(id: UUID) : FieldEdit {
+    override fun get(id: UUID): FieldEdit {
         return jdbc.queryForObject("$GET WHERE pk_organization=? AND pk_field_edit=?",
                 MAPPER, getOrgId(), id)
     }
 
-    override fun get(assetId: UUID, fieldId: UUID) : FieldEdit {
+    override fun get(assetId: UUID, fieldId: UUID): FieldEdit {
         return jdbc.queryForObject("$GET WHERE pk_field=? AND pk_asset=? AND pk_organization=?",
                 MAPPER, fieldId, assetId, getOrgId())
     }
 
-    override fun getAll(assetId: UUID) : List<FieldEdit> {
+    override fun getAll(assetId: UUID): List<FieldEdit> {
         return jdbc.query("$GET WHERE pk_asset=? AND pk_organization=?",
                 MAPPER, assetId, getOrgId())
     }
@@ -89,22 +94,22 @@ class FieldEditDaoImpl : AbstractDao(), FieldEditDao {
         return jdbc.queryForObject(query, Long::class.java, *values)
     }
 
-    override fun getAll(filter: FieldEditFilter) : KPagedList<FieldEdit> {
+    override fun getAll(filter: FieldEditFilter): KPagedList<FieldEdit> {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
-    override fun delete(id: UUID) : Boolean {
-        val result =  jdbc.update(
+    override fun delete(id: UUID): Boolean {
+        val result = jdbc.update(
                 "DELETE FROM field_edit WHERE pk_organization=? AND pk_field_edit=?", getOrgId(), id) == 1
         logger.event(LogObject.FIELD_EDIT, LogAction.DELETE, mapOf("fieldEditId" to id, "boolStatus" to result))
         return result
     }
 
-    override fun getAssetUpdateMap(assetId: UUID) : Map<String, Any?> {
+    override fun getAssetUpdateMap(assetId: UUID): Map<String, Any?> {
         val map = mutableMapOf<String, Any?>()
-        jdbc.query(GET_UPDATE_MAP, RowCallbackHandler { rs->
+        jdbc.query(GET_UPDATE_MAP, RowCallbackHandler { rs ->
             map[rs.getString(1)] =
                     Json.deserialize(rs.getString("json_new_value"), Json.GENERIC_MAP)["value"]
         }, assetId, getOrgId())
@@ -122,7 +127,6 @@ class FieldEditDaoImpl : AbstractDao(), FieldEditDao {
     }
 
     companion object {
-
 
         private const val GET = "SELECT * FROM field_edit"
         private const val COUNT = "SELECT COUNT(1) FROM field_edit"
@@ -144,7 +148,7 @@ class FieldEditDaoImpl : AbstractDao(), FieldEditDao {
 
         private const val GET_UPDATE_MAP =
                 "SELECT " +
-                    "field.str_attr_name,"+
+                    "field.str_attr_name," +
                     "field_edit.json_new_value " +
                 "FROM " +
                     "field_edit INNER JOIN field ON (field_edit.pk_field = field.pk_field) " +

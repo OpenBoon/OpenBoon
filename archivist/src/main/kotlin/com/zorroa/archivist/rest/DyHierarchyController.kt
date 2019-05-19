@@ -7,8 +7,13 @@ import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.util.HttpUtils
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
  * Created by chambers on 8/10/16.
@@ -16,9 +21,9 @@ import java.util.*
 @RestController
 @Timed
 class DyHierarchyController @Autowired constructor(
-        val folderService : FolderService,
-        val dyHierarchyService: DyHierarchyService
-){
+    val folderService: FolderService,
+    val dyHierarchyService: DyHierarchyService
+) {
 
     @GetMapping(value = ["/api/v1/dyhi/_folder/{id}"])
     fun getByFolder(@PathVariable id: UUID): DyHierarchy {
@@ -41,7 +46,7 @@ class DyHierarchyController @Autowired constructor(
 
     @PostMapping(value = ["/api/v1/dyhi/{id}/_run"])
     @Throws(Exception::class)
-    fun run(@PathVariable id: UUID) : Any {
+    fun run(@PathVariable id: UUID): Any {
         val dh = dyHierarchyService.get(id)
         return HttpUtils.updated("DyHierarchy", "run", dyHierarchyService.generate(dh) > 0)
     }

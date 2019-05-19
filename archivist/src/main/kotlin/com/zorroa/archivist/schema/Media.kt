@@ -2,7 +2,7 @@ package com.zorroa.common.schema
 
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.*
+import java.util.Date
 
 class MediaClip {
 
@@ -40,7 +40,6 @@ class MediaClip {
     @JvmOverloads constructor(parent: String, type: String, start: String, stop: String = start) : this(parent, type, BigDecimal(start), BigDecimal(stop)) {}
 
     constructor(parent: String, type: String, start: Double, stop: Double) : this(parent, type, BigDecimal(start.toString()), BigDecimal(stop.toString())) {}
-
 
     @JvmOverloads constructor(parent: String, type: String, start: Int, stop: Int = start) : this(parent, type, BigDecimal(start), BigDecimal(stop)) {}
 

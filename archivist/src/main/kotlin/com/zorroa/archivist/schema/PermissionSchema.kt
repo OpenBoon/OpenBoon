@@ -1,7 +1,7 @@
 package com.zorroa.common.schema
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import java.util.*
+import java.util.UUID
 
 /**
  * PermissionSchema contains the attributes necessary for defining permissions around

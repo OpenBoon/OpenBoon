@@ -27,7 +27,7 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
     private val ipRegexes = mutableListOf<Regex>()
 
     @Value("\${archivist.security.analyst.prefer-hostnames}")
-    var preferHostnames : Boolean = true
+    var preferHostnames: Boolean = true
 
     @PostConstruct
     fun init() {
@@ -37,9 +37,11 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
     }
 
     @Throws(IOException::class, ServletException::class)
-    override fun doFilterInternal(req: HttpServletRequest,
-                                  res: HttpServletResponse,
-                                  chain: FilterChain) {
+    override fun doFilterInternal(
+        req: HttpServletRequest,
+        res: HttpServletResponse,
+        chain: FilterChain
+    ) {
 
         val analystPort = req.getHeader(ANALYST_HEADER_PORT)
         val analystHost = req.getHeader(ANALYST_HEADER_HOST)
@@ -51,8 +53,7 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
                         val port = analystPort.toInt()
                         val endpoint = if (preferHostnames) {
                             "https://${analystHost ?: remoteAddr}:$port"
-                        }
-                        else {
+                        } else {
                             "https://$remoteAddr:$port"
                         }
                         SecurityContextHolder.getContext().authentication =
@@ -85,7 +86,7 @@ class AnalystAuthenticationFilter @Autowired constructor(authManager: Authentica
     }
 }
 
-class AnalystAuthentication(private val endpoint: String): Authentication {
+class AnalystAuthentication(private val endpoint: String) : Authentication {
 
     override fun getAuthorities(): Collection<out GrantedAuthority> {
         return setOf(SimpleGrantedAuthority("ANALYST"))
@@ -112,5 +113,4 @@ class AnalystAuthentication(private val endpoint: String): Authentication {
     override fun getDetails(): Any {
         return endpoint
     }
-
 }

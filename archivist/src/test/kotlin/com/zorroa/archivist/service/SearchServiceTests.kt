@@ -933,7 +933,6 @@ class SearchServiceTests : AbstractTest() {
         val asb = AssetSearch(AssetFilter()
                 .addRange("source.fileSize", RangeQuery().setGt(100000)))
 
-
         val result = searchService.search(Pager.first(), asb)
         assertEquals(2, result.size().toLong())
     }

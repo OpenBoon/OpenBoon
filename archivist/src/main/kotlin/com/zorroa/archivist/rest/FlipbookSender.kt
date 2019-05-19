@@ -6,21 +6,23 @@ import com.zorroa.common.util.Json
 import javax.servlet.http.HttpServletResponse
 
 data class Frame(
-        val id: String?,
-        val frame: Int?,
-        val filename: String?)
+    val id: String?,
+    val frame: Int?,
+    val filename: String?
+)
 
 class FlipBook {
-    val frames : MutableList<Frame> = mutableListOf()
+    val frames: MutableList<Frame> = mutableListOf()
 
-    fun getSize() : Int {
+    fun getSize(): Int {
         return frames.size
     }
 }
 
 class FlipbookSender constructor(
-        val assetId: String,
-        val searchService : SearchService) {
+    val assetId: String,
+    val searchService: SearchService
+) {
 
     fun serveResource(response: HttpServletResponse) {
         response.contentType = "application/json"
@@ -30,7 +32,7 @@ class FlipbookSender constructor(
         search.size = 100
         search.addToFilter().addToTerms("media.clip.parent.raw", assetId)
         search.addToFilter().addToTerms("media.clip.type.raw", "flipbook")
-        search.fields = arrayOf("_id",  "source", "media")
+        search.fields = arrayOf("_id", "source", "media")
 
         val result = FlipBook()
         for (doc in searchService.scanAndScroll(search, 0)) {

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Timed
-class RootController @Autowired constructor(val networkEnvironment: NetworkEnvironment){
+class RootController @Autowired constructor(val networkEnvironment: NetworkEnvironment) {
 
     @GetMapping("/api/v1/commands")
-    fun getCommands() : List<Any> {
+    fun getCommands(): List<Any> {
         return listOf()
     }
 }

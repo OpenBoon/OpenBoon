@@ -27,7 +27,6 @@ import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.Strings
-import org.elasticsearch.common.io.stream.NamedWriteableRegistry
 import org.elasticsearch.common.lucene.search.function.CombineFunction
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
@@ -308,7 +307,6 @@ class SearchServiceImpl @Autowired constructor(
         val ssb = SearchSourceBuilder()
         applyCollapse(search, ssb)
         ssb.query(getQuery(search))
-
 
         val req = rest.newSearchRequest()
         req.indices("archivist")
@@ -779,7 +777,7 @@ class SearchServiceImpl @Autowired constructor(
         /**
          * Used for ES XContentParsers
          */
-        val searchModule =  SearchModule(Settings.EMPTY, false, emptyList())
+        val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
 
         /**
          * Used for ES XContentParsers

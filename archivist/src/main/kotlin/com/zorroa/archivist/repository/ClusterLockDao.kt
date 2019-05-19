@@ -16,10 +16,10 @@ import org.springframework.stereotype.Repository
 import java.net.InetAddress
 
 interface ClusterLockDao {
-    fun lock(spec: ClusterLockSpec) : LockStatus
-    fun unlock(name: String) : Boolean
+    fun lock(spec: ClusterLockSpec): LockStatus
+    fun unlock(name: String): Boolean
     fun isLocked(name: String): Boolean
-    fun hasCombineLocks(spec: ClusterLockSpec) : Boolean
+    fun hasCombineLocks(spec: ClusterLockSpec): Boolean
     fun getExpired(): List<ClusterLockExpired>
     fun checkLock(name: String): Boolean
 }
@@ -51,7 +51,6 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
             meterRegistry.counter("zorrra.cluster_lock",
                     getTags(Tag.of("status", "locked"))).increment()
             LockStatus.Locked
-
         } catch (e: DuplicateKeyException) {
             logger.warnEvent(LogObject.CLUSTER_LOCK, LogAction.LOCK,
                     "Failure obtaining lock", mapOf("lockName" to spec.name))
@@ -70,8 +69,7 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                     getTags(Tag.of("status", "combine"))).increment()
                 return true
             }
-        }
-        catch (e: DataAccessException) {
+        } catch (e: DataAccessException) {
             logger.debug("Could not increment combined lock for $name")
         }
         return false
@@ -91,7 +89,7 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
                 "SELECT str_name FROM cluster_lock WHERE str_name=? FOR UPDATE NOWAIT",
                 String::class.java, name)
             true
-        } catch (e : DataAccessException) {
+        } catch (e: DataAccessException) {
             false
         }
     }
@@ -105,7 +103,7 @@ class ClusterLockDaoImpl : AbstractDao(), ClusterLockDao {
             }, System.currentTimeMillis())
     }
 
-    override fun hasCombineLocks(spec: ClusterLockSpec) : Boolean {
+    override fun hasCombineLocks(spec: ClusterLockSpec): Boolean {
         return try {
             // Lock the row
             jdbc.queryForObject(

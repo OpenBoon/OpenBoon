@@ -9,19 +9,22 @@ import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.copyInputToOuput
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-
 
 @RestController
 @Timed
 class ExportController @Autowired constructor(
-        private val exportService: ExportService,
-        private val jobService: JobService,
-        private val fileServerProvider: FileServerProvider,
-        private val fileStorageService: FileStorageService
+    private val exportService: ExportService,
+    private val jobService: JobService,
+    private val fileServerProvider: FileServerProvider,
+    private val fileStorageService: FileStorageService
 ) {
 
     @PostMapping(value = ["/api/v1/exports"])
@@ -58,4 +61,3 @@ class ExportController @Autowired constructor(
         copyInputToOuput(st.getInputStream(), rsp.outputStream)
     }
 }
-

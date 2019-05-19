@@ -29,9 +29,7 @@ class ClusterLockExpirationManagerTests : AbstractTest() {
         Thread.sleep(5)
         assertEquals(1, clusterLockExpirationManager.clearExpired())
     }
-
 }
-
 
 class ClusterLockServiceTests : AbstractTest() {
 
@@ -56,7 +54,6 @@ class ClusterLockServiceTests : AbstractTest() {
         val lock = "counter2"
         assertEquals(LockStatus.Locked, clusterLockService.lock(ClusterLockSpec.softLock(lock)))
         val time = System.currentTimeMillis() - 1000
-
 
         assertEquals(1, jdbc.update("UPDATE cluster_lock SET time_expired=? WHERE str_name=?", time, lock))
 
