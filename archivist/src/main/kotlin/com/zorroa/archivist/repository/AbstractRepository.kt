@@ -1,7 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.uuid.*
+import com.fasterxml.uuid.EthernetAddress
+import com.fasterxml.uuid.Generators
+import com.fasterxml.uuid.NoArgGenerator
+import com.fasterxml.uuid.TimestampSynchronizer
+import com.fasterxml.uuid.UUIDTimer
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.google.common.collect.Lists
@@ -15,7 +19,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
-import java.util.*
+import java.util.Arrays
+import java.util.Random
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 import javax.sql.DataSource
 
@@ -51,19 +57,16 @@ interface GenericNamedDao<T, S> : GenericDao<T, S> {
  * A utility function for catching a EmptyResultDataAccessException and rethrowing
  * the same function with a better message intended for the client.
  */
-inline fun <T> throwWhenNotFound(msg:String, body: () -> T): T {
+inline fun <T> throwWhenNotFound(msg: String, body: () -> T): T {
 
     try {
         return body()
-    }
-    catch (e: EmptyResultDataAccessException) {
+    } catch (e: EmptyResultDataAccessException) {
         throw EmptyResultDataAccessException(msg, 1)
-    }
-    catch (e: IndexOutOfBoundsException) {
+    } catch (e: IndexOutOfBoundsException) {
         throw EmptyResultDataAccessException(msg, 1)
     }
 }
-
 
 /**
  * Lifted from M. Chamber's BBQ project.
@@ -74,9 +77,9 @@ inline fun <T> throwWhenNotFound(msg:String, body: () -> T): T {
  */
 class UUIDSyncMechanism : TimestampSynchronizer() {
 
-    val timer : AtomicLong = AtomicLong()
+    val timer: AtomicLong = AtomicLong()
 
-    override fun update(p0:Long) : Long {
+    override fun update(p0: Long): Long {
         timer.set(p0)
         return p0 + 1
     }
@@ -89,21 +92,22 @@ class UUIDSyncMechanism : TimestampSynchronizer() {
     }
 }
 
-
 open class AbstractDao {
 
-    val logger : Logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    protected val uuid1 : NoArgGenerator =
-            TimeBasedGenerator(EthernetAddress.fromInterface(),
-                    UUIDTimer(Random(), UUIDSyncMechanism()))
+    protected val uuid1: NoArgGenerator =
+            TimeBasedGenerator(
+                EthernetAddress.fromInterface(),
+                    UUIDTimer(Random(), UUIDSyncMechanism())
+            )
 
     protected val uuid3 =
             Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
     protected lateinit var jdbc: JdbcTemplate
 
-    protected lateinit var properties : ApplicationProperties
+    protected lateinit var properties: ApplicationProperties
 
     private lateinit var dbVendor: String
 
@@ -127,15 +131,14 @@ open class AbstractDao {
 }
 
 class LongRangeFilter(
-        val greaterThan: Long?,
-        val lessThan: Long?,
-        val inclusive: Boolean=true
-)
-{
+    val greaterThan: Long?,
+    val lessThan: Long?,
+    val inclusive: Boolean = true
+) {
     /**
      * Return values needed to satisfy SQL query as list.
      */
-    fun getFilterValues() : Iterable<Long> {
+    fun getFilterValues(): Iterable<Long> {
         val res = mutableListOf<Long>()
         if (greaterThan != null) {
             res.add(greaterThan)

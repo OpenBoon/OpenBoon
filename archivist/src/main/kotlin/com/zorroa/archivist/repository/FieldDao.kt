@@ -1,6 +1,12 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.AttrType
+import com.zorroa.archivist.domain.Field
+import com.zorroa.archivist.domain.FieldFilter
+import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldUpdateSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
@@ -11,20 +17,20 @@ import com.zorroa.common.util.readValueOrNull
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface FieldDao {
 
-    fun create(spec: FieldSpec) : Field
-    fun get(id: UUID) : Field
+    fun create(spec: FieldSpec): Field
+    fun get(id: UUID): Field
     fun getAll(filter: FieldFilter): KPagedList<Field>
     fun findOne(filter: FieldFilter): Field
     fun count(filter: FieldFilter): Long
-    fun get(attrName: String) : Field
-    fun exists(attrName: String) : Boolean
-    fun deleteAll() : Int
+    fun get(attrName: String): Field
+    fun exists(attrName: String): Boolean
+    fun deleteAll(): Int
     fun delete(field: Field): Boolean
-    fun update(field: Field, spec: FieldUpdateSpec) : Boolean
+    fun update(field: Field, spec: FieldUpdateSpec): Boolean
 
     /**
      * Allocate a brand new field attribute.  This function picks a new custom
@@ -33,7 +39,7 @@ interface FieldDao {
      *
      * @param type: The field type to allocate for.
      */
-    fun allocate(type: AttrType) : String
+    fun allocate(type: AttrType): String
 
     /**
      * Return a list of attribute names for use with keyword search.
@@ -41,7 +47,7 @@ interface FieldDao {
      * @param forExactMatch If the field type supports .raw, return that instead.
      * @return a map of attr name / boost value
      */
-    fun getKeywordAttrNames(forExactMatch: Boolean=false): Map<String, Float>
+    fun getKeywordAttrNames(forExactMatch: Boolean = false): Map<String, Float>
 
     /**
      * Return a list of the fields marked for suggestions.
@@ -52,7 +58,7 @@ interface FieldDao {
 @Repository
 class FieldDaoImpl : AbstractDao(), FieldDao {
 
-    override fun create(spec: FieldSpec) : Field {
+    override fun create(spec: FieldSpec): Field {
 
         /**
          * AttrType.StringSuggest is deprecated, when used just
@@ -96,7 +102,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps
         }
 
-        logger.event(LogObject.FIELD, LogAction.CREATE, mapOf("fieldId" to id,
+        logger.event(
+            LogObject.FIELD, LogAction.CREATE, mapOf("fieldId" to id,
                 "fieldName" to spec.name,
                 "attrType" to spec.attrType,
                 "attrName" to spec.attrName,
@@ -109,7 +116,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 spec.suggest)
     }
 
-    override fun update(field: Field, spec: FieldUpdateSpec) : Boolean {
+    override fun update(field: Field, spec: FieldUpdateSpec): Boolean {
         val time = System.currentTimeMillis()
         val user = getUser()
 
@@ -137,17 +144,17 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         } == 1
     }
 
-    override fun get(id: UUID) : Field {
+    override fun get(id: UUID): Field {
         return jdbc.queryForObject("$GET WHERE pk_field=? AND pk_organization=?",
                 MAPPER, id, getOrgId())
     }
 
-    override fun get(attrName: String) : Field {
+    override fun get(attrName: String): Field {
         return jdbc.queryForObject("$GET WHERE str_attr_name=? AND pk_organization=?",
                 MAPPER, attrName, getOrgId())
     }
 
-    override fun exists(attrName: String) : Boolean {
+    override fun exists(attrName: String): Boolean {
         return jdbc.queryForObject("$COUNT WHERE str_attr_name=? AND pk_organization=?",
                 Int::class.java, attrName, getOrgId()) == 1
     }
@@ -158,7 +165,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
-    override fun findOne(filter: FieldFilter) : Field {
+    override fun findOne(filter: FieldFilter): Field {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return jdbc.queryForObject(query, MAPPER, *values)
@@ -167,12 +174,11 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
     override fun getKeywordAttrNames(forExactMatch: Boolean): Map<String, Float> {
         val result = mutableMapOf<String, Float>()
         jdbc.query(GET_KEYWORD_FIELDS,
-            RowCallbackHandler { rs->
+            RowCallbackHandler { rs ->
                 val type = AttrType.values()[rs.getInt("int_attr_type")]
                 if (forExactMatch && type == AttrType.StringAnalyzed) {
                     result[rs.getString("str_attr_name") + ".raw"] = rs.getFloat("float_keywords_boost")
-                }
-                else {
+                } else {
                     result[rs.getString("str_attr_name")] = rs.getFloat("float_keywords_boost")
                 }
             }, getOrgId())
@@ -190,7 +196,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
     }
 
-    override fun deleteAll() : Int {
+    override fun deleteAll(): Int {
         return jdbc.update("DELETE FROM field WHERE pk_organization=?", getOrgId())
     }
 
@@ -198,14 +204,13 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         return jdbc.update("DELETE FROM field WHERE pk_field=?", field.id) == 1
     }
 
-    override fun allocate(type: AttrType) : String {
+    override fun allocate(type: AttrType): String {
         val user = getUser()
-        val num= if (jdbc.update(ALLOC_UPDATE, user.organizationId, type.ordinal) == 1) {
+        val num = if (jdbc.update(ALLOC_UPDATE, user.organizationId, type.ordinal) == 1) {
             jdbc.queryForObject(
                     "SELECT int_count FROM field_alloc WHERE pk_organization=? AND int_attr_type=?",
                     Int::class.java, user.organizationId, type.ordinal)
-        }
-        else {
+        } else {
             val id = uuid1.generate()
             jdbc.update(ALLOC_INSERT, id, user.organizationId, type.ordinal, 0)
             0
@@ -249,7 +254,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "json_options::jsonb",
                 "bool_suggest")
 
-        private val UPDATE = JdbcUtils.update("field","pk_field",
+        private val UPDATE = JdbcUtils.update("field", "pk_field",
                 "time_modified",
                 "pk_user_modified",
                 "str_name",
@@ -282,5 +287,4 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             "AND " +
                 "bool_keywords='t'"
     }
-
 }

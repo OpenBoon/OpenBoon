@@ -13,7 +13,21 @@ import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.EmailService
+import com.zorroa.archivist.service.FieldService
+import com.zorroa.archivist.service.FieldSystemService
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.FolderService
+import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.archivist.service.IndexService
+import com.zorroa.archivist.service.OrganizationService
+import com.zorroa.archivist.service.PermissionService
+import com.zorroa.archivist.service.RequestService
+import com.zorroa.archivist.service.SearchService
+import com.zorroa.archivist.service.SettingsService
+import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
@@ -42,12 +56,12 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource(locations=["classpath:test.properties"])
+@TestPropertySource(locations = ["classpath:test.properties"])
 @WebAppConfiguration
 @Transactional
 open abstract class AbstractTest {
@@ -119,7 +133,7 @@ open abstract class AbstractTest {
         ArchivistConfiguration.unittest = true
     }
 
-    fun requiresElasticSearch() : Boolean {
+    fun requiresElasticSearch(): Boolean {
         return false
     }
 
@@ -175,7 +189,6 @@ open abstract class AbstractTest {
             cleanElastic()
         }
 
-
         val spec1 = UserSpec(
                 "user",
                 "user",
@@ -203,7 +216,7 @@ open abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
     }
 
-    fun testUserSpec(name: String="test") : UserSpec {
+    fun testUserSpec(name: String = "test"): UserSpec {
         return UserSpec(
                 name,
                 "test",
@@ -297,7 +310,7 @@ open abstract class AbstractTest {
 
             val f = File(path)
             val b = Source(f)
-            //b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
+            // b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
             b.setAttr("location.point", mapOf("lat" to "36.996460", "lon" to "-109.043360"))
             b.setAttr("location.state", "New Mexico")
             b.setAttr("location.country", "USA")
@@ -307,9 +320,9 @@ open abstract class AbstractTest {
             b.setAttr("media.title", "Picture of ${f.name}")
             val id = UUID.randomUUID().toString()
             val proxies = Lists.newArrayList<Proxy>()
-            proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
-            proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
-            proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 100, height = 100, id = "proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 200, height = 200, id = "proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 300, height = 300, id = "proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
 
             val p = ProxySchema()
             p.proxies = proxies
@@ -337,17 +350,16 @@ open abstract class AbstractTest {
             source.setAttr("test.path", file.toPath().toAbsolutePath().toString())
             val id = UUID.randomUUID().toString()
             val proxies = Lists.newArrayList<Proxy>()
-            proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
-            proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
-            proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
-            proxies.add(Proxy(width=1920, height=1080, id="proxy___${id}_transcode.mp4", mimetype = "video/mp4"))
+            proxies.add(Proxy(width = 100, height = 100, id = "proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 200, height = 200, id = "proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 300, height = 300, id = "proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 1920, height = 1080, id = "proxy___${id}_transcode.mp4", mimetype = "video/mp4"))
 
             val proxySchema = ProxySchema()
             proxySchema.proxies = proxies
             source.setAttr("proxies", proxySchema)
             source.setAttr("proxy_id", id)
             videoAssets.add(source)
-
         }
         addTestAssets(videoAssets)
     }
@@ -359,14 +371,13 @@ open abstract class AbstractTest {
      * @param commitToDb: Set to true if the assets should be committed in a separate TX.
      *
      */
-    fun addTestAssets(builders: List<Source>, commitToDb:Boolean=true) {
+    fun addTestAssets(builders: List<Source>, commitToDb: Boolean = true) {
         for (source in builders) {
 
             logger.info("Adding test asset: {}", source.path.toString())
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-
 
             val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
 
@@ -381,12 +392,11 @@ open abstract class AbstractTest {
             } else {
                 assetService.createOrReplaceAssets(req)
             }
-
         }
         refreshIndex()
     }
 
-    fun refreshIndex(sleep: Long=0) {
+    fun refreshIndex(sleep: Long = 0) {
         indexRoutingService.refreshAll()
     }
 }

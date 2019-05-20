@@ -2,7 +2,7 @@ package com.zorroa.common.repository
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.Arrays
 
 abstract class KDaoFilter {
 
@@ -18,7 +18,7 @@ abstract class KDaoFilter {
     @JsonIgnore
     protected var values: MutableList<Any> = mutableListOf()
 
-    var page : KPage = KPage()
+    var page: KPage = KPage()
 
     var sort: List<String>? = null
 
@@ -63,14 +63,13 @@ abstract class KDaoFilter {
         if (!forCount && sort != null) {
             val order = StringBuilder(64)
 
-            sort?.forEach { e->
-                val (key, dir) = e.split(":", limit=2)
+            sort?.forEach { e ->
+                val (key, dir) = e.split(":", limit = 2)
                 val col = sortMap[key]
                 if (col != null) {
                     order.append(col + " " + if (dir.startsWith("a", ignoreCase = true)) "asc " else "desc ")
                     order.append(",")
-                }
-                else {
+                } else {
                     throw IllegalArgumentException("Invalid sort column: '$col'")
                 }
             }
@@ -111,8 +110,7 @@ abstract class KDaoFilter {
         __build()
         return if (forCount) {
             values.toTypedArray()
-        }
-        else {
+        } else {
             val result = Arrays.copyOf(values.toTypedArray(), values.size + 2)
             result[values.size] = page.size
             result[values.size + 1] = page.from

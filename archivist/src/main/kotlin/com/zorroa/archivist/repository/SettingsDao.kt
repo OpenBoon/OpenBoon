@@ -49,7 +49,7 @@ open class SettingsDaoImpl : AbstractDao(), SettingsDao {
 
     companion object {
 
-        private val MAPPER = RowMapper<Map<String,String>> { rs, _ ->
+        private val MAPPER = RowMapper<Map<String, String>> { rs, _ ->
             ImmutableMap.of<String, String>("key", rs.getString("str_name"),
                     "value", rs.getString("str_value"))
         }

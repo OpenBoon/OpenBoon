@@ -31,7 +31,7 @@ object JdbcUtils {
         sb.append("INSERT INTO ")
         sb.append(table)
         sb.append("(")
-        for(col in cols) {
+        for (col in cols) {
             when {
                 "::" in col -> sb.append(col.split("::").first())
                 "@" in col -> sb.append(col.split("@").first())
@@ -41,7 +41,7 @@ object JdbcUtils {
         }
         sb.deleteCharAt(sb.lastIndex)
         sb.append(") VALUES (")
-        for(col in  cols) {
+        for (col in cols) {
             when {
                 "::" in col -> sb.append("?::" + col.split("::").last())
                 "@" in col -> sb.append(col.split("@").last() + "(?)")
@@ -81,7 +81,7 @@ object JdbcUtils {
 
     fun inClause(col: String, size: Int): String {
         return when {
-            size <=0 -> ""
+            size <= 0 -> ""
             size == 1 -> "$col = ?"
             else -> {
                 val sb = StringBuilder(128)
@@ -96,8 +96,8 @@ object JdbcUtils {
     fun inClause(col: String, size: Int, cast: String): String {
         val repeat = "?::$cast"
         return when {
-            size<=0 -> ""
-            size== 1-> "$col = $repeat"
+            size <= 0 -> ""
+            size == 1 -> "$col = $repeat"
             else -> {
                 val sb = StringBuilder(128)
                 sb.append("$col IN (")
@@ -120,7 +120,7 @@ object JdbcUtils {
      */
     fun arrayOverlapClause(col: String, type: String, size: Int): String {
         return when {
-            size<=0 -> ""
+            size <= 0 -> ""
             else -> {
                 val sb = StringBuilder(128)
                 sb.append("$col && ARRAY[")
@@ -157,12 +157,12 @@ object JdbcUtils {
      */
     fun rangeClause(col: String, rng: LongRangeFilter): String {
         val sb = StringBuilder(32)
-        val eq = if(rng.inclusive) { "="} else ""
+        val eq = if (rng.inclusive) { "=" } else ""
 
         if (rng.greaterThan != null) {
             sb.append(" $col>$eq? ")
             if (rng.lessThan != null) {
-                sb.append( "AND ")
+                sb.append("AND ")
             }
         }
 
@@ -171,5 +171,4 @@ object JdbcUtils {
         }
         return sb.toString()
     }
-
 }

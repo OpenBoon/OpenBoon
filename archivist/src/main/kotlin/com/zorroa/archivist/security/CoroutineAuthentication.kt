@@ -11,9 +11,10 @@ import kotlin.coroutines.CoroutineContext
  * @property securityContext The security context you want to use for your coroutine.
  */
 class CoroutineAuthentication(
-        private var securityContext: SecurityContext) : ThreadContextElement<SecurityContext> {
+    private var securityContext: SecurityContext
+) : ThreadContextElement<SecurityContext> {
 
-    constructor(): this(SecurityContextHolder.getContext())
+    constructor() : this(SecurityContextHolder.getContext())
 
     companion object Key : CoroutineContext.Key<CoroutineAuthentication>
 

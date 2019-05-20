@@ -1,8 +1,7 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import java.util.*
-
+import java.util.UUID
 
 /**
  * An IndexRoute points to a unqiue ES cluster and index name.
@@ -22,18 +21,18 @@ import java.util.*
  * @property useRouteKey Store all of an Organizations data into a single shard.
  */
 class IndexRoute(
-        val id: UUID,
-        val clusterUrl: String,
-        val indexName: String,
-        val mappingType: String,
-        val mappingMajorVer: Int,
-        val mappingMinorVer: Int,
-        val closed: Boolean,
-        val replicas: Int,
-        val shards: Int,
-        val defaultPool: Boolean,
-        val useRouteKey: Boolean)
-{
+    val id: UUID,
+    val clusterUrl: String,
+    val indexName: String,
+    val mappingType: String,
+    val mappingMajorVer: Int,
+    val mappingMinorVer: Int,
+    val closed: Boolean,
+    val replicas: Int,
+    val shards: Int,
+    val defaultPool: Boolean,
+    val useRouteKey: Boolean
+) {
 
     var orgCount: Int = 0
     val indexUrl = "$clusterUrl/$indexName"
@@ -42,7 +41,7 @@ class IndexRoute(
      * Return an [EsClientCacheKey] which will apply writes across all shards.
      */
     @JsonIgnore
-    fun esClientCacheKey() : EsClientCacheKey {
+    fun esClientCacheKey(): EsClientCacheKey {
         return EsClientCacheKey(clusterUrl, indexName)
     }
 
@@ -51,11 +50,10 @@ class IndexRoute(
      * the route has useRouteKey enabled.
      */
     @JsonIgnore
-    fun esClientCacheKey(rkey: String) : EsClientCacheKey {
+    fun esClientCacheKey(rkey: String): EsClientCacheKey {
         return if (useRouteKey) {
             EsClientCacheKey(clusterUrl, indexName, rkey)
-        }
-        else {
+        } else {
             EsClientCacheKey(clusterUrl, indexName)
         }
     }
@@ -73,14 +71,14 @@ class IndexRoute(
  * @property shards The number of shards in the index. Defaults to 5.
  */
 class IndexRouteSpec(
-        var clusterUrl: String,
-        var indexName: String,
-        var mappingType: String,
-        var mappingMajorVer: Int,
-        var defaultPool: Boolean,
-        var replicas: Int=2,
-        var shards: Int=5)
-
+    var clusterUrl: String,
+    var indexName: String,
+    var mappingType: String,
+    var mappingMajorVer: Int,
+    var defaultPool: Boolean,
+    var replicas: Int = 2,
+    var shards: Int = 5
+)
 
 /**
  * The ESClientCacheKey is used to lookup or create cached ElasticSearch client
@@ -92,9 +90,10 @@ class IndexRouteSpec(
  * @property indexUrl The full URL to the index.
  */
 class EsClientCacheKey(
-        val clusterUrl: String,
-        val indexName: String,
-        val routingKey: String?=null) {
+    val clusterUrl: String,
+    val indexName: String,
+    val routingKey: String? = null
+) {
 
     val indexUrl = "$clusterUrl/$indexName"
 }

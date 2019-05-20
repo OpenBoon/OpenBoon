@@ -36,12 +36,13 @@ import java.util.UUID
 @RestController
 @Timed
 class AnalystController @Autowired constructor(
-        val analystService: AnalystService,
-        val workQueue: AsyncListenableTaskExecutor,
-        val clusterLockService: ClusterLockService) {
+    val analystService: AnalystService,
+    val workQueue: AsyncListenableTaskExecutor,
+    val clusterLockService: ClusterLockService
+) {
 
     @PostMapping(value = ["/api/v1/analysts/_search"])
-    fun search(@RequestBody filter: AnalystFilter) : Any {
+    fun search(@RequestBody filter: AnalystFilter): Any {
         return analystService.getAll(filter)
     }
 
@@ -51,12 +52,12 @@ class AnalystController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/analysts/{id}"])
-    fun get( @PathVariable id: UUID) : Analyst {
+    fun get(@PathVariable id: UUID): Analyst {
         return analystService.get(id)
     }
 
     @PutMapping(value = ["/api/v1/analysts/{id}/_lock"])
-    fun setLockState(@PathVariable id: UUID, @RequestParam(value = "state", required = true) state: String) : Any {
+    fun setLockState(@PathVariable id: UUID, @RequestParam(value = "state", required = true) state: String): Any {
         val newState = LockState.valueOf(state.toLowerCase().capitalize())
         val analyst = analystService.get(id)
         return HttpUtils.updated("analyst", analyst.id, analystService.setLockState(analyst, newState))

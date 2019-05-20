@@ -1,8 +1,15 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.AclEntry
+import com.zorroa.archivist.domain.Blob
+import com.zorroa.archivist.domain.BlobId
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getPermissionIds
 import com.zorroa.archivist.security.getUserId
@@ -13,7 +20,7 @@ import com.zorroa.security.Groups
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface BlobDao {
 
@@ -120,8 +127,8 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
             } else {
                 for (entry in req.acl!!) {
                     if (entry.getAccess() > 7) {
-                        throw IllegalArgumentException("Invalid Access level "
-                                + entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                        throw IllegalArgumentException("Invalid Access level " +
+                                entry.getAccess() + " for permission ID " + entry.getPermissionId())
                     }
                     if (entry.access <= 0) {
                         jdbc.update("DELETE FROM jblob_acl WHERE pk_permission=?", entry.permissionId)
@@ -240,6 +247,5 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                     "pk_organization=? " +
                 "AND " +
                     "pk_jblob=?"
-
     }
 }

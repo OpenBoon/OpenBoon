@@ -2,7 +2,19 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.google.common.hash.Hashing
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.ApiKey
+import com.zorroa.archivist.domain.ApiKeySpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserFilter
+import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.archivist.domain.UserSource
+import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
@@ -16,7 +28,7 @@ import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface UserDao {
 
@@ -46,7 +58,7 @@ interface UserDao {
 
     fun setPassword(user: User, password: String): Boolean
 
-    fun exists(name: String, source:String?): Boolean
+    fun exists(name: String, source: String?): Boolean
 
     fun setEnablePasswordRecovery(user: User): String
 
@@ -64,7 +76,7 @@ interface UserDao {
 
     fun hasPermission(user: UserId, type: String, name: String): Boolean
 
-    fun setPermissions(user: UserId, perms: Collection<Permission>,source:String="local") : Int
+    fun setPermissions(user: UserId, perms: Collection<Permission>, source: String = "local"): Int
 
     fun addPermission(user: UserId, perm: Permission, immutable: Boolean): Boolean
 
@@ -84,7 +96,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
     private val hashFunc = Hashing.sha256()
 
-    private fun generateKey() : String {
+    private fun generateKey(): String {
         return hashFunc.newHasher()
                 .putString(UUID.randomUUID().toString(), Charsets.UTF_8)
                 .putLong(System.nanoTime())
@@ -110,7 +122,6 @@ class UserDaoImpl : AbstractDao(), UserDao {
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("The password change token has expired, request a new password reset.", 1)
         }
-
     }
 
     override fun getAll(): List<User> {
@@ -128,7 +139,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun findOne(filter: UserFilter): User {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
-        return throwWhenNotFound("Permission not found") {
+        return throwWhenNotFound("User not found") {
             KPagedList(1L, KPage(0, 1), jdbc.query(query, MAPPER, *values))[0]
         }
     }
@@ -174,13 +185,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps
         }
 
-        logger.event(LogObject.USER, LogAction.CREATE,
+        logger.event(
+            LogObject.USER, LogAction.CREATE,
                 mapOf("createdUser" to spec.username,
                         "createdOrgId" to user.organizationId))
         return get(id)
     }
 
-    override fun exists(name: String, source:String?): Boolean {
+    override fun exists(name: String, source: String?): Boolean {
         var append = ""
         var args = mutableListOf<Any>(name, name)
 
@@ -259,8 +271,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 throw EmptyResultDataAccessException("Unknown user", 1)
             }
             key
-        }
-        else {
+        } else {
             getHmacKey(spec.userId)
         }
 
@@ -275,7 +286,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
     override fun generateAdminKey(): Boolean {
         val key = generateKey()
-        return jdbc.update("UPDATE users SET hmac_key=? WHERE str_username='admin' AND hmac_key IS NULL", key) == 1;
+        return jdbc.update("UPDATE users SET hmac_key=? WHERE str_username='admin' AND hmac_key IS NULL", key) == 1
     }
 
     override fun getCount(): Long {
@@ -291,7 +302,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
         return jdbc.queryForObject(HAS_PERM, Int::class.java, user.id, name, type) == 1
     }
 
-    private fun clearPermissions(user: UserId, source:String="local") : Int {
+    private fun clearPermissions(user: UserId, source: String = "local"): Int {
         /*
          * Ensure the user's immutable permissions cannot be removed.
          */
@@ -299,7 +310,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 user.id, false, source)
     }
 
-    override fun setPermissions(user: UserId, perms: Collection<Permission>, source:String): Int {
+    override fun setPermissions(user: UserId, perms: Collection<Permission>, source: String): Int {
 
         clearPermissions(user, source)
 

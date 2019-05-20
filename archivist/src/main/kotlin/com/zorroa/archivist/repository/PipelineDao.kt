@@ -1,9 +1,15 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.LIST_OF_PREFS
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Pipeline
+import com.zorroa.archivist.domain.PipelineSpec
+import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.service.event
-import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.JdbcUtils.isUUID
 import com.zorroa.common.util.JdbcUtils.update
@@ -11,17 +17,17 @@ import com.zorroa.common.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface PipelineDao {
     fun create(spec: PipelineSpec): Pipeline
-    fun get(name: String) : Pipeline
-    fun get(id: UUID) : Pipeline
-    fun update(pipeline: Pipeline) : Boolean
-    fun exists(name: String) : Boolean
+    fun get(name: String): Pipeline
+    fun get(id: UUID): Pipeline
+    fun update(pipeline: Pipeline): Boolean
+    fun exists(name: String): Boolean
     fun refresh(obj: Pipeline): Pipeline
     fun getAll(): List<Pipeline>
-    fun getAll(type:PipelineType): List<Pipeline>
+    fun getAll(type: PipelineType): List<Pipeline>
     fun getAll(paging: Pager): PagedList<Pipeline>
     fun count(): Long
     fun delete(id: UUID): Boolean
@@ -48,7 +54,8 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             ps.setLong(7, time)
             ps
         }
-        logger.event(LogObject.PIPELINE, LogAction.CREATE,
+        logger.event(
+            LogObject.PIPELINE, LogAction.CREATE,
                 mapOf("pipelineId" to id, "pipelineName" to spec.name))
         return get(id)
     }
@@ -84,7 +91,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         return jdbc.query("SELECT * FROM pipeline", MAPPER)
     }
 
-    override fun getAll(type:PipelineType): List<Pipeline> {
+    override fun getAll(type: PipelineType): List<Pipeline> {
         return jdbc.query("SELECT * FROM pipeline WHERE int_type=?", MAPPER, type.ordinal)
     }
 
@@ -132,6 +139,3 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
                 "json_processors")
     }
 }
-
-
-

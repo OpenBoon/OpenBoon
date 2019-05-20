@@ -2,25 +2,61 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.AssetUploadedResponse
+import com.zorroa.archivist.domain.AuditLogEntrySpec
+import com.zorroa.archivist.domain.AuditLogType
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdateAssetLinks
+import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
+import com.zorroa.archivist.domain.BatchUpdatePermissionsResponse
+import com.zorroa.archivist.domain.ClusterLockSpec
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FieldEdit
+import com.zorroa.archivist.domain.FieldEditSpec
+import com.zorroa.archivist.domain.FieldEditSpecInternal
+import com.zorroa.archivist.domain.FieldSet
+import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.LinkSchema
+import com.zorroa.archivist.domain.LinkType
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.UpdateAssetRequest
+import com.zorroa.archivist.domain.UpdateLinksResponse
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.FieldEditDao
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.search.AssetFilter
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.security.CoroutineAuthentication
+import com.zorroa.archivist.security.getAuthentication
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getSecurityContext
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.clients.CoreDataVaultAssetSpec
 import com.zorroa.common.clients.CoreDataVaultClient
 import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.URI
-import java.util.*
+import java.util.Collections
+import java.util.Date
+import java.util.UUID
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -38,9 +74,9 @@ interface AssetService {
     fun batchDelete(assetIds: List<String>): BatchDeleteAssetsResponse
     fun removeLinks(type: LinkType, value: UUID, assets: List<String>): UpdateLinksResponse
     fun addLinks(type: LinkType, value: UUID, req: BatchUpdateAssetLinks): UpdateLinksResponse
-    fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse
-    fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse
-    fun getFieldSets(assetId: String) : List<FieldSet>
+    fun setPermissions(spec: BatchUpdatePermissionsRequest): BatchUpdatePermissionsResponse
+    fun handleAssetUpload(name: String, bytes: ByteArray): AssetUploadedResponse
+    fun getFieldSets(assetId: String): List<FieldSet>
 
     fun createFieldEdit(spec: FieldEditSpec): FieldEdit
     fun deleteFieldEdit(edit: FieldEdit): Boolean
@@ -51,7 +87,7 @@ interface AssetService {
      *
      * @param batch A BatchCreateAssetsRequest with fully composed assets to create.
      */
-    fun createOrReplaceAssets(batch: BatchCreateAssetsRequest) : BatchCreateAssetsResponse
+    fun createOrReplaceAssets(batch: BatchCreateAssetsRequest): BatchCreateAssetsResponse
 
     /**
      * Update a batch of assets and return a [BatchUpdateAssetsResponse]
@@ -67,7 +103,7 @@ interface AssetService {
      * @param reindex Set true of docs should be reindexed. Defaults to true.
      * @param taxons Set to true to run taxons and dyhis.  Defaults to true.
      */
-    fun updateAssets(assets: List<Document>, reindex: Boolean=true, taxons: Boolean=true) : BatchUpdateAssetsResponse
+    fun updateAssets(assets: List<Document>, reindex: Boolean = true, taxons: Boolean = true): BatchUpdateAssetsResponse
 }
 
 /**
@@ -77,9 +113,9 @@ interface AssetService {
  * @property auditLogs uncommitted field change logs detected for each asset
  */
 class PreppedAssets(
-        val assets: List<Document>,
-        val scope: String)
-
+    val assets: List<Document>,
+    val scope: String
+)
 
 open abstract class AbstractAssetService : AssetService {
 
@@ -165,7 +201,6 @@ open abstract class AbstractAssetService : AssetService {
             handleLinks(existingSource, newSource)
             fieldSystemService.applyFieldEdits(newSource)
 
-
             newSource
         }, req.scope)
 
@@ -249,7 +284,6 @@ open abstract class AbstractAssetService : AssetService {
                 }
                 newAsset.setAttr("system.permissions",
                         Json.Mapper.convertValue<Map<String, Any>>(existingPerms, Json.GENERIC_MAP))
-
             }
             existingPerms.isEmpty ->
                 /**
@@ -283,7 +317,8 @@ open abstract class AbstractAssetService : AssetService {
      */
     fun runDyhiAndTaxons() {
         val orgId = getOrgId()
-        clusterLockExecutor.execute(ClusterLockSpec.combineLock("dyhi-taxons-$orgId")
+        clusterLockExecutor.execute(
+            ClusterLockSpec.combineLock("dyhi-taxons-$orgId")
                 .apply { authentication = getAuthentication() }) {
             dyHierarchyService.generateAll()
             taxonomyService.tagAll()
@@ -303,17 +338,18 @@ open abstract class AbstractAssetService : AssetService {
     /**
      * Index a batch of PreppedAssets
      */
-    fun batchIndexAssets(req: BatchCreateAssetsRequest?,
-                         prepped: PreppedAssets,
-                         batchUpdateResult: Map<String, Boolean>?=null): BatchCreateAssetsResponse {
+    fun batchIndexAssets(
+        req: BatchCreateAssetsRequest?,
+        prepped: PreppedAssets,
+        batchUpdateResult: Map<String, Boolean>? = null
+    ): BatchCreateAssetsResponse {
 
         val docsToIndex = if (batchUpdateResult != null) {
             // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
             prepped.assets.filter {
                 batchUpdateResult.getOrDefault(it.id, true)
             }
-        }
-        else {
+        } else {
             prepped.assets
         }
 
@@ -432,8 +468,9 @@ open abstract class AbstractAssetService : AssetService {
          */
         fun checkAttr(attr: String, assetId: String, allowSystem: Boolean): Boolean {
             if (!allowSystem && (attr == "system" || attr.startsWith("system."))) {
-                logger.warnEvent(LogObject.ASSET,
-                        LogAction.BATCH_UPDATE,
+                logger.warnEvent(
+                    LogObject.ASSET,
+                    LogAction.BATCH_UPDATE,
                         "Skipping setting $attr, cannot set system values on batch update",
                         mapOf("assetId" to assetId))
                 return false
@@ -539,9 +576,11 @@ open abstract class AbstractAssetService : AssetService {
         return rsp
     }
 
-    override fun removeLinks(type: LinkType,
-                             value: UUID, assets:
-                             List<String>): UpdateLinksResponse = runBlocking {
+    override fun removeLinks(
+        type: LinkType,
+        value: UUID,
+        assets: List<String>
+    ): UpdateLinksResponse = runBlocking {
 
         val errorAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
         val successAssetIds = Collections.synchronizedSet(mutableSetOf<String>())
@@ -565,14 +604,14 @@ open abstract class AbstractAssetService : AssetService {
                 }
             }
         }
-
-       UpdateLinksResponse(successAssetIds, errorAssetIds)
+        UpdateLinksResponse(successAssetIds, errorAssetIds)
     }
 
     override fun addLinks(
-            type: LinkType,
-            value: UUID,
-            req: BatchUpdateAssetLinks) : UpdateLinksResponse = runBlocking {
+        type: LinkType,
+        value: UUID,
+        req: BatchUpdateAssetLinks
+    ): UpdateLinksResponse = runBlocking {
 
         val errors = Collections.synchronizedSet(mutableSetOf<String>())
         val success = Collections.synchronizedSet(mutableSetOf<String>())
@@ -657,8 +696,7 @@ open abstract class AbstractAssetService : AssetService {
                         value = edit.oldValue)
                 auditLogDao.create(aspec)
                 return true
-            }
-            else {
+            } else {
                 throw rsp.getThrowableError()
             }
         }
@@ -710,8 +748,7 @@ open abstract class AbstractAssetService : AssetService {
                     value = spec.newValue)
             auditLogDao.create(aspec)
             return fieldEdit
-        }
-        else {
+        } else {
             throw rsp.getThrowableError()
         }
     }
@@ -724,11 +761,10 @@ open abstract class AbstractAssetService : AssetService {
      * For production mode, all IO is run in the Dispatchers.IO pool.
      *
      */
-    private fun getCoroutineContext() : CoroutineContext {
+    private fun getCoroutineContext(): CoroutineContext {
         return if (ArchivistConfiguration.unittest) {
             CoroutineAuthentication(getSecurityContext())
-        }
-        else {
+        } else {
             Dispatchers.IO + CoroutineAuthentication(getSecurityContext())
         }
     }
@@ -745,9 +781,8 @@ open abstract class AbstractAssetService : AssetService {
          */
         const val UPDATE_BATCH_SIZE = 10
 
-        val logger : Logger = LoggerFactory.getLogger(AbstractAssetService::class.java)
+        val logger: Logger = LoggerFactory.getLogger(AbstractAssetService::class.java)
     }
-
 }
 
 /**
@@ -755,7 +790,8 @@ open abstract class AbstractAssetService : AssetService {
  * is required.
  */
 open class IrmAssetServiceImpl constructor(
-        private val cdvClient: CoreDataVaultClient) : AbstractAssetService(), AssetService {
+    private val cdvClient: CoreDataVaultClient
+) : AbstractAssetService(), AssetService {
 
     @Autowired
     lateinit var organizationService: OrganizationService
@@ -773,8 +809,7 @@ open class IrmAssetServiceImpl constructor(
          */
         if (asset.attrExists("media.clip.parent")) {
             return indexService.delete(assetId)
-        }
-        else {
+        } else {
             /**
              * Relying on IRM's security to know if the asset can be deleted.
              */
@@ -798,7 +833,7 @@ open class IrmAssetServiceImpl constructor(
         return result
     }
 
-    override fun createOrReplaceAssets(spec: BatchCreateAssetsRequest) : BatchCreateAssetsResponse {
+    override fun createOrReplaceAssets(spec: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
         val prepped = prepAssets(spec)
         val parentsOnly = prepped.assets.filter { !it.attrExists("media.clip.parent") }
 
@@ -819,8 +854,7 @@ open class IrmAssetServiceImpl constructor(
             // doesn't throw any exceptions.
             if (cdvClient.updateIndexedMetadata(getCompanyId(), asset)) {
                 rsp.updatedAssetIds.add(asset.id)
-            }
-            else {
+            } else {
                 rsp.erroredAssetIds.add(asset.id)
                 logger.warnEvent(LogObject.ASSET,
                         LogAction.BATCH_UPDATE, "Asset not found", mapOf("assetId" to asset.id))
@@ -838,13 +872,12 @@ open class IrmAssetServiceImpl constructor(
     /**
      * Pull the company ID from the authed user Attrs
      */
-    fun getCompanyId() : Int {
+    fun getCompanyId(): Int {
         return try {
             // Check for the user's company ID. This works for users logged
             // in via SAML.
             getUser().attrs["company_id"].toString().toInt()
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             // Check the magical org name.  This works for magical users that don't
             // have SAML attributes.
             try {
@@ -856,8 +889,7 @@ open class IrmAssetServiceImpl constructor(
         }
     }
 
-
-    override fun setPermissions(spec: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
+    override fun setPermissions(spec: BatchUpdatePermissionsRequest): BatchUpdatePermissionsResponse {
         val rAcl = permissionDao.resolveAcl(spec.acl, false)
         spec.search.access = Access.Write
         val size = searchService.count(spec.search)
@@ -867,32 +899,31 @@ open class IrmAssetServiceImpl constructor(
         }
 
         val combinedRsp = BatchUpdatePermissionsResponse()
-        searchService.scanAndScroll(spec.search, false) { hits->
+        searchService.scanAndScroll(spec.search, false) { hits ->
             val ids = hits.map { it.id }
 
             val req = BatchCreateAssetsRequest(getAll(ids).map { doc ->
                 applyAcl(doc, spec.replace, rAcl)
                 doc
-            }, skipAssetPrep = true, scope="setPermissions")
+            }, skipAssetPrep = true, scope = "setPermissions")
             combinedRsp.plus(createOrReplaceAssets(req))
         }
         return combinedRsp
     }
 
-    override fun getAll(ids: List<String>) : List<Document> {
+    override fun getAll(ids: List<String>): List<Document> {
         return ids.map {
             // Will return empty document if not in CDV
             val doc = cdvClient.getIndexedMetadata(getCompanyId(), it)
             if (doc.document.isEmpty()) {
                 indexService.get(it)
-            }
-            else {
+            } else {
                 doc
             }
         }
     }
 
-    override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
+    override fun handleAssetUpload(name: String, bytes: ByteArray): AssetUploadedResponse {
         val types = cdvClient.getDocumentTypes(getCompanyId())
         val id = UUID.randomUUID()
         val spec = CoreDataVaultAssetSpec(id, types[0]["documentTypeId"] as String, name)
@@ -902,7 +933,6 @@ open class IrmAssetServiceImpl constructor(
         return AssetUploadedResponse(id, uri)
     }
 }
-
 
 class AssetServiceImpl : AbstractAssetService(), AssetService {
 
@@ -918,7 +948,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
     }
 
     override fun getAll(assetIds: List<String>): List<Document> {
-       return assetDao.getAll(assetIds)
+        return assetDao.getAll(assetIds)
     }
 
     override fun delete(id: String): Boolean {
@@ -966,9 +996,7 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
             val r = updated[index] == 1
             if (r) {
                 rsp.updatedAssetIds.add(doc.id)
-
-            }
-            else {
+            } else {
                 rsp.erroredAssetIds.add(doc.id)
             }
             r
@@ -1009,14 +1037,10 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
         return combinedRep
     }
 
-    override fun handleAssetUpload(name: String, bytes: ByteArray) : AssetUploadedResponse {
+    override fun handleAssetUpload(name: String, bytes: ByteArray): AssetUploadedResponse {
         val id = UUID.randomUUID()
         val fss = fileStorageService.get(FileStorageSpec("asset", id, name))
         fileStorageService.write(fss.id, bytes)
         return AssetUploadedResponse(id, fss.uri)
     }
 }
-
-
-
-

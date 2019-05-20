@@ -4,41 +4,42 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.repository.DaoFilter
 import com.zorroa.archivist.search.AssetSearch
-import java.util.*
+import java.util.Objects
+import java.util.UUID
 
 class FolderFilter : DaoFilter() {
 
-    var paths : List<String>? = null
+    var paths: List<String>? = null
 
     override val sortMap: Map<String, String>?
         get() = mapOf("name" to "str_name")
 
     override fun build() {
-
     }
 }
 
-fun isRootFolder(folder: Folder) : Boolean {
+fun isRootFolder(folder: Folder): Boolean {
     return folder.name == "/" && folder.parentId == null
 }
 
 data class Folder(
-        val id: UUID,
-        val name: String,
-        val parentId: UUID?,
-        val organizationId: UUID,
-        val dyhiId: UUID?,
-        val user: UserBase,
-        val timeCreated: Long,
-        val timeModified: Long,
-        val recursive: Boolean,
-        val dyhiRoot: Boolean,
-        val dyhiField: String?,
-        val childCount: Int = 0,
-        val acl: Acl? = null,
-        val search: AssetSearch? = null,
-        var taxonomyRoot: Boolean = false,
-        val attrs: Map<String, Any>? = null) {
+    val id: UUID,
+    val name: String,
+    val parentId: UUID?,
+    val organizationId: UUID,
+    val dyhiId: UUID?,
+    val user: UserBase,
+    val timeCreated: Long,
+    val timeModified: Long,
+    val recursive: Boolean,
+    val dyhiRoot: Boolean,
+    val dyhiField: String?,
+    val childCount: Int = 0,
+    val acl: Acl? = null,
+    val search: AssetSearch? = null,
+    var taxonomyRoot: Boolean = false,
+    val attrs: Map<String, Any>? = null
+) {
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
@@ -59,12 +60,13 @@ data class Folder(
     }
 }
 
-data class FolderUpdate (
-        var name : String,
-        var parentId : UUID?,
-        var recursive : Boolean = true,
-        var search: AssetSearch? = null,
-        var attrs: Map<String, Any>? = null) {
+data class FolderUpdate(
+    var name: String,
+    var parentId: UUID?,
+    var recursive: Boolean = true,
+    var search: AssetSearch? = null,
+    var attrs: Map<String, Any>? = null
+) {
 
     constructor(folder: Folder) :
             this(folder.name, folder.parentId, folder.recursive, folder.search, folder.attrs)
@@ -72,15 +74,15 @@ data class FolderUpdate (
 
 class FolderSpec {
 
-    var name : String? = null
-    var parentId : UUID? = null
+    var name: String? = null
+    var parentId: UUID? = null
     var dyhiId: UUID? = null
     var search: AssetSearch? = null
     var acl: Acl? = null
     var attrs: Map<String, Any>? = null
-    var recursive : Boolean = true
+    var recursive: Boolean = true
 
-    @JsonIgnore var created : Boolean = false
+    @JsonIgnore var created: Boolean = false
     @JsonIgnore var userId: UUID? = null
 
     constructor()
@@ -114,6 +116,3 @@ class FolderSpec {
         return Objects.hash(parentId, name)
     }
 }
-
-
-

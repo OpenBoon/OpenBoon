@@ -4,7 +4,13 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.ClusterLockSpec
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.EsClientCacheKey
+import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsRestClient
@@ -30,10 +36,8 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 import java.net.URI
-import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
-
 
 /**
  * Manages the creation and usage of ES indexes.  Currently this implementation only supports
@@ -57,7 +61,7 @@ interface IndexRoutingService {
      *
      * @return: EsRestClient
      */
-    fun getOrgRestClient() : EsRestClient
+    fun getOrgRestClient(): EsRestClient
 
     /**
      * Get an non-routed [EsRestClient] for cluster wide operations.
@@ -74,7 +78,7 @@ interface IndexRoutingService {
      * @param route The IndexRoute to version up.
      * @return the [ElasticMapping] the route was updated to.
      */
-    fun syncIndexRouteVersion(route: IndexRoute) : ElasticMapping?
+    fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping?
 
     /**
      * Apply all outstanding mapping patches to all active IndexRoutes.
@@ -116,29 +120,31 @@ interface IndexRoutingService {
      * Launch a reindex job for the current authorized user's organization.  The job
      * will kill any existing reindex job.
      */
-    fun launchReindexJob() : Job
+    fun launchReindexJob(): Job
 
     /**
      * Perform a health check on all active [IndexRoute]s
      */
-    fun performHealthCheck() : Health
+    fun performHealthCheck(): Health
 }
 
 /**
  * Represents a versioned ElasticSearch mapping.
  */
 class ElasticMapping(
-        val name: String,
-        val majorVersion: Int,
-        val minorVersion: Int,
-        val mapping: MutableMap<String, Any>
+    val name: String,
+    val majorVersion: Int,
+    val minorVersion: Int,
+    val mapping: MutableMap<String, Any>
 )
 
 @Component
 class IndexRoutingServiceImpl @Autowired
-    constructor(val indexRouteDao: IndexRouteDao,
-                val properties: ApplicationProperties):
-        IndexRoutingService, ApplicationListener<ContextRefreshedEvent>{
+    constructor(
+        val indexRouteDao: IndexRouteDao,
+        val properties: ApplicationProperties
+    ) :
+        IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
@@ -176,14 +182,14 @@ class IndexRoutingServiceImpl @Autowired
             if (!it.closed) {
                 logger.info("refreshing index route ${it.indexUrl}")
                 val req = Request("POST", "/_refresh")
-                val client =  getClusterRestClient(it).client.lowLevelClient
+                val client = getClusterRestClient(it).client.lowLevelClient
                 client.performRequest(req)
             }
         }
     }
 
-    override fun syncIndexRouteVersion(route: IndexRoute) : ElasticMapping? {
-        var result : ElasticMapping? = null
+    override fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping? {
+        var result: ElasticMapping? = null
 
         val es = getClusterRestClient(route)
         waitForElasticSearch(es)
@@ -210,8 +216,7 @@ class IndexRoutingServiceImpl @Autowired
                 req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
                 es.client.indices().create(req, RequestOptions.DEFAULT)
                 result = mappingFile
-            }
-            else {
+            } else {
                 logger.info("Not creating ${route.indexUrl}, already exists")
             }
 
@@ -240,7 +245,7 @@ class IndexRoutingServiceImpl @Autowired
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
     }
 
-    override fun launchReindexJob() : Job {
+    override fun launchReindexJob(): Job {
         val name = "Reindexing All Assets"
         val script = ZpsScript(name,
                 type = PipelineType.Import,
@@ -250,7 +255,7 @@ class IndexRoutingServiceImpl @Autowired
                 generate = listOf(
                 ProcessorRef(
                         "zplugins.core.generators.AssetSearchGenerator",
-                        mapOf("search" to mapOf<String,Any>()))
+                        mapOf("search" to mapOf<String, Any>()))
                 ))
 
         val spec = JobSpec(name,
@@ -298,13 +303,13 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     fun waitForElasticSearch(client: EsRestClient) {
-        while(!client.isAvailable()) {
+        while (!client.isAvailable()) {
             logger.info("Waiting for ES to be available.....{}", client.route.clusterUrl)
             Thread.sleep(1000)
         }
     }
 
-    override fun performHealthCheck() : Health {
+    override fun performHealthCheck(): Health {
         if (!migrated.get()) {
             return Health.down().withDetail(
                     "ElasticSearch routes have not been migrated", migrated).build()
@@ -342,13 +347,11 @@ class IndexRoutingServiceImpl @Autowired
             val response = es.client.indices().putMapping(request, RequestOptions.DEFAULT)
             if (response.isAcknowledged) {
                 indexRouteDao.setMinorVersion(route, patchFile.minorVersion)
-            }
-            else {
+            } else {
                 indexRouteDao.setErrorVersion(route, patchFile.minorVersion)
                 throw RuntimeException("ES server did not ack patch.")
             }
-        }
-        catch (e:Exception) {
+        } catch (e: Exception) {
             logger.warn("Failed to apply patch: {}.{}",
                     patchFile.majorVersion, patchFile.minorVersion, e)
             indexRouteDao.setErrorVersion(route, patchFile.minorVersion)
@@ -366,7 +369,6 @@ class IndexRoutingServiceImpl @Autowired
 
         private val MAP_PATCH_REGEX = Regex("^V(\\d+)\\.(\\d{8})__(.*?).json$")
     }
-
 }
 
 /**

@@ -9,7 +9,7 @@ import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.TreeSet
 import java.util.concurrent.TimeUnit
 
 interface FieldService {
@@ -29,9 +29,9 @@ interface FieldService {
 
 @Service
 class FieldServiceImpl @Autowired constructor(
-        val indexRoutingService: IndexRoutingService,
-        val properties: ApplicationProperties
-): FieldService {
+    val indexRoutingService: IndexRoutingService,
+    val properties: ApplicationProperties
+) : FieldService {
 
     private val fieldMapCache = CacheBuilder.newBuilder()
             .maximumSize(2)
@@ -63,7 +63,7 @@ class FieldServiceImpl @Autowired constructor(
         val stream = rest.client.lowLevelClient.performRequest(
                 "GET", "/${rest.route.indexName}").entity.content
 
-        val map : Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
+        val map: Map<String, Any> = Json.Mapper.readValue(stream, Json.GENERIC_MAP)
         getList(result, "", Document(map).getAttr("${rest.route.indexName}.mappings.asset")!!)
         return result
     }
@@ -78,7 +78,7 @@ class FieldServiceImpl @Autowired constructor(
 
     override fun getFieldType(field: String): String? {
         val fields = getFields("asset")
-        for ((k,v) in fields.entries) {
+        for ((k, v) in fields.entries) {
             if (field in v) {
                 return k
             }
@@ -110,15 +110,16 @@ class FieldServiceImpl @Autowired constructor(
         return field
     }
 
-
     /**
      * Builds a list of field names, recursively walking each object.
      */
-    private fun getList(result: MutableMap<String, MutableSet<String>>,
-                        fieldName: String?,
-                        mapProperties: Map<String, Any>) {
+    private fun getList(
+        result: MutableMap<String, MutableSet<String>>,
+        fieldName: String?,
+        mapProperties: Map<String, Any>
+    ) {
 
-        if (fieldName == null) {  return }
+        if (fieldName == null) { return }
         val map = mapProperties["properties"] as Map<String, Any>
         for (key in map.keys) {
             val item = map[key] as Map<String, Any>
@@ -130,18 +131,15 @@ class FieldServiceImpl @Autowired constructor(
                 type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
                 if (type == "text") {
                     type = "string"
-                }
-                else if (type == "keyword") {
+                } else if (type == "keyword") {
                     type = "id"
                 }
-
 
                 if (item.containsKey("fields")) {
                     val subFields = item["fields"] as Map<String, Any>
                     if (subFields.containsKey("paths")) {
                         type = "path"
-                    }
-                    else if (subFields.containsKey("suggest")) {
+                    } else if (subFields.containsKey("suggest")) {
                         hasSuggest = true
                     }
                 }
@@ -161,7 +159,6 @@ class FieldServiceImpl @Autowired constructor(
                 if (key in AUTO_KEYWORDS_FIELDS) {
                     result.getValue("keywords").add(fqfn)
                 }
-
             } else {
                 getList(result, arrayOf(fieldName, key, ".").joinToString(""), item)
             }
@@ -172,9 +169,9 @@ class FieldServiceImpl @Autowired constructor(
         val result = mutableMapOf<String, Float>()
         val fields = getFields("asset")
 
-        fields.getValue("keywords").forEach { v-> result[v] = 1.0f }
+        fields.getValue("keywords").forEach { v -> result[v] = 1.0f }
         for (field in fields.getValue("keywords-boost")) {
-            val (key,boost) = field.split(':', limit=2)
+            val (key, boost) = field.split(':', limit = 2)
             try {
                 result[key] = boost.toFloat()
             } catch (e: Exception) {
@@ -201,4 +198,3 @@ class FieldServiceImpl @Autowired constructor(
         private const val PROP_BOOST_KEYWORD_FIELD = "archivist.search.keywords.boost"
     }
 }
-

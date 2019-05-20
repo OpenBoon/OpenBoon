@@ -1,8 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.storage.*
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.HttpMethod
+import com.google.cloud.storage.Storage
 import com.google.cloud.storage.Storage.SignUrlOption
+import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
@@ -43,7 +47,7 @@ interface FileStorageService {
      * @param[spec] The FileStorageSpec which describes what is being stored.
      * @return a FileStorage object detailing the location of the storage
      */
-    fun get(spec: FileStorageSpec) : FileStorage
+    fun get(spec: FileStorageSpec): FileStorage
 
     /**
      * Use a FileStorage ID to get an existing FileStorage record
@@ -51,7 +55,7 @@ interface FileStorageService {
      * @param[id] The unique id of the storage element
      * @return a FileStorage object detailing the location of the storage
      */
-    fun get(id: String) : FileStorage
+    fun get(id: String): FileStorage
 
     /**
      * In order to read/write this image, callers need a signed URL.
@@ -61,7 +65,7 @@ interface FileStorageService {
      * @param[unit] The unit of time passed for duration
      * @return a FileStorage object detailing the location of the storage
      */
-    fun getSignedUrl(id: String, method: HttpMethod, duration: Long=10, unit: TimeUnit=TimeUnit.MINUTES) : String
+    fun getSignedUrl(id: String, method: HttpMethod, duration: Long = 10, unit: TimeUnit = TimeUnit.MINUTES): String
 
     /**
      * Write the given type array to location of th given ID.
@@ -102,13 +106,11 @@ interface LayoutProvider {
      * @return the unique ID
      */
     fun buildId(spec: FileStorageSpec): String
-
-
 }
 /**
  * The GcsFileStorageService handles the location and placement of files withing GCS.
  */
-class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=null) : FileStorageService {
+class GcsFileStorageService constructor(val bucket: String, credsFile: Path? = null) : FileStorageService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
@@ -118,15 +120,14 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
 
     private val gcs: Storage
 
-    val dlp  = GcsLayoutProvider(bucket)
+    val dlp = GcsLayoutProvider(bucket)
 
     init {
-        gcs = if (credsFile!= null && Files.exists(credsFile)) {
+        gcs = if (credsFile != null && Files.exists(credsFile)) {
             StorageOptions.newBuilder()
                     .setCredentials(
                     GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))).build().service
-        }
-        else {
+        } else {
             StorageOptions.newBuilder().build().service
         }
     }
@@ -139,11 +140,11 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
                 mapOf("fileStorageId" to id,
                         "fileStorageUri" to uri))
 
-        return FileStorage(id, URI(uri),"gs", StaticUtils.tika.detect(uri), fileServerProvider)
+        return FileStorage(id, URI(uri), "gs", StaticUtils.tika.detect(uri), fileServerProvider)
     }
 
     override fun get(id: String): FileStorage {
-        val storage =  FileStorage(
+        val storage = FileStorage(
                 unslashed(id),
                 URI(dlp.buildUri(id)),
                 "gs",
@@ -155,7 +156,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         return storage
     }
 
-    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit) : String {
+    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit): String {
         val uri = URI(dlp.buildUri(id))
         val path = uri.path
         val contentType = StaticUtils.tika.detect(path)
@@ -167,8 +168,7 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
         val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
         val opts = if (method == HttpMethod.PUT) {
             arrayOf(SignUrlOption.withContentType(), SignUrlOption.httpMethod(method))
-        }
-        else {
+        } else {
             arrayOf(SignUrlOption.httpMethod(method))
         }
 
@@ -191,7 +191,9 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path?=nul
  * LocalFileStorageService handles the location of files in an on-prem single tenant install.
  */
 class LocalFileStorageService constructor(
-        val root: Path, ofs: ObjectFileSystem): FileStorageService {
+    val root: Path,
+    ofs: ObjectFileSystem
+) : FileStorageService {
 
     val dlp = LocalLayoutProvider(root, ofs)
 
@@ -206,16 +208,16 @@ class LocalFileStorageService constructor(
         }
     }
 
-    override fun get(spec: FileStorageSpec) : FileStorage {
+    override fun get(spec: FileStorageSpec): FileStorage {
         return buildFileStorage(dlp.buildId(spec), dlp.buildUri(spec))
     }
 
-    override fun get(id: String) : FileStorage {
+    override fun get(id: String): FileStorage {
         val url = dlp.buildUri(id)
         return buildFileStorage(id, url)
     }
 
-    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit) : String  {
+    override fun getSignedUrl(id: String, method: HttpMethod, duration: Long, unit: TimeUnit): String {
         val url = dlp.buildUri(id)
         if (method == HttpMethod.PUT) {
             val parent = Paths.get(URI(url)).toFile().parentFile
@@ -232,7 +234,7 @@ class LocalFileStorageService constructor(
         Files.write(uri, input)
     }
 
-    private fun buildFileStorage(id: String, url: String) : FileStorage {
+    private fun buildFileStorage(id: String, url: String): FileStorage {
         return FileStorage(
                 unslashed(id),
                 URI(url),
@@ -245,7 +247,6 @@ class LocalFileStorageService constructor(
         private val logger = LoggerFactory.getLogger(LocalFileStorageService::class.java)
     }
 }
-
 
 class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : LayoutProvider {
 
@@ -278,11 +279,11 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
         return "${parentType}___${spec.parentId.toLowerCase()}___$name"
     }
 
-    private fun getOrgRoot() : Path  {
+    private fun getOrgRoot(): Path {
         return root.resolve("orgs").resolve(getOrgId().toString())
     }
 
-    private fun expandId(id: String) : String {
+    private fun expandId(id: String): String {
         val sb = StringBuilder(16)
         for (i in 0..3) {
             sb.append("${id[i]}/")
@@ -291,7 +292,6 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
         return sb.toString()
     }
 }
-
 
 class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
 
@@ -312,11 +312,11 @@ class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
         return "${getOrgRoot()}/$slashed"
     }
 
-    override fun buildUri(spec: FileStorageSpec) : String {
+    override fun buildUri(spec: FileStorageSpec): String {
         return "${getOrgRoot()}/${spec.parentType}/${spec.parentId}/${spec.name}"
     }
 
-    override fun buildId(spec: FileStorageSpec) : String {
+    override fun buildId(spec: FileStorageSpec): String {
         val name = unslash_name(spec.name)
         val parentType = spec.parentType.toLowerCase()
         if (parentType !in allowedParentTypes) {
@@ -325,17 +325,16 @@ class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
         return "${spec.parentType}___${spec.parentId}___$name"
     }
 
-    private fun getOrgRoot() : String  {
+    private fun getOrgRoot(): String {
         val org = getOrgId()
         return "gs://$bucket/orgs/$org"
     }
-
 }
 
 /**
  * Utility function for cleaning up file slugs.
  */
-private inline fun unslash_name(name: String) : String {
+private inline fun unslash_name(name: String): String {
     return name
         .replace(Regex("[/]+"), "___")
         .replace(Regex("\\.{2,}"), ".")
@@ -344,13 +343,13 @@ private inline fun unslash_name(name: String) : String {
 /**
  * Utility method for replacing slashes with triple ___ in proxy IDs
  */
-private inline fun unslashed(id: String) : String {
+private inline fun unslashed(id: String): String {
     return id.replace("/", "___")
 }
 
 /**
  * Utility method for replacing ___ with triple / in proxy IDs
  */
-private inline fun slashed(id: String) : String {
+private inline fun slashed(id: String): String {
     return id.replace("___", "/")
 }

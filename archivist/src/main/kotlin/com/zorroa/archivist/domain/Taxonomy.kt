@@ -1,6 +1,6 @@
 package com.zorroa.archivist.domain
 
-import java.util.*
+import java.util.UUID
 
 /**
  * A Taxonomy turns a folder structure into an auto-tagging system.
@@ -12,11 +12,12 @@ import java.util.*
  * @property timeCreated The time the taxonomy was created.
  */
 class Taxonomy(
-        val taxonomyId: UUID,
-        val folderId: UUID,
-        val organizationId: UUID,
-        val createdUser: UUID,
-        val timeCreated : Long) {
+    val taxonomyId: UUID,
+    val folderId: UUID,
+    val organizationId: UUID,
+    val createdUser: UUID,
+    val timeCreated: Long
+) {
 
     val clusterLockId = "taxi-$taxonomyId"
 
@@ -44,8 +45,8 @@ class Taxonomy(
  * @param timestamp The new timetamp for the [Taxonomy]
  *
  */
-class TagTaxonomyResult (
-    val assetCount : Long,
+class TagTaxonomyResult(
+    val assetCount: Long,
     val folderCount: Long,
-    val timestamp : Long
+    val timestamp: Long
 )

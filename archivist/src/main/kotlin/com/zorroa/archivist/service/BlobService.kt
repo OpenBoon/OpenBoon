@@ -1,13 +1,17 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.Blob
+import com.zorroa.archivist.domain.BlobId
+import com.zorroa.archivist.domain.BlobSpec
+import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.repository.BlobDao
 import com.zorroa.archivist.repository.PermissionDao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-
 
 interface BlobService {
 
@@ -32,8 +36,9 @@ interface BlobService {
 @Transactional
 class BlobServiceImpl
     @Autowired constructor (
-            private val blobDao: BlobDao,
-            private val permissionDao: PermissionDao) : BlobService {
+        private val blobDao: BlobDao,
+        private val permissionDao: PermissionDao
+    ) : BlobService {
 
     override fun set(app: String, feature: String, name: String, blob: Any): Blob {
         return try {
@@ -73,7 +78,6 @@ class BlobServiceImpl
         return blobDao.getId(app, feature, name, forAccess)
     }
 
-
     override fun delete(blob: BlobId): Boolean {
         return blobDao.delete(blob)
     }
@@ -91,5 +95,3 @@ class BlobServiceImpl
         return blobDao.getAll(app, feature)
     }
 }
-
-

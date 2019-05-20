@@ -1,13 +1,9 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.LockState
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
-import java.util.*
+import java.util.UUID
 
 class ProcessorSpec(
     val className: String,
@@ -17,7 +13,7 @@ class ProcessorSpec(
     val display: List<Map<String, Any>>?
 )
 
-class Processor (
+class Processor(
     val id: UUID,
     val className: String,
     val type: String,
@@ -28,11 +24,11 @@ class Processor (
 )
 
 class ProcessorFilter(
-        val ids : List<UUID>? = null,
-        val types : List<String>? = null,
-        val classNames: List<String>? = null,
-        var fileTypes: List<String>? = null,
-        var keywords: String? = null
+    val ids: List<UUID>? = null,
+    val types: List<String>? = null,
+    val classNames: List<String>? = null,
+    var fileTypes: List<String>? = null,
+    var keywords: String? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -71,7 +67,5 @@ class ProcessorFilter(
             addToWhere("fti_keywords @@ to_tsquery(?)")
             addToValues(it)
         }
-
     }
-
 }

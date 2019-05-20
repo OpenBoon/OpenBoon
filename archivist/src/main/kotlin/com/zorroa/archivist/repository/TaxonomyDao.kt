@@ -1,6 +1,12 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Taxonomy
+import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.event
@@ -8,7 +14,7 @@ import com.zorroa.archivist.util.JdbcUtils
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface TaxonomyDao : GenericDao<Taxonomy, TaxonomySpec> {
 
@@ -75,7 +81,6 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
 
     companion object {
 
-
         private val INSERT = JdbcUtils.insert("taxonomy",
                 "pk_taxonomy",
                 "pk_folder",
@@ -88,7 +93,7 @@ class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
                 "pk_folder, " +
                 "pk_organization, " +
                 "pk_user_created," +
-                "time_created "+
+                "time_created " +
                 "FROM " +
                 "taxonomy "
 

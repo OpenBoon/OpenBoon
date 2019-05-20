@@ -11,7 +11,9 @@ import com.zorroa.archivist.security.CoroutineAuthentication
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import io.micrometer.core.instrument.MeterRegistry
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ThreadContextElement
+import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.AsyncListenableTaskExecutor
@@ -28,19 +30,19 @@ interface ClusterLockExecutor {
 
     /**
      * Run the given code inline with the current thread.
-     * 
-     * @param spec  A ClusterLock spec
+     *
+     * @param spec A ClusterLock spec
      * @param body The code to execute
      */
-    fun <T : Any?> inline(spec: ClusterLockSpec, body: () -> T?) : T?
+    fun <T : Any?> inline(spec: ClusterLockSpec, body: () -> T?): T?
 
     /**
      * Execute the given function with the named cluster lock.
      *
-     * @param spec  A ClusterLock spec
+     * @param spec A ClusterLock spec
      * @param body The code to execute
      */
-    fun <T : Any?> submit(spec: ClusterLockSpec, body: () -> T?) : ListenableFuture<T?>
+    fun <T : Any?> submit(spec: ClusterLockSpec, body: () -> T?): ListenableFuture<T?>
 
     /**
      * Execute the given function with the named cluster lock.
@@ -51,7 +53,6 @@ interface ClusterLockExecutor {
     fun execute(spec: ClusterLockSpec, body: () -> Unit)
 }
 
-
 interface ClusterLockService {
 
     /**
@@ -60,30 +61,30 @@ interface ClusterLockService {
      *
      * @param spec The lock specification
      */
-    fun lock(spec: ClusterLockSpec) : LockStatus
+    fun lock(spec: ClusterLockSpec): LockStatus
 
     /**
      * Unlock the given lock.
      *
      * @param name The name of the lock
      */
-    fun unlock(spec: ClusterLockSpec) : Boolean
+    fun unlock(spec: ClusterLockSpec): Boolean
 
     /**
      * Return true if the given lock is locked
      *
      * @param name The name of the lock
      */
-    fun isLocked(name: String) : Boolean
+    fun isLocked(name: String): Boolean
 
     /**
      * Clear all expired locks.
      *
      * @return The number of locks cleared.
      */
-    fun clearExpired(expired: ClusterLockExpired) : Boolean
+    fun clearExpired(expired: ClusterLockExpired): Boolean
 
-    fun getExpired() : List<ClusterLockExpired>
+    fun getExpired(): List<ClusterLockExpired>
 
     /**
      * Return true of the given lock is combined with a lock with the same name.  If
@@ -91,7 +92,7 @@ interface ClusterLockService {
      *
      * @param spec The lock specification
      */
-    fun hasCombineLocks(spec : ClusterLockSpec): Boolean
+    fun hasCombineLocks(spec: ClusterLockSpec): Boolean
 }
 
 /**
@@ -99,10 +100,10 @@ interface ClusterLockService {
  * reentrant locking.
  */
 object ClusterLockContext {
-    private val locks : ThreadLocal<MutableList<String>> =
+    private val locks: ThreadLocal<MutableList<String>> =
             ThreadLocal.withInitial { mutableListOf<String>() }
 
-    fun getLocks() : MutableList<String>  {
+    fun getLocks(): MutableList<String> {
         return locks.get()
     }
 
@@ -111,14 +112,14 @@ object ClusterLockContext {
     }
 }
 
-
 /**
  * A Coroutine Context for passing around thread local cluster locks.
  *
  * @property locks: A list of cluster locks.
  */
 class ClusterLocksCoroutineContext(
-        private var locks: MutableList<String>) : ThreadContextElement<MutableList<String>> {
+    private var locks: MutableList<String>
+) : ThreadContextElement<MutableList<String>> {
 
     companion object Key : CoroutineContext.Key<ClusterLocksCoroutineContext>
 
@@ -136,17 +137,16 @@ class ClusterLocksCoroutineContext(
     }
 }
 
-
 @Component
 class ClusterLockExecutorImpl @Autowired constructor(
-        val clusterLockService : ClusterLockService,
-        val workQueue: AsyncListenableTaskExecutor
-): ClusterLockExecutor {
+    val clusterLockService: ClusterLockService,
+    val workQueue: AsyncListenableTaskExecutor
+) : ClusterLockExecutor {
 
     val maxBackoff = 10000L
     val backoffIncrement = 100L
 
-    override fun <T> inline(spec: ClusterLockSpec, body: () -> T?) : T? {
+    override fun <T> inline(spec: ClusterLockSpec, body: () -> T?): T? {
         var result: T? = null
 
         /**
@@ -159,8 +159,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
          */
         val lock = if (ArchivistConfiguration.unittest) {
             obtainLock(spec)
-        }
-        else {
+        } else {
             runBlocking(ClusterLocksCoroutineContext(ClusterLockContext.getLocks()) +
                             CoroutineAuthentication() +
                             Dispatchers.IO) {
@@ -180,8 +179,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
             } finally {
                 if (ArchivistConfiguration.unittest) {
                     clusterLockService.unlock(spec)
-                }
-                else {
+                } else {
                     runBlocking(ClusterLocksCoroutineContext(ClusterLockContext.getLocks()) +
                                     CoroutineAuthentication() +
                                     Dispatchers.IO) {
@@ -214,8 +212,8 @@ class ClusterLockExecutorImpl @Autowired constructor(
         }
     }
 
-    override fun <T> submit(spec: ClusterLockSpec, body: () -> T?) : ListenableFuture<T?> {
-        val authentication =  spec.authentication ?: getAuthentication()
+    override fun <T> submit(spec: ClusterLockSpec, body: () -> T?): ListenableFuture<T?> {
+        val authentication = spec.authentication ?: getAuthentication()
         return workQueue.submitListenable(Callable {
             withAuth(authentication) {
                 if (!obtainLock(spec)) {
@@ -235,8 +233,7 @@ class ClusterLockExecutorImpl @Autowired constructor(
         })
     }
 
-    fun obtainLock(spec: ClusterLockSpec) : Boolean {
-
+    fun obtainLock(spec: ClusterLockSpec): Boolean {
 
         var tryNum = 0
         var backOff = backoffIncrement
@@ -271,9 +268,9 @@ class ClusterLockExecutorImpl @Autowired constructor(
 @Service
 @Transactional
 class ClusterLockServiceImpl @Autowired constructor(
-        val clusterLockDao: ClusterLockDao,
-        val meterRegistry: MeterRegistry
-): ClusterLockService {
+    val clusterLockDao: ClusterLockDao,
+    val meterRegistry: MeterRegistry
+) : ClusterLockService {
 
     @Transactional(readOnly = true)
     override fun isLocked(name: String): Boolean {
@@ -281,13 +278,13 @@ class ClusterLockServiceImpl @Autowired constructor(
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    override fun hasCombineLocks(spec : ClusterLockSpec): Boolean {
+    override fun hasCombineLocks(spec: ClusterLockSpec): Boolean {
         if (!spec.combineMultiple) { return false }
         return clusterLockDao.hasCombineLocks(spec)
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    override fun lock(spec : ClusterLockSpec) : LockStatus {
+    override fun lock(spec: ClusterLockSpec): LockStatus {
         val ctx = ClusterLockContext.getLocks()
         if (ctx.contains(spec.name)) {
             meterRegistry.counter("zorroa.cluster_lock.reentrant").increment()
@@ -301,7 +298,7 @@ class ClusterLockServiceImpl @Autowired constructor(
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    override fun unlock(spec: ClusterLockSpec) : Boolean {
+    override fun unlock(spec: ClusterLockSpec): Boolean {
         ClusterLockContext.getLocks().remove(spec.name)
         return if (!spec.holdTillTimeout) {
             clusterLockDao.unlock(spec.name)
@@ -311,7 +308,7 @@ class ClusterLockServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getExpired() : List<ClusterLockExpired> {
+    override fun getExpired(): List<ClusterLockExpired> {
         return clusterLockDao.getExpired()
     }
 
@@ -319,8 +316,7 @@ class ClusterLockServiceImpl @Autowired constructor(
     override fun clearExpired(expired: ClusterLockExpired): Boolean {
         return if (clusterLockDao.checkLock(expired.name)) {
             clusterLockDao.unlock(expired.name)
-        }
-        else {
+        } else {
             val time = System.currentTimeMillis() - expired.expiredTime
             logger.warn("The lock ${expired.name} is still locked after $time ms")
             meterRegistry.counter("zorroa.cluster_lock.expire_failure").increment()
@@ -343,7 +339,7 @@ class ClusterLockExpirationManager @Autowired constructor(
     val meterRegistry: MeterRegistry
 ) {
 
-    fun clearExpired() : Int {
+    fun clearExpired(): Int {
         var result = 0
         for (expired in clusterLockService.getExpired()) {
             if (clusterLockService.clearExpired(expired)) {

@@ -6,7 +6,7 @@ import kotlin.test.assertTrue
 
 class EsRestClientTests : AbstractTest() {
 
-    override fun requiresElasticSearch() : Boolean {
+    override fun requiresElasticSearch(): Boolean {
         return true
     }
 

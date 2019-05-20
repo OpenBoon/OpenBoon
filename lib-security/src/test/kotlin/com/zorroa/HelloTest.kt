@@ -1,5 +1,3 @@
 package com.zorroa
 
-class HelloTest {
-
-}
+class HelloTest

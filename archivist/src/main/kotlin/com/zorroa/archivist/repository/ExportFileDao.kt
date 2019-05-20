@@ -1,21 +1,22 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.ExportFile
+import com.zorroa.archivist.domain.ExportFileSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.ServableFile
 import com.zorroa.archivist.service.event
-import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.domain.JobId
 import com.zorroa.common.util.JdbcUtils
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
-
+import java.util.UUID
 
 interface ExportFileDao {
     fun create(job: JobId, file: ServableFile, spec: ExportFileSpec): ExportFile
-    fun get(id: UUID) : ExportFile
+    fun get(id: UUID): ExportFile
     fun getAll(job: JobId): List<ExportFile>
 }
 
@@ -40,7 +41,8 @@ class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
             ps
         }
 
-        logger.event(LogObject.EXPORT_FILE, LogAction.CREATE,
+        logger.event(
+            LogObject.EXPORT_FILE, LogAction.CREATE,
                 mapOf("jobId" to job.jobId, "storageId" to spec.storageId))
         return get(id)
     }
@@ -80,5 +82,4 @@ class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
                 "int_size",
                 "time_created")
     }
-
 }

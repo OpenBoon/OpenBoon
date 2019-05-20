@@ -24,14 +24,15 @@ enum class LockStatus {
  *
  */
 class ClusterLockSpec(
-        var name : String,
-        var maxTries: Int = 0,
-        var combineMultiple: Boolean = false,
-        var timeout : Long = 1,
-        var timeoutUnits : TimeUnit = TimeUnit.MINUTES,
-        var holdTillTimeout: Boolean = false,
-        var dispatcher: CoroutineDispatcher = Dispatchers.Default,
-        var authentication: Authentication? = null) {
+    var name: String,
+    var maxTries: Int = 0,
+    var combineMultiple: Boolean = false,
+    var timeout: Long = 1,
+    var timeoutUnits: TimeUnit = TimeUnit.MINUTES,
+    var holdTillTimeout: Boolean = false,
+    var dispatcher: CoroutineDispatcher = Dispatchers.Default,
+    var authentication: Authentication? = null
+) {
 
     companion object {
 
@@ -47,8 +48,8 @@ class ClusterLockSpec(
          * @param name The name of the lock
          * @return A ClusterLockSpec
          */
-        fun combineLock(name: String) : ClusterLockSpec =
-                ClusterLockSpec(name, combineMultiple=true, maxTries=-1)
+        fun combineLock(name: String): ClusterLockSpec =
+                ClusterLockSpec(name, combineMultiple = true, maxTries = -1)
 
         /**
          * A hard lock is a guarantee that at some point the code will be executed, barring
@@ -57,13 +58,13 @@ class ClusterLockSpec(
          * @param name The name of the lock
          * @return A ClusterLockSpec
          */
-        fun hardLock(name: String) : ClusterLockSpec =
-                ClusterLockSpec(name, maxTries=-1)
+        fun hardLock(name: String): ClusterLockSpec =
+                ClusterLockSpec(name, maxTries = -1)
 
         /**
          * A soft lock will attempt to take a lock, but stop doing so upon the first failure.
          */
-        fun softLock(name: String, maxTries: Int=0) : ClusterLockSpec =
+        fun softLock(name: String, maxTries: Int = 0): ClusterLockSpec =
                 ClusterLockSpec(name, maxTries)
     }
 }
@@ -80,4 +81,3 @@ class ClusterLockExpired(
     val host: String,
     val expiredTime: Long
 )
-

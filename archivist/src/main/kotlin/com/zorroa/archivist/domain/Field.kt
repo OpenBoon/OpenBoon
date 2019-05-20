@@ -14,7 +14,7 @@ import java.util.UUID
  */
 enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
     StringAnalyzed("string_analyzed", true),
-    StringExact("string_exact",true),
+    StringExact("string_exact", true),
     @Deprecated("Using this type simply marks the field as both keyword and suggest")
     StringSuggest("string_suggest", true),
     StringContent("string_content", true),
@@ -29,7 +29,7 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
     /**
      * Return the name of the custom file name.
      */
-    fun getCustomAttrName(num: Int) : kotlin.String {
+    fun getCustomAttrName(num: Int): kotlin.String {
         return "custom.${prefix}__$num".toLowerCase()
     }
 
@@ -40,14 +40,14 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
      * @param value the value to check.
      * @return True if the value is ok, otherwise false.
      */
-    fun isValid(value: Any?) : Boolean {
+    fun isValid(value: Any?): Boolean {
         if (value == null) {
             return true
         }
 
-        return when(this) {
-            AttrType.NumberInteger-> { value is Int || value is Long }
-            AttrType.NumberFloat-> { value is Double || value is Float }
+        return when (this) {
+            AttrType.NumberInteger -> { value is Int || value is Long }
+            AttrType.NumberFloat -> { value is Double || value is Float }
             AttrType.StringExact,
             AttrType.StringContent,
             AttrType.StringAnalyzed,
@@ -60,7 +60,6 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
         }
     }
 }
-
 
 /**
  * The properties required to create a new field.
@@ -75,16 +74,16 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
  * @property options The valid set of options for a field.
  */
 class FieldSpec(
-        val name: String,
-        var attrName: String?,
-        var attrType: AttrType?,
-        var editable: Boolean=false,
-        var keywords: Boolean=false,
-        var keywordsBoost: Float=1.0f,
-        var suggest: Boolean=false,
-        var options: List<Any>?=null,
-        @JsonIgnore var custom: Boolean=false)
-
+    val name: String,
+    var attrName: String?,
+    var attrType: AttrType?,
+    var editable: Boolean = false,
+    var keywords: Boolean = false,
+    var keywordsBoost: Float = 1.0f,
+    var suggest: Boolean = false,
+    var options: List<Any>? = null,
+    @JsonIgnore var custom: Boolean = false
+)
 
 /**
  * A Field describes the display properties for a given ES attribute.  Each ES attribute
@@ -101,21 +100,20 @@ class FieldSpec(
  * @property value The value of the field, if the field is resolved against an asset.
  * @property fieldEditId Will be the unique ID of an edit, if the field has been edited on a given asset.
  */
-class Field (
-        val id: UUID,
-        val name: String,
-        val attrName: String,
-        val attrType: AttrType,
-        val editable: Boolean,
-        val custom: Boolean,
-        val keywords: Boolean,
-        val keywordsBoost: Float,
-        val suggest: Boolean,
-        val options: List<Any>?=null,
-        val value: Any?=null,
-        val fieldEditId: UUID?=null
-)
-{
+class Field(
+    val id: UUID,
+    val name: String,
+    val attrName: String,
+    val attrType: AttrType,
+    val editable: Boolean,
+    val custom: Boolean,
+    val keywords: Boolean,
+    val keywordsBoost: Float,
+    val suggest: Boolean,
+    val options: List<Any>? = null,
+    val value: Any? = null,
+    val fieldEditId: UUID? = null
+) {
     companion object {
 
         object TypeRefKList : TypeReference<KPagedList<Field>>()
@@ -131,13 +129,13 @@ class Field (
  * @property keywordsBoost The keywords boost level for the field.
  * @property options Available options.
  */
-class FieldUpdateSpec (
-        val name: String,
-        val editable: Boolean,
-        var keywords: Boolean,
-        val keywordsBoost: Float,
-        val suggest: Boolean,
-        val options: List<Any>?=null
+class FieldUpdateSpec(
+    val name: String,
+    val editable: Boolean,
+    var keywords: Boolean,
+    val keywordsBoost: Float,
+    val suggest: Boolean,
+    val options: List<Any>? = null
 )
 
 /**
@@ -150,10 +148,10 @@ class FieldUpdateSpec (
  * @property fieldSpecs A set of field specs which will add fields and then assign them to the field set.
  */
 class FieldSetSpec(
-        val name: String,
-        val linkExpression: String? = null,
-        var fieldIds : List<UUID>? = null,
-        var fieldSpecs : List<FieldSpec>? = null
+    val name: String,
+    val linkExpression: String? = null,
+    var fieldIds: List<UUID>? = null,
+    var fieldSpecs: List<FieldSpec>? = null
 )
 
 /**
@@ -166,14 +164,14 @@ class FieldSetSpec(
  * @property fields The fields in the field set. Only populated in some cases.
  */
 class FieldSet(
-        val id: UUID,
-        val name: String,
-        val linkExpression: String?=null,
-        var fields: MutableList<Field>?=null
+    val id: UUID,
+    val name: String,
+    val linkExpression: String? = null,
+    var fields: MutableList<Field>? = null
 )
 
-class FieldSetFilter (
-    val ids : List<UUID>? = null,
+class FieldSetFilter(
+    val ids: List<UUID>? = null,
     val names: List<String>? = null
 ) : KDaoFilter() {
 
@@ -203,13 +201,13 @@ class FieldSetFilter (
     }
 }
 
-class FieldFilter (
-        val ids : List<UUID>? = null,
-        val attrTypes: List<AttrType>? = null,
-        val attrNames: List<String>? = null,
-        val keywords: Boolean? = null,
-        val editable: Boolean? = null,
-        val suggest: Boolean? = null
+class FieldFilter(
+    val ids: List<UUID>? = null,
+    val attrTypes: List<AttrType>? = null,
+    val attrNames: List<String>? = null,
+    val keywords: Boolean? = null,
+    val editable: Boolean? = null,
+    val suggest: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -232,7 +230,7 @@ class FieldFilter (
 
         attrTypes?.let {
             addToWhere(JdbcUtils.inClause("field.int_attr_type", it.size))
-            addToValues(it.map { i-> i.ordinal })
+            addToValues(it.map { i -> i.ordinal })
         }
 
         attrNames?.let {
@@ -258,6 +256,4 @@ class FieldFilter (
         addToWhere("field.pk_organization=?")
         addToValues(getOrgId())
     }
-
 }
-

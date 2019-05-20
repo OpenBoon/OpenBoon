@@ -1,8 +1,25 @@
 package com.zorroa.archivist.service
 
 import com.google.common.base.Splitter
-import com.google.common.collect.*
-import com.zorroa.archivist.domain.*
+import com.google.common.collect.ImmutableList
+import com.google.common.collect.ImmutableMap
+import com.google.common.collect.ImmutableSet
+import com.google.common.collect.Iterables
+import com.google.common.collect.Lists
+import com.google.common.collect.Sets
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.AclEntry
+import com.zorroa.archivist.domain.ClusterLockSpec
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchyLevelType
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PathIterator
+import com.zorroa.archivist.domain.Tuple
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
@@ -19,7 +36,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.ArrayDeque
+import java.util.Queue
+import java.util.Stack
+import java.util.UUID
 
 interface DyHierarchyService {
 
@@ -49,8 +69,7 @@ interface DyHierarchyService {
      * @param dyhi The DyHierarchy to generate folders for.
      * @param clearFirst Set to true if any of the dyhi levels have changed.
      */
-    fun generate(dyhi: DyHierarchy, clearFirst: Boolean=false) : Int
-
+    fun generate(dyhi: DyHierarchy, clearFirst: Boolean = false): Int
 }
 
 @Service
@@ -62,7 +81,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
 ) : DyHierarchyService {
 
     @Autowired
-    private lateinit var folderService: FolderService;
+    private lateinit var folderService: FolderService
 
     @Autowired
     private lateinit var searchService: SearchService
@@ -117,8 +136,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 folderService.removeDyHierarchyRoot(folder)
                 folderService.deleteAll(dyhi)
                 true
-            }
-            else {
+            } else {
 
                 false
             }
@@ -157,7 +175,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         dyHierarchyDao.getAll().forEach { generate(it) }
     }
 
-    override fun generate(dyhi: DyHierarchy, clearFirst: Boolean) : Int {
+    override fun generate(dyhi: DyHierarchy, clearFirst: Boolean): Int {
         val lock = ClusterLockSpec.combineLock(dyhi.lockName).apply { timeout = 5 }
         val result = clusterLockExecutor.inline(lock) {
             try {
@@ -191,8 +209,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
             val sr = rest.newSearchBuilder()
             if (rf.search != null) {
                 sr.source.query(searchService.getQuery(rf.search))
-            }
-            else {
+            } else {
                 sr.source.query(QueryBuilders.matchAllQuery())
             }
             /**
@@ -230,7 +247,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 logger.warn("Failed to delete unused folders: {}, {}", unusedFolders, e)
             }
 
-            logger.event(LogObject.DYHI, LogAction.EXECUTE,
+            logger.event(
+                LogObject.DYHI, LogAction.EXECUTE,
                     mapOf("dyhiId" to dyhi.id,
                             "dyhiLevels" to dyhi.levels.size,
                             "folderId" to dyhi.folderId,
@@ -240,7 +258,6 @@ class DyHierarchyServiceImpl @Autowired constructor (
         } catch (e: Exception) {
             logger.warn("Failed to generate dynamic hierarchy,", e)
         } finally {
-
         }
 
         return 0
@@ -282,8 +299,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 val pathTerms = AggregationBuilders.terms(idx.toString())
                 val field = if (level.field.endsWith(".paths")) {
                     level.field
-                }
-                else {
+                } else {
                     "${level.field}.paths"
                 }
                 pathTerms.field(field)
@@ -495,11 +511,9 @@ class DyHierarchyServiceImpl @Autowired constructor (
         val type = fieldService.getFieldType(level.field.replace(".raw", ""))
         if (type == null) {
             throw IllegalStateException("Attempting to agg on a invalid field ${level.field}")
-        }
-        else if (type == "path") {
+        } else if (type == "path") {
             level.field = level.field + ".paths"
-        }
-        else if (type ==  "string") {
+        } else if (type == "string") {
             if (!level.field.endsWith(".raw")) {
                 level.field = level.field + ".raw"
             }
@@ -511,4 +525,3 @@ class DyHierarchyServiceImpl @Autowired constructor (
         private val logger = LoggerFactory.getLogger(DyHierarchyServiceImpl::class.java)
     }
 }
-

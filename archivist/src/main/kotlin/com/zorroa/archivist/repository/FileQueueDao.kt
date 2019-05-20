@@ -12,22 +12,20 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
-import java.util.*
-
+import java.util.UUID
 
 interface FileQueueDao {
     fun create(spec: QueuedFileSpec): QueuedFile
-    fun get(id: UUID) : QueuedFile
-    fun getAll(limit: Int) : List<QueuedFile>
-    fun delete(files: List<QueuedFile>) : Int
-    fun getOrganizationMeters() : Map<String, Long>
-
+    fun get(id: UUID): QueuedFile
+    fun getAll(limit: Int): List<QueuedFile>
+    fun delete(files: List<QueuedFile>): Int
+    fun getOrganizationMeters(): Map<String, Long>
 }
 
 @Repository
 class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
 
-    override fun delete(files: List<QueuedFile>) : Int {
+    override fun delete(files: List<QueuedFile>): Int {
         return jdbc.batchUpdate("DELETE FROM queued_file WHERE pk_queued_file=?",
                 object : BatchPreparedStatementSetter {
 
@@ -42,17 +40,17 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
         }).size
     }
 
-    override fun getAll(limit: Int) : List<QueuedFile> {
+    override fun getAll(limit: Int): List<QueuedFile> {
         return jdbc.query("$GET ORDER BY pk_organization, pk_pipeline LIMIT ?", MAPPER, limit)
     }
 
-    override fun get(id: UUID) : QueuedFile {
+    override fun get(id: UUID): QueuedFile {
         return jdbc.queryForObject("$GET WHERE pk_queued_file=?", MAPPER, id)
     }
 
-    override fun getOrganizationMeters() : Map<String, Long> {
+    override fun getOrganizationMeters(): Map<String, Long> {
         val result = mutableMapOf<String, Long>()
-        jdbc.query(ORG_METERS) { rs->
+        jdbc.query(ORG_METERS) { rs ->
             result.put(rs.getString(1), rs.getLong(2))
         }
         return result
@@ -98,8 +96,8 @@ class FileQueueDaoImpl : AbstractDao(), FileQueueDao {
                 "pk_queued_file, " +
                 "pk_organization, " +
                 "pk_pipeline, " +
-                "asset_id,"+
-                "json_metadata,"+
+                "asset_id," +
+                "json_metadata," +
                 "str_path " +
                 "FROM " +
                 "queued_file "

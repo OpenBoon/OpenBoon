@@ -4,19 +4,19 @@ import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.security.getOrgId
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface IndexRouteDao {
 
     /**
      * Set a new minor version for the given [IndexRoute]
      */
-    fun setMinorVersion(route: IndexRoute, version: Int) : Boolean
+    fun setMinorVersion(route: IndexRoute, version: Int): Boolean
 
     /**
      * Set the version that the patch system stopped on as the error version.
      */
-    fun setErrorVersion(route: IndexRoute, version: Int) : Boolean
+    fun setErrorVersion(route: IndexRoute, version: Int): Boolean
 
     /**
      * Return the [IndexRoute] assigned to the current user's organization.
@@ -63,11 +63,11 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         return jdbc.query(GET_DEFAULTS, MAPPER).random()
     }
 
-    override fun setMinorVersion(route: IndexRoute, version: Int) : Boolean {
+    override fun setMinorVersion(route: IndexRoute, version: Int): Boolean {
         return jdbc.update(UPDATE_MINOR_VER, version, System.currentTimeMillis(), route.id) == 1
     }
 
-    override fun setErrorVersion(route: IndexRoute, version: Int) : Boolean {
+    override fun setErrorVersion(route: IndexRoute, version: Int): Boolean {
         return jdbc.update(UPDATE_ERROR_VER, version, System.currentTimeMillis(), route.id) == 1
     }
 

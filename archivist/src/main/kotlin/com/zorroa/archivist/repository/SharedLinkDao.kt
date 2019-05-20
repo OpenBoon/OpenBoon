@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import java.time.Duration
-import java.util.*
+import java.util.UUID
 
 interface SharedLinkDao {
 

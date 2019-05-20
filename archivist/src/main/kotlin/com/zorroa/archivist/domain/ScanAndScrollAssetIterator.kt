@@ -4,16 +4,18 @@ import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RestHighLevelClient
-import java.util.*
+import java.util.Spliterator
 import java.util.function.Consumer
 
 /**
  * Defines the fields needed for an online-asset.
  */
 
-class ScanAndScrollAssetIterator(private val client: RestHighLevelClient,
-                                 private val rsp: SearchResponse,
-                                 private var maxResults: Long) : Iterable<Document> {
+class ScanAndScrollAssetIterator(
+    private val client: RestHighLevelClient,
+    private val rsp: SearchResponse,
+    private var maxResults: Long
+) : Iterable<Document> {
 
     override fun iterator(): Iterator<Document> {
         return object : Iterator<Document> {
