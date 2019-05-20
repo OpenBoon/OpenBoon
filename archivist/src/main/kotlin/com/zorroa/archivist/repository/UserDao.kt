@@ -128,7 +128,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun findOne(filter: UserFilter): User {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
-        return throwWhenNotFound("Permission not found") {
+        return throwWhenNotFound("User not found") {
             KPagedList(1L, KPage(0, 1), jdbc.query(query, MAPPER, *values))[0]
         }
     }
