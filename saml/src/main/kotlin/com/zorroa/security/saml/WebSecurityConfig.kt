@@ -78,7 +78,6 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.MessageDigest
 import java.util.Properties
-import javax.xml.bind.DatatypeConverter
 
 @Order(Ordered.HIGHEST_PRECEDENCE + 100)
 @Configuration
@@ -280,7 +279,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                             val md5 = MessageDigest.getInstance("MD5")
                             val bytes = Files.readAllBytes(Paths.get(uri))
                             val hash = md5.digest(bytes)
-                            logger.info("Metdata MD5: {}", DatatypeConverter.printHexBinary(hash))
                         } catch (e: Exception) {
                             logger.warn("Unable to MD5 metadata")
                         }
