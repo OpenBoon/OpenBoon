@@ -1,23 +1,25 @@
 package com.zorroa.archivist.domain
 
-import java.util.*
+import java.util.Objects
+import java.util.UUID
 
 interface BlobId {
     fun getBlobId(): UUID
 }
 
-data class BlobSpec (
-        val data: Any,
-        val acl: Acl?
+data class BlobSpec(
+    val data: Any,
+    val acl: Acl?
 )
 
-class Blob (
+class Blob(
     private val blobId: UUID,
     val version: Long,
     val app: String,
     val feature: String,
     val name: String,
-    val data: Any) : BlobId {
+    val data: Any
+) : BlobId {
 
     override fun getBlobId(): UUID {
         return blobId
@@ -36,5 +38,4 @@ class Blob (
     override fun hashCode(): Int {
         return blobId.hashCode()
     }
-
 }

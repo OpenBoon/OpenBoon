@@ -11,9 +11,10 @@ import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.nio.file.Paths
-import java.util.*
-import kotlin.test.*
-
+import java.util.UUID
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 /**
  * Unless you are configured with the proper service-credentials.json file, these tests
@@ -27,9 +28,9 @@ class CoreDataVaultClientTests : AbstractTest() {
     val docType = "01059ec7-42e8-48f3-adcf-4fa726005ab4"
 
     @Autowired
-    lateinit var meterRegistry : MeterRegistry
+    lateinit var meterRegistry: MeterRegistry
 
-    lateinit var client :  IrmCoreDataVaultClientImpl
+    lateinit var client: IrmCoreDataVaultClientImpl
 
     @Before
     fun init() {
@@ -42,7 +43,7 @@ class CoreDataVaultClientTests : AbstractTest() {
     @Test
     fun testAssetExists() {
         val id = UUID.randomUUID().toString()
-        val spec = CoreDataVaultAssetSpec(id, docType,"test.pdf")
+        val spec = CoreDataVaultAssetSpec(id, docType, "test.pdf")
         val asset1 = client.createAsset(companyId, spec)
         assertTrue(client.assetExists(companyId, asset1["documentGUID"] as String))
         assertFalse(client.assetExists(companyId, "705EF325-E6E4-4DA7-AD26-C610C70261A8"))
@@ -58,7 +59,7 @@ class CoreDataVaultClientTests : AbstractTest() {
     @Test
     fun testGetAsset() {
         val id = UUID.randomUUID().toString()
-        val spec = CoreDataVaultAssetSpec(id, docType,"test.pdf")
+        val spec = CoreDataVaultAssetSpec(id, docType, "test.pdf")
         val asset1 = client.createAsset(companyId, spec)
         val asset2 = client.getAsset(companyId, asset1["documentGUID"] as String)
 
@@ -69,7 +70,7 @@ class CoreDataVaultClientTests : AbstractTest() {
     @Test
     fun testCreateAsset() {
         val id = UUID.randomUUID().toString()
-        val spec = CoreDataVaultAssetSpec(id, docType,"test.pdf")
+        val spec = CoreDataVaultAssetSpec(id, docType, "test.pdf")
         val asset1 = client.createAsset(companyId, spec)
 
         println(Json.prettyString(asset1))
@@ -145,12 +146,12 @@ class CoreDataVaultClientTests : AbstractTest() {
         assertTrue(result[doc.id] ?: false)
     }
 
-    @Test(expected=com.zorroa.common.clients.RestClientException::class)
+    @Test(expected = com.zorroa.common.clients.RestClientException::class)
     fun testDelete() {
         val id = UUID.randomUUID()
         val asset1 = client.createAsset(companyId,
                 CoreDataVaultAssetSpec(id, docType, "test.pdf")).toMutableMap()
-        val assetId =  asset1["documentGUID"] as String
+        val assetId = asset1["documentGUID"] as String
         assertTrue(client.delete(companyId, assetId))
         client.getAsset(companyId, assetId)
     }
@@ -160,7 +161,7 @@ class CoreDataVaultClientTests : AbstractTest() {
         val id = UUID.randomUUID()
         val asset1 = client.createAsset(companyId,
                 CoreDataVaultAssetSpec(id, docType, "test.pdf")).toMutableMap()
-        val assetId =  asset1["documentGUID"] as String
+        val assetId = asset1["documentGUID"] as String
         val result = client.batchDelete(companyId, listOf(assetId))
         assertTrue(result[assetId] ?: false)
     }

@@ -243,7 +243,6 @@ class AnalystClusterControllerTests : MockMvcTest() {
             assertEquals(stack?.className, "Unknown Class")
             assertEquals(stack?.methodName, "Unknown Method")
             assertEquals(stack?.lineNumber, 0)
-
         } else {
             assertNotNull(task)
         }

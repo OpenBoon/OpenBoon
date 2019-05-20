@@ -75,43 +75,43 @@ class MaintenanceConfiguration {
     /**
      * Remove Analyst from list after being down for this period of time.
      */
-    lateinit var analystRemoveInactivityTime : String
+    lateinit var analystRemoveInactivityTime: String
 
     /**
      * The amount of time to wait for a ping before considering the task an orphan.
      */
-    lateinit var taskOrphanTime : String
+    lateinit var taskOrphanTime: String
 
     /**
      * The amount of time before a shared link is removed.
      */
-    lateinit var sharedLinksExpireTime : String
+    lateinit var sharedLinksExpireTime: String
 
     /**
      * Return a [Duration] instance from the analystInactivityTimeDown property.
      */
-    fun getAnalystDownInactivityTime() : Duration {
+    fun getAnalystDownInactivityTime(): Duration {
         return Duration.parse("PT${analystDownInactivityTime.toUpperCase()}")
     }
 
     /**
      * Return a [Duration] instance from the analystInactivityTimeRemove property.
      */
-    fun getAnalystRemoveInactivityTime() : Duration {
+    fun getAnalystRemoveInactivityTime(): Duration {
         return Duration.parse("PT${analystRemoveInactivityTime.toUpperCase()}")
     }
 
     /**
      * Return a [Duration] instance describing the task orphan time.
      */
-    fun getTaskOrphanTime() : Duration {
+    fun getTaskOrphanTime(): Duration {
         return Duration.parse("PT${taskOrphanTime.toUpperCase()}")
     }
 
     /**
      * Return a [Duration] instance describing the shared link expire time.
      */
-    fun getSharedLinkExpiredTime() : Duration {
+    fun getSharedLinkExpiredTime(): Duration {
         return Duration.parse("PT${sharedLinksExpireTime.toUpperCase()}")
     }
 }
@@ -121,9 +121,10 @@ class MaintenanceConfiguration {
  */
 @Component
 class ResumePausedJobsScheduler @Autowired constructor(
-        val jobDao: JobDao,
-        val clusterLockExecutor: ClusterLockExecutor,
-        val config: MaintenanceConfiguration) : AbstractScheduledService(), ApplicationListener<ContextRefreshedEvent> {
+    val jobDao: JobDao,
+    val clusterLockExecutor: ClusterLockExecutor,
+    val config: MaintenanceConfiguration
+) : AbstractScheduledService(), ApplicationListener<ContextRefreshedEvent> {
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         if (config.enabled) {
@@ -156,20 +157,20 @@ class ResumePausedJobsScheduler @Autowired constructor(
 
         private val logger = LoggerFactory.getLogger(ResumePausedJobsScheduler::class.java)
     }
-
 }
 
 @Component
 class MaintenanceServiceImpl @Autowired constructor(
-        val sharedLinkService: SharedLinkService,
-        val storageService: FileStorageService,
-        val jobService: JobService,
-        val dispatcherService: DispatcherService,
-        val analystService: AnalystService,
-        val clusterLockExpirationManager: ClusterLockExpirationManager,
-        val clusterLockExecutor: ClusterLockExecutor,
-        val meterRegistry: MeterRegistry,
-        val config: MaintenanceConfiguration) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
+    val sharedLinkService: SharedLinkService,
+    val storageService: FileStorageService,
+    val jobService: JobService,
+    val dispatcherService: DispatcherService,
+    val analystService: AnalystService,
+    val clusterLockExpirationManager: ClusterLockExpirationManager,
+    val clusterLockExecutor: ClusterLockExecutor,
+    val meterRegistry: MeterRegistry,
+    val config: MaintenanceConfiguration
+) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         logger.info("MaintenanceService is enabled: {}", config.enabled)
@@ -220,8 +221,7 @@ class MaintenanceServiceImpl @Autowired constructor(
                         storage.getServableFile().delete()
                     }
                     removedCounter.increment()
-                }
-                else {
+                } else {
                     logger.warn("Failed to delete job $job from DB, did not exist.")
                 }
             }
@@ -254,7 +254,6 @@ class MaintenanceServiceImpl @Autowired constructor(
                 analystService.delete(it)
                 removeCounter.increment()
             }
-
         } catch (e: Exception) {
             logger.warn("Unable to handle unresponsive analysts, ", e)
         }
@@ -298,7 +297,6 @@ class MaintenanceServiceImpl @Autowired constructor(
          * The Name of the meter for counting events.
          */
         private const val meterName = "zorroa.maintenance"
-
 
         private val logger = LoggerFactory.getLogger(MaintenanceServiceImpl::class.java)
     }

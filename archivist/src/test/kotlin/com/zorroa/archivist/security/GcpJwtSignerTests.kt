@@ -53,7 +53,7 @@ class GcpJwtSignerTests {
         assertTrue(req.getHeaders("Authorization")[0].toString()
                 .startsWith("Authorization: Bearer "))
 
-        val token =  req.getHeaders("Authorization")[0].toString()
+        val token = req.getHeaders("Authorization")[0].toString()
                 .substringAfter("Bearer ")
         val claims = validator.validate(token)
         assertEquals("bar", claims["foo"])

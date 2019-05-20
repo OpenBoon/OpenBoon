@@ -19,16 +19,16 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
 
-
 @RestController
 @Timed
 class AnalystClusterController @Autowired constructor(
-        val analystService: AnalystService,
-        val dispatcherService: DispatcherService,
-        val dispatchQueueManager: DispatchQueueManager) {
+    val analystService: AnalystService,
+    val dispatcherService: DispatcherService,
+    val dispatchQueueManager: DispatchQueueManager
+) {
 
     @PostMapping(value = ["/cluster/_ping"])
-    fun ping(@RequestBody spec: AnalystSpec) : Any {
+    fun ping(@RequestBody spec: AnalystSpec): Any {
         return analystService.upsert(spec)
     }
 
@@ -36,7 +36,7 @@ class AnalystClusterController @Autowired constructor(
 
     @PutMapping(value = ["/cluster/_queue"])
     @Throws(IOException::class)
-    fun queue() : ResponseEntity<DispatchTask> {
+    fun queue(): ResponseEntity<DispatchTask> {
         // Will throw if not a valid Analyst
         getAnalystEndpoint()
 
@@ -50,7 +50,7 @@ class AnalystClusterController @Autowired constructor(
 
     @PostMapping(value = ["/cluster/_event"])
     @Throws(IOException::class)
-    fun event(@RequestBody event: TaskEvent) : Any {
+    fun event(@RequestBody event: TaskEvent): Any {
         dispatcherService.handleEvent(event)
         return HttpUtils.status("event", "foo", true)
     }

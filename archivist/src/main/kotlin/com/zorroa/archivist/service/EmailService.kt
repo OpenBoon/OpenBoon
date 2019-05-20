@@ -25,20 +25,18 @@ interface EmailService {
     fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink)
     fun sendPasswordResetEmail(user: User): PasswordResetToken
     fun sendExportRequestEmail(user: User, req: Request)
-
 }
 
 @Component
 class EmailServiceImpl @Autowired constructor(
-        private val userDao: UserDao,
-        private val mailSender: JavaMailSender?,
-        private val networkEnv: NetworkEnvironment,
-        private val properties: ApplicationProperties
+    private val userDao: UserDao,
+    private val mailSender: JavaMailSender?,
+    private val networkEnv: NetworkEnvironment,
+    private val properties: ApplicationProperties
 ) : EmailService {
 
     @Autowired
     private lateinit var folderService: FolderService
-
 
     override fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink) {
 
@@ -70,7 +68,6 @@ class EmailServiceImpl @Autowired constructor(
         } catch (e: MessagingException) {
             logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e)
         }
-
     }
 
     override fun sendPasswordResetEmail(user: User): PasswordResetToken {
@@ -137,12 +134,11 @@ class EmailServiceImpl @Autowired constructor(
             } catch (e: MessagingException) {
                 logger.warn("Email for sendOnboardEmail not sent, unexpected ", e)
             }
-
         }
         return token
     }
 
-    override fun sendExportRequestEmail(user: User, req: Request)  {
+    override fun sendExportRequestEmail(user: User, req: Request) {
 
         var name: String
         if (user.firstName != null && user.lastName != null) {
@@ -192,7 +188,7 @@ class EmailServiceImpl @Autowired constructor(
     }
 
     @Throws(MessagingException::class)
-    private fun sendHTMLEmail(email:String, subject: String, text: String, cc: List<String>, htmlMsg: String?) {
+    private fun sendHTMLEmail(email: String, subject: String, text: String, cc: List<String>, htmlMsg: String?) {
 
         mailSender?.let {
             val mimeMessage = mailSender.createMimeMessage()
@@ -204,8 +200,7 @@ class EmailServiceImpl @Autowired constructor(
 
             if (ArchivistConfiguration.unittest) {
                 helper.setTo(System.getProperty("user.name") + "@zorroa.com")
-            }
-            else {
+            } else {
                 helper.setTo(email)
             }
 
@@ -216,10 +211,7 @@ class EmailServiceImpl @Autowired constructor(
             }
             mailSender.send(mimeMessage)
         }
-
-
     }
-
 
     companion object {
         private val logger = LoggerFactory.getLogger(EmailServiceImpl::class.java)

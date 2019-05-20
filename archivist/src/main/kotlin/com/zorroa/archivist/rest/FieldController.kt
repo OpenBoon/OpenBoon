@@ -8,12 +8,21 @@ import com.zorroa.archivist.service.FieldSystemService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 class FieldController @Autowired constructor(
-        val fieldSystemService: FieldSystemService
+    val fieldSystemService: FieldSystemService
 ) {
 
     @PostMapping(value = ["/api/v1/fields"])
@@ -39,15 +48,17 @@ class FieldController @Autowired constructor(
     @DeleteMapping(value = ["/api/v1/fields/{id}"])
     @Throws(Exception::class)
     fun delete(@PathVariable id: UUID): Any {
-        return  HttpUtils.status("field", id, "delete",
+        return HttpUtils.status("field", id, "delete",
                 fieldSystemService.deleteField(fieldSystemService.getField(id)))
     }
 
     @RequestMapping(value = ["/api/v1/fields/_search"], method = [RequestMethod.GET, RequestMethod.POST])
     @Throws(Exception::class)
-    fun search(@RequestBody(required = false) req: FieldFilter?,
-               @RequestParam(value = "from", required = false) from: Int?,
-               @RequestParam(value = "count", required = false) count: Int?): KPagedList<Field> {
+    fun search(
+        @RequestBody(required = false) req: FieldFilter?,
+        @RequestParam(value = "from", required = false) from: Int?,
+        @RequestParam(value = "count", required = false) count: Int?
+    ): KPagedList<Field> {
         val filter = req ?: FieldFilter()
         from?.let { filter.page.from = it }
         count?.let { filter.page.size = it }

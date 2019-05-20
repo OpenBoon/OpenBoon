@@ -7,8 +7,10 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.GrantedAuthority
 
-class UnitTestAuthentication(principal: UserAuthed,
-                             authorities: Collection<GrantedAuthority>) : AbstractAuthenticationToken(authorities) {
+class UnitTestAuthentication(
+    principal: UserAuthed,
+    authorities: Collection<GrantedAuthority>
+) : AbstractAuthenticationToken(authorities) {
     private val principal: Any
     private val username: String
 
@@ -45,4 +47,3 @@ class UnitTestAuthenticationProvider : AuthenticationProvider {
         return aClass == UnitTestAuthentication::class.java
     }
 }
-

@@ -3,9 +3,7 @@ package com.zorroa.archivist.schema
 import com.zorroa.archivist.domain.Document
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-
 
 class DocumentTests {
 
@@ -40,13 +38,11 @@ class DocumentTests {
         assertEquals(listOf("spock", "kirk", "bones"), doc.getAttr("bing", List::class.java))
     }
 
-
     @Test
     fun removeFromAttr() {
         val doc = Document()
         doc.addToAttr("bing", listOf("spock", "kirk"))
         doc.removeFromAttr("bing", "spock")
         assertEquals(listOf("kirk"), doc.getAttr("bing", List::class.java))
-
     }
 }

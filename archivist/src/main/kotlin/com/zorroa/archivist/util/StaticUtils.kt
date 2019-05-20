@@ -6,16 +6,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.uuid.Generators
-import com.fasterxml.uuid.impl.NameBasedGenerator
-import com.zorroa.archivist.security.getUser
-import com.zorroa.archivist.security.getUserOrNull
-import com.zorroa.archivist.service.ImageServiceImpl
 import org.apache.tika.Tika
-import org.slf4j.Logger
 import java.io.InputStream
 import java.io.OutputStream
-import java.lang.IllegalArgumentException
 import java.nio.ByteBuffer
 import java.nio.channels.Channels
 import java.text.SimpleDateFormat
@@ -49,7 +42,7 @@ object StaticUtils {
  * @param output The dst output stream
  * @param buffer_size: The size of the copy buffer, defaults to 16384
  */
-fun copyInputToOuput(input: InputStream, output: OutputStream, buffer_size: Int=16384) : Long {
+fun copyInputToOuput(input: InputStream, output: OutputStream, buffer_size: Int = 16384): Long {
     val inputChannel = Channels.newChannel(input)
     val outputChannel = Channels.newChannel(output)
     var size = 0L
@@ -67,10 +60,8 @@ fun copyInputToOuput(input: InputStream, output: OutputStream, buffer_size: Int=
     return size
 }
 
-inline fun  <E: Any, T: Collection<E>> T?.whenNullOrEmpty(func: () -> Unit): Unit {
+inline fun <E : Any, T : Collection<E>> T?.whenNullOrEmpty(func: () -> Unit) {
     if (this == null || this.isEmpty()) {
         func()
     }
 }
-
-

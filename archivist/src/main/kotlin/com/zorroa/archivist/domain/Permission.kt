@@ -4,31 +4,32 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import org.springframework.security.core.GrantedAuthority
-import java.util.*
+import java.util.UUID
 
 class SetPermissions constructor() {
 
     var acl: Acl? = null
     var replace = false
 
-    constructor(acl:Acl?, replace:Boolean) : this() {
+    constructor(acl: Acl?, replace: Boolean) : this() {
         this.acl = acl
         this.replace = replace
     }
 }
 
 class PermissionUpdateSpec(
-        val id: UUID,
-        val type: String,
-        val name: String,
-        val description: String
+    val id: UUID,
+    val type: String,
+    val name: String,
+    val description: String
 )
 
 class PermissionSpec(
     var type: String,
     var name: String,
     var description: String = "",
-    var source: String = "local") {
+    var source: String = "local"
+) {
 
     constructor(authority: String) : this(authority.split(Permission.JOIN)[0],
             authority.split(Permission.JOIN)[1])
@@ -46,11 +47,12 @@ class PermissionSpec(
  *
  */
 class Permission constructor (
-        val id: UUID,
-        val name: String,
-        val type: String,
-        val description: String,
-        @JsonIgnore val immutable: Boolean=false) : GrantedAuthority {
+    val id: UUID,
+    val name: String,
+    val type: String,
+    val description: String,
+    @JsonIgnore val immutable: Boolean = false
+) : GrantedAuthority {
 
     val fullName = "$type${Permission.JOIN}$name"
 
@@ -82,11 +84,11 @@ class Permission constructor (
 }
 
 class PermissionFilter constructor(
-        val types: List<String>? = null,
-        val names: List<String>? = null,
-        val authorities: List<String>? = null,
-        val assignableToUser: Boolean? = null,
-        val assignableToObj: Boolean? = null
+    val types: List<String>? = null,
+    val names: List<String>? = null,
+    val authorities: List<String>? = null,
+    val assignableToUser: Boolean? = null,
+    val assignableToObj: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -104,17 +106,17 @@ class PermissionFilter constructor(
         addToWhere("permission.pk_organization=?")
         addToValues(getOrgId())
 
-        types?.let  {
+        types?.let {
             addToWhere(com.zorroa.common.util.JdbcUtils.inClause("permission.str_type", it.size))
             addToValues(it)
         }
 
-        names?.let  {
+        names?.let {
             addToWhere(com.zorroa.common.util.JdbcUtils.inClause("permission.str_name", it.size))
             addToValues(it)
         }
 
-        authorities?.let  {
+        authorities?.let {
             addToWhere(com.zorroa.common.util.JdbcUtils.inClause("permission.str_authority", it.size))
             addToValues(it)
         }
@@ -128,6 +130,5 @@ class PermissionFilter constructor(
             addToWhere("bool_assignable_to_obj=?")
             addToValues(assignableToObj)
         }
-
     }
 }

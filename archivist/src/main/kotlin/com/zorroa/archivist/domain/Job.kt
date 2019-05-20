@@ -9,7 +9,7 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
-import java.util.*
+import java.util.UUID
 
 enum class JobState {
     Active,
@@ -42,55 +42,55 @@ object JobPriority {
     const val Reindex = -32000
 }
 
-class JobSpec (
-        var name: String?,
-        var script : ZpsScript?,
-        val args: MutableMap<String, Any>? = mutableMapOf(),
-        val env: MutableMap<String, String>? =  mutableMapOf(),
-        var priority: Int=JobPriority.Standard,
-        var paused: Boolean=false,
-        val pauseDurationSeconds: Long?=null,
-        val replace:Boolean=false
+class JobSpec(
+    var name: String?,
+    var script: ZpsScript?,
+    val args: MutableMap<String, Any>? = mutableMapOf(),
+    val env: MutableMap<String, String>? = mutableMapOf(),
+    var priority: Int = JobPriority.Standard,
+    var paused: Boolean = false,
+    val pauseDurationSeconds: Long? = null,
+    val replace: Boolean = false
 )
 
-class JobUpdateSpec (
-        var name: String,
-        val priority: Int,
-        val paused: Boolean,
-        val timePauseExpired: Long
+class JobUpdateSpec(
+    var name: String,
+    val priority: Int,
+    val paused: Boolean,
+    val timePauseExpired: Long
 )
 
-class Job (
-        val id: UUID,
-        val organizationId: UUID,
-        val name: String,
-        val type: PipelineType,
-        val state: JobState,
-        var assetCounts: Map<String,Int>?=null,
-        var taskCounts: Map<String,Int>?=null,
-        var createdUser: UserBase?=null,
-        var timeStarted: Long,
-        var timeUpdated: Long,
-        var timeCreated: Long,
-        var priority: Int,
-        val paused: Boolean,
-        val timePauseExpired: Long
+class Job(
+    val id: UUID,
+    val organizationId: UUID,
+    val name: String,
+    val type: PipelineType,
+    val state: JobState,
+    var assetCounts: Map<String, Int>? = null,
+    var taskCounts: Map<String, Int>? = null,
+    var createdUser: UserBase? = null,
+    var timeStarted: Long,
+    var timeUpdated: Long,
+    var timeCreated: Long,
+    var priority: Int,
+    val paused: Boolean,
+    val timePauseExpired: Long
 ) : JobId {
     override val jobId = id
 
     @JsonIgnore
-    fun getStorageId() : String {
-        return "job___${jobId}"
+    fun getStorageId(): String {
+        return "job___$jobId"
     }
 }
 
-class JobFilter (
-        val ids : List<UUID>? = null,
-        val type: PipelineType? = null,
-        val states : List<JobState>? = null,
-        val organizationIds: List<UUID>? = null,
-        val names: List<String>? = null,
-        val paused: Boolean? = null
+class JobFilter(
+    val ids: List<UUID>? = null,
+    val type: PipelineType? = null,
+    val states: List<JobState>? = null,
+    val organizationIds: List<UUID>? = null,
+    val names: List<String>? = null,
+    val paused: Boolean? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -115,8 +115,7 @@ class JobFilter (
                 addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
                 addToValues(it)
             }
-        }
-        else {
+        } else {
             addToWhere("job.pk_organization=?")
             addToValues(getOrgId())
         }
@@ -133,7 +132,7 @@ class JobFilter (
 
         states?.let {
             addToWhere(JdbcUtils.inClause("job.int_state", it.size))
-            addToValues(it.map{ s-> s.ordinal})
+            addToValues(it.map { s -> s.ordinal })
         }
 
         names?.let {
@@ -147,4 +146,3 @@ class JobFilter (
         }
     }
 }
-

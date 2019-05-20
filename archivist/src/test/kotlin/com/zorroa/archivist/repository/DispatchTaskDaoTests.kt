@@ -120,10 +120,10 @@ class DispatchTaskDaoTests : AbstractTest() {
         assertEquals(0, priority.priority)
     }
 
-    fun launchJob(priority: Int) : Job {
+    fun launchJob(priority: Int): Job {
         val spec1 = JobSpec("test_job_p$priority",
             emptyZpsScript("priority_$priority"),
-            args=mutableMapOf("captain" to "kirk"),
+            args = mutableMapOf("captain" to "kirk"),
             priority = priority)
         return jobService.create(spec1)
     }

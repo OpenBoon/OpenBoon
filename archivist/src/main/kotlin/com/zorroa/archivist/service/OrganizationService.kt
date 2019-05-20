@@ -16,11 +16,11 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.UUID
 
 interface OrganizationService {
-    fun create(spec: OrganizationSpec) : Organization
-    fun get(id: UUID) : Organization
+    fun create(spec: OrganizationSpec): Organization
+    fun get(id: UUID): Organization
     fun get(name: String): Organization
     fun findOne(filter: OrganizationFilter): Organization
     fun getAll(filter: OrganizationFilter): KPagedList<Organization>
@@ -30,9 +30,9 @@ interface OrganizationService {
 @Service
 @Transactional
 class OrganizationServiceImpl @Autowired constructor (
-        val organizationDao: OrganizationDao,
-        val indexRouteDao: IndexRouteDao,
-        val properties: ApplicationProperties
+    val organizationDao: OrganizationDao,
+    val indexRouteDao: IndexRouteDao,
+    val properties: ApplicationProperties
 ) : OrganizationService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
@@ -63,7 +63,6 @@ class OrganizationServiceImpl @Autowired constructor (
             folderService.createStandardFolders(org)
             userService.createStandardUsers(org)
             fieldSystemService.setupDefaultFieldSets(org)
-
         } finally {
             resetAuthentication(auth)
         }
@@ -76,13 +75,13 @@ class OrganizationServiceImpl @Autowired constructor (
     }
 
     @Transactional(readOnly = true)
-    override fun get(id: UUID): Organization =  organizationDao.get(id)
+    override fun get(id: UUID): Organization = organizationDao.get(id)
 
     @Transactional(readOnly = true)
-    override fun get(name: String): Organization =  organizationDao.get(name)
+    override fun get(name: String): Organization = organizationDao.get(name)
 
     @Transactional(readOnly = true)
-    override fun findOne(filter: OrganizationFilter): Organization  {
+    override fun findOne(filter: OrganizationFilter): Organization {
         return organizationDao.findOne(filter)
     }
 

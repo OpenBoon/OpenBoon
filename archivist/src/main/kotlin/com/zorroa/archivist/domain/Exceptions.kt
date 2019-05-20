@@ -1,6 +1,5 @@
 package com.zorroa.common.domain
 
-
 open class ArchivistException : RuntimeException {
 
     constructor() : super() {}
@@ -32,7 +31,6 @@ class ArchivistWriteException : ArchivistException {
     constructor(message: String, cause: Throwable) : super(message, cause) {}
 
     constructor(cause: Throwable) : super(cause) {}
-
 }
 
 class DuplicateEntityException : ArchivistException {
@@ -57,7 +55,6 @@ class EntityNotFoundException : ArchivistException {
     constructor(cause: Throwable) : super(cause) {}
 }
 
-
 class InvalidRequestException : ArchivistException {
 
     constructor() : super() {}
@@ -68,5 +65,3 @@ class InvalidRequestException : ArchivistException {
 
     constructor(cause: Throwable) : super(cause) {}
 }
-
-

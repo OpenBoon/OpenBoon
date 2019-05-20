@@ -15,7 +15,7 @@ import java.util.UUID
 
 @RestController
 class FieldSetController @Autowired constructor(
-        val fieldSystemService: FieldSystemService
+    val fieldSystemService: FieldSystemService
 ) {
 
     @PostMapping(value = ["/api/v1/fieldSets"])

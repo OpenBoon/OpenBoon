@@ -1,7 +1,11 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.security.getUserOrNull
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.ArchivistException
+import com.zorroa.common.domain.ArchivistSecurityException
+import com.zorroa.common.domain.DuplicateEntityException
+import com.zorroa.common.domain.EntityNotFoundException
+import com.zorroa.common.domain.InvalidRequestException
 import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,10 +23,15 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.HttpRequestMethodNotSupportedException
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
-import java.util.*
+import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -35,7 +44,7 @@ class RestApiExceptionHandler {
     lateinit var errorAttributes: ErrorAttributes
 
     @Value("\${archivist.debug-mode.enabled}")
-    var debug : Boolean = false
+    var debug: Boolean = false
 
     /**
      * Do extra logging for these response statuses
@@ -46,31 +55,25 @@ class RestApiExceptionHandler {
                     HttpStatus.INTERNAL_SERVER_ERROR)
 
     @ExceptionHandler(Exception::class)
-    fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception) : ResponseEntity<Any> {
+    fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception): ResponseEntity<Any> {
 
         val annotation = AnnotationUtils.findAnnotation(e::class.java, ResponseStatus::class.java)
 
         val status = if (annotation != null) {
             annotation.value
-        }
-        else if (e is EmptyResultDataAccessException || e is EntityNotFoundException) {
-           HttpStatus.NOT_FOUND
-        }
-        else if (e is IncorrectResultSizeDataAccessException) {
+        } else if (e is EmptyResultDataAccessException || e is EntityNotFoundException) {
+            HttpStatus.NOT_FOUND
+        } else if (e is IncorrectResultSizeDataAccessException) {
             // We're borrowing this http status
             HttpStatus.METHOD_FAILURE
-        }
-        else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
+        } else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
             HttpStatus.CONFLICT
-        }
-        else if (e is ArchivistSecurityException || e is AccessDeniedException) {
+        } else if (e is ArchivistSecurityException || e is AccessDeniedException) {
             HttpStatus.FORBIDDEN
-        }
-        else if (e is HttpRequestMethodNotSupportedException ||
+        } else if (e is HttpRequestMethodNotSupportedException ||
                 e is MethodArgumentTypeMismatchException) {
             HttpStatus.METHOD_NOT_ALLOWED
-        }
-        else if (e is ArchivistException ||
+        } else if (e is ArchivistException ||
                 e is InvalidObjectException ||
                 e is InvalidRequestException ||
                 e is DataAccessException ||
@@ -80,8 +83,7 @@ class RestApiExceptionHandler {
                 e is NumberFormatException ||
                 e is ArrayIndexOutOfBoundsException) {
             HttpStatus.BAD_REQUEST
-        }
-        else {
+        } else {
             HttpStatus.INTERNAL_SERVER_ERROR
         }
 
@@ -93,12 +95,11 @@ class RestApiExceptionHandler {
         if (doExtraLogging.contains(status) || debug) {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
                     req.servletPath, getUserOrNull()?.username, errorId, e)
-        }
-        else {
+        } else {
             logger.error("endpoint='{}' user='{}', errorId='{}',",
                     req.servletPath, getUserOrNull()?.username, errorId)
         }
-        
+
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
         errAttrs["status"] = status.value()
@@ -110,7 +111,6 @@ class RestApiExceptionHandler {
         return ResponseEntity.status(status)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(errAttrs)
-
     }
 
     companion object {
@@ -125,7 +125,7 @@ class CustomErrorController @Autowired constructor(private val errorAttributes: 
         AbstractErrorController(errorAttributes), ErrorController {
 
     @Value("\${archivist.debug-mode.enabled}")
-    var debug : Boolean = false
+    var debug: Boolean = false
 
     override fun getErrorPath(): String {
         return "/error"
@@ -138,6 +138,4 @@ class CustomErrorController @Autowired constructor(private val errorAttributes: 
         val status = this.getStatus(request)
         return ResponseEntity(body, status)
     }
-
-
 }

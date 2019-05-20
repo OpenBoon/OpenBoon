@@ -28,14 +28,14 @@ import java.util.UUID
 
 interface TaskDao {
     fun create(job: JobId, spec: TaskSpec): Task
-    fun get(id: UUID) : Task
-    fun getInternal(id: UUID) : InternalTask
-    fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean
+    fun get(id: UUID): Task
+    fun getInternal(id: UUID): InternalTask
+    fun setState(task: TaskId, newState: TaskState, oldState: TaskState?): Boolean
     fun setHostEndpoint(task: TaskId, host: String)
-    fun getHostEndpoint(taskId: TaskId) : String?
+    fun getHostEndpoint(taskId: TaskId): String?
     fun setExitStatus(task: TaskId, exitStatus: Int)
-    fun getScript(id: UUID) : ZpsScript
-    fun incrementAssetCounters(task: TaskId, counts: AssetCounters) : Boolean
+    fun getScript(id: UUID): ZpsScript
+    fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean
     fun getAll(tf: TaskFilter?): KPagedList<Task>
     fun getAll(job: UUID, state: TaskState): List<InternalTask>
     fun isAutoRetryable(task: TaskId): Boolean
@@ -53,12 +53,12 @@ interface TaskDao {
     /**
      * Return a list of [InternalTask]s which have not seen a ping for the given [Duration]
      */
-    fun getOrphans(duration: Duration) : List<InternalTask>
+    fun getOrphans(duration: Duration): List<InternalTask>
 
     /**
      * Reset the asset stat counters for the given task back to 0.
      */
-    fun resetAssetCounters(task: TaskId) : Boolean
+    fun resetAssetCounters(task: TaskId): Boolean
 
     fun findOne(filter: TaskFilter): Task
 }
@@ -97,28 +97,27 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         return get(id)
     }
 
-    override fun get(id: UUID) : Task {
+    override fun get(id: UUID): Task {
         return jdbc.queryForObject("$GET WHERE task.pk_task=?", MAPPER, id)
     }
 
-    override fun getInternal(id: UUID) : InternalTask {
+    override fun getInternal(id: UUID): InternalTask {
         return jdbc.queryForObject("$GET_INTERNAL WHERE task.pk_task=?", INTERNAL_MAPPER, id)
     }
 
-    override fun getScript(id: UUID) : ZpsScript {
+    override fun getScript(id: UUID): ZpsScript {
         val script = jdbc.queryForObject("SELECT json_script FROM task WHERE pk_task=?",
                 String::class.java, id)
         return Json.deserialize(script, ZpsScript::class.java)
     }
 
-    override fun setState(task: TaskId, newState: TaskState, oldState: TaskState?) : Boolean {
+    override fun setState(task: TaskId, newState: TaskState, oldState: TaskState?): Boolean {
         val time = System.currentTimeMillis()
         // Note: There is a trigger updating counts here.
-        val updated =  if (oldState != null) {
+        val updated = if (oldState != null) {
             jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=? AND int_state=?",
                     newState.ordinal, time, task.taskId, oldState.ordinal) == 1
-        }
-        else {
+        } else {
             jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=?",
                     newState.ordinal, time, task.taskId) == 1
         }
@@ -133,8 +132,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             if (newState in START_STATES) {
                 jdbc.update("UPDATE task SET time_started=?, int_run_count=int_run_count+1, " +
                         "time_stopped=-1 WHERE pk_task=?", time, task.taskId)
-            }
-            else if (newState in STOP_STATES) {
+            } else if (newState in STOP_STATES) {
                 jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
             }
         }
@@ -159,7 +157,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.taskId)
     }
 
-    override fun incrementAssetCounters(task: TaskId, counts: AssetCounters) : Boolean {
+    override fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean {
         return jdbc.update(ASSET_COUNTS_INC,
                 counts.created,
                 counts.warnings,
@@ -168,7 +166,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 task.taskId) == 1
     }
 
-    override fun resetAssetCounters(task: TaskId) : Boolean {
+    override fun resetAssetCounters(task: TaskId): Boolean {
         return jdbc.update(ASSET_COUNTS_RESET, task.taskId) == 1
     }
 
@@ -210,7 +208,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 System.currentTimeMillis(), taskId, endpoint, TaskState.Running.ordinal) == 1
     }
 
-    override fun getOrphans(duration: Duration) : List<InternalTask> {
+    override fun getOrphans(duration: Duration): List<InternalTask> {
         val time = System.currentTimeMillis() - duration.toMillis()
         return jdbc.query(GET_ORPHANS, INTERNAL_MAPPER,
                 TaskState.Running.ordinal,
@@ -245,8 +243,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     buildAssetCounts(rs))
         }
 
-        private inline fun buildAssetCounts(rs: ResultSet) : Map<String, Int> {
-            val result = mutableMapOf<String,Int>()
+        private inline fun buildAssetCounts(rs: ResultSet): Map<String, Int> {
+            val result = mutableMapOf<String, Int>()
             result["assetCreatedCount"] = rs.getInt("int_asset_create_count")
             result["assetReplacedCount"] = rs.getInt("int_asset_replace_count")
             result["assetWarningCount"] = rs.getInt("int_asset_warning_count")
@@ -263,7 +261,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "WHERE " +
                     "pk_task=? " +
                 "AND " +
-                    "str_host=? "+
+                    "str_host=? " +
                 "AND " +
                     "int_state=?"
 
@@ -317,7 +315,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "json_script::JSON",
                 "int_run_count")
 
-        private const val GET  = "SELECT " +
+        private const val GET = "SELECT " +
                 "task.pk_task," +
                 "task.pk_parent," +
                 "task.pk_job," +
@@ -327,7 +325,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task.time_started," +
                 "task.time_stopped," +
                 "task.time_created," +
-                "task.time_ping,"+
+                "task.time_ping," +
                 "task.time_state_change," +
                 "task.int_exit_status," +
                 "task.str_host, " +
@@ -337,7 +335,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task_stat.int_asset_replace_count," +
                 "task_stat.int_asset_error_count," +
                 "task_stat.int_asset_warning_count," +
-                "job.pk_organization "+
+                "job.pk_organization " +
                 "FROM " +
                 "task " +
                 "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
@@ -355,6 +353,5 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     "job.int_state = ? " +
                 "AND " +
                     "task.int_state = ? "
-
     }
 }

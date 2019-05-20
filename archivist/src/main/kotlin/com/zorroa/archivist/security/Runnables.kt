@@ -85,5 +85,4 @@ class SecureSingleThreadExecutor(corePoolSize: Int, maximumPoolSize: Int, keepAl
 
         private val logger = LoggerFactory.getLogger(SecureSingleThreadExecutor::class.java)
     }
-
 }

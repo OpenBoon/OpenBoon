@@ -6,7 +6,7 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
-import java.util.*
+import java.util.UUID
 
 /**
  * An internal use only FieldEditSpec
@@ -17,10 +17,10 @@ import java.util.*
  * @property oldValue The old value if any.
  */
 class FieldEditSpecInternal(
-        val assetId: UUID,
-        val fieldId: UUID,
-        val newValue: Any?,
-        var oldValue: Any?=null
+    val assetId: UUID,
+    val fieldId: UUID,
+    val newValue: Any?,
+    var oldValue: Any? = null
 )
 
 /**
@@ -34,10 +34,10 @@ class FieldEditSpecInternal(
  * @property newValue The new value of the field.
  */
 class FieldEditSpec(
-        val assetId: UUID,
-        val fieldId: UUID?,
-        val attrName: String?,
-        val newValue: Any?
+    val assetId: UUID,
+    val fieldId: UUID?,
+    val attrName: String?,
+    val newValue: Any?
 ) {
     constructor(assetId: String, fieldId: UUID?, attrName: String?, newValue: Any?) : this(
             UUID.fromString(assetId), fieldId, attrName, newValue)
@@ -56,26 +56,25 @@ class FieldEditSpec(
  *
  */
 class FieldEdit(
-        val id: UUID,
-        val fieldId: UUID,
-        val assetId: UUID,
-        val oldValue: Any?,
-        val newValue: Any?,
-        val timeCreated: Long,
-        val userCreated: UserBase
-)
-{
+    val id: UUID,
+    val fieldId: UUID,
+    val assetId: UUID,
+    val oldValue: Any?,
+    val newValue: Any?,
+    val timeCreated: Long,
+    val userCreated: UserBase
+) {
     companion object {
 
         object TypeRefKList : TypeReference<KPagedList<FieldEdit>>()
     }
 }
 
-class FieldEditFilter (
-        val ids : List<UUID>? = null,
-        val assetIds: List<UUID>? = null,
-        val fieldIds: List<UUID>? = null,
-        val userCreatedIds: List<UUID>? = null
+class FieldEditFilter(
+    val ids: List<UUID>? = null,
+    val assetIds: List<UUID>? = null,
+    val fieldIds: List<UUID>? = null,
+    val userCreatedIds: List<UUID>? = null
 
 ) : KDaoFilter() {
 
@@ -115,7 +114,4 @@ class FieldEditFilter (
         addToWhere("field_edit.pk_organization=?")
         addToValues(getOrgId())
     }
-
 }
-
-

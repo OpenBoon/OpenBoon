@@ -48,23 +48,24 @@ data class FileStat(val size: Long, val mediaType: String, val exists: Boolean)
  * On object that can be stored somewhere locallly or in the vast
  * reaches of the interweb.
  */
-class ServableFile (
-        private val fileServerService: FileServerService,
-        val uri: URI) {
+class ServableFile(
+    private val fileServerService: FileServerService,
+    val uri: URI
+) {
 
-    fun exists() : Boolean {
+    fun exists(): Boolean {
         return fileServerService.objectExists(uri)
     }
 
-    fun isLocal() : Boolean {
+    fun isLocal(): Boolean {
         return fileServerService.storedLocally
     }
 
-    fun getSignedUrl() : URL {
+    fun getSignedUrl(): URL {
         return fileServerService.getSignedUrl(uri)
     }
 
-    fun getReponseEntity() : ResponseEntity<InputStreamResource> {
+    fun getReponseEntity(): ResponseEntity<InputStreamResource> {
         return fileServerService.getReponseEntity(uri)
     }
 
@@ -72,14 +73,14 @@ class ServableFile (
         return fileServerService.copyTo(uri, response)
     }
 
-    fun getLocalFile() : Path? {
+    fun getLocalFile(): Path? {
         return fileServerService.getLocalPath(uri)
     }
 
     /**
      * Return an open InputStream for the given file.
      */
-    fun getInputStream() : InputStream {
+    fun getInputStream(): InputStream {
         return fileServerService.getInputStream(uri)
     }
 
@@ -87,7 +88,7 @@ class ServableFile (
         return fileServerService.getStat(uri)
     }
 
-    fun delete() : Boolean {
+    fun delete(): Boolean {
         return fileServerService.delete(uri)
     }
 }
@@ -97,13 +98,12 @@ class ServableFile (
  */
 interface FileServerProvider {
 
-    fun getStorageUri(doc: Document) : URI {
-        val stream : String = doc.getAttr("source.path") ?: throw IllegalStateException("${doc.id} has no source.path")
+    fun getStorageUri(doc: Document): URI {
+        val stream: String = doc.getAttr("source.path") ?: throw IllegalStateException("${doc.id} has no source.path")
 
         return if (stream.contains(":/")) {
             URI(UrlEscapers.urlFragmentEscaper().escape(stream))
-        }
-        else {
+        } else {
             URI("file://$stream")
         }
     }
@@ -111,33 +111,32 @@ interface FileServerProvider {
     fun getServableFile(storage: FileStorage): ServableFile = getServableFile(storage.uri)
     fun getServableFile(uri: URI): ServableFile
     fun getServableFile(doc: Document): ServableFile
-    fun getServableFile(uri: String) : ServableFile = getServableFile(URI(uri))
+    fun getServableFile(uri: String): ServableFile = getServableFile(URI(uri))
 }
 
 open class FileServerProviderImpl @Autowired constructor (
-        val properties: ApplicationProperties,
-        val credentials: Path?) : FileServerProvider {
+    val properties: ApplicationProperties,
+    val credentials: Path?
+) : FileServerProvider {
 
-    private val services : Map<String, FileServerService>
+    private val services: Map<String, FileServerService>
 
     init {
         services = mutableMapOf()
         val internalStorageType = properties.getString("archivist.storage.type")
 
-        if (internalStorageType== "gcs") {
+        if (internalStorageType == "gcs") {
             services["gcs"] = GcpFileServerService(credentials)
-        }
-        else {
+        } else {
             services["local"] = LocalFileServerService()
         }
-
     }
 
-    fun getServerService(uri: URI) : FileServerService {
-        val type = when(uri.scheme) {
+    fun getServerService(uri: URI): FileServerService {
+        val type = when (uri.scheme) {
             "gs" -> "gcs"
             "file" -> "local"
-            null->"local"
+            null -> "local"
             else -> uri.scheme
         }
         return services[type] ?: throw FileServerException(
@@ -165,9 +164,9 @@ open class FileServerProviderImpl @Autowired constructor (
  */
 interface FileServerService {
 
-    val storedLocally : Boolean
+    val storedLocally: Boolean
 
-    fun getReponseEntity(url: URI) : ResponseEntity<InputStreamResource>
+    fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource>
 
     fun copyTo(url: URI, response: HttpServletResponse)
 
@@ -179,9 +178,9 @@ interface FileServerService {
 
     fun getSignedUrl(url: URI): URL
 
-    fun getLocalPath(url: URI) : Path?
+    fun getLocalPath(url: URI): Path?
 
-    fun getStat(url: URI) : FileStat
+    fun getStat(url: URI): FileStat
 
     fun delete(url: URI): Boolean
 }
@@ -229,19 +228,19 @@ class LocalFileServerService : FileServerService {
     }
 
     override fun getLocalPath(url: URI): Path? {
-      return Paths.get(url)
+        return Paths.get(url)
     }
 
     override fun getStat(url: URI): FileStat {
         val path = getLocalPath(url)
 
         return try {
-           val path = getLocalPath(url)
-           FileStat(Files.size(path), StaticUtils.tika.detect(path), objectExists(url))
-       } catch (e: Exception) {
+            val path = getLocalPath(url)
+            FileStat(Files.size(path), StaticUtils.tika.detect(path), objectExists(url))
+        } catch (e: Exception) {
             // guessing mimeType from string path
-           FileStat(0, StaticUtils.tika.detect(path.toString()), false)
-       }
+            FileStat(0, StaticUtils.tika.detect(path.toString()), false)
+        }
     }
 
     override fun delete(uri: URI): Boolean {
@@ -249,8 +248,7 @@ class LocalFileServerService : FileServerService {
         val path = Paths.get(uri)
         return if (path.toFile().isDirectory) {
             FileSystemUtils.deleteRecursively(path)
-        }
-        else {
+        } else {
             Files.deleteIfExists(path)
         }
     }
@@ -261,17 +259,17 @@ class LocalFileServerService : FileServerService {
 }
 
 class GcpFileServerService constructor (
-        val credentials: Path?) : FileServerService {
+    val credentials: Path?
+) : FileServerService {
 
     private val storage: Storage
     init {
         logger.info("Initializing Google Cloud Storage file server")
 
-        storage = if (credentials!= null && Files.exists(credentials)) {
+        storage = if (credentials != null && Files.exists(credentials)) {
             StorageOptions.newBuilder().setCredentials(
                     GoogleCredentials.fromStream(FileInputStream(credentials.toFile()))).build().service
-        }
-        else {
+        } else {
             StorageOptions.newBuilder().build().service
         }
     }
@@ -280,7 +278,7 @@ class GcpFileServerService constructor (
         get() = false
 
     override fun getReponseEntity(url: URI): ResponseEntity<InputStreamResource> {
-        val blob =  getBlob(url)
+        val blob = getBlob(url)
         if (blob != null) {
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(blob.contentType))
@@ -293,7 +291,7 @@ class GcpFileServerService constructor (
     }
 
     override fun copyTo(url: URI, response: HttpServletResponse) {
-        val blob =  getBlob(url)
+        val blob = getBlob(url)
         if (blob != null) {
             response.setContentLengthLong(blob.size)
             response.contentType = blob.contentType
@@ -304,7 +302,7 @@ class GcpFileServerService constructor (
     }
 
     override fun copyTo(url: URI, output: OutputStream) {
-        val blob =  getBlob(url)
+        val blob = getBlob(url)
         if (blob != null) {
             Channels.newInputStream(blob.reader()).copyTo(output)
         } else {
@@ -313,7 +311,7 @@ class GcpFileServerService constructor (
     }
 
     override fun getInputStream(url: URI): InputStream {
-        val blob =  getBlob(url)
+        val blob = getBlob(url)
         if (blob != null) {
             return Channels.newInputStream(blob.reader())
         } else {
@@ -327,61 +325,58 @@ class GcpFileServerService constructor (
             logger.event(LogObject.STORAGE, LogAction.AUTHORIZE, mapOf("uri" to url.toString()))
             return blob.signUrl(60, TimeUnit.MINUTES,
                     Storage.SignUrlOption.httpMethod(HttpMethod.GET))
-        }
-        else {
+        } else {
             throw FileServerReadException("$url not found")
         }
     }
 
     override fun objectExists(url: URI): Boolean {
-        var (bucket, path) =  splitGcpUrl(url)
+        var (bucket, path) = splitGcpUrl(url)
         val blobId = BlobId.of(bucket, path)
         val storage = storage.get(blobId) ?: return false
         return storage.exists()
     }
 
-    private fun getBlob(uri: URI) : Blob? {
-        var (bucket, path) =  splitGcpUrl(uri)
+    private fun getBlob(uri: URI): Blob? {
+        var (bucket, path) = splitGcpUrl(uri)
         val blobId = BlobId.of(bucket, path)
         logger.event(LogObject.STORAGE, LogAction.GET, mapOf("uri" to uri.toString()))
         return storage.get(blobId)
     }
 
-    private fun splitGcpUrl(url: URI) : Array<String> {
-        return arrayOf (
+    private fun splitGcpUrl(url: URI): Array<String> {
+        return arrayOf(
             url.authority,
             url.path.removePrefix("/")
         )
     }
 
     override fun getLocalPath(url: URI): Path? {
-       return null
+        return null
     }
 
     override fun getStat(url: URI): FileStat {
         val blob = getBlob(url)
         return if (blob != null) {
             FileStat(blob.size, blob.contentType, objectExists(url))
-        }
-        else {
+        } else {
             FileStat(0, defaultContentType, false)
         }
     }
 
     override fun delete(url: URI): Boolean {
         var result = true
-        var (bucket, path) =  splitGcpUrl(url)
+        var (bucket, path) = splitGcpUrl(url)
         val blobs = storage.list(bucket, Storage.BlobListOption.pageSize(100),
                 Storage.BlobListOption.prefix(path))
 
         for (blob in blobs.iterateAll()) {
             if (blob.delete()) {
                 logger.event(LogObject.STORAGE, LogAction.DELETE, mapOf("url" to url.toString()))
-            }
-            else {
+            } else {
                 logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, "Did not exist",
                         mapOf("url" to url.toString()))
-                result=false
+                result = false
             }
         }
         return result
@@ -392,11 +387,10 @@ class GcpFileServerService constructor (
     }
 }
 
-open class FileServerException(override var message:String?) : RuntimeException(message) {
+open class FileServerException(override var message: String?) : RuntimeException(message) {
     constructor(e: Exception) : this(e.message) {
         this.initCause(e)
     }
 }
 
-class FileServerReadException (override var message:String?) : FileServerException(message)
-
+class FileServerReadException(override var message: String?) : FileServerException(message)

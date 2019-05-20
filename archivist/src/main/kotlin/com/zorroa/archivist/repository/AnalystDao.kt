@@ -18,28 +18,28 @@ import java.time.Duration
 import java.util.UUID
 
 interface AnalystDao {
-    fun create(spec: AnalystSpec) : Analyst
-    fun update(spec: AnalystSpec) : Boolean
+    fun create(spec: AnalystSpec): Analyst
+    fun update(spec: AnalystSpec): Boolean
     fun get(id: UUID): Analyst
     fun get(endpoint: String): Analyst
     fun exists(endpoint: String): Boolean
     fun setState(analyst: Analyst, state: AnalystState): Boolean
-    fun getAll(filter: AnalystFilter) : KPagedList<Analyst>
+    fun getAll(filter: AnalystFilter): KPagedList<Analyst>
     fun count(filter: AnalystFilter): Long
-    fun setLockState(analyst: Analyst, state: LockState) : Boolean
-    fun isInLockState(endpoint: String, state: LockState) : Boolean
+    fun setLockState(analyst: Analyst, state: LockState): Boolean
+    fun isInLockState(endpoint: String, state: LockState): Boolean
     fun setTaskId(endpoint: String, taskId: UUID?): Boolean
-    fun getUnresponsive(state: AnalystState, duration: Duration) : List<Analyst>
-    fun delete(analyst: Analyst) : Boolean
+    fun getUnresponsive(state: AnalystState, duration: Duration): List<Analyst>
+    fun delete(analyst: Analyst): Boolean
     fun findOne(filter: AnalystFilter): Analyst
 }
 
 @Repository
 class AnalystDaoImpl : AbstractDao(), AnalystDao {
 
-    override fun create(spec: AnalystSpec) : Analyst {
+    override fun create(spec: AnalystSpec): Analyst {
         val id = uuid1.generate()
-        val endpoint= spec.endpoint ?: getAnalystEndpoint()
+        val endpoint = spec.endpoint ?: getAnalystEndpoint()
         if (!endpoint.startsWith("https://")) {
             throw IllegalArgumentException("The analyst endpoint must be an https URL.")
         }
@@ -49,7 +49,7 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         return get(id)
     }
 
-    override fun update(spec: AnalystSpec) : Boolean {
+    override fun update(spec: AnalystSpec): Boolean {
         val time = System.currentTimeMillis()
         val endpoint = getAnalystEndpoint()
         return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb,
@@ -75,8 +75,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         return jdbc.queryForObject("SELECT COUNT(1) FROM analyst WHERE str_endpoint=?", Int::class.java, endpoint) == 1
     }
 
-    override fun setState(analyst: Analyst, state: AnalystState) : Boolean {
-        val result =  jdbc.update("UPDATE analyst SET int_state=? WHERE pk_analyst=? AND int_state != ?",
+    override fun setState(analyst: Analyst, state: AnalystState): Boolean {
+        val result = jdbc.update("UPDATE analyst SET int_state=? WHERE pk_analyst=? AND int_state != ?",
                 state.ordinal, analyst.id, state.ordinal) == 1
         if (result) {
             logger.event(LogObject.ANALYST, LogAction.STATE_CHANGE,
@@ -85,34 +85,34 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
         return result
     }
 
-    override fun setLockState(analyst: Analyst, state: LockState) : Boolean {
+    override fun setLockState(analyst: Analyst, state: LockState): Boolean {
         return jdbc.update("UPDATE analyst SET int_lock_state=? WHERE pk_analyst=? AND int_lock_state != ?",
                 state.ordinal, analyst.id, state.ordinal) == 1
     }
 
-    override fun isInLockState(endpoint: String, state: LockState) : Boolean {
+    override fun isInLockState(endpoint: String, state: LockState): Boolean {
         return jdbc.queryForObject("SELECT COUNT(1) FROM analyst WHERE str_endpoint=? AND int_lock_state=?",
                 Int::class.java, endpoint, state.ordinal) == 1
     }
 
-    override fun setTaskId(endpoint: String, taskId: UUID?) : Boolean {
+    override fun setTaskId(endpoint: String, taskId: UUID?): Boolean {
         return jdbc.update("UPDATE analyst SET pk_task=? WHERE str_endpoint=?", taskId, endpoint) == 1
     }
 
-    override fun getUnresponsive(state: AnalystState, duration: Duration) : List<Analyst> {
+    override fun getUnresponsive(state: AnalystState, duration: Duration): List<Analyst> {
         val time = System.currentTimeMillis() - duration.toMillis()
         return jdbc.query(GET_DOWN, MAPPER, state.ordinal, time)
     }
 
-    override fun delete(analyst: Analyst) : Boolean {
-        val result =  jdbc.update("DELETE FROM analyst WHERE pk_analyst=?", analyst.id) == 1
+    override fun delete(analyst: Analyst): Boolean {
+        val result = jdbc.update("DELETE FROM analyst WHERE pk_analyst=?", analyst.id) == 1
         if (result) {
             logger.event(LogObject.ANALYST, LogAction.DELETE)
         }
         return result
     }
 
-    override fun getAll(filter: AnalystFilter) : KPagedList<Analyst> {
+    override fun getAll(filter: AnalystFilter): KPagedList<Analyst> {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
@@ -170,5 +170,4 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                 "flt_load",
                 "int_state")
     }
-
 }

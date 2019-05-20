@@ -1,6 +1,10 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.BatchUpdateAssetLinks
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.service.FolderService
@@ -9,16 +13,22 @@ import io.micrometer.core.annotation.Timed
 import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.HandlerMapping
-import java.util.*
+import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
 @RestController
 @Timed
 class FolderController @Autowired constructor(
-        private val folderService: FolderService,
-        private val searchService: SearchService
+    private val folderService: FolderService,
+    private val searchService: SearchService
 ) {
 
     val all: List<Folder>
@@ -60,7 +70,7 @@ class FolderController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v2/folders/_getByPath"])
-    fun getByPathV2(@RequestBody req: Map<String,String>): Folder? {
+    fun getByPathV2(@RequestBody req: Map<String, String>): Folder? {
         return folderService.get(req.getValue("path"))
     }
 
@@ -149,8 +159,9 @@ class FolderController @Autowired constructor(
     @DeleteMapping(value = ["/api/v1/folders/{id}/assets"])
     @Throws(Exception::class)
     fun removeAssets(
-            @RequestBody assetIds: List<String>,
-            @PathVariable id: UUID): Any {
+        @RequestBody assetIds: List<String>,
+        @PathVariable id: UUID
+    ): Any {
         val folder = folderService.get(id)
         return folderService.removeAssets(folder, assetIds)
     }
@@ -180,11 +191,12 @@ class FolderController @Autowired constructor(
     @PostMapping(value = ["/api/v1/folders/{id}/assets"])
     @Throws(Exception::class)
     fun addAssets(
-            @RequestBody assetIds: List<String>,
-            @PathVariable id: UUID): Any {
+        @RequestBody assetIds: List<String>,
+        @PathVariable id: UUID
+    ): Any {
         val folder = folderService.get(id)
         val req = BatchUpdateAssetLinks(assetIds, null, null)
-        val result =  folderService.addAssets(folder, req)
+        val result = folderService.addAssets(folder, req)
         return mapOf("success" to result.updatedAssetIds, "missing" to result.erroredAssetIds)
     }
 

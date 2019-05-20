@@ -1,7 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.QueuedFile
+import com.zorroa.archivist.domain.QueuedFileSpec
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.getOrgBatchUserName
 import com.zorroa.archivist.repository.FileQueueDao
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
@@ -13,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.Timer
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.timerTask
-
 
 /**
  * The FileQueueService handles accepting file processing requests via various
@@ -24,15 +29,16 @@ import kotlin.concurrent.timerTask
  */
 interface FileQueueService {
     fun create(spec: QueuedFileSpec): QueuedFile
-    fun processQueue() : Int
+    fun processQueue(): Int
 }
 
 // Not transactional
 @Service
 class FileQueueServiceImpl @Autowired constructor(
-        private val fileQueueDao: FileQueueDao,
-        private val properties: ApplicationProperties,
-        private val meterRegistrty: MeterRegistry): FileQueueService, ApplicationListener<ContextRefreshedEvent> {
+    private val fileQueueDao: FileQueueDao,
+    private val properties: ApplicationProperties,
+    private val meterRegistrty: MeterRegistry
+) : FileQueueService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     lateinit var jobService: JobService
@@ -51,14 +57,14 @@ class FileQueueServiceImpl @Autowired constructor(
         setupTimer()
     }
 
-    override fun create(spec: QueuedFileSpec) : QueuedFile {
+    override fun create(spec: QueuedFileSpec): QueuedFile {
         val result = fileQueueDao.create(spec)
         meterRegistrty.counter("zorroa.file-queue.created",
                 "organizationId", result.organizationId.toString()).increment()
         return result
     }
 
-    override fun processQueue() : Int {
+    override fun processQueue(): Int {
 
         // TODO: get lock on queue.  With multiple archivists we need a cluster wide lock
 
@@ -91,7 +97,7 @@ class FileQueueServiceImpl @Autowired constructor(
                     logger.info("Launching batch of {} files org.id='{}'", batch.size, orgId)
 
                     // Launch the job
-                    total+=makeJob(orgId, pipelineId, batch)
+                    total += makeJob(orgId, pipelineId, batch)
 
                     meterRegistrty.counter("zorroa.file-queue.processed",
                             "organizationId", qf.organizationId.toString()).increment(total.toDouble())
@@ -102,7 +108,6 @@ class FileQueueServiceImpl @Autowired constructor(
                     // Reset these values
                     orgId = qf.organizationId
                     pipelineId = qf.pipelineId
-
                 } else {
                     batch.add(qf)
                 }
@@ -110,21 +115,18 @@ class FileQueueServiceImpl @Autowired constructor(
 
             if (batch.isNotEmpty()) {
                 logger.info("Launching final batch of {} files to org.id='{}'", batch.size, orgId)
-                total+=makeJob(orgId, pipelineId, batch)
-
+                total += makeJob(orgId, pipelineId, batch)
             }
-
         } catch (e: Exception) {
             logger.error("Failed to launch batch of queued files org.id='{}': ", e)
-        }
-        finally {
+        } finally {
             isProcessing.set(false)
         }
 
         return total
     }
 
-    private fun makeJob(orgId: UUID, pipelineId: UUID, batch: List<QueuedFile>) : Int {
+    private fun makeJob(orgId: UUID, pipelineId: UUID, batch: List<QueuedFile>): Int {
 
         // Reset auth to
         val currentAuth = resetAuthentication(InternalAuthentication(
@@ -170,13 +172,11 @@ class FileQueueServiceImpl @Autowired constructor(
         timer.scheduleAtFixedRate(timerTask {
             try {
                 processQueue()
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 logger.error("Failed to launch batch of queued files: ", e)
             }
         }, delay, interval)
     }
-
 
     companion object {
 

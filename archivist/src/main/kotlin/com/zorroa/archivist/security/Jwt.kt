@@ -18,7 +18,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import java.io.IOException
-import java.util.*
+import java.util.UUID
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -29,11 +29,12 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
     @Autowired
     private lateinit var validator: JwtValidator
 
-
     @Throws(IOException::class, ServletException::class)
-    override fun doFilterInternal(req: HttpServletRequest,
-                                  res: HttpServletResponse,
-                                  chain: FilterChain) {
+    override fun doFilterInternal(
+        req: HttpServletRequest,
+        res: HttpServletResponse,
+        chain: FilterChain
+    ) {
 
         val token = req.getHeader(HEADER_STRING)
 
@@ -58,8 +59,8 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
  * JwtAuthenticationToken stores the validated claims
  */
 class JwtAuthenticationToken constructor(
-        claims: Map<String, String>,
-        val organizationId: String?=null
+    claims: Map<String, String>,
+    val organizationId: String? = null
 ) : AbstractAuthenticationToken(listOf()) {
 
     val userId = claims.getValue("userId")
@@ -69,7 +70,7 @@ class JwtAuthenticationToken constructor(
     }
 
     override fun getPrincipal(): Any {
-       return userId
+        return userId
     }
 
     override fun isAuthenticated(): Boolean = false
@@ -79,7 +80,7 @@ class JwtAuthenticationToken constructor(
  * An AuthenticationProvider that specifically looks for JwtAuthenticationToken.  Pulls
  * the userId from the JwtAuthenticationToken and returns a UsernamePasswordAuthenticationToken.
  */
-class JwtAuthenticationProvider: AuthenticationProvider {
+class JwtAuthenticationProvider : AuthenticationProvider {
 
     @Autowired
     private lateinit var userRegistryService: UserRegistryService
@@ -107,7 +108,5 @@ class JwtAuthenticationProvider: AuthenticationProvider {
     companion object {
 
         private val logger = LoggerFactory.getLogger(JwtAuthenticationProvider::class.java)
-
     }
 }
-

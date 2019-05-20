@@ -2,8 +2,21 @@ package com.zorroa.archivist.rest
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
-import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.domain.ApiKeySpec
+import com.zorroa.archivist.domain.LocalUserSpec
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.User
+import com.zorroa.archivist.domain.UserFilter
+import com.zorroa.archivist.domain.UserPasswordUpdate
+import com.zorroa.archivist.domain.UserProfileUpdate
+import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.security.generateUserToken
+import com.zorroa.archivist.security.getAuthentication
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
@@ -11,7 +24,6 @@ import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.security.Groups
 import io.micrometer.core.annotation.Timed
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -22,44 +34,51 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.security.Principal
-import java.util.*
+import java.util.Objects
+import java.util.UUID
 import java.util.stream.Collectors
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 @RestController
 @Timed
 class UserController @Autowired constructor(
-        private val userService: UserService,
-        private val permissionService: PermissionService,
-        private val emailService: EmailService
+    private val userService: UserService,
+    private val permissionService: PermissionService,
+    private val emailService: EmailService
 ) {
 
     @Deprecated("See /api/v1/users/_search")
     @RequestMapping(value = ["/api/v1/users"])
-    fun getAll() : List<User> = userService.getAll()
+    fun getAll(): List<User> = userService.getAll()
 
     @RequestMapping(value = ["/api/v1/who"])
     fun getCurrent(user: Principal?): ResponseEntity<Any> {
         return if (user != null) {
             ResponseEntity(userService.get(getUserId()), HttpStatus.OK)
-        }
-        else {
+        } else {
             ResponseEntity(mapOf("message" to "No authenticated user"), HttpStatus.UNAUTHORIZED)
         }
     }
 
     class ApiKeyReq(
-            val replace: Boolean = false,
-            val server: String? = null
+        val replace: Boolean = false,
+        val server: String? = null
     )
 
-    @RequestMapping(value = ["/api/v1/users/api-key"], method=[RequestMethod.GET, RequestMethod.POST])
+    @RequestMapping(value = ["/api/v1/users/api-key"], method = [RequestMethod.GET, RequestMethod.POST])
     fun getApiKey(@RequestBody(required = false) kreq: ApiKeyReq?, hreq: HttpServletRequest): Any {
         val req = kreq ?: ApiKeyReq(false, null)
 
@@ -68,7 +87,7 @@ class UserController @Autowired constructor(
          */
         val uri = when {
             req.server != null -> req.server
-            hreq.getHeader( "X-Zorroa-Curator-Host") != null -> hreq.getHeader( "X-Zorroa-Curator-Protocol") + "://" + hreq.getHeader( "X-Zorroa-Curator-Host")
+            hreq.getHeader("X-Zorroa-Curator-Host") != null -> hreq.getHeader("X-Zorroa-Curator-Protocol") + "://" + hreq.getHeader("X-Zorroa-Curator-Host")
             else -> {
                 val builder = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 builder.replacePath("/").build().toString()
@@ -112,8 +131,8 @@ class UserController @Autowired constructor(
      *
      * @return
      */
-    @RequestMapping(value = ["/api/v1/logout"], method=[RequestMethod.POST, RequestMethod.GET])
-    fun logout(req: HttpServletRequest, rsp: HttpServletResponse) : Any {
+    @RequestMapping(value = ["/api/v1/logout"], method = [RequestMethod.POST, RequestMethod.GET])
+    fun logout(req: HttpServletRequest, rsp: HttpServletResponse): Any {
         val auth = getAuthentication()
         val cookieClearingLogoutHandler = CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
         val securityContextLogoutHandler = SecurityContextLogoutHandler()
@@ -123,8 +142,7 @@ class UserController @Autowired constructor(
 
         return if (auth == null) {
             mapOf("success" to false)
-        }
-        else {
+        } else {
             mapOf("success" to true)
         }
     }
@@ -287,9 +305,11 @@ class UserController @Autowired constructor(
     }
 
     @PostMapping(value = ["/api/v1/users/_search"])
-    fun search(@RequestBody(required = false) req: UserFilter?,
-               @RequestParam(value = "from", required = false) from: Int?,
-               @RequestParam(value = "count", required = false) count: Int?) : KPagedList<User>  {
+    fun search(
+        @RequestBody(required = false) req: UserFilter?,
+        @RequestParam(value = "from", required = false) from: Int?,
+        @RequestParam(value = "count", required = false) count: Int?
+    ): KPagedList<User> {
         val filter = req ?: UserFilter()
         from?.let { filter.page.from = it }
         count?.let { filter.page.size = it }
@@ -297,12 +317,12 @@ class UserController @Autowired constructor(
     }
 
     @PostMapping(value = ["/api/v1/users/_findOne"])
-    fun findOne(@RequestBody(required = false) req: UserFilter?): User  {
+    fun findOne(@RequestBody(required = false) req: UserFilter?): User {
         return userService.findOne(req ?: UserFilter())
     }
 
     private fun validatePermissions(id: UUID) {
-        if (!Objects.equals(getUserId(),id) && !hasPermission(Groups.MANAGER, Groups.ADMIN)) {
+        if (!Objects.equals(getUserId(), id) && !hasPermission(Groups.MANAGER, Groups.ADMIN)) {
             throw SecurityException("Access denied.")
         }
     }

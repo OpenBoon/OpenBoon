@@ -43,7 +43,6 @@ enum class LogAction {
     ORGSWAP
 }
 
-
 /**
  * All the different classes we're creating event logs for.
  */
@@ -71,4 +70,3 @@ enum class LogObject {
     FIELD_SET,
     TASK_ERROR
 }
-

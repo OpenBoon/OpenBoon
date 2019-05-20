@@ -1,7 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Sets
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.TrashedFolder
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUserId
@@ -11,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface TrashFolderDao {
 
@@ -57,7 +61,6 @@ interface TrashFolderDao {
 
     fun removeAll(userId: UUID): List<UUID>
 }
-
 
 @Repository
 class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
@@ -128,7 +131,8 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             ps
         }
 
-        logger.event(LogObject.TRASH_FOLDER, LogAction.CREATE,
+        logger.event(
+            LogObject.TRASH_FOLDER, LogAction.CREATE,
                 mapOf("folderId" to folder.id, "trashFolderId" to id))
         return id
     }
@@ -191,7 +195,6 @@ class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             } catch (e: EmptyResultDataAccessException) {
                 logger.warn("Unable to find trash folder id: {}", id)
             }
-
         }
         return ids
     }

@@ -6,14 +6,13 @@ import com.zorroa.archivist.domain.UserBase
 import com.zorroa.archivist.security.SuperAdmin
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 interface UserDaoCache {
     fun getUser(id: UUID): UserBase
     fun getUser(username: String): UserBase
     fun invalidate(id: UUID)
-
 }
 
 @Repository
@@ -29,8 +28,7 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
                     // Super admin isn't in the DB so we'll return a static record
                     return if (key == SuperAdmin.id) {
                         SuperAdmin.base
-                    }
-                    else {
+                    } else {
                         jdbc.queryForObject(GET_BY_ID, MAPPER, key)
                     }
                 }
@@ -64,6 +62,5 @@ class UserDaoCacheImpl : AbstractDao(), UserDaoCache {
                     rs.getObject("pk_folder") as UUID?,
                     rs.getObject("pk_organization") as UUID)
         }
-
     }
 }

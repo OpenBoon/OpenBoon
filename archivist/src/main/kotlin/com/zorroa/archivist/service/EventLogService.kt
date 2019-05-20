@@ -11,17 +11,15 @@ import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 
-
 /**
  * EventLogConfiguration is a Configuration class which is just a method
  * of populating a MeterRegistryHolder with a MeterRegistry instance at startup.
  */
 @Configuration
-class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry)  {
+class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry) {
     init {
         MeterRegistryHolder.meterRegistry = meterRegistrty
     }
-
 }
 
 /**
@@ -29,9 +27,9 @@ class EventLogConfiguration @Autowired constructor(meterRegistrty: MeterRegistry
  */
 object MeterRegistryHolder {
 
-    lateinit var meterRegistry : MeterRegistry
+    lateinit var meterRegistry: MeterRegistry
 
-    fun getTags(vararg tags: Tag) : MutableList<Tag> {
+    fun getTags(vararg tags: Tag): MutableList<Tag> {
         // TODO: Add organization name.
         val result = mutableListOf<Tag>()
 
@@ -65,7 +63,7 @@ object MeterRegistryHolder {
  * @param kvp: A variable arg list of maps which contain additional key/value pairs to log.
  * @return A formatted log string
  */
-fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?) : String {
+fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?): String {
     val user = getUserOrNull()
     val sb = StringBuilder(256)
 
@@ -73,7 +71,7 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
     if (user != null) {
         sb.append(" zorroa.username='${user.getName()}' zorroa.orgId='${user.organizationId}'")
     }
-    kvp?.forEach { e->
+    kvp?.forEach { e ->
         e?.forEach {
             if (it.value != null) {
                 if (it.value is Number || it.value is Boolean) {
@@ -110,7 +108,7 @@ fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?
  * @param message: The message or exception
  * @param kvp: A map of key value pairs we want to associate with the line.
  */
-fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Map<String, Any?>?=null, ex: Exception?=null) {
+fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Map<String, Any?>? = null, ex: Exception? = null) {
     // Don't ever pass kvp into MeterRegistryHolder for tags
     MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "warn"))
     if (this.isWarnEnabled) {
@@ -168,7 +166,6 @@ fun applyAssetSearchMetrics(search: AssetSearch) {
         MeterRegistryHolder.increment(counter, Tag.of("type", "must_not"))
     }
     if (filter.recursive == true) {
-        MeterRegistryHolder.increment(counter,Tag.of("type", "recursive"))
+        MeterRegistryHolder.increment(counter, Tag.of("type", "recursive"))
     }
 }
-

@@ -12,21 +12,21 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
-import java.util.*
-
+import java.util.Date
+import java.util.UUID
 
 interface AssetDao {
     fun createOrReplace(asset: Document): Document
-    fun batchCreateOrReplace(docs: List<Document>) : Int
-    fun get(id: UUID) : Document
+    fun batchCreateOrReplace(docs: List<Document>): Int
+    fun get(id: UUID): Document
     fun get(id: String): Document
     fun getMap(ids: List<String>): Map<String, Document>
     fun getAll(ids: List<String>): List<Document>
-    fun batchUpdate(docs: List<Document>) : IntArray
+    fun batchUpdate(docs: List<Document>): IntArray
 }
 
 @Repository
-class AssetDaoImpl :  AbstractDao(), AssetDao {
+class AssetDaoImpl : AbstractDao(), AssetDao {
 
     override fun createOrReplace(doc: Document): Document {
         val time = extractTime(doc)
@@ -48,7 +48,7 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
         return doc
     }
 
-    override fun batchCreateOrReplace(docs: List<Document>) : Int {
+    override fun batchCreateOrReplace(docs: List<Document>): Int {
         val time = extractTime(docs[0])
         val user = getUser()
         val result = jdbc.batchUpdate(INSERT, object : BatchPreparedStatementSetter {
@@ -74,7 +74,7 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
         return result.sum()
     }
 
-    override fun batchUpdate(docs: List<Document>) : IntArray {
+    override fun batchUpdate(docs: List<Document>): IntArray {
         if (docs.isEmpty()) { return IntArray(0) }
         val time = extractTime(docs[0])
         val user = getUser()
@@ -141,8 +141,8 @@ class AssetDaoImpl :  AbstractDao(), AssetDao {
         return result
     }
 
-    fun extractTime(doc : Document) : Date {
-        return  doc.getAttr("system.timeModified", Date::class.java) ?: Date()
+    fun extractTime(doc: Document): Date {
+        return doc.getAttr("system.timeModified", Date::class.java) ?: Date()
     }
 
     companion object {

@@ -13,26 +13,33 @@ import com.zorroa.archivist.util.HttpUtils
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @Timed
 class PermissionController @Autowired constructor(
-        val permissionService: PermissionService,
-        val indexService: IndexService
-){
+    val permissionService: PermissionService,
+    val indexService: IndexService
+) {
     /**
      * Return all available permissions.
      */
     @GetMapping(value = ["/api/v1/permissions"])
-    fun getAll() : List<Permission> = permissionService.getPermissions()
+    fun getAll(): List<Permission> = permissionService.getPermissions()
 
     /**
      * Return all available permissions.
      */
     @GetMapping(value = ["/api/v1/permissions/_names"])
-    fun getAllNames() : List<String> = permissionService.getPermissionNames()
+    fun getAllNames(): List<String> = permissionService.getPermissionNames()
 
     /**
      * Get a particular permission record.

@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain
 
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
-import java.util.*
+import java.util.UUID
 
 /**
  * All properties needed to create an organization.
@@ -13,8 +13,8 @@ import java.util.*
  *
  */
 class OrganizationSpec(
-        val name: String,
-        var indexRouteId: UUID?=null
+    val name: String,
+    var indexRouteId: UUID? = null
 )
 
 /**
@@ -26,9 +26,9 @@ class OrganizationSpec(
  * @property name The unique name of the Organization.
  */
 class Organization(
-        val id: UUID,
-        val indexRouteId: UUID,
-        val name: String
+    val id: UUID,
+    val indexRouteId: UUID,
+    val name: String
 ) {
     companion object {
         val DEFAULT_ORG_ID = UUID.fromString("00000000-9998-8888-7777-666666666666")
@@ -42,8 +42,8 @@ class Organization(
  * @property indexRouteId Will update the Organizations's ES cluster address. Will not move files.
  */
 class OrganizationUpdateSpec(
-        var name: String,
-        var indexRouteId: UUID
+    var name: String,
+    var indexRouteId: UUID
 )
 
 /**
@@ -54,9 +54,10 @@ class OrganizationUpdateSpec(
  * @property indexRouteIds A list of [IndexRoute] ids.
  */
 class OrganizationFilter(
-        val ids : List<UUID>?=null,
-        val names: List<String>?=null,
-        val indexRouteIds: List<UUID>?=null) : KDaoFilter() {
+    val ids: List<UUID>? = null,
+    val names: List<String>? = null,
+    val indexRouteIds: List<UUID>? = null
+) : KDaoFilter() {
 
     override val sortMap: Map<String, String> = mapOf(
             "name" to "organization.str_name",
@@ -69,23 +70,22 @@ class OrganizationFilter(
             sort = listOf("name:a")
         }
 
-        ids?.let  {
+        ids?.let {
             addToWhere(JdbcUtils.inClause("organization.pk_organization", it.size))
             addToValues(it)
         }
 
-        names?.let  {
+        names?.let {
             addToWhere(JdbcUtils.inClause("organization.str_name", it.size))
             addToValues(it)
         }
 
-        indexRouteIds?.let  {
+        indexRouteIds?.let {
             addToWhere(JdbcUtils.inClause("organization.pk_index_route", it.size))
             addToValues(it)
         }
     }
 }
-
 
 /**
  * A simple class for determining the dispatch priority of organization.
@@ -93,7 +93,7 @@ class OrganizationFilter(
  * @property organizationId The Organization Id.
  * @property priority The priority of the Organization, lower is higher priority.
  */
-class DispatchPriority (
-        val organizationId: UUID,
-        val priority: Int
+class DispatchPriority(
+    val organizationId: UUID,
+    val priority: Int
 )
