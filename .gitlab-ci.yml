@@ -115,8 +115,8 @@ deploy_archivist_dev:
   script:
     - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
-    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-deploy
+    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=dev
 
 deploy_elasticsearch_dev:
   image: google/cloud-sdk
@@ -129,5 +129,5 @@ deploy_elasticsearch_dev:
   script:
     - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
-    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-deploy
+    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=dev
