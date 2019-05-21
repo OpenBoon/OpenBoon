@@ -22,18 +22,11 @@ import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import io.micrometer.core.instrument.MeterRegistry
-import io.undertow.servlet.api.SecurityConstraint
-import io.undertow.servlet.api.SecurityInfo
-import io.undertow.servlet.api.TransportGuaranteeType
-import io.undertow.servlet.api.WebResourceCollection
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer
-import org.springframework.boot.web.embedded.undertow.UndertowDeploymentInfoCustomizer
-import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
@@ -88,27 +81,6 @@ class ArchivistConfiguration {
         }
 
         return InfoEndpoint(ImmutableList.of(info))
-    }
-
-    @Bean
-    fun servletWebServerFactory(): UndertowServletWebServerFactory {
-        val factory = UndertowServletWebServerFactory()
-        factory.addBuilderCustomizers(UndertowBuilderCustomizer {
-            it.addHttpListener(properties().getInt("server.http_port", 8080), "0.0.0.0")
-        })
-        if (properties().getBoolean("security.require_ssl", false)) {
-            factory.addDeploymentInfoCustomizers(UndertowDeploymentInfoCustomizer {
-                it.addSecurityConstraint(SecurityConstraint()
-                        .addWebResourceCollection(WebResourceCollection()
-                                .addUrlPattern("/*"))
-                        .setTransportGuaranteeType(TransportGuaranteeType.CONFIDENTIAL)
-                        .setEmptyRoleSemantic(SecurityInfo.EmptyRoleSemantic.PERMIT))
-                        .setConfidentialPortManager {
-                            properties().getInt("server.port", 8066)
-                        }
-            })
-        }
-        return factory
     }
 
     @Bean
