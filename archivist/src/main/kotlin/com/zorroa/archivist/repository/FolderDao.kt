@@ -481,6 +481,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             return query
         }
 
+        if (access == Access.Read && hasPermission(Groups.VIEW_ALL_FOLDERS)) {
+            return query
+        }
+
         val sb = StringBuilder(query.length + 256)
         sb.append(query)
         if (query.contains("WHERE")) {

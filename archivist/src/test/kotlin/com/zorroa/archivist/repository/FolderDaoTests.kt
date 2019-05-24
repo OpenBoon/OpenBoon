@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.FolderUpdate
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.domain.TaxonomySpec
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
