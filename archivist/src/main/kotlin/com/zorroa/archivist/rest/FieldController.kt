@@ -2,7 +2,8 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldFilter
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecCustom
+import com.zorroa.archivist.domain.FieldSpecExpose
 import com.zorroa.archivist.domain.FieldUpdateSpec
 import com.zorroa.archivist.service.FieldSystemService
 import com.zorroa.archivist.util.HttpUtils
@@ -27,7 +28,13 @@ class FieldController @Autowired constructor(
 
     @PostMapping(value = ["/api/v1/fields"])
     @Throws(Exception::class)
-    fun create(@RequestBody spec: FieldSpec): Field {
+    fun create(@RequestBody spec: FieldSpecCustom): Field {
+        return fieldSystemService.createField(spec)
+    }
+
+    @PostMapping(value = ["/api/v1/fields/_expose"])
+    @Throws(Exception::class)
+    fun expose(@RequestBody spec: FieldSpecExpose): Field {
         return fieldSystemService.createField(spec)
     }
 

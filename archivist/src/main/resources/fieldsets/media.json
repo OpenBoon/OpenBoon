@@ -1,32 +1,11 @@
 {
   "name": "Media Properties",
   "linkExpression": "_not_empty_:media",
-  "fieldSpecs": [
-    {
-      "name": "Title",
-      "attrName": "media.title",
-      "attrType": "StringAnalyzed",
-      "editable": true,
-      "keywords": true,
-      "suggest": true
-    },
-    {
-      "name": "Keywords",
-      "attrName": "media.keywords",
-      "attrType": "StringAnalyzed",
-      "editable": true,
-      "keywords": true,
-      "suggest": true
-    },
-    {
-      "name": "Width",
-      "attrName": "media.width",
-      "attrType": "NumberInteger"
-    },
-    {
-      "name": "Height",
-      "attrName": "media.height",
-      "attrType": "NumberInteger"
-    }
+  "attrNames": [
+    "media.title",
+    "media.keywords",
+    "media.description",
+    "media.width",
+    "media.height"
   ]
 }

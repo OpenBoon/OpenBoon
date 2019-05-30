@@ -1,9 +1,10 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldEditSpecInternal
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecExpose
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,8 +26,9 @@ class FieldEditDaoTests : AbstractTest() {
     fun init() {
         addTestAssets("set04/standard")
         refreshIndex()
-        field = fieldSystemService.createField(FieldSpec(
-                "File Extension", "source.extension", null, true))
+        field = fieldSystemService.createField(FieldSpecExpose(
+                "File Extension", "source.extension", AttrType.StringAnalyzed)
+        )
     }
 
     @Test

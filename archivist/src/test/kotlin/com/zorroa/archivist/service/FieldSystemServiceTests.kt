@@ -3,7 +3,8 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.FieldEditSpec
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecCustom
+import com.zorroa.archivist.domain.FieldSpecExpose
 import com.zorroa.archivist.domain.FieldUpdateSpec
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.search.AssetSearch
@@ -32,7 +33,7 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createRegular() {
-        val spec = FieldSpec("File Extension", "source.extension", null, false)
+        val spec = FieldSpecExpose("File Extension", "source.extension")
         val field = fieldSystemService.createField(spec)
         assertEquals("source.extension", field.attrName)
         assertEquals("File Extension", field.name)
@@ -42,7 +43,7 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomStringContentField() {
-        val spec = FieldSpec("Notes", null, AttrType.StringContent, true)
+        val spec = FieldSpecCustom("Notes", AttrType.StringContent).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(AttrType.StringContent, field.attrType)
         assertTrue(field.custom)
@@ -56,7 +57,7 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomStringExactField() {
-        val spec = FieldSpec("SomeField", null, AttrType.StringExact, true)
+        val spec = FieldSpecCustom("SomeField", AttrType.StringExact).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(AttrType.StringExact, field.attrType)
         assertTrue(field.custom)
@@ -72,7 +73,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.string_analyzed__0"
         val attrType = AttrType.StringAnalyzed
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -88,7 +89,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.string_path__0"
         val attrType = AttrType.StringPath
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -104,7 +105,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.number_integer__0"
         val attrType = AttrType.NumberInteger
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -120,7 +121,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.number_float__0"
         val attrType = AttrType.NumberFloat
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -136,7 +137,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.boolean__0"
         val attrType = AttrType.Bool
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -152,7 +153,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.boolean__0"
         val attrType = AttrType.Bool
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -168,7 +169,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.date_time__0"
         val attrType = AttrType.DateTime
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -184,7 +185,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.date_time__0"
         val attrType = AttrType.DateTime
 
-        val spec = FieldSpec("SomeField", null, attrType, true)
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -199,6 +200,7 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun applyFieldEdits() {
+        setupEmbeddedFieldSets()
         val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         val field = fieldSystemService.getField("media.title")
         val edit = assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "bilbo"))
@@ -238,8 +240,10 @@ class FieldSystemServiceTests : AbstractTest() {
     @Test
     fun testCreateSuggestField() {
         val jobCount = jobService.getAll(JobFilter()).size()
-        val spec = FieldSpec("File Extension", "foo.bar", AttrType.StringAnalyzed,
-                keywords = true, suggest = true)
+        val spec = FieldSpecExpose("File Extension", "foo.bar", AttrType.StringAnalyzed).apply {
+            suggest=true
+            forceType=true
+        }
         val field = fieldSystemService.createField(spec)
         assertEquals(true, field.suggest)
         assertEquals(true, field.keywords)
@@ -250,8 +254,10 @@ class FieldSystemServiceTests : AbstractTest() {
     @Test
     fun testCreateSuggestFieldSkipReindex() {
         val jobCount = jobService.getAll(JobFilter()).size()
-        val spec = FieldSpec("File Extension", "foo.bar", AttrType.StringAnalyzed,
-                keywords = true, suggest = true)
+        val spec = FieldSpecExpose("File Extension", "foo.bar", AttrType.StringAnalyzed).apply {
+            suggest=true
+            forceType=true
+        }
         fieldSystemService.createField(spec, reindexSuggest = false)
         assertEquals(jobCount, jobService.getAll(JobFilter()).size(),
                 "reindex job was created but was not needed")
@@ -260,9 +266,11 @@ class FieldSystemServiceTests : AbstractTest() {
     @Test
     fun testUpdateFieldSuggest() {
         val jobCount = jobService.getAll(JobFilter()).size()
-        val spec = FieldSpec("File Extension", "foo.bar", AttrType.StringAnalyzed,
-                keywords = true, suggest = false)
-        val field = fieldSystemService.createField(spec)
+        val spec = FieldSpecExpose("File Extension", "foo.bar", AttrType.StringAnalyzed).apply {
+            forceType=true
+        }
+
+        val field = fieldSystemService.createField(spec, true)
         assertEquals(jobCount, jobService.getAll(JobFilter()).size(),
                 "reindex job was created but was not needed")
 
@@ -275,8 +283,9 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun testApplySuggestFields() {
-        val spec = FieldSpec("File Extension", "source.extension", AttrType.StringAnalyzed,
-                keywords = true, suggest = true)
+        val spec = FieldSpecExpose("File Extension", "source.extension", AttrType.StringAnalyzed).apply {
+            suggest=true
+        }
         fieldSystemService.createField(spec, reindexSuggest = false)
         val assets = searchService.search(Pager.first(), AssetSearch()).list
         fieldSystemService.applySuggestions(assets)

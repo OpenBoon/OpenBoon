@@ -3,7 +3,7 @@ package com.zorroa.archivist.rest
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.FieldEdit
 import com.zorroa.archivist.domain.FieldEditSpec
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecExpose
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.common.repository.KPagedList
@@ -23,6 +23,9 @@ class FieldEditControllerTests : MockMvcTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
+    val field = FieldSpecExpose("File Ext", "source.extension")
+        .apply { editable = true }
+
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -33,8 +36,7 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val field = fieldSystemService.createField(field)
         val edit = assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id,
                 "source.extension", "gandalf"))
 
@@ -55,8 +57,7 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val field = fieldSystemService.createField(field)
         assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id,
                 "source.extension", "gandalf"))
 
@@ -78,8 +79,8 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val field = fieldSystemService.createField(
+            FieldSpecExpose("File Ext", "source.extension").apply { editable=true })
         val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits")
@@ -103,8 +104,7 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val field = fieldSystemService.createField(field)
         val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits")
@@ -123,8 +123,7 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val field = fieldSystemService.createField(field)
         val edit = assetService.createFieldEdit(FieldEditSpec(asset.id, field.id,
                 "source.extension", "gandalf"))
 

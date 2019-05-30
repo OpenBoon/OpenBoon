@@ -46,44 +46,99 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
         }
 
         return when (this) {
-            AttrType.NumberInteger -> { value is Int || value is Long }
-            AttrType.NumberFloat -> { value is Double || value is Float }
-            AttrType.StringExact,
-            AttrType.StringContent,
-            AttrType.StringAnalyzed,
-            AttrType.StringSuggest,
-            AttrType.StringPath -> { value is CharSequence }
-            AttrType.Bool -> { value is Boolean }
-            AttrType.HashSimilarity -> { value is String }
-            AttrType.DateTime -> { value is Long || value is String || value is Date }
-            AttrType.GeoPoint -> { value is List<*> }
+            NumberInteger -> { value is Int || value is Long }
+            NumberFloat -> { value is Double || value is Float }
+            StringExact,
+            StringContent,
+            StringAnalyzed,
+            StringSuggest,
+            StringPath -> { value is CharSequence }
+            Bool -> { value is Boolean }
+            HashSimilarity -> { value is String }
+            DateTime -> { value is Long || value is String || value is Date }
+            GeoPoint -> { value is List<*> }
         }
     }
 }
 
 /**
- * The properties required to create a new field.
+ * The base class for FieldSpec, FieldSpecCustom and FieldSpecExpose.
+ *
+ * @property editable If the field is editable or not.
+ * @property keywords Set to true if this field should be considered a keyword.
+ * @property keywordsBoost The keywords boost level for the field.
+ * @property suggest If the field is a suggest field or not.
+ * @property options The valid set of options for a field.
+ */
+open class BaseFieldSpec {
+    var editable: Boolean = false
+    var keywords: Boolean = false
+    var keywordsBoost: Float = 1.0f
+    var suggest: Boolean = false
+    var options: List<Any>? = null
+}
+
+/**
+ * [FieldSpecCustom] and [FieldSpecExpose] converted turned into a [FieldSpec] which
+ * is used to create a [Field].  This class is not exposed via the REST API.
+ *
+ * @property name The label/name of the Field
+ * @property attrName The ES attribute name.
+ * @property attrType The type of attribute.
+ * @property custom True if the Field is a custom attribute.
+ */
+class FieldSpec  (
+    val name: String,
+    var attrName: String,
+    var attrType: AttrType,
+    var custom: Boolean = false
+) : BaseFieldSpec() {
+
+    constructor(spec: FieldSpecCustom, attrName: String) : this(spec.name, attrName, spec.attrType) {
+        this.editable = spec.editable
+        this.keywords = spec.keywords
+        this.keywordsBoost = spec.keywordsBoost
+        this.suggest = spec.suggest
+        this.options = spec.options
+        this.custom = true
+    }
+
+    constructor(spec: FieldSpecExpose, attrType: AttrType) : this(spec.name, spec.attrName, attrType) {
+        this.editable = spec.editable
+        this.keywords = spec.keywords
+        this.keywordsBoost = spec.keywordsBoost
+        this.suggest = spec.suggest
+        this.options = spec.options
+        this.custom = false
+    }
+}
+
+/**
+ * The properties required to create a new [Field] that points at a custom ES attribute.
+ *
+ * @property name The name of the field, aka the label.
+ * @property attrType The type of attribute.
+ */
+class FieldSpecCustom (
+    val name: String,
+    var attrType: AttrType
+) : BaseFieldSpec()
+
+/**
+ * The properties required to expose an existing ES attribute.
  *
  * @property name The name of the field, aka the label.
  * @property attrName The ES attribute name.
  * @property attrType The type of attribute.
- * @property editable If the field is editable or not.
- * @property custom If the field is a custom field or a Zorroa standard.
- * @property keywords Set to true if this field should be considered a keyword.
- * @property keywordsBoost The keywords boost level for the field.
- * @property options The valid set of options for a field.
+ * @property forceType Forces the attrType value to be used. This is only done internally.
  */
-class FieldSpec(
+class FieldSpecExpose(
     val name: String,
-    var attrName: String?,
-    var attrType: AttrType?,
-    var editable: Boolean = false,
-    var keywords: Boolean = false,
-    var keywordsBoost: Float = 1.0f,
-    var suggest: Boolean = false,
-    var options: List<Any>? = null,
-    @JsonIgnore var custom: Boolean = false
-)
+    var attrName: String,
+    var attrType: AttrType?=null,
+    @JsonIgnore
+    var forceType: Boolean = false
+) : BaseFieldSpec()
 
 /**
  * A Field describes the display properties for a given ES attribute.  Each ES attribute
@@ -94,7 +149,6 @@ class FieldSpec(
  * @property attrName The ES attribute name.
  * @property attrType The type of attribute.
  * @property editable If the field is editable or not.
- * @property custom If the field is a custom field or a Zorroa standard.
  * @property keywords Set to true if this field should be considered a keyword.
  * @property keywordsBoost The keywords boost level for the field.
  * @property value The value of the field, if the field is resolved against an asset.
@@ -127,6 +181,7 @@ class Field(
  * @property editable If the field is editable or not.
  * @property keywords Set to true if this field should be considered a keyword.
  * @property keywordsBoost The keywords boost level for the field.
+ * @property suggest True the field should drive suggestions.
  * @property options Available options.
  */
 class FieldUpdateSpec(
@@ -145,13 +200,13 @@ class FieldUpdateSpec(
  * @property linkExpression A query string expression used by the server to determine
  *  if an asset should display a field set.
  * @property fieldIds Unique field ids in the field set. Optional.
- * @property fieldSpecs A set of field specs which will add fields and then assign them to the field set.
+ * @property attrNames Alternative to fieldIds, provide a list of attribute names which get added to the field set.
  */
 class FieldSetSpec(
     val name: String,
     val linkExpression: String? = null,
     var fieldIds: List<UUID>? = null,
-    var fieldSpecs: List<FieldSpec>? = null
+    var attrNames: List<String>? = null
 )
 
 /**

@@ -110,10 +110,10 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "isKeywords" to spec.keywords,
                 "isSuggest" to spec.suggest))
 
-        return Field(id, spec.name, spec!!.attrName as String,
-                spec.attrType as AttrType, spec.editable,
+        return Field(id, spec.name, spec.attrName,
+                spec.attrType, spec.editable,
                 spec.custom, spec.keywords, spec.keywordsBoost,
-                spec.suggest)
+                spec.suggest, spec.options)
     }
 
     override fun update(field: Field, spec: FieldUpdateSpec): Boolean {

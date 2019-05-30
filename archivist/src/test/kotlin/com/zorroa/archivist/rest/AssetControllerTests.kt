@@ -30,6 +30,7 @@ import com.zorroa.security.Groups
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.doReturn
@@ -47,6 +48,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.web.bind.annotation.InitBinder
 import java.io.File
 import java.net.URL
 import java.util.UUID
@@ -66,6 +68,11 @@ class AssetControllerTests : MockMvcTest() {
 
     @SpyBean
     override lateinit var fileServerProvider: FileServerProvider
+
+    @Before
+    fun init() {
+        setupEmbeddedFieldSets()
+    }
 
     @After
     fun after() {
