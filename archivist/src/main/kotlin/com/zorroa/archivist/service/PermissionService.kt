@@ -92,7 +92,8 @@ class PermissionServiceImpl @Autowired constructor(
             mapOf("name" to "export", "desc" to "Export all files"),
             mapOf("name" to "read", "desc" to "Read all data"),
             mapOf("name" to "write", "desc" to "Write all data"),
-            mapOf("name" to "librarian", "desc" to "Manager /library folder"))
+            mapOf("name" to "librarian", "desc" to "Manager /library folder"),
+            mapOf("name" to "view-all-folders", "desc" to "Ability to view all folders"))
 
     override fun createStandardPermissions(org: Organization) {
         for (entry in standardPerms) {

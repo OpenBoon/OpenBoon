@@ -32,7 +32,6 @@ import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.util.whenNullOrEmpty
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -827,7 +826,6 @@ class FolderServiceImpl @Autowired constructor(
         // This folder can be created before the user is actually fully
         // authenticated in the case of external auth systems.
         val adminUser = userDao.get("admin")
-        val everyone = permissionDao.get(Groups.EVERYONE)
 
         val rootFolder = folderDao.getRootFolder()
         val userFolder = folderDao.get(rootFolder.id, "Users", true)
@@ -837,8 +835,7 @@ class FolderServiceImpl @Autowired constructor(
         spec.userId = adminUser.id
         val folder = folderDao.create(spec)
         folderDao.setAcl(folder.id, Acl()
-                .addEntry(perm, Access.Read, Access.Write)
-                .addEntry(everyone, Access.Read.value), true)
+                .addEntry(perm, Access.Read, Access.Write))
         return folder
     }
 

@@ -13,4 +13,5 @@ public class Groups {
     public static final String EXPORT = "zorroa::export";
     public static final String READ = "zorroa::read";
     public static final String WRITE = "zorroa::write";
+    public static final String VIEW_ALL_FOLDERS = "zorroa::view-all-folders";
 }
