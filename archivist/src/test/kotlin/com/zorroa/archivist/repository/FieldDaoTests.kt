@@ -46,7 +46,8 @@ class FieldDaoTests : AbstractTest() {
         val field = fieldDao.create(spec)
 
         val updateSpec = FieldUpdateSpec(
-                "test", true, true, 2.0f, true)
+            "test", true, true, 2.0f, true
+        )
 
         assertTrue(fieldDao.update(field, updateSpec))
         val result = fieldDao.get(field.id)
@@ -77,7 +78,7 @@ class FieldDaoTests : AbstractTest() {
         fieldDao.deleteAll()
 
         val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed)
-            .apply { suggest=true })
+            .apply { suggest = true })
         val f2 = fieldDao.create(FieldSpec("Boats", "document.number", AttrType.NumberInteger))
         val f3 = fieldDao.create(FieldSpec("Moats", "document.float", AttrType.NumberFloat)
             .apply { editable = true })

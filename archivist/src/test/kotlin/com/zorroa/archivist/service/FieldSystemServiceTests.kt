@@ -43,7 +43,7 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomStringContentField() {
-        val spec = FieldSpecCustom("Notes", AttrType.StringContent).apply { editable=true }
+        val spec = FieldSpecCustom("Notes", AttrType.StringContent).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(AttrType.StringContent, field.attrType)
         assertTrue(field.custom)
@@ -57,7 +57,7 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomStringExactField() {
-        val spec = FieldSpecCustom("SomeField", AttrType.StringExact).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", AttrType.StringExact).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(AttrType.StringExact, field.attrType)
         assertTrue(field.custom)
@@ -73,7 +73,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.string_analyzed__0"
         val attrType = AttrType.StringAnalyzed
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -89,7 +89,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.string_path__0"
         val attrType = AttrType.StringPath
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -105,7 +105,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.number_integer__0"
         val attrType = AttrType.NumberInteger
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -121,7 +121,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.number_float__0"
         val attrType = AttrType.NumberFloat
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -137,7 +137,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.boolean__0"
         val attrType = AttrType.Bool
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -153,7 +153,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.boolean__0"
         val attrType = AttrType.Bool
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -169,7 +169,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.date_time__0"
         val attrType = AttrType.DateTime
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -185,7 +185,7 @@ class FieldSystemServiceTests : AbstractTest() {
         val attrName = "custom.date_time__0"
         val attrType = AttrType.DateTime
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable=true }
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -241,57 +241,73 @@ class FieldSystemServiceTests : AbstractTest() {
     fun testCreateSuggestField() {
         val jobCount = jobService.getAll(JobFilter()).size()
         val spec = FieldSpecExpose("File Extension", "foo.bar", AttrType.StringAnalyzed).apply {
-            suggest=true
-            forceType=true
+            suggest = true
+            forceType = true
         }
         val field = fieldSystemService.createField(spec)
         assertEquals(true, field.suggest)
         assertEquals(true, field.keywords)
-        assertEquals(jobCount + 1, jobService.getAll(JobFilter()).size(),
-                "reindex job was not created")
+        assertEquals(
+            jobCount + 1, jobService.getAll(JobFilter()).size(),
+            "reindex job was not created"
+        )
     }
 
     @Test
     fun testCreateSuggestFieldSkipReindex() {
         val jobCount = jobService.getAll(JobFilter()).size()
         val spec = FieldSpecExpose("File Extension", "foo.bar", AttrType.StringAnalyzed).apply {
-            suggest=true
-            forceType=true
+            suggest = true
+            forceType = true
         }
         fieldSystemService.createField(spec, reindexSuggest = false)
-        assertEquals(jobCount, jobService.getAll(JobFilter()).size(),
-                "reindex job was created but was not needed")
+        assertEquals(
+            jobCount, jobService.getAll(JobFilter()).size(),
+            "reindex job was created but was not needed"
+        )
     }
 
     @Test
     fun testUpdateFieldSuggest() {
         val jobCount = jobService.getAll(JobFilter()).size()
         val spec = FieldSpecExpose("File Extension", "foo.bar", AttrType.StringAnalyzed).apply {
-            forceType=true
+            forceType = true
         }
 
         val field = fieldSystemService.createField(spec, true)
-        assertEquals(jobCount, jobService.getAll(JobFilter()).size(),
-                "reindex job was created but was not needed")
+        assertEquals(
+            jobCount, jobService.getAll(JobFilter()).size(),
+            "reindex job was created but was not needed"
+        )
 
-        assertTrue(fieldSystemService.updateField(field, FieldUpdateSpec(field.name, field.editable,
-                field.keywords, field.keywordsBoost, true)
-        ))
-        assertEquals(jobCount + 1, jobService.getAll(JobFilter()).size(),
-                "reindex job was not created")
+        assertTrue(
+            fieldSystemService.updateField(
+                field, FieldUpdateSpec(
+                    field.name, field.editable,
+                    field.keywords, field.keywordsBoost, true
+                )
+            )
+        )
+        assertEquals(
+            jobCount + 1, jobService.getAll(JobFilter()).size(),
+            "reindex job was not created"
+        )
     }
 
     @Test
     fun testApplySuggestFields() {
         val spec = FieldSpecExpose("File Extension", "source.extension", AttrType.StringAnalyzed).apply {
-            suggest=true
+            suggest = true
         }
         fieldSystemService.createField(spec, reindexSuggest = false)
         val assets = searchService.search(Pager.first(), AssetSearch()).list
         fieldSystemService.applySuggestions(assets)
         for (asset in assets) {
-            assertTrue(asset.getAttr("system.suggestions", Json.LIST_OF_STRINGS).contains(
-                    asset.getAttr("source.extension", String::class.java)))
+            assertTrue(
+                asset.getAttr("system.suggestions", Json.LIST_OF_STRINGS).contains(
+                    asset.getAttr("source.extension", String::class.java)
+                )
+            )
         }
     }
 }

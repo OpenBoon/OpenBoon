@@ -46,17 +46,31 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
         }
 
         return when (this) {
-            NumberInteger -> { value is Int || value is Long }
-            NumberFloat -> { value is Double || value is Float }
+            NumberInteger -> {
+                value is Int || value is Long
+            }
+            NumberFloat -> {
+                value is Double || value is Float
+            }
             StringExact,
             StringContent,
             StringAnalyzed,
             StringSuggest,
-            StringPath -> { value is CharSequence }
-            Bool -> { value is Boolean }
-            HashSimilarity -> { value is String }
-            DateTime -> { value is Long || value is String || value is Date }
-            GeoPoint -> { value is List<*> }
+            StringPath -> {
+                value is CharSequence
+            }
+            Bool -> {
+                value is Boolean
+            }
+            HashSimilarity -> {
+                value is String
+            }
+            DateTime -> {
+                value is Long || value is String || value is Date
+            }
+            GeoPoint -> {
+                value is List<*>
+            }
         }
     }
 }
@@ -87,7 +101,7 @@ open class BaseFieldSpec {
  * @property attrType The type of attribute.
  * @property custom True if the Field is a custom attribute.
  */
-class FieldSpec  (
+class FieldSpec(
     val name: String,
     var attrName: String,
     var attrType: AttrType,
@@ -119,7 +133,7 @@ class FieldSpec  (
  * @property name The name of the field, aka the label.
  * @property attrType The type of attribute.
  */
-class FieldSpecCustom (
+class FieldSpecCustom(
     val name: String,
     var attrType: AttrType
 ) : BaseFieldSpec()
@@ -135,7 +149,7 @@ class FieldSpecCustom (
 class FieldSpecExpose(
     val name: String,
     var attrName: String,
-    var attrType: AttrType?=null,
+    var attrType: AttrType? = null,
     @JsonIgnore
     var forceType: Boolean = false
 ) : BaseFieldSpec()
@@ -232,8 +246,10 @@ class FieldSetFilter(
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-            mapOf("id" to "field_set.pk_field_set",
-                    "name" to "field_set.str_name")
+        mapOf(
+            "id" to "field_set.pk_field_set",
+            "name" to "field_set.str_name"
+        )
 
     override fun build() {
 
@@ -267,10 +283,12 @@ class FieldFilter(
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-            mapOf("id" to "field.pk_field",
-                    "name" to "field.str_name",
-                    "attrType" to "field.int_attr_type",
-                    "attrName" to "field.int_attr_name")
+        mapOf(
+            "id" to "field.pk_field",
+            "name" to "field.str_name",
+            "attrType" to "field.int_attr_type",
+            "attrName" to "field.int_attr_name"
+        )
 
     override fun build() {
 
