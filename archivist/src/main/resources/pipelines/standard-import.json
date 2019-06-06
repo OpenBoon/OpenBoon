@@ -14,6 +14,18 @@
     },
     {
       "className": "zplugins.proxies.processors.ProxyProcessor"
+    },
+    {
+      "className": "zplugins.mxnet.processors.ResNetSimilarityProcessor"
+    },
+    {
+      "className": "zplugins.image.processors.HSVSimilarityProcessor"
+    },
+    {
+      "className": "zplugins.face.processors.FaceRecognitionProcessor"
+    },
+    {
+      "className": "zplugins.video.clipifiers.FFProbeKeyframeClipifier"
     }
   ]
 }
