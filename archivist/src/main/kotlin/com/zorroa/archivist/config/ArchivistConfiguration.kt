@@ -5,6 +5,7 @@ import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.security.GcpJwtValidator
+import com.zorroa.archivist.security.IrmJwtValidator
 import com.zorroa.archivist.security.JwtValidator
 import com.zorroa.archivist.security.MasterJwtValidator
 import com.zorroa.archivist.security.UserJwtValidator
@@ -176,9 +177,10 @@ class ArchivistConfiguration {
     fun jwtValidator(userDao: UserDao): JwtValidator {
         val validators = mutableListOf<JwtValidator>()
         validators.add(UserJwtValidator(userDao))
+        validators.add(IrmJwtValidator())
 
         val path = properties().getPath("archivist.config.path")
-                .resolve("service-credentials.json")
+            .resolve("service-credentials.json")
         if (Files.exists(path)) {
             validators.add(GcpJwtValidator(path.toString()))
         }
