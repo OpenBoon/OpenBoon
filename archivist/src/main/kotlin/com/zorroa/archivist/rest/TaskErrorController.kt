@@ -6,8 +6,12 @@ import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
 import io.micrometer.core.annotation.Timed
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,14 +21,16 @@ import java.util.UUID
 
 @RestController
 @Timed
+@Api(tags = ["Task Error"], description = "Operations for interacting with Task Errors.")
 class TaskErrorController @Autowired constructor(val jobService: JobService) {
 
+    @ApiOperation("Search for Task Errors.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/taskerrors/_search"])
     fun getAll(
-        @RequestBody filter: TaskErrorFilter,
-        @RequestParam(value = "from", required = false) from: Int?,
-        @RequestParam(value = "count", required = false) count: Int?
+        @ApiParam("Search filter.") @RequestBody filter: TaskErrorFilter,
+        @ApiParam("Result number to start from.") @RequestParam(value = "from", required = false) from: Int?,
+        @ApiParam("Number of results per page.") @RequestParam(value = "count", required = false) count: Int?
     ): KPagedList<TaskError> {
         // Backwards compat
         from?.let { filter.page.from = it }
@@ -32,15 +38,18 @@ class TaskErrorController @Autowired constructor(val jobService: JobService) {
         return jobService.getTaskErrors(filter)
     }
 
+    @ApiOperation("Searches for a single Task Error.",
+        notes = "Throws an error if more than 1 result is returned based on the given filter.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/taskerrors/_findOne"])
-    fun findOne(@RequestBody filter: TaskErrorFilter): TaskError {
+    fun findOne(@ApiParam("Search filter.") @RequestBody filter: TaskErrorFilter): TaskError {
         return jobService.findOneTaskError(filter)
     }
 
+    @ApiOperation("Delete a Task Error.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
-    @PostMapping(value = ["/api/v1/taskerrors/{id}"])
-    fun delete(@PathVariable id: UUID): Any {
+    @DeleteMapping(value = ["/api/v1/taskerrors/{id}"])
+    fun delete(@ApiParam("UUID of the Task Error.") @PathVariable id: UUID): Any {
         return HttpUtils.deleted("TaskError", id, jobService.deleteTaskError(id))
     }
 }

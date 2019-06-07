@@ -1,17 +1,26 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.UUID;
 
-/**
- * An AclEntry define a permission and the access type for the permission.
- */
+@ApiModel(value = "ACL Entry", description = "Defines a permission and the access type for the permission.")
 public class AclEntry {
 
+    @ApiModelProperty("UUID of a Permission.")
     public UUID permissionId;
+
+    @ApiModelProperty(value = "Access level for the Permission.",
+            notes = "Access levels for the Permission represented as bit flags. First bit is read access, " +
+                    "second bit is write access, and third bit is execute access. E.g. value of 3 implies R|W access, " +
+                    "5 implies R|X, 7 is R|W|X.")
     public int access;
+
+    @ApiModelProperty("Permission name.")
     public String permission;
+
     public AclEntry() { }
 
     public AclEntry(Permission perm, Access... access) {

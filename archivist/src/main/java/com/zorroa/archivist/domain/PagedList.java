@@ -1,6 +1,8 @@
 package com.zorroa.archivist.domain;
 
 import com.zorroa.archivist.search.Scroll;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,11 +13,19 @@ import java.util.stream.Stream;
 /**
  * Created by chambers on 6/30/16.
  */
+@ApiModel(value = "Paged List", description = "Paginated list of items.")
 public class PagedList<T> implements Iterable<T> {
 
+    @ApiModelProperty("List of items to paginate.")
     private List<T> list;
+
+    @ApiModelProperty("Current page.")
     private Pager page;
+
+    @ApiModelProperty("Aggregations to apply to list.")
     private Map<String, Object> aggregations;
+
+    @ApiModelProperty("Scroll used to get the next page.")
     private Scroll scroll;
 
     public PagedList() {

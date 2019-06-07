@@ -5,6 +5,8 @@ import com.zorroa.archivist.repository.LongRangeFilter
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
@@ -42,25 +44,27 @@ enum class AuditLogType {
     Warning
 }
 
-/**
- * An AuditLogFilter is used to filter an audit log query.  Most of the properties here
- * should be self explanatory.  All properties are nullable.
- *
- * @property assetIds The unique assetIds to filter on.
- * @property userIds The unique userIds to filter on.
- * @property fieldIds The unique fieldIds to filter on.
- * @property timeCreated The time to filter on, see the [LongRangeFilter] class.
- * @property types The entry types to filter on. See [AuditLogType].
- * @property attrNames The attribute names to filter on.
- * @property sort The sort direction. Formatted as field:direction, defaults to ["timeCreated:desc"]
- */
+@ApiModel("Audit Log Filter", description = "Used to filter an audit log query.")
 class AuditLogFilter(
+
+    @ApiModelProperty("Asset UUIDs to match.")
     val assetIds: List<UUID>? = null,
+
+    @ApiModelProperty("User UUIDs to match,")
     val userIds: List<UUID>? = null,
+
+    @ApiModelProperty("Field UUIDs to match.")
     val fieldIds: List<UUID>? = null,
+
+    @ApiModelProperty("Time range to filter on.")
     val timeCreated: LongRangeFilter? = null,
+
+    @ApiModelProperty("Types to match.")
     val types: List<AuditLogType>? = null,
+
+    @ApiModelProperty("Attribute names to match.")
     val attrNames: List<String>? = null
+
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -113,29 +117,36 @@ class AuditLogFilter(
     }
 }
 
-/**
- * An entry into the AuditLog.
- *
- * @property id The unique ID of the entry
- * @property assetId The assetId that was modified.
- * @property fieldId The fieldId that was modified.  Can be null.
- * @property user The user that generated the audit log entry.
- * @property timeCreated The time the entry was created.
- * @property type The entry type.  See AuditLogType enum.
- * @property attrName The name of the attribute changed. Can be null.
- * @property message A message associated with the log entry.
- * @property value The new value of a field or property changed.  Can be null.
- */
+@ApiModel("Audit Log Entry", description = "Describes an action taken by a User.")
 class AuditLogEntry(
+
+    @ApiModelProperty("UUID of the Audit Log Entry.")
     val id: UUID,
+
+    @ApiModelProperty("UUID of the Asset that was modified.")
     val assetId: UUID,
+
+    @ApiModelProperty("UUID of the Field that was modified.")
     val fieldId: UUID?,
+
+    @ApiModelProperty("User that took the action.")
     val user: UserBase,
+
+    @ApiModelProperty("Time the entry was created.")
     val timeCreated: Long,
+
+    @ApiModelProperty("Type of action.")
     val type: AuditLogType,
+
+    @ApiModelProperty("Name of the attribute that changed.")
     val attrName: String?,
+
+    @ApiModelProperty("Message associated with the log entry.")
     val message: String?,
+
+    @ApiModelProperty("New value of a field or property changed.")
     val value: Any?
+
 )
 
 /**

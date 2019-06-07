@@ -1,17 +1,36 @@
 package com.zorroa.archivist.search;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Created by chambers on 7/26/16.
  */
+@ApiModel(value = "Range Query", description = "Query within a set range.")
 public class RangeQuery {
 
+    @ApiModelProperty("Values must be greater than this.")
     public  Object gt;
+
+    @ApiModelProperty("Values must be less than this.")
     public Object lt;
+
+    @ApiModelProperty("Values must be greater than or equal to this.")
     public Object gte;
+
+    @ApiModelProperty("Values must be less than or equal to this.")
     public Object lte;
+
+    @ApiModelProperty("")
     public Object from;
+
+    @ApiModelProperty("")
     public Object to;
+
+    @ApiModelProperty("Optional date formats to use. Example: \"dd/MM/yyyy||yyyy\"")
     public String format;
+
+    @ApiModelProperty("ES Boost value of the query.")
     public float boost = 1.0f;
 
     public RangeQuery() { }

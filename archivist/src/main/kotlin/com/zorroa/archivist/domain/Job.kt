@@ -9,6 +9,8 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 enum class JobState {
@@ -42,39 +44,97 @@ object JobPriority {
     const val Reindex = -32000
 }
 
+@ApiModel("Job Spec", description = "Attributes required to create a Job.")
 class JobSpec(
+
+    @ApiModelProperty("Name of the job")
     var name: String?,
+
+    @ApiModelProperty("ZPS Script this Job will run.")
     var script: ZpsScript?,
+
+    @ApiModelProperty("Args to run the ZPS script with.")
     val args: MutableMap<String, Any>? = mutableMapOf(),
+
+    @ApiModelProperty("Environment to pass to the ZPS script.")
     val env: MutableMap<String, String>? = mutableMapOf(),
+
+    @ApiModelProperty("Priority of the Job.")
     var priority: Int = JobPriority.Standard,
+
+    @ApiModelProperty("If true create the Job in the paused state.")
     var paused: Boolean = false,
+
+    @ApiModelProperty("Number of seconds to keep the Job paused after creation.")
     val pauseDurationSeconds: Long? = null,
+
+    @ApiModelProperty("If true replace Jobs of the same name.")
     val replace: Boolean = false
+
 )
 
+@ApiModel("Job Update Spec", description = "Attributes required to update a Job.")
 class JobUpdateSpec(
+
+    @ApiModelProperty("Name of the Job.")
     var name: String,
+
+    @ApiModelProperty("Priority for the Job.")
     val priority: Int,
+
+    @ApiModelProperty("If true the Job will be paused.")
     val paused: Boolean,
+
+    @ApiModelProperty("Time the Job should be unpaused.")
     val timePauseExpired: Long
+
 )
 
+@ApiModel("Job", description = "Describes an Analyst Job.")
 class Job(
+
+    @ApiModelProperty("UUID of the Job.")
     val id: UUID,
+
+    @ApiModelProperty("UUID of the Organization this Job belongs to.")
     val organizationId: UUID,
+
+    @ApiModelProperty("Name of the Job.")
     val name: String,
+
+    @ApiModelProperty("Type of Pipeline this Job will run.")
     val type: PipelineType,
+
+    @ApiModelProperty("Current state of this Job.")
     val state: JobState,
+
+    @ApiModelProperty("Number of Assets this Job is running.")
     var assetCounts: Map<String, Int>? = null,
+
+    @ApiModelProperty("Number of Tasks in this Job.")
     var taskCounts: Map<String, Int>? = null,
+
+    @ApiModelProperty("User that created the Job.")
     var createdUser: UserBase? = null,
+
+    @ApiModelProperty("Time the Job was started.")
     var timeStarted: Long,
+
+    @ApiModelProperty("Time the Job was last updated.")
     var timeUpdated: Long,
+
+    @ApiModelProperty("Time the Job was created.")
     var timeCreated: Long,
+
+    @ApiModelProperty("Current priority of the Job,")
     var priority: Int,
+
+    @ApiModelProperty("If true this Job is paused.")
     val paused: Boolean,
+
+    @ApiModelProperty("Time this Job will unpause itself.")
     val timePauseExpired: Long
+
 ) : JobId {
     override val jobId = id
 
@@ -84,13 +144,27 @@ class Job(
     }
 }
 
+@ApiModel("Job Filter", description = "Search filter for finding Jobs.")
 class JobFilter(
+
+    @ApiModelProperty("Job UUIDs to match.")
     val ids: List<UUID>? = null,
+
+    @ApiModelProperty("Pipeline Type to match.")
     val type: PipelineType? = null,
+
+    @ApiModelProperty("States to match.")
     val states: List<JobState>? = null,
+
+    @ApiModelProperty("Organization UUIDs to match.")
     val organizationIds: List<UUID>? = null,
+
+    @ApiModelProperty("Job names to match.")
     val names: List<String>? = null,
+
+    @ApiModelProperty("Paused status to match.")
     val paused: Boolean? = null
+
 ) : KDaoFilter() {
 
     @JsonIgnore

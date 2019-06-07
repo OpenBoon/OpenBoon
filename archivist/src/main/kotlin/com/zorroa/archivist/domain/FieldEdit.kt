@@ -6,6 +6,8 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
@@ -23,21 +25,22 @@ class FieldEditSpecInternal(
     var oldValue: Any? = null
 )
 
-/**
- * A FieldEditSpec defines the properties needed to create a FieldEdit
- * with the REST API.
- *
- * This class allows you to specify either a fieldId or attrName.  FieldId is preferred.
- *
- * @property fieldId The ID of the field to add an edit to.
- * @property attrName The attribute name. Optional.
- * @property newValue The new value of the field.
- */
+@ApiModel("Field Edit Spec", description = "Defines the properties needed to create a FieldEdit. This class " +
+    "allows you to specify either a fieldId or attrName. fieldId is preferred.")
 class FieldEditSpec(
+
+    @ApiModelProperty("UUID of the Asset that was edited.")
     val assetId: UUID,
+
+    @ApiModelProperty("UUID of the Field that was edited.")
     val fieldId: UUID?,
+
+    @ApiModelProperty("Name of the attribute that was edited.")
     val attrName: String?,
+
+    @ApiModelProperty("New value of the Field.")
     val newValue: Any?
+
 ) {
     constructor(assetId: String, fieldId: UUID?, attrName: String?, newValue: Any?) : this(
             UUID.fromString(assetId), fieldId, attrName, newValue)
@@ -70,10 +73,19 @@ class FieldEdit(
     }
 }
 
+@ApiModel("Field Edit Filter", description = "Search filter for Field Edits.")
 class FieldEditFilter(
+
+    @ApiModelProperty("Field Edit UUIDs to match.")
     val ids: List<UUID>? = null,
+
+    @ApiModelProperty("Asset UUIDs to match.")
     val assetIds: List<UUID>? = null,
+
+    @ApiModelProperty("Field UUIDs to match.")
     val fieldIds: List<UUID>? = null,
+
+    @ApiModelProperty("UUIDs of User's that created Field Edits to match.")
     val userCreatedIds: List<UUID>? = null
 
 ) : KDaoFilter() {
