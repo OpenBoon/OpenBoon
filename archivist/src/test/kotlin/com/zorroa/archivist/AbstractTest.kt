@@ -137,6 +137,10 @@ open abstract class AbstractTest {
         return false
     }
 
+    fun requiresFieldSets(): Boolean {
+        return false
+    }
+
     @Autowired
     fun setDataSource(dataSource: DataSource) {
         this.jdbc = JdbcTemplate(dataSource)
@@ -166,7 +170,9 @@ open abstract class AbstractTest {
                  * Need these in here so fields are visible by threads and coroutines.
                  */
                 authenticate()
-                setupDefaultOrganization()
+                if (requiresFieldSets()) {
+                    setupEmbeddedFieldSets()
+                }
             }
         })
 
@@ -247,8 +253,9 @@ open abstract class AbstractTest {
         indexRoutingService.syncAllIndexRoutes()
     }
 
-    fun setupDefaultOrganization() {
+    fun setupEmbeddedFieldSets() {
         val org = organizationService.get(Organization.DEFAULT_ORG_ID)
+        fieldSystemService.setupDefaultFields(org)
         fieldSystemService.setupDefaultFieldSets(org)
     }
     /**

@@ -30,6 +30,7 @@ import com.zorroa.security.Groups
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.doReturn
@@ -66,6 +67,11 @@ class AssetControllerTests : MockMvcTest() {
 
     @SpyBean
     override lateinit var fileServerProvider: FileServerProvider
+
+    @Before
+    fun init() {
+        setupEmbeddedFieldSets()
+    }
 
     @After
     fun after() {

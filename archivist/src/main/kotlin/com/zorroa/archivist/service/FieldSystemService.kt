@@ -13,6 +13,8 @@ import com.zorroa.archivist.domain.FieldSet
 import com.zorroa.archivist.domain.FieldSetFilter
 import com.zorroa.archivist.domain.FieldSetSpec
 import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecCustom
+import com.zorroa.archivist.domain.FieldSpecExpose
 import com.zorroa.archivist.domain.FieldUpdateSpec
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.repository.FieldDao
@@ -24,7 +26,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.io.FileInputStream
 import java.io.InputStream
@@ -34,7 +35,8 @@ import java.util.UUID
 
 interface FieldSystemService {
 
-    fun createField(spec: FieldSpec, reindexSuggest: Boolean = true): Field
+    fun createField(spec: FieldSpecExpose, reindexSuggest: Boolean = true): Field
+    fun createField(spec: FieldSpecCustom): Field
     fun getField(id: UUID): Field
     fun getField(spec: FieldEditSpec): Field
     fun getField(attrName: String): Field
@@ -68,7 +70,19 @@ interface FieldSystemService {
     fun getEsMapping(): Map<String, Any?>
     fun getEsAttrType(attrName: String): AttrType?
 
+    /**
+     * Create the default field sets for the given Organization.
+     *
+     * @param org: The Organization
+     */
     fun setupDefaultFieldSets(org: Organization)
+
+    /**
+     * Create the default set of fields for the given Organization.
+     *
+     * @param org: The Organization
+     */
+    fun setupDefaultFields(org: Organization)
 }
 
 @Service
@@ -85,34 +99,30 @@ class FieldSystemServiceImpl @Autowired constructor(
     @Autowired
     lateinit var jobService: JobService
 
-    override fun createField(spec: FieldSpec, reindexSuggest: Boolean): Field {
+    override fun createField(spec: FieldSpecCustom): Field {
+        val attrName = fieldDao.allocate(spec.attrType)
+        val cspec = FieldSpec(spec, attrName)
+        return fieldDao.create(cspec)
+    }
 
-        when {
-            spec.attrName != null -> {
-                /*
-                 * The user has provided a field name, so the type should be known
-                 */
-                val attrName = spec.attrName as String
-                spec.attrType = spec.attrType ?: getEsAttrType(attrName)
-            }
-            spec.attrType != null -> {
-                /*
-                 * The user has provided a type but no attribute name, so it's a dynamic
-                 * field.
-                 */
-                spec.attrName = fieldDao.allocate(spec.attrType!!)
-                spec.custom = true
-            }
-            else -> throw IllegalStateException(
-                    "Invalid FieldSpec, not enough information to createField a field.")
-        }
+    override fun createField(spec: FieldSpecExpose, reindexSuggest: Boolean): Field {
+        val attrName = spec.attrName
 
+        // Allow the spec to provide a type if forceType is set, which
+        // is only used internally.
+        val attrType = (if (spec.forceType && spec.attrType != null) {
+            spec.attrType
+        } else {
+            getEsAttrType(attrName)
+        }) ?: throw IllegalArgumentException("Unable to determine attribute type for '$attrName'")
+
+        val fspec = FieldSpec(spec, attrType)
         if (spec.suggest && reindexSuggest) {
             txevent.afterCommit(sync = false) {
                 indexRoutingService.launchReindexJob()
             }
         }
-        return fieldDao.create(spec)
+        return fieldDao.create(fspec)
     }
 
     @Transactional(readOnly = true)
@@ -193,17 +203,16 @@ class FieldSystemServiceImpl @Autowired constructor(
     }
 
     override fun createFieldSet(spec: FieldSetSpec, regenSuggest: Boolean): FieldSet {
-        val fieldIds = spec.fieldSpecs?.mapNotNull { fs ->
-            val field = fs.attrName?.let {
-                val field = if (fieldDao.exists(it)) {
-                    getField(it)
-                } else {
-                    createField(fs, regenSuggest)
-                }
-                field.id
-            }
-            field
+        val fieldIds = mutableListOf<UUID>()
+        spec.fieldIds?.let {
+            fieldIds.addAll(it)
         }
+        spec.attrNames?.forEach { attr ->
+            if (fieldDao.exists(attr)) {
+                fieldIds.add(getField(attr).id)
+            }
+        }
+        // Reset field Ids
         spec.fieldIds = fieldIds
         return fieldSetDao.create(spec)
     }
@@ -237,7 +246,6 @@ class FieldSystemServiceImpl @Autowired constructor(
 
     override fun applySuggestions(docs: List<Document>) {
         val fields = fieldDao.getSuggestAttrNames()
-        logger.info("FIELDS {}", fields)
         for (doc in docs) {
             val values = fields.flatMap {
                 val attr: Any? = doc.getAttr(it, Any::class.java)
@@ -254,16 +262,11 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    fun createFieldSet(stream: InputStream) {
-        val fs = Json.Mapper.readValue<FieldSetSpec>(stream)
-        createFieldSet(fs, false)
-    }
-
     override fun getEsMapping(): Map<String, Any> {
         val rest = indexRoutingService.getOrgRestClient()
         val stream = rest.client.lowLevelClient.performRequest(
-                "GET", "/${rest.route.indexName}").entity.content
+            "GET", "/${rest.route.indexName}"
+        ).entity.content
         return Json.Mapper.readValue(stream, Json.GENERIC_MAP)
     }
 
@@ -288,7 +291,9 @@ class FieldSystemServiceImpl @Autowired constructor(
         mapProperties: Map<String, Any>
     ) {
 
-        if (fieldName == null) { return }
+        if (fieldName == null) {
+            return
+        }
         val map = mapProperties["properties"] as Map<String, Any>
         for (key in map.keys) {
             val item = map[key] as Map<String, Any>
@@ -309,6 +314,29 @@ class FieldSystemServiceImpl @Autowired constructor(
                 result[fqfn] = attrType
             } else {
                 getMap(result, arrayOf(fieldName, key, ".").joinToString(""), item)
+            }
+        }
+    }
+
+    override fun setupDefaultFields(org: Organization) {
+
+        val home = properties.getString("archivist.path.home")
+        val searchPath = listOf("classpath:/fields", "$home/config/fields")
+        val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
+
+        searchPath.forEach {
+            if (it.startsWith("classpath:")) {
+                val resources = resolver.getResources("$it/*.json")
+                for (resource in resources) {
+                    exposeFields(resource.inputStream)
+                }
+            } else {
+                val path = Paths.get(it.trim())
+                if (Files.exists(path)) {
+                    for (file in Files.list(path)) {
+                        exposeFields(FileInputStream(file.toFile()))
+                    }
+                }
             }
         }
     }
@@ -336,6 +364,21 @@ class FieldSystemServiceImpl @Autowired constructor(
         }
     }
 
+    fun createFieldSet(stream: InputStream) {
+        val fs = Json.Mapper.readValue<FieldSetSpec>(stream)
+        createFieldSet(fs, false)
+    }
+
+    fun exposeFields(stream: InputStream) {
+        val fields = Json.Mapper.readValue<List<FieldSpecExpose>>(stream)
+        fields.forEach { spec ->
+            if (!fieldDao.exists(spec.attrName)) {
+                spec.forceType = true
+                createField(spec, false)
+            }
+        }
+    }
+
     companion object {
 
         /**
@@ -346,16 +389,18 @@ class FieldSystemServiceImpl @Autowired constructor(
         /**
          * Maps a particular type or column configuration to our own set of attribute types.
          */
-        private val NAME_TYPE_OVERRRIDES = mapOf("shash" to AttrType.HashSimilarity,
-                        "long" to AttrType.NumberInteger,
-                        "integer" to AttrType.NumberInteger,
-                        "double" to AttrType.NumberFloat,
-                        "float" to AttrType.NumberFloat,
-                        "geo_point" to AttrType.GeoPoint,
-                        "boolean" to AttrType.Bool,
-                        "date" to AttrType.DateTime,
-                        "text" to AttrType.StringAnalyzed,
-                        "keyword" to AttrType.StringExact)
+        private val NAME_TYPE_OVERRRIDES = mapOf(
+            "shash" to AttrType.HashSimilarity,
+            "long" to AttrType.NumberInteger,
+            "integer" to AttrType.NumberInteger,
+            "double" to AttrType.NumberFloat,
+            "float" to AttrType.NumberFloat,
+            "geo_point" to AttrType.GeoPoint,
+            "boolean" to AttrType.Bool,
+            "date" to AttrType.DateTime,
+            "text" to AttrType.StringAnalyzed,
+            "keyword" to AttrType.StringExact
+        )
 
         /**
          * Maps a particular ES analyzer to a type of column

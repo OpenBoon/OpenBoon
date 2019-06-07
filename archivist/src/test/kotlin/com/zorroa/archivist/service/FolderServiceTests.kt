@@ -56,6 +56,10 @@ class FolderServiceTests : AbstractTest() {
         return true
     }
 
+    override fun requiresFieldSets(): Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         addTestAssets("set04/standard")

@@ -2,7 +2,7 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.FieldSetSpec
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecExpose
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -29,7 +29,7 @@ class FieldSetDaoTests : AbstractTest() {
     @Test
     fun testCreateWithFields() {
 
-        val fspec = FieldSpec("Time Created", "system.timeCreated", null, false)
+        val fspec = FieldSpecExpose("Time Created", "system.timeCreated")
         val field = fieldSystemService.createField(fspec)
 
         val spec = FieldSetSpec("System", fieldIds = listOf(field.id))

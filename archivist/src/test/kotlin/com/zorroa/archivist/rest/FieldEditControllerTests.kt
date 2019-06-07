@@ -3,7 +3,7 @@ package com.zorroa.archivist.rest
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.FieldEdit
 import com.zorroa.archivist.domain.FieldEditSpec
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecExpose
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.common.repository.KPagedList
@@ -23,6 +23,9 @@ class FieldEditControllerTests : MockMvcTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
+    val field = FieldSpecExpose("File Ext", "source.extension")
+        .apply { editable = true }
+
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -33,17 +36,22 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
-        val edit = assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id,
-                "source.extension", "gandalf"))
+        val field = fieldSystemService.createField(field)
+        val edit = assetService.createFieldEdit(
+            FieldEditSpec(
+                UUID.fromString(asset.id), field.id,
+                "source.extension", "gandalf"
+            )
+        )
 
-        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fieldEdits/${edit.id}")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/fieldEdits/${edit.id}")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val result = Json.Mapper.readValue<FieldEdit>(req.response.contentAsString)
         assertEquals(edit.id, result.id)
@@ -55,20 +63,26 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
-        assetService.createFieldEdit(FieldEditSpec(UUID.fromString(asset.id), field.id,
-                "source.extension", "gandalf"))
+        val field = fieldSystemService.createField(field)
+        assetService.createFieldEdit(
+            FieldEditSpec(
+                UUID.fromString(asset.id), field.id,
+                "source.extension", "gandalf"
+            )
+        )
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits/_search")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/fieldEdits/_search")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val result = Json.Mapper.readValue<KPagedList<FieldEdit>>(
-                req.response.contentAsString, FieldEdit.Companion.TypeRefKList)
+            req.response.contentAsString, FieldEdit.Companion.TypeRefKList
+        )
         Assert.assertEquals(1, result.size())
     }
 
@@ -78,17 +92,19 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val field = fieldSystemService.createField(
+            FieldSpecExpose("File Ext", "source.extension").apply { editable = true })
         val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/fieldEdits")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val result = Json.Mapper.readValue<FieldEdit>(req.response.contentAsString, FieldEdit::class.java)
         Assert.assertEquals(field.id, result.fieldId)
@@ -103,17 +119,18 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
+        val field = fieldSystemService.createField(field)
         val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fieldEdits")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/fieldEdits")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andReturn()
     }
 
     @Test
@@ -123,19 +140,25 @@ class FieldEditControllerTests : MockMvcTest() {
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
-        val field = fieldSystemService.createField(FieldSpec("File Ext",
-                "source.extension", null, true))
-        val edit = assetService.createFieldEdit(FieldEditSpec(asset.id, field.id,
-                "source.extension", "gandalf"))
+        val field = fieldSystemService.createField(field)
+        val edit = assetService.createFieldEdit(
+            FieldEditSpec(
+                asset.id, field.id,
+                "source.extension", "gandalf"
+            )
+        )
 
-        val req = mvc.perform(MockMvcRequestBuilders.delete(
-                "/api/v1/fieldEdits/${edit.id}")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.delete(
+                "/api/v1/fieldEdits/${edit.id}"
+            )
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(edit))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
         val result = Json.Mapper.readValue<Map<String, Any>>(req.response.contentAsString, Json.GENERIC_MAP)
         Assert.assertEquals("delete", result["op"])
         Assert.assertEquals(true, result["success"])
