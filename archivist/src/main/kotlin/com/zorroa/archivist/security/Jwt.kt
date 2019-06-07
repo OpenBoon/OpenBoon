@@ -1,12 +1,16 @@
 package com.zorroa.archivist.security
 
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
 import com.zorroa.archivist.security.JwtSecurityConstants.ORGID_HEADER
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
+import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.event
+import com.zorroa.common.util.JdbcUtils
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import java.io.IOException
@@ -24,10 +29,20 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
+class JWTAuthorizationFilter(authManager: AuthenticationManager) :
+    BasicAuthenticationFilter(authManager) {
 
     @Autowired
     private lateinit var validator: JwtValidator
+
+    @Autowired
+    private lateinit var permissionService: PermissionService
+
+    @Autowired
+    private lateinit var properties: ApplicationProperties
+
+    @Autowired
+    private lateinit var userRegistryService: UserRegistryService
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
@@ -43,13 +58,39 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
             return
         }
         /**
-         * Validate the JWT claims. Asumming they are valid, create a JwtAuthenticationToken which
-         * will be converted into a proper UsernamePasswordAuthenticationToken by the JwtAuthenticationProvider
+         * Validate the JWT claims. Assuming they are valid, create a JwtAuthenticationToken which
+         * will be converted into a proper UsernamePasswordAuthenticationToken by the
+         * JwtAuthenticationProvider
          *
          * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
          */
-        val claims = validator.validate(token.replace(TOKEN_PREFIX, ""))
-        SecurityContextHolder.getContext().authentication = JwtAuthenticationToken(claims, req.getHeader(ORGID_HEADER))
+        val claims = validator.validate(token.replace(TOKEN_PREFIX, "")).toMutableMap()
+
+        val userId = claims["userId"]
+        userId?.let {
+            if (!JdbcUtils.isUUID(it)) {
+                val user = userRegistryService.getUser(it)
+                claims["userId"] = user.id.toString()
+            }
+        }
+
+        val mapping =
+            properties.parseToMap("archivist.security.permissions.map")
+
+        val authorities = claims["permissions"]?.let { str ->
+            str.split(",")
+                .mapNotNull { token ->
+                    mapping[token.trim()]?.let {
+                        permissionService.getPermission(
+                            it
+                        )
+                    }
+                }
+        }
+
+        SecurityContextHolder.getContext().authentication =
+            JwtAuthenticationToken(claims, req.getHeader(ORGID_HEADER), authorities ?: emptyList())
+
         req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
         chain.doFilter(req, res)
     }
@@ -60,8 +101,9 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
  */
 class JwtAuthenticationToken constructor(
     claims: Map<String, String>,
-    val organizationId: String? = null
-) : AbstractAuthenticationToken(listOf()) {
+    val organizationId: String? = null,
+    authorities: Collection<GrantedAuthority> = emptyList()
+) : AbstractAuthenticationToken(authorities) {
 
     val userId = claims.getValue("userId")
 
@@ -87,14 +129,29 @@ class JwtAuthenticationProvider : AuthenticationProvider {
 
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as JwtAuthenticationToken
-        val user = userRegistryService.getUser(UUID.fromString(token.userId))
+
+        val user = if (token.authorities.isEmpty()) {
+            userRegistryService.getUser(UUID.fromString(token.userId))
+        } else {
+            UserAuthed(
+                UUID.fromString(token.userId),
+                UUID.fromString(token.organizationId),
+                token.name,
+                HashSet(token.authorities),
+                emptyMap()
+            )
+        }
 
         if (token.organizationId != null) {
             if (user.authorities.map { it.authority == Groups.SUPERADMIN }.isNotEmpty()) {
                 user.organizationId = UUID.fromString(token.organizationId)
-                logger.event(LogObject.USER, LogAction.ORGSWAP,
-                        mapOf("username" to user.username,
-                                "newOrganizationId" to token.organizationId))
+                logger.event(
+                    LogObject.USER, LogAction.ORGSWAP,
+                    mapOf(
+                        "username" to user.username,
+                        "newOrganizationId" to token.organizationId
+                    )
+                )
             }
         }
 

@@ -7,6 +7,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
+import com.zorroa.common.util.readValueOrNull
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.security.cert.CertificateFactory
@@ -16,8 +17,7 @@ import java.util.Date
 import java.util.UUID
 
 class JwtValidatorException constructor(
-    override val message:
-  String,
+    override val message: String,
     override val cause: Throwable?
 ) : RuntimeException(message, cause) {
 
@@ -54,9 +54,75 @@ class MasterJwtValidator constructor(private val validators: List<JwtValidator>)
         for (validator in validators) {
             try {
                 return validator.validate(token)
-            } catch (e: Exception) { }
+            } catch (e: Exception) {
+                // Called validators should log exceptions if needed
+            }
         }
         throw JwtValidatorException("Failed to validate JWT token")
+    }
+}
+
+class IrmJwtValidator : JwtValidator {
+
+    override fun validate(token: String): Map<String, String> {
+        try {
+            val jwt = JWT.decode(token)
+
+            // TODO Need to validate claims based on signature
+            // val verifier = JWT.require(Algorithm.none())
+            //     .acceptLeeway(30) // because not everyone uses NTP
+            //     .build()
+            // verifier.verify(token)
+
+            val claims = jwt.claims.map {
+                it.key to it.value.asString()
+            }.toMap().toMutableMap()
+
+            val unpackedInsightClaim: Map<String, Object> =
+                Json.Mapper.readValueOrNull(jwt.getClaim("insightUser").asString())
+                    ?: throw JwtValidatorException("No insightUser found in JWT claims")
+
+            if (unpackedInsightClaim.containsKey("companyId")) {
+                claims.putIfAbsent("companyId", unpackedInsightClaim["companyId"].toString())
+            }
+
+            claims["permissions"] = mapPermissions(claims).joinToString()
+
+            unpackedInsightClaim.map {
+                claims.putIfAbsent(it.key, it.value.toString())
+            }
+
+            return claims
+        } catch (e: JWTVerificationException) {
+            throw JwtValidatorException("Failed to validate token", e)
+        } catch (e: Exception) {
+            logger.debug("Unexpected Exception", e)
+            throw e
+        }
+    }
+
+    private fun mapPermissions(claims: Map<String, String>): List<String> {
+
+        val insightUserClaims: Map<String, Object>? =
+            Json.Mapper.readValueOrNull(claims["insightUser"])
+
+        val permissions = mutableListOf<String>()
+        insightUserClaims?.let {
+            val authInfo = it["userAuthInfo"] as Map<String, Object>
+            val aclEntries = authInfo["aclEntries"] as List<Map<String, String>>
+            permissions.addAll(aclEntries?.mapNotNull { p ->
+                p["permission"]
+            })
+        }
+        return permissions
+    }
+
+    init {
+        logger.info("Initializing IRM JwtValidator")
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(IrmJwtValidator::class.java)
     }
 }
 

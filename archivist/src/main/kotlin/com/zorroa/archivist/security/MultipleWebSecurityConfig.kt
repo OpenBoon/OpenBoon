@@ -114,6 +114,7 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
                     .antMatchers("/api/v1/send-onboard-email").permitAll()
+                    .antMatchers("/api/v1/auth/token").permitAll()
                     .anyRequest().authenticated()
                     .and().headers().frameOptions().disable().cacheControl().disable()
                     .and().csrf().csrfTokenRepository(csrfTokenRepository)
@@ -271,6 +272,8 @@ class MultipleWebSecurityConfig {
          */
         val csrfRequestMatcher = RequestMatcher {
             if (it.getAttribute("authType") == HttpServletRequest.CLIENT_CERT_AUTH) {
+                false
+            } else if (it.requestURI == "/api/v1/auth/token") {
                 false
             } else {
                 it.method !in setOf("GET", "HEAD", "TRACE", "OPTIONS")

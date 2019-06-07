@@ -2,8 +2,10 @@ package com.zorroa.archivist.rest
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.ApiKeySpec
 import com.zorroa.archivist.domain.LocalUserSpec
+import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserFilter
@@ -11,6 +13,9 @@ import com.zorroa.archivist.domain.UserPasswordUpdate
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSettings
 import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.sdk.security.AuthSource
+import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.IrmJwtValidator
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.getUser
@@ -22,6 +27,7 @@ import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
+import com.zorroa.common.util.JdbcUtils
 import com.zorroa.security.Groups
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,7 +63,9 @@ import javax.servlet.http.HttpServletResponse
 class UserController @Autowired constructor(
     private val userService: UserService,
     private val permissionService: PermissionService,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+    private val userRegistryService: UserRegistryService,
+    private val properties: ApplicationProperties
 ) {
 
     @Deprecated("See /api/v1/users/_search")
@@ -104,6 +112,49 @@ class UserController @Autowired constructor(
         val user = getUser()
         val key = userService.getHmacKey(user)
         return mapOf("token" to generateUserToken(user.id, key))
+    }
+
+    @PostMapping(value = ["/api/v1/auth/token"])
+    fun jwtCreateAndLogin(
+        @RequestParam(value = "insight_auth_token") token: String,
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ) {
+
+        val claims = IrmJwtValidator().validate(token)
+        val userId = claims["userId"]
+        val companyId = claims["companyId"]
+
+        val orgId = if (companyId == "0") {
+            Organization.DEFAULT_ORG_ID.toString()
+        } else {
+            "company-$companyId"
+        }
+
+        val mapping =
+            properties.parseToMap("archivist.security.permissions.map")
+
+        var authorities = claims["permissions"]?.let { str ->
+            str.split(",").mapNotNull { token -> mapping[token.trim()] }
+        }
+
+        val source = AuthSource("IRM", "Jwt", "Jwt", orgId, groups = authorities)
+
+        userId?.let {
+            if (!JdbcUtils.isUUID(it)) {
+                // assume for now that a UUID represents a user that already exists
+                userRegistryService.registerUser(it, source)
+            }
+        }
+
+        try {
+            response.setHeader("Location", "/")
+            response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
+        } catch (e: Exception) {
+            if (!response.isCommitted) {
+                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString())
+            }
+        }
     }
 
     /**
