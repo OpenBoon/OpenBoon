@@ -23,9 +23,6 @@
     },
     {
       "className": "zplugins.face.processors.FaceRecognitionProcessor"
-    },
-    {
-      "className": "zplugins.video.clipifiers.FFProbeKeyframeClipifier"
     }
   ]
 }

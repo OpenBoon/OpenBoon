@@ -35,19 +35,19 @@ class PipelineServiceTests : AbstractTest() {
     @Test
     fun testGetPipeline() {
         val pipeline = pipelineService.get("standard-import")
-        assertEquals(pipeline.processors.size, 8)
+        assertEquals(pipeline.processors.size, 7)
     }
 
     @Test
     fun testResolveDefaultPipeline() {
-        assertEquals(8, pipelineService.resolveDefault(PipelineType.Import).size)
+        assertEquals(7, pipelineService.resolveDefault(PipelineType.Import).size)
     }
 
     @Test
     fun testResolveImportPipeline() {
         val resolved = pipelineService.resolve(PipelineType.Import,
                 pipelineService.get("standard-import").processors)
-        assertEquals(8, resolved.size)
+        assertEquals(7, resolved.size)
     }
 
     @Test
