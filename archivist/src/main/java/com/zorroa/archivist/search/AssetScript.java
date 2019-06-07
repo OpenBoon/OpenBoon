@@ -4,14 +4,21 @@
 
 package com.zorroa.archivist.search;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Map;
 
-/**
- * A script to use for queries or filters
- */
+@ApiModel(value = "Asset Script", description = "Script to use for querying or filtering Assets.")
 public class AssetScript {
+
+    @ApiModelProperty("Script to execute.")
     private String script;
+
+    @ApiModelProperty("Parameters to pass to the script.")
     private Map<String, Object> params;
+
+    @ApiModelProperty("Type of script this is.")
     private String type = "expression";
 
     public AssetScript() { }

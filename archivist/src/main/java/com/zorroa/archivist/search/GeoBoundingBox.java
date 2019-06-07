@@ -1,8 +1,17 @@
 package com.zorroa.archivist.search;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Geo Bounding Box", description = "Describes a rectangular area on a map.")
 public class GeoBoundingBox {
 
+    @ApiModelProperty("Top-left coordinates of box in decimal degrees(DD). " +
+            "Example: \"41.19286226482936, -125.08249999998772\".")
     private String top_left;
+
+    @ApiModelProperty("Bottom-right coordinates of box in decimal degrees(DD). " +
+            "Example: \"41.19286226482936, -125.08249999998772\".")
     private String bottom_right;
 
     public GeoBoundingBox() { }

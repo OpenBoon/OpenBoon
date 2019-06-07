@@ -8,6 +8,9 @@ import com.zorroa.common.domain.AnalystFilter
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.LockState
 import io.micrometer.core.annotation.Timed
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy
@@ -35,39 +38,48 @@ import java.util.UUID
 @PreAuthorize("hasAuthority(T( com.zorroa.security.Groups).SUPERADMIN)")
 @RestController
 @Timed
+@Api(tags = ["Analyst"], description = "Operations for managing and interacting with the Analysts.")
 class AnalystController @Autowired constructor(
     val analystService: AnalystService,
     val workQueue: AsyncListenableTaskExecutor,
     val clusterLockService: ClusterLockService
 ) {
 
+    @ApiOperation("Returns a list of Analysts matching the search filter.")
     @PostMapping(value = ["/api/v1/analysts/_search"])
-    fun search(@RequestBody filter: AnalystFilter): Any {
+    fun search(@ApiParam("Search filter.") @RequestBody filter: AnalystFilter): Any {
         return analystService.getAll(filter)
     }
 
+    @ApiOperation("Searches for a single Analyst",
+        notes = "Throws an error if more than 1 result is returned based on the given filter.")
     @PostMapping(value = ["/api/v1/analysts/_findOne"])
-    fun findOne(@RequestBody(required = false) filter: AnalystFilter): Analyst {
+    fun findOne(@ApiParam("Search filter.") @RequestBody(required = false) filter: AnalystFilter): Analyst {
         return analystService.findOne(filter)
     }
 
+    @ApiOperation("Returns info describing an Analyst.")
     @GetMapping(value = ["/api/v1/analysts/{id}"])
-    fun get(@PathVariable id: UUID): Analyst {
+    fun get(@ApiParam("UUID of the Analyst.") @PathVariable id: UUID): Analyst {
         return analystService.get(id)
     }
 
+    @ApiOperation("Sets the lock state of an Analyst.",
+        notes = "Locking an Analyst prevents it from picking up any new jobs.")
     @PutMapping(value = ["/api/v1/analysts/{id}/_lock"])
-    fun setLockState(@PathVariable id: UUID, @RequestParam(value = "state", required = true) state: String): Any {
+    fun setLockState(
+        @ApiParam("UUID of the Analyst.") @PathVariable id: UUID,
+        @ApiParam("State to set Analyst to.", allowableValues = "locked,unlocked")
+            @RequestParam(value = "state", required = true) state: String
+    ): Any {
         val newState = LockState.valueOf(state.toLowerCase().capitalize())
         val analyst = analystService.get(id)
         return HttpUtils.updated("analyst", analyst.id, analystService.setLockState(analyst, newState))
     }
 
-    /**
-     * Initiate a processor scan.  If the processor-scan key is locked, then the "success"
-     * property on the response body is set to False.  This means there is an active
-     * scan already running and the request was ignored.
-     */
+    @ApiOperation("Initiate a custom processor scan.",
+        notes = "If the processor-scan key is locked, then the \"success\" property on the response body is set to " +
+            "False. This means there is an active scan already running and the request was ignored.")
     @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
     fun processorScan(): Any {
         val locked = clusterLockService.isLocked("processor-scan")
@@ -79,9 +91,8 @@ class AnalystController @Autowired constructor(
         return HttpUtils.status("processor", "scan", !locked)
     }
 
-    /**
-     * A request for this endpoint will download the ZSDK python wheel file.
-     */
+    @ApiOperation("Download the ZSDK.",
+        notes = "Downloads a universal python wheel file which can be used to install the Python SDK.")
     @GetMapping(value = ["/download-zsdk"])
     fun downloadZsdk(requestEntity: RequestEntity<Any>): Any {
         val acceptingTrustStrategy = { chain: Array<X509Certificate>, authType: String -> true }

@@ -14,6 +14,8 @@ import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.util.JdbcUtils
 import io.micrometer.core.instrument.MeterRegistry
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -130,10 +132,18 @@ open class AbstractDao {
     }
 }
 
+@ApiModel("Long Range Filter", description = "Filters on a range using Longs.")
 class LongRangeFilter(
+
+    @ApiModelProperty("Values must be greater than this.")
     val greaterThan: Long?,
+
+    @ApiModelProperty("Values must be less than this.")
     val lessThan: Long?,
+
+    @ApiModelProperty("If true values matching the bounds will be included.")
     val inclusive: Boolean = true
+
 ) {
     /**
      * Return values needed to satisfy SQL query as list.

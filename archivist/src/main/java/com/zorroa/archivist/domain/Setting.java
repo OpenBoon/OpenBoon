@@ -1,19 +1,33 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 
 /**
  * Created by chambers on 7/6/17.
  */
+@ApiModel(value = "Setting", description = "Describes a server-side configuration setting.")
 public class Setting {
 
+    @ApiModelProperty("Name of the Setting.")
     private String name;
+
+    @ApiModelProperty("Default value of the Setting.")
     private String defaultValue;
+
+    @ApiModelProperty("Current value of the Setting.")
     private String currentValue;
+
+    @ApiModelProperty("If true this Setting can be updated without restarting the server.")
     private boolean live;
+
+    @ApiModelProperty("Description of the Setting.")
     private String description;
+
+    @ApiModelProperty("Category of the Setting.")
     private String category;
 
     public String getDescription() {

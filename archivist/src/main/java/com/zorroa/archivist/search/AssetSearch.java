@@ -6,82 +6,57 @@ package com.zorroa.archivist.search;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zorroa.archivist.domain.Access;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The AssetSearch class describes all possible properties which can be
- * used when searching for assets.
- */
+@ApiModel(value = "Asset Search", description = "Describes all possible properties which can be used when searching for assets.")
 public class AssetSearch {
 
-    /**
-     * Create a scrolling search.  Set this to the value of the timeout.
-     */
+
+    @ApiModelProperty("Create a scrolling search.  Set this to the value of the timeout.")
     private Scroll scroll;
 
-    /**
-     * The keyword search being made.
-     */
+    @ApiModelProperty("The keyword search being made.")
     private String query;
 
-    /**
-     * Search for exactQuery terms as if each word was quoted.
-     */
+    @ApiModelProperty("Search for exactQuery terms as if each word was quoted.")
     private Boolean exactQuery = false;
 
-    /**
-     * A map of query fields and boost values.
-     */
+    @ApiModelProperty("Map of query fields and boost values.")
     private Map<String, Float> queryFields;
 
-    /**
-     * The fields to include in the result.  An empty or null list means all fields.
-     */
+    @ApiModelProperty("Fields to include in the result.  An empty or null list means all fields.")
     private String[] fields;
 
-    /**
-     * Filters that are applied to the keyword search results and aggs.
-     */
+    @ApiModelProperty("Filters that are applied to the keyword search results and aggs.")
     private AssetFilter filter;
 
-    /**
-     * Post-filters are applied to search results after processing aggs.
-     */
+    @ApiModelProperty("Post-filters are applied to search results after processing aggs.")
     private AssetFilter postFilter;
 
-    /**
-     * The order of the results returned.
-     */
+    @ApiModelProperty("Sets the order of the results returned.")
     private List<AssetSearchOrder> order;
 
-    /**
-     * The size of the result to return.  If left unset the value will
-     * default to a server controlled setting.
-     */
+    @ApiModelProperty("Size of the result to return. If left unset the value will default to a server " +
+            "controlled setting.")
     private Integer size;
 
-    /**
-     * The page from which to return results from.  This is used for
-     * paging large results.  If left unset the value will default
-     * to 1.
-     */
+    @ApiModelProperty("Page from which to return results from. This is used for paging large results. If left unset " +
+            "the value will default to 1.")
     private Integer from;
 
-
+    @ApiModelProperty("Filters assets based on the current User's access to them.")
     private Access access;
 
-    /**
-     * Allow for field collapsing.
-     * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-collapse.html
-     */
+    @ApiModelProperty("Allow for field collapsing. https://www.elastic.co/guide/en/elasticsearch/reference/" +
+            "6.4/search-request-collapse.html")
     private Map<String, Object> collapse;
 
-    /**
-     * Aggregations to return with the search.  Map is name, then agg.
-     */
+    @ApiModelProperty("Aggregations to return with the search.  Map is name, then agg.")
     private Map<String, Map<String, Object>> aggs;
 
     public AssetSearch() { }

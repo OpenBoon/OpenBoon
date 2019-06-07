@@ -1,22 +1,27 @@
 package com.zorroa.archivist.domain
 
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
-/**
- * A Taxonomy turns a folder structure into an auto-tagging system.
- *
- * @property taxonomyId Rhe ID of the taxonomy.
- * @property folderId The root folder Id of the taxonomy.
- * @property organizationId The organization Id for the taxonomy.
- * @property createdUser The user that created the taxonomy.
- * @property timeCreated The time the taxonomy was created.
- */
+@ApiModel("Taxonomy", description = "Taxonomy turns a folder structure into an auto-tagging system.")
 class Taxonomy(
+
+    @ApiModelProperty("UUID of the taxonomy.")
     val taxonomyId: UUID,
+
+    @ApiModelProperty("UUID of the root Folder of the Taxonomy.")
     val folderId: UUID,
+
+    @ApiModelProperty("UUID of the Organization.")
     val organizationId: UUID,
+
+    @ApiModelProperty("User that created the Taxonomy.")
     val createdUser: UUID,
+
+    @ApiModelProperty("Time the Taxonomy was created.")
     val timeCreated: Long
+
 ) {
 
     val clusterLockId = "taxi-$taxonomyId"

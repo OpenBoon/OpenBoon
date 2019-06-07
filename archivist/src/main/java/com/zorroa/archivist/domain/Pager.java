@@ -1,15 +1,22 @@
 package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Created by chambers on 6/16/16.
  */
+@ApiModel(value = "Pager", description = "Used for pagination.")
 public class Pager {
 
+    @ApiModelProperty("Result index to start from.")
     private final int from;
+
+    @ApiModelProperty("Number of results per page.")
     private final int size;
 
+    @ApiModelProperty("Total number of results.")
     private Long totalCount;
 
     private static final int DEFAULT_SIZE = 10;

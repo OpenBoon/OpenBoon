@@ -14,6 +14,8 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.archivist.util.copyInputToOuput
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -42,7 +44,12 @@ private const val defaultContentType = "application/octet-steam"
 
 private const val entity = "FileStorage"
 
-data class FileStat(val size: Long, val mediaType: String, val exists: Boolean)
+@ApiModel("File Stat.", description = "Stats for file on disk.")
+data class FileStat(
+    @ApiModelProperty("File size in bytes.") val size: Long,
+    @ApiModelProperty("Media type of the file.") val mediaType: String,
+    @ApiModelProperty("True if the file exists on disk.") val exists: Boolean
+)
 
 /**
  * On object that can be stored somewhere locallly or in the vast

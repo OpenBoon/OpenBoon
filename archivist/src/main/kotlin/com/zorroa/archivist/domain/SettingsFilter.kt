@@ -1,27 +1,22 @@
 package com.zorroa.archivist.domain
 
 import com.google.common.collect.ImmutableSet
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 
+@ApiModel("Settings Filter", description = "Search filter for finding settings.")
 class SettingsFilter {
 
-    /**
-     * Only return "live settings", which are settings that can be modified.
-     */
+    @ApiModelProperty("If true only return \"live settings\", which are settings that can be modified.")
     var liveOnly: Boolean = false
 
-    /**
-     * A set of exact setting names to return.
-     */
+    @ApiModelProperty("Set of exact setting names to return.")
     var names: Set<String> = ImmutableSet.of()
 
-    /**
-     * A set of startsWith filters to match setting names against.
-     */
+    @ApiModelProperty("Set of startsWith filters to match setting names against.")
     var startsWith: Set<String> = ImmutableSet.of()
 
-    /**
-     * The maximum number of settings to return.
-     */
+    @ApiModelProperty("Maximum number of settings to return.")
     var count = Integer.MAX_VALUE
 
     fun matches(setting: Setting): Boolean {

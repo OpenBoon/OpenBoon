@@ -5,6 +5,9 @@ import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.service.ProcessorService
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
 import com.zorroa.common.repository.KPagedList
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,28 +20,33 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
+@Api(tags = ["Processor"], description = "Operations for interacting with Processors.")
 class ProcessorController @Autowired constructor(
     val processorService: ProcessorService
 ) {
 
+    @ApiOperation("Search for Pipelines.")
     @RequestMapping(value = ["/api/v1/processors/_search"], method = [RequestMethod.POST, RequestMethod.GET])
     fun search(
-        @RequestBody(required = true) filter: ProcessorFilter,
-        @RequestParam(value = "from", required = false) from: Int?,
-        @RequestParam(value = "count", required = false) count: Int?
+        @ApiParam("Search filter.") @RequestBody(required = true) filter: ProcessorFilter,
+        @ApiParam("Result number to start from.") @RequestParam(value = "from", required = false) from: Int?,
+        @ApiParam("Number of results per page.") @RequestParam(value = "count", required = false) count: Int?
     ): KPagedList<Processor> {
         from?.let { filter.page.from = it }
         count?.let { filter.page.size = it }
         return processorService.getAll(filter)
     }
 
+    @ApiOperation("Search for a single Processor.",
+        notes = "Throws an error if more than 1 result is returned based on the given filter.")
     @PostMapping(value = ["/api/v1/processors/_findOne"])
-    fun findOne(@RequestBody filter: ProcessorFilter): Processor {
+    fun findOne(@ApiParam("Search filter.") @RequestBody filter: ProcessorFilter): Processor {
         return processorService.findOne(filter)
     }
 
+    @ApiOperation("Get a Processor.")
     @GetMapping(value = ["/api/v1/processors/{id:.+}"])
-    fun get(@PathVariable(value = "id") id: String): Processor {
+    fun get(@ApiParam("UUID of the Processor.") @PathVariable(value = "id") id: String): Processor {
         return if (UUID_REGEXP.matches(id)) {
             processorService.get(UUID.fromString(id))
         } else {

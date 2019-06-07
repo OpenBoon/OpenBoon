@@ -4,11 +4,16 @@
 
 package com.zorroa.archivist.search;
 
-/**
- * Sugest completions for text within a search
- */
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Asset Suggest Builder", description = "Suggest completions for text within a search")
 public class AssetSuggestBuilder {
+
+    @ApiModelProperty("Text to suggest auto-completion for.")
     String text;
+
+    @ApiModelProperty("Suggestion will be gathered only from Assets that match this search filter.")
     AssetSearch search;
 
     public String getText() {

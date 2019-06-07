@@ -8,6 +8,8 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
@@ -63,8 +65,13 @@ interface TaskId {
 open class InternalTask(
     override val taskId: UUID,
     override val jobId: UUID,
+
+    @ApiModelProperty("Name of this task.")
     val name: String,
+
+    @ApiModelProperty("Current state of the Task.")
     val state: TaskState
+
 ) : TaskId, JobId {
     override fun toString(): String {
         return "<Task id='$taskId' name='$name'/>"
@@ -79,33 +86,40 @@ open class InternalTask(
     }
 }
 
-/**
- * The standad Task implementation return to the clients.
- *
- * @property id The unique ID of the [Task].
- * @property jobId The unique ID of the [Job].
- * @property organizationId The unique ID of the Organization.
- * @property name The [Task] name
- * @property state The current [TaskState] of the [Task]
- * @property host The host endpoint of the last Analyst the task ran on.
- * @property timeStarted The time the [Task] was started.
- * @property timeStopped The time the [Task] was stopped.
- * @property timeCreated The time the [Task] was created.
- * @property timePing The time the [Task] got a ping from an [Analyst]
- * @property assetCounts Counters for the total number of assets created, updated, etc.
- */
+@ApiModel("Task", description = "Describes a Task.")
 open class Task(
+
+    @ApiModelProperty("UUID of the Task.")
     val id: UUID,
+
+    @ApiModelProperty("UUID of the Job this Task belongs to.")
     override val jobId: UUID,
+
+    @ApiModelProperty("UUID of the Organization this Task belongs to.")
     val organizationId: UUID,
+
     name: String,
+
     state: TaskState,
+
+    @ApiModelProperty("Host endpoint of the last Analyst the Task ran on.")
     val host: String?,
+
+    @ApiModelProperty("Time the Task was started.")
     val timeStarted: Long,
+
+    @ApiModelProperty("Time the Task was stopped.")
     val timeStopped: Long,
+
+    @ApiModelProperty("Time the Task was created.")
     val timeCreated: Long,
+
+    @ApiModelProperty("Time the Task last received a pint from an Analyst.")
     val timePing: Long,
+
+    @ApiModelProperty("Counters for the total number of assets created, updated, etc.")
     val assetCounts: Map<String, Int>
+
 ) : InternalTask(id, jobId, name, state)
 
 /**
@@ -136,20 +150,24 @@ class DispatchTask(
     override val taskId = id
 }
 
-/**
- * A DAO filter for selecting tasks.
- *
- * @property ids An array of unique [Task] ids.
- * @property states An array of [TaskState]s.
- * @property jobIds An array of unique [Job] ids.
- * @property names An array of task names.
- */
+@ApiModel("Task Filter", description = "Search filter for finding Tasks.")
 class TaskFilter(
+
+    @ApiModelProperty("Task UUIDs to match.")
     val ids: List<UUID>? = null,
+
+    @ApiModelProperty("States to match.")
     val states: List<TaskState>? = null,
+
+    @ApiModelProperty("Job UUIDs to match.")
     val jobIds: List<UUID>? = null,
+
+    @ApiModelProperty("Task names to match.")
     val names: List<String>? = null,
+
+    @ApiModelProperty("Organization UUIDs to match.")
     val organizationIds: List<UUID>? = null
+
 ) : KDaoFilter() {
 
     @JsonIgnore

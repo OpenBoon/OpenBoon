@@ -1,18 +1,21 @@
 package com.zorroa.archivist.search;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by chambers on 12/6/16.
  */
+@ApiModel(value = "Similarity Filter", description = "Filter that returns Assets that have at least a minimum matching score.")
 public class SimilarityFilter {
 
+    @ApiModelProperty("Similarity Hashes to match against.")
     private List<SimilarityHash> hashes;
 
-    /**
-     * A value between 1 and 100 which represents the minimum percent match.
-     */
+    @ApiModelProperty("Value between 1 and 100 which represents the minimum percent match.")
     private int minScore = 75;
 
     public SimilarityFilter() { }
@@ -47,9 +50,16 @@ public class SimilarityFilter {
         return this;
     }
 
+    @ApiModel(value = "Similarity Hash", description = "Quantized feature vector, used to compare how similar two assets are.")
     public static class SimilarityHash {
+
+        @ApiModelProperty("Hash used for comparison.")
         private String hash;
+
+        @ApiModelProperty("Weighting of this Hash.")
         private Float weight;
+
+        @ApiModelProperty("Order of this Hash.")
         private Integer order;
 
         public SimilarityHash() {  }

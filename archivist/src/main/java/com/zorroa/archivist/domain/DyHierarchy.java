@@ -2,6 +2,8 @@ package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -12,32 +14,27 @@ import java.util.UUID;
 /**
  * Created by chambers on 7/14/16.
  */
+@ApiModel(value = "Dynamic Hierarchy", description = "Describes a Dynamic Hierarchy (DyHi).")
 public class DyHierarchy {
 
-    /**
-     * Id of the aggregation.
-     */
+    @ApiModelProperty("UUID of the DyHi.")
     private UUID id;
 
-    /**
-     * The folder the agg is on.
-     */
     @NotNull
+    @ApiModelProperty("UUID of the Folder the DyHi is applied to.")
     private UUID folderId;
 
-    /**
-     * The user that created the dyhi.
-     */
+    @ApiModelProperty("User that created the DyHi")
     private UserBase user;
 
-    /**
-     * The time the aggregation was created;
-     */
+    @ApiModelProperty("Time the DyHi was created.")
     private long timeCreated;
 
     @NotEmpty
+    @ApiModelProperty("List DyHi levels.")
     private List<DyHierarchyLevel> levels;
 
+    @ApiModelProperty("True if the DyHi is working.")
     private boolean working;
 
     public UUID getId() {
