@@ -7,7 +7,9 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.EsClientCacheKey
+import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
@@ -35,7 +37,11 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.net.URI
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -55,6 +61,11 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  */
 interface IndexRoutingService {
+
+    /**
+     * Create a new [IndexRoute] and return it.
+     */
+    fun createIndexRoute(spec: IndexRouteSpec) : IndexRoute
 
     /**
      * Get an [EsRestClient] for the current users organization.
@@ -126,6 +137,21 @@ interface IndexRoutingService {
      * Perform a health check on all active [IndexRoute]s
      */
     fun performHealthCheck(): Health
+
+    /**
+     * Return a list of available ES index mappings.
+     */
+    fun getIndexMappingVersions(): List<IndexMappingVersion>
+
+    /**
+     * Return a given [IndexRoute] by its unique Id.
+     */
+    fun getIndexRoute(id:UUID) : IndexRoute
+
+    /**
+     * Return true if the index route being used is for reindexig.
+     */
+    fun isReIndexRoute(): Boolean
 }
 
 /**
@@ -162,6 +188,62 @@ class IndexRoutingServiceImpl @Autowired
             // This is run manually by unittests we can test it.
             syncAllIndexRoutes()
         }
+    }
+
+    @Transactional
+    override fun createIndexRoute(spec: IndexRouteSpec) : IndexRoute {
+
+        if (!indexMappingVersionExists(spec.mappingType, spec.mappingMajorVer)) {
+            throw IllegalArgumentException(
+                "Failed to find index mapping ${spec.mappingType} v${spec.mappingMajorVer}")
+        }
+
+        // These are always false for single tenant
+        if (!properties.getBoolean("archivist.organization.multiTenant")) {
+            spec.useRouteKey = false
+            spec.defaultPool = false
+        }
+
+        val route = indexRouteDao.create(spec)
+        syncIndexRouteVersion(route)
+        return route
+    }
+
+    @Transactional(readOnly = true)
+    override fun getIndexRoute(id:UUID) : IndexRoute {
+        return indexRouteDao.get(id)
+    }
+
+    override fun getIndexMappingVersions(): List<IndexMappingVersion> {
+
+        val result = mutableListOf<IndexMappingVersion>()
+        val searchPath = listOf("classpath:/db/migration/elasticsearch")
+        val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
+
+        fun addMatch(filename: String) {
+            val match = MAP_MAJOR_REGEX.matchEntire(filename)
+            if (match != null) {
+                val majorVersion = match.groupValues[1]
+                val name = match.groupValues[2]
+                result.add(IndexMappingVersion(name, majorVersion.toInt()))
+            }
+        }
+
+        searchPath.forEach {
+            if (it.startsWith("classpath:")) {
+                val resources = resolver.getResources("$it/*.json")
+                for (resource in resources) {
+                    addMatch(resource.filename)
+                }
+            }
+        }
+
+        return result
+    }
+
+    override fun isReIndexRoute() : Boolean {
+        val req = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes
+        return req?.request?.getHeader("X-Zorroa-Index-Route") != null
     }
 
     override fun setupDefaultIndexRoute() {
@@ -294,7 +376,17 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     override fun getOrgRestClient(): EsRestClient {
-        val route = indexRouteDao.getOrgRoute()
+
+        val req = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?
+        val routeId = req?.request?.getHeader("X-Zorroa-Index-Route")
+
+        val route = if (routeId != null) {
+            indexRouteDao.get(UUID.fromString(routeId))
+        }
+        else {
+            indexRouteDao.getOrgRoute()
+        }
+
         return esClientCache.get(route.esClientCacheKey(getOrgId().toString()))
     }
 
@@ -323,6 +415,13 @@ class IndexRoutingServiceImpl @Autowired
             }
         }
         return Health.up().build()
+    }
+
+    /**
+     * Return true if the given mapping and major version exists.
+     */
+    private fun indexMappingVersionExists(mapping: String, majorVersion: Int) : Boolean {
+        return getIndexMappingVersions().find { it.mapping == mapping && it.mappingMajorVer == majorVersion } != null
     }
 
     /**
@@ -366,6 +465,8 @@ class IndexRoutingServiceImpl @Autowired
          * which might kick off another reindex job to happen.
          */
         const val REINDEX_JOB_DELAY_SEC = 20L
+
+        private val MAP_MAJOR_REGEX = Regex("^V(\\d+)__(.*?).json$")
 
         private val MAP_PATCH_REGEX = Regex("^V(\\d+)\\.(\\d{8})__(.*?).json$")
     }

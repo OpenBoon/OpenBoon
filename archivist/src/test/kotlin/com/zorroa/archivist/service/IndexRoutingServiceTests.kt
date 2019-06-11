@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
@@ -11,13 +12,18 @@ import com.zorroa.common.domain.JobState
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
+import org.junit.After
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import org.springframework.mock.web.MockHttpServletRequest
+import java.util.UUID
 
 class IndexRoutingServiceTests : AbstractTest() {
 
@@ -32,6 +38,11 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     override fun requiresElasticSearch(): Boolean {
         return true
+    }
+
+    @After
+    fun reset() {
+        RequestContextHolder.resetRequestAttributes()
     }
 
     @Test
@@ -153,6 +164,33 @@ class IndexRoutingServiceTests : AbstractTest() {
     }
 
     @Test
+    fun getOrgRestClientReIndex() {
+
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "test",
+            1,
+            false)
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        val request = MockHttpServletRequest()
+        request.addHeader("X-Zorroa-Index-Route", route.id)
+        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
+        indexRoutingService.getOrgRestClient()
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun getOrgRestClientReIndexMissing() {
+
+        val request = MockHttpServletRequest()
+        request.addHeader("X-Zorroa-Index-Route", UUID.randomUUID().toString())
+        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
+
+       indexRoutingService.getOrgRestClient()
+    }
+
+    @Test
     fun getClusterRestClient() {
         var route = indexRouteDao.getRandomDefaultRoute()
         val client = indexRoutingService.getClusterRestClient(route)
@@ -209,5 +247,51 @@ class IndexRoutingServiceTests : AbstractTest() {
                 states = listOf(JobState.Active),
                 names = listOf(job.name))).size()
         assertEquals(1, jobCount)
+    }
+
+    @Test
+    fun testGetIndexMappingVersions() {
+        val mappings = indexRoutingService.getIndexMappingVersions()
+        assertTrue(mappings.isNotEmpty())
+    }
+
+    @Test
+    fun testCreate() {
+
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "test",
+            1,
+            false)
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        assertEquals(spec.clusterUrl, route.clusterUrl)
+        assertEquals(spec.indexName, route.indexName)
+        assertEquals(spec.mappingType, route.mappingType)
+        assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testCreateMissingMapping() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "kirk",
+            33,
+            false)
+
+        indexRoutingService.createIndexRoute(spec)
+    }
+
+    @Test
+    fun testIsReindexRoute() {
+        assertFalse(indexRoutingService.isReIndexRoute())
+
+        val request = MockHttpServletRequest()
+        request.addHeader("X-Zorroa-Index-Route", UUID.randomUUID().toString())
+        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
+
+        assertTrue(indexRoutingService.isReIndexRoute())
     }
 }

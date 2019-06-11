@@ -82,6 +82,18 @@ class IndexRouteSpec(
 )
 
 /**
+ * An IndexMappingVersion is a version of an ES mapping found on disk
+ * or packaged with the Archivist that can be used to make an [IndexRoute]
+ *
+ * @property mapping The name of the mapping.
+ * @property mappingMajorVer The major version of the mapping.
+ */
+class IndexMappingVersion(
+    val mapping: String,
+    val mappingMajorVer: Int
+)
+
+/**
  * The ESClientCacheKey is used to lookup or create cached ElasticSearch client
  * instances.
  *
