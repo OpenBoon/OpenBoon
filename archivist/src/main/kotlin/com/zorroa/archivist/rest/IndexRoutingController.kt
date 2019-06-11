@@ -27,22 +27,22 @@ class IndexRoutingController @Autowired constructor(
     val organizationService: OrganizationService
 ) {
 
-    @PostMapping(value = ["/api/v1/index-route"])
+    @PostMapping(value = ["/api/v1/index-routes"])
     fun create(@RequestBody spec: IndexRouteSpec): IndexRoute {
         return indexRoutingService.createIndexRoute(spec)
     }
 
-    @GetMapping(value = ["/api/v1/index-route/{id}"])
+    @GetMapping(value = ["/api/v1/index-routes/{id}"])
     fun get(@PathVariable id: UUID): IndexRoute {
         return indexRoutingService.getIndexRoute(id)
     }
 
-    @GetMapping(value = ["/api/v1/index-route/_mappings"])
+    @GetMapping(value = ["/api/v1/index-routes/_mappings"])
     fun getMappings(): List<IndexMappingVersion> {
         return indexRoutingService.getIndexMappingVersions()
     }
 
-    @PostMapping(value = ["/api/v1/index-route/_migrate"])
+    @PostMapping(value = ["/api/v1/index-routes/_migrate"])
     fun migrate(@RequestBody mig: IndexMigrationSpec): Any {
         return indexMigrationService.migrate(organizationService.get(getOrgId()), mig)
     }

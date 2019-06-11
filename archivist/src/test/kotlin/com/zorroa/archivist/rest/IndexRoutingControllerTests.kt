@@ -42,7 +42,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
             false)
 
         val rsp = mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/index-route")
+            MockMvcRequestBuilders.post("/api/v1/index-routes")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -75,7 +75,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
 
         val rsp = mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/index-route/${route.id}")
+            MockMvcRequestBuilders.get("/api/v1/index-routes/${route.id}")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -100,7 +100,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
     fun testGetMappings() {
 
         val rsp = mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/index-route/_mappings")
+            MockMvcRequestBuilders.get("/api/v1/index-routes/_mappings")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -127,7 +127,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
         val mspec = IndexMigrationSpec(route.id, true)
 
         val rsp = mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/index-route/_migrate")
+            MockMvcRequestBuilders.post("/api/v1/index-routes/_migrate")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
