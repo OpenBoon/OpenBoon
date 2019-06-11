@@ -90,11 +90,12 @@ class ZpsFilter(
 
 class ProcessorRef(
     var className: String,
-    var args: Map<String, Any>? = mutableMapOf(),
+    var args: Map<String, Any?>? = mutableMapOf(),
     var execute: List<ProcessorRef>? = mutableListOf(),
     var filters: List<ZpsFilter>? = mutableListOf(),
     var fileTypes: Set<String>? = mutableSetOf(),
-    val language: String = "python"
+    val language: String = "python",
+    val env : Map<String, String> = mutableMapOf()
 )
 
 var LIST_OF_PREFS: TypeReference<List<ProcessorRef>> = object : TypeReference<List<ProcessorRef>>() {}
