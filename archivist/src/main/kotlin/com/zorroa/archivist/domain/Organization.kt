@@ -44,7 +44,9 @@ class Organization(
 class OrganizationUpdateSpec(
     var name: String,
     var indexRouteId: UUID
-)
+) {
+    constructor(org: Organization) : this(org.name, org.indexRouteId)
+}
 
 /**
  * Options available for filtering organizations.
