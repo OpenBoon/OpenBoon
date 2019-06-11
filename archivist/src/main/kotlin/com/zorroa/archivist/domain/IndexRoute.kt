@@ -76,6 +76,7 @@ class IndexRouteSpec(
     var mappingType: String,
     var mappingMajorVer: Int,
     var defaultPool: Boolean,
+    var useRouteKey: Boolean = false,
     var replicas: Int = 2,
     var shards: Int = 5
 )

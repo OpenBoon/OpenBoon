@@ -1,7 +1,9 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.util.JdbcUtils
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -38,10 +40,47 @@ interface IndexRouteDao {
      * application.properties file.  This is called once at startup time.
      */
     fun updateDefaultIndexRoutes(clusterUrl: String, useRoutingKey: Boolean)
+
+    /**
+     * Return an [IndexRoute] by its unique Id.
+     */
+    fun get(id: UUID): IndexRoute
+
+    /**
+     * Create a new IndexRoute entry.
+     */
+    fun create(spec: IndexRouteSpec) : IndexRoute
 }
 
 @Repository
 class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
+
+    override fun create(spec: IndexRouteSpec) : IndexRoute {
+
+        val id = uuid1.generate()
+        val time = System.currentTimeMillis()
+
+        jdbc.update { connection ->
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setString(2, spec.clusterUrl)
+            ps.setString(3, spec.indexName)
+            ps.setString(4, spec.mappingType)
+            ps.setInt(5, spec.mappingMajorVer)
+            ps.setInt(6, 0)
+            ps.setInt(7, spec.replicas)
+            ps.setInt(8, spec.shards)
+            ps.setBoolean(9, false)
+            ps.setBoolean(10, spec.defaultPool)
+            ps.setBoolean(11, spec.useRouteKey)
+            ps.setLong(12, time)
+            ps.setLong(13, time)
+            ps.setInt(14, -1)
+            ps
+        }
+
+        return get(id)
+    }
 
     override fun updateDefaultIndexRoutes(clusterUrl: String, useRoutingKey: Boolean) {
         val count = jdbc.update(
@@ -57,6 +96,10 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun getOrgRoute(): IndexRoute {
         return jdbc.queryForObject(GET_BY_ORG, MAPPER, getOrgId())
+    }
+
+    override fun get(id: UUID): IndexRoute {
+        return jdbc.queryForObject("$GET WHERE pk_index_route=?", MAPPER, id)
     }
 
     override fun getRandomDefaultRoute(): IndexRoute {
@@ -88,7 +131,25 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                     rs.getBoolean("bool_use_rkey"))
         }
 
+        val INSERT = JdbcUtils.insert(
+            "index_route",
+            "pk_index_route",
+            "str_url",
+            "str_index",
+            "str_mapping_type",
+            "int_mapping_major_ver",
+            "int_mapping_minor_ver",
+            "int_replicas",
+            "int_shards",
+            "bool_closed",
+            "bool_default_pool",
+            "bool_use_rkey",
+            "time_created",
+            "time_modified",
+            "int_mapping_error_ver")
+
         const val GET = "SELECT * FROM index_route"
+
         const val GET_BY_ORG = "$GET " +
                 "INNER JOIN " +
                     "organization " +

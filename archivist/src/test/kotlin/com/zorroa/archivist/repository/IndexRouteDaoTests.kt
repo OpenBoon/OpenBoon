@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.IndexRouteSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -26,6 +27,52 @@ class IndexRouteDaoTests : AbstractTest() {
                 Boolean::class.java))
     }
 
+    @Test
+    fun testCreate() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false)
+
+        val route = indexRouteDao.create(spec)
+        assertEquals(spec.clusterUrl, route.clusterUrl)
+        assertEquals(spec.indexName, route.indexName)
+        assertEquals(spec.defaultPool, route.defaultPool)
+        assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
+        assertEquals(0, route.mappingMinorVer)
+        assertEquals(spec.shards, route.shards)
+        assertEquals(spec.replicas, route.replicas)
+    }
+
+    @Test
+    fun testGetById() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false)
+
+        val route1 = indexRouteDao.create(spec)
+        val route2 = indexRouteDao.get(route1.id)
+        assertEquals(route1.id, route2.id)
+    }
+
+    @Test
+    fun testGetByUrl() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false)
+
+        val route1 = indexRouteDao.create(spec)
+        val route2 = indexRouteDao.get(route1.id)
+        assertEquals(route1.id, route2.id)
+    }
     @Test
     fun testGetOrgRoute() {
         val route = indexRouteDao.getOrgRoute()
