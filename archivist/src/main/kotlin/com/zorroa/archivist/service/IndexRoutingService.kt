@@ -193,9 +193,9 @@ class IndexRoutingServiceImpl @Autowired
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec) : IndexRoute {
 
-        if (!indexMappingVersionExists(spec.mappingType, spec.mappingMajorVer)) {
+        if (!indexMappingVersionExists(spec.mapping, spec.mappingMajorVer)) {
             throw IllegalArgumentException(
-                "Failed to find index mapping ${spec.mappingType} v${spec.mappingMajorVer}")
+                "Failed to find index mapping ${spec.mapping} v${spec.mappingMajorVer}")
         }
 
         // These are always false for single tenant
@@ -282,12 +282,12 @@ class IndexRoutingServiceImpl @Autowired
             val indexExisted = es.indexExists()
             if (!indexExisted) {
                 logger.info("Creating index:" +
-                        "type: '${route.mappingType}'  index: '${route.indexName}' " +
+                        "type: '${route.mapping}'  index: '${route.indexName}' " +
                         "ver: '${route.mappingMajorVer}'" +
                         "shards: '${route.shards}' replicas: '${route.replicas}'")
 
                 val mappingFile = getMajorVersionMappingFile(
-                        route.mappingType, route.mappingMajorVer)
+                        route.mapping, route.mappingMajorVer)
 
                 val mapping = Document(mappingFile.mapping)
                 mapping.setAttr("settings.index.number_of_shards", route.shards)
@@ -302,7 +302,7 @@ class IndexRoutingServiceImpl @Autowired
                 logger.info("Not creating ${route.indexUrl}, already exists")
             }
 
-            val patches = getMinorVersionMappingFiles(route.mappingType, route.mappingMajorVer)
+            val patches = getMinorVersionMappingFiles(route.mapping, route.mappingMajorVer)
             for (patch in patches) {
                 /**
                  * If the index already existed, then only apply new patches. If

@@ -9,7 +9,7 @@ import java.util.UUID
  * @property id The unique ID of the index route.
  * @property clusterUrl The URL to the ES cluster.
  * @property indexName The name of the ES index.
- * @property mappingType The mapping type. This is extracted from the
+ * @property mapping The mapping type. This is extracted from the
  * mapping file name, not the ES type.
  * @property mappingMajorVer The major version of the mapping file.
  * @property mappingMinorVer The minor version of the mapping file in a date format.
@@ -24,7 +24,7 @@ class IndexRoute(
     val id: UUID,
     val clusterUrl: String,
     val indexName: String,
-    val mappingType: String,
+    val mapping: String,
     val mappingMajorVer: Int,
     val mappingMinorVer: Int,
     val closed: Boolean,
@@ -64,7 +64,7 @@ class IndexRoute(
  *
  * @property clusterUrl The URL of the ES cluster.
  * @property indexName The name of the ES index.
- * @property mappingType The type of mapping (not ES object type)
+ * @property mapping The type of mapping (not ES object type)
  * @property mappingMajorVer The major version to use. It will be patched up to highest level.
  * @property defaultPool Add the route to the default pool.
  * @property replicas The number of replicas there should be for each shard. Defaults to 2.
@@ -73,7 +73,7 @@ class IndexRoute(
 class IndexRouteSpec(
     var clusterUrl: String,
     var indexName: String,
-    var mappingType: String,
+    var mapping: String,
     var mappingMajorVer: Int,
     var defaultPool: Boolean,
     var useRouteKey: Boolean = false,

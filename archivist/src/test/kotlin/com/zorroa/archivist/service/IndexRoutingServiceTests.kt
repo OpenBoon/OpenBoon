@@ -268,7 +268,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         val route = indexRoutingService.createIndexRoute(spec)
         assertEquals(spec.clusterUrl, route.clusterUrl)
         assertEquals(spec.indexName, route.indexName)
-        assertEquals(spec.mappingType, route.mappingType)
+        assertEquals(spec.mapping, route.mapping)
         assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
     }
 

@@ -65,7 +65,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             ps.setObject(1, id)
             ps.setString(2, spec.clusterUrl)
             ps.setString(3, spec.indexName)
-            ps.setString(4, spec.mappingType)
+            ps.setString(4, spec.mapping)
             ps.setInt(5, spec.mappingMajorVer)
             ps.setInt(6, 0)
             ps.setInt(7, spec.replicas)
