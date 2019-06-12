@@ -12,13 +12,12 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.UUID
 
-inline fun <reified T: Any> ObjectMapper.readValueOrNull(content: String?): T?  {
+inline fun <reified T : Any> ObjectMapper.readValueOrNull(content: String?): T? {
     return if (content == null) {
         null
-    }
-    else {
+    } else {
         readValue(content, jacksonTypeRef<T>())
     }
 }
@@ -63,7 +62,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to serialize object, unexpected: $e", e)
         }
-
     }
 
     fun serializeToString(`object`: Any): String {
@@ -73,7 +71,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to serialize object, unexpected: $e", e)
         }
-
     }
 
     fun hash(`object`: Any): Int {
@@ -84,7 +81,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to serialize object, unexpected: $e", e)
         }
-
     }
 
     fun serialize(`object`: Any): ByteArray {
@@ -94,7 +90,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to serialize object, unexpected: $e", e)
         }
-
     }
 
     fun serializeToString(`object`: Any?, onNull: String?): String? {
@@ -107,7 +102,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to serialize object, unexpected: $e", e)
         }
-
     }
 
     fun serialize(`object`: Any?, onNull: String?): ByteArray? {
@@ -120,7 +114,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to serialize object, unexpected: $e", e)
         }
-
     }
 
     fun <T> deserialize(data: ByteArray, valueType: Class<T>): T {
@@ -130,7 +123,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to unserialize object, unexpected $e", e)
         }
-
     }
 
     fun <T> deserialize(data: ByteArray, valueType: TypeReference<T>): T {
@@ -140,7 +132,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to unserialize object, unexpected $e", e)
         }
-
     }
 
     fun <T> deserialize(data: String, valueType: Class<T>): T {
@@ -150,7 +141,6 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to unserialize object, unexpected $e", e)
         }
-
     }
 
     fun <T> deserialize(data: String, valueType: TypeReference<T>): T {
@@ -160,6 +150,5 @@ object Json {
             throw IllegalArgumentException(
                     "Failed to unserialize object, unexpected $e", e)
         }
-
     }
 }

@@ -7,11 +7,40 @@ import com.google.common.base.Suppliers
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.*
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.DispatchPriority
+import com.zorroa.archivist.domain.JobStateChangeEvent
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.TaskErrorEvent
+import com.zorroa.archivist.domain.TaskEvent
+import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.TaskMessageEvent
+import com.zorroa.archivist.domain.TaskStoppedEvent
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.zpsTaskName
+import com.zorroa.archivist.repository.AnalystDao
+import com.zorroa.archivist.repository.DispatchTaskDao
+import com.zorroa.archivist.repository.JobDao
+import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.repository.UserDao
+import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.generateUserToken
+import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAuthentication
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.common.domain.*
+import com.zorroa.common.domain.DispatchTask
+import com.zorroa.common.domain.InternalTask
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobId
+import com.zorroa.common.domain.JobPriority
+import com.zorroa.common.domain.JobState
+import com.zorroa.common.domain.Task
+import com.zorroa.common.domain.TaskId
+import com.zorroa.common.domain.TaskSpec
+import com.zorroa.common.domain.TaskState
 import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
@@ -22,11 +51,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
 import javax.annotation.PostConstruct
-
 
 interface DispatcherService {
     /**
@@ -36,7 +64,7 @@ interface DispatcherService {
      * @param organizationId: The organization ID.
      * @param count: The maximium number of tasks to return.
      */
-    fun getWaitingTasks(organizationId: UUID, count: Int) : List<DispatchTask>
+    fun getWaitingTasks(organizationId: UUID, count: Int): List<DispatchTask>
 
     /**
      * Return a list of waiting [DispatchTask] instances with at least
@@ -46,7 +74,7 @@ interface DispatcherService {
      * @param minPriority The minimum task priority.
      * @param count The maximum number of tasks to return.
      */
-    fun getWaitingTasks(minPriority : Int, count: Int) : List<DispatchTask>
+    fun getWaitingTasks(minPriority: Int, count: Int): List<DispatchTask>
 
     fun startTask(task: InternalTask): Boolean
     fun stopTask(task: InternalTask, event: TaskStoppedEvent): Boolean
@@ -61,7 +89,7 @@ interface DispatcherService {
     /**
      * Return the [Organization] dispatch priority.
      */
-    fun getDispatchPriority() : List<DispatchPriority>
+    fun getDispatchPriority(): List<DispatchPriority>
 }
 
 /**
@@ -69,14 +97,13 @@ interface DispatcherService {
  */
 @Component
 class DispatchQueueManager @Autowired constructor(
-        val dispatcherService: DispatcherService,
-        val analystService: AnalystService,
-        val fileStorageService: FileStorageService,
-        val userDao: UserDao,
-        val properties: ApplicationProperties,
-        val meterRegistry: MeterRegistry
-)
-{
+    val dispatcherService: DispatcherService,
+    val analystService: AnalystService,
+    val fileStorageService: FileStorageService,
+    val userDao: UserDao,
+    val properties: ApplicationProperties,
+    val meterRegistry: MeterRegistry
+) {
 
     /**
      * The number of tasks to poll per request.  A higher number lowers dispatch collisions.
@@ -135,9 +162,9 @@ class DispatchQueueManager @Autowired constructor(
                     METRICS_KEY, "op", "tasks-polled").increment(tasks.size.toDouble())
 
             for (task in tasks) {
-               if (queueAndDispatchTask(task, analyst)) {
-                   return task
-               }
+                if (queueAndDispatchTask(task, analyst)) {
+                    return task
+                }
             }
         }
 
@@ -151,7 +178,7 @@ class DispatchQueueManager @Autowired constructor(
      * @param task The task to dispatch
      * @param analyst The hostname for the [Analyst] asking for a task.
      */
-    fun queueAndDispatchTask(task: DispatchTask, analyst: String) : Boolean {
+    fun queueAndDispatchTask(task: DispatchTask, analyst: String): Boolean {
         if (dispatcherService.queueTask(task, analyst)) {
             meterRegistry.counter(
                 METRICS_KEY, "op", "tasks-queued").increment()
@@ -172,8 +199,7 @@ class DispatchQueueManager @Autowired constructor(
                 task.logFile = logFile
             }
             return true
-        }
-        else {
+        } else {
             meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
         }
 
@@ -192,13 +218,14 @@ class DispatchQueueManager @Autowired constructor(
 @Service
 @Transactional
 class DispatcherServiceImpl @Autowired constructor(
-        private val dispatchTaskDao: DispatchTaskDao,
-        private val taskDao: TaskDao,
-        private val jobDao: JobDao,
-        private val taskErrorDao: TaskErrorDao,
-        private val analystDao: AnalystDao,
-        private val eventBus: EventBus,
-        private val meterRegistry: MeterRegistry) : DispatcherService {
+    private val dispatchTaskDao: DispatchTaskDao,
+    private val taskDao: TaskDao,
+    private val jobDao: JobDao,
+    private val taskErrorDao: TaskErrorDao,
+    private val analystDao: AnalystDao,
+    private val eventBus: EventBus,
+    private val meterRegistry: MeterRegistry
+) : DispatcherService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
@@ -223,7 +250,7 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getDispatchPriority() : List<DispatchPriority> {
+    override fun getDispatchPriority(): List<DispatchPriority> {
         return meterRegistry.timer("zorroa.dispatch-service.prioritize")
                 .record<List<DispatchPriority>> {
             dispatchTaskDao.getDispatchPriority()
@@ -231,12 +258,12 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getWaitingTasks(organizationId: UUID, count: Int) : List<DispatchTask> {
+    override fun getWaitingTasks(organizationId: UUID, count: Int): List<DispatchTask> {
         return dispatchTaskDao.getNextByOrg(organizationId, count)
     }
 
     @Transactional(readOnly = true)
-    override fun getWaitingTasks(minPriority : Int, count: Int) : List<DispatchTask> {
+    override fun getWaitingTasks(minPriority: Int, count: Int): List<DispatchTask> {
         return dispatchTaskDao.getNextByJobPriority(minPriority, count)
     }
 
@@ -268,8 +295,7 @@ class DispatcherServiceImpl @Autowired constructor(
             event.exitStatus != 0 -> {
                 if (!event.manualKill && taskDao.isAutoRetryable(task)) {
                     TaskState.Waiting
-                }
-                else {
+                } else {
                     TaskState.Failure
                 }
             }
@@ -298,7 +324,7 @@ class DispatcherServiceImpl @Autowired constructor(
             if (!event.manualKill && event.exitStatus != 0 && newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.taskId)
                 val assetCount = script.over?.size ?: 0
-                jobService.incrementAssetCounters(task, AssetCounters(errors=assetCount))
+                jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
 
                 taskErrorDao.batchCreate(task, script.over?.map {
                     TaskErrorEvent(UUID.fromString(it.id),
@@ -318,7 +344,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun expand(parentTask: InternalTask, script: ZpsScript): Task {
 
         val parentScript = taskDao.getScript(parentTask.taskId)
-        script.globals = parentScript.globals
+        script.globalArgs = parentScript.globalArgs
         script.type = parentScript.type
         script.settings = parentScript.settings
 
@@ -327,7 +353,8 @@ class DispatcherServiceImpl @Autowired constructor(
         }
 
         val newTask = taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
-        logger.event(LogObject.JOB, LogAction.EXPAND,
+        logger.event(
+            LogObject.JOB, LogAction.EXPAND,
                 mapOf("parentTaskId" to parentTask.taskId,
                         "taskId" to newTask.id,
                         "jobId" to newTask.jobId))
@@ -343,7 +370,7 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
         taskErrorDao.create(task, error)
-        jobService.incrementAssetCounters(task, AssetCounters(errors=1))
+        jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
     }
 
     override fun handleEvent(event: TaskEvent) {
@@ -383,7 +410,7 @@ class DispatcherServiceImpl @Autowired constructor(
         meterRegistry.counter("zorroa.task.retry", getTags()).increment()
         return if (task.state.isDispatched()) {
             GlobalScope.launch(Dispatchers.IO) {
-                if(!killRunningTaskOnAnalyst(task, TaskState.Waiting, reason)) {
+                if (!killRunningTaskOnAnalyst(task, TaskState.Waiting, reason)) {
                     logger.warn("Manually setting task {} to Waiting", task)
                     jobService.setTaskState(task, TaskState.Waiting, null)
                 }

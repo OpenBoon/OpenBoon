@@ -22,8 +22,7 @@ class SettingsFilter {
     /**
      * The maximum number of settings to return.
      */
-   var count = Integer.MAX_VALUE
-
+    var count = Integer.MAX_VALUE
 
     fun matches(setting: Setting): Boolean {
         if (names?.isNotEmpty()) {

@@ -1,8 +1,8 @@
 package com.zorroa.archivist
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
@@ -13,7 +13,21 @@ import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.EmailService
+import com.zorroa.archivist.service.FieldService
+import com.zorroa.archivist.service.FieldSystemService
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.FolderService
+import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.archivist.service.IndexService
+import com.zorroa.archivist.service.OrganizationService
+import com.zorroa.archivist.service.PermissionService
+import com.zorroa.archivist.service.RequestService
+import com.zorroa.archivist.service.SearchService
+import com.zorroa.archivist.service.SettingsService
+import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
@@ -38,15 +52,16 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionCallbackWithoutResult
 import org.springframework.transaction.support.TransactionTemplate
+import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource(locations=["classpath:test.properties"])
+@TestPropertySource(locations = ["classpath:test.properties"])
 @WebAppConfiguration
 @Transactional
 open abstract class AbstractTest {
@@ -118,7 +133,7 @@ open abstract class AbstractTest {
         ArchivistConfiguration.unittest = true
     }
 
-    fun requiresElasticSearch() : Boolean {
+    fun requiresElasticSearch(): Boolean {
         return false
     }
 
@@ -174,7 +189,6 @@ open abstract class AbstractTest {
             cleanElastic()
         }
 
-
         val spec1 = UserSpec(
                 "user",
                 "user",
@@ -195,8 +209,6 @@ open abstract class AbstractTest {
         userService.addPermissions(manager, listOf(
                 permissionService.getPermission("zorroa::librarian")))
 
-
-        resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"))
         Json.Mapper.registerModule(KotlinModule())
     }
 
@@ -204,7 +216,7 @@ open abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
     }
 
-    fun testUserSpec(name: String="test") : UserSpec {
+    fun testUserSpec(name: String = "test"): UserSpec {
         return UserSpec(
                 name,
                 "test",
@@ -272,60 +284,50 @@ open abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication = null
     }
 
-    fun getTestPath(subdir: String): Path {
-        return resources.resolve(subdir)
+    fun getTestPaths(subdir: String): List<Path> {
+        val paths = Json.Mapper.readValue<List<String>>(File("src/test/resources/test-data/files.json"))
+        return paths.filter {
+            it.contains(subdir)
+        }.map {
+            Paths.get(it)
+        }
     }
 
     fun getTestImagePath(subdir: String): Path {
-        return if (subdir.startsWith("/")) {
-            resources.resolve(subdir.substring(1))
-        } else {
-            resources.resolve("images/$subdir")
-        }
+        return Paths.get("/tmp/images/$subdir")
     }
-
-    fun getTestImagePath(): Path {
-        return getTestImagePath("set04/standard")
-    }
-
-    private val SUPPORTED_FORMATS = ImmutableSet.of(
-            "jpg", "pdf", "m4v", "gif", "tif")
 
     fun getTestAssets(subdir: String): List<Source> {
+
+        val formats = setOf("jpg", "pdf", "m4v", "gif", "tif")
+
         val result = mutableListOf<Source>()
-        val tip = getTestImagePath(subdir)
-        for (f in tip.toFile().listFiles()!!) {
-
-            if (f.isFile) {
-                if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.path).toLowerCase())) {
-                    logger.info("adding test file: {}", f)
-                    val b = Source(f)
-                    b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
-                    b.setAttr("location.point", mapOf("lat" to "36.996460", "lon" to "-109.043360"))
-                    b.setAttr("location.state", "New Mexico")
-                    b.setAttr("location.country", "USA")
-                    b.setAttr("location.keywords", listOf("boring", "tourist", "attraction"))
-                    b.setAttr("media.width", 1024)
-                    b.setAttr("media.height", 1024)
-                    b.setAttr("media.title", "Picture of ${f.name}")
-                    val id = UUID.randomUUID().toString()
-                    val proxies = Lists.newArrayList<Proxy>()
-                    proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
-                    proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
-                    proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
-
-                    val p = ProxySchema()
-                    p.proxies = proxies
-                    b.setAttr("proxies", p)
-                    result.add(b)
-                }
+        val imagePaths = Json.Mapper.readValue<List<String>>(File("src/test/resources/test-data/files.json"))
+        for (path in imagePaths) {
+            if (!path.contains(subdir) || !formats.contains(FileUtils.extension(path).toLowerCase())) {
+                continue
             }
-        }
 
-        for (f in getTestImagePath(subdir).toFile().listFiles()!!) {
-            if (f.isDirectory) {
-                result.addAll(getTestAssets(subdir + "/" + f.name))
-            }
+            val f = File(path)
+            val b = Source(f)
+            // b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
+            b.setAttr("location.point", mapOf("lat" to "36.996460", "lon" to "-109.043360"))
+            b.setAttr("location.state", "New Mexico")
+            b.setAttr("location.country", "USA")
+            b.setAttr("location.keywords", listOf("boring", "tourist", "attraction"))
+            b.setAttr("media.width", 1024)
+            b.setAttr("media.height", 1024)
+            b.setAttr("media.title", "Picture of ${f.name}")
+            val id = UUID.randomUUID().toString()
+            val proxies = Lists.newArrayList<Proxy>()
+            proxies.add(Proxy(width = 100, height = 100, id = "proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 200, height = 200, id = "proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 300, height = 300, id = "proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
+
+            val p = ProxySchema()
+            p.proxies = proxies
+            b.setAttr("proxies", p)
+            result.add(b)
         }
 
         return result
@@ -335,29 +337,29 @@ open abstract class AbstractTest {
         addTestAssets(getTestAssets(subdir))
     }
 
-    fun addTestVideoAssets(subdir: String) {
-        // note: does not recurse into subdirectories
+    fun addTestVideoAssets() {
         val videoAssets = mutableListOf<Source>()
-        val path = resources.resolve(subdir)
-        for (f in path.toFile().listFiles()!!) {
+        val paths = Json.Mapper.readValue<List<String>>(File("src/test/resources/test-data/files.json"))
 
-            if (f.isFile) {
-                    logger.info("adding test file: {}", f)
-                    val source = Source(f)
-                    source.setAttr("test.path", path.toAbsolutePath().toString())
-                    val id = UUID.randomUUID().toString()
-                    val proxies = Lists.newArrayList<Proxy>()
-                    proxies.add(Proxy(width=100, height=100, id="proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
-                    proxies.add(Proxy(width=200, height=200, id="proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
-                    proxies.add(Proxy(width=300, height=300, id="proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
-                    proxies.add(Proxy(width=1920, height=1080, id="proxy___${id}_transcode.mp4", mimetype = "video/mp4"))
-
-                    val proxySchema = ProxySchema()
-                    proxySchema.proxies = proxies
-                    source.setAttr("proxies", proxySchema)
-                    source.setAttr("proxy_id", id)
-                    videoAssets.add(source)
+        for (path in paths) {
+            if ("video/" !in path) {
+                continue
             }
+            val file = File(path)
+            val source = Source(file)
+            source.setAttr("test.path", file.toPath().toAbsolutePath().toString())
+            val id = UUID.randomUUID().toString()
+            val proxies = Lists.newArrayList<Proxy>()
+            proxies.add(Proxy(width = 100, height = 100, id = "proxy___${id}_foo.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 200, height = 200, id = "proxy___${id}_bar.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 300, height = 300, id = "proxy___${id}_bing.jpg", mimetype = "image/jpeg"))
+            proxies.add(Proxy(width = 1920, height = 1080, id = "proxy___${id}_transcode.mp4", mimetype = "video/mp4"))
+
+            val proxySchema = ProxySchema()
+            proxySchema.proxies = proxies
+            source.setAttr("proxies", proxySchema)
+            source.setAttr("proxy_id", id)
+            videoAssets.add(source)
         }
         addTestAssets(videoAssets)
     }
@@ -369,14 +371,13 @@ open abstract class AbstractTest {
      * @param commitToDb: Set to true if the assets should be committed in a separate TX.
      *
      */
-    fun addTestAssets(builders: List<Source>, commitToDb:Boolean=true) {
+    fun addTestAssets(builders: List<Source>, commitToDb: Boolean = true) {
         for (source in builders) {
 
             logger.info("Adding test asset: {}", source.path.toString())
             source.setAttr("source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
                     source.sourceSchema.extension))
-
 
             val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
 
@@ -391,12 +392,11 @@ open abstract class AbstractTest {
             } else {
                 assetService.createOrReplaceAssets(req)
             }
-
         }
         refreshIndex()
     }
 
-    fun refreshIndex(sleep: Long=0) {
+    fun refreshIndex(sleep: Long = 0) {
         indexRoutingService.refreshAll()
     }
 }

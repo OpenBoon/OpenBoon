@@ -1,7 +1,14 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.DyHierarchyLevel
+import com.zorroa.archivist.domain.DyHierarchySpec
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
@@ -11,7 +18,7 @@ import com.zorroa.common.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface DyHierarchyDao : GenericDao<DyHierarchy, DyHierarchySpec> {
 
@@ -32,7 +39,6 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
         h.user = userDaoCache.getUser(rs.getObject("pk_user_created") as UUID)
         h.levels = Json.deserialize(rs.getString("json_levels"),
                 object : TypeReference<List<DyHierarchyLevel>>() {
-
                 })
         h
     }
@@ -51,7 +57,8 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
             ps
         }
 
-        logger.event(LogObject.DYHI, LogAction.CREATE,
+        logger.event(
+            LogObject.DYHI, LogAction.CREATE,
                 mapOf("dyhiId" to id, "folderId" to spec.folderId))
 
         return get(id)
@@ -72,7 +79,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
     }
 
     override fun getAll(): List<DyHierarchy> {
-        return jdbc.query("$GET WHERE pk_organization=?" , MAPPER, getOrgId())
+        return jdbc.query("$GET WHERE pk_organization=?", MAPPER, getOrgId())
     }
 
     override fun getAll(paging: Pager): PagedList<DyHierarchy> {

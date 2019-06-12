@@ -1,9 +1,24 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.AclEntry
+import com.zorroa.archivist.domain.DyHierarchy
+import com.zorroa.archivist.domain.Folder
+import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.FolderUpdate
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Organization
+import com.zorroa.archivist.domain.TrashedFolder
+import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.*
+import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getPermissionIds
+import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.util.Json
@@ -13,7 +28,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface FolderDao {
 
@@ -47,7 +62,7 @@ interface FolderDao {
 
     fun create(spec: TrashedFolder): Folder
 
-    fun createRootFolder(org: Organization) : Folder
+    fun createRootFolder(org: Organization): Folder
 
     fun update(id: UUID, folder: FolderUpdate): Boolean
 
@@ -73,7 +88,7 @@ interface FolderDao {
 
     fun getAcl(folder: UUID): Acl
 
-    fun renameUserFolder(user: User, newName:String): Boolean
+    fun renameUserFolder(user: User, newName: String): Boolean
 }
 
 @Repository
@@ -82,17 +97,16 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     @Autowired
     internal lateinit var userDaoCache: UserDaoCache
 
-
     private val MAPPER = RowMapper { rs, _ ->
         val id = rs.getObject("pk_folder") as UUID
         val dyhiField = rs.getString("str_dyhi_field")
 
-        var search : String? = rs.getString("json_search")
+        var search: String? = rs.getString("json_search")
         if (search == null && dyhiField != null) {
             search = "{}"
         }
 
-        var assetSearch : AssetSearch? = null
+        var assetSearch: AssetSearch? = null
         if (search != null) {
             assetSearch = Json.deserialize(search, AssetSearch::class.java)
             /**
@@ -120,7 +134,6 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                 assetSearch,
                 rs.getBoolean("bool_tax_root"),
                 Json.deserialize(rs.getString("json_attrs"), Json.GENERIC_MAP))
-
     }
 
     override operator fun get(id: UUID?): Folder {
@@ -136,8 +149,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     override operator fun get(parent: UUID?, name: String, ignorePerms: Boolean): Folder {
         val parentId = if (parent == null) {
             getRootFolder().id
-        }
-        else {
+        } else {
             parent
         }
         try {
@@ -147,7 +159,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             } else {
                 jdbc.queryForObject<Folder>(
                         appendReadAccess("$GET WHERE pk_organization=? AND pk_parent=? AND str_name=?"), MAPPER,
-                        *appendAclArgs(getOrgId(),parentId, name))
+                        *appendAclArgs(getOrgId(), parentId, name))
             }
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to find folder, parent: $parent name: $name", 1)
@@ -215,7 +227,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         return exists(parent.id, name)
     }
 
-    override fun createRootFolder(org: Organization) : Folder {
+    override fun createRootFolder(org: Organization): Folder {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
         val user = getUser()
@@ -269,7 +281,8 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             ps
         }
 
-        logger.event(LogObject.FOLDER, LogAction.CREATE, mapOf(
+        logger.event(
+            LogObject.FOLDER, LogAction.CREATE, mapOf(
                 "folderId" to id,
                 "folderName" to spec.name))
 
@@ -306,7 +319,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         return getAfterCreate(spec.folderId)
     }
 
-    override fun renameUserFolder(user: User, newName:String): Boolean {
+    override fun renameUserFolder(user: User, newName: String): Boolean {
         return jdbc.update("UPDATE folder SET str_name=? WHERE pk_organization=? AND pk_folder=?",
                 newName, getOrgId(), user.homeFolderId) == 1
     }
@@ -419,8 +432,8 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                     continue
                 }
                 if (entry.getAccess() > 7) {
-                    throw IllegalArgumentException("Invalid Access level "
-                            + entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                    throw IllegalArgumentException("Invalid Access level " +
+                            entry.getAccess() + " for permission ID " + entry.getPermissionId())
                 }
                 jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
                         entry.getPermissionId(), folder, entry.getAccess())
@@ -429,8 +442,8 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
             for (entry in acl) {
                 if (entry.getAccess() > 7) {
-                    throw IllegalArgumentException("Invalid Access level "
-                            + entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                    throw IllegalArgumentException("Invalid Access level " +
+                            entry.getAccess() + " for permission ID " + entry.getPermissionId())
                 }
                 if (entry.getAccess() <= 0) {
                     jdbc.update("DELETE FROM folder_acl WHERE pk_folder=? AND pk_permission=?",
@@ -449,9 +462,11 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         jdbc.query("SELECT p.str_authority, p.pk_permission, f.int_access FROM folder_acl f, permission p WHERE " +
                 "p.pk_organization=? AND f.pk_permission = p.pk_permission and f.pk_folder=?",
                 RowCallbackHandler { rs ->
-                    result.add(AclEntry(rs.getString("str_authority"),
+                    result.add(
+                        AclEntry(rs.getString("str_authority"),
                             rs.getObject("pk_permission") as UUID,
-                            rs.getInt("int_access"))) }, getOrgId(), folder)
+                            rs.getInt("int_access"))
+                    ) }, getOrgId(), folder)
         return result
     }
 
@@ -463,6 +478,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
      */
     private fun appendAccess(query: String, access: Access): String {
         if (hasPermission(Groups.SUPERADMIN, Groups.ADMIN)) {
+            return query
+        }
+
+        if (access == Access.Read && hasPermission(Groups.VIEW_ALL_FOLDERS)) {
             return query
         }
 
@@ -533,11 +552,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                 return true
             }
         } catch (e: Exception) {
-            //ignore
+            // ignore
         }
 
         return false
-
     }
 
     companion object {

@@ -1,4 +1,4 @@
-FROM zorroaevi/8-jre-slim-gcloud
+FROM zorroaevi/11-jre-slim-gcloud
 MAINTAINER Zorroa <support@zorroa.com>
 
 VOLUME /tmp

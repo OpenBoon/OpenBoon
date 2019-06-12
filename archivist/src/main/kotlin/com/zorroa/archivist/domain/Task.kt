@@ -8,7 +8,7 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
-import java.util.*
+import java.util.UUID
 
 /**
  * The state of a Task.
@@ -30,21 +30,21 @@ enum class TaskState {
     /**
      * Return true of the TaskState is Running or Queued
      */
-    fun isDispatched() : Boolean {
+    fun isDispatched(): Boolean {
         return this == Running || this == Queued
     }
 
     /**
      * Return a Micrometer tag for tagging metrics related to this state.
      */
-    fun metricsTag() : Tag {
+    fun metricsTag(): Tag {
         return Tag.of("task-state", this.toString())
     }
 }
 
 class TaskSpec(
-        val name: String,
-        val script: ZpsScript
+    val name: String,
+    val script: ZpsScript
 )
 
 interface TaskId {
@@ -65,8 +65,7 @@ open class InternalTask(
     override val jobId: UUID,
     val name: String,
     val state: TaskState
-) : TaskId, JobId
-{
+) : TaskId, JobId {
     override fun toString(): String {
         return "<Task id='$taskId' name='$name'/>"
     }
@@ -95,19 +94,19 @@ open class InternalTask(
  * @property timePing The time the [Task] got a ping from an [Analyst]
  * @property assetCounts Counters for the total number of assets created, updated, etc.
  */
-open class Task (
-        val id: UUID,
-        override val jobId: UUID,
-        val organizationId: UUID,
-        name: String,
-        state: TaskState,
-        val host: String?,
-        val timeStarted: Long,
-        val timeStopped: Long,
-        val timeCreated: Long,
-        val timePing: Long,
-        val assetCounts: Map<String,Int>
-) : InternalTask (id, jobId, name, state)
+open class Task(
+    val id: UUID,
+    override val jobId: UUID,
+    val organizationId: UUID,
+    name: String,
+    state: TaskState,
+    val host: String?,
+    val timeStarted: Long,
+    val timeStopped: Long,
+    val timeCreated: Long,
+    val timePing: Long,
+    val assetCounts: Map<String, Int>
+) : InternalTask(id, jobId, name, state)
 
 /**
  * A DispatchTask is used by the Analysts to start a new task.
@@ -121,17 +120,18 @@ open class Task (
  *
  */
 class DispatchTask(
-        val id: UUID,
-        jobId: UUID,
-        val organizationId: UUID,
-        name: String,
-        state: TaskState,
-        val host: String?,
-        val script: ZpsScript,
-        var env: MutableMap<String, String>,
-        var args: MutableMap<String, Any>,
-        val userId: UUID,
-        var logFile: String?=null) : InternalTask(id, jobId, name, state), TaskId {
+    val id: UUID,
+    jobId: UUID,
+    val organizationId: UUID,
+    name: String,
+    state: TaskState,
+    val host: String?,
+    val script: ZpsScript,
+    var env: MutableMap<String, String>,
+    var args: MutableMap<String, Any>,
+    val userId: UUID,
+    var logFile: String? = null
+) : InternalTask(id, jobId, name, state), TaskId {
 
     override val taskId = id
 }
@@ -144,12 +144,12 @@ class DispatchTask(
  * @property jobIds An array of unique [Job] ids.
  * @property names An array of task names.
  */
-class TaskFilter (
-        val ids : List<UUID>? = null,
-        val states : List<TaskState>? = null,
-        val jobIds: List<UUID>? = null,
-        val names: List<String>?=null,
-        val organizationIds: List<UUID>? = null
+class TaskFilter(
+    val ids: List<UUID>? = null,
+    val states: List<TaskState>? = null,
+    val jobIds: List<UUID>? = null,
+    val names: List<String>? = null,
+    val organizationIds: List<UUID>? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -173,20 +173,19 @@ class TaskFilter (
                 addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
                 addToValues(it)
             }
-        }
-        else {
+        } else {
             addToWhere("job.pk_organization=?")
             addToValues(getOrgId())
         }
 
-        ids?.let  {
+        ids?.let {
             addToWhere(JdbcUtils.inClause("task.pk_task", it.size))
             addToValues(it)
         }
 
         states?.let {
             addToWhere(JdbcUtils.inClause("task.int_state", it.size))
-            addToValues(it.map{ s -> s.ordinal})
+            addToValues(it.map { s -> s.ordinal })
         }
 
         jobIds?.let {

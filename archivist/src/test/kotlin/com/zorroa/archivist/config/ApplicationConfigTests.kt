@@ -16,5 +16,4 @@ class ApplicationConfigTests : AbstractTest() {
         assertEquals("https://10.0.1.2", networkEnvironment.getPublicUrl("example-service"))
         assertEquals("http://archivist", networkEnvironment.getPublicUrl("archivist"))
     }
-
 }

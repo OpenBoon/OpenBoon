@@ -1,8 +1,13 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
-import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
@@ -14,7 +19,6 @@ import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
-import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
 import org.elasticsearch.action.DocWriteRequest
@@ -25,20 +29,17 @@ import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
-import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Repository
 import java.io.IOException
 import java.io.OutputStream
 import java.nio.file.Path
-import java.util.concurrent.atomic.AtomicLong
 import java.util.regex.Pattern
 
 interface IndexDao {
@@ -94,13 +95,13 @@ interface IndexDao {
 
     fun appendLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>>
 
-    fun setLinks(assetId: String, type:String, ids: Collection<Any>)
+    fun setLinks(assetId: String, type: String, ids: Collection<Any>)
 
     fun update(doc: Document): Long
 
     fun <T> getFieldValue(id: String, field: String): T?
 
-    fun index(source: Document, refresh:Boolean=true): Document
+    fun index(source: Document, refresh: Boolean = true): Document
 
     /**
      * Index the given sources.  If any assets are created, attach a source link.
@@ -109,7 +110,7 @@ interface IndexDao {
      */
     fun index(sources: List<Document>): BatchCreateAssetsResponse
 
-    fun index(sources: List<Document>, refresh: Boolean=true): BatchCreateAssetsResponse
+    fun index(sources: List<Document>, refresh: Boolean = true): BatchCreateAssetsResponse
 }
 
 @Repository
@@ -124,7 +125,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         return d.getAttr(field.removeSuffix(".raw"))
     }
 
-    override fun index(source: Document, refresh:Boolean): Document {
+    override fun index(source: Document, refresh: Boolean): Document {
         index(listOf(source), refresh)
         return get(source.id)
     }
@@ -162,7 +163,8 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
                     result.warningAssetIds.add(asset.id)
                     retries.add(sources[index])
                 } else {
-                    logger.warnEvent(LogObject.ASSET, LogAction.BATCH_INDEX, message,
+                    logger.warnEvent(
+                        LogObject.ASSET, LogAction.BATCH_INDEX, message,
                             mapOf("assetId" to response.id,
                                     "index" to response.index))
                     result.erroredAssetIds.add(asset.id)
@@ -176,7 +178,6 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
                         } else {
                             result.replacedAssetIds.add(idxr.id)
                         }
-
                     }
                 }
             }
@@ -235,7 +236,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         }
 
         val rest = getClient()
-        val link = mapOf<String,Any>("type" to typeOfLink, "id" to value.toString())
+        val link = mapOf<String, Any>("type" to typeOfLink, "id" to value.toString())
         val bulkRequest = BulkRequest()
         for (id in assets) {
 
@@ -266,7 +267,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         if (typeOfLink.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
-        val link = mapOf<String,Any>("type" to typeOfLink, "id" to value.toString())
+        val link = mapOf<String, Any>("type" to typeOfLink, "id" to value.toString())
 
         val rest = getClient()
         val bulkRequest = BulkRequest()
@@ -294,7 +295,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         return result
     }
 
-    override fun setLinks(assetId: String, typeOfLink:String, ids: Collection<Any>) {
+    override fun setLinks(assetId: String, typeOfLink: String, ids: Collection<Any>) {
         if (typeOfLink.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
@@ -306,7 +307,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
 
     override fun update(asset: Document): Long {
         val rest = getClient()
-        val ver =  rest.client.update(rest.newUpdateRequest(asset.id)
+        val ver = rest.client.update(rest.newUpdateRequest(asset.id)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
         return ver
@@ -325,16 +326,14 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         val bulkRequest = BulkRequest()
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
 
-        docs.forEach { doc->
+        docs.forEach { doc ->
             val hold = doc.getAttr("system.hold", Boolean::class.java) ?: false
             if (doc.attrExists("system.hold") && hold) {
                 rsp.onHoldAssetIds.add(doc.id)
-            }
-            else if (!hasPermission("write", doc)) {
+            } else if (!hasPermission("write", doc)) {
                 rsp.accessDeniedAssetIds.add(doc.id)
-            }
-            else {
-                rsp.totalRequested+=1
+            } else {
+                rsp.totalRequested += 1
                 bulkRequest.add(rest.newDeleteRequest(doc.id))
             }
         }
@@ -351,15 +350,14 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
                             mapOf("assetId" to br.id, "index" to br.index))
                     rsp.errors[br.id] = br.failureMessage
                 }
-                else ->  {
-                    val deleted =  br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
+                else -> {
+                    val deleted = br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
                     if (deleted) {
                         logger.event(LogObject.ASSET, LogAction.BATCH_DELETE, mapOf("assetId" to br.id, "index" to br.index))
                         rsp.deletedAssetIds.add(br.id)
-                    }
-                    else {
+                    } else {
                         rsp.missingAssetIds.add(br.id)
-                        logger.warnEvent(LogObject.ASSET, LogAction.BATCH_DELETE,  "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
+                        logger.warnEvent(LogObject.ASSET, LogAction.BATCH_DELETE, "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
                     }
                 }
             }
@@ -392,7 +390,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         req.source.size(1)
         req.source.query(query)
 
-        return elastic.queryForObject(req,  MAPPER)
+        return elastic.queryForObject(req, MAPPER)
     }
 
     override fun exists(path: Path): Boolean {
@@ -423,7 +421,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         val assets = elastic.query(req, MAPPER)
 
         if (assets.isEmpty()) {
-            throw EmptyResultDataAccessException("Asset $path does not exist", 1);
+            throw EmptyResultDataAccessException("Asset $path does not exist", 1)
         }
         return assets[0]
     }
@@ -464,7 +462,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
     companion object {
 
         private const val REMOVE_LINK_SCRIPT =
-                "if (ctx._source.system != null) {  "+
+                "if (ctx._source.system != null) {  " +
                 "if (ctx._source.system.links != null) { " +
                 "if (ctx._source.system.links[params.type] != null) { " +
                 "ctx._source.system.links[params.type].removeIf(i-> i==params.id); }}}"
@@ -473,7 +471,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
                 "if (ctx._source.system == null) { ctx._source.system = new HashMap(); } " +
                 "if (ctx._source.system.links == null) { ctx._source.system.links = new HashMap(); }  " +
                 "if (ctx._source.system.links[params.type] == null) { ctx._source.system.links[params.type] = new ArrayList(); }" +
-                "ctx._source.system.links[params.type].add(params.id); "+
+                "ctx._source.system.links[params.type].add(params.id); " +
                 "ctx._source.system.links[params.type] = new HashSet(ctx._source.system.links[params.type]);"
 
         private val MAPPER = object : SearchHitRowMapper<Document> {

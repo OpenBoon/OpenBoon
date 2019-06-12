@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.util.FileUtils
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import java.net.URI
 import java.nio.file.Files
@@ -125,6 +126,7 @@ class GcsLayoutProviderTests : AbstractTest() {
     }
 }
 
+@Ignore
 class GcsFileStorageServiceTests : AbstractTest() {
 
     val bucketName = "rmaas-dit-2-zorroa-data"

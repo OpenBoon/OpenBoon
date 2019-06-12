@@ -36,9 +36,9 @@ class AssetStreamResolutionService constructor(
          * a fast-start movie.
          */
         val proxies = asset.getAttr("proxies", ProxySchema::class.java) ?: ProxySchema()
-        val forceVideoProxy = asset.attrExists("media.clip.parent")
-            && asset.getAttr<String>("source.type") == "video"
-            && proxies.getLargest("video") != null
+        val forceVideoProxy = asset.attrExists("media.clip.parent") &&
+            asset.getAttr<String>("source.type") == "video" &&
+            proxies.getLargest("video") != null
 
         /**
          * Three things have to checkout or else the proxy is served.
@@ -84,8 +84,7 @@ class AssetStreamResolutionService constructor(
                     return fileStorageService.get(proxy.id).getServableFile()
                 }
             }
-        }
-        else {
+        } else {
             for (type in mimeTypes) {
                 val proxy = proxies.getLargest(type)
                 if (proxy != null) {

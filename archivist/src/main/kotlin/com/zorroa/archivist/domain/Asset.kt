@@ -13,7 +13,7 @@ import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
 import java.net.URI
-import java.util.*
+import java.util.UUID
 import java.util.regex.Pattern
 
 /**
@@ -22,8 +22,8 @@ import java.util.regex.Pattern
  * @property uri The URI where the source file was placed.
  */
 class AssetUploadedResponse(
-        val assetId: UUID,
-        val uri: URI
+    val assetId: UUID,
+    val uri: URI
 )
 
 /**
@@ -37,12 +37,12 @@ class AssetUploadedResponse(
  * @property allowSystem Allow systems vars to be set. Default to false. Cannot be set over wire.
  */
 class UpdateAssetRequest(
-        val update : Map<String, Any>?=null,
-        val remove: List<String>?=null,
-        val appendToList: Map<String, Any>?=null,
-        val appendToUniqueList: Map<String, Any>?=null,
-        val removeFromList: Map<String, Any>?=null,
-        @JsonIgnore val allowSystem: Boolean=false
+    val update: Map<String, Any>? = null,
+    val remove: List<String>? = null,
+    val appendToList: Map<String, Any>? = null,
+    val appendToUniqueList: Map<String, Any>? = null,
+    val removeFromList: Map<String, Any>? = null,
+    @JsonIgnore val allowSystem: Boolean = false
 )
 
 /**
@@ -54,10 +54,9 @@ class UpdateAssetRequest(
  * @property batch : Any array of asset ids.
  */
 class BatchUpdateAssetsRequest(
-        val batch: Map<String, UpdateAssetRequest>
-)
-{
-    override fun toString() : String {
+    val batch: Map<String, UpdateAssetRequest>
+) {
+    override fun toString(): String {
         return "<BatchUpdateAssetRequest update='$batch'>"
     }
 }
@@ -83,7 +82,7 @@ class BatchUpdateAssetsResponse {
         accessDeniedAssetIds.addAll(other.accessDeniedAssetIds)
     }
 
-    override fun toString() : String {
+    override fun toString(): String {
         return "<BatchUpdateAssetsResponse " +
                 "updated=${updatedAssetIds.size} " +
                 "errored=${erroredAssetIds.size} " +
@@ -91,23 +90,22 @@ class BatchUpdateAssetsResponse {
     }
 
     @JsonIgnore
-    fun getThrowableError() : Throwable {
+    fun getThrowableError(): Throwable {
         return when {
             accessDeniedAssetIds.isNotEmpty() -> AccessDeniedException(
                     "Access denied updating assets: $accessDeniedAssetIds")
             erroredAssetIds.isNotEmpty() -> EntityNotFoundException(
                     "Cannot update missing assets: $erroredAssetIds")
             // Should never get here.
-            else-> ArchivistWriteException("Unspecified update exception")
+            else -> ArchivistWriteException("Unspecified update exception")
         }
     }
 
     @JsonIgnore
-    fun isSuccess() : Boolean {
+    fun isSuccess(): Boolean {
         return updatedAssetIds.isNotEmpty() &&
                 erroredAssetIds.isEmpty() && accessDeniedAssetIds.isEmpty()
     }
-
 }
 
 /**
@@ -119,9 +117,9 @@ class BatchUpdateAssetsResponse {
  * @param replace: Replace all permissions with this acl, defaults to false.
  */
 class BatchUpdatePermissionsRequest(
-        val search: AssetSearch,
-        val acl: Acl,
-        val replace: Boolean = false
+    val search: AssetSearch,
+    val acl: Acl,
+    val replace: Boolean = false
 )
 
 /**
@@ -149,9 +147,10 @@ class BatchUpdatePermissionsResponse {
  * @property skipAssetPrep: Skip over asset prep stage during create.
  */
 class BatchCreateAssetsRequest(
-        val sources: List<Document>,
-        val jobId: UUID?,
-        val taskId: UUID?) {
+    val sources: List<Document>,
+    val jobId: UUID?,
+    val taskId: UUID?
+) {
 
     /**
      * A convenience constructor for unit tests.
@@ -166,13 +165,12 @@ class BatchCreateAssetsRequest(
 
     var isUpload = false
 
-    constructor(sources: List<Document>, scope : String="index", skipAssetPrep:Boolean=false)
-            : this(sources, null, null) {
+    constructor(sources: List<Document>, scope: String = "index", skipAssetPrep: Boolean = false) :
+            this(sources, null, null) {
         this.scope = scope
         this.skipAssetPrep = skipAssetPrep
     }
 }
-
 
 /**
  * The response after batch creating an array of assets.
@@ -184,8 +182,8 @@ class BatchCreateAssetsRequest(
  */
 class BatchCreateAssetsResponse(val total: Int) {
     var createdAssetIds = mutableSetOf<String>()
-    var replacedAssetIds  = mutableSetOf<String>()
-    var erroredAssetIds  = mutableSetOf<String>()
+    var replacedAssetIds = mutableSetOf<String>()
+    var erroredAssetIds = mutableSetOf<String>()
     var warningAssetIds = mutableSetOf<String>()
     var retryCount = 0
 
@@ -201,14 +199,14 @@ class BatchCreateAssetsResponse(val total: Int) {
     /**
      * Return true if assets were created or replaced.
      */
-    fun assetsChanged() : Boolean {
+    fun assetsChanged(): Boolean {
         return createdAssetIds.isNotEmpty() || replacedAssetIds.isNotEmpty()
     }
 
     /**
      * Return an AssetCounters instance for incrementing job and task counts.
      */
-    fun getAssetCounters() : AssetCounters {
+    fun getAssetCounters(): AssetCounters {
         return AssetCounters(
                 created = createdAssetIds.size,
                 replaced = replacedAssetIds.size,
@@ -236,12 +234,12 @@ class BatchCreateAssetsResponse(val total: Int) {
  * @property created The total number of assets created.
  * @property replaced The total number of assets replaced.
  */
-class AssetCounters (
-        val total: Int=0,
-        val errors: Int=0,
-        val warnings: Int=0,
-        val created: Int=0,
-        val replaced: Int=0
+class AssetCounters(
+    val total: Int = 0,
+    val errors: Int = 0,
+    val warnings: Int = 0,
+    val created: Int = 0,
+    val replaced: Int = 0
 )
 
 /**
@@ -249,8 +247,8 @@ class AssetCounters (
  *
  * @property assetIds an array of assetIds to delete.
  */
-class BatchDeleteAssetsRequest (
-        val assetIds: List<String>
+class BatchDeleteAssetsRequest(
+    val assetIds: List<String>
 )
 
 /**
@@ -263,8 +261,8 @@ class BatchDeleteAssetsRequest (
  * @property missingAssetIds Assets that have already been deleted.
  * @property errors A map AssetID/Message failures.
  */
-class BatchDeleteAssetsResponse (
-    var totalRequested: Int=0,
+class BatchDeleteAssetsResponse(
+    var totalRequested: Int = 0,
     var deletedAssetIds: MutableSet<String> = mutableSetOf(),
     var onHoldAssetIds: MutableSet<String> = mutableSetOf(),
     var accessDeniedAssetIds: MutableSet<String> = mutableSetOf(),
@@ -308,7 +306,7 @@ open class Document {
 
     var links: MutableList<Tuple<String, Any>>? = null
 
-    var score : Float? = null
+    var score: Float? = null
 
     var replace = false
 
@@ -341,7 +339,6 @@ open class Document {
         this.document = doc
     }
 
-
     fun addToLinks(type: String, id: Any): Document {
         if (links == null) {
             links = mutableListOf()
@@ -361,7 +358,6 @@ open class Document {
         }
         return this
     }
-
 
     /**
      * Get an attribute value  by its fully qualified name.
@@ -412,7 +408,7 @@ open class Document {
      * @param unique If true, uniquify the collection.
      * @return Return true if the value was added to the collection.
      */
-    fun addToAttr(attr: String, value: Any, unique: Boolean=true) : Boolean {
+    fun addToAttr(attr: String, value: Any, unique: Boolean = true): Boolean {
         val key = Attr.name(attr)
 
         try {
@@ -423,10 +419,9 @@ open class Document {
                 container[key] = collection
             }
 
-            val res =  if (value is Collection<*>) {
+            val res = if (value is Collection<*>) {
                 collection.addAll(value)
-            }
-            else {
+            } else {
                 collection.add(value)
             }
 
@@ -437,8 +432,7 @@ open class Document {
             }
 
             return res
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             logger.warn("Unable to append to attr '$attr', it maybe not be a collection")
         }
 
@@ -452,7 +446,7 @@ open class Document {
      * @param attr The attr name in dot notation, must point to a collection.
      * @param value The value to remove from the collection.
      */
-    fun removeFromAttr(attr: String, value: Any, unique: Boolean=true) : Boolean {
+    fun removeFromAttr(attr: String, value: Any, unique: Boolean = true): Boolean {
         val key = Attr.name(attr)
 
         try {
@@ -468,8 +462,7 @@ open class Document {
             } else {
                 collection.remove(value)
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             logger.warn("Unable to remove from attr '$attr', it maybe not be a collection")
         }
 
@@ -535,12 +528,10 @@ open class Document {
         return try {
             val map = child as MutableMap<String, Any>?
             map?.isEmpty() ?: true
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             false
         }
     }
-
 
     /**
      * Return true if the value of an attribute contains the given value.
@@ -611,7 +602,6 @@ open class Document {
         private val PATTERN_ATTR = Pattern.compile(Attr.DELIMITER, Pattern.LITERAL)
     }
 }
-
 
 object Attr {
 
@@ -714,5 +704,3 @@ enum class DocumentState private constructor(val value: Long) {
 
 class Tuple<L, R>(val left: L, val right: R)
 class MutableTuple<L, R>(var left: L, var right: R)
-
-

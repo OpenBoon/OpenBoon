@@ -146,8 +146,7 @@ class ImageServiceImpl @Autowired constructor(
             val dim = getImageDimension(localFile.toFile())
             val isWatermarkSize = (dim.width <= watermarkMinProxySize && dim.height <= watermarkMinProxySize)
             serveImage(rsp, storage, isWatermarkSize)
-        }
-        else {
+        } else {
             serveImage(rsp, storage, false)
         }
     }

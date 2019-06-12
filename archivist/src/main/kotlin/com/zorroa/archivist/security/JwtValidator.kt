@@ -12,21 +12,24 @@ import java.io.FileInputStream
 import java.security.cert.CertificateFactory
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
-class JwtValidatorException constructor(override val message :
-                                      String, override val cause : Throwable?) : RuntimeException(message, cause) {
+class JwtValidatorException constructor(
+    override val message:
+  String,
+    override val cause: Throwable?
+) : RuntimeException(message, cause) {
 
     constructor(message: String) : this(message, null)
 }
 
-fun generateUserToken(userId: UUID, key: String) : String {
+fun generateUserToken(userId: UUID, key: String): String {
     val algo = Algorithm.HMAC256(key)
     return JWT.create().withIssuer("zorroa")
             .withClaim("userId", userId.toString())
             .sign(algo)
 }
-
 
 object JwtSecurityConstants {
     const val TOKEN_PREFIX = "Bearer "
@@ -42,7 +45,7 @@ interface JwtValidator {
     /**
      * The only method you have to implement
      */
-    fun validate(token: String): Map<String,String>
+    fun validate(token: String): Map<String, String>
 }
 
 class MasterJwtValidator constructor(private val validators: List<JwtValidator>) : JwtValidator {
@@ -51,20 +54,19 @@ class MasterJwtValidator constructor(private val validators: List<JwtValidator>)
         for (validator in validators) {
             try {
                 return validator.validate(token)
-            }
-            catch (e: Exception) { }
+            } catch (e: Exception) { }
         }
         throw JwtValidatorException("Failed to validate JWT token")
     }
 }
 
-class UserJwtValidator constructor(val userDao: UserDao): JwtValidator {
+class UserJwtValidator constructor(val userDao: UserDao) : JwtValidator {
 
     init {
         logger.info("Initializing User/Hmac JwtValidator")
     }
 
-    override fun validate(token: String) : Map<String, String> {
+    override fun validate(token: String): Map<String, String> {
         try {
             val jwt = JWT.decode(token)
             val userId = UUID.fromString(jwt.claims.getValue("userId").asString())
@@ -75,8 +77,7 @@ class UserJwtValidator constructor(val userDao: UserDao): JwtValidator {
             return jwt.claims.map {
                 it.key to it.value.asString()
             }.toMap()
-
-        } catch(e: JWTVerificationException) {
+        } catch (e: JWTVerificationException) {
             throw JwtValidatorException("Failed to validate token", e)
         }
     }
@@ -90,9 +91,9 @@ class UserJwtValidator constructor(val userDao: UserDao): JwtValidator {
  */
 class GcpJwtValidator : JwtValidator {
 
-    private val credentials : GoogleCredential
+    private val credentials: GoogleCredential
     private val client = RestClient("https://www.googleapis.com")
-    private val publickKey : RSAPublicKey
+    private val publickKey: RSAPublicKey
 
     init {
         logger.info("Initializing GCP JwtValidator")
@@ -107,17 +108,16 @@ class GcpJwtValidator : JwtValidator {
         val cert = cfactory.generateCertificate(
                 keys.getValue(credentials.serviceAccountPrivateKeyId).byteInputStream())
         this.publickKey = cert.publicKey as RSAPublicKey
-
     }
     constructor(path: String?) : this(GoogleCredential.fromStream(FileInputStream(path)))
 
     constructor() : this(System.getenv()["GOOGLE_APPLICATION_CREDENTIALS"])
 
-    override fun validate(token: String) : Map<String, String> {
+    override fun validate(token: String): Map<String, String> {
         try {
             val jwt = JWT.decode(token)
-            val alg = when(jwt.algorithm) {
-                "RS256"-> Algorithm.RSA256(publickKey, credentials.serviceAccountPrivateKey as RSAPrivateKey)
+            val alg = when (jwt.algorithm) {
+                "RS256" -> Algorithm.RSA256(publickKey, credentials.serviceAccountPrivateKey as RSAPrivateKey)
                 else -> Algorithm.HMAC256(credentials.serviceAccountPrivateKey.encoded)
             }
             alg.verify(jwt)
@@ -127,20 +127,19 @@ class GcpJwtValidator : JwtValidator {
                 throw JwtValidatorException("Token has expired")
             }
 
-            val result = mutableMapOf<String,String>()
+            val result = mutableMapOf<String, String>()
             if (logger.isDebugEnabled) {
                 logger.debug("JWT Claims: {}", Json.prettyString(jwt.claims))
             }
 
-            jwt.claims.forEach { (k,v) ->
+            jwt.claims.forEach { (k, v) ->
 
                 if (v.asString() != null) {
                     result[k] = v.asString()
                 }
             }
             return result
-
-        } catch(e: JWTVerificationException) {
+        } catch (e: JWTVerificationException) {
             throw JwtValidatorException("Failed to validate token", e)
         }
     }

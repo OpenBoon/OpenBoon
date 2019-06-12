@@ -5,7 +5,7 @@ import com.zorroa.archivist.repository.LongRangeFilter
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
-import java.util.*
+import java.util.UUID
 
 /**
  * The type of audit log entry.
@@ -55,13 +55,13 @@ enum class AuditLogType {
  * @property sort The sort direction. Formatted as field:direction, defaults to ["timeCreated:desc"]
  */
 class AuditLogFilter(
-        val assetIds: List<UUID>?=null,
-        val userIds: List<UUID>?=null,
-        val fieldIds: List<UUID>?=null,
-        val timeCreated: LongRangeFilter?=null,
-        val types: List<AuditLogType>?=null,
-        val attrNames: List<String>?=null
-): KDaoFilter() {
+    val assetIds: List<UUID>? = null,
+    val userIds: List<UUID>? = null,
+    val fieldIds: List<UUID>? = null,
+    val timeCreated: LongRangeFilter? = null,
+    val types: List<AuditLogType>? = null,
+    val attrNames: List<String>? = null
+) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
@@ -100,7 +100,7 @@ class AuditLogFilter(
 
         types?.let {
             addToWhere(JdbcUtils.inClause("auditlog.int_type", it.size))
-            addToValues(it.map { t-> t.ordinal })
+            addToValues(it.map { t -> t.ordinal })
         }
 
         attrNames?.let {
@@ -110,7 +110,6 @@ class AuditLogFilter(
 
         addToWhere("pk_organization=?")
         addToValues(getOrgId())
-
     }
 }
 
@@ -128,17 +127,16 @@ class AuditLogFilter(
  * @property value The new value of a field or property changed.  Can be null.
  */
 class AuditLogEntry(
-        val id: UUID,
-        val assetId: UUID,
-        val fieldId: UUID?,
-        val user: UserBase,
-        val timeCreated: Long,
-        val type: AuditLogType,
-        val attrName: String?,
-        val message: String?,
-        val value: Any?
+    val id: UUID,
+    val assetId: UUID,
+    val fieldId: UUID?,
+    val user: UserBase,
+    val timeCreated: Long,
+    val type: AuditLogType,
+    val attrName: String?,
+    val message: String?,
+    val value: Any?
 )
-
 
 /**
  * The properties required to create an audit log entry.
@@ -153,22 +151,22 @@ class AuditLogEntry(
  * many different places, scope describes the place it occurred.
  */
 class AuditLogEntrySpec(
-        val assetId: UUID,
-        val type: AuditLogType,
-        val fieldId: UUID?=null,
-        val message: String?=null,
-        val attrName: String?=null,
-        val value: Any?=null,
-        val scope: String?=null
-)
-{
-    constructor(assetId: String,
-                type: AuditLogType,
-                fieldId: UUID?=null,
-                message: String?=null,
-                attrName: String?=null,
-                value: Any?=null,
-                scope: String?=null) :
+    val assetId: UUID,
+    val type: AuditLogType,
+    val fieldId: UUID? = null,
+    val message: String? = null,
+    val attrName: String? = null,
+    val value: Any? = null,
+    val scope: String? = null
+) {
+    constructor(
+        assetId: String,
+        type: AuditLogType,
+        fieldId: UUID? = null,
+        message: String? = null,
+        attrName: String? = null,
+        value: Any? = null,
+        scope: String? = null
+    ) :
             this(UUID.fromString(assetId), type, fieldId, message, attrName, value, scope)
-
 }

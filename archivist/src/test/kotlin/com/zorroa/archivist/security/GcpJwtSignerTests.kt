@@ -3,6 +3,7 @@ package com.zorroa.archivist.security
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.common.clients.GcpJwtSigner
 import org.apache.http.client.methods.HttpPost
+import org.junit.Ignore
 import org.junit.Test
 import java.io.FileInputStream
 import kotlin.test.assertEquals
@@ -40,6 +41,7 @@ class GcpJwtSignerTests {
     }
 
     @Test
+    @Ignore
     fun testValidate() {
         val creds = GoogleCredential.fromStream(FileInputStream(credsPath))
         val signer = GcpJwtSigner(creds)
@@ -51,7 +53,7 @@ class GcpJwtSignerTests {
         assertTrue(req.getHeaders("Authorization")[0].toString()
                 .startsWith("Authorization: Bearer "))
 
-        val token =  req.getHeaders("Authorization")[0].toString()
+        val token = req.getHeaders("Authorization")[0].toString()
                 .substringAfter("Bearer ")
         val claims = validator.validate(token)
         assertEquals("bar", claims["foo"])

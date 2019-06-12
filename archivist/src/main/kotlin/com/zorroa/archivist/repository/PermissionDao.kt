@@ -1,6 +1,13 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.PermissionFilter
+import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.PermissionUpdateSpec
+import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.event
@@ -14,7 +21,7 @@ import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface PermissionDao {
 
@@ -24,7 +31,7 @@ interface PermissionDao {
 
     fun update(permission: PermissionUpdateSpec): Permission
 
-    fun renameUserPermission(user:User, newName: String): Boolean
+    fun renameUserPermission(user: User, newName: String): Boolean
 
     fun get(id: UUID): Permission
 
@@ -56,7 +63,7 @@ interface PermissionDao {
 
     fun delete(perm: Permission): Boolean
 
-    fun getDefaultPermissionSchema() : PermissionSchema
+    fun getDefaultPermissionSchema(): PermissionSchema
 }
 
 @Repository
@@ -81,7 +88,8 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 ps.setBoolean(8, immutable)
                 ps
             }
-            logger.event(LogObject.PERMISSION, LogAction.CREATE,
+            logger.event(
+                LogObject.PERMISSION, LogAction.CREATE,
                     mapOf("permissionId" to id, "permissionName" to spec.name))
         } catch (e: DuplicateKeyException) {
             throw DuplicateKeyException("The permission " + spec.name + " already exists")
@@ -157,7 +165,6 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 // Get the permission ID
                 val id = try {
                     getId(entry.permission)
-
                 } catch (e: EmptyResultDataAccessException) {
                     if (createMissing) {
                         create(PermissionSpec(entry.permission)
@@ -171,7 +178,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                     resolved.add(id)
                 }
             } else {
-                if(!resolved.contains(entry.permissionId)) {
+                if (!resolved.contains(entry.permissionId)) {
                     result.add(entry)
                     resolved.add(entry.permissionId)
                 }
@@ -195,7 +202,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override fun count(filter: PermissionFilter): Long {
-        return jdbc.queryForObject(filter.getQuery(COUNT,forCount = true),
+        return jdbc.queryForObject(filter.getQuery(COUNT, forCount = true),
                 Long::class.java, *filter.getValues(forCount = true))
     }
 
@@ -216,7 +223,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
     override fun getAll(ids: Collection<UUID>?): List<Permission> {
         return if (ids == null || ids.isEmpty()) {
             listOf()
-        } else  {
+        } else {
             val values = ids.toTypedArray().plus(getOrgId())
             jdbc.query("SELECT * FROM permission WHERE " +
                     JdbcUtils.`in`("pk_permission", ids.size) + " AND pk_organization=?", MAPPER,
@@ -228,11 +235,11 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         return if (names == null || names.isEmpty()) {
             listOf()
         } else {
-            val values : MutableList<Any> = mutableListOf()
+            val values: MutableList<Any> = mutableListOf()
             names.toCollection(values)
             values.add(getOrgId())
-            jdbc.query("SELECT * FROM permission WHERE " + JdbcUtils.`in`("str_authority", names.size)
-                    + "AND pk_organization=?", MAPPER, *values.toTypedArray())
+            jdbc.query("SELECT * FROM permission WHERE " + JdbcUtils.`in`("str_authority", names.size) +
+                    "AND pk_organization=?", MAPPER, *values.toTypedArray())
         }
     }
 
@@ -248,7 +255,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
      * TODO: hard coded permissions
      * This is just hard coded for now, post MVP organizations will be able to customizes this.
      */
-    override fun getDefaultPermissionSchema() : PermissionSchema {
+    override fun getDefaultPermissionSchema(): PermissionSchema {
         val everyone = get(Groups.EVERYONE).id
         val admin: UUID = get(Groups.ADMIN).id
         val schema = PermissionSchema()

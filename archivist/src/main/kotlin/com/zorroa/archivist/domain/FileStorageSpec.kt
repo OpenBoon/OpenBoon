@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.ServableFile
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 /**
  * The attributes needed to register storage.
@@ -14,9 +14,9 @@ import java.util.*
  * @property name A name for the file.
  */
 class FileStorageSpec(
-        val parentType: String,
-        val parentId: String,
-        val name: String
+    val parentType: String,
+    val parentId: String,
+    val name: String
 
 ) {
 
@@ -36,11 +36,11 @@ class FileStorageSpec(
  * @property mediaType A mime type based off the file extension.
  */
 class FileStorage(
-        val id: String,
-        val uri: URI,
-        val scheme: String,
-        val mediaType: String,
-        @JsonIgnore val fileServerProvider: FileServerProvider
+    val id: String,
+    val uri: URI,
+    val scheme: String,
+    val mediaType: String,
+    @JsonIgnore val fileServerProvider: FileServerProvider
 ) {
 
     constructor(id: String, uri: String, scheme: String, mediaType: String, fileServerProvider: FileServerProvider) :
@@ -54,11 +54,9 @@ class FileStorage(
     /**
      * Return a ServableFile instance for this storage.
      *
-     * @return  ServableFile
+     * @return ServableFile
      */
-    fun getServableFile() : ServableFile {
+    fun getServableFile(): ServableFile {
         return fileServerProvider.getServableFile(uri)
     }
 }
-
-

@@ -2,7 +2,15 @@ package com.zorroa.archivist.service
 
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskStoppedEvent
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
@@ -19,7 +27,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.TestPropertySource
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -37,7 +45,7 @@ class GCPDispatcherServiceTests : AbstractTest() {
     @Autowired
     lateinit var fileStorageService: FileStorageService
 
-    fun launchJob(priority: Int) : Job {
+    fun launchJob(priority: Int): Job {
         val spec1 = JobSpec("test_job_p$priority",
             emptyZpsScript("priority_$priority"),
             priority = priority)
@@ -126,7 +134,6 @@ class DispatcherServiceTests : AbstractTest() {
                     env = mutableMapOf("foo" to "bar"))
             jobService.create(spec2)
         }
-
 
         val priority = dispatcherService.getDispatchPriority()
         assertEquals(0, priority[0].priority)
@@ -378,7 +385,7 @@ class DispatcherServiceTests : AbstractTest() {
         assertEquals(1, zps.execute!!.size)
     }
 
-    fun launchJob(priority: Int) : Job {
+    fun launchJob(priority: Int): Job {
         val spec1 = JobSpec("test_job_p$priority",
             emptyZpsScript("priority_$priority"),
             priority = priority)

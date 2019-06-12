@@ -24,21 +24,21 @@ import java.util.UUID
 
 interface FieldSetDao {
 
-    fun get(id: UUID) : FieldSet
-    fun create(spec: FieldSetSpec) : FieldSet
-    fun setMembers(fieldSet: FieldSet, members: List<UUID>) : Int
-    fun getAll() : List<FieldSet>
-    fun getAll(doc: Document) : List<FieldSet>
+    fun get(id: UUID): FieldSet
+    fun create(spec: FieldSetSpec): FieldSet
+    fun setMembers(fieldSet: FieldSet, members: List<UUID>): Int
+    fun getAll(): List<FieldSet>
+    fun getAll(doc: Document): List<FieldSet>
     fun findOne(filter: FieldSetFilter): FieldSet
     fun count(filter: FieldSetFilter): Long
     fun getAll(filter: FieldSetFilter?): KPagedList<FieldSet>
-    fun deleteAll() : Int
+    fun deleteAll(): Int
 }
 
 @Repository
 class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
 
-    override fun create(spec: FieldSetSpec) : FieldSet {
+    override fun create(spec: FieldSetSpec): FieldSet {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
         val user = getUser()
@@ -66,19 +66,19 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
         return fs
     }
 
-    override fun get(id: UUID) : FieldSet {
+    override fun get(id: UUID): FieldSet {
         return jdbc.queryForObject("$GET WHERE pk_organization=? AND pk_field_set=?",
                 MAPPER, getOrgId(), id)
     }
 
-    override fun getAll() : List<FieldSet> {
+    override fun getAll(): List<FieldSet> {
         return jdbc.query("$GET WHERE pk_organization=? ORDER BY str_name ASC", MAPPER, getOrgId())
     }
 
-    override fun getAll(doc: Document) : List<FieldSet> {
+    override fun getAll(doc: Document): List<FieldSet> {
         val result = mutableListOf<FieldSet>()
         var linkExpresionMatches = false
-        var currentFieldSet : FieldSet? =  null
+        var currentFieldSet: FieldSet? = null
 
         jdbc.query(GET_RESOLVED, RowCallbackHandler { rs ->
             val fsId = rs.getObject("pk_field_set") as UUID
@@ -114,7 +114,6 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
                             rs.getObject("pk_field_edit") as UUID?))
                 }
             }
-
         }, doc.id, getOrgId())
 
         return result
@@ -138,7 +137,7 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
         return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
     }
 
-    override fun setMembers(fieldSet: FieldSet, members: List<UUID>) : Int {
+    override fun setMembers(fieldSet: FieldSet, members: List<UUID>): Int {
         jdbc.update("DELETE FROM field_set_member WHERE pk_field_set=?", fieldSet.id)
 
         return jdbc.batchUpdate(INSERT_MEMBER, object : BatchPreparedStatementSetter {
@@ -154,11 +153,11 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
         }).sum()
     }
 
-    override fun deleteAll() : Int {
+    override fun deleteAll(): Int {
         return jdbc.update("DELETE FROM field_set WHERE pk_organization=?", getOrgId())
     }
 
-    fun checkLinkExpr(doc: Document, expr: String?) : Boolean {
+    fun checkLinkExpr(doc: Document, expr: String?): Boolean {
         if (expr == null) {
             return true
         }
@@ -177,7 +176,6 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
             true
         }
     }
-
 
     private val MAPPER = RowMapper { rs, _ ->
         FieldSet(
@@ -207,21 +205,20 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
                 "pk_field_set",
                 "int_order")
 
-
         private const val GET_RESOLVED = "SELECT " +
                 "field_set.pk_field_set," +
-                "field_set.str_name,"+
-                "field_set.str_link_expr,"+
+                "field_set.str_name," +
+                "field_set.str_link_expr," +
                 "field.pk_field AS field_id," +
-                "field.str_name AS field_name,"+
-                "field.str_attr_name AS field_attr_name,"+
+                "field.str_name AS field_name," +
+                "field.str_attr_name AS field_attr_name," +
                 "field.int_attr_type AS field_attr_type, " +
                 "field.bool_custom AS field_custom," +
                 "field.bool_editable AS field_editable, " +
                 "field.bool_keywords AS field_keywords, " +
                 "field.float_keywords_boost AS field_keywords_boost, " +
-                "field.bool_suggest,"+
-                "field.json_options,"+
+                "field.bool_suggest," +
+                "field.json_options," +
                 "field_edit.pk_field_edit " +
                 "FROM " +
                     "field_set " +
@@ -233,7 +230,5 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
                 "ORDER BY " +
                     "field_set.pk_field_set ASC," +
                     "field.str_name ASC"
-
-
     }
 }

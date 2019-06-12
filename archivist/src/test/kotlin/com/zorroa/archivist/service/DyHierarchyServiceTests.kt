@@ -15,14 +15,12 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.util.FileUtils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.text.ParseException
 import java.text.SimpleDateFormat
 
 /**
@@ -33,44 +31,33 @@ class DyHierarchyServiceTests : AbstractTest() {
     @Autowired
     lateinit var dyhiService: DyHierarchyService
 
-    lateinit var testDataPath: String
-
     override fun requiresElasticSearch(): Boolean {
         return true
     }
 
     @Before
-    @Throws(ParseException::class)
     fun init() {
 
-        testDataPath = FileUtils.normalize(resources).toString()
-
-        for (f in getTestImagePath("set01").toFile().listFiles()!!) {
-            if (!f.isFile || f.isHidden) {
-                continue
-            }
-            val ab = Source(f)
+        for (path in getTestPaths("/set01/")) {
+            val ab = Source(path)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"))
             ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"))
+            logger.info("adding test asset {}", ab.path)
             assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
-        for (f in getTestPath("office").toFile().listFiles()!!) {
-            if (!f.isFile || f.isHidden) {
-                continue
-            }
-            val ab = Source(f)
+        for (path in getTestPaths("/office/")) {
+            val ab = Source(path)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("03-05-2013 09:11:14"))
+            logger.info("adding test asset {}", ab.path)
             assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
-        for (f in getTestPath("video").toFile().listFiles()!!) {
-            if (!f.isFile || f.isHidden) {
-                continue
-            }
-            val ab = Source(f)
+        for (path in getTestPaths("/video/")) {
+            val ab = Source(path)
             ab.setAttr("source.date",
                     SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("11-12-2015 06:14:10"))
+            logger.info("adding test asset {}", ab.path)
             assetService.createOrReplaceAssets(BatchCreateAssetsRequest(ab))
         }
         refreshIndex()
@@ -109,10 +96,10 @@ class DyHierarchyServiceTests : AbstractTest() {
         val result = dyhiService.generate(agg)
         assertTrue(result > 0)
 
-        val base = testDataPath.replace('/', '_')
-        val folder1 = folderService.get("/foo/" + base + "_video")
-        val folder2 = folderService.get("/foo/" + base + "_office")
-        val folder3 = folderService.get("/foo/" + base + "_images_set01")
+        val testDataPath = "_tmp"
+        val folder1 = folderService.get("/foo/" + testDataPath + "_video")
+        folderService.get("/foo/" + testDataPath + "_office")
+        folderService.get("/foo/" + testDataPath + "_images_set01")
         assertEquals(8, searchService.count(folder1!!.search!!))
     }
 
@@ -127,6 +114,7 @@ class DyHierarchyServiceTests : AbstractTest() {
                 DyHierarchyLevel("source.extension"))
         val result = dyhiService.generate(agg)
 
+        val testDataPath = "/tmp"
         // Video aggs
         folder = folderService.get("/foo/video$testDataPath/video/m4v")
         assertEquals(1, searchService.count(folder!!.search!!))
@@ -232,7 +220,7 @@ class DyHierarchyServiceTests : AbstractTest() {
         assertEquals(5, searchService.search(search1!!).hits.getTotalHits())
 
         year = folderService.get(id, "2013")
-        assertEquals(7, searchService.search(year.search!!).hits.getTotalHits())
+        assertEquals(6, searchService.search(year.search!!).hits.getTotalHits())
     }
 
     @Test
@@ -277,18 +265,12 @@ class DyHierarchyServiceTests : AbstractTest() {
 
         dyhiService.generate(agg)
 
-        for (f in getTestImagePath("set02").toFile().listFiles()!!) {
-            if (!f.isFile) {
-                continue
-            }
+        for (f in getTestImagePath("set02")) {
             val ab = Source(f)
             indexService.index(ab)
         }
 
-        for (f in getTestImagePath("set03").toFile().listFiles()!!) {
-            if (!f.isFile) {
-                continue
-            }
+        for (f in getTestImagePath("set03")) {
             val ab = Source(f)
             indexService.index(ab)
         }

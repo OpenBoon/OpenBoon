@@ -66,9 +66,9 @@ class ProxySchemaTests {
     fun getMixedType() {
         val proxies = mutableListOf<Proxy>()
         proxies.add(Proxy("1", 100, 100))
-        proxies.add(Proxy("2", 200,200))
+        proxies.add(Proxy("2", 200, 200))
         proxies.add(Proxy("3", 100, 100, "video/mp4"))
-        proxies.add(Proxy("4", 200,200, "video/mp4"))
+        proxies.add(Proxy("4", 200, 200, "video/mp4"))
 
         val p = ProxySchema()
         p.proxies = proxies
@@ -79,16 +79,16 @@ class ProxySchemaTests {
         assertEquals("image/jpeg", p.getClosest(1000, 1000)!!.mimetype)
 
         assertEquals("video/mp4", p.getClosest(100, 100, "video/mp4")!!.mimetype)
-        assertEquals("video/mp4", p.getClosest(149, 150,"video/mp4")!!.mimetype)
-        assertEquals("video/mp4", p.getClosest(151, 150,"video/mp4")!!.mimetype)
-        assertEquals("video/mp4", p.getClosest(1000, 1000,"video/mp4")!!.mimetype)
+        assertEquals("video/mp4", p.getClosest(149, 150, "video/mp4")!!.mimetype)
+        assertEquals("video/mp4", p.getClosest(151, 150, "video/mp4")!!.mimetype)
+        assertEquals("video/mp4", p.getClosest(1000, 1000, "video/mp4")!!.mimetype)
     }
 
     @Test
     fun getClosest() {
         val proxies = mutableListOf<Proxy>()
         proxies.add(Proxy("1", 100, 100))
-        proxies.add(Proxy("2", 200,200))
+        proxies.add(Proxy("2", 200, 200))
 
         val p = ProxySchema()
         p.proxies = proxies
@@ -102,15 +102,13 @@ class ProxySchemaTests {
     @Test
     fun getClosest2() {
         val proxies = mutableListOf<Proxy>()
-        proxies.add(Proxy("1",128, 128))
-        proxies.add(Proxy("2",640, 400))
-
+        proxies.add(Proxy("1", 128, 128))
+        proxies.add(Proxy("2", 640, 400))
 
         val p = ProxySchema()
         p.proxies = proxies
 
         assertEquals(128, p.getClosest(256, 256)!!.width)
         assertEquals(640, p.getClosest(400, 400)!!.width)
-
     }
 }

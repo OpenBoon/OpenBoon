@@ -6,3 +6,4 @@ __________
         \/                             \/
 The Archivist - v${pom.version} - build ${git.commit.id.abbrev} by ${user.name} on ${timestamp}
 JVM Options: ${ZORROA_JAVA_OPTS}
+JVM Version: ${java.version}

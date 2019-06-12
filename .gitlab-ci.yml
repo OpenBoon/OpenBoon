@@ -13,7 +13,7 @@ variables:
   DOCKER_HOST: tcp://localhost:2375
 
 build_artifacts:
-  image: maven:3.6.0-jdk-8-slim
+  image: maven:3.6.1-jdk-11-slim
   stage: build
   only:
     - merge_requests
@@ -55,22 +55,18 @@ linting:
   only:
     - merge_requests
     - development
-  allow_failure: true
   script:
     - apk update && apk add ca-certificates wget && update-ca-certificates
     - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
     - chmod a+x ktlint
-    - DIFF=$(git diff --name-only --diff-filter=b $(git merge-base $CI_COMMIT_SHA development))
-    - echo $DIFF
-    - ./ktlint $DIFF
+    - ./ktlint
 
 unit_tests:
   stage: test
-  image: maven:3.6.0-jdk-8-alpine
+  image: maven:3.6.1-jdk-11-slim
   only:
     - merge_requests
     - development
-  allow_failure: true
   services:
     - name: postgres:9.6.9
       alias: postgres
@@ -84,11 +80,11 @@ unit_tests:
     PGDATA: /var/lib/postgresql/data/pgdata
     SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=unittest40"
     LOGGING_LEVEL_COM_ZORROA: WARN
+    USER: gitlab
   script:
     - mvn test -q
   after_script:
     - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% code coverage" }' archivist/target/site/jacoco/jacoco.csv
-
 
 docker_hub_push:
   stage: push
@@ -119,8 +115,8 @@ deploy_archivist_dev:
   script:
     - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
-    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-deploy
+    - kubectl patch deployment archivist -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=dev
 
 deploy_elasticsearch_dev:
   image: google/cloud-sdk
@@ -133,5 +129,5 @@ deploy_elasticsearch_dev:
   script:
     - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $DEV_SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-dev
-    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=default
+    - gcloud container clusters get-credentials zorroa --zone us-central1-a --project zorroa-deploy
+    - kubectl patch statefulset elasticsearch -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"commit\":\"$CI_COMMIT_SHA\"}}}}}" --namespace=dev

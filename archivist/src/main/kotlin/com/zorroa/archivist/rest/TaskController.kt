@@ -13,26 +13,36 @@ import com.zorroa.common.domain.TaskFilter
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.ExecutionException
 import javax.servlet.http.HttpServletResponse
-
 
 @RestController
 @Timed
 class TaskController @Autowired constructor(
-        val jobService: JobService,
-        val dispatcherService: DispatcherService,
-        val taskDao: TaskDao
+    val jobService: JobService,
+    val dispatcherService: DispatcherService,
+    val taskDao: TaskDao
 ) {
 
     @PostMapping(value = ["/api/v1/tasks/_search"])
     @Throws(IOException::class)
-    fun search(@RequestBody filter: TaskFilter,
-                 @RequestParam(value = "from", required = false) from: Int?,
-                 @RequestParam(value = "count", required = false) count: Int?): Any {
+    fun search(
+        @RequestBody filter: TaskFilter,
+        @RequestParam(value = "from", required = false) from: Int?,
+        @RequestParam(value = "count", required = false) count: Int?
+    ): Any {
         return taskDao.getAll(filter)
     }
 
@@ -50,17 +60,16 @@ class TaskController @Autowired constructor(
     @PutMapping(value = ["/api/v1/tasks/{id}/_retry"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
-    fun retry(@PathVariable id: UUID) : Any {
+    fun retry(@PathVariable id: UUID): Any {
         return HttpUtils.status("Task", id, "retry",
                 dispatcherService.retryTask(jobService.getInternalTask(id),
                         "Retried by ${getUsername()}"))
-
     }
 
     @PutMapping(value = ["/api/v1/tasks/{id}/_skip"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
-    fun skip(@PathVariable id: UUID) : Any {
+    fun skip(@PathVariable id: UUID): Any {
 
         return HttpUtils.status("Task", id, "skip",
                 dispatcherService.skipTask(jobService.getInternalTask(id)))
@@ -82,23 +91,19 @@ class TaskController @Autowired constructor(
             rsp.contentType = "text/plain"
             rsp.setContentLengthLong(sf.getStat().size)
             copyInputToOuput(sf.getInputStream(), rsp.outputStream)
-        }
-        else {
+        } else {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
     }
 
-    @RequestMapping(value = ["/api/v1/tasks/{id}/taskerrors"], method=[RequestMethod.GET, RequestMethod.POST])
+    @RequestMapping(value = ["/api/v1/tasks/{id}/taskerrors"], method = [RequestMethod.GET, RequestMethod.POST])
     fun getTaskErrors(@PathVariable id: UUID, @RequestBody(required = false) filter: TaskErrorFilter?): Any {
         val fixedFilter = if (filter == null) {
-            TaskErrorFilter(taskIds=listOf(id))
-        }
-        else {
+            TaskErrorFilter(taskIds = listOf(id))
+        } else {
             filter.taskIds = listOf(id)
             filter
         }
         return jobService.getTaskErrors(fixedFilter)
     }
-
 }
-

@@ -28,13 +28,13 @@ import java.util.UUID
 interface TaskErrorDao {
     fun create(task: InternalTask, error: TaskErrorEvent): TaskError
     fun batchCreate(task: InternalTask, specs: List<TaskErrorEvent>): Int
-    fun get(id: UUID) : TaskError
-    fun getLast() : TaskError
+    fun get(id: UUID): TaskError
+    fun getLast(): TaskError
     fun count(filter: TaskErrorFilter): Long
-    fun getAll(filter: TaskErrorFilter) : KPagedList<TaskError>
+    fun getAll(filter: TaskErrorFilter): KPagedList<TaskError>
     fun findOneTaskError(filter: TaskErrorFilter): TaskError
-    fun delete(id: UUID) : Boolean
-    fun deleteAll(job: JobId) : Int
+    fun delete(id: UUID): Boolean
+    fun deleteAll(job: JobId): Int
 }
 
 @Repository
@@ -116,7 +116,6 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
         specs.forEach { warnEvent(task, it) }
         return result.sum()
-
     }
 
     override fun count(filter: TaskErrorFilter): Long {
@@ -137,20 +136,18 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return jdbc.queryForObject(query, MAPPER, *values)
     }
 
-    override fun get(id: UUID) : TaskError {
+    override fun get(id: UUID): TaskError {
         return if (hasPermission("zorroa::superadmin")) {
             jdbc.queryForObject("$GET WHERE pk_task_error=?", MAPPER, id)
-        }
-        else {
+        } else {
             jdbc.queryForObject("$GET WHERE pk_task_error=? AND pk_organization=?", MAPPER, id, getOrgId())
         }
     }
 
-    override fun getLast() : TaskError {
+    override fun getLast(): TaskError {
         return return if (hasPermission("zorroa::superadmin")) {
             jdbc.queryForObject("$GET ORDER BY time_created DESC LIMIT 1", MAPPER)
-        }
-        else {
+        } else {
             jdbc.queryForObject("$GET WHERE pk_organization=? ORDER BY time_created DESC LIMIT 1",
                     MAPPER, getOrgId())
         }
@@ -164,8 +161,8 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return jdbc.update("DELETE FROM task_error WHERE pk_job=?", job.jobId)
     }
 
-    fun getKeywords(spec: TaskErrorEvent) : String {
-        var keywords =  JdbcUtils.getTsWordVector(spec.path, spec.processor, spec.message)
+    fun getKeywords(spec: TaskErrorEvent): String {
+        var keywords = JdbcUtils.getTsWordVector(spec.path, spec.processor, spec.message)
         spec.path?.let {
             keywords += " ${FileUtils.filename(it)}"
             keywords += " $it"
@@ -199,7 +196,6 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                     rs.getString("str_phase"),
                     rs.getLong("time_created"),
                     Json.Mapper.readValueOrNull(rs.getString("json_stack_trace")))
-
         }
 
         private const val COUNT = "SELECT COUNT(1) FROM task_error INNER JOIN job ON (job.pk_job = task_error.pk_job)"

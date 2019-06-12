@@ -18,13 +18,15 @@ import java.util.UUID
 
 @RestController
 class ProcessorController @Autowired constructor(
-        val processorService: ProcessorService) {
-
+    val processorService: ProcessorService
+) {
 
     @RequestMapping(value = ["/api/v1/processors/_search"], method = [RequestMethod.POST, RequestMethod.GET])
-    fun search(@RequestBody(required = true) filter: ProcessorFilter,
-               @RequestParam(value = "from", required = false) from: Int?,
-               @RequestParam(value = "count", required = false) count: Int?): KPagedList<Processor> {
+    fun search(
+        @RequestBody(required = true) filter: ProcessorFilter,
+        @RequestParam(value = "from", required = false) from: Int?,
+        @RequestParam(value = "count", required = false) count: Int?
+    ): KPagedList<Processor> {
         from?.let { filter.page.from = it }
         count?.let { filter.page.size = it }
         return processorService.getAll(filter)
@@ -36,7 +38,7 @@ class ProcessorController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/processors/{id:.+}"])
-    fun get(@PathVariable(value="id") id: String): Processor {
+    fun get(@PathVariable(value = "id") id: String): Processor {
         return if (UUID_REGEXP.matches(id)) {
             processorService.get(UUID.fromString(id))
         } else {

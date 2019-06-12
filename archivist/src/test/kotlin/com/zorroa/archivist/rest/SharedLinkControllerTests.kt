@@ -1,7 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.ImmutableSet
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.SharedLinkSpec
 import com.zorroa.archivist.security.getUserId
@@ -15,7 +13,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.util.*
 
 /**
  * Created by chambers on 7/11/17.

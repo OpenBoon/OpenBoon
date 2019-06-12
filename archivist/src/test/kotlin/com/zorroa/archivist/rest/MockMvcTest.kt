@@ -7,7 +7,6 @@ import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.core.Authentication
@@ -17,7 +16,6 @@ import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
-import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
@@ -49,7 +47,9 @@ abstract class MockMvcTest : AbstractTest() {
      * Assert successful post to API endpoint
      * @return an an object of the
      */
-    final inline fun <reified T> resultForPostContent(urlTemplate: String, `object`: Any,
+    final inline fun <reified T> resultForPostContent(
+        urlTemplate: String,
+        `object`: Any,
         session: MockHttpSession = admin()): T {
         // MockMvc clears the security context when it returns, I don't know how to configure it otherwise.
         val savedAuthentication = SecurityContextHolder.getContext().authentication

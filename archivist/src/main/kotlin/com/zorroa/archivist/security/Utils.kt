@@ -29,8 +29,8 @@ import java.util.UUID
  * @param auth The new Authentication value.
  * @return the old authentication value or null
  */
-fun resetAuthentication(auth: Authentication?) : Authentication?   {
-    val oldAuth =  SecurityContextHolder.getContext().authentication
+fun resetAuthentication(auth: Authentication?): Authentication? {
+    val oldAuth = SecurityContextHolder.getContext().authentication
     SecurityContextHolder.getContext().authentication = auth
     return oldAuth
 }
@@ -40,13 +40,12 @@ fun resetAuthentication(auth: Authentication?) : Authentication?   {
  * is null, then just execute with no authentication.
  *
  */
-fun <T> withAuth(auth: Authentication?, body: () -> T) : T {
+fun <T> withAuth(auth: Authentication?, body: () -> T): T {
     val hold = SecurityContextHolder.getContext().authentication
     SecurityContextHolder.getContext().authentication = auth
     try {
         return body()
-    }
-    finally {
+    } finally {
         SecurityContextHolder.getContext().authentication = hold
     }
 }
@@ -73,7 +72,7 @@ fun createPasswordHash(plainPassword: String): String {
  * @param length The password length
  * @return A random password.
  */
-fun generateRandomPassword(length: Int) : String {
+fun generateRandomPassword(length: Int): String {
     val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     return (1..length).map { allowedChars.random() }.joinToString("")
 }
@@ -91,7 +90,7 @@ fun getUser(): UserAuthed {
             } catch (e2: ClassCastException) {
                 // Log this message so we can see what the type is.
                 SecurityLogger.logger.warn("Invalid auth objects: principal='{}' details='{}'",
-                        auth?.principal,  auth?.details)
+                        auth?.principal, auth?.details)
                 throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
             }
         }
@@ -102,8 +101,7 @@ fun getAnalystEndpoint(): String {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
         throw AuthenticationCredentialsNotFoundException("No login credentials specified for cluster node")
-    }
-    else {
+    } else {
         return SecurityContextHolder.getContext().authentication.principal as String
     }
 }
@@ -114,7 +112,6 @@ fun getUserOrNull(): UserAuthed? {
     } catch (ex: AuthenticationCredentialsNotFoundException) {
         null
     }
-
 }
 
 fun getUsername(): String {
@@ -223,16 +220,14 @@ fun getPermissionsFilter(access: Access?): QueryBuilder? {
                 QueryBuilders.termsQuery("system.permissions.read",
                         getPermissionIds().map { it.toString() })
             }
-        }
-        else if (access == Access.Write) {
+        } else if (access == Access.Write) {
             return if (hasPermission(Groups.WRITE)) {
                 null
             } else {
                 QueryBuilders.termsQuery("system.permissions.write",
                         getPermissionIds().map { it.toString() })
             }
-        }
-        else if (access == Access.Export) {
+        } else if (access == Access.Export) {
             return if (hasPermission(Groups.EXPORT)) {
                 null
             } else {
@@ -328,4 +323,3 @@ fun canExport(asset: Document): Boolean {
     val perms = asset.getAttr("system.permissions.export", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
-

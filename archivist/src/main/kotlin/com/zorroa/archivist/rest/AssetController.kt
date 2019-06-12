@@ -77,7 +77,8 @@ class AssetController @Autowired constructor(
     private val fieldService: FieldService,
     private val fileUploadService: FileUploadService,
     private val fieldSystemService: FieldSystemService,
-    meterRegistry: MeterRegistry) {
+    meterRegistry: MeterRegistry
+) {
 
     private val proxyLookupCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
@@ -90,7 +91,6 @@ class AssetController @Autowired constructor(
                 }
             })
 
-
     init {
         meterRegistry.gauge("zorroa.cache.proxy-cache-size", proxyLookupCache) {
             it.size().toDouble()
@@ -98,7 +98,7 @@ class AssetController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/assets/_fields"])
-    fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
+    fun getFields(response: HttpServletResponse): Map<String, Set<String>> {
         response.setHeader("Cache-Control", CacheControl.maxAge(
                 30, TimeUnit.SECONDS).cachePrivate().headerValue)
         return fieldService.getFields("asset")
@@ -126,7 +126,8 @@ class AssetController @Autowired constructor(
     fun streamAsset(
         @PathVariable id: String,
         @RequestHeader headers: HttpHeaders,
-        rsp: HttpServletResponse) {
+        rsp: HttpServletResponse
+    ) {
 
         val servableFile = assetStreamResolutionService.getServableFile(id, headers.accept)
         if (servableFile == null) {
@@ -161,7 +162,8 @@ class AssetController @Autowired constructor(
         @RequestParam(value = "ext", required = false) ext: String?,
         @RequestHeader headers: HttpHeaders,
         req: HttpServletRequest,
-        rsp: HttpServletResponse) {
+        rsp: HttpServletResponse
+    ) {
 
         try {
             /**
@@ -170,8 +172,7 @@ class AssetController @Autowired constructor(
              */
             val mediaTypes = if (ext != null) {
                 listOf(MediaType.parseMediaType(StaticUtils.tika.detect(".$ext")))
-            }
-            else {
+            } else {
                 headers.accept
             }
 
@@ -189,16 +190,14 @@ class AssetController @Autowired constructor(
                         .setContentType(servableFile.getStat().mediaType)
                         .serveResource()
                 }
-            }
-            else {
+            } else {
                 logger.warn("Failed to stream asset ID $id, with media types $mediaTypes")
                 rsp.status = 404
             }
         } catch (e: Exception) {
             if (logger.isDebugEnabled) {
                 logger.debug("Interrupted while streaming $id", e)
-            }
-            else {
+            } else {
                 logger.warn("Interrupted while streaming Asset $id")
             }
 
@@ -208,12 +207,14 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{width:\\d+}x{height:\\d+}"])
     @Throws(IOException::class)
-    fun getClosestProxy(req: HttpServletRequest,
-                        rsp: HttpServletResponse,
-                        @PathVariable id: String,
-                        @PathVariable width: Int,
-                        @PathVariable height: Int,
-                        @RequestParam(value="type", defaultValue = "image") type: String)  {
+    fun getClosestProxy(
+        req: HttpServletRequest,
+        rsp: HttpServletResponse,
+        @PathVariable id: String,
+        @PathVariable width: Int,
+        @PathVariable height: Int,
+        @RequestParam(value = "type", defaultValue = "image") type: String
+    ) {
         return try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).getClosest(width, height, type))
         } catch (e: Exception) {
@@ -223,11 +224,13 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/atLeast/{size:\\d+}"])
     @Throws(IOException::class)
-    fun getAtLeast(req: HttpServletRequest,
-                   rsp: HttpServletResponse,
-                   @PathVariable id: String,
-                   @PathVariable(required = true) size: Int,
-                   @RequestParam(value="type", defaultValue = "image") type: String) {
+    fun getAtLeast(
+        req: HttpServletRequest,
+        rsp: HttpServletResponse,
+        @PathVariable id: String,
+        @PathVariable(required = true) size: Int,
+        @RequestParam(value = "type", defaultValue = "image") type: String
+    ) {
         try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).atLeastThisSize(size, type))
         } catch (e: Exception) {
@@ -237,10 +240,12 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
     @Throws(IOException::class)
-    fun getLargestProxy(req: HttpServletRequest,
-                        rsp: HttpServletResponse,
-                        @PathVariable id: String,
-                        @RequestParam(value="type", defaultValue = "image") type: String) {
+    fun getLargestProxy(
+        req: HttpServletRequest,
+        rsp: HttpServletResponse,
+        @PathVariable id: String,
+        @RequestParam(value = "type", defaultValue = "image") type: String
+    ) {
         try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).getLargest(type))
         } catch (e: Exception) {
@@ -250,10 +255,12 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/smallest"])
     @Throws(IOException::class)
-    fun getSmallestProxy(req: HttpServletRequest,
-                         rsp: HttpServletResponse,
-                         @PathVariable id: String,
-                         @RequestParam(value="type", defaultValue = "image") type: String) {
+    fun getSmallestProxy(
+        req: HttpServletRequest,
+        rsp: HttpServletResponse,
+        @PathVariable id: String,
+        @RequestParam(value = "type", defaultValue = "image") type: String
+    ) {
         return try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).getSmallest(type))
         } catch (e: Exception) {
@@ -325,8 +332,7 @@ class AssetController @Autowired constructor(
                 BatchUpdateAssetsRequest(mapOf(id to UpdateAssetRequest(attrs))))
         if (rsp.isSuccess()) {
             return HttpUtils.updated("asset", id, true, assetService.get(id))
-        }
-        else {
+        } else {
             throw rsp.getThrowableError()
         }
     }
@@ -338,8 +344,7 @@ class AssetController @Autowired constructor(
                 BatchUpdateAssetsRequest(mapOf(id to req)))
         if (rsp.isSuccess()) {
             return HttpUtils.updated("asset", id, true, assetService.get(id))
-        }
-        else {
+        } else {
             throw rsp.getThrowableError()
         }
     }
@@ -375,14 +380,16 @@ class AssetController @Autowired constructor(
 
     @PutMapping(value = ["/api/v2/assets/_permissions"])
     @Throws(Exception::class)
-    fun setPermissionsV2(@RequestBody req: BatchUpdatePermissionsRequest) : BatchUpdatePermissionsResponse {
+    fun setPermissionsV2(@RequestBody req: BatchUpdatePermissionsRequest): BatchUpdatePermissionsResponse {
         return assetService.setPermissions(req)
     }
 
     @PostMapping(value = ["/api/v1/assets/_upload", "/api/v1/imports/_upload"], consumes = ["multipart/form-data"])
     @ResponseBody
-    fun upload(@RequestParam("files") files: Array<MultipartFile>,
-               @RequestParam("body") body: String): Any {
+    fun upload(
+        @RequestParam("files") files: Array<MultipartFile>,
+        @RequestParam("body") body: String
+    ): Any {
         val spec = Json.deserialize(body, FileUploadSpec::class.java)
         return fileUploadService.ingest(spec, files)
     }
@@ -393,7 +400,7 @@ class AssetController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
-    fun getFieldEdits(@PathVariable id: UUID): List<FieldEdit>  {
+    fun getFieldEdits(@PathVariable id: UUID): List<FieldEdit> {
         return fieldSystemService.getFieldEdits(id)
     }
 

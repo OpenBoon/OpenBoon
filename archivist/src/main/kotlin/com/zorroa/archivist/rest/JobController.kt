@@ -21,18 +21,19 @@ import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
 import java.util.UUID
 
-
 @RestController
 @Timed
 class JobController @Autowired constructor(
-        val jobService: JobService
+    val jobService: JobService
 ) {
 
     @PostMapping(value = ["/api/v1/jobs/_search"])
     @Throws(IOException::class)
-    fun search(@RequestBody(required = false) filter: JobFilter,
-               @RequestParam(value = "from", required = false) from: Int?,
-               @RequestParam(value = "count", required = false) count: Int?): Any {
+    fun search(
+        @RequestBody(required = false) filter: JobFilter,
+        @RequestParam(value = "from", required = false) from: Int?,
+        @RequestParam(value = "count", required = false) count: Int?
+    ): Any {
         // Backwards compat
         from?.let { filter.page.from = it }
         count?.let { filter.page.size = it }
@@ -64,12 +65,11 @@ class JobController @Autowired constructor(
         return jobService.get(UUID.fromString(id), forClient = true)
     }
 
-    @RequestMapping(value = ["/api/v1/jobs/{id}/taskerrors"], method=[RequestMethod.GET, RequestMethod.POST])
+    @RequestMapping(value = ["/api/v1/jobs/{id}/taskerrors"], method = [RequestMethod.GET, RequestMethod.POST])
     fun getTaskErrors(@PathVariable id: UUID, @RequestBody(required = false) filter: TaskErrorFilter?): Any {
         val fixedFilter = if (filter == null) {
-            TaskErrorFilter(jobIds=listOf(id))
-        }
-        else {
+            TaskErrorFilter(jobIds = listOf(id))
+        } else {
             filter.jobIds = listOf(id)
             filter
         }

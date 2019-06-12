@@ -25,5 +25,4 @@ class InternalAuthentication : AbstractAuthenticationToken {
     override fun getPrincipal(): Any {
         return principal
     }
-
 }

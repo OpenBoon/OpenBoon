@@ -14,14 +14,12 @@ import com.zorroa.common.domain.TaskState
  */
 class WatermarkSettingsChanged
 
-
 /**
  * Emitted when a job state changes.
  */
-class JobStateChangeEvent(val job: Job, val newState: JobState, val oldState : JobState?)
+class JobStateChangeEvent(val job: Job, val newState: JobState, val oldState: JobState?)
 
 /**
  * Emitted when a task state changes.
  */
-class TaskStateChangeEvent(val task: InternalTask, val newState: TaskState, val oldState : TaskState?)
-
+class TaskStateChangeEvent(val task: InternalTask, val newState: TaskState, val oldState: TaskState?)

@@ -1,7 +1,14 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Organization
+import com.zorroa.archivist.domain.OrganizationFilter
+import com.zorroa.archivist.domain.OrganizationSpec
+import com.zorroa.archivist.domain.OrganizationUpdateSpec
+import com.zorroa.archivist.domain.PagedList
+import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.service.event
 import com.zorroa.common.repository.KPage
@@ -9,13 +16,13 @@ import com.zorroa.common.repository.KPagedList
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 interface OrganizationDao : GenericNamedDao<Organization, OrganizationSpec> {
     fun findOne(filter: OrganizationFilter): Organization
     fun getAll(filter: OrganizationFilter): KPagedList<Organization>
     fun count(filter: OrganizationFilter): Long
-    fun update(org: Organization, spec: OrganizationUpdateSpec) : Boolean
+    fun update(org: Organization, spec: OrganizationUpdateSpec): Boolean
 }
 
 @Repository
@@ -36,12 +43,13 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
             ps.setObject(3, spec.indexRouteId)
             ps
         }
-        logger.event(LogObject.ORGANIZATION, LogAction.CREATE,
+        logger.event(
+            LogObject.ORGANIZATION, LogAction.CREATE,
                 mapOf("newOrgId" to id, "orgName" to spec.name))
         return get(id)
     }
 
-    override fun update(org: Organization, spec: OrganizationUpdateSpec) : Boolean {
+    override fun update(org: Organization, spec: OrganizationUpdateSpec): Boolean {
         return jdbc.update(UPDATE, spec.name, spec.indexRouteId, org.id) == 1
     }
 
@@ -77,15 +85,15 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
     }
 
     override fun getAll(paging: Pager): PagedList<Organization> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun update(id: UUID, spec: Organization): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun delete(id: UUID): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun count(): Long {
@@ -120,5 +128,4 @@ class OrganizationDaoImpl : AbstractDao(), OrganizationDao {
         private val UPDATE = "UPDATE organization SET str_name=?, " +
                 "pk_index_route=? WHERE pk_organization=?"
 }
-
 }

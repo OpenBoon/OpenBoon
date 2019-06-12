@@ -9,18 +9,25 @@ import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 import javax.servlet.http.HttpServletResponse
 
 @RestController
 @Timed
 class PipelineController @Autowired constructor(
-        val pipelineService: PipelineService
-){
+    val pipelineService: PipelineService
+) {
 
-    @GetMapping(value=["/api/v1/pipelines/{id}"])
-    fun get(@PathVariable id: String) : Pipeline {
+    @GetMapping(value = ["/api/v1/pipelines/{id}"])
+    fun get(@PathVariable id: String): Pipeline {
         // handles UUID and string at lower level
         return pipelineService.get(id)
     }
@@ -39,8 +46,10 @@ class PipelineController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/pipelines"])
-    fun getPaged(@RequestParam(value = "page", required = false) page: Int?,
-                 @RequestParam(value = "count", required = false) count: Int?): PagedList<Pipeline> {
+    fun getPaged(
+        @RequestParam(value = "page", required = false) page: Int?,
+        @RequestParam(value = "count", required = false) count: Int?
+    ): PagedList<Pipeline> {
         return pipelineService.getAll(Pager(page, count))
     }
 
@@ -54,10 +63,10 @@ class PipelineController @Autowired constructor(
         return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
     }
 
-    fun getPipeline(nameOrId : String) : Pipeline {
+    fun getPipeline(nameOrId: String): Pipeline {
         return try {
             pipelineService.get(UUID.fromString(nameOrId))
-        } catch (e:IllegalArgumentException) {
+        } catch (e: IllegalArgumentException) {
             pipelineService.get(nameOrId)
         }
     }

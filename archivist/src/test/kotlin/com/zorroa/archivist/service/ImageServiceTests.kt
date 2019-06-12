@@ -12,10 +12,9 @@ class ImageServiceTests : AbstractTest() {
     lateinit var imageService: ImageService
 
     @Test
-    fun testGetImageDimension()  {
+    fun testGetImageDimension() {
         val dim = imageService.getImageDimension(File("src/test/resources/test-data/toucan.jpg"))
         assertEquals(512, dim.width)
         assertEquals(341, dim.height)
     }
-
 }

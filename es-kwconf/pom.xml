@@ -80,7 +80,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.1.1</version>
                 <configuration>
                     <finalName>es-kwconf</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
