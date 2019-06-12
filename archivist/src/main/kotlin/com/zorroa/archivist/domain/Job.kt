@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.UserBase
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
@@ -192,6 +193,11 @@ class JobFilter(
         } else {
             addToWhere("job.pk_organization=?")
             addToValues(getOrgId())
+        }
+
+        if (!hasPermission("zorroa::admin")) {
+            addToWhere("job.pk_user_created=?")
+            addToValues(getUserId())
         }
 
         ids?.let {
