@@ -8,7 +8,10 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.service.ServableFile
 import com.zorroa.archivist.service.event
+import com.zorroa.common.domain.Job
+import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobId
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -48,14 +51,18 @@ class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
     }
 
     override fun get(id: UUID): ExportFile {
+        val user = getUser()
         return jdbc.queryForObject("$GET WHERE " +
-                "pk_export_file=? AND pk_organization=?",
-                MAPPER, id, getOrgId())
+                "pk_export_file=? AND export_file.pk_organization=? AND job.pk_user_created=?",
+                MAPPER, id, user.organizationId, user.id)
     }
 
     override fun getAll(job: JobId): List<ExportFile> {
-        return jdbc.query("$GET WHERE pk_job=? AND pk_organization=? ORDER BY time_created DESC",
-                MAPPER, job.jobId, getUser().organizationId)
+        val user = getUser()
+        return jdbc.query("$GET WHERE " +
+            "export_file.pk_job=? AND export_file.pk_organization=? " +
+            "AND job.pk_user_created=? ORDER BY export_file.time_created DESC",
+                MAPPER, job.jobId, user.organizationId, user.id)
     }
 
     companion object {
@@ -70,7 +77,8 @@ class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
                     rs.getLong("time_created"))
         }
 
-        private const val GET = "SELECT * FROM export_file "
+        private const val GET = "SELECT * FROM export_file " +
+            "INNER JOIN job ON (job.pk_job = export_file.pk_job)"
 
         private val INSERT = JdbcUtils.insert("export_file",
                 "pk_export_file",
