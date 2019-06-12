@@ -188,6 +188,29 @@ class JobDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testAdminUserFilter() {
+        for (i in 1..3) {
+            val spec = JobSpec("run_some_stuff_$i",
+                emptyZpsScript("test_script"))
+            jobDao.create(spec, PipelineType.Import)
+        }
+
+        authenticate("user")
+
+        var filter = JobFilter()
+        var jobs = jobDao.getAll(filter)
+        assertEquals(0, jobs.size())
+        assertEquals(0, jobs.page.totalCount)
+
+        authenticate("admin")
+
+        filter = JobFilter()
+        jobs = jobDao.getAll(filter)
+        assertEquals(3, jobs.size())
+        assertEquals(3, jobs.page.totalCount)
+    }
+
+    @Test
     fun testAllSortColumns() {
         for (i in 1..10) {
             val random = Random.nextInt(1, 100000)
