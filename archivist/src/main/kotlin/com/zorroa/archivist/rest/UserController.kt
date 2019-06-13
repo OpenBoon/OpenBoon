@@ -27,7 +27,6 @@ import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.JdbcUtils
 import com.zorroa.security.Groups
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
@@ -161,10 +160,7 @@ class UserController @Autowired constructor(
         val source = AuthSource("IRM", "Jwt", "Jwt", orgId, groups = authorities)
 
         userId?.let {
-            if (!JdbcUtils.isUUID(it)) {
-                // assume for now that a UUID represents a user that already exists
-                userRegistryService.registerUser(it, source)
-            }
+            userRegistryService.registerUser(it, source)
         }
 
         try {
