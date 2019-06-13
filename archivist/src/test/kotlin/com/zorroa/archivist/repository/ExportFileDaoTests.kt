@@ -37,17 +37,21 @@ class ExportFileDaoTests : AbstractTest() {
 
     @Before
     fun init() {
-        val espec = ExportSpec("foo",
-                AssetSearch(),
-                mutableListOf(),
-                mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"))
+        val espec = ExportSpec(
+            "foo",
+            AssetSearch(),
+            mutableListOf(),
+            mutableMapOf("foo" to "bar"),
+            mutableMapOf("foo" to "bar")
+        )
         export = exportService.create(espec, resolve = false)
 
         val spec = FileStorageSpec("job", export.id, "exported/foo.bar")
         val storage = fileStorageService.get(spec)
-        exportFile = exportFileDao.create(export, storage.getServableFile(),
-                ExportFileSpec(storage.id, "foo.bar"))
+        exportFile = exportFileDao.create(
+            export, storage.getServableFile(),
+            ExportFileSpec(storage.id, "foo.bar")
+        )
     }
 
     @Test
@@ -60,8 +64,7 @@ class ExportFileDaoTests : AbstractTest() {
         assertEquals(exportFile.timeCreated, ef.timeCreated)
     }
 
-
-    @Test(expected= EmptyResultDataAccessException::class)
+    @Test(expected = EmptyResultDataAccessException::class)
     fun testGetFailureWrongUser() {
         authenticate("user")
         exportFileDao.get(exportFile.id)
