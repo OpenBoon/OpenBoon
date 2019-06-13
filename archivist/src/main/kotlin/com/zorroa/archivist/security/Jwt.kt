@@ -10,7 +10,6 @@ import com.zorroa.archivist.security.JwtSecurityConstants.ORGID_HEADER
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.event
-import com.zorroa.common.util.JdbcUtils
 import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -66,9 +65,9 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
          */
         val claims = validator.validate(token.replace(TOKEN_PREFIX, "")).toMutableMap()
 
-        val userId = claims["userId"]
-        userId?.let {
-            if (!JdbcUtils.isUUID(it)) {
+        // TODO move this IRM specific code to IRM only location
+        if (claims.containsKey("insightUser")) {
+            claims["userId"]?.let {
                 val user = userRegistryService.getUser(it)
                 claims["userId"] = user.id.toString()
             }
