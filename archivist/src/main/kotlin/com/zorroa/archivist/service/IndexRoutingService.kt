@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ProcessorRef
@@ -19,6 +20,7 @@ import com.zorroa.common.clients.EsRestClient
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobPriority
 import com.zorroa.common.domain.JobSpec
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
@@ -149,9 +151,20 @@ interface IndexRoutingService {
     fun getIndexRoute(id:UUID) : IndexRoute
 
     /**
-     * Return true if the index route being used is for reindexig.
+     * Return true if the index route being used is for reindexing.
      */
     fun isReIndexRoute(): Boolean
+
+    /**
+     * Return all [IndexRoute]s that match the [IndexRouteFilter]
+     */
+    fun getAll(filter: IndexRouteFilter) : KPagedList<IndexRoute>
+
+    /**
+     * Return an [IndexRoute] that matches the [IndexRouteFilter].  If the filter does
+     * not return one and only one [IndexRoute] then an exception is raised.
+     */
+    fun findOne(filter: IndexRouteFilter) : IndexRoute
 }
 
 /**
@@ -455,6 +468,16 @@ class IndexRoutingServiceImpl @Autowired
                     patchFile.majorVersion, patchFile.minorVersion, e)
             indexRouteDao.setErrorVersion(route, patchFile.minorVersion)
         }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAll(filter: IndexRouteFilter) : KPagedList<IndexRoute> {
+        return indexRouteDao.getAll(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findOne(filter: IndexRouteFilter) : IndexRoute {
+        return indexRouteDao.findOne(filter)
     }
 
     companion object {

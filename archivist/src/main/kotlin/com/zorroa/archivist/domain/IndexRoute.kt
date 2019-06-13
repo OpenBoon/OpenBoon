@@ -1,6 +1,8 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.common.repository.KDaoFilter
+import com.zorroa.common.util.JdbcUtils
 import java.util.UUID
 
 /**
@@ -109,4 +111,44 @@ class EsClientCacheKey(
 ) {
 
     val indexUrl = "$clusterUrl/$indexName"
+}
+
+/**
+ * A class for filtering [IndexRoute]s
+ */
+class IndexRouteFilter(
+    val ids: List<UUID>? = null,
+    val clusterUrls: List<String>? = null,
+    val mappings: List<String>? = null
+) : KDaoFilter() {
+
+    @JsonIgnore
+    override val sortMap: Map<String, String> =
+        mapOf("id" to "index_route.pk_index_route",
+            "clusterUrl" to "index_route.str_url",
+            "mapping" to "index_route.str_mapping_type",
+            "timeCreated" to "index_route.time_created")
+
+    @JsonIgnore
+    override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("timeCreated:desc")
+        }
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("index_route.pk_index_route", it.size))
+            addToValues(it)
+        }
+
+        clusterUrls?.let {
+            addToWhere(JdbcUtils.inClause("index_route.str_url", it.size))
+            addToValues(it)
+        }
+
+        mappings?.let {
+            addToWhere(JdbcUtils.inClause("index_route.str_mapping_type", it.size))
+            addToValues(it)
+        }
+    }
 }

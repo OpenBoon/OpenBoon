@@ -1,8 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.security.getOrgId
+import com.zorroa.common.repository.KPage
+import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -50,6 +53,22 @@ interface IndexRouteDao {
      * Create a new IndexRoute entry.
      */
     fun create(spec: IndexRouteSpec) : IndexRoute
+
+    /**
+     * Count the number of [IndexRoute]s that match the filter.
+     */
+    fun count(filter: IndexRouteFilter): Long
+
+    /**
+     * Get all [IndexRoute]s that match the filter.
+     */
+    fun getAll(filter: IndexRouteFilter): KPagedList<IndexRoute>
+
+    /**
+     * Find a single [IndexRoute]sthat matches the filter.
+     */
+    fun findOne(filter: IndexRouteFilter): IndexRoute
+
 }
 
 @Repository
@@ -114,6 +133,25 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         return jdbc.update(UPDATE_ERROR_VER, version, System.currentTimeMillis(), route.id) == 1
     }
 
+    override fun count(filter: IndexRouteFilter): Long {
+        return jdbc.queryForObject(filter.getQuery(COUNT, forCount = true),
+            Long::class.java, *filter.getValues(forCount = true))
+    }
+
+    override fun getAll(filter: IndexRouteFilter): KPagedList<IndexRoute> {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun findOne(filter: IndexRouteFilter): IndexRoute {
+        filter.apply { page = KPage(0, 1) }
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return throwWhenNotFound("IndexRoute not found") {
+            return KPagedList(1L, filter.page, jdbc.query(query,MAPPER, *values))[0]
+        }
+    }
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
@@ -149,6 +187,8 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "int_mapping_error_ver")
 
         const val GET = "SELECT * FROM index_route"
+
+        const val COUNT = "SELECT COUNT(1) FROM index_route"
 
         const val GET_BY_ORG = "$GET " +
                 "INNER JOIN " +

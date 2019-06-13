@@ -1,6 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -103,6 +105,25 @@ class IndexRouteDaoTests : AbstractTest() {
     fun testGetAll() {
         val routes = indexRouteDao.getAll()
         assertEquals(1, routes.size)
+    }
+
+    @Test
+    fun testGetAllByFilter() {
+        val route = indexRouteDao.getOrgRoute()
+
+        val filter = IndexRouteFilter(
+            ids = listOf(route.id),
+            mappings = listOf(route.mapping),
+            clusterUrls = listOf(route.clusterUrl))
+
+        assertEquals(1, indexRouteDao.getAll(filter).size())
+    }
+
+    @Test
+    fun testGetAllByFilterSorted() {
+        val filter = IndexRouteFilter()
+        filter.sort = listOf("id:a", "clusterUrl:a", "mapping:a", "timeCreated:a")
+        assertEquals(1, indexRouteDao.getAll(filter).size())
     }
 
     @Test
