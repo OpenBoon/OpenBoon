@@ -16,14 +16,14 @@ import org.junit.After
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.springframework.mock.web.MockHttpServletRequest
-import java.util.UUID
 
 class IndexRoutingServiceTests : AbstractTest() {
 
@@ -50,8 +50,11 @@ class IndexRoutingServiceTests : AbstractTest() {
         indexRoutingService.setupDefaultIndexRoute()
         assertEquals(1, jdbc.update("UPDATE index_route SET str_url='http://foo'"))
         indexRoutingService.setupDefaultIndexRoute()
-        assertEquals("http://localhost:9200", jdbc.queryForObject(
-                "SELECT str_url FROM index_route", String::class.java))
+        assertEquals(
+            "http://localhost:9200", jdbc.queryForObject(
+                "SELECT str_url FROM index_route", String::class.java
+            )
+        )
     }
 
     @Test
@@ -65,8 +68,10 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun syncAllIndexRoutes() {
-        jdbc.update("UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
-                "int_mapping_minor_ver=0, str_index='test123'")
+        jdbc.update(
+            "UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
+                "int_mapping_minor_ver=0, str_index='test123'"
+        )
 
         indexRoutingService.syncAllIndexRoutes()
 
@@ -103,8 +108,10 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun syncIndexRouteVersion() {
-        jdbc.update("UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
-                "int_mapping_minor_ver=0, str_index='test123'")
+        jdbc.update(
+            "UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
+                "int_mapping_minor_ver=0, str_index='test123'"
+        )
 
         var route = indexRouteDao.getRandomDefaultRoute()
         indexRoutingService.syncIndexRouteVersion(route)
@@ -118,8 +125,10 @@ class IndexRoutingServiceTests : AbstractTest() {
     @Test
     fun syncIndexRouteVersionShardsAndReplicas() {
         val index = "test123"
-        jdbc.update("UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
-                "int_mapping_minor_ver=0, str_index=?, int_shards=1, int_replicas=0", index)
+        jdbc.update(
+            "UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
+                "int_mapping_minor_ver=0, str_index=?, int_shards=1, int_replicas=0", index
+        )
 
         val rest = indexRoutingService.getOrgRestClient()
         try {
@@ -171,7 +180,8 @@ class IndexRoutingServiceTests : AbstractTest() {
             "testing123",
             "test",
             1,
-            false)
+            false
+        )
 
         val route = indexRoutingService.createIndexRoute(spec)
         val request = MockHttpServletRequest()
@@ -187,7 +197,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         request.addHeader("X-Zorroa-Index-Route", UUID.randomUUID().toString())
         RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
 
-       indexRoutingService.getOrgRestClient()
+        indexRoutingService.getOrgRestClient()
     }
 
     @Test
@@ -243,9 +253,12 @@ class IndexRoutingServiceTests : AbstractTest() {
         jobCount = jobService.getAll(JobFilter(names = listOf(job.name))).size()
         assertEquals(2, jobCount)
 
-        jobCount = jobService.getAll(JobFilter(
+        jobCount = jobService.getAll(
+            JobFilter(
                 states = listOf(JobState.Active),
-                names = listOf(job.name))).size()
+                names = listOf(job.name)
+            )
+        ).size()
         assertEquals(1, jobCount)
     }
 
@@ -263,7 +276,8 @@ class IndexRoutingServiceTests : AbstractTest() {
             "testing123",
             "test",
             1,
-            false)
+            false
+        )
 
         val route = indexRoutingService.createIndexRoute(spec)
         assertEquals(spec.clusterUrl, route.clusterUrl)
@@ -279,7 +293,8 @@ class IndexRoutingServiceTests : AbstractTest() {
             "testing123",
             "kirk",
             33,
-            false)
+            false
+        )
 
         indexRoutingService.createIndexRoute(spec)
     }

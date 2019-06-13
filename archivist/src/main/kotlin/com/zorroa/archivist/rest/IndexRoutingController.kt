@@ -9,8 +9,6 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.IndexMigrationService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.OrganizationService
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.repository.KPagedList
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired

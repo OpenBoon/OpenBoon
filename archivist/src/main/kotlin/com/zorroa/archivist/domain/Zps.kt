@@ -26,8 +26,10 @@ fun zpsTaskName(zps: ZpsScript): String {
 }
 
 fun emptyZpsScript(name: String): ZpsScript {
-    return ZpsScript(name,
-            null, null, null)
+    return ZpsScript(
+        name,
+        null, null, null
+    )
 }
 
 @ApiModel("ZPS Script", description = "Describes a ZPS script that can be run by the Analysts.")
@@ -124,7 +126,7 @@ class ProcessorRef(
     var fileTypes: Set<String>? = mutableSetOf(),
 
     @ApiModelProperty("Envrironment variables that should be present during processor execution.")
-    val env : Map<String, String> = mutableMapOf(),
+    val env: Map<String, String> = mutableMapOf(),
 
     @ApiModelProperty("DEPRECATED: Always python.", hidden = true)
     val language: String = "python"

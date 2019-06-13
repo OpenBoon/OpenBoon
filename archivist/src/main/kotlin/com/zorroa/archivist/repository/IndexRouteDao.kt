@@ -52,7 +52,7 @@ interface IndexRouteDao {
     /**
      * Create a new IndexRoute entry.
      */
-    fun create(spec: IndexRouteSpec) : IndexRoute
+    fun create(spec: IndexRouteSpec): IndexRoute
 
     /**
      * Count the number of [IndexRoute]s that match the filter.
@@ -68,13 +68,12 @@ interface IndexRouteDao {
      * Find a single [IndexRoute]sthat matches the filter.
      */
     fun findOne(filter: IndexRouteFilter): IndexRoute
-
 }
 
 @Repository
 class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
-    override fun create(spec: IndexRouteSpec) : IndexRoute {
+    override fun create(spec: IndexRouteSpec): IndexRoute {
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
@@ -103,10 +102,13 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun updateDefaultIndexRoutes(clusterUrl: String, useRoutingKey: Boolean) {
         val count = jdbc.update(
-                "UPDATE index_route SET str_url=?,bool_use_rkey=? WHERE pk_index_route=?",
-                clusterUrl, useRoutingKey, UUID.fromString("00000000-0000-0000-0000-000000000000"))
-        logger.info("Updated $count default ES cluster URLs to " +
-                "'$clusterUrl', use rkey $useRoutingKey")
+            "UPDATE index_route SET str_url=?,bool_use_rkey=? WHERE pk_index_route=?",
+            clusterUrl, useRoutingKey, UUID.fromString("00000000-0000-0000-0000-000000000000")
+        )
+        logger.info(
+            "Updated $count default ES cluster URLs to " +
+                "'$clusterUrl', use rkey $useRoutingKey"
+        )
     }
 
     override fun getAll(): List<IndexRoute> {
@@ -134,8 +136,10 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     }
 
     override fun count(filter: IndexRouteFilter): Long {
-        return jdbc.queryForObject(filter.getQuery(COUNT, forCount = true),
-            Long::class.java, *filter.getValues(forCount = true))
+        return jdbc.queryForObject(
+            filter.getQuery(COUNT, forCount = true),
+            Long::class.java, *filter.getValues(forCount = true)
+        )
     }
 
     override fun getAll(filter: IndexRouteFilter): KPagedList<IndexRoute> {
@@ -149,24 +153,27 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return throwWhenNotFound("IndexRoute not found") {
-            return KPagedList(1L, filter.page, jdbc.query(query,MAPPER, *values))[0]
+            return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
         }
     }
+
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
 
-            IndexRoute(rs.getObject("pk_index_route") as UUID,
-                    rs.getString("str_url"),
-                    rs.getString("str_index"),
-                    rs.getString("str_mapping_type"),
-                    rs.getInt("int_mapping_major_ver"),
-                    rs.getInt("int_mapping_minor_ver"),
-                    rs.getBoolean("bool_closed"),
-                    rs.getInt("int_replicas"),
-                    rs.getInt("int_shards"),
-                    rs.getBoolean("bool_default_pool"),
-                    rs.getBoolean("bool_use_rkey"))
+            IndexRoute(
+                rs.getObject("pk_index_route") as UUID,
+                rs.getString("str_url"),
+                rs.getString("str_index"),
+                rs.getString("str_mapping_type"),
+                rs.getInt("int_mapping_major_ver"),
+                rs.getInt("int_mapping_minor_ver"),
+                rs.getBoolean("bool_closed"),
+                rs.getInt("int_replicas"),
+                rs.getInt("int_shards"),
+                rs.getBoolean("bool_default_pool"),
+                rs.getBoolean("bool_use_rkey")
+            )
         }
 
         val INSERT = JdbcUtils.insert(
@@ -184,39 +191,40 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "bool_use_rkey",
             "time_created",
             "time_modified",
-            "int_mapping_error_ver")
+            "int_mapping_error_ver"
+        )
 
         const val GET = "SELECT * FROM index_route"
 
         const val COUNT = "SELECT COUNT(1) FROM index_route"
 
         const val GET_BY_ORG = "$GET " +
-                "INNER JOIN " +
-                    "organization " +
-                "ON " +
-                    "index_route.pk_index_route = organization.pk_index_route " +
-                "AND " +
-                    "organization.pk_organization=?"
+            "INNER JOIN " +
+            "organization " +
+            "ON " +
+            "index_route.pk_index_route = organization.pk_index_route " +
+            "AND " +
+            "organization.pk_organization=?"
 
         const val GET_DEFAULTS = "$GET WHERE bool_default_pool='t' AND bool_closed='f'"
 
         const val UPDATE_MINOR_VER =
-                "UPDATE " +
-                        "index_route " +
+            "UPDATE " +
+                "index_route " +
                 "SET " +
-                    "int_mapping_minor_ver=?, " +
-                    "int_mapping_error_ver=-1, " +
-                    "time_modified=? " +
+                "int_mapping_minor_ver=?, " +
+                "int_mapping_error_ver=-1, " +
+                "time_modified=? " +
                 "WHERE " +
-                    "pk_index_route=?"
+                "pk_index_route=?"
 
         const val UPDATE_ERROR_VER =
-                "UPDATE " +
-                    "index_route " +
+            "UPDATE " +
+                "index_route " +
                 "SET " +
-                    "int_mapping_error_ver=?, " +
-                    "time_modified=? " +
+                "int_mapping_error_ver=?, " +
+                "time_modified=? " +
                 "WHERE " +
-                    "pk_index_route=?"
+                "pk_index_route=?"
     }
 }

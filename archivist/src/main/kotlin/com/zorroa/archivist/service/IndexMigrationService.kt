@@ -31,7 +31,7 @@ class IndexMigrationServiceImpl constructor(
     override fun migrate(org: Organization, mig: IndexMigrationSpec): Job {
         val srcRoute = indexRouteDao.getOrgRoute()
         val dstRoute = indexRouteDao.get(mig.dstRouteId)
-        val job =  launchMigrationJob(mig, org, srcRoute, dstRoute)
+        val job = launchMigrationJob(mig, org, srcRoute, dstRoute)
 
         if (mig.swapRoutes) {
             val updateOrgSpec = OrganizationUpdateSpec(org)
@@ -68,7 +68,8 @@ class IndexMigrationServiceImpl constructor(
             name,
             script,
             priority = JobPriority.Reindex,
-            replace = true)
+            replace = true
+        )
 
         return jobService.create(spec, PipelineType.Batch)
     }

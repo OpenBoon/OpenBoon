@@ -9,7 +9,7 @@ import java.util.UUID
  * route's have to to exist.
  */
 @ApiModel("IndexMigrationSpec", description = "Describes an ES index migration")
-class IndexMigrationSpec (
+class IndexMigrationSpec(
 
     @ApiModelProperty("The desination IndexRoute id.")
     val dstRouteId: UUID,
@@ -18,8 +18,8 @@ class IndexMigrationSpec (
     val swapRoutes: Boolean = true,
 
     @ApiModelProperty("An array of attributes to remove during reindexing")
-    val removeAttrs: List<String>?=null,
+    val removeAttrs: List<String>? = null,
 
     @ApiModelProperty("An array of attributes to set during reindexing")
-    val setAttrs: Map<String, Any>?=null
+    val setAttrs: Map<String, Any>? = null
 )

@@ -145,10 +145,18 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testAppendLink() {
-        assertTrue(indexDao.appendLink("folder", "100",
-                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
-        assertTrue(indexDao.appendLink("parent", "foo",
-                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
+        assertTrue(
+            indexDao.appendLink(
+                "folder", "100",
+                ImmutableList.of(asset1.id)
+            )["success"]!!.contains(asset1.id)
+        )
+        assertTrue(
+            indexDao.appendLink(
+                "parent", "foo",
+                ImmutableList.of(asset1.id)
+            )["success"]!!.contains(asset1.id)
+        )
 
         val a = indexDao.get(asset1.id)
         val folder_links = a.getAttr<Collection<Any>>("system.links.folder")
@@ -162,15 +170,23 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testRemoveLink() {
-        assertTrue(indexDao.appendLink("folder", "100",
-                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
+        assertTrue(
+            indexDao.appendLink(
+                "folder", "100",
+                ImmutableList.of(asset1.id)
+            )["success"]!!.contains(asset1.id)
+        )
 
         var a = indexDao.get(asset1.id)
         var links = a.getAttr<Collection<Any>>("system.links.folder")
         assertEquals(1, links!!.size.toLong())
 
-        assertTrue(indexDao.removeLink("folder", "100",
-                ImmutableList.of(asset1.id))["success"]!!.contains(asset1.id))
+        assertTrue(
+            indexDao.removeLink(
+                "folder", "100",
+                ImmutableList.of(asset1.id)
+            )["success"]!!.contains(asset1.id)
+        )
 
         a = indexDao.get(asset1.id)
         links = a.getAttr("system.links.folder")
@@ -212,16 +228,18 @@ class IndexDaoTests : AbstractTest() {
     fun testRetryBrokenFields() {
 
         val assets = ImmutableList.of<Document>(
-                Source(getTestImagePath("set01/standard/faces.jpg")))
+            Source(getTestImagePath("set01/standard/faces.jpg"))
+        )
         assets[0].setAttr("custom.foobar", 1000)
         var result = indexDao.index(assets)
         refreshIndex()
 
         val next = ImmutableList.of<Document>(
-                Source(getTestImagePath("set01/standard/hyena.jpg")),
-                Source(getTestImagePath("set01/standard/toucan.jpg")),
-                Source(getTestImagePath("set01/standard/visa.jpg")),
-                Source(getTestImagePath("set01/standard/visa12.jpg")))
+            Source(getTestImagePath("set01/standard/hyena.jpg")),
+            Source(getTestImagePath("set01/standard/toucan.jpg")),
+            Source(getTestImagePath("set01/standard/visa.jpg")),
+            Source(getTestImagePath("set01/standard/visa12.jpg"))
+        )
         for (s in next) {
             s.setAttr("custom.foobar", "bob")
         }

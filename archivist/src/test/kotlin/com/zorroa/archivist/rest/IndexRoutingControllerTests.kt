@@ -39,14 +39,16 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "testing123",
             "test",
             1,
-            false)
+            false
+        )
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/index-routes")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(spec)))
+                .content(Json.serialize(spec))
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -69,16 +71,17 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "testing123",
             "test",
             1,
-            false)
+            false
+        )
 
         val route = indexRoutingService.createIndexRoute(spec)
-
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-routes/${route.id}")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -92,9 +95,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
         assertEquals(false, result.useRouteKey)
         assertEquals(2, result.replicas)
         assertEquals(5, result.shards)
-
     }
-
 
     @Test
     fun testGetMappings() {
@@ -103,7 +104,8 @@ class IndexRoutingControllerTests : MockMvcTest() {
             MockMvcRequestBuilders.get("/api/v1/index-routes/_mappings")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -121,7 +123,8 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "testing123",
             "test",
             1,
-            false)
+            false
+        )
 
         val route = indexRoutingService.createIndexRoute(spec)
         val mspec = IndexMigrationSpec(route.id, true)
@@ -131,7 +134,8 @@ class IndexRoutingControllerTests : MockMvcTest() {
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mspec)))
+                .content(Json.serialize(mspec))
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 

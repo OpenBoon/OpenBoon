@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import org.junit.Test
@@ -23,10 +22,18 @@ class IndexRouteDaoTests : AbstractTest() {
     fun testUpdateDefaultIndexRoutes() {
         val url = "http://dog:1234"
         indexRouteDao.updateDefaultIndexRoutes("http://dog:1234", false)
-        assertEquals(url, jdbc.queryForObject("SELECT str_url FROM index_route",
-                String::class.java))
-        assertFalse(jdbc.queryForObject("SELECT bool_use_rkey FROM index_route",
-                Boolean::class.java))
+        assertEquals(
+            url, jdbc.queryForObject(
+                "SELECT str_url FROM index_route",
+                String::class.java
+            )
+        )
+        assertFalse(
+            jdbc.queryForObject(
+                "SELECT bool_use_rkey FROM index_route",
+                Boolean::class.java
+            )
+        )
     }
 
     @Test
@@ -36,7 +43,8 @@ class IndexRouteDaoTests : AbstractTest() {
             "testing123",
             "on_prem",
             1,
-            false)
+            false
+        )
 
         val route = indexRouteDao.create(spec)
         assertEquals(spec.clusterUrl, route.clusterUrl)
@@ -55,7 +63,8 @@ class IndexRouteDaoTests : AbstractTest() {
             "testing123",
             "on_prem",
             1,
-            false)
+            false
+        )
 
         val route1 = indexRouteDao.create(spec)
         val route2 = indexRouteDao.get(route1.id)
@@ -69,12 +78,14 @@ class IndexRouteDaoTests : AbstractTest() {
             "testing123",
             "on_prem",
             1,
-            false)
+            false
+        )
 
         val route1 = indexRouteDao.create(spec)
         val route2 = indexRouteDao.get(route1.id)
         assertEquals(route1.id, route2.id)
     }
+
     @Test
     fun testGetOrgRoute() {
         val route = indexRouteDao.getOrgRoute()
@@ -114,7 +125,8 @@ class IndexRouteDaoTests : AbstractTest() {
         val filter = IndexRouteFilter(
             ids = listOf(route.id),
             mappings = listOf(route.mapping),
-            clusterUrls = listOf(route.clusterUrl))
+            clusterUrls = listOf(route.clusterUrl)
+        )
 
         assertEquals(1, indexRouteDao.getAll(filter).size())
     }
@@ -131,8 +143,11 @@ class IndexRouteDaoTests : AbstractTest() {
         val ver = 131337
         val route = indexRouteDao.getOrgRoute()
         assertTrue(indexRouteDao.setMinorVersion(route, ver))
-        assertEquals(ver, jdbc.queryForObject(
-                "SELECT int_mapping_minor_ver FROM index_route", Int::class.java))
+        assertEquals(
+            ver, jdbc.queryForObject(
+                "SELECT int_mapping_minor_ver FROM index_route", Int::class.java
+            )
+        )
     }
 
     @Test
@@ -140,7 +155,10 @@ class IndexRouteDaoTests : AbstractTest() {
         val ver = 666
         val route = indexRouteDao.getOrgRoute()
         assertTrue(indexRouteDao.setErrorVersion(route, ver))
-        assertEquals(ver, jdbc.queryForObject(
-                "SELECT int_mapping_error_ver FROM index_route", Int::class.java))
+        assertEquals(
+            ver, jdbc.queryForObject(
+                "SELECT int_mapping_error_ver FROM index_route", Int::class.java
+            )
+        )
     }
 }

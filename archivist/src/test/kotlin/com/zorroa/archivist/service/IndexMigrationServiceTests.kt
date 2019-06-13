@@ -14,7 +14,7 @@ import kotlin.test.assertNotEquals
 class IndexMigrationServiceTests : AbstractTest() {
 
     @Autowired
-    lateinit var indexMigrationService : IndexMigrationService
+    lateinit var indexMigrationService: IndexMigrationService
 
     @Autowired
     lateinit var dispatcherService: DispatcherService
@@ -31,7 +31,8 @@ class IndexMigrationServiceTests : AbstractTest() {
             "testing123",
             "test",
             1,
-            false)
+            false
+        )
 
         val route = indexRoutingService.createIndexRoute(spec)
         val mspec = IndexMigrationSpec(route.id, true, listOf("bob", "dole"), mapOf("bob" to "dole"))
@@ -53,7 +54,6 @@ class IndexMigrationServiceTests : AbstractTest() {
         assertEquals(route.id, org.indexRouteId)
     }
 
-
     @Test
     fun testMigrateDontSwapRoute() {
 
@@ -62,7 +62,8 @@ class IndexMigrationServiceTests : AbstractTest() {
             "testing123",
             "test",
             1,
-            false)
+            false
+        )
 
         val route = indexRoutingService.createIndexRoute(spec)
         val mspec = IndexMigrationSpec(route.id, false)
@@ -71,6 +72,5 @@ class IndexMigrationServiceTests : AbstractTest() {
         val org = organizationService.get(getOrgId())
         assertNotEquals(route.id, org.indexRouteId)
     }
-
 }
 
