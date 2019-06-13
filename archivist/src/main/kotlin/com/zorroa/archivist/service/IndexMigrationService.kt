@@ -11,7 +11,6 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobPriority
 import com.zorroa.common.domain.JobSpec
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -55,11 +54,7 @@ class IndexMigrationServiceImpl constructor(
             type = PipelineType.Batch,
             settings = mutableMapOf("inline" to true),
             over = listOf(),
-            execute = mutableListOf(
-                getSetAttributesProcessor(mig),
-                ProcessorRef("zplugins.core.collectors.ImportCollector",
-                    env = mutableMapOf("ZORROA_INDEX_ROUTE_ID" to dstRoute.id.toString()))
-            ),
+            execute = getProcessors(mig),
             generate = listOf(
                 ProcessorRef(
                     "zplugins.core.generators.AssetSearchGenerator",
@@ -78,11 +73,32 @@ class IndexMigrationServiceImpl constructor(
         return jobService.create(spec, PipelineType.Batch)
     }
 
-    private fun getSetAttributesProcessor(mig: IndexMigrationSpec): ProcessorRef {
+    private fun getProcessors(mig: IndexMigrationSpec): MutableList<ProcessorRef> {
 
-        return ProcessorRef(
-            "zplugins.core.processors.SetAttributesProcessor",
-            mutableMapOf("attrs" to mig.setAttrs, "removeAttrs" to mig.removeAttrs)
+        val result = mutableListOf<ProcessorRef>()
+
+        val args = mutableMapOf<String, Any>()
+        mig.setAttrs?.let {
+            args["attrs"] = it
+        }
+        mig.removeAttrs?.let {
+            args["removeAttrs"] = it
+        }
+
+        if (args.isNotEmpty()) {
+            result.add(
+                ProcessorRef(
+                    "zplugins.core.processors.SetAttributesProcessor", args
+                )
+            )
+        }
+        result.add(
+            ProcessorRef(
+                "zplugins.core.collectors.ImportCollector",
+                env = mutableMapOf("ZORROA_INDEX_ROUTE_ID" to mig.dstRouteId.toString())
+            )
         )
+
+        return result
     }
 }
