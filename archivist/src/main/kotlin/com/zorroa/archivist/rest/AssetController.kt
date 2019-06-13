@@ -37,6 +37,11 @@ import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
 import io.micrometer.core.instrument.MeterRegistry
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl
@@ -67,6 +72,7 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @Timed
+@Api(tags = ["Asset"], description = "Operations for interacting with Assets including CRUD, streaming, proxies and more.")
 class AssetController @Autowired constructor(
     private val indexService: IndexService,
     private val assetService: AssetService,
@@ -97,6 +103,7 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Gets a list of all metadata fields an Asset could have.")
     @GetMapping(value = ["/api/v1/assets/_fields"])
     fun getFields(response: HttpServletResponse): Map<String, Set<String>> {
         response.setHeader("Cache-Control", CacheControl.maxAge(
@@ -109,22 +116,14 @@ class AssetController @Autowired constructor(
         @Throws(IOException::class)
         get() = indexService.getMapping()
 
-    /**
-     * Handle a HEAD request which a client can use to fetch a singed URL for
-     * a file in bucket storage, such as GCS or S3.
-     *
-     * The Accept header should be used to specify media types that the requesting
-     * application can display.  For example if the application can display EXR
-     * files, it should send "image/x-exr" in the accept header.
-     *
-     * @param id The asset ID
-     * @param headers The request headers.
-     * @param rsp the HTTP response.
-     *
-     */
+    @ApiOperation("Handle a HEAD request which a client can use to fetch a singed URL for the asset.",
+        notes = "The signed url is a fqdn that has authentication built in and can be used by a browser to retrieve the asset " +
+            "from a bucket storage location such as GCS or S3. The Accept header should be used to specify media types " +
+            "that the requesting application can display.  For example if the application can display EXR files, it " +
+            "should send \"image/x-exr\" in the accept header.")
     @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.HEAD])
     fun streamAsset(
-        @PathVariable id: String,
+        @ApiParam("UUID of the asset") @PathVariable id: String,
         @RequestHeader headers: HttpHeaders,
         rsp: HttpServletResponse
     ) {
@@ -139,27 +138,15 @@ class AssetController @Autowired constructor(
         }
     }
 
-    /**
-     * Stream the best possible representation for the asset.
-     *
-     * The ext parameter can be used to short circuit the content negotiation logic
-     * and ask for a specific file extension.
-     *
-     * The Accept header should be used to specify media types that the requesting
-     * application can display.  For example if the application can display EXR
-     * files, it should send "image/x-exr" in the accept header.
-     *
-     * @param id The asset Id.
-     * @param ext An optional file extension to serve.
-     * @param headers The HTTP request headers.
-     * @param req The HTTP request.
-     * @param rsp The HTTP response.
-     *
-     */
+    @ApiOperation("Stream the best possible representation for the asset.",
+        notes = "The ext parameter can be used to short circuit the content negotiation logic and ask for a specific " +
+            "file extension. The Accept header should be used to specify media types that the requesting application " +
+            "can display. For example if the application can display EXR files, it should send \"image/x-exr\" in " +
+            "the accept header.")
     @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
     fun streamAsset(
-        @PathVariable id: String,
-        @RequestParam(value = "ext", required = false) ext: String?,
+        @ApiParam("UUID of the Asset.") @PathVariable id: String,
+        @ApiParam("An optional file extension to serve.") @RequestParam(value = "ext", required = false) ext: String?,
         @RequestHeader headers: HttpHeaders,
         req: HttpServletRequest,
         rsp: HttpServletResponse
@@ -205,15 +192,18 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Returns the proxy file closest in size.",
+        notes = "Based on the resolution set in the url the image proxy that is closest in size will be returned.")
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{width:\\d+}x{height:\\d+}"])
     @Throws(IOException::class)
     fun getClosestProxy(
         req: HttpServletRequest,
         rsp: HttpServletResponse,
-        @PathVariable id: String,
-        @PathVariable width: Int,
-        @PathVariable height: Int,
-        @RequestParam(value = "type", defaultValue = "image") type: String
+        @ApiParam("UUID of the Asset.") @PathVariable id: String,
+        @ApiParam("Width (in pixels) for the resolution to try matching.") @PathVariable width: Int,
+        @ApiParam("Height (in pixels) for the resolution to try matching.") @PathVariable height: Int,
+        @ApiParam("Type of proxy to return.", allowableValues = "image,video")
+            @RequestParam(value = "type", defaultValue = "image") type: String
     ) {
         return try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).getClosest(width, height, type))
@@ -222,14 +212,18 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Return a proxy file this size or larger.",
+        notes = "Returns a proxy whose width or height (in pixels) is at least this size.")
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/atLeast/{size:\\d+}"])
     @Throws(IOException::class)
     fun getAtLeast(
         req: HttpServletRequest,
         rsp: HttpServletResponse,
-        @PathVariable id: String,
-        @PathVariable(required = true) size: Int,
-        @RequestParam(value = "type", defaultValue = "image") type: String
+        @ApiParam("UUID of the Asset.") @PathVariable id: String,
+        @ApiParam("Length (in pixels) to use as a miniumum for proxy size.")
+            @PathVariable(required = true) size: Int,
+        @ApiParam("Type of proxy to return.", allowableValues = "image,video")
+            @RequestParam(value = "type", defaultValue = "image") type: String
     ) {
         try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).atLeastThisSize(size, type))
@@ -238,13 +232,15 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Returns the largest proxy file.")
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
     @Throws(IOException::class)
     fun getLargestProxy(
         req: HttpServletRequest,
         rsp: HttpServletResponse,
-        @PathVariable id: String,
-        @RequestParam(value = "type", defaultValue = "image") type: String
+        @ApiParam("UUID of the Asset.") @PathVariable id: String,
+        @ApiParam("Type of proxy to return.", allowableValues = "image,video")
+            @RequestParam(value = "type", defaultValue = "image") type: String
     ) {
         try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).getLargest(type))
@@ -253,13 +249,15 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Returns the smallest proxy file.")
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/smallest"])
     @Throws(IOException::class)
     fun getSmallestProxy(
         req: HttpServletRequest,
         rsp: HttpServletResponse,
-        @PathVariable id: String,
-        @RequestParam(value = "type", defaultValue = "image") type: String
+        @ApiParam("UUID of the Asset.")@PathVariable id: String,
+        @ApiParam("Type of proxy to return.", allowableValues = "image,video")
+            @RequestParam(value = "type", defaultValue = "image") type: String
     ) {
         return try {
             imageService.serveImage(rsp, proxyLookupCache.get(id).getSmallest(type))
@@ -268,66 +266,96 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Search for Assets.",
+        notes = "Returns a list of Assets that matched the given search filter.")
     @PostMapping(value = ["/api/v3/assets/_search"])
     @Throws(IOException::class)
-    fun searchV3(@RequestBody search: AssetSearch): PagedList<Document> {
+    fun searchV3(
+        @ApiParam("Filter to use for searching for Assets.")
+            @RequestBody search: AssetSearch
+    ): PagedList<Document> {
         return searchService.search(Pager(search.from, search.size, 0), search)
     }
 
+    @ApiOperation("Search for Assets.",
+        notes = "Returns a list of Assets that matched the given search filter.")
     @PostMapping(value = ["/api/v4/assets/_search"])
     @Throws(IOException::class)
-    fun searchV4(@RequestBody search: AssetSearch, out: ServletOutputStream) {
+    fun searchV4(
+        @ApiParam("Filter to use for searching for Assets.") @RequestBody search: AssetSearch,
+        out: ServletOutputStream
+    ) {
         searchService.search(Pager(search.from, search.size, 0), search, out)
     }
 
+    @ApiOperation("Returns number of Assets matching the search given.")
     @PostMapping(value = ["/api/v2/assets/_count"])
     @Throws(IOException::class)
-    fun count(@RequestBody search: AssetSearch): Any {
+    fun count(@ApiParam("Filter to use for searching for Assets.") @RequestBody search: AssetSearch): Any {
         return HttpUtils.count(searchService.count(search))
     }
 
+    @ApiOperation("Checks if an Assets exists.")
     @GetMapping(value = ["/api/v1/assets/{id}/_exists"])
     @Throws(IOException::class)
-    fun exists(@PathVariable id: String): Any {
+    fun exists(@ApiParam("UUID of the Asset.") @PathVariable id: String): Any {
         return HttpUtils.exists(id, indexService.exists(id))
     }
 
+    @ApiOperation("Get a list of keyword suggestions.",
+        notes = "Intended to help auto-populate a search bar with suggestions as a user types.")
     @PostMapping(value = ["/api/v3/assets/_suggest"])
     @Throws(IOException::class)
-    fun suggestV3(@RequestBody suggest: AssetSuggestBuilder): Any {
+    fun suggestV3(
+        @ApiParam("Suggestion builder that allows for adding an asset search filter and a text " +
+        "filter. The most common usage is to just add the text (i.e. {\"text\": \"ca\"}).")
+            @RequestBody suggest: AssetSuggestBuilder
+    ): Any {
         return searchService.getSuggestTerms(suggest.text)
     }
 
+    @ApiOperation("Get an Asset.")
     @GetMapping(value = ["/api/v2/assets/{id}", "/api/v1/assets/{id}"])
-    fun get(@PathVariable id: String): Any {
+    fun get(@ApiParam("UUID of the Asset.") @PathVariable id: String): Any {
         return indexService.get(id)
     }
 
+    @ApiOperation("Get Field Sets for an Asset.")
     @GetMapping(value = ["/api/v1/assets/{id}/fieldSets"])
-    fun getFieldSets(@PathVariable id: String): List<FieldSet> {
+    fun getFieldSets(@ApiParam("UUID of the Asset.") @PathVariable id: String): List<FieldSet> {
         return assetService.getFieldSets(id)
     }
 
+    @ApiOperation("Get Assets that match a source path.",
+        notes = "Returns any Assets whose source.path metadata matches the path sent in the request body.")
     @GetMapping(value = ["/api/v1/assets/_path"])
-    fun getByPath(@RequestBody path: Map<String, String>): Document? {
+    fun getByPath(@ApiParam("Path to get Assets for.") @RequestBody path: Map<String, String>): Document? {
         return path["path"]?.let { indexService.get(Paths.get(it)) }
     }
 
-    @DeleteMapping(value = ["/api/v1/assets/{id}"])
-    @Throws(IOException::class)
-    fun delete(@PathVariable id: String): Any {
-        return HttpUtils.deleted("asset", id, assetService.delete(id))
-    }
-
+    @ApiOperation("Delete multiple Assets.")
     @DeleteMapping(value = ["/api/v1/assets"])
     @Throws(IOException::class)
-    fun batchDelete(@RequestBody batch: BatchDeleteAssetsRequest): BatchDeleteAssetsResponse {
+    fun batchDelete(
+        @ApiParam("Assets to delete.") @RequestBody batch: BatchDeleteAssetsRequest
+    ): BatchDeleteAssetsResponse {
         return assetService.batchDelete(batch.assetIds)
     }
 
+    @ApiOperation("Delete an Asset.")
+    @DeleteMapping(value = ["/api/v1/assets/{id}"])
+    @Throws(IOException::class)
+    fun delete(@ApiParam("UUID of the Asset.") @PathVariable id: String): Any {
+        return HttpUtils.deleted("asset", id, assetService.delete(id))
+    }
+
+    @ApiOperation("Update an Asset.")
     @PutMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
-    fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
+    fun update(
+        @ApiParam("Attributes to update.") @RequestBody attrs: Map<String, Any>,
+        @ApiParam("UUID of the Asset.") @PathVariable id: String
+    ): Any {
         val rsp = assetService.updateAssets(
                 BatchUpdateAssetsRequest(mapOf(id to UpdateAssetRequest(attrs))))
         if (rsp.isSuccess()) {
@@ -337,9 +365,13 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Update an Asset.")
     @PutMapping(value = ["/api/v2/assets/{id}"])
     @Throws(IOException::class)
-    fun updateV2(@PathVariable id: String, @RequestBody req: UpdateAssetRequest): Any {
+    fun updateV2(
+        @ApiParam("UUID of the Asset.") @PathVariable id: String,
+        @ApiParam("Updates to make to the Asset.") @RequestBody req: UpdateAssetRequest
+    ): Any {
         val rsp = assetService.updateAssets(
                 BatchUpdateAssetsRequest(mapOf(id to req)))
         if (rsp.isSuccess()) {
@@ -349,28 +381,36 @@ class AssetController @Autowired constructor(
         }
     }
 
+    @ApiOperation("Update multiple Assets.")
     @PutMapping(value = ["/api/v1/assets"])
-    fun batchUpdate(@RequestBody req: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
+    fun batchUpdate(
+        @ApiParam("List of Asset updates.") @RequestBody req: BatchUpdateAssetsRequest
+    ): BatchUpdateAssetsResponse {
         return assetService.updateAssets(req)
     }
 
+    @ApiOperation("Create multiple Assets.")
     @PostMapping(value = ["/api/v1/assets/_index"])
     @Throws(IOException::class)
-    fun batchCreate(@RequestBody spec: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
+    fun batchCreate(
+        @ApiParam("Assets to create.") @RequestBody spec: BatchCreateAssetsRequest
+    ): BatchCreateAssetsResponse {
         return assetService.createOrReplaceAssets(spec)
     }
 
+    @ApiModel("Set Folders Request")
     class SetFoldersRequest {
-        var folders: List<UUID>? = null
+        @ApiModelProperty("UUIDs of Folders to set.") var folders: List<UUID>? = null
     }
 
-    /**
-     * Reset all folders for a given asset.  Currently only used for syncing.
-     */
+    @ApiOperation("Reset all folders for a given asset. Currently only used for syncing.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
     @Throws(Exception::class)
-    fun setFolders(@PathVariable id: String, @RequestBody req: SetFoldersRequest): Any {
+    fun setFolders(
+        @ApiParam("UUID of the Asset.") @PathVariable id: String,
+        @ApiParam("Folders to reset.") @RequestBody req: SetFoldersRequest
+    ): Any {
         req?.folders?.let {
             folderService.setFoldersForAsset(id, it)
             return HttpUtils.updated("asset", id, true)
@@ -378,12 +418,16 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, false)
     }
 
+    @ApiOperation("Update the permissions for multiple Assets.")
     @PutMapping(value = ["/api/v2/assets/_permissions"])
     @Throws(Exception::class)
-    fun setPermissionsV2(@RequestBody req: BatchUpdatePermissionsRequest): BatchUpdatePermissionsResponse {
+    fun setPermissionsV2(
+        @ApiParam("List of permission updates.") @RequestBody req: BatchUpdatePermissionsRequest
+    ): BatchUpdatePermissionsResponse {
         return assetService.setPermissions(req)
     }
 
+    @ApiOperation("Create a new asset from an uploaded file.")
     @PostMapping(value = ["/api/v1/assets/_upload", "/api/v1/imports/_upload"], consumes = ["multipart/form-data"])
     @ResponseBody
     fun upload(
@@ -394,18 +438,19 @@ class AssetController @Autowired constructor(
         return fileUploadService.ingest(spec, files)
     }
 
+    @ApiOperation("DEPRECATED: Exists only for backwards compatibility.")
     @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {
         logger.warn("Refresh called.")
     }
 
+    @ApiOperation("Return a list of edits made to this Asset's fields.")
     @GetMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
-    fun getFieldEdits(@PathVariable id: UUID): List<FieldEdit> {
+    fun getFieldEdits(@ApiParam("UUID of the Asset.") @PathVariable id: UUID): List<FieldEdit> {
         return fieldSystemService.getFieldEdits(id)
     }
 
     companion object {
-
         private val logger = LoggerFactory.getLogger(AssetController::class.java)
     }
 }

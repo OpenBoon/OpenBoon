@@ -10,6 +10,8 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.EntityNotFoundException
 import com.zorroa.common.util.Json
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
 import java.net.URI
@@ -26,54 +28,50 @@ class AssetUploadedResponse(
     val uri: URI
 )
 
-/**
- * A class to define updates to a single Asset
- *
- * @property update key/value pairs to be updated.
- * @property remove An array of fields to remove.
- * @property appendToList Append values to a list attribute.
- * @property appendToUniqueList Append values to a list attribute and ensure the result is unique.
- * @property removeFromList Remove values from a list attribute.
- * @property allowSystem Allow systems vars to be set. Default to false. Cannot be set over wire.
- */
+@ApiModel("Update Asset Request", description = "Request structure to update an Asset.")
 class UpdateAssetRequest(
+
+    @ApiModelProperty("Key/vaue pairs to be updated.")
     val update: Map<String, Any>? = null,
+
+    @ApiModelProperty("Array of fields to remove.")
     val remove: List<String>? = null,
+
+    @ApiModelProperty("Append values to a list attribute.")
     val appendToList: Map<String, Any>? = null,
+
+    @ApiModelProperty("Append values to a list attribute and ensure the result is unique.")
     val appendToUniqueList: Map<String, Any>? = null,
+
+    @ApiModelProperty("Remove values from a list attribute.")
     val removeFromList: Map<String, Any>? = null,
-    @JsonIgnore val allowSystem: Boolean = false
+
+    @JsonIgnore
+    @ApiModelProperty("Allow systems vars to be set. Default to false. Cannot be set over wire.")
+    val allowSystem: Boolean = false
 )
 
-/**
- * BatchUpdateAssetsRequest defines how to batch update a list of assets.
- *
- * The attributes property should be in dot notation, for example:
- * { "foo.bar" : 1, "source.ext": "png"}
- *
- * @property batch : Any array of asset ids.
- */
+@ApiModel("Batch Update Assets Request", description = "Defines how to batch update a list of assets.")
 class BatchUpdateAssetsRequest(
-    val batch: Map<String, UpdateAssetRequest>
+    @ApiModelProperty("Attributes to update. They should be in dot notation. " +
+        "Example: { \"foo.bar\" : 1, \"source.ext\": \"png\"}") val batch: Map<String, UpdateAssetRequest>
 ) {
     override fun toString(): String {
         return "<BatchUpdateAssetRequest update='$batch'>"
     }
 }
 
-/**
- * A response object for batch updating large numbers of assets via REST API.
- * Batch updates are able to edit individual attributes however the entire
- * document is rewritten.
- *
- * @property updatedAssetIds : The asset Ids updated
- * @property erroredAssetIds : The missing or errored asset Ids
- * @property accessDeniedAssetIds : The assetIds that were denied write access.
- *
- */
+@ApiModel("Batch Update Assets Response", description = "Response object for batch updating large numbers of " +
+    "assets. Batch updates are able to edit individual attributes however the entire document is rewritten.")
 class BatchUpdateAssetsResponse {
+
+    @ApiModelProperty("UUIDs of updated Assets.")
     val updatedAssetIds = mutableSetOf<String>()
+
+    @ApiModelProperty("UUIDs of Assets that encountered errors.")
     val erroredAssetIds = mutableSetOf<String>()
+
+    @ApiModelProperty("UUIDs of Assets that were denied write access.")
     val accessDeniedAssetIds = mutableSetOf<String>()
 
     operator fun plus(other: BatchUpdateAssetsResponse) {
@@ -108,29 +106,26 @@ class BatchUpdateAssetsResponse {
     }
 }
 
-/**
- * Request to update selected assets with new permissions.  If replace=true, then
- * all permissions are replaced,otherwise they are updated.
- *
- * @param search: An asset search
- * @param acl: An acl to apply
- * @param replace: Replace all permissions with this acl, defaults to false.
- */
+@ApiModel("Batch Update Permissions Request", description = "Request to update selected assets with new permissions.")
 class BatchUpdatePermissionsRequest(
+
+    @ApiModelProperty("Search filter used to get batch of Assets to update.")
     val search: AssetSearch,
+
+    @ApiModelProperty("ACL to apply to Assets.")
     val acl: Acl,
+
+    @ApiModelProperty("If true all permissions are replaced otherwise they are updated.")
     val replace: Boolean = false
 )
 
-/**
- * A response object for a BatchUpdatePermissionsRequest
- *
- * @property updatedAssetIds The asset ids that were updated.
- * @property errors A map of errors which happened during processing
- */
+@ApiModel("Batch Update Permissions Response", description = "Response object for a BatchUpdatePermissionsRequest.")
 class BatchUpdatePermissionsResponse {
 
+    @ApiModelProperty("UUIDs of Assets that were updated.")
     val updatedAssetIds = mutableSetOf<String>()
+
+    @ApiModelProperty("Errors that occurred while processing.")
     val errors = mutableMapOf<String, String>()
 
     operator fun plus(other: BatchCreateAssetsResponse) {
@@ -138,17 +133,16 @@ class BatchUpdatePermissionsResponse {
     }
 }
 
-/**
- * Structure for upserting a batch of assets.
- *
- * @property sources: The source documents
- * @property jobId: The associated job Id
- * @property taskId: The associated task Id
- * @property skipAssetPrep: Skip over asset prep stage during create.
- */
+@ApiModel("Batch Create Assets Request", description = "Structure for upserting a batch of assets.")
 class BatchCreateAssetsRequest(
+
+    @ApiModelProperty("List of Documents to upsert.")
     val sources: List<Document>,
+
+    @ApiModelProperty("UUID of the Job doing the upsert.")
     val jobId: UUID?,
+
+    @ApiModelProperty("UUID of the Task doing to upsert.")
     val taskId: UUID?
 ) {
 
@@ -172,19 +166,22 @@ class BatchCreateAssetsRequest(
     }
 }
 
-/**
- * The response after batch creating an array of assets.
- * @property createdAssetIds An array of asset ids that were created.
- * @property replacedAssetIds An array of asset ids that were replaced.
- * @property erroredAssetIds An array of asset ids that were an error and were not added.
- * @property warningAssetIds Asset IDs with a field warning.
- * @property retryCount Number of retries it took to get this batch through.
- */
+@ApiModel("Batch Create Assets Response", description = "The response after batch creating an array of assets.")
 class BatchCreateAssetsResponse(val total: Int) {
+
+    @ApiModelProperty("UUIDs of Assets that were created.")
     var createdAssetIds = mutableSetOf<String>()
+
+    @ApiModelProperty("UUIDs of Assets that were replaced.")
     var replacedAssetIds = mutableSetOf<String>()
+
+    @ApiModelProperty("UUIDs of Assets that had errors.")
     var erroredAssetIds = mutableSetOf<String>()
+
+    @ApiModelProperty("UUIDs of Assets that had warnings.")
     var warningAssetIds = mutableSetOf<String>()
+
+    @ApiModelProperty("Number of retries it took finish this batch request.")
     var retryCount = 0
 
     fun add(other: BatchCreateAssetsResponse): BatchCreateAssetsResponse {
@@ -225,50 +222,51 @@ class BatchCreateAssetsResponse(val total: Int) {
     }
 }
 
-/**
- * AssetCounters stores the types of asset counters we keep track off.
- *
- * @property total The total number of assets.
- * @property errors The total error count.
- * @property warnings The total number of warnings.
- * @property created The total number of assets created.
- * @property replaced The total number of assets replaced.
- */
+@ApiModel("Asset Counters", description = "Stores the types of asset counters we keep track off.")
 class AssetCounters(
+
+    @ApiModelProperty("Total number of assets.")
     val total: Int = 0,
+
+    @ApiModelProperty("Total error count.")
     val errors: Int = 0,
+
+    @ApiModelProperty("Total number of warnings")
     val warnings: Int = 0,
+
+    @ApiModelProperty("Total number of assets created.")
     val created: Int = 0,
+
+    @ApiModelProperty("Total number of assets replaced")
     val replaced: Int = 0
 )
 
-/**
- * A request to batch delete assets.
- *
- * @property assetIds an array of assetIds to delete.
- */
+@ApiModel("Batch Delete Assets Request", description = "Describes a request to delete Assets.")
 class BatchDeleteAssetsRequest(
-    val assetIds: List<String>
+    @ApiModelProperty("UUIDs of Assets to delete.") val assetIds: List<String>
 )
 
-/**
- * The response returned when assets are deleted.
- *
- * @property totalRequested The total number of assets requested to be deleted.  This includes the resolved # of clips.
- * @property deletedAssetIds The total number of assets actually deleted.
- * @property onHoldAssetIds Assets skipped due to being on hold.
- * @property accessDeniedAssetIds Assets skipped due to permissions
- * @property missingAssetIds Assets that have already been deleted.
- * @property errors A map AssetID/Message failures.
- */
+@ApiModel("Batch Delete Assets Response", description = "Response returned when Assets are deleted.")
 class BatchDeleteAssetsResponse(
+    @ApiModelProperty("Number of assets requested to be deleted. Includes the resolved number of clips.")
     var totalRequested: Int = 0,
+
+    @ApiModelProperty("Number of assets deleted.")
     var deletedAssetIds: MutableSet<String> = mutableSetOf(),
+
+    @ApiModelProperty("UUIDS o Assets skipped due to being on hold.")
     var onHoldAssetIds: MutableSet<String> = mutableSetOf(),
+
+    @ApiModelProperty("UUIDs of Assets skipped due to permissions")
     var accessDeniedAssetIds: MutableSet<String> = mutableSetOf(),
+
+    @ApiModelProperty("UUIDS of Assets that have already been deleted.")
     var missingAssetIds: MutableSet<String> = mutableSetOf(),
+
+    @ApiModelProperty("Map of AssetID/Message for all errors encountered.")
     var errors: MutableMap<String, String> = mutableMapOf()
 ) {
+
     operator fun plus(other: BatchDeleteAssetsResponse) {
         totalRequested += other.totalRequested
         deletedAssetIds.addAll(other.deletedAssetIds)
@@ -294,20 +292,28 @@ enum class AssetState {
 /**
  * The ES document
  */
+@ApiModel("Document", description = "Represents an Elasticsearch (ES) document.")
 open class Document {
 
+    @ApiModelProperty("Contents of the Document.")
     var document: Map<String, Any>
 
+    @ApiModelProperty("UUID of the Document.")
     var id: String = UUID.randomUUID().toString()
 
+    @ApiModelProperty("Type of the Document.")
     var type = "asset"
 
+    @ApiModelProperty("Permissions associated with the Document.")
     var permissions: MutableMap<String, Int>? = null
 
+    @ApiModelProperty("Links associated with the Document.")
     var links: MutableList<Tuple<String, Any>>? = null
 
+    @ApiModelProperty("Search result score.")
     var score: Float? = null
 
+    @ApiModelProperty(hidden = true)
     var replace = false
 
     constructor() {

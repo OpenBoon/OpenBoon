@@ -62,6 +62,7 @@ class OrganizationServiceImpl @Autowired constructor (
             permissionService.createStandardPermissions(org)
             folderService.createStandardFolders(org)
             userService.createStandardUsers(org)
+            fieldSystemService.setupDefaultFields(org)
             fieldSystemService.setupDefaultFieldSets(org)
         } finally {
             resetAuthentication(auth)
@@ -102,6 +103,7 @@ class OrganizationServiceImpl @Autowired constructor (
         val auth = resetAuthentication(SuperAdminAuthentication(org.id))
         try {
             if (fieldSystemService.getAllFieldSets().isEmpty()) {
+                fieldSystemService.setupDefaultFields(org)
                 fieldSystemService.setupDefaultFieldSets(org)
             }
         } finally {

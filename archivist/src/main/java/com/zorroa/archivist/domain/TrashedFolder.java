@@ -1,6 +1,8 @@
 package com.zorroa.archivist.domain;
 
 import com.zorroa.archivist.search.AssetSearch;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Map;
 import java.util.UUID;
@@ -8,21 +10,49 @@ import java.util.UUID;
 /**
  * Created by chambers on 12/2/16.
  */
+@ApiModel(value = "Trashed Folder", description = "Folder that has been soft-deleted.")
 public class TrashedFolder {
 
+    @ApiModelProperty("UUID of the Trashed Folder")
     private UUID id;
+
+    @ApiModelProperty("UUID of the operation that trashed the Folder.")
     private String opId;
+
+    @ApiModelProperty("UUID of the Folder that was trashed.")
     private UUID folderId;
+
+    @ApiModelProperty("UUID of the Folder's parent Folder.")
     private UUID parentId;
+
+    @ApiModelProperty("Name of this Trashed Folder.")
     private String name;
+
+    @ApiModelProperty("User this Trashed Folder belongs to.")
     private UserBase user;
+
+    @ApiModelProperty("User that trashed the Folder.")
     private UserBase userDeleted;
+
+    @ApiModelProperty("Time this Trashed Folder was created.")
     private long timeCreated;
+
+    @ApiModelProperty("Time this Trashed Folder was last modified.")
     private long timeModified;
+
+    @ApiModelProperty("Time the Folder was trashed.")
     private long timeDeleted;
+
+    @ApiModelProperty(hidden = true)
     private boolean recursive;
+
+    @ApiModelProperty("ACL applied the Folder.")
     private Acl acl;
+
+    @ApiModelProperty("Asset Search used to populate the Folder.")
     private AssetSearch search;
+
+    @ApiModelProperty("Folder's attributes.")
     private Map<String, Object> attrs;
 
     public UserBase getUserDeleted() {

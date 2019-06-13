@@ -27,6 +27,7 @@ class FieldSetControllerTests : MockMvcTest() {
 
     @Test
     fun testGet() {
+        setupEmbeddedFieldSets()
         val allFieldSets = fieldSystemService.getAllFieldSets()
 
         val result = mvc.perform(
@@ -41,6 +42,7 @@ class FieldSetControllerTests : MockMvcTest() {
 
     @Test
     fun testSearch() {
+        setupEmbeddedFieldSets()
         val fieldSets = resultForPostContent<KPagedList<FieldSet>>(
             "/api/v1/fieldSets/_search",
             FieldSetFilter())
@@ -49,6 +51,7 @@ class FieldSetControllerTests : MockMvcTest() {
 
     @Test
     fun testFindOne() {
+        setupEmbeddedFieldSets()
         val allFieldSets = fieldSystemService.getAllFieldSets()
         val fieldSet = resultForPostContent<FieldSet>(
             "/api/v1/fieldSets/_findOne",

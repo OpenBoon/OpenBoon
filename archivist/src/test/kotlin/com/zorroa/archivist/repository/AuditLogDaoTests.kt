@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.AuditLogEntrySpec
 import com.zorroa.archivist.domain.AuditLogFilter
 import com.zorroa.archivist.domain.AuditLogType
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecCustom
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
 import org.junit.Test
@@ -47,7 +47,7 @@ class AuditLogDaoTests : AbstractTest() {
 
     @Test
     fun testCreateFieldEdit() {
-        val fspec = FieldSpec("Notes", null, AttrType.StringContent, true)
+        val fspec = FieldSpecCustom("Notes", AttrType.StringContent)
         val field = fieldSystemService.createField(fspec)
 
         val spec = AuditLogEntrySpec(

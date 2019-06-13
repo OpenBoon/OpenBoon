@@ -1,6 +1,8 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.Maps;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,30 +10,23 @@ import org.slf4j.LoggerFactory;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-/**
- * The settings for creating a single aggregation level.
- */
+@ApiModel(value = "Dynamic Hierarchy Level", description = "Settings for creating a single aggregation level")
 public class DyHierarchyLevel {
 
     private static final Logger logger = LoggerFactory.getLogger(DyHierarchyLevel.class);
 
-    /**
-     * The field to be used in an aggregation.
-     */
     @NotEmpty
+    @ApiModelProperty("Field to be used in an aggregation.")
     private String field;
 
+    @ApiModelProperty("ACL to apply to the Level.")
     private Acl acl;
 
-    /**
-     * The type of aggregation.
-     */
     @NotNull
+    @ApiModelProperty("Type of aggregation.")
     private DyHierarchyLevelType type = DyHierarchyLevelType.Attr;
 
-    /**
-     * Options which can modify the behavior of the DyHierarchy generator.
-     */
+    @ApiModelProperty("Options which can modify the behavior of the DyHierarchy generator.")
     private Map<String, Object> options = Maps.newHashMap();
 
     public DyHierarchyLevel() {}

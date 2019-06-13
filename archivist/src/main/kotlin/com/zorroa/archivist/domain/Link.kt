@@ -1,6 +1,8 @@
 package com.zorroa.archivist.domain
 
 import com.zorroa.archivist.search.AssetSearch
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 enum class LinkType {
@@ -13,18 +15,18 @@ enum class LinkType {
     }
 }
 
-/**
- * BatchUpdateAssetLinks defines an arbitrarily large set of assets which need
- * to be linked.
- *
- * @property: assetIds - the asset IDs to be linked.
- * @property: parentIds - the parents IDs to be combined with the search.
- * @property: search - a search which when combined with parentIds wil yield children
- */
+@ApiModel("Batch Update Asset Links", description = "Defines an arbitrarily large set of assets which need to be linked.")
 class BatchUpdateAssetLinks(
+
+    @ApiModelProperty("UUIDs of Assets to be linked.")
     val assetIds: List<String>? = null,
+
+    @ApiModelProperty("UUIDs of parents to be combined with the search.")
     val parentIds: List<String>? = null,
+
+    @ApiModelProperty("Search which when combined with parentIds wil yield children")
     val search: AssetSearch? = null
+
 )
 
 /**

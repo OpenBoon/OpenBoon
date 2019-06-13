@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+import springfox.documentation.annotations.ApiIgnore
 import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
@@ -121,6 +122,7 @@ class RestApiExceptionHandler {
 @RestController
 @RequestMapping("/error")
 @Timed
+@ApiIgnore
 class CustomErrorController @Autowired constructor(private val errorAttributes: ErrorAttributes) :
         AbstractErrorController(errorAttributes), ErrorController {
 

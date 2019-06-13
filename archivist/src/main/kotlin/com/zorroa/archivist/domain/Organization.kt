@@ -2,63 +2,64 @@ package com.zorroa.archivist.domain
 
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
-/**
- * All properties needed to create an organization.
- *
- * @property name The name of the origizaiton, must be unique.
- * @property indexRouteId The route to the ES index this org is assigned to.
- * If null, one is selected.
- *
- */
+@ApiModel("Organization Spec", description = "Attributes required to create an Organization.")
 class OrganizationSpec(
+
+    @ApiModelProperty("Name of the Organization.")
     val name: String,
+
+    @ApiModelProperty("UUID of the ES index route.")
     var indexRouteId: UUID? = null
+
 )
 
-/**
- * An Organization holds all of the assets, user, folders etc and is the top level
- * multi-tenant entity.
- *
- * @property id The unique ID of the Organization
- * @property indexRouteId The unique ID of the ES cluster this Organization lives on.
- * @property name The unique name of the Organization.
- */
+@ApiModel("Organization", description = "Holds all of the assets, user, folders etc and is the top level " +
+    "multi-tenant entity.")
 class Organization(
+
+    @ApiModelProperty("UUID of the Organization")
     val id: UUID,
+
+    @ApiModelProperty("UUID of the ES cluster this Organization lives on.")
     val indexRouteId: UUID,
+
+    @ApiModelProperty("Name of the Organization.")
     val name: String
+
 ) {
     companion object {
         val DEFAULT_ORG_ID = UUID.fromString("00000000-9998-8888-7777-666666666666")
     }
 }
 
-/**
- * All properties available for updating an organization.
- *
- * @property name Will renames the organization.
- * @property indexRouteId Will update the Organizations's ES cluster address. Will not move files.
- */
+@ApiModel("Organization Update Spec", description = "Attributes for updating an Organization.")
 class OrganizationUpdateSpec(
+
+    @ApiModelProperty("Name of the Organization.")
     var name: String,
+
+    @ApiModelProperty("Will update the Organizations's ES cluster address. Will not move files.")
     var indexRouteId: UUID
 ) {
     constructor(org: Organization) : this(org.name, org.indexRouteId)
 }
 
-/**
- * Options available for filtering organizations.
- *
- * @property ids A list of unique organization ids.
- * @property indexRouteIds A list of unique organization names.
- * @property indexRouteIds A list of [IndexRoute] ids.
- */
+@ApiModel("Organization Filter", description = "Filter for finding Organizations.")
 class OrganizationFilter(
+
+    @ApiModelProperty("Organization UUIDs to match.")
     val ids: List<UUID>? = null,
+
+    @ApiModelProperty("Names to match.")
     val names: List<String>? = null,
+
+    @ApiModelProperty("Index route UUIDs to match.")
     val indexRouteIds: List<UUID>? = null
+
 ) : KDaoFilter() {
 
     override val sortMap: Map<String, String> = mapOf(

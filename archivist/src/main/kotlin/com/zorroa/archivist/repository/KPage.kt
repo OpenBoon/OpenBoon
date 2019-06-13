@@ -1,11 +1,17 @@
 package com.zorroa.common.repository
 
 import com.zorroa.archivist.search.Scroll
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.stream.Stream
 
+@ApiModel("KPage", description = "Used to describe results page when paginating responses.")
 class KPage constructor(from: Int?, size: Int? = pageSizeDefault) {
 
+    @ApiModelProperty("Result index to start from.")
     var from: Int = from ?: 0
+
+    @ApiModelProperty("Number of results per page.")
     var size: Int
 
     init {
@@ -21,12 +27,19 @@ class KPage constructor(from: Int?, size: Int? = pageSizeDefault) {
     }
 }
 
+@ApiModel("KPaged List", description = "Paginated list of items.")
 class KPagedList<T> : Iterable<T> {
 
+    @ApiModelProperty("List of items to paginate.")
     var list: List<T>
+
+    @ApiModelProperty("Current page.")
     var page: KPage
 
+    @ApiModelProperty("Aggregations to apply.")
     var aggregations: Map<String, Any>? = null
+
+    @ApiModelProperty("Scroll used to retrieve the next page.")
     var scroll: Scroll? = null
 
     constructor() {

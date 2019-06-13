@@ -3,6 +3,8 @@ package com.zorroa.common.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 enum class AnalystState {
@@ -14,7 +16,6 @@ enum class LockState {
     Unlocked,
     Locked
 }
-
 class AnalystSpec(
     val totalRamMb: Int,
     val freeRamMb: Int,
@@ -27,29 +28,63 @@ class AnalystSpec(
     var endpoint: String? = null
 }
 
+@ApiModel("Analyst", description = "Describes an Analyst worker node.")
 class Analyst(
+    @ApiModelProperty("UUID of the Analyst.")
     val id: UUID,
+
+    @ApiModelProperty("UUID of Task currently running on the Analyst.")
     val taskId: UUID?,
+
+    @ApiModelProperty("URL where the Analyst can be reached.")
     val endpoint: String,
+
+    @ApiModelProperty("Total RAM Analyst can use in mb.")
     val totalRamMb: Int,
+
+    @ApiModelProperty("Amount RAM free on the Analyst in mb.")
     val freeRamMb: Int,
+
+    @ApiModelProperty("Free disk sapce on the Analyst in mb.")
     val freeDiskMb: Int,
+
+    @ApiModelProperty("Current CPU load on the Analyst.")
     val load: Float,
+
+    @ApiModelProperty("Time it took to ping the Analyst.")
     val timePing: Long,
+
+    @ApiModelProperty("Datetime the Analyst was created.")
     val timeCreated: Long,
+
+    @ApiModelProperty("Current state of the Analyst")
     val state: AnalystState,
+
+    @ApiModelProperty("Lock status of the Analyst", allowableValues = "locked,unlocked")
     val lock: LockState
+
 ) {
     override fun toString(): String {
         return "<Analyst id='$id' endpoint='$endpoint'>"
     }
 }
 
+@ApiModel("Analyst Filter", description = "Search filter for finding Analysts.")
 data class AnalystFilter(
+
+    @ApiModelProperty("Analyst UUIDs.")
     val ids: List<UUID>? = null,
+
+    @ApiModelProperty("Analyst states.", allowableValues = "up,down")
     val states: List<AnalystState>? = null,
+
+    @ApiModelProperty("Task UUIDs that are running on Analysts.")
     val taskIds: List<UUID>? = null,
+
+    @ApiModelProperty("Analyst lock states.", allowableValues = "locked,unlocked")
     val lockStates: List<LockState>? = null,
+
+    @ApiModelProperty("URL endpoints of Analysts.")
     val endpoints: List<String>? = null
 ) : KDaoFilter() {
 

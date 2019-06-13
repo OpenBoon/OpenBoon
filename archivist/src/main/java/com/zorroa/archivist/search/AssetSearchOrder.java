@@ -4,11 +4,16 @@
 
 package com.zorroa.archivist.search;
 
-/**
- * Specify the field and order for search results
- */
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Asset Search Order", description = "Specify the field and order for search results")
 public class AssetSearchOrder {
+
+    @ApiModelProperty("Field to order results by.")
     private String field;
+
+    @ApiModelProperty("If true the results will be in ascending order.")
     private Boolean ascending = true;
 
     public AssetSearchOrder() {

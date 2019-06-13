@@ -3,28 +3,55 @@ package com.zorroa.archivist.search;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Maps;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Restrict a query to a subset of assets matching the filter.
- *
  * Note: get/is methods that don't return actual properties should always be
  * marked @JsonIgnore.
  */
+@ApiModel(value = "Asset Filter", description = "Restrict a query to a subset of assets matching the filter.")
 public class AssetFilter {
+
+    @ApiModelProperty("True if the Asset's source path exists on disk.")
     private List<String> exists;
+
+    @ApiModelProperty(value = "Matches Assets with fields that have null values. Example: [\"media.parent\"]")
     private List<String> missing;
+
+    @ApiModelProperty(value = "Matches Assets with fields that have any of the given terms. " +
+        "Example: {\"source.type\": [\"video\", \"image\"]}")
     private Map<String, List<Object>> terms;
+
+    @ApiModelProperty(value = "Matches Assets with fields that start with the given terms. Maps to the lucene " +
+            "PrefixQuery. Example: {\"source.path\": [\"/videos/day1\"]}")
     private Map<String, Map<String,Object>> prefix;
+
+    @ApiModelProperty(value = "Matches Assets with fields that have terms within a certain range.")
     private Map<String, RangeQuery> range;
+
+    @ApiModelProperty("Matches Assets based on scripts passed to Elasticsearch.")
     private List<AssetScript> scripts;
+
+    @ApiModelProperty("Matches Assets with any of the given folder links.")
     private Map<String, List<Object>> links;
+
+    @ApiModelProperty("Matches Assets based on a Similarity Hash.")
     private Map<String, SimilarityFilter> similarity;
+
+    @ApiModelProperty("Matches Assets based on keyword confidence.")
     private Map<String, KwConfFilter> kwconf;
+
+    @ApiModelProperty("If true then folders will be searched recursively.")
     private Boolean recursive;
+
+    @ApiModelProperty("Matches Assets within a geo bounding box.")
     private Map<String, GeoBoundingBox> geo_bounding_box;
+
+    @ApiModelProperty("Matches Assets based on an AssetSearch query.")
     private AssetSearch query;
 
     @Deprecated
