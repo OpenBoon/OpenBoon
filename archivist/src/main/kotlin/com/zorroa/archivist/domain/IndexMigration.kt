@@ -23,5 +23,3 @@ class IndexMigrationSpec (
     @ApiModelProperty("An array of attributes to set during reindexing")
     val setAttrs: Map<String, Any>?=null
 )
-
-
