@@ -67,7 +67,7 @@ interface IndexRoutingService {
     /**
      * Create a new [IndexRoute] and return it.
      */
-    fun createIndexRoute(spec: IndexRouteSpec) : IndexRoute
+    fun createIndexRoute(spec: IndexRouteSpec): IndexRoute
 
     /**
      * Get an [EsRestClient] for the current users organization.
@@ -148,7 +148,7 @@ interface IndexRoutingService {
     /**
      * Return a given [IndexRoute] by its unique Id.
      */
-    fun getIndexRoute(id:UUID) : IndexRoute
+    fun getIndexRoute(id: UUID): IndexRoute
 
     /**
      * Return true if the index route being used is for reindexing.
@@ -158,13 +158,13 @@ interface IndexRoutingService {
     /**
      * Return all [IndexRoute]s that match the [IndexRouteFilter]
      */
-    fun getAll(filter: IndexRouteFilter) : KPagedList<IndexRoute>
+    fun getAll(filter: IndexRouteFilter): KPagedList<IndexRoute>
 
     /**
      * Return an [IndexRoute] that matches the [IndexRouteFilter].  If the filter does
      * not return one and only one [IndexRoute] then an exception is raised.
      */
-    fun findOne(filter: IndexRouteFilter) : IndexRoute
+    fun findOne(filter: IndexRouteFilter): IndexRoute
 }
 
 /**
@@ -179,11 +179,11 @@ class ElasticMapping(
 
 @Component
 class IndexRoutingServiceImpl @Autowired
-    constructor(
-        val indexRouteDao: IndexRouteDao,
-        val properties: ApplicationProperties
-    ) :
-        IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
+constructor(
+    val indexRouteDao: IndexRouteDao,
+    val properties: ApplicationProperties
+) :
+    IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
@@ -204,11 +204,12 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     @Transactional
-    override fun createIndexRoute(spec: IndexRouteSpec) : IndexRoute {
+    override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {
 
         if (!indexMappingVersionExists(spec.mapping, spec.mappingMajorVer)) {
             throw IllegalArgumentException(
-                "Failed to find index mapping ${spec.mapping} v${spec.mappingMajorVer}")
+                "Failed to find index mapping ${spec.mapping} v${spec.mappingMajorVer}"
+            )
         }
 
         // These are always false for single tenant
@@ -223,7 +224,7 @@ class IndexRoutingServiceImpl @Autowired
     }
 
     @Transactional(readOnly = true)
-    override fun getIndexRoute(id:UUID) : IndexRoute {
+    override fun getIndexRoute(id: UUID): IndexRoute {
         return indexRouteDao.get(id)
     }
 
@@ -254,9 +255,9 @@ class IndexRoutingServiceImpl @Autowired
         return result
     }
 
-    override fun isReIndexRoute() : Boolean {
+    override fun isReIndexRoute(): Boolean {
         val req = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes
-        return req?.request?.getHeader("X-Zorroa-Index-Route") != null
+        return req.request.getHeader("X-Zorroa-Index-Route") != null
     }
 
     override fun setupDefaultIndexRoute() {
@@ -294,13 +295,16 @@ class IndexRoutingServiceImpl @Autowired
 
             val indexExisted = es.indexExists()
             if (!indexExisted) {
-                logger.info("Creating index:" +
+                logger.info(
+                    "Creating index:" +
                         "type: '${route.mapping}'  index: '${route.indexName}' " +
                         "ver: '${route.mappingMajorVer}'" +
-                        "shards: '${route.shards}' replicas: '${route.replicas}'")
+                        "shards: '${route.shards}' replicas: '${route.replicas}'"
+                )
 
                 val mappingFile = getMajorVersionMappingFile(
-                        route.mapping, route.mappingMajorVer)
+                    route.mapping, route.mappingMajorVer
+                )
 
                 val mapping = Document(mappingFile.mapping)
                 mapping.setAttr("settings.index.number_of_shards", route.shards)
@@ -336,29 +340,35 @@ class IndexRoutingServiceImpl @Autowired
         val path = "db/migration/elasticsearch/V${majorVersion}__$mappingType.json"
         val resource = ClassPathResource(path)
         val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(
-                resource.inputStream, Json.GENERIC_MAP)
+            resource.inputStream, Json.GENERIC_MAP
+        )
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
     }
 
     override fun launchReindexJob(): Job {
         val name = "Reindexing All Assets"
-        val script = ZpsScript(name,
-                type = PipelineType.Import,
-                settings = mutableMapOf("inline" to true),
-                over = listOf(),
-                execute = listOf(),
-                generate = listOf(
+        val script = ZpsScript(
+            name,
+            type = PipelineType.Import,
+            settings = mutableMapOf("inline" to true),
+            over = listOf(),
+            execute = listOf(),
+            generate = listOf(
                 ProcessorRef(
-                        "zplugins.core.generators.AssetSearchGenerator",
-                        mapOf("search" to mapOf<String, Any>()))
-                ))
+                    "zplugins.core.generators.AssetSearchGenerator",
+                    mapOf("search" to mapOf<String, Any>())
+                )
+            )
+        )
 
-        val spec = JobSpec(name,
-                script,
-                priority = JobPriority.Reindex,
-                replace = true,
-                paused = true,
-                pauseDurationSeconds = REINDEX_JOB_DELAY_SEC)
+        val spec = JobSpec(
+            name,
+            script,
+            priority = JobPriority.Reindex,
+            replace = true,
+            paused = true,
+            pauseDurationSeconds = REINDEX_JOB_DELAY_SEC
+        )
 
         return jobService.create(spec, PipelineType.Import)
     }
@@ -377,7 +387,8 @@ class IndexRoutingServiceImpl @Autowired
 
                 if (major == majorVersion && type == mappingType) {
                     val json = Json.Mapper.readValue<MutableMap<String, Any>>(
-                            resource.inputStream, Json.GENERIC_MAP)
+                        resource.inputStream, Json.GENERIC_MAP
+                    )
                     result.add(ElasticMapping(mappingType, major, minor, json))
                 }
             }
@@ -395,8 +406,7 @@ class IndexRoutingServiceImpl @Autowired
 
         val route = if (routeId != null) {
             indexRouteDao.get(UUID.fromString(routeId))
-        }
-        else {
+        } else {
             indexRouteDao.getOrgRoute()
         }
 
@@ -417,14 +427,18 @@ class IndexRoutingServiceImpl @Autowired
     override fun performHealthCheck(): Health {
         if (!migrated.get()) {
             return Health.down().withDetail(
-                    "ElasticSearch routes have not been migrated", migrated).build()
+                "ElasticSearch routes have not been migrated", migrated
+            ).build()
         }
         for (route in indexRouteDao.getAll()) {
-            if (route.closed) { continue }
+            if (route.closed) {
+                continue
+            }
             val client = getClusterRestClient(route)
             if (!client.isAvailable()) {
                 return Health.down().withDetail(
-                        "ElasticSearch ${route.clusterUrl }down or not ready", client.route).build()
+                    "ElasticSearch ${route.clusterUrl}down or not ready", client.route
+                ).build()
             }
         }
         return Health.up().build()
@@ -433,7 +447,7 @@ class IndexRoutingServiceImpl @Autowired
     /**
      * Return true if the given mapping and major version exists.
      */
-    private fun indexMappingVersionExists(mapping: String, majorVersion: Int) : Boolean {
+    private fun indexMappingVersionExists(mapping: String, majorVersion: Int): Boolean {
         return getIndexMappingVersions().find { it.mapping == mapping && it.mappingMajorVer == majorVersion } != null
     }
 
@@ -452,9 +466,11 @@ class IndexRoutingServiceImpl @Autowired
             request.type("asset")
             request.source(Json.serializeToString(patch.getValue("patch")), XContentType.JSON)
 
-            logger.info("Applying ES patch '{} {}.{}' - '{}' to index '{}'",
-                    patchFile.name, patchFile.majorVersion, patchFile.minorVersion,
-                    patch["description"], route.indexUrl)
+            logger.info(
+                "Applying ES patch '{} {}.{}' - '{}' to index '{}'",
+                patchFile.name, patchFile.majorVersion, patchFile.minorVersion,
+                patch["description"], route.indexUrl
+            )
 
             val response = es.client.indices().putMapping(request, RequestOptions.DEFAULT)
             if (response.isAcknowledged) {
@@ -464,19 +480,21 @@ class IndexRoutingServiceImpl @Autowired
                 throw RuntimeException("ES server did not ack patch.")
             }
         } catch (e: Exception) {
-            logger.warn("Failed to apply patch: {}.{}",
-                    patchFile.majorVersion, patchFile.minorVersion, e)
+            logger.warn(
+                "Failed to apply patch: {}.{}",
+                patchFile.majorVersion, patchFile.minorVersion, e
+            )
             indexRouteDao.setErrorVersion(route, patchFile.minorVersion)
         }
     }
 
     @Transactional(readOnly = true)
-    override fun getAll(filter: IndexRouteFilter) : KPagedList<IndexRoute> {
+    override fun getAll(filter: IndexRouteFilter): KPagedList<IndexRoute> {
         return indexRouteDao.getAll(filter)
     }
 
     @Transactional(readOnly = true)
-    override fun findOne(filter: IndexRouteFilter) : IndexRoute {
+    override fun findOne(filter: IndexRouteFilter): IndexRoute {
         return indexRouteDao.findOne(filter)
     }
 
@@ -501,24 +519,25 @@ class IndexRoutingServiceImpl @Autowired
 class EsClientCache {
 
     private val cache = CacheBuilder.newBuilder()
-            .maximumSize(20)
-            .initialCapacity(5)
-            .concurrencyLevel(1)
-            .expireAfterWrite(1, TimeUnit.HOURS)
-            .removalListener<String, RestHighLevelClient> {
-                try {
-                    it.value.close()
-                } catch (e: Exception) {
-                }
+        .maximumSize(20)
+        .initialCapacity(5)
+        .concurrencyLevel(1)
+        .expireAfterWrite(1, TimeUnit.HOURS)
+        .removalListener<String, RestHighLevelClient> {
+            try {
+                it.value.close()
+            } catch (e: Exception) {
             }
-            .build(object : CacheLoader<String, RestHighLevelClient>() {
-                @Throws(Exception::class)
-                override fun load(clusterUrl: String): RestHighLevelClient {
-                    val uri = URI.create(clusterUrl)
-                    return RestHighLevelClient(
-                            RestClient.builder(HttpHost(uri.host, uri.port, uri.scheme)))
-                }
-            })
+        }
+        .build(object : CacheLoader<String, RestHighLevelClient>() {
+            @Throws(Exception::class)
+            override fun load(clusterUrl: String): RestHighLevelClient {
+                val uri = URI.create(clusterUrl)
+                return RestHighLevelClient(
+                    RestClient.builder(HttpHost(uri.host, uri.port, uri.scheme))
+                )
+            }
+        })
 
     /**
      * Return an [EsRestClient] instance for the given [EsClientCacheKey]
