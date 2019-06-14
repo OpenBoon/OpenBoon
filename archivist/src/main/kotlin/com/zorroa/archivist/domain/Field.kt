@@ -50,12 +50,10 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
         val value = if (obj is Collection<*>) {
             if (obj.isEmpty()) {
                 return true
-            }
-            else {
+            } else {
                 obj.first()
             }
-        }
-        else {
+        } else {
             obj
         }
 
@@ -171,8 +169,10 @@ class FieldSpecExpose(
 
 ) : BaseFieldSpec()
 
-@ApiModel("Field", description = "Field describes the display properties for a given ES attribute. " +
-    "Each ES attribute can be exposed as a Field, which defines what users can see.")
+@ApiModel(
+    "Field", description = "Field describes the display properties for a given ES attribute. " +
+        "Each ES attribute can be exposed as a Field, which defines what users can see."
+)
 class Field(
 
     @ApiModelProperty("UUID of the Field.")
@@ -256,8 +256,10 @@ class FieldSetSpec(
     @ApiModelProperty("Name/label of Field Set.")
     val name: String,
 
-    @ApiModelProperty("Query string expression used by the server to determine if an asset should display a " +
-        "field set.")
+    @ApiModelProperty(
+        "Query string expression used by the server to determine if an asset should display a " +
+            "field set."
+    )
     val linkExpression: String? = null,
 
     @ApiModelProperty("UUIDs of Fields in this Field Set.")
@@ -276,8 +278,10 @@ class FieldSet(
     @ApiModelProperty("Name of the Field Set.")
     val name: String,
 
-    @ApiModelProperty("Query string expression used by the server to determine if an asset should display a " +
-        "field set.")
+    @ApiModelProperty(
+        "Query string expression used by the server to determine if an asset should display a " +
+            "field set."
+    )
     val linkExpression: String? = null,
 
     @ApiModelProperty("Fields in the Field Set. Only populated in some cases.")
