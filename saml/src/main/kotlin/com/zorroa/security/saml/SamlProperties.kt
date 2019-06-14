@@ -20,5 +20,5 @@ class SamlProperties {
     lateinit var landingPage: String
     var logout = true
     var forceAuthN = false
-    var maxAuthenticationAge : Long = 7200
+    var maxAuthenticationAge: Long = 7200
 }
