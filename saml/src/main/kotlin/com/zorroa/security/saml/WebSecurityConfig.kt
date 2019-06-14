@@ -155,7 +155,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     // SAML 2.0 WebSSO Assertion Consumer
     @Bean
     fun webSSOprofileConsumer(): WebSSOProfileConsumer {
-        return WebSSOProfileConsumerImpl()
+        val consumer =  WebSSOProfileConsumerImpl()
+        consumer.maxAuthenticationAge = properties.maxAuthenticationAge
+        return consumer
     }
 
     // SAML 2.0 Holder-of-Key WebSSO Assertion Consumer
@@ -231,6 +233,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     fun defaultWebSSOProfileOptions(): WebSSOProfileOptions {
         val webSSOProfileOptions = WebSSOProfileOptions()
         webSSOProfileOptions.isIncludeScoping = false
+        webSSOProfileOptions.forceAuthN = properties.forceAuthN
         return webSSOProfileOptions
     }
 
