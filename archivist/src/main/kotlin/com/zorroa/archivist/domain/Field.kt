@@ -42,9 +42,21 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
      * @param value the value to check.
      * @return True if the value is ok, otherwise false.
      */
-    fun isValid(value: Any?): Boolean {
-        if (value == null) {
+    fun isValid(obj: Any?): Boolean {
+        if (obj == null) {
             return true
+        }
+
+        val value = if (obj is Collection<*>) {
+            if (obj.isEmpty()) {
+                return true
+            }
+            else {
+                obj.first()
+            }
+        }
+        else {
+            obj
         }
 
         return when (this) {
