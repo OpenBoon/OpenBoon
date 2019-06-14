@@ -73,4 +73,3 @@ class IndexMigrationServiceTests : AbstractTest() {
         assertNotEquals(route.id, org.indexRouteId)
     }
 }
-
