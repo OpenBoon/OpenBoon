@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
@@ -23,11 +24,13 @@ import com.zorroa.common.domain.JobPriority
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.LockState
 import com.zorroa.common.domain.TaskState
+import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.TestPropertySource
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -46,23 +49,28 @@ class GCPDispatcherServiceTests : AbstractTest() {
     lateinit var fileStorageService: FileStorageService
 
     fun launchJob(priority: Int): Job {
-        val spec1 = JobSpec("test_job_p$priority",
+        val spec1 = JobSpec(
+            "test_job_p$priority",
             emptyZpsScript("priority_$priority"),
-            priority = priority)
+            priority = priority
+        )
         return jobService.create(spec1)
     }
 
     @Test
     fun testGetNext() {
 
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         jobService.create(spec)
 
         val storage = FileStorage(
-                "foo", "gs://foo/bar/bing.jpg", "fs", "image/jpeg", fileServerProvider)
+            "foo", "gs://foo/bar/bing.jpg", "fs", "image/jpeg", fileServerProvider
+        )
 
         whenever(fileStorageService.get(zany(FileStorageSpec::class.java))).thenReturn(storage)
         whenever(fileStorageService.getSignedUrl(zany(), zany(), anyLong(), zany())).thenReturn("https://foo/bar")
@@ -94,15 +102,47 @@ class DispatcherServiceTests : AbstractTest() {
     @Autowired
     lateinit var dispatchQueueManager: DispatchQueueManager
 
+    @Autowired
+    lateinit var meterRegistry: MeterRegistry
+
+    @Test
+    fun testHandleStatsEvent() {
+        val stats = listOf(TaskStatsEvent("zplugins.core.TestProcessor", 10, 0.1, 0.5, 0.25))
+        dispatcherService.handleStatsEvent(stats)
+
+        assertEquals(
+            0.1, meterRegistry.timer(
+                "zorroa.processor.process_min_time",
+                "processor", "zplugins.core.TestProcessor"
+            ).totalTime(TimeUnit.SECONDS)
+        )
+
+        assertEquals(
+            0.5, meterRegistry.timer(
+                "zorroa.processor.process_max_time",
+                "processor", "zplugins.core.TestProcessor"
+            ).totalTime(TimeUnit.SECONDS)
+        )
+
+        assertEquals(
+            0.25, meterRegistry.timer(
+                "zorroa.processor.process_avg_time",
+                "processor", "zplugins.core.TestProcessor"
+            ).totalTime(TimeUnit.SECONDS)
+        )
+    }
+
     @Test
     fun getTaskPriority() {
         var priority = dispatcherService.getDispatchPriority()
         assertTrue(priority.isEmpty())
 
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         jobService.create(spec)
 
         priority = dispatcherService.getDispatchPriority()
@@ -119,19 +159,25 @@ class DispatcherServiceTests : AbstractTest() {
     fun getTaskPriorityMultipleOrganizations() {
         val org = organizationService.create(OrganizationSpec("kirk"))
 
-        val spec1 = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec1 = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec1)
-        jdbc.update("UPDATE job_count SET int_task_state_1=100 WHERE pk_job=?",
-                job.id)
+        jdbc.update(
+            "UPDATE job_count SET int_task_state_1=100 WHERE pk_job=?",
+            job.id
+        )
 
         withAuth(SuperAdminAuthentication(org.id)) {
-            val spec2 = JobSpec("test_job",
-                    emptyZpsScript("foo"),
-                    args = mutableMapOf("foo" to 1),
-                    env = mutableMapOf("foo" to "bar"))
+            val spec2 = JobSpec(
+                "test_job",
+                emptyZpsScript("foo"),
+                args = mutableMapOf("foo" to 1),
+                env = mutableMapOf("foo" to "bar")
+            )
             jobService.create(spec2)
         }
 
@@ -155,8 +201,10 @@ class DispatcherServiceTests : AbstractTest() {
         assertNotNull(next)
         next?.let {
             assertEquals(job.id, it.jobId)
-            val host: String = this.jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
-                    String::class.java, it.id)
+            val host: String = this.jdbc.queryForObject(
+                "SELECT str_host FROM task WHERE pk_task=?",
+                String::class.java, it.id
+            )
             assertEquals(analyst, host)
         }
     }
@@ -164,10 +212,12 @@ class DispatcherServiceTests : AbstractTest() {
     @Test
     fun testGetNext() {
         val analyst = "https://127.0.0.1:5000"
-        val spec = JobSpec("test_job",
+        val spec = JobSpec(
+            "test_job",
             emptyZpsScript("foo"),
             args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar"))
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
 
         authenticateAsAnalyst()
@@ -175,27 +225,32 @@ class DispatcherServiceTests : AbstractTest() {
         assertNotNull(next)
         next?.let {
             assertEquals(job.id, it.jobId)
-            val host: String = this.jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
-                String::class.java, it.id)
+            val host: String = this.jdbc.queryForObject(
+                "SELECT str_host FROM task WHERE pk_task=?",
+                String::class.java, it.id
+            )
             assertEquals(analyst, host)
         }
     }
 
     @Test
     fun testGetNextLockedAnalyst() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo")
+        )
         jobService.create(spec)
 
         authenticateAsAnalyst()
         val analyst = "https://127.0.0.1:5000"
         val aspec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null).apply { endpoint = analyst }
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.41.0",
+            null
+        ).apply { endpoint = analyst }
 
         val node = analystDao.create(aspec)
         assertTrue(analystDao.setLockState(node, LockState.Locked))
@@ -206,19 +261,22 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testStartAndStopTask() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo")
+        )
         jobService.create(spec)
 
         authenticateAsAnalyst()
         val analyst = "https://127.0.0.1:5000"
         val aspec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null).apply { endpoint = analyst }
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.41.0",
+            null
+        ).apply { endpoint = analyst }
 
         val node = analystDao.create(aspec)
 
@@ -244,23 +302,27 @@ class DispatcherServiceTests : AbstractTest() {
         val doc2 = Document(id2)
         doc2.setAttr("source.path", "/flim/flam.jpg")
 
-        val spec = JobSpec("test_job",
-                ZpsScript("foo",
-                        generate = null,
-                        execute = null,
-                        over = listOf(doc1, doc2))
+        val spec = JobSpec(
+            "test_job",
+            ZpsScript(
+                "foo",
+                generate = null,
+                execute = null,
+                over = listOf(doc1, doc2)
+            )
         )
         jobService.create(spec)
 
         authenticateAsAnalyst()
         val analyst = "https://127.0.0.1:5000"
         val aspec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null).apply { endpoint = analyst }
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.41.0",
+            null
+        ).apply { endpoint = analyst }
 
         val next = dispatchQueueManager.getNext()
         assertNotNull(next)
@@ -283,22 +345,27 @@ class DispatcherServiceTests : AbstractTest() {
         val doc2 = Document(id2)
         doc2.setAttr("source.path", "/flim/flam.jpg")
 
-        val spec = JobSpec("test_job",
-                ZpsScript("foo",
-                        generate = null,
-                        execute = null,
-                        over = listOf(doc1, doc2)))
+        val spec = JobSpec(
+            "test_job",
+            ZpsScript(
+                "foo",
+                generate = null,
+                execute = null,
+                over = listOf(doc1, doc2)
+            )
+        )
         jobService.create(spec)
 
         authenticateAsAnalyst()
         val analyst = "https://127.0.0.1:5000"
         val aspec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null).apply { endpoint = analyst }
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.41.0",
+            null
+        ).apply { endpoint = analyst }
 
         val next = dispatchQueueManager.getNext()
         assertNotNull(next)
@@ -321,22 +388,27 @@ class DispatcherServiceTests : AbstractTest() {
         val doc2 = Document(id2)
         doc2.setAttr("source.path", "/flim/flam.jpg")
 
-        val spec = JobSpec("test_job",
-                ZpsScript("foo",
-                        generate = null,
-                        execute = null,
-                        over = listOf(doc1, doc2)))
+        val spec = JobSpec(
+            "test_job",
+            ZpsScript(
+                "foo",
+                generate = null,
+                execute = null,
+                over = listOf(doc1, doc2)
+            )
+        )
         jobService.create(spec)
 
         authenticateAsAnalyst()
         val analyst = "https://127.0.0.1:5000"
         val aspec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null).apply { endpoint = analyst }
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.41.0",
+            null
+        ).apply { endpoint = analyst }
 
         val next = dispatchQueueManager.getNext()
         assertNotNull(next)
@@ -355,10 +427,12 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testExpand() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         val job = jobService.create(spec)
         val task = dispatcherService.expand(job, emptyZpsScript("bar"))
@@ -367,10 +441,12 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testExpandFromParentTask() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         val job = jobService.create(spec)
         val zps = emptyZpsScript("bar")
@@ -386,9 +462,11 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     fun launchJob(priority: Int): Job {
-        val spec1 = JobSpec("test_job_p$priority",
+        val spec1 = JobSpec(
+            "test_job_p$priority",
             emptyZpsScript("priority_$priority"),
-            priority = priority)
+            priority = priority
+        )
         return jobService.create(spec1)
     }
 }
