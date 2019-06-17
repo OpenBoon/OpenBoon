@@ -44,7 +44,6 @@ import com.zorroa.common.domain.TaskSpec
 import com.zorroa.common.domain.TaskState
 import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
-import io.micrometer.core.instrument.Timer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
