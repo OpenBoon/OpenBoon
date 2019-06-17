@@ -92,6 +92,10 @@ interface DispatcherService {
      */
     fun getDispatchPriority(): List<DispatchPriority>
 
+    /**
+     * Add per-processor runtime stats provided by the Analyst event system
+     * to the meterRegistry.
+     */
     fun handleStatsEvent(stats: List<TaskStatsEvent>)
 }
 
