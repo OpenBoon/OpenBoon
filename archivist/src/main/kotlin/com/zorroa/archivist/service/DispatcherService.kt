@@ -256,11 +256,6 @@ class DispatcherServiceImpl @Autowired constructor(
     fun init() {
         // Register for event bus
         eventBus.register(this)
-
-        Timer.builder("my.timer")
-            .description("a description of what this timer does") // optional
-            .tags("region", "test") // optional
-            .register(meterRegistry)
     }
 
     @Transactional(readOnly = true)
