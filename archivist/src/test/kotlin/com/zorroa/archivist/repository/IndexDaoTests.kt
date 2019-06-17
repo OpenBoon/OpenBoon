@@ -152,12 +152,11 @@ class IndexDaoTests : AbstractTest() {
         val client = indexRoutingService.getOrgRestClient()
         val req = UpdateSettingsRequest(client.route.indexName)
         req.settings(Settings.builder().put("index.blocks.read_only_allow_delete", true).build())
-        val rsp = client.client.indices().putSettings(req, RequestOptions.DEFAULT)
-
+        client.client.indices().putSettings(req, RequestOptions.DEFAULT)
 
         val source1 = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
         val source2 = Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"))
-        var result = indexDao.index(ImmutableList.of(source1, source2))
+        indexDao.index(ImmutableList.of(source1, source2))
     }
 
     @Test

@@ -30,7 +30,6 @@ import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.cluster.block.ClusterBlockException
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
