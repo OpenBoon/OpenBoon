@@ -16,6 +16,7 @@ import com.zorroa.common.repository.KPage
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import java.time.Duration
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -120,6 +121,12 @@ class TaskDaoTests : AbstractTest() {
         assertEquals(1, taskStateCount(job, TaskState.Running))
         assertFalse(taskDao.setState(task, TaskState.Running, TaskState.Waiting))
         assertFalse(taskDao.setState(task, TaskState.Skipped, TaskState.Waiting))
+    }
+
+    @Test(expected=DataIntegrityViolationException::class)
+    fun testSetStateMaxRunningFailure() {
+        jdbc.update("UPDATE job_count SET int_max_running_tasks=0")
+        assertTrue(taskDao.setState(task, TaskState.Running, null))
     }
 
     fun taskStateCount(job: JobId, state: TaskState): Int {

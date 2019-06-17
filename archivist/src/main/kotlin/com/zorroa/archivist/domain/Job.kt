@@ -70,7 +70,10 @@ class JobSpec(
     val pauseDurationSeconds: Long? = null,
 
     @ApiModelProperty("If true replace Jobs of the same name.")
-    val replace: Boolean = false
+    val replace: Boolean = false,
+
+    @ApiModelProperty("The maximum number of running tasks on the job.")
+    val maxRunningTasks: Int = 1024
 
 )
 
@@ -87,8 +90,10 @@ class JobUpdateSpec(
     val paused: Boolean,
 
     @ApiModelProperty("Time the Job should be unpaused.")
-    val timePauseExpired: Long
+    val timePauseExpired: Long,
 
+    @ApiModelProperty("The maximum number of running tasks on the job.")
+    val maxRunningTasks: Int
 )
 
 @ApiModel("Job", description = "Describes an Analyst Job.")
@@ -134,7 +139,10 @@ class Job(
     val paused: Boolean,
 
     @ApiModelProperty("Time this Job will unpause itself.")
-    val timePauseExpired: Long
+    val timePauseExpired: Long,
+
+    @ApiModelProperty("The maximum number of running tasks on the job.")
+    val maxRunningTasks: Int
 
 ) : JobId {
     override val jobId = id
