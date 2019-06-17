@@ -30,6 +30,7 @@ import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.cluster.block.ClusterBlockException
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.script.Script
@@ -157,6 +158,13 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         for (response in bulk.items) {
             index++
             if (response.isFailed) {
+                /**
+                 * If we hit this, then throw back to client.
+                 */
+                if ("cluster_block_exception" in response.failure.message) {
+                    throw response.failure.cause
+                }
+
                 val message = response.failure.message
                 val asset = sources[index]
                 if (removeBrokenField(asset, message)) {
