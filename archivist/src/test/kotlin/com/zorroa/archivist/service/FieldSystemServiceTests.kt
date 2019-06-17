@@ -85,6 +85,22 @@ class FieldSystemServiceTests : AbstractTest() {
     }
 
     @Test
+    fun createCustomStringAnalyzedArrayField() {
+        val attrName = "custom.string_analyzed__0"
+        val attrType = AttrType.StringAnalyzed
+
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val field = fieldSystemService.createField(spec)
+        assertEquals(attrType, field.attrType)
+        assertTrue(field.custom)
+        assertEquals(attrName, field.attrName)
+
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
+        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, listOf("ABC")))
+        assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
+    }
+
+    @Test
     fun createCustomStringPathField() {
         val attrName = "custom.string_path__0"
         val attrType = AttrType.StringPath
@@ -117,6 +133,22 @@ class FieldSystemServiceTests : AbstractTest() {
     }
 
     @Test
+    fun createCustomNumberIntegerArrayField() {
+        val attrName = "custom.number_integer__0"
+        val attrType = AttrType.NumberInteger
+
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val field = fieldSystemService.createField(spec)
+        assertEquals(attrType, field.attrType)
+        assertTrue(field.custom)
+        assertEquals(attrName, field.attrName)
+
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
+        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, listOf(2112)))
+        assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
+    }
+
+    @Test
     fun createCustomNumberFloatField() {
         val attrName = "custom.number_float__0"
         val attrType = AttrType.NumberFloat
@@ -129,6 +161,22 @@ class FieldSystemServiceTests : AbstractTest() {
 
         val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, 2.22))
+        assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
+    }
+
+    @Test
+    fun createCustomNumberFloatArrayField() {
+        val attrName = "custom.number_float__0"
+        val attrType = AttrType.NumberFloat
+
+        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val field = fieldSystemService.createField(spec)
+        assertEquals(attrType, field.attrType)
+        assertTrue(field.custom)
+        assertEquals(attrName, field.attrName)
+
+        val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
+        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, listOf(2.22)))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
 
