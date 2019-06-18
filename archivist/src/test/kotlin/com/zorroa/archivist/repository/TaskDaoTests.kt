@@ -123,7 +123,7 @@ class TaskDaoTests : AbstractTest() {
         assertFalse(taskDao.setState(task, TaskState.Skipped, TaskState.Waiting))
     }
 
-    @Test(expected=DataIntegrityViolationException::class)
+    @Test(expected = DataIntegrityViolationException::class)
     fun testSetStateMaxRunningFailure() {
         jdbc.update("UPDATE job_count SET int_max_running_tasks=0")
         assertTrue(taskDao.setState(task, TaskState.Running, null))

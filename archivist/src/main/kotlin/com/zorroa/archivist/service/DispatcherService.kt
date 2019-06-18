@@ -213,7 +213,7 @@ class DispatchQueueManager @Autowired constructor(
      * out to this point than to catch it in a @Transactional class because
      * the transaction is invalid anyway.
      */
-    fun queueTask(task: DispatchTask, analyst: String) : Boolean {
+    fun queueTask(task: DispatchTask, analyst: String): Boolean {
         return try {
             dispatcherService.queueTask(task, analyst)
         } catch (e: DataIntegrityViolationException) {
