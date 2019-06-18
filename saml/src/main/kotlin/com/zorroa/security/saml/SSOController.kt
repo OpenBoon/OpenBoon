@@ -60,7 +60,7 @@ class SSOController {
         }
 
         val result = mutableMapOf<String, Any>()
-        result["logout"] = properties.isLogout
+        result["logout"] = properties.logout
         result["landing"] = properties.landingPage
         result["baseUrl"] = properties.baseUrl
         result["idps"] = urls

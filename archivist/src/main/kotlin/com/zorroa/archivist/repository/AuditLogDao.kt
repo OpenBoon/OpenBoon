@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
+import java.sql.ResultSet
 import java.util.UUID
 
 interface AuditLogDao {
@@ -66,8 +67,9 @@ class AuditLogDaoImpl : AbstractDao(), AuditLogDao {
         val time = System.currentTimeMillis()
         val id = uuid1.generate()
         val user = getUser()
-        val value = Json.serializeToString(spec.value, null)
-        val message = spec.message ?: getLogMessage(user, spec, value)
+        val oldValue = Json.serializeToString(spec.oldValue, null)
+        val newValue = Json.serializeToString(spec.newValue, null)
+        val message = spec.message ?: getLogMessage(user, spec, oldValue, newValue)
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
@@ -79,8 +81,9 @@ class AuditLogDaoImpl : AbstractDao(), AuditLogDao {
             ps.setLong(6, time)
             ps.setInt(7, spec.type.ordinal)
             ps.setString(8, spec.attrName)
-            ps.setString(9, value)
-            ps.setString(10, message)
+            ps.setString(9, oldValue)
+            ps.setString(10, newValue)
+            ps.setString(11, message)
             ps
         }
 
@@ -93,7 +96,8 @@ class AuditLogDaoImpl : AbstractDao(), AuditLogDao {
                 spec.type,
                 spec.attrName,
                 message,
-                value)
+                oldValue,
+                newValue)
     }
 
     override fun batchCreate(specs: List<AuditLogEntrySpec>, kvp: Map<String, Any?>?): Int {
@@ -104,8 +108,9 @@ class AuditLogDaoImpl : AbstractDao(), AuditLogDao {
         val result = jdbc.batchUpdate(INSERT, object : BatchPreparedStatementSetter {
             override fun setValues(ps: PreparedStatement, i: Int) {
                 val spec = specs[i]
-                val value = Json.serializeToString(spec.value, null)
-                val message = spec.message ?: getLogMessage(user, spec, value)
+                val oldValue = Json.serializeToString(spec.oldValue, null)
+                val newValue = Json.serializeToString(spec.newValue, null)
+                val message = spec.message ?: getLogMessage(user, spec, oldValue, newValue)
 
                 ps.setObject(1, uuid1.generate())
                 ps.setObject(2, spec.assetId)
@@ -115,8 +120,9 @@ class AuditLogDaoImpl : AbstractDao(), AuditLogDao {
                 ps.setLong(6, time)
                 ps.setInt(7, spec.type.ordinal)
                 ps.setString(8, spec.attrName)
-                ps.setString(9, value)
-                ps.setString(10, message)
+                ps.setString(9, oldValue)
+                ps.setString(10, newValue)
+                ps.setString(11, message)
             }
 
             override fun getBatchSize(): Int {
@@ -167,65 +173,82 @@ class AuditLogDaoImpl : AbstractDao(), AuditLogDao {
         return "$type Asset"
     }
 
-    private inline fun getLogMessage(user: UserAuthed, spec: AuditLogEntrySpec, fieldValue: String?): String {
+    private inline fun getLogMessage(
+        user: UserAuthed,
+        spec: AuditLogEntrySpec,
+        oldValue: String?,
+        newValue: String?
+    ): String {
         val scope = spec.scope ?: "index"
         return if (spec.attrName != null) {
             /**
              * TODO: A lot of this should move to a AuditLogService where spec.attrName
              * can be resolved into a field name.
              */
-            "${user.username} ${spec.type} field \"${spec.attrName}\" with a \"$scope\" to $fieldValue"
+            "${user.username} ${spec.type} field \"${spec.attrName}\" with a \"$scope\" from $oldValue to $newValue"
         } else {
             "${user.username} ${spec.type} Asset ${spec.assetId}"
         }
     }
 
-    private val MAPPER = RowMapper { rs, _ ->
-        val json = rs.getString("json_value")
-        val fieldValue: Any? = if (json == null) {
+    private fun jsonOrNull(rs: ResultSet, column: String): Any? {
+        val json = rs.getString(column)
+        return if (json == null) {
             null
         } else {
             Json.deserialize(json, Any::class.java)
         }
+    }
+
+    private val MAPPER = RowMapper { rs, _ ->
+        val oldValue: Any? = jsonOrNull(rs, "json_old_value")
+        val newValue: Any? = jsonOrNull(rs, "json_new_value")
 
         AuditLogEntry(
-                rs.getObject("pk_auditlog") as UUID,
-                rs.getObject("pk_asset") as UUID,
-                rs.getObject("pk_field") as UUID?,
-                userDaoCache.getUser(rs.getObject("pk_user_created") as UUID),
-                rs.getLong("time_created"),
-                AuditLogType.values()[rs.getInt("int_type")],
-                rs.getString("str_attr_name"),
-                rs.getString("str_message"),
-                fieldValue)
+            rs.getObject("pk_auditlog") as UUID,
+            rs.getObject("pk_asset") as UUID,
+            rs.getObject("pk_field") as UUID?,
+            userDaoCache.getUser(rs.getObject("pk_user_created") as UUID),
+            rs.getLong("time_created"),
+            AuditLogType.values()[rs.getInt("int_type")],
+            rs.getString("str_attr_name"),
+            rs.getString("str_message"),
+            oldValue,
+            newValue
+        )
     }
 
     companion object {
 
-        private val GET = "SELECT " +
-                "pk_auditlog," +
-                "pk_asset," +
-                "pk_field," +
-                "pk_user_created," +
-                "time_created," +
-                "int_type," +
-                "str_message," +
-                "str_attr_name," +
-                "json_value " +
-                "FROM auditlog"
+        private const val GET = "SELECT " +
+            "pk_auditlog," +
+            "pk_asset," +
+            "pk_field," +
+            "pk_user_created," +
+            "time_created," +
+            "int_type," +
+            "str_message," +
+            "str_attr_name," +
+            "json_old_value," +
+            "json_new_value " +
+            "FROM auditlog " +
+            "INNER JOIN users ON (users.pk_user = auditlog.pk_user_created)"
 
         private const val COUNT = "SELECT COUNT(1) FROM auditlog"
 
-        private val INSERT = JdbcUtils.insert("auditlog",
-                "pk_auditlog",
-                "pk_asset",
-                "pk_field",
-                "pk_organization",
-                "pk_user_created",
-                "time_created",
-                "int_type",
-                "str_attr_name",
-                "json_value::jsonb",
-                "str_message")
+        private val INSERT = JdbcUtils.insert(
+            "auditlog",
+            "pk_auditlog",
+            "pk_asset",
+            "pk_field",
+            "pk_organization",
+            "pk_user_created",
+            "time_created",
+            "int_type",
+            "str_attr_name",
+            "json_old_value::jsonb",
+            "json_new_value::jsonb",
+            "str_message"
+        )
     }
 }

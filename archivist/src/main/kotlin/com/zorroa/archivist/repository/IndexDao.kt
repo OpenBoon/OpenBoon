@@ -157,6 +157,13 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         for (response in bulk.items) {
             index++
             if (response.isFailed) {
+                /**
+                 * If we hit this, then throw back to client.
+                 */
+                if ("cluster_block_exception" in response.failure.message) {
+                    throw response.failure.cause
+                }
+
                 val message = response.failure.message
                 val asset = sources[index]
                 if (removeBrokenField(asset, message)) {

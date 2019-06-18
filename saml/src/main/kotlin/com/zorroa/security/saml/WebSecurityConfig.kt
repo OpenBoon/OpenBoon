@@ -155,7 +155,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     // SAML 2.0 WebSSO Assertion Consumer
     @Bean
     fun webSSOprofileConsumer(): WebSSOProfileConsumer {
-        return WebSSOProfileConsumerImpl()
+        val consumer = WebSSOProfileConsumerImpl()
+        consumer.maxAuthenticationAge = properties.maxAuthenticationAge
+        return consumer
     }
 
     // SAML 2.0 Holder-of-Key WebSSO Assertion Consumer
@@ -190,15 +192,17 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     // Central storage of cryptographic keys
     @Bean
     fun keyManager(): KeyManager {
-        val keystore = properties!!.keystore
+        val keystore = properties.keystore
         val storeFile = FileSystemResource(File(keystore["path"]))
         val passwords = mutableMapOf<String, String>()
 
         passwords[keystore.getOrDefault("alias", "zorroa")] =
-                keystore.getOrDefault("keyPassword", "zorroa")
+            keystore.getOrDefault("keyPassword", "zorroa")
 
-        return JKSKeyManager(storeFile, keystore["password"],
-                passwords, keystore["alias"])
+        return JKSKeyManager(
+            storeFile, keystore["password"],
+            passwords, keystore["alias"]
+        )
     }
 
     // Setup TLS Socket Factory
@@ -231,6 +235,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     fun defaultWebSSOProfileOptions(): WebSSOProfileOptions {
         val webSSOProfileOptions = WebSSOProfileOptions()
         webSSOProfileOptions.isIncludeScoping = false
+        webSSOProfileOptions.forceAuthN = properties.forceAuthN
         return webSSOProfileOptions
     }
 
@@ -260,42 +265,42 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         val providers = mutableListOf<MetadataProvider>()
         Files.list(Paths.get("/config/saml"))
-                .filter { p -> p.fileName.toString().endsWith(".properties") }
-                .forEach { p ->
+            .filter { p -> p.fileName.toString().endsWith(".properties") }
+            .forEach { p ->
 
-                    logger.info("Initializing SAML : {}", p)
-                    val props = Properties()
+                logger.info("Initializing SAML : {}", p)
+                val props = Properties()
+                try {
+                    props.load(FileInputStream(p.toFile()))
+                    val uri = props.getProperty("metadataUrl")
+
+                    val extendedMetadata = ZorroaExtendedMetadata()
+                    extendedMetadata.isIdpDiscoveryEnabled = true
+                    extendedMetadata.isSignMetadata = true
+                    extendedMetadata.isEcpEnabled = true
+                    extendedMetadata.props = props
+
                     try {
-                        props.load(FileInputStream(p.toFile()))
-                        val uri = props.getProperty("metadataUrl")
-
-                        val extendedMetadata = ZorroaExtendedMetadata()
-                        extendedMetadata.isIdpDiscoveryEnabled = true
-                        extendedMetadata.isSignMetadata = true
-                        extendedMetadata.isEcpEnabled = true
-                        extendedMetadata.props = props
-
-                        try {
-                            val md5 = MessageDigest.getInstance("MD5")
-                            val bytes = Files.readAllBytes(Paths.get(uri))
-                            val hash = md5.digest(bytes)
-                        } catch (e: Exception) {
-                            logger.warn("Unable to MD5 metadata")
-                        }
-
-                        val provider = FilesystemMetadataProvider(File(uri))
-                        provider.parserPool = parserPool()
-                        val emd = ExtendedMetadataDelegate(provider, extendedMetadata)
-                        emd.isMetadataTrustCheck = false
-                        emd.isMetadataRequireSignature = false
-                        emd.setRequireValidMetadata(false)
-                        providers.add(emd)
-                    } catch (e: IOException) {
-                        logger.warn("Failed to open SAML file: ", e)
-                    } catch (e: MetadataProviderException) {
-                        logger.warn("Failed to open SAML file: ", e)
+                        val md5 = MessageDigest.getInstance("MD5")
+                        val bytes = Files.readAllBytes(Paths.get(uri))
+                        val hash = md5.digest(bytes)
+                    } catch (e: Exception) {
+                        logger.warn("Unable to MD5 metadata")
                     }
+
+                    val provider = FilesystemMetadataProvider(File(uri))
+                    provider.parserPool = parserPool()
+                    val emd = ExtendedMetadataDelegate(provider, extendedMetadata)
+                    emd.isMetadataTrustCheck = false
+                    emd.isMetadataRequireSignature = false
+                    emd.setRequireValidMetadata(false)
+                    providers.add(emd)
+                } catch (e: IOException) {
+                    logger.warn("Failed to open SAML file: ", e)
+                } catch (e: MetadataProviderException) {
+                    logger.warn("Failed to open SAML file: ", e)
                 }
+            }
 
         return CachingMetadataManager(providers)
     }
@@ -384,17 +389,21 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     // global logout
     @Bean
     fun samlLogoutProcessingFilter(): SAMLLogoutProcessingFilter {
-        return SAMLLogoutProcessingFilter(successLogoutHandler(),
-                logoutHandler())
+        return SAMLLogoutProcessingFilter(
+            successLogoutHandler(),
+            logoutHandler()
+        )
     }
 
     // Overrides default logout processing filter with the one processing SAML
     // messages
     @Bean
     fun samlLogoutFilter(): SAMLLogoutFilter {
-        return SAMLLogoutFilter(successLogoutHandler(),
-                arrayOf<LogoutHandler>(logoutHandler()),
-                arrayOf<LogoutHandler>(logoutHandler()))
+        return SAMLLogoutFilter(
+            successLogoutHandler(),
+            arrayOf<LogoutHandler>(logoutHandler()),
+            arrayOf<LogoutHandler>(logoutHandler())
+        )
     }
 
     @Bean
@@ -443,18 +452,42 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     fun samlFilter(): FilterChainProxy {
         val chains = ArrayList<SecurityFilterChain>()
-        chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/login/**"),
-                samlEntryPoint()))
-        chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/logout/**"),
-                samlLogoutFilter()))
-        chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/metadata/**"),
-                metadataDisplayFilter()))
-        chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/SSO/**"),
-                samlWebSSOProcessingFilter()))
-        chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/SSOHoK/**"),
-                samlWebSSOHoKProcessingFilter()))
-        chains.add(DefaultSecurityFilterChain(AntPathRequestMatcher("/saml/SingleLogout/**"),
-                samlLogoutProcessingFilter()))
+        chains.add(
+            DefaultSecurityFilterChain(
+                AntPathRequestMatcher("/saml/login/**"),
+                samlEntryPoint()
+            )
+        )
+        chains.add(
+            DefaultSecurityFilterChain(
+                AntPathRequestMatcher("/saml/logout/**"),
+                samlLogoutFilter()
+            )
+        )
+        chains.add(
+            DefaultSecurityFilterChain(
+                AntPathRequestMatcher("/saml/metadata/**"),
+                metadataDisplayFilter()
+            )
+        )
+        chains.add(
+            DefaultSecurityFilterChain(
+                AntPathRequestMatcher("/saml/SSO/**"),
+                samlWebSSOProcessingFilter()
+            )
+        )
+        chains.add(
+            DefaultSecurityFilterChain(
+                AntPathRequestMatcher("/saml/SSOHoK/**"),
+                samlWebSSOHoKProcessingFilter()
+            )
+        )
+        chains.add(
+            DefaultSecurityFilterChain(
+                AntPathRequestMatcher("/saml/SingleLogout/**"),
+                samlLogoutProcessingFilter()
+            )
+        )
 
         return FilterChainProxy(chains)
     }
@@ -468,17 +501,17 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.antMatcher("/saml/**")
-                .csrf().disable()
-                .httpBasic()
-                .authenticationEntryPoint(samlEntryPoint())
-                .and()
-                .addFilterBefore(metadataGeneratorFilter(), ChannelProcessingFilter::class.java)
-                .addFilterAfter(samlFilter(), BasicAuthenticationFilter::class.java)
-                .authorizeRequests()
-                .antMatchers("/saml/**").permitAll()
-                .and()
-                .logout()
-                .disable()
+            .csrf().disable()
+            .httpBasic()
+            .authenticationEntryPoint(samlEntryPoint())
+            .and()
+            .addFilterBefore(metadataGeneratorFilter(), ChannelProcessingFilter::class.java)
+            .addFilterAfter(samlFilter(), BasicAuthenticationFilter::class.java)
+            .authorizeRequests()
+            .antMatchers("/saml/**").permitAll()
+            .and()
+            .logout()
+            .disable()
     }
 
     /**
@@ -490,7 +523,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth
-                .authenticationProvider(samlAuthenticationProvider())
+            .authenticationProvider(samlAuthenticationProvider())
     }
 
     companion object {

@@ -1,6 +1,9 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
@@ -47,7 +50,7 @@ abstract class MockMvcTest : AbstractTest() {
      * Assert successful post to API endpoint
      * @return an an object of the
      */
-    final inline fun <reified T> resultForPostContent(
+    final inline fun <reified T : Any> resultForPostContent(
         urlTemplate: String,
         `object`: Any,
         session: MockHttpSession = admin()): T {
@@ -63,10 +66,14 @@ abstract class MockMvcTest : AbstractTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
         SecurityContextHolder.getContext().authentication = savedAuthentication
-        return Json.Mapper.readValue<T>(result.response.contentAsString, T::class.java)
+        val mapper = ObjectMapper().registerKotlinModule()
+        return mapper.readValue(result.response.contentAsString)
     }
 
-    fun assertClientErrorForPostContent(urlTemplate: String, `object`: Any, session: MockHttpSession = admin()) {
+    fun assertClientErrorForPostContent(
+        urlTemplate: String,
+        `object`: Any,
+        session: MockHttpSession = admin()) {
         val savedAuthentication = SecurityContextHolder.getContext().authentication
         this.mvc.perform(
             MockMvcRequestBuilders
@@ -82,8 +89,10 @@ abstract class MockMvcTest : AbstractTest() {
 
     private fun buildSession(authentication: Authentication): MockHttpSession {
         val session = MockHttpSession()
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, MockSecurityContext(authentication))
-
+        session.setAttribute(
+            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+            MockSecurityContext(authentication)
+        )
         return session
     }
 
