@@ -9,6 +9,10 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
+import org.elasticsearch.ElasticsearchException
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest
+import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.junit.Assert.assertEquals
@@ -130,7 +134,7 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchUpsert() {
+    fun testIndex() {
         val source1 = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
         val source2 = Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"))
 
@@ -141,6 +145,18 @@ class IndexDaoTests : AbstractTest() {
         result = indexDao.index(ImmutableList.of(source1, source2))
         assertEquals(0, result.createdAssetIds.size)
         assertEquals(2, result.replacedAssetIds.size)
+    }
+
+    @Test(expected = ElasticsearchException::class)
+    fun testIndexClusterBlockError() {
+        val client = indexRoutingService.getOrgRestClient()
+        val req = UpdateSettingsRequest(client.route.indexName)
+        req.settings(Settings.builder().put("index.blocks.read_only_allow_delete", true).build())
+        client.client.indices().putSettings(req, RequestOptions.DEFAULT)
+
+        val source1 = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"))
+        indexDao.index(ImmutableList.of(source1, source2))
     }
 
     @Test

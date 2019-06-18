@@ -693,7 +693,7 @@ open abstract class AbstractAssetService : AssetService {
                         fieldId = field.id,
                         attrName = field.attrName,
                         scope = "undo edit",
-                        value = edit.oldValue)
+                        newValue = edit.oldValue)
                 auditLogDao.create(aspec)
                 return true
             } else {
@@ -754,7 +754,8 @@ open abstract class AbstractAssetService : AssetService {
                     fieldId = field.id,
                     attrName = field.attrName,
                     scope = "manual edit",
-                    value = spec.newValue)
+                    oldValue = oldValue,
+                    newValue = spec.newValue)
             auditLogDao.create(aspec)
             return fieldEdit
         } else {
