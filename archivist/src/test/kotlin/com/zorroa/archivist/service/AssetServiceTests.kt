@@ -284,6 +284,21 @@ class AssetServiceTests : AbstractTest() {
         assertTrue(result.size() > 0)
     }
 
+    @Test(expected = IllegalArgumentException::class)
+    fun testCreateFieldEditRequireList() {
+        jdbc.update("UPDATE field SET bool_list='t' WHERE str_attr_name='media.title'")
+
+        val title = "khaaaaaan"
+        val field = fieldSystemService.getField("media.title")
+        assertTrue(field.requireList)
+
+        val page = searchService.search(Pager.first(), AssetSearch())
+        val asset = page.list.first()
+
+        assetService.createFieldEdit(
+            FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+    }
+
     @Test
     fun testDeleteFieldEdit() {
         val title = "khaaaaaan"

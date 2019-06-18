@@ -718,6 +718,15 @@ open abstract class AbstractAssetService : AssetService {
                     "for field ${field.name} is not the correct type")
         }
 
+        if (field.requireList) {
+            if (spec.newValue != null) {
+                if (spec.newValue !is Collection<*>) {
+                    throw java.lang.IllegalArgumentException("The value ${spec.newValue} " +
+                        "for field ${field.name} must be a list.")
+                }
+            }
+        }
+
         val updateReq = if (spec.newValue == null) {
             UpdateAssetRequest(
                     remove = listOf(field.attrName),

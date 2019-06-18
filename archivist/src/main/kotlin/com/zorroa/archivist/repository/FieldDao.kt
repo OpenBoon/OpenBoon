@@ -99,6 +99,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps.setFloat(13, spec.keywordsBoost)
             ps.setString(14, Json.serializeToString(spec.options, null))
             ps.setBoolean(15, spec.suggest)
+            ps.setBoolean(16, spec.requireList)
             ps
         }
 
@@ -113,7 +114,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         return Field(id, spec.name, spec.attrName,
                 spec.attrType, spec.editable,
                 spec.custom, spec.keywords, spec.keywordsBoost,
-                spec.suggest, spec.options)
+                spec.suggest, spec.requireList, spec.options)
     }
 
     override fun update(field: Field, spec: FieldUpdateSpec): Boolean {
@@ -138,8 +139,9 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
             ps.setFloat(6, spec.keywordsBoost)
             ps.setString(7, Json.serializeToString(spec.options, null))
             ps.setBoolean(8, spec.suggest)
-            ps.setObject(9, field.id)
-            ps.setObject(10, user.organizationId)
+            ps.setBoolean(9, spec.requireList)
+            ps.setObject(10, field.id)
+            ps.setObject(11, user.organizationId)
             ps
         } == 1
     }
@@ -231,6 +233,7 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                     rs.getBoolean("bool_keywords"),
                     rs.getFloat("float_keywords_boost"),
                     rs.getBoolean("bool_suggest"),
+                    rs.getBoolean("bool_list"),
                     Json.Mapper.readValueOrNull(rs.getString("json_options")))
         }
 
@@ -252,7 +255,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "bool_keywords",
                 "float_keywords_boost",
                 "json_options::jsonb",
-                "bool_suggest")
+                "bool_suggest",
+                "bool_list")
 
         private val UPDATE = JdbcUtils.update("field", "pk_field",
                 "time_modified",
@@ -262,7 +266,8 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 "bool_keywords",
                 "float_keywords_boost",
                 "json_options::jsonb",
-                "bool_suggest")
+                "bool_suggest",
+                "bool_list")
 
         private const val ALLOC_UPDATE = "UPDATE field_alloc " +
                 "SET int_count=int_count + 1 " +

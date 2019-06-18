@@ -61,7 +61,7 @@ class FieldControllerTests : MockMvcTest() {
     fun testUpdateField() {
         val field = fieldSystemService.createField(fieldSpec)
         val updateSpec = FieldUpdateSpec(
-                "test", true, true, 2.0f, false,
+                "test", true, true, 2.0f, false, requireList = false,
                 options = listOf("a", "b", "c"))
 
         val session = admin()
