@@ -82,7 +82,7 @@ unit_tests:
     LOGGING_LEVEL_COM_ZORROA: WARN
     USER: gitlab
   script:
-    - mvn test -q
+    - mvn test verify -q
   after_script:
     - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% code coverage" }' archivist/target/site/jacoco/jacoco.csv
 
