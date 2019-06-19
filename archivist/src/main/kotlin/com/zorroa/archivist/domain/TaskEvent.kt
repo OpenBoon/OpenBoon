@@ -8,7 +8,8 @@ enum class TaskEventType {
     STARTED,
     ERROR,
     EXPAND,
-    MESSAGE
+    MESSAGE,
+    STATS
 }
 
 open class TaskEvent(
@@ -48,4 +49,22 @@ class TaskErrorEvent(
 
 class TaskMessageEvent(
     val message: String
+)
+
+/**
+ * The TaskStatsEvent contains the run count, and min/max/avg exec times for each processor of a
+ * given task.  Emitted by the processing system once a task is completed.
+ *
+ * @property processor The processor name
+ * @property count The number of times the processor was run.
+ * @property min The lowest time it took the processor to run.
+ * @property max The maximum time it took the processor to run.
+ * @property avg The average time it took the processor to run.
+ */
+class TaskStatsEvent(
+    val processor: String,
+    val count: Long,
+    val min: Double,
+    val max: Double,
+    val avg: Double
 )

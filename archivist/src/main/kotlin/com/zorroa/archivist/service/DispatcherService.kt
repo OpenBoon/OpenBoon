@@ -16,6 +16,7 @@ import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskMessageEvent
+import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.zpsTaskName
@@ -53,7 +54,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicLong
 import javax.annotation.PostConstruct
 
 interface DispatcherService {
@@ -90,6 +90,12 @@ interface DispatcherService {
      * Return the [Organization] dispatch priority.
      */
     fun getDispatchPriority(): List<DispatchPriority>
+
+    /**
+     * Add per-processor runtime stats provided by the Analyst event system
+     * to the meterRegistry.
+     */
+    fun handleStatsEvent(stats: List<TaskStatsEvent>)
 }
 
 /**
@@ -134,14 +140,16 @@ class DispatchQueueManager @Autowired constructor(
         }
 
         meterRegistry.counter(
-                METRICS_KEY, "op", "requests").increment()
+            METRICS_KEY, "op", "requests"
+        ).increment()
 
         /**
          * First check for interactive jobs.
          */
         val tasks = dispatcherService.getWaitingTasks(JobPriority.Interactive, numberOfTasksToPoll)
         meterRegistry.counter(
-            METRICS_KEY, "op", "tasks-polled").increment(tasks.size.toDouble())
+            METRICS_KEY, "op", "tasks-polled"
+        ).increment(tasks.size.toDouble())
 
         for (task in tasks) {
             if (queueAndDispatchTask(task, analyst)) {
@@ -156,10 +164,12 @@ class DispatchQueueManager @Autowired constructor(
         for (priority in cachedDispatchPriority.get()) {
 
             val tasks = dispatcherService.getWaitingTasks(
-                    priority.organizationId, numberOfTasksToPoll)
+                priority.organizationId, numberOfTasksToPoll
+            )
 
             meterRegistry.counter(
-                    METRICS_KEY, "op", "tasks-polled").increment(tasks.size.toDouble())
+                METRICS_KEY, "op", "tasks-polled"
+            ).increment(tasks.size.toDouble())
 
             for (task in tasks) {
                 if (queueAndDispatchTask(task, analyst)) {
@@ -181,7 +191,8 @@ class DispatchQueueManager @Autowired constructor(
     fun queueAndDispatchTask(task: DispatchTask, analyst: String): Boolean {
         if (dispatcherService.queueTask(task, analyst)) {
             meterRegistry.counter(
-                METRICS_KEY, "op", "tasks-queued").increment()
+                METRICS_KEY, "op", "tasks-queued"
+            ).increment()
 
             task.env["ZORROA_TASK_ID"] = task.id.toString()
             task.env["ZORROA_JOB_ID"] = task.jobId.toString()
@@ -195,7 +206,8 @@ class DispatchQueueManager @Autowired constructor(
             withAuth(SuperAdminAuthentication(task.organizationId)) {
                 val fs = fileStorageService.get(task.getLogSpec())
                 val logFile = fileStorageService.getSignedUrl(
-                    fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS)
+                    fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS
+                )
                 task.logFile = logFile
             }
             return true
@@ -243,18 +255,14 @@ class DispatcherServiceImpl @Autowired constructor(
     fun init() {
         // Register for event bus
         eventBus.register(this)
-
-        meterRegistry.gauge("zorroa.task.pending", AtomicLong()) {
-            taskDao.getPendingTaskCount().toDouble()
-        }
     }
 
     @Transactional(readOnly = true)
     override fun getDispatchPriority(): List<DispatchPriority> {
         return meterRegistry.timer("zorroa.dispatch-service.prioritize")
-                .record<List<DispatchPriority>> {
-            dispatchTaskDao.getDispatchPriority()
-        }
+            .record<List<DispatchPriority>> {
+                dispatchTaskDao.getDispatchPriority()
+            }
     }
 
     @Transactional(readOnly = true)
@@ -327,12 +335,14 @@ class DispatcherServiceImpl @Autowired constructor(
                 jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
 
                 taskErrorDao.batchCreate(task, script.over?.map {
-                    TaskErrorEvent(UUID.fromString(it.id),
-                            it.getAttr("source.path"),
-                            "Hard Task failure, exit ${event.exitStatus}",
-                            "unknown",
-                            true,
-                            "unknown")
+                    TaskErrorEvent(
+                        UUID.fromString(it.id),
+                        it.getAttr("source.path"),
+                        "Hard Task failure, exit ${event.exitStatus}",
+                        "unknown",
+                        true,
+                        "unknown"
+                    )
                 }.orEmpty())
             }
         }
@@ -355,22 +365,39 @@ class DispatcherServiceImpl @Autowired constructor(
         val newTask = taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
         logger.event(
             LogObject.JOB, LogAction.EXPAND,
-                mapOf("parentTaskId" to parentTask.taskId,
-                        "taskId" to newTask.id,
-                        "jobId" to newTask.jobId))
+            mapOf(
+                "parentTaskId" to parentTask.taskId,
+                "taskId" to newTask.id,
+                "jobId" to newTask.jobId
+            )
+        )
         return newTask
     }
 
     override fun expand(job: JobId, script: ZpsScript): Task {
         val newTask = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
-        logger.event(LogObject.JOB, LogAction.EXPAND,
-                mapOf("jobId" to newTask.jobId, "taskId" to newTask.id))
+        logger.event(
+            LogObject.JOB, LogAction.EXPAND,
+            mapOf("jobId" to newTask.jobId, "taskId" to newTask.id)
+        )
         return newTask
     }
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
         taskErrorDao.create(task, error)
         jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
+    }
+
+    override fun handleStatsEvent(stats: List<TaskStatsEvent>) {
+        for (stat in stats) {
+            val proc = stat.processor
+            meterRegistry.timer("zorroa.processor.process_min_time", "processor", proc)
+                .record(stat.min.times(1000).toLong(), TimeUnit.MILLISECONDS)
+            meterRegistry.timer("zorroa.processor.process_max_time", "processor", proc)
+                .record(stat.max.times(1000).toLong(), TimeUnit.MILLISECONDS)
+            meterRegistry.timer("zorroa.processor.process_avg_time", "processor", proc)
+                .record(stat.avg.times(1000).toLong(), TimeUnit.MILLISECONDS)
+        }
     }
 
     override fun handleEvent(event: TaskEvent) {
@@ -392,6 +419,10 @@ class DispatcherServiceImpl @Autowired constructor(
             TaskEventType.MESSAGE -> {
                 val message = Json.Mapper.convertValue<TaskMessageEvent>(event.payload)
                 logger.warn("Task Event Message: ${task.taskId} : $message")
+            }
+            TaskEventType.STATS -> {
+                val stats = Json.Mapper.convertValue<List<TaskStatsEvent>>(event.payload)
+                handleStatsEvent(stats)
             }
         }
     }
