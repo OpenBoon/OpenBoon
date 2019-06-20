@@ -109,6 +109,7 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
                             rs.getBoolean("field_keywords"),
                             rs.getFloat("field_keywords_boost"),
                             rs.getBoolean("bool_suggest"),
+                            rs.getBoolean("field_list"),
                             Json.Mapper.readValueOrNull(rs.getString("json_options")),
                             doc.getAttr(rs.getString("field_attr_name"), Any::class.java),
                             rs.getObject("pk_field_edit") as UUID?))
@@ -216,6 +217,7 @@ class FieldSetDaoImpl : AbstractDao(), FieldSetDao {
                 "field.bool_custom AS field_custom," +
                 "field.bool_editable AS field_editable, " +
                 "field.bool_keywords AS field_keywords, " +
+                "field.bool_list AS field_list, " +
                 "field.float_keywords_boost AS field_keywords_boost, " +
                 "field.bool_suggest," +
                 "field.json_options," +

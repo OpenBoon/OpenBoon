@@ -95,6 +95,7 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
  * @property keywordsBoost The keywords boost level for the field.
  * @property suggest If the field is a suggest field or not.
  * @property options The valid set of options for a field.
+ * @property requireList Force the field to only accept a list of values.
  */
 open class BaseFieldSpec {
     var editable: Boolean = false
@@ -102,6 +103,7 @@ open class BaseFieldSpec {
     var keywordsBoost: Float = 1.0f
     var suggest: Boolean = false
     var options: List<Any>? = null
+    var requireList: Boolean = false
 }
 
 /**
@@ -202,6 +204,9 @@ class Field(
     @ApiModelProperty("If true this Field will show up in the list of suggestions.")
     val suggest: Boolean,
 
+    @ApiModelProperty("The data stored in this field must be a list.")
+    val requireList: Boolean,
+
     @ApiModelProperty("List of valid options for this Field.")
     val options: List<Any>? = null,
 
@@ -244,6 +249,9 @@ class FieldUpdateSpec(
 
     @ApiModelProperty("If true this field will be considered for auto-complete suggestions.")
     val suggest: Boolean,
+
+    @ApiModelProperty("The data stored in this field must be a list.")
+    val requireList: Boolean,
 
     @ApiModelProperty("Available options for this Field's values.")
     val options: List<Any>? = null

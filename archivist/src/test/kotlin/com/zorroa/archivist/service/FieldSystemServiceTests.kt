@@ -332,7 +332,7 @@ class FieldSystemServiceTests : AbstractTest() {
             fieldSystemService.updateField(
                 field, FieldUpdateSpec(
                     field.name, field.editable,
-                    field.keywords, field.keywordsBoost, true
+                    field.keywords, field.keywordsBoost, true, requireList = false
                 )
             )
         )

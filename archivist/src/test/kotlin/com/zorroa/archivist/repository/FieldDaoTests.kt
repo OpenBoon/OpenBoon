@@ -46,7 +46,7 @@ class FieldDaoTests : AbstractTest() {
         val field = fieldDao.create(spec)
 
         val updateSpec = FieldUpdateSpec(
-            "test", true, true, 2.0f, true
+            "test", true, true, 2.0f, true, requireList = true
         )
 
         assertTrue(fieldDao.update(field, updateSpec))
