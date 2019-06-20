@@ -49,6 +49,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -189,7 +190,7 @@ class DispatchQueueManager @Autowired constructor(
      * @param analyst The hostname for the [Analyst] asking for a task.
      */
     fun queueAndDispatchTask(task: DispatchTask, analyst: String): Boolean {
-        if (dispatcherService.queueTask(task, analyst)) {
+        if (queueTask(task, analyst)) {
             meterRegistry.counter(
                 METRICS_KEY, "op", "tasks-queued"
             ).increment()
@@ -216,6 +217,20 @@ class DispatchQueueManager @Autowired constructor(
         }
 
         return false
+    }
+
+    /**
+     * The queueTask method handles the fact that dispatcherService.queueTask may throw
+     * a DataIntegrityViolationException.  It's better to let the exception propagate
+     * out to this point than to catch it in a @Transactional class because
+     * the transaction is invalid anyway.
+     */
+    fun queueTask(task: DispatchTask, analyst: String): Boolean {
+        return try {
+            dispatcherService.queueTask(task, analyst)
+        } catch (e: DataIntegrityViolationException) {
+            false
+        }
     }
 
     companion object {

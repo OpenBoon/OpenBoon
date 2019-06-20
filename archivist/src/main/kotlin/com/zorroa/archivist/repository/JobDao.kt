@@ -80,7 +80,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps
         }
 
-        jdbc.update("INSERT INTO job_count (pk_job, time_updated) VALUES (?, ?)", id, time)
+        jdbc.update("INSERT INTO job_count (pk_job, time_updated, int_max_running_tasks) VALUES (?, ?, ?)",
+            id, time, spec.maxRunningTasks)
         jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", id)
 
         logger.event(LogObject.JOB, LogAction.CREATE, mapOf("jobId" to id, "jobName" to spec.name))
@@ -89,6 +90,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun update(job: JobId, update: JobUpdateSpec): Boolean {
+        jdbc.update("UPDATE job_count SET int_max_running_tasks=? WHERE pk_job=?",
+            update.maxRunningTasks, job.jobId)
         return jdbc.update(UPDATE,
                 update.name, update.priority, update.paused, update.timePauseExpired, job.jobId) == 1
     }
@@ -229,7 +232,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     rs.getLong("time_created"),
                     rs.getInt("int_priority"),
                     rs.getBoolean("bool_paused"),
-                    rs.getLong("time_pause_expired")
+                    rs.getLong("time_pause_expired"),
+                    rs.getInt("int_max_running_tasks")
             )
         }
 

@@ -113,13 +113,17 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "task.json_script, " +
                 "task.str_host " +
             "FROM " +
-                "task INNER JOIN job ON job.pk_job = task.pk_job " +
+                "task " +
+                "INNER JOIN job ON job.pk_job = task.pk_job " +
+                "INNER JOIN job_count ON job.pk_job = job_count.pk_job " +
             "WHERE " +
                 "job.int_state=? " +
             "AND " +
                 "job.bool_paused='f' " +
             "AND " +
-                "task.int_state=? "
+                "task.int_state=? " +
+            "AND " +
+                "job_count.int_max_running_tasks > job_count.int_task_state_1 + int_task_state_5  "
 
         /**
          * Provides FIFO scheduling by job. The order is:

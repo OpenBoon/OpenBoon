@@ -234,6 +234,20 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testGetNextFailureMaxRunningJob() {
+        val analyst = "https://127.0.0.1:5000"
+        val spec = JobSpec("test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"),
+            maxRunningTasks = 0)
+        jobService.create(spec)
+        authenticateAsAnalyst()
+        val next = dispatchQueueManager.getNext()
+        assertNull(next)
+    }
+
+    @Test
     fun testGetNextLockedAnalyst() {
         val spec = JobSpec(
             "test_job",
