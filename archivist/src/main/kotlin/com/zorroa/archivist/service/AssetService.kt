@@ -155,6 +155,9 @@ open abstract class AbstractAssetService : AssetService {
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
 
+    @Autowired
+    lateinit var indexRoutingService: IndexRoutingService
+
     /**
      * Prepare a list of assets to be created.  Updated assets are not prepped.
      *
@@ -986,6 +989,10 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
          * We have to do this backwards here because we're relying on ES to
          * merge existing docs and updates together.
          */
+        if (indexRoutingService.isReIndexRoute()) {
+            spec.skipAssetPrep = true
+        }
+
         val prepped = prepAssets(spec)
         val txResult = assetDao.batchCreateOrReplace(prepped.assets)
 

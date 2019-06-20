@@ -44,8 +44,9 @@ class OrganizationUpdateSpec(
 
     @ApiModelProperty("Will update the Organizations's ES cluster address. Will not move files.")
     var indexRouteId: UUID
-
-)
+) {
+    constructor(org: Organization) : this(org.name, org.indexRouteId)
+}
 
 @ApiModel("Organization Filter", description = "Filter for finding Organizations.")
 class OrganizationFilter(

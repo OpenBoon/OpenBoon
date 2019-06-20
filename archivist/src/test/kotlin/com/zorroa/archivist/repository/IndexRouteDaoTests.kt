@@ -1,6 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.IndexRouteFilter
+import com.zorroa.archivist.domain.IndexRouteSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -20,10 +22,68 @@ class IndexRouteDaoTests : AbstractTest() {
     fun testUpdateDefaultIndexRoutes() {
         val url = "http://dog:1234"
         indexRouteDao.updateDefaultIndexRoutes("http://dog:1234", false)
-        assertEquals(url, jdbc.queryForObject("SELECT str_url FROM index_route",
-                String::class.java))
-        assertFalse(jdbc.queryForObject("SELECT bool_use_rkey FROM index_route",
-                Boolean::class.java))
+        assertEquals(
+            url, jdbc.queryForObject(
+                "SELECT str_url FROM index_route",
+                String::class.java
+            )
+        )
+        assertFalse(
+            jdbc.queryForObject(
+                "SELECT bool_use_rkey FROM index_route",
+                Boolean::class.java
+            )
+        )
+    }
+
+    @Test
+    fun testCreate() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false
+        )
+
+        val route = indexRouteDao.create(spec)
+        assertEquals(spec.clusterUrl, route.clusterUrl)
+        assertEquals(spec.indexName, route.indexName)
+        assertEquals(spec.defaultPool, route.defaultPool)
+        assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
+        assertEquals(0, route.mappingMinorVer)
+        assertEquals(spec.shards, route.shards)
+        assertEquals(spec.replicas, route.replicas)
+    }
+
+    @Test
+    fun testGetById() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false
+        )
+
+        val route1 = indexRouteDao.create(spec)
+        val route2 = indexRouteDao.get(route1.id)
+        assertEquals(route1.id, route2.id)
+    }
+
+    @Test
+    fun testGetByUrl() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false
+        )
+
+        val route1 = indexRouteDao.create(spec)
+        val route2 = indexRouteDao.get(route1.id)
+        assertEquals(route1.id, route2.id)
     }
 
     @Test
@@ -32,7 +92,7 @@ class IndexRouteDaoTests : AbstractTest() {
         assertEquals("http://localhost:9200", route.clusterUrl)
         assertEquals("http://localhost:9200/unittest", route.indexUrl)
         assertEquals("unittest", route.indexName)
-        assertEquals("asset", route.mappingType)
+        assertEquals("asset", route.mapping)
         assertEquals(false, route.closed)
         assertEquals(true, route.defaultPool)
         assertEquals(2, route.replicas)
@@ -45,7 +105,7 @@ class IndexRouteDaoTests : AbstractTest() {
         assertEquals("http://localhost:9200", route.clusterUrl)
         assertEquals("http://localhost:9200/unittest", route.indexUrl)
         assertEquals("unittest", route.indexName)
-        assertEquals("asset", route.mappingType)
+        assertEquals("asset", route.mapping)
         assertEquals(false, route.closed)
         assertEquals(true, route.defaultPool)
         assertEquals(2, route.replicas)
@@ -59,12 +119,35 @@ class IndexRouteDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testGetAllByFilter() {
+        val route = indexRouteDao.getOrgRoute()
+
+        val filter = IndexRouteFilter(
+            ids = listOf(route.id),
+            mappings = listOf(route.mapping),
+            clusterUrls = listOf(route.clusterUrl)
+        )
+
+        assertEquals(1, indexRouteDao.getAll(filter).size())
+    }
+
+    @Test
+    fun testGetAllByFilterSorted() {
+        val filter = IndexRouteFilter()
+        filter.sort = listOf("id:a", "clusterUrl:a", "mapping:a", "timeCreated:a")
+        assertEquals(1, indexRouteDao.getAll(filter).size())
+    }
+
+    @Test
     fun testSetMinorVersion() {
         val ver = 131337
         val route = indexRouteDao.getOrgRoute()
         assertTrue(indexRouteDao.setMinorVersion(route, ver))
-        assertEquals(ver, jdbc.queryForObject(
-                "SELECT int_mapping_minor_ver FROM index_route", Int::class.java))
+        assertEquals(
+            ver, jdbc.queryForObject(
+                "SELECT int_mapping_minor_ver FROM index_route", Int::class.java
+            )
+        )
     }
 
     @Test
@@ -72,7 +155,10 @@ class IndexRouteDaoTests : AbstractTest() {
         val ver = 666
         val route = indexRouteDao.getOrgRoute()
         assertTrue(indexRouteDao.setErrorVersion(route, ver))
-        assertEquals(ver, jdbc.queryForObject(
-                "SELECT int_mapping_error_ver FROM index_route", Int::class.java))
+        assertEquals(
+            ver, jdbc.queryForObject(
+                "SELECT int_mapping_error_ver FROM index_route", Int::class.java
+            )
+        )
     }
 }

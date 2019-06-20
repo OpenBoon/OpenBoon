@@ -1,6 +1,8 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.common.repository.KDaoFilter
+import com.zorroa.common.util.JdbcUtils
 import java.util.UUID
 
 /**
@@ -9,7 +11,7 @@ import java.util.UUID
  * @property id The unique ID of the index route.
  * @property clusterUrl The URL to the ES cluster.
  * @property indexName The name of the ES index.
- * @property mappingType The mapping type. This is extracted from the
+ * @property mapping The mapping type. This is extracted from the
  * mapping file name, not the ES type.
  * @property mappingMajorVer The major version of the mapping file.
  * @property mappingMinorVer The minor version of the mapping file in a date format.
@@ -24,7 +26,7 @@ class IndexRoute(
     val id: UUID,
     val clusterUrl: String,
     val indexName: String,
-    val mappingType: String,
+    val mapping: String,
     val mappingMajorVer: Int,
     val mappingMinorVer: Int,
     val closed: Boolean,
@@ -64,7 +66,7 @@ class IndexRoute(
  *
  * @property clusterUrl The URL of the ES cluster.
  * @property indexName The name of the ES index.
- * @property mappingType The type of mapping (not ES object type)
+ * @property mapping The type of mapping (not ES object type)
  * @property mappingMajorVer The major version to use. It will be patched up to highest level.
  * @property defaultPool Add the route to the default pool.
  * @property replicas The number of replicas there should be for each shard. Defaults to 2.
@@ -73,11 +75,24 @@ class IndexRoute(
 class IndexRouteSpec(
     var clusterUrl: String,
     var indexName: String,
-    var mappingType: String,
+    var mapping: String,
     var mappingMajorVer: Int,
     var defaultPool: Boolean,
+    var useRouteKey: Boolean = false,
     var replicas: Int = 2,
     var shards: Int = 5
+)
+
+/**
+ * An IndexMappingVersion is a version of an ES mapping found on disk
+ * or packaged with the Archivist that can be used to make an [IndexRoute]
+ *
+ * @property mapping The name of the mapping.
+ * @property mappingMajorVer The major version of the mapping.
+ */
+class IndexMappingVersion(
+    val mapping: String,
+    val mappingMajorVer: Int
 )
 
 /**
@@ -96,4 +111,44 @@ class EsClientCacheKey(
 ) {
 
     val indexUrl = "$clusterUrl/$indexName"
+}
+
+/**
+ * A class for filtering [IndexRoute]s
+ */
+class IndexRouteFilter(
+    val ids: List<UUID>? = null,
+    val clusterUrls: List<String>? = null,
+    val mappings: List<String>? = null
+) : KDaoFilter() {
+
+    @JsonIgnore
+    override val sortMap: Map<String, String> =
+        mapOf("id" to "index_route.pk_index_route",
+            "clusterUrl" to "index_route.str_url",
+            "mapping" to "index_route.str_mapping_type",
+            "timeCreated" to "index_route.time_created")
+
+    @JsonIgnore
+    override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("timeCreated:desc")
+        }
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("index_route.pk_index_route", it.size))
+            addToValues(it)
+        }
+
+        clusterUrls?.let {
+            addToWhere(JdbcUtils.inClause("index_route.str_url", it.size))
+            addToValues(it)
+        }
+
+        mappings?.let {
+            addToWhere(JdbcUtils.inClause("index_route.str_mapping_type", it.size))
+            addToValues(it)
+        }
+    }
 }
