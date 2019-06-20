@@ -20,6 +20,6 @@ class IndexMigrationSpec(
     @ApiModelProperty("An array of attributes to remove during reindexing")
     val removeAttrs: List<String>? = null,
 
-    @ApiModelProperty("An array of attributes to set during reindexing")
+    @ApiModelProperty("An map of attributes to set during reindexing")
     val setAttrs: Map<String, Any>? = null
 )
