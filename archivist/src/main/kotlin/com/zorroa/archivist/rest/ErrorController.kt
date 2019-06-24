@@ -7,6 +7,7 @@ import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.domain.EntityNotFoundException
 import com.zorroa.common.domain.InvalidRequestException
 import io.micrometer.core.annotation.Timed
+import org.elasticsearch.ElasticsearchException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+import springfox.documentation.annotations.ApiIgnore
 import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
@@ -74,6 +76,7 @@ class RestApiExceptionHandler {
                 e is MethodArgumentTypeMismatchException) {
             HttpStatus.METHOD_NOT_ALLOWED
         } else if (e is ArchivistException ||
+                e is ElasticsearchException ||
                 e is InvalidObjectException ||
                 e is InvalidRequestException ||
                 e is DataAccessException ||
@@ -121,6 +124,7 @@ class RestApiExceptionHandler {
 @RestController
 @RequestMapping("/error")
 @Timed
+@ApiIgnore
 class CustomErrorController @Autowired constructor(private val errorAttributes: ErrorAttributes) :
         AbstractErrorController(errorAttributes), ErrorController {
 

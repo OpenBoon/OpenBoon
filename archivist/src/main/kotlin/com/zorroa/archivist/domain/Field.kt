@@ -6,6 +6,8 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.Date
 import java.util.UUID
 
@@ -40,78 +42,178 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
      * @param value the value to check.
      * @return True if the value is ok, otherwise false.
      */
-    fun isValid(value: Any?): Boolean {
-        if (value == null) {
+    fun isValid(obj: Any?): Boolean {
+        if (obj == null) {
             return true
         }
 
+        val value = if (obj is Collection<*>) {
+            if (obj.isEmpty()) {
+                return true
+            } else {
+                obj.first()
+            }
+        } else {
+            obj
+        }
+
         return when (this) {
-            AttrType.NumberInteger -> { value is Int || value is Long }
-            AttrType.NumberFloat -> { value is Double || value is Float }
-            AttrType.StringExact,
-            AttrType.StringContent,
-            AttrType.StringAnalyzed,
-            AttrType.StringSuggest,
-            AttrType.StringPath -> { value is CharSequence }
-            AttrType.Bool -> { value is Boolean }
-            AttrType.HashSimilarity -> { value is String }
-            AttrType.DateTime -> { value is Long || value is String || value is Date }
-            AttrType.GeoPoint -> { value is List<*> }
+            NumberInteger -> {
+                value is Int || value is Long
+            }
+            NumberFloat -> {
+                value is Double || value is Float
+            }
+            StringExact,
+            StringContent,
+            StringAnalyzed,
+            StringSuggest,
+            StringPath -> {
+                value is CharSequence
+            }
+            Bool -> {
+                value is Boolean
+            }
+            HashSimilarity -> {
+                value is String
+            }
+            DateTime -> {
+                value is Long || value is String || value is Date
+            }
+            GeoPoint -> {
+                value is List<*>
+            }
         }
     }
 }
 
 /**
- * The properties required to create a new field.
+ * The base class for FieldSpec, FieldSpecCustom and FieldSpecExpose.
  *
- * @property name The name of the field, aka the label.
- * @property attrName The ES attribute name.
- * @property attrType The type of attribute.
  * @property editable If the field is editable or not.
- * @property custom If the field is a custom field or a Zorroa standard.
  * @property keywords Set to true if this field should be considered a keyword.
  * @property keywordsBoost The keywords boost level for the field.
+ * @property suggest If the field is a suggest field or not.
  * @property options The valid set of options for a field.
+ * @property requireList Force the field to only accept a list of values.
  */
-class FieldSpec(
-    val name: String,
-    var attrName: String?,
-    var attrType: AttrType?,
-    var editable: Boolean = false,
-    var keywords: Boolean = false,
-    var keywordsBoost: Float = 1.0f,
-    var suggest: Boolean = false,
-    var options: List<Any>? = null,
-    @JsonIgnore var custom: Boolean = false
-)
+open class BaseFieldSpec {
+    var editable: Boolean = false
+    var keywords: Boolean = false
+    var keywordsBoost: Float = 1.0f
+    var suggest: Boolean = false
+    var options: List<Any>? = null
+    var requireList: Boolean = false
+}
 
 /**
- * A Field describes the display properties for a given ES attribute.  Each ES attribute
- * can be exposed as a Field, which defines what users can see.
+ * [FieldSpecCustom] and [FieldSpecExpose] converted turned into a [FieldSpec] which
+ * is used to create a [Field].  This class is not exposed via the REST API.
  *
- * @property id The UUID of the field.
- * @property name The name of the field, aka the label.
+ * @property name The label/name of the Field
  * @property attrName The ES attribute name.
  * @property attrType The type of attribute.
- * @property editable If the field is editable or not.
- * @property custom If the field is a custom field or a Zorroa standard.
- * @property keywords Set to true if this field should be considered a keyword.
- * @property keywordsBoost The keywords boost level for the field.
- * @property value The value of the field, if the field is resolved against an asset.
- * @property fieldEditId Will be the unique ID of an edit, if the field has been edited on a given asset.
+ * @property custom True if the Field is a custom attribute.
  */
-class Field(
-    val id: UUID,
+@ApiModel(value = "Field Spec", description = "Contains everything needed to create a Field.")
+class FieldSpec(
     val name: String,
+    var attrName: String,
+    var attrType: AttrType,
+    var custom: Boolean = false
+) : BaseFieldSpec() {
+
+    constructor(spec: FieldSpecCustom, attrName: String) : this(spec.name, attrName, spec.attrType) {
+        this.editable = spec.editable
+        this.keywords = spec.keywords
+        this.keywordsBoost = spec.keywordsBoost
+        this.suggest = spec.suggest
+        this.options = spec.options
+        this.custom = true
+    }
+
+    constructor(spec: FieldSpecExpose, attrType: AttrType) : this(spec.name, spec.attrName, attrType) {
+        this.editable = spec.editable
+        this.keywords = spec.keywords
+        this.keywordsBoost = spec.keywordsBoost
+        this.suggest = spec.suggest
+        this.options = spec.options
+        this.custom = false
+    }
+}
+
+/**
+ * The properties required to create a new [Field] that points at a custom ES attribute.
+ *
+ * @property name The name of the field, aka the label.
+ * @property attrType The type of attribute.
+ */
+class FieldSpecCustom(
+    val name: String,
+    var attrType: AttrType
+) : BaseFieldSpec()
+
+@ApiModel("Field Spec Expose", description = "Properties required to expose an existing ES attribute.")
+class FieldSpecExpose(
+
+    @ApiModelProperty("Name/label of the Field.")
+    val name: String,
+
+    @ApiModelProperty("ES attribute name.")
+    var attrName: String,
+
+    @ApiModelProperty("Type of the attribute.")
+    var attrType: AttrType? = null,
+
+    @JsonIgnore
+    @ApiModelProperty("Forces the attrType value to be used. This is only done internally.")
+    var forceType: Boolean = false
+
+) : BaseFieldSpec()
+
+@ApiModel(
+    "Field", description = "Field describes the display properties for a given ES attribute. " +
+        "Each ES attribute can be exposed as a Field, which defines what users can see."
+)
+class Field(
+
+    @ApiModelProperty("UUID of the Field.")
+    val id: UUID,
+
+    @ApiModelProperty("Display name of the Field.")
+    val name: String,
+
+    @ApiModelProperty("ES attribute name.")
     val attrName: String,
+
+    @ApiModelProperty("Type of the Field.")
     val attrType: AttrType,
+
+    @ApiModelProperty("If true this Field can be edited.")
     val editable: Boolean,
+
+    @ApiModelProperty("If true this is a custom user-created Field.")
     val custom: Boolean,
+
+    @ApiModelProperty("If true this Field will get a keywords field and be searchable.")
     val keywords: Boolean,
+
+    @ApiModelProperty("Boost value for the keywords results.")
     val keywordsBoost: Float,
+
+    @ApiModelProperty("If true this Field will show up in the list of suggestions.")
     val suggest: Boolean,
+
+    @ApiModelProperty("The data stored in this field must be a list.")
+    val requireList: Boolean,
+
+    @ApiModelProperty("List of valid options for this Field.")
     val options: List<Any>? = null,
+
+    @ApiModelProperty("Current value of this Field, if the field is resolved against an asset..")
     val value: Any? = null,
+
+    @ApiModelProperty("UUID of the Field Edit that set the value.")
     val fieldEditId: UUID? = null
 ) {
     companion object {
@@ -127,58 +229,91 @@ class Field(
  * @property editable If the field is editable or not.
  * @property keywords Set to true if this field should be considered a keyword.
  * @property keywordsBoost The keywords boost level for the field.
+ * @property suggest True the field should drive suggestions.
  * @property options Available options.
  */
+@ApiModel("Field Update Spec", description = "Describes the properties which can be updated on a Field.")
 class FieldUpdateSpec(
+
+    @ApiModelProperty("Name/label of the Field.")
     val name: String,
+
+    @ApiModelProperty("If true this Field is editable.")
     val editable: Boolean,
+
+    @ApiModelProperty("If true this field is considered a keyword.")
     var keywords: Boolean,
+
+    @ApiModelProperty("Keywords boost level for the field.")
     val keywordsBoost: Float,
+
+    @ApiModelProperty("If true this field will be considered for auto-complete suggestions.")
     val suggest: Boolean,
+
+    @ApiModelProperty("The data stored in this field must be a list.")
+    val requireList: Boolean,
+
+    @ApiModelProperty("Available options for this Field's values.")
     val options: List<Any>? = null
+
 )
 
-/**
- * The properties required to create a FieldSet.
- *
- * @property name The name or label of field set.
- * @property linkExpression A query string expression used by the server to determine
- *  if an asset should display a field set.
- * @property fieldIds Unique field ids in the field set. Optional.
- * @property fieldSpecs A set of field specs which will add fields and then assign them to the field set.
- */
+@ApiModel("Field Set Spec", description = "Properties required to create a FieldSet.")
 class FieldSetSpec(
+
+    @ApiModelProperty("Name/label of Field Set.")
     val name: String,
+
+    @ApiModelProperty(
+        "Query string expression used by the server to determine if an asset should display a " +
+            "field set."
+    )
     val linkExpression: String? = null,
+
+    @ApiModelProperty("UUIDs of Fields in this Field Set.")
     var fieldIds: List<UUID>? = null,
-    var fieldSpecs: List<FieldSpec>? = null
+
+    @ApiModelProperty("Alternative to fieldIds, provide a list of attribute names which get added to the field set.")
+    var attrNames: List<String>? = null
 )
 
-/**
- * A FieldSet is a collection of fields grouped together under a name.
- *
- * @property id The unique ID of the field set.
- * @property name The name or label of field set.
- * @property linkExpression A query string expression used by the server to determine
- *  if an asset should display a field set.
- * @property fields The fields in the field set. Only populated in some cases.
- */
+@ApiModel("Field Set", description = "Collection of Fields grouped together under a name.")
 class FieldSet(
+
+    @ApiModelProperty("UUID of the Field Set.")
     val id: UUID,
+
+    @ApiModelProperty("Name of the Field Set.")
     val name: String,
+
+    @ApiModelProperty(
+        "Query string expression used by the server to determine if an asset should display a " +
+            "field set."
+    )
     val linkExpression: String? = null,
+
+    @ApiModelProperty("Fields in the Field Set. Only populated in some cases.")
     var fields: MutableList<Field>? = null
+
 )
 
+@ApiModel("Field Set Filter", description = "Search filter for finding Field Sets.")
 class FieldSetFilter(
+
+    @ApiModelProperty("Field Set UUIDs to match.")
     val ids: List<UUID>? = null,
+
+    @ApiModelProperty("Field Set names to match.")
     val names: List<String>? = null
+
 ) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-            mapOf("id" to "field_set.pk_field_set",
-                    "name" to "field_set.str_name")
+        mapOf(
+            "id" to "field_set.pk_field_set",
+            "name" to "field_set.str_name"
+        )
 
     override fun build() {
 
@@ -201,21 +336,37 @@ class FieldSetFilter(
     }
 }
 
+@ApiModel("Field Filter", description = "Search filter finding Fields.")
 class FieldFilter(
+
+    @ApiModelProperty("Field UUIDs to match.")
     val ids: List<UUID>? = null,
+
+    @ApiModelProperty("Attribute Types to match.")
     val attrTypes: List<AttrType>? = null,
+
+    @ApiModelProperty("Attribute names to match.")
     val attrNames: List<String>? = null,
+
+    @ApiModelProperty("Keywords setting to match.")
     val keywords: Boolean? = null,
+
+    @ApiModelProperty("Editable setting to match.")
     val editable: Boolean? = null,
+
+    @ApiModelProperty("Suggest setting to match.")
     val suggest: Boolean? = null
+
 ) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-            mapOf("id" to "field.pk_field",
-                    "name" to "field.str_name",
-                    "attrType" to "field.int_attr_type",
-                    "attrName" to "field.int_attr_name")
+        mapOf(
+            "id" to "field.pk_field",
+            "name" to "field.str_name",
+            "attrType" to "field.int_attr_type",
+            "attrName" to "field.int_attr_name"
+        )
 
     override fun build() {
 

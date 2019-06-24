@@ -155,6 +155,9 @@ open abstract class AbstractAssetService : AssetService {
     @Autowired
     lateinit var clusterLockExecutor: ClusterLockExecutor
 
+    @Autowired
+    lateinit var indexRoutingService: IndexRoutingService
+
     /**
      * Prepare a list of assets to be created.  Updated assets are not prepped.
      *
@@ -693,7 +696,7 @@ open abstract class AbstractAssetService : AssetService {
                         fieldId = field.id,
                         attrName = field.attrName,
                         scope = "undo edit",
-                        value = edit.oldValue)
+                        newValue = edit.oldValue)
                 auditLogDao.create(aspec)
                 return true
             } else {
@@ -716,6 +719,15 @@ open abstract class AbstractAssetService : AssetService {
         if (!field.attrType.isValid(spec.newValue)) {
             throw java.lang.IllegalArgumentException("The value ${spec.newValue} " +
                     "for field ${field.name} is not the correct type")
+        }
+
+        if (field.requireList) {
+            if (spec.newValue != null) {
+                if (spec.newValue !is Collection<*>) {
+                    throw java.lang.IllegalArgumentException("The value ${spec.newValue} " +
+                        "for field ${field.name} must be a list.")
+                }
+            }
         }
 
         val updateReq = if (spec.newValue == null) {
@@ -745,7 +757,8 @@ open abstract class AbstractAssetService : AssetService {
                     fieldId = field.id,
                     attrName = field.attrName,
                     scope = "manual edit",
-                    value = spec.newValue)
+                    oldValue = oldValue,
+                    newValue = spec.newValue)
             auditLogDao.create(aspec)
             return fieldEdit
         } else {
@@ -976,6 +989,10 @@ class AssetServiceImpl : AbstractAssetService(), AssetService {
          * We have to do this backwards here because we're relying on ES to
          * merge existing docs and updates together.
          */
+        if (indexRoutingService.isReIndexRoute()) {
+            spec.skipAssetPrep = true
+        }
+
         val prepped = prepAssets(spec)
         val txResult = assetDao.batchCreateOrReplace(prepped.assets)
 

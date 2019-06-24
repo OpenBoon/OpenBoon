@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Blob
 import com.zorroa.archivist.domain.BlobSpec
 import com.zorroa.archivist.domain.SetPermissions
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.service.BlobService
+import com.zorroa.archivist.util.HttpUtils
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -16,15 +16,22 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import springfox.documentation.annotations.ApiIgnore
 
 @RestController
 @Timed
+@ApiIgnore
 class BlobController @Autowired constructor(
     private val blobService: BlobService
 ) {
 
     @PostMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}"])
-    fun set(@RequestBody data: Any, @PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Blob {
+    fun set(
+        @RequestBody data: Any,
+        @PathVariable app: String,
+        @PathVariable feature: String,
+        @PathVariable name: String
+    ): Blob {
         return blobService.set(app, feature, name, data)
     }
 

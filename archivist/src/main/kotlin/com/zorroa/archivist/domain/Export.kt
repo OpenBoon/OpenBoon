@@ -1,16 +1,19 @@
 package com.zorroa.archivist.domain
 
 import com.zorroa.archivist.search.AssetSearch
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
-/**
- * Defines fields needed to make new ExportFile.
- * @property storageId: The id of the exported file.
- * @property filename: The filename the server will set when downloaded.
- */
+@ApiModel("Export File Spec", description = "Defines fields needed to make new Export File.")
 data class ExportFileSpec(
+
+    @ApiModelProperty("UUID of the Storage.")
     var storageId: String,
+
+    @ApiModelProperty("Filename the server will set when downloaded.")
     var filename: String
+
 )
 
 /**
@@ -26,12 +29,22 @@ data class ExportFile(
     val timeCreated: Long
 )
 
-/**
- * Defines fields needed to create a new export.
- */
+@ApiModel("Export Spec", description = "Defines fields needed to create a new export.")
 data class ExportSpec(
+
+    @ApiModelProperty("Name of the Export.")
     var name: String?,
+
+    @ApiModelProperty("Assets from this search filter will get added to the Export.")
     var search: AssetSearch,
+
+    @ApiModelProperty("List of processors to use when processing the Export.")
     var processors: List<ProcessorRef> = mutableListOf(),
+
+    @ApiModelProperty("Args to send to the processors.")
     var args: Map<String, Any> = mutableMapOf(),
-    var env: Map<String, String> = mutableMapOf())
+
+    @ApiModelProperty("Environment to use when processing the Export")
+    var env: Map<String, String> = mutableMapOf()
+
+)

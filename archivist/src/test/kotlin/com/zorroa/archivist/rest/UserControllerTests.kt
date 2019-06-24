@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.UserFilter
 import com.zorroa.archivist.domain.UserPasswordUpdate
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSettings
+import com.zorroa.archivist.security.IrmJwtValidatorTest
 import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getUserId
@@ -24,8 +25,9 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
 import java.util.stream.Collectors
@@ -385,5 +387,19 @@ class UserControllerTests : MockMvcTest() {
                 object : TypeReference<List<Permission>>() {
                 })
         assertEquals(response, userService.getPermissions(user))
+    }
+
+    @Test
+    fun testJwtTokeRedirect() {
+        val token = IrmJwtValidatorTest::class.java.getResource("/irm-qa-tester-token.jwt").readText()
+
+        mvc.perform(
+            post("/api/v1/auth/token")
+                .param("insight_auth_token", token)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isTemporaryRedirect)
+            .andExpect(redirectedUrl("/"))
+            .andReturn()
     }
 }

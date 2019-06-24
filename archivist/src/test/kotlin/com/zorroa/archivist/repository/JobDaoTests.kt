@@ -68,13 +68,14 @@ class JobDaoTests : AbstractTest() {
                 args = mutableMapOf("foo" to 1),
                 env = mutableMapOf("foo" to "bar"))
         val t1 = jobDao.create(spec, PipelineType.Import)
-        val update = JobUpdateSpec("bilbo_baggins", 5, true, System.currentTimeMillis())
+        val update = JobUpdateSpec("bilbo_baggins", 5, true, System.currentTimeMillis(), 5)
         assertTrue(jobDao.update(t1, update))
         val t2 = jobDao.get(t1.id)
         assertEquals(update.name, t2.name)
         assertEquals(update.priority, t2.priority)
         assertEquals(update.paused, t2.paused)
         assertEquals(update.timePauseExpired, t2.timePauseExpired)
+        assertEquals(update.maxRunningTasks, t2.maxRunningTasks)
     }
 
     @Test
@@ -185,6 +186,29 @@ class JobDaoTests : AbstractTest() {
         filter = JobFilter(paused = true)
         jobs = jobDao.getAll(filter)
         assertEquals(0, jobs.size())
+    }
+
+    @Test
+    fun testAdminUserFilter() {
+        for (i in 1..3) {
+            val spec = JobSpec("run_some_stuff_$i",
+                emptyZpsScript("test_script"))
+            jobDao.create(spec, PipelineType.Import)
+        }
+
+        authenticate("user")
+
+        var filter = JobFilter()
+        var jobs = jobDao.getAll(filter)
+        assertEquals(0, jobs.size())
+        assertEquals(0, jobs.page.totalCount)
+
+        authenticate("admin")
+
+        filter = JobFilter()
+        jobs = jobDao.getAll(filter)
+        assertEquals(3, jobs.size())
+        assertEquals(3, jobs.page.totalCount)
     }
 
     @Test

@@ -85,7 +85,7 @@ class JobControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdate() {
-        val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis())
+        val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis(), 5)
 
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}")
@@ -99,6 +99,7 @@ class JobControllerTests : MockMvcTest() {
         val t1 = deserialize(result, Job::class.java)
         assertEquals(spec.name, t1.name)
         assertEquals(spec.priority, t1.priority)
+        assertEquals(spec.maxRunningTasks, t1.maxRunningTasks)
     }
 
     @Test

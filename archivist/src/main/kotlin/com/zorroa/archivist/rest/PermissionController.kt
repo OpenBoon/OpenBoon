@@ -11,6 +11,9 @@ import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.util.HttpUtils
 import io.micrometer.core.annotation.Timed
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,61 +28,50 @@ import java.util.UUID
 
 @RestController
 @Timed
+@Api(tags = ["Permission"], description = "Operations for interacting with Permissions.")
 class PermissionController @Autowired constructor(
     val permissionService: PermissionService,
     val indexService: IndexService
 ) {
-    /**
-     * Return all available permissions.
-     */
+
+    @ApiOperation("Gets all Permissions.")
     @GetMapping(value = ["/api/v1/permissions"])
     fun getAll(): List<Permission> = permissionService.getPermissions()
 
-    /**
-     * Return all available permissions.
-     */
+    @ApiOperation("Gets a list of all Permission names.")
     @GetMapping(value = ["/api/v1/permissions/_names"])
     fun getAllNames(): List<String> = permissionService.getPermissionNames()
 
-    /**
-     * Get a particular permission record.
-     */
+    @ApiOperation("Get a Permission.")
     @RequestMapping(value = ["/api/v1/permissions/{id}"])
-    fun get(@PathVariable id: UUID): Permission {
+    fun get(@ApiParam("UUID of the Permission.") @PathVariable id: UUID): Permission {
         return permissionService.getPermission(id)
     }
 
-    /**
-     * Find a particular permission record using a filter.
-     */
+    @ApiOperation("Searches for a single Permission.",
+        notes = "Throws an error if more than 1 result is returned based on the given filter.")
     @RequestMapping(value = ["/api/v1/permissions/_findOne"], method = [RequestMethod.POST, RequestMethod.GET])
     fun find(@RequestBody(required = false) filter: PermissionFilter?): Permission {
         return permissionService.findPermission(filter ?: PermissionFilter())
     }
 
-    /**
-     * Return true if permission exits.
-     */
+    @ApiOperation("Determine if a Permission exists.")
     @RequestMapping(value = ["/api/v1/permissions/_exists/{name}"])
-    fun exists(@PathVariable name: String): Boolean? {
+    fun exists(@ApiParam("Name of the Permission.") @PathVariable name: String): Boolean? {
         return permissionService.permissionExists(name)
     }
 
-    /**
-     * Create a new permission.
-     */
+    @ApiOperation("Create a Permission.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/permissions"])
-    fun create(@RequestBody builder: PermissionSpec): Permission {
+    fun create(@ApiParam("Permission to create.") @RequestBody builder: PermissionSpec): Permission {
         return permissionService.createPermission(builder)
     }
 
-    /**
-     * Delete a permission.
-     */
+    @ApiOperation("Delete a Permission.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @DeleteMapping(value = ["/api/v1/permissions/{id}"])
-    fun delete(@PathVariable id: String): Any {
+    fun delete(@ApiParam("UUID of the Permission.") @PathVariable id: String): Any {
         val p = permissionService.getPermission(id)
         return HttpUtils.status("permissions", id, "delete", permissionService.deletePermission(p))
     }

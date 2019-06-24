@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldFilter
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecExpose
 import com.zorroa.archivist.domain.FieldUpdateSpec
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
@@ -20,36 +20,36 @@ import kotlin.test.assertTrue
 
 class FieldControllerTests : MockMvcTest() {
 
+    val fieldSpec = FieldSpecExpose("Media Clip Parent", "media.clip.parent")
+
     @Test
-    fun testCreateField() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
+    fun testExposeField() {
         val session = admin()
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields")
+        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_expose")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(spec)))
+                .content(Json.serialize(fieldSpec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
         val field = Json.Mapper.readValue<Field>(req.response.contentAsString, Field::class.java)
-        assertEquals(spec.name, field.name)
+        assertEquals(fieldSpec.name, field.name)
         assertEquals(AttrType.StringExact, field.attrType)
-        assertEquals(spec.attrName, field.attrName)
+        assertEquals(fieldSpec.attrName, field.attrName)
     }
 
     @Test
     fun testDeleteField() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
-        val field = fieldSystemService.createField(spec)
+        val field = fieldSystemService.createField(fieldSpec)
         val session = admin()
 
         val req = mvc.perform(MockMvcRequestBuilders.delete("/api/v1/fields/${field.id}")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(spec)))
+                .content(Json.serialize(fieldSpec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
@@ -59,10 +59,9 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateField() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
-        val field = fieldSystemService.createField(spec)
+        val field = fieldSystemService.createField(fieldSpec)
         val updateSpec = FieldUpdateSpec(
-                "test", true, true, 2.0f, false,
+                "test", true, true, 2.0f, false, requireList = false,
                 options = listOf("a", "b", "c"))
 
         val session = admin()
@@ -88,8 +87,7 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testGet() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
-        val field = fieldSystemService.createField(spec)
+        val field = fieldSystemService.createField(fieldSpec)
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/${field.id}")
@@ -105,8 +103,7 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testSearch() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
-        val field = fieldSystemService.createField(spec)
+        val field = fieldSystemService.createField(fieldSpec)
 
         val filter = FieldFilter(ids = listOf(field.id))
 
@@ -127,8 +124,7 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testFindOne() {
-        val spec = FieldSpec("Media Clip Parent", "media.clip.parent", null, false)
-        val field = fieldSystemService.createField(spec)
+        val field = fieldSystemService.createField(fieldSpec)
 
         val result = resultForPostContent<Field>(
             "/api/v1/fields/_findOne",
@@ -139,6 +135,7 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testGetWithNullBody() {
+        setupEmbeddedFieldSets()
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/_search")
                 .session(session)

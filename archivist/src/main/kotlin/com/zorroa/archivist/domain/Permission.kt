@@ -3,12 +3,18 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import org.springframework.security.core.GrantedAuthority
 import java.util.UUID
 
+@ApiModel("Set Permissions", description = "Directions for setting a Permission.")
 class SetPermissions constructor() {
 
+    @ApiModelProperty("ACL to set.")
     var acl: Acl? = null
+
+    @ApiModelProperty("If true the Permissions will be replaced instead of appended.")
     var replace = false
 
     constructor(acl: Acl?, replace: Boolean) : this() {
@@ -24,11 +30,21 @@ class PermissionUpdateSpec(
     val description: String
 )
 
+@ApiModel("Permission Spec", description = "Attributes required to create a Permission.")
 class PermissionSpec(
+
+    @ApiModelProperty("Type of the Permission.")
     var type: String,
+
+    @ApiModelProperty("Name of the Permission.")
     var name: String,
+
+    @ApiModelProperty("Description of the Permission.")
     var description: String = "",
+
+    @ApiModelProperty("Source of the Permission.")
     var source: String = "local"
+
 ) {
 
     constructor(authority: String) : this(authority.split(Permission.JOIN)[0],
@@ -38,20 +54,25 @@ class PermissionSpec(
 /**
  * A Permission describes a group or role.  Permission implements from GrantedAuthority which
  * allows it to be used by Spring directly.
- *
- * @param id The unique ID of the permission
- * @param name The name of the permission
- * @param type The type of permission.
- * @param description A description for the permission
- * @param immutable True if the permission can be changed.
- *
  */
+@ApiModel("Permission", description = "Describes a user Permission.")
 class Permission constructor (
+
+    @ApiModelProperty("UUID of the Permission.")
     val id: UUID,
+
+    @ApiModelProperty("Name of the Permission.")
     val name: String,
+
+    @ApiModelProperty("Type of the Permission.")
     val type: String,
+
+    @ApiModelProperty("Description of the Permission.")
     val description: String,
-    @JsonIgnore val immutable: Boolean = false
+
+    @JsonIgnore
+    val immutable: Boolean = false
+
 ) : GrantedAuthority {
 
     val fullName = "$type${Permission.JOIN}$name"

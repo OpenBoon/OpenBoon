@@ -13,6 +13,7 @@ import com.zorroa.common.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
 
@@ -36,17 +37,21 @@ class ExportFileDaoTests : AbstractTest() {
 
     @Before
     fun init() {
-        val espec = ExportSpec("foo",
-                AssetSearch(),
-                mutableListOf(),
-                mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"))
+        val espec = ExportSpec(
+            "foo",
+            AssetSearch(),
+            mutableListOf(),
+            mutableMapOf("foo" to "bar"),
+            mutableMapOf("foo" to "bar")
+        )
         export = exportService.create(espec, resolve = false)
 
         val spec = FileStorageSpec("job", export.id, "exported/foo.bar")
         val storage = fileStorageService.get(spec)
-        exportFile = exportFileDao.create(export, storage.getServableFile(),
-                ExportFileSpec(storage.id, "foo.bar"))
+        exportFile = exportFileDao.create(
+            export, storage.getServableFile(),
+            ExportFileSpec(storage.id, "foo.bar")
+        )
     }
 
     @Test
@@ -57,6 +62,12 @@ class ExportFileDaoTests : AbstractTest() {
         assertEquals(exportFile.name, ef.name)
         assertEquals(exportFile.size, ef.size)
         assertEquals(exportFile.timeCreated, ef.timeCreated)
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testGetFailureWrongUser() {
+        authenticate("user")
+        exportFileDao.get(exportFile.id)
     }
 
     @Test

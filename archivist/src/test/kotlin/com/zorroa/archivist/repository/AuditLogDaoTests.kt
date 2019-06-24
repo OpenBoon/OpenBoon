@@ -5,9 +5,10 @@ import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.AuditLogEntrySpec
 import com.zorroa.archivist.domain.AuditLogFilter
 import com.zorroa.archivist.domain.AuditLogType
-import com.zorroa.archivist.domain.FieldSpec
+import com.zorroa.archivist.domain.FieldSpecCustom
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.util.Json
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -30,7 +31,7 @@ class AuditLogDaoTests : AbstractTest() {
         assertEquals(spec.type, entry.type)
         assertEquals(spec.message, entry.message)
         assertEquals(spec.attrName, entry.attrName)
-        assertEquals(spec.value, entry.value)
+        assertEquals(spec.newValue, entry.newValue)
     }
 
     @Test
@@ -39,15 +40,15 @@ class AuditLogDaoTests : AbstractTest() {
                 UUID.fromString("D585D35C-AF3D-4AEB-A78F-42C61C1077CB"),
                 AuditLogType.Changed,
                 attrName = "irm.documentType",
-                value = "cat")
+                newValue = "cat")
         val entry = auditLogDao.create(spec)
         assertEquals(spec.attrName, entry.attrName)
-        assertEquals(Json.serializeToString("cat"), entry.value)
+        assertEquals(Json.serializeToString("cat"), entry.newValue)
     }
 
     @Test
     fun testCreateFieldEdit() {
-        val fspec = FieldSpec("Notes", null, AttrType.StringContent, true)
+        val fspec = FieldSpecCustom("Notes", AttrType.StringContent)
         val field = fieldSystemService.createField(fspec)
 
         val spec = AuditLogEntrySpec(
@@ -55,7 +56,7 @@ class AuditLogDaoTests : AbstractTest() {
                 AuditLogType.Changed,
                 fieldId = field.id,
                 attrName = field.attrName,
-                value = "cat")
+                newValue = "cat")
         val entry = auditLogDao.create(spec)
         assertEquals(spec.attrName, entry.attrName)
 
@@ -71,7 +72,7 @@ class AuditLogDaoTests : AbstractTest() {
                     UUID.fromString("D585D35C-AF3D-4AEB-A78F-42C61C1077CB"),
                     AuditLogType.Changed,
                     attrName = "irm.documentType",
-                    value = "cat"))
+                    newValue = "cat"))
         }
 
         assertEquals(10, auditLogDao.batchCreate(specs))
@@ -87,7 +88,7 @@ class AuditLogDaoTests : AbstractTest() {
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
                     attrName = "irm.documentType",
-                    value = "cat"))
+                    newValue = "cat"))
         }
         val filter = AuditLogFilter(assetIds = listOf(UUID.fromString(assetId)))
 
@@ -105,7 +106,7 @@ class AuditLogDaoTests : AbstractTest() {
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
                     attrName = "irm.documentType",
-                    value = "cat"))
+                    newValue = "cat"))
         }
         val filter = AuditLogFilter(assetIds = listOf(UUID.fromString(assetId), UUID.randomUUID()))
         assertEquals(10, auditLogDao.batchCreate(specs))
@@ -122,7 +123,7 @@ class AuditLogDaoTests : AbstractTest() {
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
                     attrName = "irm.documentType",
-                    value = "cat"))
+                    newValue = "cat"))
         }
         val filter = AuditLogFilter(userIds = listOf(getUserId()))
         assertEquals(10, auditLogDao.batchCreate(specs))
@@ -139,7 +140,7 @@ class AuditLogDaoTests : AbstractTest() {
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
                     attrName = "irm.documentType",
-                    value = "cat"))
+                    newValue = "cat"))
         }
         val filter = AuditLogFilter(
                 assetIds = listOf(UUID.fromString(assetId)),
@@ -156,11 +157,14 @@ class AuditLogDaoTests : AbstractTest() {
         val specs = mutableListOf<AuditLogEntrySpec>()
         val assetId = "D585D35C-AF3D-4AEB-A78F-42C61C1077CB"
         for (i in 1..10) {
-            specs.add(AuditLogEntrySpec(
+            specs.add(
+                AuditLogEntrySpec(
                     UUID.fromString(assetId),
                     AuditLogType.Changed,
                     attrName = "irm.documentType",
-                    value = "cat"))
+                    newValue = "cat"
+                )
+            )
         }
         auditLogDao.batchCreate(specs)
         // Just test the DB allows us to sort on each defined sortMap col
@@ -171,5 +175,73 @@ class AuditLogDaoTests : AbstractTest() {
             val page = auditLogDao.getAll(filter)
             assertTrue(page.size() > 0)
         }
+    }
+
+    @Test
+    fun testGetAllSortedByModifiedValue() {
+        val specs = mutableListOf<AuditLogEntrySpec>()
+        val assetId = "D585D35C-AF3D-4AEB-A78F-42C61C1077CB"
+        for (i in 1..10) {
+            specs.add(
+                AuditLogEntrySpec(
+                    UUID.fromString(assetId),
+                    AuditLogType.Changed,
+                    attrName = "irm.documentType",
+                    newValue = if (i % 2 == 0) {
+                        "cat"
+                    } else {
+                        "dog"
+                    }
+                )
+            )
+        }
+        auditLogDao.batchCreate(specs)
+
+        val filter1 = AuditLogFilter().apply {
+            sort = listOf("newValue:a")
+        }
+        assertThat(auditLogDao.getAll(filter1).list)
+            .isSortedAccordingTo(compareBy { it.newValue.toString() })
+
+        val filter2 = AuditLogFilter().apply {
+            sort = listOf("newValue:d")
+        }
+        assertThat(auditLogDao.getAll(filter2).list)
+            .isSortedAccordingTo(compareByDescending { it.newValue.toString() })
+    }
+
+    @Test
+    fun testGetAllSortedByUserEmail() {
+        val assetId = "D585D35C-AF3D-4AEB-A78F-42C61C1077CB"
+
+        val spec = AuditLogEntrySpec(
+            UUID.fromString(assetId),
+            AuditLogType.Changed,
+            attrName = "irm.documentType",
+            newValue = "deed"
+        )
+
+        authenticate()
+        auditLogDao.create(spec)
+
+        authenticate("user")
+        auditLogDao.create(spec)
+
+        authenticate("librarian")
+        auditLogDao.create(spec)
+
+        assertThat(auditLogDao.getAll(AuditLogFilter())).hasSize(3)
+
+        val filter1 = AuditLogFilter().apply {
+            sort = listOf("userEmail:a")
+        }
+        assertThat(auditLogDao.getAll(filter1).list)
+            .isSortedAccordingTo(compareBy { it.user.email })
+
+        val filter2 = AuditLogFilter().apply {
+            sort = listOf("userEmail:d")
+        }
+        assertThat(auditLogDao.getAll(filter2).list)
+            .isSortedAccordingTo(compareByDescending { it.user.email })
     }
 }

@@ -1,6 +1,8 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.core.type.TypeReference
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 
 fun zpsTaskName(zps: ZpsScript): String {
     if (zps.name == null) {
@@ -24,17 +26,33 @@ fun zpsTaskName(zps: ZpsScript): String {
 }
 
 fun emptyZpsScript(name: String): ZpsScript {
-    return ZpsScript(name,
-            null, null, null)
+    return ZpsScript(
+        name,
+        null, null, null
+    )
 }
 
+@ApiModel("ZPS Script", description = "Describes a ZPS script that can be run by the Analysts.")
 class ZpsScript(
+    @ApiModelProperty("Name of the ZPS Script.")
     var name: String?,
+
+    @ApiModelProperty("List of Processor Refs to add to the 'generate' section of the ZPS Script.")
     var generate: List<ProcessorRef>?,
+
+    @ApiModelProperty("List of Processor Refs to add to the 'over' section of the ZPS Script.")
     var over: List<Document>?,
+
+    @ApiModelProperty("List of Processor Refs to add to the 'execute' section of the ZPS Script.")
     var execute: List<ProcessorRef>?,
+
+    @ApiModelProperty("Global arguments to apply to the Processors.")
     var globalArgs: MutableMap<String, Any>? = mutableMapOf(),
+
+    @ApiModelProperty("Type of pipeline to run", allowableValues = "import,export")
     var type: PipelineType = PipelineType.Import,
+
+    @ApiModelProperty("Settings for the run of this ZPS Script.")
     var settings: MutableMap<String, Any>? = null
 ) {
     /**
@@ -83,17 +101,34 @@ class ZpsError(
     var skipped: Boolean = false
 )
 
+@ApiModel("Zps Filter")
 class ZpsFilter(
     var expr: String? = null,
     var drop: Boolean = false
 )
 
+@ApiModel("Processor Ref", description = "Describes an instance of Processor that can be run by ZPS.")
 class ProcessorRef(
+
+    @ApiModelProperty("Dot-path to the Processor's python class.")
     var className: String,
+
+    @ApiModelProperty("Args to pass to the Processor.")
     var args: Map<String, Any>? = mutableMapOf(),
+
+    @ApiModelProperty("List of Processor Refs to execute as part of this Processor Ref.")
     var execute: List<ProcessorRef>? = mutableListOf(),
+
+    @ApiModelProperty("Filters to apply to this Processor Ref.")
     var filters: List<ZpsFilter>? = mutableListOf(),
+
+    @ApiModelProperty("File types to filter on.")
     var fileTypes: Set<String>? = mutableSetOf(),
+
+    @ApiModelProperty("Envrironment variables that should be present during processor execution.")
+    val env: Map<String, String> = mutableMapOf(),
+
+    @ApiModelProperty("DEPRECATED: Always python.", hidden = true)
     val language: String = "python"
 )
 

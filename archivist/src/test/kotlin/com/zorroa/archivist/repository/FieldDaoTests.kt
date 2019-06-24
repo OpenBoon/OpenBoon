@@ -19,14 +19,13 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = FieldSpec("Notes", "document.notes",
-                AttrType.StringAnalyzed, false, true,
-                2.0f, true)
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed)
+
         val field = fieldDao.create(spec)
         assertEquals(spec.name, field.name)
         assertEquals(spec.attrType, field.attrType)
         assertEquals(spec.attrName, field.attrName)
-        assertEquals(spec.custom, field.custom)
+        assertEquals(false, field.custom)
         assertEquals(spec.editable, field.editable)
         assertEquals(spec.keywords, field.keywords)
         assertEquals(spec.keywordsBoost, field.keywordsBoost)
@@ -35,7 +34,7 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testDelete() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed)
         val field = fieldDao.create(spec)
         assertTrue(fieldDao.delete(field))
         assertFalse(fieldDao.delete(field))
@@ -43,13 +42,12 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val spec = FieldSpec("Notes", "document.notes",
-                AttrType.StringAnalyzed, false, false,
-                1.0f, false)
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed)
         val field = fieldDao.create(spec)
 
         val updateSpec = FieldUpdateSpec(
-                "test", true, true, 2.0f, true)
+            "test", true, true, 2.0f, true, requireList = true
+        )
 
         assertTrue(fieldDao.update(field, updateSpec))
         val result = fieldDao.get(field.id)
@@ -63,7 +61,7 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testGet() {
-        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false)
+        val spec = FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed)
         val field1 = fieldDao.create(spec)
         val field2 = fieldDao.get(field1.id)
         assertEquals(field1.id, field2.id)
@@ -79,10 +77,11 @@ class FieldDaoTests : AbstractTest() {
         // Clear out existing fields to make filters easier.
         fieldDao.deleteAll()
 
-        val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed, false))
-        val f2 = fieldDao.create(FieldSpec("Boats", "document.number", AttrType.NumberInteger, false))
-        val f3 = fieldDao.create(FieldSpec("Moats", "document.float",
-                AttrType.NumberFloat, true, true, 1.0f, true))
+        val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed)
+            .apply { suggest = true })
+        val f2 = fieldDao.create(FieldSpec("Boats", "document.number", AttrType.NumberInteger))
+        val f3 = fieldDao.create(FieldSpec("Moats", "document.float", AttrType.NumberFloat)
+            .apply { editable = true })
 
         var filter = FieldFilter(ids = listOf(f1.id, f2.id))
         assertEquals(2, fieldDao.getAll(filter).size())
@@ -111,10 +110,8 @@ class FieldDaoTests : AbstractTest() {
         // Clear out existing fields to make filters easier.
         fieldDao.deleteAll()
 
-        val f1 = fieldDao.create(FieldSpec("Notes",
-                "document.notes", AttrType.StringAnalyzed, false))
-        val f2 = fieldDao.create(FieldSpec("Boats",
-                "document.number", AttrType.NumberInteger, false))
+        val f1 = fieldDao.create(FieldSpec("Notes", "document.notes", AttrType.StringAnalyzed))
+        val f2 = fieldDao.create(FieldSpec("Boats", "document.number", AttrType.NumberInteger))
 
         var filter = FieldFilter(ids = listOf(f1.id))
         val result1 = fieldDao.findOne(filter)
@@ -137,6 +134,7 @@ class FieldDaoTests : AbstractTest() {
 
     @Test
     fun testGetKeywordAttrNames() {
+        setupEmbeddedFieldSets()
         var fields = fieldDao.getKeywordAttrNames()
         assertTrue(fields.isNotEmpty())
         for ((field, _) in fields) {

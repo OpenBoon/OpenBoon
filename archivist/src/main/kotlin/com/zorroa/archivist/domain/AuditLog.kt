@@ -5,6 +5,8 @@ import com.zorroa.archivist.repository.LongRangeFilter
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
@@ -42,35 +44,45 @@ enum class AuditLogType {
     Warning
 }
 
-/**
- * An AuditLogFilter is used to filter an audit log query.  Most of the properties here
- * should be self explanatory.  All properties are nullable.
- *
- * @property assetIds The unique assetIds to filter on.
- * @property userIds The unique userIds to filter on.
- * @property fieldIds The unique fieldIds to filter on.
- * @property timeCreated The time to filter on, see the [LongRangeFilter] class.
- * @property types The entry types to filter on. See [AuditLogType].
- * @property attrNames The attribute names to filter on.
- * @property sort The sort direction. Formatted as field:direction, defaults to ["timeCreated:desc"]
- */
+@ApiModel("Audit Log Filter", description = "Used to filter an audit log query.")
 class AuditLogFilter(
+
+    @ApiModelProperty("Asset UUIDs to match.")
     val assetIds: List<UUID>? = null,
+
+    @ApiModelProperty("User UUIDs to match,")
     val userIds: List<UUID>? = null,
+
+    @ApiModelProperty("Field UUIDs to match.")
     val fieldIds: List<UUID>? = null,
+
+    @ApiModelProperty("Time range to filter on.")
     val timeCreated: LongRangeFilter? = null,
+
+    @ApiModelProperty("Types to match.")
     val types: List<AuditLogType>? = null,
-    val attrNames: List<String>? = null
+
+    @ApiModelProperty("Attribute names to match.")
+    val attrNames: List<String>? = null,
+
+    @ApiModelProperty("User email addresses to match.")
+    val userEmails: List<String>? = null
+
 ) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-            mapOf("timeCreated" to "time_created",
-                    "userId" to "auditlog.pk_user_created",
-                    "assetId" to "auditlog.pk_asset",
-                    "fieldId" to "auditlog.pk_field",
-                    "types" to "auditlog.int_type",
-                    "attrName" to "auditlog.str_attr_name")
+        mapOf(
+            "timeCreated" to "time_created",
+            "userId" to "auditlog.pk_user_created",
+            "assetId" to "auditlog.pk_asset",
+            "fieldId" to "auditlog.pk_field",
+            "types" to "auditlog.int_type",
+            "attrName" to "auditlog.str_attr_name",
+            "userEmail" to "users.str_email",
+            "oldValue" to "auditlog.json_old_value",
+            "newValue" to "auditlog.json_new_value"
+        )
 
     override fun build() {
 
@@ -108,35 +120,56 @@ class AuditLogFilter(
             addToValues(it)
         }
 
-        addToWhere("pk_organization=?")
+        userEmails?.let {
+            addToWhere(JdbcUtils.inClause("users.str_email", it.size))
+            addToValues(it)
+        }
+
+        addToWhere("auditlog.pk_organization=?")
         addToValues(getOrgId())
     }
 }
 
-/**
- * An entry into the AuditLog.
- *
- * @property id The unique ID of the entry
- * @property assetId The assetId that was modified.
- * @property fieldId The fieldId that was modified.  Can be null.
- * @property user The user that generated the audit log entry.
- * @property timeCreated The time the entry was created.
- * @property type The entry type.  See AuditLogType enum.
- * @property attrName The name of the attribute changed. Can be null.
- * @property message A message associated with the log entry.
- * @property value The new value of a field or property changed.  Can be null.
- */
+@ApiModel("Audit Log Entry", description = "Describes an action taken by a User.")
 class AuditLogEntry(
+
+    @ApiModelProperty("UUID of the Audit Log Entry.")
     val id: UUID,
+
+    @ApiModelProperty("UUID of the Asset that was modified.")
     val assetId: UUID,
+
+    @ApiModelProperty("UUID of the Field that was modified.")
     val fieldId: UUID?,
+
+    @ApiModelProperty("User that took the action.")
     val user: UserBase,
+
+    @ApiModelProperty("Time the entry was created.")
     val timeCreated: Long,
+
+    @ApiModelProperty("Type of action.")
     val type: AuditLogType,
+
+    @ApiModelProperty("Name of the attribute that changed.")
     val attrName: String?,
+
+    @ApiModelProperty("Message associated with the log entry.")
     val message: String?,
-    val value: Any?
-)
+
+    @ApiModelProperty("Old value of a field or property changed.")
+    val oldValue: Any?,
+
+    @ApiModelProperty("New value of a field or property changed.")
+    val newValue: Any?
+
+) {
+    override fun toString(): String {
+        return "AuditLogEntry(id=$id, assetId=$assetId, fieldId=$fieldId, user=$user, " +
+            "timeCreated=$timeCreated, type=$type, attrName=$attrName, message=$message, " +
+            "oldValue=$oldValue, newValue=$newValue)"
+    }
+}
 
 /**
  * The properties required to create an audit log entry.
@@ -146,7 +179,8 @@ class AuditLogEntry(
  * @property fieldId The fieldId associated with the log entry.  Can be null.
  * @property message The log message.  If null, a log message will be auto-generated.
  * @property attrName The attribute name associated with the log entry.
- * @property value The new value of a field or property changed.  Can be null.
+ * @property newValue The new value of a field or property changed.  Can be null.
+ * @property oldValue The old value of a field or property changed.  Can be null.
  * @property scope The scope/sub-type of the entry.  For example, type=Changed can happen in
  * many different places, scope describes the place it occurred.
  */
@@ -156,7 +190,8 @@ class AuditLogEntrySpec(
     val fieldId: UUID? = null,
     val message: String? = null,
     val attrName: String? = null,
-    val value: Any? = null,
+    val oldValue: Any? = null,
+    val newValue: Any? = null,
     val scope: String? = null
 ) {
     constructor(
@@ -165,8 +200,8 @@ class AuditLogEntrySpec(
         fieldId: UUID? = null,
         message: String? = null,
         attrName: String? = null,
-        value: Any? = null,
+        oldValue: Any? = null,
+        newValue: Any? = null,
         scope: String? = null
-    ) :
-            this(UUID.fromString(assetId), type, fieldId, message, attrName, value, scope)
+    ) : this(UUID.fromString(assetId), type, fieldId, message, attrName, oldValue, newValue, scope)
 }

@@ -43,43 +43,57 @@ class ExportFileDaoImpl : AbstractDao(), ExportFileDao {
 
         logger.event(
             LogObject.EXPORT_FILE, LogAction.CREATE,
-                mapOf("jobId" to job.jobId, "storageId" to spec.storageId))
+            mapOf("jobId" to job.jobId, "storageId" to spec.storageId)
+        )
         return get(id)
     }
 
     override fun get(id: UUID): ExportFile {
-        return jdbc.queryForObject("$GET WHERE " +
-                "pk_export_file=? AND pk_organization=?",
-                MAPPER, id, getOrgId())
+        val user = getUser()
+        return jdbc.queryForObject(
+            "$GET WHERE " +
+                "pk_export_file=? AND export_file.pk_organization=? AND job.pk_user_created=?",
+            MAPPER, id, user.organizationId, user.id
+        )
     }
 
     override fun getAll(job: JobId): List<ExportFile> {
-        return jdbc.query("$GET WHERE pk_job=? AND pk_organization=? ORDER BY time_created DESC",
-                MAPPER, job.jobId, getUser().organizationId)
+        val user = getUser()
+        return jdbc.query(
+            "$GET WHERE " +
+                "export_file.pk_job=? AND export_file.pk_organization=? " +
+                "AND job.pk_user_created=? ORDER BY export_file.time_created DESC",
+            MAPPER, job.jobId, user.organizationId, user.id
+        )
     }
 
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
-            ExportFile(rs.getObject("pk_export_file") as UUID,
-                    rs.getObject("pk_job") as UUID,
-                    rs.getString("str_name"),
-                    rs.getString("str_path"),
-                    rs.getString("str_mime_type"),
-                    rs.getLong("int_size"),
-                    rs.getLong("time_created"))
+            ExportFile(
+                rs.getObject("pk_export_file") as UUID,
+                rs.getObject("pk_job") as UUID,
+                rs.getString("str_name"),
+                rs.getString("str_path"),
+                rs.getString("str_mime_type"),
+                rs.getLong("int_size"),
+                rs.getLong("time_created")
+            )
         }
 
-        private const val GET = "SELECT * FROM export_file "
+        private const val GET = "SELECT * FROM export_file " +
+            "INNER JOIN job ON (job.pk_job = export_file.pk_job)"
 
-        private val INSERT = JdbcUtils.insert("export_file",
-                "pk_export_file",
-                "pk_job",
-                "pk_organization",
-                "str_name",
-                "str_path",
-                "str_mime_type",
-                "int_size",
-                "time_created")
+        private val INSERT = JdbcUtils.insert(
+            "export_file",
+            "pk_export_file",
+            "pk_job",
+            "pk_organization",
+            "str_name",
+            "str_path",
+            "str_mime_type",
+            "int_size",
+            "time_created"
+        )
     }
 }

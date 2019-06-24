@@ -46,6 +46,10 @@ class SearchServiceTests : AbstractTest() {
         return true
     }
 
+    override fun requiresFieldSets(): Boolean {
+        return true
+    }
+
     @Before
     fun init() {
         fieldService.invalidateFields()

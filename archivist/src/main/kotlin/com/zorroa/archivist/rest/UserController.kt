@@ -2,8 +2,10 @@ package com.zorroa.archivist.rest
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.ApiKeySpec
 import com.zorroa.archivist.domain.LocalUserSpec
+import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserFilter
@@ -11,6 +13,9 @@ import com.zorroa.archivist.domain.UserPasswordUpdate
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSettings
 import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.sdk.security.AuthSource
+import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.IrmJwtValidator
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.getUser
@@ -24,6 +29,11 @@ import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.security.Groups
 import io.micrometer.core.annotation.Timed
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -54,16 +64,22 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @Timed
+@Api(tags = ["User"], description = "Operations for interacting with a list of Users.")
 class UserController @Autowired constructor(
     private val userService: UserService,
     private val permissionService: PermissionService,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+    private val userRegistryService: UserRegistryService,
+    private val properties: ApplicationProperties
 ) {
 
+    @ApiOperation("DEPRECATED: Do not use.", hidden = true)
     @Deprecated("See /api/v1/users/_search")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll(): List<User> = userService.getAll()
 
+    @ApiOperation("Who am I?",
+        notes = "Returns the current authenticated User.")
     @RequestMapping(value = ["/api/v1/who"])
     fun getCurrent(user: Principal?): ResponseEntity<Any> {
         return if (user != null) {
@@ -73,13 +89,22 @@ class UserController @Autowired constructor(
         }
     }
 
+    @ApiModel("API Key Request", description = "Request body used to set options for requesting an API key.")
     class ApiKeyReq(
+        @ApiModelProperty("If true the current API key will removed and a new one will be issued.")
         val replace: Boolean = false,
+
+        @ApiModelProperty("Sets the server the API key is tied to.")
         val server: String? = null
     )
 
+    @ApiOperation("Get an API key.",
+        notes = "Returns an API key that can be used for sending requests from scripts or applications.")
     @RequestMapping(value = ["/api/v1/users/api-key"], method = [RequestMethod.GET, RequestMethod.POST])
-    fun getApiKey(@RequestBody(required = false) kreq: ApiKeyReq?, hreq: HttpServletRequest): Any {
+    fun getApiKey(
+        @ApiParam("Options for getting the API key.") @RequestBody(required = false) kreq: ApiKeyReq?,
+        hreq: HttpServletRequest
+    ): Any {
         val req = kreq ?: ApiKeyReq(false, null)
 
         /**
@@ -99,6 +124,8 @@ class UserController @Autowired constructor(
         return userService.getApiKey(spec)
     }
 
+    @ApiOperation("Get a json web token (JWT).",
+        notes = "Returns a JWT that can be used to authenticate requests.")
     @GetMapping(value = ["/api/v1/users/auth-token"])
     fun getAuthToken(): Any {
         val user = getUser()
@@ -106,14 +133,49 @@ class UserController @Autowired constructor(
         return mapOf("token" to generateUserToken(user.id, key))
     }
 
-    /**
-     * An HTTP auth based login endpoint.
-     *
-     * Returns the current user as well as a X-Zorroa-Auth-Token header with a
-     * valid JWT token.
-     *
-     * @return
-     */
+    @PostMapping(value = ["/api/v1/auth/token"])
+    fun jwtCreateAndLogin(
+        @RequestParam(value = "insight_auth_token") token: String,
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ) {
+
+        val claims = IrmJwtValidator().validate(token)
+        val userId = claims["userId"]
+        val companyId = claims["companyId"]
+
+        val orgId = if (companyId == "0") {
+            Organization.DEFAULT_ORG_ID.toString()
+        } else {
+            "company-$companyId"
+        }
+
+        val mapping =
+            properties.parseToMap("archivist.security.permissions.map")
+
+        var authorities = claims["permissions"]?.let { str ->
+            str.split(",").mapNotNull { token -> mapping[token.trim()] }
+        }
+
+        val source = AuthSource("IRM", "Jwt", "Jwt", orgId, groups = authorities)
+
+        userId?.let {
+            userRegistryService.registerUser(it, source)
+        }
+
+        try {
+            response.setHeader("Location", "/")
+            response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
+        } catch (e: Exception) {
+            if (!response.isCommitted) {
+                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString())
+            }
+        }
+    }
+
+    @ApiOperation("HTTP-auth-based login.",
+        notes = "Use standard HTTP authentication to get logged in. Returns the current user as well as a " +
+            "X-Zorroa-Auth-Token header with a valid JWT.")
     @PostMapping(value = ["/api/v1/login"])
     fun login(): ResponseEntity<User> {
         val user = getUser()
@@ -126,11 +188,7 @@ class UserController @Autowired constructor(
                 .body(userService.get(user.id))
     }
 
-    /**
-     * An HTTP auth based logout endpoint.
-     *
-     * @return
-     */
+    @ApiOperation("HTTP-auth-based logout.")
     @RequestMapping(value = ["/api/v1/logout"], method = [RequestMethod.POST, RequestMethod.GET])
     fun logout(req: HttpServletRequest, rsp: HttpServletResponse): Any {
         val auth = getAuthentication()
@@ -147,22 +205,19 @@ class UserController @Autowired constructor(
         }
     }
 
-    /**
-     * This handles a password reset using the reset token and the
-     * ResetPasswordSecurityFilter.
-     * @return
-     * @throws ServletException
-     */
+    @ApiOperation("Reset your password.")
     @PostMapping(value = ["/api/v1/reset-password"])
     @Throws(ServletException::class)
     fun resetPasswordAndLogin(): User {
         return userService.get(getUserId())
     }
 
+    @ApiModel("Send Forgot Password Email Request")
     class SendForgotPasswordEmailRequest {
-        var email: String? = null
+        @ApiModelProperty("Address to send a forgot password email to.") var email: String? = null
     }
 
+    @ApiOperation("Sends a password reset email.", hidden = true)
     @PostMapping(value = ["/api/v1/send-password-reset-email"])
     @Throws(ServletException::class)
     fun sendPasswordRecoveryEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
@@ -171,6 +226,7 @@ class UserController @Autowired constructor(
         return HttpUtils.status("send-password-reset-email", "update", true)
     }
 
+    @ApiOperation("Sends an onboard email.", hidden = true)
     @PostMapping(value = ["/api/v1/send-onboard-email"])
     @Throws(ServletException::class)
     fun sendOnboardEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
@@ -179,39 +235,51 @@ class UserController @Autowired constructor(
         return HttpUtils.status("send-onboard-email", "update", true)
     }
 
+    @ApiOperation("Create a User.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/users"])
-    fun create(@RequestBody builder: UserSpec): User {
+    fun create(@ApiParam("User to create.") @RequestBody builder: UserSpec): User {
         return userService.create(builder)
     }
 
+    @ApiOperation("Create a User.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v2/users"])
-    fun createV2(@RequestBody spec: LocalUserSpec): User {
+    fun createV2(@ApiParam("User to create.") @RequestBody spec: LocalUserSpec): User {
         return userService.create(spec)
     }
 
+    @ApiOperation("Get a User.")
     @RequestMapping(value = ["/api/v1/users/{id}"])
-    operator fun get(@PathVariable id: UUID): User {
+    operator fun get(@ApiParam("UUID of the User.") @PathVariable id: UUID): User {
         validatePermissions(id)
         return userService.get(id)
     }
 
+    @ApiOperation("Determine if a User exists.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users/{username}/_exists"])
-    operator fun get(@PathVariable username: String): Map<*, *> {
+    operator fun get(@ApiParam("Username.") @PathVariable username: String): Map<*, *> {
         return ImmutableMap.of("result", userService.exists(username, null))
     }
 
+    @ApiOperation("Update a User's profile.")
     @PutMapping(value = ["/api/v1/users/{id}/_profile"])
-    fun updateProfile(@RequestBody form: UserProfileUpdate, @PathVariable id: UUID): Any {
+    fun updateProfile(
+        @ApiParam("Updated User profile.") @RequestBody form: UserProfileUpdate,
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): Any {
         validatePermissions(id)
         val user = userService.get(id)
         return HttpUtils.updated("users", id, userService.update(user, form), userService.get(id))
     }
 
+    @ApiOperation("Change a User's password.")
     @PutMapping(value = ["/api/v1/users/{id}/_password"])
-    fun updatePassword(@RequestBody form: UserPasswordUpdate, @PathVariable id: UUID): Any {
+    fun updatePassword(
+        @ApiParam("New and old passwords.") @RequestBody form: UserPasswordUpdate,
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): Any {
         validatePermissions(id)
 
         /**
@@ -230,16 +298,25 @@ class UserController @Autowired constructor(
         return HttpUtils.updated("users", id, true, user)
     }
 
+    @ApiOperation("Update a User's settings.")
     @PutMapping(value = ["/api/v1/users/{id}/_settings"])
-    fun updateSettings(@RequestBody settings: UserSettings, @PathVariable id: UUID): Any {
+    fun updateSettings(
+        @ApiParam("Updated settings.") @RequestBody settings: UserSettings,
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): Any {
         validatePermissions(id)
         val user = userService.get(id)
         return HttpUtils.updated("users", id, userService.updateSettings(user, settings), userService.get(id))
     }
 
+    @ApiOperation("Enable or disable a User.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/_enabled"])
-    fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: UUID): Any {
+    fun disable(
+        @ApiParam("Object that sets the enabled status. The value of the 'enabled' entry must be 'true' or " +
+            "'false. Example: {\"enabled\": true}") @RequestBody settings: Map<String, Boolean>,
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): Any {
         val user = userService.get(id)
         if (id == getUserId()) {
             throw IllegalArgumentException("You cannot disable yourself")
@@ -253,40 +330,35 @@ class UserController @Autowired constructor(
                 userService.setEnabled(user, settings.getValue("enabled")))
     }
 
-    /**
-     * Return the list of permissions for the given user id.
-     *
-     * @param id
-     * @return
-     */
+    @ApiOperation("Get Permissions for a User.")
     @GetMapping(value = ["/api/v1/users/{id}/permissions"])
-    fun getPermissions(@PathVariable id: UUID): List<Permission> {
+    fun getPermissions(@ApiParam("UUID of the User.") @PathVariable id: UUID): List<Permission> {
         validatePermissions(id)
         val user = userService.get(id)
         return userService.getPermissions(user)
     }
 
-    /**
-     * Set an array of integers that correspond to permission IDs.  These
-     * will be assigned to the user as permissions.  The Permission object
-     * assigned are returned back.
-     *
-     * @param pids
-     * @param id
-     * @return
-     */
+    @ApiOperation("Update Permissions for a User.",
+        notes = "The complete list of permissions a User should have needs to be sent in the request.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions"])
-    fun setPermissions(@RequestBody pids: List<UUID>, @PathVariable id: UUID): List<Permission> {
+    fun setPermissions(
+        @ApiParam("list of Permission UUIDs to assign to the User.") @RequestBody pids: List<UUID>,
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): List<Permission> {
         val user = userService.get(id)
         val perms = pids.stream().map { i -> permissionService.getPermission(i) }.collect(Collectors.toList())
         userService.setPermissions(user, perms)
         return userService.getPermissions(user)
     }
 
+    @ApiOperation("Add Permissions to a User.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_add"])
-    fun addPermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
+    fun addPermissions(
+        @ApiParam("List of Permission UUIDs to add to the User.") @RequestBody pids: List<String>,
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): List<Permission> {
         val user = userService.get(id)
         val resolved = Sets.newHashSetWithExpectedSize<Permission>(pids.size)
         pids.mapTo(resolved) { permissionService.getPermission(it) }
@@ -294,9 +366,13 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
+    @ApiOperation("Remove Permissions from a User.")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_remove"])
-    fun removePermissions(@RequestBody pids: List<String>, @PathVariable id: UUID): List<Permission> {
+    fun removePermissions(
+        @ApiParam("List of Permission UUIDs to remove from the User.") @RequestBody pids: List<String>,
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): List<Permission> {
         val user = userService.get(id)
         val resolved = Sets.newHashSetWithExpectedSize<Permission>(pids.size)
         pids.mapTo(resolved) { permissionService.getPermission(it) }
@@ -304,11 +380,12 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
+    @ApiOperation("Search for Users.")
     @PostMapping(value = ["/api/v1/users/_search"])
     fun search(
-        @RequestBody(required = false) req: UserFilter?,
-        @RequestParam(value = "from", required = false) from: Int?,
-        @RequestParam(value = "count", required = false) count: Int?
+        @ApiParam("Search filter.") @RequestBody(required = false) req: UserFilter?,
+        @ApiParam("Result number to start from.") @RequestParam(value = "from", required = false) from: Int?,
+        @ApiParam("Number of results per page.") @RequestParam(value = "count", required = false) count: Int?
     ): KPagedList<User> {
         val filter = req ?: UserFilter()
         from?.let { filter.page.from = it }
@@ -316,8 +393,10 @@ class UserController @Autowired constructor(
         return userService.getAll(filter)
     }
 
+    @ApiOperation("Search for a single User.",
+        notes = "Throws an error if more than 1 result is returned based on the given filter.")
     @PostMapping(value = ["/api/v1/users/_findOne"])
-    fun findOne(@RequestBody(required = false) req: UserFilter?): User {
+    fun findOne(@ApiParam("Search filter.") @RequestBody(required = false) req: UserFilter?): User {
         return userService.findOne(req ?: UserFilter())
     }
 
