@@ -83,6 +83,10 @@ interface UserService {
 
     fun delete(user: User): Boolean
 
+    fun setLanguage(user: User, language: String): Boolean
+
+    fun setAuthAttrs(user: User, attrs: Map<String, String>): Boolean
+
     fun updateSettings(user: User, settings: UserSettings): Boolean
 
     fun setEnabled(user: User, value: Boolean): Boolean
@@ -157,18 +161,24 @@ class UserRegistryServiceImpl @Autowired constructor(
             SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
 
             val spec = UserSpec(
-                    username,
-                    UUID.randomUUID().toString() + UUID.randomUUID().toString(),
-                    getEmail(username, source),
-                    source.authSourceId,
-                    firstName = source.attrs.getOrDefault("first_name", "First"),
-                    lastName = source.attrs.getOrDefault("last_name", "Last"),
-                    authAttrs = source.attrs)
+                username,
+                UUID.randomUUID().toString() + UUID.randomUUID().toString(),
+                getEmail(username, source),
+                source.authSourceId,
+                firstName = source.attrs.getOrDefault("first_name", "First"),
+                lastName = source.attrs.getOrDefault("last_name", "Last")
+            )
             userService.create(spec)
         } else {
             userService.get(username)
         }
         userService.incrementLoginCounter(user)
+
+        userService.setAuthAttrs(user, source.attrs)
+
+        source.attrs["user_locale"]?.let {
+            userService.setLanguage(user, it)
+        }
 
         if (properties.getBoolean("archivist.security.saml.permissions.import")) {
             SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
@@ -180,8 +190,7 @@ class UserRegistryServiceImpl @Autowired constructor(
                 SecurityContextHolder.getContext().authentication = null
             }
         }
-
-        return toUserAuthed(user)
+        return toUserAuthed(userService.get(user.id))
     }
 
     @Transactional(readOnly = true)
@@ -247,7 +256,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         val perms = mutableListOf<Permission>()
         for (group in groups) {
 
-            // Maps the external permission to a standard one, if applicagle.
+            // Maps the external permission to a standard one, if applicable.
             val parts = if (mapping.containsKey(group)) {
                 mapping.getValue(group).split(Permission.JOIN, limit = 2)
             } else {
@@ -519,6 +528,14 @@ class UserServiceImpl @Autowired constructor(
             }
         }
         return result
+    }
+
+    override fun setLanguage(user: User, language: String): Boolean {
+        return userDao.setLanguage(user, language)
+    }
+
+    override fun setAuthAttrs(user: User, attrs: Map<String, String>): Boolean {
+        return userDao.setAuthAttrs(user, attrs)
     }
 
     override fun updateSettings(user: User, settings: UserSettings): Boolean {

@@ -68,6 +68,8 @@ interface UserDao {
 
     fun update(user: User, update: UserProfileUpdate): Boolean
 
+    fun setLanguage(user: User, language: String): Boolean
+
     fun getAll(paging: Pager): PagedList<User>
 
     fun create(builder: UserSpec): User
@@ -89,6 +91,8 @@ interface UserDao {
     fun getAll(filter: UserFilter): KPagedList<User>
 
     fun findOne(filter: UserFilter): User
+
+    fun setAuthAttrs(user: User, attrs: Map<String, String>?): Boolean
 }
 
 @Repository
@@ -182,6 +186,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setObject(12, spec.homeFolderId)
             ps.setObject(13, user.organizationId)
             ps.setString(14, Json.serializeToString(spec.authAttrs, "{}"))
+            ps.setString(15, spec.language)
             ps
         }
 
@@ -245,6 +250,21 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun update(user: User, update: UserProfileUpdate): Boolean {
         return jdbc.update(UPDATE, update.username, update.email, update.firstName,
                 update.lastName, user.id) == 1
+    }
+
+    override fun setLanguage(user: User, language: String): Boolean {
+        return jdbc.update(
+            "UPDATE users SET str_language=? WHERE pk_user=? AND str_language is distinct from ?",
+            language, user.id, language
+        ) == 1
+    }
+
+    override fun setAuthAttrs(user: User, attrs: Map<String, String>?): Boolean {
+        val jsonAttrs = Json.serializeToString(attrs, "{}")
+        return jdbc.update(
+            "UPDATE users SET json_auth_attrs=? WHERE pk_user=? AND json_auth_attrs is distinct from ?",
+            jsonAttrs, user.id, jsonAttrs
+        ) == 1
     }
 
     override fun incrementLoginCounter(user: UserId) {
@@ -354,7 +374,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                     Json.deserialize(rs.getString("json_settings"), UserSettings::class.java),
                     rs.getInt("int_login_count"),
                     rs.getLong("time_last_login"),
-                    Json.deserialize(rs.getString("json_auth_attrs"), Json.GENERIC_MAP))
+                    Json.deserialize(rs.getString("json_auth_attrs"), Json.GENERIC_MAP),
+                    rs.getString("str_language"))
         }
 
         private const val GET = "SELECT * FROM users"
@@ -375,7 +396,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "pk_permission",
                 "pk_folder",
                 "pk_organization",
-                "json_auth_attrs")
+                "json_auth_attrs",
+                "str_language")
 
         private const val RESET_PASSWORD = "UPDATE " +
                 "users " +

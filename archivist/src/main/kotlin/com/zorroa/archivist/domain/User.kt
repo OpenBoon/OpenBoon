@@ -117,7 +117,10 @@ class User(
     val timeLastLogin: Long,
 
     @ApiModelProperty("Attributes for the User.")
-    var attrs: Map<String, Any>
+    var attrs: Map<String, Any>,
+
+    @ApiModelProperty("User's language")
+    val language: String?
 
 ) : UserId {
 
@@ -148,7 +151,10 @@ class UserProfileUpdate(
     var firstName: String? = "",
 
     @ApiModelProperty("User's last name.")
-    var lastName: String? = ""
+    var lastName: String? = "",
+
+    @ApiModelProperty("User's language")
+    val language: String? = ""
 
 )
 
@@ -201,7 +207,10 @@ class UserSpec(
     var userPermissionId: UUID? = null,
 
     @JsonIgnore
-    var authAttrs: Map<String, String>? = null
+    var authAttrs: Map<String, String>? = null,
+
+    @ApiModelProperty("User's language")
+    val language: String? = null
 
 ) {
 

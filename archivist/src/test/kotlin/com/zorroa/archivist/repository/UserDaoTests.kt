@@ -241,4 +241,19 @@ class UserDaoTests : AbstractTest() {
         assertTrue(t.timeLastLogin > 0)
         assertEquals(1, t.loginCount.toLong())
     }
+
+    @Test
+    fun testSetLanguage() {
+        assertTrue(userDao.setLanguage(user, "en"))
+        assertFalse(userDao.setLanguage(user, "en"))
+    }
+
+    @Test
+    fun testSetAuthAttrs() {
+        assertFalse(userDao.setAuthAttrs(user, emptyMap()))
+        assertTrue(userDao.setAuthAttrs(user, mapOf("foo" to "bar")))
+        assertFalse(userDao.setAuthAttrs(user, mapOf("foo" to "bar")))
+        assertTrue(userDao.setAuthAttrs(user, emptyMap()))
+        assertFalse(userDao.setAuthAttrs(user, null))
+    }
 }
