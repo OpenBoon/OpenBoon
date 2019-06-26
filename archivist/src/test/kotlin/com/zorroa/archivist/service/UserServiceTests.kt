@@ -13,6 +13,7 @@ import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
+import org.assertj.core.api.Assertions
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -277,5 +278,31 @@ class UserServiceTests : AbstractTest() {
             }
         }
         throw RuntimeException("The admin user was missing the user::admin permission")
+    }
+
+    @Test
+    fun testSetLanguage() {
+        assertEquals(null, userService.get(testUser.id).language)
+
+        userService.setLanguage(testUser, "en")
+        assertEquals("en", userService.get(testUser.id).language)
+
+        userService.setLanguage(testUser, "jp")
+        assertEquals("jp", userService.get(testUser.id).language)
+    }
+
+    @Test
+    fun testSetAuthAttrs() {
+        Assertions.assertThat(userService.get(testUser.id).attrs).isEmpty()
+
+        userService.setAuthAttrs(testUser, mapOf("foo" to "bar"))
+        Assertions.assertThat(userService.get(testUser.id).attrs).isEqualTo(mapOf("foo" to "bar"))
+
+        userService.setAuthAttrs(testUser, mapOf("foo" to "bar"))
+        userService.setAuthAttrs(testUser, mapOf("baz" to "bing"))
+        Assertions.assertThat(userService.get(testUser.id).attrs).isEqualTo(mapOf("baz" to "bing"))
+
+        userService.setAuthAttrs(testUser, attrs = emptyMap())
+        Assertions.assertThat(userService.get(testUser.id).attrs).isEmpty()
     }
 }
