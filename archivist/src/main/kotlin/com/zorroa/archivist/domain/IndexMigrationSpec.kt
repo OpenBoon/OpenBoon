@@ -11,7 +11,7 @@ import java.util.UUID
 @ApiModel("IndexMigrationSpec", description = "Describes an ES index migration")
 class IndexMigrationSpec(
 
-    @ApiModelProperty("The desination IndexRoute id.")
+    @ApiModelProperty("The destination IndexRoute id.")
     val dstRouteId: UUID,
 
     @ApiModelProperty("True if the organization's route should swap before reindexing.")
