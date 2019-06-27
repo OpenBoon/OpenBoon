@@ -155,7 +155,6 @@ class IndexRouteDaoTests : AbstractTest() {
         assertFalse(indexRouteDao.setClosed(route1, false))
     }
 
-
     @Test
     fun testSetMinorVersion() {
         val ver = 131337

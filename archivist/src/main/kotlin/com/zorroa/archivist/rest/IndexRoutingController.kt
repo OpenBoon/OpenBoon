@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
-import javax.servlet.ServletOutputStream
 
 @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SUPERADMIN)")
 @RestController
@@ -79,7 +78,7 @@ class IndexRoutingController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/index-routes/{id}/_state"])
-    fun getState(@PathVariable id: UUID) : Map<String, Any> {
+    fun getState(@PathVariable id: UUID): Map<String, Any> {
         val route = indexRoutingService.getIndexRoute(id)
         return indexRoutingService.getEsIndexState(route)
     }
