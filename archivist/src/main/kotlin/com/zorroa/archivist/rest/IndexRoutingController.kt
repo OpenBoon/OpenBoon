@@ -9,6 +9,7 @@ import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.IndexMigrationService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.OrganizationService
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.repository.KPagedList
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,11 +17,13 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
+import javax.servlet.ServletOutputStream
 
 @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SUPERADMIN)")
 @RestController
@@ -59,5 +62,25 @@ class IndexRoutingController @Autowired constructor(
     @PostMapping(value = ["/api/v1/index-routes/_migrate"])
     fun migrate(@RequestBody mig: IndexMigrationSpec): Any {
         return indexMigrationService.migrate(organizationService.get(getOrgId()), mig)
+    }
+
+    @PutMapping(value = ["/api/v1/index-routes/{id}/_close"])
+    fun close(@PathVariable id: UUID): Any {
+        val route = indexRoutingService.getIndexRoute(id)
+        val closed = indexRoutingService.closeIndex(route)
+        return HttpUtils.updated("index-route", route.id, closed, indexRoutingService.getIndexRoute(id))
+    }
+
+    @PutMapping(value = ["/api/v1/index-routes/{id}/_open"])
+    fun open(@PathVariable id: UUID): Any {
+        val route = indexRoutingService.getIndexRoute(id)
+        val closed = indexRoutingService.openIndex(route)
+        return HttpUtils.updated("index-route", route.id, closed, indexRoutingService.getIndexRoute(id))
+    }
+
+    @GetMapping(value = ["/api/v1/index-routes/{id}/_state"])
+    fun getState(@PathVariable id: UUID, output: ServletOutputStream) {
+        val route = indexRoutingService.getIndexRoute(id)
+        return indexRoutingService.getEsIndexState(route).writeTo(output)
     }
 }

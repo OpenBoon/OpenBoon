@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.IndexRouteSpec
@@ -9,6 +10,7 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobState
+import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
@@ -308,5 +310,39 @@ class IndexRoutingServiceTests : AbstractTest() {
         RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
 
         assertTrue(indexRoutingService.isReIndexRoute())
+    }
+
+    @Test
+    fun testOpenIndex() {
+        var route = indexRouteDao.getRandomDefaultRoute()
+        assertTrue(indexRoutingService.closeIndex(route))
+        assertTrue(indexRoutingService.openIndex(route))
+
+        val state = indexRoutingService.getEsIndexState(route)
+        val parsed = Json.Mapper.readValue<List<Map<String, Any>>>(state.content)
+        assertEquals("open", parsed[0]["status"])
+    }
+
+    @Test
+    fun testCloseIndex() {
+        var route = indexRouteDao.getRandomDefaultRoute()
+        assertTrue(indexRoutingService.closeIndex(route))
+        assertFalse(indexRoutingService.closeIndex(route))
+
+        val state = indexRoutingService.getEsIndexState(route)
+        val parsed = Json.Mapper.readValue<List<Map<String, Any>>>(state.content)
+        assertEquals("close", parsed[0]["status"])
+    }
+
+    @Test
+    fun testGetEsIndexState() {
+        val route = indexRouteDao.getRandomDefaultRoute()
+        val result = indexRoutingService.getEsIndexState(route)
+        val parsed = Json.Mapper.readValue<List<Map<String, Any>>>(result.content)
+
+        assertEquals("yellow", parsed[0]["health"])
+        assertEquals("open", parsed[0]["status"])
+        assertEquals("5", parsed[0]["pri"])
+        assertEquals("2", parsed[0]["rep"])
     }
 }
