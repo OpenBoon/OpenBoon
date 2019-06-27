@@ -65,9 +65,14 @@ interface IndexRouteDao {
     fun getAll(filter: IndexRouteFilter): KPagedList<IndexRoute>
 
     /**
-     * Find a single [IndexRoute]sthat matches the filter.
+     * Find a single [IndexRoute] that matches the filter.
      */
     fun findOne(filter: IndexRouteFilter): IndexRoute
+
+    /**
+     * Set the given [IndexRoute] status to closed.  Closed indexes cannot be used.
+     */
+    fun setClosed(route: IndexRoute, state: Boolean): Boolean
 }
 
 @Repository
@@ -155,6 +160,11 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         return throwWhenNotFound("IndexRoute not found") {
             return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
         }
+    }
+
+    override fun setClosed(route: IndexRoute, state: Boolean): Boolean {
+        return jdbc.update("UPDATE index_route SET bool_closed=? WHERE pk_index_route=? AND bool_closed=?",
+            state, route.id, !state) == 1
     }
 
     companion object {
