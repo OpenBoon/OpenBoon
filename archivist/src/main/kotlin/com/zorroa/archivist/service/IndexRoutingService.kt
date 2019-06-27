@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
@@ -22,7 +23,6 @@ import com.zorroa.common.domain.JobPriority
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
-import org.apache.http.HttpEntity
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
@@ -180,9 +180,9 @@ interface IndexRoutingService {
     fun openIndex(route: IndexRoute): Boolean
 
     /**
-     * Return the ES index state as an [HttpEntity].
+     * Return the ES index state as a Map
      */
-    fun getEsIndexState(route: IndexRoute): HttpEntity
+    fun getEsIndexState(route: IndexRoute): Map<String, Any>
 }
 
 /**
@@ -534,10 +534,13 @@ constructor(
         return false
     }
 
-    override fun getEsIndexState(route: IndexRoute): HttpEntity {
+    override fun getEsIndexState(route: IndexRoute): Map<String, Any> {
         val client = getClusterRestClient(route).client
-        val req = Request("GET", "/_cat/indices/${route.indexName}?format=json&pretty")
-        return client.lowLevelClient.performRequest(req).entity
+        val req = Request("GET", "/_cat/indices/${route.indexName}?format=json")
+        val list = Json.Mapper.readValue<List<Map<String, Any>>>(
+            client.lowLevelClient.performRequest(req).entity.content
+        )
+        return list[0]
     }
 
     companion object {

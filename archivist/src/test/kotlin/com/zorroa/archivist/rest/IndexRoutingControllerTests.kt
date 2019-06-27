@@ -140,8 +140,8 @@ class IndexRoutingControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(jsonPath("$[0].health", CoreMatchers.equalTo("yellow")))
-            .andExpect(jsonPath("$[0].status", CoreMatchers.equalTo("open")))
+            .andExpect(jsonPath("$.health", CoreMatchers.equalTo("yellow")))
+            .andExpect(jsonPath("$.status", CoreMatchers.equalTo("open")))
             .andReturn()
     }
 

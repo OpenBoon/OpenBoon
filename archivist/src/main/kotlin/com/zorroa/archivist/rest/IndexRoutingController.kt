@@ -79,8 +79,8 @@ class IndexRoutingController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/index-routes/{id}/_state"])
-    fun getState(@PathVariable id: UUID, output: ServletOutputStream) {
+    fun getState(@PathVariable id: UUID) : Map<String, Any> {
         val route = indexRoutingService.getIndexRoute(id)
-        return indexRoutingService.getEsIndexState(route).writeTo(output)
+        return indexRoutingService.getEsIndexState(route)
     }
 }

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.IndexRouteSpec
@@ -10,7 +9,6 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobState
-import com.zorroa.common.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
@@ -319,8 +317,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertTrue(indexRoutingService.openIndex(route))
 
         val state = indexRoutingService.getEsIndexState(route)
-        val parsed = Json.Mapper.readValue<List<Map<String, Any>>>(state.content)
-        assertEquals("open", parsed[0]["status"])
+        assertEquals("open", state["status"])
     }
 
     @Test
@@ -330,19 +327,16 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertFalse(indexRoutingService.closeIndex(route))
 
         val state = indexRoutingService.getEsIndexState(route)
-        val parsed = Json.Mapper.readValue<List<Map<String, Any>>>(state.content)
-        assertEquals("close", parsed[0]["status"])
+        assertEquals("close", state["status"])
     }
 
     @Test
     fun testGetEsIndexState() {
         val route = indexRouteDao.getRandomDefaultRoute()
         val result = indexRoutingService.getEsIndexState(route)
-        val parsed = Json.Mapper.readValue<List<Map<String, Any>>>(result.content)
-
-        assertEquals("yellow", parsed[0]["health"])
-        assertEquals("open", parsed[0]["status"])
-        assertEquals("5", parsed[0]["pri"])
-        assertEquals("2", parsed[0]["rep"])
+        assertEquals("yellow", result["health"])
+        assertEquals("open", result["status"])
+        assertEquals("5", result["pri"])
+        assertEquals("2", result["rep"])
     }
 }
