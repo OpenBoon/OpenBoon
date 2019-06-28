@@ -26,6 +26,7 @@ import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.JobUpdateSpec
 import com.zorroa.common.domain.Task
+import com.zorroa.common.domain.TaskFilter
 import com.zorroa.common.domain.TaskSpec
 import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
@@ -44,6 +45,7 @@ interface JobService {
     fun create(spec: JobSpec, type: PipelineType): Job
     fun get(id: UUID, forClient: Boolean = false): Job
     fun getTask(id: UUID): Task
+    fun getJobTasks(jobId: UUID): KPagedList<Task>
     fun getInternalTask(id: UUID): InternalTask
     fun createTask(job: JobId, spec: TaskSpec): Task
     fun getAll(filter: JobFilter?): KPagedList<Job>
@@ -195,6 +197,12 @@ class JobServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getTask(id: UUID): Task {
         return taskDao.get(id)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getJobTasks(jobId: UUID): KPagedList<Task> {
+        val filter = TaskFilter(jobIds = arrayListOf(jobId))
+        return taskDao.getAll(filter)
     }
 
     @Transactional(readOnly = true)
