@@ -1,7 +1,9 @@
 package com.zorroa.ldap
 
+import com.zorroa.archivist.sdk.security.LdapUserDetailsPlugin
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -61,6 +63,16 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         val ldapAuthenticationProvider = LdapAuthenticationProvider(bindAuthenticator, userDetailsService)
         ldapAuthenticationProvider.setUserDetailsContextMapper(userDetailsService)
         return ldapAuthenticationProvider
+    }
+
+    /**
+     * If no LdapUserDetailsPlugin plugin is defined, use this one
+     * as a default.
+     **/
+    @Bean
+    @ConditionalOnMissingBean
+    open fun ldapUserDetailsPlugin(): LdapUserDetailsPlugin {
+        return StandardLdapUserDetailsPlugin()
     }
 
     @Bean
