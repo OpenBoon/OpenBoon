@@ -13,5 +13,4 @@ open class StandardLdapUserDetailsPlugin : LdapUserDetailsPlugin {
     override fun getGroups(username: String): List<String> {
         return listOf()
     }
-
 }

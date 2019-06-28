@@ -71,7 +71,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
      **/
     @Bean
     @ConditionalOnMissingBean
-    open fun ldapUserDetailsPlugin() : LdapUserDetailsPlugin {
+    open fun ldapUserDetailsPlugin(): LdapUserDetailsPlugin {
         return StandardLdapUserDetailsPlugin()
     }
 
