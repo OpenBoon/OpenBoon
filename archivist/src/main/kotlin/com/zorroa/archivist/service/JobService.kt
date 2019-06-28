@@ -31,6 +31,7 @@ import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
@@ -81,6 +82,9 @@ class JobServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var fileStorageService: FileStorageService
+
+    @Value("\${archivist.pipeline.import-collector}")
+    lateinit var importCollector: String
 
     override fun create(spec: JobSpec): Job {
         if (spec.script != null) {
@@ -143,7 +147,7 @@ class JobServiceImpl @Autowired constructor(
 
             when (type) {
                 PipelineType.Import -> {
-                    execute.add(ProcessorRef("zplugins.core.collectors.ImportCollector"))
+                    execute.add(ProcessorRef(importCollector))
                 }
                 PipelineType.Export -> {
                     script.setSettting("inline", true)
