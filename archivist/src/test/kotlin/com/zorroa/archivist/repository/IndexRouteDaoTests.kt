@@ -139,6 +139,23 @@ class IndexRouteDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testSetClosed() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false
+        )
+
+        val route1 = indexRouteDao.create(spec)
+        assertTrue(indexRouteDao.setClosed(route1, true))
+        assertFalse(indexRouteDao.setClosed(route1, true))
+        assertTrue(indexRouteDao.setClosed(route1, false))
+        assertFalse(indexRouteDao.setClosed(route1, false))
+    }
+
+    @Test
     fun testSetMinorVersion() {
         val ver = 131337
         val route = indexRouteDao.getOrgRoute()

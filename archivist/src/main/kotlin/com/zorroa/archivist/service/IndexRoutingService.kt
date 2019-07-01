@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
@@ -23,8 +24,10 @@ import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
+import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
+import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
@@ -165,6 +168,21 @@ interface IndexRoutingService {
      * not return one and only one [IndexRoute] then an exception is raised.
      */
     fun findOne(filter: IndexRouteFilter): IndexRoute
+
+    /**
+     * Close the index and return True.  If the index is already closed then return false.
+     */
+    fun closeIndex(route: IndexRoute): Boolean
+
+    /**
+     * Open the index and return True.  If the index is already open then return false.
+     */
+    fun openIndex(route: IndexRoute): Boolean
+
+    /**
+     * Return the ES index state as a Map
+     */
+    fun getEsIndexState(route: IndexRoute): Map<String, Any>
 }
 
 /**
@@ -496,6 +514,33 @@ constructor(
     @Transactional(readOnly = true)
     override fun findOne(filter: IndexRouteFilter): IndexRoute {
         return indexRouteDao.findOne(filter)
+    }
+
+    override fun closeIndex(route: IndexRoute): Boolean {
+        val rsp = getClusterRestClient(route).client.indices()
+            .close(CloseIndexRequest(route.indexName), RequestOptions.DEFAULT)
+        if (rsp.isAcknowledged) {
+            return indexRouteDao.setClosed(route, true)
+        }
+        return false
+    }
+
+    override fun openIndex(route: IndexRoute): Boolean {
+        val rsp = getClusterRestClient(route).client.indices()
+            .open(OpenIndexRequest(route.indexName), RequestOptions.DEFAULT)
+        if (rsp.isAcknowledged) {
+            return indexRouteDao.setClosed(route, false)
+        }
+        return false
+    }
+
+    override fun getEsIndexState(route: IndexRoute): Map<String, Any> {
+        val client = getClusterRestClient(route).client
+        val req = Request("GET", "/_cat/indices/${route.indexName}?format=json")
+        val list = Json.Mapper.readValue<List<Map<String, Any>>>(
+            client.lowLevelClient.performRequest(req).entity.content
+        )
+        return list[0]
     }
 
     companion object {
