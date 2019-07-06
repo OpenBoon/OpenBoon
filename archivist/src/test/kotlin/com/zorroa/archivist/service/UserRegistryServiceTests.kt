@@ -119,6 +119,20 @@ class UserRegistryServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testUpdateRegisteredUserWithoutAttr() {
+        val username = "billybob@bob.com"
+        registerWithAuthAttrs(username, mapOf("user_locale" to "jp"))
+        Assertions.assertThat(userService.get(username))
+            .hasFieldOrPropertyWithValue("language", "jp")
+            .hasFieldOrPropertyWithValue("firstName", "First")
+
+        registerWithAuthAttrs(username, mapOf("first_name" to "foo"))
+        Assertions.assertThat(userService.get(username))
+            .hasFieldOrPropertyWithValue("language", "jp")
+            .hasFieldOrPropertyWithValue("firstName", "foo")
+    }
+
+    @Test
     fun testUpdateRegisteredUserAuthAttrs() {
         val username = "billybob@bob.com"
         registerWithAuthAttrs(username, mapOf("foo" to "bar"))

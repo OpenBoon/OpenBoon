@@ -7,9 +7,9 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
-import com.zorroa.common.util.readValueOrNull
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
+import java.nio.file.Path
 import java.security.cert.CertificateFactory
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
@@ -27,8 +27,8 @@ class JwtValidatorException constructor(
 fun generateUserToken(userId: UUID, key: String): String {
     val algo = Algorithm.HMAC256(key)
     return JWT.create().withIssuer("zorroa")
-            .withClaim("userId", userId.toString())
-            .sign(algo)
+        .withClaim("userId", userId.toString())
+        .sign(algo)
 }
 
 object JwtSecurityConstants {
@@ -46,83 +46,38 @@ interface JwtValidator {
      * The only method you have to implement
      */
     fun validate(token: String): Map<String, String>
+
+    /**
+     * Provision a user with the given claims.
+     */
+    fun provisionUser(claims: Map<String, String>)
 }
 
-class MasterJwtValidator constructor(private val validators: List<JwtValidator>) : JwtValidator {
+/**
+ * The validated JWT claims and the validator instance.
+ */
+class ValidatedJwt(
+    val validator: JwtValidator,
+    val claims: Map<String, String>
+) {
+    fun provisionUser() {
+        validator.provisionUser(claims)
+    }
+}
 
-    override fun validate(token: String): Map<String, String> {
+class MasterJwtValidator constructor(
+    private val validators: List<JwtValidator>
+) {
+    fun validate(token: String): ValidatedJwt {
         for (validator in validators) {
             try {
-                return validator.validate(token)
+                val claims = validator.validate(token)
+                return ValidatedJwt(validator, claims)
             } catch (e: Exception) {
                 // Called validators should log exceptions if needed
             }
         }
         throw JwtValidatorException("Failed to validate JWT token")
-    }
-}
-
-class IrmJwtValidator : JwtValidator {
-
-    override fun validate(token: String): Map<String, String> {
-        try {
-            val jwt = JWT.decode(token)
-
-            // TODO Need to validate claims based on signature
-            // val verifier = JWT.require(Algorithm.none())
-            //     .acceptLeeway(30) // because not everyone uses NTP
-            //     .build()
-            // verifier.verify(token)
-
-            val claims = jwt.claims.map {
-                it.key to it.value.asString()
-            }.toMap().toMutableMap()
-
-            val unpackedInsightClaim: Map<String, Object> =
-                Json.Mapper.readValueOrNull(jwt.getClaim("insightUser").asString())
-                    ?: throw JwtValidatorException("No insightUser found in JWT claims")
-
-            if (unpackedInsightClaim.containsKey("companyId")) {
-                claims.putIfAbsent("companyId", unpackedInsightClaim["companyId"].toString())
-            }
-
-            claims["permissions"] = mapPermissions(claims).joinToString()
-
-            unpackedInsightClaim.map {
-                claims.putIfAbsent(it.key, it.value.toString())
-            }
-
-            return claims
-        } catch (e: JWTVerificationException) {
-            throw JwtValidatorException("Failed to validate token", e)
-        } catch (e: Exception) {
-            logger.debug("Unexpected Exception", e)
-            throw e
-        }
-    }
-
-    private fun mapPermissions(claims: Map<String, String>): List<String> {
-
-        val insightUserClaims: Map<String, Object>? =
-            Json.Mapper.readValueOrNull(claims["insightUser"])
-
-        val permissions = mutableListOf<String>()
-        insightUserClaims?.let {
-            val authInfo = it["userAuthInfo"] as Map<String, Object>
-            val aclEntries = authInfo["aclEntries"] as List<Map<String, String>>
-            permissions.addAll(aclEntries?.mapNotNull { p ->
-                p["permission"]
-            })
-        }
-        return permissions
-    }
-
-    init {
-        logger.info("Initializing IRM JwtValidator")
-    }
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(IrmJwtValidator::class.java)
     }
 }
 
@@ -147,6 +102,11 @@ class UserJwtValidator constructor(val userDao: UserDao) : JwtValidator {
             throw JwtValidatorException("Failed to validate token", e)
         }
     }
+
+    override fun provisionUser(claims: Map<String, String>) {
+        // User already has to be provisioned for this validator to work
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(UserJwtValidator::class.java)
     }
@@ -172,10 +132,14 @@ class GcpJwtValidator : JwtValidator {
 
         val cfactory = CertificateFactory.getInstance("X.509")
         val cert = cfactory.generateCertificate(
-                keys.getValue(credentials.serviceAccountPrivateKeyId).byteInputStream())
+            keys.getValue(credentials.serviceAccountPrivateKeyId).byteInputStream()
+        )
         this.publickKey = cert.publicKey as RSAPublicKey
     }
+
     constructor(path: String?) : this(GoogleCredential.fromStream(FileInputStream(path)))
+
+    constructor(path: Path) : this(GoogleCredential.fromStream(FileInputStream(path.toFile())))
 
     constructor() : this(System.getenv()["GOOGLE_APPLICATION_CREDENTIALS"])
 
@@ -183,7 +147,10 @@ class GcpJwtValidator : JwtValidator {
         try {
             val jwt = JWT.decode(token)
             val alg = when (jwt.algorithm) {
-                "RS256" -> Algorithm.RSA256(publickKey, credentials.serviceAccountPrivateKey as RSAPrivateKey)
+                "RS256" -> Algorithm.RSA256(
+                    publickKey,
+                    credentials.serviceAccountPrivateKey as RSAPrivateKey
+                )
                 else -> Algorithm.HMAC256(credentials.serviceAccountPrivateKey.encoded)
             }
             alg.verify(jwt)
@@ -208,6 +175,10 @@ class GcpJwtValidator : JwtValidator {
         } catch (e: JWTVerificationException) {
             throw JwtValidatorException("Failed to validate token", e)
         }
+    }
+
+    override fun provisionUser(claims: Map<String, String>) {
+        // User already has to be provisioned for this validator to work
     }
 
     companion object {
