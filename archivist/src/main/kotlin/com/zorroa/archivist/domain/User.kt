@@ -65,9 +65,9 @@ class UserBase(
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("username", username)
-                .toString()
+            .add("id", id)
+            .add("username", username)
+            .toString()
     }
 }
 
@@ -129,9 +129,9 @@ class User(
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("username", username)
-                .toString()
+            .add("id", id)
+            .add("username", username)
+            .toString()
     }
 }
 
@@ -210,13 +210,27 @@ class UserSpec(
     var authAttrs: Map<String, String>? = null,
 
     @ApiModelProperty("User's language")
-    val language: String? = null
+    val language: String? = null,
+
+    @JsonIgnore
+    val id: UUID? = null
 
 ) {
 
     fun hashedPassword(): String {
         return createPasswordHash(password)
     }
+}
+
+/**
+ * Used when updating an externally managed user (e.g.: SAML or JWT)
+ */
+class RegisteredUserUpdateSpec(val user: User, authAttrs: Map<String, String>) {
+    val email: String = authAttrs["email"] ?: user.email
+    var firstName: String? = authAttrs["first_name"] ?: user.firstName
+    var lastName: String? = authAttrs["last_name"] ?: user.lastName
+    var authAttrs: Map<String, String> = authAttrs
+    val language: String? = authAttrs.getOrDefault("user_locale", user.language)
 }
 
 /**
@@ -258,9 +272,9 @@ class UserFilter constructor(
 
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
-            "id" to "users.pk_user",
-            "username" to "users.str_username",
-            "email" to "users.str_email")
+        "id" to "users.pk_user",
+        "username" to "users.str_username",
+        "email" to "users.str_email")
 
     override fun build() {
         if (sort == null) {

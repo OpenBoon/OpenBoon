@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.RegisteredUserUpdateSpec
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserFilter
 import com.zorroa.archivist.domain.UserProfileUpdate
@@ -67,6 +68,8 @@ interface UserDao {
     fun setEnabled(user: User, value: Boolean): Boolean
 
     fun update(user: User, update: UserProfileUpdate): Boolean
+
+    fun update(user: User, spec: RegisteredUserUpdateSpec): User
 
     fun setLanguage(user: User, language: String): Boolean
 
@@ -167,7 +170,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             spec.source = UserSource.LOCAL
         }
 
-        val id = uuid1.generate()
+        val id = spec.id ?: uuid1.generate()
         val user = getUser()
 
         jdbc.update { connection ->
@@ -250,6 +253,22 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun update(user: User, update: UserProfileUpdate): Boolean {
         return jdbc.update(UPDATE, update.username, update.email, update.firstName,
                 update.lastName, user.id) == 1
+    }
+
+    override fun update(user: User, spec: RegisteredUserUpdateSpec): User {
+        val jsonAttrs = Json.serializeToString(spec.authAttrs, "{}")
+
+        jdbc.update(
+            "UPDATE users " +
+                "SET str_email=?, str_firstname=?, str_lastname=?, str_language=?, json_auth_attrs=? WHERE pk_user=?",
+            spec.email,
+            spec.firstName,
+            spec.lastName,
+            spec.language,
+            jsonAttrs,
+            user.id
+        )
+        return get(user.id)
     }
 
     override fun setLanguage(user: User, language: String): Boolean {

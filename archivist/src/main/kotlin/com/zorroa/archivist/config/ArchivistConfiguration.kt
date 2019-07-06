@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.repository.UserDao
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.GcpJwtValidator
 import com.zorroa.archivist.security.IrmJwtValidator
 import com.zorroa.archivist.security.JwtValidator
@@ -40,7 +41,6 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files
 import java.nio.file.Path
 import java.util.Properties
 
@@ -74,7 +74,7 @@ class ArchivistConfiguration {
             }
 
             builder.withDetail("archivist-plugins",
-                    File("/extensions/active").walkTopDown()
+                File("/extensions/active").walkTopDown()
                     .map { it.toString() }
                     .filter { it.endsWith(".jar") }
                     .map { FileUtils.basename(it) }
@@ -88,7 +88,7 @@ class ArchivistConfiguration {
     fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
         val adapter = RequestMappingHandlerAdapter()
         adapter.messageConverters = listOf<HttpMessageConverter<*>>(
-                MappingJackson2HttpMessageConverter()
+            MappingJackson2HttpMessageConverter()
         )
         return adapter
     }
@@ -145,10 +145,13 @@ class ArchivistConfiguration {
         val props = properties()
         if (props.getString("archivist.pubsub.type") == "gcp") {
             val network = networkEnvironment()
-            return GcpPubSubServiceImpl(IrmCoreDataVaultClientImpl(
+            return GcpPubSubServiceImpl(
+                IrmCoreDataVaultClientImpl(
                     network.getPublicUrl("core-data-vault-api"),
                     serviceCredentials(),
-                    dataCredentials(), meterRegistry), meterRegistry)
+                    dataCredentials(), meterRegistry
+                ), meterRegistry
+            )
         }
         logger.info("No PubSub service configured")
         return null
@@ -164,9 +167,11 @@ class ArchivistConfiguration {
             "irm" -> {
                 IrmAssetServiceImpl(
                     IrmCoreDataVaultClientImpl(
-                            network.getPublicUrl("core-data-vault-api"),
-                            serviceCredentials(),
-                            dataCredentials(), meterRegistry))
+                        network.getPublicUrl("core-data-vault-api"),
+                        serviceCredentials(),
+                        dataCredentials(), meterRegistry
+                    )
+                )
             }
             else -> AssetServiceImpl()
         }
@@ -174,16 +179,35 @@ class ArchivistConfiguration {
 
     @Bean
     @Autowired
-    fun jwtValidator(userDao: UserDao): JwtValidator {
+    fun masterJwtValidator(userRegistryService: UserRegistryService, userDao: UserDao): MasterJwtValidator {
         val validators = mutableListOf<JwtValidator>()
-        validators.add(UserJwtValidator(userDao))
-        validators.add(IrmJwtValidator())
+        val props = properties()
+        val jwtModules = props.getList("archivist.security.jwt.modules")
 
-        val path = properties().getPath("archivist.config.path")
-            .resolve("service-credentials.json")
-        if (Files.exists(path)) {
-            validators.add(GcpJwtValidator(path.toString()))
+        /**
+         * Determine which JWT validators to instance.
+         */
+        for (module in jwtModules) {
+            val moduleInstance = when (module) {
+                "zorroa" -> {
+                    UserJwtValidator(userDao)
+                }
+                "irm" -> {
+                    IrmJwtValidator(
+                        props.getPath("archivist.security.jwt.irm.credentials-path", serviceCredentials()),
+                        props.parseToMap("archivist.security.permissions.map"), userRegistryService
+                    )
+                }
+                "gcp" -> {
+                    GcpJwtValidator(props.getPath("archivist.security.jwt.gcp.credentials-path", serviceCredentials()))
+                }
+                else -> {
+                    throw IllegalArgumentException("Invalid jwt module: $module")
+                }
+            }
+            validators.add(moduleInstance)
         }
+
         return MasterJwtValidator(validators)
     }
 
@@ -191,7 +215,7 @@ class ArchivistConfiguration {
     fun networkEnvironment(): NetworkEnvironment {
         val props = properties()
         val override = props.getMap("env.host-override")
-                .map { it.key.split('.').last() to it.value.toString() }.toMap()
+            .map { it.key.split('.').last() to it.value.toString() }.toMap()
 
         logger.info("Host overrides: {}", override)
 
@@ -226,8 +250,8 @@ class ArchivistConfiguration {
      */
     fun serviceCredentials(): Path {
         return properties()
-                .getPath("archivist.config.path")
-                .resolve("service-credentials.json")
+            .getPath("archivist.config.path")
+            .resolve("service-credentials.json")
     }
 
     /**
@@ -235,8 +259,8 @@ class ArchivistConfiguration {
      */
     fun dataCredentials(): Path {
         return properties()
-                .getPath("archivist.config.path")
-                .resolve("data-credentials.json")
+            .getPath("archivist.config.path")
+            .resolve("data-credentials.json")
     }
 
     companion object {

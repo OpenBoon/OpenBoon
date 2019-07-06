@@ -108,6 +108,8 @@ class MultipleWebSecurityConfig {
                     .antMatcher("/api/**")
                     .addFilterBefore(jwtAuthorizationFilter(), CsrfFilter::class.java)
                     .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .and()
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
                     .antMatchers("/api/v1/who").permitAll()
