@@ -975,4 +975,35 @@ class SearchServiceTests : AbstractTest() {
         val result = searchService.search(Pager.first(), search)
         assertEquals(1, result.list.size)
     }
+
+    @Test
+    fun testPostFilter() {
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source1.setAttr("post_filter_check", "cat")
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+
+        val search = AssetSearch()
+        search.postFilter = AssetFilter()
+        search.postFilter.addToTerms("post_filter_check", "cat")
+
+        val result = searchService.search(Pager.first(), search)
+        assertEquals(1, result.list.size)
+    }
+
+    @Test
+    fun testPostFilterWithQuery() {
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
+        source1.setAttr("post_filter_check", "cat")
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+
+        val search = AssetSearch()
+        search.query = "beer"
+        search.postFilter = AssetFilter()
+        search.postFilter.addToTerms("post_filter_check", "cat")
+
+        val result = searchService.search(Pager.first(), search)
+        assertEquals(1, result.list.size)
+    }
 }
