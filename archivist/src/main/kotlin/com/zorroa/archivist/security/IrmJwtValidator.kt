@@ -66,9 +66,15 @@ class IrmJwtValidator constructor(
             // Move the value of userId to username
             claims["username"] = claims.getValue("userId")
 
-            // Generate a unique userId from the username and company ID.
-            // This allows JwtAuthenticationProvider to stay generic.
-            claims["userId"] = IdGen.getId("${claims["username"]}::${claims["companyId"]}")
+            claims["userId"] = if (userRegistryService.exists(claims.getValue("userId"), "Jwt")) {
+                // Support any users that were already created with a JWT token
+                val userAuthed = userRegistryService.getUser(claims.getValue("userId"))
+                userAuthed.id.toString()
+            } else {
+                // Generate a unique userId from the username and company ID.
+                // This allows JwtAuthenticationProvider to stay generic.
+                IdGen.getId("${claims["username"]}::${claims["companyId"]}")
+            }
 
             return claims
         } catch (e: Exception) {
