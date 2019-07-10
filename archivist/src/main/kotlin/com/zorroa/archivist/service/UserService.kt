@@ -194,6 +194,10 @@ class UserRegistryServiceImpl @Autowired constructor(
         return toUserAuthed(user)
     }
 
+    override fun exists(username: String, source: String?): Boolean {
+        return userService.exists(username, source)
+    }
+
     @Transactional(readOnly = true)
     override fun getUser(username: String): UserAuthed {
         return toUserAuthed(userService.get(username))
