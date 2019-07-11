@@ -62,14 +62,14 @@ class UserDaoTests : AbstractTest() {
 
     @Test
     fun testAll() {
-        assertEquals(5, userDao.getAll().size.toLong())
+        val userCount = userDao.getAll().size.toLong()
 
         val builder = testUserSpec("foo")
         builder.homeFolderId = UUID.randomUUID()
         builder.userPermissionId = permissionDao.get("zorroa", "manager").id
         userService.create(builder)
 
-        assertEquals(6, userDao.getAll().size.toLong())
+        assertEquals(userCount + 1, userDao.getAll().size.toLong())
     }
 
     @Test
@@ -113,8 +113,9 @@ class UserDaoTests : AbstractTest() {
 
     @Test
     fun testAllPageable() {
-        assertEquals(5, userDao.getAll(Pager.first()).size().toLong())
-        assertEquals(0, userDao.getAll(Pager(2, 5)).size().toLong())
+        val userCount = userDao.getAll().size.toLong()
+        assertEquals(userCount, userDao.getAll(Pager.first()).size().toLong())
+        assertEquals(0, userDao.getAll(Pager(2, userCount.toInt())).size().toLong())
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
@@ -240,5 +241,20 @@ class UserDaoTests : AbstractTest() {
         val t = userDao.get(user.id)
         assertTrue(t.timeLastLogin > 0)
         assertEquals(1, t.loginCount.toLong())
+    }
+
+    @Test
+    fun testSetLanguage() {
+        assertTrue(userDao.setLanguage(user, "en"))
+        assertFalse(userDao.setLanguage(user, "en"))
+    }
+
+    @Test
+    fun testSetAuthAttrs() {
+        assertFalse(userDao.setAuthAttrs(user, emptyMap()))
+        assertTrue(userDao.setAuthAttrs(user, mapOf("foo" to "bar")))
+        assertFalse(userDao.setAuthAttrs(user, mapOf("foo" to "bar")))
+        assertTrue(userDao.setAuthAttrs(user, emptyMap()))
+        assertFalse(userDao.setAuthAttrs(user, null))
     }
 }

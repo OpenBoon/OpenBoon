@@ -309,4 +309,34 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         assertTrue(indexRoutingService.isReIndexRoute())
     }
+
+    @Test
+    fun testOpenIndex() {
+        var route = indexRouteDao.getRandomDefaultRoute()
+        assertTrue(indexRoutingService.closeIndex(route))
+        assertTrue(indexRoutingService.openIndex(route))
+
+        val state = indexRoutingService.getEsIndexState(route)
+        assertEquals("open", state["status"])
+    }
+
+    @Test
+    fun testCloseIndex() {
+        var route = indexRouteDao.getRandomDefaultRoute()
+        assertTrue(indexRoutingService.closeIndex(route))
+        assertFalse(indexRoutingService.closeIndex(route))
+
+        val state = indexRoutingService.getEsIndexState(route)
+        assertEquals("close", state["status"])
+    }
+
+    @Test
+    fun testGetEsIndexState() {
+        val route = indexRouteDao.getRandomDefaultRoute()
+        val result = indexRoutingService.getEsIndexState(route)
+        assertEquals("yellow", result["health"])
+        assertEquals("open", result["status"])
+        assertEquals("5", result["pri"])
+        assertEquals("2", result["rep"])
+    }
 }

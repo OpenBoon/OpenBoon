@@ -43,6 +43,7 @@ class JobServiceTests : AbstractTest() {
         assertEquals(spec.name, job.name)
         val tcount = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?", Int::class.java, job.id)
         assertEquals(2, tcount)
+        jobService.getZpsScript(task.id)
     }
 
     @Test
@@ -54,6 +55,21 @@ class JobServiceTests : AbstractTest() {
         val job2 = jobService.create(spec2, PipelineType.Export)
         assertEquals(JobPriority.Interactive, job2.priority)
         assertEquals(PipelineType.Export, job2.type)
+    }
+
+    @Test
+    fun testCreateImport() {
+        val spec2 = JobSpec(null,
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"))
+        val job2 = jobService.create(spec2, PipelineType.Import)
+        assertEquals(JobPriority.Standard, job2.priority)
+        assertEquals(PipelineType.Import, job2.type)
+        val tasks = jobService.getJobTasks(job2.id)
+        assertEquals(1, tasks.count())
+        val script = jobService.getZpsScript(tasks[0].id)
+        assertEquals("zplugins.core.collectors.ImportCollector", script.execute?.get(7)?.className)
     }
 
     @Test

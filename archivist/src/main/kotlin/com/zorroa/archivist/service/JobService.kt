@@ -26,11 +26,13 @@ import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.JobUpdateSpec
 import com.zorroa.common.domain.Task
+import com.zorroa.common.domain.TaskFilter
 import com.zorroa.common.domain.TaskSpec
 import com.zorroa.common.domain.TaskState
 import com.zorroa.common.repository.KPagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
@@ -43,6 +45,7 @@ interface JobService {
     fun create(spec: JobSpec, type: PipelineType): Job
     fun get(id: UUID, forClient: Boolean = false): Job
     fun getTask(id: UUID): Task
+    fun getJobTasks(jobId: UUID): KPagedList<Task>
     fun getInternalTask(id: UUID): InternalTask
     fun createTask(job: JobId, spec: TaskSpec): Task
     fun getAll(filter: JobFilter?): KPagedList<Job>
@@ -81,6 +84,9 @@ class JobServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var fileStorageService: FileStorageService
+
+    @Value("\${archivist.pipeline.import-collector}")
+    lateinit var importCollector: String
 
     override fun create(spec: JobSpec): Job {
         if (spec.script != null) {
@@ -143,7 +149,7 @@ class JobServiceImpl @Autowired constructor(
 
             when (type) {
                 PipelineType.Import -> {
-                    execute.add(ProcessorRef("zplugins.core.collectors.ImportCollector"))
+                    execute.add(ProcessorRef(importCollector))
                 }
                 PipelineType.Export -> {
                     script.setSettting("inline", true)
@@ -191,6 +197,12 @@ class JobServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getTask(id: UUID): Task {
         return taskDao.get(id)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getJobTasks(jobId: UUID): KPagedList<Task> {
+        val filter = TaskFilter(jobIds = arrayListOf(jobId))
+        return taskDao.getAll(filter)
     }
 
     @Transactional(readOnly = true)

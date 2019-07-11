@@ -9,6 +9,10 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.util.Json
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.client.RequestOptions
+import org.hamcrest.CoreMatchers
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.springframework.http.MediaType
@@ -16,6 +20,8 @@ import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -30,6 +36,25 @@ class IndexRoutingControllerTests : MockMvcTest() {
     @Before
     fun init() {
         session = admin()
+    }
+
+    @After
+    fun after() {
+
+        val route = indexRoutingService.getIndexRoute(
+            UUID.fromString("00000000-0000-0000-0000-000000000000")
+        )
+        val rest = indexRoutingService.getClusterRestClient(route)
+
+        // Clear out test indexes.  Could be more in future.
+        listOf("testing123").forEach {
+            try {
+                val reqDel = DeleteIndexRequest(it)
+                rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
+            } catch (e: Exception) {
+                logger.warn("Failed to delete '$it' index, this is usually ok.")
+            }
+        }
     }
 
     @Test
@@ -95,6 +120,75 @@ class IndexRoutingControllerTests : MockMvcTest() {
         assertEquals(false, result.useRouteKey)
         assertEquals(2, result.replicas)
         assertEquals(5, result.shards)
+    }
+
+    @Test
+    fun testGetState() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "test",
+            1,
+            false
+        )
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/index-routes/${route.id}/_state")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.health", CoreMatchers.equalTo("yellow")))
+            .andExpect(jsonPath("$.status", CoreMatchers.equalTo("open")))
+            .andReturn()
+    }
+
+    @Test
+    fun testOpenIndex() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "test",
+            1,
+            false
+        )
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        indexRoutingService.closeIndex(route)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_open")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.object.closed", CoreMatchers.equalTo(false)))
+            .andReturn()
+    }
+
+    @Test
+    fun testCloseIndex() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "test",
+            1,
+            false
+        )
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_close")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.object.closed", CoreMatchers.equalTo(true)))
+            .andReturn()
     }
 
     @Test

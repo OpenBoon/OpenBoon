@@ -65,9 +65,9 @@ class UserBase(
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("username", username)
-                .toString()
+            .add("id", id)
+            .add("username", username)
+            .toString()
     }
 }
 
@@ -117,7 +117,10 @@ class User(
     val timeLastLogin: Long,
 
     @ApiModelProperty("Attributes for the User.")
-    var attrs: Map<String, Any>
+    var attrs: Map<String, Any>,
+
+    @ApiModelProperty("User's language")
+    val language: String?
 
 ) : UserId {
 
@@ -126,9 +129,9 @@ class User(
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("username", username)
-                .toString()
+            .add("id", id)
+            .add("username", username)
+            .toString()
     }
 }
 
@@ -148,7 +151,10 @@ class UserProfileUpdate(
     var firstName: String? = "",
 
     @ApiModelProperty("User's last name.")
-    var lastName: String? = ""
+    var lastName: String? = "",
+
+    @ApiModelProperty("User's language")
+    val language: String? = ""
 
 )
 
@@ -201,13 +207,30 @@ class UserSpec(
     var userPermissionId: UUID? = null,
 
     @JsonIgnore
-    var authAttrs: Map<String, String>? = null
+    var authAttrs: Map<String, String>? = null,
+
+    @ApiModelProperty("User's language")
+    val language: String? = null,
+
+    @JsonIgnore
+    val id: UUID? = null
 
 ) {
 
     fun hashedPassword(): String {
         return createPasswordHash(password)
     }
+}
+
+/**
+ * Used when updating an externally managed user (e.g.: SAML or JWT)
+ */
+class RegisteredUserUpdateSpec(val user: User, authAttrs: Map<String, String>) {
+    val email: String = authAttrs["email"] ?: user.email
+    var firstName: String? = authAttrs["first_name"] ?: user.firstName
+    var lastName: String? = authAttrs["last_name"] ?: user.lastName
+    var authAttrs: Map<String, String> = authAttrs
+    val language: String? = authAttrs.getOrDefault("user_locale", user.language)
 }
 
 /**
@@ -249,9 +272,9 @@ class UserFilter constructor(
 
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
-            "id" to "users.pk_user",
-            "username" to "users.str_username",
-            "email" to "users.str_email")
+        "id" to "users.pk_user",
+        "username" to "users.str_username",
+        "email" to "users.str_email")
 
     override fun build() {
         if (sort == null) {

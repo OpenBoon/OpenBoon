@@ -137,7 +137,8 @@ class SearchServiceImpl @Autowired constructor(
     override fun count(builder: AssetSearch): Long {
         val rest = indexRoutingService.getOrgRestClient()
         val rsp = rest.client.search(
-                buildSearch(builder, "asset").request, RequestOptions.DEFAULT)
+            buildSearch(builder, "asset").request, RequestOptions.DEFAULT
+        )
         return rsp.hits.totalHits
     }
 
@@ -193,15 +194,19 @@ class SearchServiceImpl @Autowired constructor(
         val suggestBuilder = SuggestBuilder()
         val req = rest.newSearchRequest()
 
-        val ctx = mapOf("organization" to
-                listOf<ToXContent>(CategoryQueryContext.builder()
+        val ctx = mapOf(
+            "organization" to
+                listOf<ToXContent>(
+                    CategoryQueryContext.builder()
                         .setCategory(getOrgId().toString())
                         .setBoost(1)
-                        .setPrefix(false).build()))
+                        .setPrefix(false).build()
+                )
+        )
 
         val completion = SuggestBuilders.completionSuggestion("system.suggestions")
-                .text(text)
-                .contexts(ctx)
+            .text(text)
+            .contexts(ctx)
         suggestBuilder.addSuggestion("suggest", completion)
         builder.suggest(suggestBuilder)
         req.source(builder)
@@ -244,6 +249,7 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
     }
+
     override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp: Boolean): Iterable<Document> {
         val rest = indexRoutingService.getOrgRestClient()
         val builder = rest.newSearchBuilder()
@@ -335,7 +341,8 @@ class SearchServiceImpl @Autowired constructor(
             val json = Json.serializeToString(map)
 
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-                xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION, json)
+                xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION, json
+            )
 
             val ssb2 = SearchSourceBuilder.fromXContent(parser)
             ssb2.aggregations().aggregatorFactories.forEach { ssb.aggregation(it) }
@@ -367,7 +374,8 @@ class SearchServiceImpl @Autowired constructor(
                     val sortOrder = if (searchOrder.ascending) SortOrder.ASC else SortOrder.DESC
                     // Make sure to use .raw for strings
                     if (!searchOrder.field.endsWith(".raw") &&
-                            fields.getValue("string").contains(searchOrder.field)) {
+                        fields.getValue("string").contains(searchOrder.field)
+                    ) {
                         searchOrder.field = searchOrder.field + ".raw"
                     }
                     ssb.sort(searchOrder.field, sortOrder)
@@ -380,6 +388,10 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
+        if (properties.getBoolean("archivist.debug-mode.enabled")) {
+            logger.debug("SEARCH : {}", Strings.toString(ssb, true, true))
+        }
+
         return rest.newSearchBuilder(req, ssb)
     }
 
@@ -389,12 +401,18 @@ class SearchServiceImpl @Autowired constructor(
 
     fun applyCollapse(search: AssetSearch, ssb: SearchSourceBuilder) {
         search.collapse?.let {
-            val parser = XContentFactory.xContent(XContentType.JSON).createParser(xContentRegistry,
-                DeprecationHandler.THROW_UNSUPPORTED_OPERATION, Json.serialize(search.collapse))
+            val parser = XContentFactory.xContent(XContentType.JSON).createParser(
+                xContentRegistry,
+                DeprecationHandler.THROW_UNSUPPORTED_OPERATION, Json.serialize(search.collapse)
+            )
             ssb.collapse(CollapseBuilder.fromXContent(parser))
         }
     }
 
+    /**
+     *
+     * @param postFilter should only be true if applying from folder query.
+     */
     private fun getQuery(
         search: AssetSearch,
         linkedFolders: MutableSet<String>,
@@ -414,43 +432,37 @@ class SearchServiceImpl @Autowired constructor(
 
         if (search == null || (search.filter == null && search.query == null)) {
             query.must(QueryBuilders.matchAllQuery())
+        } else {
+            val assetBool = QueryBuilders.boolQuery()
 
-            if (properties.getBoolean("archivist.debug-mode.enabled")) {
-                logger.debug("SEARCH : {}", Strings.toString(query, true, true))
+            query.minimumShouldMatch(1)
+            if (search.isQuerySet) {
+                assetBool.must(getQueryStringQuery(search))
             }
-            return query
-        }
 
-        query.minimumShouldMatch(1)
-        val assetBool = QueryBuilders.boolQuery()
-        if (search.isQuerySet) {
-            assetBool.must(getQueryStringQuery(search))
-        }
+            var filter: AssetFilter? = search.filter
+            if (filter != null) {
+                applyFilterToQuery(filter, assetBool, linkedFolders)
+            }
 
-        var filter: AssetFilter? = search.filter
-        if (filter != null) {
-            applyFilterToQuery(filter, assetBool, linkedFolders)
+            if (assetBool.hasClauses()) {
+                query.should(assetBool)
+            }
         }
 
         // Folders apply their post filter, but the main search// applies the post filter in the SearchRequest.
         // Aggs will be limited to the folders (correct), but
         // not to the filters in the top-level search.
         if (postFilter) {
-            filter = search.postFilter
-            if (filter != null) {
-                applyFilterToQuery(filter, assetBool, linkedFolders)
+            if (search.postFilter != null) {
+                val postBool = QueryBuilders.boolQuery()
+                applyFilterToQuery(search.postFilter, postBool, linkedFolders)
+                query.must(postBool)
             }
-        }
-
-        if (assetBool.hasClauses()) {
-            query.should(assetBool)
         }
 
         applyAssetSearchMetrics(search)
 
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            logger.debug("SEARCH : {}", Strings.toString(query, true, true))
-        }
         return query
     }
 
@@ -472,10 +484,10 @@ class SearchServiceImpl @Autowired constructor(
         if (links.containsKey("folder")) {
 
             val folders = links["folder"]!!
-                    .stream()
-                    .map { f -> UUID.fromString(f.toString()) }
-                    .filter { f -> !linkedFolders.contains(f.toString()) }
-                    .collect(Collectors.toSet())
+                .stream()
+                .map { f -> UUID.fromString(f.toString()) }
+                .filter { f -> !linkedFolders.contains(f.toString()) }
+                .collect(Collectors.toSet())
 
             val recursive = if (filter.recursive == null) true else filter.recursive
 
@@ -483,8 +495,9 @@ class SearchServiceImpl @Autowired constructor(
                 val childFolders = mutableSetOf<String>()
 
                 for (folder in folderService.getAllDescendants(
-                        folderService.getAll(folders),
-                        includeStartFolders = true, forSearch = true)) {
+                    folderService.getAll(folders),
+                    includeStartFolders = true, forSearch = true
+                )) {
 
                     if (linkedFolders.contains(folder.id.toString())) {
                         continue
@@ -497,8 +510,13 @@ class SearchServiceImpl @Autowired constructor(
                      */
                     if (folder.search != null) {
                         folder.search.aggs = null
-                        staticBool.should(getQuery(folder.search,
-                                linkedFolders, perms = false, postFilter = true))
+                        logger.info("Getting folder post query!! {}", Json.prettyString(folder.search))
+                        staticBool.should(
+                            getQuery(
+                                folder.search,
+                                linkedFolders, perms = false, postFilter = true
+                            )
+                        )
                     }
 
                     /**
@@ -563,10 +581,14 @@ class SearchServiceImpl @Autowired constructor(
             val prefixMust = QueryBuilders.boolQuery()
             // models elasticsearch, the Map<String,Object> allows for a boost property
             for ((key, value) in filter.prefix) {
-                val prefixFilter = QueryBuilders.prefixQuery(key,
-                        value["prefix"] as String).boost(
-                        ((value as java.util.Map<String, Any>).getOrDefault(
-                                "boost", 1.0) as Double).toFloat())
+                val prefixFilter = QueryBuilders.prefixQuery(
+                    key,
+                    value["prefix"] as String
+                ).boost(
+                    ((value as java.util.Map<String, Any>).getOrDefault(
+                        "boost", 1.0
+                    ) as Double).toFloat()
+                )
 
                 prefixMust.should(prefixFilter)
             }
@@ -590,13 +612,13 @@ class SearchServiceImpl @Autowired constructor(
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
                 val values = value.orEmpty().filterNotNull()
-                        .map {
-                            if (it is UUID) {
-                                it.toString()
-                            } else {
-                                it
-                            }
+                    .map {
+                        if (it is UUID) {
+                            it.toString()
+                        } else {
+                            it
                         }
+                    }
                 if (values.isNotEmpty()) {
                     val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), values)
                     query.must(termsQuery)
@@ -615,7 +637,8 @@ class SearchServiceImpl @Autowired constructor(
                         m.invoke(rqb, v)
                     } catch (e: Exception) {
                         throw IllegalArgumentException(
-                                "RangeQueryBuilder has no '" + f.name + "' method")
+                            "RangeQueryBuilder has no '" + f.name + "' method"
+                        )
                     }
                 }
                 query.must(rqb)
@@ -625,8 +648,12 @@ class SearchServiceImpl @Autowired constructor(
         if (filter.scripts != null) {
 
             for (script in filter.scripts) {
-                val scriptFilterBuilder = QueryBuilders.scriptQuery(Script(ScriptType.INLINE,
-                        "painless", script.script, script.params))
+                val scriptFilterBuilder = QueryBuilders.scriptQuery(
+                    Script(
+                        ScriptType.INLINE,
+                        "painless", script.script, script.params
+                    )
+                )
                 query.must(scriptFilterBuilder)
             }
         }
@@ -675,7 +702,7 @@ class SearchServiceImpl @Autowired constructor(
                     val tl = value.topLeftPoint()
                     val br = value.bottomRightPoint()
                     val bboxQuery = geoBoundingBoxQuery(field)
-                            .setCorners(tl[0], tl[1], br[0], br[1])
+                        .setCorners(tl[0], tl[1], br[0], br[1])
                     query.should(bboxQuery)
                 }
             }
@@ -693,8 +720,13 @@ class SearchServiceImpl @Autowired constructor(
             args["range"] = filter.range
 
             val fsqb = QueryBuilders.functionScoreQuery(
-                    ScoreFunctionBuilders.scriptFunction(Script(ScriptType.INLINE,
-                            "zorroa-kwconf", "kwconf", args)))
+                ScoreFunctionBuilders.scriptFunction(
+                    Script(
+                        ScriptType.INLINE,
+                        "zorroa-kwconf", "kwconf", args
+                    )
+                )
+            )
 
             fsqb.minScore = filter.range[0].toFloat()
             fsqb.boostMode(CombineFunction.REPLACE)
@@ -742,8 +774,13 @@ class SearchServiceImpl @Autowired constructor(
             args["minScore"] = filter.minScore
 
             val fsqb = QueryBuilders.functionScoreQuery(
-                    ScoreFunctionBuilders.scriptFunction(Script(ScriptType.INLINE,
-                            "zorroa-similarity", "similarity", args)))
+                ScoreFunctionBuilders.scriptFunction(
+                    Script(
+                        ScriptType.INLINE,
+                        "zorroa-similarity", "similarity", args
+                    )
+                )
+            )
 
             fsqb.minScore = filter.minScore / 100.0f
             fsqb.boostMode(CombineFunction.REPLACE)
@@ -758,15 +795,15 @@ class SearchServiceImpl @Autowired constructor(
         val sortFields = properties.getList("archivist.search.sortFields")
 
         sortFields.asSequence()
-                .map { it.split(":", limit = 2) }
-                .forEach {
-                    val order = try {
-                        SortOrder.valueOf(it[1])
-                    } catch (e: IllegalArgumentException) {
-                        SortOrder.ASC
-                    }
-                    result[it[0]] = order
+            .map { it.split(":", limit = 2) }
+            .forEach {
+                val order = try {
+                    SortOrder.valueOf(it[1])
+                } catch (e: IllegalArgumentException) {
+                    SortOrder.ASC
                 }
+                result[it[0]] = order
+            }
 
         return result
     }

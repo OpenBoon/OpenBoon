@@ -1,8 +1,9 @@
 package com.zorroa.ldap
 
+import com.zorroa.archivist.sdk.security.LdapUserDetailsPlugin
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -18,17 +19,8 @@ import org.springframework.security.ldap.authentication.LdapAuthenticationProvid
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch
 
 @Configuration
-@ConfigurationProperties("archivist.security.ldap")
-open class LdapProperties {
-    var enabled: Boolean = false
-    var url: String? = null
-    var base: String? = null
-    var filter: String? = null
-}
-
-@Configuration
 @EnableWebSecurity
-@Order(Ordered.HIGHEST_PRECEDENCE + 3)
+@Order(Ordered.HIGHEST_PRECEDENCE + 10)
 open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
@@ -61,6 +53,16 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         val ldapAuthenticationProvider = LdapAuthenticationProvider(bindAuthenticator, userDetailsService)
         ldapAuthenticationProvider.setUserDetailsContextMapper(userDetailsService)
         return ldapAuthenticationProvider
+    }
+
+    /**
+     * If no LdapUserDetailsPlugin plugin is defined, use this one
+     * as a default.
+     **/
+    @Bean
+    @ConditionalOnMissingBean
+    open fun ldapUserDetailsPlugin(): LdapUserDetailsPlugin {
+        return StandardLdapUserDetailsPlugin()
     }
 
     @Bean

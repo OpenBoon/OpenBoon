@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.PermissionSpec
+import com.zorroa.archivist.domain.RegisteredUserUpdateSpec
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.domain.UserFilter
 import com.zorroa.archivist.domain.UserProfileUpdate
@@ -81,7 +82,13 @@ interface UserService {
 
     fun update(user: User, builder: UserProfileUpdate): Boolean
 
+    fun update(user: User, spec: RegisteredUserUpdateSpec): User
+
     fun delete(user: User): Boolean
+
+    fun setLanguage(user: User, language: String): Boolean
+
+    fun setAuthAttrs(user: User, attrs: Map<String, String>): Boolean
 
     fun updateSettings(user: User, settings: UserSettings): Boolean
 
@@ -137,7 +144,7 @@ class UserRegistryServiceImpl @Autowired constructor(
     internal lateinit var permissionService: PermissionService
 
     @Value("\${archivist.organization.multiTenant}")
-    var multiTentant: Boolean = false
+    var multiTenant: Boolean = false
 
     @Value("\${archivist.organization.domain}")
     lateinit var defaultEmailDomain: String
@@ -147,7 +154,7 @@ class UserRegistryServiceImpl @Autowired constructor(
      */
     override fun registerUser(username: String, source: AuthSource): UserAuthed {
 
-        logger.info("Registering external user, multi-tenant enabled: {}", multiTentant)
+        logger.info("Registering external user {}, multi-tenant enabled: {}", username, multiTenant)
         val org = getOrganization(source)
 
         val user = if (!userService.exists(username, null)) {
@@ -157,16 +164,20 @@ class UserRegistryServiceImpl @Autowired constructor(
             SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
 
             val spec = UserSpec(
-                    username,
-                    UUID.randomUUID().toString() + UUID.randomUUID().toString(),
-                    getEmail(username, source),
-                    source.authSourceId,
-                    firstName = source.attrs.getOrDefault("first_name", "First"),
-                    lastName = source.attrs.getOrDefault("last_name", "Last"),
-                    authAttrs = source.attrs)
+                username,
+                UUID.randomUUID().toString() + UUID.randomUUID().toString(),
+                getEmail(username, source),
+                source.authSourceId,
+                firstName = source.attrs.getOrDefault("first_name", "First"),
+                lastName = source.attrs.getOrDefault("last_name", "Last"),
+                language = source.attrs["user_locale"],
+                authAttrs = source.attrs,
+                id = source.userId
+            )
             userService.create(spec)
         } else {
-            userService.get(username)
+            val user = userService.get(username)
+            userService.update(user, RegisteredUserUpdateSpec(user, source.attrs))
         }
         userService.incrementLoginCounter(user)
 
@@ -180,8 +191,11 @@ class UserRegistryServiceImpl @Autowired constructor(
                 SecurityContextHolder.getContext().authentication = null
             }
         }
-
         return toUserAuthed(user)
+    }
+
+    override fun exists(username: String, source: String?): Boolean {
+        return userService.exists(username, source)
     }
 
     @Transactional(readOnly = true)
@@ -223,7 +237,7 @@ class UserRegistryServiceImpl @Autowired constructor(
          * ID or name.  Using the name is just temporary for IRM and will eventually
          * be removed.
          */
-        return if (multiTentant) {
+        return if (multiTenant) {
             source.organizationName?.let {
                 if (JdbcUtils.isUUID(it)) {
                     organizationService.get(UUID.fromString(it))
@@ -247,7 +261,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         val perms = mutableListOf<Permission>()
         for (group in groups) {
 
-            // Maps the external permission to a standard one, if applicagle.
+            // Maps the external permission to a standard one, if applicable.
             val parts = if (mapping.containsKey(group)) {
                 mapping.getValue(group).split(Permission.JOIN, limit = 2)
             } else {
@@ -302,7 +316,6 @@ class UserServiceImpl @Autowired constructor(
     private val tx: TransactionEventManager,
     private val properties: ApplicationProperties
 ) : UserService, ApplicationListener<ContextRefreshedEvent> {
-
     @Autowired
     internal lateinit var folderService: FolderService
 
@@ -407,6 +420,10 @@ class UserServiceImpl @Autowired constructor(
         userDao.addPermission(user, userPerm, true)
         userDao.addPermission(user, permissionDao.get(Groups.EVERYONE), true)
         return userDao.get(user.id)
+    }
+
+    override fun update(user: User, spec: RegisteredUserUpdateSpec): User {
+        return userDao.update(user, spec)
     }
 
     override fun get(username: String): User {
@@ -519,6 +536,14 @@ class UserServiceImpl @Autowired constructor(
             }
         }
         return result
+    }
+
+    override fun setLanguage(user: User, language: String): Boolean {
+        return userDao.setLanguage(user, language)
+    }
+
+    override fun setAuthAttrs(user: User, attrs: Map<String, String>): Boolean {
+        return userDao.setAuthAttrs(user, attrs)
     }
 
     override fun updateSettings(user: User, settings: UserSettings): Boolean {
