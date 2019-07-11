@@ -38,6 +38,7 @@
         <module>archivist</module>
         <module>es-similarity</module>
         <module>es-kwconf</module>
+        <module>unittest-dispatcher</module>
     </modules>
 
     <dependencyManagement>
@@ -143,6 +144,12 @@
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>lib-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zorroa</groupId>
+                <artifactId>unittest-dispatcher</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
