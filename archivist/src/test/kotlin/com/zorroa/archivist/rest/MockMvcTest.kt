@@ -41,9 +41,9 @@ abstract class MockMvcTest : AbstractTest() {
     override fun setup() {
         super.setup()
         this.mvc = MockMvcBuilders
-                .webAppContextSetup(this.wac!!)
-                .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain!!)
-                .build()
+            .webAppContextSetup(this.wac!!)
+            .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain!!)
+            .build()
     }
 
     /**
@@ -53,7 +53,8 @@ abstract class MockMvcTest : AbstractTest() {
     final inline fun <reified T : Any> resultForPostContent(
         urlTemplate: String,
         `object`: Any,
-        session: MockHttpSession = admin()): T {
+        session: MockHttpSession = admin()
+    ): T {
         // MockMvc clears the security context when it returns, I don't know how to configure it otherwise.
         val savedAuthentication = SecurityContextHolder.getContext().authentication
         val result = this.mvc.perform(
@@ -73,7 +74,8 @@ abstract class MockMvcTest : AbstractTest() {
     fun assertClientErrorForPostContent(
         urlTemplate: String,
         `object`: Any,
-        session: MockHttpSession = admin()) {
+        session: MockHttpSession = admin()
+    ) {
         val savedAuthentication = SecurityContextHolder.getContext().authentication
         this.mvc.perform(
             MockMvcRequestBuilders
@@ -110,23 +112,10 @@ abstract class MockMvcTest : AbstractTest() {
         return buildSession(UnitTestAuthentication(user, user.authorities))
     }
 
-    /**
-     * @return a session for an admin with the id 1.
-     */
     protected fun admin(): MockHttpSession {
         return user("admin")
     }
 
-    /**
-     * @return a session for a monitor user.
-     */
-    protected fun monitor(): MockHttpSession {
-        return user("monitor")
-    }
-
-    /**
-     * @return a session for an admin with the id 1.
-     */
     protected fun analyst(): MockHttpSession {
         return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
     }
@@ -138,6 +127,3 @@ abstract class MockMvcTest : AbstractTest() {
         var success: Boolean = false
     }
 }
-/**
- * @return a session for an employee with the id 2.
- */

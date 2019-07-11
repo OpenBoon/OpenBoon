@@ -185,7 +185,7 @@ class FolderDaoTests : AbstractTest() {
                 permissionService.getPermission(Groups.ADMIN)))
 
         assertFalse(folderDao.hasAccess(f3, Access.Read))
-        assertEquals(6, folderDao.getChildrenInsecure(pub.id).size.toLong())
+        assertEquals(7, folderDao.getChildrenInsecure(pub.id).size.toLong())
         assertEquals((startCount + 2).toLong(), folderDao.getChildren(pub.id).size.toLong())
     }
 

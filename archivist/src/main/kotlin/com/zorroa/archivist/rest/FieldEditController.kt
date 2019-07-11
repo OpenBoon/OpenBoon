@@ -11,6 +11,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -35,12 +36,18 @@ class FieldEditController @Autowired constructor(
 
     @ApiOperation("Create a Field Edit.")
     @PostMapping(value = ["/api/v1/fieldEdits"])
+    @PreAuthorize(
+        "hasAuthority(T(com.zorroa.security.Groups).WRITE) or " +
+        "hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     fun create(@ApiParam("Field Edit to create.") @RequestBody spec: FieldEditSpec): FieldEdit {
         return assetService.createFieldEdit(spec)
     }
 
     @ApiOperation("Delete a Field Edit.")
     @DeleteMapping(value = ["/api/v1/fieldEdits/{id}"])
+    @PreAuthorize(
+        "hasAuthority(T(com.zorroa.security.Groups).WRITE) or " +
+            "hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     fun delete(@ApiParam("UUID of the Field Edit.") @PathVariable id: UUID): Any {
         val edit = fieldSystemService.getFieldEdit(id)
         return HttpUtils.deleted("fieldEdit", id, assetService.deleteFieldEdit(edit))
