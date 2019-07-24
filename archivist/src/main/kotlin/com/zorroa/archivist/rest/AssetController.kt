@@ -3,9 +3,9 @@ package com.zorroa.archivist.rest
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
@@ -394,7 +394,7 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun batchCreate(
         @ApiParam("Assets to create.") @RequestBody spec: BatchCreateAssetsRequest
-    ): BatchCreateAssetsResponse {
+    ): BatchIndexAssetsResponse {
         return assetService.createOrReplaceAssets(spec)
     }
 
@@ -412,7 +412,7 @@ class AssetController @Autowired constructor(
         @ApiParam("Folders to reset.") @RequestBody req: SetFoldersRequest
     ): Any {
         req?.folders?.let {
-            folderService.setFoldersForAsset(id, it)
+            assetService.batchSetLinks(id, it)
             return HttpUtils.updated("asset", id, true)
         }
         return HttpUtils.updated("asset", id, false)

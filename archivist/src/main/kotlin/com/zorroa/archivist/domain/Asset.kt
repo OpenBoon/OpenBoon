@@ -80,6 +80,16 @@ class BatchUpdateAssetsResponse {
         accessDeniedAssetIds.addAll(other.accessDeniedAssetIds)
     }
 
+    /**
+     * Add the counts from an BatchIndexAssetsResponse to this object.
+     */
+    operator fun plus(other: BatchIndexAssetsResponse) {
+        updatedAssetIds.addAll(other.replacedAssetIds)
+        updatedAssetIds.addAll(other.replacedAssetIds)
+        erroredAssetIds.addAll(other.erroredAssetIds)
+    }
+
+
     override fun toString(): String {
         return "<BatchUpdateAssetsResponse " +
                 "updated=${updatedAssetIds.size} " +
@@ -128,7 +138,7 @@ class BatchUpdatePermissionsResponse {
     @ApiModelProperty("Errors that occurred while processing.")
     val errors = mutableMapOf<String, String>()
 
-    operator fun plus(other: BatchCreateAssetsResponse) {
+    operator fun plus(other: BatchIndexAssetsResponse) {
         updatedAssetIds.addAll(other.replacedAssetIds)
     }
 }
@@ -167,7 +177,7 @@ class BatchCreateAssetsRequest(
 }
 
 @ApiModel("Batch Create Assets Response", description = "The response after batch creating an array of assets.")
-class BatchCreateAssetsResponse(val total: Int) {
+class BatchIndexAssetsResponse(val total: Int) {
 
     @ApiModelProperty("UUIDs of Assets that were created.")
     var createdAssetIds = mutableSetOf<String>()
@@ -184,7 +194,7 @@ class BatchCreateAssetsResponse(val total: Int) {
     @ApiModelProperty("Number of retries it took finish this batch request.")
     var retryCount = 0
 
-    fun add(other: BatchCreateAssetsResponse): BatchCreateAssetsResponse {
+    fun add(other: BatchIndexAssetsResponse): BatchIndexAssetsResponse {
         createdAssetIds.addAll(other.createdAssetIds)
         replacedAssetIds.addAll(other.replacedAssetIds)
         erroredAssetIds.addAll(other.erroredAssetIds)

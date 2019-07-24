@@ -2,8 +2,10 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
+import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.IndexDao
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -22,6 +24,10 @@ class IndexServiceTests : AbstractTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
+    @Autowired
+    lateinit var assetDao: AssetDao
+
+
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -29,6 +35,16 @@ class IndexServiceTests : AbstractTest() {
     @Before
     fun init() {
         addTestAssets("set04/standard")
+    }
+
+    @Test
+    fun testIndexWithBackup() {
+        val doc = Document()
+        doc.setAttr("foo", "bar")
+        indexService.index(doc)
+
+        val asset = assetDao.get(doc.id)
+        assertEquals("bar", asset.getAttr("foo"))
     }
 
     @Test

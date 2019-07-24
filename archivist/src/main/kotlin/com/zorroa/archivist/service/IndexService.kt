@@ -1,30 +1,38 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
+import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.AuditLogEntrySpec
 import com.zorroa.archivist.domain.AuditLogType
-import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.AuditLogDao
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.SecureRunnable
+import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.task.AsyncListenableTaskExecutor
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.task.SyncTaskExecutor
+import org.springframework.core.task.TaskExecutor
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.stereotype.Component
 import java.nio.file.Path
 import java.nio.file.Paths
+import javax.annotation.PostConstruct
 
 /**
  * The IndexService is responsible for the business logic around asset CRUD and batch operations.
@@ -37,17 +45,15 @@ interface IndexService {
 
     fun get(path: Path): Document
 
+    fun getAll(ids: List<String>): List<Document>
+
     fun getProxies(id: String): ProxySchema
 
     fun getAll(page: Pager): PagedList<Document>
 
-    fun index(assets: List<Document>): BatchCreateAssetsResponse
+    fun index(assets: List<Document>): BatchIndexAssetsResponse
 
     fun index(doc: Document): Document
-
-    fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>>
-
-    fun appendLink(type: String, value: String, assets: List<String>): Map<String, List<Any>>
 
     fun exists(path: Path): Boolean
 
@@ -61,15 +67,25 @@ interface IndexService {
 @Component
 class IndexServiceImpl @Autowired constructor (
     private val indexDao: IndexDao,
+    private val assetDao: AssetDao,
     private val auditLogDao: AuditLogDao,
     private val fileServerProvider: FileServerProvider,
-    private val fileStorageService: FileStorageService,
-    private val workQueue: AsyncListenableTaskExecutor
+    private val fileStorageService: FileStorageService
 
 ) : IndexService {
 
     @Autowired
     lateinit var searchService: SearchService
+
+    @Value("\${archivist.assetStore.sqlBackup}")
+    var assetStoreBackup : Boolean = false
+
+    lateinit var workQueue : TaskExecutor
+
+    @PostConstruct
+    fun init() {
+        workQueue = buildAssetWorkQueue()
+    }
 
     override fun get(id: String): Document {
         return if (id.startsWith("/")) {
@@ -81,6 +97,10 @@ class IndexServiceImpl @Autowired constructor (
 
     override fun get(path: Path): Document {
         return indexDao.get(path)
+    }
+
+    override fun getAll(ids: List<String>): List<Document> {
+        return indexDao.getAll(ids)
     }
 
     override fun getProxies(id: String): ProxySchema {
@@ -111,16 +131,17 @@ class IndexServiceImpl @Autowired constructor (
         return indexDao.get(doc.id)
     }
 
-    override fun index(assets: List<Document>): BatchCreateAssetsResponse {
-        return indexDao.index(assets, true)
-    }
-
-    override fun removeLink(type: String, value: String, assets: List<String>): Map<String, List<Any>> {
-        return indexDao.removeLink(type, value, assets)
-    }
-
-    override fun appendLink(type: String, value: String, assets: List<String>): Map<String, List<Any>> {
-        return indexDao.appendLink(type, value, assets)
+    override fun index(assets: List<Document>): BatchIndexAssetsResponse {
+        val result =  indexDao.index(assets, true)
+        if (assetStoreBackup) {
+            val auth = getAuthentication()
+            workQueue.execute {
+                withAuth(auth) {
+                    assetDao.batchCreateOrReplace(assets)
+                }
+            }
+        }
+        return result
     }
 
     override fun exists(path: Path): Boolean {
@@ -219,6 +240,21 @@ class IndexServiceImpl @Autowired constructor (
                             mapOf("proxyId" to pr.id), e)
                 }
             }
+        }
+    }
+
+    private fun buildAssetWorkQueue(): TaskExecutor {
+        return if (ArchivistConfiguration.unittest) {
+            SyncTaskExecutor()
+        }
+        else {
+            val tpe = ThreadPoolTaskExecutor()
+            tpe.corePoolSize = 4
+            tpe.maxPoolSize = 4
+            tpe.threadNamePrefix = "ASSET-QUEUE-"
+            tpe.isDaemon = true
+            tpe.setQueueCapacity(1000)
+            return tpe
         }
     }
 

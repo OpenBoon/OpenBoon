@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
-import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
+import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
@@ -32,8 +32,6 @@ import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.script.Script
-import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Repository
@@ -55,6 +53,8 @@ interface IndexDao {
     fun batchDelete(ids: List<Document>): BatchDeleteAssetsResponse
 
     fun get(id: String): Document
+
+    fun getAll(ids: List<String>): List<Document>
 
     /**
      * Return the next page of an asset scroll.
@@ -91,12 +91,6 @@ interface IndexDao {
 
     fun get(path: Path): Document
 
-    fun removeLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>>
-
-    fun appendLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>>
-
-    fun setLinks(assetId: String, type: String, ids: Collection<Any>)
-
     fun update(doc: Document): Long
 
     fun <T> getFieldValue(id: String, field: String): T?
@@ -108,9 +102,9 @@ interface IndexDao {
      * @param sources
      * @return
      */
-    fun index(sources: List<Document>): BatchCreateAssetsResponse
+    fun index(sources: List<Document>): BatchIndexAssetsResponse
 
-    fun index(sources: List<Document>, refresh: Boolean = true): BatchCreateAssetsResponse
+    fun index(sources: List<Document>, refresh: Boolean = true): BatchIndexAssetsResponse
 }
 
 @Repository
@@ -130,12 +124,12 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         return get(source.id)
     }
 
-    override fun index(sources: List<Document>): BatchCreateAssetsResponse {
+    override fun index(sources: List<Document>): BatchIndexAssetsResponse {
         return index(sources, true)
     }
 
-    override fun index(sources: List<Document>, refresh: Boolean): BatchCreateAssetsResponse {
-        val result = BatchCreateAssetsResponse(sources.size)
+    override fun index(sources: List<Document>, refresh: Boolean): BatchIndexAssetsResponse {
+        val result = BatchIndexAssetsResponse(sources.size)
         if (sources.isEmpty()) {
             return result
         }
@@ -237,81 +231,6 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         return false
     }
 
-    override fun removeLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>> {
-        if (typeOfLink.contains(".")) {
-            throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
-        }
-
-        val rest = getClient()
-        val link = mapOf<String, Any>("type" to typeOfLink, "id" to value.toString())
-        val bulkRequest = BulkRequest()
-        for (id in assets) {
-
-            val updateBuilder = rest.newUpdateRequest(id)
-            updateBuilder.script(Script(ScriptType.INLINE,
-                    "painless", REMOVE_LINK_SCRIPT, link))
-            bulkRequest.add(updateBuilder)
-        }
-
-        val result = mutableMapOf<String, MutableList<Any>>()
-        result["success"] = mutableListOf()
-        result["failed"] = mutableListOf()
-
-        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
-        val bulk = rest.client.bulk(bulkRequest)
-        for (rsp in bulk.items) {
-            if (rsp.isFailed) {
-                result["failed"]!!.add(mapOf("id" to rsp.id, "error" to rsp.failureMessage))
-                logger.warn("Failed to unlink asset: {}", rsp.failureMessage, rsp.failure.cause)
-            } else {
-                result["success"]!!.add(rsp.id)
-            }
-        }
-        return result
-    }
-
-    override fun appendLink(typeOfLink: String, value: Any, assets: List<String>): Map<String, List<Any>> {
-        if (typeOfLink.contains(".")) {
-            throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
-        }
-        val link = mapOf<String, Any>("type" to typeOfLink, "id" to value.toString())
-
-        val rest = getClient()
-        val bulkRequest = BulkRequest()
-        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
-
-        for (id in assets) {
-            val update = rest.newUpdateRequest(id)
-            update.script(Script(ScriptType.INLINE, "painless", APPEND_LINK_SCRIPT, link))
-            bulkRequest.add(update)
-        }
-
-        val result = mutableMapOf<String, MutableList<Any>>(
-                "success" to mutableListOf(), "failed" to mutableListOf())
-
-        val bulk = rest.client.bulk(bulkRequest)
-        for (rsp in bulk.items) {
-            if (rsp.isFailed) {
-                result["failed"]!!.add(mapOf("id" to rsp.id, "error" to rsp.failureMessage))
-                logger.warn("Failed to link asset: {}", rsp.failureMessage, rsp.failure.cause)
-            } else {
-                result["success"]!!.add(rsp.id)
-            }
-        }
-
-        return result
-    }
-
-    override fun setLinks(assetId: String, typeOfLink: String, ids: Collection<Any>) {
-        if (typeOfLink.contains(".")) {
-            throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
-        }
-        val doc = mapOf("system" to mapOf("links" to mapOf(typeOfLink to ids)))
-        val rest = getClient()
-        rest.client.update(rest.newUpdateRequest(assetId)
-                .doc(Json.serializeToString(doc), XContentType.JSON))
-    }
-
     override fun update(asset: Document): Long {
         val rest = getClient()
         val ver = rest.client.update(rest.newUpdateRequest(asset.id)
@@ -400,6 +319,18 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         return elastic.queryForObject(req, MAPPER)
     }
 
+    override fun getAll(ids: List<String>): List<Document> {
+        val rest = getClient()
+        val req = rest.newSearchBuilder()
+        val query = QueryBuilders.boolQuery()
+            .must(QueryBuilders.termsQuery("_id", ids))
+            .must(getOrganizationFilter())
+        req.source.size(ids.size)
+        req.source.query(query)
+
+        return elastic.query(req, MAPPER)
+    }
+
     override fun exists(path: Path): Boolean {
         val rest = getClient()
         val req = rest.newSearchBuilder()
@@ -467,19 +398,6 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
     }
 
     companion object {
-
-        private const val REMOVE_LINK_SCRIPT =
-                "if (ctx._source.system != null) {  " +
-                "if (ctx._source.system.links != null) { " +
-                "if (ctx._source.system.links[params.type] != null) { " +
-                "ctx._source.system.links[params.type].removeIf(i-> i==params.id); }}}"
-
-        private const val APPEND_LINK_SCRIPT =
-                "if (ctx._source.system == null) { ctx._source.system = new HashMap(); } " +
-                "if (ctx._source.system.links == null) { ctx._source.system.links = new HashMap(); }  " +
-                "if (ctx._source.system.links[params.type] == null) { ctx._source.system.links[params.type] = new ArrayList(); }" +
-                "ctx._source.system.links[params.type].add(params.id); " +
-                "ctx._source.system.links[params.type] = new HashSet(ctx._source.system.links[params.type]);"
 
         private val MAPPER = object : SearchHitRowMapper<Document> {
             override fun mapRow(hit: SingleHit): Document {

@@ -49,6 +49,10 @@ class AssetDaoImpl : AbstractDao(), AssetDao {
     }
 
     override fun batchCreateOrReplace(docs: List<Document>): Int {
+        if (docs.isEmpty()) {
+            return 0
+        }
+
         val time = extractTime(docs[0])
         val user = getUser()
         val result = jdbc.batchUpdate(INSERT, object : BatchPreparedStatementSetter {

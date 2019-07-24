@@ -6,8 +6,10 @@ import com.google.common.collect.Maps
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetLinks
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.LinkType
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
@@ -308,8 +310,10 @@ class SearchServiceTests : AbstractTest() {
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
+
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
-        indexService.appendLink("folder", folder2.id.toString(), ImmutableList.of(source2.id))
+        assetService.batchUpdateLinks(LinkType.Folder, listOf(folder2.id), BatchUpdateAssetLinks(
+            ImmutableList.of(source2.id)))
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
         val search = AssetSearch().setFilter(filter)
