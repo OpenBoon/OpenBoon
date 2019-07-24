@@ -57,6 +57,12 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testGetAll() {
+        val assets = indexService.getAll(Pager.first())
+        assertEquals(2, assets.size())
+    }
+
+    @Test
     fun testDelete() {
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
@@ -76,7 +82,6 @@ class IndexServiceTests : AbstractTest() {
 
     @Test
     fun testBatchDeleteEmptyList() {
-        val assets = indexService.getAll(Pager.first())
         val res = indexService.batchDelete(listOf())
         assertEquals(0, res.totalRequested)
         assertEquals(0, res.deletedAssetIds.size)
