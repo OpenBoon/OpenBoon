@@ -77,7 +77,7 @@ class IndexServiceImpl @Autowired constructor (
     @Autowired
     lateinit var searchService: SearchService
 
-    @Value("\${archivist.assetStore.sqlBackup}")
+    @Value("\${archivist.asset-store.sql-backup}")
     var assetStoreBackup : Boolean = false
 
     lateinit var workQueue : TaskExecutor
