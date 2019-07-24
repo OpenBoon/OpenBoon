@@ -13,14 +13,10 @@ import com.zorroa.archivist.security.UserJwtValidator
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileServerProviderImpl
 import com.zorroa.archivist.service.FileStorageService
-import com.zorroa.archivist.service.GcpPubSubServiceImpl
 import com.zorroa.archivist.service.GcsFileStorageService
 import com.zorroa.archivist.service.LocalFileStorageService
-import com.zorroa.archivist.service.PubSubService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
-import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
@@ -134,24 +130,6 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus(): EventBus {
         return EventBus()
-    }
-
-    @Bean
-    @Autowired
-    fun pubSubService(meterRegistry: MeterRegistry): PubSubService? {
-        val props = properties()
-        if (props.getString("archivist.pubsub.type") == "gcp") {
-            val network = networkEnvironment()
-            return GcpPubSubServiceImpl(
-                IrmCoreDataVaultClientImpl(
-                    network.getPublicUrl("core-data-vault-api"),
-                    serviceCredentials(),
-                    dataCredentials(), meterRegistry
-                ), meterRegistry
-            )
-        }
-        logger.info("No PubSub service configured")
-        return null
     }
 
     @Bean

@@ -6,7 +6,6 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.domain.PasswordResetToken
-import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.repository.UserDao
@@ -24,15 +23,13 @@ interface EmailService {
     fun sendOnboardEmail(user: User): PasswordResetToken
     fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink)
     fun sendPasswordResetEmail(user: User): PasswordResetToken
-    fun sendExportRequestEmail(user: User, req: Request)
 }
 
 @Component
 class EmailServiceImpl @Autowired constructor(
     private val userDao: UserDao,
     private val mailSender: JavaMailSender?,
-    private val networkEnv: NetworkEnvironment,
-    private val properties: ApplicationProperties
+    private val networkEnv: NetworkEnvironment
 ) : EmailService {
 
     @Autowired
@@ -136,49 +133,6 @@ class EmailServiceImpl @Autowired constructor(
             }
         }
         return token
-    }
-
-    override fun sendExportRequestEmail(user: User, req: Request) {
-
-        var name: String
-        if (user.firstName != null && user.lastName != null) {
-            name = "${user.firstName} ${user.lastName}"
-        } else {
-            name = user.username
-        }
-        val url = networkEnv.getPublicUrl("zorroa-archivist") + "/folder/${req.folderId}"
-        val folderPath = folderService.getPath(folderService.get(req.folderId))
-        val folderName = folderPath.split("/").last()
-        val toEmail = properties.getString("archivist.requests.managerEmail")
-
-        val allCC = req.emailCC.toMutableList()
-        allCC.add(user.email)
-
-        logger.info("Sending request email cc: $allCC to: $toEmail")
-
-        val text = StringBuilder(1024)
-        text.append("Hello !\n\n")
-        text.append("$name (${user.email}) has requested assets to be exported from $folderPath.\n")
-        text.append("Click here to visit the folder $url\n\n")
-        text.append("Additional Notes:\n")
-        text.append(req.comment)
-
-        var htmlMsg: String? = null
-        try {
-            htmlMsg = getTextResourceFile("emails/ExportRequest.html")
-            htmlMsg = htmlMsg.replace("*|FROM_USER|*", "$name (${user.email})")
-            htmlMsg = htmlMsg.replace("*|FOLDER_URL|*", url)
-            htmlMsg = htmlMsg.replace("*|FOLDER_PATH|*", folderPath)
-            htmlMsg = htmlMsg.replace("*|COMMENTS|*", req.comment)
-        } catch (e: IOException) {
-            logger.warn("Failed to open HTML template for export request, Sending text only.", e)
-        }
-
-        try {
-            sendHTMLEmail(toEmail, "Export Request from $name for \"$folderName\"", text.toString(), allCC, htmlMsg)
-        } catch (e: MessagingException) {
-            logger.warn("Export Request not sent, unexpected ", e)
-        }
     }
 
     @Throws(IOException::class)
