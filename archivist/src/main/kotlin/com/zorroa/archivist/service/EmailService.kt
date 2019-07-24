@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.google.common.base.Charsets
 import com.google.common.io.CharStreams
-import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.config.NetworkEnvironment
 import com.zorroa.archivist.domain.PasswordResetToken
@@ -31,9 +30,6 @@ class EmailServiceImpl @Autowired constructor(
     private val mailSender: JavaMailSender?,
     private val networkEnv: NetworkEnvironment
 ) : EmailService {
-
-    @Autowired
-    private lateinit var folderService: FolderService
 
     override fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink) {
 
