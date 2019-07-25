@@ -11,6 +11,7 @@ import com.zorroa.archivist.domain.UserPasswordUpdate
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSettings
 import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.MasterJwtValidator
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.archivist.security.getAuthentication
@@ -167,10 +168,9 @@ class UserController @Autowired constructor(
     fun login(): ResponseEntity<User> {
         val user = getUser()
         val headers = HttpHeaders()
-        headers.add(
-            "X-Zorroa-Auth-Token",
-            generateUserToken(user.id, userService.getHmacKey(user))
-        )
+        val token =  generateUserToken(user.id, userService.getHmacKey(user))
+        headers.add("X-Zorroa-Auth-Token", token)
+        headers.add(JwtSecurityConstants.HEADER_STRING, token)
 
         return ResponseEntity.ok()
             .headers(headers)

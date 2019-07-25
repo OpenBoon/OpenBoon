@@ -24,6 +24,9 @@ import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import io.micrometer.core.instrument.MeterRegistry
+import net.spy.memcached.AddrUtil
+import net.spy.memcached.ConnectionFactoryBuilder
+import net.spy.memcached.MemcachedClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
@@ -54,6 +57,14 @@ class ArchivistConfiguration {
     @Bean
     fun transactionEventManager(): TransactionEventManager {
         return TransactionEventManager()
+    }
+
+    @Bean
+    fun memcachedClient(): MemcachedClient {
+        return MemcachedClient(
+            ConnectionFactoryBuilder()
+                .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY).build(),
+            AddrUtil.getAddresses("memcached:11211"))
     }
 
     @Bean

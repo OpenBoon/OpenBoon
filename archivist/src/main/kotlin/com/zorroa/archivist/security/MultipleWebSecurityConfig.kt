@@ -28,7 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
-import org.springframework.security.web.csrf.CsrfFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
 import javax.servlet.http.HttpServletRequest
@@ -62,18 +61,17 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                    .antMatcher("/api/**/login")
-                    .authorizeRequests()
-                    .anyRequest().authenticated()
-                    .and().headers().frameOptions().disable()
-                    .and().httpBasic()
-                    .and().csrf().csrfTokenRepository(csrfTokenRepository)
-                    .requireCsrfProtectionMatcher(csrfRequestMatcher)
+                .antMatcher("/api/**/login")
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and().headers().frameOptions().disable()
+                .and().csrf().disable()
+                .httpBasic()
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
-                        .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
-                        .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
+                    .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
+                    .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
             }
         }
     }
@@ -105,32 +103,30 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                    .antMatcher("/api/**")
-                    .addFilterBefore(jwtAuthorizationFilter(), CsrfFilter::class.java)
-                    .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                    .and()
-                    .authorizeRequests()
-                    .antMatchers("/api/v1/logout").permitAll()
-                    .antMatchers("/api/v1/who").permitAll()
-                    .antMatchers("/api/v1/reset-password").permitAll()
-                    .antMatchers("/api/v1/send-password-reset-email").permitAll()
-                    .antMatchers("/api/v1/send-onboard-email").permitAll()
-                    .antMatchers("/api/v1/auth/token").permitAll()
-                    .anyRequest().authenticated()
-                    .and().headers().frameOptions().disable().cacheControl().disable()
-                    .and().csrf().csrfTokenRepository(csrfTokenRepository)
-                    .requireCsrfProtectionMatcher(csrfRequestMatcher)
-                    .and()
-                    .exceptionHandling().authenticationEntryPoint {
-                        _: HttpServletRequest, rsp: HttpServletResponse, exp: AuthenticationException ->
-                        rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED, exp.message)
-                    }
+                .antMatcher("/api/**")
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
+                .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/v1/logout").permitAll()
+                .antMatchers("/api/v1/who").permitAll()
+                .antMatchers("/api/v1/reset-password").permitAll()
+                .antMatchers("/api/v1/send-password-reset-email").permitAll()
+                .antMatchers("/api/v1/send-onboard-email").permitAll()
+                .antMatchers("/api/v1/auth/token").permitAll()
+                .anyRequest().authenticated()
+                .and().headers().frameOptions().disable().cacheControl().disable()
+                .and().csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint { _: HttpServletRequest, rsp: HttpServletResponse, exp: AuthenticationException ->
+                    rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED, exp.message)
+                }
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
-                        .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
-                        .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
+                    .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
+                    .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
             }
         }
     }
@@ -149,13 +145,13 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                    .antMatcher("/cluster/**")
-                    .addFilterBefore(analystAuthenticationFilter, CsrfFilter::class.java)
-                    .csrf().disable()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
-                    .authorizeRequests()
-                    .anyRequest().hasAuthority("ANALYST")
+                .antMatcher("/cluster/**")
+                .addFilterBefore(analystAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .anyRequest().hasAuthority("ANALYST")
         }
     }
 
@@ -170,16 +166,17 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                    .antMatcher("/actuator/**")
-                    .httpBasic()
-                    .and()
-                    .addFilterBefore(jwtAuthorizationFilter, CsrfFilter::class.java)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
-                    .authorizeRequests()
-                    .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
-                        .hasAnyAuthority("zorroa::superadmin", "zorroa::monitor")
-                    .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
+                .antMatcher("/actuator/**")
+                .httpBasic()
+                .and()
+                .csrf().disable()
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
+                .hasAnyAuthority("zorroa::superadmin", "zorroa::monitor")
+                .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
 
@@ -188,23 +185,22 @@ class MultipleWebSecurityConfig {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class RootSecurityConfig : WebSecurityConfigurerAdapter() {
 
-        @Autowired
-        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
-
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                    .antMatcher("/*")
-                    .authorizeRequests()
-                    .antMatchers("/v2/api-docs").hasAuthority("zorroa::superadmin")
-                    .antMatchers("/configuration/**").hasAuthority("zorroa::superadmin")
-                    .antMatchers("/swagger-resources/**").hasAuthority("zorroa::superadmin")
-                    .antMatchers("/swagger-ui.html").hasAuthority("zorroa::superadmin")
-                    .antMatchers("/webjars/**").hasAuthority("zorroa::superadmin")
-                    .antMatchers("/error").permitAll()
-                    .anyRequest().permitAll()
-                    .and()
-                    .csrf().disable()
+                .antMatcher("/*")
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/v2/api-docs").hasAuthority("zorroa::superadmin")
+                .antMatchers("/configuration/**").hasAuthority("zorroa::superadmin")
+                .antMatchers("/swagger-resources/**").hasAuthority("zorroa::superadmin")
+                .antMatchers("/swagger-ui.html").hasAuthority("zorroa::superadmin")
+                .antMatchers("/webjars/**").hasAuthority("zorroa::superadmin")
+                .antMatchers("/error").permitAll()
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable()
         }
     }
 
@@ -215,12 +211,12 @@ class MultipleWebSecurityConfig {
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth
-                .authenticationProvider(jwtAuthenticationProvider())
-                .authenticationProvider(zorroaAuthenticationProvider())
-                .authenticationEventPublisher(authenticationEventPublisher())
-                .inMemoryAuthentication()
-                .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
-                .authorities("zorroa::monitor")
+            .authenticationProvider(jwtAuthenticationProvider())
+            .authenticationProvider(zorroaAuthenticationProvider())
+            .authenticationEventPublisher(authenticationEventPublisher())
+            .inMemoryAuthentication()
+            .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
+            .authorities("zorroa::monitor")
 
         /**
          * If its a unit test we add our rubber stamp authenticator.
@@ -240,15 +236,17 @@ class MultipleWebSecurityConfig {
 
         return object : AuthenticationEventPublisher {
 
-            override fun publishAuthenticationSuccess(authentication: Authentication) { }
+            override fun publishAuthenticationSuccess(authentication: Authentication) {}
             override fun publishAuthenticationFailure(
                 exception: AuthenticationException,
                 authentication: Authentication
             ) {
 
                 if (properties.getBoolean("archivist.debug-mode.enabled")) {
-                    logger.warnEvent(LogObject.USER, LogAction.ERROR,
-                            "failed to authenticate", emptyMap(), exception)
+                    logger.warnEvent(
+                        LogObject.USER, LogAction.ERROR,
+                        "failed to authenticate", emptyMap(), exception
+                    )
                 }
             }
         }

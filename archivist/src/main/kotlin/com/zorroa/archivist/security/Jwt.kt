@@ -39,7 +39,6 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
     ) {
 
         val token = req.getHeader(HEADER_STRING)
-
         if (token == null || !token.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res)
             return
@@ -51,12 +50,13 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
          *
          * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
          */
-        val valiadated = validator.validate(token.replace(TOKEN_PREFIX, ""))
+        val validated = validator.validate(token.replace(TOKEN_PREFIX, ""))
 
-        SecurityContextHolder.getContext().authentication =
-            JwtAuthenticationToken(valiadated.claims, req.getHeader(ORGID_HEADER))
+        val authToken = JwtAuthenticationToken(validated.claims, req.getHeader(ORGID_HEADER))
+        SecurityContextHolder.getContext().authentication = authToken
 
         req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
+        res.addHeader(HEADER_STRING,  token)
         chain.doFilter(req, res)
     }
 }
@@ -122,7 +122,7 @@ class JwtAuthenticationProvider : AuthenticationProvider {
                     LogObject.USER, LogAction.ORGSWAP,
                     mapOf(
                         "username" to user.username,
-                        "newOrganizationId" to token.organizationId
+                        "overrideOrganizationId" to token.organizationId
                     )
                 )
             }
