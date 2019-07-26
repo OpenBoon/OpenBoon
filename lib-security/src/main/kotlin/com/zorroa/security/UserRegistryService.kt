@@ -19,4 +19,6 @@ interface UserRegistryService {
     fun getUser(username: String): UserAuthed
 
     fun getUser(id: UUID): UserAuthed
+
+    fun exists(username: String, source: String?): Boolean
 }
