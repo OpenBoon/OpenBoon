@@ -114,15 +114,37 @@ class FieldEditControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testCreateFieldEditAccessDenied() {
-        val session = user()
+    fun testCreateFieldEditWithPermission() {
+        val session = user("editor")
         addTestAssets("set04/standard")
-        var asset = indexDao.getAll(Pager.first())[0]
+        addWritePermissionToTestAssets()
 
+        var asset = indexDao.getAll(Pager.first())[0]
         val field = fieldSystemService.createField(field)
         val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
 
-        val req = mvc.perform(
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/fieldEdits")
+                .session(session)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serializeToString(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testCreateFieldEditAccessDenied() {
+        val session = user()
+        addTestAssets("set04/standard")
+        addWritePermissionToTestAssets()
+
+        var asset = indexDao.getAll(Pager.first())[0]
+        val field = fieldSystemService.createField(field)
+        val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "bob")
+
+        mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/fieldEdits")
                 .session(session)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

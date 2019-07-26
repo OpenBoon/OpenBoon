@@ -792,7 +792,7 @@ class AssetServiceImpl : AssetService {
      */
     private fun getCoroutineContext(): CoroutineContext {
         return if (ArchivistConfiguration.unittest) {
-            CoroutineAuthentication(getSecurityContext())
+            CoroutineAuthentication(getSecurityContext()) + Dispatchers.Main.immediate
         } else {
             Dispatchers.IO + CoroutineAuthentication(getSecurityContext())
         }

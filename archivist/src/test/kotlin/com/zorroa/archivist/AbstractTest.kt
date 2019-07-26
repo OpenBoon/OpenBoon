@@ -6,11 +6,14 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.service.AssetService
@@ -31,6 +34,7 @@ import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
+import com.zorroa.security.Groups
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.junit.Before
@@ -63,7 +67,7 @@ import javax.sql.DataSource
 @TestPropertySource(locations = ["classpath:test.properties"])
 @WebAppConfiguration
 @Transactional
-open abstract class AbstractTest {
+abstract class AbstractTest {
 
     val logger = LoggerFactory.getLogger(javaClass)
 
@@ -191,25 +195,33 @@ open abstract class AbstractTest {
             cleanElastic()
         }
 
-        val spec1 = UserSpec(
+        userService.create(UserSpec(
                 "user",
                 "user",
                 "user@zorroa.com",
                 firstName = "Bob",
-                lastName = "User")
+                lastName = "User"))
 
-        userService.create(spec1)
-
-        val spec2 = UserSpec(
+        val manager = userService.create(UserSpec(
                 "librarian",
                 "manager",
                 "librarian@zorroa.com",
                 firstName = "Anne",
-                lastName = "Librarian")
+                lastName = "Librarian"))
 
-        val manager = userService.create(spec2)
         userService.addPermissions(manager, listOf(
-                permissionService.getPermission("zorroa::librarian")))
+            permissionService.getPermission("zorroa::librarian")))
+
+        val editor = userService.create(UserSpec(
+            "editor",
+            "editor",
+            "editor@zorroa.com",
+            firstName = "Metadata",
+            lastName = "Editor"
+        ))
+
+        userService.addPermissions(editor,
+            listOf(permissionService.getPermission(Groups.WRITE)))
 
         Json.Mapper.registerModule(KotlinModule())
     }
@@ -338,6 +350,12 @@ open abstract class AbstractTest {
 
     fun addTestAssets(subdir: String) {
         addTestAssets(getTestAssets(subdir))
+    }
+
+    fun addWritePermissionToTestAssets() {
+        val perm = permissionService.getPermission(Groups.WRITE)
+        assetService.setPermissions(
+            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 2)))
     }
 
     fun addTestVideoAssets() {
