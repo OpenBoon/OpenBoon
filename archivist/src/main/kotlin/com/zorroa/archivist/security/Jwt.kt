@@ -74,9 +74,10 @@ class JwtAuthenticationToken constructor(
 ) : AbstractAuthenticationToken(listOf()) {
 
     val userId = claims.getValue("userId")
+    val sessionId = claims.getOrDefault("sessionId", "")
 
     override fun getCredentials(): Any {
-        return userId
+        return sessionId
     }
 
     override fun getPrincipal(): Any {
@@ -128,7 +129,7 @@ class JwtAuthenticationProvider : AuthenticationProvider {
             }
         }
 
-        return UsernamePasswordAuthenticationToken(authedUser, "", authorities)
+        return UsernamePasswordAuthenticationToken(authedUser, token.credentials, authorities)
     }
 
     override fun supports(cls: Class<*>): Boolean {

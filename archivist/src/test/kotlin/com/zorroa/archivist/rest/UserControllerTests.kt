@@ -15,7 +15,6 @@ import com.zorroa.archivist.domain.UserSettings
 import com.zorroa.archivist.security.IrmJwtValidatorTest
 import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.generateUserToken
-import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
@@ -50,24 +49,6 @@ class UserControllerTests : MockMvcTest() {
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
         )
             .andExpect(status().isOk)
-    }
-
-    @Test
-    fun testGetAuthToken() {
-        val session = admin()
-
-        val key = userService.getHmacKey(userService.get("admin"))
-        val token = generateUserToken(getUserId(), key)
-        val result = mvc.perform(
-            get("/api/v1/users/auth-token")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(status().isOk)
-            .andReturn()
-        val content = Json.deserialize(result.response.contentAsString, Json.GENERIC_MAP)
-        assertEquals(token, content["token"])
     }
 
     @Test
@@ -168,7 +149,7 @@ class UserControllerTests : MockMvcTest() {
     @Test
     fun testCreateV2WithOrgIdHeader() {
         val user = userService.get("admin")
-        val token = generateUserToken(user.id, userService.getHmacKey(user))
+        val token = generateUserToken(user.id, null, userService.getHmacKey(user))
         val org = organizationService.create(OrganizationSpec("Mordor Inc"))
 
         val spec = LocalUserSpec(

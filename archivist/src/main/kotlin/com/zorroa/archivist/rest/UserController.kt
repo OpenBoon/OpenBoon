@@ -13,7 +13,7 @@ import com.zorroa.archivist.domain.UserSettings
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.MasterJwtValidator
-import com.zorroa.archivist.security.generateUserToken
+import com.zorroa.archivist.security.TokenStore
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
@@ -38,9 +38,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -66,7 +64,8 @@ class UserController @Autowired constructor(
     private val userService: UserService,
     private val permissionService: PermissionService,
     private val emailService: EmailService,
-    private val masterJwtValidator: MasterJwtValidator
+    private val masterJwtValidator: MasterJwtValidator,
+    private val tokenStore: TokenStore
 ) {
 
     @ApiOperation("DEPRECATED: Do not use.", hidden = true)
@@ -125,17 +124,6 @@ class UserController @Autowired constructor(
         return userService.getApiKey(spec)
     }
 
-    @ApiOperation(
-        "Get a json web token (JWT).",
-        notes = "Returns a JWT that can be used to authenticate requests."
-    )
-    @GetMapping(value = ["/api/v1/users/auth-token"])
-    fun getAuthToken(): Any {
-        val user = getUser()
-        val key = userService.getHmacKey(user)
-        return mapOf("token" to generateUserToken(user.id, key))
-    }
-
     @PostMapping(value = ["/api/v1/auth/token"])
     fun jwtCreateAndLogin(
         @RequestParam(value = "insight_auth_token") token: String,
@@ -168,9 +156,9 @@ class UserController @Autowired constructor(
     fun login(): ResponseEntity<User> {
         val user = getUser()
         val headers = HttpHeaders()
-        val token =  generateUserToken(user.id, userService.getHmacKey(user))
-        headers.add("X-Zorroa-Auth-Token", token)
-        headers.add(JwtSecurityConstants.HEADER_STRING, token)
+        val token = tokenStore.createSessionToken(user.id)
+
+        headers.add(JwtSecurityConstants.HEADER_STRING, JwtSecurityConstants.TOKEN_PREFIX + token)
 
         return ResponseEntity.ok()
             .headers(headers)
@@ -181,11 +169,13 @@ class UserController @Autowired constructor(
     @RequestMapping(value = ["/api/v1/logout"], method = [RequestMethod.POST, RequestMethod.GET])
     fun logout(req: HttpServletRequest, rsp: HttpServletResponse): Any {
         val auth = getAuthentication()
-        val cookieClearingLogoutHandler =
-            CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
-        val securityContextLogoutHandler = SecurityContextLogoutHandler()
-        cookieClearingLogoutHandler.logout(req, rsp, auth)
-        securityContextLogoutHandler.logout(req, rsp, auth)
+
+        /**
+         * TODO: not sure we can assume auth.credentials has a session Id.
+         */
+        auth?.let {
+            tokenStore.removeSession(auth.credentials as String)
+        }
         SecurityContextHolder.clearContext()
 
         return if (auth == null) {

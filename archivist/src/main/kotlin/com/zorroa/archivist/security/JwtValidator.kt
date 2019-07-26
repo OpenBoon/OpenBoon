@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
-import com.zorroa.archivist.repository.UserDao
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
@@ -22,13 +21,6 @@ class JwtValidatorException constructor(
 ) : RuntimeException(message, cause) {
 
     constructor(message: String) : this(message, null)
-}
-
-fun generateUserToken(userId: UUID, key: String): String {
-    val algo = Algorithm.HMAC256(key)
-    return JWT.create().withIssuer("zorroa")
-        .withClaim("userId", userId.toString())
-        .sign(algo)
 }
 
 object JwtSecurityConstants {
@@ -74,14 +66,18 @@ class MasterJwtValidator constructor(
                 val claims = validator.validate(token)
                 return ValidatedJwt(validator, claims)
             } catch (e: Exception) {
-                // Called validators should log exceptions if needed
+
             }
         }
         throw JwtValidatorException("Failed to validate JWT token")
     }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(MasterJwtValidator::class.java)
+    }
 }
 
-class UserJwtValidator constructor(val userDao: UserDao) : JwtValidator {
+class LocalUserJwtValidator constructor(val tokenStore: TokenStore) : JwtValidator {
 
     init {
         logger.info("Initializing User/Hmac JwtValidator")
@@ -91,13 +87,21 @@ class UserJwtValidator constructor(val userDao: UserDao) : JwtValidator {
         try {
             val jwt = JWT.decode(token)
             val userId = UUID.fromString(jwt.claims.getValue("userId").asString())
-            val hmacKey = userDao.getHmacKey(userId)
+
+            // Validate signing
+            val hmacKey = tokenStore.getSigningKey(userId)
             val alg = Algorithm.HMAC256(hmacKey)
             alg.verify(jwt)
+
+            // Check expire if the token has a session ID.
+            if (jwt.claims.containsKey("sessionId")) {
+                tokenStore.incrementSessionExpirationTime(jwt.claims.getValue("sessionId").asString())
+            }
 
             return jwt.claims.map {
                 it.key to it.value.asString()
             }.toMap()
+
         } catch (e: JWTVerificationException) {
             throw JwtValidatorException("Failed to validate token", e)
         }
@@ -108,7 +112,7 @@ class UserJwtValidator constructor(val userDao: UserDao) : JwtValidator {
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(UserJwtValidator::class.java)
+        private val logger = LoggerFactory.getLogger(LocalUserJwtValidator::class.java)
     }
 }
 
