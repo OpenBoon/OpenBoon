@@ -24,8 +24,10 @@ class JwtValidatorException constructor(
 }
 
 object JwtSecurityConstants {
+
     const val TOKEN_PREFIX = "Bearer "
-    const val HEADER_STRING = "Authorization"
+    const val HEADER_STRING_REQ = "Authorization"
+    const val HEADER_STRING_RSP = "X-Zorroa-Credential"
 
     /**
      * Used to override organization

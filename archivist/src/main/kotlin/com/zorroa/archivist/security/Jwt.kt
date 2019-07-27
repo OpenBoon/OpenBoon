@@ -3,7 +3,8 @@ package com.zorroa.archivist.security
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
+import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_REQ
+import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_RSP
 import com.zorroa.archivist.security.JwtSecurityConstants.ORGID_HEADER
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import com.zorroa.archivist.service.UserService
@@ -38,7 +39,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
         chain: FilterChain
     ) {
 
-        val token = req.getHeader(HEADER_STRING)
+        val token = req.getHeader(HEADER_STRING_REQ)
         if (token == null || !token.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res)
             return
@@ -56,7 +57,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
         SecurityContextHolder.getContext().authentication = authToken
 
         req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
-        res.addHeader(HEADER_STRING,  token)
+        res.addHeader(HEADER_STRING_RSP, token)
         chain.doFilter(req, res)
     }
 }

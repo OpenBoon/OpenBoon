@@ -161,7 +161,7 @@ class UserControllerTests : MockMvcTest() {
             post("/api/v2/users")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header(
-                    JwtSecurityConstants.HEADER_STRING,
+                    JwtSecurityConstants.HEADER_STRING_REQ,
                     "${JwtSecurityConstants.TOKEN_PREFIX}$token"
                 )
                 .header(JwtSecurityConstants.ORGID_HEADER, org.id.toString())

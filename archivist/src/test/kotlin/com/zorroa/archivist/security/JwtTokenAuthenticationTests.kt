@@ -20,7 +20,7 @@ class JwtTokenAuthenticationTests : MockMvcTest() {
 
         val rsp = mvc.perform(MockMvcRequestBuilders.get("/api/v1/who")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .header(JwtSecurityConstants.HEADER_STRING,
+                .header(JwtSecurityConstants.HEADER_STRING_REQ,
                         "${JwtSecurityConstants.TOKEN_PREFIX}$token")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)

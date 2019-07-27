@@ -38,7 +38,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -158,7 +157,7 @@ class UserController @Autowired constructor(
         val headers = HttpHeaders()
         val token = tokenStore.createSessionToken(user.id)
 
-        headers.add(JwtSecurityConstants.HEADER_STRING, JwtSecurityConstants.TOKEN_PREFIX + token)
+        headers.add(JwtSecurityConstants.HEADER_STRING_REQ, JwtSecurityConstants.TOKEN_PREFIX + token)
 
         return ResponseEntity.ok()
             .headers(headers)
