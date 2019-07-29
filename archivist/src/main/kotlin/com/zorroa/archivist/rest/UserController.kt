@@ -123,40 +123,42 @@ class UserController @Autowired constructor(
         return userService.getApiKey(spec)
     }
 
+    @ApiOperation(
+        "Authenticate using a valid auth token.",
+        notes = "Use token authentication to get logged in. Returns the X-Zorroa-Credential header with a valid JWT."
+    )
     @PostMapping(value = ["/api/v1/auth/token"])
-    fun jwtCreateAndLogin(
-        @RequestParam(value = "insight_auth_token") token: String,
+    fun tokenAuth(
+        @RequestParam(value = "auth_token") token: String,
         request: HttpServletRequest,
         response: HttpServletResponse
     ) {
-
         // Clear out any current authentication.
         logout(request, response)
 
-        val validatedJwt = masterJwtValidator.validate(token)
-        validatedJwt.provisionUser()
-
-        try {
+        val validatedToken = masterJwtValidator.validate(token)
+        val user = validatedToken.provisionUser()
+        if (user != null) {
+            val token = tokenStore.createSessionToken(user.id)
             response.setHeader("Location", "/")
+            response.setHeader(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
             response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
-        } catch (e: Exception) {
-            if (!response.isCommitted) {
-                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString())
-            }
+        } else {
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Authentication failed")
         }
     }
 
     @ApiOperation(
         "HTTP-auth-based login.",
         notes = "Use standard HTTP authentication to get logged in. Returns the current user as well as a " +
-            "X-Zorroa-Auth-Token header with a valid JWT."
+            "X-Zorroa-Credential header with a valid JWT."
     )
     @PostMapping(value = ["/api/v1/login"])
     fun login(): ResponseEntity<User> {
         val user = getUser()
         val headers = HttpHeaders()
-        val token = tokenStore.createSessionToken(user.id)
 
+        val token = tokenStore.createSessionToken(user.id)
         headers.add(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
 
         return ResponseEntity.ok()
@@ -167,13 +169,12 @@ class UserController @Autowired constructor(
     @ApiOperation("HTTP-auth-based logout.")
     @RequestMapping(value = ["/api/v1/logout"], method = [RequestMethod.POST, RequestMethod.GET])
     fun logout(req: HttpServletRequest, rsp: HttpServletResponse): Any {
-        val auth = getAuthentication()
 
-        /**
-         * TODO: not sure we can assume auth.credentials has a session Id.
-         */
-        auth?.let {
-            tokenStore.removeSession(auth.credentials as String)
+        val auth = getAuthentication()?.let { auth ->
+            auth.credentials?.let { sessionId ->
+                tokenStore.removeSession(sessionId as String)
+            }
+            auth
         }
         SecurityContextHolder.clearContext()
 

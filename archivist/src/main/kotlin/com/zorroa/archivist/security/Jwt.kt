@@ -52,7 +52,6 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
          * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
          */
         val validated = validator.validate(token.replace(TOKEN_PREFIX, ""))
-
         val authToken = JwtAuthenticationToken(validated.claims, req.getHeader(ORGID_HEADER))
         SecurityContextHolder.getContext().authentication = authToken
 
@@ -97,6 +96,9 @@ class JwtAuthenticationProvider : AuthenticationProvider {
     @Autowired
     private lateinit var userService: UserService
 
+    @Autowired
+    private lateinit var tokenStore: TokenStore
+
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as JwtAuthenticationToken
         val userId = token.userId
@@ -115,6 +117,11 @@ class JwtAuthenticationProvider : AuthenticationProvider {
             authorities,
             user.attrs
         )
+
+        // Increment expire time if the token is still active.
+        if (!token.sessionId.isNullOrEmpty()) {
+            tokenStore.incrementSessionExpirationTime(token.sessionId)
+        }
 
         // If the token has an orgId validate
         if (token.organizationId != null) {

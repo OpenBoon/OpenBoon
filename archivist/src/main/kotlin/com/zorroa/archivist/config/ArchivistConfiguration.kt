@@ -7,9 +7,9 @@ import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.GcpJwtValidator
 import com.zorroa.archivist.security.IrmJwtValidator
 import com.zorroa.archivist.security.JwtValidator
+import com.zorroa.archivist.security.LocalUserJwtValidator
 import com.zorroa.archivist.security.MasterJwtValidator
 import com.zorroa.archivist.security.TokenStore
-import com.zorroa.archivist.security.LocalUserJwtValidator
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.AssetServiceImpl
 import com.zorroa.archivist.service.FileServerProvider
@@ -21,10 +21,10 @@ import com.zorroa.archivist.service.IrmAssetServiceImpl
 import com.zorroa.archivist.service.LocalFileStorageService
 import com.zorroa.archivist.service.PubSubService
 import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.clients.IrmCoreDataVaultClientImpl
 import io.micrometer.core.instrument.MeterRegistry
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
@@ -40,7 +40,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
-import redis.clients.jedis.Jedis
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 import java.io.File
@@ -61,11 +60,11 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun redisClient() : JedisPool {
+    fun redisClient(): JedisPool {
         /**
          * TODO: don't hard code the redis host/port
          */
-        return JedisPool(JedisPoolConfig(), "redis", 6379, 10000);
+        return JedisPool(JedisPoolConfig(), "redis", 6379, 10000)
     }
 
     @Bean
@@ -192,13 +191,16 @@ class ArchivistConfiguration {
     @Bean
     @Autowired
     fun masterJwtValidator(
-        userRegistryService: UserRegistryService, tokenStore: TokenStore): MasterJwtValidator {
+        userService: UserService,
+        userRegistryService: UserRegistryService,
+        tokenStore: TokenStore
+    ): MasterJwtValidator {
         val validators = mutableListOf<JwtValidator>()
         val props = properties()
         val jwtModules = props.getList("archivist.security.jwt.modules")
 
         // Have to have Zorroa for jobs to run.
-        validators.add(LocalUserJwtValidator(tokenStore))
+        validators.add(LocalUserJwtValidator(userService))
 
         /**
          * Determine which other JWT validators to instance.
@@ -215,10 +217,9 @@ class ArchivistConfiguration {
                     GcpJwtValidator(props.getPath("archivist.security.jwt.gcp.credentials-path", serviceCredentials()))
                 }
                 else -> {
-                    if (module == "zorroa") {
+                    if (module in setOf("zorroa", "local")) {
                         null
-                    }
-                    else {
+                    } else {
                         throw IllegalArgumentException("Invalid jwt module: $module")
                     }
                 }
@@ -226,7 +227,6 @@ class ArchivistConfiguration {
             moduleInstance?.let {
                 validators.add(it)
             }
-
         }
 
         return MasterJwtValidator(validators)

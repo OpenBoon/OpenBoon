@@ -6,6 +6,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.archivist.domain.IdGen
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.sdk.security.AuthSource
+import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
@@ -66,7 +67,7 @@ class IrmJwtValidator constructor(
             // Move the value of userId to username
             claims["username"] = claims.getValue("userId")
 
-            claims["userId"] = if (userRegistryService.exists(claims.getValue("userId"), "Jwt")) {
+            claims["userId"] = if (userRegistryService.exists(claims.getValue("userId"), AUTH_SOURCE)) {
                 // Support any users that were already created with a JWT token
                 val userAuthed = userRegistryService.getUser(claims.getValue("userId"))
                 userAuthed.id.toString()
@@ -117,7 +118,7 @@ class IrmJwtValidator constructor(
         return permissions
     }
 
-    override fun provisionUser(claims: Map<String, String>) {
+    override fun provisionUser(claims: Map<String, String>): UserAuthed? {
 
         // These things have to exist, they cannot be null.
         val userId = claims.getValue("userId")
@@ -134,15 +135,23 @@ class IrmJwtValidator constructor(
             str.split(",").mapNotNull { token -> permMap[token.trim()] }
         }
 
-        val source = AuthSource("IRM", "Jwt", "Jwt", orgId,
+        val source = AuthSource(
+            "IRM", AUTH_SOURCE, "Jwt", orgId,
             attrs = claims,
             groups = authorities,
             userId = UUID.fromString(userId)
         )
-        userRegistryService.registerUser(username, source)
+        return userRegistryService.registerUser(username, source)
     }
 
     companion object {
+
+        /**
+         * The name of the auth-source is not good, should be IRM but at this point
+         * we can't go back.
+         */
+        const val AUTH_SOURCE = "Jwt"
+
         private val logger =
             LoggerFactory.getLogger(IrmJwtValidator::class.java)
     }

@@ -41,8 +41,10 @@ class ZorroaAuthenticationProvider : AuthenticationProvider {
         }
         userService.checkPassword(username, authentication.credentials.toString())
         val authed = userRegistryService.getUser(username)
-        logger.event(LogObject.USER, LogAction.AUTHENTICATE,
-                mapOf("authType" to "password", "username" to username))
+        logger.event(
+            LogObject.USER, LogAction.AUTHENTICATE,
+            mapOf("authType" to "password", "username" to username)
+        )
 
         return UsernamePasswordAuthenticationToken(authed, "", authed.authorities)
     }
@@ -55,7 +57,8 @@ class ZorroaAuthenticationProvider : AuthenticationProvider {
 
         private val logger = LoggerFactory.getLogger(ZorroaAuthenticationProvider::class.java)
 
-        private val SUPPORTED_AUTHENTICATION = ImmutableSet.of<Class<*>>(UsernamePasswordAuthenticationToken::class.java)
+        private val SUPPORTED_AUTHENTICATION =
+            ImmutableSet.of<Class<*>>(UsernamePasswordAuthenticationToken::class.java)
     }
 }
 
@@ -65,7 +68,11 @@ class ResetPasswordSecurityFilter : OncePerRequestFilter() {
     internal var userService: UserService? = null
 
     @Throws(ServletException::class, IOException::class)
-    override fun doFilterInternal(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse, filterChain: FilterChain) {
+    override fun doFilterInternal(
+        servletRequest: HttpServletRequest,
+        servletResponse: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
         /**
          * At this point we have to extract the crypted data.
          */
@@ -75,7 +82,8 @@ class ResetPasswordSecurityFilter : OncePerRequestFilter() {
             if (form != null && form.isValid) {
                 val user = userService!!.resetPassword(token, form.getPassword()!!)
                 if (user != null) {
-                    SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(user.username, form.getPassword())
+                    SecurityContextHolder.getContext().authentication =
+                        UsernamePasswordAuthenticationToken(user.username, form.getPassword())
                 }
             }
         }

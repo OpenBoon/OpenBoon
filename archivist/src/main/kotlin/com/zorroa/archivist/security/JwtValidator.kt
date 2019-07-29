@@ -4,9 +4,13 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
+import com.zorroa.archivist.sdk.security.UserAuthed
+import com.zorroa.archivist.service.UserService
 import com.zorroa.common.clients.RestClient
 import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.io.FileInputStream
 import java.nio.file.Path
 import java.security.cert.CertificateFactory
@@ -36,6 +40,7 @@ object JwtSecurityConstants {
 }
 
 interface JwtValidator {
+
     /**
      * The only method you have to implement
      */
@@ -44,7 +49,7 @@ interface JwtValidator {
     /**
      * Provision a user with the given claims.
      */
-    fun provisionUser(claims: Map<String, String>)
+    fun provisionUser(claims: Map<String, String>): UserAuthed?
 }
 
 /**
@@ -54,8 +59,8 @@ class ValidatedJwt(
     val validator: JwtValidator,
     val claims: Map<String, String>
 ) {
-    fun provisionUser() {
-        validator.provisionUser(claims)
+    fun provisionUser(): UserAuthed? {
+        return validator.provisionUser(claims)
     }
 }
 
@@ -63,6 +68,7 @@ class MasterJwtValidator constructor(
     private val validators: List<JwtValidator>
 ) {
     fun validate(token: String): ValidatedJwt {
+
         for (validator in validators) {
             try {
                 val claims = validator.validate(token)
@@ -71,7 +77,9 @@ class MasterJwtValidator constructor(
 
             }
         }
-        throw JwtValidatorException("Failed to validate JWT token")
+
+        val req = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
+        throw JwtValidatorException("Failed to validate JWT token, ${req.requestURI}")
     }
 
     companion object {
@@ -79,7 +87,7 @@ class MasterJwtValidator constructor(
     }
 }
 
-class LocalUserJwtValidator constructor(val tokenStore: TokenStore) : JwtValidator {
+class LocalUserJwtValidator constructor(val userService: UserService) : JwtValidator {
 
     init {
         logger.info("Initializing User/Hmac JwtValidator")
@@ -91,26 +99,20 @@ class LocalUserJwtValidator constructor(val tokenStore: TokenStore) : JwtValidat
             val userId = UUID.fromString(jwt.claims.getValue("userId").asString())
 
             // Validate signing
-            val hmacKey = tokenStore.getSigningKey(userId)
+            val hmacKey = userService.getHmacKey(userId)
             val alg = Algorithm.HMAC256(hmacKey)
             alg.verify(jwt)
-
-            // Check expire if the token has a session ID.
-            if (jwt.claims.containsKey("sessionId")) {
-                tokenStore.incrementSessionExpirationTime(jwt.claims.getValue("sessionId").asString())
-            }
 
             return jwt.claims.map {
                 it.key to it.value.asString()
             }.toMap()
-
         } catch (e: JWTVerificationException) {
             throw JwtValidatorException("Failed to validate token", e)
         }
     }
 
-    override fun provisionUser(claims: Map<String, String>) {
-        // User already has to be provisioned for this validator to work
+    override fun provisionUser(claims: Map<String, String>): UserAuthed? {
+        return null
     }
 
     companion object {
@@ -183,8 +185,8 @@ class GcpJwtValidator : JwtValidator {
         }
     }
 
-    override fun provisionUser(claims: Map<String, String>) {
-        // User already has to be provisioned for this validator to work
+    override fun provisionUser(claims: Map<String, String>): UserAuthed? {
+        return null
     }
 
     companion object {

@@ -76,6 +76,8 @@ interface UserService {
 
     fun setPassword(user: User, password: String): Boolean
 
+    fun getHmacKey(userId: UUID): String
+
     fun getHmacKey(user: UserId): String
 
     fun getApiKey(spec: ApiKeySpec): ApiKey
@@ -464,6 +466,7 @@ class UserServiceImpl @Autowired constructor(
         return userDao.setPassword(user, password)
     }
 
+    @Transactional(readOnly = true)
     override fun getPassword(username: String): String {
         try {
             return userDao.getPassword(username)
@@ -472,10 +475,17 @@ class UserServiceImpl @Autowired constructor(
         }
     }
 
-    override fun getHmacKey(user: UserId): String {
-        return userDao.getHmacKey(user.id)
+    @Transactional(readOnly = true)
+    override fun getHmacKey(userId: UUID): String {
+        return userDao.getHmacKey(userId)
     }
 
+    @Transactional(readOnly = true)
+    override fun getHmacKey(user: UserId): String {
+        return getHmacKey(user.id)
+    }
+
+    @Transactional(readOnly = true)
     override fun getApiKey(spec: ApiKeySpec): ApiKey {
         return userDao.getApiKey(spec)
     }
