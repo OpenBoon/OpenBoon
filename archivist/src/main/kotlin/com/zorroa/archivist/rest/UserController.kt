@@ -51,6 +51,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.security.Principal
 import java.util.Objects
 import java.util.UUID
+import java.util.regex.Pattern
 import java.util.stream.Collectors
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -171,7 +172,10 @@ class UserController @Autowired constructor(
 
         val auth = getAuthentication()?.let { auth ->
             auth.credentials?.let { sessionId ->
-                tokenStore.removeSession(sessionId as String)
+                val session = sessionId.toString()
+                if (session.isNotBlank()) {
+                    tokenStore.removeSession(session)
+                }
             }
             auth
         }
