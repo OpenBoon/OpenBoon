@@ -6,10 +6,13 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.AnalystAuthentication
+import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.UnitTestAuthentication
+import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.core.Authentication
@@ -53,15 +56,13 @@ abstract class MockMvcTest : AbstractTest() {
     final inline fun <reified T : Any> resultForPostContent(
         urlTemplate: String,
         `object`: Any,
-        session: MockHttpSession = admin()
-    ): T {
+        session: HttpHeaders = admin()): T {
         // MockMvc clears the security context when it returns, I don't know how to configure it otherwise.
         val savedAuthentication = SecurityContextHolder.getContext().authentication
         val result = this.mvc.perform(
             MockMvcRequestBuilders
                 .post(urlTemplate)
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .headers(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(`object`)))
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -74,21 +75,18 @@ abstract class MockMvcTest : AbstractTest() {
     fun assertClientErrorForPostContent(
         urlTemplate: String,
         `object`: Any,
-        session: MockHttpSession = admin()
-    ) {
+        session: HttpHeaders = admin()) {
         val savedAuthentication = SecurityContextHolder.getContext().authentication
         this.mvc.perform(
             MockMvcRequestBuilders
                 .post(urlTemplate)
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .headers(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(`object`)))
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
             .andReturn()
         SecurityContextHolder.getContext().authentication = savedAuthentication
     }
-
     private fun buildSession(authentication: Authentication): MockHttpSession {
         val session = MockHttpSession()
         session.setAttribute(
@@ -106,14 +104,26 @@ abstract class MockMvcTest : AbstractTest() {
         return Json.deserialize(result.response.contentAsByteArray, type)
     }
 
-    @JvmOverloads
-    protected fun user(name: String = "user"): MockHttpSession {
-        val user = userRegistryService.getUser(name)
-        return buildSession(UnitTestAuthentication(user, user.authorities))
+    /**
+     * @return a session for an admin with the id 1.
+     */
+    protected fun admin(): HttpHeaders {
+        val user = userService.get("admin")
+        val token = generateUserToken(user.id, null, userService.getHmacKey(user.id))
+
+        val headers = HttpHeaders()
+        headers.set(JwtSecurityConstants.HEADER_STRING_REQ, "${JwtSecurityConstants.TOKEN_PREFIX}$token")
+        return headers
+
     }
 
-    protected fun admin(): MockHttpSession {
-        return user("admin")
+    protected fun user(): HttpHeaders {
+        val user = userService.get("user")
+        val token = generateUserToken(user.id, null, userService.getHmacKey(user.id))
+
+        val headers = HttpHeaders()
+        headers.set(JwtSecurityConstants.HEADER_STRING_REQ, "${JwtSecurityConstants.TOKEN_PREFIX}$token")
+        return headers
     }
 
     protected fun analyst(): MockHttpSession {

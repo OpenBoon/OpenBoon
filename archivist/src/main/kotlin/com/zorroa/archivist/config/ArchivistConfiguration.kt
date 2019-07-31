@@ -10,14 +10,11 @@ import com.zorroa.archivist.security.JwtValidator
 import com.zorroa.archivist.security.LocalUserJwtValidator
 import com.zorroa.archivist.security.MasterJwtValidator
 import com.zorroa.archivist.security.TokenStore
-import com.zorroa.archivist.service.AssetService
-import com.zorroa.archivist.service.AssetServiceImpl
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileServerProviderImpl
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.GcpPubSubServiceImpl
 import com.zorroa.archivist.service.GcsFileStorageService
-import com.zorroa.archivist.service.IrmAssetServiceImpl
 import com.zorroa.archivist.service.LocalFileStorageService
 import com.zorroa.archivist.service.PubSubService
 import com.zorroa.archivist.service.TransactionEventManager
@@ -167,27 +164,7 @@ class ArchivistConfiguration {
         logger.info("No PubSub service configured")
         return null
     }
-
-    @Bean
-    @Autowired
-    fun assetService(meterRegistry: MeterRegistry): AssetService {
-        val network = networkEnvironment()
-        val type = properties().getString("archivist.assetStore.type", "sql")
-        logger.info("Initializing Core Asset Store: {}", type)
-        return when (type) {
-            "irm" -> {
-                IrmAssetServiceImpl(
-                    IrmCoreDataVaultClientImpl(
-                        network.getPublicUrl("core-data-vault-api"),
-                        serviceCredentials(),
-                        dataCredentials(), meterRegistry
-                    )
-                )
-            }
-            else -> AssetServiceImpl()
-        }
-    }
-
+    
     @Bean
     @Autowired
     fun masterJwtValidator(
@@ -195,6 +172,7 @@ class ArchivistConfiguration {
         userRegistryService: UserRegistryService,
         tokenStore: TokenStore
     ): MasterJwtValidator {
+
         val validators = mutableListOf<JwtValidator>()
         val props = properties()
         val jwtModules = props.getList("archivist.security.jwt.modules")

@@ -365,6 +365,7 @@ class AssetControllerTests : MockMvcTest() {
         refreshIndex()
         authenticate("admin")
         doc = indexService.get(doc.id)
+        println(Json.prettyString(doc))
         assertEquals(10, doc.getAttr("system.links.folder", List::class.java)!!.size.toLong())
     }
 

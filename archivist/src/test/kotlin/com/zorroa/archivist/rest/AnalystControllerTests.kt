@@ -85,11 +85,9 @@ class AnalystControllerTests : MockMvcTest() {
 
     @Test
     fun testGet() {
-        val session = admin()
-
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/analysts/${analyst.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -104,10 +102,9 @@ class AnalystControllerTests : MockMvcTest() {
 
     @Test
     fun testLockAndUnlock() {
-        val session = admin()
         val rsp = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=locked")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -118,7 +115,7 @@ class AnalystControllerTests : MockMvcTest() {
 
         val rsp2 = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=unlocked")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -130,10 +127,9 @@ class AnalystControllerTests : MockMvcTest() {
 
     @Test
     fun testLockAndUnlockFailure() {
-        val session = admin()
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=sdsdsdsdsds")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -142,7 +138,7 @@ class AnalystControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/wedwdsdsds/_lock?state=unlocked")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -152,10 +148,9 @@ class AnalystControllerTests : MockMvcTest() {
 
     @Test
     fun testProcessorScan() {
-        val session = admin()
         val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -169,7 +164,7 @@ class AnalystControllerTests : MockMvcTest() {
 
         val rsp2 = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -184,10 +179,9 @@ class AnalystControllerTests : MockMvcTest() {
 
     @Test
     fun testDownloadZsdk() {
-        val session = admin()
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/download-zsdk")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
