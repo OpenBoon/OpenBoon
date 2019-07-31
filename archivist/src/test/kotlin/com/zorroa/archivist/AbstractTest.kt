@@ -26,7 +26,6 @@ import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.OrganizationService
 import com.zorroa.archivist.service.PermissionService
-import com.zorroa.archivist.service.RequestService
 import com.zorroa.archivist.service.SearchService
 import com.zorroa.archivist.service.SettingsService
 import com.zorroa.archivist.service.TransactionEventManager
@@ -104,9 +103,6 @@ abstract class AbstractTest {
 
     @Autowired
     protected lateinit var emailService: EmailService
-
-    @Autowired
-    protected lateinit var requestService: RequestService
 
     @Autowired
     protected lateinit var organizationService: OrganizationService
