@@ -316,7 +316,7 @@ class SearchServiceTests : AbstractTest() {
 
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java)!!.filename)
-        
+
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
         assetService.batchUpdateLinks(
             LinkType.Folder, listOf(folder2.id), BatchUpdateAssetLinks(
