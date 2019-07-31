@@ -135,11 +135,10 @@ class UserController @Autowired constructor(
     ) {
         // Clear out any current authentication.
         logout(request, response)
-
         val validatedToken = masterJwtValidator.validate(token)
         val user = validatedToken.provisionUser()
         if (user != null) {
-            val token = tokenStore.createSessionToken(user.id)
+            // Utilize the same token, since it will have special info from IRM
             response.setHeader("Location", "/")
             response.setHeader(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
             response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
