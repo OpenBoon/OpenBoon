@@ -52,7 +52,7 @@ class JobControllerTests : MockMvcTest() {
     fun testGet() {
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/jobs/" + job.id)
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
@@ -70,7 +70,7 @@ class JobControllerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -89,7 +89,7 @@ class JobControllerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -106,7 +106,7 @@ class JobControllerTests : MockMvcTest() {
     fun testCancel() {
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_cancel")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -126,7 +126,7 @@ class JobControllerTests : MockMvcTest() {
         jobService.setJobState(job, JobState.Cancelled, null)
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_restart")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -148,7 +148,7 @@ class JobControllerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_retryAllFailures")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -183,7 +183,7 @@ class JobControllerTests : MockMvcTest() {
         val session = admin()
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs/${job.id}/taskerrors")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)

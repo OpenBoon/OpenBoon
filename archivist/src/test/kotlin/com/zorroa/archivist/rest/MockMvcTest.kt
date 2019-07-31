@@ -7,7 +7,6 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.JwtSecurityConstants
-import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.common.util.Json
 import org.junit.Before
@@ -17,7 +16,6 @@ import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.test.web.servlet.MockMvc

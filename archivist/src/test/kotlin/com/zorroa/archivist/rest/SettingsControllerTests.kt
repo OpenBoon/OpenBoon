@@ -25,7 +25,7 @@ class SettingsControllerTests : MockMvcTest() {
         val session = admin()
 
         val result = mvc.perform(get("/api/v1/settings")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
@@ -41,7 +41,7 @@ class SettingsControllerTests : MockMvcTest() {
         val filter = SettingsFilter()
         filter.count = 5
         val result = mvc.perform(get("/api/v1/settings")
-                .session(session)
+                .headers(admin())
                 .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -60,7 +60,7 @@ class SettingsControllerTests : MockMvcTest() {
                 "curator.thumbnails.drag-template", "bob")
 
         val result = mvc.perform(put("/api/v1/settings/")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))

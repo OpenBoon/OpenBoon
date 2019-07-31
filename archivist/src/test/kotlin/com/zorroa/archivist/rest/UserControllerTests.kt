@@ -23,6 +23,7 @@ import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -45,9 +46,8 @@ class UserControllerTests : MockMvcTest() {
     fun testLogin() {
         mvc.perform(
             post("/api/v1/login")
-                .session(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-        )
+                .with(httpBasic("admin", "admin"))
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
             .andExpect(status().isOk)
     }
 
@@ -59,7 +59,7 @@ class UserControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v1/users/api-key")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
@@ -78,7 +78,7 @@ class UserControllerTests : MockMvcTest() {
             post("/api/v1/users/api-key")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
@@ -94,7 +94,7 @@ class UserControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v1/users/_search")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .session(session)
+                .headers(admin())
                 .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -111,7 +111,7 @@ class UserControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v1/users/_findOne")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .session(session)
+                .headers(admin())
                 .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -133,7 +133,7 @@ class UserControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v2/users")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .session(session)
+                .headers(admin())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -253,7 +253,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/${user1.id}/_profile")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(builder))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -282,7 +282,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/${user.id}/_password")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(password))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -304,7 +304,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/${user.id}/_settings")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -328,7 +328,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         mvc.perform(
             put("/api/v1/users/" + user.id + "/_enabled")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(ImmutableMap.of("enabled", false)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -341,7 +341,7 @@ class UserControllerTests : MockMvcTest() {
 
         mvc.perform(
             put("/api/v1/users/" + user.id + "/_enabled")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(ImmutableMap.of("enabled", true)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -360,7 +360,7 @@ class UserControllerTests : MockMvcTest() {
         mvc.perform(
             put("/api/v1/users/1/_enabled")
                 .content(Json.serialize(ImmutableMap.of("enabled", false)))
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -379,7 +379,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/" + user.id + "/permissions")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(perms))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -407,7 +407,7 @@ class UserControllerTests : MockMvcTest() {
         val session = admin()
         val result = mvc.perform(
             get("/api/v1/users/" + user.id + "/permissions")
-                .session(session)
+                .headers(admin())
                 .content(Json.serialize(perms))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -422,10 +422,10 @@ class UserControllerTests : MockMvcTest() {
 
     @Test
     fun testJwtTokenRedirect() {
-        val token = IrmJwtValidatorTest::class.java.getResource("/irm-alice-token.jwt").readText()
+        val token = IrmJwtValidatorTest::class.java.getResource("/irm-alice-token.jwt").readText().trim()
         mvc.perform(
             post("/api/v1/auth/token")
-                .param("insight_auth_token", token)
+                .param("auth_token", token)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -436,11 +436,10 @@ class UserControllerTests : MockMvcTest() {
 
     @Test
     fun testJwtTokenUserCreation() {
-        val token = IrmJwtValidatorTest::class.java.getResource("/irm-alice-token.jwt").readText()
+        val token = IrmJwtValidatorTest::class.java.getResource("/irm-alice-token.jwt").readText().trim()
         mvc.perform(
             post("/api/v1/auth/token")
-                .param("insight_auth_token", token)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .param("auth_token", token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isTemporaryRedirect)

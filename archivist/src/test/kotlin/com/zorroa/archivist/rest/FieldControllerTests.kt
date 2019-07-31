@@ -27,7 +27,7 @@ class FieldControllerTests : MockMvcTest() {
         val session = admin()
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_expose")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(fieldSpec)))
@@ -46,7 +46,7 @@ class FieldControllerTests : MockMvcTest() {
         val session = admin()
 
         val req = mvc.perform(MockMvcRequestBuilders.delete("/api/v1/fields/${field.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(fieldSpec)))
@@ -66,7 +66,7 @@ class FieldControllerTests : MockMvcTest() {
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.put("/api/v1/fields/${field.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(updateSpec)))
@@ -91,7 +91,7 @@ class FieldControllerTests : MockMvcTest() {
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/${field.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -109,7 +109,7 @@ class FieldControllerTests : MockMvcTest() {
 
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_search")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter)))
@@ -138,7 +138,7 @@ class FieldControllerTests : MockMvcTest() {
         setupEmbeddedFieldSets()
         val session = admin()
         val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/_search")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()

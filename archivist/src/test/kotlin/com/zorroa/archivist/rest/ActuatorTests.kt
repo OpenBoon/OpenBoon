@@ -7,20 +7,26 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @WebAppConfiguration
 class ActuatorTests : MockMvcTest() {
 
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
     @Test
     fun testInfoEndpoint() {
-        val session = admin()
-        val rsp = mvc.perform(MockMvcRequestBuilders.get("/actuator/info")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+        val rsp = mvc.perform(
+            MockMvcRequestBuilders.get("/actuator/info")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val result = Json.deserialize(rsp.response.contentAsString, Json.GENERIC_MAP)
         assertEquals("Zorroa Archivist Server", result["description"])
@@ -29,40 +35,36 @@ class ActuatorTests : MockMvcTest() {
 
     @Test
     fun testHealthEndpoint() {
-        val session = admin()
-        val rsp = mvc.perform(MockMvcRequestBuilders.get("/actuator/health")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
-
-        val result = Json.deserialize(rsp.response.contentAsString, Json.GENERIC_MAP)
-        assertEquals("UP", result["status"])
+        val rsp = mvc.perform(
+            MockMvcRequestBuilders.get("/actuator/health")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.status").value("UP"))
+            .andReturn()
     }
 
     @Test
     fun testMetrics() {
         val monUser = userService.get("monitor")
         val token = generateUserToken(monUser.id, null, userService.getHmacKey(monUser))
-        val rsp = mvc.perform(MockMvcRequestBuilders.get("/actuator/metrics")
+        mvc.perform(
+            MockMvcRequestBuilders.get("/actuator/metrics")
                 .header("Authorization", "Bearer $token")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
-
-        val result = Json.deserialize(rsp.response.contentAsString, Json.GENERIC_MAP)
-        assertTrue("names" in result.keys)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.names").exists())
+            .andReturn()
     }
 
     @Test
     fun testMetricsFail() {
-        val session = user()
-        val rsp = mvc.perform(MockMvcRequestBuilders.get("/actuator/metrics")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError)
-                .andReturn()
-
-        println(rsp.response.contentAsString)
+        mvc.perform(
+            MockMvcRequestBuilders.get("/actuator/metrics")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andReturn()
     }
 }

@@ -31,7 +31,7 @@ class SharedLinkControllerTests : MockMvcTest() {
         spec.userIds = setOf(getUserId())
 
         val result = mvc.perform(post("/api/v1/shared_link")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -52,7 +52,7 @@ class SharedLinkControllerTests : MockMvcTest() {
         val link = sharedLinkService!!.create(spec)
 
         val result = mvc.perform(get("/api/v1/shared_link/" + link.id)
-                .session(session)
+                .headers(admin())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)

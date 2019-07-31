@@ -21,17 +21,10 @@ class OrganizationControllerTests : MockMvcTest() {
     private val organizationName = "Wendys"
     private val organizationSpec = OrganizationSpec(organizationName)
 
-    internal lateinit var session: MockHttpSession
-
-    @Before
-    fun init() {
-        session = admin()
-    }
-
     @Test
     fun testCreate() {
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/organizations")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(organizationSpec)))
@@ -45,7 +38,7 @@ class OrganizationControllerTests : MockMvcTest() {
     fun testGet() {
         val org = organizationService.create(organizationSpec)
         val rsp = mvc.perform(MockMvcRequestBuilders.get("/api/v1/organizations/${org.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -60,7 +53,7 @@ class OrganizationControllerTests : MockMvcTest() {
         val filter = OrganizationFilter(names = listOf(organizationName))
 
         val rsp = mvc.perform(MockMvcRequestBuilders.post("/api/v1/organizations/_search")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter)))
@@ -76,7 +69,7 @@ class OrganizationControllerTests : MockMvcTest() {
         val filter = OrganizationFilter(names = listOf(organizationName))
 
         val rsp = mvc.perform(MockMvcRequestBuilders.post("/api/v1/organizations/_findOne")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter)))
@@ -92,7 +85,7 @@ class OrganizationControllerTests : MockMvcTest() {
         val update = OrganizationUpdateSpec("bob_dole", org.indexRouteId)
 
         val rsp = mvc.perform(MockMvcRequestBuilders.put("/api/v1/organizations/${org.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(update)))

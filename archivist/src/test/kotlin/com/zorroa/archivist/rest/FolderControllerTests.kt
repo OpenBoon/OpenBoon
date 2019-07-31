@@ -35,8 +35,6 @@ class FolderControllerTests : MockMvcTest() {
 
     internal lateinit var folder: Folder
 
-    internal lateinit var session: MockHttpSession
-
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -44,7 +42,6 @@ class FolderControllerTests : MockMvcTest() {
     @Before
     @Throws(Exception::class)
     fun init() {
-        session = admin()
 
         val spec = FolderSpec("TestFolder1")
         val s = Json.prettyString(spec)
@@ -52,7 +49,7 @@ class FolderControllerTests : MockMvcTest() {
         val spec2 = Json.deserialize(s, FolderSpec::class.java)
 
         val result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("TestFolder1"))))
@@ -68,7 +65,7 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testCreate() {
         val result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("TestFolder2"))))
@@ -85,7 +82,7 @@ class FolderControllerTests : MockMvcTest() {
     fun testGetRoot() {
 
         val result = mvc.perform(get("/api/v1/folders/_root")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -101,7 +98,7 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGet() {
         val result = mvc.perform(get("/api/v1/folders/" + folder.id)
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -119,7 +116,7 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetByPath() {
         val result = mvc.perform(get("/api/v1/folders/_path/Users")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -137,7 +134,7 @@ class FolderControllerTests : MockMvcTest() {
         authenticate("admin")
         folderService.create(FolderSpec("  foo  "))
         val result = mvc.perform(get("/api/v2/folders/_getByPath")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(ImmutableMap.of("path", "/  foo  "))))
                 .andExpect(status().isOk())
@@ -154,7 +151,7 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testExistsByPathV2() {
         val result = mvc.perform(get("/api/v2/folders/_existsByPath")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(ImmutableMap.of("path", "/Users"))))
                 .andExpect(status().isOk())
@@ -168,7 +165,7 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testExitsByPath() {
         val result = mvc.perform(get("/api/v1/folders/_exists/Users")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -180,7 +177,7 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testExitsByPathFailure() {
         val result = mvc.perform(get("/api/v1/folders/_exists/blah")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -192,7 +189,7 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetAll() {
         val result = mvc.perform(get("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -208,7 +205,7 @@ class FolderControllerTests : MockMvcTest() {
     fun testUpdate() {
 
         var result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("TestFolder3"))))
@@ -224,7 +221,7 @@ class FolderControllerTests : MockMvcTest() {
         up.attrs = ImmutableMap.of("a", "b")
 
         result = mvc.perform(put("/api/v1/folders/" + createdFolder.id)
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(createdFolder)))
@@ -243,7 +240,7 @@ class FolderControllerTests : MockMvcTest() {
     fun testDelete() {
 
         mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("first"))))
@@ -251,7 +248,7 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
 
         var result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("second"))))
@@ -263,14 +260,14 @@ class FolderControllerTests : MockMvcTest() {
                 })
 
         mvc.perform(delete("/api/v1/folders/$id")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
 
         result = mvc.perform(get("/api/v1/folders")
-                .session(session))
+                .headers(admin()))
                 .andExpect(status().isOk())
                 .andReturn()
 
@@ -290,7 +287,7 @@ class FolderControllerTests : MockMvcTest() {
     fun testChildren() {
 
         var result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("grandpa"))))
@@ -302,7 +299,7 @@ class FolderControllerTests : MockMvcTest() {
                 })
 
         result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("daddy", grandpa))))
@@ -314,7 +311,7 @@ class FolderControllerTests : MockMvcTest() {
                 })
 
         mvc.perform(post("/api/v1/folders")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(FolderSpec("uncly", grandpa))))
@@ -322,7 +319,7 @@ class FolderControllerTests : MockMvcTest() {
                 .andReturn()
 
         result = mvc.perform(get("/api/v1/folders/" + grandpa.id + "/_children")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -341,7 +338,7 @@ class FolderControllerTests : MockMvcTest() {
         up.name = "daddy2"
 
         result = mvc.perform(put("/api/v1/folders/" + dad.id)
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(up)))
@@ -367,7 +364,7 @@ class FolderControllerTests : MockMvcTest() {
 
         val session = admin()
         mvc.perform(post("/api/v1/folders/$id/assets")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
@@ -397,7 +394,7 @@ class FolderControllerTests : MockMvcTest() {
 
         val session = admin()
         mvc.perform(delete("/api/v1/folders/" + folder1.id + "/assets")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))

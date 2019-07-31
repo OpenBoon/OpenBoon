@@ -179,10 +179,9 @@ class AnalystControllerTests : MockMvcTest() {
 
     @Test
     fun testDownloadZsdk() {
-        val rsp = mvc.perform(
+        mvc.perform(
             MockMvcRequestBuilders.get("/download-zsdk")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isNotFound)

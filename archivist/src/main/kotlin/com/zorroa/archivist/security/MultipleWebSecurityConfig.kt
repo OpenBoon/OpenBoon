@@ -185,10 +185,14 @@ class MultipleWebSecurityConfig {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class RootSecurityConfig : WebSecurityConfigurerAdapter() {
 
+        @Autowired
+        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
+
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                 .antMatcher("/*")
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()

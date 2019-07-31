@@ -38,7 +38,7 @@ class PipelineControllerTests : MockMvcTest() {
 
         val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, "test", processors = listOf())
         val result = mvc.perform(post("/api/v1/pipelines")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -55,7 +55,7 @@ class PipelineControllerTests : MockMvcTest() {
     fun testDelete() {
         val session = admin()
         val result2 = mvc.perform(delete("/api/v1/pipelines/" + pl.id)
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -76,7 +76,7 @@ class PipelineControllerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(put("/api/v1/pipelines/" + pl.id)
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec2))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -91,7 +91,7 @@ class PipelineControllerTests : MockMvcTest() {
     fun testGet() {
         val session = admin()
         val result = mvc.perform(get("/api/v1/pipelines/" + pl.id)
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
@@ -105,7 +105,7 @@ class PipelineControllerTests : MockMvcTest() {
     fun testGetByName() {
         val session = admin()
         val result = mvc.perform(get("/api/v1/pipelines/" + pl.name)
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
