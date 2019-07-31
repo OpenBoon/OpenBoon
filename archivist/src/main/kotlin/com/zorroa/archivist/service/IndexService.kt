@@ -65,7 +65,7 @@ interface IndexService {
 }
 
 @Component
-class IndexServiceImpl @Autowired constructor (
+class IndexServiceImpl @Autowired constructor(
     private val indexDao: IndexDao,
     private val assetDao: AssetDao,
     private val auditLogDao: AuditLogDao,
@@ -78,9 +78,9 @@ class IndexServiceImpl @Autowired constructor (
     lateinit var searchService: SearchService
 
     @Value("\${archivist.asset-store.sql-backup}")
-    var assetStoreBackup : Boolean = false
+    var assetStoreBackup: Boolean = false
 
-    lateinit var workQueue : TaskExecutor
+    lateinit var workQueue: TaskExecutor
 
     @PostConstruct
     fun init() {
@@ -111,10 +111,14 @@ class IndexServiceImpl @Autowired constructor (
             return proxies
         } else {
 
-            for (hit in searchService.search(Pager.first(1), AssetSearch(AssetFilter()
-                    .addToTerms("media.clip.parent", id))
+            for (hit in searchService.search(
+                Pager.first(1), AssetSearch(
+                    AssetFilter()
+                        .addToTerms("media.clip.parent", id)
+                )
                     .setFields(arrayOf("proxies"))
-                    .setOrder(ImmutableList.of(AssetSearchOrder("_id"))))) {
+                    .setOrder(ImmutableList.of(AssetSearchOrder("_id")))
+            )) {
                 return hit.getAttr("proxies", ProxySchema::class.java) ?: ProxySchema()
             }
 
@@ -132,7 +136,7 @@ class IndexServiceImpl @Autowired constructor (
     }
 
     override fun index(assets: List<Document>): BatchIndexAssetsResponse {
-        val result =  indexDao.index(assets, true)
+        val result = indexDao.index(assets, true)
         if (assetStoreBackup) {
             val auth = getAuthentication()
             workQueue.execute {
@@ -173,8 +177,9 @@ class IndexServiceImpl @Autowired constructor (
         val search = AssetSearch()
         search.filter = AssetFilter()
         search.filter.should = listOf(
-                AssetFilter().addToTerms("_id", assetIds).addToMissing("media.clip.parent"),
-                AssetFilter().addToTerms("media.clip.parent", assetIds))
+            AssetFilter().addToTerms("_id", assetIds).addToMissing("media.clip.parent"),
+            AssetFilter().addToTerms("media.clip.parent", assetIds)
+        )
 
         /*
          * Iterate a scan and scroll and batch delete each batch.
@@ -230,14 +235,19 @@ class IndexServiceImpl @Autowired constructor (
                     if (ofile.delete()) {
                         logger.event(
                             LogObject.STORAGE, LogAction.DELETE,
-                                mapOf("proxyId" to pr.id, "assetId" to doc.id))
+                            mapOf("proxyId" to pr.id, "assetId" to doc.id)
+                        )
                     } else {
-                        logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, "file did not exist",
-                                mapOf("proxyId" to pr.id))
+                        logger.warnEvent(
+                            LogObject.STORAGE, LogAction.DELETE, "file did not exist",
+                            mapOf("proxyId" to pr.id)
+                        )
                     }
                 } catch (e: Exception) {
-                    logger.warnEvent(LogObject.STORAGE, LogAction.DELETE, e.message ?: e.javaClass.name,
-                            mapOf("proxyId" to pr.id), e)
+                    logger.warnEvent(
+                        LogObject.STORAGE, LogAction.DELETE, e.message ?: e.javaClass.name,
+                        mapOf("proxyId" to pr.id), e
+                    )
                 }
             }
         }
@@ -246,8 +256,7 @@ class IndexServiceImpl @Autowired constructor (
     private fun buildAssetWorkQueue(): TaskExecutor {
         return if (ArchivistConfiguration.unittest) {
             SyncTaskExecutor()
-        }
-        else {
+        } else {
             val tpe = ThreadPoolTaskExecutor()
             tpe.corePoolSize = 4
             tpe.maxPoolSize = 4

@@ -27,7 +27,6 @@ class IndexServiceTests : AbstractTest() {
     @Autowired
     lateinit var assetDao: AssetDao
 
-
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -51,8 +50,10 @@ class IndexServiceTests : AbstractTest() {
     fun testGetAsset() {
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
-            assertEquals(a.id,
-                    indexService.get(Paths.get(a.getAttr("source.path", String::class.java))).id)
+            assertEquals(
+                a.id,
+                indexService.get(Paths.get(a.getAttr("source.path", String::class.java))).id
+            )
         }
     }
 
@@ -140,8 +141,10 @@ class IndexServiceTests : AbstractTest() {
 
         assertNotNull(asset1.getAttr("system.timeCreated"))
         assertNotNull(asset1.getAttr("system.timeModified"))
-        assertEquals(asset1.getAttr("system.timeCreated", String::class.java),
-                asset1.getAttr("system.timeModified", String::class.java))
+        assertEquals(
+            asset1.getAttr("system.timeCreated", String::class.java),
+            asset1.getAttr("system.timeModified", String::class.java)
+        )
 
         refreshIndex()
         Thread.sleep(1000)
@@ -150,7 +153,9 @@ class IndexServiceTests : AbstractTest() {
         val asset2 = assetService.get(source2.id)
 
         refreshIndex()
-        assertNotEquals(asset2.getAttr("system.timeCreated", String::class.java),
-                asset2.getAttr("system.timeModified", String::class.java))
+        assertNotEquals(
+            asset2.getAttr("system.timeCreated", String::class.java),
+            asset2.getAttr("system.timeModified", String::class.java)
+        )
     }
 }

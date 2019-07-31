@@ -15,7 +15,10 @@ enum class LinkType {
     }
 }
 
-@ApiModel("Batch Update Asset Links", description = "Defines an arbitrarily large set of assets which need to be linked.")
+@ApiModel(
+    "Batch Update Asset Links",
+    description = "Defines an arbitrarily large set of assets which need to be linked."
+)
 class BatchUpdateAssetLinks(
 
     @ApiModelProperty("UUIDs of Assets to be linked.")
@@ -28,7 +31,7 @@ class BatchUpdateAssetLinks(
     val search: AssetSearch? = null,
 
     @ApiModelProperty("Replace links rather than append.  Default is to append")
-    val replace : Boolean = false
+    val replace: Boolean = false
 )
 
 /**
