@@ -53,16 +53,20 @@ class UpdateAssetRequest(
 
 @ApiModel("Batch Update Assets Request", description = "Defines how to batch update a list of assets.")
 class BatchUpdateAssetsRequest(
-    @ApiModelProperty("Attributes to update. They should be in dot notation. " +
-        "Example: { \"foo.bar\" : 1, \"source.ext\": \"png\"}") val batch: Map<String, UpdateAssetRequest>
+    @ApiModelProperty(
+        "Attributes to update. They should be in dot notation. " +
+            "Example: { \"foo.bar\" : 1, \"source.ext\": \"png\"}"
+    ) val batch: Map<String, UpdateAssetRequest>
 ) {
     override fun toString(): String {
         return "<BatchUpdateAssetRequest update='$batch'>"
     }
 }
 
-@ApiModel("Batch Update Assets Response", description = "Response object for batch updating large numbers of " +
-    "assets. Batch updates are able to edit individual attributes however the entire document is rewritten.")
+@ApiModel(
+    "Batch Update Assets Response", description = "Response object for batch updating large numbers of " +
+        "assets. Batch updates are able to edit individual attributes however the entire document is rewritten."
+)
 class BatchUpdateAssetsResponse {
 
     @ApiModelProperty("UUIDs of updated Assets.")
@@ -89,21 +93,22 @@ class BatchUpdateAssetsResponse {
         erroredAssetIds.addAll(other.erroredAssetIds)
     }
 
-
     override fun toString(): String {
         return "<BatchUpdateAssetsResponse " +
-                "updated=${updatedAssetIds.size} " +
-                "errored=${erroredAssetIds.size} " +
-                "accessDenied=${accessDeniedAssetIds.size}"
+            "updated=${updatedAssetIds.size} " +
+            "errored=${erroredAssetIds.size} " +
+            "accessDenied=${accessDeniedAssetIds.size}"
     }
 
     @JsonIgnore
     fun getThrowableError(): Throwable {
         return when {
             accessDeniedAssetIds.isNotEmpty() -> AccessDeniedException(
-                    "Access denied updating assets: $accessDeniedAssetIds")
+                "Access denied updating assets: $accessDeniedAssetIds"
+            )
             erroredAssetIds.isNotEmpty() -> EntityNotFoundException(
-                    "Cannot update missing assets: $erroredAssetIds")
+                "Cannot update missing assets: $erroredAssetIds"
+            )
             // Should never get here.
             else -> ArchivistWriteException("Unspecified update exception")
         }
@@ -112,7 +117,7 @@ class BatchUpdateAssetsResponse {
     @JsonIgnore
     fun isSuccess(): Boolean {
         return updatedAssetIds.isNotEmpty() &&
-                erroredAssetIds.isEmpty() && accessDeniedAssetIds.isEmpty()
+            erroredAssetIds.isEmpty() && accessDeniedAssetIds.isEmpty()
     }
 }
 
@@ -170,7 +175,7 @@ class BatchCreateAssetsRequest(
     var isUpload = false
 
     constructor(sources: List<Document>, scope: String = "index", skipAssetPrep: Boolean = false) :
-            this(sources, null, null) {
+        this(sources, null, null) {
         this.scope = scope
         this.skipAssetPrep = skipAssetPrep
     }
@@ -215,20 +220,21 @@ class BatchIndexAssetsResponse(val total: Int) {
      */
     fun getAssetCounters(): AssetCounters {
         return AssetCounters(
-                created = createdAssetIds.size,
-                replaced = replacedAssetIds.size,
-                errors = erroredAssetIds.size,
-                warnings = warningAssetIds.size)
+            created = createdAssetIds.size,
+            replaced = replacedAssetIds.size,
+            errors = erroredAssetIds.size,
+            warnings = warningAssetIds.size
+        )
     }
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-                .add("created", createdAssetIds.size)
-                .add("replaced", replacedAssetIds.size)
-                .add("warnings", warningAssetIds)
-                .add("errors", erroredAssetIds.size)
-                .add("retries", retryCount)
-                .toString()
+            .add("created", createdAssetIds.size)
+            .add("replaced", replacedAssetIds.size)
+            .add("warnings", warningAssetIds)
+            .add("errors", erroredAssetIds.size)
+            .add("retries", retryCount)
+            .toString()
     }
 }
 
