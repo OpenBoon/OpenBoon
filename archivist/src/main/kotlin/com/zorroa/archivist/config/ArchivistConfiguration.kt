@@ -54,10 +54,10 @@ class ArchivistConfiguration {
 
     @Bean
     fun redisClient(): JedisPool {
-        /**
-         * TODO: don't hard code the redis host/port
-         */
-        return JedisPool(JedisPoolConfig(), "redis", 6379, 10000)
+        val props = properties()
+        val host = props.getString("archivist.redis.host")
+        val port = props.getInt("archivist.redis.port")
+        return JedisPool(JedisPoolConfig(), host, port, 10000)
     }
 
     @Bean
