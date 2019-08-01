@@ -119,4 +119,3 @@ fun generateUserToken(userId: UUID, sessionId: String?, signingKey: String): Str
     }
     return spec.sign(algo)
 }
-

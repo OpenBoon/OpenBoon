@@ -89,15 +89,17 @@ class AssetControllerTests : MockMvcTest() {
         val session = admin()
         addTestAssets("set04/standard")
 
-        val result = mvc.perform(get("/api/v1/assets/_fields")
+        val result = mvc.perform(
+            get("/api/v1/assets/_fields")
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val fields = Json.Mapper.readValue<Map<String, Set<String>>>(result.response.contentAsString,
-                object : TypeReference<Map<String, Set<String>>>() {
-                })
+            object : TypeReference<Map<String, Set<String>>>() {
+            })
         assertTrue(fields["date"]!!.isNotEmpty())
         assertTrue(fields["string"]!!.isNotEmpty())
         assertTrue(fields.containsKey("integer"))
@@ -110,17 +112,19 @@ class AssetControllerTests : MockMvcTest() {
         val session = admin()
         addTestAssets("set04/standard")
 
-        val result = mvc.perform(post("/api/v3/assets/_search")
+        val result = mvc.perform(
+            post("/api/v3/assets/_search")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(AssetSearch("O'Malley"))))
-                .andExpect(status().isOk)
-                .andReturn()
+                .content(Json.serializeToString(AssetSearch("O'Malley")))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-                })
+            object : TypeReference<Map<String, Any>>() {
+            })
     }
 
     @Test
@@ -130,17 +134,19 @@ class AssetControllerTests : MockMvcTest() {
         val session = admin()
         addTestAssets("set04/standard")
 
-        val result = mvc.perform(post("/api/v2/assets/_count")
+        val result = mvc.perform(
+            post("/api/v2/assets/_count")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(AssetSearch("beer"))))
-                .andExpect(status().isOk)
-                .andReturn()
+                .content(Json.serializeToString(AssetSearch("beer")))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val counts = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                object : TypeReference<Map<String, Any>>() {
-                })
+            object : TypeReference<Map<String, Any>>() {
+            })
         val count = counts["count"] as Int
         assertEquals(1, count.toLong())
     }
@@ -178,10 +184,11 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(
             post("/api/v2/assets/_count")
-                 .headers(admin())
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(search)))
+                .content(Json.serializeToString(search))
+        )
             .andExpect(status().isOk)
             .andReturn()
 
@@ -200,19 +207,23 @@ class AssetControllerTests : MockMvcTest() {
         addTestAssets(sources, commitToDb = false)
         refreshIndex()
 
-        val result = mvc.perform(post("/api/v3/assets/_suggest")
-                 .headers(admin())
+        val result = mvc.perform(
+            post("/api/v3/assets/_suggest")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mapOf("text" to "re"))))
-                .andExpect(status().isOk)
-                .andReturn()
+                .content(Json.serialize(mapOf("text" to "re")))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val json = result.response.contentAsString
         val keywords = Json.Mapper.readValue<List<String>>(json, Json.LIST_OF_STRINGS)
 
-        assertTrue("The list of keywords, '$json' does not contain 'reflection'",
-                keywords.contains("reflection"))
+        assertTrue(
+            "The list of keywords, '$json' does not contain 'reflection'",
+            keywords.contains("reflection")
+        )
     }
 
     @Test
@@ -225,15 +236,17 @@ class AssetControllerTests : MockMvcTest() {
 
         val assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
-            val result = mvc.perform(delete("/api/v1/assets/" + asset.id)
-                     .headers(admin())
+            val result = mvc.perform(
+                delete("/api/v1/assets/" + asset.id)
+                    .headers(admin())
                     .with(SecurityMockMvcRequestPostProcessors.csrf())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(status().isOk)
-                    .andReturn()
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+            )
+                .andExpect(status().isOk)
+                .andReturn()
             val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                    object : TypeReference<Map<String, Any>>() {
-                    })
+                object : TypeReference<Map<String, Any>>() {
+                })
             assertEquals(true, json["success"])
             assertEquals("delete", json["op"])
         }
@@ -250,16 +263,20 @@ class AssetControllerTests : MockMvcTest() {
         val assets = indexDao.getAll(Pager.first())
         val ids = assets.stream().map { a -> a.id }.toList()
 
-        val result = mvc.perform(delete("/api/v1/assets")
+        val result = mvc.perform(
+            delete("/api/v1/assets")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                 .headers(admin())
+                .headers(admin())
                 .content(Json.serializeToString(mapOf("assetIds" to ids)))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
-        val rsp = Json.Mapper.readValue(result.response.contentAsString,
-                BatchDeleteAssetsResponse::class.java)
+        val rsp = Json.Mapper.readValue(
+            result.response.contentAsString,
+            BatchDeleteAssetsResponse::class.java
+        )
         assertEquals(2, rsp.totalRequested)
         assertEquals(2, rsp.deletedAssetIds.size)
     }
@@ -273,16 +290,20 @@ class AssetControllerTests : MockMvcTest() {
         val assets = indexDao.getAll(Pager.first())
         val ids = assets.stream().map { a -> a.id }.toList()
 
-        val result = mvc.perform(delete("/api/v1/assets")
+        val result = mvc.perform(
+            delete("/api/v1/assets")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .headers(user())
                 .content(Json.serializeToString(mapOf("assetIds" to ids)))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
-        val rsp = Json.Mapper.readValue(result.response.contentAsString,
-                BatchDeleteAssetsResponse::class.java)
+        val rsp = Json.Mapper.readValue(
+            result.response.contentAsString,
+            BatchDeleteAssetsResponse::class.java
+        )
         assertEquals(0, rsp.totalRequested)
         assertEquals(0, rsp.deletedAssetIds.size)
         assertEquals(0, rsp.onHoldAssetIds.size)
@@ -299,14 +320,16 @@ class AssetControllerTests : MockMvcTest() {
 
         val assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
-            val result = mvc.perform(get("/api/v2/assets/" + asset.id)
-                     .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(status().isOk)
-                    .andReturn()
+            val result = mvc.perform(
+                get("/api/v2/assets/" + asset.id)
+                    .headers(admin())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+            )
+                .andExpect(status().isOk)
+                .andReturn()
             val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                    object : TypeReference<Map<String, Any>>() {
-                    })
+                object : TypeReference<Map<String, Any>>() {
+                })
             assertEquals(asset.id, json["id"])
         }
     }
@@ -322,15 +345,17 @@ class AssetControllerTests : MockMvcTest() {
         val assets = indexDao.getAll(Pager.first())
         for (asset in assets) {
             val url = "/api/v1/assets/_path"
-            val result = mvc.perform(get(url)
-                     .headers(admin())
+            val result = mvc.perform(
+                get(url)
+                    .headers(admin())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content(Json.serializeToString(ImmutableMap.of("path", asset.getAttr<Any>("source.path")!!))))
-                    .andExpect(status().isOk)
-                    .andReturn()
+                    .content(Json.serializeToString(ImmutableMap.of("path", asset.getAttr<Any>("source.path")!!)))
+            )
+                .andExpect(status().isOk)
+                .andReturn()
             val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-                    object : TypeReference<Map<String, Any>>() {
-                    })
+                object : TypeReference<Map<String, Any>>() {
+                })
             assertEquals(asset.id, json["id"])
         }
     }
@@ -352,13 +377,15 @@ class AssetControllerTests : MockMvcTest() {
         var doc = assets[0]
 
         val session = admin()
-        mvc.perform(put("/api/v1/assets/" + doc.id + "/_setFolders")
-                 .headers(admin())
+        mvc.perform(
+            put("/api/v1/assets/" + doc.id + "/_setFolders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(ImmutableMap.of<String, List<UUID>>("folders", folders))))
-                .andExpect(status().isOk)
-                .andReturn()
+                .content(Json.serialize(ImmutableMap.of<String, List<UUID>>("folders", folders)))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         refreshIndex()
         authenticate("admin")
@@ -376,13 +403,15 @@ class AssetControllerTests : MockMvcTest() {
         val perm = permissionService.getPermission(Groups.ADMIN)
         val req = BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 7))
 
-        mvc.perform(put("/api/v2/assets/_permissions")
-                 .headers(admin())
+        mvc.perform(
+            put("/api/v2/assets/_permissions")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(req)))
-                .andExpect(status().isOk)
-                .andReturn()
+                .content(Json.serialize(req))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         authenticate("admin")
         val assets = indexService.getAll(Pager.first(1))
@@ -406,18 +435,20 @@ class AssetControllerTests : MockMvcTest() {
         val (id1) = folderService.create(FolderSpec("bar"))
         mvc.run {
             perform(post("/api/v1/folders/$id/assets")
-                 .headers(admin())
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+            )
                 .andExpect(status().isOk)
                 .andReturn()
 
             perform(post("/api/v1/folders/$id1/assets")
-                 .headers(admin())
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+            )
                 .andExpect(status().isOk)
                 .andReturn()
         }
@@ -431,7 +462,8 @@ class AssetControllerTests : MockMvcTest() {
             })
             assertEquals(2, links.size.toLong())
             assertTrue(
-                    links[0] == id.toString() || links[1] == id.toString())
+                links[0] == id.toString() || links[1] == id.toString()
+            )
         }
     }
 
@@ -445,7 +477,9 @@ class AssetControllerTests : MockMvcTest() {
         val uri = source.path.toUri()
         val servableFile = ServableFile(fileServerService, uri)
 
-        val anyDocument = object : Document() { override fun equals(other: Any?): Boolean = true }
+        val anyDocument = object : Document() {
+            override fun equals(other: Any?): Boolean = true
+        }
         doReturn(servableFile).`when`(fileServerProvider).getServableFile(anyDocument)
 
         given(fileServerService.storedLocally).willReturn(false)
@@ -455,9 +489,11 @@ class AssetControllerTests : MockMvcTest() {
         given(fileServerService.getSignedUrl(uri)).willReturn(URL(signedUrl))
 
         val url = String.format("/api/v1/assets/%s/_stream", source.id)
-        mvc.perform(head(url)
-             .headers(admin())
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
+        mvc.perform(
+            head(url)
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(MockMvcResultMatchers.header().string("X-Zorroa-Signed-URL", signedUrl))
             .andReturn()
@@ -472,12 +508,14 @@ class AssetControllerTests : MockMvcTest() {
         indexService.index(source)
 
         val url = String.format("/api/v1/assets/%s/_stream", source.id)
-        mvc.perform(get(url)
-                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andExpect(MockMvcResultMatchers.content().contentType("image/jpeg"))
-                .andReturn()
+        mvc.perform(
+            get(url)
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType("image/jpeg"))
+            .andReturn()
     }
 
     @Test
@@ -499,9 +537,11 @@ class AssetControllerTests : MockMvcTest() {
 
         val url = String.format("/api/v1/assets/%s/_stream", asset.id)
 
-        mvc.perform(get(url)
-             .headers(admin())
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
+        mvc.perform(
+            get(url)
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(MockMvcResultMatchers.content().contentType(mediaType))
             .andReturn()
@@ -526,10 +566,12 @@ class AssetControllerTests : MockMvcTest() {
 
         val url = String.format("/api/v1/assets/%s/_stream", asset.id)
         val accept = "video/webm,video/ogg"
-        mvc.perform(head(url)
-             .headers(admin())
-            .header("Accept", accept)
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
+        mvc.perform(
+            head(url)
+                .headers(admin())
+                .header("Accept", accept)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isNotFound)
             .andExpect(MockMvcResultMatchers.header().doesNotExist("X-Zorroa-Signed-URL"))
             .andReturn()
@@ -554,9 +596,11 @@ class AssetControllerTests : MockMvcTest() {
 
         val url = String.format("/api/v1/assets/%s/_stream", asset.id)
         val accept = "video/mp4,video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5"
-        mvc.perform(head(url)
-             .headers(admin())
-            .header("Accept", accept))
+        mvc.perform(
+            head(url)
+                .headers(admin())
+                .header("Accept", accept)
+        )
             .andExpect(status().isOk)
             .andExpect(MockMvcResultMatchers.header().doesNotExist("X-Zorroa-Signed-URL"))
             .andReturn()
@@ -580,16 +624,20 @@ class AssetControllerTests : MockMvcTest() {
 
         val session = admin()
         val req = BatchUpdateAssetsRequest(updates)
-        val result = mvc.perform(put("/api/v1/assets")
+        val result = mvc.perform(
+            put("/api/v1/assets")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                 .headers(admin())
+                .headers(admin())
                 .content(Json.serializeToString(req))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
-        val rsp = Json.Mapper.readValue(result.response.contentAsString,
-                BatchUpdateAssetsResponse::class.java)
+        val rsp = Json.Mapper.readValue(
+            result.response.contentAsString,
+            BatchUpdateAssetsResponse::class.java
+        )
         assertEquals(2, rsp.updatedAssetIds.size)
         assertEquals(0, rsp.erroredAssetIds.size)
 
@@ -614,13 +662,16 @@ class AssetControllerTests : MockMvcTest() {
         val spec = FieldEditSpec(UUID.fromString(asset.id), field.id, null, newValue = "The Hobbit 2")
         assetService.createFieldEdit(spec)
 
-        val req = mvc.perform(MockMvcRequestBuilders.get(
-                "/api/v1/assets/${asset.id}/fieldSets")
-                 .headers(admin())
+        val req = mvc.perform(
+            MockMvcRequestBuilders.get(
+                "/api/v1/assets/${asset.id}/fieldSets"
+            )
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
         val result = Json.Mapper.readValue<Any>(req.response.contentAsString, Json.LIST_OF_GENERIC_MAP)
         println(Json.prettyString(result))
     }

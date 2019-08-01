@@ -54,7 +54,8 @@ abstract class MockMvcTest : AbstractTest() {
     final inline fun <reified T : Any> resultForPostContent(
         urlTemplate: String,
         `object`: Any,
-        session: HttpHeaders = admin()): T {
+        session: HttpHeaders = admin()
+    ): T {
         // MockMvc clears the security context when it returns, I don't know how to configure it otherwise.
         val savedAuthentication = SecurityContextHolder.getContext().authentication
         val result = this.mvc.perform(
@@ -62,7 +63,8 @@ abstract class MockMvcTest : AbstractTest() {
                 .post(urlTemplate)
                 .headers(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(`object`)))
+                .content(Json.serialize(`object`))
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
         SecurityContextHolder.getContext().authentication = savedAuthentication
@@ -73,18 +75,21 @@ abstract class MockMvcTest : AbstractTest() {
     fun assertClientErrorForPostContent(
         urlTemplate: String,
         `object`: Any,
-        session: HttpHeaders = admin()) {
+        session: HttpHeaders = admin()
+    ) {
         val savedAuthentication = SecurityContextHolder.getContext().authentication
         this.mvc.perform(
             MockMvcRequestBuilders
                 .post(urlTemplate)
                 .headers(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(`object`)))
+                .content(Json.serialize(`object`))
+        )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
             .andReturn()
         SecurityContextHolder.getContext().authentication = savedAuthentication
     }
+
     private fun buildSession(authentication: Authentication): MockHttpSession {
         val session = MockHttpSession()
         session.setAttribute(
@@ -112,7 +117,6 @@ abstract class MockMvcTest : AbstractTest() {
         val headers = HttpHeaders()
         headers.set(JwtSecurityConstants.HEADER_STRING_REQ, "${JwtSecurityConstants.TOKEN_PREFIX}$token")
         return headers
-
     }
 
     protected fun user(): HttpHeaders {

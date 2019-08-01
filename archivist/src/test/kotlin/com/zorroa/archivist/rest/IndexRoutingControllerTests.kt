@@ -13,10 +13,8 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.hamcrest.CoreMatchers
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import org.springframework.http.MediaType
-import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -30,7 +28,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
     override fun requiresElasticSearch(): Boolean {
         return true
     }
-    
+
     @After
     fun after() {
 
