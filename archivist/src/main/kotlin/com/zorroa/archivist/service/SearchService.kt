@@ -510,7 +510,6 @@ class SearchServiceImpl @Autowired constructor(
                      */
                     if (folder.search != null) {
                         folder.search.aggs = null
-                        logger.info("Getting folder post query!! {}", Json.prettyString(folder.search))
                         staticBool.should(
                             getQuery(
                                 folder.search,
