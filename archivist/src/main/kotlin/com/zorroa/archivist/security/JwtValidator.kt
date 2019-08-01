@@ -74,7 +74,7 @@ class MasterJwtValidator constructor(
                 val claims = validator.validate(token)
                 return ValidatedJwt(validator, claims)
             } catch (e: Exception) {
-
+                // ignore
             }
         }
 
