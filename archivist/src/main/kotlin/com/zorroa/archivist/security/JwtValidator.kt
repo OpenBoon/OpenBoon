@@ -61,7 +61,7 @@ class ValidatedJwt(
 @Component
 class MasterJwtValidator {
 
-     val validators: MutableList<JwtValidator> = mutableListOf()
+    val validators: MutableList<JwtValidator> = mutableListOf()
 
     @Autowired
     var externalJwtValidator: ExternalJwtValidator? = null

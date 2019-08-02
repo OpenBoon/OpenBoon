@@ -39,8 +39,9 @@ class ExternalJwtValidatorTests : AbstractTest() {
     fun testExternalValidatorConfigured() {
         assertNotNull(masterJwtValidator.externalJwtValidator)
     }
+
     @Test
-    fun testValidateAndProvision()  {
+    fun testValidateAndProvision() {
         val payload = """
             {
                 "userId": "2B2ED9E0-294B-4847-A019-A4E8F46ADEE3",
@@ -52,14 +53,17 @@ class ExternalJwtValidatorTests : AbstractTest() {
 
         mockServer.expect(
             ExpectedCount.once(),
-            requestTo(URI("http://localhost:8181/validate")))
+            requestTo(URI("http://localhost:8181/validate"))
+        )
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(payload)
+            .andRespond(
+                withStatus(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(payload)
             )
 
-        val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjQ3NjE0NzcsImV4cCI6MTU5NjI5NzQ3NywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.6PaIyxGoG9HRqAdTpxq7sf4yJgnNKSLN-HPRCQYU3hU"
+        val token =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjQ3NjE0NzcsImV4cCI6MTU5NjI5NzQ3NywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.6PaIyxGoG9HRqAdTpxq7sf4yJgnNKSLN-HPRCQYU3hU"
         val result = validator.validate(token)
         val user = validator.provisionUser(result)
 

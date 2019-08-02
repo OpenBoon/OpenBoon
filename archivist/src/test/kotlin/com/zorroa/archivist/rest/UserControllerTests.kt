@@ -17,7 +17,6 @@ import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
-import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
@@ -27,7 +26,6 @@ import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
 import java.util.stream.Collectors
@@ -46,7 +44,8 @@ class UserControllerTests : MockMvcTest() {
         mvc.perform(
             post("/api/v1/login")
                 .with(httpBasic("admin", "admin"))
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
             .andExpect(status().isOk)
     }
 
