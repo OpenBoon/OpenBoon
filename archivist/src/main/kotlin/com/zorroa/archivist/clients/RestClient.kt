@@ -38,11 +38,12 @@ import javax.crypto.spec.SecretKeySpec
 
 class RestClientException constructor(
     override val message:
-         String,
+    String,
     override val cause: Throwable?
 ) : RuntimeException(message, cause) {
 
     var status: Int = HttpStatus.SC_INTERNAL_SERVER_ERROR
+
     constructor(message: String) : this(message, null)
     constructor(message: String, status: Int) : this(message, null) {
         this.status = status
@@ -63,7 +64,6 @@ class RestClient {
     private var user: String? = null
     private var hmac: String? = null
     private val host: HttpHost
-    private val jwtSigner: JwtSigner?
     private val client: CloseableHttpClient
     private var retryConnectionTimeout = false
 
@@ -72,20 +72,12 @@ class RestClient {
         this.user = initUser()
         this.hmac = initHmacKey()
         this.client = initClient()
-        this.jwtSigner = null
     }
 
     constructor(host: String) {
         this.host = HttpHost.create(host)
         this.client = initClient()
         this.user = initUser()
-        this.jwtSigner = null
-    }
-
-    constructor(host: String, jwtSigner: JwtSigner?) {
-        this.host = HttpHost.create(host)
-        this.client = initClient()
-        this.jwtSigner = jwtSigner
     }
 
     fun isRetryConnectionTimeout(): Boolean {
@@ -98,7 +90,10 @@ class RestClient {
     }
 
     private fun initHost(): HttpHost {
-        var host: String? = (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_ARCHIVIST_URL", System.getProperty("system.archivist.url"))
+        var host: String? = (System.getenv() as java.util.Map<String, String>).getOrDefault(
+            "ZORROA_ARCHIVIST_URL",
+            System.getProperty("system.archivist.url")
+        )
         if (host == null) {
             host = "http://localhost:8066"
         }
@@ -107,8 +102,11 @@ class RestClient {
     }
 
     private fun initUser(): String {
-        return (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_USER", System.getProperty("system.user"))
-                ?: return System.getProperty("user.name")
+        return (System.getenv() as java.util.Map<String, String>).getOrDefault(
+            "ZORROA_USER",
+            System.getProperty("system.user")
+        )
+            ?: return System.getProperty("user.name")
     }
 
     private fun initHmacKey(): String? {
@@ -122,7 +120,13 @@ class RestClient {
             return key
         }
 
-        val paths = arrayOf(String.format("%s/%s.key", (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_HMAC_PATH", "/vol/hmac"), user), String.format("%s/.zorroa/%s.key", System.getProperty("user.home"), user))
+        val paths = arrayOf(
+            String.format(
+                "%s/%s.key",
+                (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_HMAC_PATH", "/vol/hmac"),
+                user
+            ), String.format("%s/.zorroa/%s.key", System.getProperty("user.home"), user)
+        )
 
         for (path in paths) {
             try {
@@ -207,8 +211,10 @@ class RestClient {
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
         builder.setBoundary("---Content Boundary")
         for (file in files) {
-            builder.addBinaryBody("files", file,
-                    ContentType.DEFAULT_BINARY, filename(file))
+            builder.addBinaryBody(
+                "files", file,
+                ContentType.DEFAULT_BINARY, filename(file)
+            )
         }
         builder.setBoundary("---Content Boundary")
 
@@ -278,9 +284,11 @@ class RestClient {
         }
 
         if (response.statusLine.statusCode != 200) {
-            logger.warn("REST response error: {}{} {} {}",
-                    host.hostName, req.requestLine.uri,
-                    response.statusLine.reasonPhrase, response.statusLine.statusCode)
+            logger.warn(
+                "REST response error: {}{} {} {}",
+                host.hostName, req.requestLine.uri,
+                response.statusLine.reasonPhrase, response.statusLine.statusCode
+            )
 
             val error = checkResponse(response, Json.GENERIC_MAP)
             val message = error.getOrElse("message") {
@@ -307,10 +315,6 @@ class RestClient {
             } catch (e: Exception) {
                 throw RestClientException("Failed to sign request, $e", e)
             }
-        }
-
-        jwtSigner?.let {
-            it.sign(req, host.toString())
         }
     }
 
@@ -361,8 +365,8 @@ class RestClient {
 
             try {
                 val ctx = SSLContexts.custom()
-                        .loadTrustMaterial(null, TrustSelfSignedStrategy())
-                        .build()
+                    .loadTrustMaterial(null, TrustSelfSignedStrategy())
+                    .build()
                 factory = SSLConnectionSocketFactory(ctx, NoopHostnameVerifier())
             } catch (e: Exception) {
                 logger.warn("Failed to initialize SSL config, ", e)
@@ -370,10 +374,10 @@ class RestClient {
 
             val requestConfig = RequestConfig.custom().setConnectTimeout(30 * 1000).build()
             return HttpClients.custom()
-                    .setConnectionManagerShared(true)
-                    .setSSLSocketFactory(factory)
-                    .setDefaultRequestConfig(requestConfig)
-                    .build()
+                .setConnectionManagerShared(true)
+                .setSSLSocketFactory(factory)
+                .setDefaultRequestConfig(requestConfig)
+                .build()
         }
 
         fun filename(file: File): String {

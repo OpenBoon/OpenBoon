@@ -172,7 +172,7 @@ class UserRegistryServiceImpl @Autowired constructor(
                 source.authSourceId,
                 firstName = source.attrs.getOrDefault("first_name", "First"),
                 lastName = source.attrs.getOrDefault("last_name", "Last"),
-                language = source.attrs["user_locale"],
+                language = source.attrs.getOrDefault("user_locale", "en_US"),
                 authAttrs = source.attrs,
                 id = source.userId
             )
@@ -247,7 +247,8 @@ class UserRegistryServiceImpl @Autowired constructor(
                     organizationService.get(it)
                 }
             } ?: throw BadCredentialsException(
-                    "Unable to determine organization, organization was null")
+                "Unable to determine organization, organization was null"
+            )
         } else {
             organizationService.get(Organization.DEFAULT_ORG_ID)
         }
@@ -279,11 +280,13 @@ class UserRegistryServiceImpl @Autowired constructor(
             spec.source = source.authSourceId
 
             val authority = spec.type + Permission.JOIN + spec.name
-            perms.add(if (permissionService.permissionExists(authority)) {
-                permissionService.getPermission(authority)
-            } else {
-                permissionService.createPermission(spec)
-            })
+            perms.add(
+                if (permissionService.permissionExists(authority)) {
+                    permissionService.getPermission(authority)
+                } else {
+                    permissionService.createPermission(spec)
+                }
+            )
         }
         return perms
     }
@@ -339,12 +342,14 @@ class UserServiceImpl @Autowired constructor(
 
     override fun createStandardUsers(org: Organization) {
         val username = getOrgBatchUserName(org.id)
-        val spec = UserSpec(username,
-                UUID.randomUUID().toString(),
-                "$username@zorroa.com",
-                UserSource.INTERNAL,
-                "Batch",
-                "Job")
+        val spec = UserSpec(
+            username,
+            UUID.randomUUID().toString(),
+            "$username@zorroa.com",
+            UserSource.INTERNAL,
+            "Batch",
+            "Job"
+        )
 
         val batchUser = userDao.create(spec)
         /**
@@ -362,7 +367,8 @@ class UserServiceImpl @Autowired constructor(
 
         val name = spec.name ?: spec.email.split("@")[0]
         val nameParts = name.split(Regex("\\s+"), limit = 2)
-        val user = create(UserSpec(
+        val user = create(
+            UserSpec(
                 spec.email,
                 spec.password ?: generateRandomPassword(10),
                 spec.email,
@@ -373,7 +379,9 @@ class UserServiceImpl @Autowired constructor(
                 } else {
                     nameParts.last()
                 },
-                spec.permissionIds))
+                spec.permissionIds
+            )
+        )
 
         tx.afterCommit(sync = false) {
             // Email a password reset if no password was provided.
@@ -396,14 +404,18 @@ class UserServiceImpl @Autowired constructor(
         }
 
         if (userDao.exists(spec.username, null)) {
-            throw DuplicateEntityException("The user '" +
-                    spec.username + "' already exists.")
+            throw DuplicateEntityException(
+                "The user '" +
+                    spec.username + "' already exists."
+            )
         }
 
         val userPerm = permissionDao.create(
-                PermissionSpec("user", spec.username), true)
+            PermissionSpec("user", spec.username), true
+        )
         val userFolder = folderService.createUserFolder(
-                spec.username, userPerm)
+            spec.username, userPerm
+        )
 
         spec.homeFolderId = userFolder.id
         spec.userPermissionId = userPerm.id
@@ -502,8 +514,9 @@ class UserServiceImpl @Autowired constructor(
 
         val updatePermsAndFolders = user.username != form.username
         if (!userDao.exists(user.username, UserSource.LOCAL) &&
-                (updatePermsAndFolders ||
-                user.email != form.email)) {
+            (updatePermsAndFolders ||
+                user.email != form.email)
+        ) {
             throw IllegalArgumentException("Users from external sources cannot change their username or email address.")
         }
 

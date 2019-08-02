@@ -3,21 +3,15 @@ package com.zorroa.archivist.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.UserService
-import com.zorroa.common.clients.RestClient
-import com.zorroa.common.util.Json
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
-import java.io.FileInputStream
-import java.nio.file.Path
-import java.security.cert.CertificateFactory
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.util.Date
 import java.util.UUID
+import javax.annotation.PostConstruct
 
 class JwtValidatorException constructor(
     override val message: String,
@@ -64,11 +58,26 @@ class ValidatedJwt(
     }
 }
 
-class MasterJwtValidator constructor(
-    private val validators: List<JwtValidator>
-) {
-    fun validate(token: String): ValidatedJwt {
+@Component
+class MasterJwtValidator {
 
+     val validators: MutableList<JwtValidator> = mutableListOf()
+
+    @Autowired
+    var externalJwtValidator: ExternalJwtValidator? = null
+
+    @Autowired
+    lateinit var jwtValidator: JwtValidator
+
+    @PostConstruct
+    fun init() {
+        validators.add(jwtValidator)
+        externalJwtValidator?.let {
+            validators.add(it)
+        }
+    }
+
+    fun validate(token: String): ValidatedJwt {
         for (validator in validators) {
             try {
                 val claims = validator.validate(token)
@@ -87,7 +96,7 @@ class MasterJwtValidator constructor(
     }
 }
 
-class LocalUserJwtValidator constructor(val userService: UserService) : JwtValidator {
+class LocalUserJwtValidator @Autowired constructor(val userService: UserService) : JwtValidator {
 
     init {
         logger.info("Initializing User/Hmac JwtValidator")
@@ -117,79 +126,5 @@ class LocalUserJwtValidator constructor(val userService: UserService) : JwtValid
 
     companion object {
         private val logger = LoggerFactory.getLogger(LocalUserJwtValidator::class.java)
-    }
-}
-
-/**
- * Validates a token with google credentials
- */
-class GcpJwtValidator : JwtValidator {
-
-    private val credentials: GoogleCredential
-    private val client = RestClient("https://www.googleapis.com")
-    private val publickKey: RSAPublicKey
-
-    init {
-        logger.info("Initializing GCP JwtValidator")
-    }
-
-    constructor(credentials: GoogleCredential) {
-        this.credentials = credentials
-        val user = credentials.serviceAccountId
-        val keys = client.get("/robot/v1/metadata/x509/$user", Json.STRING_MAP)
-
-        val cfactory = CertificateFactory.getInstance("X.509")
-        val cert = cfactory.generateCertificate(
-            keys.getValue(credentials.serviceAccountPrivateKeyId).byteInputStream()
-        )
-        this.publickKey = cert.publicKey as RSAPublicKey
-    }
-
-    constructor(path: String?) : this(GoogleCredential.fromStream(FileInputStream(path)))
-
-    constructor(path: Path) : this(GoogleCredential.fromStream(FileInputStream(path.toFile())))
-
-    constructor() : this(System.getenv()["GOOGLE_APPLICATION_CREDENTIALS"])
-
-    override fun validate(token: String): Map<String, String> {
-        try {
-            val jwt = JWT.decode(token)
-            val alg = when (jwt.algorithm) {
-                "RS256" -> Algorithm.RSA256(
-                    publickKey,
-                    credentials.serviceAccountPrivateKey as RSAPrivateKey
-                )
-                else -> Algorithm.HMAC256(credentials.serviceAccountPrivateKey.encoded)
-            }
-            alg.verify(jwt)
-            val expDate: Date? = jwt.expiresAt
-
-            if (expDate != null && (System.currentTimeMillis() > expDate.time)) {
-                throw JwtValidatorException("Token has expired")
-            }
-
-            val result = mutableMapOf<String, String>()
-            if (logger.isDebugEnabled) {
-                logger.debug("JWT Claims: {}", Json.prettyString(jwt.claims))
-            }
-
-            jwt.claims.forEach { (k, v) ->
-
-                if (v.asString() != null) {
-                    result[k] = v.asString()
-                }
-            }
-            return result
-        } catch (e: JWTVerificationException) {
-            throw JwtValidatorException("Failed to validate token", e)
-        }
-    }
-
-    override fun provisionUser(claims: Map<String, String>): UserAuthed? {
-        return null
-    }
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(GcpJwtValidator::class.java)
     }
 }

@@ -12,7 +12,6 @@ import com.zorroa.archivist.domain.UserFilter
 import com.zorroa.archivist.domain.UserPasswordUpdate
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSettings
-import com.zorroa.archivist.security.IrmJwtValidatorTest
 import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.common.repository.KPagedList
@@ -418,50 +417,5 @@ class UserControllerTests : MockMvcTest() {
             object : TypeReference<List<Permission>>() {
             })
         assertEquals(response, userService.getPermissions(user))
-    }
-
-    @Test
-    fun testJwtTokenRedirect() {
-        val token = IrmJwtValidatorTest::class.java.getResource("/irm-alice-token.jwt").readText().trim()
-        mvc.perform(
-            post("/api/v1/auth/token")
-                .param("auth_token", token)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(status().isTemporaryRedirect)
-            .andExpect(redirectedUrl("/"))
-            .andReturn()
-    }
-
-    @Test
-    fun testJwtTokenUserCreation() {
-        val token = IrmJwtValidatorTest::class.java.getResource("/irm-alice-token.jwt").readText().trim()
-        mvc.perform(
-            post("/api/v1/auth/token")
-                .param("auth_token", token)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(status().isTemporaryRedirect)
-            .andExpect(redirectedUrl("/"))
-            .andReturn()
-
-        authenticate()
-        val user = userService.findOne(UserFilter(emails = listOf("Alice_DIT2T@ironmountain.com")))
-
-        Assertions.registerFormatterForType(Permission::class.java) { it.fullName }
-
-        Assertions.assertThat(userService.getPermissions(user))
-            .containsExactlyInAnyOrder(
-                permissionService.getPermission("zorroa::everyone"),
-                permissionService.getPermission("zorroa::read"),
-                permissionService.getPermission("zorroa::write"),
-                permissionService.getPermission("zorroa::export"),
-                permissionService.getPermission(user.permissionId.toString())
-            )
-
-        Assertions.assertThat(user.language).isEqualTo("en")
-        Assertions.assertThat(user.firstName).isEqualTo("Alice")
-        Assertions.assertThat(user.lastName).isEqualTo("Tester")
     }
 }

@@ -27,9 +27,6 @@ import kotlin.test.assertTrue
 class FolderControllerTests : MockMvcTest() {
 
     @Autowired
-    internal lateinit var folderController: FolderController
-
-    @Autowired
     internal lateinit var assetDao: IndexDao
 
     internal lateinit var folder: Folder

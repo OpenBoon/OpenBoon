@@ -4,12 +4,10 @@ import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.sdk.security.UserRegistryService
-import com.zorroa.archivist.security.GcpJwtValidator
-import com.zorroa.archivist.security.IrmJwtValidator
+import com.zorroa.archivist.security.ExternalJwtValidator
+import com.zorroa.archivist.security.HttpExternalJwtValidator
 import com.zorroa.archivist.security.JwtValidator
 import com.zorroa.archivist.security.LocalUserJwtValidator
-import com.zorroa.archivist.security.MasterJwtValidator
-import com.zorroa.archivist.security.TokenStore
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileServerProviderImpl
 import com.zorroa.archivist.service.FileStorageService
@@ -37,6 +35,7 @@ import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 import java.io.File
 import java.io.IOException
+import java.net.URI
 import java.nio.file.Path
 import java.util.Properties
 
@@ -145,46 +144,22 @@ class ArchivistConfiguration {
 
     @Bean
     @Autowired
-    fun masterJwtValidator(
-        userService: UserService,
-        userRegistryService: UserRegistryService,
-        tokenStore: TokenStore
-    ): MasterJwtValidator {
-        val validators = mutableListOf<JwtValidator>()
+    @ConditionalOnProperty(
+        value = ["archivist.security.jwt.external.enabled"],
+        havingValue = "true",
+        matchIfMissing = false
+    )
+    fun externalJwtValidator(userRegistryService: UserRegistryService): ExternalJwtValidator {
         val props = properties()
-        val jwtModules = props.getList("archivist.security.jwt.modules")
+        return HttpExternalJwtValidator(
+            URI.create(props.getString("archivist.security.jwt.external.url")),
+            userRegistryService
+        )
+    }
 
-        // Have to have Zorroa for jobs to run.
-        validators.add(LocalUserJwtValidator(userService))
-
-        /**
-         * Determine which other JWT validators to instance.
-         */
-        for (module in jwtModules) {
-            val moduleInstance = when (module) {
-                "irm" -> {
-                    IrmJwtValidator(
-                        props.getPath("archivist.security.jwt.irm.credentials-path", serviceCredentials()),
-                        props.parseToMap("archivist.security.permissions.map"), userRegistryService
-                    )
-                }
-                "gcp" -> {
-                    GcpJwtValidator(props.getPath("archivist.security.jwt.gcp.credentials-path", serviceCredentials()))
-                }
-                else -> {
-                    if (module in setOf("zorroa", "local")) {
-                        null
-                    } else {
-                        throw IllegalArgumentException("Invalid jwt module: $module")
-                    }
-                }
-            }
-            moduleInstance?.let {
-                validators.add(it)
-            }
-        }
-
-        return MasterJwtValidator(validators)
+    @Bean
+    fun jwtValidator(userService: UserService): JwtValidator {
+        return LocalUserJwtValidator(userService)
     }
 
     @Bean
