@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.client.ExpectedCount
 import org.springframework.test.web.client.MockRestServiceServer
+import org.springframework.test.web.client.match.MockRestRequestMatchers.header
 import org.springframework.test.web.client.match.MockRestRequestMatchers.method
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
@@ -42,6 +43,8 @@ class ExternalJwtValidatorTests : AbstractTest() {
 
     @Test
     fun testValidateAndProvision() {
+        val token =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjQ3NjE0NzcsImV4cCI6MTU5NjI5NzQ3NywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.6PaIyxGoG9HRqAdTpxq7sf4yJgnNKSLN-HPRCQYU3hU"
         val payload = """
             {
                 "userId": "2B2ED9E0-294B-4847-A019-A4E8F46ADEE3",
@@ -56,14 +59,14 @@ class ExternalJwtValidatorTests : AbstractTest() {
             requestTo(URI("http://localhost:8181/validate"))
         )
             .andExpect(method(HttpMethod.GET))
+            .andExpect(header("Authorization", "Bearer $token"))
             .andRespond(
                 withStatus(HttpStatus.OK)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(payload)
             )
 
-        val token =
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjQ3NjE0NzcsImV4cCI6MTU5NjI5NzQ3NywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.6PaIyxGoG9HRqAdTpxq7sf4yJgnNKSLN-HPRCQYU3hU"
+
         val result = validator.validate(token)
         val user = validator.provisionUser(result)
 

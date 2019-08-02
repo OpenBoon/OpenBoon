@@ -36,7 +36,9 @@ class HttpExternalJwtValidator constructor(
     val rest: RestTemplate = RestTemplate(HttpComponentsClientHttpRequestFactory())
 
     override fun validate(token: String): Map<String, String> {
-        val req = RequestEntity.get(validateUri).accept(MediaType.APPLICATION_JSON).build()
+        val req = RequestEntity.get(validateUri)
+            .header(JwtSecurityConstants.HEADER_STRING_REQ, JwtSecurityConstants.TOKEN_PREFIX + token)
+            .accept(MediaType.APPLICATION_JSON).build()
         return rest.exchange(req, responseType).body
     }
 
