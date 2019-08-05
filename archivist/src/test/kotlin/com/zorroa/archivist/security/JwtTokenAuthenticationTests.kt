@@ -16,11 +16,11 @@ class JwtTokenAuthenticationTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testWho() {
         val user = userService.get("admin")
-        val token = generateUserToken(user.id, userService.getHmacKey(user))
+        val token = generateUserToken(user.id, null, userService.getHmacKey(user))
 
         val rsp = mvc.perform(MockMvcRequestBuilders.get("/api/v1/who")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .header(JwtSecurityConstants.HEADER_STRING,
+                .header(JwtSecurityConstants.HEADER_STRING_REQ,
                         "${JwtSecurityConstants.TOKEN_PREFIX}$token")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)

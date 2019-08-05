@@ -13,10 +13,8 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.hamcrest.CoreMatchers
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import org.springframework.http.MediaType
-import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -27,15 +25,8 @@ import kotlin.test.assertTrue
 
 class IndexRoutingControllerTests : MockMvcTest() {
 
-    internal lateinit var session: MockHttpSession
-
     override fun requiresElasticSearch(): Boolean {
         return true
-    }
-
-    @Before
-    fun init() {
-        session = admin()
     }
 
     @After
@@ -69,7 +60,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/index-routes")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec))
@@ -103,7 +94,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-routes/${route.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -135,7 +126,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
         val route = indexRoutingService.createIndexRoute(spec)
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-routes/${route.id}/_state")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -160,7 +151,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_open")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -182,7 +173,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
         val route = indexRoutingService.createIndexRoute(spec)
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_close")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -196,7 +187,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-routes/_mappings")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -225,7 +216,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/index-routes/_migrate")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(mspec))

@@ -35,7 +35,7 @@ import org.springframework.web.client.RestTemplate
 import java.security.cert.X509Certificate
 import java.util.UUID
 
-@PreAuthorize("hasAuthority(T( com.zorroa.security.Groups).SUPERADMIN)")
+@PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SUPERADMIN)")
 @RestController
 @Timed
 @Api(tags = ["Analyst"], description = "Operations for managing and interacting with the Analysts.")

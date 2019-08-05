@@ -33,7 +33,7 @@ class TaxonomyControllerTests : MockMvcTest() {
         val spec = TaxonomySpec(f)
 
         val result = mvc.perform(post("/api/v1/taxonomy")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -54,7 +54,7 @@ class TaxonomyControllerTests : MockMvcTest() {
         val tax = taxonomyService!!.create(spec)
 
         val result = mvc.perform(delete("/api/v1/taxonomy/" + tax.taxonomyId)
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))

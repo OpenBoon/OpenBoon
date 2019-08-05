@@ -3,7 +3,8 @@ package com.zorroa.archivist.security
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING
+import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_REQ
+import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_RSP
 import com.zorroa.archivist.security.JwtSecurityConstants.ORGID_HEADER
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import com.zorroa.archivist.service.UserService
@@ -38,8 +39,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
         chain: FilterChain
     ) {
 
-        val token = req.getHeader(HEADER_STRING)
-
+        val token = req.getHeader(HEADER_STRING_REQ)
         if (token == null || !token.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res)
             return
@@ -51,12 +51,12 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
          *
          * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
          */
-        val valiadated = validator.validate(token.replace(TOKEN_PREFIX, ""))
-
-        SecurityContextHolder.getContext().authentication =
-            JwtAuthenticationToken(valiadated.claims, req.getHeader(ORGID_HEADER))
+        val validated = validator.validate(token.replace(TOKEN_PREFIX, ""))
+        val authToken = JwtAuthenticationToken(validated.claims, req.getHeader(ORGID_HEADER))
+        SecurityContextHolder.getContext().authentication = authToken
 
         req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
+        res.addHeader(HEADER_STRING_RSP, token)
         chain.doFilter(req, res)
     }
 }
@@ -74,9 +74,10 @@ class JwtAuthenticationToken constructor(
 ) : AbstractAuthenticationToken(listOf()) {
 
     val userId = claims.getValue("userId")
+    val sessionId = claims.getOrDefault("sessionId", "")
 
     override fun getCredentials(): Any {
-        return userId
+        return sessionId
     }
 
     override fun getPrincipal(): Any {
@@ -94,6 +95,9 @@ class JwtAuthenticationProvider : AuthenticationProvider {
 
     @Autowired
     private lateinit var userService: UserService
+
+    @Autowired
+    private lateinit var tokenStore: TokenStore
 
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as JwtAuthenticationToken
@@ -114,6 +118,11 @@ class JwtAuthenticationProvider : AuthenticationProvider {
             user.attrs
         )
 
+        // Increment expire time if the token is still active.
+        if (!token.sessionId.isNullOrEmpty()) {
+            tokenStore.incrementSessionExpirationTime(token.sessionId)
+        }
+
         // If the token has an orgId validate
         if (token.organizationId != null) {
             if (authedUser.authorities.map { it.authority == Groups.SUPERADMIN }.isNotEmpty()) {
@@ -122,13 +131,13 @@ class JwtAuthenticationProvider : AuthenticationProvider {
                     LogObject.USER, LogAction.ORGSWAP,
                     mapOf(
                         "username" to user.username,
-                        "newOrganizationId" to token.organizationId
+                        "overrideOrganizationId" to token.organizationId
                     )
                 )
             }
         }
 
-        return UsernamePasswordAuthenticationToken(authedUser, "", authorities)
+        return UsernamePasswordAuthenticationToken(authedUser, token.credentials, authorities)
     }
 
     override fun supports(cls: Class<*>): Boolean {
