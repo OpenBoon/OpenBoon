@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.AuditLogFilter
@@ -10,6 +11,7 @@ import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FieldEditSpec
+import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.LinkType
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.UpdateAssetRequest
@@ -18,6 +20,7 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -76,8 +79,8 @@ class AssetServiceTests : AbstractTest() {
 
         val ids = assets.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.addLinks(
-                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
+        assertEquals(2, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))
         assets = searchService.search(Pager.first(), AssetSearch())
@@ -205,10 +208,10 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.addLinks(
-                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
-        assertEquals(0, assetService.addLinks(
-                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).erroredAssetIds.size)
+        assertEquals(2, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
+        assertEquals(0, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).erroredAssetIds.size)
     }
 
     @Test
@@ -220,7 +223,7 @@ class AssetServiceTests : AbstractTest() {
 
         val folderId = UUID.randomUUID()
         assertEquals(1,
-                assetService.addLinks(LinkType.Folder, folderId,
+                assetService.batchUpdateLinks(LinkType.Folder, listOf(folderId),
                         BatchUpdateAssetLinks(null, listOf(page[1].id), AssetSearch())).updatedAssetIds.size)
     }
 
@@ -229,10 +232,10 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.addLinks(
-                LinkType.Folder, folderId, BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
-        assertEquals(2, assetService.removeLinks(LinkType.Folder, folderId, ids).updatedAssetIds.size)
-        assertEquals(0, assetService.removeLinks(LinkType.Folder, folderId, ids).updatedAssetIds.size)
+        assertEquals(2, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
+        assertEquals(2, assetService.batchRemoveLinks(LinkType.Folder, listOf(folderId), ids).updatedAssetIds.size)
+        assertEquals(0, assetService.batchRemoveLinks(LinkType.Folder, listOf(folderId), ids).updatedAssetIds.size)
     }
 
     @Test
@@ -333,5 +336,25 @@ class AssetServiceTests : AbstractTest() {
         assertNotNull(asset.getAttr("system.timeCreated"))
         assertNotNull(asset.getAttr("system.timeModified"))
         assertNotNull(asset.getAttr("system.links"))
+    }
+
+    @Test
+    fun testBatchSetLinks() {
+
+        val folders = Lists.newArrayList<UUID>()
+        for (i in 0..9) {
+            val builder = FolderSpec("Folder$i")
+            val (id) = folderService.create(builder)
+            folders.add(id)
+        }
+
+        val assets = indexService.getAll(Pager.first(1)).list
+        Assert.assertEquals(1, assets.size.toLong())
+        var doc = assets[0]
+        assetService.batchSetLinks(doc.id, folders)
+        refreshIndex()
+
+        doc = indexService.get(doc.id)
+        Assert.assertEquals(10, doc.getAttr("system.links.folder", List::class.java)!!.size.toLong())
     }
 }

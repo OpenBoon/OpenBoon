@@ -159,6 +159,7 @@ class IndexDaoTests : AbstractTest() {
         indexDao.index(ImmutableList.of(source1, source2))
     }
 
+    /*
     @Test
     fun testAppendLink() {
         assertTrue(
@@ -208,6 +209,7 @@ class IndexDaoTests : AbstractTest() {
         links = a.getAttr("system.links.folder")
         assertEquals(0, links!!.size.toLong())
     }
+*/
 
     @Test
     fun testUpdate() {

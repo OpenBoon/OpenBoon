@@ -6,8 +6,10 @@ import com.google.common.collect.Maps
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetLinks
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FolderSpec
+import com.zorroa.archivist.domain.LinkType
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
@@ -102,8 +104,11 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class)
     fun testSearchExportPermissionOverrideHit() {
         val user = userService.get("user")
-        userService.addPermissions(user, ImmutableList.of(
-                permissionService.getPermission("zorroa::export")))
+        userService.addPermissions(
+            user, ImmutableList.of(
+                permissionService.getPermission("zorroa::export")
+            )
+        )
         authenticate("user")
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -126,8 +131,8 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         val search = AssetSearch()
-                .setAccess(Access.Export)
-                .setQuery("source.filename:beer")
+            .setAccess(Access.Export)
+            .setQuery("source.filename:beer")
         assertNotNull(getPermissionsFilter(search.access))
         assertEquals(1, searchService.search(search).hits.getTotalHits())
     }
@@ -282,7 +287,9 @@ class SearchServiceTests : AbstractTest() {
         var count = 0
         for (a in searchService.search(
             Pager.first(), AssetSearch().setFilter(
-                AssetFilter().addToTerms("media.keywords", "captain")))) {
+                AssetFilter().addToTerms("media.keywords", "captain")
+            )
+        )) {
             count++
         }
         assertTrue(count > 0)
@@ -300,7 +307,9 @@ class SearchServiceTests : AbstractTest() {
 
         builder = FolderSpec("Characters", folder2)
         builder.search = AssetSearch("captain america")
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search1, taxonomyRoot, attrs) = folderService.create(builder)
+        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search1, taxonomyRoot, attrs) = folderService.create(
+            builder
+        )
 
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("media.keywords", ImmutableList.of("captain"))
@@ -309,7 +318,11 @@ class SearchServiceTests : AbstractTest() {
         source2.setAttr("media.keywords", source2.getAttr("source", SourceSchema::class.java)!!.filename)
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
-        indexService.appendLink("folder", folder2.id.toString(), ImmutableList.of(source2.id))
+        assetService.batchUpdateLinks(
+            LinkType.Folder, listOf(folder2.id), BatchUpdateAssetLinks(
+                ImmutableList.of(source2.id)
+            )
+        )
 
         val filter = AssetFilter().addToLinks("folder", folder1.id)
         val search = AssetSearch().setFilter(filter)
@@ -352,14 +365,24 @@ class SearchServiceTests : AbstractTest() {
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("captain").setQueryFields(ImmutableMap.of("foo.bar1", 1.0f))).hits.getTotalHits())
-        assertEquals(0, searchService.search(
-                AssetSearch("captain").setQueryFields(ImmutableMap.of("foo.bar2", 1.0f))).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("captain").setQueryFields(ImmutableMap.of("foo.bar1", 1.0f))
+            ).hits.getTotalHits()
+        )
+        assertEquals(
+            0, searchService.search(
+                AssetSearch("captain").setQueryFields(ImmutableMap.of("foo.bar2", 1.0f))
+            ).hits.getTotalHits()
+        )
 
-        assertEquals(1, searchService.search(
+        assertEquals(
+            1, searchService.search(
                 AssetSearch("captain baggins").setQueryFields(
-                        ImmutableMap.of("foo.bar1", 1.0f, "foo.bar2", 2.0f))).hits.getTotalHits())
+                    ImmutableMap.of("foo.bar1", 1.0f, "foo.bar2", 2.0f)
+                )
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -385,12 +408,21 @@ class SearchServiceTests : AbstractTest() {
         /*
          * High confidence words are found at every level.
          */
-        assertEquals(1, searchService.search(
-                AssetSearch("zipzoom")).hits.getTotalHits())
-        assertEquals(1, searchService.search(
-                AssetSearch("zipzoom")).hits.getTotalHits())
-        assertEquals(1, searchService.search(
-                AssetSearch("zipzoom")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("zipzoom")
+            ).hits.getTotalHits()
+        )
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("zipzoom")
+            ).hits.getTotalHits()
+        )
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("zipzoom")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -401,8 +433,11 @@ class SearchServiceTests : AbstractTest() {
         source.setAttr("media.keywords", ImmutableList.of("zipzoom"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("zipzoom")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("zipzoom")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -453,8 +488,11 @@ class SearchServiceTests : AbstractTest() {
         source.setAttr("media.keywords", ImmutableList.of("source", "zoolander"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("zoo*")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("zoo*")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -469,8 +507,11 @@ class SearchServiceTests : AbstractTest() {
         source2.setAttr("media.keywords", "ironMan17314.jpg")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source2))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("\"ironMan17313.jpg\"")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("\"ironMan17313.jpg\"")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -485,8 +526,11 @@ class SearchServiceTests : AbstractTest() {
         source2.setAttr("media.keywords", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source2))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("\"Cock O'the Walk\" AND \"RA\"")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("\"Cock O'the Walk\" AND \"RA\"")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -501,8 +545,11 @@ class SearchServiceTests : AbstractTest() {
         source2.setAttr("media.title", listOf("RA", "Cock O'the Walk"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source2))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("\"Cock O'the Walk\"")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("\"Cock O'the Walk\"")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -513,8 +560,11 @@ class SearchServiceTests : AbstractTest() {
         source.addToKeywords("media", "zoolander", "beer")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        assertEquals(0, searchService.search(
-                AssetSearch("zoo* -beer")).hits.getTotalHits())
+        assertEquals(
+            0, searchService.search(
+                AssetSearch("zoo* -beer")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -525,8 +575,11 @@ class SearchServiceTests : AbstractTest() {
         source.setAttr("media.title", "Zoolander")
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("zoolander OR cat")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("zoolander OR cat")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -537,14 +590,23 @@ class SearchServiceTests : AbstractTest() {
         source.setAttr("media.keywords", listOf("Dog In the Street"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        assertEquals(0, searchService.search(
-                AssetSearch("Dog In the").setExactQuery(true)).hits.getTotalHits())
+        assertEquals(
+            0, searchService.search(
+                AssetSearch("Dog In the").setExactQuery(true)
+            ).hits.getTotalHits()
+        )
 
-        assertEquals(0, searchService.search(
-            AssetSearch("dog in the street").setExactQuery(true)).hits.getTotalHits())
+        assertEquals(
+            0, searchService.search(
+                AssetSearch("dog in the street").setExactQuery(true)
+            ).hits.getTotalHits()
+        )
 
-        assertEquals(1, searchService.search(
-                AssetSearch("Dog In the Street").setExactQuery(true)).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("Dog In the Street").setExactQuery(true)
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -554,8 +616,11 @@ class SearchServiceTests : AbstractTest() {
         source.setAttr("media.keywords", ImmutableList.of("zooland"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
-        assertEquals(1, searchService.search(
-                AssetSearch("zoolind~")).hits.getTotalHits())
+        assertEquals(
+            1, searchService.search(
+                AssetSearch("zoolind~")
+            ).hits.getTotalHits()
+        )
     }
 
     @Test
@@ -585,13 +650,19 @@ class SearchServiceTests : AbstractTest() {
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
-        val result1 = searchService.search(Pager.first(1),
-                AssetSearch().setScroll(Scroll().setTimeout("1m")))
+        val result1 = searchService.search(
+            Pager.first(1),
+            AssetSearch().setScroll(Scroll().setTimeout("1m"))
+        )
         assertNotNull(result1.scroll)
         assertEquals(1, result1.size().toLong())
 
-        val result2 = searchService.search(Pager.first(1), AssetSearch().setScroll(result1.scroll
-                .setTimeout("1m")))
+        val result2 = searchService.search(
+            Pager.first(1), AssetSearch().setScroll(
+                result1.scroll
+                    .setTimeout("1m")
+            )
+        )
         assertNotNull(result2.scroll)
         assertEquals(1, result2.size().toLong())
     }
@@ -603,10 +674,16 @@ class SearchServiceTests : AbstractTest() {
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
-        val page = searchService.search(Pager.first(1),
-                AssetSearch().addToAggs("foo",
-                        ImmutableMap.of<String, Any>("max",
-                                ImmutableMap.of("field", "source.fileSize"))))
+        val page = searchService.search(
+            Pager.first(1),
+            AssetSearch().addToAggs(
+                "foo",
+                ImmutableMap.of<String, Any>(
+                    "max",
+                    ImmutableMap.of("field", "source.fileSize")
+                )
+            )
+        )
         assertEquals(1, page.aggregations.size.toLong())
     }
 
@@ -619,11 +696,17 @@ class SearchServiceTests : AbstractTest() {
 
         val req = Maps.newHashMap<String, Any>()
         req["filter"] = ImmutableMap.of<Any, Any>()
-        req["aggs"] = ImmutableMap.of("foo", ImmutableMap.of("terms",
-                ImmutableMap.of("field", "source.fileSize")))
+        req["aggs"] = ImmutableMap.of(
+            "foo", ImmutableMap.of(
+                "terms",
+                ImmutableMap.of("field", "source.fileSize")
+            )
+        )
 
-        val page = searchService.search(Pager.first(1),
-                AssetSearch().addToAggs("facet", req))
+        val page = searchService.search(
+            Pager.first(1),
+            AssetSearch().addToAggs("facet", req)
+        )
         assertEquals(1, page.aggregations.size.toLong())
     }
 
@@ -679,15 +762,18 @@ class SearchServiceTests : AbstractTest() {
     @Throws(IOException::class, InterruptedException::class)
     fun testKwConfSearch() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
-        source1.setAttr("kw_with_conf", listOf(
+        source1.setAttr(
+            "kw_with_conf", listOf(
                 mapOf("keyword" to "dog", "confidence" to 0.5),
                 mapOf("keyword" to "cat", "confidence" to 0.1),
-                mapOf("keyword" to "bilboAngry", "confidence" to 0.7)))
+                mapOf("keyword" to "bilboAngry", "confidence" to 0.7)
+            )
+        )
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source1))
 
         val filter = AssetFilter()
-                .addToKwConf("kw_with_conf", KwConfFilter(listOf("bilboAngry"), listOf(0.25, 0.70)))
+            .addToKwConf("kw_with_conf", KwConfFilter(listOf("bilboAngry"), listOf(0.25, 0.70)))
 
         assertEquals(1, searchService.search(AssetSearch(filter)).hits.getTotalHits())
     }
@@ -705,9 +791,11 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source2, source1)))
 
         val search = AssetSearch(
-                AssetFilter().addToSimilarity("test.jimbo.shash",
-                        SimilarityFilter("AFAFAFAF", 100)
-                ))
+            AssetFilter().addToSimilarity(
+                "test.jimbo.shash",
+                SimilarityFilter("AFAFAFAF", 100)
+            )
+        )
         assertEquals(0, searchService.search(search).hits.getTotalHits())
     }
 
@@ -725,8 +813,11 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source2, source1)))
 
         val search = AssetSearch(
-                AssetFilter().addToSimilarity("test.hash1.jimbo.raw",
-                        SimilarityFilter("AFAFAFAF", 100)))
+            AssetFilter().addToSimilarity(
+                "test.hash1.jimbo.raw",
+                SimilarityFilter("AFAFAFAF", 100)
+            )
+        )
         assertEquals(1, searchService.search(search).hits.getTotalHits())
     }
 
@@ -744,18 +835,27 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source2, source1)))
 
         var search = AssetSearch(
-                AssetFilter().addToSimilarity("test.hash1.shash",
-                        SimilarityFilter("AFAFAFAF", 100)))
+            AssetFilter().addToSimilarity(
+                "test.hash1.shash",
+                SimilarityFilter("AFAFAFAF", 100)
+            )
+        )
         assertEquals(1, searchService.search(search).hits.getTotalHits())
 
         search = AssetSearch(
-                AssetFilter().addToSimilarity("test.hash1.shash",
-                        SimilarityFilter("AFAFAFAF", 50)))
+            AssetFilter().addToSimilarity(
+                "test.hash1.shash",
+                SimilarityFilter("AFAFAFAF", 50)
+            )
+        )
         assertEquals(2, searchService.search(search).hits.getTotalHits())
 
         search = AssetSearch(
-                AssetFilter().addToSimilarity("test.hash1.shash",
-                        SimilarityFilter("APAPAPAP", 20)))
+            AssetFilter().addToSimilarity(
+                "test.hash1.shash",
+                SimilarityFilter("APAPAPAP", 20)
+            )
+        )
 
         assertEquals(2, searchService.search(search).hits.getTotalHits())
     }
@@ -781,8 +881,11 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source2, source1)))
 
         val search = AssetSearch(
-                AssetFilter().addToSimilarity("test.hash1.shash",
-                        SimilarityFilter("AFAFAFAF", 100)))
+            AssetFilter().addToSimilarity(
+                "test.hash1.shash",
+                SimilarityFilter("AFAFAFAF", 100)
+            )
+        )
         val hits = searchService.search(search).hits
         assertEquals(1, hits.getTotalHits())
         val doc = Document(hits.getAt(0).sourceAsMap)
@@ -804,8 +907,10 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source2, source1)))
 
         val search = AssetSearch("beer")
-        search.filter = AssetFilter().addToSimilarity("test.hash1.shash",
-                SimilarityFilter("afafafaf", 1))
+        search.filter = AssetFilter().addToSimilarity(
+            "test.hash1.shash",
+            SimilarityFilter("afafafaf", 1)
+        )
 
         /**
          * The score from the hamming distance is combined with the query
@@ -830,8 +935,10 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source2, source1)))
 
         val search = AssetSearch("beer")
-        search.filter = AssetFilter().addToSimilarity("test.hash1.shash",
-                SimilarityFilter(source1.id, 8))
+        search.filter = AssetFilter().addToSimilarity(
+            "test.hash1.shash",
+            SimilarityFilter(source1.id, 8)
+        )
 
         /**
          * The score from the hamming distance is combined with the query
@@ -887,8 +994,10 @@ class SearchServiceTests : AbstractTest() {
     @Test
     fun testFromSize() {
         addTestAssets("set01")
-        assertEquals(2,
-                searchService.search(Pager(2, 2), AssetSearch()).size().toLong())
+        assertEquals(
+            2,
+            searchService.search(Pager(2, 2), AssetSearch()).size().toLong()
+        )
     }
 
     @Test
@@ -934,8 +1043,10 @@ class SearchServiceTests : AbstractTest() {
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
-        val asb = AssetSearch(AssetFilter()
-                .addRange("source.fileSize", RangeQuery().setGt(100000)))
+        val asb = AssetSearch(
+            AssetFilter()
+                .addRange("source.fileSize", RangeQuery().setGt(100000))
+        )
 
         val result = searchService.search(Pager.first(), asb)
         assertEquals(2, result.size().toLong())
@@ -951,8 +1062,10 @@ class SearchServiceTests : AbstractTest() {
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1)))
 
         val text = "doc['source.fileSize'].value == params.size"
-        val script = AssetScript(text,
-                ImmutableMap.of<String, Any>("size", 113333))
+        val script = AssetScript(
+            text,
+            ImmutableMap.of<String, Any>("size", 113333)
+        )
 
         val scripts = ArrayList<AssetScript>()
         scripts.add(script)
