@@ -66,7 +66,6 @@ class ExternalJwtValidatorTests : AbstractTest() {
                     .body(payload)
             )
 
-
         val result = validator.validate(token)
         val user = validator.provisionUser(result)
 
