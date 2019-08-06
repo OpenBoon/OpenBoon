@@ -42,8 +42,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
         val token = req.getHeader(HEADER_STRING_REQ)?.let {
             if (it.startsWith(TOKEN_PREFIX)) {
                 it.removePrefix(TOKEN_PREFIX)
-            }
-            else {
+            } else {
                 null
             }
         } ?: req.getParameter("token")

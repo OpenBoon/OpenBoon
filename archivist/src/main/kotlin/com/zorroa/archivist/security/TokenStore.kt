@@ -13,11 +13,9 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import redis.clients.jedis.JedisPool
 import java.nio.ByteBuffer
+import java.util.Calendar
 import java.util.Date
 import java.util.UUID
-import java.util.Calendar
-
-
 
 /**
  * A basic interface for dealing with an external JWT token store
@@ -93,7 +91,8 @@ class RedisTokenStore @Autowired constructor(
     override fun createSessionToken(userId: UUID): String {
         val sessionId = "token:" + encodeUUIDBase64(UUID.randomUUID())
         val token = generateUserToken(
-            userId, sessionId, userDao.getHmacKey(userId), expireTimeHours = tokenExpireTime)
+            userId, sessionId, userDao.getHmacKey(userId), expireTimeHours = tokenExpireTime
+        )
 
         jedisPool.resource.use {
             if (it.exists(sessionId)) {
@@ -132,11 +131,12 @@ fun encodeUUIDBase64(uuid: UUID): String {
  * @param sessionId An optional session Id.
  * @param expireTimeHours An optional expire time in days.
  */
-fun generateUserToken(userId: UUID,
+fun generateUserToken(
+    userId: UUID,
     signingKey: String,
     sessionId: String? = null,
-    expireTimeHours: Int? = null): String
-{
+    expireTimeHours: Int? = null
+): String {
     val algo = Algorithm.HMAC256(signingKey)
     val spec = JWT.create().withIssuer("zorroa")
         .withClaim("userId", userId.toString())
