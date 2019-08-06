@@ -61,7 +61,11 @@ interface PermissionDao {
 
     fun getAll(names: List<String>?): List<Permission>
 
-    fun delete(perm: Permission): Boolean
+    /**
+     * Delete the given permission.  Optionally force deleting a system permission
+     * that users would not otherwise be abl to delete.
+     */
+    fun delete(perm: Permission, force: Boolean = false): Boolean
 
     fun getDefaultPermissionSchema(): PermissionSchema
 }
@@ -243,12 +247,17 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         }
     }
 
-    override fun delete(perm: Permission): Boolean {
-        /*
-         * Ensure immutable permissions cannot be deleted.
-         */
-        return jdbc.update("DELETE FROM permission WHERE pk_organization=? AND pk_permission=? AND bool_immutable=?",
-                getOrgId(), perm.id, false) == 1
+    override fun delete(perm: Permission, force: Boolean): Boolean {
+        return if (force) {
+            jdbc.update("DELETE FROM permission WHERE pk_organization=? AND pk_permission=?",
+                getOrgId(), perm.id)
+        }
+        else {
+            jdbc.update(
+                "DELETE FROM permission WHERE pk_organization=? AND pk_permission=? AND bool_immutable=?",
+                getOrgId(), perm.id, force
+            )
+        } == 1
     }
 
     /**

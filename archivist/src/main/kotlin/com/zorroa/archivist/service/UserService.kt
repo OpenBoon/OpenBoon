@@ -535,29 +535,24 @@ class UserServiceImpl @Autowired constructor(
 
     override fun delete(user: User): Boolean {
         val result = userDao.delete(user)
-
         if (result) {
 
-            try {
-                if (user.permissionId != null) {
-                    permissionDao.delete(permissionDao.get(user.permissionId))
-                }
-            } catch (e: Exception) {
-                logger.warn("Failed to delete user permission for {}", user)
+            if (user.permissionId != null) {
+                permissionDao.delete(permissionDao.get(user.permissionId), force = true)
             }
 
-            try {
-                if (user.homeFolderId != null) {
-                    folderService.delete(folderService.get(user.homeFolderId))
-                }
-            } catch (e: Exception) {
-                logger.warn("Failed to delete home folder for {}", user)
+            if (user.homeFolderId != null) {
+                val folder = folderService.get(user.homeFolderId)
+                folderService.invalidate(folder)
+                folderService.deleteAll(folderService.getAllDescendants(folder, false).map { it.id })
+                folderService.delete(folder)
             }
 
             tx.afterCommit(false) {
                 userDaoCache.invalidate(user.id)
             }
         }
+
         return result
     }
 
