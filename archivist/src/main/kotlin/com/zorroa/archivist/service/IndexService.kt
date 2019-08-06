@@ -263,6 +263,7 @@ class IndexServiceImpl @Autowired constructor(
             tpe.threadNamePrefix = "ASSET-QUEUE-"
             tpe.isDaemon = true
             tpe.setQueueCapacity(1000)
+            tpe.initialize()
             return tpe
         }
     }
