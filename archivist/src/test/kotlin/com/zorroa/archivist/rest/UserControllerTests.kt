@@ -147,7 +147,7 @@ class UserControllerTests : MockMvcTest() {
     @Test
     fun testCreateV2WithOrgIdHeader() {
         val user = userService.get("admin")
-        val token = generateUserToken(user.id, null, userService.getHmacKey(user))
+        val token = generateUserToken(user.id, userService.getHmacKey(user))
         val org = organizationService.create(OrganizationSpec("Mordor Inc"))
 
         val spec = LocalUserSpec(

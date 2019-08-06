@@ -15,7 +15,7 @@ class JwtTokenAuthenticationTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testWho() {
         val user = userService.get("admin")
-        val token = generateUserToken(user.id, null, userService.getHmacKey(user))
+        val token = generateUserToken(user.id, userService.getHmacKey(user))
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/who")
@@ -36,7 +36,7 @@ class JwtTokenAuthenticationTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testJwtValidationWithTokenParam() {
         val user = userService.get("admin")
-        val token = generateUserToken(user.id, null, userService.getHmacKey(user))
+        val token = generateUserToken(user.id, userService.getHmacKey(user))
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/who")

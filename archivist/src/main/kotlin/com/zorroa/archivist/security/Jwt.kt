@@ -39,11 +39,19 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
         chain: FilterChain
     ) {
 
-        val token = req.getHeader(HEADER_STRING_REQ) ?: req.getParameter("token")
+        val token = req.getHeader(HEADER_STRING_REQ)?.let {
+            if (it.startsWith(TOKEN_PREFIX)) {
+                it.removePrefix(TOKEN_PREFIX)
+            } else {
+                null
+            }
+        } ?: req.getParameter("token")
+
         if (token == null) {
             chain.doFilter(req, res)
             return
         }
+
         /**
          * Validate the JWT claims. Assuming they are valid, create a JwtAuthenticationToken which
          * will be converted into a proper UsernamePasswordAuthenticationToken by the
@@ -51,7 +59,7 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
          *
          * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
          */
-        val validated = validator.validate(token.replace(TOKEN_PREFIX, ""))
+        val validated = validator.validate(token)
         val authToken = JwtAuthenticationToken(validated.claims, req.getHeader(ORGID_HEADER))
         SecurityContextHolder.getContext().authentication = authToken
 
