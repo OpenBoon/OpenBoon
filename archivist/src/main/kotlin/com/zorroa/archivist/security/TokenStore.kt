@@ -89,7 +89,7 @@ class RedisTokenStore @Autowired constructor(
     }
 
     override fun createSessionToken(userId: UUID): String {
-        val sessionId = "token:" + encodeUUIDBase64(UUID.randomUUID())
+        val sessionId = "token:" + base64UUID(UUID.randomUUID())
         val token = generateUserToken(
             userId, sessionId, userDao.getHmacKey(userId), expireTimeHours = tokenExpireTime
         )
@@ -116,7 +116,7 @@ class RedisTokenStore @Autowired constructor(
     }
 }
 
-fun encodeUUIDBase64(uuid: UUID): String {
+fun base64UUID(uuid: UUID): String {
     val bb = ByteBuffer.wrap(ByteArray(16))
     bb.putLong(uuid.mostSignificantBits)
     bb.putLong(uuid.leastSignificantBits)

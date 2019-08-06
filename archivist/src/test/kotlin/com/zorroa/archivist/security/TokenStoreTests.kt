@@ -16,7 +16,6 @@ class TokenStoreTests : AbstractTest() {
 
     @Test
     fun testcreateSessionToken() {
-
         val user = userService.get("admin")
         val token = tokenStore.createSessionToken(user.id)
 
@@ -41,5 +40,10 @@ class TokenStoreTests : AbstractTest() {
         assertNull(jwt.claims["sessionId"])
         // Must have a userId.
         assertEquals(user.id, UUID.fromString(jwt.claims["userId"]?.asString()))
+    }
+
+    @Test
+    fun testBase64UUID() {
+        assertEquals(22, base64UUID(UUID.randomUUID()).length)
     }
 }
