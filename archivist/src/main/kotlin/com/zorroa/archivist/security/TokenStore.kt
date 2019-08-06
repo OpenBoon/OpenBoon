@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import redis.clients.jedis.JedisPool
 import java.nio.ByteBuffer
+import java.util.Date
 import java.util.UUID
+import java.util.Calendar
+
+
 
 /**
  * A basic interface for dealing with an external JWT token store
@@ -52,12 +56,22 @@ class RedisTokenStore @Autowired constructor(
     private val meterRegistry: MeterRegistry
 ) : TokenStore {
 
-    @Value("\${archivist.security.jwt.expire-time-seconds}")
-    var expireTime: Int = 1200
+    /**
+     * The maximum amount of time a JWT token is valid for.
+     */
+    @Value("\${archivist.security.jwt.token-expire-time-hours}")
+    var tokenExpireTime: Int = 24
+
+    /**
+     * Automatic in activity logout time.  If there are no requests for this
+     * amount of time, the user is automatically logged out.
+     */
+    @Value("\${archivist.security.jwt.session-inactivity-time-seconds}")
+    var sessionExpireTime: Int = 1200
 
     override fun incrementSessionExpirationTime(sessionId: String) {
         jedisPool.resource.use {
-            if (it.expire(sessionId, expireTime) == 0L) {
+            if (it.expire(sessionId, sessionExpireTime) == 0L) {
                 meterRegistry.counter("zorroa.token-store", "action", "invalid-token").increment()
                 throw BadCredentialsException("Invalid token")
             }
@@ -78,7 +92,8 @@ class RedisTokenStore @Autowired constructor(
 
     override fun createSessionToken(userId: UUID): String {
         val sessionId = "token:" + encodeUUIDBase64(UUID.randomUUID())
-        val token = generateUserToken(userId, sessionId, userDao.getHmacKey(userId))
+        val token = generateUserToken(
+            userId, sessionId, userDao.getHmacKey(userId), expireTimeHours = tokenExpireTime)
 
         jedisPool.resource.use {
             if (it.exists(sessionId)) {
@@ -87,14 +102,14 @@ class RedisTokenStore @Autowired constructor(
             }
 
             it.set(sessionId, userId.toString())
-            it.expire(sessionId, expireTime)
+            it.expire(sessionId, sessionExpireTime)
         }
         meterRegistry.counter("zorroa.token-store", "action", "create-token").increment()
         return token
     }
 
     override fun createAPIToken(userId: UUID): String {
-        return generateUserToken(userId, null, userDao.getHmacKey(userId))
+        return generateUserToken(userId, userDao.getHmacKey(userId))
     }
 
     companion object {
@@ -109,13 +124,31 @@ fun encodeUUIDBase64(uuid: UUID): String {
     return StringUtils.trimTrailingCharacter(BaseEncoding.base64Url().encode(bb.array()), '=')
 }
 
-fun generateUserToken(userId: UUID, sessionId: String?, signingKey: String): String {
+/**
+ * Generate a token with a users private key.
+ *
+ * @param userId The UUID of the user.
+ * @param signingKey The users signing key.
+ * @param sessionId An optional session Id.
+ * @param expireTimeHours An optional expire time in days.
+ */
+fun generateUserToken(userId: UUID,
+    signingKey: String,
+    sessionId: String? = null,
+    expireTimeHours: Int? = null): String
+{
     val algo = Algorithm.HMAC256(signingKey)
     val spec = JWT.create().withIssuer("zorroa")
         .withClaim("userId", userId.toString())
     // Setup the session if its not null or empty.
     if (!sessionId.isNullOrEmpty()) {
         spec.withClaim("sessionId", sessionId)
+    }
+    if (expireTimeHours != null) {
+        val c = Calendar.getInstance()
+        c.time = Date()
+        c.add(Calendar.HOUR, expireTimeHours)
+        spec.withExpiresAt(c.time)
     }
     return spec.sign(algo)
 }

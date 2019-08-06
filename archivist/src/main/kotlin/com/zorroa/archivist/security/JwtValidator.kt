@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import java.util.Date
 import java.util.UUID
 import javax.annotation.PostConstruct
 
@@ -108,9 +109,14 @@ class LocalUserJwtValidator @Autowired constructor(val userService: UserService)
     override fun validate(token: String): Map<String, String> {
         try {
             val jwt = JWT.decode(token)
-            val userId = UUID.fromString(jwt.claims.getValue("userId").asString())
 
-            // Validate signing
+            jwt.expiresAt?.let {
+                if (Date() > it) {
+                    throw JwtValidatorException("Failed to validate token")
+                }
+            }
+
+            val userId = UUID.fromString(jwt.claims.getValue("userId").asString())
             val hmacKey = userService.getHmacKey(userId)
             val alg = Algorithm.HMAC256(hmacKey)
             alg.verify(jwt)

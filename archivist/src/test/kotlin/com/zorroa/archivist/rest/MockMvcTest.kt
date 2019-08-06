@@ -112,7 +112,7 @@ abstract class MockMvcTest : AbstractTest() {
      */
     protected fun admin(): HttpHeaders {
         val user = userService.get("admin")
-        val token = generateUserToken(user.id, null, userService.getHmacKey(user.id))
+        val token = generateUserToken(user.id, userService.getHmacKey(user.id))
 
         val headers = HttpHeaders()
         headers.set(JwtSecurityConstants.HEADER_STRING_REQ, "${JwtSecurityConstants.TOKEN_PREFIX}$token")
@@ -121,7 +121,7 @@ abstract class MockMvcTest : AbstractTest() {
 
     protected fun user(): HttpHeaders {
         val user = userService.get("user")
-        val token = generateUserToken(user.id, null, userService.getHmacKey(user.id))
+        val token = generateUserToken(user.id, userService.getHmacKey(user.id))
 
         val headers = HttpHeaders()
         headers.set(JwtSecurityConstants.HEADER_STRING_REQ, "${JwtSecurityConstants.TOKEN_PREFIX}$token")
