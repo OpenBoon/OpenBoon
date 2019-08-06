@@ -91,7 +91,7 @@ class RedisTokenStore @Autowired constructor(
     override fun createSessionToken(userId: UUID): String {
         val sessionId = "token:" + base64UUID(UUID.randomUUID())
         val token = generateUserToken(
-            userId, sessionId, userDao.getHmacKey(userId), expireTimeHours = tokenExpireTime
+            userId, userDao.getHmacKey(userId), sessionId =  sessionId, expireTimeHours = tokenExpireTime
         )
 
         jedisPool.resource.use {
