@@ -7,12 +7,15 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.service.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 import java.util.UUID
 import javax.annotation.PostConstruct
 
+@ResponseStatus(HttpStatus.FORBIDDEN)
 class JwtValidatorException constructor(
     override val message: String,
     override val cause: Throwable?
