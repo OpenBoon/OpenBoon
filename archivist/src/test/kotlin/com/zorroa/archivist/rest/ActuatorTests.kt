@@ -47,7 +47,7 @@ class ActuatorTests : MockMvcTest() {
     @Test
     fun testMetrics() {
         val monUser = userService.get("monitor")
-        val token = generateUserToken(monUser.id, null, userService.getHmacKey(monUser))
+        val token = generateUserToken(monUser.id, userService.getHmacKey(monUser))
         mvc.perform(
             MockMvcRequestBuilders.get("/actuator/metrics")
                 .header("Authorization", "Bearer $token")
