@@ -15,7 +15,8 @@ class TokenStoreTests : AbstractTest() {
     lateinit var tokenStore: TokenStore
 
     @Test
-    fun testCreateSessionToken() {
+    fun testcreateSessionToken() {
+
         val user = userService.get("admin")
         val token = tokenStore.createSessionToken(user.id)
 
