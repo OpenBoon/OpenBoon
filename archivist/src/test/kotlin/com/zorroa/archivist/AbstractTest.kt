@@ -195,19 +195,26 @@ abstract class AbstractTest {
             cleanElastic()
         }
 
+        setupAllUsers()
+
+        Json.Mapper.registerModule(KotlinModule())
+    }
+
+    fun setupAllUsers() {
+
         userService.create(UserSpec(
-                "user",
-                "user",
-                "user@zorroa.com",
-                firstName = "Bob",
-                lastName = "User"))
+            "user",
+            "user",
+            "user@zorroa.com",
+            firstName = "Bob",
+            lastName = "User"))
 
         val manager = userService.create(UserSpec(
-                "librarian",
-                "manager",
-                "librarian@zorroa.com",
-                firstName = "Anne",
-                lastName = "Librarian"))
+            "librarian",
+            "manager",
+            "librarian@zorroa.com",
+            firstName = "Anne",
+            lastName = "Librarian"))
 
         userService.addPermissions(manager, listOf(
             permissionService.getPermission("zorroa::librarian")))
@@ -223,7 +230,18 @@ abstract class AbstractTest {
         userService.addPermissions(editor,
             listOf(permissionService.getPermission(Groups.WRITE)))
 
-        Json.Mapper.registerModule(KotlinModule())
+
+        val orgAdmin = userService.create(UserSpec(
+            "orgadmin",
+            "orgadmin",
+            "orgadmin@zorroa.com",
+            firstName = "Organization",
+            lastName = "Admin"
+        ))
+
+        userService.addPermissions(orgAdmin,
+            listOf(permissionService.getPermission(Groups.ADMIN)))
+
     }
 
     fun authenticateAsAnalyst() {
@@ -270,8 +288,6 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val auth = UsernamePasswordAuthenticationToken("admin", "admin")
-
         val userAuthed = userRegistryService.getUser("admin")
         userAuthed.setAttr("company_id", "25274")
         SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
@@ -283,12 +299,11 @@ abstract class AbstractTest {
 
     fun authenticate(username: String, superUser: Boolean) {
         val authed = userRegistryService.getUser(username)
-        val authorities = Lists.newArrayList(
-                authed.authorities)
+        val authorities = authed.authorities.toMutableList()
 
         if (superUser) {
             authorities.add(
-                    permissionService.getPermission("zorroa::administrator"))
+                    permissionService.getPermission(Groups.ADMIN))
         }
 
         SecurityContextHolder.getContext().authentication =

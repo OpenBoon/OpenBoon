@@ -13,6 +13,7 @@ import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.domain.TaxonomySpec
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -178,14 +179,14 @@ class FolderDaoTests : AbstractTest() {
 
         val pub = folderDao.get(folderDao.getRootFolder().id, "Users", false)
         val startCount = folderDao.getChildren(pub.id).size
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(FolderSpec("level1", pub))
-        val (id1, name1, parentId1, organizationId1, dyhiId1, user1, timeCreated1, timeModified1, recursive1, dyhiRoot1, dyhiField1, childCount1, acl1, search1, taxonomyRoot1, attrs1) = folderDao.create(FolderSpec("level2", pub))
+        folderDao.create(FolderSpec("level1", pub))
+        folderDao.create(FolderSpec("level2", pub))
         val f3 = folderDao.create(FolderSpec("level3", pub))
         folderDao.setAcl(f3.id, Acl().addEntry(
                 permissionService.getPermission(Groups.ADMIN)))
 
         assertFalse(folderDao.hasAccess(f3, Access.Read))
-        assertEquals(7, folderDao.getChildrenInsecure(pub.id).size.toLong())
+        assertEquals(8, folderDao.getChildrenInsecure(pub.id).size.toLong())
         assertEquals((startCount + 2).toLong(), folderDao.getChildren(pub.id).size.toLong())
     }
 
@@ -203,6 +204,32 @@ class FolderDaoTests : AbstractTest() {
         folderDao.setAcl(folder1.id, acl)
 
         assertFalse(folderDao.hasAccess(folder1, Access.Read))
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun testHasAccessViewAllFoldersPermission() {
+        authenticate("user")
+        val builder = FolderSpec("test")
+        val folder1 = folderDao.create(builder)
+
+        val p = permissionService.createPermission(PermissionSpec("group", "foo"))
+        val acl = Acl()
+        acl.addEntry(p, Access.Read)
+        folderDao.setAcl(folder1.id, acl)
+
+        // The org admin will not have access.
+        authenticate("orgadmin")
+        assertFalse(folderDao.hasAccess(folder1, Access.Read))
+
+        // Add Groups.VIEW_ALL_FOLDERS to the org admin
+        val user = userService.get("orgadmin")
+        userService.addPermissions(user,
+            listOf(permissionService.getPermission(Groups.VIEW_ALL_FOLDERS)))
+
+        // Now the org admins has access.
+        authenticate("orgadmin")
+        assertTrue(folderDao.hasAccess(folder1, Access.Read))
     }
 
     @Test
