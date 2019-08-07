@@ -201,33 +201,46 @@ abstract class AbstractTest {
 
     fun setupAllUsers() {
 
-        userService.create(UserSpec(
-            "user",
-            "user",
-            "user@zorroa.com",
-            firstName = "Bob",
-            lastName = "User"))
+        userService.create(
+            UserSpec(
+                "user",
+                "user",
+                "user@zorroa.com",
+                firstName = "Bob",
+                lastName = "User"
+            )
+        )
 
-        val manager = userService.create(UserSpec(
-            "librarian",
-            "manager",
-            "librarian@zorroa.com",
-            firstName = "Anne",
-            lastName = "Librarian"))
+        val manager = userService.create(
+            UserSpec(
+                "librarian",
+                "manager",
+                "librarian@zorroa.com",
+                firstName = "Anne",
+                lastName = "Librarian"
+            )
+        )
 
-        userService.addPermissions(manager, listOf(
-            permissionService.getPermission("zorroa::librarian")))
+        userService.addPermissions(
+            manager, listOf(
+                permissionService.getPermission("zorroa::librarian")
+            )
+        )
 
-        val editor = userService.create(UserSpec(
-            "editor",
-            "editor",
-            "editor@zorroa.com",
-            firstName = "Metadata",
-            lastName = "Editor"
-        ))
+        val editor = userService.create(
+            UserSpec(
+                "editor",
+                "editor",
+                "editor@zorroa.com",
+                firstName = "Metadata",
+                lastName = "Editor"
+            )
+        )
 
-        userService.addPermissions(editor,
-            listOf(permissionService.getPermission(Groups.WRITE)))
+        userService.addPermissions(
+            editor,
+            listOf(permissionService.getPermission(Groups.WRITE))
+        )
 
         val orgAdmin = userService.create(
             UserSpec(
@@ -239,9 +252,10 @@ abstract class AbstractTest {
             )
         )
 
-        userService.addPermissions(orgAdmin,
-            listOf(permissionService.getPermission(Groups.ADMIN)))
-
+        userService.addPermissions(
+            orgAdmin,
+            listOf(permissionService.getPermission(Groups.ADMIN))
+        )
     }
 
     fun authenticateAsAnalyst() {
@@ -250,11 +264,12 @@ abstract class AbstractTest {
 
     fun testUserSpec(name: String = "test"): UserSpec {
         return UserSpec(
-                name,
-                "test",
-                "$name@zorroa.com",
-                firstName = "mr",
-                lastName = "test")
+            name,
+            "test",
+            "$name@zorroa.com",
+            firstName = "mr",
+            lastName = "test"
+        )
     }
 
     fun cleanElastic() {
@@ -284,6 +299,7 @@ abstract class AbstractTest {
         fieldSystemService.setupDefaultFields(org)
         fieldSystemService.setupDefaultFieldSets(org)
     }
+
     /**
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
@@ -303,11 +319,12 @@ abstract class AbstractTest {
 
         if (superUser) {
             authorities.add(
-                    permissionService.getPermission(Groups.ADMIN))
+                permissionService.getPermission(Groups.ADMIN)
+            )
         }
 
         SecurityContextHolder.getContext().authentication =
-                authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
+            authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
     }
 
     fun logout() {
@@ -370,7 +387,8 @@ abstract class AbstractTest {
     fun addWritePermissionToTestAssets() {
         val perm = permissionService.getPermission(Groups.WRITE)
         assetService.setPermissions(
-            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 2)))
+            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 2))
+        )
     }
 
     fun addTestVideoAssets() {
@@ -411,9 +429,12 @@ abstract class AbstractTest {
         for (source in builders) {
 
             logger.info("Adding test asset: {}", source.path.toString())
-            source.setAttr("source.keywords", ImmutableList.of(
+            source.setAttr(
+                "source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
-                    source.sourceSchema.extension))
+                    source.sourceSchema.extension
+                )
+            )
 
             val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
 
