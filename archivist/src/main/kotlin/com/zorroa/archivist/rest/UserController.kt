@@ -321,7 +321,8 @@ class UserController @Autowired constructor(
     @ApiOperation("Delete a user")
     @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
     @DeleteMapping(value = ["/api/v1/users/{id}"])
-    fun delete(@ApiParam("UUID of the User.") @PathVariable id: UUID
+    fun delete(
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
     ): Any {
         val user = userService.get(id)
         return HttpUtils.status(

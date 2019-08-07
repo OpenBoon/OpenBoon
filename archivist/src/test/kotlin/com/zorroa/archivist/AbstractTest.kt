@@ -45,7 +45,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
@@ -230,14 +229,15 @@ abstract class AbstractTest {
         userService.addPermissions(editor,
             listOf(permissionService.getPermission(Groups.WRITE)))
 
-
-        val orgAdmin = userService.create(UserSpec(
-            "orgadmin",
-            "orgadmin",
-            "orgadmin@zorroa.com",
-            firstName = "Organization",
-            lastName = "Admin"
-        ))
+        val orgAdmin = userService.create(
+            UserSpec(
+                "orgadmin",
+                "orgadmin",
+                "orgadmin@zorroa.com",
+                firstName = "Organization",
+                lastName = "Admin"
+            )
+        )
 
         userService.addPermissions(orgAdmin,
             listOf(permissionService.getPermission(Groups.ADMIN)))
