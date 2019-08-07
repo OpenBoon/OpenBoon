@@ -38,6 +38,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -314,6 +315,18 @@ class UserController @Autowired constructor(
         return HttpUtils.status(
             "users", id, "enable",
             userService.setEnabled(user, settings.getValue("enabled"))
+        )
+    }
+
+    @ApiOperation("Delete a user")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @DeleteMapping(value = ["/api/v1/users/{id}"])
+    fun delete(
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): Any {
+        val user = userService.get(id)
+        return HttpUtils.status(
+            "users", id, "delete", userService.delete(user)
         )
     }
 

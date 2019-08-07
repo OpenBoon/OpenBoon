@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.test.context.web.WebAppConfiguration
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -354,7 +355,6 @@ class UserControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testDisableSelf() {
-        val session = admin()
         mvc.perform(
             put("/api/v1/users/1/_enabled")
                 .content(Json.serialize(ImmutableMap.of("enabled", false)))
@@ -364,6 +364,21 @@ class UserControllerTests : MockMvcTest() {
         )
             .andExpect(status().is4xxClientError())
             .andReturn()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testDelete() {
+        val user = userService.get("user")
+        mvc.perform(
+            delete("/api/v1/users/${user.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
+
+        assertFalse(userService.exists("user", "local"))
     }
 
     @Test

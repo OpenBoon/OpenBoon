@@ -135,8 +135,8 @@ fun hasPermission(permIds: Set<UUID>?): Boolean {
     } else intersection<UUID>(permIds, getPermissionIds()).isNotEmpty()
 }
 
-fun hasPermission(vararg perms: String): Boolean {
-    return hasPermission(perms.toSet())
+fun hasPermission(vararg perms: String, adminOverride: Boolean = true): Boolean {
+    return hasPermission(perms.toSet(), adminOverride)
 }
 
 private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
@@ -146,14 +146,14 @@ private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
 private fun containsSuperadmin(it: Collection<GrantedAuthority>) =
     it.any { it.authority == Groups.SUPERADMIN }
 
-fun hasPermission(perms: Collection<String>): Boolean {
+fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boolean {
     val auth = SecurityContextHolder.getContext().authentication
     auth?.authorities?.let { authorities ->
         if (containsSuperadmin(authorities)) {
             return true
         } else if (!containsOnlySuperadmin(perms)) {
             for (g in authorities) {
-                if (g.authority == Groups.ADMIN || perms.contains(g.authority)) {
+                if ((adminOverride && g.authority == Groups.ADMIN) || perms.contains(g.authority)) {
                     return true
                 }
             }
@@ -194,12 +194,12 @@ fun hasPermission(acl: Acl?, access: Access): Boolean {
 
 fun getPermissionIds(): Set<UUID> {
     val result = Sets.newHashSet<UUID>()
+
     for (g in SecurityContextHolder.getContext().authentication.authorities) {
         try {
             val p = g as Permission
             result.add(p.id)
         } catch (e: ClassCastException) {
-            // ignore
         }
     }
     return result

@@ -45,7 +45,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
@@ -195,35 +194,68 @@ abstract class AbstractTest {
             cleanElastic()
         }
 
-        userService.create(UserSpec(
+        setupAllUsers()
+
+        Json.Mapper.registerModule(KotlinModule())
+    }
+
+    fun setupAllUsers() {
+
+        userService.create(
+            UserSpec(
                 "user",
                 "user",
                 "user@zorroa.com",
                 firstName = "Bob",
-                lastName = "User"))
+                lastName = "User"
+            )
+        )
 
-        val manager = userService.create(UserSpec(
+        val manager = userService.create(
+            UserSpec(
                 "librarian",
                 "manager",
                 "librarian@zorroa.com",
                 firstName = "Anne",
-                lastName = "Librarian"))
+                lastName = "Librarian"
+            )
+        )
 
-        userService.addPermissions(manager, listOf(
-            permissionService.getPermission("zorroa::librarian")))
+        userService.addPermissions(
+            manager, listOf(
+                permissionService.getPermission("zorroa::librarian")
+            )
+        )
 
-        val editor = userService.create(UserSpec(
-            "editor",
-            "editor",
-            "editor@zorroa.com",
-            firstName = "Metadata",
-            lastName = "Editor"
-        ))
+        val editor = userService.create(
+            UserSpec(
+                "editor",
+                "editor",
+                "editor@zorroa.com",
+                firstName = "Metadata",
+                lastName = "Editor"
+            )
+        )
 
-        userService.addPermissions(editor,
-            listOf(permissionService.getPermission(Groups.WRITE)))
+        userService.addPermissions(
+            editor,
+            listOf(permissionService.getPermission(Groups.WRITE))
+        )
 
-        Json.Mapper.registerModule(KotlinModule())
+        val orgAdmin = userService.create(
+            UserSpec(
+                "orgadmin",
+                "orgadmin",
+                "orgadmin@zorroa.com",
+                firstName = "Organization",
+                lastName = "Admin"
+            )
+        )
+
+        userService.addPermissions(
+            orgAdmin,
+            listOf(permissionService.getPermission(Groups.ADMIN))
+        )
     }
 
     fun authenticateAsAnalyst() {
@@ -232,11 +264,12 @@ abstract class AbstractTest {
 
     fun testUserSpec(name: String = "test"): UserSpec {
         return UserSpec(
-                name,
-                "test",
-                "$name@zorroa.com",
-                firstName = "mr",
-                lastName = "test")
+            name,
+            "test",
+            "$name@zorroa.com",
+            firstName = "mr",
+            lastName = "test"
+        )
     }
 
     fun cleanElastic() {
@@ -266,12 +299,11 @@ abstract class AbstractTest {
         fieldSystemService.setupDefaultFields(org)
         fieldSystemService.setupDefaultFieldSets(org)
     }
+
     /**
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val auth = UsernamePasswordAuthenticationToken("admin", "admin")
-
         val userAuthed = userRegistryService.getUser("admin")
         userAuthed.setAttr("company_id", "25274")
         SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
@@ -283,16 +315,16 @@ abstract class AbstractTest {
 
     fun authenticate(username: String, superUser: Boolean) {
         val authed = userRegistryService.getUser(username)
-        val authorities = Lists.newArrayList(
-                authed.authorities)
+        val authorities = authed.authorities.toMutableList()
 
         if (superUser) {
             authorities.add(
-                    permissionService.getPermission("zorroa::administrator"))
+                permissionService.getPermission(Groups.ADMIN)
+            )
         }
 
         SecurityContextHolder.getContext().authentication =
-                authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
+            authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
     }
 
     fun logout() {
@@ -355,7 +387,8 @@ abstract class AbstractTest {
     fun addWritePermissionToTestAssets() {
         val perm = permissionService.getPermission(Groups.WRITE)
         assetService.setPermissions(
-            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 2)))
+            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 2))
+        )
     }
 
     fun addTestVideoAssets() {
@@ -396,9 +429,12 @@ abstract class AbstractTest {
         for (source in builders) {
 
             logger.info("Adding test asset: {}", source.path.toString())
-            source.setAttr("source.keywords", ImmutableList.of(
+            source.setAttr(
+                "source.keywords", ImmutableList.of(
                     source.sourceSchema.filename,
-                    source.sourceSchema.extension))
+                    source.sourceSchema.extension
+                )
+            )
 
             val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
 

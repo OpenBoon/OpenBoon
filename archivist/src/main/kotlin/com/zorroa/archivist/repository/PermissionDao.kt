@@ -61,7 +61,11 @@ interface PermissionDao {
 
     fun getAll(names: List<String>?): List<Permission>
 
-    fun delete(perm: Permission): Boolean
+    /**
+     * Delete the given permission.  Optionally force deleting a system permission
+     * that users would not otherwise be abl to delete.
+     */
+    fun delete(perm: Permission, force: Boolean = false): Boolean
 
     fun getDefaultPermissionSchema(): PermissionSchema
 }
@@ -80,17 +84,20 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 ps.setString(3, spec.name)
                 ps.setString(4, spec.type)
                 ps.setString(5, spec.type + "::" + spec.name)
-                ps.setString(6, if (spec.description == null)
-                    String.format("%s permission", spec.name)
-                else
-                    spec.description)
+                ps.setString(
+                    6, if (spec.description == null)
+                        String.format("%s permission", spec.name)
+                    else
+                        spec.description
+                )
                 ps.setString(7, spec.source)
                 ps.setBoolean(8, immutable)
                 ps
             }
             logger.event(
                 LogObject.PERMISSION, LogAction.CREATE,
-                    mapOf("permissionId" to id, "permissionName" to spec.name))
+                mapOf("permissionId" to id, "permissionName" to spec.name)
+            )
         } catch (e: DuplicateKeyException) {
             throw DuplicateKeyException("The permission " + spec.name + " already exists")
         }
@@ -100,21 +107,27 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
 
     override fun update(permission: PermissionUpdateSpec): Permission {
         val authority = arrayOf(permission.type, permission.name).joinToString(Permission.JOIN)
-        jdbc.update("UPDATE permission SET str_type=?, str_name=?,str_description=?,str_authority=? WHERE pk_organization=? AND pk_permission=? AND bool_immutable=?",
-                permission.type, permission.name, permission.description, authority, getOrgId(), permission.id, false)
+        jdbc.update(
+            "UPDATE permission SET str_type=?, str_name=?,str_description=?,str_authority=? WHERE pk_organization=? AND pk_permission=? AND bool_immutable=?",
+            permission.type, permission.name, permission.description, authority, getOrgId(), permission.id, false
+        )
         return get(permission.id)
     }
 
     override fun renameUserPermission(user: User, newName: String): Boolean {
-        return jdbc.update("UPDATE permission SET str_name=?, str_authority=? WHERE pk_organization=? AND pk_permission=?",
-                newName, "user::$newName", getOrgId(), user.permissionId) == 1
+        return jdbc.update(
+            "UPDATE permission SET str_name=?, str_authority=? WHERE pk_organization=? AND pk_permission=?",
+            newName, "user::$newName", getOrgId(), user.permissionId
+        ) == 1
     }
 
     override operator fun get(id: UUID): Permission {
         val orgId = getOrgId()
         return throwWhenNotFound("Permission '$id' was not found for '$orgId'") {
-            jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND pk_permission=?",
-                    MAPPER, orgId, id)
+            jdbc.queryForObject(
+                "SELECT * FROM permission WHERE pk_organization=? AND pk_permission=?",
+                MAPPER, orgId, id
+            )
         }
     }
 
@@ -133,16 +146,20 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         }
         val orgId = getOrgId()
         return throwWhenNotFound("Permission '$name' was not found for org: $orgId") {
-            return jdbc.queryForObject("SELECT pk_permission FROM permission WHERE pk_organization=? AND str_authority=?",
-                    UUID::class.java, orgId, name)
+            return jdbc.queryForObject(
+                "SELECT pk_permission FROM permission WHERE pk_organization=? AND str_authority=?",
+                UUID::class.java, orgId, name
+            )
         }
     }
 
     override fun get(type: String, name: String): Permission {
         val orgId = getOrgId()
         return throwWhenNotFound("Permission '$type::$name' was not found for org: '$orgId'") {
-            jdbc.queryForObject("SELECT * FROM permission WHERE pk_organization=? AND str_name=? AND str_type=?",
-                    MAPPER, orgId, name, type)
+            jdbc.queryForObject(
+                "SELECT * FROM permission WHERE pk_organization=? AND str_name=? AND str_type=?",
+                MAPPER, orgId, name, type
+            )
         }
     }
 
@@ -168,7 +185,8 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 } catch (e: EmptyResultDataAccessException) {
                     if (createMissing) {
                         create(PermissionSpec(entry.permission)
-                                .apply { description = "Auto created permission" }, false).id
+                            .apply { description = "Auto created permission" }, false
+                        ).id
                     } else {
                         throw e
                     }
@@ -202,13 +220,17 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override fun count(filter: PermissionFilter): Long {
-        return jdbc.queryForObject(filter.getQuery(COUNT, forCount = true),
-                Long::class.java, *filter.getValues(forCount = true))
+        return jdbc.queryForObject(
+            filter.getQuery(COUNT, forCount = true),
+            Long::class.java, *filter.getValues(forCount = true)
+        )
     }
 
     override fun exists(name: String): Boolean {
-        return jdbc.queryForObject("$COUNT WHERE pk_organization=? AND str_authority=?",
-                Int::class.java, getOrgId(), name) == 1
+        return jdbc.queryForObject(
+            "$COUNT WHERE pk_organization=? AND str_authority=?",
+            Int::class.java, getOrgId(), name
+        ) == 1
     }
 
     override fun getAll(user: UserId): List<Permission> {
@@ -216,8 +238,10 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override fun getAll(type: String): List<Permission> {
-        return jdbc.query("SELECT * FROM permission WHERE pk_organization=? AND str_type=?",
-                MAPPER, getOrgId(), type)
+        return jdbc.query(
+            "SELECT * FROM permission WHERE pk_organization=? AND str_type=?",
+            MAPPER, getOrgId(), type
+        )
     }
 
     override fun getAll(ids: Collection<UUID>?): List<Permission> {
@@ -225,9 +249,11 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
             listOf()
         } else {
             val values = ids.toTypedArray().plus(getOrgId())
-            jdbc.query("SELECT * FROM permission WHERE " +
+            jdbc.query(
+                "SELECT * FROM permission WHERE " +
                     JdbcUtils.`in`("pk_permission", ids.size) + " AND pk_organization=?", MAPPER,
-                    *values)
+                *values
+            )
         }
     }
 
@@ -238,17 +264,25 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
             val values: MutableList<Any> = mutableListOf()
             names.toCollection(values)
             values.add(getOrgId())
-            jdbc.query("SELECT * FROM permission WHERE " + JdbcUtils.`in`("str_authority", names.size) +
-                    "AND pk_organization=?", MAPPER, *values.toTypedArray())
+            jdbc.query(
+                "SELECT * FROM permission WHERE " + JdbcUtils.`in`("str_authority", names.size) +
+                    "AND pk_organization=?", MAPPER, *values.toTypedArray()
+            )
         }
     }
 
-    override fun delete(perm: Permission): Boolean {
-        /*
-         * Ensure immutable permissions cannot be deleted.
-         */
-        return jdbc.update("DELETE FROM permission WHERE pk_organization=? AND pk_permission=? AND bool_immutable=?",
-                getOrgId(), perm.id, false) == 1
+    override fun delete(perm: Permission, force: Boolean): Boolean {
+        return if (force) {
+            jdbc.update(
+                "DELETE FROM permission WHERE pk_organization=? AND pk_permission=?",
+                getOrgId(), perm.id
+            )
+        } else {
+            jdbc.update(
+                "DELETE FROM permission WHERE pk_organization=? AND pk_permission=? AND bool_immutable=?",
+                getOrgId(), perm.id, force
+            )
+        } == 1
     }
 
     /**
@@ -267,23 +301,26 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
 
     companion object {
 
-        private val INSERT = JdbcUtils.insert("permission",
-                "pk_permission",
-                "pk_organization",
-                "str_name",
-                "str_type",
-                "str_authority",
-                "str_description",
-                "str_source",
-                "bool_immutable")
+        private val INSERT = JdbcUtils.insert(
+            "permission",
+            "pk_permission",
+            "pk_organization",
+            "str_name",
+            "str_type",
+            "str_authority",
+            "str_description",
+            "str_source",
+            "bool_immutable"
+        )
 
         private val MAPPER = RowMapper { rs, _ ->
             Permission(
-                    rs.getObject("pk_permission") as UUID,
-                    rs.getString("str_name"),
-                    rs.getString("str_type"),
-                    rs.getString("str_description"),
-                    rs.getBoolean("bool_immutable"))
+                rs.getObject("pk_permission") as UUID,
+                rs.getString("str_name"),
+                rs.getString("str_type"),
+                rs.getString("str_description"),
+                rs.getBoolean("bool_immutable")
+            )
         }
 
         private const val COUNT = "SELECT COUNT(1) FROM permission"
@@ -291,12 +328,12 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         private const val GET = "SELECT * FROM permission "
 
         private const val GET_BY_USER = "SELECT p.* " +
-                "FROM " +
-                "permission p, " +
-                "user_permission m " +
-                "WHERE " +
-                "p.pk_permission=m.pk_permission " +
-                "AND " +
-                "m.pk_user=?"
+            "FROM " +
+            "permission p, " +
+            "user_permission m " +
+            "WHERE " +
+            "p.pk_permission=m.pk_permission " +
+            "AND " +
+            "m.pk_user=?"
     }
 }

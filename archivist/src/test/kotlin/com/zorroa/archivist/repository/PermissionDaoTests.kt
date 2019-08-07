@@ -214,7 +214,7 @@ class PermissionDaoTests : AbstractTest() {
     fun testGetAllByType() {
         val perms = permissionDao.getAll("user")
         logger.info(Json.prettyString(perms))
-        assertEquals(5, perms.size)
+        assertEquals(6, perms.size)
     }
 
     @Test

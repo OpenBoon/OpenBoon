@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.LocalUserSpec
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.User
@@ -304,5 +305,26 @@ class UserServiceTests : AbstractTest() {
 
         userService.setAuthAttrs(testUser, attrs = emptyMap())
         Assertions.assertThat(userService.get(testUser.id).attrs).isEmpty()
+    }
+
+    @Test
+    fun testDeleteUser() {
+        val user = userService.create(UserSpec(
+            "spock",
+            "spock",
+            "spock@zorroa.com",
+            firstName = "Spock",
+            lastName = "Kirk"
+        ))
+
+        val hf = folderService.get(user.homeFolderId)
+        val folder1 = folderService.create(FolderSpec("bilbo", hf.id))
+        folderService.create(FolderSpec("gandalf", folder1.id))
+
+        logger.info("{}", userService.getPermissions(user))
+
+        assertTrue(userService.delete(user))
+        assertTrue(userService.getPermissions(user).isEmpty())
+        assertTrue(folderService.getAll(listOf(hf.id)).isEmpty())
     }
 }
