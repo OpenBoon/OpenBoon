@@ -1,5 +1,7 @@
 package com.zorroa.archivist.security
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserRegistryService
@@ -11,6 +13,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 /**
  * External validators must provide a response in the following format.
@@ -35,18 +38,36 @@ class HttpExternalJwtValidator constructor(
 
     val rest: RestTemplate = RestTemplate(HttpComponentsClientHttpRequestFactory())
 
+    /**
+     * Cache the results for a very short amount of time. The token conversion endpoint
+     * can be slow depending on how its been implemented.
+     */
+    private val cache = CacheBuilder.newBuilder()
+        .initialCapacity(1024)
+        .concurrencyLevel(8)
+        .expireAfterWrite(5, TimeUnit.SECONDS)
+        .build(object : CacheLoader<String, Map<String, String>>() {
+            @Throws(Exception::class)
+            override fun load(token: String): Map<String, String> {
+                val req = RequestEntity.get(validateUri)
+                    .header(JwtSecurityConstants.HEADER_STRING_REQ, JwtSecurityConstants.TOKEN_PREFIX + token)
+                    .accept(MediaType.APPLICATION_JSON).build()
+                return rest.exchange(req, responseType).body
+            }
+        })
+
     override fun validate(token: String): Map<String, String> {
-        val req = RequestEntity.get(validateUri)
-            .header(JwtSecurityConstants.HEADER_STRING_REQ, JwtSecurityConstants.TOKEN_PREFIX + token)
-            .accept(MediaType.APPLICATION_JSON).build()
-        return rest.exchange(req, responseType).body
+        try {
+            return cache.get(token)
+        } catch (e: Exception) {
+            throw JwtValidatorException("Invalid token")
+        }
     }
 
     override fun provisionUser(claims: Map<String, String>): UserAuthed? {
 
-        // These things have to exist, they cannot be null.
         val userId = claims.getValue("userId")
-        val username = claims.getValue("username")
+        val username = claims.getOrDefault("username", userId)
         val organizationId = claims.getValue("organizationId")
 
         val source = AuthSource(
@@ -62,12 +83,10 @@ class HttpExternalJwtValidator constructor(
     companion object {
 
         /**
-         * The name of the auth-source is not good, should be IRM but at this point
-         * we can't go back.
-         */
+         * The name of the auth-source cannot be changed.
+         ***/
         const val AUTH_SOURCE = "Jwt"
 
-        private val logger =
-            LoggerFactory.getLogger(ExternalJwtValidator::class.java)
+        private val logger = LoggerFactory.getLogger(ExternalJwtValidator::class.java)
     }
 }
