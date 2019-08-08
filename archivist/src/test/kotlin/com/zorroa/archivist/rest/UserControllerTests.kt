@@ -40,12 +40,19 @@ import kotlin.test.assertTrue
 class UserControllerTests : MockMvcTest() {
 
     @Test
-    @Throws(Exception::class)
     fun testLogin() {
         mvc.perform(
             post("/api/v1/login")
                 .with(httpBasic("admin", "admin"))
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    fun testLogoutWithInvalidToken() {
+        mvc.perform(
+            post("/api/v1/logout?token=abc")
         )
             .andExpect(status().isOk)
     }

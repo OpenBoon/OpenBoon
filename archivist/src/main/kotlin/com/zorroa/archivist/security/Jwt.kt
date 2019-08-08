@@ -32,6 +32,13 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
     @Autowired
     private lateinit var validator: MasterJwtValidator
 
+    /**
+     * Paths to exclude from JWT validation exceptions.  If validation
+     * fails then then there is just no authentication but the request
+     * continues.
+     */
+    private val excludePaths = setOf("/api/v1/logout")
+
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
         req: HttpServletRequest,
@@ -46,7 +53,6 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
                 null
             }
         } ?: req.getParameter("token")
-
         if (token == null) {
             chain.doFilter(req, res)
             return
@@ -56,15 +62,25 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
          * Validate the JWT claims. Assuming they are valid, create a JwtAuthenticationToken which
          * will be converted into a proper UsernamePasswordAuthenticationToken by the
          * JwtAuthenticationProvider
-         *
-         * Not doing this 2 step process means the actuator endpoints can't be authed by a token.
          */
-        val validated = validator.validate(token)
-        val authToken = JwtAuthenticationToken(validated.claims, req.getHeader(ORGID_HEADER))
-        SecurityContextHolder.getContext().authentication = authToken
 
-        req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
-        res.addHeader(HEADER_STRING_RSP, token)
+        val doSessionValidaton = req.requestURI !in excludePaths
+
+        try {
+            val validated = validator.validate(token)
+            val authToken = JwtAuthenticationToken(
+                validated.claims, req.getHeader(ORGID_HEADER),
+                doSessionValidaton
+            )
+
+            req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
+            res.addHeader(HEADER_STRING_RSP, token)
+            SecurityContextHolder.getContext().authentication = authToken
+        } catch (e: JwtValidatorException) {
+            if (doSessionValidaton) {
+                throw e
+            }
+        }
         chain.doFilter(req, res)
     }
 }
@@ -78,7 +94,8 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
  */
 class JwtAuthenticationToken constructor(
     claims: Map<String, String>,
-    val organizationId: String? = null
+    val organizationId: String? = null,
+    val doSessionValidation: Boolean = true
 ) : AbstractAuthenticationToken(listOf()) {
 
     val userId = claims.getValue("userId")
@@ -127,7 +144,7 @@ class JwtAuthenticationProvider : AuthenticationProvider {
         )
 
         // Increment expire time if the token is still active.
-        if (!token.sessionId.isNullOrEmpty()) {
+        if (!token.sessionId.isNullOrEmpty() && token.doSessionValidation) {
             tokenStore.incrementSessionExpirationTime(token.sessionId)
         }
 

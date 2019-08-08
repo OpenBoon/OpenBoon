@@ -97,7 +97,7 @@ class RedisTokenStore @Autowired constructor(
         jedisPool.resource.use {
             if (it.exists(sessionId)) {
                 meterRegistry.counter("zorroa.token-store", "action", "token-collision").increment()
-                throw IllegalStateException("Invalid token")
+                throw BadCredentialsException("Invalid token")
             }
 
             it.set(sessionId, userId.toString())
