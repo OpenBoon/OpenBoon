@@ -107,11 +107,10 @@ interface FileServerProvider {
 
     fun getStorageUri(doc: Document): URI {
         val stream: String = doc.getAttr("source.path") ?: throw IllegalStateException("${doc.id} has no source.path")
-
         return if (stream.contains(":/")) {
             URI(UrlEscapers.urlFragmentEscaper().escape(stream))
         } else {
-            URI("file://$stream")
+            URI(UrlEscapers.urlFragmentEscaper().escape("file://$stream"))
         }
     }
 

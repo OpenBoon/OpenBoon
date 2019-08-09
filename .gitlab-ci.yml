@@ -35,14 +35,14 @@ build_artifacts:
       - archivist/ext/*.jar
 
 push_to_local_registry:
-  image: docker:stable
+  image: docker:18.09.8-dind
   stage: pretest
   only:
     - merge_requests
     - development
   retry: 2
   services:
-    - docker:dind
+    - docker:18.09.8-dind
   script:
     - cd elasticsearch
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
@@ -91,9 +91,9 @@ docker_hub_push:
   retry: 2
   only:
     - development
-  image: docker:stable
+  image: docker:18.09.8-dind
   services:
-    - docker:dind
+    - docker:18.09.8-dind
   script:
     - cd archivist
     - docker build --pull -t $DOCKERHUB_IMAGE_ARCHIVIST .
