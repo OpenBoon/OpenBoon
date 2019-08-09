@@ -62,6 +62,8 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                 .antMatcher("/api/**/login")
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and().headers().frameOptions().disable()
