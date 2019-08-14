@@ -73,27 +73,6 @@ class FolderServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testSetAssets() {
-
-        val folders = Lists.newArrayList<UUID>()
-        for (i in 0..9) {
-            val builder = FolderSpec("Folder$i")
-            val (id) = folderService.create(builder)
-            folders.add(id)
-        }
-
-        val assets = indexService.getAll(Pager.first(1)).list
-        assertEquals(1, assets.size.toLong())
-        var doc = assets[0]
-
-        folderService.setFoldersForAsset(doc.id, folders)
-        refreshIndex()
-
-        doc = indexService.get(doc.id)
-        assertEquals(10, doc.getAttr("system.links.folder", List::class.java)!!.size.toLong())
-    }
-
-    @Test
     fun testAddAssetToFolder() {
 
         val builder = FolderSpec("Folder")

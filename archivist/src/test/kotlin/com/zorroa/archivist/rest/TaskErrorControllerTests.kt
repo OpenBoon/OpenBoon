@@ -55,7 +55,7 @@ class TaskErrorControllerTests : MockMvcTest() {
         val filter = TaskErrorFilter(processors = listOf("com.zorroa.OfficeIngestor"))
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/taskerrors/_search")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter)))

@@ -96,6 +96,8 @@ class Permission constructor (
         return id.hashCode()
     }
 
+    override fun toString() = authority
+
     companion object {
         /**
          * A string for joining together the type + name

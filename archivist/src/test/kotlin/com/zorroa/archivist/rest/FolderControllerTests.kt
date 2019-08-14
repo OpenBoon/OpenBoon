@@ -13,7 +13,6 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.mock.web.MockHttpSession
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -28,14 +27,9 @@ import kotlin.test.assertTrue
 class FolderControllerTests : MockMvcTest() {
 
     @Autowired
-    internal lateinit var folderController: FolderController
-
-    @Autowired
     internal lateinit var assetDao: IndexDao
 
     internal lateinit var folder: Folder
-
-    internal lateinit var session: MockHttpSession
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -44,39 +38,42 @@ class FolderControllerTests : MockMvcTest() {
     @Before
     @Throws(Exception::class)
     fun init() {
-        session = admin()
 
         val spec = FolderSpec("TestFolder1")
         val s = Json.prettyString(spec)
         logger.info(s)
         val spec2 = Json.deserialize(s, FolderSpec::class.java)
 
-        val result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+        val result = mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("TestFolder1"))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("TestFolder1")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         folder = Json.Mapper.readValue(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
     }
 
     @Test
     @Throws(Exception::class)
     fun testCreate() {
-        val result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+        val result = mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("TestFolder2"))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("TestFolder2")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val (_, name) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
         assertEquals("TestFolder2", name)
     }
 
@@ -84,14 +81,16 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetRoot() {
 
-        val result = mvc.perform(get("/api/v1/folders/_root")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+        val result = mvc.perform(
+            get("/api/v1/folders/_root")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val folder = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
         assertEquals(null, folder.parentId)
         assertEquals("/", folder.name)
@@ -100,14 +99,16 @@ class FolderControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testGet() {
-        val result = mvc.perform(get("/api/v1/folders/" + folder.id)
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+        val result = mvc.perform(
+            get("/api/v1/folders/" + folder.id)
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val (id, name, parentId, _, _, user) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
         assertEquals(folder.id, id)
         assertEquals(folder.parentId, parentId)
@@ -118,14 +119,16 @@ class FolderControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testGetByPath() {
-        val result = mvc.perform(get("/api/v1/folders/_path/Users")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+        val result = mvc.perform(
+            get("/api/v1/folders/_path/Users")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val (_, name, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
         assertEquals("Users", name)
         // assertEquals(getRootFolderId(), parentId)
@@ -136,15 +139,17 @@ class FolderControllerTests : MockMvcTest() {
     fun testGetByPathV2() {
         authenticate("admin")
         folderService.create(FolderSpec("  foo  "))
-        val result = mvc.perform(get("/api/v2/folders/_getByPath")
-                .session(session)
+        val result = mvc.perform(
+            get("/api/v2/folders/_getByPath")
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(ImmutableMap.of("path", "/  foo  "))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(ImmutableMap.of("path", "/  foo  ")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val (_, name, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
         assertEquals("  foo  ", name)
         // assertEquals(getRootFolderId(), parentId)
@@ -153,12 +158,14 @@ class FolderControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testExistsByPathV2() {
-        val result = mvc.perform(get("/api/v2/folders/_existsByPath")
-                .session(session)
+        val result = mvc.perform(
+            get("/api/v2/folders/_existsByPath")
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(ImmutableMap.of("path", "/Users"))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(ImmutableMap.of("path", "/Users")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val rs = deserialize(result, MockMvcTest.StatusResult::class.java)
         assertTrue(rs.success)
@@ -167,11 +174,13 @@ class FolderControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testExitsByPath() {
-        val result = mvc.perform(get("/api/v1/folders/_exists/Users")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+        val result = mvc.perform(
+            get("/api/v1/folders/_exists/Users")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val rs = deserialize(result, MockMvcTest.StatusResult::class.java)
         assertTrue(rs.success)
     }
@@ -179,11 +188,13 @@ class FolderControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testExitsByPathFailure() {
-        val result = mvc.perform(get("/api/v1/folders/_exists/blah")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+        val result = mvc.perform(
+            get("/api/v1/folders/_exists/blah")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val rs = deserialize(result, MockMvcTest.StatusResult::class.java)
         assertFalse(rs.success)
     }
@@ -191,15 +202,17 @@ class FolderControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testGetAll() {
-        val result = mvc.perform(get("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+        val result = mvc.perform(
+            get("/api/v1/folders")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val folders = Json.Mapper.readValue<List<Folder>>(result.response.contentAsString,
-                object : TypeReference<List<Folder>>() {
-                })
+            object : TypeReference<List<Folder>>() {
+            })
         assertTrue(folders.contains(folder))
     }
 
@@ -207,33 +220,37 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testUpdate() {
 
-        var result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+        var result = mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("TestFolder3"))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("TestFolder3")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val createdFolder = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
         val req = Json.Mapper.convertValue<Map<String, Any>>(createdFolder, Json.GENERIC_MAP)
 
         val up = FolderUpdate(createdFolder)
         up.attrs = ImmutableMap.of("a", "b")
 
-        result = mvc.perform(put("/api/v1/folders/" + createdFolder.id)
-                .session(session)
+        result = mvc.perform(
+            put("/api/v1/folders/" + createdFolder.id)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(createdFolder)))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serializeToString(createdFolder))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val (_, name, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
         assertEquals(createdFolder.name, name)
         assertEquals(folder.parentId, parentId)
     }
@@ -242,41 +259,49 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testDelete() {
 
-        mvc.perform(post("/api/v1/folders")
-                .session(session)
+        mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("first"))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("first")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
-        var result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+        var result = mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("second"))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("second")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val (id) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
-        mvc.perform(delete("/api/v1/folders/$id")
-                .session(session)
+        mvc.perform(
+            delete("/api/v1/folders/$id")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
-        result = mvc.perform(get("/api/v1/folders")
-                .session(session))
-                .andExpect(status().isOk())
-                .andReturn()
+        result = mvc.perform(
+            get("/api/v1/folders")
+                .headers(admin())
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val folders = Json.Mapper.readValue<List<Folder>>(result.response.contentAsString,
-                object : TypeReference<List<Folder>>() {
-                })
+            object : TypeReference<List<Folder>>() {
+            })
 
         val names = folders.stream().map<String>({ it.name }).collect(Collectors.toSet())
 
@@ -289,47 +314,55 @@ class FolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testChildren() {
 
-        var result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+        var result = mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("grandpa"))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("grandpa")))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val grandpa = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
-        result = mvc.perform(post("/api/v1/folders")
-                .session(session)
+        result = mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("daddy", grandpa))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("daddy", grandpa)))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val dad = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
-        mvc.perform(post("/api/v1/folders")
-                .session(session)
+        mvc.perform(
+            post("/api/v1/folders")
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(FolderSpec("uncly", grandpa))))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(FolderSpec("uncly", grandpa)))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
-        result = mvc.perform(get("/api/v1/folders/" + grandpa.id + "/_children")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
+        result = mvc.perform(
+            get("/api/v1/folders/" + grandpa.id + "/_children")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk())
+            .andReturn()
 
         val folders = Json.Mapper.readValue<List<Folder>>(result.response.contentAsString,
-                object : TypeReference<List<Folder>>() {
-                })
+            object : TypeReference<List<Folder>>() {
+            })
 
         assertEquals(2, folders.size.toLong())
         val names = folders.map { it.name }
@@ -340,16 +373,18 @@ class FolderControllerTests : MockMvcTest() {
         val up = FolderUpdate(dad)
         up.name = "daddy2"
 
-        result = mvc.perform(put("/api/v1/folders/" + dad.id)
-                .session(session)
+        result = mvc.perform(
+            put("/api/v1/folders/" + dad.id)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(up)))
-                .andExpect(status().isOk())
-                .andReturn()
+                .content(Json.serialize(up))
+        )
+            .andExpect(status().isOk())
+            .andReturn()
         val (id, _, parentId) = Json.Mapper.readValue<Folder>(result.response.contentAsString,
-                object : TypeReference<Folder>() {
-                })
+            object : TypeReference<Folder>() {
+            })
 
         assertEquals(grandpa.id, parentId)
         assertEquals(dad.id, id)
@@ -367,12 +402,13 @@ class FolderControllerTests : MockMvcTest() {
 
         val session = admin()
         mvc.perform(post("/api/v1/folders/$id/assets")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
-                .andExpect(status().isOk)
-                .andReturn()
+            .headers(admin())
+            .with(SecurityMockMvcRequestPostProcessors.csrf())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         authenticate("admin")
         assets = assetDao.getAll(Pager.first())
@@ -397,12 +433,13 @@ class FolderControllerTests : MockMvcTest() {
 
         val session = admin()
         mvc.perform(delete("/api/v1/folders/" + folder1.id + "/assets")
-                .session(session)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList()))))
-                .andExpect(status().isOk)
-                .andReturn()
+            .headers(admin())
+            .with(SecurityMockMvcRequestPostProcessors.csrf())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         refreshIndex()
         authenticate("admin")

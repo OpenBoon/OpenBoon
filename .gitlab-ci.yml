@@ -68,6 +68,8 @@ unit_tests:
     - merge_requests
     - development
   services:
+    - name: redis:alpine
+      alias: redis
     - name: postgres:9.6.9
       alias: postgres
     - name: $LOCAL_ES_NAME

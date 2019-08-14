@@ -141,8 +141,8 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             return getRootFolder()
         }
         throwWhenNotFound("The folder Id `$id` was not found.") {
-            return jdbc.queryForObject<Folder>(appendReadAccess("$GET WHERE pk_organization=? AND pk_folder=?"),
-                    MAPPER, *appendAclArgs(getOrgId(), id))
+            return jdbc.queryForObject(appendReadAccess("$GET WHERE pk_organization=? AND pk_folder=?"),
+                    MAPPER, *appendAclArgs(Access.Read, getOrgId(), id))
         }
     }
 
@@ -159,7 +159,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
             } else {
                 jdbc.queryForObject<Folder>(
                         appendReadAccess("$GET WHERE pk_organization=? AND pk_parent=? AND str_name=?"), MAPPER,
-                        *appendAclArgs(getOrgId(), parentId, name))
+                        *appendAclArgs(Access.Read, getOrgId(), parentId, name))
             }
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to find folder, parent: $parent name: $name", 1)
@@ -191,7 +191,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         val sb = StringBuilder(512)
         sb.append(GET)
         sb.append(" WHERE pk_organization=? AND pk_parent=?")
-        return jdbc.query(appendReadAccess(sb.toString()), MAPPER, *appendAclArgs(getOrgId(), parentId))
+        return jdbc.query(appendReadAccess(sb.toString()), MAPPER, *appendAclArgs(Access.Read, getOrgId(), parentId))
     }
 
     override fun getChildrenInsecure(parentId: UUID): List<Folder> {
@@ -384,7 +384,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
 
     override fun hasAccess(folder: Folder, access: Access): Boolean {
         return jdbc.queryForObject(appendAccess("$COUNT WHERE pk_organization=? AND pk_folder=?", access),
-                Int::class.java, *appendAclArgs(getOrgId(), folder.id)) > 0
+                Int::class.java, *appendAclArgs(access, getOrgId(), folder.id)) > 0
     }
 
     override fun setTaxonomyRoot(folder: Folder, value: Boolean): Boolean {
@@ -477,11 +477,11 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
      * @return
      */
     private fun appendAccess(query: String, access: Access): String {
-        if (hasPermission(Groups.SUPERADMIN, Groups.ADMIN)) {
+        if (hasPermission(Groups.SUPERADMIN)) {
             return query
         }
 
-        if (access == Access.Read && hasPermission(Groups.VIEW_ALL_FOLDERS)) {
+        if (access == Access.Read && hasPermission(Groups.VIEW_ALL_FOLDERS, adminOverride = false)) {
             return query
         }
 
@@ -516,8 +516,12 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         return appendAccess(query, Access.Read)
     }
 
-    fun appendAclArgs(vararg args: Any): Array<out Any> {
-        if (hasPermission(Groups.ADMIN, Groups.SUPERADMIN)) {
+    fun appendAclArgs(access: Access, vararg args: Any): Array<out Any> {
+        if (hasPermission(Groups.SUPERADMIN)) {
+            return args
+        }
+
+        if (access == Access.Read && hasPermission(Groups.VIEW_ALL_FOLDERS, adminOverride = false)) {
             return args
         }
 

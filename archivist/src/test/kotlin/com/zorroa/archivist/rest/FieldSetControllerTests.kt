@@ -32,7 +32,7 @@ class FieldSetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/fieldSets/{id}", allFieldSets[0].id)
-                .session(admin())
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()

@@ -294,6 +294,9 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun delete(user: User): Boolean {
         val result = jdbc.update("DELETE FROM users WHERE pk_organization=? AND pk_user=?",
                 getOrgId(), user.id) == 1
+        if (result) {
+            jdbc.update("DELETE FROM user_permission WHERE pk_user=?", user.id)
+        }
         logger.event(LogObject.USER, LogAction.DELETE, mapOf("userName" to user.username, "result" to result))
         return result
     }

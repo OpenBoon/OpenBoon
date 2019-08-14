@@ -94,8 +94,10 @@ class FolderDaoTests : AbstractTest() {
     @Throws(IOException::class)
     fun createRootFolder() {
         val org = organizationDao.create(
-            OrganizationSpec("test",
-                indexRouteDao.getRandomDefaultRoute().id)
+            OrganizationSpec(
+                "test",
+                indexRouteDao.getRandomDefaultRoute().id
+            )
         )
         val root = folderDao.createRootFolder(org)
         assertEquals("/", root.name)
@@ -132,9 +134,13 @@ class FolderDaoTests : AbstractTest() {
         builder = FolderSpec("Dad", grandpa)
         val dad = folderDao.create(builder)
         builder = FolderSpec("Uncle", grandpa)
-        val (id, name1, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(builder)
+        val (id, name1, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(
+            builder
+        )
         builder = FolderSpec("Child", dad)
-        val (id1, name2, parentId1, organizationId1, dyhiId1, user1, timeCreated1, timeModified1, recursive1, dyhiRoot1, dyhiField1, childCount1, acl1, search1, taxonomyRoot1, attrs1) = folderDao.create(builder)
+        val (id1, name2, parentId1, organizationId1, dyhiId1, user1, timeCreated1, timeModified1, recursive1, dyhiRoot1, dyhiField1, childCount1, acl1, search1, taxonomyRoot1, attrs1) = folderDao.create(
+            builder
+        )
 
         val folders = folderDao.getChildren(grandpa)
         assertEquals(2, folders.size.toLong())
@@ -178,14 +184,17 @@ class FolderDaoTests : AbstractTest() {
 
         val pub = folderDao.get(folderDao.getRootFolder().id, "Users", false)
         val startCount = folderDao.getChildren(pub.id).size
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(FolderSpec("level1", pub))
-        val (id1, name1, parentId1, organizationId1, dyhiId1, user1, timeCreated1, timeModified1, recursive1, dyhiRoot1, dyhiField1, childCount1, acl1, search1, taxonomyRoot1, attrs1) = folderDao.create(FolderSpec("level2", pub))
+        folderDao.create(FolderSpec("level1", pub))
+        folderDao.create(FolderSpec("level2", pub))
         val f3 = folderDao.create(FolderSpec("level3", pub))
-        folderDao.setAcl(f3.id, Acl().addEntry(
-                permissionService.getPermission(Groups.ADMIN)))
+        folderDao.setAcl(
+            f3.id, Acl().addEntry(
+                permissionService.getPermission(Groups.ADMIN)
+            )
+        )
 
         assertFalse(folderDao.hasAccess(f3, Access.Read))
-        assertEquals(7, folderDao.getChildrenInsecure(pub.id).size.toLong())
+        assertEquals(8, folderDao.getChildrenInsecure(pub.id).size.toLong())
         assertEquals((startCount + 2).toLong(), folderDao.getChildren(pub.id).size.toLong())
     }
 
@@ -203,6 +212,34 @@ class FolderDaoTests : AbstractTest() {
         folderDao.setAcl(folder1.id, acl)
 
         assertFalse(folderDao.hasAccess(folder1, Access.Read))
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun testHasAccessViewAllFoldersPermission() {
+        authenticate("user")
+        val builder = FolderSpec("test")
+        val folder1 = folderDao.create(builder)
+
+        val p = permissionService.createPermission(PermissionSpec("group", "foo"))
+        val acl = Acl()
+        acl.addEntry(p, Access.Read)
+        folderDao.setAcl(folder1.id, acl)
+
+        // The org admin will not have access.
+        authenticate("orgadmin")
+        assertFalse(folderDao.hasAccess(folder1, Access.Read))
+
+        // Add Groups.VIEW_ALL_FOLDERS to the org admin
+        val user = userService.get("orgadmin")
+        userService.addPermissions(
+            user,
+            listOf(permissionService.getPermission(Groups.VIEW_ALL_FOLDERS))
+        )
+
+        // Now the org admins has access.
+        authenticate("orgadmin")
+        assertTrue(folderDao.hasAccess(folder1, Access.Read))
     }
 
     @Test
@@ -318,7 +355,9 @@ class FolderDaoTests : AbstractTest() {
     @Test
     fun testCount() {
         val count = folderDao.count()
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(FolderSpec("test"))
+        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(
+            FolderSpec("test")
+        )
         assertEquals((count + 1).toLong(), folderDao.count().toLong())
     }
 
@@ -329,7 +368,9 @@ class FolderDaoTests : AbstractTest() {
         assertTrue(folderDao.exists(folderDao.getRootFolder().id, "foo"))
 
         builder = FolderSpec("bar", folder1)
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(builder)
+        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderDao.create(
+            builder
+        )
         assertTrue(folderDao.exists(folder1.id, "bar"))
     }
 
@@ -338,9 +379,12 @@ class FolderDaoTests : AbstractTest() {
         val spec1 = FolderSpec("foo")
         val (id) = folderDao.create(spec1)
 
-        val spec = DyHierarchySpec(id, listOf(
+        val spec = DyHierarchySpec(
+            id, listOf(
                 DyHierarchyLevel("source.type.raw"),
-                DyHierarchyLevel("source.extension.raw")))
+                DyHierarchyLevel("source.extension.raw")
+            )
+        )
         val dyhi = dyHierarchyDao.create(spec)
 
         val spec2 = FolderSpec("bar")

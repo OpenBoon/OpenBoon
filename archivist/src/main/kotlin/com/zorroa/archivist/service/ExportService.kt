@@ -9,9 +9,6 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.ExportFileDao
-import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.search.AssetFilter
-import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.getUser
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.domain.Job
@@ -22,7 +19,6 @@ import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
 import java.util.UUID
 
 interface ExportService {
@@ -38,11 +34,9 @@ interface ExportService {
 @Transactional
 class ExportServiceImpl @Autowired constructor(
     private val properties: ApplicationProperties,
-    private val indexDao: IndexDao,
     private val exportFileDao: ExportFileDao,
     private val fileStorageService: FileStorageService,
-    private val jobService: JobService,
-    private val pipelineService: PipelineService
+    private val jobService: JobService
 ) : ExportService {
 
     @Autowired
@@ -67,31 +61,6 @@ class ExportServiceImpl @Autowired constructor(
     override fun getAll(page: Pager): KPagedList<Job> {
         val filter = JobFilter(type = PipelineType.Export)
         return jobService.getAll(filter)
-    }
-
-    private inner class ExportParams(var search: AssetSearch)
-
-    /**
-     * TODO: Rethink this method, might not be needed. Audit-log is probably better.
-     */
-    private fun resolveExportSearch(search: AssetSearch, exportId: UUID): ExportParams {
-        search.fields = arrayOf("source")
-
-        val params = ExportParams(AssetSearch())
-        val ids = mutableListOf<String>()
-        val maxAssets = properties.getInt("archivist.export.maxAssetCount").toLong()
-        for (asset in searchService.scanAndScroll(search, maxAssets, clamp = true)) {
-            ids.add(asset.id)
-        }
-
-        if (ids.isEmpty()) {
-            throw ArchivistWriteException("Unable to start export, search returns no assets")
-        }
-
-        indexDao.appendLink("export", exportId.toString(), ids)
-        params.search = AssetSearch().setFilter(
-                AssetFilter().addToLinks("export", exportId.toString()))
-        return params
     }
 
     override fun create(spec: ExportSpec, resolve: Boolean): Job {

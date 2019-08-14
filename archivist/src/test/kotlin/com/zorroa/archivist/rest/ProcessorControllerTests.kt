@@ -38,7 +38,7 @@ class ProcessorControllerTests : MockMvcTest() {
         val session = admin()
         val id = "eebf2132-4b50-5eb0-a240-debfeaea2c6f"
         val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/processors/$id")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -53,7 +53,7 @@ class ProcessorControllerTests : MockMvcTest() {
         val session = admin()
         val name = "zplugins.duplicates.processors.DuplicateDetectionProcessor"
         val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/processors/$name")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -69,7 +69,7 @@ class ProcessorControllerTests : MockMvcTest() {
         val filter = ProcessorFilter(keywords = "ingestor")
 
         val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/processors/_search")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
