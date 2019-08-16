@@ -28,6 +28,7 @@ import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.TokenStore
 import com.zorroa.archivist.security.generateRandomPassword
 import com.zorroa.common.domain.DuplicateEntityException
 import com.zorroa.common.repository.KPagedList
@@ -133,7 +134,8 @@ interface UserService {
 
 @Service
 class UserRegistryServiceImpl @Autowired constructor(
-    private val properties: ApplicationProperties
+    private val properties: ApplicationProperties,
+    private val tokenStore: TokenStore
 ) : UserRegistryService {
 
     @Autowired
@@ -300,6 +302,13 @@ class UserRegistryServiceImpl @Autowired constructor(
     fun toUserAuthed(user: User): UserAuthed {
         val perms = userService.getPermissions(user)
         return UserAuthed(user.id, user.organizationId, user.username, perms.toSet(), user.attrs)
+    }
+
+    /**
+     * Create a new session token for the given user Id.
+     */
+    override fun createSessionToken(id: UUID): String {
+        return tokenStore.createSessionToken(id)
     }
 
     companion object {
