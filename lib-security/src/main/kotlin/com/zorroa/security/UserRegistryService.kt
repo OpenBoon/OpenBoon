@@ -21,4 +21,6 @@ interface UserRegistryService {
     fun getUser(id: UUID): UserAuthed
 
     fun exists(username: String, source: String?): Boolean
+
+    fun createSessionToken(id: UUID): String
 }
