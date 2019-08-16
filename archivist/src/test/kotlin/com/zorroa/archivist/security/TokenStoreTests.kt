@@ -6,8 +6,10 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class TokenStoreTests : AbstractTest() {
 
@@ -26,6 +28,15 @@ class TokenStoreTests : AbstractTest() {
         assertNotNull(jwt.claims["sessionId"])
         // Must have a userId
         assertEquals(user.id, UUID.fromString(jwt.claims["userId"]?.asString()))
+    }
+
+    @Test
+    fun removeSessionToken() {
+        val user = userService.get("admin")
+        val token = tokenStore.createSessionToken(user.id)
+        val jwt = JWT.decode(token)
+        assertTrue(tokenStore.removeSession(jwt.claims["sessionId"]!!.asString()))
+        assertFalse(tokenStore.removeSession(jwt.claims["sessionId"]!!.asString()))
     }
 
     @Test

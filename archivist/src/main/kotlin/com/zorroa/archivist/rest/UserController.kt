@@ -14,7 +14,6 @@ import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.MasterJwtValidator
 import com.zorroa.archivist.security.TokenStore
-import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.getUsername
@@ -167,23 +166,13 @@ class UserController @Autowired constructor(
     @ApiOperation("HTTP-auth-based logout.")
     @RequestMapping(value = ["/api/v1/logout"], method = [RequestMethod.POST, RequestMethod.GET])
     fun logout(req: HttpServletRequest, rsp: HttpServletResponse): Any {
+        val sessionId = req.getAttribute("sessionId")
+        val loggedOut = sessionId?.let {
+            tokenStore.removeSession(it.toString())
+        } ?: false
 
-        val auth = getAuthentication()?.let { auth ->
-            auth.credentials?.let { sessionId ->
-                val session = sessionId.toString()
-                if (session.isNotBlank()) {
-                    tokenStore.removeSession(session)
-                }
-            }
-            auth
-        }
         SecurityContextHolder.clearContext()
-
-        return if (auth == null) {
-            mapOf("success" to false)
-        } else {
-            mapOf("success" to true)
-        }
+        return mapOf("success" to loggedOut)
     }
 
     @ApiOperation("Reset your password.")
