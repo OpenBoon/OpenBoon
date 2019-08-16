@@ -128,7 +128,7 @@ class UserController @Autowired constructor(
         "Authenticate using a valid auth token.",
         notes = "Use token authentication to get logged in. Returns the X-Zorroa-Credential header with a valid JWT."
     )
-    @PostMapping(value = ["/api/v1/auth/token"])
+    @RequestMapping(value = ["/api/v1/auth/token"], method = [RequestMethod.GET, RequestMethod.POST])
     fun tokenAuth(
         @RequestParam(value = "auth_token") token: String,
         request: HttpServletRequest,
@@ -136,16 +136,14 @@ class UserController @Autowired constructor(
     ) {
         // Clear out any current authentication.
         logout(request, response)
+
+        // If the token is validated, redirect to /
         val validatedToken = masterJwtValidator.validate(token)
-        val user = validatedToken.provisionUser()
-        if (user != null) {
-            // Utilize the same token, since it will have special info from IRM
-            response.setHeader("Location", "/")
-            response.setHeader(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
-            response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
-        } else {
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Authentication failed")
-        }
+        validatedToken.provisionUser()
+
+        response.setHeader("Location", "/?token=$token")
+        response.setHeader(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
+        response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
     }
 
     @ApiOperation(

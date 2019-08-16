@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.saml.SAMLAuthenticationProvider
 import org.springframework.security.saml.SAMLBootstrap
 import org.springframework.security.saml.SAMLEntryPoint
@@ -328,7 +329,8 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean
     fun successRedirectHandler(): SavedRequestAwareAuthenticationSuccessHandler {
         val successRedirectHandler = SavedRequestAwareAuthenticationSuccessHandler()
-        successRedirectHandler.setDefaultTargetUrl(properties.landingPage)
+        // Run through he SAML landing page so we can start a session
+        successRedirectHandler.setDefaultTargetUrl("${properties.baseUrl}/saml/landing")
         successRedirectHandler.setAlwaysUseDefaultTargetUrl(true)
         return successRedirectHandler
     }
@@ -371,7 +373,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean
     fun successLogoutHandler(): SimpleUrlLogoutSuccessHandler {
         val successLogoutHandler = SimpleUrlLogoutSuccessHandler()
-        successLogoutHandler.setDefaultTargetUrl(properties.landingPage)
+        successLogoutHandler.setDefaultTargetUrl(properties.baseUrl)
         return successLogoutHandler
     }
 
@@ -504,6 +506,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .csrf().disable()
             .httpBasic()
             .authenticationEntryPoint(samlEntryPoint())
+            .and()
+            // Need to have cookies for SAML to function.
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             .and()
             .addFilterBefore(metadataGeneratorFilter(), ChannelProcessingFilter::class.java)
             .addFilterAfter(samlFilter(), BasicAuthenticationFilter::class.java)
