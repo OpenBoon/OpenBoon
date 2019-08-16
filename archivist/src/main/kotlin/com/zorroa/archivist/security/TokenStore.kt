@@ -31,7 +31,7 @@ interface TokenStore {
     /**
      * Remove the given session Id from the token store.
      */
-    fun removeSession(sessionId: String)
+    fun removeSession(sessionId: String): Boolean
 
     /**
      * Create a new JWT token and register a session with the token store.
@@ -76,16 +76,21 @@ class RedisTokenStore @Autowired constructor(
         }
     }
 
-    override fun removeSession(sessionId: String) {
+    override fun removeSession(sessionId: String): Boolean {
         jedisPool.resource.use {
             try {
-                it.del(sessionId)
-                meterRegistry.counter("zorroa.token-store", "action", "remove-token").increment()
+                val res = it.del(sessionId)
+                if (res > 0) {
+                    meterRegistry.counter("zorroa.token-store", "action", "remove-token").increment()
+                    return true
+                }
             } catch (e: Exception) {
-                meterRegistry.counter("zorroa.token-store", "action", "invalid-token").increment()
                 logger.warn("Failed to remove sessionId: {}, already gone.", sessionId)
             }
         }
+
+        meterRegistry.counter("zorroa.token-store", "action", "invalid-token").increment()
+        return false
     }
 
     override fun createSessionToken(userId: UUID): String {
