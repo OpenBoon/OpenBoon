@@ -11,9 +11,9 @@ import com.zorroa.archivist.domain.UserPasswordUpdate
 import com.zorroa.archivist.domain.UserProfileUpdate
 import com.zorroa.archivist.domain.UserSettings
 import com.zorroa.archivist.domain.UserSpec
+import com.zorroa.archivist.security.JwtSecurityConstants
 import com.zorroa.archivist.security.MasterJwtValidator
-import com.zorroa.archivist.security.generateUserToken
-import com.zorroa.archivist.security.getAuthentication
+import com.zorroa.archivist.security.TokenStore
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.getUsername
@@ -37,9 +37,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -65,7 +63,8 @@ class UserController @Autowired constructor(
     private val userService: UserService,
     private val permissionService: PermissionService,
     private val emailService: EmailService,
-    private val masterJwtValidator: MasterJwtValidator
+    private val masterJwtValidator: MasterJwtValidator,
+    private val tokenStore: TokenStore
 ) {
 
     @ApiOperation("DEPRECATED: Do not use.", hidden = true)
@@ -125,52 +124,39 @@ class UserController @Autowired constructor(
     }
 
     @ApiOperation(
-        "Get a json web token (JWT).",
-        notes = "Returns a JWT that can be used to authenticate requests."
+        "Authenticate using a valid auth token.",
+        notes = "Use token authentication to get logged in. Returns the X-Zorroa-Credential header with a valid JWT."
     )
-    @GetMapping(value = ["/api/v1/users/auth-token"])
-    fun getAuthToken(): Any {
-        val user = getUser()
-        val key = userService.getHmacKey(user)
-        return mapOf("token" to generateUserToken(user.id, key))
-    }
-
-    @PostMapping(value = ["/api/v1/auth/token"])
-    fun jwtCreateAndLogin(
-        @RequestParam(value = "insight_auth_token") token: String,
+    @RequestMapping(value = ["/api/v1/auth/token"], method = [RequestMethod.GET, RequestMethod.POST])
+    fun tokenAuth(
+        @RequestParam(value = "auth_token") token: String,
         request: HttpServletRequest,
         response: HttpServletResponse
     ) {
-
         // Clear out any current authentication.
         logout(request, response)
 
-        val validatedJwt = masterJwtValidator.validate(token)
-        validatedJwt.provisionUser()
+        // If the token is validated, redirect to /
+        val validatedToken = masterJwtValidator.validate(token)
+        validatedToken.provisionUser()
 
-        try {
-            response.setHeader("Location", "/")
-            response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
-        } catch (e: Exception) {
-            if (!response.isCommitted) {
-                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString())
-            }
-        }
+        response.setHeader("Location", "/?token=$token")
+        response.setHeader(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
+        response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
     }
 
     @ApiOperation(
         "HTTP-auth-based login.",
         notes = "Use standard HTTP authentication to get logged in. Returns the current user as well as a " +
-            "X-Zorroa-Auth-Token header with a valid JWT."
+            "X-Zorroa-Credential header with a valid JWT."
     )
     @PostMapping(value = ["/api/v1/login"])
     fun login(): ResponseEntity<User> {
         val user = getUser()
         val headers = HttpHeaders()
-        headers.add(
-            "X-Zorroa-Auth-Token",
-            generateUserToken(user.id, userService.getHmacKey(user))
-        )
+
+        val token = tokenStore.createSessionToken(user.id)
+        headers.add(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
 
         return ResponseEntity.ok()
             .headers(headers)
@@ -180,19 +166,13 @@ class UserController @Autowired constructor(
     @ApiOperation("HTTP-auth-based logout.")
     @RequestMapping(value = ["/api/v1/logout"], method = [RequestMethod.POST, RequestMethod.GET])
     fun logout(req: HttpServletRequest, rsp: HttpServletResponse): Any {
-        val auth = getAuthentication()
-        val cookieClearingLogoutHandler =
-            CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
-        val securityContextLogoutHandler = SecurityContextLogoutHandler()
-        cookieClearingLogoutHandler.logout(req, rsp, auth)
-        securityContextLogoutHandler.logout(req, rsp, auth)
-        SecurityContextHolder.clearContext()
+        val sessionId = req.getAttribute("sessionId")
+        val loggedOut = sessionId?.let {
+            tokenStore.removeSession(it.toString())
+        } ?: false
 
-        return if (auth == null) {
-            mapOf("success" to false)
-        } else {
-            mapOf("success" to true)
-        }
+        SecurityContextHolder.clearContext()
+        return mapOf("success" to loggedOut)
     }
 
     @ApiOperation("Reset your password.")
@@ -322,6 +302,18 @@ class UserController @Autowired constructor(
         return HttpUtils.status(
             "users", id, "enable",
             userService.setEnabled(user, settings.getValue("enabled"))
+        )
+    }
+
+    @ApiOperation("Delete a user")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @DeleteMapping(value = ["/api/v1/users/{id}"])
+    fun delete(
+        @ApiParam("UUID of the User.") @PathVariable id: UUID
+    ): Any {
+        val user = userService.get(id)
+        return HttpUtils.status(
+            "users", id, "delete", userService.delete(user)
         )
     }
 

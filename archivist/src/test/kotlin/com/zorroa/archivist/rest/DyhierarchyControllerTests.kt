@@ -50,7 +50,7 @@ class DyhierarchyControllerTests : MockMvcTest() {
                 DyHierarchyLevel("source.filename.raw")))
 
         val result = mvc.perform(post("/api/v1/dyhi")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
@@ -61,7 +61,7 @@ class DyhierarchyControllerTests : MockMvcTest() {
         assertEquals(4, dh.levels.size.toLong())
 
         val delRsp = mvc.perform(delete("/api/v1/dyhi/${dh.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)

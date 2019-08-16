@@ -31,7 +31,7 @@ class TrashFolderControllerTests : MockMvcTest() {
     lateinit var folder1: Folder
 
     @Autowired
-    internal var trashFolderDao: TrashFolderDao? = null
+    lateinit var trashFolderDao: TrashFolderDao
 
     @Before
     fun init() {
@@ -50,7 +50,7 @@ class TrashFolderControllerTests : MockMvcTest() {
         val content = Json.serializeToString(
                 ImmutableList.of(deleteOp.trashFolderId.toString()))
         val result = mvc.perform(post("/api/v1/trash/_restore")
-                .session(admin())
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -67,7 +67,7 @@ class TrashFolderControllerTests : MockMvcTest() {
         assertEquals(3, exists.toLong())
 
         val result = mvc.perform(delete("/api/v1/trash")
-                .session(admin())
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
@@ -75,8 +75,8 @@ class TrashFolderControllerTests : MockMvcTest() {
 
         val data = deserialize(result, Map::class.java)
         assertTrue(data["success"] as Boolean)
-
-        val folders = trashFolderDao!!.getAll(admin().id)
+        val user = userService.get("admin")
+        val folders = trashFolderDao.getAll(user.id)
         assertEquals(0, folders.size.toLong())
     }
 
@@ -85,19 +85,18 @@ class TrashFolderControllerTests : MockMvcTest() {
     fun testEmptySpecificFolders() {
         val exists = jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash", Int::class.java)!!
         assertEquals(3, exists.toLong())
-
+        println(folder1.id)
         val result = mvc.perform(delete("/api/v1/trash")
-                .session(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serializeToString(listOf(folder1.id)))
+                .headers(admin())
+                .content(Json.serializeToString(listOf(deleteOp.trashFolderId)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
 
         val data = deserialize(result, Map::class.java)
         assertTrue(data["success"] as Boolean)
-
-        val folders = trashFolderDao!!.getAll(admin().id)
+        val user = userService.get("admin")
+        val folders = trashFolderDao.getAll(user.id)
         assertEquals(0, folders.size.toLong())
     }
 
@@ -105,7 +104,7 @@ class TrashFolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetAll() {
         val result = mvc.perform(get("/api/v1/trash")
-                .session(admin())
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
@@ -119,7 +118,7 @@ class TrashFolderControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testCount() {
         val result = mvc.perform(get("/api/v1/trash/_count")
-                .session(admin())
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()

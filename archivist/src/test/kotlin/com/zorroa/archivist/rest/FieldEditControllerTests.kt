@@ -46,7 +46,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
         val req = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/fieldEdits/${edit.id}")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -73,7 +73,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
         val req = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/fieldEdits/_search")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -98,7 +98,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
         val req = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/fieldEdits")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -115,7 +115,6 @@ class FieldEditControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateFieldEditWithPermission() {
-        val session = user("editor")
         addTestAssets("set04/standard")
         addWritePermissionToTestAssets()
 
@@ -125,7 +124,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/fieldEdits")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -136,7 +135,6 @@ class FieldEditControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateFieldEditAccessDenied() {
-        val session = user()
         addTestAssets("set04/standard")
         addWritePermissionToTestAssets()
 
@@ -146,7 +144,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/fieldEdits")
-                .session(session)
+                .headers(user())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -174,7 +172,7 @@ class FieldEditControllerTests : MockMvcTest() {
             MockMvcRequestBuilders.delete(
                 "/api/v1/fieldEdits/${edit.id}"
             )
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serializeToString(edit))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

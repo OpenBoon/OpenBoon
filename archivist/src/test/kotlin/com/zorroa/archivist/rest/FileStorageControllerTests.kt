@@ -23,14 +23,13 @@ class FileStorageControllerTests : MockMvcTest() {
 
     @Test
     fun testCreate() {
-        val session = admin()
         val spec = FileStorageSpec(
                 "asset",
                 UUID.randomUUID().toString(),
                 "so_urgent_x_100_y_100.jpg")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
@@ -45,14 +44,13 @@ class FileStorageControllerTests : MockMvcTest() {
 
     @Test
     fun testGetById() {
-        val session = admin()
         val spec = FileStorageSpec(
                 "asset",
                 UUID.randomUUID().toString(),
                 "so_urgent_x_100_y_100.jpg")
 
         val req1 = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
@@ -61,7 +59,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val rsp1 = Json.Mapper.readValue(req1.response.contentAsString, FileStorageResponse::class.java)
 
         val req2 = mvc.perform(MockMvcRequestBuilders.get("/api/v1/file-storage/${rsp1.id}")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
@@ -72,14 +70,13 @@ class FileStorageControllerTests : MockMvcTest() {
 
     @Test
     fun testStat() {
-        val session = admin()
         val spec = FileStorageSpec(
                 "asset",
                 UUID.randomUUID().toString(),
                 "so_urgent_x_100_y_100.jpg")
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
@@ -90,7 +87,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val id = fs.id
 
         val req2 = mvc.perform(MockMvcRequestBuilders.get("/api/v1/file-storage/$id/_stat")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -102,7 +99,6 @@ class FileStorageControllerTests : MockMvcTest() {
 
     @Test
     fun testStream() {
-        val session = admin()
         val spec = FileStorageSpec(
             "asset",
             UUID.randomUUID().toString(),
@@ -114,7 +110,7 @@ class FileStorageControllerTests : MockMvcTest() {
         Files.write(localFile, listOf("bob"))
 
         mvc.perform(MockMvcRequestBuilders.get("/api/v1/file-storage/${st.id}/_stream")
-            .session(session)
+            .headers(admin())
             .with(SecurityMockMvcRequestPostProcessors.csrf())
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(MockMvcResultMatchers.status().isOk)

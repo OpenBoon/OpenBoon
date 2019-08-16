@@ -16,7 +16,10 @@
 
 package com.zorroa.security.saml
 
+import com.zorroa.archivist.sdk.security.UserAuthed
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.Authentication
 import org.springframework.security.saml.metadata.CachingMetadataManager
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
+import javax.servlet.http.HttpSession
 
 @Controller
 @RequestMapping("/saml")
@@ -36,9 +40,17 @@ class SSOController {
     @Autowired
     lateinit var properties: SamlProperties
 
+    @Autowired
+    lateinit var userRegistryService: UserRegistryService
+
     @RequestMapping(value = ["/landing"], method = [RequestMethod.POST, RequestMethod.GET])
-    fun landing(model: ModelMap): ModelAndView {
-        return ModelAndView("redirect:" + properties.landingPage, model)
+    fun landing(model: ModelMap, session: HttpSession, authentication: Authentication): ModelAndView {
+        val user = authentication.details as UserAuthed
+        val token = userRegistryService.createSessionToken(user.id)
+        val redirect = "redirect:${properties.baseUrl}/api/v1/auth/token?auth_token=$token"
+
+        session.invalidate()
+        return ModelAndView(redirect, model)
     }
 
     @GetMapping(value = ["/options"], produces = ["application/json"])

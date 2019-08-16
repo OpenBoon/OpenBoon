@@ -2,19 +2,14 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.domain.UserBase
 import com.zorroa.archivist.sdk.security.UserAuthed
+import com.zorroa.security.Groups
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import java.util.UUID
 
 class SuperAdminAuthority : GrantedAuthority {
     override fun getAuthority(): String {
-        return "super::administrator"
-    }
-}
-
-class AdminAuthority : GrantedAuthority {
-    override fun getAuthority(): String {
-        return "zorroa::administrator"
+        return Groups.SUPERADMIN
     }
 }
 
@@ -36,7 +31,7 @@ class SuperAdminAuthentication : AbstractAuthenticationToken {
 
     val authed: UserAuthed
 
-    constructor(orgId: UUID) : super(listOf(SuperAdminAuthority(), AdminAuthority())) {
+    constructor(orgId: UUID) : super(listOf(SuperAdminAuthority())) {
         authed = UserAuthed(SuperAdmin.id, orgId, SuperAdmin.username, this.authorities.toSet(), mapOf())
     }
 

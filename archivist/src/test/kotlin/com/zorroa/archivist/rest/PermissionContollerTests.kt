@@ -25,7 +25,7 @@ class PermissionContollerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(post("/api/v1/permissions")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(b))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -43,7 +43,7 @@ class PermissionContollerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(get("/api/v1/permissions")
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
@@ -67,7 +67,7 @@ class PermissionContollerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(get("/api/v1/permissions/" + perm.id)
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()
@@ -86,7 +86,7 @@ class PermissionContollerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(post("/api/v1/permissions/_findOne")
-                .session(session)
+                .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(mapOf("authorities" to listOf("project::sw"))))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -107,7 +107,7 @@ class PermissionContollerTests : MockMvcTest() {
 
         val session = admin()
         val result = mvc.perform(get("/api/v1/permissions/" + perm.id)
-                .session(session)
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk)
                 .andReturn()

@@ -2,8 +2,10 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
+import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.IndexDao
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -22,6 +24,9 @@ class IndexServiceTests : AbstractTest() {
     @Autowired
     lateinit var indexDao: IndexDao
 
+    @Autowired
+    lateinit var assetDao: AssetDao
+
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -32,12 +37,30 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testIndexWithBackup() {
+        val doc = Document()
+        doc.setAttr("foo", "bar")
+        indexService.index(doc)
+
+        val asset = assetDao.get(doc.id)
+        assertEquals("bar", asset.getAttr("foo"))
+    }
+
+    @Test
     fun testGetAsset() {
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
-            assertEquals(a.id,
-                    indexService.get(Paths.get(a.getAttr("source.path", String::class.java))).id)
+            assertEquals(
+                a.id,
+                indexService.get(Paths.get(a.getAttr("source.path", String::class.java))).id
+            )
         }
+    }
+
+    @Test
+    fun testGetAll() {
+        val assets = indexService.getAll(Pager.first())
+        assertEquals(2, assets.size())
     }
 
     @Test
@@ -60,7 +83,6 @@ class IndexServiceTests : AbstractTest() {
 
     @Test
     fun testBatchDeleteEmptyList() {
-        val assets = indexService.getAll(Pager.first())
         val res = indexService.batchDelete(listOf())
         assertEquals(0, res.totalRequested)
         assertEquals(0, res.deletedAssetIds.size)
@@ -119,8 +141,10 @@ class IndexServiceTests : AbstractTest() {
 
         assertNotNull(asset1.getAttr("system.timeCreated"))
         assertNotNull(asset1.getAttr("system.timeModified"))
-        assertEquals(asset1.getAttr("system.timeCreated", String::class.java),
-                asset1.getAttr("system.timeModified", String::class.java))
+        assertEquals(
+            asset1.getAttr("system.timeCreated", String::class.java),
+            asset1.getAttr("system.timeModified", String::class.java)
+        )
 
         refreshIndex()
         Thread.sleep(1000)
@@ -129,7 +153,9 @@ class IndexServiceTests : AbstractTest() {
         val asset2 = assetService.get(source2.id)
 
         refreshIndex()
-        assertNotEquals(asset2.getAttr("system.timeCreated", String::class.java),
-                asset2.getAttr("system.timeModified", String::class.java))
+        assertNotEquals(
+            asset2.getAttr("system.timeCreated", String::class.java),
+            asset2.getAttr("system.timeModified", String::class.java)
+        )
     }
 }
