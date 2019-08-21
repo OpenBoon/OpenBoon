@@ -17,9 +17,10 @@ object ElasticQueryParser {
     val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
     val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
 
-    fun parse(query: String) : QueryBuilder {
+    fun parse(query: String): QueryBuilder {
         val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-            xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION, query)
+            xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION, query
+        )
 
         val ssb = SearchSourceBuilder.fromXContent(parser)
         return ssb.query()
