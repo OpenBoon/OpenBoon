@@ -15,7 +15,8 @@ class UserAuthed(
     var organizationId: UUID,
     username: String,
     permissions: Set<out GrantedAuthority>,
-    attrs: Map<String, Any>
+    attrs: Map<String, Any>,
+    val filter: String? = null
 ) : UserId, UserDetails, Serializable {
 
     val attrs: MutableMap<String, Any> = attrs.toMutableMap()
