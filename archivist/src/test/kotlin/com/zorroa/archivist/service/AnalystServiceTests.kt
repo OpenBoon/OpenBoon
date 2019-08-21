@@ -23,7 +23,7 @@ class AnalystServiceTests : AbstractTest() {
                 648,
                 1024,
                 0.5f,
-                "0.41.0",
+                "0.42.0",
                 null)
         analystService.upsert(spec1)
 
@@ -32,7 +32,7 @@ class AnalystServiceTests : AbstractTest() {
                 1024,
                 1024,
                 1.0f,
-                "0.41.0",
+                "0.42.0",
                 UUID.fromString("EF3B1E5A-31B5-4AEB-8C4E-7DA50F2AC592"))
         val a2 = analystService.upsert(spec2)
         assertEquals(spec2.totalRamMb, a2.totalRamMb)
