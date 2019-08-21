@@ -16,7 +16,7 @@ import com.zorroa.archivist.search.RangeQuery
 import com.zorroa.archivist.search.SimilarityFilter
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
-import com.zorroa.archivist.security.getPermissionsFilter
+import com.zorroa.archivist.security.getAssetPermissionsFilter
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.SearchBuilder
@@ -424,7 +424,7 @@ class SearchServiceImpl @Autowired constructor(
         query.filter(getOrganizationFilter())
 
         if (perms) {
-            val permsQuery = getPermissionsFilter(search.access)
+            val permsQuery = getAssetPermissionsFilter(search.access)
             if (permsQuery != null) {
                 query.filter(permsQuery)
             }

@@ -26,7 +26,7 @@ import com.zorroa.archivist.search.RangeQuery
 import com.zorroa.archivist.search.Scroll
 import com.zorroa.archivist.search.SimilarityFilter
 import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.archivist.security.getPermissionsFilter
+import com.zorroa.archivist.security.getAssetPermissionsFilter
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
@@ -115,7 +115,7 @@ class SearchServiceTests : AbstractTest() {
 
         val search = AssetSearch().setQuery("source.filename:beer").setAccess(Access.Export)
         assertEquals(1, searchService.search(search).hits.getTotalHits())
-        assertNull(getPermissionsFilter(search.access))
+        assertNull(getAssetPermissionsFilter(search.access))
     }
 
     @Test
@@ -133,7 +133,7 @@ class SearchServiceTests : AbstractTest() {
         val search = AssetSearch()
             .setAccess(Access.Export)
             .setQuery("source.filename:beer")
-        assertNotNull(getPermissionsFilter(search.access))
+        assertNotNull(getAssetPermissionsFilter(search.access))
         assertEquals(1, searchService.search(search).hits.getTotalHits())
     }
 

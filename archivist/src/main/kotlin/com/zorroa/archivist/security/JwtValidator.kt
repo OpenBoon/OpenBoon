@@ -121,7 +121,13 @@ class LocalUserJwtValidator @Autowired constructor(val userService: UserService)
             val alg = Algorithm.HMAC256(hmacKey)
             alg.verify(jwt)
 
-            return jwt.claims.map {
+            /**
+             * The only claims we allow to move forward in this validator
+             * must be in the whitelist.
+             */
+            return jwt.claims.filterKeys {
+                it in CLAIM_WHITELIST
+            }.map {
                 it.key to it.value.asString()
             }.toMap()
         } catch (e: JWTVerificationException) {
@@ -134,6 +140,10 @@ class LocalUserJwtValidator @Autowired constructor(val userService: UserService)
     }
 
     companion object {
+
+        // These claims cannot be in self signed JWT tokens.
+        private val CLAIM_WHITELIST = setOf("userId", "sessionId")
+
         private val logger = LoggerFactory.getLogger(LocalUserJwtValidator::class.java)
     }
 }

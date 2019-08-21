@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.elastic.ElasticUtils
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
@@ -89,8 +90,10 @@ fun getUser(): UserAuthed {
                 auth.details as UserAuthed
             } catch (e2: ClassCastException) {
                 // Log this message so we can see what the type is.
-                SecurityLogger.logger.warn("Invalid auth objects: principal='{}' details='{}'",
-                        auth?.principal, auth?.details)
+                SecurityLogger.logger.warn(
+                    "Invalid auth objects: principal='{}' details='{}'",
+                    auth?.principal, auth?.details
+                )
                 throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
             }
         }
@@ -209,36 +212,37 @@ fun getOrganizationFilter(): QueryBuilder {
     return QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
 }
 
-fun getPermissionsFilter(access: Access?): QueryBuilder? {
-    if (hasPermission(Groups.ADMIN)) {
+fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
+    val user = getUser()
+    if (user.filter != null) {
+        return ElasticUtils.parse(user.filter as String)
+    } else if (hasPermission(Groups.ADMIN)) {
         return null
-    } else {
-        if (access == null || access == Access.Read) {
-            return if (hasPermission(Groups.READ)) {
-                null
-            } else {
-                QueryBuilders.termsQuery("system.permissions.read",
-                        getPermissionIds().map { it.toString() })
-            }
-        } else if (access == Access.Write) {
-            return if (hasPermission(Groups.WRITE)) {
-                null
-            } else {
-                QueryBuilders.termsQuery("system.permissions.write",
-                        getPermissionIds().map { it.toString() })
-            }
-        } else if (access == Access.Export) {
-            return if (hasPermission(Groups.EXPORT)) {
-                null
-            } else {
-                QueryBuilders.termsQuery("system.permissions.export",
-                        getPermissionIds().map { it.toString() })
-            }
+    } else if (access == null || access == Access.Read) {
+        return if (hasPermission(Groups.READ)) {
+            null
+        } else {
+            QueryBuilders.termsQuery("system.permissions.read",
+                getPermissionIds().map { it.toString() })
+        }
+    } else if (access == Access.Write) {
+        return if (hasPermission(Groups.WRITE)) {
+            null
+        } else {
+            QueryBuilders.termsQuery("system.permissions.write",
+                getPermissionIds().map { it.toString() })
+        }
+    } else if (access == Access.Export) {
+        return if (hasPermission(Groups.EXPORT)) {
+            null
+        } else {
+            QueryBuilders.termsQuery("system.permissions.export",
+                getPermissionIds().map { it.toString() })
         }
     }
 
     return QueryBuilders.termsQuery("system.permissions.read",
-            getPermissionIds().map { it.toString() })
+        getPermissionIds().map { it.toString() })
 }
 
 fun setWritePermissions(source: Document, perms: Collection<Permission>) {
