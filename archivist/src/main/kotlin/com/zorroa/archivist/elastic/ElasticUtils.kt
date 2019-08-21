@@ -12,7 +12,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 /**
  * ElasticSearch utility functions.
  */
-object ElasticQueryParser {
+object ElasticUtils {
 
     val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
     val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)

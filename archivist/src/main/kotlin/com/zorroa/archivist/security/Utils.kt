@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Permission
-import com.zorroa.archivist.elastic.ElasticQueryParser
+import com.zorroa.archivist.elastic.ElasticUtils
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.PermissionSchema
@@ -215,7 +215,7 @@ fun getOrganizationFilter(): QueryBuilder {
 fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
     val user = getUser()
     if (user.filter != null) {
-        return ElasticQueryParser.parse(user.filter as String)
+        return ElasticUtils.parse(user.filter as String)
     } else if (hasPermission(Groups.ADMIN)) {
         return null
     } else if (access == null || access == Access.Read) {

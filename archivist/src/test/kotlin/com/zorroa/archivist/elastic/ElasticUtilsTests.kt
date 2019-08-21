@@ -9,7 +9,7 @@ class ElasticUtilsTests {
     @Test
     fun testParse() {
         val query = """{"query": { "terms": {"source.type": ["video"]}}}"""
-        val qb = ElasticQueryParser.parse(query)
+        val qb = ElasticUtils.parse(query)
         assertTrue(qb is TermsQueryBuilder)
     }
 }
