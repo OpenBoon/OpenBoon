@@ -214,7 +214,16 @@ fun getOrganizationFilter(): QueryBuilder {
 
 fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
     val user = getUser()
-    if (user.filter != null) {
+    if (user.queryStringFilter != null) {
+        return QueryBuilders.queryStringQuery(user.queryStringFilter as String)
+            .autoGenerateSynonymsPhraseQuery(false)
+            .analyzeWildcard(false)
+            .lenient(false)
+            .analyzer("keyword")
+            .fuzzyMaxExpansions(0)
+            .fuzzyTranspositions(false)
+    }
+    else if (user.filter != null) {
         return ElasticUtils.parse(user.filter as String)
     } else if (hasPermission(Groups.ADMIN)) {
         return null
