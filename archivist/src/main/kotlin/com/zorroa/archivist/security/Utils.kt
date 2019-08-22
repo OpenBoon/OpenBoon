@@ -9,7 +9,6 @@ import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.elastic.ElasticUtils
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
@@ -222,8 +221,7 @@ fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
             .analyzer("keyword")
             .fuzzyMaxExpansions(0)
             .fuzzyTranspositions(false)
-    }
-    else if (user.filter != null) {
+    } else if (user.filter != null) {
         return ElasticUtils.parse(user.filter as String)
     } else if (hasPermission(Groups.ADMIN)) {
         return null
@@ -252,30 +250,6 @@ fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
 
     return QueryBuilders.termsQuery("system.permissions.read",
         getPermissionIds().map { it.toString() })
-}
-
-fun setWritePermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
-    if (ps == null) {
-        ps = PermissionSchema()
-    }
-    ps.write.clear()
-    for (p in perms) {
-        ps.write.add(p.id)
-    }
-    source.setAttr("system.permissions", ps)
-}
-
-fun setExportPermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
-    if (ps == null) {
-        ps = PermissionSchema()
-    }
-    ps.export.clear()
-    for (p in perms) {
-        ps.export.add(p.id)
-    }
-    source.setAttr("system.permissions", ps)
 }
 
 /**

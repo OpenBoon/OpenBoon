@@ -6,8 +6,6 @@ import org.elasticsearch.common.xcontent.NamedXContentRegistry
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilder
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.index.query.SimpleQueryStringBuilder
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 
