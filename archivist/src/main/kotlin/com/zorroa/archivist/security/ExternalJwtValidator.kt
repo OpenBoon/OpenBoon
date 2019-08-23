@@ -25,7 +25,8 @@ import java.util.concurrent.TimeUnit
  * last_name: the users last name
  * mail: the users email
  * locale: the users locale (en_US)
- * filter: an ES filter to apply
+ * filter: an ES filter to apply,
+ * queryStringFilter: an ES query string filter
  */
 interface ExternalJwtValidator : JwtValidator
 

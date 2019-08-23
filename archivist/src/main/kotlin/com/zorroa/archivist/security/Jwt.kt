@@ -102,6 +102,7 @@ class JwtAuthenticationToken constructor(
     val userId = claims.getValue("userId")
     val sessionId = claims.getOrDefault("sessionId", "")
     val filter = claims["filter"]
+    val queryStringFilter = claims["queryStringFilter"]
 
     override fun getCredentials(): Any {
         return sessionId
@@ -143,7 +144,8 @@ class JwtAuthenticationProvider : AuthenticationProvider {
             user.username,
             authorities,
             user.attrs,
-            token.filter
+            token.filter,
+            token.queryStringFilter
         )
 
         // Increment expire time if the token is still active.

@@ -17,6 +17,7 @@ import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.schema.LocationSchema
 import com.zorroa.archivist.schema.SourceSchema
+import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetScript
 import com.zorroa.archivist.search.AssetSearch
@@ -26,7 +27,9 @@ import com.zorroa.archivist.search.RangeQuery
 import com.zorroa.archivist.search.Scroll
 import com.zorroa.archivist.search.SimilarityFilter
 import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.security.getAssetPermissionsFilter
+import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
@@ -36,6 +39,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import java.io.IOException
 import java.util.UUID
 
@@ -1117,6 +1122,59 @@ class SearchServiceTests : AbstractTest() {
         search.postFilter.addToTerms("post_filter_check", "cat")
 
         val result = searchService.search(Pager.first(), search)
+        assertEquals(1, result.list.size)
+    }
+
+    @Test
+    fun testSearchWithJwtQStringFilter() {
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+
+        val currentUser = getUser()
+        val perms = currentUser.authorities.toSet() as Set<out GrantedAuthority>
+
+        // Build a new UserAuthed object
+        val authedUser = UserAuthed(
+            currentUser.id,
+            currentUser.organizationId,
+            currentUser.username,
+            perms,
+            currentUser.attrs,
+            null,
+            "source.filename:beer_kettle_01.jpg"
+        )
+
+        SecurityContextHolder.getContext().authentication =
+            UnitTestAuthentication(authedUser, authedUser.authorities)
+
+        val result = searchService.search(Pager.first(), AssetSearch())
+        assertEquals(1, result.list.size)
+    }
+
+    @Test
+    fun testSearchWithJwtQueryFilter() {
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+
+        val currentUser = getUser()
+        val perms = currentUser.authorities.toSet() as Set<out GrantedAuthority>
+
+        // Build a new UserAuthed object
+        val authedUser = UserAuthed(
+            currentUser.id,
+            currentUser.organizationId,
+            currentUser.username,
+            perms,
+            currentUser.attrs,
+            """{"query": {"terms": {"source.filename.raw": ["beer_kettle_01.jpg"]}}}"""
+        )
+
+        SecurityContextHolder.getContext().authentication =
+            UnitTestAuthentication(authedUser, authedUser.authorities)
+
+        val result = searchService.search(Pager.first(), AssetSearch())
         assertEquals(1, result.list.size)
     }
 }
