@@ -1,6 +1,7 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.AbstractTest
+import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.elasticsearch.index.query.SimpleQueryStringBuilder
 import org.junit.Before
 import org.junit.Test
@@ -79,8 +80,8 @@ class ExternalJwtValidatorTests : AbstractTest() {
 
         // Get a permission filter.
         val filter = getAssetPermissionsFilter(null)
-        assertTrue(filter is SimpleQueryStringBuilder)
-        assertEquals("source.type:image", filter.value())
+        assertTrue(filter is QueryStringQueryBuilder)
+        assertEquals("source.type:image", filter.queryString())
     }
 
     @Test
