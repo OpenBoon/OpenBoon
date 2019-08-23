@@ -2,7 +2,6 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.AbstractTest
 import org.elasticsearch.index.query.QueryStringQueryBuilder
-import org.elasticsearch.index.query.SimpleQueryStringBuilder
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
