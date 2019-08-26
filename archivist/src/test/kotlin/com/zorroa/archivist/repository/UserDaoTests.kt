@@ -75,9 +75,10 @@ class UserDaoTests : AbstractTest() {
     @Test
     fun testAllFiltered() {
         val filter = UserFilter(
-                ids = listOf(UUID.randomUUID()),
-                usernames = listOf("bob"),
-                emails = listOf("dole"))
+            ids = listOf(UUID.randomUUID()),
+            usernames = listOf("bob"),
+            emails = listOf("dole")
+        )
 
         // Checks that the columns are valid in the query
         assertEquals(0, userDao.getAll(filter).size())
@@ -180,6 +181,12 @@ class UserDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testExistsById() {
+        assertTrue(userDao.exists(user.id))
+        assertFalse(userDao.exists(UUID.randomUUID()))
+    }
+
+    @Test
     fun testHasPermissionUningNames() {
         assertFalse(userDao.hasPermission(user, "zorroa", "manager"))
         userDao.addPermission(user, permissionDao.get(Groups.MANAGER), false)
@@ -221,9 +228,13 @@ class UserDaoTests : AbstractTest() {
     fun testSetForgotPassword() {
         val token = userDao.setEnablePasswordRecovery(user)
         assertEquals(64, token.length.toLong())
-        assertEquals(token,
-                jdbc.queryForObject("SELECT str_reset_pass_token FROM users WHERE pk_user=?",
-                        String::class.java, user.id))
+        assertEquals(
+            token,
+            jdbc.queryForObject(
+                "SELECT str_reset_pass_token FROM users WHERE pk_user=?",
+                String::class.java, user.id
+            )
+        )
     }
 
     @Test

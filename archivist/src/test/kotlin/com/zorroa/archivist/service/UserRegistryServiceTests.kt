@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.sdk.security.AuthSource
 import org.assertj.core.api.Assertions
 import org.junit.Test
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -101,20 +102,37 @@ class UserRegistryServiceTests : AbstractTest() {
     fun testRegisterUserWithLanguage() {
         val username = "billybob@bob.com"
         val language = "jp"
-        userRegistryService.registerUser(username,
-            AuthSource("IRM", "saml", "saml", attrs = mapOf("user_locale" to language)))
+        userRegistryService.registerUser(
+            username,
+            AuthSource("IRM", "saml", "saml", attrs = mapOf("user_locale" to language))
+        )
         assertEquals(language, userService.get(username).language)
+    }
+
+    @Test
+    fun testRegisterUserWithUserId() {
+        val username = "billybob@bob.com"
+        val userId = UUID.randomUUID()
+        val user = userRegistryService.registerUser(
+            username,
+            AuthSource("IRM", "saml", "saml", userId = userId)
+        )
+        assertEquals(userId, user.id)
     }
 
     @Test
     fun testUpdateRegisteredUserLanguage() {
         val username = "billybob@bob.com"
-        userRegistryService.registerUser(username,
-            AuthSource("IRM", "saml", "saml", attrs = mapOf("user_locale" to "jp")))
+        userRegistryService.registerUser(
+            username,
+            AuthSource("IRM", "saml", "saml", attrs = mapOf("user_locale" to "jp"))
+        )
         assertEquals("jp", userService.get(username).language)
 
-        userRegistryService.registerUser(username,
-            AuthSource("IRM", "saml", "saml", attrs = mapOf("user_locale" to "es")))
+        userRegistryService.registerUser(
+            username,
+            AuthSource("IRM", "saml", "saml", attrs = mapOf("user_locale" to "es"))
+        )
         assertEquals("es", userService.get(username).language)
     }
 

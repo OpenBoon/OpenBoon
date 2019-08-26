@@ -47,7 +47,7 @@ class HttpExternalJwtValidator constructor(
     private val cache = CacheBuilder.newBuilder()
         .initialCapacity(1024)
         .concurrencyLevel(8)
-        .expireAfterWrite(5, TimeUnit.SECONDS)
+        .expireAfterWrite(10, TimeUnit.SECONDS)
         .build(object : CacheLoader<String, Map<String, String>>() {
             @Throws(Exception::class)
             override fun load(token: String): Map<String, String> {
