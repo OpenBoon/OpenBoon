@@ -123,15 +123,18 @@ class JobServiceImpl @Autowired constructor(
              */
             txevent.afterCommit(sync = false) {
                 val filter = JobFilter(
-                        states = listOf(JobState.Active),
-                        names = listOf(job.name),
-                        organizationIds = listOf(getOrgId()))
+                    states = listOf(JobState.Active),
+                    names = listOf(job.name),
+                    organizationIds = listOf(getOrgId())
+                )
                 val oldJobs = jobDao.getAll(filter)
                 for (oldJob in oldJobs) {
                     // Don't kill one we just made
                     if (oldJob.id != job.id) {
-                        logger.event(LogObject.JOB, LogAction.REPLACE,
-                                mapOf("jobId" to oldJob.id, "jobName" to oldJob.name))
+                        logger.event(
+                            LogObject.JOB, LogAction.REPLACE,
+                            mapOf("jobId" to oldJob.id, "jobName" to oldJob.name)
+                        )
                         cancelJob(oldJob)
                     }
                 }
@@ -149,16 +152,20 @@ class JobServiceImpl @Autowired constructor(
 
             when (type) {
                 PipelineType.Import -> {
-                    execute.add(ProcessorRef(importCollector))
+                    execute.addAll(pipelineService.loadFragment(importCollector))
                 }
                 PipelineType.Export -> {
                     script.setSettting("inline", true)
-                    script.setGlobalArg("exportArgs", mapOf(
+                    script.setGlobalArg(
+                        "exportArgs", mapOf(
                             "exportId" to job.id,
-                            "exportName" to job.name))
+                            "exportName" to job.name
+                        )
+                    )
                     execute.add(ProcessorRef("zplugins.core.collectors.ExportCollector"))
                 }
-                PipelineType.Batch, PipelineType.Generate -> { }
+                PipelineType.Batch, PipelineType.Generate -> {
+                }
             }
             script.execute = execute
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
