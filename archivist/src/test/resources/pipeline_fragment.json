@@ -1,0 +1,17 @@
+[
+  {
+    "className": "zplugins.core.collectors.GoogleCloudStorageCollector",
+    "args": {
+      "bucket": "gs://zorroa/foo/bar"
+    }
+  },
+  {
+    "className": "zplugins.core.collectors.GooglePubSubCollector",
+    "args": {
+      "channel": "zorroa_foo_bar"
+    }
+  },
+  {
+    "className": "zplugins.core.collectors.ImportCollector"
+  }
+]
