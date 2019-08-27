@@ -187,8 +187,7 @@ class AssetServiceImpl : AssetService {
 
         val assets = req.sources
         val orgId = getOrgId()
-        val defaultPermissions = Json.Mapper.convertValue<Map<String, Any>>(
-                permissionDao.getDefaultPermissionSchema(), Json.GENERIC_MAP)
+        val defaultPermissions = permissionDao.getDefaultPermissionSchema()
 
         val prepped = PreppedAssets(assets.map { newSource ->
 
@@ -206,7 +205,7 @@ class AssetServiceImpl : AssetService {
             newSource.setAttr("system.organizationId", orgId.toString())
             handleTimes(existingSource, newSource)
             handleHold(existingSource, newSource)
-            handlePermissions(existingSource, newSource, defaultPermissions)
+            handlePermissions(existingSource, newSource, defaultPermissions.copy())
             handleLinks(existingSource, newSource)
             fieldSystemService.applyFieldEdits(newSource)
 
@@ -272,41 +271,28 @@ class AssetServiceImpl : AssetService {
      * @param newAsset the new asset
      * @param defaultPermissions The default permissions as set in application.properties
      */
-    private fun handlePermissions(oldAsset: Document, newAsset: Document, defaultPermissions: Map<String, Any>?) {
+    private fun handlePermissions(oldAsset: Document, newAsset: Document, defaultPermissions: PermissionSchema) {
 
-        val existingPerms = oldAsset.getAttr("system.permissions",
-                PermissionSchema::class.java) ?: PermissionSchema()
+        /**
+         * If the existing asset has no permissions, we assume the defaults.
+         */
+        var existingPerms = oldAsset.getAttr(
+            "system.permissions",
+            PermissionSchema::class.java
+        ) ?: defaultPermissions
 
-        when {
-            /**
-             * Merge new permissions with existing permissions.
-             */
-            newAsset.permissions != null -> {
-                newAsset.permissions?.forEach {
-                    val key = it.key
-                    val value = it.value
-                    try {
-                        val perm = permissionDao.get(key)
-                        applyAclToPermissions(perm.id, value, existingPerms)
-                    } catch (e: Exception) {
-                        logger.warn("Permission not found: {}", key)
-                    }
-                }
-                newAsset.setAttr("system.permissions",
-                        Json.Mapper.convertValue<Map<String, Any>>(existingPerms, Json.GENERIC_MAP))
+        newAsset.permissions?.forEach { key, value ->
+            try {
+                val perm = permissionDao.get(key)
+                applyAclToPermissions(perm.id, value, existingPerms)
+            } catch (e: Exception) {
+                throw IllegalArgumentException("Permission not found: $key")
             }
-            existingPerms.isEmpty ->
-                /**
-                 * If the source didn't come with any permissions and the current perms
-                 * on the asset are empty, we apply the default permissions.
-                 */
-                newAsset.setAttr("system.permissions", defaultPermissions)
-            else ->
-                /**
-                 * Re-apply the existing permissions.
-                 */
-                newAsset.setAttr("system.permissions", existingPerms)
         }
+
+        newAsset.setAttr(
+            "system.permissions", existingPerms
+        )
     }
 
     /**
@@ -378,7 +364,6 @@ class AssetServiceImpl : AssetService {
      * Apply a permission and access level to a PermissionSchema
      */
     fun applyAclToPermissions(permissionId: UUID, access: Int, perms: PermissionSchema) {
-
         if (access == 0) {
             perms.removeFromRead(permissionId)
             perms.removeFromWrite(permissionId)
