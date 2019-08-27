@@ -94,6 +94,7 @@ class SearchServiceTests : AbstractTest() {
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, 1)
+        source.addToPermissions("zorroa::everyone", 0)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         val search = AssetSearch().setQuery("beer").setAccess(Access.Export)
