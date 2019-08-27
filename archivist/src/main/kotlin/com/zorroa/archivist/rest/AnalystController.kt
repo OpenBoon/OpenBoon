@@ -1,5 +1,7 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.ClusterLockService
 import com.zorroa.archivist.util.HttpUtils
@@ -42,7 +44,8 @@ import java.util.UUID
 class AnalystController @Autowired constructor(
     val analystService: AnalystService,
     val workQueue: AsyncListenableTaskExecutor,
-    val clusterLockService: ClusterLockService
+    val clusterLockService: ClusterLockService,
+    val properties: ApplicationProperties
 ) {
 
     @ApiOperation("Returns a list of Analysts matching the search filter.")
@@ -94,7 +97,12 @@ class AnalystController @Autowired constructor(
     @ApiOperation("Download the ZSDK.",
         notes = "Downloads a universal python wheel file which can be used to install the Python SDK.")
     @GetMapping(value = ["/download-zsdk"])
+    @PreAuthorize("permitAll()")
     fun downloadZsdk(requestEntity: RequestEntity<Any>): Any {
+        if (!properties.getBoolean("archivist.zsdk-download-enabled")) {
+            return ResponseEntity<Any>(HttpStatus.NOT_FOUND)
+        }
+
         val acceptingTrustStrategy = { chain: Array<X509Certificate>, authType: String -> true }
         val sslContext = org.apache.http.ssl.SSLContexts.custom()
                 .loadTrustMaterial(null, acceptingTrustStrategy)
