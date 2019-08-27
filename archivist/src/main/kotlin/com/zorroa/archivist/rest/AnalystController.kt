@@ -1,7 +1,6 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.ClusterLockService
 import com.zorroa.archivist.util.HttpUtils
@@ -54,8 +53,10 @@ class AnalystController @Autowired constructor(
         return analystService.getAll(filter)
     }
 
-    @ApiOperation("Searches for a single Analyst",
-        notes = "Throws an error if more than 1 result is returned based on the given filter.")
+    @ApiOperation(
+        "Searches for a single Analyst",
+        notes = "Throws an error if more than 1 result is returned based on the given filter."
+    )
     @PostMapping(value = ["/api/v1/analysts/_findOne"])
     fun findOne(@ApiParam("Search filter.") @RequestBody(required = false) filter: AnalystFilter): Analyst {
         return analystService.findOne(filter)
@@ -67,22 +68,26 @@ class AnalystController @Autowired constructor(
         return analystService.get(id)
     }
 
-    @ApiOperation("Sets the lock state of an Analyst.",
-        notes = "Locking an Analyst prevents it from picking up any new jobs.")
+    @ApiOperation(
+        "Sets the lock state of an Analyst.",
+        notes = "Locking an Analyst prevents it from picking up any new jobs."
+    )
     @PutMapping(value = ["/api/v1/analysts/{id}/_lock"])
     fun setLockState(
         @ApiParam("UUID of the Analyst.") @PathVariable id: UUID,
         @ApiParam("State to set Analyst to.", allowableValues = "locked,unlocked")
-            @RequestParam(value = "state", required = true) state: String
+        @RequestParam(value = "state", required = true) state: String
     ): Any {
         val newState = LockState.valueOf(state.toLowerCase().capitalize())
         val analyst = analystService.get(id)
         return HttpUtils.updated("analyst", analyst.id, analystService.setLockState(analyst, newState))
     }
 
-    @ApiOperation("Initiate a custom processor scan.",
+    @ApiOperation(
+        "Initiate a custom processor scan.",
         notes = "If the processor-scan key is locked, then the \"success\" property on the response body is set to " +
-            "False. This means there is an active scan already running and the request was ignored.")
+            "False. This means there is an active scan already running and the request was ignored."
+    )
     @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
     fun processorScan(): Any {
         val locked = clusterLockService.isLocked("processor-scan")
@@ -94,8 +99,10 @@ class AnalystController @Autowired constructor(
         return HttpUtils.status("processor", "scan", !locked)
     }
 
-    @ApiOperation("Download the ZSDK.",
-        notes = "Downloads a universal python wheel file which can be used to install the Python SDK.")
+    @ApiOperation(
+        "Download the ZSDK.",
+        notes = "Downloads a universal python wheel file which can be used to install the Python SDK."
+    )
     @GetMapping(value = ["/download-zsdk"])
     @PreAuthorize("permitAll()")
     fun downloadZsdk(requestEntity: RequestEntity<Any>): Any {
@@ -105,14 +112,14 @@ class AnalystController @Autowired constructor(
 
         val acceptingTrustStrategy = { chain: Array<X509Certificate>, authType: String -> true }
         val sslContext = org.apache.http.ssl.SSLContexts.custom()
-                .loadTrustMaterial(null, acceptingTrustStrategy)
-                .loadTrustMaterial(null, TrustSelfSignedStrategy())
-                .build()
+            .loadTrustMaterial(null, acceptingTrustStrategy)
+            .loadTrustMaterial(null, TrustSelfSignedStrategy())
+            .build()
         val csf = SSLConnectionSocketFactory(sslContext)
         val httpClient = HttpClients.custom()
-                .setSSLSocketFactory(csf)
-                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .build()
+            .setSSLSocketFactory(csf)
+            .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+            .build()
         val requestFactory = HttpComponentsClientHttpRequestFactory()
         requestFactory.httpClient = httpClient
         val restTemplate = RestTemplate(requestFactory)
