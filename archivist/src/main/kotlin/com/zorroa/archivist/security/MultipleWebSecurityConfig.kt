@@ -200,6 +200,7 @@ class MultipleWebSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/v2/api-docs").hasAuthority("zorroa::superadmin")
                 .antMatchers("/error").permitAll()
+                .antMatchers("/download-zsdk").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
