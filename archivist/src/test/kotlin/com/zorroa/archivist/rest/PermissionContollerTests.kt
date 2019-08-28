@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.common.util.Json
@@ -11,6 +12,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import kotlin.test.assertTrue
 
 /**
  * Created by chambers on 10/28/15.
@@ -24,13 +26,15 @@ class PermissionContollerTests : MockMvcTest() {
         b.description = "Star Wars crew members"
 
         val session = admin()
-        val result = mvc.perform(post("/api/v1/permissions")
+        val result = mvc.perform(
+            post("/api/v1/permissions")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(b))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val p = Json.deserialize(result.response.contentAsByteArray, Permission::class.java)
         assertEquals(b.description, p.description)
@@ -42,15 +46,17 @@ class PermissionContollerTests : MockMvcTest() {
     fun testGetAll() {
 
         val session = admin()
-        val result = mvc.perform(get("/api/v1/permissions")
+        val result = mvc.perform(
+            get("/api/v1/permissions")
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val perms1 = Json.Mapper.readValue<List<Permission>>(result.response.contentAsByteArray,
-                object : TypeReference<List<Permission>>() {
-                })
+            object : TypeReference<List<Permission>>() {
+            })
         authenticate()
         val perms2 = permissionService.getPermissions()
         assertEquals(perms1, perms2)
@@ -66,14 +72,36 @@ class PermissionContollerTests : MockMvcTest() {
         val perm = permissionService.createPermission(b)
 
         val session = admin()
-        val result = mvc.perform(get("/api/v1/permissions/" + perm.id)
+        val result = mvc.perform(
+            get("/api/v1/permissions/" + perm.id)
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val perm1 = Json.deserialize(result.response.contentAsByteArray, Permission::class.java)
         assertEquals(perm, perm1)
+    }
+
+    @Test
+    fun testExists() {
+
+        val b = PermissionSpec("project", "sw")
+        b.description = "Star Wars crew members"
+        val perm = permissionService.createPermission(b)
+
+        val result = mvc.perform(
+            get("/api/v2/permissions/_exists")
+                .headers(admin())
+                .content(Json.serialize(mapOf("fullName" to perm.authority)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
+
+        val value = Json.Mapper.readValue<Boolean>(result.response.contentAsString)
+        assertTrue(value)
     }
 
     @Test
@@ -85,13 +113,15 @@ class PermissionContollerTests : MockMvcTest() {
         val perm = permissionService.createPermission(b)
 
         val session = admin()
-        val result = mvc.perform(post("/api/v1/permissions/_findOne")
+        val result = mvc.perform(
+            post("/api/v1/permissions/_findOne")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(mapOf("authorities" to listOf("project::sw"))))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val perm1 = Json.deserialize(result.response.contentAsByteArray, Permission::class.java)
         assertEquals(perm, perm1)
@@ -106,11 +136,13 @@ class PermissionContollerTests : MockMvcTest() {
         val perm = permissionService.createPermission(b)
 
         val session = admin()
-        val result = mvc.perform(get("/api/v1/permissions/" + perm.id)
+        val result = mvc.perform(
+            get("/api/v1/permissions/" + perm.id)
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val perm1 = Json.deserialize(result.response.contentAsByteArray, Permission::class.java)
         assertEquals(perm, perm1)
