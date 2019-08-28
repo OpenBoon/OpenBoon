@@ -55,10 +55,17 @@ class PermissionController @Autowired constructor(
         return permissionService.findPermission(filter ?: PermissionFilter())
     }
 
+    @Deprecated("see v2")
     @ApiOperation("Determine if a Permission exists.")
     @RequestMapping(value = ["/api/v1/permissions/_exists/{name}"])
     fun exists(@ApiParam("Name of the Permission.") @PathVariable name: String): Boolean? {
         return permissionService.permissionExists(name)
+    }
+
+    @ApiOperation("Determine if a Permission exists.")
+    @RequestMapping(value = ["/api/v2/permissions/_exists"])
+    fun existsV2(@ApiParam("Name of the Permission.") @RequestBody req: Map<String, Any>): Boolean? {
+        return permissionService.permissionExists(req.getValue("fullName").toString())
     }
 
     @ApiOperation("Create a Permission.")
