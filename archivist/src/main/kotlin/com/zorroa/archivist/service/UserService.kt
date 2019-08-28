@@ -70,6 +70,8 @@ interface UserService {
 
     fun exists(username: String, source: String?): Boolean
 
+    fun exists(id: UUID): Boolean
+
     @Deprecated("see getAll(filter: UserFilter)")
     fun getAll(page: Pager): PagedList<User>
 
@@ -161,28 +163,38 @@ class UserRegistryServiceImpl @Autowired constructor(
         logger.info("Registering external user {}, multi-tenant enabled: {}", username, multiTenant)
         val org = getOrganization(source)
 
-        val user = if (!userService.exists(username, null)) {
-            logger.info("User not found, creating user: {}", username)
+        val existsById = source.userId != null && userService.exists(source.userId as UUID)
+        val existsByUser = userService.exists(username, null)
 
-            // We must become the super admin to add new users.
-            SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+        val user = when {
+            existsById -> userService.get(source.userId as UUID)
+            existsByUser -> userService.get(username)
+            else -> {
+                logger.info("User not found, creating user: {}", username)
 
-            val spec = UserSpec(
-                username,
-                UUID.randomUUID().toString() + UUID.randomUUID().toString(),
-                getEmail(username, source),
-                source.authSourceId,
-                firstName = source.attrs.getOrDefault("first_name", "First"),
-                lastName = source.attrs.getOrDefault("last_name", "Last"),
-                language = source.attrs.getOrDefault("user_locale", "en_US"),
-                authAttrs = source.attrs,
-                id = source.userId
-            )
-            userService.create(spec)
-        } else {
-            val user = userService.get(username)
+                // We must become the super admin to add new users.
+                SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
+
+                val spec = UserSpec(
+                    username,
+                    UUID.randomUUID().toString() + UUID.randomUUID().toString(),
+                    getEmail(username, source),
+                    source.authSourceId,
+                    firstName = source.attrs.getOrDefault("first_name", "First"),
+                    lastName = source.attrs.getOrDefault("last_name", "Last"),
+                    language = source.attrs.getOrDefault("user_locale", "en_US"),
+                    authAttrs = source.attrs,
+                    id = source.userId
+                )
+                userService.create(spec)
+            }
+        }
+
+        // If the user exists, update them.
+        if (existsById || existsByUser) {
             userService.update(user, RegisteredUserUpdateSpec(user, source.attrs))
         }
+
         userService.incrementLoginCounter(user)
 
         if (properties.getBoolean("archivist.security.saml.permissions.import")) {
@@ -459,6 +471,10 @@ class UserServiceImpl @Autowired constructor(
 
     override fun exists(username: String, source: String?): Boolean {
         return userDao.exists(username, source)
+    }
+
+    override fun exists(id: UUID): Boolean {
+        return userDao.exists(id)
     }
 
     override fun getAll(): List<User> {

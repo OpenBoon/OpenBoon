@@ -9,7 +9,6 @@ import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.elastic.ElasticUtils
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
@@ -166,15 +165,17 @@ fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boo
 }
 
 /**
- * Return true if the user has permission to a particular type of permission.
  *
- * @param field
- * @param asset
- * @return
  */
-fun hasPermission(field: String, asset: Document): Boolean {
-    val perms = asset.getAttr("system.permissions.$field", Json.SET_OF_UUIDS)
-    return hasPermission(perms)
+fun hasPermission(access: Access, asset: Document): Boolean {
+    val user = getUser()
+    // This assumes that the filter was already applied.
+    return if (user.hasPermissionFilter()) {
+        true
+    } else {
+        val perms = asset.getAttr("system.permissions.${access.field}", Json.SET_OF_UUIDS)
+        return hasPermission(perms)
+    }
 }
 
 /**
@@ -214,7 +215,15 @@ fun getOrganizationFilter(): QueryBuilder {
 
 fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
     val user = getUser()
-    if (user.filter != null) {
+    if (user.queryStringFilter != null) {
+        return QueryBuilders.queryStringQuery(user.queryStringFilter as String)
+            .autoGenerateSynonymsPhraseQuery(false)
+            .analyzeWildcard(false)
+            .lenient(false)
+            .analyzer("keyword")
+            .fuzzyMaxExpansions(0)
+            .fuzzyTranspositions(false)
+    } else if (user.filter != null) {
         return ElasticUtils.parse(user.filter as String)
     } else if (hasPermission(Groups.ADMIN)) {
         return null
@@ -243,30 +252,6 @@ fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
 
     return QueryBuilders.termsQuery("system.permissions.read",
         getPermissionIds().map { it.toString() })
-}
-
-fun setWritePermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
-    if (ps == null) {
-        ps = PermissionSchema()
-    }
-    ps.write.clear()
-    for (p in perms) {
-        ps.write.add(p.id)
-    }
-    source.setAttr("system.permissions", ps)
-}
-
-fun setExportPermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
-    if (ps == null) {
-        ps = PermissionSchema()
-    }
-    ps.export.clear()
-    for (p in perms) {
-        ps.export.add(p.id)
-    }
-    source.setAttr("system.permissions", ps)
 }
 
 /**

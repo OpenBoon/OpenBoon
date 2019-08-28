@@ -16,7 +16,8 @@ class UserAuthed(
     username: String,
     permissions: Set<out GrantedAuthority>,
     attrs: Map<String, Any>,
-    val filter: String? = null
+    var filter: String? = null,
+    var queryStringFilter: String? = null
 ) : UserId, UserDetails, Serializable {
 
     val attrs: MutableMap<String, Any> = attrs.toMutableMap()
@@ -29,6 +30,10 @@ class UserAuthed(
         } else {
             attrs[key] = value
         }
+    }
+
+    fun hasPermissionFilter(): Boolean {
+        return filter != null || queryStringFilter != null
     }
 
     override fun getAuthorities(): Collection<out GrantedAuthority> {

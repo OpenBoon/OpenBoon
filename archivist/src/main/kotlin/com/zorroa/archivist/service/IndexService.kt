@@ -19,7 +19,6 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getAuthentication
-import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
@@ -54,8 +53,6 @@ interface IndexService {
     fun index(assets: List<Document>): BatchIndexAssetsResponse
 
     fun index(doc: Document): Document
-
-    fun exists(path: Path): Boolean
 
     fun exists(id: String): Boolean
 
@@ -148,10 +145,6 @@ class IndexServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun exists(path: Path): Boolean {
-        return indexDao.exists(path)
-    }
-
     override fun exists(id: String): Boolean {
         return indexDao.exists(id)
     }
@@ -213,11 +206,7 @@ class IndexServiceImpl @Autowired constructor(
 
     override fun delete(assetId: String): Boolean {
         val doc = indexDao.get(assetId)
-        if (!hasPermission("write", doc)) {
-            throw ArchivistWriteException("delete access denied")
-        }
-
-        val result = indexDao.delete(assetId)
+        val result = indexDao.delete(doc)
         deleteAssociatedFiles(doc)
         if (result) {
             auditLogDao.create(AuditLogEntrySpec(assetId, AuditLogType.Deleted))

@@ -25,7 +25,8 @@ import java.util.concurrent.TimeUnit
  * last_name: the users last name
  * mail: the users email
  * locale: the users locale (en_US)
- * filter: an ES filter to apply
+ * filter: an ES filter to apply,
+ * queryStringFilter: an ES query string filter
  */
 interface ExternalJwtValidator : JwtValidator
 
@@ -46,7 +47,7 @@ class HttpExternalJwtValidator constructor(
     private val cache = CacheBuilder.newBuilder()
         .initialCapacity(1024)
         .concurrencyLevel(8)
-        .expireAfterWrite(5, TimeUnit.SECONDS)
+        .expireAfterWrite(10, TimeUnit.SECONDS)
         .build(object : CacheLoader<String, Map<String, String>>() {
             @Throws(Exception::class)
             override fun load(token: String): Map<String, String> {

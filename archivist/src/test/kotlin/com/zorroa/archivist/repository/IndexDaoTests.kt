@@ -66,12 +66,6 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testExistsByPath() {
-        val p = getTestImagePath("set04/standard/beer_kettle_01.jpg")
-        assertTrue(indexDao.exists(p))
-    }
-
-    @Test
     fun testExistsById() {
         assertTrue(indexDao.exists(asset1.id))
         assertFalse(indexDao.exists("abc"))
@@ -159,58 +153,6 @@ class IndexDaoTests : AbstractTest() {
         indexDao.index(ImmutableList.of(source1, source2))
     }
 
-    /*
-    @Test
-    fun testAppendLink() {
-        assertTrue(
-            indexDao.appendLink(
-                "folder", "100",
-                ImmutableList.of(asset1.id)
-            )["success"]!!.contains(asset1.id)
-        )
-        assertTrue(
-            indexDao.appendLink(
-                "parent", "foo",
-                ImmutableList.of(asset1.id)
-            )["success"]!!.contains(asset1.id)
-        )
-
-        val a = indexDao.get(asset1.id)
-        val folder_links = a.getAttr<Collection<Any>>("system.links.folder")
-        val parent_links = a.getAttr<Collection<Any>>("system.links.parent")
-
-        assertEquals(1, folder_links!!.size.toLong())
-        assertEquals(1, parent_links!!.size.toLong())
-        assertTrue(folder_links.contains("100"))
-        assertTrue(parent_links.contains("foo"))
-    }
-
-    @Test
-    fun testRemoveLink() {
-        assertTrue(
-            indexDao.appendLink(
-                "folder", "100",
-                ImmutableList.of(asset1.id)
-            )["success"]!!.contains(asset1.id)
-        )
-
-        var a = indexDao.get(asset1.id)
-        var links = a.getAttr<Collection<Any>>("system.links.folder")
-        assertEquals(1, links!!.size.toLong())
-
-        assertTrue(
-            indexDao.removeLink(
-                "folder", "100",
-                ImmutableList.of(asset1.id)
-            )["success"]!!.contains(asset1.id)
-        )
-
-        a = indexDao.get(asset1.id)
-        links = a.getAttr("system.links.folder")
-        assertEquals(0, links!!.size.toLong())
-    }
-*/
-
     @Test
     fun testUpdate() {
         asset1.setAttr("foo.bar", 100)
@@ -221,9 +163,7 @@ class IndexDaoTests : AbstractTest() {
 
     @Test
     fun testDelete() {
-        assertTrue(indexDao.delete(asset1.id))
-        refreshIndex()
-        assertFalse(indexDao.delete(asset1.id))
+        assertTrue(indexDao.delete(asset1))
     }
 
     @Test

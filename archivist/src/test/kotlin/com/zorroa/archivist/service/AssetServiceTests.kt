@@ -73,6 +73,43 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchCreateOrReplaceWithPermissions() {
+        val assets = getTestAssets("set06")
+        assets.forEach {
+            // Remove everyone
+            it.permissions = mutableMapOf("zorroa::everyone" to 0)
+            it.setAttr("test", "1")
+        }
+
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets))
+        var result = searchService.search(Pager.first(), AssetSearch("test:1"))
+        println(result.list)
+
+        for (asset in result.list) {
+            val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
+            assertTrue(perms!!.export.isEmpty())
+            assertTrue(perms!!.read.isEmpty())
+            assertTrue(perms!!.write.isNotEmpty())
+        }
+
+        // Add admin permission
+        assets.forEach {
+            // Remove everyone
+            it.permissions = mutableMapOf("user::admin" to 7)
+        }
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets))
+
+        result = searchService.search(Pager.first(), AssetSearch("test:1"))
+        for (asset in result.list) {
+            val perms = asset.getAttr("system.permissions", PermissionSchema::class.java)
+            println(Json.prettyString(perms!!))
+            assertTrue(perms!!.export.isNotEmpty())
+            assertTrue(perms!!.read.isNotEmpty())
+            assertEquals(2, perms!!.write.size)
+        }
+    }
+
+    @Test
     fun testBatchCreateOrReplaceWithLinks() {
         var assets = searchService.search(Pager.first(), AssetSearch())
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))

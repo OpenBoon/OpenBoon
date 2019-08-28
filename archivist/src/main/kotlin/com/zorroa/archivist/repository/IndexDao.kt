@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
+import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
 import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.Document
@@ -11,6 +12,7 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
+import com.zorroa.archivist.security.getAssetPermissionsFilter
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
 import com.zorroa.archivist.security.hasPermission
@@ -18,6 +20,7 @@ import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.clients.SearchBuilder
+import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
@@ -44,7 +47,7 @@ interface IndexDao {
 
     fun getMapping(): Map<String, Any>
 
-    fun delete(id: String): Boolean
+    fun delete(doc: Document): Boolean
 
     /**
      * Batch delete the given asset IDs.
@@ -74,7 +77,6 @@ interface IndexDao {
      */
     fun getAll(page: Pager, search: SearchBuilder): PagedList<Document>
 
-    @Throws(IOException::class)
     fun getAll(page: Pager, search: SearchBuilder, stream: OutputStream)
 
     /**
@@ -84,8 +86,6 @@ interface IndexDao {
      * @return
      */
     fun getAll(page: Pager): PagedList<Document>
-
-    fun exists(path: Path): Boolean
 
     fun exists(id: String): Boolean
 
@@ -233,15 +233,21 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
 
     override fun update(asset: Document): Long {
         val rest = getClient()
+        if (!hasPermission(Access.Write, asset)) {
+            throw ArchivistSecurityException("Access denied")
+        }
         val ver = rest.client.update(rest.newUpdateRequest(asset.id)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
         return ver
     }
 
-    override fun delete(id: String): Boolean {
+    override fun delete(doc: Document): Boolean {
         val rest = getClient()
-        return rest.client.delete(rest.newDeleteRequest(id)).result == DocWriteResponse.Result.DELETED
+        if (!hasPermission(Access.Write, doc)) {
+            throw ArchivistSecurityException("Access denied")
+        }
+        return rest.client.delete(rest.newDeleteRequest(doc.id)).result == DocWriteResponse.Result.DELETED
     }
 
     override fun batchDelete(docs: List<Document>): BatchDeleteAssetsResponse {
@@ -256,7 +262,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
             val hold = doc.getAttr("system.hold", Boolean::class.java) ?: false
             if (doc.attrExists("system.hold") && hold) {
                 rsp.onHoldAssetIds.add(doc.id)
-            } else if (!hasPermission("write", doc)) {
+            } else if (!hasPermission(Access.Write, doc)) {
                 rsp.accessDeniedAssetIds.add(doc.id)
             } else {
                 rsp.totalRequested += 1
@@ -312,7 +318,11 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
                 .must(QueryBuilders.termQuery("_id", id))
-                .must(getOrganizationFilter())
+                .filter(getOrganizationFilter())
+
+        getAssetPermissionsFilter(Access.Read)?.let {
+            query.filter(it)
+        }
         req.source.size(1)
         req.source.query(query)
 
@@ -324,21 +334,14 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termsQuery("_id", ids))
-            .must(getOrganizationFilter())
+            .filter(getOrganizationFilter())
+        getAssetPermissionsFilter(Access.Read)?.let {
+            query.filter(it)
+        }
         req.source.size(ids.size)
         req.source.query(query)
 
         return elastic.query(req, MAPPER)
-    }
-
-    override fun exists(path: Path): Boolean {
-        val rest = getClient()
-        val req = rest.newSearchBuilder()
-        val source = req.source
-        source.query(QueryBuilders.termQuery("source.path.raw", path.toString()))
-        source.size(0)
-
-        return rest.client.search(req.request).hits.totalHits > 0
     }
 
     override fun exists(id: String): Boolean {
@@ -352,7 +355,11 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
                 .must(QueryBuilders.termQuery("source.path.raw", path.toString()))
-                .must(getOrganizationFilter())
+                .filter(getOrganizationFilter())
+        getAssetPermissionsFilter(Access.Read)?.let {
+            query.filter(it)
+        }
+
         req.source.size(1)
         req.source.query(query)
 

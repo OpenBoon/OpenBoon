@@ -26,6 +26,14 @@ class PermissionSchema {
         @JsonIgnore
         get() = export.size + write.size + read.size == 0
 
+    fun copy(): PermissionSchema {
+        val result = PermissionSchema()
+        result.read = read.toMutableSet()
+        result.write = write.toMutableSet()
+        result.export = export.toMutableSet()
+        return result
+    }
+
     fun setSearch(read: MutableSet<UUID>): PermissionSchema {
         this.read = read
         return this
