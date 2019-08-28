@@ -14,6 +14,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import java.nio.file.Paths
 
 /**
@@ -47,7 +48,7 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testGetAsset() {
+    fun testGet() {
         val assets = indexService.getAll(Pager.first())
         for (a in assets) {
             assertEquals(
@@ -55,6 +56,13 @@ class IndexServiceTests : AbstractTest() {
                 indexService.get(Paths.get(a.getAttr("source.path", String::class.java))).id
             )
         }
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testGetTokenFilterFailure() {
+        val assets = indexService.getAll(Pager.first())
+        authenticate("user", qStringFilter = "source.path:foo")
+        indexService.get(assets[0].id)
     }
 
     @Test

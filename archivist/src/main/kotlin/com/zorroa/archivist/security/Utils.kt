@@ -165,15 +165,17 @@ fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boo
 }
 
 /**
- * Return true if the user has permission to a particular type of permission.
  *
- * @param field
- * @param asset
- * @return
  */
-fun hasPermission(field: String, asset: Document): Boolean {
-    val perms = asset.getAttr("system.permissions.$field", Json.SET_OF_UUIDS)
-    return hasPermission(perms)
+fun hasPermission(access: Access, asset: Document): Boolean {
+    val user = getUser()
+    // This assumes that the filter was already applied.
+    return if (user.hasPermissionFilter()) {
+        true
+    } else {
+        val perms = asset.getAttr("system.permissions.${access.field}", Json.SET_OF_UUIDS)
+        return hasPermission(perms)
+    }
 }
 
 /**
