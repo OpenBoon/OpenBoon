@@ -313,7 +313,7 @@ abstract class AbstractTest {
         authenticate(username, false)
     }
 
-    fun authenticate(username: String, superUser: Boolean, qStringFilter: String? = null) {
+    fun authenticate(username: String, superUser: Boolean = false, qStringFilter: String? = null) {
         val authed = userRegistryService.getUser(username)
         authed.queryStringFilter = qStringFilter
 

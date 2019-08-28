@@ -77,7 +77,6 @@ interface IndexDao {
      */
     fun getAll(page: Pager, search: SearchBuilder): PagedList<Document>
 
-    @Throws(IOException::class)
     fun getAll(page: Pager, search: SearchBuilder, stream: OutputStream)
 
     /**
