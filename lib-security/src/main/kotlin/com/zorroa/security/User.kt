@@ -32,7 +32,7 @@ class UserAuthed(
         }
     }
 
-    fun hasPermissionFilter() : Boolean {
+    fun hasPermissionFilter(): Boolean {
         return filter != null || queryStringFilter != null
     }
 

@@ -167,7 +167,7 @@ fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boo
 /**
  *
  */
-fun hasPermission(access: Access, asset: Document) : Boolean {
+fun hasPermission(access: Access, asset: Document): Boolean {
     val user = getUser()
     // This assumes that the filter was already applied.
     return if (user.hasPermissionFilter()) {

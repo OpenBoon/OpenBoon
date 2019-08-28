@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.AuditLogEntrySpec
 import com.zorroa.archivist.domain.AuditLogType
 import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
@@ -20,7 +19,6 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.AssetSearchOrder
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.getAuthentication
-import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.schema.ProxySchema
