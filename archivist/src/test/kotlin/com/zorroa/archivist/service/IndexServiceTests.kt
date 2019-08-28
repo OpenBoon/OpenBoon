@@ -16,7 +16,6 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import java.nio.file.Paths
-import java.util.UUID
 
 /**
  * Created by chambers on 9/1/16.
