@@ -173,6 +173,31 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     @Throws(IOException::class)
+    fun testSearchTokenPermissionsHit() {
+        authenticate("user", false, "source.filename:beer_kettle_01.jpg")
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        source.addToPermissions(Groups.EVERYONE, 1)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun testSearchTokenPermissionsMiss() {
+        authenticate("user", false, "source.filename:bilbo.mov")
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        assertEquals(0, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    @Throws(IOException::class)
     fun testFolderSearch() {
 
         val builder = FolderSpec("Avengers")

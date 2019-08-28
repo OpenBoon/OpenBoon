@@ -500,7 +500,7 @@ class AssetServiceImpl : AssetService {
                 val rsp = BatchUpdateAssetsResponse()
                 val docs: List<Document> = getAll(ids).mapNotNull { doc ->
 
-                    if (!hasPermission("write", doc)) {
+                    if (!hasPermission(Access.Write, doc)) {
                         logger.warnEvent(LogObject.ASSET,
                                 LogAction.BATCH_UPDATE,
                                 "Skipping updating asset, access denied",
@@ -674,7 +674,7 @@ class AssetServiceImpl : AssetService {
         val asset = get(edit.assetId.toString())
         val field = fieldSystemService.getField(edit.fieldId)
 
-        if (!hasPermission("write", asset)) {
+        if (!hasPermission(Access.Write, asset)) {
             throw ArchivistSecurityException("update access denied")
         }
 
@@ -793,8 +793,8 @@ class AssetServiceImpl : AssetService {
 
     override fun delete(assetId: String): Boolean {
         val asset = indexService.get(assetId)
-        if (!hasPermission("write", asset)) {
-            throw ArchivistWriteException("delete access denied")
+        if (!hasPermission(Access.Write, asset)) {
+            throw ArchivistSecurityException("delete access denied")
         }
         val result = indexService.delete(assetId)
         if (result) {
