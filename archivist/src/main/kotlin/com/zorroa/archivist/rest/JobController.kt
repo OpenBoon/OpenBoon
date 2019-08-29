@@ -74,7 +74,8 @@ class JobController @Autowired constructor(
                 resetAuthentication(InternalAuthentication(
                     userRegistryService.getUser(getOrgBatchUserName(UUID.fromString(orgHeader)))))
             } else {
-                return ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN)
+                return ResponseEntity("You do not have permission to submit jobs for other organizations.",
+                    HttpStatus.FORBIDDEN)
             }
         }
         val job = jobService.create(spec)
