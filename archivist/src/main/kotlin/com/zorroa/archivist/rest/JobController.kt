@@ -63,7 +63,7 @@ class JobController @Autowired constructor(
     @Throws(IOException::class)
     fun create(
         @ApiParam("Job to create.") @RequestBody spec: JobSpec,
-        @RequestHeader(value="X-Zorroa-Organization", required = false) orgHeader: String?
+        @RequestHeader(value = "X-Zorroa-Organization", required = false) orgHeader: String?
     ): Any {
         if (orgHeader != null) {
             resetAuthentication(InternalAuthentication(
