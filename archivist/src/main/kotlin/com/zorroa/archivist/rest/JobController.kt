@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.getOrgBatchUserName
 import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.resetAuthentication
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
@@ -11,11 +12,14 @@ import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobUpdateSpec
+import com.zorroa.security.Groups
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -66,8 +70,12 @@ class JobController @Autowired constructor(
         @RequestHeader(value = "X-Zorroa-Organization", required = false) orgHeader: String?
     ): Any {
         if (orgHeader != null) {
-            resetAuthentication(InternalAuthentication(
-                userRegistryService.getUser(getOrgBatchUserName(UUID.fromString(orgHeader)))))
+            if (hasPermission(Groups.SUPERADMIN)) {
+                resetAuthentication(InternalAuthentication(
+                    userRegistryService.getUser(getOrgBatchUserName(UUID.fromString(orgHeader)))))
+            } else {
+                return ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN)
+            }
         }
         val job = jobService.create(spec)
         return jobService.get(job.id, forClient = true)
