@@ -84,6 +84,42 @@ class JobControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testCreateDifferentOrgWithoutSuperAdmin() {
+        val spec = JobSpec("test_job_2",
+            emptyZpsScript("test"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"))
+
+        val headers = user()
+        headers.set("X-Zorroa-Organization", UUID.randomUUID().toString())
+        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
+            .headers(headers)
+            .with(SecurityMockMvcRequestPostProcessors.csrf())
+            .content(Json.serialize(spec))
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(MockMvcResultMatchers.status().isForbidden)
+            .andReturn()
+    }
+
+    @Test
+    fun testCreateDifferentOrgWithSuperAdmin() {
+        val spec = JobSpec("test_job_2",
+            emptyZpsScript("test"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"))
+
+        val headers = admin()
+        headers.set("X-Zorroa-Organization", UUID.randomUUID().toString())
+        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
+            .headers(headers)
+            .with(SecurityMockMvcRequestPostProcessors.csrf())
+            .content(Json.serialize(spec))
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(MockMvcResultMatchers.status().isNotFound)
+            .andReturn()
+    }
+
+    @Test
     fun testUpdate() {
         val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis(), 5)
 
