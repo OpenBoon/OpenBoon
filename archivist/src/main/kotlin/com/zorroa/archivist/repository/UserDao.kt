@@ -113,17 +113,27 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun get(id: UUID): User {
-        return jdbc.queryForObject<User>(
-            "SELECT * FROM users WHERE pk_user=?",
-            MAPPER, id
-        )
+        return try {
+            jdbc.queryForObject<User>(
+                "SELECT * FROM users WHERE pk_user=?",
+                MAPPER, id
+            )
+        }
+        catch(e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("User ID $id not found", 1)
+        }
     }
 
     override fun get(username: String): User {
-        return jdbc.queryForObject<User>(
-            "SELECT * FROM users WHERE (str_username=? OR str_email=?)",
-            MAPPER, username, username
-        )
+        return try {
+            return jdbc.queryForObject<User>(
+                "SELECT * FROM users WHERE (str_username=? OR str_email=?)",
+                MAPPER, username, username
+            )
+        }
+        catch(e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("User ID $username not found", 1)
+        }
     }
 
     override fun getByToken(token: String): User {
