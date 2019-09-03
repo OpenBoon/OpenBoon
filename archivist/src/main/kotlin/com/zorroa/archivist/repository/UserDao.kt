@@ -118,8 +118,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "SELECT * FROM users WHERE pk_user=?",
                 MAPPER, id
             )
-        }
-        catch(e: EmptyResultDataAccessException) {
+        } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("User ID $id not found", 1)
         }
     }
@@ -130,8 +129,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "SELECT * FROM users WHERE (str_username=? OR str_email=?)",
                 MAPPER, username, username
             )
-        }
-        catch(e: EmptyResultDataAccessException) {
+        } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("User ID $username not found", 1)
         }
     }
