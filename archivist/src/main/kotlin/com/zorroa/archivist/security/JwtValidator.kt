@@ -48,6 +48,11 @@ interface JwtValidator {
      * Provision a user with the given claims.
      */
     fun provisionUser(claims: Map<String, String>): UserAuthed?
+
+    /**
+     * Refresh the given token and return a new one.
+     */
+    fun refresh(token: String): String
 }
 
 /**
@@ -137,6 +142,10 @@ class LocalUserJwtValidator @Autowired constructor(val userService: UserService)
 
     override fun provisionUser(claims: Map<String, String>): UserAuthed? {
         return null
+    }
+
+    override fun refresh(token: String): String {
+        return token
     }
 
     companion object {
