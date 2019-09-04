@@ -4,7 +4,6 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_REQ
-import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_RSP
 import com.zorroa.archivist.security.JwtSecurityConstants.ORGID_HEADER
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import com.zorroa.archivist.service.UserService
