@@ -521,7 +521,7 @@ class UserServiceImpl @Autowired constructor(
     override fun getHmacKey(user: UserId): String {
         return getHmacKey(user.id)
     }
-    
+
     override fun getApiKey(spec: ApiKeySpec): ApiKey {
         return userDao.getApiKey(spec)
     }
