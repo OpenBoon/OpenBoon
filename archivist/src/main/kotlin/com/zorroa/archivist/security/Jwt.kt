@@ -74,8 +74,6 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
 
             req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
             req.setAttribute("sessionId", authToken.sessionId)
-            // I don't think we need this.
-            //res.addHeader(HEADER_STRING_RSP, token)
             SecurityContextHolder.getContext().authentication = authToken
         } catch (e: JwtValidatorException) {
             if (doSessionValidaton) {
