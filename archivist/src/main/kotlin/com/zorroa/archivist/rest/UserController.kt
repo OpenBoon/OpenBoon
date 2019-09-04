@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -143,6 +144,25 @@ class UserController @Autowired constructor(
         response.setHeader("Location", "/?token=$token")
         response.setHeader(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
         response.status = HttpServletResponse.SC_TEMPORARY_REDIRECT
+    }
+
+    @ApiOperation(
+        "Authenticate using a valid auth token.",
+        notes = "Use token authentication to get logged in. Returns the X-Zorroa-Credential header with a valid JWT."
+    )
+    @RequestMapping(value = ["/api/v1/auth/token-refresh"], method = [RequestMethod.POST])
+    fun tokenRefresh(
+        @RequestHeader("Authorization") token: String,
+        response: HttpServletResponse
+    ): ResponseEntity<Any> {
+
+        val cleanToken = token.removePrefix("Bearer ")
+        val validatedToken = masterJwtValidator.validate(cleanToken)
+        val refreshedToken = JwtSecurityConstants.TOKEN_PREFIX + validatedToken.validator.refresh(cleanToken)
+
+        return ResponseEntity.ok()
+            .header(JwtSecurityConstants.HEADER_STRING_RSP, refreshedToken)
+            .body(mapOf<String, String>())
     }
 
     @ApiOperation(

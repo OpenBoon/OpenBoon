@@ -32,6 +32,7 @@ interface ExternalJwtValidator : JwtValidator
 
 class HttpExternalJwtValidator constructor(
     private val validateUri: URI,
+    private val refreshUri: URI?,
     private val userRegistryService: UserRegistryService
 ) : ExternalJwtValidator {
 
@@ -80,6 +81,17 @@ class HttpExternalJwtValidator constructor(
         )
         logger.info("Jwt provision user: $userId/$username in OrgId $organizationId")
         return userRegistryService.registerUser(username, source)
+    }
+
+    override fun refresh(token: String): String {
+        return if (refreshUri != null) {
+            val req = RequestEntity.get(refreshUri)
+                .header(JwtSecurityConstants.HEADER_STRING_REQ, JwtSecurityConstants.TOKEN_PREFIX + token)
+                .accept(MediaType.ALL).build()
+            rest.exchange(req, String::class.java).body
+        } else {
+            token
+        }
     }
 
     companion object {

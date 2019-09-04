@@ -33,7 +33,9 @@ class ExternalJwtValidatorTests : AbstractTest() {
     @Before
     fun init() {
         validator = HttpExternalJwtValidator(
-            URI.create("http://localhost:8181/validate"), userRegistryService
+            URI.create("http://localhost:8181/validate"),
+            URI.create("http://localhost:8181/refresh"),
+            userRegistryService
         )
         mockServer = MockRestServiceServer.createServer(validator.rest)
     }
@@ -45,7 +47,8 @@ class ExternalJwtValidatorTests : AbstractTest() {
 
     @Test
     fun testEmbeddedQueryStringFilter() {
-        val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjY1MDE1MDUsImV4cCI6MTU5ODAzNzUwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjAwMDAwMDAwLTdiMGItNDgwZS04YzM2LWYwNmYwNGFlZDJmMSIsIm9yZ2FuaXphdGlvbklkIjoiMDAwMDAwMDAtOTk5OC04ODg4LTc3NzctNjY2NjY2NjY2NjY2IiwicXVlcnRTdHJpbmdGaWx0ZXIiOiJzb3VyY2UudHlwZTppbWFnZSJ9.4hGTBU1RHST-pojdDoGyAZGUe0QUN2xTiDfPrqYhnpA"
+        val token =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjY1MDE1MDUsImV4cCI6MTU5ODAzNzUwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjAwMDAwMDAwLTdiMGItNDgwZS04YzM2LWYwNmYwNGFlZDJmMSIsIm9yZ2FuaXphdGlvbklkIjoiMDAwMDAwMDAtOTk5OC04ODg4LTc3NzctNjY2NjY2NjY2NjY2IiwicXVlcnRTdHJpbmdGaWx0ZXIiOiJzb3VyY2UudHlwZTppbWFnZSJ9.4hGTBU1RHST-pojdDoGyAZGUe0QUN2xTiDfPrqYhnpA"
         val payload = """{
             "iss": "Online JWT Builder",
             "iat": 1566501505,
@@ -167,5 +170,26 @@ class ExternalJwtValidatorTests : AbstractTest() {
 
         // provision 1 more time to ensure the reprovisioning works.
         validator.provisionUser(result)
+    }
+
+    @Test
+    fun testTokenRefresh() {
+        val token = "abc123"
+        val rspToken = "zaq321"
+
+        mockServer.expect(
+            ExpectedCount.once(),
+            requestTo(URI("http://localhost:8181/refresh"))
+        )
+            .andExpect(method(HttpMethod.GET))
+            .andExpect(header("Authorization", "Bearer $token"))
+            .andRespond(
+                withStatus(HttpStatus.OK)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(rspToken)
+            )
+
+        val result = validator.refresh(token)
+        assertEquals(result, rspToken)
     }
 }
