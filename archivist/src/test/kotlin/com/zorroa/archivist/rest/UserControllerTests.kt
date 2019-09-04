@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delet
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
 import java.util.stream.Collectors
@@ -55,6 +56,18 @@ class UserControllerTests : MockMvcTest() {
             post("/api/v1/logout?token=abc")
         )
             .andExpect(status().isOk)
+    }
+
+    @Test
+    fun testTokenRefresh() {
+        mvc.perform(
+            post("/api/v1/auth/token-refresh")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(header().exists(JwtSecurityConstants.HEADER_STRING_RSP))
+            .andReturn()
     }
 
     @Test
