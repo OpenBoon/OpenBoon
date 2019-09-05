@@ -25,18 +25,19 @@ class SharedLinkControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testCreate() {
-        val session = admin()
 
         val spec = SharedLinkSpec(mapOf("foo" to "bar"))
         spec.userIds = setOf(getUserId())
 
-        val result = mvc.perform(post("/api/v1/shared_link")
+        val result = mvc.perform(
+            post("/api/v1/shared_link")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val t = deserialize(result, SharedLink::class.java)
         assertEquals(spec.state, t.state)
@@ -45,18 +46,19 @@ class SharedLinkControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testGet() {
-        val session = admin()
 
         val spec = SharedLinkSpec(mapOf<String, Any>("foo" to "bar"))
         spec.userIds = setOf(getUserId())
         val link = sharedLinkService!!.create(spec)
 
-        val result = mvc.perform(get("/api/v1/shared_link/" + link.id)
+        val result = mvc.perform(
+            get("/api/v1/shared_link/" + link.id)
                 .headers(admin())
                 .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val t = deserialize(result, SharedLink::class.java)
         assertEquals(spec.state, t.state)

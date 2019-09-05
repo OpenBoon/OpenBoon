@@ -522,7 +522,6 @@ class UserServiceImpl @Autowired constructor(
         return getHmacKey(user.id)
     }
 
-    @Transactional(readOnly = true)
     override fun getApiKey(spec: ApiKeySpec): ApiKey {
         return userDao.getApiKey(spec)
     }

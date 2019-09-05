@@ -397,15 +397,14 @@ class FolderControllerTests : MockMvcTest() {
 
         addTestAssets("set04/standard")
         var assets = assetDao.getAll(Pager.first())
-
         val (id) = folderService.create(FolderSpec("foo"))
 
-        val session = admin()
-        mvc.perform(post("/api/v1/folders/$id/assets")
-            .headers(admin())
-            .with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+        mvc.perform(
+            post("/api/v1/folders/$id/assets")
+                .headers(admin())
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
         )
             .andExpect(status().isOk)
             .andReturn()
@@ -431,12 +430,12 @@ class FolderControllerTests : MockMvcTest() {
         folderService.addAssets(folder1, BatchUpdateAssetLinks(assets.map { it.id }.toList()))
         refreshIndex()
 
-        val session = admin()
-        mvc.perform(delete("/api/v1/folders/" + folder1.id + "/assets")
-            .headers(admin())
-            .with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+        mvc.perform(
+            delete("/api/v1/folders/" + folder1.id + "/assets")
+                .headers(admin())
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
         )
             .andExpect(status().isOk)
             .andReturn()

@@ -32,7 +32,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
     @Test
     fun testGetFieldEdit() {
-        val session = admin()
+
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
@@ -59,7 +59,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
     @Test
     fun testSearchFieldEdits() {
-        val session = admin()
+
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
@@ -88,7 +88,7 @@ class FieldEditControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateFieldEdit() {
-        val session = admin()
+
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
@@ -156,7 +156,6 @@ class FieldEditControllerTests : MockMvcTest() {
     @Test
     fun testDeleteFieldEdit() {
 
-        val session = admin()
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
