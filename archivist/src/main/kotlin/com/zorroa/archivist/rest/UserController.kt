@@ -176,7 +176,7 @@ class UserController @Autowired constructor(
         val headers = HttpHeaders()
 
         val token = tokenStore.createSessionToken(user.id)
-        headers.add(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
+        headers.set(JwtSecurityConstants.HEADER_STRING_RSP, JwtSecurityConstants.TOKEN_PREFIX + token)
 
         return ResponseEntity.ok()
             .headers(headers)
