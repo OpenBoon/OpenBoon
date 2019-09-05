@@ -72,7 +72,6 @@ class UserControllerTests : MockMvcTest() {
 
     @Test
     fun testApiKey() {
-        val session = admin()
 
         val currentKey = userService.getHmacKey(userService.get("admin"))
         val result = mvc.perform(
@@ -89,7 +88,7 @@ class UserControllerTests : MockMvcTest() {
 
     @Test
     fun testApiKeyRegen() {
-        val session = admin()
+
         val currentKey = userService.getHmacKey(userService.get("admin"))
 
         val spec = UserController.ApiKeyReq(replace = true)
@@ -109,7 +108,7 @@ class UserControllerTests : MockMvcTest() {
     @Test
     fun testSearch() {
         val filter = UserFilter(usernames = listOf("admin"))
-        val session = admin()
+
         val result = mvc.perform(
             post("/api/v1/users/_search")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -126,7 +125,7 @@ class UserControllerTests : MockMvcTest() {
     @Test
     fun testFindOne() {
         val filter = UserFilter(usernames = listOf("admin"))
-        val session = admin()
+
         val result = mvc.perform(
             post("/api/v1/users/_findOne")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -142,7 +141,6 @@ class UserControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateV2() {
-        val session = admin()
 
         val spec = LocalUserSpec(
             "bilbo@baggins.com",
@@ -269,7 +267,6 @@ class UserControllerTests : MockMvcTest() {
         builder.firstName = "test123"
         builder.lastName = "456test"
 
-        val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/${user1.id}/_profile")
                 .headers(admin())
@@ -298,7 +295,6 @@ class UserControllerTests : MockMvcTest() {
         val user = userService.get("user")
         val password = UserPasswordUpdate(newPassword = "catandDog!231")
 
-        val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/${user.id}/_password")
                 .headers(admin())
@@ -320,7 +316,6 @@ class UserControllerTests : MockMvcTest() {
         val user = userService.get("user")
         val settings = UserSettings(search = ImmutableMap.of<String, Any>("foo", "bar"))
 
-        val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/${user.id}/_settings")
                 .headers(admin())
@@ -344,7 +339,7 @@ class UserControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testEnableDisable() {
         var user = userService.get("user")
-        val session = admin()
+
         mvc.perform(
             put("/api/v1/users/" + user.id + "/_enabled")
                 .headers(admin())
@@ -409,7 +404,6 @@ class UserControllerTests : MockMvcTest() {
         val perms = permissionService.getPermissions().stream()
             .map { p -> p.id }.collect(Collectors.toList())
 
-        val session = admin()
         val result = mvc.perform(
             put("/api/v1/users/" + user.id + "/permissions")
                 .headers(admin())
@@ -437,7 +431,6 @@ class UserControllerTests : MockMvcTest() {
         userService.setPermissions(user, Lists.newArrayList(permissionService.getPermission(Groups.ADMIN)))
         perms.add(permissionService.getPermission(Groups.ADMIN))
 
-        val session = admin()
         val result = mvc.perform(
             get("/api/v1/users/" + user.id + "/permissions")
                 .headers(admin())

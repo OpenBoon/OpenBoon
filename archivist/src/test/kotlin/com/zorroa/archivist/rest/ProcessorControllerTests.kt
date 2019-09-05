@@ -29,20 +29,23 @@ class ProcessorControllerTests : MockMvcTest() {
     @Before
     fun init() {
         testSpecs = Json.Mapper.readValue<List<ProcessorSpec>>(
-                ClassPathResource("processors.json").inputStream)
+            ClassPathResource("processors.json").inputStream
+        )
         processorService.replaceAll(testSpecs)
     }
 
     @Test
     fun testGetById() {
-        val session = admin()
+
         val id = "eebf2132-4b50-5eb0-a240-debfeaea2c6f"
-        val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/processors/$id")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/processors/$id")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val proc = deserialize(result, Processor::class.java)
         assertEquals(id, proc.id.toString())
@@ -50,14 +53,16 @@ class ProcessorControllerTests : MockMvcTest() {
 
     @Test
     fun testGetByClassName() {
-        val session = admin()
+
         val name = "zplugins.duplicates.processors.DuplicateDetectionProcessor"
-        val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/processors/$name")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/processors/$name")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val proc = deserialize(result, Processor::class.java)
         assertEquals(name, proc.className)
@@ -65,16 +70,18 @@ class ProcessorControllerTests : MockMvcTest() {
 
     @Test
     fun testSearch() {
-        val session = admin()
+
         val filter = ProcessorFilter(keywords = "ingestor")
 
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/processors/_search")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/processors/_search")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(filter))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val procs = deserialize(result, object : TypeReference<KPagedList<Processor>>() {})
         assertEquals(4, procs.size())

@@ -40,22 +40,26 @@ class JobControllerTests : MockMvcTest() {
 
     @Before
     fun init() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         job = jobService.create(spec)
     }
 
     @Test
     fun testGet() {
-        val session = admin()
-        val result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/jobs/" + job.id)
+
+        val result = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/jobs/" + job.id)
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val t1 = deserialize(result, Job::class.java)
         assertEquals(job.id, t1.id)
@@ -63,19 +67,22 @@ class JobControllerTests : MockMvcTest() {
 
     @Test
     fun testCreate() {
-        val spec = JobSpec("test_job_2",
-                emptyZpsScript("test"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job_2",
+            emptyZpsScript("test"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
-        val session = admin()
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/jobs")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val t1 = deserialize(result, Job::class.java)
         assertEquals(spec.name, t1.name)
@@ -85,36 +92,44 @@ class JobControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateDifferentOrgWithoutSuperAdmin() {
-        val spec = JobSpec("test_job_2",
+        val spec = JobSpec(
+            "test_job_2",
             emptyZpsScript("test"),
             args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar"))
+            env = mutableMapOf("foo" to "bar")
+        )
 
         val headers = user()
         headers.set("X-Zorroa-Organization", UUID.randomUUID().toString())
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
-            .headers(headers)
-            .with(SecurityMockMvcRequestPostProcessors.csrf())
-            .content(Json.serialize(spec))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
+        val result = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/jobs")
+                .headers(headers)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isForbidden)
             .andReturn()
     }
 
     @Test
     fun testCreateDifferentOrgWithSuperAdmin() {
-        val spec = JobSpec("test_job_2",
+        val spec = JobSpec(
+            "test_job_2",
             emptyZpsScript("test"),
             args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar"))
+            env = mutableMapOf("foo" to "bar")
+        )
 
         val headers = admin()
         headers.set("X-Zorroa-Organization", UUID.randomUUID().toString())
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs")
-            .headers(headers)
-            .with(SecurityMockMvcRequestPostProcessors.csrf())
-            .content(Json.serialize(spec))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
+        val result = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/jobs")
+                .headers(headers)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isNotFound)
             .andReturn()
     }
@@ -123,14 +138,15 @@ class JobControllerTests : MockMvcTest() {
     fun testUpdate() {
         val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis(), 5)
 
-        val session = admin()
-        val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val t1 = deserialize(result, Job::class.java)
         assertEquals(spec.name, t1.name)
@@ -140,13 +156,15 @@ class JobControllerTests : MockMvcTest() {
 
     @Test
     fun testCancel() {
-        val session = admin()
-        val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_cancel")
+
+        val result = mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_cancel")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val job = jobService.get(job.id)
         assertEquals(JobState.Cancelled, job.state)
@@ -160,13 +178,15 @@ class JobControllerTests : MockMvcTest() {
     @Test
     fun testRestart() {
         jobService.setJobState(job, JobState.Cancelled, null)
-        val session = admin()
-        val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_restart")
+
+        val result = mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_restart")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val job = jobService.get(job.id)
         assertEquals(JobState.Active, job.state)
@@ -182,13 +202,14 @@ class JobControllerTests : MockMvcTest() {
         val t = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
         assertTrue(jobService.setTaskState(t, TaskState.Failure, null))
 
-        val session = admin()
-        val result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_retryAllFailures")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_retryAllFailures")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val status = deserialize(result, Json.GENERIC_MAP)
         assertEquals("Job", status["type"])
@@ -203,31 +224,36 @@ class JobControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetTaskErrors() {
 
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
         authenticateAsAnalyst()
-        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
-                "it broke", "com.zorroa.OfficeIngestor", true, "execute")
+        val error = TaskErrorEvent(
+            UUID.randomUUID(), "/foo/bar.jpg",
+            "it broke", "com.zorroa.OfficeIngestor", true, "execute"
+        )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         taskErrorDao.create(task, error)
         authenticate("admin")
-        val session = admin()
 
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/jobs/${job.id}/taskerrors")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/jobs/${job.id}/taskerrors")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val content = result.response.contentAsString
         val log = Json.Mapper.readValue<KPagedList<TaskError>>(content,
-                object : TypeReference<KPagedList<TaskError>>() {})
+            object : TypeReference<KPagedList<TaskError>>() {})
         assertEquals(1, log.size())
     }
 
