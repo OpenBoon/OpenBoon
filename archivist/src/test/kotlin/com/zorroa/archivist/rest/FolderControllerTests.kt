@@ -397,9 +397,7 @@ class FolderControllerTests : MockMvcTest() {
 
         addTestAssets("set04/standard")
         var assets = assetDao.getAll(Pager.first())
-
         val (id) = folderService.create(FolderSpec("foo"))
-
 
         mvc.perform(
             post("/api/v1/folders/$id/assets")
@@ -431,7 +429,6 @@ class FolderControllerTests : MockMvcTest() {
         val folder1 = folderService.create(FolderSpec("foo"))
         folderService.addAssets(folder1, BatchUpdateAssetLinks(assets.map { it.id }.toList()))
         refreshIndex()
-
 
         mvc.perform(
             delete("/api/v1/folders/" + folder1.id + "/assets")

@@ -369,7 +369,6 @@ class AssetControllerTests : MockMvcTest() {
         assertEquals(1, assets.size.toLong())
         var doc = assets[0]
 
-
         mvc.perform(
             put("/api/v1/assets/" + doc.id + "/_setFolders")
                 .headers(admin())
