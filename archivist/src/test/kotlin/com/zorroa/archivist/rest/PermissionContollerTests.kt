@@ -25,7 +25,6 @@ class PermissionContollerTests : MockMvcTest() {
         val b = PermissionSpec("project", "sw")
         b.description = "Star Wars crew members"
 
-        val session = admin()
         val result = mvc.perform(
             post("/api/v1/permissions")
                 .headers(admin())
@@ -45,7 +44,6 @@ class PermissionContollerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetAll() {
 
-        val session = admin()
         val result = mvc.perform(
             get("/api/v1/permissions")
                 .headers(admin())
@@ -71,7 +69,6 @@ class PermissionContollerTests : MockMvcTest() {
         b.description = "Star Wars crew members"
         val perm = permissionService.createPermission(b)
 
-        val session = admin()
         val result = mvc.perform(
             get("/api/v1/permissions/" + perm.id)
                 .headers(admin())
@@ -112,7 +109,6 @@ class PermissionContollerTests : MockMvcTest() {
         b.description = "Star Wars crew members"
         val perm = permissionService.createPermission(b)
 
-        val session = admin()
         val result = mvc.perform(
             post("/api/v1/permissions/_findOne")
                 .headers(admin())
@@ -135,7 +131,6 @@ class PermissionContollerTests : MockMvcTest() {
         b.description = "Star Wars crew members"
         val perm = permissionService.createPermission(b)
 
-        val session = admin()
         val result = mvc.perform(
             get("/api/v1/permissions/" + perm.id)
                 .headers(admin())

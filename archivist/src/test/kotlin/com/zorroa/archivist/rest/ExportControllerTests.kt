@@ -30,22 +30,26 @@ class ExportControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testCreate() {
-        val session = admin()
+
         addTestAssets("set04/standard")
 
-        val spec = ExportSpec("foo",
-                AssetSearch(),
-                mutableListOf(),
-                mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"))
+        val spec = ExportSpec(
+            "foo",
+            AssetSearch(),
+            mutableListOf(),
+            mutableMapOf("foo" to "bar"),
+            mutableMapOf("foo" to "bar")
+        )
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/exports")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(spec)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(spec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val export = Json.Mapper.readValue<Job>(req.response.contentAsString, Job::class.java)
         assertEquals(spec.name, export.name)
@@ -54,30 +58,37 @@ class ExportControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testCreateExportFile() {
-        val session = admin()
+
         addTestAssets("set04/standard")
 
-        val espec = ExportSpec("foo",
-                AssetSearch(),
-                mutableListOf(),
-                mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"))
+        val espec = ExportSpec(
+            "foo",
+            AssetSearch(),
+            mutableListOf(),
+            mutableMapOf("foo" to "bar"),
+            mutableMapOf("foo" to "bar")
+        )
         val export = exportService.create(espec)
 
-        val storage = fileStorageService.get(FileStorageSpec(
-                "job", export.id.toString(), "exported/foo.txt"))
+        val storage = fileStorageService.get(
+            FileStorageSpec(
+                "job", export.id.toString(), "exported/foo.txt"
+            )
+        )
         fileStorageService.getSignedUrl(storage.id, HttpMethod.PUT)
 
         Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
 
         val fspec = ExportFileSpec(storage.id, "foo.txt")
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(fspec)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(fspec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val file = Json.Mapper.readValue(req.response.contentAsString, ExportFile::class.java)
         println(Json.prettyString(file))
@@ -89,41 +100,58 @@ class ExportControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testGetExportFile() {
-        val session = admin()
+
         addTestAssets("set04/standard")
-        val espec = ExportSpec("foo",
-                AssetSearch(),
-                mutableListOf(),
-                mutableMapOf("foo" to "bar"),
-                mutableMapOf("foo" to "bar"))
+        val espec = ExportSpec(
+            "foo",
+            AssetSearch(),
+            mutableListOf(),
+            mutableMapOf("foo" to "bar"),
+            mutableMapOf("foo" to "bar")
+        )
         val export = exportService.create(espec)
 
-        val storage = fileStorageService.get(FileStorageSpec(
-                "job", export.id.toString(), "exported/foo.txt"))
+        val storage = fileStorageService.get(
+            FileStorageSpec(
+                "job", export.id.toString(), "exported/foo.txt"
+            )
+        )
         fileStorageService.getSignedUrl(storage.id, HttpMethod.PUT)
 
         Files.write(storage.getServableFile().getLocalFile(), "bing".toByteArray())
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/exports/${export.id}/_files")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mapOf("storageId" to storage.id, "filename" to "exported.txt"))))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(mapOf("storageId" to storage.id, "filename" to "exported.txt")))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val file = Json.Mapper.readValue(req.response.contentAsString, ExportFile::class.java)
 
-        val req2 = mvc.perform(MockMvcRequestBuilders.get("/api/v1/exports/${export.id}/_files/${file.id}/_stream")
+        val req2 = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/exports/${export.id}/_files/${file.id}/_stream")
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.header().string("Content-Disposition",
-                        "attachment; filename=\"exported.txt\""))
-                .andExpect(MockMvcResultMatchers.header().longValue("Content-Length",
-                        storage.getServableFile().getStat().size))
-                .andExpect(MockMvcResultMatchers.header().string("Content-Type", "text/plain"))
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.header().string(
+                    "Content-Disposition",
+                    "attachment; filename=\"exported.txt\""
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.header().longValue(
+                    "Content-Length",
+                    storage.getServableFile().getStat().size
+                )
+            )
+            .andExpect(MockMvcResultMatchers.header().string("Content-Type", "text/plain"))
+            .andReturn()
 
         val content = req2.response.contentAsString
         assertEquals("bing", content)

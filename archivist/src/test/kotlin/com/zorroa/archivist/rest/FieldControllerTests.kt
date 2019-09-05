@@ -24,15 +24,16 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testExposeField() {
-        val session = admin()
 
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_expose")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/fields/_expose")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(fieldSpec)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(fieldSpec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val field = Json.Mapper.readValue<Field>(req.response.contentAsString, Field::class.java)
         assertEquals(fieldSpec.name, field.name)
@@ -43,15 +44,16 @@ class FieldControllerTests : MockMvcTest() {
     @Test
     fun testDeleteField() {
         val field = fieldSystemService.createField(fieldSpec)
-        val session = admin()
 
-        val req = mvc.perform(MockMvcRequestBuilders.delete("/api/v1/fields/${field.id}")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v1/fields/${field.id}")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(fieldSpec)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(fieldSpec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val rsp = Json.Mapper.readValue<Map<String, Any>>(req.response.contentAsString)
         assertTrue(rsp["success"] as Boolean)
@@ -61,17 +63,19 @@ class FieldControllerTests : MockMvcTest() {
     fun testUpdateField() {
         val field = fieldSystemService.createField(fieldSpec)
         val updateSpec = FieldUpdateSpec(
-                "test", true, true, 2.0f, false, requireList = false,
-                options = listOf("a", "b", "c"))
+            "test", true, true, 2.0f, false, requireList = false,
+            options = listOf("a", "b", "c")
+        )
 
-        val session = admin()
-        val req = mvc.perform(MockMvcRequestBuilders.put("/api/v1/fields/${field.id}")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/fields/${field.id}")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(updateSpec)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(updateSpec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val rsp = Json.Mapper.readValue<Map<String, Any>>(req.response.contentAsString)
         assertTrue(rsp["success"] as Boolean)
@@ -89,13 +93,14 @@ class FieldControllerTests : MockMvcTest() {
     fun testGet() {
         val field = fieldSystemService.createField(fieldSpec)
 
-        val session = admin()
-        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/${field.id}")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/fields/${field.id}")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val result = Json.Mapper.readValue<Field>(req.response.contentAsString, Field::class.java)
         assertEquals(field.id, result.id)
@@ -107,17 +112,19 @@ class FieldControllerTests : MockMvcTest() {
 
         val filter = FieldFilter(ids = listOf(field.id))
 
-        val session = admin()
-        val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/fields/_search")
+        val req = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/fields/_search")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(filter)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(filter))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val result = Json.Mapper.readValue<KPagedList<Field>>(
-                req.response.contentAsString, Field.Companion.TypeRefKList)
+            req.response.contentAsString, Field.Companion.TypeRefKList
+        )
         assertEquals(1, result.size())
         assertEquals(field.id, result[0].id)
     }
@@ -136,15 +143,18 @@ class FieldControllerTests : MockMvcTest() {
     @Test
     fun testGetWithNullBody() {
         setupEmbeddedFieldSets()
-        val session = admin()
-        val req = mvc.perform(MockMvcRequestBuilders.get("/api/v1/fields/_search")
+
+        val req = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/fields/_search")
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val result = Json.Mapper.readValue<KPagedList<Field>>(
-                req.response.contentAsString, Field.Companion.TypeRefKList)
+            req.response.contentAsString, Field.Companion.TypeRefKList
+        )
         assertTrue(result.size() > 0)
     }
 }

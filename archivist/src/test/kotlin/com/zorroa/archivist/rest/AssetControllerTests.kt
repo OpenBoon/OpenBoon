@@ -86,7 +86,6 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetFields() {
 
-        val session = admin()
         addTestAssets("set04/standard")
 
         val result = mvc.perform(
@@ -109,7 +108,6 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testSearchV3() {
 
-        val session = admin()
         addTestAssets("set04/standard")
 
         val result = mvc.perform(
@@ -131,7 +129,6 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testCountV2() {
 
-        val session = admin()
         addTestAssets("set04/standard")
 
         val result = mvc.perform(
@@ -176,7 +173,7 @@ class AssetControllerTests : MockMvcTest() {
     }
 
     private fun countWithAssetSearch(filter: AssetFilter?): Int {
-        val session = admin()
+
         addTestAssets("set01")
 
         val search = AssetSearch("jpg")
@@ -199,7 +196,7 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testSuggestV3() {
-        val session = admin()
+
         val sources = getTestAssets("set04/canyon")
         for (source in sources) {
             source.setAttr("media.keywords", listOf("reflection"))
@@ -230,7 +227,6 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testDelete() {
 
-        val session = admin()
         addTestAssets("set04/standard")
         refreshIndex()
 
@@ -256,7 +252,6 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testBatchDelete() {
 
-        val session = admin()
         addTestAssets("set04/standard")
         refreshIndex()
 
@@ -314,7 +309,6 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetV2() {
 
-        val session = admin()
         addTestAssets("set04/standard")
         refreshIndex()
 
@@ -338,7 +332,6 @@ class AssetControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testGetByPath() {
 
-        val session = admin()
         addTestAssets("set04/standard")
         refreshIndex()
 
@@ -376,7 +369,6 @@ class AssetControllerTests : MockMvcTest() {
         assertEquals(1, assets.size.toLong())
         var doc = assets[0]
 
-        val session = admin()
         mvc.perform(
             put("/api/v1/assets/" + doc.id + "/_setFolders")
                 .headers(admin())
@@ -399,7 +391,6 @@ class AssetControllerTests : MockMvcTest() {
     fun testSetPermissions() {
         addTestAssets("set04/canyon")
 
-        val session = admin()
         val perm = permissionService.getPermission(Groups.ADMIN)
         val req = BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 7))
 
@@ -426,7 +417,6 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testFolderAssign() {
-        val session = admin()
 
         addTestAssets("set04/canyon")
         var assets = indexDao.getAll(Pager.first())
@@ -434,20 +424,22 @@ class AssetControllerTests : MockMvcTest() {
         val (id) = folderService.create(FolderSpec("foo"))
         val (id1) = folderService.create(FolderSpec("bar"))
         mvc.run {
-            perform(post("/api/v1/folders/$id/assets")
-                .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+            perform(
+                post("/api/v1/folders/$id/assets")
+                    .headers(admin())
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
             )
                 .andExpect(status().isOk)
                 .andReturn()
 
-            perform(post("/api/v1/folders/$id1/assets")
-                .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
+            perform(
+                post("/api/v1/folders/$id1/assets")
+                    .headers(admin())
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(Json.serialize(assets.stream().map { it.id }.collect(Collectors.toList())))
             )
                 .andExpect(status().isOk)
                 .andReturn()
@@ -470,7 +462,7 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testStreamHeadRequest() {
-        val session = admin()
+
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         indexService.index(source)
 
@@ -502,7 +494,6 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testStreamSource() {
-        val session = admin()
 
         val source = Source(File("src/test/resources/test-data/toucan.jpg"))
         indexService.index(source)
@@ -520,7 +511,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testStreamProxy() {
-        val session = admin()
+
         val asset = videoAsset()
         val mediaType = "video/mp4"
         val tmpFile = createTempFile()
@@ -551,7 +542,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testStreamHeadWithAcceptHeaderNoValidOptions() {
-        val session = admin()
+
         val asset = videoAsset()
         val mediaType = "video/mov"
         val tmpFile = createTempFile()
@@ -581,7 +572,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testStreamHeadWithAcceptHeaderForProxy() {
-        val session = admin()
+
         val asset = videoAsset()
         val mediaType = "video/mov"
         val tmpFile = createTempFile()
@@ -622,7 +613,6 @@ class AssetControllerTests : MockMvcTest() {
             updates[doc.id] = UpdateAssetRequest(mapOf("foos" to "ball"))
         }
 
-        val session = admin()
         val req = BatchUpdateAssetsRequest(updates)
         val result = mvc.perform(
             put("/api/v1/assets")
@@ -652,7 +642,6 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     fun testGetFieldSets() {
 
-        val session = admin()
         addTestAssets("set04/standard")
         var asset = indexDao.getAll(Pager.first())[0]
 
