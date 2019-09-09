@@ -9,17 +9,15 @@ import com.zorroa.archivist.domain.DyHierarchySpec
 import com.zorroa.archivist.domain.FolderSpec
 import com.zorroa.archivist.domain.Source
 import com.zorroa.common.util.Json
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-
-import java.text.ParseException
-
-import org.junit.Assert.assertEquals
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.text.ParseException
 
 /**
  * Created by chambers on 4/18/17.
@@ -40,32 +38,38 @@ class DyhierarchyControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testCreateAndDelete() {
-        val session = admin()
 
         val (id) = folderService.create(FolderSpec("foo"), false)
-        val spec = DyHierarchySpec(id, listOf(
+        val spec = DyHierarchySpec(
+            id, listOf(
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day),
                 DyHierarchyLevel("source.type.raw"),
                 DyHierarchyLevel("source.extension.raw"),
-                DyHierarchyLevel("source.filename.raw")))
+                DyHierarchyLevel("source.filename.raw")
+            )
+        )
 
-        val result = mvc.perform(post("/api/v1/dyhi")
+        val result = mvc.perform(
+            post("/api/v1/dyhi")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(spec)))
-                .andExpect(status().isOk)
-                .andReturn()
+                .content(Json.serialize(spec))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val dh = Json.Mapper.readValue<DyHierarchy>(result.response.contentAsString)
         assertEquals(4, dh.levels.size.toLong())
 
-        val delRsp = mvc.perform(delete("/api/v1/dyhi/${dh.id}")
+        val delRsp = mvc.perform(
+            delete("/api/v1/dyhi/${dh.id}")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val delBody = Json.Mapper.readValue<Map<String, Any>>(delRsp.response.contentAsString)
         assertEquals(delBody["success"], true)

@@ -1,22 +1,31 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.getOrgBatchUserName
+import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.security.InternalAuthentication
+import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.security.resetAuthentication
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.JobUpdateSpec
+import com.zorroa.security.Groups
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -28,7 +37,8 @@ import java.util.UUID
 @Timed
 @Api(tags = ["Job"], description = "Operations for interacting with jobs.")
 class JobController @Autowired constructor(
-    val jobService: JobService
+    val jobService: JobService,
+    val userRegistryService: UserRegistryService
 ) {
 
     @ApiOperation("Search for Jobs.")
@@ -55,7 +65,19 @@ class JobController @Autowired constructor(
     @ApiOperation("Create a Job.")
     @PostMapping(value = ["/api/v1/jobs"])
     @Throws(IOException::class)
-    fun create(@ApiParam("Job to create.") @RequestBody spec: JobSpec): Any {
+    fun create(
+        @ApiParam("Job to create.") @RequestBody spec: JobSpec,
+        @RequestHeader(value = "X-Zorroa-Organization", required = false) orgHeader: String?
+    ): Any {
+        if (orgHeader != null) {
+            if (hasPermission(Groups.SUPERADMIN)) {
+                resetAuthentication(InternalAuthentication(
+                    userRegistryService.getUser(getOrgBatchUserName(UUID.fromString(orgHeader)))))
+            } else {
+                return ResponseEntity("You do not have permission to submit jobs for other organizations.",
+                    HttpStatus.FORBIDDEN)
+            }
+        }
         val job = jobService.create(spec)
         return jobService.get(job.id, forClient = true)
     }

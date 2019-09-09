@@ -34,16 +34,17 @@ class PipelineControllerTests : MockMvcTest() {
 
     @Test
     fun testCreate() {
-        val session = admin()
 
         val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, "test", processors = listOf())
-        val result = mvc.perform(post("/api/v1/pipelines")
+        val result = mvc.perform(
+            post("/api/v1/pipelines")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
         val p = deserialize(result, Pipeline::class.java)
         assertEquals(spec.type, p.type)
         assertEquals(spec.processors, p.processors)
@@ -53,13 +54,15 @@ class PipelineControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testDelete() {
-        val session = admin()
-        val result2 = mvc.perform(delete("/api/v1/pipelines/" + pl.id)
+
+        val result2 = mvc.perform(
+            delete("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val rs = deserialize(result2, Json.GENERIC_MAP)
         println(rs)
@@ -69,19 +72,21 @@ class PipelineControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testUpdate() {
         val spec2 = Pipeline(
-                pl.id,
-                "Rocky IV",
-                PipelineType.Batch,
-                listOf())
+            pl.id,
+            "Rocky IV",
+            PipelineType.Batch,
+            listOf()
+        )
 
-        val session = admin()
-        val result = mvc.perform(put("/api/v1/pipelines/" + pl.id)
+        val result = mvc.perform(
+            put("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec2))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val rs = deserialize(result, Json.GENERIC_MAP)
         assertTrue(rs.get("success") as Boolean)
@@ -89,12 +94,14 @@ class PipelineControllerTests : MockMvcTest() {
 
     @Test
     fun testGet() {
-        val session = admin()
-        val result = mvc.perform(get("/api/v1/pipelines/" + pl.id)
+
+        val result = mvc.perform(
+            get("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val data = deserialize(result, Pipeline::class.java)
         assertEquals(pl.id, data.id)
@@ -103,12 +110,14 @@ class PipelineControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testGetByName() {
-        val session = admin()
-        val result = mvc.perform(get("/api/v1/pipelines/" + pl.name)
+
+        val result = mvc.perform(
+            get("/api/v1/pipelines/" + pl.name)
                 .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk)
-                .andReturn()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
 
         val data = deserialize(result, Pipeline::class.java)
         assertEquals(pl, data)

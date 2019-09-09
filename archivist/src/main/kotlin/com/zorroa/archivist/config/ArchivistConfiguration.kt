@@ -151,8 +151,16 @@ class ArchivistConfiguration {
     )
     fun externalJwtValidator(userRegistryService: UserRegistryService): ExternalJwtValidator {
         val props = properties()
+        val refreshUrl = props.getString("archivist.security.jwt.external.refresh-url")
+        val refreshUri = if (refreshUrl.isEmpty()) {
+            null
+        } else {
+            URI.create(refreshUrl)
+        }
+
         return HttpExternalJwtValidator(
             URI.create(props.getString("archivist.security.jwt.external.url")),
+            refreshUri,
             userRegistryService
         )
     }

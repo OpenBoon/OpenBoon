@@ -33,16 +33,20 @@ class TaskErrorControllerTests : MockMvcTest() {
 
     @Before
     fun init() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
         authenticateAsAnalyst()
-        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
-                "it broke", "com.zorroa.OfficeIngestor", true, "execute")
+        val error = TaskErrorEvent(
+            UUID.randomUUID(), "/foo/bar.jpg",
+            "it broke", "com.zorroa.OfficeIngestor", true, "execute"
+        )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         taskErrorDao.create(task, error)
         authenticate("admin")
@@ -51,20 +55,22 @@ class TaskErrorControllerTests : MockMvcTest() {
     @Test
     @Throws(Exception::class)
     fun testSearch() {
-        val session = admin()
+
         val filter = TaskErrorFilter(processors = listOf("com.zorroa.OfficeIngestor"))
 
-        val result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/taskerrors/_search")
+        val result = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/taskerrors/_search")
                 .headers(admin())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(filter)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(filter))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val content = result.response.contentAsString
         val log = Json.Mapper.readValue<KPagedList<TaskError>>(content,
-                object : TypeReference<KPagedList<TaskError>>() {})
+            object : TypeReference<KPagedList<TaskError>>() {})
         assertEquals(1, log.size())
     }
 
@@ -72,7 +78,8 @@ class TaskErrorControllerTests : MockMvcTest() {
     fun testFindOne() {
         val taskError = resultForPostContent<TaskError>(
             "/api/v1/taskerrors/_findOne",
-            TaskErrorFilter(processors = listOf("com.zorroa.OfficeIngestor")))
+            TaskErrorFilter(processors = listOf("com.zorroa.OfficeIngestor"))
+        )
         assertEquals("/foo/bar.jpg", taskError.path)
     }
 }

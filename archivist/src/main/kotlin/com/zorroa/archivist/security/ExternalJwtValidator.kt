@@ -25,11 +25,14 @@ import java.util.concurrent.TimeUnit
  * last_name: the users last name
  * mail: the users email
  * locale: the users locale (en_US)
+ * filter: an ES filter to apply,
+ * queryStringFilter: an ES query string filter
  */
 interface ExternalJwtValidator : JwtValidator
 
 class HttpExternalJwtValidator constructor(
     private val validateUri: URI,
+    private val refreshUri: URI?,
     private val userRegistryService: UserRegistryService
 ) : ExternalJwtValidator {
 
@@ -45,7 +48,7 @@ class HttpExternalJwtValidator constructor(
     private val cache = CacheBuilder.newBuilder()
         .initialCapacity(1024)
         .concurrencyLevel(8)
-        .expireAfterWrite(5, TimeUnit.SECONDS)
+        .expireAfterWrite(10, TimeUnit.SECONDS)
         .build(object : CacheLoader<String, Map<String, String>>() {
             @Throws(Exception::class)
             override fun load(token: String): Map<String, String> {
@@ -78,6 +81,17 @@ class HttpExternalJwtValidator constructor(
         )
         logger.info("Jwt provision user: $userId/$username in OrgId $organizationId")
         return userRegistryService.registerUser(username, source)
+    }
+
+    override fun refresh(token: String): String {
+        return if (refreshUri != null) {
+            val req = RequestEntity.get(refreshUri)
+                .header(JwtSecurityConstants.HEADER_STRING_REQ, JwtSecurityConstants.TOKEN_PREFIX + token)
+                .accept(MediaType.ALL).build()
+            rest.exchange(req, String::class.java).body
+        } else {
+            token
+        }
     }
 
     companion object {

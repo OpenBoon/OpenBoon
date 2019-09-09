@@ -48,6 +48,11 @@ interface JwtValidator {
      * Provision a user with the given claims.
      */
     fun provisionUser(claims: Map<String, String>): UserAuthed?
+
+    /**
+     * Refresh the given token and return a new one.
+     */
+    fun refresh(token: String): String
 }
 
 /**
@@ -121,7 +126,13 @@ class LocalUserJwtValidator @Autowired constructor(val userService: UserService)
             val alg = Algorithm.HMAC256(hmacKey)
             alg.verify(jwt)
 
-            return jwt.claims.map {
+            /**
+             * The only claims we allow to move forward in this validator
+             * must be in the whitelist.
+             */
+            return jwt.claims.filterKeys {
+                it in CLAIM_WHITELIST
+            }.map {
                 it.key to it.value.asString()
             }.toMap()
         } catch (e: JWTVerificationException) {
@@ -133,7 +144,15 @@ class LocalUserJwtValidator @Autowired constructor(val userService: UserService)
         return null
     }
 
+    override fun refresh(token: String): String {
+        return token
+    }
+
     companion object {
+
+        // These claims cannot be in self signed JWT tokens.
+        private val CLAIM_WHITELIST = setOf("userId", "sessionId")
+
         private val logger = LoggerFactory.getLogger(LocalUserJwtValidator::class.java)
     }
 }

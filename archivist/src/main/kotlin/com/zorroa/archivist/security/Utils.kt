@@ -6,9 +6,9 @@ import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.elastic.ElasticUtils
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.schema.PermissionSchema
 import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
@@ -89,8 +89,10 @@ fun getUser(): UserAuthed {
                 auth.details as UserAuthed
             } catch (e2: ClassCastException) {
                 // Log this message so we can see what the type is.
-                SecurityLogger.logger.warn("Invalid auth objects: principal='{}' details='{}'",
-                        auth?.principal, auth?.details)
+                SecurityLogger.logger.warn(
+                    "Invalid auth objects: principal='{}' details='{}'",
+                    auth?.principal, auth?.details
+                )
                 throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
             }
         }
@@ -163,15 +165,17 @@ fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boo
 }
 
 /**
- * Return true if the user has permission to a particular type of permission.
  *
- * @param field
- * @param asset
- * @return
  */
-fun hasPermission(field: String, asset: Document): Boolean {
-    val perms = asset.getAttr("system.permissions.$field", Json.SET_OF_UUIDS)
-    return hasPermission(perms)
+fun hasPermission(access: Access, asset: Document): Boolean {
+    val user = getUser()
+    // This assumes that the filter was already applied.
+    return if (user.hasPermissionFilter()) {
+        true
+    } else {
+        val perms = asset.getAttr("system.permissions.${access.field}", Json.SET_OF_UUIDS)
+        return hasPermission(perms)
+    }
 }
 
 /**
@@ -209,60 +213,45 @@ fun getOrganizationFilter(): QueryBuilder {
     return QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
 }
 
-fun getPermissionsFilter(access: Access?): QueryBuilder? {
-    if (hasPermission(Groups.ADMIN)) {
+fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
+    val user = getUser()
+    if (user.queryStringFilter != null) {
+        return QueryBuilders.queryStringQuery(user.queryStringFilter as String)
+            .autoGenerateSynonymsPhraseQuery(false)
+            .analyzeWildcard(false)
+            .lenient(false)
+            .analyzer("keyword")
+            .fuzzyMaxExpansions(0)
+            .fuzzyTranspositions(false)
+    } else if (user.filter != null) {
+        return ElasticUtils.parse(user.filter as String)
+    } else if (hasPermission(Groups.ADMIN)) {
         return null
-    } else {
-        if (access == null || access == Access.Read) {
-            return if (hasPermission(Groups.READ)) {
-                null
-            } else {
-                QueryBuilders.termsQuery("system.permissions.read",
-                        getPermissionIds().map { it.toString() })
-            }
-        } else if (access == Access.Write) {
-            return if (hasPermission(Groups.WRITE)) {
-                null
-            } else {
-                QueryBuilders.termsQuery("system.permissions.write",
-                        getPermissionIds().map { it.toString() })
-            }
-        } else if (access == Access.Export) {
-            return if (hasPermission(Groups.EXPORT)) {
-                null
-            } else {
-                QueryBuilders.termsQuery("system.permissions.export",
-                        getPermissionIds().map { it.toString() })
-            }
+    } else if (access == null || access == Access.Read) {
+        return if (hasPermission(Groups.READ)) {
+            null
+        } else {
+            QueryBuilders.termsQuery("system.permissions.read",
+                getPermissionIds().map { it.toString() })
+        }
+    } else if (access == Access.Write) {
+        return if (hasPermission(Groups.WRITE)) {
+            null
+        } else {
+            QueryBuilders.termsQuery("system.permissions.write",
+                getPermissionIds().map { it.toString() })
+        }
+    } else if (access == Access.Export) {
+        return if (hasPermission(Groups.EXPORT)) {
+            null
+        } else {
+            QueryBuilders.termsQuery("system.permissions.export",
+                getPermissionIds().map { it.toString() })
         }
     }
 
     return QueryBuilders.termsQuery("system.permissions.read",
-            getPermissionIds().map { it.toString() })
-}
-
-fun setWritePermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
-    if (ps == null) {
-        ps = PermissionSchema()
-    }
-    ps.write.clear()
-    for (p in perms) {
-        ps.write.add(p.id)
-    }
-    source.setAttr("system.permissions", ps)
-}
-
-fun setExportPermissions(source: Document, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("system.permissions", PermissionSchema::class.java)
-    if (ps == null) {
-        ps = PermissionSchema()
-    }
-    ps.export.clear()
-    for (p in perms) {
-        ps.export.add(p.id)
-    }
-    source.setAttr("system.permissions", ps)
+        getPermissionIds().map { it.toString() })
 }
 
 /**

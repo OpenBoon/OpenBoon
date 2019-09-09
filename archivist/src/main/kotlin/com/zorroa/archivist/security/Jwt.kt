@@ -4,7 +4,6 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_REQ
-import com.zorroa.archivist.security.JwtSecurityConstants.HEADER_STRING_RSP
 import com.zorroa.archivist.security.JwtSecurityConstants.ORGID_HEADER
 import com.zorroa.archivist.security.JwtSecurityConstants.TOKEN_PREFIX
 import com.zorroa.archivist.service.UserService
@@ -75,7 +74,6 @@ class JWTAuthorizationFilter(authManager: AuthenticationManager) :
 
             req.setAttribute("authType", HttpServletRequest.CLIENT_CERT_AUTH)
             req.setAttribute("sessionId", authToken.sessionId)
-            res.addHeader(HEADER_STRING_RSP, token)
             SecurityContextHolder.getContext().authentication = authToken
         } catch (e: JwtValidatorException) {
             if (doSessionValidaton) {
@@ -101,6 +99,8 @@ class JwtAuthenticationToken constructor(
 
     val userId = claims.getValue("userId")
     val sessionId = claims.getOrDefault("sessionId", "")
+    val filter = claims["filter"]
+    val queryStringFilter = claims["queryStringFilter"]
 
     override fun getCredentials(): Any {
         return sessionId
@@ -141,7 +141,9 @@ class JwtAuthenticationProvider : AuthenticationProvider {
             user.organizationId,
             user.username,
             authorities,
-            user.attrs
+            user.attrs,
+            token.filter,
+            token.queryStringFilter
         )
 
         // Increment expire time if the token is still active.

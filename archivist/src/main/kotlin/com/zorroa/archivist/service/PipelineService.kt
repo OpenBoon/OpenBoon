@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.google.common.base.Splitter
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
@@ -18,6 +19,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.nio.file.Files
@@ -38,6 +40,12 @@ interface PipelineService {
     fun delete(id: UUID): Boolean
     fun getDefaultPipelineName(type: PipelineType): String
     fun resolve(type: PipelineType, refs: List<ProcessorRef>?): List<ProcessorRef>
+
+    /**
+     * Load a pipeline fragment.  A fragment is either a comma delimited list
+     * of processors of a path to a json file.  A path must end with .json.
+     */
+    fun loadFragment(fragment: String): List<ProcessorRef>
 }
 
 /**
@@ -122,8 +130,10 @@ class PipelineServiceImpl @Autowired constructor(
                 }
 
                 if (pl.type != type) {
-                    throw throw IllegalArgumentException("Cannot have pipeline type " +
-                            pl.type + " embedded in a " + type + " pipeline")
+                    throw throw IllegalArgumentException(
+                        "Cannot have pipeline type " +
+                            pl.type + " embedded in a " + type + " pipeline"
+                    )
                 }
                 result.addAll(resolve(type, pl.processors))
             } else {
@@ -135,6 +145,16 @@ class PipelineServiceImpl @Autowired constructor(
         }
 
         return result
+    }
+
+    override fun loadFragment(fragment: String): List<ProcessorRef> {
+        return if (fragment.endsWith(".json")) {
+            Json.Mapper.readValue(File(fragment))
+        } else {
+            Splitter.on(",").omitEmptyStrings().trimResults().split(fragment).map {
+                ProcessorRef(it)
+            }
+        }
     }
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
