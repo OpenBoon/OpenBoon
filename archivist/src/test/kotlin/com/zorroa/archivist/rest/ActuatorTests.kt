@@ -35,7 +35,7 @@ class ActuatorTests : MockMvcTest() {
 
     @Test
     fun testHealthEndpoint() {
-        val rsp = mvc.perform(
+        mvc.perform(
             MockMvcRequestBuilders.get("/actuator/health")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -46,7 +46,7 @@ class ActuatorTests : MockMvcTest() {
 
     @Test
     fun testMetrics() {
-        val monUser = userService.get("monitor")
+        val monUser = userService.get("admin")
         val token = generateUserToken(monUser.id, userService.getHmacKey(monUser))
         mvc.perform(
             MockMvcRequestBuilders.get("/actuator/metrics")

@@ -10,6 +10,7 @@ import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
 import com.zorroa.archivist.domain.Organization
+import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
@@ -42,6 +43,7 @@ import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.security.authentication.AuthenticationManager
@@ -309,24 +311,24 @@ abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
     }
 
-    fun authenticate(username: String) {
-        authenticate(username, false)
-    }
-
-    fun authenticate(username: String, superUser: Boolean = false, qStringFilter: String? = null) {
+    fun authenticate(username: String, qStringFilter: String? = null, perms: List<String>? = null) {
         val authed = userRegistryService.getUser(username)
         authed.queryStringFilter = qStringFilter
 
-        val authorities = authed.authorities.toMutableList()
-
-        if (superUser) {
+        val authorities = authed.authorities.toMutableSet()
+        perms?.forEach {
             authorities.add(
-                permissionService.getPermission(Groups.ADMIN)
+                try {
+                    permissionService.getPermission(it)
+                } catch (e: EmptyResultDataAccessException) {
+                    val (type, name) = it.split(Permission.JOIN, limit = 2)
+                    Permission(UUID.randomUUID(), name, type, "test")
+                }
             )
         }
-
         SecurityContextHolder.getContext().authentication =
             authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
+
     }
 
     fun logout() {

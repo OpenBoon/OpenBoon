@@ -42,6 +42,7 @@ import org.junit.Test
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import java.io.IOException
+import java.lang.RuntimeException
 import java.util.UUID
 
 /**
@@ -87,14 +88,12 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearchExportPermissionsMiss() {
-
         authenticate("user")
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, 1)
-        source.addToPermissions("zorroa::everyone", 0)
+        source.addToPermissions(Groups.EVERYONE, 0)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         val search = AssetSearch().setQuery("beer").setAccess(Access.Export)
@@ -112,7 +111,7 @@ class SearchServiceTests : AbstractTest() {
         val user = userService.get("user")
         userService.addPermissions(
             user, ImmutableList.of(
-                permissionService.getPermission("zorroa::export")
+                permissionService.getPermission(Groups.EXPORT)
             )
         )
         authenticate("user")
@@ -151,7 +150,7 @@ class SearchServiceTests : AbstractTest() {
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, 1)
-        source.addToPermissions("zorroa::everyone", 0)
+        source.addToPermissions(Groups.EVERYONE, 0)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         val search = AssetSearch().setQuery("beer")
@@ -171,10 +170,23 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, searchService.search(search).hits.getTotalHits())
     }
 
+    @Test(expected=RuntimeException::class)
+    fun testSearchWithJwtPermissionsWriteAccessFailure() {
+        authenticate("user", "source.filename:beer_kettle_01.jpg")
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        source.addToPermissions(Groups.ADMIN, 7)
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        search.access = Access.Write
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
     @Test
     @Throws(IOException::class)
     fun testSearchTokenPermissionsHit() {
-        authenticate("user", false, "source.filename:beer_kettle_01.jpg")
+        authenticate("user", "source.filename:beer_kettle_01.jpg")
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("captain"))
         source.addToPermissions(Groups.EVERYONE, 1)
@@ -185,9 +197,8 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearchTokenPermissionsMiss() {
-        authenticate("user", false, "source.filename:bilbo.mov")
+        authenticate("user", "source.filename:bilbo.mov")
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("captain"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
@@ -197,7 +208,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testFolderSearch() {
 
         val builder = FolderSpec("Avengers")
