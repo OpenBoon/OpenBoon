@@ -26,9 +26,9 @@ import com.zorroa.archivist.search.KwConfFilter
 import com.zorroa.archivist.search.RangeQuery
 import com.zorroa.archivist.search.Scroll
 import com.zorroa.archivist.search.SimilarityFilter
+import com.zorroa.archivist.security.AccessResolver
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
-import com.zorroa.archivist.security.getAssetPermissionsFilter
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.security.Groups
@@ -39,8 +39,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.TestPropertySource
 import java.io.IOException
 import java.util.UUID
 
@@ -48,6 +51,9 @@ import java.util.UUID
  * Created by chambers on 10/30/15.
  */
 class SearchServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var accessResolver: AccessResolver
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -116,7 +122,7 @@ class SearchServiceTests : AbstractTest() {
 
         val search = AssetSearch().setQuery("source.filename:beer").setAccess(Access.Export)
         assertEquals(1, searchService.search(search).hits.getTotalHits())
-        assertNull(getAssetPermissionsFilter(search.access))
+        assertNull(accessResolver.getAssetPermissionsFilter(search.access))
     }
 
     @Test
@@ -133,7 +139,7 @@ class SearchServiceTests : AbstractTest() {
         val search = AssetSearch()
             .setAccess(Access.Export)
             .setQuery("source.filename:beer")
-        assertNotNull(getAssetPermissionsFilter(search.access))
+        assertNotNull(accessResolver.getAssetPermissionsFilter(search.access))
         assertEquals(1, searchService.search(search).hits.getTotalHits())
     }
 
@@ -161,42 +167,6 @@ class SearchServiceTests : AbstractTest() {
 
         val search = AssetSearch().setQuery("captain")
         assertEquals(1, searchService.search(search).hits.getTotalHits())
-    }
-
-    @Test(expected = RuntimeException::class)
-    fun testSearchWithJwtPermissionsWriteAccessFailure() {
-        authenticate("user", "source.filename:beer_kettle_01.jpg")
-        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", ImmutableList.of("captain"))
-        source.addToPermissions(Groups.ADMIN, 7)
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
-
-        val search = AssetSearch().setQuery("captain")
-        search.access = Access.Write
-        assertEquals(1, searchService.search(search).hits.getTotalHits())
-    }
-
-    @Test
-    fun testSearchTokenPermissionsHit() {
-        authenticate("user", "source.filename:beer_kettle_01.jpg")
-        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", ImmutableList.of("captain"))
-        source.addToPermissions(Groups.EVERYONE, 1)
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
-
-        val search = AssetSearch().setQuery("captain")
-        assertEquals(1, searchService.search(search).hits.getTotalHits())
-    }
-
-    @Test
-    fun testSearchTokenPermissionsMiss() {
-        authenticate("user", "source.filename:bilbo.mov")
-        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", ImmutableList.of("captain"))
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
-
-        val search = AssetSearch().setQuery("captain")
-        assertEquals(0, searchService.search(search).hits.getTotalHits())
     }
 
     @Test
@@ -1122,6 +1092,55 @@ class SearchServiceTests : AbstractTest() {
         val result = searchService.search(Pager.first(), search)
         assertEquals(1, result.list.size)
     }
+}
+
+@TestPropertySource(locations = ["classpath:test.properties", "classpath:jwt.properties"])
+class JwtTokenSecuritySearchServiceTests : AbstractTest() {
+
+    @Test(expected = AccessDeniedException::class)
+    fun testSearchWithJwtWriteAccessFailure() {
+        authenticate("user", "source.filename:beer_kettle_01.jpg")
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        search.access = Access.Write
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    fun testSearchWithJwtReadAccessAll() {
+        authenticate("user", "source.filename:*", listOf(Groups.READ))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    fun testSearchJwtReadAccessFilter() {
+        authenticate("user", "source.filename:beer_kettle_01.jpg", listOf(Groups.READ))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test(expected = AccessDeniedException::class)
+    fun testSearchTokenPermissionsFailure() {
+        authenticate("user", "source.filename:bilbo.mov")
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        searchService.search(search).hits.getTotalHits()
+    }
 
     @Test
     fun testSearchWithJwtQStringFilter() {
@@ -1150,29 +1169,16 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, result.list.size)
     }
 
-    @Test
-    fun testSearchWithJwtQueryFilter() {
-        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
-        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
 
-        val currentUser = getUser()
-        val perms = currentUser.authorities.toSet() as Set<out GrantedAuthority>
+    override fun requiresFieldSets(): Boolean {
+        return true
+    }
 
-        // Build a new UserAuthed object
-        val authedUser = UserAuthed(
-            currentUser.id,
-            currentUser.organizationId,
-            currentUser.username,
-            perms,
-            currentUser.attrs,
-            """{"query": {"terms": {"source.filename.raw": ["beer_kettle_01.jpg"]}}}"""
-        )
-
-        SecurityContextHolder.getContext().authentication =
-            UnitTestAuthentication(authedUser, authedUser.authorities)
-
-        val result = searchService.search(Pager.first(), AssetSearch())
-        assertEquals(1, result.list.size)
+    @Before
+    fun init() {
+        fieldService.invalidateFields()
     }
 }

@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
@@ -14,7 +15,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.security.access.AccessDeniedException
+import org.springframework.test.context.TestPropertySource
 import java.nio.file.Paths
 
 /**
@@ -56,13 +58,6 @@ class IndexServiceTests : AbstractTest() {
                 indexService.get(Paths.get(a.getAttr("source.path", String::class.java))).id
             )
         }
-    }
-
-    @Test(expected = EmptyResultDataAccessException::class)
-    fun testGetTokenFilterFailure() {
-        val assets = indexService.getAll(Pager.first())
-        authenticate("user", qStringFilter = "source.path:foo")
-        indexService.get(assets[0].id)
     }
 
     @Test
@@ -167,3 +162,31 @@ class IndexServiceTests : AbstractTest() {
         )
     }
 }
+
+@TestPropertySource(locations = ["classpath:test.properties", "classpath:jwt.properties"])
+class JwtTokenSecurityIndexServiceTests : AbstractTest() {
+
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
+    @Before
+    fun init() {
+        addTestAssets("set04/standard")
+    }
+
+    @Test
+    fun testGetTokenFilter() {
+        authenticate("user", qStringFilter = "source.subType:jpeg", perms = listOf(Groups.READ))
+        val assets = indexService.getAll(Pager.first())
+        indexService.get(assets[0].id)
+    }
+
+    @Test(expected = AccessDeniedException::class)
+    fun testGetTokenFilterFailure() {
+        authenticate("user", qStringFilter = "source.path:foo")
+        val assets = indexService.getAll(Pager.first())
+        indexService.get(assets[0].id)
+    }
+}
+

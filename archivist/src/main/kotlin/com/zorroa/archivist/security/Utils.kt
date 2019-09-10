@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Permission
-import com.zorroa.archivist.elastic.ElasticUtils
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.util.Json
@@ -14,7 +13,6 @@ import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -212,57 +210,6 @@ fun getPermissionIds(): Set<UUID> {
 
 fun getOrganizationFilter(): QueryBuilder {
     return QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
-}
-
-fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
-    val user = getUser()
-    if (user.queryStringFilter != null) {
-
-        if (access == Access.Write && !hasPermission(Groups.WRITE)) {
-            throw AccessDeniedException("User does not have permissions")
-        } else if (access == Access.Delete && !hasPermission(Groups.DELETE)) {
-            throw AccessDeniedException("User does not have permissions")
-        } else if (access == Access.Read && !hasPermission(Groups.READ)) {
-            throw AccessDeniedException("User does not have permissions")
-        }
-        else {
-            return QueryBuilders.queryStringQuery(user.queryStringFilter as String)
-                .autoGenerateSynonymsPhraseQuery(false)
-                .analyzeWildcard(false)
-                .lenient(false)
-                .analyzer("keyword")
-                .fuzzyMaxExpansions(0)
-                .fuzzyTranspositions(false)
-        }
-    } else if (user.filter != null) {
-        return ElasticUtils.parse(user.filter as String)
-    } else if (hasPermission(Groups.ADMIN)) {
-        return null
-    } else if (access == null || access == Access.Read) {
-        return if (hasPermission(Groups.READ)) {
-            null
-        } else {
-            QueryBuilders.termsQuery("system.permissions.read",
-                getPermissionIds().map { it.toString() })
-        }
-    } else if (access == Access.Write) {
-        return if (hasPermission(Groups.WRITE)) {
-            null
-        } else {
-            QueryBuilders.termsQuery("system.permissions.write",
-                getPermissionIds().map { it.toString() })
-        }
-    } else if (access == Access.Export) {
-        return if (hasPermission(Groups.EXPORT)) {
-            null
-        } else {
-            QueryBuilders.termsQuery("system.permissions.export",
-                getPermissionIds().map { it.toString() })
-        }
-    }
-
-    return QueryBuilders.termsQuery("system.permissions.read",
-        getPermissionIds().map { it.toString() })
 }
 
 /**
