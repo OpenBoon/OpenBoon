@@ -11,8 +11,8 @@ public class Groups {
     public static final String MONITOR = "zorroa::monitor";
 
     public static final String EXPORT = "assets::export-all";
-    public static final String READ = "assets::view-all";
-    public static final String WRITE = "assets::edit-all";
+    public static final String READ = "assets::read-all";
+    public static final String WRITE = "assets::write-all";
     public static final String DELETE = "assets::delete-all";
-    public static final String VIEW_ALL_FOLDERS = "folders::view-all";
+    public static final String VIEW_ALL_FOLDERS = "folders::read-all";
 }

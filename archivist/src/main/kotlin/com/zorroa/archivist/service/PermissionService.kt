@@ -85,11 +85,11 @@ class PermissionServiceImpl @Autowired constructor(
             mapOf("type" to "zorroa", "name" to "administrator", "desc" to "Superuser, can do and access everything"),
             mapOf("type" to "zorroa", "name" to "everyone", "desc" to "A standard user of the system"),
             mapOf("type" to "assets", "name" to "export-all", "desc" to "Export all files"),
-            mapOf("type" to "assets", "name" to "view-all", "desc" to "Read all data"),
-            mapOf("type" to "assets", "name" to "edit-all", "desc" to "Write all data"),
+            mapOf("type" to "assets", "name" to "read-all", "desc" to "Read all data"),
+            mapOf("type" to "assets", "name" to "write-all", "desc" to "Write all data"),
             mapOf("type" to "assets", "name" to "delete-all", "desc" to "Write all data"),
             mapOf("type" to "zorroa", "name" to "librarian", "desc" to "Manager /library folder"),
-            mapOf("type" to "folders", "name" to "view-all", "desc" to "Ability to view all folders"))
+            mapOf("type" to "folders", "name" to "read-all", "desc" to "Ability to view all folders"))
 
     override fun createStandardPermissions(org: Organization) {
         for (entry in standardPerms) {

@@ -8,10 +8,10 @@ DELETE FROM permission WHERE str_authority='zorroa::share';
 DELETE FROM permission WHERE str_authority='zorroa::monitor';
 
 --- zorroa::read, zorroa::write, zorroa::export, zorroa::view-all-folders get renamed.
-UPDATE permission SET str_type='assets', str_name='edit-all', str_authority='assets::edit-all' WHERE str_authority='zorroa::write';
-UPDATE permission SET str_type='assets', str_name='view-all', str_authority='assets::view-all' WHERE str_authority='zorroa::read';
+UPDATE permission SET str_type='assets', str_name='write-all', str_authority='assets::write-all' WHERE str_authority='zorroa::write';
+UPDATE permission SET str_type='assets', str_name='read-all', str_authority='assets::read-all' WHERE str_authority='zorroa::read';
 UPDATE permission SET str_type='assets', str_name='export-all', str_authority='assets::export-all' WHERE str_authority='zorroa::export';
-UPDATE permission SET str_type='folders', str_name='view-all', str_authority='folders::view-all' WHERE str_authority='zorroa::view-all-folders';
+UPDATE permission SET str_type='folders', str_name='read-all', str_authority='folders::read-all' WHERE str_authority='zorroa::view-all-folders';
 
 --- Add delete-all to control deletes.
 INSERT INTO permission(
