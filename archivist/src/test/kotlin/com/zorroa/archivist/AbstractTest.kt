@@ -328,7 +328,6 @@ abstract class AbstractTest {
         }
         SecurityContextHolder.getContext().authentication =
             authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
-
     }
 
     fun logout() {

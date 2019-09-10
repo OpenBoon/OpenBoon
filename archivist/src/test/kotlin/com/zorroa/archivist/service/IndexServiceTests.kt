@@ -189,4 +189,3 @@ class JwtTokenSecurityIndexServiceTests : AbstractTest() {
         indexService.get(assets[0].id)
     }
 }
-
