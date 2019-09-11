@@ -14,6 +14,7 @@ import java.util.UUID
  *  * search - users that can see the asset in a search.
  *  * export - users that can export the source material.
  *  * write - users that can modify the asset.
+ *  * delete - users that can delete the asset.
  *
  */
 class PermissionSchema {
@@ -21,32 +22,19 @@ class PermissionSchema {
     var read: MutableSet<UUID> = mutableSetOf()
     var export: MutableSet<UUID> = mutableSetOf()
     var write: MutableSet<UUID> = mutableSetOf()
+    var delete: MutableSet<UUID> = mutableSetOf()
 
     val isEmpty: Boolean
         @JsonIgnore
-        get() = export.size + write.size + read.size == 0
+        get() = export.size + write.size + read.size + delete.size == 0
 
     fun copy(): PermissionSchema {
         val result = PermissionSchema()
         result.read = read.toMutableSet()
         result.write = write.toMutableSet()
         result.export = export.toMutableSet()
+        result.delete = delete.toMutableSet()
         return result
-    }
-
-    fun setSearch(read: MutableSet<UUID>): PermissionSchema {
-        this.read = read
-        return this
-    }
-
-    fun setExport(export: MutableSet<UUID>): PermissionSchema {
-        this.export = export
-        return this
-    }
-
-    fun setWrite(write: MutableSet<UUID>): PermissionSchema {
-        this.write = write
-        return this
     }
 
     fun addToExport(vararg values: UUID) {
@@ -67,6 +55,12 @@ class PermissionSchema {
         }
     }
 
+    fun addToDelete(vararg values: UUID) {
+        for (i in values) {
+            delete.add(i)
+        }
+    }
+
     fun removeFromExport(vararg values: UUID) {
         for (i in values) {
             export.remove(i)
@@ -82,6 +76,12 @@ class PermissionSchema {
     fun removeFromWrite(vararg values: UUID) {
         for (i in values) {
             write.remove(i)
+        }
+    }
+
+    fun removeFromDelete(vararg values: UUID) {
+        for (i in values) {
+            delete.remove(i)
         }
     }
 }

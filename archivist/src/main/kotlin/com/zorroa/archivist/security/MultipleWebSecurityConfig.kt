@@ -5,6 +5,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.warnEvent
+import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -177,7 +178,7 @@ class MultipleWebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
-                .hasAnyAuthority("zorroa::superadmin", "zorroa::monitor")
+                .hasAnyAuthority(Groups.SUPERADMIN, Groups.MONITOR)
                 .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
@@ -219,7 +220,7 @@ class MultipleWebSecurityConfig {
             .authenticationEventPublisher(authenticationEventPublisher())
             .inMemoryAuthentication()
             .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
-            .authorities("zorroa::monitor")
+            .authorities(Groups.MONITOR)
 
         /**
          * If its a unit test we add our rubber stamp authenticator.

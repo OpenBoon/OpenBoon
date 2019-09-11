@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Permission
-import com.zorroa.archivist.elastic.ElasticUtils
 import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.common.domain.ArchivistWriteException
 import com.zorroa.common.util.Json
@@ -165,20 +164,6 @@ fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boo
 }
 
 /**
- *
- */
-fun hasPermission(access: Access, asset: Document): Boolean {
-    val user = getUser()
-    // This assumes that the filter was already applied.
-    return if (user.hasPermissionFilter()) {
-        true
-    } else {
-        val perms = asset.getAttr("system.permissions.${access.field}", Json.SET_OF_UUIDS)
-        return hasPermission(perms)
-    }
-}
-
-/**
  * Test that the current logged in user has the given access
  * with a particular access control list.  Users with group::superuser
  * will always have access.
@@ -211,47 +196,6 @@ fun getPermissionIds(): Set<UUID> {
 
 fun getOrganizationFilter(): QueryBuilder {
     return QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
-}
-
-fun getAssetPermissionsFilter(access: Access?): QueryBuilder? {
-    val user = getUser()
-    if (user.queryStringFilter != null) {
-        return QueryBuilders.queryStringQuery(user.queryStringFilter as String)
-            .autoGenerateSynonymsPhraseQuery(false)
-            .analyzeWildcard(false)
-            .lenient(false)
-            .analyzer("keyword")
-            .fuzzyMaxExpansions(0)
-            .fuzzyTranspositions(false)
-    } else if (user.filter != null) {
-        return ElasticUtils.parse(user.filter as String)
-    } else if (hasPermission(Groups.ADMIN)) {
-        return null
-    } else if (access == null || access == Access.Read) {
-        return if (hasPermission(Groups.READ)) {
-            null
-        } else {
-            QueryBuilders.termsQuery("system.permissions.read",
-                getPermissionIds().map { it.toString() })
-        }
-    } else if (access == Access.Write) {
-        return if (hasPermission(Groups.WRITE)) {
-            null
-        } else {
-            QueryBuilders.termsQuery("system.permissions.write",
-                getPermissionIds().map { it.toString() })
-        }
-    } else if (access == Access.Export) {
-        return if (hasPermission(Groups.EXPORT)) {
-            null
-        } else {
-            QueryBuilders.termsQuery("system.permissions.export",
-                getPermissionIds().map { it.toString() })
-        }
-    }
-
-    return QueryBuilders.termsQuery("system.permissions.read",
-        getPermissionIds().map { it.toString() })
 }
 
 /**

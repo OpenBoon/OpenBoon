@@ -39,12 +39,6 @@ class PermissionServiceTests : AbstractTest() {
                 PermissionSpec("ttest", "superadmin", description = "foo"))
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testIllegalGroup() {
-        permissionService.createPermission(
-                PermissionSpec("zorroa", "mr-stubbins", description = "foo"))
-    }
-
     @Test
     fun testGet() {
         val perm1 = permissionService.createPermission(

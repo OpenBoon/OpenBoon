@@ -12,10 +12,9 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
-import com.zorroa.archivist.security.getAssetPermissionsFilter
+import com.zorroa.archivist.security.AccessResolver
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
-import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
@@ -108,12 +107,15 @@ interface IndexDao {
 }
 
 @Repository
-class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElasticDao(), IndexDao {
+class IndexDaoImpl constructor(
+    val meterRegistry: MeterRegistry,
+    val accessResolver: AccessResolver
+) : AbstractElasticDao(), IndexDao {
 
     override fun <T> getFieldValue(id: String, field: String): T? {
         val rest = getClient()
         val req = rest.newGetRequest(id)
-                .fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
+            .fetchSourceContext(FetchSourceContext.FETCH_SOURCE)
         val d = Document(rest.client.get(req).source)
         // field values never have .raw since they come from source
         return d.getAttr(field.removeSuffix(".raw"))
@@ -166,8 +168,11 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
                 } else {
                     logger.warnEvent(
                         LogObject.ASSET, LogAction.BATCH_INDEX, message,
-                            mapOf("assetId" to response.id,
-                                    "index" to response.index))
+                        mapOf(
+                            "assetId" to response.id,
+                            "index" to response.index
+                        )
+                    )
                     result.erroredAssetIds.add(asset.id)
                 }
             } else {
@@ -192,21 +197,29 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
             result.add(index(retries))
         }
 
-        meterRegistry.counter("zorroa.asset.index",
-                getTags(Tag.of("status", "created")))
-                .increment(result.createdAssetIds.size.toDouble())
+        meterRegistry.counter(
+            "zorroa.asset.index",
+            getTags(Tag.of("status", "created"))
+        )
+            .increment(result.createdAssetIds.size.toDouble())
 
-        meterRegistry.counter("zorroa.asset.index",
-                getTags(Tag.of("status", "replaced")))
-                .increment(result.replacedAssetIds.size.toDouble())
+        meterRegistry.counter(
+            "zorroa.asset.index",
+            getTags(Tag.of("status", "replaced"))
+        )
+            .increment(result.replacedAssetIds.size.toDouble())
 
-        meterRegistry.counter("zorroa.asset.index",
-                getTags(Tag.of("status", "rejected")))
-                .increment(result.erroredAssetIds.size.toDouble())
+        meterRegistry.counter(
+            "zorroa.asset.index",
+            getTags(Tag.of("status", "rejected"))
+        )
+            .increment(result.erroredAssetIds.size.toDouble())
 
-        meterRegistry.counter("zorroa.asset.index",
-                getTags(Tag.of("status", "warning")))
-                .increment(result.warningAssetIds.size.toDouble())
+        meterRegistry.counter(
+            "zorroa.asset.index",
+            getTags(Tag.of("status", "warning"))
+        )
+            .increment(result.warningAssetIds.size.toDouble())
 
         return result
     }
@@ -215,16 +228,18 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         source.setAttr("system.organizationId", getOrgId().toString())
         val rest = getClient()
         return rest.newIndexRequest(source.id)
-                .opType(DocWriteRequest.OpType.INDEX)
-                .source(Json.serialize(source.document), XContentType.JSON)
+            .opType(DocWriteRequest.OpType.INDEX)
+            .source(Json.serialize(source.document), XContentType.JSON)
     }
 
     private fun removeBrokenField(asset: Document, error: String): Boolean {
         for (pattern in RECOVERABLE_BULK_ERRORS) {
             val matcher = pattern.matcher(error)
             if (matcher.find()) {
-                logger.warn("Removing broken field from {}: {}={}, {}", asset.id, matcher.group(1),
-                        asset.getAttr(matcher.group(1)), error)
+                logger.warn(
+                    "Removing broken field from {}: {}={}, {}", asset.id, matcher.group(1),
+                    asset.getAttr(matcher.group(1)), error
+                )
                 return asset.removeAttr(matcher.group(1))
             }
         }
@@ -233,36 +248,40 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
 
     override fun update(asset: Document): Long {
         val rest = getClient()
-        if (!hasPermission(Access.Write, asset)) {
+        if (!accessResolver.hasAccess(Access.Write, asset)) {
             throw ArchivistSecurityException("Access denied")
         }
-        val ver = rest.client.update(rest.newUpdateRequest(asset.id)
+        val ver = rest.client.update(
+            rest.newUpdateRequest(asset.id)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
-                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)).version
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
+        ).version
         return ver
     }
 
     override fun delete(doc: Document): Boolean {
         val rest = getClient()
-        if (!hasPermission(Access.Write, doc)) {
+        if (!accessResolver.hasAccess(Access.Delete, doc)) {
             throw ArchivistSecurityException("Access denied")
         }
         return rest.client.delete(rest.newDeleteRequest(doc.id)).result == DocWriteResponse.Result.DELETED
     }
 
     override fun batchDelete(docs: List<Document>): BatchDeleteAssetsResponse {
-        if (docs.isEmpty()) { return BatchDeleteAssetsResponse() }
+        if (docs.isEmpty()) {
+            return BatchDeleteAssetsResponse()
+        }
 
         val rsp = BatchDeleteAssetsResponse()
         val rest = getClient()
         val bulkRequest = BulkRequest()
-                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
+            .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
 
         docs.forEach { doc ->
             val hold = doc.getAttr("system.hold", Boolean::class.java) ?: false
             if (doc.attrExists("system.hold") && hold) {
                 rsp.onHoldAssetIds.add(doc.id)
-            } else if (!hasPermission(Access.Write, doc)) {
+            } else if (!accessResolver.hasAccess(Access.Delete, doc)) {
                 rsp.accessDeniedAssetIds.add(doc.id)
             } else {
                 rsp.totalRequested += 1
@@ -278,37 +297,48 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         for (br in bulk.items) {
             when {
                 br.isFailed -> {
-                    logger.warnEvent(LogObject.ASSET, LogAction.BATCH_DELETE, br.failureMessage,
-                            mapOf("assetId" to br.id, "index" to br.index))
+                    logger.warnEvent(
+                        LogObject.ASSET, LogAction.BATCH_DELETE, br.failureMessage,
+                        mapOf("assetId" to br.id, "index" to br.index)
+                    )
                     rsp.errors[br.id] = br.failureMessage
                 }
                 else -> {
                     val deleted = br.getResponse<DeleteResponse>().result == DocWriteResponse.Result.DELETED
                     if (deleted) {
-                        logger.event(LogObject.ASSET, LogAction.BATCH_DELETE, mapOf("assetId" to br.id, "index" to br.index))
+                        logger.event(
+                            LogObject.ASSET,
+                            LogAction.BATCH_DELETE,
+                            mapOf("assetId" to br.id, "index" to br.index)
+                        )
                         rsp.deletedAssetIds.add(br.id)
                     } else {
                         rsp.missingAssetIds.add(br.id)
-                        logger.warnEvent(LogObject.ASSET, LogAction.BATCH_DELETE, "Asset did not exist", mapOf("assetId" to br.id, "index" to br.index))
+                        logger.warnEvent(
+                            LogObject.ASSET,
+                            LogAction.BATCH_DELETE,
+                            "Asset did not exist",
+                            mapOf("assetId" to br.id, "index" to br.index)
+                        )
                     }
                 }
             }
         }
 
         meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "success")))
-                .increment(rsp.deletedAssetIds.size.toDouble())
+            .increment(rsp.deletedAssetIds.size.toDouble())
 
         meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "denied")))
-                .increment(rsp.accessDeniedAssetIds.size.toDouble())
+            .increment(rsp.accessDeniedAssetIds.size.toDouble())
 
         meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "error")))
-                .increment(rsp.errors.size.toDouble())
+            .increment(rsp.errors.size.toDouble())
 
         meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "missing")))
-                .increment(rsp.missingAssetIds.size.toDouble())
+            .increment(rsp.missingAssetIds.size.toDouble())
 
         meterRegistry.counter("zorroa.asset.delete", getTags(Tag.of("state", "on-hold")))
-                .increment(rsp.onHoldAssetIds.size.toDouble())
+            .increment(rsp.onHoldAssetIds.size.toDouble())
 
         return rsp
     }
@@ -317,10 +347,10 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         val rest = getClient()
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("_id", id))
-                .filter(getOrganizationFilter())
+            .must(QueryBuilders.termQuery("_id", id))
+            .filter(getOrganizationFilter())
 
-        getAssetPermissionsFilter(Access.Read)?.let {
+        accessResolver.getAssetPermissionsFilter(Access.Read)?.let {
             query.filter(it)
         }
         req.source.size(1)
@@ -335,7 +365,7 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termsQuery("_id", ids))
             .filter(getOrganizationFilter())
-        getAssetPermissionsFilter(Access.Read)?.let {
+        accessResolver.getAssetPermissionsFilter(Access.Read)?.let {
             query.filter(it)
         }
         req.source.size(ids.size)
@@ -346,17 +376,19 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
 
     override fun exists(id: String): Boolean {
         val rest = getClient()
-        return rest.client.get(rest.newGetRequest(id)
-                .fetchSourceContext(FetchSourceContext.DO_NOT_FETCH_SOURCE)).isExists
+        return rest.client.get(
+            rest.newGetRequest(id)
+                .fetchSourceContext(FetchSourceContext.DO_NOT_FETCH_SOURCE)
+        ).isExists
     }
 
     override fun get(path: Path): Document {
         val rest = getClient()
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("source.path.raw", path.toString()))
-                .filter(getOrganizationFilter())
-        getAssetPermissionsFilter(Access.Read)?.let {
+            .must(QueryBuilders.termQuery("source.path.raw", path.toString()))
+            .filter(getOrganizationFilter())
+        accessResolver.getAssetPermissionsFilter(Access.Read)?.let {
             query.filter(it)
         }
 
@@ -418,8 +450,9 @@ class IndexDaoImpl constructor(val meterRegistry: MeterRegistry) : AbstractElast
         }
 
         private val RECOVERABLE_BULK_ERRORS = arrayOf(
-                Pattern.compile("reason=failed to parse \\[(.*?)\\]"),
-                Pattern.compile("\"term in field=\"(.*?)\"\""),
-                Pattern.compile("mapper \\[(.*?)\\] of different type"))
+            Pattern.compile("reason=failed to parse \\[(.*?)\\]"),
+            Pattern.compile("\"term in field=\"(.*?)\"\""),
+            Pattern.compile("mapper \\[(.*?)\\] of different type")
+        )
     }
 }

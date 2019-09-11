@@ -299,7 +299,7 @@ class FolderDaoTests : AbstractTest() {
 
         val p = permissionService.createPermission(PermissionSpec("group", "foo"))
         val acl = Acl()
-        acl.add(AclEntry(p.id, 12))
+        acl.add(AclEntry(p.id, 16))
         folderDao.setAcl(id, acl)
     }
 

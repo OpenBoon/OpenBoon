@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.PagedList
@@ -14,9 +15,9 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.search.KwConfFilter
 import com.zorroa.archivist.search.RangeQuery
 import com.zorroa.archivist.search.SimilarityFilter
+import com.zorroa.archivist.security.AccessResolver
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
-import com.zorroa.archivist.security.getAssetPermissionsFilter
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.SearchBuilder
@@ -122,7 +123,8 @@ class SearchContext(
 class SearchServiceImpl @Autowired constructor(
     val indexDao: IndexDao,
     val indexRoutingService: IndexRoutingService,
-    val properties: ApplicationProperties
+    val properties: ApplicationProperties,
+    val accessResolver: AccessResolver
 
 ) : SearchService {
     @Autowired
@@ -424,7 +426,7 @@ class SearchServiceImpl @Autowired constructor(
         query.filter(getOrganizationFilter())
 
         if (perms) {
-            val permsQuery = getAssetPermissionsFilter(search.access)
+            val permsQuery = accessResolver.getAssetPermissionsFilter(search.access ?: Access.Read)
             if (permsQuery != null) {
                 query.filter(permsQuery)
             }

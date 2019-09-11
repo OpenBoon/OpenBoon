@@ -7,11 +7,12 @@ public class Groups {
     public static final String MANAGER = "zorroa::manager";
     public static final String EVERYONE = "zorroa::everyone";
     public static final String DEV = "zorroa::developer";
-    public static final String SHARE = "zorroa::share";
     public static final String LIBRARIAN = "zorroa::librarian";
+    public static final String MONITOR = "zorroa::monitor";
 
-    public static final String EXPORT = "zorroa::export";
-    public static final String READ = "zorroa::read";
-    public static final String WRITE = "zorroa::write";
-    public static final String VIEW_ALL_FOLDERS = "zorroa::view-all-folders";
+    public static final String EXPORT = "assets::export-all";
+    public static final String READ = "assets::read-all";
+    public static final String WRITE = "assets::write-all";
+    public static final String DELETE = "assets::delete-all";
+    public static final String VIEW_ALL_FOLDERS = "folders::read-all";
 }

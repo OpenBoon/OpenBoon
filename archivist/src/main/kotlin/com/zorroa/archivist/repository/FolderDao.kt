@@ -431,9 +431,8 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
                 if (entry.getAccess() == 0) {
                     continue
                 }
-                if (entry.getAccess() > 7) {
-                    throw IllegalArgumentException("Invalid Access level " +
-                            entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                require(entry.getAccess() <= Access.MAX) {
+                    "Invalid Access level ${entry.getAccess()} for permission ID ${entry.getPermissionId()}"
                 }
                 jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
                         entry.getPermissionId(), folder, entry.getAccess())
@@ -441,9 +440,8 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         } else {
 
             for (entry in acl) {
-                if (entry.getAccess() > 7) {
-                    throw IllegalArgumentException("Invalid Access level " +
-                            entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                require(entry.getAccess() <= Access.MAX) { "Invalid Access level ${entry.getAccess()} " +
+                    "for permission ID ${entry.getPermissionId()}"
                 }
                 if (entry.getAccess() <= 0) {
                     jdbc.update("DELETE FROM folder_acl WHERE pk_folder=? AND pk_permission=?",

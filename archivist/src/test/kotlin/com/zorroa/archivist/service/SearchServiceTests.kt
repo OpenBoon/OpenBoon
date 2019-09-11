@@ -26,9 +26,9 @@ import com.zorroa.archivist.search.KwConfFilter
 import com.zorroa.archivist.search.RangeQuery
 import com.zorroa.archivist.search.Scroll
 import com.zorroa.archivist.search.SimilarityFilter
+import com.zorroa.archivist.security.AccessResolver
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
-import com.zorroa.archivist.security.getAssetPermissionsFilter
 import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.security.Groups
@@ -39,8 +39,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.TestPropertySource
 import java.io.IOException
 import java.util.UUID
 
@@ -48,6 +51,9 @@ import java.util.UUID
  * Created by chambers on 10/30/15.
  */
 class SearchServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var accessResolver: AccessResolver
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -62,7 +68,6 @@ class SearchServiceTests : AbstractTest() {
         fieldService.invalidateFields()
     }
 
-    @Throws(IOException::class)
     fun testScanAndScrollClamp() {
 
         addTestAssets("set04")
@@ -76,7 +81,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test(expected = java.lang.IllegalArgumentException::class)
-    @Throws(IOException::class)
     fun testScanAndScrollError() {
 
         addTestAssets("set04")
@@ -87,14 +91,12 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearchExportPermissionsMiss() {
-
         authenticate("user")
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, 1)
-        source.addToPermissions("zorroa::everyone", 0)
+        source.addToPermissions(Groups.EVERYONE, 0)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         val search = AssetSearch().setQuery("beer").setAccess(Access.Export)
@@ -107,12 +109,11 @@ class SearchServiceTests : AbstractTest() {
      * @throws IOException
      */
     @Test
-    @Throws(IOException::class)
     fun testSearchExportPermissionOverrideHit() {
         val user = userService.get("user")
         userService.addPermissions(
             user, ImmutableList.of(
-                permissionService.getPermission("zorroa::export")
+                permissionService.getPermission(Groups.EXPORT)
             )
         )
         authenticate("user")
@@ -121,11 +122,10 @@ class SearchServiceTests : AbstractTest() {
 
         val search = AssetSearch().setQuery("source.filename:beer").setAccess(Access.Export)
         assertEquals(1, searchService.search(search).hits.getTotalHits())
-        assertNull(getAssetPermissionsFilter(search.access))
+        assertNull(accessResolver.getAssetPermissionsFilter(search.access))
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearchPermissionsExportHit() {
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
         val user = userService.get("user")
@@ -139,19 +139,18 @@ class SearchServiceTests : AbstractTest() {
         val search = AssetSearch()
             .setAccess(Access.Export)
             .setQuery("source.filename:beer")
-        assertNotNull(getAssetPermissionsFilter(search.access))
+        assertNotNull(accessResolver.getAssetPermissionsFilter(search.access))
         assertEquals(1, searchService.search(search).hits.getTotalHits())
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearchPermissionsReadMiss() {
 
         authenticate("user")
         val perm = permissionService.createPermission(PermissionSpec("group", "test"))
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.addToPermissions(perm.authority, 1)
-        source.addToPermissions("zorroa::everyone", 0)
+        source.addToPermissions(Groups.EVERYONE, 0)
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
 
         val search = AssetSearch().setQuery("beer")
@@ -159,7 +158,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearchPermissionsReadHit() {
         authenticate("user")
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -172,32 +170,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
-    fun testSearchTokenPermissionsHit() {
-        authenticate("user", false, "source.filename:beer_kettle_01.jpg")
-        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", ImmutableList.of("captain"))
-        source.addToPermissions(Groups.EVERYONE, 1)
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
-
-        val search = AssetSearch().setQuery("captain")
-        assertEquals(1, searchService.search(search).hits.getTotalHits())
-    }
-
-    @Test
-    @Throws(IOException::class)
-    fun testSearchTokenPermissionsMiss() {
-        authenticate("user", false, "source.filename:bilbo.mov")
-        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
-        source.setAttr("media.keywords", ImmutableList.of("captain"))
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
-
-        val search = AssetSearch().setQuery("captain")
-        assertEquals(0, searchService.search(search).hits.getTotalHits())
-    }
-
-    @Test
-    @Throws(IOException::class)
     fun testFolderSearch() {
 
         val builder = FolderSpec("Avengers")
@@ -214,7 +186,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testFolderCount() {
 
         val builder = FolderSpec("Beer")
@@ -229,7 +200,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testRecursiveFolderSearch() {
 
         var builder = FolderSpec("Avengers")
@@ -251,7 +221,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testNonRecursiveFolderSearch() {
 
         var builder = FolderSpec("Avengers")
@@ -284,7 +253,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSmartFolderSearch() {
 
         var builder = FolderSpec("Avengers")
@@ -308,7 +276,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testTermSearch() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -328,7 +295,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSmartFolderAndStaticFolderMixture() {
 
         var builder = FolderSpec("Avengers")
@@ -362,7 +328,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testLotsOfSmartFolders() {
 
         var builder = FolderSpec("people")
@@ -387,7 +352,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryWithCustomFields() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -418,7 +382,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryWithGeoBBoxFields() {
         addTestAssets("set04")
 
@@ -430,7 +393,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testHighConfidenceSearch() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -458,7 +420,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testNoConfidenceSearch() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -473,7 +434,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearchResponseFields() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -513,7 +473,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryWildcard() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -528,7 +487,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryExactWithQuotes() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -547,7 +505,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryMultipleExactWithAnd() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -566,7 +523,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryExactTermWithSpaces() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -585,7 +541,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryMinusTerm() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -600,7 +555,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryPlusTerm() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -615,7 +569,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryExact() {
 
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
@@ -642,7 +595,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testQueryFuzzyTerm() {
         val source = Source(getTestImagePath("beer_kettle_01.jpg"))
         source.setAttr("media.keywords", ImmutableList.of("zooland"))
@@ -676,7 +628,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testScrollSearch() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
@@ -700,7 +651,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testAggregationSearch() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
@@ -720,7 +670,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testAggregationSearchEmptyFilter() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
@@ -743,7 +692,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testMustSearch() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
@@ -759,7 +707,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testMustNotSearch() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
@@ -775,7 +722,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testShouldSearch() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
@@ -791,7 +737,7 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class, InterruptedException::class)
+
     fun testKwConfSearch() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr(
@@ -811,7 +757,7 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class, InterruptedException::class)
+
     fun testHammingDistanceFilterWithEmptyValue() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
@@ -832,7 +778,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilterWithRaw() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
@@ -854,7 +799,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilter() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
@@ -900,7 +844,6 @@ class SearchServiceTests : AbstractTest() {
      */
     @Ignore
     @Test
-    @Throws(IOException::class, InterruptedException::class)
     fun testHammingDistanceFilterArray() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("superhero", "captain")
@@ -925,7 +868,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testHammingDistanceFilterWithQuery() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("media.keywords", listOf("beer_kettle_01.jpg"))
@@ -953,7 +895,6 @@ class SearchServiceTests : AbstractTest() {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testHammingDistanceFilterWithAssetId() {
         val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
         source1.setAttr("media.keywords", listOf("beer"))
@@ -1151,6 +1092,55 @@ class SearchServiceTests : AbstractTest() {
         val result = searchService.search(Pager.first(), search)
         assertEquals(1, result.list.size)
     }
+}
+
+@TestPropertySource(locations = ["classpath:test.properties", "classpath:jwt.properties"])
+class JwtTokenSecuritySearchServiceTests : AbstractTest() {
+
+    @Test(expected = AccessDeniedException::class)
+    fun testSearchWithJwtWriteAccessFailure() {
+        authenticate("user", "source.filename:beer_kettle_01.jpg")
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        search.access = Access.Write
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    fun testSearchWithJwtReadAccessAll() {
+        authenticate("user", "source.filename:*", listOf(Groups.READ))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test
+    fun testSearchJwtReadAccessFilter() {
+        authenticate("user", "source.filename:beer_kettle_01.jpg", listOf(Groups.READ))
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        assertEquals(1, searchService.search(search).hits.getTotalHits())
+    }
+
+    @Test(expected = AccessDeniedException::class)
+    fun testSearchTokenPermissionsFailure() {
+        authenticate("user", "source.filename:bilbo.mov")
+        val source = Source(getTestImagePath("beer_kettle_01.jpg"))
+        source.setAttr("media.keywords", ImmutableList.of("captain"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(source))
+
+        val search = AssetSearch().setQuery("captain")
+        searchService.search(search).hits.getTotalHits()
+    }
 
     @Test
     fun testSearchWithJwtQStringFilter() {
@@ -1179,29 +1169,16 @@ class SearchServiceTests : AbstractTest() {
         assertEquals(1, result.list.size)
     }
 
-    @Test
-    fun testSearchWithJwtQueryFilter() {
-        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
-        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
-        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
 
-        val currentUser = getUser()
-        val perms = currentUser.authorities.toSet() as Set<out GrantedAuthority>
+    override fun requiresFieldSets(): Boolean {
+        return true
+    }
 
-        // Build a new UserAuthed object
-        val authedUser = UserAuthed(
-            currentUser.id,
-            currentUser.organizationId,
-            currentUser.username,
-            perms,
-            currentUser.attrs,
-            """{"query": {"terms": {"source.filename.raw": ["beer_kettle_01.jpg"]}}}"""
-        )
-
-        SecurityContextHolder.getContext().authentication =
-            UnitTestAuthentication(authedUser, authedUser.authorities)
-
-        val result = searchService.search(Pager.first(), AssetSearch())
-        assertEquals(1, result.list.size)
+    @Before
+    fun init() {
+        fieldService.invalidateFields()
     }
 }

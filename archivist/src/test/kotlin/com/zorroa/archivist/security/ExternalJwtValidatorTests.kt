@@ -1,6 +1,7 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Access
 import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.junit.Before
 import org.junit.Test
@@ -9,6 +10,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.web.client.ExpectedCount
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers.header
@@ -17,10 +19,12 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.request
 import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 import java.net.URI
 import java.util.UUID
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
+@TestPropertySource(locations = ["classpath:test.properties", "classpath:jwt.properties"])
 class ExternalJwtValidatorTests : AbstractTest() {
 
     lateinit var mockServer: MockRestServiceServer
@@ -29,6 +33,9 @@ class ExternalJwtValidatorTests : AbstractTest() {
 
     @Autowired
     lateinit var masterJwtValidator: MasterJwtValidator
+
+    @Autowired
+    lateinit var accessResolver: AccessResolver
 
     @Before
     fun init() {
@@ -81,11 +88,13 @@ class ExternalJwtValidatorTests : AbstractTest() {
         SecurityContextHolder.getContext().authentication = auth
 
         // Get a permission filter.
-        val filter = getAssetPermissionsFilter(null)
+        val filter = accessResolver.getAssetPermissionsFilter(Access.Read)
+        assertNotNull(filter)
         assertTrue(filter is QueryStringQueryBuilder)
         assertEquals("source.type:image", filter.queryString())
     }
 
+    @Ignore("Disabled this feature but might bring back")
     @Test
     fun testEmbeddedSearchFilter() {
         val token =
@@ -122,7 +131,7 @@ class ExternalJwtValidatorTests : AbstractTest() {
         SecurityContextHolder.getContext().authentication = auth
 
         // Get a permission filter.
-        val filter = getAssetPermissionsFilter(null).toString()
+        val filter = accessResolver.getAssetPermissionsFilter(Access.Read).toString()
         val knownFilter = """{
   "terms" : {
     "source.type" : [

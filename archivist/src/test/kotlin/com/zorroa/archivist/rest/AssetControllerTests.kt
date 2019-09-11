@@ -287,7 +287,6 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(
             delete("/api/v1/assets")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .headers(user())
                 .content(Json.serializeToString(mapOf("assetIds" to ids)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

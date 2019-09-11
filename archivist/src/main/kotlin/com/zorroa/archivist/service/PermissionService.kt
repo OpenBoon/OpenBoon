@@ -10,7 +10,6 @@ import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
 import java.util.UUID
 import java.util.stream.Collectors
 
@@ -40,8 +39,7 @@ interface PermissionService {
 @Service
 @Transactional
 class PermissionServiceImpl @Autowired constructor(
-    private val permissionDao: PermissionDao,
-    private val txem: TransactionEventManager
+    private val permissionDao: PermissionDao
 ) : PermissionService {
 
     @Transactional(readOnly = true)
@@ -78,26 +76,24 @@ class PermissionServiceImpl @Autowired constructor(
     }
 
     override fun createPermission(builder: PermissionSpec): Permission {
-        if (builder.type == "zorroa" || builder.name == "superadmin") {
-            throw IllegalArgumentException("Cannot create permission " +
-                    "'${builder.type}::${builder.name}' in the Zorroa namespace.")
-        }
+        require(builder.name != "superadmin") { "Cannot create permission " +
+        "'${builder.type}::${builder.name}' in the Zorroa namespace." }
         return permissionDao.create(builder, false)
     }
 
     val standardPerms = listOf(
-            mapOf("name" to "administrator", "desc" to "Superuser, can do and access everything"),
-            mapOf("name" to "everyone", "desc" to "A standard user of the system"),
-            mapOf("name" to "share", "desc" to "Modify all permissions"),
-            mapOf("name" to "export", "desc" to "Export all files"),
-            mapOf("name" to "read", "desc" to "Read all data"),
-            mapOf("name" to "write", "desc" to "Write all data"),
-            mapOf("name" to "librarian", "desc" to "Manager /library folder"),
-            mapOf("name" to "view-all-folders", "desc" to "Ability to view all folders"))
+            mapOf("type" to "zorroa", "name" to "administrator", "desc" to "Superuser, can do and access everything"),
+            mapOf("type" to "zorroa", "name" to "everyone", "desc" to "A standard user of the system"),
+            mapOf("type" to "assets", "name" to "export-all", "desc" to "Export all files"),
+            mapOf("type" to "assets", "name" to "read-all", "desc" to "Read all data"),
+            mapOf("type" to "assets", "name" to "write-all", "desc" to "Write all data"),
+            mapOf("type" to "assets", "name" to "delete-all", "desc" to "Write all data"),
+            mapOf("type" to "zorroa", "name" to "librarian", "desc" to "Manager /library folder"),
+            mapOf("type" to "folders", "name" to "read-all", "desc" to "Ability to view all folders"))
 
     override fun createStandardPermissions(org: Organization) {
         for (entry in standardPerms) {
-            val spec = PermissionSpec("zorroa", entry["name"]!!)
+            val spec = PermissionSpec(entry.getValue("type"), entry.getValue("name"))
             permissionDao.create(spec, true)
         }
     }
