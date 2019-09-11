@@ -164,20 +164,6 @@ fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boo
 }
 
 /**
- *
- */
-fun hasPermission(access: Access, asset: Document): Boolean {
-    val user = getUser()
-    // This assumes that the filter was already applied.
-    return if (user.hasPermissionFilter()) {
-        true
-    } else {
-        val perms = asset.getAttr("system.permissions.${access.field}", Json.SET_OF_UUIDS)
-        return hasPermission(perms)
-    }
-}
-
-/**
  * Test that the current logged in user has the given access
  * with a particular access control list.  Users with group::superuser
  * will always have access.

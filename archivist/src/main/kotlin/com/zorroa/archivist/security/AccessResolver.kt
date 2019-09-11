@@ -2,6 +2,8 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Access
+import com.zorroa.archivist.domain.Document
+import com.zorroa.common.util.Json
 import com.zorroa.security.Groups
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component
 
 interface AccessResolver {
     fun getAssetPermissionsFilter(access: Access = Access.Read): QueryBuilder?
+    fun hasAccess(access: Access, asset: Document): Boolean
 }
 
 @Component
@@ -70,10 +73,32 @@ class AcccessResolverImpl @Autowired constructor(
                 QueryBuilders.termsQuery("system.permissions.export",
                     getPermissionIds().map { it.toString() })
             }
+        } else if (access == Access.Delete) {
+            return if (hasPermission(Groups.DELETE)) {
+                null
+            } else {
+                QueryBuilders.termsQuery("system.permissions.delete",
+                    getPermissionIds().map { it.toString() })
+            }
         }
 
         return QueryBuilders.termsQuery("system.permissions.read",
             getPermissionIds().map { it.toString() })
+    }
+
+    override fun hasAccess(access: Access, asset: Document): Boolean {
+        return if (useJwtFilter) {
+            if (access == Access.Write && hasPermission(Groups.WRITE)) {
+                true
+            } else if (access == Access.Delete && hasPermission(Groups.DELETE)) {
+                true
+            } else if (access == Access.Export && hasPermission(Groups.EXPORT)) {
+                true
+            } else access == Access.Read && hasPermission(Groups.READ)
+        } else {
+            val perms = asset.getAttr("system.permissions.${access.field}", Json.SET_OF_UUIDS)
+            hasPermission(perms)
+        }
     }
 
     companion object {

@@ -180,6 +180,7 @@ class IndexServiceImpl @Autowired constructor(
          */
         val rsp = BatchDeleteAssetsResponse()
         searchService.scanAndScroll(search, true) { hits ->
+
             /*
              * Determine if any documents are on hold.
              */

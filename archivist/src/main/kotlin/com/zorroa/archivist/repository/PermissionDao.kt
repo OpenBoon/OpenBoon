@@ -184,8 +184,9 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
                     getId(entry.permission)
                 } catch (e: EmptyResultDataAccessException) {
                     if (createMissing) {
-                        create(PermissionSpec(entry.permission)
-                            .apply { description = "Auto created permission" }, false
+                        create(
+                            PermissionSpec(entry.permission)
+                                .apply { description = "Auto created permission" }, false
                         ).id
                     } else {
                         throw e
@@ -296,6 +297,7 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
         schema.addToRead(everyone)
         schema.addToExport(everyone)
         schema.addToWrite(admin)
+        schema.addToDelete(admin)
         return schema
     }
 

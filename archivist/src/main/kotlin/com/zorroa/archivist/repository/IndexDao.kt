@@ -15,7 +15,6 @@ import com.zorroa.archivist.elastic.SingleHit
 import com.zorroa.archivist.security.AccessResolver
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
-import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
@@ -249,7 +248,7 @@ class IndexDaoImpl constructor(
 
     override fun update(asset: Document): Long {
         val rest = getClient()
-        if (!hasPermission(Access.Write, asset)) {
+        if (!accessResolver.hasAccess(Access.Write, asset)) {
             throw ArchivistSecurityException("Access denied")
         }
         val ver = rest.client.update(
@@ -262,7 +261,7 @@ class IndexDaoImpl constructor(
 
     override fun delete(doc: Document): Boolean {
         val rest = getClient()
-        if (!hasPermission(Access.Write, doc)) {
+        if (!accessResolver.hasAccess(Access.Delete, doc)) {
             throw ArchivistSecurityException("Access denied")
         }
         return rest.client.delete(rest.newDeleteRequest(doc.id)).result == DocWriteResponse.Result.DELETED
@@ -282,7 +281,7 @@ class IndexDaoImpl constructor(
             val hold = doc.getAttr("system.hold", Boolean::class.java) ?: false
             if (doc.attrExists("system.hold") && hold) {
                 rsp.onHoldAssetIds.add(doc.id)
-            } else if (!hasPermission(Access.Write, doc)) {
+            } else if (!accessResolver.hasAccess(Access.Delete, doc)) {
                 rsp.accessDeniedAssetIds.add(doc.id)
             } else {
                 rsp.totalRequested += 1

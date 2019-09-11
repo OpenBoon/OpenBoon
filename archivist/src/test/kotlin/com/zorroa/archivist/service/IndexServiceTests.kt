@@ -188,4 +188,22 @@ class JwtTokenSecurityIndexServiceTests : AbstractTest() {
         val assets = indexService.getAll(Pager.first())
         indexService.get(assets[0].id)
     }
+
+    @Test
+    fun testBatchDeleteFailure() {
+        authenticate("user", qStringFilter = "source.path:*", perms = listOf("assets::read-all"))
+        val assets = indexService.getAll(Pager.first())
+        val rsp = indexService.batchDelete(listOf(assets[0].id))
+        assertEquals(1, rsp.accessDeniedAssetIds.size)
+        assertEquals(0, rsp.deletedAssetIds.size)
+    }
+
+    @Test
+    fun testBatchDeleteSuccess() {
+        authenticate("user", qStringFilter = "source.path:*", perms = listOf("assets::read-all", "assets::delete-all"))
+        val assets = indexService.getAll(Pager.first())
+        val rsp = indexService.batchDelete(listOf(assets[0].id))
+        assertEquals(0, rsp.accessDeniedAssetIds.size)
+        assertEquals(1, rsp.deletedAssetIds.size)
+    }
 }
