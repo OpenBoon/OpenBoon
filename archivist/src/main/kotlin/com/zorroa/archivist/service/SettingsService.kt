@@ -63,16 +63,16 @@ class SettingsServiceImpl @Autowired constructor(
 
     // a memoizer would be nicer but no good ones that allow manual invalidation
     private val settingsCache = CacheBuilder.newBuilder()
-            .maximumSize(2)
-            .initialCapacity(2)
-            .concurrencyLevel(1)
-            .expireAfterWrite(1, TimeUnit.DAYS)
-            .build(object : CacheLoader<Int, List<Setting>>() {
-                @Throws(Exception::class)
-                override fun load(key: Int): List<Setting> {
-                    return settingsProvider()
-                }
-            })
+        .maximumSize(2)
+        .initialCapacity(2)
+        .concurrencyLevel(1)
+        .expireAfterWrite(1, TimeUnit.DAYS)
+        .build(object : CacheLoader<Int, List<Setting>>() {
+            @Throws(Exception::class)
+            override fun load(key: Int): List<Setting> {
+                return settingsProvider()
+            }
+        })
 
     override fun onApplicationEvent(contextRefreshedEvent: ContextRefreshedEvent) {
         /**
@@ -99,15 +99,14 @@ class SettingsServiceImpl @Autowired constructor(
     }
 
     override fun getAll(filter: SettingsFilter): List<Setting> {
-        if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
-            logger.info("adding live only filter")
+        if (!hasPermission(Groups.SUPERADMIN)) {
             filter.liveOnly = true
         }
         try {
             return settingsCache.get(0).stream()
-                    .filter { s -> filter.matches(s) }
-                    .limit(filter.count.toLong())
-                    .collect(Collectors.toList())
+                .filter { s -> filter.matches(s) }
+                .limit(filter.count.toLong())
+                .collect(Collectors.toList())
         } catch (e: ExecutionException) {
             throw IllegalStateException(e)
         }
@@ -121,7 +120,7 @@ class SettingsServiceImpl @Autowired constructor(
         val filter = SettingsFilter()
         filter.count = 1
         filter.names = ImmutableSet.of(key)
-        if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
+        if (!hasPermission(Groups.SUPERADMIN)) {
             filter.liveOnly = true
         }
         try {
@@ -133,18 +132,21 @@ class SettingsServiceImpl @Autowired constructor(
 
     fun checkValid(key: String, value: String?): SettingValidator {
         val validator = WHITELIST[key] ?: throw ArchivistWriteException(
-                "Cannot set key $key remotely")
+            "Cannot set key $key remotely"
+        )
 
         if (value == null) {
             if (!validator.allowNull) {
                 throw ArchivistWriteException(
-                        "Invalid value for $key, cannot be null")
+                    "Invalid value for $key, cannot be null"
+                )
             }
         } else {
             validator.regex?.let {
                 if (!it.matches(value)) {
                     throw ArchivistWriteException(
-                            "Invalid value for $key, '$value' must match " + it.pattern)
+                        "Invalid value for $key, '$value' must match " + it.pattern
+                    )
                 }
             }
         }
@@ -257,32 +259,57 @@ class SettingsServiceImpl @Autowired constructor(
          * A whitelist of property names that can be set via the API.
          */
         private val WHITELIST = ImmutableMap.builder<String, SettingValidator>()
-                .put("archivist.watermark.font-name", SettingValidator(null))
-                .put("archivist.search.keywords.boost",
-                        SettingValidator(Regex("([\\w\\.]+:[\\d\\.]+)(,[\\w\\.]+:[\\d\\.]+)*")))
-                .put("archivist.export.maxAssetCount",
-                        SettingValidator(Regex("[\\d]+"), allowNull = true))
-                .put("archivist.export.videoStreamExtensionFallbackOrder",
-                        SettingValidator(null))
-                .put("archivist.search.sortFields",
-                        SettingValidator(Regex("([_\\w\\.]+:(ASC|DESC))(,[\\w\\.]+:(ASC|DESC))*")))
-                .put("archivist.watermark.enabled",
-                        SettingValidator(booleanValue, emit = watermarkSettingsChanged))
-                .put("archivist.watermark.template", SettingValidator(emit = watermarkSettingsChanged))
-                .put("archivist.watermark.min-proxy-size",
-                        SettingValidator(numericValue, emit = watermarkSettingsChanged))
-                .put("archivist.watermark.scale",
-                        SettingValidator(decimalValue, emit = watermarkSettingsChanged))
-                .put("curator.lightbar.label-template",
-                        SettingValidator(null))
-                .put("curator.thumbnail.badge-template",
-                        SettingValidator(null))
-                .put("curator.thumbnails.drag-template",
-                        SettingValidator(null))
-                .put("curator.lightbox.zoom-min",
-                        SettingValidator(Regex("[\\d]+"), allowNull = true))
-                .put("curator.lightbox.zoom-max",
-                        SettingValidator(Regex("[\\d]+"), allowNull = true))
-                .build()
+            .put("archivist.watermark.font-name", SettingValidator(null))
+            .put(
+                "archivist.search.keywords.boost",
+                SettingValidator(Regex("([\\w\\.]+:[\\d\\.]+)(,[\\w\\.]+:[\\d\\.]+)*"))
+            )
+            .put(
+                "archivist.export.maxAssetCount",
+                SettingValidator(Regex("[\\d]+"), allowNull = true)
+            )
+            .put(
+                "archivist.export.videoStreamExtensionFallbackOrder",
+                SettingValidator(null)
+            )
+            .put(
+                "archivist.search.sortFields",
+                SettingValidator(Regex("([_\\w\\.]+:(ASC|DESC))(,[\\w\\.]+:(ASC|DESC))*"))
+            )
+            .put(
+                "archivist.watermark.enabled",
+                SettingValidator(booleanValue, emit = watermarkSettingsChanged)
+            )
+            .put("archivist.watermark.template", SettingValidator(emit = watermarkSettingsChanged))
+            .put(
+                "archivist.watermark.min-proxy-size",
+                SettingValidator(numericValue, emit = watermarkSettingsChanged)
+            )
+            .put(
+                "archivist.watermark.scale",
+                SettingValidator(decimalValue, emit = watermarkSettingsChanged)
+            )
+            .put(
+                "curator.lightbar.label-template",
+                SettingValidator(null)
+            )
+            .put(
+                "curator.thumbnail.badge-template",
+                SettingValidator(null)
+            )
+            .put(
+                "curator.thumbnails.drag-template",
+                SettingValidator(null)
+            )
+            .put(
+                "curator.lightbox.zoom-min",
+                SettingValidator(Regex("[\\d]+"), allowNull = true)
+            )
+            .put(
+                "curator.lightbox.zoom-max",
+                SettingValidator(Regex("[\\d]+"), allowNull = true)
+            )
+            .put("curator.fields.default-static", SettingValidator(null, allowNull = false))
+            .build()
     }
 }

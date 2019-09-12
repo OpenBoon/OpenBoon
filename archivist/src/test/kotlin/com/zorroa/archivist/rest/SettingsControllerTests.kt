@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class SettingsControllerTests : MockMvcTest() {
 
     @Test
-    @Throws(Exception::class)
     fun testGetAllNoFilter() {
 
         val result = mvc.perform(
@@ -36,9 +35,7 @@ class SettingsControllerTests : MockMvcTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAllFilter() {
-
         val filter = SettingsFilter()
         filter.count = 5
         val result = mvc.perform(
@@ -55,7 +52,24 @@ class SettingsControllerTests : MockMvcTest() {
     }
 
     @Test
-    @Throws(Exception::class)
+    fun testGetAllFilterNotSuperuser() {
+        val count = settingsService.getAll().size
+
+        val filter = SettingsFilter()
+        val result = mvc.perform(
+            get("/api/v1/settings")
+                .headers(user())
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
+
+        val t = deserialize(result, SettingsService.ListOfSettingsType)
+        assertTrue(t.size.toLong() < count)
+    }
+
+    @Test
     fun testSet() {
 
         val settings = ImmutableMap.of(
@@ -65,7 +79,6 @@ class SettingsControllerTests : MockMvcTest() {
         val result = mvc.perform(
             put("/api/v1/settings/")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(settings))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -74,5 +87,22 @@ class SettingsControllerTests : MockMvcTest() {
 
         val map = deserialize(result, Json.GENERIC_MAP)
         assertTrue(map["success"] as Boolean)
+    }
+
+    @Test
+    fun testSetAuthFailure() {
+
+        val settings = ImmutableMap.of(
+            "curator.thumbnails.drag-template", "bob"
+        )
+
+        mvc.perform(
+            put("/api/v1/settings/")
+                .headers(user())
+                .content(Json.serialize(settings))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().is4xxClientError)
+            .andReturn()
     }
 }
