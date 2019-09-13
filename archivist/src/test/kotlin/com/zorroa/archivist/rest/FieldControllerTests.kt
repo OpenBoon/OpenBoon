@@ -16,6 +16,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class FieldControllerTests : MockMvcTest() {
@@ -156,5 +157,23 @@ class FieldControllerTests : MockMvcTest() {
             req.response.contentAsString, Field.Companion.TypeRefKList
         )
         assertTrue(result.size() > 0)
+    }
+
+    @Test
+    fun testGetFieldAttrTypes() {
+
+        val req = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/fields/_attrTypes")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val result = Json.Mapper.readValue<List<String>>(req.response.contentAsString)
+        assertTrue("StringAnalyzed" in result)
+        assertTrue("StringExact" in result)
+        assertTrue("StringContent" in result)
+        assertFalse("StringSuggest" in result)
     }
 }
