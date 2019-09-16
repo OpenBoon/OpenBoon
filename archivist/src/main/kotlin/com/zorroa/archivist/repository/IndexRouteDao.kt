@@ -73,6 +73,11 @@ interface IndexRouteDao {
      * Set the given [IndexRoute] status to closed.  Closed indexes cannot be used.
      */
     fun setClosed(route: IndexRoute, state: Boolean): Boolean
+
+    /**
+     *
+     */
+    fun delete(route: IndexRoute): Boolean
 }
 
 @Repository
@@ -165,6 +170,13 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     override fun setClosed(route: IndexRoute, state: Boolean): Boolean {
         return jdbc.update("UPDATE index_route SET bool_closed=? WHERE pk_index_route=? AND bool_closed=?",
             state, route.id, !state) == 1
+    }
+
+    override fun delete(route: IndexRoute): Boolean {
+        return jdbc.update(
+            "DELETE FROM index_route WHERE pk_index_route=? AND bool_closed='t'",
+            route.id
+        ) == 1
     }
 
     companion object {
