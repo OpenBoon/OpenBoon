@@ -375,6 +375,6 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         val route = indexRoutingService.createIndexRoute(spec)
         indexRoutingService.closeIndex(route)
-        assertTrue(indexRoutingService.deleteIndex(route))
+        assertTrue(indexRoutingService.deleteIndex(route, force = true))
     }
 }
