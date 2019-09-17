@@ -87,18 +87,27 @@ class IndexRoutingServiceTests : AbstractTest() {
      */
     @Test
     fun testSyncDeletedIndex() {
+
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "test",
+            1,
+            false
+        )
+        val newRoute = indexRoutingService.createIndexRoute(spec)
         val rest = indexRoutingService.getOrgRestClient()
-        val reqDel = DeleteIndexRequest("unittest")
+        val reqDel = DeleteIndexRequest(newRoute.indexName)
 
         try {
             rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
-            logger.info("unittest Elastic DB Removed")
+            logger.info("${newRoute.indexUrl} Elastic DB Removed")
         } catch (e: Exception) {
             logger.warn("Failed to delete 'unittest' index, this is usually ok.")
         }
 
         // The ES index is deleted but our route still shows an updated index
-        val route = indexRouteDao.getRandomDefaultRoute()
+        val route = indexRouteDao.get(newRoute.id)
         assertTrue(route.mappingMinorVer > 0)
 
         val lastMapping = indexRoutingService.syncIndexRouteVersion(route)
@@ -286,6 +295,20 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
     }
 
+    @Test
+    fun testCloseAndDelete() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "v13_test",
+            "strict",
+            1,
+            false
+        )
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        indexRoutingService.closeAndDeleteIndex(route)
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun testCreateMissingMapping() {
         val spec = IndexRouteSpec(
@@ -338,5 +361,20 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals("open", result["status"])
         assertEquals("5", result["pri"])
         assertEquals("2", result["rep"])
+    }
+
+    @Test
+    fun testDeleteIndex() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "v13_test",
+            "strict",
+            1,
+            false
+        )
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        indexRoutingService.closeIndex(route)
+        assertTrue(indexRoutingService.deleteIndex(route))
     }
 }

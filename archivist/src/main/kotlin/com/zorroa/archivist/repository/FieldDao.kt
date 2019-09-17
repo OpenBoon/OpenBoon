@@ -33,15 +33,6 @@ interface FieldDao {
     fun update(field: Field, spec: FieldUpdateSpec): Boolean
 
     /**
-     * Allocate a brand new field attribute.  This function picks a new custom
-     * ES field name for the given attribute.  Once a field name is allocated,
-     * it can never be reused.
-     *
-     * @param type: The field type to allocate for.
-     */
-    fun allocate(type: AttrType): String
-
-    /**
      * Return a list of attribute names for use with keyword search.
      *
      * @param forExactMatch If the field type supports .raw, return that instead.
@@ -104,17 +95,22 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         }
 
         logger.event(
-            LogObject.FIELD, LogAction.CREATE, mapOf("fieldId" to id,
+            LogObject.FIELD, LogAction.CREATE, mapOf(
+                "fieldId" to id,
                 "fieldName" to spec.name,
                 "attrType" to spec.attrType,
                 "attrName" to spec.attrName,
                 "isKeywords" to spec.keywords,
-                "isSuggest" to spec.suggest))
+                "isSuggest" to spec.suggest
+            )
+        )
 
-        return Field(id, spec.name, spec.attrName,
-                spec.attrType, spec.editable,
-                spec.custom, spec.keywords, spec.keywordsBoost,
-                spec.suggest, spec.requireList, spec.options)
+        return Field(
+            id, spec.name, spec.attrName,
+            spec.attrType, spec.editable,
+            spec.custom, spec.keywords, spec.keywordsBoost,
+            spec.suggest, spec.requireList, spec.options
+        )
     }
 
     override fun update(field: Field, spec: FieldUpdateSpec): Boolean {
@@ -147,18 +143,24 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
     }
 
     override fun get(id: UUID): Field {
-        return jdbc.queryForObject("$GET WHERE pk_field=? AND pk_organization=?",
-                MAPPER, id, getOrgId())
+        return jdbc.queryForObject(
+            "$GET WHERE pk_field=? AND pk_organization=?",
+            MAPPER, id, getOrgId()
+        )
     }
 
     override fun get(attrName: String): Field {
-        return jdbc.queryForObject("$GET WHERE str_attr_name=? AND pk_organization=?",
-                MAPPER, attrName, getOrgId())
+        return jdbc.queryForObject(
+            "$GET WHERE str_attr_name=? AND pk_organization=?",
+            MAPPER, attrName, getOrgId()
+        )
     }
 
     override fun exists(attrName: String): Boolean {
-        return jdbc.queryForObject("$COUNT WHERE str_attr_name=? AND pk_organization=?",
-                Int::class.java, attrName, getOrgId()) == 1
+        return jdbc.queryForObject(
+            "$COUNT WHERE str_attr_name=? AND pk_organization=?",
+            Int::class.java, attrName, getOrgId()
+        ) == 1
     }
 
     override fun getAll(filter: FieldFilter): KPagedList<Field> {
@@ -183,14 +185,16 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
                 } else {
                     result[rs.getString("str_attr_name")] = rs.getFloat("float_keywords_boost")
                 }
-            }, getOrgId())
+            }, getOrgId()
+        )
         return result
     }
 
     override fun getSuggestAttrNames(): List<String> {
         return jdbc.queryForList(
-                "SELECT str_attr_name FROM field WHERE pk_organization=? AND bool_suggest='t'",
-                String::class.java, getOrgId())
+            "SELECT str_attr_name FROM field WHERE pk_organization=? AND bool_suggest='t'",
+            String::class.java, getOrgId()
+        )
     }
 
     override fun count(filter: FieldFilter): Long {
@@ -206,90 +210,84 @@ class FieldDaoImpl : AbstractDao(), FieldDao {
         return jdbc.update("DELETE FROM field WHERE pk_field=?", field.id) == 1
     }
 
-    override fun allocate(type: AttrType): String {
-        val user = getUser()
-        val num = if (jdbc.update(ALLOC_UPDATE, user.organizationId, type.ordinal) == 1) {
-            jdbc.queryForObject(
-                    "SELECT int_count FROM field_alloc WHERE pk_organization=? AND int_attr_type=?",
-                    Int::class.java, user.organizationId, type.ordinal)
-        } else {
-            val id = uuid1.generate()
-            jdbc.update(ALLOC_INSERT, id, user.organizationId, type.ordinal, 0)
-            0
-        }
-        return type.getCustomAttrName(num)
-    }
-
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
 
-            Field(rs.getObject("pk_field") as UUID,
-                    rs.getString("str_name"),
-                    rs.getString("str_attr_name"),
-                    AttrType.values()[rs.getInt("int_attr_type")],
-                    rs.getBoolean("bool_editable"),
-                    rs.getBoolean("bool_custom"),
-                    rs.getBoolean("bool_keywords"),
-                    rs.getFloat("float_keywords_boost"),
-                    rs.getBoolean("bool_suggest"),
-                    rs.getBoolean("bool_list"),
-                    Json.Mapper.readValueOrNull(rs.getString("json_options")))
+            Field(
+                rs.getObject("pk_field") as UUID,
+                rs.getString("str_name"),
+                rs.getString("str_attr_name"),
+                AttrType.values()[rs.getInt("int_attr_type")],
+                rs.getBoolean("bool_editable"),
+                rs.getBoolean("bool_custom"),
+                rs.getBoolean("bool_keywords"),
+                rs.getFloat("float_keywords_boost"),
+                rs.getBoolean("bool_suggest"),
+                rs.getBoolean("bool_list"),
+                Json.Mapper.readValueOrNull(rs.getString("json_options"))
+            )
         }
 
         private const val GET = "SELECT * FROM field"
         private const val COUNT = "SELECT COUNT(1) FROM field"
 
-        private val INSERT = JdbcUtils.insert("field",
-                "pk_field",
-                "pk_organization",
-                "pk_user_created",
-                "pk_user_modified",
-                "time_created",
-                "time_modified",
-                "str_name",
-                "str_attr_name",
-                "int_attr_type",
-                "bool_editable",
-                "bool_custom",
-                "bool_keywords",
-                "float_keywords_boost",
-                "json_options::jsonb",
-                "bool_suggest",
-                "bool_list")
+        private val INSERT = JdbcUtils.insert(
+            "field",
+            "pk_field",
+            "pk_organization",
+            "pk_user_created",
+            "pk_user_modified",
+            "time_created",
+            "time_modified",
+            "str_name",
+            "str_attr_name",
+            "int_attr_type",
+            "bool_editable",
+            "bool_custom",
+            "bool_keywords",
+            "float_keywords_boost",
+            "json_options::jsonb",
+            "bool_suggest",
+            "bool_list"
+        )
 
-        private val UPDATE = JdbcUtils.update("field", "pk_field",
-                "time_modified",
-                "pk_user_modified",
-                "str_name",
-                "bool_editable",
-                "bool_keywords",
-                "float_keywords_boost",
-                "json_options::jsonb",
-                "bool_suggest",
-                "bool_list")
+        private val UPDATE = JdbcUtils.update(
+            "field", "pk_field",
+            "time_modified",
+            "pk_user_modified",
+            "str_name",
+            "bool_editable",
+            "bool_keywords",
+            "float_keywords_boost",
+            "json_options::jsonb",
+            "bool_suggest",
+            "bool_list"
+        )
 
         private const val ALLOC_UPDATE = "UPDATE field_alloc " +
-                "SET int_count=int_count + 1 " +
-                "WHERE pk_organization=? " +
-                "AND int_attr_type=?"
+            "SET int_count=int_count + 1 " +
+            "WHERE pk_organization=? " +
+            "AND int_attr_type=?"
 
-        private val ALLOC_INSERT = JdbcUtils.insert("field_alloc",
-                "pk_field_alloc",
-                "pk_organization",
-                "int_attr_type",
-                "int_count")
+        private val ALLOC_INSERT = JdbcUtils.insert(
+            "field_alloc",
+            "pk_field_alloc",
+            "pk_organization",
+            "int_attr_type",
+            "int_count"
+        )
 
         private const val GET_KEYWORD_FIELDS =
             "SELECT " +
                 "str_attr_name, " +
                 "float_keywords_boost, " +
                 "int_attr_type " +
-            "FROM " +
+                "FROM " +
                 "field " +
-            "WHERE " +
+                "WHERE " +
                 "pk_organization=? " +
-            "AND " +
+                "AND " +
                 "bool_keywords='t'"
     }
 }

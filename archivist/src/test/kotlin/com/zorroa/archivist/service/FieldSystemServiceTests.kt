@@ -43,37 +43,39 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomStringContentField() {
-        val spec = FieldSpecCustom("Notes", AttrType.StringContent).apply { editable = true }
+        val fieldName = "test.test_content"
+        val spec = FieldSpecCustom("Notes", fieldName, AttrType.StringContent).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(AttrType.StringContent, field.attrType)
         assertTrue(field.custom)
-        assertEquals("custom.string_content__0", field.attrName)
+        assertEquals(fieldName, field.attrName)
         assertEquals("Notes", field.name)
 
         val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
-        assertEquals(AttrType.StringContent, fieldSystemService.getEsAttrType("custom.string_content__0"))
+        assertEquals(AttrType.StringContent, fieldSystemService.getEsAttrType(fieldName))
     }
 
     @Test
     fun createCustomStringExactField() {
-        val spec = FieldSpecCustom("SomeField", AttrType.StringExact).apply { editable = true }
+        val fieldName = "test.str_exact"
+        val spec = FieldSpecCustom("SomeField", fieldName, AttrType.StringExact).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(AttrType.StringExact, field.attrType)
         assertTrue(field.custom)
-        assertEquals("custom.string_exact__0", field.attrName)
+        assertEquals(fieldName, field.attrName)
 
         val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
         assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, "ABC"))
-        assertEquals(AttrType.StringExact, fieldSystemService.getEsAttrType("custom.string_exact__0"))
+        assertEquals(AttrType.StringExact, fieldSystemService.getEsAttrType(fieldName))
     }
 
     @Test
     fun createCustomStringAnalyzedField() {
-        val attrName = "custom.string_analyzed__0"
+        val attrName = "test.str_analyzed"
         val attrType = AttrType.StringAnalyzed
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -86,10 +88,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomStringAnalyzedArrayField() {
-        val attrName = "custom.string_analyzed__0"
+        val attrName = "test.str_analyzed"
         val attrType = AttrType.StringAnalyzed
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -102,10 +104,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomStringPathField() {
-        val attrName = "custom.string_path__0"
+        val attrName = "test.path_test"
         val attrType = AttrType.StringPath
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -118,10 +120,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomNumberIntegerField() {
-        val attrName = "custom.number_integer__0"
+        val attrName = "test.number_test"
         val attrType = AttrType.NumberInteger
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -134,10 +136,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomNumberIntegerArrayField() {
-        val attrName = "custom.number_integer__0"
+        val attrName = "test.number_test"
         val attrType = AttrType.NumberInteger
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -150,10 +152,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomNumberFloatField() {
-        val attrName = "custom.number_float__0"
+        val attrName = "test.float_test"
         val attrType = AttrType.NumberFloat
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -166,10 +168,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomNumberFloatArrayField() {
-        val attrName = "custom.number_float__0"
+        val attrName = "test.float_test"
         val attrType = AttrType.NumberFloat
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -182,10 +184,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomBooleanField() {
-        val attrName = "custom.boolean__0"
+        val attrName = "test.bool_test"
         val attrType = AttrType.Bool
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -198,10 +200,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomField() {
-        val attrName = "custom.boolean__0"
+        val attrName = "test.bool_test"
         val attrType = AttrType.Bool
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -214,10 +216,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomDateTimeFieldAsLong() {
-        val attrName = "custom.date_time__0"
+        val attrName = "test.date_test"
         val attrType = AttrType.DateTime
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)
@@ -230,10 +232,10 @@ class FieldSystemServiceTests : AbstractTest() {
 
     @Test
     fun createCustomDateTimeFieldAsString() {
-        val attrName = "custom.date_time__0"
+        val attrName = "test.date_test"
         val attrType = AttrType.DateTime
 
-        val spec = FieldSpecCustom("SomeField", attrType).apply { editable = true }
+        val spec = FieldSpecCustom("SomeField", attrName, attrType).apply { editable = true }
         val field = fieldSystemService.createField(spec)
         assertEquals(attrType, field.attrType)
         assertTrue(field.custom)

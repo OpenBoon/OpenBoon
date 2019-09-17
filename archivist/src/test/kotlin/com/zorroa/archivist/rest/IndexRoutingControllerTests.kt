@@ -183,6 +183,29 @@ class IndexRoutingControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testDeleteIndex() {
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "test",
+            1,
+            false
+        )
+
+        val route = indexRoutingService.createIndexRoute(spec)
+        indexRoutingService.closeIndex(route)
+
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v1/index-routes/${route.id}")
+                .headers(admin())
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
     fun testGetMappings() {
 
         val rsp = mvc.perform(

@@ -165,7 +165,10 @@ abstract class AbstractTest {
                 jdbc.update("DELETE FROM cluster_lock")
                 jdbc.update("DELETE FROM field_set")
                 jdbc.update("DELETE FROM field")
-                jdbc.update("UPDATE index_route SET str_index='unittest'")
+                jdbc.update(
+                    "UPDATE index_route SET str_index='unittest' " +
+                        "WHERE pk_index_route='00000000-0000-0000-0000-000000000000'"
+                )
 
                 /**
                  * Need these in here so fields are visible by threads and coroutines.
@@ -293,6 +296,7 @@ abstract class AbstractTest {
             logger.warn("Failed to delete 'unittest' index, this is usually ok.")
         }
 
+        // See setup() method for configuration of default index.
         indexRoutingService.syncAllIndexRoutes()
     }
 
