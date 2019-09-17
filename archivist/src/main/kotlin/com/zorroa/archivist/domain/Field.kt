@@ -8,7 +8,6 @@ import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import java.lang.IllegalArgumentException
 import java.util.Date
 import java.util.UUID
 
@@ -90,17 +89,21 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
     /**
      * Get the ES mapping for the given field attribute type.
      */
-    fun getMapping() : Map<String, Any> {
-        return when(this) {
+    fun getMapping(): Map<String, Any> {
+        return when (this) {
             NumberInteger -> mapOf("type" to "integer")
             NumberFloat -> mapOf("type" to "float")
             StringExact -> mapOf("type" to "keyword")
             StringContent -> mapOf("type" to "text", "analyzer" to "content")
             StringAnalyzed -> mapOf("type" to "text", "fields" to mapOf("raw" to mapOf("type" to "keyword")))
             StringSuggest -> throw IllegalArgumentException("StringSuggest field not supported")
-            StringPath ->  mapOf("type" to "text", "analyzer" to "default", "fields" to
-                mapOf("raw" to mapOf("type" to "keyword"), "paths" to
-                    mapOf("type" to "text", "analyzer" to "path_analyzer", "fielddata" to true)))
+            StringPath -> mapOf(
+                "type" to "text", "analyzer" to "default", "fields" to
+                    mapOf(
+                        "raw" to mapOf("type" to "keyword"), "paths" to
+                            mapOf("type" to "text", "analyzer" to "path_analyzer", "fielddata" to true)
+                    )
+            )
             Bool -> mapOf("type" to "boolean")
             HashSimilarity -> mapOf("type" to "keyword")
             DateTime -> mapOf("type" to "date")
@@ -108,8 +111,6 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
         }
     }
 }
-
-
 
 /**
  * The base class for FieldSpec, FieldSpecCustom and FieldSpecExpose.

@@ -1,7 +1,6 @@
 package com.zorroa.common.clients
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.common.util.Json
 import org.elasticsearch.action.delete.DeleteRequest
