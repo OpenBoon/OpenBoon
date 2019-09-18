@@ -40,7 +40,7 @@ class SettingsController @Autowired constructor(
     }
 
     @ApiOperation("Update Settings.")
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).DEV) || hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SUPERADMIN)")
     @PutMapping(value = ["/api/v1/settings"])
     fun set(@ApiParam("Settings to update.") @RequestBody settings: Map<String, String>): Any {
         val count = settingsService.setAll(settings)

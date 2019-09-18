@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.AttrType
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FieldFilter
 import com.zorroa.archivist.domain.FieldSpecCustom
@@ -67,12 +68,16 @@ class FieldController @Autowired constructor(
     @DeleteMapping(value = ["/api/v1/fields/{id}"])
     @Throws(Exception::class)
     fun delete(@ApiParam(value = "UUID of the Field.") @PathVariable id: UUID): Any {
-        return HttpUtils.status("field", id, "delete",
-                fieldSystemService.deleteField(fieldSystemService.getField(id)))
+        return HttpUtils.status(
+            "field", id, "delete",
+            fieldSystemService.deleteField(fieldSystemService.getField(id))
+        )
     }
 
-    @ApiOperation(value = "Search for Fields.",
-        notes = "Returns a list of Fields that match the given search filter.")
+    @ApiOperation(
+        value = "Search for Fields.",
+        notes = "Returns a list of Fields that match the given search filter."
+    )
     @RequestMapping(value = ["/api/v1/fields/_search"], method = [RequestMethod.GET, RequestMethod.POST])
     @Throws(Exception::class)
     fun search(
@@ -86,11 +91,20 @@ class FieldController @Autowired constructor(
         return fieldSystemService.getAllFields(filter)
     }
 
-    @ApiOperation(value = "Searches for a single Field",
-        notes = "Throws an error if more than 1 result is returned based on the given filter.")
+    @ApiOperation(
+        value = "Searches for a single Field",
+        notes = "Throws an error if more than 1 result is returned based on the given filter."
+    )
     @RequestMapping(value = ["/api/v1/fields/_findOne"], method = [RequestMethod.GET, RequestMethod.POST])
     @Throws(Exception::class)
     fun findOne(@ApiParam(value = "Search filter.") @RequestBody(required = false) req: FieldFilter?): Field {
         return fieldSystemService.findOneField(req ?: FieldFilter())
+    }
+
+    @ApiOperation(value = "Get all possible ES attribute types.")
+    @GetMapping(value = ["/api/v1/fields/_attrTypes"])
+    @Throws(Exception::class)
+    fun fieldAttrTypes(): List<String> {
+        return AttrType.values().filter { it.name != "StringSuggest" }.map { it.toString() }
     }
 }
