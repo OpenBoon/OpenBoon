@@ -627,7 +627,7 @@ open class Document {
 
 object Attr {
 
-    val DELIMITER = "."
+    const val DELIMITER = "."
 
     /**
      * A convenience method which takes a variable list of strings and

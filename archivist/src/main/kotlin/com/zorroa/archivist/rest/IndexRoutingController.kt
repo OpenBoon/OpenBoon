@@ -14,6 +14,7 @@ import com.zorroa.common.repository.KPagedList
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -68,6 +69,13 @@ class IndexRoutingController @Autowired constructor(
         val route = indexRoutingService.getIndexRoute(id)
         val closed = indexRoutingService.closeIndex(route)
         return HttpUtils.updated("index-route", route.id, closed, indexRoutingService.getIndexRoute(id))
+    }
+
+    @DeleteMapping(value = ["/api/v1/index-routes/{id}"])
+    fun delete(@PathVariable id: UUID): Any {
+        val route = indexRoutingService.getIndexRoute(id)
+        val deleted = indexRoutingService.deleteIndex(route)
+        return HttpUtils.deleted("index-route", route.id, deleted)
     }
 
     @PutMapping(value = ["/api/v1/index-routes/{id}/_open"])

@@ -100,8 +100,8 @@ class FieldSystemServiceImpl @Autowired constructor(
     lateinit var jobService: JobService
 
     override fun createField(spec: FieldSpecCustom): Field {
-        val attrName = fieldDao.allocate(spec.attrType)
-        val cspec = FieldSpec(spec, attrName)
+        createAttribute(spec.attrName, spec.attrType)
+        val cspec = FieldSpec(spec, spec.attrName)
         return fieldDao.create(cspec)
     }
 
@@ -377,6 +377,39 @@ class FieldSystemServiceImpl @Autowired constructor(
                 createField(spec, false)
             }
         }
+    }
+
+    /**
+     * Update the current ES mapping with a new field of the given type.
+     */
+    fun createAttribute(attrName: String, attrType: AttrType) {
+        val client = indexRoutingService.getOrgRestClient()
+        try {
+            val frag = createMappingFragment(attrName, attrType)
+            client.updateMapping(frag)
+        } catch (e: Exception) {
+            logger.warn("Failed to create attr: $attrName with type $attrType", e)
+            throw e
+        }
+    }
+
+    /**
+     * Create the necessary JSON body for adding a field to the user's ES mapping.
+     */
+    fun createMappingFragment(attrName: String, attrType: AttrType): Map<String, Any> {
+        val mapping = attrType.getMapping()
+        val root = mutableMapOf<String, Any>("properties" to mutableMapOf<String, Any>())
+        var current = root
+        attrName.split('.').forEach {
+            val next = mutableMapOf<String, Any>()
+            val props = mutableMapOf<String, Map<String, Any>>(it to next)
+            current["properties"] = props
+            current = next
+        }
+        mapping.forEach { (k, v) ->
+            current[k] = v
+        }
+        return root
     }
 
     companion object {

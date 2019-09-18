@@ -85,6 +85,31 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
             }
         }
     }
+
+    /**
+     * Get the ES mapping for the given field attribute type.
+     */
+    fun getMapping(): Map<String, Any> {
+        return when (this) {
+            NumberInteger -> mapOf("type" to "integer")
+            NumberFloat -> mapOf("type" to "float")
+            StringExact -> mapOf("type" to "keyword")
+            StringContent -> mapOf("type" to "text", "analyzer" to "content")
+            StringAnalyzed -> mapOf("type" to "text", "fields" to mapOf("raw" to mapOf("type" to "keyword")))
+            StringSuggest -> throw IllegalArgumentException("StringSuggest field not supported")
+            StringPath -> mapOf(
+                "type" to "text", "analyzer" to "default", "fields" to
+                    mapOf(
+                        "raw" to mapOf("type" to "keyword"), "paths" to
+                            mapOf("type" to "text", "analyzer" to "path_analyzer", "fielddata" to true)
+                    )
+            )
+            Bool -> mapOf("type" to "boolean")
+            HashSimilarity -> mapOf("type" to "keyword")
+            DateTime -> mapOf("type" to "date")
+            GeoPoint -> mapOf("type" to "geo_point")
+        }
+    }
 }
 
 /**
@@ -150,7 +175,8 @@ class FieldSpec(
  */
 class FieldSpecCustom(
     val name: String,
-    var attrType: AttrType
+    val attrName: String,
+    val attrType: AttrType
 ) : BaseFieldSpec()
 
 @ApiModel("Field Spec Expose", description = "Properties required to expose an existing ES attribute.")

@@ -121,18 +121,6 @@ class FieldDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testAllocate() {
-        var field = fieldDao.allocate(AttrType.StringAnalyzed)
-        assertTrue(field.endsWith("__0"))
-
-        field = fieldDao.allocate(AttrType.StringAnalyzed)
-        assertTrue(field.endsWith("__1"))
-
-        field = fieldDao.allocate(AttrType.NumberInteger)
-        assertTrue(field.endsWith("__0"))
-    }
-
-    @Test
     fun testGetKeywordAttrNames() {
         setupEmbeddedFieldSets()
         var fields = fieldDao.getKeywordAttrNames()

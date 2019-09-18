@@ -26,6 +26,7 @@ import com.zorroa.common.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
 import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
 import org.elasticsearch.client.Request
@@ -183,6 +184,16 @@ interface IndexRoutingService {
      * Return the ES index state as a Map
      */
     fun getEsIndexState(route: IndexRoute): Map<String, Any>
+
+    /**
+     * Delete the given IndexRoute, must be closed first.
+     */
+    fun deleteIndex(route: IndexRoute, force: Boolean = false): Boolean
+
+    /**
+     * Close and delete the given index.
+     */
+    fun closeAndDeleteIndex(route: IndexRoute): Boolean
 }
 
 /**
@@ -249,8 +260,8 @@ constructor(
     override fun getIndexMappingVersions(): List<IndexMappingVersion> {
 
         val result = mutableListOf<IndexMappingVersion>()
-        val searchPath = listOf("classpath:/db/migration/elasticsearch")
-        val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
+        val searchPath = listOf("classpath*:/db/migration/elasticsearch")
+        val resolver = PathMatchingResourcePatternResolver()
 
         fun addMatch(filename: String) {
             val match = MAP_MAJOR_REGEX.matchEntire(filename)
@@ -262,14 +273,11 @@ constructor(
         }
 
         searchPath.forEach {
-            if (it.startsWith("classpath:")) {
-                val resources = resolver.getResources("$it/*.json")
-                for (resource in resources) {
-                    addMatch(resource.filename)
-                }
+            val resources = resolver.getResources("$it/*.json")
+            for (resource in resources) {
+                addMatch(resource.filename)
             }
         }
-
         return result
     }
 
@@ -523,6 +531,24 @@ constructor(
             return indexRouteDao.setClosed(route, true)
         }
         return false
+    }
+
+    override fun deleteIndex(route: IndexRoute, force: Boolean): Boolean {
+        if (!force) {
+            require(route.closed) { "The index must be closed before it can be deleted" }
+        }
+
+        val rsp = getClusterRestClient(route).client.indices()
+            .delete(DeleteIndexRequest(route.indexName), RequestOptions.DEFAULT)
+        if (rsp.isAcknowledged) {
+            return indexRouteDao.delete(route)
+        }
+        return false
+    }
+
+    override fun closeAndDeleteIndex(route: IndexRoute): Boolean {
+        closeIndex(route)
+        return deleteIndex(route, force = true)
     }
 
     override fun openIndex(route: IndexRoute): Boolean {

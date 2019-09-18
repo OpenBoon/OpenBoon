@@ -1,6 +1,8 @@
 package com.zorroa.common.clients
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.EsClientCacheKey
+import com.zorroa.common.util.Json
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
@@ -9,6 +11,7 @@ import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.slf4j.LoggerFactory
 import java.io.IOException
 
 /**
@@ -103,7 +106,8 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
      */
     fun indexExists(): Boolean {
         return client.lowLevelClient.performRequest(
-                Request("HEAD", route.indexUrl)).statusLine.statusCode == 200
+            Request("HEAD", route.indexUrl)
+        ).statusLine.statusCode == 200
     }
 
     /**
@@ -114,9 +118,37 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
     fun isAvailable(): Boolean {
         return try {
             client.lowLevelClient.performRequest(
-                    Request("HEAD", route.clusterUrl)).statusLine.statusCode == 200
+                Request("HEAD", route.clusterUrl)
+            ).statusLine.statusCode == 200
         } catch (e: IOException) {
             false
         }
+    }
+
+    /**
+     * Return the ES mapping as a Document.
+     */
+    fun getMapping(): Map<String, Any> {
+        val stream = client.lowLevelClient.performRequest(
+            Request("GET", "/${route.indexName}")
+        ).entity.content
+        return Json.Mapper.readValue(stream)
+    }
+
+    /**
+     * Update ES asset mapping with given body.  Return true if the mapping update was
+     * a success or the mapping already existed.s
+     */
+    fun updateMapping(body: Map<String, Any>): Boolean {
+        val url = "${route.indexUrl}/_mapping/asset"
+        val req = Request("PUT", url)
+        req.setJsonEntity(Json.serializeToString(body))
+
+        val rsp = client.lowLevelClient.performRequest(req)
+        return rsp.statusLine.statusCode == 200
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(EsRestClient::class.java)
     }
 }

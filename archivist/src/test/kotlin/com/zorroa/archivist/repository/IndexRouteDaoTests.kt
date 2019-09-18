@@ -178,4 +178,21 @@ class IndexRouteDaoTests : AbstractTest() {
             )
         )
     }
+
+    @Test
+    fun testDelete() {
+
+        val spec = IndexRouteSpec(
+            "http://localhost:9200",
+            "testing123",
+            "on_prem",
+            1,
+            false
+        )
+
+        val route = indexRouteDao.create(spec)
+        indexRouteDao.setClosed(route, true)
+        assertTrue(indexRouteDao.delete(route))
+        assertFalse(indexRouteDao.delete(route))
+    }
 }

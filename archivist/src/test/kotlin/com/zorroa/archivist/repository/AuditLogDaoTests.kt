@@ -48,7 +48,7 @@ class AuditLogDaoTests : AbstractTest() {
 
     @Test
     fun testCreateFieldEdit() {
-        val fspec = FieldSpecCustom("Notes", AttrType.StringContent)
+        val fspec = FieldSpecCustom("Notes", "test.test_content", AttrType.StringContent)
         val field = fieldSystemService.createField(fspec)
 
         val spec = AuditLogEntrySpec(
