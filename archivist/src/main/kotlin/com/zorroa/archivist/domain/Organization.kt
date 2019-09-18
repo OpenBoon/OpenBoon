@@ -17,15 +17,17 @@ class OrganizationSpec(
 
 )
 
-@ApiModel("Organization", description = "Holds all of the assets, user, folders etc and is the top level " +
-    "multi-tenant entity.")
+@ApiModel(
+    "Organization", description = "Holds all of the assets, user, folders etc and is the top level " +
+        "multi-tenant entity."
+)
 class Organization(
 
     @ApiModelProperty("UUID of the Organization")
     val id: UUID,
 
     @ApiModelProperty("UUID of the ES cluster this Organization lives on.")
-    val indexRouteId: UUID,
+    val indexRouteId: UUID?,
 
     @ApiModelProperty("Name of the Organization.")
     val name: String
@@ -43,7 +45,7 @@ class OrganizationUpdateSpec(
     var name: String,
 
     @ApiModelProperty("Will update the Organizations's ES cluster address. Will not move files.")
-    var indexRouteId: UUID
+    var indexRouteId: UUID?
 ) {
     constructor(org: Organization) : this(org.name, org.indexRouteId)
 }
@@ -63,9 +65,10 @@ class OrganizationFilter(
 ) : KDaoFilter() {
 
     override val sortMap: Map<String, String> = mapOf(
-            "name" to "organization.str_name",
-            "id" to "organization.pk_organization",
-            "indexRouteId" to "organization.pk_index_route")
+        "name" to "organization.str_name",
+        "id" to "organization.pk_organization",
+        "indexRouteId" to "organization.pk_index_route"
+    )
 
     override fun build() {
 

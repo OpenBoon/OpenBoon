@@ -11,7 +11,6 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.core.context.SecurityContextHolder
-import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -27,7 +26,8 @@ class PermissionServiceTests : AbstractTest() {
     @Test
     fun testCreate() {
         val perm = permissionService.createPermission(
-                PermissionSpec("test", "shoe", description = "foo"))
+            PermissionSpec("test", "shoe", description = "foo")
+        )
         assertEquals(perm.fullName, "test::shoe")
         assertEquals(perm.name, "shoe")
         assertEquals(perm.type, "test")
@@ -36,13 +36,15 @@ class PermissionServiceTests : AbstractTest() {
     @Test(expected = IllegalArgumentException::class)
     fun testIllegalName() {
         permissionService.createPermission(
-                PermissionSpec("ttest", "superadmin", description = "foo"))
+            PermissionSpec("ttest", "superadmin", description = "foo")
+        )
     }
 
     @Test
     fun testGet() {
         val perm1 = permissionService.createPermission(
-                PermissionSpec("test", "test", description = "foo"))
+            PermissionSpec("test", "test", description = "foo")
+        )
         val perm2 = permissionService.getPermission(perm1.id)
         assertEquals(perm1, perm2)
     }
@@ -62,7 +64,8 @@ class PermissionServiceTests : AbstractTest() {
     @Test(expected = EmptyResultDataAccessException::class)
     fun testDelete() {
         val perm1 = permissionService.createPermission(
-                PermissionSpec("test", "test", description = "foo"))
+            PermissionSpec("test", "test", description = "foo")
+        )
         assertTrue(permissionService.deletePermission(perm1))
         assertFalse(permissionService.deletePermission(perm1))
         permissionService.getPermission(perm1.id)
@@ -70,8 +73,11 @@ class PermissionServiceTests : AbstractTest() {
 
     @Test
     fun createStandardPermissions() {
-        val org = organizationDao.create(OrganizationSpec(
-                "test", indexRouteDao.getRandomDefaultRoute().id))
+        val org = organizationDao.create(
+            OrganizationSpec(
+                "test", indexRouteDao.getRandomPoolRoute().id
+            )
+        )
         SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
         permissionService.createStandardPermissions(org)
         assertTrue(permissionService.permissionExists(Groups.ADMIN))

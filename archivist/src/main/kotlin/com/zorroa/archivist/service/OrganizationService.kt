@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.Organization
 import com.zorroa.archivist.domain.OrganizationFilter
 import com.zorroa.archivist.domain.OrganizationSpec
@@ -29,9 +30,10 @@ interface OrganizationService {
 
 @Service
 @Transactional
-class OrganizationServiceImpl @Autowired constructor (
+class OrganizationServiceImpl @Autowired constructor(
     val organizationDao: OrganizationDao,
     val indexRouteDao: IndexRouteDao,
+    val indexRoutingService: IndexRoutingService,
     val properties: ApplicationProperties
 ) : OrganizationService, ApplicationListener<ContextRefreshedEvent> {
 
@@ -51,14 +53,29 @@ class OrganizationServiceImpl @Autowired constructor (
     internal lateinit var fieldSystemService: FieldSystemService
 
     override fun create(spec: OrganizationSpec): Organization {
+
+        // will throw if no route is available.
+        val ir = indexRouteDao.getRandomPoolRoute()
+
         if (spec.indexRouteId == null) {
-            spec.indexRouteId = indexRouteDao.getRandomDefaultRoute().id
+            spec.indexRouteId = ir.id
         }
 
         val org = organizationDao.create(spec)
         val auth = resetAuthentication(SuperAdminAuthentication(org.id))
-
         try {
+            if (properties.getString("archivist.index.provisioning-method", PROV_DEDICATED) == PROV_DEDICATED) {
+                val spec = IndexRouteSpec(
+                    ir.clusterUrl,
+                    "org_${org.id}_0001",
+                    ir.mapping,
+                    ir.mappingMajorVer,
+                    defaultPool = false
+                )
+                val orgIndex = indexRoutingService.createIndexRoute(spec)
+                organizationDao.update(org, OrganizationUpdateSpec(org.name, orgIndex.id))
+            }
+
             permissionService.createStandardPermissions(org)
             folderService.createStandardFolders(org)
             userService.createStandardUsers(org)
@@ -112,6 +129,10 @@ class OrganizationServiceImpl @Autowired constructor (
     }
 
     companion object {
+
+        const val PROV_DEDICATED = "dedicated"
+        const val PROV_SHARED = "shared"
+
         private val logger = LoggerFactory.getLogger(OrganizationServiceImpl::class.java)
     }
 }

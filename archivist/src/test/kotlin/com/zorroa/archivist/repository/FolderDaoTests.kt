@@ -96,7 +96,7 @@ class FolderDaoTests : AbstractTest() {
         val org = organizationDao.create(
             OrganizationSpec(
                 "test",
-                indexRouteDao.getRandomDefaultRoute().id
+                indexRouteDao.getRandomPoolRoute().id
             )
         )
         val root = folderDao.createRootFolder(org)

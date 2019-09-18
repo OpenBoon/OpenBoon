@@ -277,24 +277,27 @@ abstract class AbstractTest {
         )
     }
 
-    fun cleanElastic() {
+    fun deleteAllIndexes() {
         /*
          * The Elastic index(s) has been created, but we have to delete it and recreate it
          * so each test has a clean index.  Once this is done we can call setupDataSources()
          * which adds some standard data to both databases.
          */
         val rest = indexRoutingService.getOrgRestClient()
-        val reqDel = DeleteIndexRequest("unittest")
+        val reqDel = DeleteIndexRequest("_all")
 
         /*
          * Delete will throw here if the index doesn't exist.
          */
         try {
             rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
-            logger.info("unittest Elastic DB Removed")
         } catch (e: Exception) {
             logger.warn("Failed to delete 'unittest' index, this is usually ok.")
         }
+    }
+
+    fun cleanElastic() {
+        deleteAllIndexes()
 
         // See setup() method for configuration of default index.
         indexRoutingService.syncAllIndexRoutes()
