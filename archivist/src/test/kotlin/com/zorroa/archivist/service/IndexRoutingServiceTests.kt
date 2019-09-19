@@ -57,19 +57,18 @@ class IndexRoutingServiceTests : AbstractTest() {
         )
     }
 
-    @Test(expected = EmptyResultDataAccessException::class)
+    @Test
     fun testNoOrgRoutingKey() {
         assertEquals(1, jdbc.update("UPDATE index_route SET bool_use_rkey='f'"))
-        indexRouteDao.getOrgRoute()
-    }
-
-    @Test
-    fun testNoOrgRouteNoRoute() {
-        jdbc.update("UPDATE organization SET pk_index_route=null")
         val route = indexRouteDao.getOrgRoute()
-        // Make sure routing key is disabled.
         assertFalse(route.useRouteKey)
         assertNull(route.esClientCacheKey("test").routingKey)
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testNoOrgRouteNoRoute() {
+        jdbc.update("UPDATE organization SET pk_index_route=null")
+        indexRouteDao.getOrgRoute()
     }
 
     @Test
@@ -83,7 +82,6 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         val route = indexRouteDao.getRandomPoolRoute()
         assertEquals(route.mappingMinorVer, 20001231)
-
         assertTrue(indexRoutingService.getOrgRestClient().indexExists())
     }
 
