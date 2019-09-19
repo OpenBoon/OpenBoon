@@ -77,7 +77,7 @@ class IndexRouteSpec(
     var indexName: String,
     var mapping: String,
     var mappingMajorVer: Int,
-    var defaultPool: Boolean,
+    var defaultPool: Boolean = false,
     var useRouteKey: Boolean = false,
     var replicas: Int = 2,
     var shards: Int = 5
@@ -124,10 +124,12 @@ class IndexRouteFilter(
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-        mapOf("id" to "index_route.pk_index_route",
+        mapOf(
+            "id" to "index_route.pk_index_route",
             "clusterUrl" to "index_route.str_url",
             "mapping" to "index_route.str_mapping_type",
-            "timeCreated" to "index_route.time_created")
+            "timeCreated" to "index_route.time_created"
+        )
 
     @JsonIgnore
     override fun build() {

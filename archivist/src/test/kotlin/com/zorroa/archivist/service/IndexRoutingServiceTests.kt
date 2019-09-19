@@ -61,9 +61,14 @@ class IndexRoutingServiceTests : AbstractTest() {
     fun testNoOrgRoutingKey() {
         assertEquals(1, jdbc.update("UPDATE index_route SET bool_use_rkey='f'"))
         val route = indexRouteDao.getOrgRoute()
-        // Make sure routing key is disabled.
         assertFalse(route.useRouteKey)
         assertNull(route.esClientCacheKey("test").routingKey)
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testNoOrgRouteNoRoute() {
+        jdbc.update("UPDATE organization SET pk_index_route=null")
+        indexRouteDao.getOrgRoute()
     }
 
     @Test
@@ -75,9 +80,8 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         indexRoutingService.syncAllIndexRoutes()
 
-        val route = indexRouteDao.getRandomDefaultRoute()
+        val route = indexRouteDao.getRandomPoolRoute()
         assertEquals(route.mappingMinorVer, 20001231)
-
         assertTrue(indexRoutingService.getOrgRestClient().indexExists())
     }
 
@@ -122,10 +126,10 @@ class IndexRoutingServiceTests : AbstractTest() {
                 "int_mapping_minor_ver=0, str_index='test123'"
         )
 
-        var route = indexRouteDao.getRandomDefaultRoute()
+        var route = indexRouteDao.getRandomPoolRoute()
         indexRoutingService.syncIndexRouteVersion(route)
 
-        route = indexRouteDao.getRandomDefaultRoute()
+        route = indexRouteDao.getRandomPoolRoute()
         assertEquals(route.mappingMinorVer, 20001231)
 
         assertTrue(indexRoutingService.getOrgRestClient().indexExists())
@@ -147,7 +151,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             // ignore
         }
 
-        var route = indexRouteDao.getRandomDefaultRoute()
+        var route = indexRouteDao.getRandomPoolRoute()
         indexRoutingService.syncIndexRouteVersion(route)
 
         // Validate the index has our settings.
@@ -211,7 +215,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun getClusterRestClient() {
-        var route = indexRouteDao.getRandomDefaultRoute()
+        var route = indexRouteDao.getRandomPoolRoute()
         val client = indexRoutingService.getClusterRestClient(route)
         assertTrue(client.indexExists())
         assertTrue(client.isAvailable())
@@ -335,7 +339,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testOpenIndex() {
-        var route = indexRouteDao.getRandomDefaultRoute()
+        var route = indexRouteDao.getRandomPoolRoute()
         assertTrue(indexRoutingService.closeIndex(route))
         assertTrue(indexRoutingService.openIndex(route))
 
@@ -345,7 +349,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testCloseIndex() {
-        var route = indexRouteDao.getRandomDefaultRoute()
+        var route = indexRouteDao.getRandomPoolRoute()
         assertTrue(indexRoutingService.closeIndex(route))
         assertFalse(indexRoutingService.closeIndex(route))
 
@@ -355,7 +359,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testGetEsIndexState() {
-        val route = indexRouteDao.getRandomDefaultRoute()
+        val route = indexRouteDao.getRandomPoolRoute()
         val result = indexRoutingService.getEsIndexState(route)
         assertEquals("yellow", result["health"])
         assertEquals("open", result["status"])

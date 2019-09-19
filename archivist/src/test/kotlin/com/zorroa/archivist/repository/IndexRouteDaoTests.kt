@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import org.junit.Test
@@ -101,7 +102,7 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Test
     fun testGetRadomDefaultRoute() {
-        val route = indexRouteDao.getRandomDefaultRoute()
+        val route = indexRouteDao.getRandomPoolRoute() as IndexRoute
         assertEquals("http://localhost:9200", route.clusterUrl)
         assertEquals("http://localhost:9200/unittest", route.indexUrl)
         assertEquals("unittest", route.indexName)

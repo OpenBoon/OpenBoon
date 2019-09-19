@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.OrganizationFilter
 import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.OrganizationUpdateSpec
@@ -24,7 +25,7 @@ class OrganizationDaoTests : AbstractTest() {
 
     @Before
     fun init() {
-        organizationSpec.indexRouteId = indexRouteDao.getRandomDefaultRoute().id
+        organizationSpec.indexRouteId = indexRouteDao.getRandomPoolRoute()!!.id
     }
 
     @Test
@@ -44,7 +45,8 @@ class OrganizationDaoTests : AbstractTest() {
     @Test
     fun testUpdate() {
         val org1 = organizationDao.create(organizationSpec)
-        val updateSpec = OrganizationUpdateSpec("Bilbo", indexRouteDao.getRandomDefaultRoute().id)
+        val route = indexRouteDao.getRandomPoolRoute() as IndexRoute
+        val updateSpec = OrganizationUpdateSpec("Bilbo", route.id)
         assertTrue(organizationDao.update(org1, updateSpec))
         val org2 = organizationDao.get(org1.id)
         assertEquals(updateSpec.name, org2.name)
@@ -65,8 +67,8 @@ class OrganizationDaoTests : AbstractTest() {
     @Test
     fun testGetAllFiltered() {
         val filter = OrganizationFilter(
-                ids = listOf(UUID.randomUUID(), UUID.randomUUID()),
-                names = listOf("foo", "bar", "jones")
+            ids = listOf(UUID.randomUUID(), UUID.randomUUID()),
+            names = listOf("foo", "bar", "jones")
         )
         // Tests all the filter columns can be in the query
         assertEquals(0, organizationDao.getAll(filter).size())

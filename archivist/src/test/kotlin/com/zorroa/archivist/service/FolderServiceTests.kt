@@ -78,8 +78,9 @@ class FolderServiceTests : AbstractTest() {
         val builder = FolderSpec("Folder")
         val folder = folderService.create(builder)
 
-        val results = folderService.addAssets(folder,
-                BatchUpdateAssetLinks(indexService.getAll(Pager.first()).map { a -> a.id })
+        val results = folderService.addAssets(
+            folder,
+            BatchUpdateAssetLinks(indexService.getAll(Pager.first()).map { a -> a.id })
         )
 
         logger.info(Json.prettyString(results))
@@ -114,7 +115,7 @@ class FolderServiceTests : AbstractTest() {
         val folder = folderService.create(builder)
 
         var results = folderService.addAssets(folder,
-                indexService.getAll(Pager.first()).map { a -> a.id })
+            indexService.getAll(Pager.first()).map { a -> a.id })
 
         assertTrue(results.erroredAssetIds.isEmpty())
         assertTrue(results.updatedAssetIds.isNotEmpty())
@@ -125,7 +126,7 @@ class FolderServiceTests : AbstractTest() {
         assertEquals(2, searchService.count(folder))
 
         results = folderService.removeAssets(folder,
-                indexService.getAll(Pager.first()).map { a -> a.id })
+            indexService.getAll(Pager.first()).map { a -> a.id })
         assertTrue(results.erroredAssetIds.isEmpty())
         assertTrue(results.updatedAssetIds.isNotEmpty())
 
@@ -144,7 +145,7 @@ class FolderServiceTests : AbstractTest() {
         folder = folderService.get(folder.id)
 
         val results = folderService.addAssets(folder,
-                indexService.getAll(Pager.first()).map { a -> a.id })
+            indexService.getAll(Pager.first()).map { a -> a.id })
         refreshIndex(2000)
 
         assertEquals(2, searchService.count(AssetSearch().setQuery("bilbo")))
@@ -159,11 +160,16 @@ class FolderServiceTests : AbstractTest() {
         folder = folderService.get(folder.id)
 
         var results = folderService.addAssets(folder,
-                indexService.getAll(Pager.first()).map { a -> a.id })
+            indexService.getAll(Pager.first()).map { a -> a.id })
         refreshIndex()
 
-        assertEquals(2, searchService.search(AssetSearch(
-                AssetFilter().addToTerms("system.links.folder", folder.id))).hits.getTotalHits())
+        assertEquals(
+            2, searchService.search(
+                AssetSearch(
+                    AssetFilter().addToTerms("system.links.folder", folder.id)
+                )
+            ).hits.getTotalHits()
+        )
         fieldService.invalidateFields()
         refreshIndex()
         assertEquals(2, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
@@ -176,8 +182,13 @@ class FolderServiceTests : AbstractTest() {
         assertTrue(results.updatedAssetIds.isNotEmpty())
         refreshIndex()
 
-        assertEquals(0, searchService.search(AssetSearch(
-                AssetFilter().addToTerms("system.links.folder", folder.id))).hits.getTotalHits())
+        assertEquals(
+            0, searchService.search(
+                AssetSearch(
+                    AssetFilter().addToTerms("system.links.folder", folder.id)
+                )
+            ).hits.getTotalHits()
+        )
         assertEquals(0, searchService.search(AssetSearch("Folder")).hits.getTotalHits())
     }
 
@@ -202,9 +213,12 @@ class FolderServiceTests : AbstractTest() {
         val folder = folderService.create(builder)
         folderService.get(folder.id)
 
-        folderService.setAcl(folder, Acl().addEntry(
+        folderService.setAcl(
+            folder, Acl().addEntry(
                 permissionService.getPermission(Groups.MANAGER),
-                Access.Read, Access.Write, Access.Export), false, false)
+                Access.Read, Access.Write, Access.Export
+            ), false, false
+        )
         folderService.get(folder.id)
     }
 
@@ -219,9 +233,12 @@ class FolderServiceTests : AbstractTest() {
          * Since we have all permissions now, this should fail because we
          * are taking away write/export permissions from ourself.
          */
-        folderService.setAcl(folder, Acl().addEntry(
+        folderService.setAcl(
+            folder, Acl().addEntry(
                 permissionService.getPermission(Groups.LIBRARIAN),
-                Access.Read), false, false)
+                Access.Read
+            ), false, false
+        )
         folderService.get(folder.id)
     }
 
@@ -236,9 +253,12 @@ class FolderServiceTests : AbstractTest() {
          * Since we have all permissions now, this should fail because we
          * are taking away write/export permissions from ourself.
          */
-        folderService.setAcl(folder, Acl().addEntry(
+        folderService.setAcl(
+            folder, Acl().addEntry(
                 permissionService.getPermission(Groups.ADMIN),
-                Access.Read), false, false)
+                Access.Read
+            ), false, false
+        )
         folderService.get(folder.id)
     }
 
@@ -250,8 +270,11 @@ class FolderServiceTests : AbstractTest() {
         folderService.get(folder.id)
 
         // use the DAO so don't fail the remove access from self check.
-        folderDao.setAcl(folder.id, Acl().addEntry(
-                permissionService.getPermission(Groups.ADMIN), Access.Read))
+        folderDao.setAcl(
+            folder.id, Acl().addEntry(
+                permissionService.getPermission(Groups.ADMIN), Access.Read
+            )
+        )
         folderService.invalidate(folder)
         folderService.get(folder.id)
     }
@@ -261,8 +284,10 @@ class FolderServiceTests : AbstractTest() {
         authenticate("librarian")
         val builder = FolderSpec("Folder", folderService.get("/Library")!!)
         val folder = folderService.create(builder)
-        folderDao.setAcl(folder.id,
-                Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Read))
+        folderDao.setAcl(
+            folder.id,
+            Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Read)
+        )
         folderService.invalidate(folder)
         folderService.get(folder.id)
     }
@@ -275,7 +300,7 @@ class FolderServiceTests : AbstractTest() {
         val acl = Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write)
         folderService.setAcl(folder, acl, false, false)
         folderService.addAssets(folderService.get(folder),
-                indexService.getAll(Pager.first()).map { a -> a.id })
+            indexService.getAll(Pager.first()).map { a -> a.id })
     }
 
     @Test(expected = ArchivistWriteException::class)
@@ -293,8 +318,10 @@ class FolderServiceTests : AbstractTest() {
         authenticate("librarian")
         val builder = FolderSpec("Folder", folderService.get("/Library")!!)
         val folder = folderService.create(builder)
-        folderDao.setAcl(folder.id,
-                Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write))
+        folderDao.setAcl(
+            folder.id,
+            Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Write)
+        )
         val up = FolderUpdate(folder)
         up.name = "bilbo"
         folderService.update(folder.id, up)
@@ -339,10 +366,20 @@ class FolderServiceTests : AbstractTest() {
         assertEquals(5, folderService.getAllDescendants(Lists.newArrayList(grandpa), true, true).size.toLong())
         assertEquals(4, folderService.getAllDescendants(Lists.newArrayList(grandpa), false, true).size.toLong())
 
-        assertEquals(5, ImmutableSet.copyOf(folderService.getAllDescendants(
-                Lists.newArrayList(grandpa, dad, uncle), true, true)).size.toLong())
-        assertEquals(4, ImmutableSet.copyOf(folderService.getAllDescendants(
-                Lists.newArrayList(grandpa, dad, uncle), false, true)).size.toLong())
+        assertEquals(
+            5, ImmutableSet.copyOf(
+                folderService.getAllDescendants(
+                    Lists.newArrayList(grandpa, dad, uncle), true, true
+                )
+            ).size.toLong()
+        )
+        assertEquals(
+            4, ImmutableSet.copyOf(
+                folderService.getAllDescendants(
+                    Lists.newArrayList(grandpa, dad, uncle), false, true
+                )
+            ).size.toLong()
+        )
     }
 
     @Test
@@ -439,7 +476,7 @@ class FolderServiceTests : AbstractTest() {
         val folder2 = folderService.create(builder2)
 
         val results = folderService.addAssets(folder2,
-                indexService.getAll(Pager.first()).map { a -> a.id })
+            indexService.getAll(Pager.first()).map { a -> a.id })
         refreshIndex(1000)
 
         assertEquals(0, searchService.count(AssetSearch().setQuery("bilbo")))
@@ -506,7 +543,9 @@ class FolderServiceTests : AbstractTest() {
         val folder1 = folderService.create(FolderSpec("test2"))
         val folder1a = folderService.create(FolderSpec("test2a", folder1))
         val folder1b = folderService.create(FolderSpec("test2b", folder1a))
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(FolderSpec("test2c", folder1b))
+        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(
+            FolderSpec("test2c", folder1b)
+        )
         val up = FolderUpdate(folder1)
         up.parentId = folder1.id
         folderService.update(folder1.id, up)
@@ -539,9 +578,11 @@ class FolderServiceTests : AbstractTest() {
     @Test
     fun testDeleteWithDyhi() {
         val folder = folderService.create(FolderSpec("foo"), false)
-        val spec = DyHierarchySpec(folder.id, listOf(
+        val spec = DyHierarchySpec(
+            folder.id, listOf(
                 DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)
-        ))
+            )
+        )
         dyhiService!!.create(spec)
         assertTrue(folderService.delete(folder))
     }
@@ -575,7 +616,9 @@ class FolderServiceTests : AbstractTest() {
         val count = folderService.count()
 
         val folder1 = folderService.create(FolderSpec("folder1"))
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(FolderSpec("folder2", folder1))
+        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(
+            FolderSpec("folder2", folder1)
+        )
         assertEquals((count + 2).toLong(), folderService.count().toLong())
 
         val result = folderService.trash(folder1)
@@ -598,14 +641,19 @@ class FolderServiceTests : AbstractTest() {
 
         val folder1 = folderService.create(FolderSpec("folder1"))
         val folder2 = folderService.create(FolderSpec("folder2", folder1))
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(FolderSpec("folder3", folder2))
+        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(
+            FolderSpec("folder3", folder2)
+        )
         val result = folderService.trash(folder1)
 
         // Deleted 2 folders
         assertEquals(3, result.count.toLong())
 
-        assertEquals(3, folderService.restore(
-                folderService.getTrashedFolder(result.trashFolderId)).count.toLong())
+        assertEquals(
+            3, folderService.restore(
+                folderService.getTrashedFolder(result.trashFolderId)
+            ).count.toLong()
+        )
     }
 
     @Test
@@ -613,7 +661,9 @@ class FolderServiceTests : AbstractTest() {
 
         val folder1 = folderService.create(FolderSpec("folder1"))
         val folder2 = folderService.create(FolderSpec("folder2", folder1))
-        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(FolderSpec("folder3", folder2))
+        val (id, name, parentId, organizationId, dyhiId, user, timeCreated, timeModified, recursive, dyhiRoot, dyhiField, childCount, acl, search, taxonomyRoot, attrs) = folderService.create(
+            FolderSpec("folder3", folder2)
+        )
         val result = folderService.trash(folder1)
 
         // Deleted 2 folders
@@ -664,7 +714,8 @@ class FolderServiceTests : AbstractTest() {
     fun createStandardfolders() {
         val org = organizationDao.create(
             OrganizationSpec(
-                "test", indexRouteDao.getRandomDefaultRoute().id)
+                "test", indexRouteDao.getRandomPoolRoute().id
+            )
         )
         SecurityContextHolder.getContext().authentication = SuperAdminAuthentication(org.id)
         permissionService.createStandardPermissions(org)
