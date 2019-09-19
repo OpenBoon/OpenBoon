@@ -176,4 +176,33 @@ class FieldControllerTests : MockMvcTest() {
         assertTrue("StringContent" in result)
         assertFalse("StringSuggest" in result)
     }
+
+    @Test
+    fun testGetFieldAttrs() {
+        val req = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/fields/_attrs")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val result = Json.Mapper.readValue<Map<String, AttrType>>(req.response.contentAsString)
+        assertEquals(AttrType.NumberFloat, result["media.clip.length"])
+    }
+
+    @Test
+    fun testGetFieldAttrsSingle() {
+        val req = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/fields/_attrs?name=media.clip.length")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val result = Json.Mapper.readValue<Map<String, AttrType>>(req.response.contentAsString)
+        assertEquals(AttrType.NumberFloat, result["media.clip.length"])
+        assertEquals(1, result.size)
+    }
 }

@@ -107,4 +107,16 @@ class FieldController @Autowired constructor(
     fun fieldAttrTypes(): List<String> {
         return AttrType.values().filter { it.name != "StringSuggest" }.map { it.toString() }
     }
+
+    @ApiOperation(value = "Get type of all attrs or type of specific attr.")
+    @GetMapping(value = ["/api/v1/fields/_attrs"])
+    @Throws(Exception::class)
+    fun getFieldAttrs(@RequestParam(name = "name", required = false) name: String?): Map<String, AttrType> {
+        val attrs = fieldSystemService.getEsTypeMap()
+        return if (name != null) {
+            mapOf(name to attrs.getValue(name))
+        } else {
+            attrs
+        }
+    }
 }
