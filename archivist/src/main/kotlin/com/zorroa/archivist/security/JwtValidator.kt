@@ -16,7 +16,7 @@ import java.util.Date
 import java.util.UUID
 import javax.annotation.PostConstruct
 
-@ResponseStatus(HttpStatus.FORBIDDEN)
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
 class JwtValidatorException constructor(
     override val message: String,
     override val cause: Throwable?

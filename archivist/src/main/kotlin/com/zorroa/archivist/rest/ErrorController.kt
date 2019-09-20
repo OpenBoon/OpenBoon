@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.security.JwtValidatorException
 import com.zorroa.archivist.security.getUserOrNull
 import com.zorroa.common.domain.ArchivistException
 import com.zorroa.common.domain.ArchivistSecurityException
@@ -63,6 +64,8 @@ class RestApiExceptionHandler {
 
         val status = if (annotation != null) {
             annotation.value
+        } else if (e is JwtValidatorException) {
+            HttpStatus.UNAUTHORIZED
         } else if (e is EmptyResultDataAccessException || e is EntityNotFoundException) {
             HttpStatus.NOT_FOUND
         } else if (e is IncorrectResultSizeDataAccessException) {
