@@ -167,6 +167,9 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var accessResolver: AccessResolver
 
+    @Autowired
+    lateinit var messagingService: MessagingService
+
     /**
      * Prepare a list of assets to be created.  Updated assets are not prepped.
      *
@@ -362,6 +365,20 @@ class AssetServiceImpl : AssetService {
         if (rsp.assetsChanged()) {
             auditLogChanges(prepped, rsp)
             runDyhiAndTaxons()
+        }
+        if (rsp.createdAssetIds.isNotEmpty()) {
+            messagingService.sendMessage(
+                actionType = ActionType.AssetsCreated,
+                organizationId = getOrgId(),
+                data = mapOf("ids" to rsp.createdAssetIds)
+            )
+        }
+        if (rsp.replacedAssetIds.isNotEmpty()) {
+            messagingService.sendMessage(
+                actionType = ActionType.AssetsDeleted,
+                organizationId = getOrgId(),
+                data = mapOf("ids" to rsp.replacedAssetIds)
+            )
         }
         return rsp
     }
@@ -593,6 +610,13 @@ class AssetServiceImpl : AssetService {
         }
 
         runDyhiAndTaxons()
+        if (rsp.updatedAssetIds.isNotEmpty()) {
+            messagingService.sendMessage(
+                actionType = ActionType.AssetsUpdated,
+                organizationId = getOrgId(),
+                data = mapOf("ids" to rsp.updatedAssetIds)
+            )
+        }
         return rsp
     }
 
@@ -830,7 +854,13 @@ class AssetServiceImpl : AssetService {
         val result = indexService.delete(assetId)
         if (result) {
             runDyhiAndTaxons()
+            messagingService.sendMessage(
+                actionType = ActionType.AssetsDeleted,
+                organizationId = getOrgId(),
+                data = mapOf("ids" to listOf(assetId))
+            )
         }
+
         return result
     }
 
@@ -838,6 +868,11 @@ class AssetServiceImpl : AssetService {
         val result = indexService.batchDelete(assetIds)
         if (result.deletedAssetIds.isNotEmpty()) {
             runDyhiAndTaxons()
+            messagingService.sendMessage(
+                actionType = ActionType.AssetsDeleted,
+                organizationId = getOrgId(),
+                data = mapOf("ids" to result.deletedAssetIds)
+            )
         }
         return result
     }
@@ -859,11 +894,16 @@ class AssetServiceImpl : AssetService {
 
         val result = BatchUpdateAssetsResponse()
         result.plus(indexService.index(assets))
-
         if (taxons) {
             runDyhiAndTaxons()
         }
-
+        if (result.updatedAssetIds.isNotEmpty()) {
+            messagingService.sendMessage(
+                actionType = ActionType.AssetsUpdated,
+                organizationId = getOrgId(),
+                data = mapOf("ids" to result.updatedAssetIds)
+            )
+        }
         return result
     }
 
