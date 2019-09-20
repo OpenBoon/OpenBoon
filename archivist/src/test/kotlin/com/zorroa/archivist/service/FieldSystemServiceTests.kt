@@ -162,7 +162,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertEquals(attrName, field.attrName)
 
         val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
-        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, 2.22))
+        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, 2.22f))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
 
@@ -178,7 +178,7 @@ class FieldSystemServiceTests : AbstractTest() {
         assertEquals(attrName, field.attrName)
 
         val asset = searchService.search(Pager.first(), AssetSearch()).list.first()
-        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, listOf(2.22)))
+        assetService.createFieldEdit(FieldEditSpec(asset.id, field.id, null, listOf(2.22f)))
         assertEquals(attrType, fieldSystemService.getEsAttrType(attrName))
     }
 

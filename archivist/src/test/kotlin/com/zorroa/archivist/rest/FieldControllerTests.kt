@@ -23,6 +23,10 @@ class FieldControllerTests : MockMvcTest() {
 
     val fieldSpec = FieldSpecExpose("Media Clip Parent", "media.clip.parent")
 
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
     @Test
     fun testExposeField() {
 

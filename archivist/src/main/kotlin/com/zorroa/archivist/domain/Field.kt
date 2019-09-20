@@ -26,7 +26,9 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
     Bool("boolean", true),
     DateTime("date_time", true),
     GeoPoint("geo_point", false),
-    HashSimilarity("hash_similarity", false);
+    HashSimilarity("hash_similarity", false),
+    NumberDouble("number_double", true),
+    NumberLong("number_long", true);
 
     /**
      * Return the name of the custom file name.
@@ -59,10 +61,10 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
 
         return when (this) {
             NumberInteger -> {
-                value is Int || value is Long
+                value is Int
             }
             NumberFloat -> {
-                value is Double || value is Float
+                value is Float
             }
             StringExact,
             StringContent,
@@ -82,6 +84,12 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
             }
             GeoPoint -> {
                 value is List<*>
+            }
+            NumberDouble -> {
+                value is Int || value is Long
+            }
+            NumberLong -> {
+                value is Double || value is Float
             }
         }
     }
@@ -108,6 +116,8 @@ enum class AttrType(val prefix: String, val editable: kotlin.Boolean) {
             HashSimilarity -> mapOf("type" to "keyword")
             DateTime -> mapOf("type" to "date")
             GeoPoint -> mapOf("type" to "geo_point")
+            NumberDouble -> mapOf("type" to "double")
+            NumberLong -> mapOf("type" to "long")
         }
     }
 }
