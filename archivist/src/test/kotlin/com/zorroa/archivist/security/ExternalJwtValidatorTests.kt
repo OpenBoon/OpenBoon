@@ -1,8 +1,11 @@
 package com.zorroa.archivist.security
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Access
-import org.elasticsearch.index.query.QueryStringQueryBuilder
+import com.zorroa.common.util.Json
+import com.zorroa.security.Groups
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +22,6 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.request
 import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 import java.net.URI
 import java.util.UUID
-import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -54,60 +56,21 @@ class ExternalJwtValidatorTests : AbstractTest() {
 
     @Test
     fun testEmbeddedQueryStringFilter() {
-        val token =
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjY1MDE1MDUsImV4cCI6MTU5ODAzNzUwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjAwMDAwMDAwLTdiMGItNDgwZS04YzM2LWYwNmYwNGFlZDJmMSIsIm9yZ2FuaXphdGlvbklkIjoiMDAwMDAwMDAtOTk5OC04ODg4LTc3NzctNjY2NjY2NjY2NjY2IiwicXVlcnRTdHJpbmdGaWx0ZXIiOiJzb3VyY2UudHlwZTppbWFnZSJ9.4hGTBU1RHST-pojdDoGyAZGUe0QUN2xTiDfPrqYhnpA"
-        val payload = """{
-            "iss": "Online JWT Builder",
-            "iat": 1566501505,
-            "exp": 1598037505,
-            "aud": "www.example.com",
-            "sub": "jrocket@example.com",
-            "userId": "00000000-7b0b-480e-8c36-f06f04aed2f1",
-            "organizationId": "00000000-9998-8888-7777-666666666666",
-            "queryStringFilter": "source.type:image"
-        }
-        """.trimIndent()
+        authenticate("user")
+        val user = getUser()
+        userService.addPermissions(user, listOf(permissionService.getPermission(Groups.READ)))
 
-        mockServer.expect(
-            ExpectedCount.once(),
-            requestTo(URI("http://localhost:8181/validate"))
-        )
-            .andExpect(method(HttpMethod.GET))
-            .andExpect(header("Authorization", "Bearer $token"))
-            .andRespond(
-                withStatus(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(payload)
-            )
+        val id = user.id.toString()
+        val token = JWT.create()
+            .withClaim("userId", id)
+            .withClaim("organizationId", user.organizationId.toString())
+            .withClaim("queryStringFilter", "foo.bar:123")
+            .sign(Algorithm.HMAC256(userService.getHmacKey(user)))
 
-        // Take our validated claims and wrap them in a JwtAuthenticationToken
-        val vjwt = JwtAuthenticationToken(validator.validate(token))
-        // Call authenticate to run the JwtAuthenticationProvider clsass
-        val auth = authenticationManager.authenticate(vjwt)
-        // Replaces the globally logged in user with our authenticated user.
-        SecurityContextHolder.getContext().authentication = auth
-
-        // Get a permission filter.
-        val filter = accessResolver.getAssetPermissionsFilter(Access.Read)
-        assertNotNull(filter)
-        assertTrue(filter is QueryStringQueryBuilder)
-        assertEquals("source.type:image", filter.queryString())
-    }
-
-    @Ignore("Disabled this feature but might bring back")
-    @Test
-    fun testEmbeddedSearchFilter() {
-        val token =
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjYzMzkwNjAsImV4cCI6MTU5Nzg3NTA2MCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IiAwMDAwMDAwMC03YjBiLTQ4MGUtOGMzNi1mMDZmMDRhZWQyZjEiLCJvcmdhbml6YXRpb25JZCI6IjAwMDAwMDAwLTk5OTgtODg4OC03Nzc3LTY2NjY2NjY2NjY2NiIsImZpbHRlciI6IntcInF1ZXJ5XCI6IHsgXCJ0ZXJtc1wiOiB7IFwic291cmNlLnR5cGVcIjogW1widmlkZW9cIl0gfSB9IH0ifQ.alnldvNVPDSclcyFAk-PrhEw791KUr_mEVL-ZnwIMAw"
-        val payload = """{
-                "iss": "Online JWT Builder",
-                "iat": 1566339060,
-                "exp": 1597875060,
-                "aud": "www.example.com",
-                "sub": "jrocket@example.com",
-                "userId": "00000000-7b0b-480e-8c36-f06f04aed2f1",
-                "organizationId": "00000000-9998-8888-7777-666666666666",
-                "filter": "{\"query\": { \"terms\": { \"source.type\": [\"video\"] } } }"
+        val body = """{
+                "userId": "$id",
+                "organizationId": "${user.organizationId}",
+                "queryStringFilter": "foo.bar:123"
             }
         """.trimIndent()
 
@@ -120,27 +83,25 @@ class ExternalJwtValidatorTests : AbstractTest() {
             .andRespond(
                 withStatus(HttpStatus.OK)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(payload)
+                    .body(body)
             )
+
+        val result = validator.validate(token)
+        validator.provisionUser(result)
 
         // Take our validated claims and wrap them in a JwtAuthenticationToken
         val vjwt = JwtAuthenticationToken(validator.validate(token))
+
         // Call authenticate to run the JwtAuthenticationProvider clsass
         val auth = authenticationManager.authenticate(vjwt)
+        println(Json.prettyString(auth))
+
         // Replaces the globally logged in user with our authenticated user.
         SecurityContextHolder.getContext().authentication = auth
 
         // Get a permission filter.
         val filter = accessResolver.getAssetPermissionsFilter(Access.Read).toString()
-        val knownFilter = """{
-  "terms" : {
-    "source.type" : [
-      "video"
-    ],
-    "boost" : 1.0
-  }
-}""".trimIndent()
-        assertEquals(knownFilter, filter)
+        assertTrue(filter.contains("query_string"))
     }
 
     @Test

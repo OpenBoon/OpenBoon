@@ -142,8 +142,7 @@ class JwtAuthenticationProvider : AuthenticationProvider {
             user.username,
             authorities,
             user.attrs,
-            token.filter,
-            token.queryStringFilter
+            user.queryStringFilter
         )
 
         // Increment expire time if the token is still active.

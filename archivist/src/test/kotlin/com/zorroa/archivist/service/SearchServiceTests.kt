@@ -41,7 +41,6 @@ import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.TestPropertySource
 import java.io.IOException
@@ -1148,8 +1147,9 @@ class JwtTokenSecuritySearchServiceTests : AbstractTest() {
         val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
 
+        authenticate("user")
         val currentUser = getUser()
-        val perms = currentUser.authorities.toSet() as Set<out GrantedAuthority>
+        var perms = setOf(permissionService.getPermission(Groups.READ))
 
         // Build a new UserAuthed object
         val authedUser = UserAuthed(
@@ -1158,7 +1158,6 @@ class JwtTokenSecuritySearchServiceTests : AbstractTest() {
             currentUser.username,
             perms,
             currentUser.attrs,
-            null,
             "source.filename:beer_kettle_01.jpg"
         )
 
@@ -1167,6 +1166,32 @@ class JwtTokenSecuritySearchServiceTests : AbstractTest() {
 
         val result = searchService.search(Pager.first(), AssetSearch())
         assertEquals(1, result.list.size)
+    }
+
+    @Test
+    fun testSearchWithJwtQStringFilterAdminUser() {
+        val source1 = Source(getTestImagePath("beer_kettle_01.jpg"))
+        val source2 = Source(getTestImagePath("new_zealand_wellington_harbour.jpg"))
+        assetService.createOrReplaceAssets(BatchCreateAssetsRequest(listOf(source1, source2)))
+
+        val currentUser = getUser()
+
+        // Build a new UserAuthed object
+        // the filter doesn't matter for admins
+        val authedUser = UserAuthed(
+            currentUser.id,
+            currentUser.organizationId,
+            currentUser.username,
+            currentUser.authorities.toSet(),
+            currentUser.attrs,
+            "source.filename:beer_kettle_01.jpg"
+        )
+
+        SecurityContextHolder.getContext().authentication =
+            UnitTestAuthentication(authedUser, authedUser.authorities)
+
+        val result = searchService.search(Pager.first(), AssetSearch())
+        assertEquals(2, result.list.size)
     }
 
     override fun requiresElasticSearch(): Boolean {
