@@ -216,6 +216,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setObject(13, user.organizationId)
             ps.setString(14, Json.serializeToString(spec.authAttrs, "{}"))
             ps.setString(15, spec.language)
+            ps.setString(16, spec.queryStringFilter)
             ps
         }
 
@@ -306,12 +307,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
         jdbc.update(
             "UPDATE users " +
-                "SET str_email=?, str_firstname=?, str_lastname=?, str_language=?, json_auth_attrs=? WHERE pk_user=?",
+                "SET str_email=?, str_firstname=?, str_lastname=?, str_language=?, " +
+                "json_auth_attrs=?, str_query_string_filter=? WHERE pk_user=?",
             spec.email,
             spec.firstName,
             spec.lastName,
             spec.language,
             jsonAttrs,
+            spec.queryStringFilter,
             user.id
         )
         return get(user.id)
@@ -468,7 +471,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 rs.getInt("int_login_count"),
                 rs.getLong("time_last_login"),
                 Json.deserialize(rs.getString("json_auth_attrs"), Json.GENERIC_MAP),
-                rs.getString("str_language")
+                rs.getString("str_language"),
+                rs.getString("str_query_string_filter")
             )
         }
 
@@ -492,7 +496,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
             "pk_folder",
             "pk_organization",
             "json_auth_attrs",
-            "str_language"
+            "str_language",
+            "str_query_string_filter"
         )
 
         private const val RESET_PASSWORD = "UPDATE " +

@@ -120,7 +120,11 @@ class User(
     var attrs: Map<String, Any>,
 
     @ApiModelProperty("User's language")
-    val language: String?
+    val language: String?,
+
+    @ApiModelProperty("User's query string filter")
+    @JsonIgnore
+    val queryStringFilter: String? = null
 
 ) : UserId {
 
@@ -158,8 +162,10 @@ class UserProfileUpdate(
 
 )
 
-@ApiModel("Local User Spec", description = "LocalUserSpec is a new version of the UserSpec for the v2 create " +
-    "user endpoint.  It accepts a organizationId but only pays attention to it if the user is a super admin.")
+@ApiModel(
+    "Local User Spec", description = "LocalUserSpec is a new version of the UserSpec for the v2 create " +
+        "user endpoint.  It accepts a organizationId but only pays attention to it if the user is a super admin."
+)
 class LocalUserSpec(
 
     @ApiModelProperty("Email address of the User")
@@ -213,7 +219,10 @@ class UserSpec(
     val language: String? = null,
 
     @JsonIgnore
-    val id: UUID? = null
+    val id: UUID? = null,
+
+    @JsonIgnore
+    val queryStringFilter: String? = null
 
 ) {
 
@@ -231,6 +240,7 @@ class RegisteredUserUpdateSpec(val user: User, authAttrs: Map<String, String>) {
     var lastName: String? = authAttrs["last_name"] ?: user.lastName
     var authAttrs: Map<String, String> = authAttrs
     val language: String? = authAttrs.getOrDefault("user_locale", user.language)
+    val queryStringFilter: String? = authAttrs.getOrDefault("query_string_filter", authAttrs["queryStringFilter"])
 }
 
 /**
@@ -274,7 +284,8 @@ class UserFilter constructor(
     override val sortMap: Map<String, String> = mapOf(
         "id" to "users.pk_user",
         "username" to "users.str_username",
-        "email" to "users.str_email")
+        "email" to "users.str_email"
+    )
 
     override fun build() {
         if (sort == null) {

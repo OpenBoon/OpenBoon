@@ -16,7 +16,6 @@ class UserAuthed(
     username: String,
     permissions: Set<out GrantedAuthority>,
     attrs: Map<String, Any>,
-    var filter: String? = null,
     var queryStringFilter: String? = null
 ) : UserId, UserDetails, Serializable {
 
@@ -32,8 +31,8 @@ class UserAuthed(
         }
     }
 
-    fun hasPermissionFilter(): Boolean {
-        return filter != null || queryStringFilter != null
+    fun hasQueryStringFilter(): Boolean {
+        return queryStringFilter != null
     }
 
     override fun getAuthorities(): Collection<out GrantedAuthority> {

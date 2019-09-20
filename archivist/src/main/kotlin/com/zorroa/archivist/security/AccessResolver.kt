@@ -33,7 +33,9 @@ class AcccessResolverImpl @Autowired constructor(
          * along with the appropriate permission.
          */
         if (useJwtFilter) {
-            if (access == Access.Write && !hasPermission(Groups.WRITE)) {
+            if (hasPermission(Groups.ADMIN)) {
+                return null
+            } else if (access == Access.Write && !hasPermission(Groups.WRITE)) {
                 throw AccessDeniedException("User does not have appropriate write permissions.")
             } else if (access == Access.Delete && !hasPermission(Groups.DELETE)) {
                 throw AccessDeniedException("User does not have appropriate delete permissions.")
@@ -50,8 +52,6 @@ class AcccessResolverImpl @Autowired constructor(
                     .fuzzyMaxExpansions(0)
                     .fuzzyTranspositions(false)
             }
-        } else if (hasPermission(Groups.ADMIN)) {
-            return null
         } else if (access == Access.Read) {
             return if (hasPermission(Groups.READ)) {
                 null

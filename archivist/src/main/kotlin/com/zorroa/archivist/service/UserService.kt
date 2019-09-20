@@ -184,7 +184,11 @@ class UserRegistryServiceImpl @Autowired constructor(
                     lastName = source.attrs.getOrDefault("last_name", "Last"),
                     language = source.attrs.getOrDefault("user_locale", "en_US"),
                     authAttrs = source.attrs,
-                    id = source.userId
+                    id = source.userId,
+                    queryStringFilter = source.attrs.getOrDefault(
+                        "query_string_filter",
+                        source.attrs["queryStringFilter"]
+                    )
                 )
                 userService.create(spec)
             }
@@ -313,7 +317,10 @@ class UserRegistryServiceImpl @Autowired constructor(
      */
     fun toUserAuthed(user: User): UserAuthed {
         val perms = userService.getPermissions(user)
-        return UserAuthed(user.id, user.organizationId, user.username, perms.toSet(), user.attrs)
+        return UserAuthed(
+            user.id, user.organizationId, user.username,
+            perms.toSet(), user.attrs, user.queryStringFilter
+        )
     }
 
     /**
