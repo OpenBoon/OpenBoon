@@ -13,6 +13,9 @@ import com.zorroa.archivist.service.FileServerProviderImpl
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.GcsFileStorageService
 import com.zorroa.archivist.service.LocalFileStorageService
+import com.zorroa.archivist.service.MessagingService
+import com.zorroa.archivist.service.NullMessagingService
+import com.zorroa.archivist.service.PubSubMessagingService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.FileUtils
@@ -122,6 +125,23 @@ class ArchivistConfiguration {
             }
             else -> {
                 throw IllegalStateException("Invalid storage type: $type")
+            }
+        }
+    }
+
+    @Bean
+    fun messagingService(): MessagingService {
+        val props = properties()
+        val type = props.getString("archivist.messaging-service.type", "None")
+        return when (type) {
+            "pubsub" -> {
+                logger.info("Using Pub/Sub messaging service.")
+                PubSubMessagingService(
+                    topicId = props.getString("archivist.messaging-service.topicId", "archivist-events")
+                )
+            }
+            else -> {
+                NullMessagingService()
             }
         }
     }

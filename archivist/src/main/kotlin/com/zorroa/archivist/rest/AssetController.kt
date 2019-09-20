@@ -345,7 +345,9 @@ class AssetController @Autowired constructor(
     @ApiOperation("Delete an Asset.")
     @DeleteMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
-    fun delete(@ApiParam("UUID of the Asset.") @PathVariable id: String): Any {
+    fun delete(
+        @ApiParam("UUID of the Asset.") @PathVariable id: String
+    ): Any {
         return HttpUtils.deleted("asset", id, assetService.delete(id))
     }
 

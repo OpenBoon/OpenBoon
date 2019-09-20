@@ -106,3 +106,30 @@ Remember to update the Analyst(s) application.properties to utilize HTTPS when t
 ```
 analyst.master.host = https://archivist.zorroa.com:8066
 ```
+
+## Messaging Service Configuration
+The archivist can be configured to publish messages to messaging queue such as Google Pub/Sub or RabbitMQ. The currently
+supported technologies are below.
+
+### Google Pub/Sub
+To enable set `archivist.messaging-service.type=pubsub` in the application.properties file.
+
+#### Config Options
+| Property | Description | Required | Default |
+| -------- | ----------- | -------- | ------- | 
+| archivist.messaging-service.topicId | Sets the pub/sub topic to publish messages to. |  | archivist-actions |
+
+#### Messages:
+
+#### Assets Deleted
+Emitted each time an asset is deleted.
+
+Attributes:
+- action = assets-deleted
+- organization = <ORGANIZATION_ID>
+
+Data:
+```
+{"ids": ["<ASSET_ID>"]}
+```
+
