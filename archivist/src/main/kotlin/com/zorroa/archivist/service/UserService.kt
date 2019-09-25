@@ -132,6 +132,8 @@ interface UserService {
     fun findOne(filter: UserFilter): User
 
     fun getAll(filter: UserFilter): KPagedList<User>
+
+    fun updateUsername(user: User, username: String): Boolean
 }
 
 @Service
@@ -199,6 +201,10 @@ class UserRegistryServiceImpl @Autowired constructor(
             userService.update(user, RegisteredUserUpdateSpec(user, source.attrs))
         }
 
+        if (existsById && user.username != username) {
+            userService.updateUsername(user, username)
+        }
+
         userService.incrementLoginCounter(user)
 
         if (properties.getBoolean("archivist.security.saml.permissions.import")) {
@@ -211,7 +217,8 @@ class UserRegistryServiceImpl @Autowired constructor(
                 SecurityContextHolder.getContext().authentication = null
             }
         }
-        return toUserAuthed(user)
+        // pull fresh user record in case it was updated.
+        return toUserAuthed(userService.get(user.id))
     }
 
     override fun exists(username: String, source: String?): Boolean {
@@ -466,6 +473,10 @@ class UserServiceImpl @Autowired constructor(
 
     override fun update(user: User, spec: RegisteredUserUpdateSpec): User {
         return userDao.update(user, spec)
+    }
+
+    override fun updateUsername(user: User, username: String): Boolean {
+        return userDao.updateUsername(user, username)
     }
 
     override fun get(username: String): User {
