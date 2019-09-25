@@ -201,9 +201,7 @@ class UserRegistryServiceImpl @Autowired constructor(
             userService.update(user, RegisteredUserUpdateSpec(user, source.attrs))
         }
 
-        logger.info("exists: $existsById  username: $username  olduser: ${user.username}")
         if (existsById && user.username != username) {
-            logger.info("updating username")
             userService.updateUsername(user, username)
         }
 
