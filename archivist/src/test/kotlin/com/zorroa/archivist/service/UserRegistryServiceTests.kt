@@ -121,6 +121,27 @@ class UserRegistryServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testRegisterUserWithNewUsername() {
+        val username1 = "billybob@bob.com"
+        val userId = UUID.randomUUID()
+        val user = userRegistryService.registerUser(
+            username1,
+            AuthSource("IRM", "saml", "saml", userId = userId)
+        )
+
+        assertEquals(userId, user.id)
+        assertEquals(username1, user.username)
+
+        val username2 = "kirk@spock.com"
+        val user2 = userRegistryService.registerUser(
+            username2,
+            AuthSource("IRM", "saml", "saml", userId = userId))
+
+        assertEquals(userId, user2.id)
+        assertEquals(username2, user2.username)
+    }
+
+    @Test
     fun testUpdateRegisteredUserLanguage() {
         val username = "billybob@bob.com"
         userRegistryService.registerUser(

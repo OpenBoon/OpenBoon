@@ -268,4 +268,18 @@ class UserDaoTests : AbstractTest() {
         assertTrue(userDao.setAuthAttrs(user, emptyMap()))
         assertFalse(userDao.setAuthAttrs(user, null))
     }
+
+    @Test
+    fun testUpdateUsername() {
+        val result = userDao.updateUsername(user, "bob")
+        assertTrue(result)
+        assertEquals("bob", jdbc.queryForObject("SELECT str_username FROM users WHERE pk_user=?",
+            String::class.java, user.id))
+        assertEquals("bob", jdbc.queryForObject("SELECT str_name FROM folder WHERE pk_folder=?",
+            String::class.java, user.homeFolderId))
+        assertEquals("bob", jdbc.queryForObject("SELECT str_name FROM permission WHERE pk_permission=?",
+            String::class.java, user.permissionId))
+        assertEquals("user::bob", jdbc.queryForObject("SELECT str_authority FROM permission WHERE pk_permission=?",
+            String::class.java, user.permissionId))
+    }
 }

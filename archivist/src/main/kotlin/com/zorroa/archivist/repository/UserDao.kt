@@ -98,6 +98,12 @@ interface UserDao {
     fun findOne(filter: UserFilter): User
 
     fun setAuthAttrs(user: User, attrs: Map<String, String>?): Boolean
+
+    /**
+     * Updates a user's username and changes the name of their
+     * home folder and permission.
+     */
+    fun updateUsername(user: User, username: String): Boolean
 }
 
 @Repository
@@ -301,6 +307,17 @@ class UserDaoImpl : AbstractDao(), UserDao {
             update.lastName, user.id
         ) == 1
     }
+
+    override fun updateUsername(user: User, username: String): Boolean {
+        if (jdbc.update("UPDATE users SET str_username=? WHERE pk_user=?", username, user.id) == 1) {
+            jdbc.update("UPDATE folder SET str_name=? WHERE pk_folder=?", username, user.homeFolderId)
+            jdbc.update("UPDATE permission SET str_name=?, str_authority=? " +
+                "WHERE pk_permission=?", username, "user::$username", user.permissionId)
+            return true
+        }
+        return false
+    }
+
 
     override fun update(user: User, spec: RegisteredUserUpdateSpec): User {
         val jsonAttrs = Json.serializeToString(spec.authAttrs, "{}")
