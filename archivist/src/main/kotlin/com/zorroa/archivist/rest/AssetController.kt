@@ -63,6 +63,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
+import java.lang.IllegalArgumentException
 import java.nio.file.Paths
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -286,6 +287,15 @@ class AssetController @Autowired constructor(
         out: ServletOutputStream
     ) {
         searchService.search(Pager(search.from, search.size, 0), search, out)
+    }
+
+    @ApiOperation("Delete a search scroll by id.")
+    @DeleteMapping(value = ["/api/v1/assets/_scroll"])
+    @Throws(IOException::class)
+    fun clearScroll(
+        @ApiParam("Request body containing a scroll_id property, mimics ES API.") @RequestBody req: Map<String, String>): Any {
+        require("scroll_id" in req) { "Request body does not contain 'scroll_id'" }
+        return HttpUtils.status("asset", "clearScroll", searchService.clearScroll(req.getValue("scroll_id")))
     }
 
     @ApiOperation("Returns number of Assets matching the search given.")

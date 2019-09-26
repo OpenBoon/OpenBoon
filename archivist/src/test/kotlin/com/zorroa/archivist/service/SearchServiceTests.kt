@@ -33,6 +33,7 @@ import com.zorroa.archivist.security.getUser
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -87,6 +88,17 @@ class SearchServiceTests : AbstractTest() {
         val count = 0
         val search = AssetSearch()
         searchService.scanAndScroll(search, 2, false)
+    }
+
+    @Test
+    fun testClearScroll() {
+       addTestAssets("set04")
+        val result1 = searchService.search(
+            Pager.first(1),
+            AssetSearch().setScroll(Scroll().setTimeout("1m"))
+        )
+        assertTrue(searchService.clearScroll(result1.scroll.id))
+        assertFalse(searchService.clearScroll(result1.scroll.id))
     }
 
     @Test
