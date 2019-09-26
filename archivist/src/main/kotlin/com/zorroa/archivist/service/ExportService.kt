@@ -80,13 +80,17 @@ class ExportServiceImpl @Autowired constructor(
          */
         val maxAssets = properties.getInt("archivist.export.maxAssetCount").toLong()
         val generate = mutableListOf<ProcessorRef>()
-        generate.add(ProcessorRef(
-                "zplugins.core.generators.AssetSearchGenerator",
-                mapOf<String, Any>(
-                        "search" to spec.search,
-                        "max_items" to maxAssets
+
+        generate.add(
+            ProcessorRef(
+                "zplugins.core.generators.AssetSearchGenerator", mapOf(
+                    "search" to spec.search,
+                    "max_assets" to maxAssets,
+                    "page_size" to 50,
+                    "scroll" to false
                 )
-        ))
+            )
+        )
 
         return ZpsScript(spec.name,
                 type = PipelineType.Export,
