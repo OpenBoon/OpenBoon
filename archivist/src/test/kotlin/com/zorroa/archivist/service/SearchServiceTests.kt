@@ -92,7 +92,7 @@ class SearchServiceTests : AbstractTest() {
 
     @Test
     fun testClearScroll() {
-       addTestAssets("set04")
+        addTestAssets("set04")
         val result1 = searchService.search(
             Pager.first(1),
             AssetSearch().setScroll(Scroll().setTimeout("1m"))
