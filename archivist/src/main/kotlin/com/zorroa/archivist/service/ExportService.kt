@@ -78,19 +78,19 @@ class ExportServiceImpl @Autowired constructor(
         /**
          * Now start to build the script for the task.
          */
-
         val maxAssets = properties.getInt("archivist.export.maxAssetCount").toLong()
-        if (searchService.count(spec.search) > maxAssets) {
-            throw IllegalArgumentException("Cannot export more than $maxAssets assets at a time")
-        }
-
         val generate = mutableListOf<ProcessorRef>()
-        generate.add(ProcessorRef(
-                "zplugins.core.generators.AssetSearchGenerator",
-                mapOf<String, Any>(
-                        "search" to spec.search
+
+        generate.add(
+            ProcessorRef(
+                "zplugins.core.generators.AssetSearchGenerator", mapOf(
+                    "search" to spec.search,
+                    "max_assets" to maxAssets,
+                    "page_size" to 25,
+                    "scroll" to false
                 )
-        ))
+            )
+        )
 
         return ZpsScript(spec.name,
                 type = PipelineType.Export,

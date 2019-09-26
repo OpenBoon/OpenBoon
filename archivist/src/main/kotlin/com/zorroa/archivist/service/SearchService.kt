@@ -22,6 +22,7 @@ import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.common.clients.SearchBuilder
 import com.zorroa.common.util.Json
+import org.elasticsearch.ElasticsearchStatusException
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
@@ -110,6 +111,11 @@ interface SearchService {
     fun buildSearch(search: AssetSearch, type: String): SearchBuilder
 
     fun getQuery(search: AssetSearch): QueryBuilder
+
+    /**
+     * Clear a given search scroll
+     */
+    fun clearScroll(scrollId: String): Boolean
 }
 
 class SearchContext(
@@ -307,6 +313,18 @@ class SearchServiceImpl @Autowired constructor(
             rest.client.clearScroll(req, RequestOptions.DEFAULT)
         }
         return result
+    }
+
+    override fun clearScroll(scrollId: String): Boolean {
+        val rest = indexRoutingService.getOrgRestClient()
+        var req = ClearScrollRequest()
+        req.addScrollId(scrollId)
+        return try {
+            val rsp = rest.client.clearScroll(req, RequestOptions.DEFAULT)
+            rsp.numFreed > 0
+        } catch (e: ElasticsearchStatusException) {
+            false
+        }
     }
 
     override fun buildSearch(search: AssetSearch, type: String): SearchBuilder {

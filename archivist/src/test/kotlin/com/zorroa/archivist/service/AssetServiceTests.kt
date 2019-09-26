@@ -53,9 +53,13 @@ class AssetServiceTests : AbstractTest() {
         var assets = searchService.search(Pager.first(), AssetSearch())
         for (asset in assets) {
             validateSystemAttrsExist(asset)
-            assertEquals(asset.getAttr("system.timeCreated",
-                    String::class.java),
-                    asset.getAttr("system.timeModified", String::class.java))
+            assertEquals(
+                asset.getAttr(
+                    "system.timeCreated",
+                    String::class.java
+                ),
+                asset.getAttr("system.timeModified", String::class.java)
+            )
         }
 
         Thread.sleep(1000)
@@ -66,9 +70,13 @@ class AssetServiceTests : AbstractTest() {
         assets = searchService.search(Pager.first(), AssetSearch())
         for (asset in assets) {
             validateSystemAttrsExist(asset)
-            assertNotEquals(asset.getAttr("system.timeCreated",
-                    String::class.java),
-                    asset.getAttr("system.timeModified", String::class.java))
+            assertNotEquals(
+                asset.getAttr(
+                    "system.timeCreated",
+                    String::class.java
+                ),
+                asset.getAttr("system.timeModified", String::class.java)
+            )
         }
     }
 
@@ -116,8 +124,11 @@ class AssetServiceTests : AbstractTest() {
 
         val ids = assets.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.batchUpdateLinks(
-                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
+        assertEquals(
+            2, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)
+            ).updatedAssetIds.size
+        )
 
         assetService.createOrReplaceAssets(BatchCreateAssetsRequest(assets.list))
         assets = searchService.search(Pager.first(), AssetSearch())
@@ -159,8 +170,10 @@ class AssetServiceTests : AbstractTest() {
         val asset1 = searchService.search(Pager.first(), AssetSearch())[0]
         val asset2 = assetService.get(asset1.id)
         assertEquals(asset1.id, asset2.id)
-        assertEquals(asset1.getAttr("source.path", String::class.java),
-                asset2.getAttr("source.path", String::class.java))
+        assertEquals(
+            asset1.getAttr("source.path", String::class.java),
+            asset2.getAttr("source.path", String::class.java)
+        )
     }
 
     @Test
@@ -245,23 +258,34 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.batchUpdateLinks(
-                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
-        assertEquals(0, assetService.batchUpdateLinks(
-                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).erroredAssetIds.size)
+        assertEquals(
+            2, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)
+            ).updatedAssetIds.size
+        )
+        assertEquals(
+            0, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)
+            ).erroredAssetIds.size
+        )
     }
 
     @Test
     fun testAddChildLinks() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val batch = BatchUpdateAssetsRequest(
-                mapOf(page[0].id to UpdateAssetRequest(mapOf("media.clip.parent" to page[1].id))))
+            mapOf(page[0].id to UpdateAssetRequest(mapOf("media.clip.parent" to page[1].id)))
+        )
         assetService.updateAssets(batch)
 
         val folderId = UUID.randomUUID()
-        assertEquals(1,
-                assetService.batchUpdateLinks(LinkType.Folder, listOf(folderId),
-                        BatchUpdateAssetLinks(null, listOf(page[1].id), AssetSearch())).updatedAssetIds.size)
+        assertEquals(
+            1,
+            assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId),
+                BatchUpdateAssetLinks(null, listOf(page[1].id), AssetSearch())
+            ).updatedAssetIds.size
+        )
     }
 
     @Test
@@ -269,8 +293,11 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         val ids = page.map { it.id }
         val folderId = UUID.randomUUID()
-        assertEquals(2, assetService.batchUpdateLinks(
-                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)).updatedAssetIds.size)
+        assertEquals(
+            2, assetService.batchUpdateLinks(
+                LinkType.Folder, listOf(folderId), BatchUpdateAssetLinks(ids)
+            ).updatedAssetIds.size
+        )
         assertEquals(2, assetService.batchRemoveLinks(LinkType.Folder, listOf(folderId), ids).updatedAssetIds.size)
         assertEquals(0, assetService.batchRemoveLinks(LinkType.Folder, listOf(folderId), ids).updatedAssetIds.size)
     }
@@ -279,7 +306,8 @@ class AssetServiceTests : AbstractTest() {
     fun testSetPermissions() {
         val perm = permissionService.getPermission(Groups.ADMIN)
         assetService.setPermissions(
-                BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4)))
+            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4))
+        )
 
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
@@ -292,7 +320,8 @@ class AssetServiceTests : AbstractTest() {
     fun testSetPermissionsWithReplace() {
         val perm = permissionService.getPermission(Groups.ADMIN)
         assetService.setPermissions(
-            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4), replace = true))
+            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 4), replace = true)
+        )
 
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
@@ -311,16 +340,20 @@ class AssetServiceTests : AbstractTest() {
         val page = searchService.search(Pager.first(), AssetSearch())
         for (asset in page) {
             assetService.createFieldEdit(
-                    FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+                FieldEditSpec(UUID.fromString(asset.id), field.id, null, title)
+            )
         }
         for (asset in searchService.search(Pager.first(), AssetSearch()).list) {
             assertEquals(title, asset.getAttr("media.title", String::class.java))
         }
 
         val result =
-                auditLogDao.getAll(AuditLogFilter(
-                        fieldIds = listOf(field.id),
-                        types = listOf(AuditLogType.Changed)))
+            auditLogDao.getAll(
+                AuditLogFilter(
+                    fieldIds = listOf(field.id),
+                    types = listOf(AuditLogType.Changed)
+                )
+            )
         assertTrue(result.size() > 0)
     }
 
@@ -336,7 +369,8 @@ class AssetServiceTests : AbstractTest() {
         val asset = page.list.first()
 
         assetService.createFieldEdit(
-            FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+            FieldEditSpec(UUID.fromString(asset.id), field.id, null, title)
+        )
     }
 
     @Test
@@ -347,7 +381,8 @@ class AssetServiceTests : AbstractTest() {
         var page = searchService.search(Pager.first(), AssetSearch())
         var asset = page.list[0]
         val edit = assetService.createFieldEdit(
-                FieldEditSpec(UUID.fromString(asset.id), field.id, null, title))
+            FieldEditSpec(UUID.fromString(asset.id), field.id, null, title)
+        )
         assertTrue(assetService.deleteFieldEdit(edit))
 
         page = searchService.search(Pager.first(), AssetSearch())
@@ -356,9 +391,12 @@ class AssetServiceTests : AbstractTest() {
         }
 
         val result =
-                auditLogDao.getAll(AuditLogFilter(
-                        fieldIds = listOf(field.id),
-                        types = listOf(AuditLogType.Changed)))
+            auditLogDao.getAll(
+                AuditLogFilter(
+                    fieldIds = listOf(field.id),
+                    types = listOf(AuditLogType.Changed)
+                )
+            )
 
         assertTrue(result[0].message!!.contains("undo"))
         assertTrue(result[1].message!!.contains("manual edit"))

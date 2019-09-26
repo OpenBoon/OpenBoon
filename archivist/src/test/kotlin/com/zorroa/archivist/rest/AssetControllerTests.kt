@@ -19,6 +19,7 @@ import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.search.AssetFilter
 import com.zorroa.archivist.search.AssetSearch
+import com.zorroa.archivist.search.Scroll
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileServerService
 import com.zorroa.archivist.service.FileStat
@@ -123,6 +124,26 @@ class AssetControllerTests : MockMvcTest() {
         val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
             object : TypeReference<Map<String, Any>>() {
             })
+    }
+
+    @Test
+    fun testClearScroll() {
+        addTestAssets("set04/standard")
+        val search = AssetSearch("O'Malley")
+        search.scroll = Scroll()
+        val result = searchService.search(Pager.first(), search)
+
+        val rsp = mvc.perform(
+            delete("/api/v1/assets/_scroll")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(mapOf("scroll_id" to result.scroll.id)))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
+
+        val body = Json.Mapper.readValue<Map<String, Any>>(rsp.response.contentAsString)
+        assertTrue(body["success"] as Boolean)
     }
 
     @Test
