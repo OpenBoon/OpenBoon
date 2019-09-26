@@ -86,7 +86,7 @@ class ExportServiceImpl @Autowired constructor(
                 "zplugins.core.generators.AssetSearchGenerator", mapOf(
                     "search" to spec.search,
                     "max_assets" to maxAssets,
-                    "page_size" to 50,
+                    "page_size" to 25,
                     "scroll" to false
                 )
             )
