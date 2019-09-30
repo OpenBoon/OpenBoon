@@ -194,15 +194,14 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                .antMatcher("/*")
+                .antMatcher("/**")
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/v2/api-docs").hasAuthority("zorroa::superadmin")
+                .antMatchers("/v2/api-docs").hasAuthority(Groups.SUPERADMIN)
                 .antMatchers("/error").permitAll()
                 .antMatchers("/download-zsdk").permitAll()
-                .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
         }
