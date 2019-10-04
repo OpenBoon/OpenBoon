@@ -1,4 +1,0 @@
-
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-  com.zorroa.ldap.WebSecurityConfig,\
-    com.zorroa.ldap.LdapConfiguration

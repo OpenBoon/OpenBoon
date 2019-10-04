@@ -33,8 +33,6 @@
 
     <modules>
         <module>lib-security</module>
-        <module>ldap</module>
-        <module>saml</module>
         <module>archivist</module>
         <module>es-similarity</module>
         <module>es-kwconf</module>
