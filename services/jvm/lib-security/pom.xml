@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <parent>
-        <artifactId>zorroa-server</artifactId>
-        <groupId>com.zorroa</groupId>
-        <version>0.42.0-SNAPSHOT</version>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
     <artifactId>lib-security</artifactId>
-    <packaging>jar</packaging>
+    <groupId>com.zorroa.zmlp</groupId>
     <name>lib-security</name>
+    <packaging>jar</packaging>
+
+    <parent>
+        <relativePath>../pom.xml</relativePath>
+        <groupId>com.zorroa.zmlp</groupId>
+        <artifactId>zorroa-jvm-core</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

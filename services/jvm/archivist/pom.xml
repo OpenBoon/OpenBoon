@@ -3,18 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zorroa</groupId>
     <artifactId>archivist</artifactId>
-    <packaging>jar</packaging>
-
+    <groupId>com.zorroa.zmlp</groupId>
     <name>archivist</name>
+    <packaging>jar</packaging>
     <description>Zorroa Platform Application Server</description>
 
     <parent>
         <relativePath>../pom.xml</relativePath>
-        <groupId>com.zorroa</groupId>
-        <artifactId>zorroa-server</artifactId>
-        <version>0.42.0-SNAPSHOT</version>
+        <groupId>com.zorroa.zmlp</groupId>
+        <artifactId>zorroa-jvm-core</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -59,7 +58,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zorroa</groupId>
+            <groupId>com.zorroa.zmlp</groupId>
             <artifactId>lib-security</artifactId>
         </dependency>
 
@@ -249,7 +248,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zorroa</groupId>
+            <groupId>com.zorroa.zmlp</groupId>
             <artifactId>unittest-dispatcher</artifactId>
             <scope>test</scope>
         </dependency>

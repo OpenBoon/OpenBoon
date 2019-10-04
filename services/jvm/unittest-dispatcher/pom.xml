@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <parent>
-        <artifactId>zorroa-server</artifactId>
-        <groupId>com.zorroa</groupId>
-        <version>0.42.0-SNAPSHOT</version>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>unittest-dispatcher</artifactId>
+    <groupId>com.zorroa.zmlp</groupId>
+    <name>unittest-dispatcher</name>
     <packaging>jar</packaging>
 
-    <name>unittest-dispatcher</name>
+    <parent>
+        <relativePath>../pom.xml</relativePath>
+        <groupId>com.zorroa.zmlp</groupId>
+        <artifactId>zorroa-jvm-core</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.3.41</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <junit.version>4.12</junit.version>
     </properties>
@@ -48,7 +48,6 @@
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
 
         <plugins>
             <plugin>
