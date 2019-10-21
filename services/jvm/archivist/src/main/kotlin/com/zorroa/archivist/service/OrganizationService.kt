@@ -35,22 +35,10 @@ class OrganizationServiceImpl @Autowired constructor(
     val indexRouteDao: IndexRouteDao,
     val indexRoutingService: IndexRoutingService,
     val properties: ApplicationProperties
-) : OrganizationService, ApplicationListener<ContextRefreshedEvent> {
-
-    @Autowired
-    internal lateinit var folderService: FolderService
-
-    @Autowired
-    internal lateinit var userService: UserService
-
-    @Autowired
-    internal lateinit var permissionService: PermissionService
+) : OrganizationService {
 
     @Autowired
     internal lateinit var fileStorageService: FileStorageService
-
-    @Autowired
-    internal lateinit var fieldSystemService: FieldSystemService
 
     override fun create(spec: OrganizationSpec): Organization {
 
@@ -64,7 +52,8 @@ class OrganizationServiceImpl @Autowired constructor(
         val org = organizationDao.create(spec)
         val auth = resetAuthentication(SuperAdminAuthentication(org.id))
         try {
-            if (properties.getString("archivist.index.provisioning-method", PROV_DEDICATED) == PROV_DEDICATED) {
+            if (properties.getString("archivist.index.provisioning-method",
+                            PROV_DEDICATED) == PROV_DEDICATED) {
                 val spec = IndexRouteSpec(
                     ir.clusterUrl,
                     "org_${org.id}_0001",
@@ -75,12 +64,6 @@ class OrganizationServiceImpl @Autowired constructor(
                 val orgIndex = indexRoutingService.createIndexRoute(spec)
                 organizationDao.update(org, OrganizationUpdateSpec(org.name, orgIndex.id))
             }
-
-            permissionService.createStandardPermissions(org)
-            folderService.createStandardFolders(org)
-            userService.createStandardUsers(org)
-            fieldSystemService.setupDefaultFields(org)
-            fieldSystemService.setupDefaultFieldSets(org)
         } finally {
             resetAuthentication(auth)
         }
@@ -106,26 +89,6 @@ class OrganizationServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getAll(filter: OrganizationFilter): KPagedList<Organization> {
         return organizationDao.getAll(filter)
-    }
-
-    override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        if (!properties.getBoolean("unittest", false)) {
-            createDefaultOrganizationFieldSets()
-        }
-    }
-
-    // Only called once at startup if there are no field sets.
-    fun createDefaultOrganizationFieldSets() {
-        val org = organizationDao.get(Organization.DEFAULT_ORG_ID)
-        val auth = resetAuthentication(SuperAdminAuthentication(org.id))
-        try {
-            if (fieldSystemService.getAllFieldSets().isEmpty()) {
-                fieldSystemService.setupDefaultFields(org)
-                fieldSystemService.setupDefaultFieldSets(org)
-            }
-        } finally {
-            resetAuthentication(auth)
-        }
     }
 
     companion object {

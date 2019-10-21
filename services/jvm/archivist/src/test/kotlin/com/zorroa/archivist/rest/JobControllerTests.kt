@@ -91,28 +91,6 @@ class JobControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testCreateDifferentOrgWithoutSuperAdmin() {
-        val spec = JobSpec(
-            "test_job_2",
-            emptyZpsScript("test"),
-            args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar")
-        )
-
-        val headers = user()
-        headers.set("X-Zorroa-Organization", UUID.randomUUID().toString())
-        val result = mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/jobs")
-                .headers(headers)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isForbidden)
-            .andReturn()
-    }
-
-    @Test
     fun testCreateDifferentOrgWithSuperAdmin() {
         val spec = JobSpec(
             "test_job_2",
@@ -240,7 +218,6 @@ class JobControllerTests : MockMvcTest() {
         )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         taskErrorDao.create(task, error)
-        authenticate("admin")
 
         val result = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/jobs/${job.id}/taskerrors")

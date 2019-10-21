@@ -266,7 +266,6 @@ class TaskControllerTests : MockMvcTest() {
         )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         taskErrorDao.create(task, error)
-        authenticate("admin")
 
         val result = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/tasks/${task.id}/taskerrors")

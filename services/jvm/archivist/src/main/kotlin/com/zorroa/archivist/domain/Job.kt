@@ -120,9 +120,6 @@ class Job(
     @ApiModelProperty("Number of Tasks in this Job.")
     var taskCounts: Map<String, Int>? = null,
 
-    @ApiModelProperty("User that created the Job.")
-    var createdUser: UserBase? = null,
-
     @ApiModelProperty("Time the Job was started.")
     var timeStarted: Long,
 

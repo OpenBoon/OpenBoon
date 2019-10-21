@@ -3,57 +3,32 @@ package com.zorroa.archivist.rest
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
-import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
 import com.zorroa.archivist.domain.BatchIndexAssetsResponse
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
-import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
-import com.zorroa.archivist.domain.BatchUpdatePermissionsResponse
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.FieldEdit
-import com.zorroa.archivist.domain.FieldSet
 import com.zorroa.archivist.domain.FileUploadSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.domain.UpdateAssetRequest
-import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.search.AssetSuggestBuilder
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.AssetStreamResolutionService
-import com.zorroa.archivist.service.FieldService
-import com.zorroa.archivist.service.FieldSystemService
 import com.zorroa.archivist.service.FileUploadService
-import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.ImageService
 import com.zorroa.archivist.service.IndexService
-import com.zorroa.archivist.service.SearchService
 import com.zorroa.archivist.service.event
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.StaticUtils
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
 import io.micrometer.core.annotation.Timed
 import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.CacheControl
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -63,8 +38,6 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
-import java.nio.file.Paths
-import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
@@ -79,13 +52,9 @@ import javax.servlet.http.HttpServletResponse
 class AssetController @Autowired constructor(
     private val indexService: IndexService,
     private val assetService: AssetService,
-    private val searchService: SearchService,
-    private val folderService: FolderService,
     private val imageService: ImageService,
     private val assetStreamResolutionService: AssetStreamResolutionService,
-    private val fieldService: FieldService,
     private val fileUploadService: FileUploadService,
-    private val fieldSystemService: FieldSystemService,
     meterRegistry: MeterRegistry
 ) {
 
@@ -104,17 +73,6 @@ class AssetController @Autowired constructor(
         meterRegistry.gauge("zorroa.cache.proxy-cache-size", proxyLookupCache) {
             it.size().toDouble()
         }
-    }
-
-    @ApiOperation("Gets a list of all metadata fields an Asset could have.")
-    @GetMapping(value = ["/api/v1/assets/_fields"])
-    fun getFields(response: HttpServletResponse): Map<String, Set<String>> {
-        response.setHeader(
-            "Cache-Control", CacheControl.maxAge(
-                30, TimeUnit.SECONDS
-            ).cachePrivate().headerValue
-        )
-        return fieldService.getFields("asset")
     }
 
     val mapping: Map<String, Any>
@@ -280,153 +238,6 @@ class AssetController @Autowired constructor(
         }
     }
 
-    @ApiOperation(
-        "Search for Assets.",
-        notes = "Returns a list of Assets that matched the given search filter."
-    )
-    @PostMapping(value = ["/api/v3/assets/_search"])
-    @Throws(IOException::class)
-    fun searchV3(
-        @ApiParam("Filter to use for searching for Assets.")
-        @RequestBody search: AssetSearch
-    ): PagedList<Document> {
-        return searchService.search(Pager(search.from, search.size, 0), search)
-    }
-
-    @ApiOperation(
-        "Search for Assets.",
-        notes = "Returns a list of Assets that matched the given search filter."
-    )
-    @PostMapping(value = ["/api/v4/assets/_search"])
-    @Throws(IOException::class)
-    fun searchV4(
-        @ApiParam("Filter to use for searching for Assets.") @RequestBody search: AssetSearch,
-        out: ServletOutputStream
-    ) {
-        searchService.search(Pager(search.from, search.size, 0), search, out)
-    }
-
-    @ApiOperation("Delete a search scroll by id.")
-    @DeleteMapping(value = ["/api/v1/assets/_scroll"])
-    @Throws(IOException::class)
-    fun clearScroll(
-        @ApiParam("Request body containing a scroll_id property, mimics ES API.") @RequestBody req: Map<String, String>
-    ): Any {
-        require("scroll_id" in req) { "Request body does not contain 'scroll_id'" }
-        return HttpUtils.status("asset", "clearScroll", searchService.clearScroll(req.getValue("scroll_id")))
-    }
-
-    @ApiOperation("Returns number of Assets matching the search given.")
-    @PostMapping(value = ["/api/v2/assets/_count"])
-    @Throws(IOException::class)
-    fun count(@ApiParam("Filter to use for searching for Assets.") @RequestBody search: AssetSearch): Any {
-        return HttpUtils.count(searchService.count(search))
-    }
-
-    @ApiOperation("Checks if an Assets exists.")
-    @GetMapping(value = ["/api/v1/assets/{id}/_exists"])
-    @Throws(IOException::class)
-    fun exists(@ApiParam("UUID of the Asset.") @PathVariable id: String): Any {
-        return HttpUtils.exists(id, indexService.exists(id))
-    }
-
-    @ApiOperation(
-        "Get a list of keyword suggestions.",
-        notes = "Intended to help auto-populate a search bar with suggestions as a user types."
-    )
-    @PostMapping(value = ["/api/v3/assets/_suggest"])
-    @Throws(IOException::class)
-    fun suggestV3(
-        @ApiParam(
-            "Suggestion builder that allows for adding an asset search filter and a text " +
-                "filter. The most common usage is to just add the text (i.e. {\"text\": \"ca\"})."
-        )
-        @RequestBody suggest: AssetSuggestBuilder
-    ): Any {
-        return searchService.getSuggestTerms(suggest.text)
-    }
-
-    @ApiOperation("Get an Asset.")
-    @GetMapping(value = ["/api/v2/assets/{id}", "/api/v1/assets/{id}"])
-    fun get(@ApiParam("UUID of the Asset.") @PathVariable id: String): Any {
-        return indexService.get(id)
-    }
-
-    @ApiOperation("Get Field Sets for an Asset.")
-    @GetMapping(value = ["/api/v1/assets/{id}/fieldSets"])
-    fun getFieldSets(@ApiParam("UUID of the Asset.") @PathVariable id: String): List<FieldSet> {
-        return assetService.getFieldSets(id)
-    }
-
-    @ApiOperation(
-        "Get Assets that match a source path.",
-        notes = "Returns any Assets whose source.path metadata matches the path sent in the request body."
-    )
-    @GetMapping(value = ["/api/v1/assets/_path"])
-    fun getByPath(@ApiParam("Path to get Assets for.") @RequestBody path: Map<String, String>): Document? {
-        return path["path"]?.let { indexService.get(Paths.get(it)) }
-    }
-
-    @ApiOperation("Delete multiple Assets.")
-    @DeleteMapping(value = ["/api/v1/assets"])
-    @Throws(IOException::class)
-    fun batchDelete(
-        @ApiParam("Assets to delete.") @RequestBody batch: BatchDeleteAssetsRequest
-    ): BatchDeleteAssetsResponse {
-        return assetService.batchDelete(batch.assetIds)
-    }
-
-    @ApiOperation("Delete an Asset.")
-    @DeleteMapping(value = ["/api/v1/assets/{id}"])
-    @Throws(IOException::class)
-    fun delete(
-        @ApiParam("UUID of the Asset.") @PathVariable id: String
-    ): Any {
-        return HttpUtils.deleted("asset", id, assetService.delete(id))
-    }
-
-    @ApiOperation("Update an Asset.")
-    @PutMapping(value = ["/api/v1/assets/{id}"])
-    @Throws(IOException::class)
-    fun update(
-        @ApiParam("Attributes to update.") @RequestBody attrs: Map<String, Any>,
-        @ApiParam("UUID of the Asset.") @PathVariable id: String
-    ): Any {
-        val rsp = assetService.updateAssets(
-            BatchUpdateAssetsRequest(mapOf(id to UpdateAssetRequest(attrs)))
-        )
-        if (rsp.isSuccess()) {
-            return HttpUtils.updated("asset", id, true, assetService.get(id))
-        } else {
-            throw rsp.getThrowableError()
-        }
-    }
-
-    @ApiOperation("Update an Asset.")
-    @PutMapping(value = ["/api/v2/assets/{id}"])
-    @Throws(IOException::class)
-    fun updateV2(
-        @ApiParam("UUID of the Asset.") @PathVariable id: String,
-        @ApiParam("Updates to make to the Asset.") @RequestBody req: UpdateAssetRequest
-    ): Any {
-        val rsp = assetService.updateAssets(
-            BatchUpdateAssetsRequest(mapOf(id to req))
-        )
-        if (rsp.isSuccess()) {
-            return HttpUtils.updated("asset", id, true, assetService.get(id))
-        } else {
-            throw rsp.getThrowableError()
-        }
-    }
-
-    @ApiOperation("Update multiple Assets.")
-    @PutMapping(value = ["/api/v1/assets"])
-    fun batchUpdate(
-        @ApiParam("List of Asset updates.") @RequestBody req: BatchUpdateAssetsRequest
-    ): BatchUpdateAssetsResponse {
-        return assetService.updateAssets(req)
-    }
-
     @ApiOperation("Create multiple Assets.")
     @PostMapping(value = ["/api/v1/assets/_index"])
     @Throws(IOException::class)
@@ -434,36 +245,6 @@ class AssetController @Autowired constructor(
         @ApiParam("Assets to create.") @RequestBody spec: BatchCreateAssetsRequest
     ): BatchIndexAssetsResponse {
         return assetService.createOrReplaceAssets(spec)
-    }
-
-    @ApiModel("Set Folders Request")
-    class SetFoldersRequest {
-        @ApiModelProperty("UUIDs of Folders to set.")
-        var folders: List<UUID>? = null
-    }
-
-    @ApiOperation("Reset all folders for a given asset. Currently only used for syncing.")
-    @PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).ADMIN)")
-    @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
-    @Throws(Exception::class)
-    fun setFolders(
-        @ApiParam("UUID of the Asset.") @PathVariable id: String,
-        @ApiParam("Folders to reset.") @RequestBody req: SetFoldersRequest
-    ): Any {
-        req?.folders?.let {
-            assetService.batchSetLinks(id, it)
-            return HttpUtils.updated("asset", id, true)
-        }
-        return HttpUtils.updated("asset", id, false)
-    }
-
-    @ApiOperation("Update the permissions for multiple Assets.")
-    @PutMapping(value = ["/api/v2/assets/_permissions"])
-    @Throws(Exception::class)
-    fun setPermissionsV2(
-        @ApiParam("List of permission updates.") @RequestBody req: BatchUpdatePermissionsRequest
-    ): BatchUpdatePermissionsResponse {
-        return assetService.setPermissions(req)
     }
 
     @ApiOperation("Create a new asset from an uploaded file.")
@@ -477,16 +258,9 @@ class AssetController @Autowired constructor(
         return fileUploadService.ingest(spec, files)
     }
 
-    @ApiOperation("DEPRECATED: Exists only for backwards compatibility.")
-    @PutMapping(value = ["/api/v1/refresh"])
-    fun refresh() {
-        logger.warn("Refresh called.")
-    }
-
-    @ApiOperation("Return a list of edits made to this Asset's fields.")
-    @GetMapping(value = ["/api/v1/assets/{id}/fieldEdits"])
-    fun getFieldEdits(@ApiParam("UUID of the Asset.") @PathVariable id: UUID): List<FieldEdit> {
-        return fieldSystemService.getFieldEdits(id)
+    @RequestMapping("/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
+    fun search(@RequestBody query: Map<String, Any>, out: ServletOutputStream) {
+        assetService.search(query, out)
     }
 
     companion object {

@@ -118,7 +118,6 @@ class JobDaoTests : AbstractTest() {
         val t1 = jobDao.get(t2.id, forClient = true)
         assertNotNull(t1.assetCounts)
         assertNotNull(t1.taskCounts)
-        assertNotNull(t1.createdUser)
     }
 
     @Test
@@ -196,14 +195,10 @@ class JobDaoTests : AbstractTest() {
             jobDao.create(spec, PipelineType.Import)
         }
 
-        authenticate("user")
-
         var filter = JobFilter()
         var jobs = jobDao.getAll(filter)
         assertEquals(0, jobs.size())
         assertEquals(0, jobs.page.totalCount)
-
-        authenticate("admin")
 
         filter = JobFilter()
         jobs = jobDao.getAll(filter)
