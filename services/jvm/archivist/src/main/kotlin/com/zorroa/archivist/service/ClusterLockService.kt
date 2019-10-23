@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.ClusterLockSpec
+import org.springframework.stereotype.Service
 
 interface ClusterLockService {
 
@@ -19,6 +20,7 @@ interface ClusterLockExecutor {
 
 }
 
+@Service
 class CusterLockExecutorImpl : ClusterLockExecutor {
 
     override fun <T> inline(spec: ClusterLockSpec, body: () -> T?): T? {

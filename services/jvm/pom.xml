@@ -5,7 +5,7 @@
 
     <groupId>com.zorroa.zmlp</groupId>
     <artifactId>zorroa-jvm-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
 
     <name>zorroa-jvm-core</name>
@@ -32,7 +32,6 @@
     </properties>
 
     <modules>
-        <module>lib-security</module>
         <module>archivist</module>
         <module>es-similarity</module>
         <module>es-kwconf</module>

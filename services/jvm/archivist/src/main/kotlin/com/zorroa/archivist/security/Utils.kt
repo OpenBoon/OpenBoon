@@ -1,7 +1,7 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.security.Groups
+import com.zorroa.archivist.domain.Groups
+import com.zorroa.archivist.domain.UserAuthed
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
@@ -119,8 +119,8 @@ fun getOrgId(): UUID {
     return getUser().organizationId
 }
 
-fun hasPermission(vararg perms: String, adminOverride: Boolean = true): Boolean {
-    return hasPermission(perms.toSet(), adminOverride)
+fun hasPermission(vararg perms: String): Boolean {
+    return hasPermission(perms.toSet())
 }
 
 private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
@@ -130,14 +130,14 @@ private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
 private fun containsSuperadmin(it: Collection<GrantedAuthority>) =
     it.any { it.authority == Groups.SUPERADMIN }
 
-fun hasPermission(perms: Collection<String>, adminOverride: Boolean = true): Boolean {
+fun hasPermission(perms: Collection<String>): Boolean {
     val auth = SecurityContextHolder.getContext().authentication
     auth?.authorities?.let { authorities ->
         if (containsSuperadmin(authorities)) {
             return true
         } else if (!containsOnlySuperadmin(perms)) {
             for (g in authorities) {
-                if ((adminOverride && g.authority == Groups.ADMIN) || perms.contains(g.authority)) {
+                if (perms.contains(g.authority)) {
                     return true
                 }
             }

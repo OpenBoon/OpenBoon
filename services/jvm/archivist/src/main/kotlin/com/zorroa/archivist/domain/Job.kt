@@ -1,12 +1,14 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.domain.Groups
 import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.domain.UserBase
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.common.domain.JobPriority.Interactive
+import com.zorroa.common.domain.JobPriority.Reindex
+import com.zorroa.common.domain.JobPriority.Standard
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
@@ -175,13 +177,15 @@ class JobFilter(
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-            mapOf("id" to "job.pk_job",
-                    "type" to "job.int_type",
-                    "name" to "job.str_name",
-                    "timeCreated" to "job.time_created",
-                    "state" to "job.int_state",
-                    "priority" to "job.int_priority",
-                    "organizationId" to "job.pk_organization")
+        mapOf(
+            "id" to "job.pk_job",
+            "type" to "job.int_type",
+            "name" to "job.str_name",
+            "timeCreated" to "job.time_created",
+            "state" to "job.int_state",
+            "priority" to "job.int_priority",
+            "organizationId" to "job.pk_organization"
+        )
 
     @JsonIgnore
     override fun build() {
@@ -190,19 +194,14 @@ class JobFilter(
             sort = listOf("timeCreated:desc")
         }
 
-        if (hasPermission("zorroa::superadmin")) {
+        if (hasPermission(Groups.SUPERADMIN)) {
             organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+                addToWhere(JdbcUtils.inClause("job.project_id", it.size))
                 addToValues(it)
             }
         } else {
             addToWhere("job.pk_organization=?")
             addToValues(getOrgId())
-        }
-
-        if (!hasPermission("zorroa::admin")) {
-            addToWhere("job.pk_user_created=?")
-            addToValues(getUserId())
         }
 
         ids?.let {
