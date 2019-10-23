@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.sdk.security.UserAuthed
+import com.zorroa.archivist.domain.UserAuthed
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication

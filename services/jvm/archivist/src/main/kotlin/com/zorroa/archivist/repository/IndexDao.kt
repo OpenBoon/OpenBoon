@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
-import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
 import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.Document
@@ -12,14 +11,12 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
-import com.zorroa.archivist.security.AccessResolver
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.security.getOrganizationFilter
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.domain.ArchivistSecurityException
 import com.zorroa.common.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
@@ -108,8 +105,7 @@ interface IndexDao {
 
 @Repository
 class IndexDaoImpl constructor(
-    val meterRegistry: MeterRegistry,
-    val accessResolver: AccessResolver
+    val meterRegistry: MeterRegistry
 ) : AbstractElasticDao(), IndexDao {
 
     override fun <T> getFieldValue(id: String, field: String): T? {
@@ -248,9 +244,6 @@ class IndexDaoImpl constructor(
 
     override fun update(asset: Document): Long {
         val rest = getClient()
-        if (!accessResolver.hasAccess(Access.Write, asset)) {
-            throw ArchivistSecurityException("Access denied")
-        }
         val ver = rest.client.update(
             rest.newUpdateRequest(asset.id)
                 .doc(Json.serializeToString(asset.document), XContentType.JSON)
@@ -261,9 +254,6 @@ class IndexDaoImpl constructor(
 
     override fun delete(doc: Document): Boolean {
         val rest = getClient()
-        if (!accessResolver.hasAccess(Access.Delete, doc)) {
-            throw ArchivistSecurityException("Access denied")
-        }
         return rest.client.delete(rest.newDeleteRequest(doc.id)).result == DocWriteResponse.Result.DELETED
     }
 
@@ -281,8 +271,6 @@ class IndexDaoImpl constructor(
             val hold = doc.getAttr("system.hold", Boolean::class.java) ?: false
             if (doc.attrExists("system.hold") && hold) {
                 rsp.onHoldAssetIds.add(doc.id)
-            } else if (!accessResolver.hasAccess(Access.Delete, doc)) {
-                rsp.accessDeniedAssetIds.add(doc.id)
             } else {
                 rsp.totalRequested += 1
                 bulkRequest.add(rest.newDeleteRequest(doc.id))
@@ -349,10 +337,6 @@ class IndexDaoImpl constructor(
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termQuery("_id", id))
             .filter(getOrganizationFilter())
-
-        accessResolver.getAssetPermissionsFilter(Access.Read)?.let {
-            query.filter(it)
-        }
         req.source.size(1)
         req.source.query(query)
 
@@ -364,10 +348,6 @@ class IndexDaoImpl constructor(
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termsQuery("_id", ids))
-            .filter(getOrganizationFilter())
-        accessResolver.getAssetPermissionsFilter(Access.Read)?.let {
-            query.filter(it)
-        }
         req.source.size(ids.size)
         req.source.query(query)
 
@@ -387,11 +367,6 @@ class IndexDaoImpl constructor(
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termQuery("source.path.raw", path.toString()))
-            .filter(getOrganizationFilter())
-        accessResolver.getAssetPermissionsFilter(Access.Read)?.let {
-            query.filter(it)
-        }
-
         req.source.size(1)
         req.source.query(query)
 

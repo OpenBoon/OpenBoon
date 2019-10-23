@@ -123,7 +123,6 @@ class TaskErrorDaoTests : AbstractTest() {
                 "it broke", "com.zorroa.ImageIngestor", true, "execute",
                 listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()")))
         taskErrorDao.create(task, error)
-        authenticate("admin")
         return task
     }
     @Test
@@ -256,8 +255,6 @@ class TaskErrorDaoTests : AbstractTest() {
             taskErrorDao.create(task, error)
         }
 
-        // Fetch them sorted
-        authenticate("admin")
         var filter = TaskErrorFilter(processors = listOf("foo"))
         filter.sort = listOf("path:d")
 

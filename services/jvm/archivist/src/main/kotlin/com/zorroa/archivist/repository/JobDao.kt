@@ -43,9 +43,6 @@ interface JobDao {
 @Repository
 class JobDaoImpl : AbstractDao(), JobDao {
 
-    @Autowired
-    lateinit var userDaoCache: UserDaoCache
-
     override fun create(spec: JobSpec, type: PipelineType): Job {
         Preconditions.checkNotNull(spec.name)
 
@@ -190,7 +187,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
         val job = MAPPER.mapRow(rs, row)
         job.assetCounts = buildAssetCounts(rs)
         job.taskCounts = buildTaskCountMap(rs)
-        job.createdUser = userDaoCache.getUser(rs.getObject("pk_user_created") as UUID)
         job
     }
 
@@ -224,7 +220,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     rs.getString("str_name"),
                     PipelineType.values()[rs.getInt("int_type")],
                     state,
-                    null,
                     null,
                     null,
                     rs.getLong("time_started"),
@@ -291,8 +286,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "time_created",
                 "time_modified",
                 "time_started",
-                "pk_user_created",
-                "pk_user_modified",
                 "json_args",
                 "json_env",
                 "int_priority",

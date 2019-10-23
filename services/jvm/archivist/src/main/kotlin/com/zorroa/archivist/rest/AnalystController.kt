@@ -2,7 +2,6 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.service.AnalystService
-import com.zorroa.archivist.service.ClusterLockService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.common.domain.Analyst
 import com.zorroa.common.domain.AnalystFilter
@@ -43,7 +42,6 @@ import java.util.UUID
 class AnalystController @Autowired constructor(
     val analystService: AnalystService,
     val workQueue: AsyncListenableTaskExecutor,
-    val clusterLockService: ClusterLockService,
     val properties: ApplicationProperties
 ) {
 
@@ -90,13 +88,11 @@ class AnalystController @Autowired constructor(
     )
     @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
     fun processorScan(): Any {
-        val locked = clusterLockService.isLocked("processor-scan")
-        if (!locked) {
-            workQueue.execute {
-                analystService.doProcessorScan()
-            }
+        // TODO: utilize redis/memcached for the locking services.
+        workQueue.execute {
+            analystService.doProcessorScan()
         }
-        return HttpUtils.status("processor", "scan", !locked)
+        return HttpUtils.status("processor", "scan", true)
     }
 
     @ApiOperation(

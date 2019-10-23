@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.common.util.Json
 import org.junit.Test
 import org.springframework.http.MediaType
@@ -46,16 +45,16 @@ class ActuatorTests : MockMvcTest() {
 
     @Test
     fun testMetrics() {
-        val monUser = userService.get("admin")
-        val token = generateUserToken(monUser.id, userService.getHmacKey(monUser))
+        // Need to auth with monitor username/pass
         mvc.perform(
             MockMvcRequestBuilders.get("/actuator/metrics")
-                .header("Authorization", "Bearer $token")
+                //.header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.names").exists())
             .andReturn()
+        throw NotImplementedError()
     }
 
     @Test

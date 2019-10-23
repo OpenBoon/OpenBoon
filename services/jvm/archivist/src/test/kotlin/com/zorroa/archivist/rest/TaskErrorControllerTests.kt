@@ -49,7 +49,6 @@ class TaskErrorControllerTests : MockMvcTest() {
         )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         taskErrorDao.create(task, error)
-        authenticate("admin")
     }
 
     @Test

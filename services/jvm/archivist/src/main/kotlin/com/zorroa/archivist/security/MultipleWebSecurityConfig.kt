@@ -2,10 +2,10 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.Groups
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.warnEvent
-import com.zorroa.security.Groups
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -93,22 +93,10 @@ class MultipleWebSecurityConfig {
             return super.authenticationManagerBean()
         }
 
-        @Bean
-        fun resetPasswordSecurityFilter(): ResetPasswordSecurityFilter {
-            return ResetPasswordSecurityFilter()
-        }
-
-        @Bean
-        fun jwtAuthorizationFilter(): JWTAuthorizationFilter {
-            return JWTAuthorizationFilter(globalAuthenticationManager())
-        }
-
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                 .antMatcher("/api/**")
-                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
-                .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter::class.java)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -163,9 +151,6 @@ class MultipleWebSecurityConfig {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
 
-        @Autowired
-        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
-
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
@@ -173,7 +158,6 @@ class MultipleWebSecurityConfig {
                 .httpBasic()
                 .and()
                 .csrf().disable()
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -188,14 +172,10 @@ class MultipleWebSecurityConfig {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class RootSecurityConfig : WebSecurityConfigurerAdapter() {
 
-        @Autowired
-        internal lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
-
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
                 .antMatcher("/**")
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -214,8 +194,6 @@ class MultipleWebSecurityConfig {
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth
-            .authenticationProvider(jwtAuthenticationProvider())
-            .authenticationProvider(zorroaAuthenticationProvider())
             .authenticationEventPublisher(authenticationEventPublisher())
             .inMemoryAuthentication()
             .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
@@ -253,19 +231,6 @@ class MultipleWebSecurityConfig {
                 }
             }
         }
-    }
-
-    @Bean
-    fun zorroaAuthenticationProvider(): ZorroaAuthenticationProvider {
-        return ZorroaAuthenticationProvider()
-    }
-
-    /**
-     * An AuthenticationProvider that handles previously validated JWT claims.
-     */
-    @Bean
-    fun jwtAuthenticationProvider(): JwtAuthenticationProvider {
-        return JwtAuthenticationProvider()
     }
 
     companion object {

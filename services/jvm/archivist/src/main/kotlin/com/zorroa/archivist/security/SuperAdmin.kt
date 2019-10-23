@@ -1,8 +1,8 @@
 package com.zorroa.archivist.security
 
+import com.zorroa.archivist.domain.Groups
+import com.zorroa.archivist.domain.UserAuthed
 import com.zorroa.archivist.domain.UserBase
-import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.security.Groups
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import java.util.UUID

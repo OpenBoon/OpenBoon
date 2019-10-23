@@ -80,7 +80,7 @@ services:
 
   # Local Analyst server.
   analyst:
-    build: ../zorroa-plugin-sdk
+    build: ../../../zorroa-plugin-sdk
     links:
        - "archivist"
     ports:
@@ -89,17 +89,6 @@ services:
       - "./localdev/shared:/shared"
       - "./localdev/zorroa:/zorroa"
       - "../zorroa-test-data:/zorroa-test-data"
-  curator:
-     build: ../zorroa-js-curator
-     user: node
-     ports:
-       - 80:8081
-       - 443:8443
-     environment:
-         NODE_ENV: "production"
-         ARCHIVIST_API_URL: "http://archivist:8080"
-         CURATOR_PORT_SECURE: "8443"
-         SSL_CERT_PATH: "./"
 
 secrets:
   prometheus.yml:

@@ -5,7 +5,6 @@
 package com.zorroa.archivist.search;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zorroa.archivist.domain.Access;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -49,9 +48,6 @@ public class AssetSearch {
             "the value will default to 1.")
     private Integer from;
 
-    @ApiModelProperty("Filters assets based on the current User's access to them.")
-    private Access access;
-
     @ApiModelProperty("Allow for field collapsing. https://www.elastic.co/guide/en/elasticsearch/reference/" +
             "6.4/search-request-collapse.html")
     private Map<String, Object> collapse;
@@ -59,7 +55,8 @@ public class AssetSearch {
     @ApiModelProperty("Aggregations to return with the search.  Map is name, then agg.")
     private Map<String, Map<String, Object>> aggs;
 
-    public AssetSearch() { }
+    public AssetSearch() {
+    }
 
     public AssetSearch(String query) {
         this.query = query;
@@ -199,15 +196,6 @@ public class AssetSearch {
 
     public AssetSearch setExactQuery(Boolean exactQuery) {
         this.exactQuery = exactQuery;
-        return this;
-    }
-
-    public Access getAccess() {
-        return access;
-    }
-
-    public AssetSearch setAccess(Access access) {
-        this.access = access;
         return this;
     }
 

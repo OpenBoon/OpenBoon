@@ -3,11 +3,6 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.filesystem.UUIDFileSystem
-import com.zorroa.archivist.sdk.security.UserRegistryService
-import com.zorroa.archivist.security.ExternalJwtValidator
-import com.zorroa.archivist.security.HttpExternalJwtValidator
-import com.zorroa.archivist.security.JwtValidator
-import com.zorroa.archivist.security.LocalUserJwtValidator
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileServerProviderImpl
 import com.zorroa.archivist.service.FileStorageService
@@ -17,10 +12,8 @@ import com.zorroa.archivist.service.MessagingService
 import com.zorroa.archivist.service.NullMessagingService
 import com.zorroa.archivist.service.PubSubMessagingService
 import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.FileUtils
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -160,34 +153,6 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus(): EventBus {
         return EventBus()
-    }
-
-    @Bean
-    @Autowired
-    @ConditionalOnProperty(
-        value = ["archivist.security.jwt.external.enabled"],
-        havingValue = "true",
-        matchIfMissing = false
-    )
-    fun externalJwtValidator(userRegistryService: UserRegistryService): ExternalJwtValidator {
-        val props = properties()
-        val refreshUrl = props.getString("archivist.security.jwt.external.refresh-url")
-        val refreshUri = if (refreshUrl.isEmpty()) {
-            null
-        } else {
-            URI.create(refreshUrl)
-        }
-
-        return HttpExternalJwtValidator(
-            URI.create(props.getString("archivist.security.jwt.external.url")),
-            refreshUri,
-            userRegistryService
-        )
-    }
-
-    @Bean
-    fun jwtValidator(userService: UserService): JwtValidator {
-        return LocalUserJwtValidator(userService)
     }
 
     @Bean
