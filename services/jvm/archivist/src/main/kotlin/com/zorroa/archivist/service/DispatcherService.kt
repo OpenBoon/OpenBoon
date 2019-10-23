@@ -26,7 +26,6 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
-import com.zorroa.archivist.security.TokenStore
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
@@ -107,8 +106,7 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val fileStorageService: FileStorageService,
     val properties: ApplicationProperties,
-    val meterRegistry: MeterRegistry,
-    val tokenStore: TokenStore
+    val meterRegistry: MeterRegistry
 ) {
 
     /**
@@ -198,7 +196,8 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZORROA_JOB_ID"] = task.jobId.toString()
             task.env["ZORROA_ORGANIZATION_ID"] = task.organizationId.toString()
             task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
-            task.env["ZORROA_AUTH_TOKEN"] = tokenStore.createAPIToken(task.userId)
+            // TODO: AUTH - supply correct token.
+            task.env["ZORROA_AUTH_TOKEN"] = "abc123"
 
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 task.env["ZORROA_DEBUG_MODE"] = "true"

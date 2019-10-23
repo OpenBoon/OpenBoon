@@ -31,9 +31,6 @@ class MaintenanceServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var sharedLinkService: SharedLinkService
-
-    @Autowired
     lateinit var taskDao: TaskDao
 
     @Autowired
@@ -47,25 +44,6 @@ class MaintenanceServiceTests : AbstractTest() {
     @Test
     fun testRemoveExpiredJobData() {
         maintenanceService.handleExpiredJobs()
-    }
-
-    @Test
-    fun testHandleExpiredSharedLink() {
-        val spec = SharedLinkSpec(mapOf("foo" to "bar"))
-        spec.userIds = setOf(getUserId())
-        sharedLinkService.create(spec)
-
-        maintenanceService.handleExpiredSharedLinks()
-        val count1 = jdbc.queryForObject("SELECT COUNT(1) FROM shared_link", Int::class.java)
-        assertEquals(1, count1)
-
-        config.sharedLinksExpireTime = "1s"
-        Thread.sleep(1000)
-
-        // link should be removed
-        maintenanceService.handleExpiredSharedLinks()
-        val count2 = jdbc.queryForObject("SELECT COUNT(1) FROM shared_link", Int::class.java)
-        assertEquals(0, count2)
     }
 
     @Test

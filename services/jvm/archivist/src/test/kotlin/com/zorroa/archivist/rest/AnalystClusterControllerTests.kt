@@ -197,7 +197,6 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-            authenticate("admin")
             val terr = taskErrorDao.getLast()
             assertEquals(task.id, terr.taskId)
             assertEquals(task.jobId, terr.jobId)
@@ -235,7 +234,6 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
-            authenticate("admin")
             val terr = taskErrorDao.getLast()
             val stack = terr.stackTrace?.get(0)
             assertNotNull(stack)

@@ -158,6 +158,10 @@ class PipelineServiceImpl @Autowired constructor(
     }
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
+        // eventually call load pipelines,
+    }
+
+    private fun loadPipelines() {
         val searchPath = properties.getList("archivist.pipeline.search-path")
         val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
 

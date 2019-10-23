@@ -6,8 +6,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.AnalystAuthentication
-import com.zorroa.archivist.security.JwtSecurityConstants
-import com.zorroa.archivist.security.generateUserToken
 import com.zorroa.common.util.Json
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
@@ -111,21 +109,7 @@ abstract class MockMvcTest : AbstractTest() {
      * @return a session for an admin with the id 1.
      */
     protected fun admin(): HttpHeaders {
-        val user = userService.get("admin")
-        val token = generateUserToken(user.id, userService.getHmacKey(user.id))
-
-        val headers = HttpHeaders()
-        headers.set(JwtSecurityConstants.HEADER_STRING_REQ, "${JwtSecurityConstants.TOKEN_PREFIX}$token")
-        return headers
-    }
-
-    protected fun user(): HttpHeaders {
-        val user = userService.get("user")
-        val token = generateUserToken(user.id, userService.getHmacKey(user.id))
-
-        val headers = HttpHeaders()
-        headers.set(JwtSecurityConstants.HEADER_STRING_REQ, "${JwtSecurityConstants.TOKEN_PREFIX}$token")
-        return headers
+        return HttpHeaders()
     }
 
     protected fun analyst(): MockHttpSession {

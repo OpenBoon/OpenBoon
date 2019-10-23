@@ -6,11 +6,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdatePermissionsRequest
-import com.zorroa.archivist.domain.Organization
-import com.zorroa.archivist.domain.Permission
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.domain.UserSpec
 import com.zorroa.archivist.sdk.security.UserRegistryService
@@ -18,19 +14,11 @@ import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.UnitTestAuthentication
 import com.zorroa.archivist.service.AssetService
-import com.zorroa.archivist.service.EmailService
-import com.zorroa.archivist.service.FieldService
-import com.zorroa.archivist.service.FieldSystemService
 import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.OrganizationService
-import com.zorroa.archivist.service.PermissionService
-import com.zorroa.archivist.service.SearchService
-import com.zorroa.archivist.service.SettingsService
 import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.archivist.service.UserService
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
@@ -73,22 +61,7 @@ abstract class AbstractTest {
     val logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
-    protected lateinit var userService: UserService
-
-    @Autowired
     protected lateinit var fileServerProvider: FileServerProvider
-
-    @Autowired
-    protected lateinit var permissionService: PermissionService
-
-    @Autowired
-    protected lateinit var folderService: FolderService
-
-    @Autowired
-    protected lateinit var searchService: SearchService
-
-    @Autowired
-    protected lateinit var fieldService: FieldService
 
     @Autowired
     protected lateinit var indexService: IndexService
@@ -98,12 +71,6 @@ abstract class AbstractTest {
 
     @Autowired
     protected lateinit var properties: ApplicationProperties
-
-    @Autowired
-    protected lateinit var settingsService: SettingsService
-
-    @Autowired
-    protected lateinit var emailService: EmailService
 
     @Autowired
     protected lateinit var organizationService: OrganizationService
@@ -116,9 +83,6 @@ abstract class AbstractTest {
 
     @Autowired
     internal lateinit var indexRoutingService: IndexRoutingService
-
-    @Autowired
-    internal lateinit var fieldSystemService: FieldSystemService
 
     @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
@@ -174,9 +138,6 @@ abstract class AbstractTest {
                  * Need these in here so fields are visible by threads and coroutines.
                  */
                 authenticate()
-                if (requiresFieldSets()) {
-                    setupEmbeddedFieldSets()
-                }
             }
         })
 
@@ -199,68 +160,7 @@ abstract class AbstractTest {
             cleanElastic()
         }
 
-        setupAllUsers()
-
         Json.Mapper.registerModule(KotlinModule())
-    }
-
-    fun setupAllUsers() {
-
-        userService.create(
-            UserSpec(
-                "user",
-                "user",
-                "user@zorroa.com",
-                firstName = "Bob",
-                lastName = "User"
-            )
-        )
-
-        val manager = userService.create(
-            UserSpec(
-                "librarian",
-                "manager",
-                "librarian@zorroa.com",
-                firstName = "Anne",
-                lastName = "Librarian"
-            )
-        )
-
-        userService.addPermissions(
-            manager, listOf(
-                permissionService.getPermission("zorroa::librarian")
-            )
-        )
-
-        val editor = userService.create(
-            UserSpec(
-                "editor",
-                "editor",
-                "editor@zorroa.com",
-                firstName = "Metadata",
-                lastName = "Editor"
-            )
-        )
-
-        userService.addPermissions(
-            editor,
-            listOf(permissionService.getPermission(Groups.WRITE))
-        )
-
-        val orgAdmin = userService.create(
-            UserSpec(
-                "orgadmin",
-                "orgadmin",
-                "orgadmin@zorroa.com",
-                firstName = "Organization",
-                lastName = "Admin"
-            )
-        )
-
-        userService.addPermissions(
-            orgAdmin,
-            listOf(permissionService.getPermission(Groups.ADMIN))
-        )
     }
 
     fun authenticateAsAnalyst() {
@@ -303,12 +203,6 @@ abstract class AbstractTest {
         indexRoutingService.syncAllIndexRoutes()
     }
 
-    fun setupEmbeddedFieldSets() {
-        val org = organizationService.get(Organization.DEFAULT_ORG_ID)
-        fieldSystemService.setupDefaultFields(org)
-        fieldSystemService.setupDefaultFieldSets(org)
-    }
-
     /**
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
@@ -316,25 +210,6 @@ abstract class AbstractTest {
         val userAuthed = userRegistryService.getUser("admin")
         userAuthed.setAttr("company_id", "25274")
         SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
-    }
-
-    fun authenticate(username: String, qStringFilter: String? = null, perms: List<String>? = null) {
-        val authed = userRegistryService.getUser(username)
-        authed.queryStringFilter = qStringFilter
-
-        val authorities = authed.authorities.toMutableSet()
-        perms?.forEach {
-            authorities.add(
-                try {
-                    permissionService.getPermission(it)
-                } catch (e: EmptyResultDataAccessException) {
-                    val (type, name) = it.split(Permission.JOIN, limit = 2)
-                    Permission(UUID.randomUUID(), name, type, "test")
-                }
-            )
-        }
-        SecurityContextHolder.getContext().authentication =
-            authenticationManager.authenticate(UnitTestAuthentication(authed, authorities))
     }
 
     fun logout() {
@@ -392,13 +267,6 @@ abstract class AbstractTest {
 
     fun addTestAssets(subdir: String) {
         addTestAssets(getTestAssets(subdir))
-    }
-
-    fun addWritePermissionToTestAssets() {
-        val perm = permissionService.getPermission(Groups.WRITE)
-        assetService.setPermissions(
-            BatchUpdatePermissionsRequest(AssetSearch(), Acl().addEntry(perm.id, 2))
-        )
     }
 
     fun addTestVideoAssets() {

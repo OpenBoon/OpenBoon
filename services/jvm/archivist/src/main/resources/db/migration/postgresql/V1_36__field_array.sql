@@ -1,3 +1,0 @@
-
-
-ALTER TABLE field ADD COLUMN bool_list BOOLEAN NOT NULL DEFAULT 'f';

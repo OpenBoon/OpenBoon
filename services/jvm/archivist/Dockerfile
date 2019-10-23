@@ -16,14 +16,6 @@ RUN mkdir /config
 RUN mkdir /service
 COPY target/archivist.jar /service/archivist.jar
 
-# Create a couple directories for service extensions.
-RUN mkdir /extensions
-RUN mkdir /extensions/inactive
-RUN mkdir /extensions/active
-
-# Copy any build extensions to the inactive folder.
-COPY ext/*.jar /extensions/inactive/
-
 # Copy over startup scripts for docker.
 COPY ./docker/jvm_options_parser /jvm_options_parser
 COPY ./docker/jvm.options /config/jvm.options
@@ -33,7 +25,6 @@ COPY ./docker/application.properties /config/application.properties
 
 
 # Change perms
-RUN chmod -R 777 /extensions
 RUN chmod -R 777 /config
 RUN chmod -R 777 /logs
 RUN chown -R 777 /shared

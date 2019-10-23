@@ -2,7 +2,6 @@ package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
-import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.repository.KDaoFilter
@@ -10,7 +9,82 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.validator.constraints.Email
 import org.hibernate.validator.constraints.NotEmpty
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+import java.io.Serializable
 import java.util.UUID
+
+object Groups {
+    val SUPERADMIN = "superadmin"
+    val MONITOR = "monitor"
+}
+
+interface UserId {
+    val id: UUID
+    fun getName(): String
+}
+
+class UserAuthed(
+    override val id: UUID,
+    var organizationId: UUID,
+    username: String,
+    permissions: Set<out GrantedAuthority>,
+    attrs: Map<String, Any>,
+    var queryStringFilter: String? = null
+) : UserId, UserDetails, Serializable {
+
+    val attrs: MutableMap<String, Any> = attrs.toMutableMap()
+    private val user: String = username
+    private val permissions: Set<out GrantedAuthority> = permissions
+
+    fun setAttr(key: String, value: Any?) {
+        if (value == null) {
+            attrs.remove(key)
+        } else {
+            attrs[key] = value
+        }
+    }
+
+    fun hasQueryStringFilter(): Boolean {
+        return queryStringFilter != null
+    }
+
+    override fun getAuthorities(): Collection<out GrantedAuthority> {
+        return permissions
+    }
+
+    override fun isEnabled(): Boolean {
+        return true
+    }
+
+    override fun getUsername(): String {
+        return user
+    }
+
+    override fun getName(): String {
+        return user
+    }
+
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+
+    override fun getPassword(): String {
+        return "<HIDDEN>"
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+
+    override fun toString(): String {
+        return "<UserAuthed username=$user organization=$organizationId>"
+    }
+}
 
 /**
  * A couple internal constants for user source.

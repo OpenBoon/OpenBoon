@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.security.canExport
 import com.zorroa.common.schema.ProxySchema
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
@@ -27,7 +26,8 @@ class AssetStreamResolutionService constructor(
     fun getServableFile(id: String, types: List<MediaType>): ServableFile? {
         val asset = indexService.get(id)
         val canDisplay = canDisplaySource(asset, types)
-        val forceProxy = !canExport(asset)
+        // TODO: ZMLP always force proxy?
+        val forceProxy = true
         val sourceFile = fileServerProvider.getServableFile(asset)
 
         /**

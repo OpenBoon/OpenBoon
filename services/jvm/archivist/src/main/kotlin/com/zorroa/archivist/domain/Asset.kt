@@ -121,19 +121,6 @@ class BatchUpdateAssetsResponse {
     }
 }
 
-@ApiModel("Batch Update Permissions Request", description = "Request to update selected assets with new permissions.")
-class BatchUpdatePermissionsRequest(
-
-    @ApiModelProperty("Search filter used to get batch of Assets to update.")
-    val search: AssetSearch,
-
-    @ApiModelProperty("ACL to apply to Assets.")
-    val acl: Acl,
-
-    @ApiModelProperty("If true all permissions are replaced otherwise they are updated.")
-    val replace: Boolean = false
-)
-
 @ApiModel("Batch Update Permissions Response", description = "Response object for a BatchUpdatePermissionsRequest.")
 class BatchUpdatePermissionsResponse {
 

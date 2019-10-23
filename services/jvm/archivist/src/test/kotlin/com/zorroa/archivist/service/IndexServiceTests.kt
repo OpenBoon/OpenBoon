@@ -75,67 +75,6 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchDelete() {
-        val assets = indexService.getAll(Pager.first())
-        val res = indexService.batchDelete(assets.map { it.id })
-        assertEquals(2, res.totalRequested)
-        assertEquals(2, res.deletedAssetIds.size)
-        assertTrue(res.errors.isEmpty())
-        Thread.sleep(2000)
-    }
-
-    @Test
-    fun testBatchDeleteEmptyList() {
-        val res = indexService.batchDelete(listOf())
-        assertEquals(0, res.totalRequested)
-        assertEquals(0, res.deletedAssetIds.size)
-        assertTrue(res.errors.isEmpty())
-    }
-
-    @Test
-    fun testBatchDeleteWithChildren() {
-        val assets = indexService.getAll(Pager.first())
-        val child = assets[1]
-        child.setAttr("media.clip.parent", assets[0].id)
-        indexService.index(child)
-
-        Thread.sleep(1000)
-
-        val res = indexService.batchDelete(listOf(assets[0].id))
-        assertEquals(2, res.totalRequested)
-        assertEquals(2, res.deletedAssetIds.size)
-        assertTrue(res.errors.isEmpty())
-    }
-
-    @Test
-    fun testBatchDeleteWithOnHold() {
-        val assets = indexService.getAll(Pager.first())
-        assets[0].setAttr("system.hold", true)
-        indexDao.update(assets[0])
-
-        val res = indexService.batchDelete(assets.map { it.id })
-        assertEquals(1, res.totalRequested)
-        assertEquals(1, res.deletedAssetIds.size)
-        assertEquals(1, res.onHoldAssetIds.size)
-        assertTrue(res.errors.isEmpty())
-    }
-
-    @Test
-    fun testBatchDeleteSkipChildren() {
-        val assets = indexService.getAll(Pager.first())
-        val child = assets[1]
-        child.setAttr("media.clip.parent", assets[0].id)
-        indexService.index(child)
-        refreshIndex()
-        Thread.sleep(1000)
-
-        val res = indexService.batchDelete(listOf(child.id))
-        assertEquals(0, res.totalRequested)
-        assertEquals(0, res.deletedAssetIds.size)
-        assertTrue(res.errors.isEmpty())
-    }
-
-    @Test
     @Throws(InterruptedException::class)
     fun testIndexCheckOrigin() {
         val source = Source(getTestImagePath("set01/toucan.jpg"))
@@ -173,37 +112,5 @@ class JwtTokenSecurityIndexServiceTests : AbstractTest() {
     @Before
     fun init() {
         addTestAssets("set04/standard")
-    }
-
-    @Test
-    fun testGetTokenFilter() {
-        authenticate("user", qStringFilter = "source.subType:jpeg", perms = listOf(Groups.READ))
-        val assets = indexService.getAll(Pager.first())
-        indexService.get(assets[0].id)
-    }
-
-    @Test(expected = AccessDeniedException::class)
-    fun testGetTokenFilterFailure() {
-        authenticate("user", qStringFilter = "source.path:foo")
-        val assets = indexService.getAll(Pager.first())
-        indexService.get(assets[0].id)
-    }
-
-    @Test
-    fun testBatchDeleteFailure() {
-        authenticate("user", qStringFilter = "source.path:*", perms = listOf("assets::read-all"))
-        val assets = indexService.getAll(Pager.first())
-        val rsp = indexService.batchDelete(listOf(assets[0].id))
-        assertEquals(1, rsp.accessDeniedAssetIds.size)
-        assertEquals(0, rsp.deletedAssetIds.size)
-    }
-
-    @Test
-    fun testBatchDeleteSuccess() {
-        authenticate("user", qStringFilter = "source.path:*", perms = listOf("assets::read-all", "assets::delete-all"))
-        val assets = indexService.getAll(Pager.first())
-        val rsp = indexService.batchDelete(listOf(assets[0].id))
-        assertEquals(0, rsp.accessDeniedAssetIds.size)
-        assertEquals(1, rsp.deletedAssetIds.size)
     }
 }
