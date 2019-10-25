@@ -1,2 +1,2 @@
 
-from .http import get_client, ZHttpClient, ZorroaJsonEncoder
+from .zhttpclient import get_client, ZHttpClient, ZorroaJsonEncoder
