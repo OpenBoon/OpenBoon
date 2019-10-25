@@ -1,0 +1,7 @@
+{
+    "name": "test-pipeline",
+    "type": "Import" ,
+    "description": "This is a test pipeline.",
+    "processors": [{"className": "zplugins.image.importers.ImageImporter"},
+                   {"className": "zplugins.proxies.processors.ProxyProcessor"}]
+}

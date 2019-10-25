@@ -1,0 +1,13 @@
+{
+  "inline": true,
+  "type": "import",
+  "execute": [
+    {
+      "className": "com.zorroa.core.processor.GroovyScript",
+      "language": "java",
+      "args": {
+        "script": "sleep(10000);"
+      }
+    }
+  ]
+}
