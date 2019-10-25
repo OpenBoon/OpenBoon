@@ -11,7 +11,7 @@
     <parent>
         <relativePath>../pom.xml</relativePath>
         <groupId>com.zorroa.zmlp</groupId>
-        <artifactId>zorroa-jvm-core</artifactId>
+        <artifactId>zorroa-es-plugins</artifactId>
         <version>1.0</version>
     </parent>
 
@@ -78,7 +78,7 @@
                         </goals>
                         <configuration>
                             <executable>cp</executable>
-                            <commandlineArgs>target/releases/es-similarity.zip "${project.parent.basedir}/elasticsearch"
+                            <commandlineArgs>target/releases/es-similarity.zip "${project.parent.basedir}/dist"
                             </commandlineArgs>
                         </configuration>
                     </execution>
