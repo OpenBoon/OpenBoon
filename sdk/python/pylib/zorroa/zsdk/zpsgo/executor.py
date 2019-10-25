@@ -4,7 +4,7 @@ import time
 import sys
 import os
 
-from zorroa.client.http import ZorroaJsonEncoder
+from zorroa.client import ZorroaJsonEncoder
 from .processors import DocumentGenerator
 from zorroa.zsdk import Context, Reactor, Collector
 from zorroa.zsdk.exception import UnrecoverableProcessorException
