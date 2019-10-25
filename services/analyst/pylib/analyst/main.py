@@ -7,6 +7,7 @@ import socket
 import subprocess
 
 from flask import Flask, jsonify, request, abort, send_file
+from gevent.pywsgi import WSGIServer
 from pathlib2 import Path
 
 import analyst.components as components
@@ -33,8 +34,8 @@ def main():
     setup_routes(api)
 
     create_ssl_files()
-    app.run(host='0.0.0.0', port=int(args.port),
-            ssl_context=('certs/analyst.cert', 'certs/analyst.key'))
+    server = WSGIServer(('0.0.0.0', int(args.port)), app, certfile='certs/analyst.cert', keyfile='certs/analyst.key')
+    server.serve_forever()
 
 
 def create_ssl_files():
