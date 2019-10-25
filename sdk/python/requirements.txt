@@ -1,0 +1,11 @@
+requests
+pytz==2018.4
+pyOpenSSL==18.0.0
+PyJWT
+file-magic==0.4.0
+google-cloud-logging
+google-cloud-storage>=1.20.0
+pathlib2>=2.3.0
+colorama==0.4.1
+uritools==2.2.0
+tabulate
