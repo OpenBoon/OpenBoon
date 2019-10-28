@@ -1,0 +1,20 @@
+{
+  "description": "Add system.suggestions field.",
+  "patch": {
+    "properties": {
+      "system": {
+        "properties": {
+          "suggestions": {
+            "type": "completion",
+            "analyzer":  "standard",
+            "contexts": {
+              "name": "organization",
+              "type": "category",
+              "path": "system.organizationId"
+            }
+          }
+        }
+      }
+    }
+  }
+}

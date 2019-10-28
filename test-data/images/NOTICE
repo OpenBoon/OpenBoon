@@ -1,0 +1,3 @@
+Some tests count the number of files processed from the 'setXX' sub directories.
+For this reason, its often best to make a new 'setXX' directory for new test images
+than it is to add the images to an existing set.

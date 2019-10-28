@@ -1,0 +1,11 @@
+{
+  "name": "Media Properties",
+  "linkExpression": "_not_empty_:media",
+  "attrNames": [
+    "media.title",
+    "media.keywords",
+    "media.description",
+    "media.width",
+    "media.height"
+  ]
+}

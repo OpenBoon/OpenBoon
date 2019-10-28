@@ -1,0 +1,28 @@
+{
+  "name": "standard-import",
+  "type": "Import",
+  "description": "The standard import pipeline",
+  "processors": [
+    {
+      "className": "zplugins.image.importers.ImageImporter"
+    },
+    {
+      "className": "zplugins.video.importers.VideoImporter"
+    },
+    {
+      "className": "zplugins.office.importers.OfficeImporter"
+    },
+    {
+      "className": "zplugins.proxies.processors.ProxyProcessor"
+    },
+    {
+      "className": "zplugins.mxnet.processors.ResNetSimilarityProcessor"
+    },
+    {
+      "className": "zplugins.image.processors.HSVSimilarityProcessor"
+    },
+    {
+      "className": "zplugins.face.processors.FaceRecognitionProcessor"
+    }
+  ]
+}

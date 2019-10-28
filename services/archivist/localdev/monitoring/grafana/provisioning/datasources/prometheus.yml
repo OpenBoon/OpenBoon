@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+  - name: "Archivist Metrics"
+    isDefault: true
+    readOnly: true
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090

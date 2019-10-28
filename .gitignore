@@ -5,6 +5,7 @@
 /**/target
 /**/dependency-reduced-pom.xml
 /**/*.jar
+/**/*.pyc
 k8.cert
 service-credentials.json
 data-credentials.json

@@ -1,0 +1,12 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+install:
+  - rm -rf db proxies exports unittest
+  - ./travis/travis-install-archivist-sdk.sh
+  - ./travis/travis-install-java-common.sh
+
+notifications:
+  slack: zorroa:U0489fQGuSPls5EZZfSUoGsL

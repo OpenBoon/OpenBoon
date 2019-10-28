@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import logging
+import os
+import pprint
+import sys
+
+import requests
+
+from zorroa.zsdk.logs import setup_logger_format
+from zorroa.zsdk.zpsgo.executor import ZpsExecutor
+
+logger = logging.getLogger("zpsgo")
+
+
+def main():
+    parser = argparse.ArgumentParser(prog='zpsgo')
+    parser.add_argument("-z", "--script",
+                        help="The location of the ZPS script to run, can be file path or URL", required=True)
+    parser.add_argument("-G", "--global", nargs="+", help="Set a global script variable")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Turn on verbose logging")
+
+    args = parser.parse_args()
+    if args.verbose or os.environ.get("ZORROA_DEBUG_MODE"):
+        level = logging.DEBUG
+    else:
+        level = logging.INFO
+    logging.basicConfig(level=level, stream=sys.stdout)
+    setup_logger_format(level=level)
+    if args.script:
+        script = read_script(args.script)
+    else:
+        logger.info("Reading ZPS script from STDIN")
+        script = read_stdin()
+
+    logger.debug("Script: \n%s" % pprint.pformat(script))
+    run_zps(script)
+
+
+def read_script(uri):
+    if uri.startswith("http"):
+        logger.info("Downloading ZPS script from url: %s" % uri)
+        response = requests.get(uri)
+        if response.status_code != 200:
+            raise RuntimeError(
+                'There was an error downloading the %s.\nStatus Code:%s\nContent:%s' %
+                (uri, response.status_code, response.content))
+        try:
+            return response.json()
+        except ValueError as error:
+            logging.error(error.message)
+            logging.info('Response when attempting to download:\n\n' % response.content)
+            sys.exit(1)
+    else:
+        return json.load(open(uri, "r"))
+
+
+def run_zps(script):
+    exe = ZpsExecutor()
+    sys.exit(exe.run(script).exit_status)
+
+
+def read_stdin():
+    lines = []
+    for line in sys.stdin:
+        lines.append(line)
+    return json.loads("".join(lines))
+
+
+if __name__ == '__main__':
+    main()

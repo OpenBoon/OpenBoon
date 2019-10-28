@@ -1,0 +1,12 @@
+[
+  {
+    "name": "zorroa-test",
+    "type": "import",
+    "description": "test pipeline",
+    "processors": [
+      {
+        "className": "com.zorroa.test.TestIngestor"
+      }
+    ]
+  }
+]

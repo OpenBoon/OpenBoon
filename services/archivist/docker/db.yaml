@@ -1,0 +1,30 @@
+
+version: '3'
+services:
+
+  es:
+    build:
+      context: elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+
+  # Postgres instance used for local devleopment servers.
+  postgres:
+    image: "postgres:9.6.9"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: zorroa
+      POSTGRES_USER: zorroa
+      POSTGRES_DB: zorroa
+      PGDATA: /var/lib/postgresql/data/pgdata
+
