@@ -1,0 +1,18 @@
+#!/usr/bin/python3
+
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(prog='echo_event')
+    parser.add_argument("-a", "--args", help="The docker image to execute")
+
+    args = parser.parse_args()
+
+    print("####HEADER####")
+    print(args.args)
+    print("####FOOTER####")
+
+
+if __name__ == '__main__':
+    main()
+
