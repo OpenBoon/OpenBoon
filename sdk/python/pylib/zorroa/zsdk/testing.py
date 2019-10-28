@@ -209,6 +209,38 @@ class TestConsumer:
         self.count += 1
 
 
+class TestEventEmitter(object):
+    """
+
+    """
+    def __init__(self):
+        self.events = []
+
+    def write(self, event):
+        self.events.append(event)
+        print("EVENT: %s" % event)
+
+    def clear(self):
+        self.events = []
+
+    def event_count(self, etype):
+        count = 0
+        for event in self.events:
+            if event["type"] == etype:
+                count += 1
+        return count
+
+    def event_total(self):
+        return len(self.events)
+
+    def get_events(self, etype):
+        result = []
+        for event in self.events:
+            if event["type"] == etype:
+                result.append(event)
+        return result
+
+
 def zorroa_test_data(rel_path=""):
     """
     Return the absolute path to the given test file.
