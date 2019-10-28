@@ -9,3 +9,4 @@ k8.cert
 service-credentials.json
 data-credentials.json
 docker-compose.override.yml
+db.sqlite3
