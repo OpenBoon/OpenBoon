@@ -39,7 +39,7 @@ import java.security.interfaces.RSAPublicKey
 @EnableAuthorizationServer
 @Configuration
 
-class AuthorizationServerConfiguration @Throws(Exception::class)
+class AuthServerConfiguration @Throws(Exception::class)
 constructor(
         authenticationConfiguration: AuthenticationConfiguration,
         internal var keyPair: KeyPair,
