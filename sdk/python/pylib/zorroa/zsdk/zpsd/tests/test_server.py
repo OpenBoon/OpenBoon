@@ -24,7 +24,7 @@ class ZpsdServerTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "zorroa.zsdk.zpsd.tests.processors.TestSetAttrProcessor",
-                    "image": "plugins-py-base",
+                    "image": "plugins-py3-base",
                     "args": {
 
                     }
@@ -47,10 +47,8 @@ class ZpsdServerTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "foo.DoesNotExist",
-                    "image": "plugins-py-base",
-                    "args": {
-
-                    }
+                    "image": "plugins-py3-base",
+                    "args": { }
                 },
                 "object": {}
             }
@@ -67,7 +65,7 @@ class ZpsdServerTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "zorroa.zsdk.zpsd.tests.processors.TestSetAttrProcessor",
-                    "image": "plugins-py-base",
+                    "image": "plugins-py3-base",
                     "args": {
 
                     }

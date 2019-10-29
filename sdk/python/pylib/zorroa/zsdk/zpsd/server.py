@@ -12,9 +12,10 @@ class ZpsdServer(object):
     def __init__(self, port, reactor=None):
         self.port = port
         self.socket = self.__setup_zmq_socket()
+        self.reactor = reactor
 
         if not reactor:
-            reactor = Reactor(ZmqEventEmitter(self.socket))
+            self.reactor = Reactor(ZmqEventEmitter(self.socket))
         self.executor = ProcessorExecutor(reactor)
 
     def __setup_zmq_socket(self):
@@ -40,7 +41,7 @@ class ZpsdServer(object):
         etype = event["type"]
         if etype == "execute":
             obj = self.executor.execute_processor(event["payload"])
-            self.socket.send_json({"type": "object", "payload": obj})
+            self.reactor.emitter.write({"type": "object", "payload": obj})
         elif etype == "teardown":
             self.executor.teardown_processor(event["payload"])
         elif etype == "stop":
