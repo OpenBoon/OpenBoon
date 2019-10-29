@@ -3,7 +3,7 @@ import unittest
 import sys
 
 from zorroa import zsdk
-from zorroa.zsdk.tfixtures import TestExecutor
+from zorroa.zsdk.testing import TestExecutor
 from zorroa.zsdk.exception import UnrecoverableProcessorException
 
 

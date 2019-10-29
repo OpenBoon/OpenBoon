@@ -2,7 +2,7 @@ import docker
 import json
 
 from zorroa.zsdk.testing import TestEventEmitter
-from zorroa.zsdk.zps.executor import ProcessorExecutor
+from zorroa.zsdk.zps.process import ProcessorExecutor
 from zorroa.zsdk.processor import Reactor
 
 
