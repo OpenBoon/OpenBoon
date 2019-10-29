@@ -1,4 +1,4 @@
-package com.example.authorizationserver
+package com.zorroa.authserver
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

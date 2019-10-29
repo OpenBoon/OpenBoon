@@ -1,4 +1,4 @@
-package com.example.authorizationserver
+package com.zorroa.authserver
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

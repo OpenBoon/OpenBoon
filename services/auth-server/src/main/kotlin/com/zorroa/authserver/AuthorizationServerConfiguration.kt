@@ -1,4 +1,4 @@
-package com.example.authorizationserver
+package com.zorroa.authserver
 
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
