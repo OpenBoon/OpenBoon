@@ -8,7 +8,7 @@ import pytest
 
 from pathlib2 import Path
 from zorroa.zsdk import Clip
-from zorroa.zsdk.tfixtures import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 
 
 class AssetUnitTests(PluginUnitTestCase):

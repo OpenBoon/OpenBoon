@@ -3,7 +3,7 @@ import zmq
 import sys
 
 from zorroa.zsdk.processor import Reactor
-from zorroa.zsdk.zps.executor import ProcessorExecutor
+from zorroa.zsdk.zps.process import ProcessorExecutor
 
 logger = logging.getLogger(__name__)
 

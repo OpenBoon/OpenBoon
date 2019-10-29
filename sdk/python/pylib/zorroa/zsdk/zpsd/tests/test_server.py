@@ -4,7 +4,7 @@ import logging
 
 
 from zorroa.zsdk.zpsd.server import ZpsdServer
-from zorroa.zsdk.tfixtures import TestEventEmitter
+from zorroa.zsdk.testing import TestEventEmitter
 from zorroa.zsdk.processor import Reactor
 
 logging.basicConfig(level=logging.DEBUG)
@@ -24,6 +24,7 @@ class ZpsdServerTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "zorroa.zsdk.zpsd.tests.processors.TestSetAttrProcessor",
+                    "image": "plugins-py-base",
                     "args": {
 
                     }
@@ -46,6 +47,7 @@ class ZpsdServerTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "foo.DoesNotExist",
+                    "image": "plugins-py-base",
                     "args": {
 
                     }
@@ -65,6 +67,7 @@ class ZpsdServerTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "zorroa.zsdk.zpsd.tests.processors.TestSetAttrProcessor",
+                    "image": "plugins-py-base",
                     "args": {
 
                     }
