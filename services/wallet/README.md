@@ -15,6 +15,9 @@ To start the environment or rebuild it after a code change just run the followin
 
 Additionally the standard django runserver can be used for rapid development that doesn't
 require a full deployment. More information is [here](https://docs.djangoproject.com/en/2.2/intro/tutorial01/#the-development-server).
+If you would like to use the runserver with a sqlite db so that you do not depend on postgres 
+running you use the `wallet.settings.local` settings file. The full command for this is
+`./manage.py runserver --settings=` 
 
 ### Style Guide
 Unless otherwise noted below this projects adheres to the [pep8](https://www.python.org/dev/peps/pep-0008/)
