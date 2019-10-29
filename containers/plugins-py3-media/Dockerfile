@@ -17,6 +17,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     xz-utils \
      --no-install-recommends
 
+RUN pip3 install opencv-python
+
 RUN mkdir /src
 WORKDIR src
 
