@@ -12,7 +12,7 @@ from pathlib2 import Path
 
 from zorroa.zsdk.document.base import Document
 from zorroa.zsdk.ofs.core import AbstractObjectFile, AbstractObjectFileSystem
-from zorroa.client.http import get_client
+from zorroa.client import get_client
 
 
 def resolve_hashable_ofs_name(value):
