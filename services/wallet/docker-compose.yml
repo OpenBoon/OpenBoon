@@ -9,7 +9,8 @@ services:
       dockerfile: Dockerfile.app
     entrypoint: "sh /app/start-server.sh postgres"
     environment:
-      DJANGO_SETTINGS_MODULE: wallet.settings_docker_compose
+      DJANGO_SETTINGS_MODULE: wallet.settings
+      PG_HOST: postgres
     depends_on:
       - postgres
 

@@ -5,11 +5,7 @@ from .settings import *  # noqa
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'wallet',
-        'USER': 'admin',
-        'PASSWORD': 'a8fnnbe934j',
-        'HOST': 'postgres',
-        'PORT': '5432',
     }
 }

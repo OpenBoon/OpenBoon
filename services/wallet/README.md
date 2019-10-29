@@ -5,7 +5,6 @@ Requirements:
  - Python 3.8.0 or greater.
  - Node 6.10.1 or greater.
  - Latest docker & docker-compose installed.
- 
 
 ### Development Server
 The local development server is run using docker compose. The compose file will spin up a 
