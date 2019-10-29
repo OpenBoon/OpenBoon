@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
@@ -47,26 +48,36 @@ constructor(
     internal lateinit var authenticationManager: AuthenticationManager
 
     init {
-
         this.authenticationManager = authenticationConfiguration.authenticationManager
     }
 
     @Throws(Exception::class)
     override fun configure(clients: ClientDetailsServiceConfigurer) {
+        clients.jdbc(appConfig.dataSource())
+
         // @formatter:off
-        clients.inMemory()
-                .withClient("client-read")
-                .authorizedGrantTypes("client_credentials")
-                .secret("{noop}secret")
-                .scopes("message:read")
-                .accessTokenValiditySeconds(600000000)
-                .and()
-                .withClient("client-write")
-                .authorizedGrantTypes("client_credentials")
-                .secret("{noop}secret")
-                .scopes("message:write")
-                .accessTokenValiditySeconds(600000000)
+//        clients.inMemory()
+//                .withClient("client-read")
+//                .authorizedGrantTypes("client_credentials")
+//                .secret("{noop}secret")
+//                .scopes("message:read")
+//                .accessTokenValiditySeconds(600000000)
+//                .and()
+//                .withClient("client-write")
+//                .authorizedGrantTypes("client_credentials")
+//                .secret("{noop}secret")
+//                .scopes("message:write")
+//                .accessTokenValiditySeconds(600000000)
         // @formatter:on
+    }
+
+    @Throws(Exception::class)
+    override fun configure(security: AuthorizationServerSecurityConfigurer) {
+        /*
+         * Allow our tokens to be delivered from our token access point as well as for tokens
+         * to be validated from this point
+         */
+        security.checkTokenAccess("permitAll()")
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {
