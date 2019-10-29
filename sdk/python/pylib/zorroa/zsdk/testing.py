@@ -3,15 +3,46 @@ import os
 import shutil
 import tempfile
 import unittest
+import time
+
 from filecmp import cmp
 
 from pathlib2 import Path
 
-from .processor import Reactor, Context
+from .processor import Reactor, Context, DocumentProcessor, Argument
 from .ofs.core import AbstractObjectFileSystem, AbstractObjectFile
 from .ofs import set_ofs
 
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
+
+
+class TestProcessor(DocumentProcessor):
+    """
+    A processor for running simple execution tests.  Having a test
+    processor in the SDK allows us to use the core image for
+    testing the execution module.
+    """
+    def __init__(self):
+        super(TestProcessor, self).__init__()
+        self.add_arg(Argument('attrs', 'struct', default=None))
+        self.add_arg(Argument('send_event', 'str', default=None))
+
+    def _process(self, frame):
+        self.logger.info("Running TestProcessor process()")
+        attrs = self.arg_value("attrs")
+        if attrs:
+            self.logger.info("setting attrs: {}".format(attrs))
+            for k, v in attrs.items():
+                frame.asset.set_attr(k, v)
+
+        event_type = self.arg_value("send_event")
+        if event_type:
+            self.logger.info("emitting event: {}".format(event_type))
+            self.reactor.emitter.write({"type": event_type, "payload": {"ding": "dong"}})
+        time.sleep(1)
+
+    def teardown(self):
+        self.logger.info("Running TestProcessor teardown()")
 
 
 class TestObjectFile(AbstractObjectFile):
@@ -211,19 +242,39 @@ class TestConsumer:
 
 class TestEventEmitter(object):
     """
-
+    This is an emitter class used for dumping Processor execution
+    events to stdout.
     """
     def __init__(self):
         self.events = []
 
     def write(self, event):
+        """
+        Write an event
+        Args:
+            event (dict): The event to write.
+        """
         self.events.append(event)
-        print("EVENT: %s" % event)
+        logger.debug("event %s" % event)
 
     def clear(self):
+        """
+        Clear the event cache.
+        """
         self.events = []
 
     def event_count(self, etype):
+        """
+        Return the number of events of the given type this
+        emitter has seen.
+
+        Args:
+            etype (str): The type of event.
+
+        Returns:
+            (int): The number of events.
+
+        """
         count = 0
         for event in self.events:
             if event["type"] == etype:
@@ -231,9 +282,25 @@ class TestEventEmitter(object):
         return count
 
     def event_total(self):
+        """
+        Return the total number of events.
+
+        Returns:
+            (int): Total number of events.
+
+        """
         return len(self.events)
 
     def get_events(self, etype):
+        """
+        Return a list of all events of a given type.
+        Args:
+            etype (str): the type of event
+
+        Returns:
+            (list): A list of events.
+
+        """
         result = []
         for event in self.events:
             if event["type"] == etype:

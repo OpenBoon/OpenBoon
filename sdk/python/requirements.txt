@@ -9,3 +9,5 @@ pathlib2>=2.3.0
 colorama==0.4.1
 uritools==2.2.0
 tabulate
+docker
+pyzmq
