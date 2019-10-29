@@ -1,5 +1,6 @@
-package com.zorroa.authserver
+package com.zorroa.authserver.oauth
 
+import com.zorroa.authserver.config.AppConfig
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import java.math.BigInteger
@@ -18,10 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter
-import org.springframework.security.oauth2.provider.token.TokenStore
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ResponseBody
 import java.security.interfaces.RSAPublicKey
@@ -43,6 +41,7 @@ class AuthServerConfiguration @Throws(Exception::class)
 constructor(
         authenticationConfiguration: AuthenticationConfiguration,
         internal var keyPair: KeyPair,
+        private val appConfig: AppConfig,
         @param:Value("\${security.oauth2.authorizationserver.jwt.enabled:true}") internal var jwtEnabled: Boolean) : AuthorizationServerConfigurerAdapter() {
 
     internal lateinit var authenticationManager: AuthenticationManager
@@ -74,22 +73,13 @@ constructor(
         // @formatter:off
         endpoints
                 .authenticationManager(this.authenticationManager)
-                .tokenStore(tokenStore())
+                .tokenStore(appConfig.tokenStore())
 
         if (this.jwtEnabled) {
             endpoints
                     .accessTokenConverter(accessTokenConverter())
         }
         // @formatter:on
-    }
-
-    @Bean
-    fun tokenStore(): TokenStore {
-        return if (this.jwtEnabled) {
-            JwtTokenStore(accessTokenConverter())
-        } else {
-            InMemoryTokenStore()
-        }
     }
 
     @Bean
