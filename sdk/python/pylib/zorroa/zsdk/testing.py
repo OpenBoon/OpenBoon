@@ -4,6 +4,7 @@ import shutil
 import tempfile
 import unittest
 import time
+import json
 
 from filecmp import cmp
 
@@ -255,7 +256,8 @@ class TestEventEmitter(object):
             event (dict): The event to write.
         """
         self.events.append(event)
-        logger.debug("event %s" % event)
+        logger.debug("Event type='%s'" % event.get("type"))
+        logger.debug(json.dumps(event, sort_keys=True, indent=4))
 
     def clear(self):
         """

@@ -27,7 +27,8 @@ class ZpsRunner(object):
         req = {
             "ref": {
                 "className": self.processor,
-                "args": self.args
+                "args": self.args,
+                "image": "local"
             },
             "object": self.data
         }
@@ -53,4 +54,4 @@ class ZpsRunner(object):
                                     entrypoint="/usr/local/bin/zpsdebug",
                                     volumes=volumes)
         for line in res:
-            print(line)
+            print(line.decode("utf-8").rstrip())
