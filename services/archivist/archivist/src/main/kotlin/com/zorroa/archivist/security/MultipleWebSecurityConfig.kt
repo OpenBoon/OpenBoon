@@ -179,7 +179,7 @@ class MultipleWebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/v2/api-docs").hasAuthority(Groups.SUPERADMIN)
+                .antMatchers("/v2/api-docs").authenticated()
                 .antMatchers("/error").permitAll()
                 .antMatchers("/download-zsdk").permitAll()
                 .and()
