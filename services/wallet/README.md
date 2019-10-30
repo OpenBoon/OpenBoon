@@ -1,10 +1,52 @@
 # Wallet
 
+
+
+
+
+### Install Pyenv
+1. Install Pyenv by following the instructions on the [Github page](https://github.com/pyenv/pyenv#basic-github-checkout).
+    * **Highly suggest using the default suggestions they give. Don't get fancy.**
+    * Follow steps 1-4.
+2. Make sure the Pyenv build environment is setup, instructions at [Pyenv Wiki.](https://github.com/pyenv/pyenv/wiki#suggested-build-environment)
+    * Make sure XCode Command Line Tools are installed.
+    * Make sure Homebrew is installed.
+    * Install the suggested libs w/ Homebrew
+    * If you're on MacOS 10.14+, install the SDK Headers. (maybe not necessary?)
+
+### Install Pyenv Virtualenv
+
+      
+
+
+
+
 ## Developing
 Requirements:
  - Python 3.8.0 or greater.
  - Node 6.10.1 or greater.
  - Latest docker & docker-compose installed.
+ - Homebrew installed.
+ 
+## Getting Started (on a Mac)
+
+#### Install [Pipenv](https://github.com/pypa/pipenv)
+Pipenv is used to manage package dependencies and the python version. Install it with homebrew.
+1. `brew install pipenv`®
+2. Run `echo 'eval "$(pipenv --completion)"' >> ~/.bash_profile` to add pipenv completion to your shell.
+3. Restart your shell to pickup the changes: `exec "$SHELL"`
+
+#### Install Python dependencies
+1. `cd` into the `wallet` base directory.
+2. Run `pipenv sync`
+
+#### Use your Pipenv
+To open a shell with your pipenv activated, run:
+* `pipenv shell`
+
+Voila, you're ready to go!
+
+---
 
 ### Development Server
 The local development server is run using docker compose. The compose file will spin up a 
