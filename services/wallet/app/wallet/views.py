@@ -1,6 +1,7 @@
 import os
 import logging
 
+from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.http import HttpResponse
 from django.conf import settings
