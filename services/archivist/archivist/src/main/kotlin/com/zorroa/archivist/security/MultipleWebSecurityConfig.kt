@@ -54,34 +54,6 @@ class MultipleWebSecurityConfig {
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-    class LoginSecurityConfig : WebSecurityConfigurerAdapter() {
-
-        @Autowired
-        internal lateinit var properties: ApplicationProperties
-
-        @Throws(Exception::class)
-        override fun configure(http: HttpSecurity) {
-            http
-                .antMatcher("/api/**/login")
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and().headers().frameOptions().disable()
-                .and().csrf().disable()
-                .httpBasic()
-
-            if (properties.getBoolean("archivist.debug-mode.enabled")) {
-                http.authorizeRequests()
-                    .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
-                    .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
-            }
-        }
-    }
-
-    @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
