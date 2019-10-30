@@ -14,11 +14,11 @@ db.sqlite3
 *.pyc
 venv
 .venv
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
-/coverage
-/build
+coverage/
+build/
 .env.local
 .env.development.local
 .env.test.local
