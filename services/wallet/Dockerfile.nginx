@@ -1,8 +1,7 @@
-# Builod stage that runs the django collectstatic command to bundle up all of the static
+# Build stage that runs the django collectstatic command to bundle up all of the static
 # files and make them available for the nginx container.
 FROM wallet as static_collector
-COPY app /app/wallet
-WORKDIR /app/wallet
+WORKDIR /app
 RUN ./manage.py collectstatic --no-input
 
 FROM nginx:1.17.1-alpine

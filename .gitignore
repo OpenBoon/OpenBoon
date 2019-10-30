@@ -14,3 +14,5 @@ db.sqlite3
 *.pyc
 venv
 .venv
+/build
+node_modules
