@@ -1,0 +1,10 @@
+server:
+  port: 9090
+
+security:
+  jwt:
+    key-store: classpath:keystore.jks
+    key-store-password: zorroa!
+    key-pair-alias: zorroa
+    key-pair-password: zorroa!
+
