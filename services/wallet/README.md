@@ -5,9 +5,85 @@ Requirements:
  - Python 3.8.0 or greater.
  - Node 6.10.1 or greater.
  - Latest docker & docker-compose installed.
+ - Homebrew installed.
+ 
+## Development Options
+There are multiple ways to run this application and you should pick the best one for your
+needs.
+1. *Frontend Development* - Use the Frontend development server. For the Backend, you can
+ either use the runserver or the Docker container. We still need to come up with a way 
+ to specify which backend api this should talk to still.
+1. *Backend Development* - Use the Backend Development server.
+1. *Production-Like Testing* - Use the Docker Compose setup. This will build the Frontend
+ and setup the Backend to use a real Postgres DB, and setup an Nginx container to serve
+ the static files.
+ 
+---
 
-### Development Server
-The local development server is run using docker compose. The compose file will spin up a 
+### React Frontend Setup
+
+The entire React project is in the `app/frontend` subdirectory. This is a basic React
+application, as created by `create-react-app`.
+
+*Note*
+* Make sure you're using Node 12 (if you're using [nvm](https://github.com/nvm-sh/nvm#install--update-script), 
+then run `nvm use node 12`)
+* All subsequent commands assume that the `app/frontend` subdirectory is your current working
+directory.
+
+## Install Frontend Dependencies
+1. `npm install`
+
+## Start Frontend Development Server
+1. `npm start`
+1. Your server will not be running on `http://localhost:3000`
+
+## Build the Frontend for the Backend Development Server
+This compiles (or transpiles, I guess) the javascript, minifies it, and places everything
+nicely packaged into the build directory. The Backend development server will serve
+out from this build location, and the Docker builds will do this automatically for themselves.
+1. `npm build`
+
+---
+ 
+### Python Backend Setup
+
+#### Install [Pipenv](https://github.com/pypa/pipenv)
+Pipenv is used to manage package dependencies and the python version. Install it with homebrew.
+1. `brew install pipenv`
+2. (Optional) Run `echo 'eval "$(pipenv --completion)"' >> ~/.bash_profile` to add pipenv completion to your shell.
+3. Restart your shell to pickup the changes: `exec "$SHELL"`
+
+#### Install Python dependencies
+1. `cd` into the `wallet` base directory (`zmlp/services/wallet`).
+2. Run `pipenv sync`
+
+#### Use your Pipenv
+To open a shell with your pipenv activated, run:
+* `pipenv shell`
+If you're using an IDE with built-in Django support, here's some helpful commands for
+setting up the IDE:
+* Get the path to your pipenv Python Interpreter: `pipenv --py`
+* Get the location of the virtualenv that pipenv is using: `pipenv --venv`
+* Install a new python package and add it to your pipenv: `pipenv install $PACKAGE`
+
+#### Start Backend Development Server
+The Django runserver will serve out the frontend, assuming that a build is present. More
+info on the Django runserver can be found [here](https://docs.djangoproject.com/en/2.2/intro/tutorial01/#the-development-server).
+
+1. CD into the project directory: `cd app`
+1. Make sure you've built the Frontend if you expect the backend to serve it (instructions above).
+1. Make sure your database is up to date: `./manage.py migrate --settings=wallet.settings.local` 
+1. `./manage.py runserver --settings=wallet.settings.local` 
+1. Your server will now be running on `http://localhost:8000`
+* *Note:* You can drop the `--settings=wallet.settings.local` from the previous commands
+if you specify this in the `DJANGO_SETTINGS_MODULE` env variable. For example: 
+`export DJANGO_SETTINGS_MODULE=wallet.settings.local`
+
+---
+
+### Docker Compose Setup
+Use this to emulate a Production-like deployment. The Docker compose file will spin up a 
 complete deployment locally. The containers will be built from your local development code. 
 To start the environment or rebuild it after a code change just run the following commmand:
 
@@ -18,6 +94,8 @@ require a full deployment. More information is [here](https://docs.djangoproject
 If you would like to use the runserver with a sqlite db so that you do not depend on postgres 
 running you use the `wallet.settings.local` settings file. The full command for this is
 `./manage.py runserver --settings=` 
+
+---
 
 ### Style Guide
 Unless otherwise noted below this projects adheres to the [pep8](https://www.python.org/dev/peps/pep-0008/)
