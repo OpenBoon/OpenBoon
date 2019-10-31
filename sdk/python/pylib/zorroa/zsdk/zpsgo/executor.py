@@ -308,7 +308,7 @@ class ZpsExecutor(object):
             except Exception as ex:
                 if strict:
                     logger.warning("Not Recovering from '%s' on processor '%s', strict enabled" %
-                                (ex, proc))
+                                   (ex, proc))
                     reactor.error(frame, proc, ex, True, "execute", sys.exc_info()[2])
                 else:
                     logger.warning("Recovering from '%s' on processor '%s'" % (ex, proc))
