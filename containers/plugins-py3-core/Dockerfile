@@ -29,5 +29,3 @@ RUN cp ffmpeg-4.2.1-amd64-static/ffmpeg /usr/bin
 RUN cp ffmpeg-4.2.1-amd64-static/ffprobe /usr/bin
 RUN rm -rf ffmpeg-4.2.1-amd64-static*
 
-USER zorroa
-
