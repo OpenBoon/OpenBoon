@@ -1,8 +1,0 @@
-# This file should be kept in alphabetical order at all times.
-Django
-gunicorn
-psycopg2-binary
-pytest
-pytest-cov
-pytest-django
-sentry-sdk
