@@ -82,7 +82,10 @@ class Tests(unittest.TestCase):
                      "args": {"paths": [FACES_JPG]}}
                 ],
                 "execute": [
-                    {"className": "zorroa.zsdk.zpsgo.tests.test_processors.GroupProcessor", "args": {}}
+                    {
+                        "className": "zorroa.zsdk.zpsgo.tests.test_processors.GroupProcessor",
+                        "args": {}
+                    }
                 ]
             }, )
         self.assertEquals(1, result.frame_count)
@@ -105,13 +108,19 @@ class Tests(unittest.TestCase):
                      "args": {"paths": [FACES_JPG]}}
                 ],
                 "execute": [
-                    {"className": "zorroa.zsdk.zpsgo.tests.test_processors.TestEnvironmentProcessor",
-                     "args": {"key": "FOO_BAR", "value": None}},
-                    {"className": "zorroa.zsdk.zpsgo.tests.test_processors.TestEnvironmentProcessor",
-                     "args": {"key": "FOO_BAR", "value": "123"},
-                     "env": {"FOO_BAR": "1234"}},
-                    {"className": "zorroa.zsdk.zpsgo.tests.test_processors.TestEnvironmentProcessor",
-                     "args": {"key": "FOO_BAR", "value": None}},
+                    {
+                        "className":
+                            "zorroa.zsdk.zpsgo.tests.test_processors.TestEnvironmentProcessor",
+                            "args": {"key": "FOO_BAR", "value": None}},
+                    {
+                        "className":
+                            "zorroa.zsdk.zpsgo.tests.test_processors.TestEnvironmentProcessor",
+                            "args": {"key": "FOO_BAR", "value": "123"},
+                            "env": {"FOO_BAR": "1234"}},
+                    {
+                        "className":
+                            "zorroa.zsdk.zpsgo.tests.test_processors.TestEnvironmentProcessor",
+                            "args": {"key": "FOO_BAR", "value": None}},
                 ]
             }, )
         self.assertEquals(1, result.frame_count)
@@ -130,7 +139,8 @@ class Tests(unittest.TestCase):
                 "execute": [
                     {
                         "className":
-                            "zorroa.zsdk.zpsgo.tests.test_processors.TestExceptionProcessor", "args": {}
+                            "zorroa.zsdk.zpsgo.tests.test_processors.TestExceptionProcessor",
+                            "args": {}
                      }
                 ]
             })
@@ -226,7 +236,8 @@ class Tests(unittest.TestCase):
                 ],
                 "execute": [
                     {
-                        "className": "zorroa.zsdk.zpsgo.tests.test_processors.GroupProcessor", "args": {}
+                        "className":
+                            "zorroa.zsdk.zpsgo.tests.test_processors.GroupProcessor", "args": {}
                     }
                 ]
             }, {"paths": [FACES_JPG]})
@@ -253,8 +264,9 @@ class Tests(unittest.TestCase):
                 ],
                 "execute": [
                     {
-                        "className": "zorroa.zsdk.zpsgo.tests.test_processors.TestSetValueProcessor",
-                        "args": {"value": expr}},
+                        "className":
+                            "zorroa.zsdk.zpsgo.tests.test_processors.TestSetValueProcessor",
+                            "args": {"value": expr}},
                     {
                         "className": "zorroa.zsdk.zpsgo.tests.test_processors.TestCollector"
                     }
@@ -284,7 +296,8 @@ class Tests(unittest.TestCase):
                         "className": "zorroa.zsdk.zpsgo.tests.test_processors.GroupProcessor",
                         "execute": [
                             {
-                                "className": "zorroa.zsdk.zpsgo.tests.test_processors.GroupProcessor",
+                                "className":
+                                    "zorroa.zsdk.zpsgo.tests.test_processors.GroupProcessor",
                             }
                         ]
                     }
