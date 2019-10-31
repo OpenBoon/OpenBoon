@@ -2,6 +2,7 @@
 *.iml
 *.p12
 .DS_Store
+venv
 /**/target
 /**/dependency-reduced-pom.xml
 /**/*.jar
