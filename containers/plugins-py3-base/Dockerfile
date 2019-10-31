@@ -8,7 +8,10 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     wget \
      --no-install-recommends
 
-RUN pip3 install --no-cache-dir -U pip wheel setuptools
+RUN pip3 install --no-cache-dir -U pip
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+RUN rm requirements.txt
 
 RUN mkdir -p /zps
 RUN echo '/zps/pylib' >> /usr/lib/python3/dist-packages/zps.pth
