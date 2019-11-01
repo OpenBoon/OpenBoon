@@ -5,10 +5,10 @@ spring:
   flyway:
     schemas: auth
   datasource:
-    url: jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth
+    url: jdbc:postgresql://host.docker.internal:5432/zorroa?currentSchema=auth
     username: zorroa
     password: zorroa
     driver-class-name: org.postgresql.Driver
 
 security:
-    admin-key: classpath:admin-key.json
+    admin-key: file:config/admin-key.json
