@@ -820,4 +820,3 @@ class Collector(DocumentProcessor):
     def __collect(self):
         self.collect(self.frames)
         self.frames = []
-

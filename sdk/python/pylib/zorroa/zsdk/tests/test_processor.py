@@ -6,7 +6,6 @@ from zorroa import zsdk
 from zorroa.zsdk.testing import TestExecutor
 from zorroa.zsdk.exception import UnrecoverableProcessorException
 
-
 class Executor:
     def __init__(self):
         self.expanded = 0
@@ -269,6 +268,7 @@ class ArgTests(unittest.TestCase):
         self.assertEquals("bilbo", p.arg_value("list_arg")[1]["str_arg"])
         self.assertEquals(9999, p.arg_value("list_arg")[1]["int_arg"])
         self.assertEquals(1.21, p.arg_value("list_arg")[1]["float_arg"])
+
 
 if __name__ == '__main__':
     unittest.main()

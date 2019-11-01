@@ -1,0 +1,9 @@
+stages:
+  - sdk-lint
+
+sdk-lint:
+  image: python:3.8
+  stage: sdk-lint
+  script:
+    - python -m pip install flake8
+    - flake8 sdk/python
