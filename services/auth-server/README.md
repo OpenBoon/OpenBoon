@@ -1,39 +1,23 @@
-# OAuth2 Server
+# Zorroa Authentication Server
 
-Spring Docs
+The Authentication server is a service for validating JWTS.
 
-https://docs.spring.io/spring-security-oauth2-boot/docs/current/reference/htmlsingle/#specifying-a-client-and-secret
+## Building
 
-This is currently single tenant only.  Need a Multi-tenant JWT singer like this one but better.
+To build locally simply:
 
-```
-https://github.com/thomasdarimont/spring-boot-2-keycloak-oauth-example/blob/feature/mulit-tenancy/src/main/java/demo/SpringBoot2App.java#L127
-```
+```mvn clean package```
 
-## Client Credentials Grant
+To build a docker image, there is no need to have the java installed on your machine.
 
-Obtaining a client credentials grant. 
+```docker build . -t auth-server```
 
-```
- curl -u clientId:secret -X POST "localhost:9090/oauth/token?grant_type=client_credentials"
-```
+## Docker Options
 
-Now use the token in an archivist request:
+In the 'docker' directory you will find various files that make up the docker image.  All
+of these can be overriden with a docker mount. 
 
-```
-curl -XGET localhost:8080/api/v1/authed/client -H "Authorization: Bearer <token>"
-```
+For example, to override the external super admin key:
 
-## Password Credentials Grant
+```docker run -it -v /tmp/key.json:/service/config/key.json auth-server```
 
-Obtaining a password credentials Grant.
-
-```
-curl -u clientId:secret -X POST "localhost:9090/oauth/token?grant_type=password&username=user&password=pass"
-```
-
-Now use the token in an archivist request:
-
-```
-curl -XGET localhost:8080/api/v1/authed/user -H "Authorization: Bearer <token>"
-```
