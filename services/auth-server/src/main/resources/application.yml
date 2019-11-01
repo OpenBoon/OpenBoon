@@ -1,10 +1,14 @@
 server:
   port: 9090
 
-security:
-  jwt:
-    key-store: classpath:keystore.jks
-    key-store-password: zorroa!
-    key-pair-alias: zorroa
-    key-pair-password: zorroa!
+spring:
+  flyway:
+    schemas: zorroa
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zorroa?currentSchema=zorroa
+    username: zorroa
+    password: zorroa
+    driver-class-name: org.postgresql.Driver
 
+security:
+    admin-key: classpath:admin-key.json
