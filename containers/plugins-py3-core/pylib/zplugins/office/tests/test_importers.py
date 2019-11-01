@@ -35,9 +35,9 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     def test_content_sanitizer(self):
         has_nulls = r"This string has embedded \u0000 null."
-        null_removed = u"This string has embedded   null."
+        null_removed = "This string has embedded   null."
 
-        metadata = json.loads(u'{"content": "%s"}' % has_nulls, object_hook=_content_sanitizer)
+        metadata = json.loads('{"content": "%s"}' % has_nulls, object_hook=_content_sanitizer)
         self.assertDictEqual({"content": null_removed}, metadata)
 
     def test_service_url(self):
@@ -57,7 +57,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
                  'file.xls': False,
                  'file.xlsx': False}
         processor = self.init_processor(OfficeImporter(), {})
-        for path, result in cases.iteritems():
+        for path, result in cases.items():
             assert processor._is_content_extractable(path) == result
 
     def test_needs_rerender_catches_missing_proxy(self):
