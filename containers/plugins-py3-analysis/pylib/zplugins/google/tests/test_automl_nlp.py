@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import os
-import zsdk
+import zorroa.zsdk
 from zplugins.google.processors import AutoMLNLPModelProcessor
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 
 
 class AutoMLNLPUnitTests(PluginUnitTestCase):
@@ -22,7 +22,7 @@ class AutoMLNLPUnitTests(PluginUnitTestCase):
         }
         self.init_processor(self.processor, args)
 
-        frame = zsdk.Frame(zsdk.Document())
+        frame = zorroa.zsdk.Frame(zorroa.zsdk.Document())
         frame.asset.set_attr('analysis.google.documentTextDetection.content',
                              "Dazu erteile ich Ihnen meine Zustimmung zur Gehaltsumwandlung in "
                              "H\xc3\xb6he meines\njeweiligen Finanzierungsanteils "
@@ -69,31 +69,31 @@ class AutoMLNLPUnitTests(PluginUnitTestCase):
         }
         self.init_processor(self.processor, args)
 
-        frame_0 = zsdk.Frame(zsdk.Document())
+        frame_0 = zorroa.zsdk.Frame(zorroa.zsdk.Document())
         frame_0.asset.id = 'f0'
         frame_0.asset.set_attr('media.pages', 5)
 
-        frame_1 = zsdk.Frame(zsdk.Document())
+        frame_1 = zorroa.zsdk.Frame(zorroa.zsdk.Document())
         frame_1.asset.id = 'f1'
         frame_1.asset.set_attr('media.clip.parent', frame_0.asset.id)
         frame_1.asset.set_attr('analysis.google.documentTextDetection.content', 'A')
 
-        frame_2 = zsdk.Frame(zsdk.Document())
+        frame_2 = zorroa.zsdk.Frame(zorroa.zsdk.Document())
         frame_2.asset.id = 'f2'
         frame_2.asset.set_attr('media.clip.parent', frame_0.asset.id)
         frame_2.asset.set_attr('analysis.google.documentTextDetection.content', 'B')
 
-        frame_3 = zsdk.Frame(zsdk.Document())
+        frame_3 = zorroa.zsdk.Frame(zorroa.zsdk.Document())
         frame_3.asset.id = 'f3'
         frame_3.asset.set_attr('media.clip.parent', frame_0.asset.id)
         frame_3.asset.set_attr('analysis.google.documentTextDetection.content', 'C')
 
-        frame_4 = zsdk.Frame(zsdk.Document())
+        frame_4 = zorroa.zsdk.Frame(zorroa.zsdk.Document())
         frame_4.asset.id = 'f4'
         frame_4.asset.set_attr('media.clip.parent', frame_0.asset.id)
         frame_4.asset.set_attr('analysis.google.documentTextDetection.content', 'D')
 
-        frame_5 = zsdk.Frame(zsdk.Document())
+        frame_5 = zorroa.zsdk.Frame(zorroa.zsdk.Document())
         frame_5.asset.id = 'f5'
         frame_5.asset.set_attr('media.clip.parent', frame_0.asset.id)
         frame_5.asset.set_attr('analysis.google.documentTextDetection.content', 'E')
