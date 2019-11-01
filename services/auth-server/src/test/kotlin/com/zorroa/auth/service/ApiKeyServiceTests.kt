@@ -3,7 +3,6 @@ package com.zorroa.auth.service
 import AbstractTest
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.domain.Permission
-import com.zorroa.auth.domain.Role
 import com.zorroa.auth.security.getProjectId
 import junit.framework.Assert.assertEquals
 import org.junit.Test

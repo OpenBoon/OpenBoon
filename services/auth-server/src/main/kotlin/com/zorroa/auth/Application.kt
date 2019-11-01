@@ -8,5 +8,5 @@ import org.springframework.boot.runApplication
 class ZorroaAuthServerApplication
 
 fun main(args: Array<String>) {
-	runApplication<ZorroaAuthServerApplication>(*args)
+    runApplication<ZorroaAuthServerApplication>(*args)
 }

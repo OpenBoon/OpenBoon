@@ -3,9 +3,7 @@ package com.zorroa.auth.rest
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.domain.Permission
-import com.zorroa.auth.domain.Role
 import org.hamcrest.CoreMatchers
-import org.hamcrest.Matchers
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
