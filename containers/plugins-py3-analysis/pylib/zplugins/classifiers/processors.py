@@ -2,7 +2,7 @@ import numpy as np
 from pathlib2 import Path
 from tensorflow.python.keras.models import load_model
 
-from zsdk import DocumentProcessor, Argument
+from zorroa.zsdk import DocumentProcessor, Argument
 
 
 class NeuralNetClassifierProcessor(DocumentProcessor):

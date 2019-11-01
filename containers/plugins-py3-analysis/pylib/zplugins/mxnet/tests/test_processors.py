@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import zsdk
+import zorroa.zsdk
 from zplugins.mxnet.processors import ResNetSimilarityProcessor, ResNetClassifyProcessor
-from zsdk import Asset
+from zorroa.zsdk import Asset
 
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 from zplugins.util.proxy import add_proxy_file
 
 
@@ -15,7 +15,7 @@ class MxUnitTests(PluginUnitTestCase):
         cls.toucan_path = zorroa_test_data("images/set01/toucan.jpg")
 
     def setUp(self):
-        self.frame = zsdk.Frame(Asset(self.toucan_path))
+        self.frame = zorroa.zsdk.Frame(Asset(self.toucan_path))
         asset = self.frame.asset
         add_proxy_file(asset, self.toucan_path)
         add_proxy_file(asset, self.toucan_path)

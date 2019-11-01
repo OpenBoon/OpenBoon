@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  analysis:
+    build: .
+    volumes:
+      - "./pylib/:/zps/pylib/"
+    tmpfs:
+      - /tmp

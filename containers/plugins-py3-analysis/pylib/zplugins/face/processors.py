@@ -6,7 +6,7 @@ import cv2
 import face_recognition
 import numpy as np
 
-from zsdk.processor import DocumentProcessor, Argument
+from zorroa.zsdk.processor import DocumentProcessor, Argument
 
 
 class FaceRecognitionProcessor(DocumentProcessor):

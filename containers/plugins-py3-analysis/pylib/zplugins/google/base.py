@@ -10,7 +10,7 @@ from pathlib2 import Path
 from google.cloud import automl_v1beta1 as automl
 from google.api_core.exceptions import ResourceExhausted
 
-from zsdk import Argument, DocumentProcessor, Generator
+from zorroa.zsdk import Argument, DocumentProcessor, Generator
 
 
 class GoogleApiProcessorMixin(object):
