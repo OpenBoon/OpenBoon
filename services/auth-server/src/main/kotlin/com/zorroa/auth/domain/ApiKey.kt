@@ -18,9 +18,6 @@ object Permission {
 object Role {
         val SUPERADMIN_PERM = "SUPERADMIN"
         val SUPERADMIN_ROLE = "ROLE_SUPERADMIN"
-
-        val USER_PERM = "USER"
-        val USER_ROLE = "ROLE_USER"
 }
 
 class ApiKeySpec(
@@ -46,7 +43,7 @@ class ApiKey(
         val name: String,
 
         @Column(name="permissions", nullable = false)
-        val permissions : String = ""
+        val permissions : String
 )
 {
         @JsonIgnore

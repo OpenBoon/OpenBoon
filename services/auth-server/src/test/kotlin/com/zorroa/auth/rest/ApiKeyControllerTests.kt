@@ -2,6 +2,7 @@ package com.zorroa.auth.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zorroa.auth.domain.ApiKeySpec
+import com.zorroa.auth.domain.Permission
 import com.zorroa.auth.domain.Role
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers
@@ -21,7 +22,7 @@ class ApiKeyControllerTests : MockMvcTest() {
         val spec = ApiKeySpec(
                 "test",
                 UUID.randomUUID(),
-                listOf(Role.USER_ROLE)
+                listOf(Permission.READ_ASSETS)
         )
 
         mvc.perform(
@@ -33,7 +34,8 @@ class ApiKeyControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(spec.projectId.toString())))
                 .andExpect(jsonPath("$.name", CoreMatchers.equalTo("test")))
-                .andExpect(jsonPath("$.permissions", CoreMatchers.containsString("ROLE_USER")))
+                .andExpect(jsonPath("$.permissions",
+                        CoreMatchers.containsString(Permission.READ_ASSETS)))
                 .andReturn()
     }
 
@@ -42,7 +44,7 @@ class ApiKeyControllerTests : MockMvcTest() {
         val spec = ApiKeySpec(
                 "test",
                 UUID.randomUUID(),
-                listOf(Role.USER_ROLE)
+                listOf(Permission.READ_ASSETS)
         )
 
         mvc.perform(
@@ -64,7 +66,8 @@ class ApiKeyControllerTests : MockMvcTest() {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(jsonPath("$.name", CoreMatchers.equalTo("standard-key")))
-                .andExpect(jsonPath("$.permissions", CoreMatchers.containsString("ROLE_USER")))
+                .andExpect(jsonPath("$.permissions",
+                        CoreMatchers.containsString(Permission.READ_ASSETS)))
                 .andReturn()
     }
 
@@ -77,7 +80,8 @@ class ApiKeyControllerTests : MockMvcTest() {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(jsonPath("$.[0]name", CoreMatchers.equalTo("standard-key")))
-                .andExpect(jsonPath("$.[0]permissions", CoreMatchers.containsString("ROLE_USER")))
+                .andExpect(jsonPath("$.[0]permissions",
+                        CoreMatchers.containsString(Permission.READ_ASSETS)))
                 .andReturn()
     }
 

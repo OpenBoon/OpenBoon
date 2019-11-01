@@ -2,6 +2,7 @@ package com.zorroa.auth.service
 
 import AbstractTest
 import com.zorroa.auth.domain.ApiKeySpec
+import com.zorroa.auth.domain.Permission
 import com.zorroa.auth.domain.Role
 import com.zorroa.auth.security.getProjectId
 import junit.framework.Assert.assertEquals
@@ -17,12 +18,12 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 UUID.randomUUID(),
-                listOf(Role.USER_ROLE)
+                listOf(Permission.READ_ASSETS)
         )
         val key = apiKeyService.create(spec)
         assertEquals(spec.name, key.name)
         assertEquals(spec.projectId, key.projectId)
-        assertTrue(Role.USER_ROLE in key.permissions)
+        assertTrue(Permission.READ_ASSETS in key.permissions)
     }
 
     @Test
@@ -30,7 +31,7 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 getProjectId(),
-                listOf(Role.USER_ROLE)
+                listOf(Permission.READ_ASSETS)
         )
         val key1 = apiKeyService.create(spec)
         val key2 = apiKeyService.get(key1.keyId)
@@ -42,7 +43,7 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 getProjectId(),
-                listOf(Role.USER_ROLE)
+                listOf(Permission.READ_ASSETS)
         )
         val key1 = apiKeyService.create(spec)
         val all = apiKeyService.findAll()
@@ -54,7 +55,7 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 getProjectId(),
-                listOf(Role.USER_ROLE)
+                listOf(Permission.READ_ASSETS)
         )
         val key1 = apiKeyService.create(spec)
         apiKeyService.delete(key1)

@@ -4,12 +4,14 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.Role
 import com.zorroa.auth.service.KeyGenerator
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -21,11 +23,12 @@ import java.util.*
 @ConfigurationProperties("security")
 class SecurityProperties {
 
-    var adminKey: Resource? = null
+    var externalKey: Resource? = null
 }
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Autowired
@@ -40,7 +43,6 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                         UsernamePasswordAuthenticationFilter::class.java)
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/v1/apikey*").hasRole(Role.SUPERADMIN_PERM)
                 .antMatchers("/v2/api-docs").hasRole(Role.SUPERADMIN_PERM)
                 .and()
                 .sessionManagement()
@@ -55,22 +57,30 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Bean
     fun externalApiKey(): ApiKey {
-        securityProperties.adminKey?.let {
+        securityProperties.externalKey?.let {
             val mapper = jacksonObjectMapper()
-            return mapper.readValue(it.inputStream, ApiKey::class.java)
+            val key = mapper.readValue(it.inputStream, ApiKey::class.java)
+            logger.info("loading keyId: ${key.keyId}")
+            return key
         }
 
         // Otherwise return a random key that is impossible to use.
+        logger.warn("extenral key file not found, generating random key.")
         return ApiKey(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 KeyGenerator.generate(),
-                "random")
+                "random", "")
     }
 
     @Bean
     fun jwtAuthorizationFilter(): JWTAuthorizationFilter {
         return JWTAuthorizationFilter()
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java)
+
     }
 
 }
