@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import io
 import os
@@ -185,7 +185,7 @@ class CloudVisionProcessor(GoogleApiDocumentProcessor):
             struct['headwear_likelihood'] = face.headwear_likelihood
 
             # For entries that are likely or very likely, add the attribute name as a keyword.
-            for key, value in struct.iteritems():
+            for key, value in struct.items():
                 if 'likelihood' in key and value >= 4:
                     keywords.append(key.replace('_likelihood', ''))
 
@@ -527,12 +527,12 @@ class CloudNaturalLanguageProcessor(GoogleApiDocumentProcessor):
             str: Flattened string of all content.
 
         """
-        flat = u''
+        flat = ''
         if type(content) == list:
             for elem in content:
                 flat += ' ' + self.flatten_content(elem)
             return flat
-        if type(content) == str or type(content) == unicode:
+        if type(content) == str or type(content) == str:
             return content
 
     def _process(self, frame):

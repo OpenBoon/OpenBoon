@@ -40,7 +40,7 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
         document = frame.asset
         assert document.get_attr('media.width') == 512
         assert document.get_attr('media.height') == 341
-        assert document.get_attr('media.timeCreated') == datetime(2009, 11, 18, 16, 04, 43)
+        assert document.get_attr('media.timeCreated') == datetime(2009, 11, 18, 16, 0o4, 43)
         assert document.get_attr('media.attrs.Exif') is None
         assert document.get_attr('media.attrs.JFIF') is None
         assert document.get_attr('media.attrs.JPEG') is None

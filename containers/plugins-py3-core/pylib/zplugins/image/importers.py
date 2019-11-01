@@ -6,6 +6,7 @@ from pathlib2 import Path
 
 from zorroa.zsdk import DocumentProcessor, Argument, Clip, ExpandFrame, Asset
 from ..util.media import get_image_metadata
+from functools import reduce
 
 
 class ImageImporter(DocumentProcessor):
@@ -156,7 +157,7 @@ class ImageImporter(DocumentProcessor):
         included_tags = self.arg_value('included_tags')
         keyword_tags = self.arg_value('keyword_tags')
         non_alphanum_regex = re.compile(r'[\W_]+')
-        for key, value in metadata.iteritems():
+        for key, value in metadata.items():
             clean_key = non_alphanum_regex.sub('', key)
             if namespace:
                 field = '%s.%s' % (namespace, clean_key)
@@ -199,7 +200,7 @@ class ImageImporter(DocumentProcessor):
 
         """
         if isinstance(item, dict):
-            for value in item.values():
+            for value in list(item.values()):
                 self.add_keywords(document, value)
         else:
             document.add_keywords('media', str(item).split())
