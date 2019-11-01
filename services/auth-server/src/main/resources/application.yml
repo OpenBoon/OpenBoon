@@ -11,4 +11,4 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 security:
-    admin-key: classpath:admin-key.json
+    external-key: classpath:key.json

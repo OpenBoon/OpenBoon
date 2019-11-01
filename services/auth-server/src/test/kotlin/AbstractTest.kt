@@ -31,7 +31,7 @@ abstract class AbstractTest {
     fun setup() {
         val projectId =  UUID.randomUUID()
         standardKey = apiKeyService.create(
-                ApiKeySpec("standard-key", UUID.randomUUID(), listOf(Role.USER_ROLE)))
+                ApiKeySpec("standard-key", UUID.randomUUID(), listOf(Permission.READ_ASSETS)))
 
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
                 standardKey.projectId, standardKey.keyId, standardKey.getGrantedAuthorities())
