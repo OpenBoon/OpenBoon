@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 import os
-import zsdk
+import zorroa.zsdk
 from zplugins.google.processors import AutoMLVisionModelProcessor
 from zplugins.util.proxy import add_proxy_file
 
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 
 
 class AutoMLVisionUnitTests(PluginUnitTestCase):
@@ -14,8 +14,8 @@ class AutoMLVisionUnitTests(PluginUnitTestCase):
     def do_not_test_model_eval(self):
         # Prep the frame, asset, and proxy
         toucan_fname = os.path.join(zorroa_test_data(), 'images/set01/toucan.jpg')
-        asset = zsdk.Asset(toucan_fname)
-        frame = zsdk.Frame(asset)
+        asset = zorroa.zsdk.Asset(toucan_fname)
+        frame = zorroa.zsdk.Frame(asset)
         add_proxy_file(asset, toucan_fname)
 
         # Prep the processor

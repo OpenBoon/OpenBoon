@@ -19,8 +19,8 @@ from google.api_core.exceptions import ResourceExhausted
 from zplugins.google.base import GoogleApiDocumentProcessor
 from zplugins.google.base import AutoMLModelProcessor
 
-from zsdk import Argument
-from zsdk.exception import UnrecoverableProcessorException
+from zorroa.zsdk import Argument
+from zorroa.zsdk.exception import UnrecoverableProcessorException
 
 import archivist
 
