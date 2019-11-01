@@ -6,7 +6,6 @@ import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.repository.ApiKeyRepository
 import com.zorroa.auth.security.getProjectId
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -17,9 +16,9 @@ interface ApiKeyService {
      */
     fun create(spec: ApiKeySpec): ApiKey
 
-    fun get(id: UUID) : ApiKey
+    fun get(id: UUID): ApiKey
 
-    fun findAll() : List<ApiKey>
+    fun findAll(): List<ApiKey>
 
     fun delete(apiKey: ApiKey)
 }
@@ -30,7 +29,7 @@ class ApiKeyServiceImpl : ApiKeyService {
     @Autowired
     lateinit var apiKeyRepository: ApiKeyRepository
 
-    override fun create(spec: ApiKeySpec) : ApiKey {
+    override fun create(spec: ApiKeySpec): ApiKey {
 
         val authorities = when {
             spec.permissions.isNullOrEmpty() -> "READ"
@@ -47,11 +46,11 @@ class ApiKeyServiceImpl : ApiKeyService {
         return apiKeyRepository.save(key)
     }
 
-    override fun get(keyId: UUID) : ApiKey {
-       return apiKeyRepository.findByKeyIdAndProjectId(keyId, getProjectId())
+    override fun get(keyId: UUID): ApiKey {
+        return apiKeyRepository.findByKeyIdAndProjectId(keyId, getProjectId())
     }
 
-    override fun findAll() : List<ApiKey> {
+    override fun findAll(): List<ApiKey> {
         return apiKeyRepository.findAllByProjectId(getProjectId())
     }
 

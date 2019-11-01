@@ -37,7 +37,7 @@ abstract class MockMvcTest : AbstractTest() {
     protected fun superAdmin(projectId: UUID? = null): HttpHeaders {
         val headers = HttpHeaders()
         headers.set(AUTH_HEADER,
-                "${TOKEN_PREFIX}${externalApiKey.getJwtToken(projId=projectId)}")
+                "${TOKEN_PREFIX}${externalApiKey.getJwtToken(projId = projectId)}")
         return headers
     }
 
