@@ -3,10 +3,6 @@ import logging
 
 from logging import LoggerAdapter
 
-import google.cloud.logging
-from google.cloud.logging import Client
-from google.cloud.logging.handlers import CloudLoggingHandler
-
 __all__ = [
     "reset_logger_format",
     "setup_logger_format"

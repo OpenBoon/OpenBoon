@@ -1,13 +1,13 @@
 import argparse
-import logging
 import json
+import logging
 
 from .runner import ZpsRunner
 
 logger = logging.getLogger(__file__)
 
-def main():
 
+def main():
     parser = argparse.ArgumentParser(prog='zpsrun')
     parser.add_argument("processor", help="The processor to execute.")
     parser.add_argument("-i", "--image",

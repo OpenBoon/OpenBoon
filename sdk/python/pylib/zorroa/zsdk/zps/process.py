@@ -1,12 +1,12 @@
-import sys
-import json
 import hashlib
+import json
 import logging
+import sys
 import time
 
-from zorroa.zsdk.processor import Frame, Context
 from zorroa.zsdk.document.asset import Asset, Document
 from zorroa.zsdk.exception import UnrecoverableProcessorException
+from zorroa.zsdk.processor import Frame, Context
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ class ProcessorExecutor(object):
     """
     Handles execution of a single Processor on a single data object.
     """
+
     def __init__(self, reactor):
         self.reactor = reactor
         self.processors = {}
@@ -137,6 +138,7 @@ class ProcessorWrapper(object):
     * Error handling
 
     """
+
     def __init__(self, instance, ref, reactor):
         self.instance = instance
         self.ref = ref
@@ -224,4 +226,3 @@ class ProcessorWrapper(object):
         """
         self.stats[key] += value
         return self.stats[key]
-

@@ -5,8 +5,8 @@ from .server import ZpsdServer
 
 logger = logging.getLogger(__file__)
 
-def main():
 
+def main():
     parser = argparse.ArgumentParser(prog='zpsd')
     parser.add_argument("-p", "--port", default=5557, help="TCP port to listen on.")
 
@@ -16,4 +16,3 @@ def main():
 
     server = ZpsdServer(int(args.port))
     server.start()
-

@@ -54,4 +54,3 @@ class AbstractClipifier(ProcessorHelper):
 
         """
         raise NotImplementedError
-

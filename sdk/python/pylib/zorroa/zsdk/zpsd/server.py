@@ -1,6 +1,7 @@
 import logging
-import zmq
 import sys
+
+import zmq
 
 from zorroa.zsdk.processor import Reactor
 from zorroa.zsdk.zps.process import ProcessorExecutor
@@ -55,5 +56,3 @@ class ZmqEventEmitter(object):
 
     def write(self, event):
         self.socket.send_json(event)
-
-
