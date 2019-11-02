@@ -80,7 +80,9 @@ def get_image_metadata(file_path):
     logger.info("running command: %s" % cmd)
 
     # Have to remove bad unicode chars with decode
-    output = check_output(cmd, shell=False).decode('ascii', errors='ignore')
+    output = check_output(cmd, shell=False)
+    if isinstance(output, (bytes, bytearray)):
+        output = output.decode('ascii', errors='ignore')
     output = re.sub(r"&#\d+;", "", output)
 
     metadata = xmltodict.parse(output).get('ImageSpec')
