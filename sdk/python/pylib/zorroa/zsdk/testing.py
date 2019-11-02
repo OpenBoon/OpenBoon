@@ -321,8 +321,8 @@ def zorroa_test_data(rel_path=""):
         str: the absolute path to the test file.
 
     """
-    if os.path.isdir('/zorroa-test-data'):
-        path = os.path.join("/zorroa-test-data", rel_path)
+    if os.path.isdir('/test-data'):
+        path = os.path.join("/test-data", rel_path)
     else:
         path = os.path.join(os.path.join(os.path.dirname(__file__)),
                             "../../../../../test-data", rel_path)
