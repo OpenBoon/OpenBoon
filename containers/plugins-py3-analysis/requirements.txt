@@ -2,7 +2,8 @@ scikit-learn
 scipy
 mxnet
 tensorflow>=2.0.0
-opencv-python
+opencv-python-headless
+opencv-contrib-python-headless
 google-api-core
 google-api-python-client
 google-auth

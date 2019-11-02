@@ -4,12 +4,12 @@ import tempfile
 import pytest
 import requests
 from pathlib2 import Path
-from mock import patch, Mock
+from unittest.mock import patch, Mock
 
 from zplugins.office.importers import OfficeImporter, _content_sanitizer
-from zsdk import Frame, Asset
-from zsdk.exception import UnrecoverableProcessorException
-from zsdk.testing import PluginUnitTestCase
+from zorroa.zsdk import Frame, Asset
+from zorroa.zsdk.exception import UnrecoverableProcessorException
+from zorroa.zsdk.testing import PluginUnitTestCase
 
 
 class OfficeImporterUnitTestCase(PluginUnitTestCase):

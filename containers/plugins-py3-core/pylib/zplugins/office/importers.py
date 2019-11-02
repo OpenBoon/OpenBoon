@@ -5,8 +5,8 @@ import requests
 
 from requests import RequestException
 
-from zsdk import DocumentProcessor, Argument, Clip, ExpandFrame, Asset
-from zsdk.exception import UnrecoverableProcessorException
+from zorroa.zsdk import DocumentProcessor, Argument, Clip, ExpandFrame, Asset
+from zorroa.zsdk.exception import UnrecoverableProcessorException
 
 
 __all__ = ["OfficeImporter", "_content_sanitizer"]

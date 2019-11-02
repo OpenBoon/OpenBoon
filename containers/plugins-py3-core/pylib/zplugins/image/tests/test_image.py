@@ -1,14 +1,9 @@
 from datetime import datetime
-from pathlib2 import Path
-from PIL import Image
 
-import zsdk
-from zsdk import Asset, Frame
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
-from zsdk.util import clean_export_root_dir
+import zorroa.zsdk as zsdk
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 from zplugins.image.processors import HSVSimilarityProcessor
 from zplugins.image.importers import ImageImporter
-from zplugins.image.exporters import ImageExporter
 from zplugins.util.proxy import add_proxy_file
 
 
@@ -94,41 +89,3 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
         assert document.get_attr("source.mediaType") == "image/x-rla"
         assert document.get_attr("source.type") == "image"
         assert document.get_attr("source.subType") == "x-rla"
-
-
-class ImageExporterUnitTestCase(PluginUnitTestCase):
-    def setUp(self):
-        super(ImageExporterUnitTestCase, self).setUp()
-        clean_export_root_dir()
-        self.asset = zsdk.Asset(TOUCAN)
-        self.frame = zsdk.Frame(self.asset)
-
-    def test_process_larger_source_image(self):
-        processor = self.init_processor(ImageExporter(), {'size': 256})
-        processor.process(self.frame)
-        destination_path = Path(processor.export_root_dir, 'toucan.jpg')
-        assert self.frame.asset.get_attr('exported.path') == str(destination_path)
-        assert Path(destination_path).exists()
-        exported_image = Image.open(str(destination_path))
-        assert exported_image.width == 256
-        assert exported_image.height == 170
-
-    def test_process_smaller_source_image(self):
-        processor = self.init_processor(ImageExporter(), {'size': 1024})
-        processor.process(self.frame)
-        destination_path = Path(processor.export_root_dir, 'toucan.jpg')
-        assert self.frame.asset.get_attr('exported.path') == str(destination_path)
-        assert Path(destination_path).exists()
-        exported_image = Image.open(str(destination_path))
-        assert exported_image.width == 512
-        assert exported_image.height == 341
-
-    def test_process_original_image(self):
-        processor = self.init_processor(ImageExporter(), {'size': 100, 'export_original': True})
-        processor.process(self.frame)
-        destination_path = Path(processor.export_root_dir, 'toucan.jpg')
-        assert self.frame.asset.get_attr('exported.path') == str(destination_path)
-        assert Path(destination_path).exists()
-        exported_image = Image.open(str(destination_path))
-        assert exported_image.width == 512
-        assert exported_image.height == 341

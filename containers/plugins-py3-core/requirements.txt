@@ -1,5 +1,6 @@
 python-dateutil
 xmltodict
-opencv-python
-
-
+backoff
+opencv-python-headless
+opencv-contrib-python-headless
+Pillow

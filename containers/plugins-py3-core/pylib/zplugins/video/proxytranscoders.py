@@ -2,7 +2,7 @@ import subprocess
 
 from pathlib2 import Path
 
-from zsdk.processor import ProcessorHelper
+from zorroa.zsdk.processor import ProcessorHelper
 
 
 class AbstractProxyTranscoder(ProcessorHelper):
