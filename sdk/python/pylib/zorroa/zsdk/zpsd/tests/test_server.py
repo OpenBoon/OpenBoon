@@ -1,11 +1,11 @@
-import zmq
-import unittest
 import logging
+import unittest
 
+import zmq
 
-from zorroa.zsdk.zpsd.server import ZpsdServer
-from zorroa.zsdk.testing import TestEventEmitter
 from zorroa.zsdk.processor import Reactor
+from zorroa.zsdk.testing import TestEventEmitter
+from zorroa.zsdk.zpsd.server import ZpsdServer
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -48,7 +48,7 @@ class ZpsdServerTests(unittest.TestCase):
                 "ref": {
                     "className": "foo.DoesNotExist",
                     "image": "plugins-py3-base",
-                    "args": { }
+                    "args": {}
                 },
                 "object": {}
             }
@@ -70,10 +70,9 @@ class ZpsdServerTests(unittest.TestCase):
 
                     }
                 },
-                "asset": { }
+                "asset": {}
             }
         }
         socket.send_json(event)
         packet = self.zpsd.socket.recv_json()
         assert packet == event
-
