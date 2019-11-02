@@ -2,8 +2,8 @@ import unittest
 
 from zplugins.video.clipifiers import FFProbeKeyframeClipifier
 from zplugins.video.importers import VideoImporter
-from zsdk import Asset
-from zsdk.testing import zorroa_test_data
+from zorroa.zsdk import Asset
+from zorroa.zsdk.testing import zorroa_test_data
 
 
 class KeyframeClipifierUnitTestCase(unittest.TestCase):
