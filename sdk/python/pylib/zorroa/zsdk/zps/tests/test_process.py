@@ -60,17 +60,6 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert len(stats) == 1
 
     def test_get_processor_wrapper(self):
-        req = {
-            "className": "zorroa.zsdk.testing.TestProcessor",
-            "args": {},
-            "image": "plugins-py3-base"
-        }
-        wrapper = self.pe.get_processor_wrapper(req)
-        assert wrapper is not None
-        assert wrapper.instance is not None
-        assert wrapper.ref == req
-
-    def test_get_processor_wrapper(self):
         ref = {
             "className": "zorroa.zsdk.testing.TestProcessor",
             "args": {},
