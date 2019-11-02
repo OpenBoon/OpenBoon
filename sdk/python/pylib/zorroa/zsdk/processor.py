@@ -140,7 +140,7 @@ class Reactor(object):
     """
     stack_trace_limit = 6
 
-    def __init__(self, executor, batch_size=None):
+    def __init__(self, emitter, batch_size=None):
         """Create and return a Reactor instance.
 
         Args:
@@ -151,7 +151,7 @@ class Reactor(object):
                 This can be overridden by processors when check_expand() is
                     called.
         """
-        self.executor = executor
+        self.emitter = emitter
         self.batch_size = batch_size or max(self.default_batch_size, 1)
         self.expand_frames = []
 
@@ -272,7 +272,7 @@ class Reactor(object):
             script (:obj:`dict`): A ZPS script structure.
 
         """
-        self.executor.write({"type": "expand", "payload": script})
+        self.emitter.write({"type": "expand", "payload": script})
 
     def error(self, frame, processor, exp, fatal, phase, exec_traceback=None):
         """Emit an Error
@@ -327,7 +327,7 @@ class Reactor(object):
                 })
             payload["stackTrace"] = stack_trace_for_payload
 
-        self.executor.write({"type": "error", "payload": payload})
+        self.emitter.write({"type": "error", "payload": payload})
 
     def performance_report(self, report):
         """
@@ -336,7 +336,7 @@ class Reactor(object):
         Args:
             report: A JSON string containing processing time statistics
         """
-        self.executor.write({"type": "stats", "payload": report})
+        self.emitter.write({"type": "stats", "payload": report})
 
 
 class Context(object):
