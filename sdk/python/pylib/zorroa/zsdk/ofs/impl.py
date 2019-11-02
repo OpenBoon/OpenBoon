@@ -12,7 +12,7 @@ from pathlib2 import Path
 
 from zorroa.zsdk.document.base import Document
 from zorroa.zsdk.ofs.core import AbstractObjectFile, AbstractObjectFileSystem
-from zorroa.client.http import get_client
+from zorroa.zclient import get_zclient
 
 
 def resolve_hashable_ofs_name(value):
@@ -166,7 +166,7 @@ class ObjectFileSystem(AbstractObjectFileSystem):
         if client:
             self.client = client
         else:
-            self.client = get_client()
+            self.client = get_zclient()
 
     def init(self):
         """Does any initialization required by the file system."""

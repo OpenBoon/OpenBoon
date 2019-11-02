@@ -3,7 +3,7 @@
 import unittest
 
 from zorroa import zsdk
-from zorroa.zsdk.tfixtures import zorroa_test_data
+from zorroa.zsdk.testing import zorroa_test_data
 
 
 class DocumentUnitTests(unittest.TestCase):

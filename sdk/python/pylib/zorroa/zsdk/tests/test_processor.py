@@ -1,9 +1,8 @@
-#!/usr/bin/env python
-import unittest
 import sys
+import unittest
 
 from zorroa import zsdk
-from zorroa.zsdk.tfixtures import TestExecutor
+from zorroa.zsdk.testing import TestExecutor
 
 
 class Executor:
@@ -215,7 +214,6 @@ class ArgTests(unittest.TestCase):
         self.assertEquals(["a", "b", "c"], p.arg_value("list_arg"))
 
     def test_nested_list_of_struct_arg(self):
-
         p = zsdk.Processor()
         list_arg = zsdk.Argument("list_arg", "list").add_arg(
             zsdk.Argument("str_arg", "string", default="bilbo"),
@@ -239,7 +237,6 @@ class ArgTests(unittest.TestCase):
         self.assertEquals(3.14, p.arg_value("list_arg")[0]["float_arg"])
 
     def test_nested_list_of_struct_arg_defaults(self):
-
         p = zsdk.Processor()
         # Defines a list of stuct, where each struct has a str_arg, int_arg, and float_arg
         list_arg = zsdk.Argument("list_arg", "list").add_arg(
@@ -268,7 +265,3 @@ class ArgTests(unittest.TestCase):
         self.assertEquals("bilbo", p.arg_value("list_arg")[1]["str_arg"])
         self.assertEquals(9999, p.arg_value("list_arg")[1]["int_arg"])
         self.assertEquals(1.21, p.arg_value("list_arg")[1]["float_arg"])
-
-
-if __name__ == '__main__':
-    unittest.main()
