@@ -23,10 +23,12 @@ COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
-COPY ffmpeg-4.2.1-amd64-static.tar.xz .
-RUN tar -xJf ffmpeg-4.2.1-amd64-static.tar.xz
-RUN cp ffmpeg-4.2.1-amd64-static/ffmpeg /usr/bin
-RUN cp ffmpeg-4.2.1-amd64-static/ffprobe /usr/bin
-RUN rm -rf ffmpeg-4.2.1-amd64-static*
+
+ARG ffmver=4.2.1-amd64
+COPY ffmpeg-$ffmver-static.tar.xz .
+RUN tar -xJf ffmpeg-$ffmver-static.tar.xz
+RUN cp ffmpeg-$ffmver-static/ffmpeg /usr/bin
+RUN cp ffmpeg-$ffmver-static/ffprobe /usr/bin
+RUN rm -rf ffmpeg-$ffmver-static*
 
 USER zorroa
