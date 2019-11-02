@@ -1,6 +1,6 @@
 python-dateutil
 xmltodict
-tensorflow>=2.0.0
-opencv-python
-
-
+backoff
+opencv-python-headless
+opencv-contrib-python-headless
+Pillow

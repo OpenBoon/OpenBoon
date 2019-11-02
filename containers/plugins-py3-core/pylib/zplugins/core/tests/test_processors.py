@@ -1,17 +1,15 @@
 #!/usr/bin/python
 
 from unittest import skip
-from mock import patch
+from unittest.mock import patch
 from pathlib2 import Path
 
-from zsdk.exception import UnrecoverableProcessorException
+from zorroa.zsdk.exception import UnrecoverableProcessorException
 from zplugins.core.processors import PythonScriptProcessor, DownloadAssetProcessor, \
-    AssertProcessor, DeleteAssetProcessor, SetIdProcessor, AddPermissionProcessor, \
+    AssertProcessor, SetIdProcessor, AddPermissionProcessor, \
     SetAttributesProcessor
-from zsdk import Document, Frame
-from zsdk.testing import PluginUnitTestCase
-
-from archivist.asset import Asset
+from zorroa.zsdk import Document, Frame
+from zorroa.zsdk.testing import PluginUnitTestCase
 
 MOCK_PERMISSION = {
     'authority': 'string',
@@ -66,17 +64,6 @@ class ProcessorsUnitTestCase(PluginUnitTestCase):
         ih = self.init_processor(SetAttributesProcessor(), args={'remove_attrs': ['foo']})
         ih.process(frame)
         self.assertIsNone(frame.asset.get_attr("foo"))
-
-    @patch.object(Asset, "delete")
-    @patch("zplugins.core.processors.get_asset")
-    def test_delete_asset_processor(self, get_patch, delete_patch):
-        get_patch.return_value = Asset({'id': '9f0f8a1d-4719-5cf8-b427-4612c5597811',
-                                        'document': None})
-        delete_patch.return_value = None
-        frame = Frame(Document(data={'id': '9f0f8a1d-4719-5cf8-b427-4612c5597811'}))
-        ih = self.init_processor(DeleteAssetProcessor())
-        ih.process(frame)
-        self.assertTrue(frame.skip, "Frame must be marked skip after asset is deleted.")
 
     def test_set_id_processor(self):
         frame = Frame(Document())

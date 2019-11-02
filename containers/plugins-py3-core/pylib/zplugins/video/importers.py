@@ -3,9 +3,9 @@ from uuid import uuid4
 
 from pathlib2 import Path
 
-from zsdk.util import file_exists
-from zsdk import DocumentProcessor, Argument, ExpandFrame
-from zsdk.exception import UnrecoverableProcessorException, ProcessorException
+from zorroa.zsdk.util.std import file_exists
+from zorroa.zsdk import DocumentProcessor, Argument, ExpandFrame
+from zorroa.zsdk.exception import UnrecoverableProcessorException, ProcessorException
 from zplugins.util.media import ffprobe, create_video_thumbnail
 from zplugins.util.proxy import add_proxy_file
 

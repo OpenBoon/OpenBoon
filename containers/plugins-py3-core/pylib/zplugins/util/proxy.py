@@ -5,8 +5,8 @@ import logging
 from pathlib2 import Path
 
 from zorroa.zsdk.ofs import get_ofs
-from zorroa.zsdk.util import file_exists
-from zorroa.zplugins.util.media import media_size
+from zorroa.zsdk.util.std import file_exists
+from zplugins.util.media import media_size
 
 logger = logging.getLogger(__name__)
 

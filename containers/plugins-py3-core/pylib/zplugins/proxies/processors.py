@@ -1,5 +1,5 @@
 import os
-import subprocess32 as subprocess
+import subprocess
 import sys
 import tempfile
 import logging
@@ -7,7 +7,7 @@ import logging
 from PIL import Image
 from pathlib2 import Path
 
-from zsdk import DocumentProcessor, Argument
+from zorroa.zsdk import DocumentProcessor, Argument
 from zplugins.util.media import get_output_dimension, media_size
 from zplugins.util.proxy import add_proxy_file, add_proxy_link
 

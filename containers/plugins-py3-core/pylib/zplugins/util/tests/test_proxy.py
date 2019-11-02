@@ -1,20 +1,20 @@
 import os
 import tempfile
 
-from mock import patch
+from unittest.mock import patch
 
-import zsdk
-from archivist.client import Client
+import zorroa.zsdk as zsdk
+from zorroa.zclient import get_zclient, ZClient
 from zplugins.util.proxy import add_proxy_file, add_proxy_link, add_proxy
-from zsdk.testing import zorroa_test_data
+from zorroa.zsdk.testing import zorroa_test_data
 
 IMAGE_JPG = zorroa_test_data('images/set01/faces.jpg')
 VIDEO_WEBM = zorroa_test_data('video/dc.webm')
 VIDEO_MP4 = zorroa_test_data('video/sample_ipad.m4v')
 
 
-@patch.object(Client, 'post')
-@patch.object(Client, 'get')
+@patch.object(ZClient, 'post')
+@patch.object(ZClient, 'get')
 def test_add_proxy(get_patch, post_patch):
     tmp_dir = tempfile.mkdtemp("ofs", "zorroa")
     asset = zsdk.Asset(IMAGE_JPG)
@@ -53,8 +53,8 @@ def test_add_proxy(get_patch, post_patch):
     assert asset.proxies[1]['mimetype'] == 'video/webm'
 
 
-@patch.object(Client, 'post')
-@patch.object(Client, 'get')
+@patch.object(ZClient, 'post')
+@patch.object(ZClient, 'get')
 def test_add_proxy_file(get_patch, post_patch):
     tmp_dir = tempfile.mkdtemp("ofs", "zorroa")
     object_file_data = {'uri': tmp_dir + '/gritty_proxy.png',
@@ -79,8 +79,8 @@ def test_add_proxy_file(get_patch, post_patch):
     assert asset.proxies[1]['mimetype'] in ['video/x-m4v', 'video/mp4']
 
 
-@patch.object(Client, 'post')
-@patch.object(Client, 'get')
+@patch.object(ZClient, 'post')
+@patch.object(ZClient, 'get')
 def test_add_proxy_link(get_patch, post_patch):
     tmp_dir = tempfile.mkdtemp("ofs", "zorroa")
     object_file_data = {'uri': tmp_dir + os.path.basename(IMAGE_JPG),

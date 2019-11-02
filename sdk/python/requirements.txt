@@ -8,3 +8,5 @@ pathlib2>=2.3.0
 uritools
 docker
 pyzmq
+backoff
+

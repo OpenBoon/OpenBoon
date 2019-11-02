@@ -5,7 +5,7 @@ from pathlib2 import Path
 from zplugins.video.importers import VideoImporter
 from zplugins.video.proxytranscoders import FFMpegProxyTranscoder
 from zplugins.util.media import ffprobe
-from zsdk.testing import zorroa_test_data
+from zorroa.zsdk.testing import zorroa_test_data
 
 
 class FFMpegProxyTranscoderUnitTestCase(unittest.TestCase):

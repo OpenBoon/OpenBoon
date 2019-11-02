@@ -2,9 +2,9 @@ import tempfile
 import os
 import shutil
 
-from mock import patch
+from unittest.mock import patch
 from zplugins.util import media
-from zsdk.testing import zorroa_test_data
+from zorroa.zsdk.testing import zorroa_test_data
 
 IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr')
 IMAGE_PSD = zorroa_test_data('images/set06/psd_123.psd')

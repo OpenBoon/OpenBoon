@@ -16,7 +16,7 @@ setup(
     license='Copyright 2019 Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
     packages=['zorroa',
-              'zorroa.client',
+              'zorroa.zclient',
               'zorroa.zsdk',
               'zorroa.zsdk.document',
               'zorroa.zsdk.util',

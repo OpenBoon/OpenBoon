@@ -1,14 +1,14 @@
 import os
 
 import pytest
-from mock import patch
+from unittest.mock import patch
 from pathlib2 import Path
 
-import zsdk
+import zorroa.zsdk as zsdk
 from zplugins.proxies.processors import ProxyProcessor, ExistingProxyProcessor, \
     get_tiny_proxy_colors
-from zsdk import Asset
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk import Asset
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 BEER = zorroa_test_data("images/set02/beer_kettle_01.jpg")

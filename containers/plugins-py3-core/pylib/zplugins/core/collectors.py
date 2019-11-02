@@ -6,13 +6,9 @@ from zipfile import ZipFile
 
 from pathlib2 import Path
 
-from archivist import get_export
-from zsdk.exception import UnrecoverableProcessorException
-
-from zsdk.processor import Collector, Argument
-from zsdk.util import get_export_root_dir
-
-from archivist.client import Client
+from zorroa.zsdk.exception import UnrecoverableProcessorException
+from zorroa.zsdk.processor import Collector, Argument
+from zorroa.zclient import get_zclient
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +53,7 @@ class ImportCollector(Collector):
         self.client = None
 
     def init(self):
-        self.client = Client()
+        self.client = get_zclient()
 
     def collect(self, frames):
         if not frames:
@@ -70,58 +66,3 @@ class ImportCollector(Collector):
             "taskId": os.environ.get("ZORROA_TASK_ID"),
             "jobId": os.environ.get("ZORROA_JOB_ID")})
         logger.debug("Archivist Indexing Results: \n%s", pprint.pformat(result))
-
-
-class ExportCollector(Collector):
-    """Collect export files and register them with the archivist."""
-
-    def __init__(self):
-        super(ExportCollector, self).__init__()
-        self.paths_to_add = set()
-        self.export_root_dir = get_export_root_dir()
-
-    def init(self):
-        """
-        The ExportCollector init is responsible for making the output directory.
-
-        Returns: None
-
-        """
-        self.export_root_dir.mkdir(parents=True, exist_ok=True)
-
-    def teardown(self):
-        """
-        Create and register the exported zip file.  Checks to see if files were exported.
-        If the output directory is empty, throws a UnrecoverableProcessorException.
-
-        Returns: None
-
-        """
-        super(ExportCollector, self).teardown()
-        export_root_dir = get_export_root_dir()
-        export = get_export(self._get_export_id())
-
-        files = os.listdir(str(export_root_dir))
-        if not files:
-            raise UnrecoverableProcessorException("No files were exported")
-
-        with tempfile.NamedTemporaryFile(suffix="_%s.zip" % export.id) as tmp_file:
-            with ZipFile(tmp_file, "w", allowZip64=True) as zip_file:
-                for file_name in os.listdir(str(export_root_dir)):
-                    path = export_root_dir.joinpath(file_name)
-                    logger.info("Adding export to zip: %s" % path)
-                    zip_file.write(str(path), str(Path(export.name, path.name)))
-            self._add_ofs_file(export, tmp_file.name)
-
-    def _add_ofs_file(self, export, path):
-        """Store the given file to ofs and inform archivist of the export."""
-        path = Path(path)
-        extension = path.suffix.strip('.')
-        export_file_name = '%s.%s' % (export.name, extension)
-        object_file = self.ofs.prepare('job', export, "exported/%s" % export_file_name)
-        object_file.store(str(path))
-        export.add_file(object_file.id, export_file_name)
-
-    def _get_export_id(self):
-        """Returns the unique id for the export associated with this piepline."""
-        return self.context.global_args['exportArgs']['exportId']

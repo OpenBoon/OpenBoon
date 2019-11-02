@@ -5,13 +5,13 @@ import os
 import tempfile
 import unittest
 
-from mock import patch
+from unittest.mock import patch
 
-import zsdk
+import zorroa.zsdk as zsdk
 from zplugins.core.generators import AssetSearchGenerator
 from zplugins.core.generators import FileGenerator, FileSystemGenerator
-from zsdk import Context
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk import Context
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 
 
 class Consumer:
@@ -44,7 +44,6 @@ class Tests(unittest.TestCase):
         c = Consumer()
         fp = FileSystemGenerator()
         image_dir = tempfile.mkdtemp()
-        print image_dir
 
         f1 = tempfile.NamedTemporaryFile(prefix='\xe4\xb8\x89\xe9\xab\x98\xe8\x95\x83\xe8\x8c\x84\xe6\xa0\x91',
                                          suffix='jpg', dir=image_dir)

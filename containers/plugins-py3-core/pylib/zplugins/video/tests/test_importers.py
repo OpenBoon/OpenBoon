@@ -2,9 +2,9 @@
 from pathlib2 import Path
 
 from zplugins.video.importers import VideoImporter
-from zsdk import Frame, Asset
-from zsdk.exception import ProcessorException
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk import Frame, Asset
+from zorroa.zsdk.exception import ProcessorException
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 
 
 class VideoImporterUnitTestCase(PluginUnitTestCase):
