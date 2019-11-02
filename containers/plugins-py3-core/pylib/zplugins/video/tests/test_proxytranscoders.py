@@ -16,7 +16,7 @@ class FFMpegProxyTranscoderUnitTestCase(unittest.TestCase):
         self.transcoder = FFMpegProxyTranscoder(processor)
 
     def test_transcode_width(self):
-        destination = Path('./ffmpeg_proxy_transcoder_test.mp4')
+        destination = Path('/tmp/ffmpeg_proxy_transcoder_test.mp4')
         self.transcoder.transcode(source_path=self.movie_path,
                                   destination_path=str(destination),
                                   width=200)
@@ -30,7 +30,7 @@ class FFMpegProxyTranscoderUnitTestCase(unittest.TestCase):
             destination.unlink()
 
     def test_transcode_height(self):
-        destination = Path('./ffmpeg_proxy_transcoder_test.mp4')
+        destination = Path('/tmp/ffmpeg_proxy_transcoder_test.mp4')
         self.transcoder.transcode(source_path=self.movie_path,
                                   destination_path=str(destination),
                                   height=112)
@@ -44,7 +44,7 @@ class FFMpegProxyTranscoderUnitTestCase(unittest.TestCase):
             destination.unlink()
 
     def test_transcode_width_height(self):
-        destination = Path('./ffmpeg_proxy_transcoder_test.mp4')
+        destination = Path('/tmp/ffmpeg_proxy_transcoder_test.mp4')
         if destination.exists():
             destination.unlink()
         self.transcoder.transcode(source_path=self.movie_path,

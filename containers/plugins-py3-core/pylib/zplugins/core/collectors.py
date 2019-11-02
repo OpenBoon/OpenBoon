@@ -1,12 +1,7 @@
 import logging
 import os
 import pprint
-import tempfile
-from zipfile import ZipFile
 
-from pathlib2 import Path
-
-from zorroa.zsdk.exception import UnrecoverableProcessorException
 from zorroa.zsdk.processor import Collector, Argument
 from zorroa.zclient import get_zclient
 

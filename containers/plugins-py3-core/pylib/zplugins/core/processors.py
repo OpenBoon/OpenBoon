@@ -1,12 +1,8 @@
-import urllib
 import logging
 
 from pathlib2 import Path
-
+from urllib.request import urlretrieve
 from zorroa.zsdk.processor import DocumentProcessor, Argument
-from zorroa.zsdk.exception import UnrecoverableProcessorException
-
-from zorroa.zclient import get_zclient
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +154,7 @@ class DownloadAssetProcessor(DocumentProcessor):
         url = asset.get_attr(self.arg_value('url_attr'))
         filename = Path(url).name
         destination_path = Path(self.arg_value('destination_directory')).joinpath(filename)
-        urllib.urlretrieve(asset.get_attr(self.arg_value('url_attr')),
+        urlretrieve(asset.get_attr(self.arg_value('url_attr')),
                            filename=str(destination_path))
         asset.set_attr(self.arg_value('destination_attr'), str(destination_path))
         self.logger.info('Downloaded file to %s.' % destination_path)
@@ -183,64 +179,3 @@ class SetIdProcessor(DocumentProcessor):
     def _process(self, frame):
         asset = frame.asset
         asset.id = asset.generate_id(attr=self.arg_value('attribute'))
-
-
-class AddPermissionProcessor(DocumentProcessor):
-    """Add a permission to the current asset.
-
-    Args:
-        name (str): Name.
-        access (int): The access level.
-        create (bool): Create the permission if it doesn't already exist.
-
-    """
-    toolTips = {
-        'name': 'Name.',
-        'access': 'The access level.',
-        'create': 'Create the permission if it doesn\'t already exist.'
-    }
-
-    def __init__(self):
-        super(AddPermissionProcessor, self).__init__()
-        self.add_arg(Argument('name', 'str', required=True, toolTip=self.toolTips['name']))
-        self.add_arg(Argument('access', 'int', required=True, default=1,
-                              toolTip=self.toolTips['access']))
-        self.add_arg(Argument('create', 'boolean', default=False,
-                              required=True, toolTip=self.toolTips['create']))
-        self.checked_names = set()
-
-    def _process(self, frame):
-        access = self.arg_value('access')
-        name = self.arg_value('name')
-        parts = name.split('::')
-        if len(parts) != 2:
-            raise UnrecoverableProcessorException('Invalid permission name: ' + name)
-
-        if self.arg_value('create') and name not in self.checked_names:
-            if not self.permission_exists(name):
-                get_zclient().post('/api/v1/permissions', {
-                    'type': parts[0],
-                    'name': parts[1],
-                    'description': name + ' created by batch job',
-                    'source': 'Permission Processor'
-                })
-
-        self.checked_names.add(name)
-
-        if frame.asset.permissions is None:
-            frame.asset.permissions = {}
-
-        frame.asset.permissions[name] = access
-
-    def permission_exists(self, name):
-        """
-        Return True if a permission with the given name exists.
-
-        Args:
-            name (str): The full permission name, ex zorroa::read
-
-        Returns:
-            bool: True if permission exists, false if not.
-
-        """
-        return get_zclient().get('/api/v2/permissions/_exists', {"fullName": name})

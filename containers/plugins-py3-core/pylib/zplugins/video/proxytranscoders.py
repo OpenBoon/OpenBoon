@@ -54,7 +54,7 @@ class FFMpegProxyTranscoder(AbstractProxyTranscoder):
         ffmpeg_command = ['ffmpeg', '-y',
                           '-i', str(source_path),
                           '-strict', '-2',
-                          '-v', 'debug',
+                          '-v', 'error',
                           '-threads', '0',
                           '-c:v', 'libx264',
                           '-c:a', 'aac',
