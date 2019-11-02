@@ -71,7 +71,7 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         self.consumer = UnittestConsumer()
         self.generator = AssetSearchGenerator()
 
-    @patch('archivist.client.Client.post')
+    @patch('zorroa.zclient.ZClient.post')
     def test_generate_scroll(self, post_patch):
 
         pwd = os.path.dirname(inspect.getfile(self.__class__))
@@ -100,7 +100,7 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         assert frame_1.asset.id == 'd4fa3a87-bd81-43d6-aa1b-b7a99fe0607b'
         assert frame_1.asset.get_attr('media.pages') == 618
 
-    @patch('archivist.client.Client.post')
+    @patch('zorroa.zclient.ZClient.post')
     def test_generate_page(self, post_patch):
 
         pwd = os.path.dirname(inspect.getfile(self.__class__))
@@ -128,7 +128,7 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         assert frame_1.asset.id == 'd4fa3a87-bd81-43d6-aa1b-b7a99fe0607b'
         assert frame_1.asset.get_attr('media.pages') == 618
 
-    @patch('archivist.client.Client.post')
+    @patch('zorroa.zclient.ZClient.post')
     def test_generate_max_assets(self, post_patch):
         pwd = os.path.dirname(inspect.getfile(self.__class__))
         response_1 = json.load(open(pwd + '/response_1.json', 'r'))

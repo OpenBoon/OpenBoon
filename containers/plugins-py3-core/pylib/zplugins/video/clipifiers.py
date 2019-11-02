@@ -15,7 +15,7 @@ class FFProbeKeyframeClipifier(AbstractClipifier):
         duration = round(float(duration), 3)
 
         # Get the keyframes.
-        keyframe_command = ('ffprobe -show_frames -of compact=p=0 -show_entries '
+        keyframe_command = ('ffprobe -of compact=p=0 -show_entries '
                             'frame=pkt_pts_time,pict_type -f lavfi '
                             'movie=' + movie_file + ',select=gt(scene\\,0.1)')
         self.logger.info('FFPROBE COMMAND: %s' % keyframe_command)
@@ -24,7 +24,7 @@ class FFProbeKeyframeClipifier(AbstractClipifier):
         previous_seconds = 0.0
         clips = []
         while True:
-            line = p.stdout.readline()
+            line = p.stdout.readline().decode("utf-8")
             if not line:
                 break
             line = line.strip()

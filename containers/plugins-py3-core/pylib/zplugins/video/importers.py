@@ -42,8 +42,7 @@ class VideoImporter(DocumentProcessor):
     default_transcoder = {'className': 'zplugins.video.proxytranscoders.FFMpegProxyTranscoder',
                           'args': {}}
     default_clipifier = {'className': 'zplugins.video.clipifiers.FFProbeKeyframeClipifier',
-                         'args': {'minimum_clip_length': 1.0,
-                                  'gcp_temp_bucket_name': ''}}
+                         'args': {'minimum_clip_length': 1.0}}
 
     def __init__(self):
         super(VideoImporter, self).__init__()

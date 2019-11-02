@@ -42,7 +42,7 @@ def add_proxy(asset, path, symlink=False):
         try:
             os.symlink(path, obj_path)
         except OSError:
-            logger.warn("Failure creating symlink '{}' to '{}', OFS path already exists".format(
+            logger.warning("Failure creating symlink '{}' to '{}', OFS path already exists".format(
                 path, obj_path))
     else:
         object_file.store(path)

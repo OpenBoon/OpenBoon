@@ -41,7 +41,7 @@ def media_size(path):
 
         try:
             logger.info("running command: %s" % cmd)
-            size = check_output(cmd, shell=False).split("x")
+            size = check_output(cmd, shell=False).decode().split("x")
             return int(size[0]), int(size[1])
         except CalledProcessError:
             raise ValueError("Invalid video file, unable to determine size: '{}".format(path))
@@ -54,7 +54,7 @@ def media_size(path):
         cmd = ["oiiotool", "--wildcardoff", "--info", str(path)]
         try:
             logger.info("running command: %s" % cmd)
-            line = [e for e in check_output(cmd, shell=False).split(" ") if e]
+            line = [e for e in check_output(cmd, shell=False).decode().split(" ") if e]
             idx = line.index("x")
             return int(line[idx-1]), int(re.sub('[^0-9]', '', line[idx+1]))
         except CalledProcessError:
