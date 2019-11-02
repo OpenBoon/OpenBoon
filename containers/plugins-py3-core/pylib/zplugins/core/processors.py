@@ -3,11 +3,10 @@ import logging
 
 from pathlib2 import Path
 
-from zsdk.processor import DocumentProcessor, Argument
-from zsdk.exception import UnrecoverableProcessorException
+from zorroa.zsdk.processor import DocumentProcessor, Argument
+from zorroa.zsdk.exception import UnrecoverableProcessorException
 
-from archivist.asset import get_asset
-from archivist.client import _client
+from zorroa.zclient import get_zclient
 
 logger = logging.getLogger(__name__)
 
@@ -165,14 +164,6 @@ class DownloadAssetProcessor(DocumentProcessor):
         self.logger.info('Downloaded file to %s.' % destination_path)
 
 
-class DeleteAssetProcessor(DocumentProcessor):
-    """Deletes an asset and skips all further processing of the document."""
-    def _process(self, frame):
-        asset = get_asset(frame.asset.id)
-        asset.delete()
-        frame.skip = True
-
-
 class SetIdProcessor(DocumentProcessor):
     """Sets a new ID for an asset based on an existing attribute.
 
@@ -227,7 +218,7 @@ class AddPermissionProcessor(DocumentProcessor):
 
         if self.arg_value('create') and name not in self.checked_names:
             if not self.permission_exists(name):
-                _client.post('/api/v1/permissions', {
+                get_zclient().post('/api/v1/permissions', {
                     'type': parts[0],
                     'name': parts[1],
                     'description': name + ' created by batch job',
@@ -252,4 +243,4 @@ class AddPermissionProcessor(DocumentProcessor):
             bool: True if permission exists, false if not.
 
         """
-        return _client.get('/api/v2/permissions/_exists', {"fullName": name})
+        return get_zclient().get('/api/v2/permissions/_exists', {"fullName": name})

@@ -334,7 +334,7 @@ class KeyManager(object):
         return url
 
 
-class ZHttpClient(object):
+class ZClient(object):
     """
     Client is responsible for making REST calls to the Archivist and
     interpreting the result.
@@ -821,7 +821,7 @@ def encode(obj):
     return json.dumps(obj, cls=ZorroaJsonEncoder)
 
 
-def get_client():
+def get_zclient():
     """
     Return the global auto-configured client instance.
     """
@@ -829,4 +829,4 @@ def get_client():
 
 
 # A global client instance.
-_client = ZHttpClient()
+_client = ZClient()
