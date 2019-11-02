@@ -1,6 +1,8 @@
 FROM plugins-py3-base:latest
 USER root
 
+RUN apt-get update && apt-get -y upgrade
+
 COPY pylib /zps/pylib
 
 COPY requirements.txt .
