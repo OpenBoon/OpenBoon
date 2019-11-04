@@ -82,8 +82,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                     rs.getString("str_host"),
                     script,
                     Json.Mapper.readValue(rs.getString("json_env")),
-                    globalArgs,
-                    rs.getObject("pk_user_created") as UUID)
+                    globalArgs)
         }
 
         private const val GET_DISPATCH_PRIORITY =
@@ -104,7 +103,6 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "job.project_id," +
                 "job.json_env," +
                 "job.json_args," +
-                "job.pk_user_created," +
                 "task.pk_task," +
                 "task.pk_job," +
                 "task.str_name," +
