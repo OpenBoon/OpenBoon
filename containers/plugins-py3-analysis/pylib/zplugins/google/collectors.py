@@ -5,7 +5,7 @@ from google.cloud import pubsub_v1, storage
 from google.cloud.exceptions import NotFound
 
 from archivist.client import ZorroaJsonEncoder
-from zsdk import Collector, Argument
+from zorroa.zsdk import Collector, Argument
 
 
 class PubSubCollector(Collector):

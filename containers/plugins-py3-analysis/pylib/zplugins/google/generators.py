@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from zsdk import Generator, Argument, Asset, Frame
+from zorroa.zsdk import Generator, Argument, Asset, Frame
 
 
 class GcsBucketGenerator(Generator):

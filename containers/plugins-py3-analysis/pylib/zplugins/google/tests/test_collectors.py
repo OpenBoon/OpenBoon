@@ -1,8 +1,8 @@
 from datetime import date
 
 from zplugins.google.collectors import PubSubCollector
-from zsdk import Frame, Asset
-from zsdk.testing import PluginUnitTestCase
+from zorroa.zsdk import Frame, Asset
+from zorroa.zsdk.testing import PluginUnitTestCase
 
 
 class PubSubCollectorUnitTestCase(PluginUnitTestCase):
