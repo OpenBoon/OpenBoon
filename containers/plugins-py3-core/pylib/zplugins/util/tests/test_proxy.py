@@ -4,7 +4,7 @@ import tempfile
 from unittest.mock import patch
 
 import zorroa.zsdk as zsdk
-from zorroa.zclient import get_zclient, ZClient
+from zorroa.zclient import ZClient
 from zplugins.util.proxy import add_proxy_file, add_proxy_link, add_proxy
 from zorroa.zsdk.testing import zorroa_test_data
 

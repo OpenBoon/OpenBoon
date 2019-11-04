@@ -176,4 +176,3 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
         processor._process(Frame(self.asset))
         assert expand_patch.call_count == 3
-

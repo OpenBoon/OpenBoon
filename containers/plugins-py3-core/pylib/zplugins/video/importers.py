@@ -220,4 +220,3 @@ class VideoImporter(DocumentProcessor):
             asset.set_attr("source.mediaType", "video/{}".format(sub_type))
             asset.set_attr("source.type", "video")
             asset.set_attr("source.subType", sub_type)
-

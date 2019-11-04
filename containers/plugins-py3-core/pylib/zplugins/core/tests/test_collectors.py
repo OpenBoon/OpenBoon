@@ -21,8 +21,8 @@ class ImportCollectorUnitTestCase(PluginUnitTestCase):
         post_patch.return_value = {}
 
         frames = [
-            Frame(Document({'id': '1', 'document':
-                {'foo': 'bar'}, 'permissions': {'zorroa::foo': 1}}))
+            Frame(Document({'id': '1', 'document': {'foo': 'bar'},
+                            'permissions': {'zorroa::foo': 1}}))
         ]
 
         collector = self.init_processor(ImportCollector())
