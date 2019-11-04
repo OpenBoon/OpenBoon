@@ -37,21 +37,12 @@ data class ApiKey(
 /**
  * A simple client to the Authentication service.
  */
-class AuthServerClient(baseUri: String) {
-
-    val authServerUri: URI
+class AuthServerClient(val baseUri: String) {
 
     val responseType: ParameterizedTypeReference<ApiKey> =
         object : ParameterizedTypeReference<ApiKey>() {}
 
     val rest: RestTemplate = RestTemplate(HttpComponentsClientHttpRequestFactory())
-
-    init {
-        val builder = URIBuilder(baseUri)
-        authServerUri = builder.setPath(builder.path + "/auth/v1/auth-token")
-            .build()
-            .normalize()
-    }
 
     val cache = CacheBuilder.newBuilder()
         .initialCapacity(128)
@@ -60,7 +51,8 @@ class AuthServerClient(baseUri: String) {
         .build(object : CacheLoader<String, ApiKey>() {
             @Throws(Exception::class)
             override fun load(token: String): ApiKey {
-                val req = RequestEntity.get(authServerUri)
+                println(baseUri)
+                val req = RequestEntity.get(URI("${baseUri}/auth/v1/auth-token"))
                     .header("Authorization", "Bearer $token")
                     .accept(MediaType.APPLICATION_JSON).build()
                 return rest.exchange(req, responseType).body
