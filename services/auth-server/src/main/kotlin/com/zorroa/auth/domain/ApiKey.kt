@@ -6,10 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
+
 
 object Permission {
     val READ_ASSETS = "READ_ASSETS"
@@ -43,14 +41,15 @@ class ApiKey(
         val name: String,
 
         @Column(name = "permissions", nullable = false)
-        val permissions: String
+        @Convert(converter = StringListConverter::class)
+        val permissions: List<String>
 ) {
     @JsonIgnore
     fun getGrantedAuthorities(): List<GrantedAuthority> {
         return if (permissions.isNullOrEmpty()) {
             listOf()
         } else {
-            permissions.split(",").map { SimpleGrantedAuthority(it) }
+            permissions.map { SimpleGrantedAuthority(it) }
         }
     }
 
@@ -92,6 +91,18 @@ class ApiKey(
         result = 31 * result + projectId.hashCode()
         result = 31 * result + sharedKey.hashCode()
         return result
+    }
+}
+
+@Converter
+class StringListConverter : AttributeConverter<List<String>, String> {
+
+    override fun convertToDatabaseColumn(list: List<String>): String {
+        return list.joinToString(",")
+    }
+
+    override fun convertToEntityAttribute(joined: String): List<String> {
+        return joined.split(",").map { it.trim() }
     }
 
 }
