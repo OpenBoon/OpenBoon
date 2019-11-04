@@ -1,14 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.LIST_OF_PREFS
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.domain.Pipeline
-import com.zorroa.archivist.domain.PipelineSpec
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.service.event
 import com.zorroa.common.util.JdbcUtils.insert
 import com.zorroa.common.util.JdbcUtils.isUUID

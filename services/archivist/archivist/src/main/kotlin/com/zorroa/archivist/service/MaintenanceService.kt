@@ -1,14 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
-import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.common.domain.AnalystState
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
-import kotlinx.coroutines.Dispatchers
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -117,7 +115,6 @@ class MaintenanceConfiguration {
 @Component
 class ResumePausedJobsScheduler @Autowired constructor(
     val jobDao: JobDao,
-    val clusterLockExecutor: ClusterLockExecutor,
     val config: MaintenanceConfiguration
 ) : AbstractScheduledService(), ApplicationListener<ContextRefreshedEvent> {
 
@@ -128,15 +125,9 @@ class ResumePausedJobsScheduler @Autowired constructor(
     }
 
     override fun runOneIteration() {
-        val lock = ClusterLockSpec.softLock(lockName).apply {
-            timeout = 1
-            timeoutUnits = TimeUnit.MINUTES
-            dispatcher = Dispatchers.IO
-        }
+        // TODO cluster lock
         try {
-            clusterLockExecutor.inline(lock) {
-                jobDao.resumePausedJobs()
-            }
+            jobDao.resumePausedJobs()
         } catch (e: Exception) {
             logger.warn("Failed to unlock paused jobs, ", e)
         }
@@ -160,7 +151,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     val jobService: JobService,
     val dispatcherService: DispatcherService,
     val analystService: AnalystService,
-    val clusterLockExecutor: ClusterLockExecutor,
     val meterRegistry: MeterRegistry,
     val config: MaintenanceConfiguration
 ) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
@@ -177,7 +167,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     override fun runOneIteration() {
         // Don't let anything bubble out of here of the thread dies
         try {
-
             runAll()
         } catch (e: Exception) {
             logger.warn("Failed to run data maintenance, ", e)
@@ -185,28 +174,22 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun runAll() {
-        val lock = ClusterLockSpec.softLock(lockName).apply {
-            timeout = 5
-            timeoutUnits = TimeUnit.MINUTES
-            dispatcher = Dispatchers.IO
-        }
-        clusterLockExecutor.inline(lock) {
-            meterRegistry.timer(meterName, listOf(Tag.of("event", "execute"))).record {
-                handleExpiredJobs()
-                handleUnresponsiveAnalysts()
-                handleOrphanTasks()
-            }
-        }
+        // TODO: cluster lock
+        handleExpiredJobs()
+        handleUnresponsiveAnalysts()
+        handleOrphanTasks()
     }
 
     override fun handleExpiredJobs() {
         try {
-            val removedCounter = meterRegistry.counter(meterName,
-                    listOf(Tag.of("event", "job_removed")))
+            val removedCounter = meterRegistry.counter(
+                meterName,
+                listOf(Tag.of("event", "job_removed"))
+            )
             for (job in jobService.getExpiredJobs(config.archiveJobsAfterDays, TimeUnit.DAYS, 100)) {
                 logger.info("Deleting expired job {},", job.id)
                 if (jobService.deleteJob(job)) {
-                    withAuth(SuperAdminAuthentication(job.organizationId)) {
+                    withAuth(SuperAdminAuthentication(job.projectId)) {
                         val storage = storageService.get(job.getStorageId())
                         storage.getServableFile().delete()
                     }
@@ -224,8 +207,10 @@ class MaintenanceServiceImpl @Autowired constructor(
         try {
             //  get Analysts that are Up but haven't pinged in
             val downDuration = config.getAnalystDownInactivityTime()
-            val downCounter = meterRegistry.counter(meterName,
-                    listOf(Tag.of("event", "analyst_down")))
+            val downCounter = meterRegistry.counter(
+                meterName,
+                listOf(Tag.of("event", "analyst_down"))
+            )
             analystService.getUnresponsive(AnalystState.Up, downDuration).forEach {
                 analystService.setState(it, AnalystState.Down)
                 analystService.setTaskId(it, null)
@@ -238,8 +223,10 @@ class MaintenanceServiceImpl @Autowired constructor(
         try {
             //  get Analysts that Down Up but haven't pinged in for a long time
             val removeDuration = config.getAnalystRemoveInactivityTime()
-            val removeCounter = meterRegistry.counter(meterName,
-                    listOf(Tag.of("event", "analyst_removed")))
+            val removeCounter = meterRegistry.counter(
+                meterName,
+                listOf(Tag.of("event", "analyst_removed"))
+            )
             analystService.getUnresponsive(AnalystState.Down, removeDuration).forEach {
                 analystService.delete(it)
                 removeCounter.increment()
@@ -251,8 +238,10 @@ class MaintenanceServiceImpl @Autowired constructor(
 
     override fun handleOrphanTasks() {
         try {
-            val orphanCounter = meterRegistry.counter(meterName,
-                    listOf(Tag.of("event", "task_orphan")))
+            val orphanCounter = meterRegistry.counter(
+                meterName,
+                listOf(Tag.of("event", "task_orphan"))
+            )
             // get tasks marked as queued or running but have not pinged in.
             val orphanDuration = config.getTaskOrphanTime()
             jobService.getOrphanTasks(orphanDuration).forEach {

@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
@@ -52,7 +51,6 @@ interface IndexService {
 @Component
 class IndexServiceImpl @Autowired constructor(
     private val indexDao: IndexDao,
-    private val assetDao: AssetDao,
     private val fileServerProvider: FileServerProvider,
     private val fileStorageService: FileStorageService
 
@@ -105,12 +103,8 @@ class IndexServiceImpl @Autowired constructor(
     override fun index(assets: List<Document>): BatchIndexAssetsResponse {
         val result = indexDao.index(assets, true)
         if (assetStoreBackup) {
-            val auth = getAuthentication()
-            workQueue.execute {
-                withAuth(auth) {
-                    assetDao.batchCreateOrReplace(assets)
-                }
-            }
+            // TODO: Write to GCS or local storage
+            // Register file to asset
         }
         return result
     }

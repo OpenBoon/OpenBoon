@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.JobFilter
 import com.zorroa.common.domain.JobSpec
@@ -102,7 +102,7 @@ class JobDaoTests : AbstractTest() {
         val t1 = jobDao.get(t2.id)
 
         assertEquals(t2.name, t1.name)
-        assertEquals(t2.organizationId, t1.organizationId)
+        assertEquals(t2.projectId, t1.projectId)
         assertEquals(t2.state, t1.state)
         assertEquals(t2.type, t1.type)
     }
@@ -167,12 +167,12 @@ class JobDaoTests : AbstractTest() {
             jobDao.create(spec, PipelineType.Import)
         }
 
-        var filter = JobFilter(organizationIds = listOf(UUID.randomUUID()))
+        var filter = JobFilter(projectIds = listOf(UUID.randomUUID()))
         var jobs = jobDao.getAll(filter)
         assertEquals(0, jobs.size())
         assertEquals(0, jobs.page.totalCount)
 
-        filter = JobFilter(organizationIds = listOf(orgId, getOrgId()))
+        filter = JobFilter(projectIds = listOf(orgId, getProjectId()))
         jobs = jobDao.getAll(filter)
         assertEquals(10, jobs.size())
         assertEquals(10, jobs.page.totalCount)
@@ -217,7 +217,7 @@ class JobDaoTests : AbstractTest() {
 
         // All the columns we can sort by.
         val sortFields = listOf(
-            "id", "type", "name", "timeCreated", "state", "priority", "organizationId"
+            "id", "type", "name", "timeCreated", "state", "priority", "projectId"
         )
 
         // Just test the DB allows us to sort

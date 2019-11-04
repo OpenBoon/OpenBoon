@@ -20,10 +20,10 @@ import java.util.UUID
  * @property shards Number of shards.
  * @property defaultPool True if the index route is in the default Pool.
  * @property indexUrl The ES index URL, or the cluster URL and index name combined.
- * @property useRouteKey Store all of an Organizations data into a single shard.
  */
 class IndexRoute(
     val id: UUID,
+    val projectId: UUID,
     val clusterUrl: String,
     val indexName: String,
     val mapping: String,
@@ -31,12 +31,9 @@ class IndexRoute(
     val mappingMinorVer: Int,
     val closed: Boolean,
     val replicas: Int,
-    val shards: Int,
-    val defaultPool: Boolean,
-    val useRouteKey: Boolean
+    val shards: Int
 ) {
-
-    var orgCount: Int = 0
+    
     val indexUrl = "$clusterUrl/$indexName"
 
     /**
@@ -45,19 +42,6 @@ class IndexRoute(
     @JsonIgnore
     fun esClientCacheKey(): EsClientCacheKey {
         return EsClientCacheKey(clusterUrl, indexName)
-    }
-
-    /**
-     * Return an [EsClientCacheKey] for use with per-organization shards, if an only if
-     * the route has useRouteKey enabled.
-     */
-    @JsonIgnore
-    fun esClientCacheKey(rkey: String): EsClientCacheKey {
-        return if (useRouteKey) {
-            EsClientCacheKey(clusterUrl, indexName, rkey)
-        } else {
-            EsClientCacheKey(clusterUrl, indexName)
-        }
     }
 }
 
@@ -77,8 +61,6 @@ class IndexRouteSpec(
     var indexName: String,
     var mapping: String,
     var mappingMajorVer: Int,
-    var defaultPool: Boolean = false,
-    var useRouteKey: Boolean = false,
     var replicas: Int = 2,
     var shards: Int = 5
 )
@@ -101,13 +83,11 @@ class IndexMappingVersion(
  *
  * @property clusterUrl The url to the cluster
  * @property indexName The name of the index.
- * @property routingKey A shard routing key string.
  * @property indexUrl The full URL to the index.
  */
 class EsClientCacheKey(
     val clusterUrl: String,
-    val indexName: String,
-    val routingKey: String? = null
+    val indexName: String
 ) {
 
     val indexUrl = "$clusterUrl/$indexName"

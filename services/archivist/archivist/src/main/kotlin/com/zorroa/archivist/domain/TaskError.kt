@@ -2,7 +2,8 @@ package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.repository.LongRangeFilter
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
@@ -95,7 +96,7 @@ class TaskErrorFilter(
     val timeCreated: LongRangeFilter? = null,
 
     @ApiModelProperty("Organizations UUIDs to match.")
-    val organizationIds: List<UUID>? = null,
+    val projectIds: List<UUID>? = null,
 
     @ApiModelProperty("Keyword query string.")
     val keywords: String? = null
@@ -119,14 +120,14 @@ class TaskErrorFilter(
             sort = listOf("timeCreated:desc")
         }
 
-        if (hasPermission("zorroa::superadmin")) {
-            organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+        if (hasPermission(Role.SUPERADMIN)) {
+            projectIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_project", it.size))
                 addToValues(it)
             }
         } else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
+            addToWhere("job.project_id =?")
+            addToValues(getProjectId())
         }
 
         ids?.let {

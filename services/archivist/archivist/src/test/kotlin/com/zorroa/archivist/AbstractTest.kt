@@ -4,26 +4,17 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import com.zorroa.archivist.clients.ApiKey
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Source
-import com.zorroa.archivist.domain.UserSpec
-import com.zorroa.archivist.sdk.security.UserRegistryService
-import com.zorroa.archivist.search.AssetSearch
 import com.zorroa.archivist.security.AnalystAuthentication
-import com.zorroa.archivist.security.UnitTestAuthentication
-import com.zorroa.archivist.service.AssetService
-import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.IndexRoutingService
-import com.zorroa.archivist.service.IndexService
-import com.zorroa.archivist.service.OrganizationService
-import com.zorroa.archivist.service.TransactionEventManager
+import com.zorroa.archivist.service.*
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.common.schema.Proxy
 import com.zorroa.common.schema.ProxySchema
 import com.zorroa.common.util.Json
-import com.zorroa.security.Groups
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.junit.Before
@@ -31,10 +22,10 @@ import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
-import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
@@ -48,7 +39,7 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.UUID
+import java.util.*
 import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
@@ -71,15 +62,6 @@ abstract class AbstractTest {
 
     @Autowired
     protected lateinit var properties: ApplicationProperties
-
-    @Autowired
-    protected lateinit var organizationService: OrganizationService
-
-    @Autowired
-    protected lateinit var userRegistryService: UserRegistryService
-
-    @Autowired
-    internal lateinit var authenticationManager: AuthenticationManager
 
     @Autowired
     internal lateinit var indexRoutingService: IndexRoutingService
@@ -114,33 +96,6 @@ abstract class AbstractTest {
     @Before
     @Throws(IOException::class)
     fun setup() {
-
-        /**
-         * Clean out any committed data we left around for co-routihes and threads
-         * to be tested.
-         */
-        val tmpl = TransactionTemplate(transactionManager)
-        tmpl.propagationBehavior = Propagation.NOT_SUPPORTED.ordinal
-        tmpl.execute(object : TransactionCallbackWithoutResult() {
-            override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
-                jdbc.update("DELETE FROM folder WHERE time_created !=1450709321000")
-                jdbc.update("DELETE FROM asset")
-                jdbc.update("DELETE FROM auditlog")
-                jdbc.update("DELETE FROM cluster_lock")
-                jdbc.update("DELETE FROM field_set")
-                jdbc.update("DELETE FROM field")
-                jdbc.update(
-                    "UPDATE index_route SET str_index='unittest' " +
-                        "WHERE pk_index_route='00000000-0000-0000-0000-000000000000'"
-                )
-
-                /**
-                 * Need these in here so fields are visible by threads and coroutines.
-                 */
-                authenticate()
-            }
-        })
-
         /*
          * Ensures that all transaction events run within the unit test transaction.
          * If this was not set then  transaction events like AfterCommit would never execute
@@ -166,17 +121,7 @@ abstract class AbstractTest {
     fun authenticateAsAnalyst() {
         SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
     }
-
-    fun testUserSpec(name: String = "test"): UserSpec {
-        return UserSpec(
-            name,
-            "test",
-            "$name@zorroa.com",
-            firstName = "mr",
-            lastName = "test"
-        )
-    }
-
+    
     fun deleteAllIndexes() {
         /*
          * The Elastic index(s) has been created, but we have to delete it and recreate it
@@ -207,9 +152,16 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val userAuthed = userRegistryService.getUser("admin")
-        userAuthed.setAttr("company_id", "25274")
-        SecurityContextHolder.getContext().authentication = UnitTestAuthentication(userAuthed, userAuthed.authorities)
+        val apiKey = ApiKey(
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                listOf("SEARCH"))
+        
+        SecurityContextHolder.getContext().authentication =
+                UsernamePasswordAuthenticationToken(
+                        apiKey,
+                        apiKey.keyId,
+                        apiKey.permissions.map { SimpleGrantedAuthority(it) })
     }
 
     fun logout() {

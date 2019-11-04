@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import org.junit.Test
@@ -43,14 +42,12 @@ class IndexRouteDaoTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "on_prem",
-            1,
-            false
+            1
         )
 
         val route = indexRouteDao.create(spec)
         assertEquals(spec.clusterUrl, route.clusterUrl)
         assertEquals(spec.indexName, route.indexName)
-        assertEquals(spec.defaultPool, route.defaultPool)
         assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
         assertEquals(0, route.mappingMinorVer)
         assertEquals(spec.shards, route.shards)
@@ -63,8 +60,7 @@ class IndexRouteDaoTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "on_prem",
-            1,
-            false
+            1
         )
 
         val route1 = indexRouteDao.create(spec)
@@ -78,8 +74,7 @@ class IndexRouteDaoTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "on_prem",
-            1,
-            false
+            1
         )
 
         val route1 = indexRouteDao.create(spec)
@@ -89,26 +84,12 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Test
     fun testGetOrgRoute() {
-        val route = indexRouteDao.getOrgRoute()
+        val route = indexRouteDao.getProjectRoute()
         assertEquals("http://localhost:9200", route.clusterUrl)
         assertEquals("http://localhost:9200/unittest", route.indexUrl)
         assertEquals("unittest", route.indexName)
         assertEquals("asset", route.mapping)
         assertEquals(false, route.closed)
-        assertEquals(true, route.defaultPool)
-        assertEquals(2, route.replicas)
-        assertEquals(5, route.shards)
-    }
-
-    @Test
-    fun testGetRadomDefaultRoute() {
-        val route = indexRouteDao.getRandomPoolRoute() as IndexRoute
-        assertEquals("http://localhost:9200", route.clusterUrl)
-        assertEquals("http://localhost:9200/unittest", route.indexUrl)
-        assertEquals("unittest", route.indexName)
-        assertEquals("asset", route.mapping)
-        assertEquals(false, route.closed)
-        assertEquals(true, route.defaultPool)
         assertEquals(2, route.replicas)
         assertEquals(5, route.shards)
     }
@@ -121,7 +102,7 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Test
     fun testGetAllByFilter() {
-        val route = indexRouteDao.getOrgRoute()
+        val route = indexRouteDao.getProjectRoute()
 
         val filter = IndexRouteFilter(
             ids = listOf(route.id),
@@ -145,8 +126,7 @@ class IndexRouteDaoTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "on_prem",
-            1,
-            false
+            1
         )
 
         val route1 = indexRouteDao.create(spec)
@@ -159,7 +139,7 @@ class IndexRouteDaoTests : AbstractTest() {
     @Test
     fun testSetMinorVersion() {
         val ver = 131337
-        val route = indexRouteDao.getOrgRoute()
+        val route = indexRouteDao.getProjectRoute()
         assertTrue(indexRouteDao.setMinorVersion(route, ver))
         assertEquals(
             ver, jdbc.queryForObject(
@@ -171,7 +151,7 @@ class IndexRouteDaoTests : AbstractTest() {
     @Test
     fun testErrorVersion() {
         val ver = 666
-        val route = indexRouteDao.getOrgRoute()
+        val route = indexRouteDao.getProjectRoute()
         assertTrue(indexRouteDao.setErrorVersion(route, ver))
         assertEquals(
             ver, jdbc.queryForObject(
@@ -187,8 +167,7 @@ class IndexRouteDaoTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "on_prem",
-            1,
-            false
+            1
         )
 
         val route = indexRouteDao.create(spec)

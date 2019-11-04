@@ -5,7 +5,6 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.archivist.domain.IndexMappingVersion
@@ -16,7 +15,6 @@ import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.common.clients.EsRestClient
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobPriority
@@ -74,7 +72,7 @@ interface IndexRoutingService {
     fun createIndexRoute(spec: IndexRouteSpec): IndexRoute
 
     /**
-     * Get an [EsRestClient] for the current users organization.
+     * Get an [EsRestClient] for the current users project.
      *
      * @return: EsRestClient
      */
@@ -134,7 +132,7 @@ interface IndexRoutingService {
     fun setupDefaultIndexRoute()
 
     /**
-     * Launch a reindex job for the current authorized user's organization.  The job
+     * Launch a reindex job for the current authorized user's project.  The job
      * will kill any existing reindex job.
      */
     fun launchReindexJob(): Job
@@ -215,9 +213,6 @@ constructor(
     IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
-    lateinit var clusterLockExecutor: ClusterLockExecutor
-
-    @Autowired
     lateinit var jobService: JobService
 
     var esClientCache = EsClientCache()
@@ -239,12 +234,6 @@ constructor(
             throw IllegalArgumentException(
                 "Failed to find index mapping ${spec.mapping} v${spec.mappingMajorVer}"
             )
-        }
-
-        // These are always false for single tenant
-        if (!properties.getBoolean("archivist.organization.multiTenant")) {
-            spec.useRouteKey = false
-            spec.defaultPool = false
         }
 
         val route = indexRouteDao.create(spec)
@@ -316,48 +305,47 @@ constructor(
         val es = getClusterRestClient(route)
         waitForElasticSearch(es)
 
-        val lock = ClusterLockSpec.softLock("create-es-${route.id}")
-        clusterLockExecutor.inline(lock) {
+        // TODO: cluster lock
 
-            val indexExisted = es.indexExists()
-            if (!indexExisted) {
-                logger.info(
-                    "Creating index:" +
-                        "type: '${route.mapping}'  index: '${route.indexName}' " +
-                        "ver: '${route.mappingMajorVer}'" +
-                        "shards: '${route.shards}' replicas: '${route.replicas}'"
-                )
+        val indexExisted = es.indexExists()
+        if (!indexExisted) {
+            logger.info(
+                "Creating index:" +
+                    "type: '${route.mapping}'  index: '${route.indexName}' " +
+                    "ver: '${route.mappingMajorVer}'" +
+                    "shards: '${route.shards}' replicas: '${route.replicas}'"
+            )
 
-                val mappingFile = getMajorVersionMappingFile(
-                    route.mapping, route.mappingMajorVer
-                )
+            val mappingFile = getMajorVersionMappingFile(
+                route.mapping, route.mappingMajorVer
+            )
 
-                val mapping = Document(mappingFile.mapping)
-                mapping.setAttr("settings.index.number_of_shards", route.shards)
-                mapping.setAttr("settings.index.number_of_replicas", route.replicas)
+            val mapping = Document(mappingFile.mapping)
+            mapping.setAttr("settings.index.number_of_shards", route.shards)
+            mapping.setAttr("settings.index.number_of_replicas", route.replicas)
 
-                val req = CreateIndexRequest()
-                req.index(route.indexName)
-                req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
-                es.client.indices().create(req, RequestOptions.DEFAULT)
-                result = mappingFile
-            } else {
-                logger.info("Not creating ${route.indexUrl}, already exists")
-            }
-
-            val patches = getMinorVersionMappingFiles(route.mapping, route.mappingMajorVer)
-            for (patch in patches) {
-                /**
-                 * If the index already existed, then only apply new patches. If
-                 * the index was just created, then apply all patches.
-                 */
-                if (indexExisted && route.mappingMinorVer >= patch.minorVersion) {
-                    continue
-                }
-                applyMinorVersionMappingFile(route, patch)
-                result = patch
-            }
+            val req = CreateIndexRequest()
+            req.index(route.indexName)
+            req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
+            es.client.indices().create(req, RequestOptions.DEFAULT)
+            result = mappingFile
+        } else {
+            logger.info("Not creating ${route.indexUrl}, already exists")
         }
+
+        val patches = getMinorVersionMappingFiles(route.mapping, route.mappingMajorVer)
+        for (patch in patches) {
+            /**
+             * If the index already existed, then only apply new patches. If
+             * the index was just created, then apply all patches.
+             */
+            if (indexExisted && route.mappingMinorVer >= patch.minorVersion) {
+                continue
+            }
+            applyMinorVersionMappingFile(route, patch)
+            result = patch
+        }
+
 
         return result
     }
@@ -433,10 +421,10 @@ constructor(
         val route = if (routeId != null) {
             indexRouteDao.get(UUID.fromString(routeId))
         } else {
-            indexRouteDao.getOrgRoute()
+            indexRouteDao.getProjectRoute()
         }
 
-        return esClientCache.get(route.esClientCacheKey(getOrgId().toString()))
+        return esClientCache.get(route.esClientCacheKey())
     }
 
     override fun getClusterRestClient(route: IndexRoute): EsRestClient {

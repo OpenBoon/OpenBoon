@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.security.getAnalystEndpoint
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.warnEvent
@@ -140,7 +140,8 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return if (hasPermission("zorroa::superadmin")) {
             jdbc.queryForObject("$GET WHERE pk_task_error=?", MAPPER, id)
         } else {
-            jdbc.queryForObject("$GET WHERE pk_task_error=? AND pk_organization=?", MAPPER, id, getOrgId())
+            jdbc.queryForObject("$GET WHERE pk_task_error=? AND project_id=?",
+                    MAPPER, id, getProjectId())
         }
     }
 
@@ -148,8 +149,8 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         return return if (hasPermission("zorroa::superadmin")) {
             jdbc.queryForObject("$GET ORDER BY time_created DESC LIMIT 1", MAPPER)
         } else {
-            jdbc.queryForObject("$GET WHERE pk_organization=? ORDER BY time_created DESC LIMIT 1",
-                    MAPPER, getOrgId())
+            jdbc.queryForObject("$GET WHERE project_id=? ORDER BY time_created DESC LIMIT 1",
+                    MAPPER, getProjectId())
         }
     }
 

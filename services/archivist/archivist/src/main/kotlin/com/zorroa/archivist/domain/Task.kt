@@ -3,7 +3,7 @@ package com.zorroa.common.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.repository.KDaoFilter
 import com.zorroa.common.util.JdbcUtils
@@ -95,8 +95,8 @@ open class Task(
     @ApiModelProperty("UUID of the Job this Task belongs to.")
     override val jobId: UUID,
 
-    @ApiModelProperty("UUID of the Organization this Task belongs to.")
-    val organizationId: UUID,
+    @ApiModelProperty("UUID of the Project this Task belongs to.")
+    val projectId: UUID,
 
     name: String,
 
@@ -125,7 +125,7 @@ open class Task(
 /**
  * A DispatchTask is used by the Analysts to start a new task.
  *
- * @property organizationId The Organization the task belongs to.
+ * @property projectId The Project the task belongs to.
  * @property script The [ZpsScript] to run.
  * @property env Extra ENV variables to apply before starting task.
  * @property args Extra script args to pass to the [ZpsScript]
@@ -136,7 +136,7 @@ open class Task(
 class DispatchTask(
     val id: UUID,
     jobId: UUID,
-    val organizationId: UUID,
+    val projectId: UUID,
     name: String,
     state: TaskState,
     val host: String?,
@@ -165,8 +165,8 @@ class TaskFilter(
     @ApiModelProperty("Task names to match.")
     val names: List<String>? = null,
 
-    @ApiModelProperty("Organization UUIDs to match.")
-    val organizationIds: List<UUID>? = null
+    @ApiModelProperty("Project UUIDs to match.")
+    val projectIds: List<UUID>? = null
 
 ) : KDaoFilter() {
 
@@ -187,13 +187,13 @@ class TaskFilter(
         }
 
         if (hasPermission("zorroa::superadmin")) {
-            organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
+            projectIds?.let {
+                addToWhere(JdbcUtils.inClause("job.pk_project", it.size))
                 addToValues(it)
             }
         } else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
+            addToWhere("job.project_id=?")
+            addToValues(getProjectId())
         }
 
         ids?.let {

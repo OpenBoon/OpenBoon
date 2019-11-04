@@ -1,10 +1,8 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.SharedLinkSpec
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.JobSpec

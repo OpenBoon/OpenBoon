@@ -1,42 +1,28 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.domain.Groups
-import com.zorroa.archivist.domain.UserAuthed
-import com.zorroa.archivist.domain.UserBase
+import com.zorroa.archivist.clients.ApiKey
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import java.util.UUID
 
 class SuperAdminAuthority : GrantedAuthority {
     override fun getAuthority(): String {
-        return Groups.SUPERADMIN
+        return Role.SUPERADMIN
     }
-}
-
-/**
- * Some constants referring to super admin users. The super admin doesn't have access to
- * any data.  It's a temporary in-memory user used for creating organizations and SSO users.
- */
-object SuperAdmin {
-    val id: UUID = UUID.fromString("00000000-1111-1111-1111-000000000000")
-    const val username = "organization-admin"
-    val base = UserBase(id, username,
-            "support@zorroa.com", null, null, null)
 }
 
 /**
  * The super-admin is both an admin for an org, and a super admin for the system overall
  */
-class SuperAdminAuthentication : AbstractAuthenticationToken {
+class SuperAdminAuthentication constructor(projectId: UUID) :
+    AbstractAuthenticationToken(listOf(SuperAdminAuthority())) {
 
-    val authed: UserAuthed
-
-    constructor(orgId: UUID) : super(listOf(SuperAdminAuthority())) {
-        authed = UserAuthed(SuperAdmin.id, orgId, SuperAdmin.username, this.authorities.toSet(), mapOf())
-    }
+    val apiKey: ApiKey = ApiKey(projectId,
+        UUID.fromString("00000000-0000-0000-0000-000000000000"),
+        listOf(Role.SUPERADMIN))
 
     override fun getDetails(): Any? {
-        return authed
+        return apiKey
     }
 
     override fun getCredentials(): Any? {
@@ -44,7 +30,7 @@ class SuperAdminAuthentication : AbstractAuthenticationToken {
     }
 
     override fun getPrincipal(): Any {
-        return authed
+        return apiKey
     }
 
     override fun isAuthenticated(): Boolean {

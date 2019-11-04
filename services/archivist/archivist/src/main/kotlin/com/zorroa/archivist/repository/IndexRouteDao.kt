@@ -3,7 +3,8 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getApiKey
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.common.repository.KPage
 import com.zorroa.common.repository.KPagedList
 import com.zorroa.common.util.JdbcUtils
@@ -24,19 +25,9 @@ interface IndexRouteDao {
     fun setErrorVersion(route: IndexRoute, version: Int): Boolean
 
     /**
-     * Return the [IndexRoute] assigned to the current user's organization.
+     * Return the [IndexRoute] assigned to the current user's project.
      */
-    fun getOrgRoute(): IndexRoute
-
-    /**
-     * Return a random [IndexRoute] that is marked to be in the default pool.
-     * For shared indexes, new organizations will use this route. If
-     * archivist.index.create-index-per-org=true, then the random
-     * default route will act as a template for a new index.
-     *
-     * Throws IllegalStateException if no route can be found.
-     */
-    fun getRandomPoolRoute(): IndexRoute
+    fun getProjectRoute(): IndexRoute
 
     /**
      * Return a list of all [IndexRoute]s, including closed.
@@ -91,11 +82,13 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     override fun create(spec: IndexRouteSpec): IndexRoute {
 
         val id = uuid1.generate()
+        val key = getApiKey()
         val time = System.currentTimeMillis()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
+            ps.setObject(2, key.projectId)
             ps.setString(2, spec.clusterUrl)
             ps.setString(3, spec.indexName)
             ps.setString(4, spec.mapping)
@@ -104,11 +97,9 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             ps.setInt(7, spec.replicas)
             ps.setInt(8, spec.shards)
             ps.setBoolean(9, false)
-            ps.setBoolean(10, spec.defaultPool)
-            ps.setBoolean(11, spec.useRouteKey)
-            ps.setLong(12, time)
-            ps.setLong(13, time)
-            ps.setInt(14, -1)
+            ps.setLong(10, time)
+            ps.setLong(11, time)
+            ps.setInt(12, -1)
             ps
         }
 
@@ -130,21 +121,14 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         return jdbc.query(GET, MAPPER)
     }
 
-    override fun getOrgRoute(): IndexRoute {
-        return throwWhenNotFound("Organization has no index") {
-            return jdbc.queryForObject(GET_BY_ORG, MAPPER, getOrgId())
+    override fun getProjectRoute(): IndexRoute {
+        return throwWhenNotFound("Project has no index") {
+            return jdbc.queryForObject("$GET WHERE project_id=?", MAPPER, getProjectId())
         }
     }
 
     override fun get(id: UUID): IndexRoute {
         return jdbc.queryForObject("$GET WHERE pk_index_route=?", MAPPER, id)
-    }
-
-    override fun getRandomPoolRoute(): IndexRoute {
-        val max = properties.getInt("archivist.index.provisioning-max")
-        val routes = jdbc.query(GET_DEFAULTS, MAPPER, max)
-        check(routes.isNotEmpty()) { "No asset indexes or clusters are available for use." }
-        return routes.random()
     }
 
     override fun setMinorVersion(route: IndexRoute, version: Int): Boolean {
@@ -194,9 +178,9 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
-
             IndexRoute(
                 rs.getObject("pk_index_route") as UUID,
+                rs.getObject("project_id") as UUID,
                 rs.getString("str_url"),
                 rs.getString("str_index"),
                 rs.getString("str_mapping_type"),
@@ -204,15 +188,14 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                 rs.getInt("int_mapping_minor_ver"),
                 rs.getBoolean("bool_closed"),
                 rs.getInt("int_replicas"),
-                rs.getInt("int_shards"),
-                rs.getBoolean("bool_default_pool"),
-                rs.getBoolean("bool_use_rkey")
+                rs.getInt("int_shards")
             )
         }
 
         val INSERT = JdbcUtils.insert(
             "index_route",
             "pk_index_route",
+            "project_id",
             "str_url",
             "str_index",
             "str_mapping_type",
@@ -221,8 +204,6 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "int_replicas",
             "int_shards",
             "bool_closed",
-            "bool_default_pool",
-            "bool_use_rkey",
             "time_created",
             "time_modified",
             "int_mapping_error_ver"
@@ -231,31 +212,6 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         const val GET = "SELECT * FROM index_route"
 
         const val COUNT = "SELECT COUNT(1) FROM index_route"
-
-        const val GET_BY_ORG = "$GET " +
-            "INNER JOIN " +
-            "organization " +
-            "ON " +
-            "index_route.pk_index_route = organization.pk_index_route " +
-            "AND " +
-            "organization.pk_organization=?"
-
-        const val GET_DEFAULTS = "$GET " +
-            "WHERE " +
-            "index_route.bool_default_pool = 't' " +
-            "AND " +
-            "index_route.bool_closed = 'f' " +
-            "AND " +
-            "index_route.str_url IN (" +
-            "SELECT str_url " +
-            "FROM " +
-            "index_route " +
-            "JOIN " +
-            "organization ON index_route.pk_index_route = organization.pk_index_route " +
-            "GROUP BY " +
-            "str_url " +
-            "HAVING " +
-            "count(str_url) < ?)"
 
         const val UPDATE_MINOR_VER =
             "UPDATE " +

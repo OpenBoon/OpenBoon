@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobId
 import com.zorroa.common.domain.JobSpec
@@ -67,10 +67,10 @@ class TaskDaoTests : AbstractTest() {
         val filter4 = TaskFilter(states = listOf(TaskState.Skipped))
         assertEquals(0, taskDao.getAll(filter4).size())
 
-        val filter5 = TaskFilter(organizationIds = listOf(getOrgId()))
+        val filter5 = TaskFilter(projectIds = listOf(getProjectId()))
         assertEquals(11, taskDao.getAll(filter5).size())
 
-        val filter6 = TaskFilter(organizationIds = listOf(UUID.randomUUID()))
+        val filter6 = TaskFilter(projectIds = listOf(UUID.randomUUID()))
         assertEquals(0, taskDao.getAll(filter6).size())
     }
 
@@ -84,7 +84,7 @@ class TaskDaoTests : AbstractTest() {
     fun testGet() {
         val task2 = taskDao.get(task.id)
         assertEquals(task.id, task2.id)
-        assertEquals(job.organizationId, task2.organizationId)
+        assertEquals(job.projectId, task2.projectId)
     }
 
     @Test

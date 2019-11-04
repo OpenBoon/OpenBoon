@@ -8,9 +8,9 @@
             "type": "completion",
             "analyzer":  "standard",
             "contexts": {
-              "name": "organization",
+              "name": "project",
               "type": "category",
-              "path": "system.organizationId"
+              "path": "system.projectId"
             }
           }
         }

@@ -232,7 +232,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         private val MAPPER = RowMapper { rs, _ ->
             Task(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
-                    rs.getObject("pk_organization") as UUID,
+                    rs.getObject("project_id") as UUID,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")],
                     rs.getString("str_host"),
@@ -335,7 +335,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task_stat.int_asset_replace_count," +
                 "task_stat.int_asset_error_count," +
                 "task_stat.int_asset_warning_count," +
-                "job.pk_organization " +
+                "job.project_id " +
                 "FROM " +
                 "task " +
                 "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
