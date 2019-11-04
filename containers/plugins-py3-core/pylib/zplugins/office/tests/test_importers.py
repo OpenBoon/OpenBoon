@@ -69,7 +69,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         asset.set_attr('tmp.office_output_dir', path)
 
         processor = self.init_processor(OfficeImporter(), {})
-        assert processor._needs_rerender(asset) == True
+        assert processor._needs_rerender(asset) is True
 
     def test_needs_rerender_catches_missing_metadata(self):
         metadata_file = tempfile.NamedTemporaryFile(prefix='proxy.', suffix='.json')
@@ -87,7 +87,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         self.asset.set_attr('media.clip.start', 1)
         self.asset.set_attr('tmp.office_output_dir', '/fake')
         processor = self.init_processor(OfficeImporter(), {})
-        assert processor._needs_rerender(self.asset) == False
+        assert processor._needs_rerender(self.asset) is False
 
     @patch.object(OfficeImporter, '_is_content_extractable', return_value=True)
     def test_get_request_body_no_content_no_page(self, _):
