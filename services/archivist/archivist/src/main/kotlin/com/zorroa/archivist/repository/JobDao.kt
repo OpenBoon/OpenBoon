@@ -92,7 +92,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
     override fun delete(job: JobId): Boolean {
         val result = listOf(
-                "DELETE FROM export_file WHERE pk_job=?",
                 "DELETE FROM task_stat WHERE pk_job=?",
                 "DELETE FROM task_error WHERE pk_job=?",
                 "DELETE FROM task WHERE pk_job=?",

@@ -158,7 +158,6 @@ CREATE TABLE job (
     int_priority smallint DEFAULT 0 NOT NULL,
     time_created bigint DEFAULT '1536693258000'::bigint NOT NULL,
     time_modified bigint DEFAULT '1536693258000'::bigint NOT NULL,
-    pk_user_modified uuid NOT NULL,
     time_pause_expired bigint DEFAULT '-1'::integer NOT NULL,
     bool_paused boolean DEFAULT false NOT NULL
 );
