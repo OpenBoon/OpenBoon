@@ -1,9 +1,9 @@
 stages:
   - pylib-linting
 
-sdk-lint:
+pylib-linting:
   image: python:3.8
-  stage: pylib_linting
+  stage: pylib-linting
   script:
     - python -m pip install flake8
     - flake8 containers/plugins-py3-analysis
