@@ -161,7 +161,7 @@ class MultipleWebSecurityConfig {
 
     @Bean
     fun apiKeyAuthenticationFilter(): ApiKeyAuthorizationFilter {
-        val authServerClient = AuthServerClient(properties.getString("secutity.auth-server.url"))
+        val authServerClient = AuthServerClient(properties.getString("security.auth-server.url"))
         return ApiKeyAuthorizationFilter(authServerClient)
     }
 
