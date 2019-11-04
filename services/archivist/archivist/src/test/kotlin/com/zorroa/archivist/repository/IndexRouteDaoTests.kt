@@ -21,7 +21,7 @@ class IndexRouteDaoTests : AbstractTest() {
     @Test
     fun testUpdateDefaultIndexRoutes() {
         val url = "http://dog:1234"
-        indexRouteDao.updateDefaultIndexRoutes("http://dog:1234", false)
+        indexRouteDao.updateDefaultIndexRoutes("http://dog:1234")
         assertEquals(
             url, jdbc.queryForObject(
                 "SELECT str_url FROM index_route",
