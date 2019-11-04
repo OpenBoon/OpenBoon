@@ -16,7 +16,7 @@ interface ApiKeyService {
      */
     fun create(spec: ApiKeySpec): ApiKey
 
-    fun get(id: UUID): ApiKey
+    fun get(keyId: UUID): ApiKey
 
     fun findAll(): List<ApiKey>
 
@@ -30,18 +30,12 @@ class ApiKeyServiceImpl : ApiKeyService {
     lateinit var apiKeyRepository: ApiKeyRepository
 
     override fun create(spec: ApiKeySpec): ApiKey {
-
-        val authorities = when {
-            spec.permissions.isNullOrEmpty() -> "READ"
-            else -> spec.permissions.joinToString(",")
-        }
-
         val key = ApiKey(
                 UUID.randomUUID(),
                 spec.projectId,
                 KeyGenerator.generate(),
                 spec.name,
-                authorities
+                spec.permissions
         )
         return apiKeyRepository.save(key)
     }
