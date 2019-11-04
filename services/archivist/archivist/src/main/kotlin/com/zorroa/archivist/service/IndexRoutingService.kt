@@ -277,8 +277,7 @@ constructor(
 
     override fun setupDefaultIndexRoute() {
         val defaultUrl = properties.getString("archivist.index.default-url")
-        val defaultRoutingKey = properties.getBoolean("archivist.index.default-use-routing-key")
-        indexRouteDao.updateDefaultIndexRoutes(defaultUrl, defaultRoutingKey)
+        indexRouteDao.updateDefaultIndexRoutes(defaultUrl)
     }
 
     override fun syncAllIndexRoutes() {
