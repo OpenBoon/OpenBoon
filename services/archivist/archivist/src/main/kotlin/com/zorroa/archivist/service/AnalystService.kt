@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ProcessorSpec
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.util.UUID
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 interface AnalystService {
@@ -50,8 +48,7 @@ interface AnalystService {
 class AnalystServicImpl @Autowired constructor(
     val analystDao: AnalystDao,
     val taskDao: TaskDao,
-    val txm: TransactionEventManager,
-    val clusterLockExecutor: ClusterLockExecutor
+    val txm: TransactionEventManager
 ) : AnalystService {
 
     @Autowired
@@ -122,20 +119,26 @@ class AnalystServicImpl @Autowired constructor(
     override fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState): Boolean {
         return try {
             val client = RestClient(endpoint)
-            val result = client.delete("/kill/$taskId",
-                    mapOf("reason" to reason, "newState" to newState.name), Json.GENERIC_MAP)
+            val result = client.delete(
+                "/kill/$taskId",
+                mapOf("reason" to reason, "newState" to newState.name), Json.GENERIC_MAP
+            )
 
             return if (result["status"] as Boolean) {
                 logger.event(LogObject.TASK, LogAction.KILL, mapOf("reason" to reason, "taskId" to taskId))
                 true
             } else {
-                logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
-                        mapOf("taskId" to taskId, "analyst" to endpoint))
+                logger.warnEvent(
+                    LogObject.TASK, LogAction.KILL, "Failed to kill task",
+                    mapOf("taskId" to taskId, "analyst" to endpoint)
+                )
                 false
             }
         } catch (e: Exception) {
-            logger.warnEvent(LogObject.TASK, LogAction.KILL, "Failed to kill task",
-                    mapOf("taskId" to taskId, "analyst" to endpoint), e)
+            logger.warnEvent(
+                LogObject.TASK, LogAction.KILL, "Failed to kill task",
+                mapOf("taskId" to taskId, "analyst" to endpoint), e
+            )
             false
         }
     }
@@ -150,44 +153,34 @@ class AnalystServicImpl @Autowired constructor(
     }
 
     override fun doProcessorScan(): List<ProcessorSpec> {
-        /**
-         * Take a soft lock and hold for the full timeout to stop over-scanning.
-         */
-        val lock = ClusterLockSpec.softLock("processor-scan").apply {
-            holdTillTimeout = true
-            timeout = 1
-            timeoutUnits = TimeUnit.MINUTES
+        // TODO: cluster lock
+        val filter = AnalystFilter(states = listOf(AnalystState.Up))
+        filter.apply {
+            this.page = KPage(0, 5)
+            this.sort = listOf("timePing:d", "load:a")
         }
 
-        val result = clusterLockExecutor.inline(lock) {
-            val filter = AnalystFilter(states = listOf(AnalystState.Up))
-            filter.apply {
-                this.page = KPage(0, 5)
-                this.sort = listOf("timePing:d", "load:a")
-            }
-
-            val analysts = analystDao.getAll(filter)
-            var processors = mutableListOf<ProcessorSpec>()
-            for (analyst in analysts) {
-                logger.event(LogObject.ANALYST, LogAction.SCAN,
-                        mapOf("analystEndpoint" to analyst.endpoint))
-                val client = getClient(analyst.endpoint)
-                try {
-                    val procs = client.get("/processors",
-                            object : TypeReference<List<ProcessorSpec>>() {})
-                    if (procs.isNotEmpty()) {
-                        processorService.replaceAll(procs)
-                        processors.addAll(procs)
-                        break
-                    }
-                } catch (e: Exception) {
-                    logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
+        val analysts = analystDao.getAll(filter)
+        var processors = mutableListOf<ProcessorSpec>()
+        for (analyst in analysts) {
+            logger.event(
+                LogObject.ANALYST, LogAction.SCAN,
+                mapOf("analystEndpoint" to analyst.endpoint)
+            )
+            val client = getClient(analyst.endpoint)
+            try {
+                val procs = client.get("/processors",
+                    object : TypeReference<List<ProcessorSpec>>() {})
+                if (procs.isNotEmpty()) {
+                    processorService.replaceAll(procs)
+                    processors.addAll(procs)
+                    break
                 }
+            } catch (e: Exception) {
+                logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
             }
-            processors
         }
-
-        return result ?: listOf()
+        return processors
     }
 
     override fun getClient(endpoint: String): RestClient {

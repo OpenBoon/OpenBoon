@@ -15,8 +15,8 @@ import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getApiKey
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.common.domain.InternalTask
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobFilter
@@ -102,10 +102,10 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun create(spec: JobSpec, type: PipelineType): Job {
-        val user = getUser()
+        val user = getApiKey()
         if (spec.name == null) {
             val date = Date()
-            spec.name = "${type.name} job launched by ${user.getName()} on $date"
+            spec.name = "${type.name} job launched by ${user.projectId} on $date"
         }
 
         /**
@@ -125,7 +125,7 @@ class JobServiceImpl @Autowired constructor(
                 val filter = JobFilter(
                     states = listOf(JobState.Active),
                     names = listOf(job.name),
-                    organizationIds = listOf(getOrgId())
+                    projectIds = listOf(getProjectId())
                 )
                 val oldJobs = jobDao.getAll(filter)
                 for (oldJob in oldJobs) {

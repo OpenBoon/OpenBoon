@@ -4,7 +4,7 @@ import com.zorroa.archivist.domain.FileUploadSpec
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.security.getUser
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.common.domain.Job
 import com.zorroa.common.domain.JobSpec
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,7 +53,7 @@ class FileUploadServiceImpl @Autowired constructor(
             pipelineService.resolve(PipelineType.Import, spec.processors)
         }
 
-        val name = spec.name ?: "File Upload by ${getUser().username}"
+        val name = spec.name ?: "File Upload by ${getProjectId()}"
         val jspec = JobSpec(name,
                 ZpsScript("Generator",
                         generate = generate,

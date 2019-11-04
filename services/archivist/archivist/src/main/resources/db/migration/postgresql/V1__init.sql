@@ -142,6 +142,7 @@ CREATE INDEX asset_pk_time_modified_idx ON zorroa.asset USING btree (time_modifi
 CREATE TABLE zorroa.index_route (
     pk_index_route uuid PRIMARY KEY,
     project_id uuid NOT NULL,
+    str_name text NOT NULL,
     str_url text NOT NULL,
     str_index text NOT NULL,
     str_mapping_type text NOT NULL,
@@ -150,8 +151,6 @@ CREATE TABLE zorroa.index_route (
     int_replicas smallint NOT NULL,
     int_shards smallint NOT NULL,
     bool_closed boolean NOT NULL,
-    bool_default_pool boolean NOT NULL,
-    bool_use_rkey boolean NOT NULL,
     time_created bigint NOT NULL,
     time_modified bigint NOT NULL,
     int_mapping_error_ver integer DEFAULT '-1'::integer NOT NULL

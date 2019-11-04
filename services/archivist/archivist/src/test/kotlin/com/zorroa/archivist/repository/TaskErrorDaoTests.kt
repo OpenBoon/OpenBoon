@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.JobService
 import com.zorroa.common.domain.JobSpec
 import com.zorroa.common.domain.Task
@@ -218,10 +218,10 @@ class TaskErrorDaoTests : AbstractTest() {
     fun testGetAllByOrganizationId() {
         createTaskErrors()
 
-        var filter = TaskErrorFilter(organizationIds = listOf(getOrgId()))
+        var filter = TaskErrorFilter(projectIds = listOf(getProjectId()))
         assertEquals(1, taskErrorDao.count(filter))
 
-        filter = TaskErrorFilter(organizationIds = listOf(UUID.randomUUID()))
+        filter = TaskErrorFilter(projectIds = listOf(UUID.randomUUID()))
         assertEquals(0, taskErrorDao.count(filter))
     }
 

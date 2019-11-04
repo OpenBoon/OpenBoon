@@ -31,7 +31,6 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head
@@ -97,16 +96,11 @@ class AssetControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v3/assets/_search")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(AssetSearch("O'Malley")))
         )
             .andExpect(status().isOk)
             .andReturn()
-
-        val json = Json.Mapper.readValue<Map<String, Any>>(result.response.contentAsString,
-            object : TypeReference<Map<String, Any>>() {
-            })
     }
 
     @Test
@@ -118,7 +112,6 @@ class AssetControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v2/assets/_count")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(AssetSearch("beer")))
         )
@@ -166,7 +159,6 @@ class AssetControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v2/assets/_count")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(search))
         )
@@ -191,7 +183,6 @@ class AssetControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v3/assets/_suggest")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(mapOf("text" to "re")))
         )
@@ -219,7 +210,6 @@ class AssetControllerTests : MockMvcTest() {
             val result = mvc.perform(
                 delete("/api/v1/assets/" + asset.id)
                     .headers(admin())
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
             )
                 .andExpect(status().isOk)
@@ -244,7 +234,6 @@ class AssetControllerTests : MockMvcTest() {
 
         val result = mvc.perform(
             delete("/api/v1/assets")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .headers(admin())
                 .content(Json.serializeToString(mapOf("assetIds" to ids)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -464,7 +453,6 @@ class AssetControllerTests : MockMvcTest() {
         val req = BatchUpdateAssetsRequest(updates)
         val result = mvc.perform(
             put("/api/v1/assets")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .headers(admin())
                 .content(Json.serializeToString(req))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

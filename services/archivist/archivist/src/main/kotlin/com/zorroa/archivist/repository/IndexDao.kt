@@ -11,8 +11,8 @@ import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getOrganizationFilter
+import com.zorroa.archivist.security.getProjectFilter
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.service.warnEvent
@@ -221,7 +221,7 @@ class IndexDaoImpl constructor(
     }
 
     private fun prepareInsert(source: Document): IndexRequest {
-        source.setAttr("system.organizationId", getOrgId().toString())
+        source.setAttr("system.projectId", getProjectId().toString())
         val rest = getClient()
         return rest.newIndexRequest(source.id)
             .opType(DocWriteRequest.OpType.INDEX)
@@ -336,7 +336,7 @@ class IndexDaoImpl constructor(
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termQuery("_id", id))
-            .filter(getOrganizationFilter())
+            .filter(getProjectFilter())
         req.source.size(1)
         req.source.query(query)
 

@@ -5,9 +5,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
-import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.security.Groups
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
@@ -15,7 +13,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.test.context.TestPropertySource
 import java.nio.file.Paths
 
@@ -26,9 +23,6 @@ class IndexServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var indexDao: IndexDao
-
-    @Autowired
-    lateinit var assetDao: AssetDao
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -41,12 +35,7 @@ class IndexServiceTests : AbstractTest() {
 
     @Test
     fun testIndexWithBackup() {
-        val doc = Document()
-        doc.setAttr("foo", "bar")
-        indexService.index(doc)
-
-        val asset = assetDao.get(doc.id)
-        assertEquals("bar", asset.getAttr("foo"))
+        throw NotImplementedError()
     }
 
     @Test

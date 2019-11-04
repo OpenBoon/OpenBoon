@@ -15,7 +15,6 @@ import org.hamcrest.CoreMatchers
 import org.junit.After
 import org.junit.Test
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -54,14 +53,12 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/index-routes")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec))
         )
@@ -74,8 +71,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
         assertEquals("testing123", result.indexName)
         assertEquals("test", result.mapping)
         assertEquals(1, result.mappingMajorVer)
-        assertEquals(false, result.defaultPool)
-        assertEquals(false, result.useRouteKey)
         assertEquals(2, result.replicas)
         assertEquals(5, result.shards)
     }
@@ -86,8 +81,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -95,7 +89,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-routes/${route.id}")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -107,8 +100,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
         assertEquals("testing123", result.indexName)
         assertEquals("test", result.mapping)
         assertEquals(1, result.mappingMajorVer)
-        assertEquals(false, result.defaultPool)
-        assertEquals(false, result.useRouteKey)
         assertEquals(2, result.replicas)
         assertEquals(5, result.shards)
     }
@@ -119,15 +110,13 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-routes/${route.id}/_state")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -142,8 +131,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -152,7 +140,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_open")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -166,15 +153,13 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_close")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -188,8 +173,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -198,7 +182,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
         mvc.perform(
             MockMvcRequestBuilders.delete("/api/v1/index-routes/${route.id}")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -211,7 +194,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-routes/_mappings")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -230,8 +212,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -240,7 +221,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/index-routes/_migrate")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(mspec))
         )

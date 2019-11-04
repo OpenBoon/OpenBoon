@@ -9,7 +9,6 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -39,7 +38,6 @@ class PipelineControllerTests : MockMvcTest() {
         val result = mvc.perform(
             post("/api/v1/pipelines")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -58,7 +56,6 @@ class PipelineControllerTests : MockMvcTest() {
         val result2 = mvc.perform(
             delete("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
@@ -81,7 +78,6 @@ class PipelineControllerTests : MockMvcTest() {
         val result = mvc.perform(
             put("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec2))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )

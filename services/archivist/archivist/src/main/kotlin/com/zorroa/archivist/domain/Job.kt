@@ -1,10 +1,10 @@
 package com.zorroa.common.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.archivist.domain.Groups
 import com.zorroa.archivist.domain.PipelineType
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.JobPriority.Interactive
 import com.zorroa.common.domain.JobPriority.Reindex
@@ -105,7 +105,7 @@ class Job(
     val id: UUID,
 
     @ApiModelProperty("UUID of the Organization this Job belongs to.")
-    val organizationId: UUID,
+    val projectId: UUID,
 
     @ApiModelProperty("Name of the Job.")
     val name: String,
@@ -164,8 +164,8 @@ class JobFilter(
     @ApiModelProperty("States to match.")
     val states: List<JobState>? = null,
 
-    @ApiModelProperty("Organization UUIDs to match.")
-    val organizationIds: List<UUID>? = null,
+    @ApiModelProperty("Project UUIDs to match.")
+    val projectIds: List<UUID>? = null,
 
     @ApiModelProperty("Job names to match.")
     val names: List<String>? = null,
@@ -184,7 +184,7 @@ class JobFilter(
             "timeCreated" to "job.time_created",
             "state" to "job.int_state",
             "priority" to "job.int_priority",
-            "organizationId" to "job.pk_organization"
+            "projectId" to "job.project_id"
         )
 
     @JsonIgnore
@@ -194,14 +194,14 @@ class JobFilter(
             sort = listOf("timeCreated:desc")
         }
 
-        if (hasPermission(Groups.SUPERADMIN)) {
-            organizationIds?.let {
+        if (hasPermission(Role.SUPERADMIN)) {
+            projectIds?.let {
                 addToWhere(JdbcUtils.inClause("job.project_id", it.size))
                 addToValues(it)
             }
         } else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
+            addToWhere("job.project_id=?")
+            addToValues(getProjectId())
         }
 
         ids?.let {
@@ -230,3 +230,14 @@ class JobFilter(
         }
     }
 }
+
+/**
+ * A simple class for determining the dispatch priority of project.
+ *
+ * @property projectId The Organization Id.
+ * @property priority The priority of the Organization, lower is higher priority.
+ */
+class DispatchPriority(
+    val projectId: UUID,
+    val priority: Int
+)

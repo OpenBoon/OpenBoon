@@ -5,7 +5,6 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.TaskStatsEvent
@@ -157,7 +156,6 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun getTaskPriorityMultipleOrganizations() {
-        val org = organizationService.create(OrganizationSpec("kirk"))
 
         val spec1 = JobSpec(
             "test_job",
@@ -171,7 +169,7 @@ class DispatcherServiceTests : AbstractTest() {
             job.id
         )
 
-        withAuth(SuperAdminAuthentication(org.id)) {
+        withAuth(SuperAdminAuthentication(UUID.randomUUID())) {
             val spec2 = JobSpec(
                 "test_job",
                 emptyZpsScript("foo"),

@@ -11,7 +11,6 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.util.UUID
@@ -88,7 +87,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/analysts/${analyst.id}")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -105,7 +103,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=locked")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -116,7 +113,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp2 = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=unlocked")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -130,7 +126,6 @@ class AnalystControllerTests : MockMvcTest() {
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=sdsdsdsdsds")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
@@ -139,7 +134,6 @@ class AnalystControllerTests : MockMvcTest() {
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/wedwdsdsds/_lock?state=unlocked")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
@@ -151,7 +145,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -165,7 +158,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp2 = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)

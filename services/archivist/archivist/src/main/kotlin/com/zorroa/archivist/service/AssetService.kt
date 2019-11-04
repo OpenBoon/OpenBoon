@@ -2,9 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getOrganizationFilter
-import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.*
 import com.zorroa.common.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.search.SearchType
@@ -79,7 +77,7 @@ class AssetServiceImpl : AssetService {
      * Prepare a list of assets to be created.  Updated assets are not prepped.
      *
      * - Removing tmp/system namespaces
-     * - Applying the organization Id
+     * - Applying the project Id
      * - Applying modified / created times
      * - Applying default permissions
      * - Applying links
@@ -97,7 +95,7 @@ class AssetServiceImpl : AssetService {
         }
 
         val assets = req.sources
-        val orgId = getOrgId()
+        val projectId = getProjectId()
 
         val prepped = PreppedAssets(assets.map { newSource ->
 
@@ -112,7 +110,7 @@ class AssetServiceImpl : AssetService {
              */
             PROTECTED_NAMESPACES.forEach { n -> newSource.removeAttr(n) }
 
-            newSource.setAttr("system.organizationId", orgId.toString())
+            newSource.setAttr("system.projectId", projectId.toString())
             handleTimes(existingSource, newSource)
             newSource
         }, req.scope)
@@ -177,14 +175,14 @@ class AssetServiceImpl : AssetService {
         if (rsp.createdAssetIds.isNotEmpty()) {
             messagingService.sendMessage(
                     actionType = ActionType.AssetsCreated,
-                    organizationId = getOrgId(),
+                    projectId = getProjectId(),
                     data = mapOf("ids" to rsp.createdAssetIds)
             )
         }
         if (rsp.replacedAssetIds.isNotEmpty()) {
             messagingService.sendMessage(
                     actionType = ActionType.AssetsDeleted,
-                    organizationId = getOrgId(),
+                    projectId = getProjectId(),
                     data = mapOf("ids" to rsp.replacedAssetIds)
             )
         }
@@ -240,7 +238,7 @@ class AssetServiceImpl : AssetService {
 
         // Wrap the query in Org filter
         val query = QueryBuilders.boolQuery()
-        query.filter(getOrganizationFilter())
+        query.filter(getProjectFilter())
 
         if (ssb.query() == null) {
             query.must(QueryBuilders.matchAllQuery())
@@ -266,7 +264,7 @@ class AssetServiceImpl : AssetService {
 
         val req = client.newSearchRequest()
         req.searchType(SearchType.DEFAULT)
-        req.preference(getUserId().toString())
+        req.preference(getProjectId().toString())
         req.source(prepSearch(query))
 
         val rsp = client.client.search(req, RequestOptions.DEFAULT)
@@ -285,12 +283,7 @@ class AssetServiceImpl : AssetService {
          * Namespaces that are protected or unable to be set via the API.
          */
         val PROTECTED_NAMESPACES = setOf("system", "tmp")
-
-        /**
-         * The number of assets each IO thread will handle during a batch update.
-         */
-        const val UPDATE_BATCH_SIZE = 10
-
+        
         val logger: Logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
     }
 }

@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.common.domain.DispatchPriority
 import com.zorroa.common.domain.DispatchTask
 import com.zorroa.common.domain.JobState
 import com.zorroa.common.domain.TaskState
@@ -16,10 +16,10 @@ interface DispatchTaskDao {
     /**
      * Return the next N tasks for an Organization.
      *
-     * @param organizationId The unique Organization ID
+     * @param projectId The unique Organization ID
      * @param count The maximum number of tasks to return
      */
-    fun getNextByOrg(organizationId: UUID, count: Int = 10): List<DispatchTask>
+    fun getNextByProject(projectId: UUID, count: Int = 10): List<DispatchTask>
 
     /**
      * Return the next N tasks with a minimum priority.  Lower is first.
@@ -38,11 +38,11 @@ interface DispatchTaskDao {
 @Repository
 class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
-    override fun getNextByOrg(organizationId: UUID, count: Int): List<DispatchTask> {
+    override fun getNextByProject(projectId: UUID, count: Int): List<DispatchTask> {
         return jdbc.query(GET_BY_ORG, MAPPER,
                 JobState.Active.ordinal,
                 TaskState.Waiting.ordinal,
-                organizationId,
+                projectId,
                 count)
     }
 
@@ -57,7 +57,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
     override fun getDispatchPriority(): List<DispatchPriority> {
         val result = jdbc.query(GET_DISPATCH_PRIORITY) { rs, _ ->
             DispatchPriority(
-                    rs.getObject("pk_organization") as UUID,
+                    rs.getObject("project_id") as UUID,
                     rs.getInt("priority"))
         }
         result.sortBy { it.priority }
@@ -76,7 +76,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
             DispatchTask(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
-                    rs.getObject("pk_organization") as UUID,
+                    rs.getObject("project_id") as UUID,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")],
                     rs.getString("str_host"),
@@ -88,7 +88,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
         private const val GET_DISPATCH_PRIORITY =
             "SELECT " +
-                "job.pk_organization, " +
+                "job.project_id, " +
                 "SUM(job_count.int_task_state_1) AS priority " +
             "FROM job " +
                 "INNER JOIN job_count ON (job.pk_job = job_count.pk_job) " +
@@ -97,11 +97,11 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "AND " +
                 "job_count.int_task_state_0 > 0 " +
             "GROUP BY " +
-                "job.pk_organization"
+                "job.project_id"
 
         private const val GET =
             "SELECT " +
-                "job.pk_organization," +
+                "job.project_id," +
                 "job.json_env," +
                 "job.json_args," +
                 "job.pk_user_created," +
@@ -134,7 +134,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
          */
         private const val GET_BY_ORG = GET +
             "AND " +
-                "job.pk_organization=? " +
+                "job.project_id=? " +
             "ORDER BY " +
                 "job.int_priority,job.time_created,task.time_created LIMIT ?"
 

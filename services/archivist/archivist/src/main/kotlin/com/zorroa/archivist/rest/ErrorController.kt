@@ -1,6 +1,6 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.security.getUserOrNull
+import com.zorroa.archivist.security.getApiKeyOrNull
 import com.zorroa.common.domain.*
 import io.micrometer.core.annotation.Timed
 import org.elasticsearch.ElasticsearchException
@@ -87,11 +87,11 @@ class RestApiExceptionHandler {
         val errorId = UUID.randomUUID().toString()
 
         if (doExtraLogging.contains(status) || debug) {
-            logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.username, errorId, e)
+            logger.error("endpoint='{}' project='{}', errorId='{}',",
+                    req.servletPath, getApiKeyOrNull()?.projectId, errorId, e)
         } else {
-            logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.username, errorId)
+            logger.error("endpoint='{}' project='{}', errorId='{}',",
+                    req.servletPath, getApiKeyOrNull()?.projectId, errorId)
         }
 
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)

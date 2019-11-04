@@ -3,7 +3,7 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
@@ -72,7 +72,7 @@ class TaskController @Autowired constructor(
     fun retry(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
         return HttpUtils.status("Task", id, "retry",
                 dispatcherService.retryTask(jobService.getInternalTask(id),
-                        "Retried by ${getUsername()}"))
+                        "Retried by ${getProjectId()}"))
     }
 
     @ApiOperation("Skip a Task.")

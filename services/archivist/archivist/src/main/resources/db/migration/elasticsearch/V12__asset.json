@@ -113,47 +113,8 @@
               "type": "date",
               "format": "yyyy/MM/dd||yyyy/MM/dd Z||date_optional_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
             },
-            "organizationId": {
+            "projectId": {
               "type": "keyword"
-            },
-            "fieldEdits": {
-              "type": "keyword"
-            },
-            "links": {
-              "properties": {
-                "import": {
-                  "type": "keyword"
-                },
-                "export": {
-                  "type": "keyword"
-                },
-                "folder": {
-                  "type": "keyword"
-                }
-              }
-            },
-            "taxonomy": {
-              "properties": {
-                "folderId": {
-                  "type": "keyword"
-                },
-                "taxId": {
-                  "type": "keyword"
-                }
-              }
-            },
-            "permissions": {
-              "properties": {
-                  "read": {
-                    "type": "keyword"
-                  },
-                  "export": {
-                    "type": "keyword"
-                  },
-                  "write": {
-                    "type": "keyword"
-                  }
-              }
             }
           }
         }
@@ -174,9 +135,9 @@
                 "suggest": {
                   "type": "completion",
                   "contexts": {
-                    "name": "organization",
+                    "name": "project",
                     "type": "category",
-                    "path": "system.organizationId"
+                    "path": "system.projectId"
                   }
                 }
               }
@@ -282,15 +243,6 @@
             "mapping": {
               "type": "date",
               "format": "yyyy-MM-dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy/MM/dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss||MM/dd/yyyy HH:mm:ss Z||MM-dd-yyyy HH:mm:ss||MM-dd-yyyy HH:mm:ss Z||date_time||epoch_millis"
-            }
-          }
-        },
-        {
-          "links_template": {
-            "path_match": "system.links.*",
-            "match_mapping_type": "string",
-            "mapping": {
-              "type": "keyword"
             }
           }
         },
