@@ -10,7 +10,8 @@ class ClassifiersUnitTests(PluginUnitTestCase):
         super(ClassifiersUnitTests, cls).setUpClass()
 
     def setUp(self):
-        self.frame = zorroa.zsdk.Frame(zorroa.zsdk.Document(data={'id': '9f0f8a1d-4719-5cf8-b427-4612c5597811'}))
+        self.frame = zorroa.zsdk.Frame(zorroa.zsdk.Document(
+            data={'id': '9f0f8a1d-4719-5cf8-b427-4612c5597811'}))
         self.frame.asset.set_attr(
             'analysis.imageSimilarity.shash',
             '0050FPPOGPPKPIPCAPPPDHHIGPCLJEPLPPPAPPGPDPFPPGPADCBFGIPGDDCIPIGPPDPABPOMPNPAPBPPDKP' +

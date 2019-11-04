@@ -13,4 +13,6 @@ class PubSubCollectorUnitTestCase(PluginUnitTestCase):
         frames = [Frame(asset)]
         collector = PubSubCollector()
         data = collector._get_data(frames)
-        assert data == '[{"links": null, "replace": false, "parentId": null, "document": {"date": "2000-01-01", "set": [1, 2]}, "type": "asset", "id": null, "permissions": null}]'
+        assert data == '[{"links": null, "replace": false, ' \
+                       '"parentId": null, "document": {"date": "2000-01-01", ' \
+                       '"set": [1, 2]}, "type": "asset", "id": null, "permissions": null}]'
