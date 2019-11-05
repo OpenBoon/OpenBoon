@@ -49,8 +49,8 @@ class ZpsScript(
     @ApiModelProperty("Global arguments to apply to the Processors.")
     var globalArgs: MutableMap<String, Any>? = mutableMapOf(),
 
-    @ApiModelProperty("Type of pipeline to run", allowableValues = "import,export")
-    var type: PipelineType = PipelineType.Import,
+    @ApiModelProperty("Type of pipeline to run", allowableValues = "import,batch")
+    var type: JobType = JobType.Import,
 
     @ApiModelProperty("Settings for the run of this ZPS Script.")
     var settings: MutableMap<String, Any>? = null
@@ -113,6 +113,9 @@ class ProcessorRef(
     @ApiModelProperty("Dot-path to the Processor's python class.")
     var className: String,
 
+    @ApiModelProperty("The docker container image.")
+    var image: String,
+
     @ApiModelProperty("Args to pass to the Processor.")
     var args: Map<String, Any>? = mutableMapOf(),
 
@@ -126,10 +129,7 @@ class ProcessorRef(
     var fileTypes: Set<String>? = mutableSetOf(),
 
     @ApiModelProperty("Envrironment variables that should be present during processor execution.")
-    val env: Map<String, String> = mutableMapOf(),
-
-    @ApiModelProperty("DEPRECATED: Always python.", hidden = true)
-    val language: String = "python"
+    val env: Map<String, String> = mutableMapOf()
 )
 
 var LIST_OF_PREFS: TypeReference<List<ProcessorRef>> = object : TypeReference<List<ProcessorRef>>() {}

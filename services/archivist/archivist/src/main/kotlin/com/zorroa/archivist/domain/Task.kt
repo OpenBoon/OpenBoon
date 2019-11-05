@@ -1,12 +1,15 @@
-package com.zorroa.common.domain
+package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.repository.KDaoFilter
-import com.zorroa.common.util.JdbcUtils
+import com.zorroa.archivist.domain.TaskState.Failure
+import com.zorroa.archivist.domain.TaskState.Queued
+import com.zorroa.archivist.domain.TaskState.Running
+import com.zorroa.archivist.domain.TaskState.Skipped
+import com.zorroa.archivist.domain.TaskState.Success
+import com.zorroa.archivist.domain.TaskState.Waiting
+import com.zorroa.archivist.repository.KDaoFilter
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -66,10 +69,9 @@ open class InternalTask(
     override val taskId: UUID,
     override val jobId: UUID,
 
-    @ApiModelProperty("Name of this task.")
+    @ApiModelProperty("UUID of the Project this Task belongs to.")
+    val projectId: UUID,
     val name: String,
-
-    @ApiModelProperty("Current state of the Task.")
     val state: TaskState
 
 ) : TaskId, JobId {
@@ -95,8 +97,7 @@ open class Task(
     @ApiModelProperty("UUID of the Job this Task belongs to.")
     override val jobId: UUID,
 
-    @ApiModelProperty("UUID of the Organization this Task belongs to.")
-    val organizationId: UUID,
+    projectId: UUID,
 
     name: String,
 
@@ -120,12 +121,12 @@ open class Task(
     @ApiModelProperty("Counters for the total number of assets created, updated, etc.")
     val assetCounts: Map<String, Int>
 
-) : InternalTask(id, jobId, name, state)
+) : InternalTask(id, jobId, projectId, name, state)
 
 /**
  * A DispatchTask is used by the Analysts to start a new task.
  *
- * @property organizationId The Organization the task belongs to.
+ * @property projectId The Project the task belongs to.
  * @property script The [ZpsScript] to run.
  * @property env Extra ENV variables to apply before starting task.
  * @property args Extra script args to pass to the [ZpsScript]
@@ -136,16 +137,15 @@ open class Task(
 class DispatchTask(
     val id: UUID,
     jobId: UUID,
-    val organizationId: UUID,
+    projectId: UUID,
     name: String,
     state: TaskState,
     val host: String?,
     val script: ZpsScript,
     var env: MutableMap<String, String>,
     var args: MutableMap<String, Any>,
-    val userId: UUID,
     var logFile: String? = null
-) : InternalTask(id, jobId, name, state), TaskId {
+) : InternalTask(id, jobId, projectId, name, state), TaskId {
 
     override val taskId = id
 }
@@ -165,8 +165,8 @@ class TaskFilter(
     @ApiModelProperty("Task names to match.")
     val names: List<String>? = null,
 
-    @ApiModelProperty("Organization UUIDs to match.")
-    val organizationIds: List<UUID>? = null
+    @ApiModelProperty("Project UUIDs to match.")
+    val projectIds: List<UUID>? = null
 
 ) : KDaoFilter() {
 
@@ -186,15 +186,8 @@ class TaskFilter(
             sort = listOf("taskId:a")
         }
 
-        if (hasPermission("zorroa::superadmin")) {
-            organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
-                addToValues(it)
-            }
-        } else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
-        }
+        addToWhere("job.project_id=?")
+        addToValues(getProjectId())
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("task.pk_task", it.size))

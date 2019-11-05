@@ -1,10 +1,5 @@
 package com.zorroa.archivist.domain
 
-import com.zorroa.common.domain.InternalTask
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.TaskState
-
 /**
  * Internal event bus events
  */

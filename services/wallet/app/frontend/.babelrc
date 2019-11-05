@@ -3,7 +3,7 @@
     "@babel/preset-env",
     "@babel/preset-react"
   ],
-  plugins: [
+  "plugins": [
     ["module-resolver", {
       "root": ["./src"]
     }]

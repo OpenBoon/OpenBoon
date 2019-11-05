@@ -6,9 +6,8 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobState
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobState
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
@@ -22,7 +21,6 @@ import org.springframework.web.context.request.ServletRequestAttributes
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
@@ -46,32 +44,6 @@ class IndexRoutingServiceTests : AbstractTest() {
     }
 
     @Test
-    fun setupDefaultIndexRoute() {
-        indexRoutingService.setupDefaultIndexRoute()
-        assertEquals(1, jdbc.update("UPDATE index_route SET str_url='http://foo'"))
-        indexRoutingService.setupDefaultIndexRoute()
-        assertEquals(
-            "http://localhost:9200", jdbc.queryForObject(
-                "SELECT str_url FROM index_route", String::class.java
-            )
-        )
-    }
-
-    @Test
-    fun testNoOrgRoutingKey() {
-        assertEquals(1, jdbc.update("UPDATE index_route SET bool_use_rkey='f'"))
-        val route = indexRouteDao.getOrgRoute()
-        assertFalse(route.useRouteKey)
-        assertNull(route.esClientCacheKey("test").routingKey)
-    }
-
-    @Test(expected = EmptyResultDataAccessException::class)
-    fun testNoOrgRouteNoRoute() {
-        jdbc.update("UPDATE organization SET pk_index_route=null")
-        indexRouteDao.getOrgRoute()
-    }
-
-    @Test
     fun syncAllIndexRoutes() {
         jdbc.update(
             "UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
@@ -80,7 +52,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         indexRoutingService.syncAllIndexRoutes()
 
-        val route = indexRouteDao.getRandomPoolRoute()
+        val route = indexRouteDao.getProjectRoute()
         assertEquals(route.mappingMinorVer, 20001231)
         assertTrue(indexRoutingService.getOrgRestClient().indexExists())
     }
@@ -96,8 +68,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
         val newRoute = indexRoutingService.createIndexRoute(spec)
         val rest = indexRoutingService.getOrgRestClient()
@@ -126,10 +97,10 @@ class IndexRoutingServiceTests : AbstractTest() {
                 "int_mapping_minor_ver=0, str_index='test123'"
         )
 
-        var route = indexRouteDao.getRandomPoolRoute()
+        var route = indexRouteDao.getProjectRoute()
         indexRoutingService.syncIndexRouteVersion(route)
 
-        route = indexRouteDao.getRandomPoolRoute()
+        route = indexRouteDao.getProjectRoute()
         assertEquals(route.mappingMinorVer, 20001231)
 
         assertTrue(indexRoutingService.getOrgRestClient().indexExists())
@@ -151,7 +122,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             // ignore
         }
 
-        var route = indexRouteDao.getRandomPoolRoute()
+        var route = indexRouteDao.getProjectRoute()
         indexRoutingService.syncIndexRouteVersion(route)
 
         // Validate the index has our settings.
@@ -176,15 +147,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals(19991231, files[0].minorVersion)
         assertEquals(20001231, files[1].minorVersion)
     }
-
-    @Test
-    fun getOrgRestClient() {
-        val client = indexRoutingService.getOrgRestClient()
-        assertTrue(client.indexExists())
-        assertTrue(client.isAvailable())
-        assertEquals(getOrgId().toString(), client.route.routingKey)
-    }
-
+    
     @Test
     fun getOrgRestClientReIndex() {
 
@@ -192,8 +155,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -215,11 +177,10 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun getClusterRestClient() {
-        var route = indexRouteDao.getRandomPoolRoute()
+        var route = indexRouteDao.getProjectRoute()
         val client = indexRoutingService.getClusterRestClient(route)
         assertTrue(client.indexExists())
         assertTrue(client.isAvailable())
-        assertEquals(null, client.route.routingKey)
     }
 
     @Test
@@ -288,8 +249,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "test",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -305,8 +265,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             "http://localhost:9200",
             "v13_test",
             "strict",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -319,8 +278,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             "http://localhost:9200",
             "testing123",
             "kirk",
-            33,
-            false
+            33
         )
 
         indexRoutingService.createIndexRoute(spec)
@@ -339,7 +297,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testOpenIndex() {
-        var route = indexRouteDao.getRandomPoolRoute()
+        var route = indexRouteDao.getProjectRoute()
         assertTrue(indexRoutingService.closeIndex(route))
         assertTrue(indexRoutingService.openIndex(route))
 
@@ -349,7 +307,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testCloseIndex() {
-        var route = indexRouteDao.getRandomPoolRoute()
+        var route = indexRouteDao.getProjectRoute()
         assertTrue(indexRoutingService.closeIndex(route))
         assertFalse(indexRoutingService.closeIndex(route))
 
@@ -359,7 +317,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testGetEsIndexState() {
-        val route = indexRouteDao.getRandomPoolRoute()
+        val route = indexRouteDao.getProjectRoute()
         val result = indexRoutingService.getEsIndexState(route)
         assertEquals("yellow", result["health"])
         assertEquals("open", result["status"])
@@ -373,8 +331,7 @@ class IndexRoutingServiceTests : AbstractTest() {
             "http://localhost:9200",
             "v13_test",
             "strict",
-            1,
-            false
+            1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)

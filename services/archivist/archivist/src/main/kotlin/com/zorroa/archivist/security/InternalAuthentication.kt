@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.domain.UserAuthed
+import com.zorroa.archivist.clients.ApiKey
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
@@ -8,13 +8,13 @@ class InternalAuthentication : AbstractAuthenticationToken {
 
     private val principal: Any
 
-    constructor(user: UserAuthed) : super(user.authorities) {
-        this.principal = user
+    constructor(apiKey: ApiKey) : super(apiKey.getAuthorities()) {
+        this.principal = apiKey
         this.isAuthenticated = true
     }
 
-    constructor(user: UserAuthed, authorities: Collection<GrantedAuthority>) : super(authorities) {
-        this.principal = user
+    constructor(apiKey: ApiKey, authorities: Collection<GrantedAuthority>) : super(authorities) {
+        this.principal = apiKey
         this.isAuthenticated = true
     }
 
