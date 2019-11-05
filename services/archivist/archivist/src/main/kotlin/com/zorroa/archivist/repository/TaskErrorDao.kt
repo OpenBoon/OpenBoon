@@ -1,22 +1,22 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.InternalTask
+import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.security.getAnalystEndpoint
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.domain.InternalTask
-import com.zorroa.common.domain.JobId
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.JdbcUtils
-import com.zorroa.common.util.Json
-import com.zorroa.common.util.readValueOrNull
+import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.readValueOrNull
 import io.micrometer.core.instrument.Tag
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
@@ -48,19 +48,20 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setObject(2, task.taskId)
-            ps.setObject(3, task.jobId)
-            ps.setObject(4, spec.assetId)
-            ps.setString(5, spec.message)
-            ps.setString(6, spec.path)
-            ps.setString(7, spec.processor)
-            ps.setString(8, getAnalystEndpoint())
-            ps.setString(9, FileUtils.extension(spec.path))
-            ps.setBoolean(10, spec.fatal)
-            ps.setString(11, spec.phase)
-            ps.setLong(12, time)
-            ps.setString(13, Json.serializeToString(spec.stackTrace, null))
-            ps.setObject(14, getKeywords(spec))
+            ps.setObject(2, task.projectId)
+            ps.setObject(3, task.taskId)
+            ps.setObject(4, task.jobId)
+            ps.setObject(5, spec.assetId)
+            ps.setString(6, spec.message)
+            ps.setString(7, spec.path)
+            ps.setString(8, spec.processor)
+            ps.setString(9, getAnalystEndpoint())
+            ps.setString(10, FileUtils.extension(spec.path))
+            ps.setBoolean(11, spec.fatal)
+            ps.setString(12, spec.phase)
+            ps.setLong(13, time)
+            ps.setString(14, Json.serializeToString(spec.stackTrace, null))
+            ps.setObject(15, getKeywords(spec))
             ps
         }
 
@@ -94,19 +95,20 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 val spec = specs[i]
                 val id = uuid1.generate()
                 ps.setObject(1, id)
-                ps.setObject(2, task.taskId)
-                ps.setObject(3, task.jobId)
-                ps.setObject(4, spec.assetId)
-                ps.setString(5, spec.message)
-                ps.setString(6, spec.path)
-                ps.setString(7, spec.processor)
-                ps.setString(8, getAnalystEndpoint())
-                ps.setString(9, FileUtils.extension(spec.path))
-                ps.setBoolean(10, spec.fatal)
-                ps.setString(11, spec.phase)
-                ps.setLong(12, time)
-                ps.setString(13, Json.serializeToString(spec.stackTrace, null))
-                ps.setObject(14, getKeywords(spec))
+                ps.setObject(2, task.projectId)
+                ps.setObject(3, task.taskId)
+                ps.setObject(4, task.jobId)
+                ps.setObject(5, spec.assetId)
+                ps.setString(6, spec.message)
+                ps.setString(7, spec.path)
+                ps.setString(8, spec.processor)
+                ps.setString(9, getAnalystEndpoint())
+                ps.setString(10, FileUtils.extension(spec.path))
+                ps.setBoolean(11, spec.fatal)
+                ps.setString(12, spec.phase)
+                ps.setLong(13, time)
+                ps.setString(14, Json.serializeToString(spec.stackTrace, null))
+                ps.setObject(15, getKeywords(spec))
             }
 
             override fun getBatchSize(): Int {
@@ -137,19 +139,20 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
     }
 
     override fun get(id: UUID): TaskError {
-        return if (hasPermission("zorroa::superadmin")) {
+        return if (hasPermission(Role.SUPERADMIN)) {
             jdbc.queryForObject("$GET WHERE pk_task_error=?", MAPPER, id)
         } else {
-            jdbc.queryForObject("$GET WHERE pk_task_error=? AND pk_organization=?", MAPPER, id, getOrgId())
+            jdbc.queryForObject("$GET WHERE pk_task_error=? AND task_error.project_id=?",
+                    MAPPER, id, getProjectId())
         }
     }
 
     override fun getLast(): TaskError {
-        return return if (hasPermission("zorroa::superadmin")) {
+        return return if (hasPermission(Role.SUPERADMIN)) {
             jdbc.queryForObject("$GET ORDER BY time_created DESC LIMIT 1", MAPPER)
         } else {
-            jdbc.queryForObject("$GET WHERE pk_organization=? ORDER BY time_created DESC LIMIT 1",
-                    MAPPER, getOrgId())
+            jdbc.queryForObject("$GET WHERE task_error.project_id=? ORDER BY time_created DESC LIMIT 1",
+                    MAPPER, getProjectId())
         }
     }
 
@@ -204,6 +207,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
         private val INSERT = JdbcUtils.insert("task_error",
                 "pk_task_error",
+                "project_id",
                 "pk_task",
                 "pk_job",
                 "pk_asset",

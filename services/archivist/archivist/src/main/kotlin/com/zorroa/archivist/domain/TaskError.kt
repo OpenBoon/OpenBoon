@@ -1,11 +1,10 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.repository.LongRangeFilter
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.repository.KDaoFilter
-import com.zorroa.common.util.JdbcUtils
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
@@ -94,9 +93,6 @@ class TaskErrorFilter(
     @ApiModelProperty("Limits results to Task Errors created within this range.")
     val timeCreated: LongRangeFilter? = null,
 
-    @ApiModelProperty("Organizations UUIDs to match.")
-    val organizationIds: List<UUID>? = null,
-
     @ApiModelProperty("Keyword query string.")
     val keywords: String? = null
 
@@ -119,15 +115,8 @@ class TaskErrorFilter(
             sort = listOf("timeCreated:desc")
         }
 
-        if (hasPermission("zorroa::superadmin")) {
-            organizationIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_organization", it.size))
-                addToValues(it)
-            }
-        } else {
-            addToWhere("job.pk_organization=?")
-            addToValues(getOrgId())
-        }
+        addToWhere("task_error.project_id =?")
+        addToValues(getProjectId())
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("task_error.pk_task_error", it.size))

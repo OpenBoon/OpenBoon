@@ -6,10 +6,7 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.common.base.MoreObjects
-import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.common.domain.ArchivistWriteException
-import com.zorroa.common.domain.EntityNotFoundException
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory

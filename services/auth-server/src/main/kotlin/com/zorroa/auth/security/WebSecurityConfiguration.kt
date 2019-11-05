@@ -70,7 +70,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 KeyGenerator.generate(),
-                "random", "")
+                "random", listOf())
     }
 
     @Bean

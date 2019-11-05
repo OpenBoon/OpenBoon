@@ -1,4 +1,4 @@
-package com.zorroa.common.domain
+package com.zorroa.archivist.domain
 
 open class ArchivistException : RuntimeException {
 

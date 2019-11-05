@@ -2,14 +2,11 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineSpec
-import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.service.PipelineService
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.domain.ZpsSlot
+import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -20,33 +17,29 @@ import kotlin.test.assertTrue
 
 class PipelineControllerTests : MockMvcTest() {
 
-    @Autowired
-    lateinit var pipelineService: PipelineService
-
     lateinit var pl: Pipeline
     lateinit var spec: PipelineSpec
 
     @Before
     fun init() {
-        spec = PipelineSpec("Zorroa Test", PipelineType.Import, "test", processors = listOf())
+        spec = PipelineSpec("Zorroa Test", ZpsSlot.Execute, processors = listOf())
         pl = pipelineService.create(spec)
     }
 
     @Test
     fun testCreate() {
 
-        val spec = PipelineSpec("Zorroa Test2", PipelineType.Import, "test", processors = listOf())
+        val spec = PipelineSpec("ZorroaTest2", ZpsSlot.Execute, processors = listOf())
         val result = mvc.perform(
             post("/api/v1/pipelines")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
             .andReturn()
         val p = deserialize(result, Pipeline::class.java)
-        assertEquals(spec.type, p.type)
+        assertEquals(spec.slot, p.slot)
         assertEquals(spec.processors, p.processors)
         assertEquals(spec.name, p.name)
     }
@@ -55,17 +48,13 @@ class PipelineControllerTests : MockMvcTest() {
     @Throws(Exception::class)
     fun testDelete() {
 
-        val result2 = mvc.perform(
+        mvc.perform(
             delete("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
             .andReturn()
-
-        val rs = deserialize(result2, Json.GENERIC_MAP)
-        println(rs)
     }
 
     @Test
@@ -74,14 +63,13 @@ class PipelineControllerTests : MockMvcTest() {
         val spec2 = Pipeline(
             pl.id,
             "Rocky IV",
-            PipelineType.Batch,
+            ZpsSlot.Execute,
             listOf()
         )
 
         val result = mvc.perform(
             put("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(spec2))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )

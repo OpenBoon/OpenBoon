@@ -1,13 +1,13 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.DispatchTask
 import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

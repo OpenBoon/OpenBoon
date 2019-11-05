@@ -3,8 +3,8 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.domain.ProcessorSpec
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ProcessorDao
-import com.zorroa.common.repository.KPagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

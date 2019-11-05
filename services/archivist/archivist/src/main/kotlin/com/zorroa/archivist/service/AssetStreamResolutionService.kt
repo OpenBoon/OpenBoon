@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Document
-import com.zorroa.common.schema.ProxySchema
+import com.zorroa.archivist.schema.ProxySchema
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
