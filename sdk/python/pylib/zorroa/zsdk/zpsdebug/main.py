@@ -11,7 +11,8 @@ logger = logging.getLogger(__file__)
 def main():
     parser = argparse.ArgumentParser(prog='zpsdebug')
     parser.add_argument("processor", help="The processor to execute.")
-    parser.add_argument("-t", "--testing_directory", help="Run unit tests in this container directory")
+    parser.add_argument("-t", "--testing_directory",
+                        help="Run unit tests in this container directory")
     parser.add_argument("-i", "--image",
                         help="A docker image to execute in, otherwise run locally")
     parser.add_argument("-a", "--args", help="Json formatting arg string")
@@ -40,7 +41,6 @@ def main():
 
         print(args.processor)
         print(args.args)
-
 
         runner = ZpsRunner(args.processor, args.args, args.image, data)
         runner.run()
