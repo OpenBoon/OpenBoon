@@ -11,28 +11,28 @@ logger = logging.getLogger(__file__)
 def main():
     parser = argparse.ArgumentParser(prog='zpsdebug')
     parser.add_argument("processor", help="The processor to execute.")
-    parser.add_argument("-t", "--testing_directory",
+    parser.add_argument("-d", "--test-dir",
                         help="Run unit tests in this container directory")
     parser.add_argument("-i", "--image",
                         help="A docker image to execute in, otherwise run locally")
     parser.add_argument("-a", "--args", help="Json formatting arg string")
-    parser.add_argument("-d", "--data", help="A data object to process")
+    parser.add_argument("-o", "--data-obj", help="A data object to process")
 
     args = parser.parse_args()
 
     # Usage when running tests in a container directory:
-    # zpsdebug pytest -t /zps/pylib/zplugins -i plugins-py3-analysis
-    if args.testing_directory and args.image:
-        runner = ZpsTestRunner(args.processor, args.testing_directory, args.image)
+    # zpsdebug pytest -d /zps/pylib/zplugins -i plugins-py3-analysis
+    if args.test_dir and args.image:
+        runner = ZpsTestRunner(args.processor, args.test_dir, args.image)
         runner.run_in_container()
 
     else:
-        if args.data:
-            if args.data.startswith("@"):
-                with open(args.data[1:]) as fp:
+        if args.data_obj:
+            if args.data_obj.startswith("@"):
+                with open(args.data_obj[1:]) as fp:
                     data = json.load(fp)
             else:
-                data = json.loads(args.data)
+                data = json.loads(args.data_obj)
         else:
             data = None
 

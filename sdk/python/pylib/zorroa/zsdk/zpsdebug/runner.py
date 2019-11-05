@@ -59,9 +59,9 @@ class ZpsRunner(object):
 
 
 class ZpsTestRunner(object):
-    def __init__(self, processor, testing_directory, image):
+    def __init__(self, processor, test_dir, image):
         self.processor = processor
-        self.testing_directory = testing_directory
+        self.test_dir = test_dir
         self.image = image
 
     def run_in_container(self):
@@ -71,7 +71,7 @@ class ZpsTestRunner(object):
         # volumes = {'/test-data': {'bind': '/test-data'}}
 
         res = client.containers.run(self.image,
-                                    entrypoint=self.processor + " " + self.testing_directory,
+                                    entrypoint=self.processor + " " + self.test_dir,
                                     # volumes=volumes,
                                     stderr=True,
                                     stream=True)
