@@ -57,10 +57,18 @@
     "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.2.1"
   },
+  "optionalDependencies": {
+    "husky": "0.14.3"
+  },
   "dependencies": {
     "classnames": "^2.2.6",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run test"
+    }
   }
 }
