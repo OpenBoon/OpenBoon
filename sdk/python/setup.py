@@ -3,7 +3,12 @@ from setuptools import setup
 from datetime import datetime
 
 # See https://packaging.python.org/tutorials/packaging-projects/
-# for details aout packaging python projects
+# for details about packaging python projects
+
+# Generating distribution archives (run from same directory as this file)
+# python3 -m pip install --user --upgrade setuptools wheel
+# python3 setup.py sdist bdist_wheel
+
 
 # External pip dependencies are loaded from the requirements-zsdk.txt file. If any
 # additional pip installs are required add them to that file.
