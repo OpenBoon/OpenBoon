@@ -2,7 +2,6 @@ package com.zorroa.auth.security
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zorroa.auth.domain.ApiKey
-import com.zorroa.auth.domain.Role
 import com.zorroa.auth.service.KeyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,7 +42,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                         UsernamePasswordAuthenticationFilter::class.java)
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/v2/api-docs").hasRole(Role.SUPERADMIN_PERM)
+                .antMatchers("/v2/api-docs").hasAuthority("MonitorServer")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

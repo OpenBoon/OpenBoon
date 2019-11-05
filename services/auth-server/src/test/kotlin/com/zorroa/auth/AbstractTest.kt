@@ -1,6 +1,7 @@
+package com.zorroa.auth
+
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.ApiKeySpec
-import com.zorroa.auth.domain.Permission
 import com.zorroa.auth.service.ApiKeyService
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -27,8 +28,11 @@ abstract class AbstractTest {
 
     @Before
     fun setup() {
+        // A tandard non-admin for testing.
         standardKey = apiKeyService.create(
-                ApiKeySpec("standard-key", UUID.randomUUID(), listOf(Permission.READ_ASSETS)))
+                ApiKeySpec("standard-key",
+                        UUID.randomUUID(),
+                        listOf("Test")))
 
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
                 standardKey.projectId, standardKey.keyId, standardKey.getGrantedAuthorities())
