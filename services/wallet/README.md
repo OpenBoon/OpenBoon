@@ -80,6 +80,19 @@ info on the Django runserver can be found [here](https://docs.djangoproject.com/
 if you specify this in the `DJANGO_SETTINGS_MODULE` env variable. For example: 
 `export DJANGO_SETTINGS_MODULE=wallet.settings.local`
 
+#### Browsable API
+
+One of the benefits of using the Backend runserver is that it will setup a browsable API you can
+ access through your web browser. This provides an easy way to see what endpoints are available,
+ the supported methods, and the expected arguments for them. To access this:
+ 
+ 1. With the backend server running.
+ 2. Navigate to http://127.0.0.1:8000/api/v1/
+ 3. This will drop you in the API Root.
+ 
+ From here, you should be able to follow the links on the available resources to see what is
+ available.
+
 ---
 
 ### Docker Compose Setup
