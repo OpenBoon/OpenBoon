@@ -126,7 +126,6 @@ CREATE UNIQUE INDEX analyst_str_endpoint_idx ON analyst USING btree (str_endpoin
 CREATE TABLE index_route (
     pk_index_route uuid PRIMARY KEY,
     project_id uuid NOT NULL,
-    str_name text NOT NULL,
     str_url text NOT NULL,
     str_index text NOT NULL,
     str_mapping_type text NOT NULL,
@@ -211,14 +210,11 @@ CREATE TABLE job_stat (
 CREATE TABLE pipeline (
     pk_pipeline uuid PRIMARY KEY,
     project_id uuid NOT NULL,
-    int_type smallint NOT NULL,
+    int_slot smallint NOT NULL,
     str_name text NOT NULL,
-    str_description text NOT NULL,
-    bool_standard boolean DEFAULT false NOT NULL,
     json_processors text DEFAULT '[]'::text NOT NULL,
-    int_version integer DEFAULT 1 NOT NULL,
-    time_created bigint DEFAULT '1536693258000'::bigint NOT NULL,
-    time_modified bigint DEFAULT '1536693258000'::bigint NOT NULL
+    time_created bigint NOT NULL,
+    time_modified bigint NOT NULL
 );
 
 CREATE UNIQUE INDEX pipeline_name_uidx ON pipeline USING btree (project_id, str_name);
