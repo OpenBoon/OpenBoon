@@ -3,13 +3,13 @@
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA zorroa;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 --
 -- Name: after_task_insert(); Type: FUNCTION; Schema: zorroa; Owner: zorroa
 --
 
-CREATE FUNCTION zorroa.after_task_insert() RETURNS trigger
+CREATE FUNCTION after_task_insert() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
@@ -23,7 +23,7 @@ $$;
 -- Name: after_task_state_change(); Type: FUNCTION; Schema: zorroa; Owner: zorroa
 --
 
-CREATE FUNCTION zorroa.after_task_state_change() RETURNS trigger
+CREATE FUNCTION after_task_state_change() RETURNS trigger
     LANGUAGE plpgsql
     AS $_$
 DECLARE
@@ -44,7 +44,7 @@ $_$;
 -- Name: bitand(integer, integer); Type: FUNCTION; Schema: zorroa; Owner: zorroa
 --
 
-CREATE FUNCTION zorroa.bitand(integer, integer) RETURNS integer
+CREATE FUNCTION bitand(integer, integer) RETURNS integer
     LANGUAGE plpgsql
     AS $_$
 BEGIN
@@ -56,7 +56,7 @@ $_$;
 -- Name: current_time_millis(); Type: FUNCTION; Schema: zorroa; Owner: zorroa
 --
 
-CREATE FUNCTION zorroa.current_time_millis() RETURNS bigint
+CREATE FUNCTION current_time_millis() RETURNS bigint
     LANGUAGE plpgsql
     AS $$
 BEGIN
@@ -68,7 +68,7 @@ $$;
 -- Name: trigger_update_job_state(); Type: FUNCTION; Schema: zorroa; Owner: zorroa
 --
 
-CREATE FUNCTION zorroa.trigger_update_job_state() RETURNS trigger
+CREATE FUNCTION trigger_update_job_state() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
@@ -83,7 +83,7 @@ END
 $$;
 
 
-ALTER FUNCTION zorroa.trigger_update_job_state() OWNER TO zorroa;
+ALTER FUNCTION trigger_update_job_state() OWNER TO zorroa;
 
 SET default_tablespace = '';
 
@@ -93,7 +93,7 @@ SET default_with_oids = false;
 -- Name: analyst;
 --
 
-CREATE TABLE zorroa.analyst (
+CREATE TABLE analyst (
     pk_analyst uuid PRIMARY KEY,
     pk_task uuid,
     int_state smallint DEFAULT 0 NOT NULL,
@@ -109,37 +109,21 @@ CREATE TABLE zorroa.analyst (
 );
 
 
-CREATE INDEX analyst_pk_task_idx ON zorroa.analyst USING btree (pk_task);
+CREATE INDEX analyst_pk_task_idx ON analyst USING btree (pk_task);
 
 
 --
 -- Name: analyst_str_endpoint_idx; Type: INDEX; Schema: zorroa; Owner: zorroa
 --
 
-CREATE UNIQUE INDEX analyst_str_endpoint_idx ON zorroa.analyst USING btree (str_endpoint);
-
-
---
--- Name: asset;
---
-
-CREATE TABLE zorroa.asset (
-    pk_asset uuid PRIMARY KEY,
-    project_id uuid NOT NULL,
-    time_created bigint NOT NULL,
-    time_modified bigint NOT NULL,
-    json_document jsonb NOT NULL,
-    int_update_count bigint DEFAULT 1 NOT NULL
-);
-
-CREATE INDEX asset_pk_time_modified_idx ON zorroa.asset USING btree (time_modified);
+CREATE UNIQUE INDEX analyst_str_endpoint_idx ON analyst USING btree (str_endpoint);
 
 
 --
 -- Name: index_route;
 --
 
-CREATE TABLE zorroa.index_route (
+CREATE TABLE index_route (
     pk_index_route uuid PRIMARY KEY,
     project_id uuid NOT NULL,
     str_url text NOT NULL,
@@ -150,20 +134,18 @@ CREATE TABLE zorroa.index_route (
     int_replicas smallint NOT NULL,
     int_shards smallint NOT NULL,
     bool_closed boolean NOT NULL,
-    bool_default_pool boolean NOT NULL,
-    bool_use_rkey boolean NOT NULL,
     time_created bigint NOT NULL,
     time_modified bigint NOT NULL,
     int_mapping_error_ver integer DEFAULT '-1'::integer NOT NULL
 );
 
-CREATE UNIQUE INDEX index_route_idx_uniq ON zorroa.index_route USING btree (str_url, str_index);
+CREATE UNIQUE INDEX index_route_idx_uniq ON index_route USING btree (str_url, str_index);
 
 --
 -- Name: job;
 --
 
-CREATE TABLE zorroa.job (
+CREATE TABLE job (
     pk_job uuid PRIMARY KEY,
     project_id uuid NOT NULL,
     str_name text NOT NULL,
@@ -175,22 +157,21 @@ CREATE TABLE zorroa.job (
     int_priority smallint DEFAULT 0 NOT NULL,
     time_created bigint DEFAULT '1536693258000'::bigint NOT NULL,
     time_modified bigint DEFAULT '1536693258000'::bigint NOT NULL,
-    pk_user_modified uuid NOT NULL,
     time_pause_expired bigint DEFAULT '-1'::integer NOT NULL,
     bool_paused boolean DEFAULT false NOT NULL
 );
 
-CREATE INDEX job_int_priority_idx ON zorroa.job USING btree (int_priority);
-CREATE INDEX job_name_idx ON zorroa.job USING btree (str_name);
-CREATE INDEX job_state_idx ON zorroa.job USING btree (int_state);
-CREATE INDEX job_time_created_idx ON zorroa.job USING btree (time_created);
-CREATE INDEX job_time_started_idx ON zorroa.job USING btree (time_started);
-CREATE INDEX job_type_idx ON zorroa.job USING btree (int_type);
+CREATE INDEX job_int_priority_idx ON job USING btree (int_priority);
+CREATE INDEX job_name_idx ON job USING btree (str_name);
+CREATE INDEX job_state_idx ON job USING btree (int_state);
+CREATE INDEX job_time_created_idx ON job USING btree (time_created);
+CREATE INDEX job_time_started_idx ON job USING btree (time_started);
+CREATE INDEX job_type_idx ON job USING btree (int_type);
 
 --
 -- Name: job_count;
 
-CREATE TABLE zorroa.job_count (
+CREATE TABLE job_count (
     pk_job uuid PRIMARY KEY,
     int_task_total_count integer DEFAULT 0 NOT NULL,
     int_task_completed_count integer DEFAULT 0 NOT NULL,
@@ -200,19 +181,19 @@ CREATE TABLE zorroa.job_count (
     int_task_state_2 integer DEFAULT 0 NOT NULL,
     int_task_state_3 integer DEFAULT 0 NOT NULL,
     int_task_state_4 integer DEFAULT 0 NOT NULL,
-    time_updated bigint DEFAULT zorroa.current_time_millis() NOT NULL,
+    time_updated bigint DEFAULT current_time_millis() NOT NULL,
     int_max_running_tasks integer DEFAULT 1024 NOT NULL,
     CONSTRAINT job_count_max_running_check CHECK (((int_task_state_1 + int_task_state_5) <= int_max_running_tasks))
 );
 
-CREATE INDEX job_count_int_task_state_0_idx ON zorroa.job_count USING btree (int_task_state_0);
+CREATE INDEX job_count_int_task_state_0_idx ON job_count USING btree (int_task_state_0);
 
 
 --
 -- Name: job_stat;
 --
 
-CREATE TABLE zorroa.job_stat (
+CREATE TABLE job_stat (
     pk_job uuid PRIMARY KEY REFERENCES job(pk_job) ON DELETE CASCADE,
     int_asset_total_count integer DEFAULT 0 NOT NULL,
     int_asset_create_count integer DEFAULT 0 NOT NULL,
@@ -222,28 +203,28 @@ CREATE TABLE zorroa.job_stat (
     int_asset_replace_count integer DEFAULT 0 NOT NULL
 );
 
+--
+-- Name: pipeline;
+--
 
-CREATE TABLE zorroa.pipeline (
+CREATE TABLE pipeline (
     pk_pipeline uuid PRIMARY KEY,
     project_id uuid NOT NULL,
-    int_type smallint NOT NULL,
+    int_slot smallint NOT NULL,
     str_name text NOT NULL,
-    str_description text NOT NULL,
-    bool_standard boolean DEFAULT false NOT NULL,
     json_processors text DEFAULT '[]'::text NOT NULL,
-    int_version integer DEFAULT 1 NOT NULL,
-    time_created bigint DEFAULT '1536693258000'::bigint NOT NULL,
-    time_modified bigint DEFAULT '1536693258000'::bigint NOT NULL
+    time_created bigint NOT NULL,
+    time_modified bigint NOT NULL
 );
 
-CREATE UNIQUE INDEX pipeline_name_uidx ON zorroa.pipeline USING btree (project_id, str_name);
+CREATE UNIQUE INDEX pipeline_name_uidx ON pipeline USING btree (project_id, str_name);
 
 
 --
 -- Name: plugin;
 --
 
-CREATE TABLE zorroa.plugin (
+CREATE TABLE plugin (
     pk_plugin uuid PRIMARY KEY,
     str_name text NOT NULL,
     str_lang text NOT NULL,
@@ -255,13 +236,13 @@ CREATE TABLE zorroa.plugin (
     str_md5 text
 );
 
-CREATE UNIQUE INDEX plugin_str_name_idx ON zorroa.plugin USING btree (str_name);
+CREATE UNIQUE INDEX plugin_str_name_idx ON plugin USING btree (str_name);
 
 --
 -- Name: processor;
 --
 
-CREATE TABLE zorroa.processor (
+CREATE TABLE processor (
     pk_processor uuid PRIMARY KEY,
     project_id uuid,
     str_name text NOT NULL,
@@ -274,12 +255,12 @@ CREATE TABLE zorroa.processor (
     fti_keywords tsvector NOT NULL
 );
 
-CREATE INDEX processor_fti_keywords_idx ON zorroa.processor USING gin (fti_keywords);
-CREATE UNIQUE INDEX processor_str_name_idx ON zorroa.processor USING btree (str_name);
+CREATE INDEX processor_fti_keywords_idx ON processor USING gin (fti_keywords);
+CREATE UNIQUE INDEX processor_str_name_idx ON processor USING btree (str_name);
 
 -- Name: task; Type: TABLE; Schema: zorroa; Owner: zorroa
 
-CREATE TABLE zorroa.task (
+CREATE TABLE task (
     pk_task uuid PRIMARY KEY,
     pk_parent uuid REFERENCES task(pk_task) ON DELETE CASCADE,
     pk_job uuid NOT NULL REFERENCES job(pk_job) ON DELETE CASCADE,
@@ -298,16 +279,16 @@ CREATE TABLE zorroa.task (
     int_run_count integer DEFAULT 0 NOT NULL
 );
 
-CREATE INDEX task_order_idx ON zorroa.task USING btree (int_order);
-CREATE INDEX task_parent_idx ON zorroa.task USING btree (pk_parent);
-CREATE INDEX task_pk_job_idx ON zorroa.task USING btree (pk_job);
-CREATE INDEX task_state_idx ON zorroa.task USING btree (int_state);
+CREATE INDEX task_order_idx ON task USING btree (int_order);
+CREATE INDEX task_parent_idx ON task USING btree (pk_parent);
+CREATE INDEX task_pk_job_idx ON task USING btree (pk_job);
+CREATE INDEX task_state_idx ON task USING btree (int_state);
 
 --
 -- Name: task_error; Type: TABLE; Schema: zorroa; Owner: zorroa
 --
 
-CREATE TABLE zorroa.task_error (
+CREATE TABLE task_error (
     pk_task_error uuid PRIMARY KEY,
     pk_task uuid NOT NULL REFERENCES task(pk_task) ON DELETE CASCADE,
     pk_job uuid NOT NULL REFERENCES job(pk_job) ON DELETE CASCADE,
@@ -325,20 +306,20 @@ CREATE TABLE zorroa.task_error (
     fti_keywords tsvector NOT NULL
 );
 
-CREATE INDEX task_error_project_id_idx ON zorroa.task_error USING btree (project_id);
-CREATE INDEX task_error_fti_keywords_idx ON zorroa.task_error USING gin (fti_keywords);
-CREATE INDEX task_error_pk_asset_idx ON zorroa.task_error USING btree (pk_asset);
-CREATE INDEX task_error_pk_job_idx ON zorroa.task_error USING btree (pk_job);
-CREATE INDEX task_error_pk_task_idx ON zorroa.task_error USING btree (pk_task);
-CREATE INDEX task_error_str_path_idx ON zorroa.task_error USING btree (str_path);
-CREATE INDEX task_error_str_processor_idx ON zorroa.task_error USING btree (str_processor);
-CREATE INDEX task_error_time_created_idx ON zorroa.task_error USING btree (time_created);
+CREATE INDEX task_error_project_id_idx ON task_error USING btree (project_id);
+CREATE INDEX task_error_fti_keywords_idx ON task_error USING gin (fti_keywords);
+CREATE INDEX task_error_pk_asset_idx ON task_error USING btree (pk_asset);
+CREATE INDEX task_error_pk_job_idx ON task_error USING btree (pk_job);
+CREATE INDEX task_error_pk_task_idx ON task_error USING btree (pk_task);
+CREATE INDEX task_error_str_path_idx ON task_error USING btree (str_path);
+CREATE INDEX task_error_str_processor_idx ON task_error USING btree (str_processor);
+CREATE INDEX task_error_time_created_idx ON task_error USING btree (time_created);
 
 --
 -- Name: task_stat; Type: TABLE; Schema: zorroa; Owner: zorroa
 --
 
-CREATE TABLE zorroa.task_stat (
+CREATE TABLE task_stat (
     pk_task uuid NOT NULL REFERENCES task(pk_task) ON DELETE CASCADE,
     pk_job uuid NOT NULL REFERENCES job(pk_job) ON DELETE CASCADE,
     int_asset_total_count integer DEFAULT 0 NOT NULL,
@@ -349,11 +330,11 @@ CREATE TABLE zorroa.task_stat (
     int_asset_replace_count integer DEFAULT 0 NOT NULL
 );
 
-CREATE INDEX task_stat_pk_job_idx ON zorroa.task_stat USING btree (pk_job);
+CREATE INDEX task_stat_pk_job_idx ON task_stat USING btree (pk_job);
 
 
 ---
 --- Triggers
 ---
-CREATE TRIGGER trig_after_task_insert AFTER INSERT ON zorroa.task FOR EACH ROW EXECUTE PROCEDURE zorroa.after_task_insert();
-CREATE TRIGGER trig_after_task_state_change AFTER UPDATE ON zorroa.task FOR EACH ROW WHEN ((old.int_state <> new.int_state)) EXECUTE PROCEDURE zorroa.after_task_state_change();
+CREATE TRIGGER trig_after_task_insert AFTER INSERT ON task FOR EACH ROW EXECUTE PROCEDURE after_task_insert();
+CREATE TRIGGER trig_after_task_state_change AFTER UPDATE ON task FOR EACH ROW WHEN ((old.int_state <> new.int_state)) EXECUTE PROCEDURE after_task_state_change();

@@ -1,0 +1,233 @@
+{
+ "list": [
+  {
+   "replace": false, 
+   "score": "NaN", 
+   "type": "asset", 
+   "document": {
+    "media": {
+     "creationdate": "D:20020518011321-07'00'", 
+     "producer": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "author": "Scanned by Ronald Wells", 
+     "title": "Apollo 17 Flight Plan", 
+     "creator": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "pages": 618, 
+     "moddate": "D:20020519140807-07'00'", 
+     "subject": "Pre-mission final flight plan"
+    }, 
+    "proxies": {
+     "proxies": [
+      {
+       "mimetype": "image/jpg", 
+       "width": 385, 
+       "id": "proxy/proxy_d4fa3a87-bd81-43d6-aa1b-b7a99fe0607b_385x512.jpg", 
+       "stream": "https://storage.cloud.google.com/some-bucket/company/100/some.jpg", 
+       "height": 512
+      }, 
+      {
+       "mimetype": "image/jpg", 
+       "width": 192, 
+       "id": "proxy/proxy_d4fa3a87-bd81-43d6-aa1b-b7a99fe0607b_192x256.jpg", 
+       "stream": "https://storage.cloud.google.com/some-bucket/company/100/some_other.jpg", 
+       "height": 256
+      }
+     ], 
+     "tinyProxy": [
+      "#ffffff", 
+      "#000000", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff"
+     ]
+    }, 
+    "source": {
+     "extension": "pdf", 
+     "mediaType": "application/pdf", 
+     "filename": "Test_PDF-20mb.pdf", 
+     "fileSize": 20702285, 
+     "path": "/tmp/cdv/100/d4fa3a87-bd81-43d6-aa1b-b7a99fe0607b/Test_PDF-20mb.pdf", 
+     "type": "application"
+    }
+   }, 
+   "id": "d4fa3a87-bd81-43d6-aa1b-b7a99fe0607b"
+  }, 
+  {
+   "replace": false, 
+   "score": "NaN", 
+   "type": "asset", 
+   "document": {
+    "media": {
+     "creationdate": "D:20020518011321-07'00'", 
+     "producer": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "author": "Scanned by Ronald Wells", 
+     "title": "Apollo 17 Flight Plan", 
+     "creator": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "pages": 618, 
+     "moddate": "D:20020519140807-07'00'", 
+     "subject": "Pre-mission final flight plan"
+    }, 
+    "proxies": {
+     "proxies": [
+      {
+       "mimetype": "image/jpg", 
+       "width": 385, 
+       "id": "proxy/proxy_3b3852fd-2ee5-4604-8235-ae6a941b6e0d_385x512.jpg", 
+       "stream": "https://storage.cloud.google.com/rmaas-us-dit1/company/100/3b3852fd-2ee5-4604-8235-ae6a941b6e0d/file/proxy_3b3852fd-2ee5-4604-8235-ae6a941b6e0d_385x512.jpg", 
+       "height": 512
+      }, 
+      {
+       "mimetype": "image/jpg", 
+       "width": 192, 
+       "id": "proxy/proxy_3b3852fd-2ee5-4604-8235-ae6a941b6e0d_192x256.jpg", 
+       "stream": "https://storage.cloud.google.com/rmaas-us-dit1/company/100/3b3852fd-2ee5-4604-8235-ae6a941b6e0d/file/proxy_3b3852fd-2ee5-4604-8235-ae6a941b6e0d_192x256.jpg", 
+       "height": 256
+      }
+     ], 
+     "tinyProxy": [
+      "#ffffff", 
+      "#000000", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff"
+     ]
+    }, 
+    "source": {
+     "extension": "pdf", 
+     "mediaType": "application/pdf", 
+     "filename": "Test_PDF-20mb.pdf", 
+     "fileSize": 20702285, 
+     "path": "/tmp/cdv/100/3b3852fd-2ee5-4604-8235-ae6a941b6e0d/Test_PDF-20mb.pdf", 
+     "type": "application"
+    }
+   }, 
+   "id": "3b3852fd-2ee5-4604-8235-ae6a941b6e0d"
+  }, 
+  {
+   "replace": false, 
+   "score": "NaN", 
+   "type": "asset", 
+   "document": {
+    "media": {
+     "creationdate": "D:20020518011321-07'00'", 
+     "producer": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "author": "Scanned by Ronald Wells", 
+     "title": "Apollo 17 Flight Plan", 
+     "creator": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "pages": 618, 
+     "moddate": "D:20020519140807-07'00'", 
+     "subject": "Pre-mission final flight plan"
+    }, 
+    "proxies": {
+     "proxies": [
+      {
+       "mimetype": "image/jpg", 
+       "width": 385, 
+       "id": "proxy/proxy_87c38351-edc2-499e-83b7-081fcc107c11_385x512.jpg", 
+       "stream": "https://storage.cloud.google.com/rmaas-us-dit1/company/100/87c38351-edc2-499e-83b7-081fcc107c11/file/proxy_87c38351-edc2-499e-83b7-081fcc107c11_385x512.jpg", 
+       "height": 512
+      }, 
+      {
+       "mimetype": "image/jpg", 
+       "width": 192, 
+       "id": "proxy/proxy_87c38351-edc2-499e-83b7-081fcc107c11_192x256.jpg", 
+       "stream": "https://storage.cloud.google.com/rmaas-us-dit1/company/100/87c38351-edc2-499e-83b7-081fcc107c11/file/proxy_87c38351-edc2-499e-83b7-081fcc107c11_192x256.jpg", 
+       "height": 256
+      }
+     ], 
+     "tinyProxy": [
+      "#ffffff", 
+      "#000000", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff"
+     ]
+    }, 
+    "source": {
+     "extension": "pdf", 
+     "mediaType": "application/pdf", 
+     "filename": "Test_PDF-20mb.pdf", 
+     "fileSize": 20702285, 
+     "path": "/tmp/cdv/100/87c38351-edc2-499e-83b7-081fcc107c11/Test_PDF-20mb.pdf", 
+     "type": "application"
+    }
+   }, 
+   "id": "87c38351-edc2-499e-83b7-081fcc107c11"
+  }, 
+  {
+   "replace": false, 
+   "score": "NaN", 
+   "type": "asset", 
+   "document": {
+    "media": {
+     "creationdate": "D:20020518011321-07'00'", 
+     "producer": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "author": "Scanned by Ronald Wells", 
+     "title": "Apollo 17 Flight Plan", 
+     "creator": "Acrobat 5.0 Scan Plug-in for Windows", 
+     "pages": 618, 
+     "moddate": "D:20020519140807-07'00'", 
+     "subject": "Pre-mission final flight plan"
+    }, 
+    "proxies": {
+     "proxies": [
+      {
+       "mimetype": "image/jpg", 
+       "width": 385, 
+       "id": "proxy/proxy_a47eb066-d312-465b-95db-971cd30346d6_385x512.jpg", 
+       "stream": "https://storage.cloud.google.com/rmaas-us-dit1/company/100/a47eb066-d312-465b-95db-971cd30346d6/file/proxy_a47eb066-d312-465b-95db-971cd30346d6_385x512.jpg", 
+       "height": 512
+      }, 
+      {
+       "mimetype": "image/jpg", 
+       "width": 192, 
+       "id": "proxy/proxy_a47eb066-d312-465b-95db-971cd30346d6_192x256.jpg", 
+       "stream": "https://storage.cloud.google.com/rmaas-us-dit1/company/100/a47eb066-d312-465b-95db-971cd30346d6/file/proxy_a47eb066-d312-465b-95db-971cd30346d6_192x256.jpg", 
+       "height": 256
+      }
+     ], 
+     "tinyProxy": [
+      "#ffffff", 
+      "#000000", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff", 
+      "#ffffff"
+     ]
+    }, 
+    "source": {
+     "extension": "pdf", 
+     "mediaType": "application/pdf", 
+     "filename": "Test_PDF-20mb.pdf", 
+     "fileSize": 20702285, 
+     "path": "/tmp/cdv/100/a47eb066-d312-465b-95db-971cd30346d6/Test_PDF-20mb.pdf", 
+     "type": "application"
+    }
+   }, 
+   "id": "a47eb066-d312-465b-95db-971cd30346d6"
+  }
+ ], 
+ "page": {
+  "totalCount": 4, 
+  "from": 0, 
+  "size": 32
+ }, 
+ "scroll": {
+  "id": "DnF1ZXJ5VGhlbkZldGNoBQAAAAAAACN5FnZxUnVwaEhfU0xxTE5aQVBCTU4wblEAAAAAAAAjehZ2cVJ1cGhIX1NMcUxOWkFQQk1OMG5RAAAAAAAAI30WdnFSdXBoSF9TTHFMTlpBUEJNTjBuUQAAAAAAACN7FnZxUnVwaEhfU0xxTE5aQVBCTU4wblEAAAAAAAAjfBZ2cVJ1cGhIX1NMcUxOWkFQQk1OMG5R", 
+  "timeout": "1m"
+ }
+}

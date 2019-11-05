@@ -14,7 +14,7 @@ class IndexMigrationSpec(
     @ApiModelProperty("The destination IndexRoute id.")
     val dstRouteId: UUID,
 
-    @ApiModelProperty("True if the organization's route should swap before reindexing.")
+    @ApiModelProperty("True if the projects's route should swap before reindexing.")
     val swapRoutes: Boolean = true,
 
     @ApiModelProperty("An array of attributes to remove during reindexing")

@@ -6,7 +6,7 @@ import com.google.cloud.pubsub.v1.Publisher
 import com.google.protobuf.ByteString
 import com.google.pubsub.v1.ProjectTopicName
 import com.google.pubsub.v1.PubsubMessage
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import org.slf4j.LoggerFactory
 import java.util.UUID
 
@@ -24,9 +24,10 @@ interface MessagingService {
      * Publishes a message to the messaging service.
      *
      * @param[actionType] Action that was taken that prompted this message to be sent.
+     * @param[projectId] Action that was taken that prompted this message to be sent.
      * @param[data] Payload of information about the action that was taken.
      */
-    fun sendMessage(actionType: ActionType, organizationId: UUID?, data: Map<Any, Any>)
+    fun sendMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>)
 }
 
 /**
@@ -34,7 +35,7 @@ interface MessagingService {
  * messaging service is not configured.
  */
 class NullMessagingService : MessagingService {
-    override fun sendMessage(actionType: ActionType, organizationId: UUID?, data: Map<Any, Any>) {}
+    override fun sendMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>) {}
 }
 
 /**
@@ -51,8 +52,8 @@ class PubSubMessagingService constructor(val topicId: String) : MessagingService
         logger.info("Initialized Pub/Sub publisher on $topicId topic.")
     }
 
-    override fun sendMessage(actionType: ActionType, organizationId: UUID?, data: Map<Any, Any>) {
-        val pubsubMessage = getMessage(actionType, organizationId, data)
+    override fun sendMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>) {
+        val pubsubMessage = getMessage(actionType, projectId, data)
         publish(pubsubMessage)
     }
 
@@ -72,16 +73,16 @@ class PubSubMessagingService constructor(val topicId: String) : MessagingService
          * Returns a PubSubMessage ready to be published based on the data and action provided.
          *
          * @param[actionType] Action that was taken that prompted this message to be sent.
-         * @param[organizationId] UUID of the organization this action was taken in.
+         * @param[projectId] UUID of the project this action was taken in.
          * @param[data] Payload of information about the action that was taken.
          * @return PubSubMessage ready to be published.
          */
-        fun getMessage(actionType: ActionType, organizationId: UUID?, data: Map<Any, Any>): PubsubMessage {
+        fun getMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>): PubsubMessage {
             val dataString = ByteString.copyFromUtf8(Json.serializeToString(data))
             val pubsubMessage = PubsubMessage.newBuilder()
                 .setData(dataString)
                 .putAttributes("action", actionType.label)
-                .putAttributes("organization", organizationId.toString())
+                .putAttributes("projectId", projectId.toString())
                 .build()
             return pubsubMessage
         }

@@ -36,4 +36,3 @@ class ZpsJsonEncoderUnitTest(unittest.TestCase):
         assert '"replace": false' in string
         assert '"document": {}' in string
         assert '"id": 1' in string
-

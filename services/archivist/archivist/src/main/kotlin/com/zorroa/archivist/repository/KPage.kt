@@ -1,4 +1,4 @@
-package com.zorroa.common.repository
+package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.search.Scroll
 import io.swagger.annotations.ApiModel

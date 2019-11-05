@@ -1,4 +1,4 @@
-package com.zorroa.common.schema
+package com.zorroa.archivist.schema
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.UUID

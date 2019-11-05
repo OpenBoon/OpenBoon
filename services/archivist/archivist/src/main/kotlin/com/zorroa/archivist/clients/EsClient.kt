@@ -1,8 +1,8 @@
-package com.zorroa.common.clients
+package com.zorroa.archivist.clients
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.EsClientCacheKey
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
@@ -46,14 +46,12 @@ class SearchBuilder {
 
 /**
  * EsRestClient is used for building pre-rerouted ES requests based on the
- * organization's routing settings.
+ * projects's routing settings.
  */
 class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient) {
 
     fun newSearchRequest(): SearchRequest {
-        return SearchRequest(route.indexName).apply {
-            route.routingKey?.let { routing(it) }
-        }
+        return SearchRequest(route.indexName)
     }
 
     fun newSearchBuilder(): SearchBuilder {
@@ -69,33 +67,22 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
     }
 
     fun newGetRequest(id: String): GetRequest {
-        return GetRequest(route.indexName).id(id).apply {
-            route.routingKey?.let { routing(it) }
-        }
+        return GetRequest(route.indexName).id(id)
     }
 
     fun newUpdateRequest(id: String): UpdateRequest {
-        return UpdateRequest(route.indexName, "asset", id).apply {
-            route.routingKey?.let { routing(it) }
-        }
+        return UpdateRequest(route.indexName, "asset", id)
     }
 
     fun newIndexRequest(id: String): IndexRequest {
-        return IndexRequest(route.indexName, "asset", id).apply {
-            route.routingKey?.let { routing(it) }
-        }
+        return IndexRequest(route.indexName, "asset", id)
     }
 
     fun newDeleteRequest(id: String): DeleteRequest {
-        return DeleteRequest(route.indexName, "asset", id).apply {
-            route.routingKey?.let { routing(it) }
-        }
+        return DeleteRequest(route.indexName, "asset", id)
     }
 
     fun routeSearchRequest(req: SearchRequest): SearchRequest {
-        if (route.routingKey != null) {
-            req.routing(route.routingKey)
-        }
         return req.indices(route.indexName)
     }
 

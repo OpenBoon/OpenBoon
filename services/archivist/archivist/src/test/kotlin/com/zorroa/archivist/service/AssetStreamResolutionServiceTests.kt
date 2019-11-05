@@ -2,8 +2,8 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.common.schema.Proxy
-import com.zorroa.common.schema.ProxySchema
+import com.zorroa.archivist.schema.Proxy
+import com.zorroa.archivist.schema.ProxySchema
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule

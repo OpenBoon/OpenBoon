@@ -1,0 +1,14 @@
+server:
+  port: 9090
+
+spring:
+  flyway:
+    schemas: auth
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/zorroa?currentSchema=auth
+    username: zorroa
+    password: zorroa
+    driver-class-name: org.postgresql.Driver
+
+security:
+    external-key: file:config/key.json

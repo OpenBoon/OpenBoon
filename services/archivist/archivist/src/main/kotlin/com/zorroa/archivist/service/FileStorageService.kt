@@ -13,7 +13,7 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.filesystem.ObjectFileSystem
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.StaticUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -280,7 +280,7 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
     }
 
     private fun getOrgRoot(): Path {
-        return root.resolve("orgs").resolve(getOrgId().toString())
+        return root.resolve("projects").resolve(getProjectId().toString())
     }
 
     private fun expandId(id: String): String {
@@ -302,18 +302,18 @@ class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
              *
              * proxy___098c296c-33dd-594a-827c-26118ff62882___098c296c-33dd-594a-827c-26118ff62882_256x144.jpg
              */
-            return "${getOrgRoot()}/ofs/${slashed(id)}"
+            return "${getProjectRoot()}/ofs/${slashed(id)}"
         }
 
         if (id.contains('/')) {
             throw IllegalArgumentException("Id '$id' cannot contain a slash")
         }
         val slashed = slashed(id)
-        return "${getOrgRoot()}/$slashed"
+        return "${getProjectRoot()}/$slashed"
     }
 
     override fun buildUri(spec: FileStorageSpec): String {
-        return "${getOrgRoot()}/${spec.parentType}/${spec.parentId}/${spec.name}"
+        return "${getProjectRoot()}/${spec.parentType}/${spec.parentId}/${spec.name}"
     }
 
     override fun buildId(spec: FileStorageSpec): String {
@@ -325,9 +325,9 @@ class GcsLayoutProvider(private val bucket: String) : LayoutProvider {
         return "${spec.parentType}___${spec.parentId}___$name"
     }
 
-    private fun getOrgRoot(): String {
-        val org = getOrgId()
-        return "gs://$bucket/orgs/$org"
+    private fun getProjectRoot(): String {
+        val org = getProjectId()
+        return "gs://$bucket/projects/$org"
     }
 }
 

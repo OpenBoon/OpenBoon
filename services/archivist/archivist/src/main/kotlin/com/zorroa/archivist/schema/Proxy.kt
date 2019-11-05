@@ -1,4 +1,4 @@
-package com.zorroa.common.schema
+package com.zorroa.archivist.schema
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.http.MediaType

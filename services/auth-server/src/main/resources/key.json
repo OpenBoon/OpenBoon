@@ -1,0 +1,7 @@
+{
+  "name": "admin-key",
+  "projectId": "50550AAC-6C5A-41CD-B779-2821BB5B535F",
+  "keyId": "76094317-D968-43A8-B9DC-D0680A899AD7",
+  "sharedKey": "3bba2a60f104dcdd16bbd57d6f9fb8050c6229034732b1da43cfded990e7e2d705b6f016e91d8ceb0314d848c01835b05fc0f3df66940fd42a986d5e6b4c2b63",
+  "permissions": ["SuperAdmin"]
+}
