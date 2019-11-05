@@ -5,34 +5,48 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import java.util.*
-import javax.persistence.*
+import java.util.Calendar
+import java.util.Date
+import java.util.UUID
+import javax.persistence.AttributeConverter
+import javax.persistence.Column
+import javax.persistence.Convert
+import javax.persistence.Converter
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 
 class ApiKeySpec(
-        val name: String,
-        val projectId: UUID,
-        val permissions: List<String>
+    val name: String,
+    val projectId: UUID,
+    val permissions: List<String>
+)
+
+class MinimalApiKey(
+    val keyId: UUID,
+    val projectId: UUID,
+    val sharedKey: String
 )
 
 @Entity
 @Table(name = "api_key")
 class ApiKey(
-        @Id
-        @Column(name = "pk_api_key")
-        val keyId: UUID,
+    @Id
+    @Column(name = "pk_api_key")
+    val keyId: UUID,
 
-        @Column(name = "project_id", nullable = false)
-        val projectId: UUID,
+    @Column(name = "project_id", nullable = false)
+    val projectId: UUID,
 
-        @Column(name = "shared_key", nullable = false)
-        val sharedKey: String,
+    @Column(name = "shared_key", nullable = false)
+    val sharedKey: String,
 
-        @Column(name = "name", nullable = false)
-        val name: String,
+    @Column(name = "name", nullable = false)
+    val name: String,
 
-        @Column(name = "permissions", nullable = false)
-        @Convert(converter = StringListConverter::class)
-        val permissions: List<String>
+    @Column(name = "permissions", nullable = false)
+    @Convert(converter = StringListConverter::class)
+    val permissions: List<String>
 ) {
     @JsonIgnore
     fun getGrantedAuthorities(): List<GrantedAuthority> {
@@ -47,16 +61,21 @@ class ApiKey(
     fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
         val algo = Algorithm.HMAC512(sharedKey)
         val spec = JWT.create().withIssuer("zorroa")
-                .withClaim("keyId", keyId.toString())
-                .withClaim("projectId", (projId ?: projectId).toString())
+            .withClaim("keyId", keyId.toString())
+            .withClaim("projectId", (projId ?: projectId).toString())
 
-        if (timeout != null) {
+        if (timeout > 0) {
             val c = Calendar.getInstance()
             c.time = Date()
             c.add(Calendar.SECOND, timeout)
             spec.withExpiresAt(c.time)
         }
         return spec.sign(algo)
+    }
+
+    @JsonIgnore
+    fun getMinimalApiKey(): MinimalApiKey {
+        return MinimalApiKey(keyId, projectId, sharedKey)
     }
 
     override fun toString(): String {
@@ -94,5 +113,4 @@ class StringListConverter : AttributeConverter<List<String>, String> {
     override fun convertToEntityAttribute(joined: String): List<String> {
         return joined.split(",").map { it.trim() }
     }
-
 }
