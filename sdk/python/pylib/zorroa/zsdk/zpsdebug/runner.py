@@ -35,6 +35,7 @@ class ZpsRunner(object):
         pe.execute_processor(req)
 
     def run_in_container(self):
+        print('running in container')
         client = docker.from_env()
         volumes = {'/tmp': {'bind': '/tmp', 'mode': "rw"}}
 
@@ -53,5 +54,27 @@ class ZpsRunner(object):
                                     stream=True,
                                     entrypoint="/usr/local/bin/zpsdebug",
                                     volumes=volumes)
+        for line in res:
+            print(line.decode("utf-8").rstrip())
+
+
+class ZpsTestRunner(object):
+    def __init__(self, processor, testing_directory, image):
+        self.processor = processor
+        self.testing_directory = testing_directory
+        self.image = image
+
+    def run_in_container(self):
+        print("running in container")
+        client = docker.from_env()
+
+        # volumes = {'/test-data': {'bind': '/test-data'}}
+
+        res = client.containers.run(self.image,
+                                    entrypoint=self.processor + " " + self.testing_directory,
+                                    # volumes=volumes,
+                                    stderr=True,
+                                    stream=True)
+
         for line in res:
             print(line.decode("utf-8").rstrip())
