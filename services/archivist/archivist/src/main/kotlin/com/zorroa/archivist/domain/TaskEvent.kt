@@ -1,6 +1,5 @@
 package com.zorroa.archivist.domain
 
-import com.zorroa.common.domain.TaskState
 import java.util.UUID
 
 enum class TaskEventType {

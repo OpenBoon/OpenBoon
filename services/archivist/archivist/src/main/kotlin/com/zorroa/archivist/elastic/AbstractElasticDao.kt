@@ -1,8 +1,8 @@
 package com.zorroa.archivist.elastic
 
+import com.zorroa.archivist.clients.EsRestClient
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.service.IndexRoutingService
-import com.zorroa.common.clients.EsRestClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 

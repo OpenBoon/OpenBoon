@@ -5,9 +5,7 @@ import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.security.getApiKey
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.common.repository.KPage
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -89,17 +87,17 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, key.projectId)
-            ps.setString(2, spec.clusterUrl)
-            ps.setString(3, spec.indexName)
-            ps.setString(4, spec.mapping)
-            ps.setInt(5, spec.mappingMajorVer)
-            ps.setInt(6, 0)
-            ps.setInt(7, spec.replicas)
-            ps.setInt(8, spec.shards)
-            ps.setBoolean(9, false)
-            ps.setLong(10, time)
+            ps.setString(3, spec.clusterUrl)
+            ps.setString(4, spec.indexName)
+            ps.setString(5, spec.mapping)
+            ps.setInt(6, spec.mappingMajorVer)
+            ps.setInt(7, 0)
+            ps.setInt(8, spec.replicas)
+            ps.setInt(9, spec.shards)
+            ps.setBoolean(10, false)
             ps.setLong(11, time)
-            ps.setInt(12, -1)
+            ps.setLong(12, time)
+            ps.setInt(13, -1)
             ps
         }
 

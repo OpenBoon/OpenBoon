@@ -5,20 +5,16 @@ import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.util.Json
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
-import org.elasticsearch.client.RequestOptions
+import com.zorroa.archivist.domain.JobType
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
-import org.junit.After
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -26,25 +22,6 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
     override fun requiresElasticSearch(): Boolean {
         return true
-    }
-
-    @After
-    fun after() {
-
-        val route = indexRoutingService.getIndexRoute(
-            UUID.fromString("00000000-0000-0000-0000-000000000000")
-        )
-        val rest = indexRoutingService.getClusterRestClient(route)
-
-        // Clear out test indexes.  Could be more in future.
-        listOf("testing123").forEach {
-            try {
-                val reqDel = DeleteIndexRequest(it)
-                rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
-            } catch (e: Exception) {
-                logger.warn("Failed to delete '$it' index, this is usually ok.")
-            }
-        }
     }
 
     @Test
@@ -71,7 +48,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
         assertEquals("testing123", result.indexName)
         assertEquals("test", result.mapping)
         assertEquals(1, result.mappingMajorVer)
-        assertEquals(2, result.replicas)
+        assertEquals(1, result.replicas)
         assertEquals(5, result.shards)
     }
 
@@ -100,7 +77,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
         assertEquals("testing123", result.indexName)
         assertEquals("test", result.mapping)
         assertEquals(1, result.mappingMajorVer)
-        assertEquals(2, result.replicas)
+        assertEquals(1, result.replicas)
         assertEquals(5, result.shards)
     }
 
@@ -228,7 +205,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
             .andReturn()
 
         val result = Json.Mapper.readValue<Job>(rsp.response.contentAsString)
-        assertEquals(PipelineType.Batch, result.type)
+        assertEquals(JobType.Batch, result.type)
         assertTrue(result.name.startsWith("migration"))
         assertEquals(JobState.Active, result.state)
     }

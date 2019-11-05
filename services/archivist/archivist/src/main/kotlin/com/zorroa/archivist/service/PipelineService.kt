@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsSlot
-import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.repository.PipelineDao
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

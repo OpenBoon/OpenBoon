@@ -1,11 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.common.domain.Analyst
-import com.zorroa.common.domain.AnalystFilter
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.LockState
+import com.zorroa.archivist.domain.Analyst
+import com.zorroa.archivist.domain.AnalystFilter
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.AnalystState
+import com.zorroa.archivist.domain.LockState
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

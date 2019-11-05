@@ -1,8 +1,8 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.repository.KDaoFilter
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty

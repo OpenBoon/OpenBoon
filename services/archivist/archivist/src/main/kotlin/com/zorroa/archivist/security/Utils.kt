@@ -82,7 +82,7 @@ fun getApiKey(): ApiKey {
             auth.principal as ApiKey
         }
         catch (e: java.lang.ClassCastException) {
-            throw SecurityException("Invalid credentials")
+            throw SecurityException("Invalid credentials", e)
         }
     }
 }

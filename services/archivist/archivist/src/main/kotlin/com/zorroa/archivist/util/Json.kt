@@ -1,4 +1,4 @@
-package com.zorroa.common.util
+package com.zorroa.archivist.util
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser

@@ -14,12 +14,12 @@ import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.Analyst
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.domain.Analyst
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -197,6 +197,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
+            authenticate()
             val terr = taskErrorDao.getLast()
             assertEquals(task.id, terr.taskId)
             assertEquals(task.jobId, terr.jobId)
@@ -234,6 +235,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
+            authenticate()
             val terr = taskErrorDao.getLast()
             val stack = terr.stackTrace?.get(0)
             assertNotNull(stack)

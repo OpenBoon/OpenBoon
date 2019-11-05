@@ -8,12 +8,9 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
-import com.zorroa.archivist.security.getAuthentication
-import com.zorroa.archivist.security.withAuth
-import com.zorroa.common.schema.ProxySchema
+import com.zorroa.archivist.schema.ProxySchema
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.task.SyncTaskExecutor
 import org.springframework.core.task.TaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
@@ -56,12 +53,6 @@ class IndexServiceImpl @Autowired constructor(
 
 ) : IndexService {
 
-    @Autowired
-    lateinit var searchService: AssetService
-
-    @Value("\${archivist.asset-store.sql-backup}")
-    var assetStoreBackup: Boolean = false
-
     lateinit var workQueue: TaskExecutor
 
     @PostConstruct
@@ -101,12 +92,9 @@ class IndexServiceImpl @Autowired constructor(
     }
 
     override fun index(assets: List<Document>): BatchIndexAssetsResponse {
-        val result = indexDao.index(assets, true)
-        if (assetStoreBackup) {
-            // TODO: Write to GCS or local storage
-            // Register file to asset
-        }
-        return result
+        // TODO: Write to GCS or local storage
+        // Register file to asset
+        return indexDao.index(assets, true)
     }
 
     override fun exists(id: String): Boolean {

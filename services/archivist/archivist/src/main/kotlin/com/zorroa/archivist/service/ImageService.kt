@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.schema.Proxy
 import com.zorroa.archivist.util.copyInputToOuput
-import com.zorroa.common.schema.Proxy
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl

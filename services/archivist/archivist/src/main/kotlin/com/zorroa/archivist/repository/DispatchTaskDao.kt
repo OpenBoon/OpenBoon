@@ -1,12 +1,12 @@
 package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.zorroa.archivist.domain.DispatchPriority
+import com.zorroa.archivist.domain.DispatchTask
+import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.common.domain.DispatchPriority
-import com.zorroa.common.domain.DispatchTask
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID

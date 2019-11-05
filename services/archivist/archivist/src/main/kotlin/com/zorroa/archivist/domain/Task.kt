@@ -1,12 +1,15 @@
-package com.zorroa.common.domain
+package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.TaskState.Failure
+import com.zorroa.archivist.domain.TaskState.Queued
+import com.zorroa.archivist.domain.TaskState.Running
+import com.zorroa.archivist.domain.TaskState.Skipped
+import com.zorroa.archivist.domain.TaskState.Success
+import com.zorroa.archivist.domain.TaskState.Waiting
+import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.repository.KDaoFilter
-import com.zorroa.common.util.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -66,10 +69,9 @@ open class InternalTask(
     override val taskId: UUID,
     override val jobId: UUID,
 
-    @ApiModelProperty("Name of this task.")
+    @ApiModelProperty("UUID of the Project this Task belongs to.")
+    val projectId: UUID,
     val name: String,
-
-    @ApiModelProperty("Current state of the Task.")
     val state: TaskState
 
 ) : TaskId, JobId {
@@ -95,8 +97,7 @@ open class Task(
     @ApiModelProperty("UUID of the Job this Task belongs to.")
     override val jobId: UUID,
 
-    @ApiModelProperty("UUID of the Project this Task belongs to.")
-    val projectId: UUID,
+    projectId: UUID,
 
     name: String,
 
@@ -120,7 +121,7 @@ open class Task(
     @ApiModelProperty("Counters for the total number of assets created, updated, etc.")
     val assetCounts: Map<String, Int>
 
-) : InternalTask(id, jobId, name, state)
+) : InternalTask(id, jobId, projectId, name, state)
 
 /**
  * A DispatchTask is used by the Analysts to start a new task.
@@ -136,7 +137,7 @@ open class Task(
 class DispatchTask(
     val id: UUID,
     jobId: UUID,
-    val projectId: UUID,
+    projectId: UUID,
     name: String,
     state: TaskState,
     val host: String?,
@@ -144,7 +145,7 @@ class DispatchTask(
     var env: MutableMap<String, String>,
     var args: MutableMap<String, Any>,
     var logFile: String? = null
-) : InternalTask(id, jobId, name, state), TaskId {
+) : InternalTask(id, jobId, projectId, name, state), TaskId {
 
     override val taskId = id
 }
@@ -185,15 +186,8 @@ class TaskFilter(
             sort = listOf("taskId:a")
         }
 
-        if (hasPermission("zorroa::superadmin")) {
-            projectIds?.let {
-                addToWhere(JdbcUtils.inClause("job.pk_project", it.size))
-                addToValues(it)
-            }
-        } else {
-            addToWhere("job.project_id=?")
-            addToValues(getProjectId())
-        }
+        addToWhere("job.project_id=?")
+        addToValues(getProjectId())
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("task.pk_task", it.size))

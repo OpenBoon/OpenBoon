@@ -8,13 +8,20 @@ import com.zorroa.archivist.clients.ApiKey
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.security.AnalystAuthentication
-import com.zorroa.archivist.service.*
+import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.EsClientCache
+import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.archivist.service.IndexService
+import com.zorroa.archivist.service.PipelineService
+import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.schema.Proxy
-import com.zorroa.common.schema.ProxySchema
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.schema.Proxy
+import com.zorroa.archivist.schema.ProxySchema
+import com.zorroa.archivist.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.junit.Before
@@ -30,16 +37,12 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.web.WebAppConfiguration
-import org.springframework.transaction.TransactionStatus
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.transaction.support.TransactionCallbackWithoutResult
-import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
@@ -59,6 +62,12 @@ abstract class AbstractTest {
 
     @Autowired
     protected lateinit var assetService: AssetService
+
+    @Autowired
+    protected lateinit var pipelineService: PipelineService
+
+    @Autowired
+    protected lateinit var esClientCache: EsClientCache
 
     @Autowired
     protected lateinit var properties: ApplicationProperties
@@ -96,6 +105,7 @@ abstract class AbstractTest {
     @Before
     @Throws(IOException::class)
     fun setup() {
+        Json.Mapper.registerModule(KotlinModule())
         /*
          * Ensures that all transaction events run within the unit test transaction.
          * If this was not set then  transaction events like AfterCommit would never execute
@@ -114,38 +124,35 @@ abstract class AbstractTest {
         if (requiresElasticSearch()) {
             cleanElastic()
         }
-
-        Json.Mapper.registerModule(KotlinModule())
     }
 
     fun authenticateAsAnalyst() {
         SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
     }
-    
+
     fun deleteAllIndexes() {
         /*
          * The Elastic index(s) has been created, but we have to delete it and recreate it
          * so each test has a clean index.  Once this is done we can call setupDataSources()
          * which adds some standard data to both databases.
          */
-        val rest = indexRoutingService.getOrgRestClient()
-        val reqDel = DeleteIndexRequest("_all")
-
         /*
          * Delete will throw here if the index doesn't exist.
          */
-        try {
-            rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
-        } catch (e: Exception) {
-            logger.warn("Failed to delete 'unittest' index, this is usually ok.")
-        }
+
     }
 
     fun cleanElastic() {
-        deleteAllIndexes()
+        val clusterUrl = properties.getString("archivist.es.url")
+        try {
+            val rest = esClientCache.getEsRestClient(clusterUrl)
+            val reqDel = DeleteIndexRequest("_all")
+            rest.indices().delete(reqDel, RequestOptions.DEFAULT)
+        } catch (e: Exception) {
+            logger.warn("Failed to delete test index, this is usually ok.", e)
+        }
 
-        // See setup() method for configuration of default index.
-        indexRoutingService.syncAllIndexRoutes()
+        indexRoutingService.createIndexRoute(IndexRouteSpec(clusterUrl, "unittest", "asset", 12))
     }
 
     /**
@@ -153,15 +160,16 @@ abstract class AbstractTest {
      */
     fun authenticate() {
         val apiKey = ApiKey(
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                listOf("SEARCH"))
-        
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            listOf("SEARCH")
+        )
+
         SecurityContextHolder.getContext().authentication =
-                UsernamePasswordAuthenticationToken(
-                        apiKey,
-                        apiKey.keyId,
-                        apiKey.permissions.map { SimpleGrantedAuthority(it) })
+            UsernamePasswordAuthenticationToken(
+                apiKey,
+                apiKey.keyId,
+                apiKey.permissions.map { SimpleGrantedAuthority(it) })
     }
 
     fun logout() {
@@ -256,6 +264,7 @@ abstract class AbstractTest {
      *
      */
     fun addTestAssets(builders: List<Source>, commitToDb: Boolean = true) {
+        logger.info("addiing test assets2")
         for (source in builders) {
 
             logger.info("Adding test asset: {}", source.path.toString())
@@ -267,18 +276,7 @@ abstract class AbstractTest {
             )
 
             val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
-
-            if (commitToDb) {
-                val tmpl = TransactionTemplate(transactionManager)
-                tmpl.propagationBehavior = Propagation.REQUIRES_NEW.value()
-                tmpl.execute(object : TransactionCallbackWithoutResult() {
-                    override fun doInTransactionWithoutResult(transactionStatus: TransactionStatus) {
-                        assetService.createOrReplaceAssets(req)
-                    }
-                })
-            } else {
-                assetService.createOrReplaceAssets(req)
-            }
+            assetService.createOrReplaceAssets(req)
         }
         refreshIndex()
     }

@@ -17,25 +17,7 @@ class IndexRouteDaoTests : AbstractTest() {
     override fun requiresElasticSearch(): Boolean {
         return true
     }
-
-    @Test
-    fun testUpdateDefaultIndexRoutes() {
-        val url = "http://dog:1234"
-        indexRouteDao.updateDefaultIndexRoutes("http://dog:1234")
-        assertEquals(
-            url, jdbc.queryForObject(
-                "SELECT str_url FROM index_route",
-                String::class.java
-            )
-        )
-        assertFalse(
-            jdbc.queryForObject(
-                "SELECT bool_use_rkey FROM index_route",
-                Boolean::class.java
-            )
-        )
-    }
-
+    
     @Test
     fun testCreate() {
         val spec = IndexRouteSpec(
@@ -83,14 +65,14 @@ class IndexRouteDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testGetOrgRoute() {
+    fun testGetProjectRoute() {
         val route = indexRouteDao.getProjectRoute()
         assertEquals("http://localhost:9200", route.clusterUrl)
         assertEquals("http://localhost:9200/unittest", route.indexUrl)
         assertEquals("unittest", route.indexName)
         assertEquals("asset", route.mapping)
         assertEquals(false, route.closed)
-        assertEquals(2, route.replicas)
+        assertEquals(1, route.replicas)
         assertEquals(5, route.shards)
     }
 

@@ -280,7 +280,7 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
     }
 
     private fun getOrgRoot(): Path {
-        return root.resolve("orgs").resolve(getProjectId().toString())
+        return root.resolve("projects").resolve(getProjectId().toString())
     }
 
     private fun expandId(id: String): String {
