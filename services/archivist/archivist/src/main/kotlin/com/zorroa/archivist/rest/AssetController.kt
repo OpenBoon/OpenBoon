@@ -2,8 +2,6 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.schema.ProxySchema
@@ -23,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -38,8 +36,8 @@ import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+@PreAuthorize("hasAuthority('AssetsRead')")
 @RestController
-@Timed
 @Api(
     tags = ["Asset"],
     description = "Operations for interacting with Assets including CRUD, streaming, proxies and more."
@@ -230,15 +228,6 @@ class AssetController @Autowired constructor(
         } catch (e: Exception) {
             rsp.status = HttpStatus.NOT_FOUND.value()
         }
-    }
-
-    @ApiOperation("Create multiple Assets.")
-    @PostMapping(value = ["/api/v1/assets/_index"])
-    @Throws(IOException::class)
-    fun batchCreate(
-        @ApiParam("Assets to create.") @RequestBody spec: BatchCreateAssetsRequest
-    ): BatchIndexAssetsResponse {
-        return assetService.createOrReplaceAssets(spec)
     }
 
     @RequestMapping("/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])

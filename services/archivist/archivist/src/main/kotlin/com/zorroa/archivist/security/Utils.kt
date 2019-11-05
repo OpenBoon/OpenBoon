@@ -12,11 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
 import java.util.UUID
 
-object Role {
-    val SUPERADMIN = "ROLE_SUPERADMIN"
-    val MONITOR = "ROLE_MONITOR"
-}
-
 /**
  * Set a new Authentication value and return the previous one, or null in the case
  * that no Authentication exists.
