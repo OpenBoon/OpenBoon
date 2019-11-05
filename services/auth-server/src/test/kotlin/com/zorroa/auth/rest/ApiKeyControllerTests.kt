@@ -69,6 +69,19 @@ class ApiKeyControllerTests : MockMvcTest() {
                 .andReturn()
     }
 
+
+    @Test
+    fun testDownload() {
+        mvc.perform(
+                MockMvcRequestBuilders.get("/auth/v1/apikey/${standardKey.keyId}/_download")
+                        .headers(superAdmin(standardKey.projectId))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andExpect(MockMvcResultMatchers.header().exists("Content-disposition"))
+                .andReturn()
+    }
+
     @Test
     fun testGetAll() {
         mvc.perform(
