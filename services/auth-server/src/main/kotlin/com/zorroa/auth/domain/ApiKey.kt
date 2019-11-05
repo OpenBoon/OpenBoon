@@ -8,16 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.*
 import javax.persistence.*
 
-
-object Permission {
-    val READ_ASSETS = "READ_ASSETS"
-}
-
-object Role {
-    val SUPERADMIN_PERM = "SUPERADMIN"
-    val SUPERADMIN_ROLE = "ROLE_SUPERADMIN"
-}
-
 class ApiKeySpec(
         val name: String,
         val projectId: UUID,

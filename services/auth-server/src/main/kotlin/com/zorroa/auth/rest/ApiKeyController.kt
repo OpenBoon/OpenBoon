@@ -10,7 +10,7 @@ import java.util.*
 
 
 @RestController
-@PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+@PreAuthorize("hasAuthority('SuperAdmin')")
 class ApiKeyController {
 
     @Autowired

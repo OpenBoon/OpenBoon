@@ -1,8 +1,8 @@
 package com.zorroa.auth.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.zorroa.auth.MockMvcTest
 import com.zorroa.auth.domain.ApiKeySpec
-import com.zorroa.auth.domain.Permission
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.http.MediaType
@@ -20,7 +20,7 @@ class ApiKeyControllerTests : MockMvcTest() {
         val spec = ApiKeySpec(
                 "test",
                 UUID.randomUUID(),
-                listOf(Permission.READ_ASSETS)
+                listOf("foo")
         )
 
         mvc.perform(
@@ -32,8 +32,8 @@ class ApiKeyControllerTests : MockMvcTest() {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(spec.projectId.toString())))
                 .andExpect(jsonPath("$.name", CoreMatchers.equalTo("test")))
-                .andExpect(jsonPath("$.permissions",
-                        CoreMatchers.containsString(Permission.READ_ASSETS)))
+                .andExpect(jsonPath("$.permissions[0]",
+                        CoreMatchers.containsString("foo")))
                 .andReturn()
     }
 
@@ -42,7 +42,7 @@ class ApiKeyControllerTests : MockMvcTest() {
         val spec = ApiKeySpec(
                 "test",
                 UUID.randomUUID(),
-                listOf(Permission.READ_ASSETS)
+                listOf("foo")
         )
 
         mvc.perform(
@@ -64,8 +64,8 @@ class ApiKeyControllerTests : MockMvcTest() {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(jsonPath("$.name", CoreMatchers.equalTo("standard-key")))
-                .andExpect(jsonPath("$.permissions",
-                        CoreMatchers.containsString(Permission.READ_ASSETS)))
+                .andExpect(jsonPath("$.permissions[0]",
+                        CoreMatchers.containsString("Test")))
                 .andReturn()
     }
 
@@ -78,8 +78,8 @@ class ApiKeyControllerTests : MockMvcTest() {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(jsonPath("$.[0]name", CoreMatchers.equalTo("standard-key")))
-                .andExpect(jsonPath("$.[0]permissions",
-                        CoreMatchers.containsString(Permission.READ_ASSETS)))
+                .andExpect(jsonPath("$.[0]permissions[0]",
+                        CoreMatchers.containsString("Test")))
                 .andReturn()
     }
 
