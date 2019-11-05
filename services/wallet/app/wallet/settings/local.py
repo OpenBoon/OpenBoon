@@ -12,4 +12,12 @@ DATABASES = {
     }
 }
 
+
 MIDDLEWARE.append('wallet.middleware.local_dev_cors_middleware')
+
+
+REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
+    'rest_framework.authentication.BasicAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+]
