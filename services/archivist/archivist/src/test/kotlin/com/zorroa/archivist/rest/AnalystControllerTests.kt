@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.domain.Analyst
 import com.zorroa.archivist.domain.AnalystFilter

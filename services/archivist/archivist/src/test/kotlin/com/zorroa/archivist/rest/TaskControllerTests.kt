@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.cloud.storage.HttpMethod
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent

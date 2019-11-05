@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.domain.ProcessorSpec
