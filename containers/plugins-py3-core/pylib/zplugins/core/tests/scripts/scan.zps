@@ -1,0 +1,23 @@
+{
+    "generate": [
+        {
+            "className": "zorroa_py_core.generators.PyFileSystemGenerator",
+            "args": {
+                "paths": {
+                    "_expr_": "_ctx.global_args['path']"
+                    }
+                }
+            }
+        }
+    ],
+    "execute": [
+        {
+            "className": "zorroa_py_core.document.PyroupProcessor",
+            "args": {},
+            "filters": [
+                {"_expr_": "_doc.get_attr('source.extension') == 'jpg'"}
+            ]
+    ],
+    "strict": true,
+    "inline": true
+}

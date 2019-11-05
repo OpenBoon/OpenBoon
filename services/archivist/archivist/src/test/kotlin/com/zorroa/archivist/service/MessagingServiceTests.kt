@@ -15,7 +15,7 @@ class MessagingServiceTests : AbstractTest() {
         val data: Map<Any, Any> = mapOf("id" to 1)
         val message = PubSubMessagingService.getMessage(
             actionType = ActionType.AssetsDeleted,
-            organizationId = UUID.randomUUID(),
+            projectId = UUID.randomUUID(),
             data = data
         )
         assertEquals(expected = ActionType.AssetsDeleted.label, actual = message.getAttributesOrThrow("action"))
@@ -31,7 +31,7 @@ class MessagingServiceTests : AbstractTest() {
         val messageService = PubSubMessagingService("archivist-events-test")
         val message = PubSubMessagingService.getMessage(
             actionType = ActionType.AssetsDeleted,
-            organizationId = UUID.randomUUID(),
+            projectId = UUID.randomUUID(),
             data = data
         )
         val future = messageService.publish(message)

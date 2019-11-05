@@ -1,21 +1,22 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.copyInputToOuput
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskFilter
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -31,6 +32,7 @@ import java.util.UUID
 import java.util.concurrent.ExecutionException
 import javax.servlet.http.HttpServletResponse
 
+@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
 @RestController
 @Timed
 @Api(tags = ["Task"], description = "Operations for interacting with Tasks.")
@@ -72,7 +74,7 @@ class TaskController @Autowired constructor(
     fun retry(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
         return HttpUtils.status("Task", id, "retry",
                 dispatcherService.retryTask(jobService.getInternalTask(id),
-                        "Retried by ${getUsername()}"))
+                        "Retried by ${getProjectId()}"))
     }
 
     @ApiOperation("Skip a Task.")

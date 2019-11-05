@@ -20,32 +20,6 @@ services:
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
-  prometheus:
-    image: "prom/prometheus"
-    depends_on:
-      - "archivist"
-    ports:
-        - "9090:9090"
-    secrets:
-      - source: prometheus.yml
-        target: /etc/prometheus/prometheus.yml
-
-  # Grafana server connected to elasticsearch instance
-  grafana:
-    links:
-      - "prometheus"
-    image: "grafana/grafana"
-    ports:
-      - "3000:3000"
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_USERS_DEFAULT_THEME: dark
-      # GF_PATHS_PROVISIONING: /etc/grafana/provisioning
-    volumes:
-      - "./localdev/monitoring/grafana/provisioning:/etc/grafana/provisioning"
-      - "./localdev/monitoring/grafana/dashboards:/var/lib/grafana/dashboards"
-
   # Postgres instance used for local development servers.
   postgres:
     image: "postgres:9.6.9"
@@ -72,22 +46,9 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - "./localdev/shared:/shared"
-      - "./localdev/monitoring:/monitoring"
-      - "./localdev/zorroa-archivist-config:/config"
-      - "./archivist/target:/service"
-      - "../zorroa-test-data:/zorroa-test-data"
-
-  # Local Analyst server.
-  analyst:
-    build: ../../../zorroa-plugin-sdk
-    links:
-       - "archivist"
-    ports:
-      - 5000:5000
-    volumes:
-      - "./localdev/shared:/shared"
-      - "./localdev/zorroa:/zorroa"
+      - "./archivist/localdev/shared:/shared"
+      - "./archivist/localdev/monitoring:/monitoring"
+      - "./archivist/localdev/zorroa-archivist-config:/config"
       - "../zorroa-test-data:/zorroa-test-data"
 
 secrets:

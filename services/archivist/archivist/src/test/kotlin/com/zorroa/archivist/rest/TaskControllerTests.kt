@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.cloud.storage.HttpMethod
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -11,19 +12,18 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskFilter
-import com.zorroa.common.domain.TaskSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskFilter
+import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -85,7 +85,6 @@ class TaskControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/tasks/_search")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -104,7 +103,6 @@ class TaskControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/tasks/_search")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -123,7 +121,7 @@ class TaskControllerTests : MockMvcTest() {
         )
         assertEquals(task.id, result.id)
         assertEquals(task.name, result.name)
-        assertEquals(task.organizationId, result.organizationId)
+        assertEquals(task.projectId, result.projectId)
     }
 
     @Test
@@ -133,7 +131,6 @@ class TaskControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/tasks/${task.id}/_retry")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -156,7 +153,6 @@ class TaskControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/tasks/${task.id}/_retry")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -179,7 +175,6 @@ class TaskControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/tasks/${task.id}/_skip")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -201,7 +196,6 @@ class TaskControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_script")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -223,7 +217,6 @@ class TaskControllerTests : MockMvcTest() {
         val req = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -239,7 +232,6 @@ class TaskControllerTests : MockMvcTest() {
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
@@ -270,7 +262,6 @@ class TaskControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/tasks/${task.id}/taskerrors")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)

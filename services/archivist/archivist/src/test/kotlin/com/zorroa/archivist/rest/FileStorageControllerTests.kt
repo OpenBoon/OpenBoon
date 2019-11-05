@@ -1,14 +1,14 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.FileStat
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.nio.file.Files
@@ -30,7 +30,6 @@ class FileStorageControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -51,7 +50,6 @@ class FileStorageControllerTests : MockMvcTest() {
 
         val req1 = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -77,7 +75,6 @@ class FileStorageControllerTests : MockMvcTest() {
 
         val req = mvc.perform(MockMvcRequestBuilders.post("/api/v1/file-storage")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(spec)))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -88,7 +85,6 @@ class FileStorageControllerTests : MockMvcTest() {
 
         val req2 = mvc.perform(MockMvcRequestBuilders.get("/api/v1/file-storage/$id/_stat")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
@@ -111,7 +107,6 @@ class FileStorageControllerTests : MockMvcTest() {
 
         mvc.perform(MockMvcRequestBuilders.get("/api/v1/file-storage/${st.id}/_stream")
             .headers(admin())
-            .with(SecurityMockMvcRequestPostProcessors.csrf())
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.content().contentType("text/plain"))

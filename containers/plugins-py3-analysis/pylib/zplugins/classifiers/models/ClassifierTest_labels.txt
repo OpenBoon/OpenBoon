@@ -1,0 +1,6 @@
+analysis.imageSimilarity.shash
+dark
+late
+sunny
+sunny_left
+sunny_right

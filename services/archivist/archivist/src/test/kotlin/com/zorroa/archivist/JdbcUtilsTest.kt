@@ -1,8 +1,8 @@
 package com.zorroa.archivist
 
-import com.zorroa.common.util.JdbcUtils.arrayOverlapClause
-import com.zorroa.common.util.JdbcUtils.getTsWordVector
-import com.zorroa.common.util.JdbcUtils.insert
+import com.zorroa.archivist.util.JdbcUtils.arrayOverlapClause
+import com.zorroa.archivist.util.JdbcUtils.getTsWordVector
+import com.zorroa.archivist.util.JdbcUtils.insert
 import org.junit.Test
 import kotlin.test.assertEquals
 
