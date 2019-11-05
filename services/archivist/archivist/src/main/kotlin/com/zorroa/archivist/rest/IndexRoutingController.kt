@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@PreAuthorize("hasRole('SUPERADMIN')")
+@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
 @RestController
 @Timed
 class IndexRoutingController @Autowired constructor(
