@@ -1,5 +1,6 @@
 import docker
 import json
+import os
 
 from zorroa.zsdk.testing import TestEventEmitter
 from zorroa.zsdk.zps.process import ProcessorExecutor
@@ -68,11 +69,12 @@ class ZpsTestRunner(object):
         print("running in container")
         client = docker.from_env()
 
-        # volumes = {'/test-data': {'bind': '/test-data'}}
+        # assumption: zpsdebug is called from the repository root during CI stage execution
+        volumes = {os.getcwd() + '/test-data': {'bind': '/test-data', 'mode': 'ro'}}
 
         res = client.containers.run(self.image,
                                     entrypoint=self.processor + " " + self.test_dir,
-                                    # volumes=volumes,
+                                    volumes=volumes,
                                     stderr=True,
                                     stream=True)
 
