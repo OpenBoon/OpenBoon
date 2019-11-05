@@ -7,8 +7,9 @@ import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
-import com.zorroa.common.clients.SearchBuilder
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.clients.SearchBuilder
+import com.zorroa.archivist.util.Json
 import org.elasticsearch.ElasticsearchException
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest
 import org.elasticsearch.client.RequestOptions
@@ -37,13 +38,14 @@ class IndexDaoTests : AbstractTest() {
     }
 
     @Before
-    fun init() {
+    fun testAssets() {
+        logger.info("creating test assets")
         val builder = Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"))
         builder.setAttr("bar.str", "dog")
         builder.setAttr("bar.int", 100)
-        asset1 = indexDao.index(builder)
+        builder.setAttr("system.projectId", getProjectId().toString())
+        asset1 = indexDao.index(builder, true)
         logger.info("Creating asset: {}", asset1.id)
-        refreshIndex()
     }
 
     @Test

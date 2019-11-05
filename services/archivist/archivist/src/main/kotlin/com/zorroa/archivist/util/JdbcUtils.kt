@@ -1,4 +1,4 @@
-package com.zorroa.common.util
+package com.zorroa.archivist.util
 
 import com.zorroa.archivist.repository.LongRangeFilter
 import org.apache.commons.lang3.StringUtils

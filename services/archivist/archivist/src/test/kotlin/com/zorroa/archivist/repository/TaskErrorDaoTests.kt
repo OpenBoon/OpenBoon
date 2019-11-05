@@ -7,11 +7,10 @@ import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.security.getOrgId
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskSpec
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.Random
@@ -31,17 +30,21 @@ class TaskErrorDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
         authenticateAsAnalyst()
-        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
-                "it broke", "com.zorroa.ImageIngestor", true, "execute",
-                listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()")))
+        val error = TaskErrorEvent(
+            UUID.randomUUID(), "/foo/bar.jpg",
+            "it broke", "com.zorroa.ImageIngestor", true, "execute",
+            listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()"))
+        )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         val result = taskErrorDao.create(task, error)
         assertEquals(error.message, result.message)
@@ -53,16 +56,20 @@ class TaskErrorDaoTests : AbstractTest() {
 
     @Test
     fun testCreateWithNullStackTrace() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
         authenticateAsAnalyst()
-        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
-                "it broke", "com.zorroa.ImageIngestor", true, "execute")
+        val error = TaskErrorEvent(
+            UUID.randomUUID(), "/foo/bar.jpg",
+            "it broke", "com.zorroa.ImageIngestor", true, "execute"
+        )
 
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         val result = taskErrorDao.create(task, error)
@@ -75,33 +82,41 @@ class TaskErrorDaoTests : AbstractTest() {
 
     @Test
     fun testBatchCreate() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
         authenticateAsAnalyst()
-        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
-                "it broke", "com.zorroa.ImageIngestor", true, "execute",
-                listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()")))
+        val error = TaskErrorEvent(
+            UUID.randomUUID(), "/foo/bar.jpg",
+            "it broke", "com.zorroa.ImageIngestor", true, "execute",
+            listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()"))
+        )
         val result = taskErrorDao.batchCreate(task, listOf(error, error, error))
         assertEquals(3, result)
     }
 
     @Test
     fun testCreateNoFile() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
         authenticateAsAnalyst()
-        val error = TaskErrorEvent(null, null,
-                "it broke", "com.zorroa.ImageIngestor", true, "execute")
+        val error = TaskErrorEvent(
+            null, null,
+            "it broke", "com.zorroa.ImageIngestor", true, "execute"
+        )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)
         val result = taskErrorDao.create(task, error)
         assertEquals(error.message, result.message)
@@ -111,20 +126,26 @@ class TaskErrorDaoTests : AbstractTest() {
     }
 
     fun createTaskErrors(): Task {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job = jobService.create(spec)
         val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
 
         authenticateAsAnalyst()
-        val error = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg",
-                "it broke", "com.zorroa.ImageIngestor", true, "execute",
-                listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()")))
+        val error = TaskErrorEvent(
+            UUID.randomUUID(), "/foo/bar.jpg",
+            "it broke", "com.zorroa.ImageIngestor", true, "execute",
+            listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()"))
+        )
         taskErrorDao.create(task, error)
+        authenticate()
         return task
     }
+
     @Test
     fun testGet() {
         createTaskErrors()
@@ -157,8 +178,10 @@ class TaskErrorDaoTests : AbstractTest() {
         createTaskErrors()
         var filter = TaskErrorFilter(processors = listOf("com.zorroa.ImageIngestor"))
         assertEquals(1, taskErrorDao.count(filter))
-        assertEquals("com.zorroa.ImageIngestor",
-                taskErrorDao.getAll(filter)[0].processor)
+        assertEquals(
+            "com.zorroa.ImageIngestor",
+            taskErrorDao.getAll(filter)[0].processor
+        )
 
         filter = TaskErrorFilter(processors = listOf("com.zorroa.BilboBaggins"))
         assertEquals(0, taskErrorDao.count(filter))
@@ -213,18 +236,7 @@ class TaskErrorDaoTests : AbstractTest() {
         filter = TaskErrorFilter(timeCreated = LongRangeFilter(System.currentTimeMillis() + 1000, null))
         assertEquals(0, taskErrorDao.count(filter))
     }
-
-    @Test
-    fun testGetAllByOrganizationId() {
-        createTaskErrors()
-
-        var filter = TaskErrorFilter(organizationIds = listOf(getOrgId()))
-        assertEquals(1, taskErrorDao.count(filter))
-
-        filter = TaskErrorFilter(organizationIds = listOf(UUID.randomUUID()))
-        assertEquals(0, taskErrorDao.count(filter))
-    }
-
+    
     @Test
     fun testGetAllByKeywords() {
         createTaskErrors()
@@ -249,12 +261,14 @@ class TaskErrorDaoTests : AbstractTest() {
         authenticateAsAnalyst()
         for (i in 0..10) {
             val num = Random().nextInt(1000)
-            val error = TaskErrorEvent(UUID.randomUUID(), String.format("%04d", num),
-                    "it broke", "foo", true, "teardown")
+            val error = TaskErrorEvent(
+                UUID.randomUUID(), String.format("%04d", num),
+                "it broke", "foo", true, "teardown"
+            )
             val event = TaskEvent(TaskEventType.ERROR, task.id, task.jobId, error)
             taskErrorDao.create(task, error)
         }
-
+        authenticate()
         var filter = TaskErrorFilter(processors = listOf("foo"))
         filter.sort = listOf("path:d")
 

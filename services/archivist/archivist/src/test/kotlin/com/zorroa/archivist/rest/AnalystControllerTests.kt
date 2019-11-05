@@ -1,22 +1,20 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.repository.AnalystDao
-import com.zorroa.common.domain.Analyst
-import com.zorroa.common.domain.AnalystFilter
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.domain.Analyst
+import com.zorroa.archivist.domain.AnalystFilter
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.AnalystState
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.util.UUID
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class AnalystControllerTests : MockMvcTest() {
@@ -88,7 +86,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/analysts/${analyst.id}")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -105,7 +102,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=locked")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -116,7 +112,6 @@ class AnalystControllerTests : MockMvcTest() {
         val rsp2 = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=unlocked")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -130,7 +125,6 @@ class AnalystControllerTests : MockMvcTest() {
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/${analyst.id}/_lock?state=sdsdsdsdsds")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
@@ -139,52 +133,9 @@ class AnalystControllerTests : MockMvcTest() {
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/analysts/wedwdsdsds/_lock?state=unlocked")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
-            .andReturn()
-    }
-
-    @Test
-    fun testProcessorScan() {
-        val rsp = mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
-                .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        val status = Json.Mapper.readValue<Map<String, Any>>(
-            rsp.response.contentAsString, Json.GENERIC_MAP
-        )
-        assertTrue(status["success"] as Boolean)
-
-        val rsp2 = mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/analysts/_processor_scan")
-                .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        val status2 = Json.Mapper.readValue<Map<String, Any>>(
-            rsp2.response.contentAsString, Json.GENERIC_MAP
-        )
-        assertFalse(status2["success"] as Boolean)
-    }
-
-    @Test
-    fun testDownloadZsdk() {
-        mvc.perform(
-            MockMvcRequestBuilders.get("/download-zsdk")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isNotFound)
             .andReturn()
     }
 

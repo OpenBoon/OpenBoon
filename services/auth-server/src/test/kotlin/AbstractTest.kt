@@ -27,7 +27,6 @@ abstract class AbstractTest {
 
     @Before
     fun setup() {
-        val projectId = UUID.randomUUID()
         standardKey = apiKeyService.create(
                 ApiKeySpec("standard-key", UUID.randomUUID(), listOf(Permission.READ_ASSETS)))
 

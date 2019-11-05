@@ -1,12 +1,12 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.JobUpdateSpec
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation

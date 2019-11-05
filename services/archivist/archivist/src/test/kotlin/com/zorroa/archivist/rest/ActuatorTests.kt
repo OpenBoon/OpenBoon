@@ -1,6 +1,6 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.context.web.WebAppConfiguration
@@ -36,6 +36,7 @@ class ActuatorTests : MockMvcTest() {
     fun testHealthEndpoint() {
         mvc.perform(
             MockMvcRequestBuilders.get("/actuator/health")
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -48,13 +49,12 @@ class ActuatorTests : MockMvcTest() {
         // Need to auth with monitor username/pass
         mvc.perform(
             MockMvcRequestBuilders.get("/actuator/metrics")
-                //.header("Authorization", "Bearer $token")
+                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.names").exists())
             .andReturn()
-        throw NotImplementedError()
     }
 
     @Test

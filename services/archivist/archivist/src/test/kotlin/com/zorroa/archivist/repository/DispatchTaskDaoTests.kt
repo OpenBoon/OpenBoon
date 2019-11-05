@@ -2,12 +2,12 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.security.getOrgId
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobPriority
-import com.zorroa.common.domain.JobSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -54,7 +54,7 @@ class DispatchTaskDaoTests : AbstractTest() {
         val job2 = launchJob(JobPriority.Interactive)
         val job3 = launchJob(JobPriority.Reindex)
 
-        var tasks = dispatchTaskDao.getNextByOrg(getOrgId(), 5)
+        var tasks = dispatchTaskDao.getNextByProject(getProjectId(), 5)
 
         assertEquals(job3.id, tasks[0].jobId)
         assertEquals(job2.id, tasks[1].jobId)
@@ -67,7 +67,7 @@ class DispatchTaskDaoTests : AbstractTest() {
         val job2 = launchJob(JobPriority.Standard)
         val job3 = launchJob(JobPriority.Standard)
 
-        var tasks = dispatchTaskDao.getNextByOrg(getOrgId(), 5)
+        var tasks = dispatchTaskDao.getNextByProject(getProjectId(), 5)
 
         assertEquals(job1.id, tasks[0].jobId)
         assertEquals(job2.id, tasks[1].jobId)
@@ -79,7 +79,7 @@ class DispatchTaskDaoTests : AbstractTest() {
         Thread.sleep(2)
         dispatcherService.expand(job3, emptyZpsScript("job3"))
 
-        tasks = dispatchTaskDao.getNextByOrg(getOrgId(), 6)
+        tasks = dispatchTaskDao.getNextByProject(getProjectId(), 6)
 
         // Job that was launched first goes first.
         assertEquals(job1.id, tasks[0].jobId)
@@ -98,7 +98,7 @@ class DispatchTaskDaoTests : AbstractTest() {
                 env = mutableMapOf("foo" to "bar"))
 
         jobService.create(spec)
-        val tasks = dispatchTaskDao.getNextByOrg(getOrgId(), 5)
+        val tasks = dispatchTaskDao.getNextByProject(getProjectId(), 5)
         assertEquals(1, tasks.size)
         assertTrue(tasks[0].args.containsKey("foo"))
         assertEquals(spec.env, tasks[0].env)
@@ -116,7 +116,7 @@ class DispatchTaskDaoTests : AbstractTest() {
         jobService.create(spec)
 
         val priority = dispatchTaskDao.getDispatchPriority()[0]
-        assertEquals(getOrgId(), priority.organizationId)
+        assertEquals(getProjectId(), priority.projectId)
         assertEquals(0, priority.priority)
     }
 

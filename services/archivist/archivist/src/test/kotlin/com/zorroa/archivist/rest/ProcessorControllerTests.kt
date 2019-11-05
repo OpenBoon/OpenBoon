@@ -6,14 +6,13 @@ import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.domain.ProcessorSpec
 import com.zorroa.archivist.service.ProcessorService
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
@@ -41,7 +40,6 @@ class ProcessorControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/processors/$id")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -58,7 +56,6 @@ class ProcessorControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/processors/$name")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -76,7 +73,6 @@ class ProcessorControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/processors/_search")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )

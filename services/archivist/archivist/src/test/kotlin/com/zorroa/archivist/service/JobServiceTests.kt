@@ -2,15 +2,15 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobPriority
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskSpec
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,29 +47,17 @@ class JobServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testCreateExport() {
-        val spec2 = JobSpec(null,
-            emptyZpsScript("foo"),
-            args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar"))
-        val job2 = jobService.create(spec2, PipelineType.Export)
-        assertEquals(JobPriority.Interactive, job2.priority)
-        assertEquals(PipelineType.Export, job2.type)
-    }
-
-    @Test
     fun testCreateImport() {
         val spec2 = JobSpec(null,
             emptyZpsScript("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar"))
-        val job2 = jobService.create(spec2, PipelineType.Import)
+        val job2 = jobService.create(spec2, JobType.Import)
         assertEquals(JobPriority.Standard, job2.priority)
-        assertEquals(PipelineType.Import, job2.type)
+        assertEquals(JobType.Import, job2.type)
         val tasks = jobService.getJobTasks(job2.id)
         assertEquals(1, tasks.count())
         val script = jobService.getZpsScript(tasks[0].id)
-        assertEquals("zplugins.core.collectors.ImportCollector", script.execute?.get(7)?.className)
     }
 
     @Test
@@ -79,7 +67,6 @@ class JobServiceTests : AbstractTest() {
                 args = mutableMapOf("foo" to 1),
                 env = mutableMapOf("foo" to "bar"))
         val job2 = jobService.create(spec2)
-        assertTrue("admin" in job2.name)
         assertTrue("Import" in job2.name)
     }
 

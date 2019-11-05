@@ -3,26 +3,23 @@ package com.zorroa.archivist.service
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.zorroa.archivist.clients.EsRestClient
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.ClusterLockSpec
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.common.clients.EsRestClient
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobPriority
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
@@ -38,8 +35,6 @@ import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.health.Health
-import org.springframework.context.ApplicationListener
-import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
@@ -74,7 +69,7 @@ interface IndexRoutingService {
     fun createIndexRoute(spec: IndexRouteSpec): IndexRoute
 
     /**
-     * Get an [EsRestClient] for the current users organization.
+     * Get an [EsRestClient] for the current users project.
      *
      * @return: EsRestClient
      */
@@ -93,7 +88,7 @@ interface IndexRoutingService {
      * Apply any outstanding mapping patches to the given [IndexRoute]
      *
      * @param route The IndexRoute to version up.
-     * @return the [ElasticMapping] the route was updated to.
+     * @return the [ElasticMapping] the route was updat to.
      */
     fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping?
 
@@ -125,16 +120,7 @@ interface IndexRoutingService {
     fun refreshAll()
 
     /**
-     * Setup the default index configured in application.properties.  This will update any
-     * route that is marked as being in the public pool with the value of the
-     * archivist.index.default-url property.
-     *
-     * This method will be removed as part of index routing phase 2
-     */
-    fun setupDefaultIndexRoute()
-
-    /**
-     * Launch a reindex job for the current authorized user's organization.  The job
+     * Launch a reindex job for the current authorized user's project.  The job
      * will kill any existing reindex job.
      */
     fun launchReindexJob(): Job
@@ -211,26 +197,15 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val properties: ApplicationProperties
-) :
-    IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
-
-    @Autowired
-    lateinit var clusterLockExecutor: ClusterLockExecutor
+) : IndexRoutingService {
 
     @Autowired
     lateinit var jobService: JobService
 
-    var esClientCache = EsClientCache()
+    @Autowired
+    lateinit var esClientCache: EsClientCache
 
     val migrated = AtomicBoolean(false)
-
-    override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        setupDefaultIndexRoute()
-        if (!ArchivistConfiguration.unittest) {
-            // This is run manually by unittests we can test it.
-            syncAllIndexRoutes()
-        }
-    }
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {
@@ -239,12 +214,6 @@ constructor(
             throw IllegalArgumentException(
                 "Failed to find index mapping ${spec.mapping} v${spec.mappingMajorVer}"
             )
-        }
-
-        // These are always false for single tenant
-        if (!properties.getBoolean("archivist.organization.multiTenant")) {
-            spec.useRouteKey = false
-            spec.defaultPool = false
         }
 
         val route = indexRouteDao.create(spec)
@@ -286,12 +255,6 @@ constructor(
         return req.request.getHeader("X-Zorroa-Index-Route") != null
     }
 
-    override fun setupDefaultIndexRoute() {
-        val defaultUrl = properties.getString("archivist.index.default-url")
-        val defaultRoutingKey = properties.getBoolean("archivist.index.default-use-routing-key")
-        indexRouteDao.updateDefaultIndexRoutes(defaultUrl, defaultRoutingKey)
-    }
-
     override fun syncAllIndexRoutes() {
         val routes = indexRouteDao.getAll()
         logger.info("Syncing all ${routes.size} index routes.")
@@ -316,48 +279,47 @@ constructor(
         val es = getClusterRestClient(route)
         waitForElasticSearch(es)
 
-        val lock = ClusterLockSpec.softLock("create-es-${route.id}")
-        clusterLockExecutor.inline(lock) {
+        // TODO: cluster lock
 
-            val indexExisted = es.indexExists()
-            if (!indexExisted) {
-                logger.info(
-                    "Creating index:" +
-                        "type: '${route.mapping}'  index: '${route.indexName}' " +
-                        "ver: '${route.mappingMajorVer}'" +
-                        "shards: '${route.shards}' replicas: '${route.replicas}'"
-                )
+        val indexExisted = es.indexExists()
+        if (!indexExisted) {
+            logger.info(
+                "Creating index:" +
+                    "type: '${route.mapping}'  index: '${route.indexName}' " +
+                    "ver: '${route.mappingMajorVer}'" +
+                    "shards: '${route.shards}' replicas: '${route.replicas}'"
+            )
 
-                val mappingFile = getMajorVersionMappingFile(
-                    route.mapping, route.mappingMajorVer
-                )
+            val mappingFile = getMajorVersionMappingFile(
+                route.mapping, route.mappingMajorVer
+            )
 
-                val mapping = Document(mappingFile.mapping)
-                mapping.setAttr("settings.index.number_of_shards", route.shards)
-                mapping.setAttr("settings.index.number_of_replicas", route.replicas)
+            val mapping = Document(mappingFile.mapping)
+            mapping.setAttr("settings.index.number_of_shards", route.shards)
+            mapping.setAttr("settings.index.number_of_replicas", route.replicas)
 
-                val req = CreateIndexRequest()
-                req.index(route.indexName)
-                req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
-                es.client.indices().create(req, RequestOptions.DEFAULT)
-                result = mappingFile
-            } else {
-                logger.info("Not creating ${route.indexUrl}, already exists")
-            }
-
-            val patches = getMinorVersionMappingFiles(route.mapping, route.mappingMajorVer)
-            for (patch in patches) {
-                /**
-                 * If the index already existed, then only apply new patches. If
-                 * the index was just created, then apply all patches.
-                 */
-                if (indexExisted && route.mappingMinorVer >= patch.minorVersion) {
-                    continue
-                }
-                applyMinorVersionMappingFile(route, patch)
-                result = patch
-            }
+            val req = CreateIndexRequest()
+            req.index(route.indexName)
+            req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
+            es.client.indices().create(req, RequestOptions.DEFAULT)
+            result = mappingFile
+        } else {
+            logger.info("Not creating ${route.indexUrl}, already exists")
         }
+
+        val patches = getMinorVersionMappingFiles(route.mapping, route.mappingMajorVer)
+        for (patch in patches) {
+            /**
+             * If the index already existed, then only apply new patches. If
+             * the index was just created, then apply all patches.
+             */
+            if (indexExisted && route.mappingMinorVer >= patch.minorVersion) {
+                continue
+            }
+            applyMinorVersionMappingFile(route, patch)
+            result = patch
+        }
+
 
         return result
     }
@@ -365,9 +327,7 @@ constructor(
     override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {
         val path = "db/migration/elasticsearch/V${majorVersion}__$mappingType.json"
         val resource = ClassPathResource(path)
-        val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(
-            resource.inputStream, Json.GENERIC_MAP
-        )
+        val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(resource.inputStream)
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
     }
 
@@ -375,13 +335,14 @@ constructor(
         val name = "Reindexing All Assets"
         val script = ZpsScript(
             name,
-            type = PipelineType.Import,
+            type = JobType.Import,
             settings = mutableMapOf("inline" to true),
             over = listOf(),
             execute = listOf(),
             generate = listOf(
                 ProcessorRef(
                     "zplugins.core.generators.AssetSearchGenerator",
+                    "zorroa-py3-core",
                     mapOf("search" to mapOf<String, Any>())
                 )
             )
@@ -396,7 +357,7 @@ constructor(
             pauseDurationSeconds = REINDEX_JOB_DELAY_SEC
         )
 
-        return jobService.create(spec, PipelineType.Import)
+        return jobService.create(spec, JobType.Import)
     }
 
     override fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping> {
@@ -413,7 +374,7 @@ constructor(
 
                 if (major == majorVersion && type == mappingType) {
                     val json = Json.Mapper.readValue<MutableMap<String, Any>>(
-                        resource.inputStream, Json.GENERIC_MAP
+                        resource.inputStream
                     )
                     result.add(ElasticMapping(mappingType, major, minor, json))
                 }
@@ -433,10 +394,10 @@ constructor(
         val route = if (routeId != null) {
             indexRouteDao.get(UUID.fromString(routeId))
         } else {
-            indexRouteDao.getOrgRoute()
+            indexRouteDao.getProjectRoute()
         }
 
-        return esClientCache.get(route.esClientCacheKey(getOrgId().toString()))
+        return esClientCache.get(route.esClientCacheKey())
     }
 
     override fun getClusterRestClient(route: IndexRoute): EsRestClient {
@@ -615,6 +576,10 @@ class EsClientCache {
      */
     fun get(route: EsClientCacheKey): EsRestClient {
         return EsRestClient(route, cache.get(route.clusterUrl))
+    }
+
+    fun getEsRestClient(url: String): RestHighLevelClient {
+        return cache.get(url)
     }
 
     /**

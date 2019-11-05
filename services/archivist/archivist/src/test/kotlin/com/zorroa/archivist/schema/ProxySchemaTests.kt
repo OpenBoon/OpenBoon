@@ -1,7 +1,5 @@
 package com.zorroa.archivist.schema
 
-import com.zorroa.common.schema.Proxy
-import com.zorroa.common.schema.ProxySchema
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
