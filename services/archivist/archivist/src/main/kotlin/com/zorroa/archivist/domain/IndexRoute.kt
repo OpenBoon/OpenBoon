@@ -1,8 +1,8 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.common.repository.KDaoFilter
-import com.zorroa.common.util.JdbcUtils
+import com.zorroa.archivist.repository.KDaoFilter
+import com.zorroa.archivist.util.JdbcUtils
 import java.util.UUID
 
 /**
@@ -61,7 +61,7 @@ class IndexRouteSpec(
     var indexName: String,
     var mapping: String,
     var mappingMajorVer: Int,
-    var replicas: Int = 2,
+    var replicas: Int = 1,
     var shards: Int = 5
 )
 

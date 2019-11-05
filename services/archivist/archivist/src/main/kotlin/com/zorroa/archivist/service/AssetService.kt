@@ -1,9 +1,14 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.*
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.domain.AssetUploadedResponse
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexAssetsResponse
+import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.security.getProjectFilter
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.RequestOptions
@@ -24,7 +29,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.OutputStream
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general

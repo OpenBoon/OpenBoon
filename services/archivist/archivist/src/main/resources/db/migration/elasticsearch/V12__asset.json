@@ -121,30 +121,6 @@
       },
       "dynamic_templates": [
         {
-
-          "keywords_template": {
-            "match_mapping_type": "string",
-            "match_pattern": "regex",
-            "match": "^keywords$|^string_suggest__.*$",
-            "mapping": {
-              "type": "text",
-              "fields": {
-                "raw": {
-                  "type": "keyword"
-                },
-                "suggest": {
-                  "type": "completion",
-                  "contexts": {
-                    "name": "project",
-                    "type": "category",
-                    "path": "system.projectId"
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "shape_template": {
             "match_pattern": "regex",
             "match": "^.+Shape$|^shape$|^geo_shape__.*$",

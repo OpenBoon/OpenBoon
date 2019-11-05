@@ -1,4 +1,4 @@
-package com.zorroa.common.schema
+package com.zorroa.archivist.schema
 
 import java.math.BigDecimal
 import java.math.RoundingMode

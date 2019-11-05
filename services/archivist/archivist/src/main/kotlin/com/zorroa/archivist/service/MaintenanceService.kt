@@ -1,10 +1,10 @@
 package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
+import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.SuperAdminAuthentication
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.common.domain.AnalystState
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
 import org.slf4j.LoggerFactory

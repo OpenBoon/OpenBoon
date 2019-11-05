@@ -4,7 +4,7 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.FileStat
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType

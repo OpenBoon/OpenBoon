@@ -1,12 +1,12 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.Analyst
+import com.zorroa.archivist.domain.AnalystFilter
+import com.zorroa.archivist.domain.AnalystState
+import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.common.domain.Analyst
-import com.zorroa.common.domain.AnalystFilter
-import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.LockState
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -35,7 +35,7 @@ import org.springframework.web.client.RestTemplate
 import java.security.cert.X509Certificate
 import java.util.UUID
 
-@PreAuthorize("hasAuthority(T(com.zorroa.security.Groups).SUPERADMIN)")
+@PreAuthorize("hasRole('ROLE_SUPERADMIN')")
 @RestController
 @Timed
 @Api(tags = ["Analyst"], description = "Operations for managing and interacting with the Analysts.")

@@ -3,9 +3,9 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineSpec
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.util.Json
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api

@@ -1,4 +1,4 @@
-package com.zorroa.common.repository
+package com.zorroa.archivist.repository
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.slf4j.LoggerFactory

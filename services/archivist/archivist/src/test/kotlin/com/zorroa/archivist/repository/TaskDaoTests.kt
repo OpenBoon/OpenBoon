@@ -2,17 +2,16 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobId
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskFilter
-import com.zorroa.common.domain.TaskSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.repository.KPage
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobId
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskFilter
+import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.TaskState
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,7 +42,7 @@ class TaskDaoTests : AbstractTest() {
                 args = mutableMapOf("foo" to 1),
                 env = mutableMapOf("foo" to "bar"))
 
-        job = jobDao.create(jspec, PipelineType.Import)
+        job = jobDao.create(jspec, JobType.Import)
         spec = TaskSpec("generator", jspec.script!!)
         task = taskDao.create(job, spec)
     }
@@ -69,9 +68,6 @@ class TaskDaoTests : AbstractTest() {
 
         val filter5 = TaskFilter(projectIds = listOf(getProjectId()))
         assertEquals(11, taskDao.getAll(filter5).size())
-
-        val filter6 = TaskFilter(projectIds = listOf(UUID.randomUUID()))
-        assertEquals(0, taskDao.getAll(filter6).size())
     }
 
     @Test

@@ -2,22 +2,21 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.InternalTask
+import com.zorroa.archivist.domain.JobId
+import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskFilter
+import com.zorroa.archivist.domain.TaskId
+import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
-import com.zorroa.common.domain.InternalTask
-import com.zorroa.common.domain.JobId
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskFilter
-import com.zorroa.common.domain.TaskId
-import com.zorroa.common.domain.TaskSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.JdbcUtils
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.archivist.util.Json
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -225,6 +224,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         private val INTERNAL_MAPPER = RowMapper { rs, _ ->
             InternalTask(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
+                    rs.getObject("project_id") as UUID,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")])
         }
@@ -289,9 +289,10 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task.pk_task," +
                 "task.pk_job," +
                 "task.str_name," +
-                "task.int_state " +
+                "task.int_state, " +
+                "job.project_id " +
             "FROM " +
-                "task "
+                "task INNER JOIN job ON (task.pk_job = job.pk_job)"
 
         private const val COUNT = "SELECT COUNT(1) " +
             "FROM " +

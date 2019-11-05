@@ -2,22 +2,21 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobId
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.JobType
+import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.security.getApiKey
 import com.zorroa.archivist.service.MeterRegistryHolder
 import com.zorroa.archivist.service.event
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobId
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.JobUpdateSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.JdbcUtils.insert
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.JdbcUtils.insert
+import com.zorroa.archivist.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
@@ -25,7 +24,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 interface JobDao {
-    fun create(spec: JobSpec, type: PipelineType): Job
+    fun create(spec: JobSpec, type: JobType): Job
     fun update(job: JobId, update: JobUpdateSpec): Boolean
     fun get(id: UUID, forClient: Boolean = false): Job
     fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean
@@ -42,7 +41,7 @@ interface JobDao {
 @Repository
 class JobDaoImpl : AbstractDao(), JobDao {
 
-    override fun create(spec: JobSpec, type: PipelineType): Job {
+    override fun create(spec: JobSpec, type: JobType): Job {
         Preconditions.checkNotNull(spec.name)
 
         val id = uuid1.generate()
@@ -214,7 +213,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             Job(rs.getObject("pk_job") as UUID,
                     rs.getObject("project_id") as UUID,
                     rs.getString("str_name"),
-                    PipelineType.values()[rs.getInt("int_type")],
+                    JobType.values()[rs.getInt("int_type")],
                     state,
                     null,
                     null,

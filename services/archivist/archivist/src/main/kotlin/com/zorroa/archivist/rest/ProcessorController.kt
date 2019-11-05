@@ -2,9 +2,9 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.ProcessorService
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
-import com.zorroa.common.repository.KPagedList
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam

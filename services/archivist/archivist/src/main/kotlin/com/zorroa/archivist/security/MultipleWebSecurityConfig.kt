@@ -1,6 +1,7 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.clients.AuthServerClientImpl
 import com.zorroa.archivist.config.ApplicationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,8 +60,10 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                 .antMatcher("/api/**")
-                .addFilterBefore(apiKeyAuthorizationFilter,
-                        UsernamePasswordAuthenticationFilter::class.java)
+                .addFilterBefore(
+                    apiKeyAuthorizationFilter,
+                    UsernamePasswordAuthenticationFilter::class.java
+                )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -98,6 +101,9 @@ class MultipleWebSecurityConfig {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
 
+        @Autowired
+        lateinit var apiKeyAuthorizationFilter: ApiKeyAuthorizationFilter
+
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
@@ -105,11 +111,15 @@ class MultipleWebSecurityConfig {
                 .httpBasic()
                 .and()
                 .csrf().disable()
+                .addFilterBefore(
+                    apiKeyAuthorizationFilter,
+                    UsernamePasswordAuthenticationFilter::class.java
+                )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
-                .hasAnyAuthority(Role.SUPERADMIN, Role.MONITOR)
+                .hasAnyRole("SUPERADMIN", "MONITOR")
                 .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
@@ -160,9 +170,13 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
+    fun authServerClient(): AuthServerClient {
+        return AuthServerClientImpl(properties.getString("security.auth-server.url"))
+    }
+
+    @Bean
     fun apiKeyAuthenticationFilter(): ApiKeyAuthorizationFilter {
-        val authServerClient = AuthServerClient(properties.getString("security.auth-server.url"))
-        return ApiKeyAuthorizationFilter(authServerClient)
+        return ApiKeyAuthorizationFilter(authServerClient())
     }
 
     companion object {

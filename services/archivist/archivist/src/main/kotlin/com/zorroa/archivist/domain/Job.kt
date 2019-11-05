@@ -1,20 +1,27 @@
-package com.zorroa.common.domain
+package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.domain.JobPriority.Interactive
+import com.zorroa.archivist.domain.JobPriority.Reindex
+import com.zorroa.archivist.domain.JobPriority.Standard
+import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.domain.JobPriority.Interactive
-import com.zorroa.common.domain.JobPriority.Reindex
-import com.zorroa.common.domain.JobPriority.Standard
-import com.zorroa.common.repository.KDaoFilter
-import com.zorroa.common.util.JdbcUtils
+import com.zorroa.archivist.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
+
+/**
+ * Backwards compatible 0.40 job type enum.
+ */
+enum class JobType {
+    Import,
+    Export,
+    Batch,
+    Generate
+}
+
 
 enum class JobState {
     Active,
@@ -111,7 +118,7 @@ class Job(
     val name: String,
 
     @ApiModelProperty("Type of Pipeline this Job will run.")
-    val type: PipelineType,
+    val type: JobType,
 
     @ApiModelProperty("Current state of this Job.")
     val state: JobState,
@@ -159,13 +166,10 @@ class JobFilter(
     val ids: List<UUID>? = null,
 
     @ApiModelProperty("Pipeline Type to match.")
-    val type: PipelineType? = null,
+    val type: JobType? = null,
 
     @ApiModelProperty("States to match.")
     val states: List<JobState>? = null,
-
-    @ApiModelProperty("Project UUIDs to match.")
-    val projectIds: List<UUID>? = null,
 
     @ApiModelProperty("Job names to match.")
     val names: List<String>? = null,
@@ -194,15 +198,8 @@ class JobFilter(
             sort = listOf("timeCreated:desc")
         }
 
-        if (hasPermission(Role.SUPERADMIN)) {
-            projectIds?.let {
-                addToWhere(JdbcUtils.inClause("job.project_id", it.size))
-                addToValues(it)
-            }
-        } else {
-            addToWhere("job.project_id=?")
-            addToValues(getProjectId())
-        }
+        addToWhere("job.project_id=?")
+        addToValues(getProjectId())
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("job.pk_job", it.size))

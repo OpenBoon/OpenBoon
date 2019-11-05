@@ -29,13 +29,8 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Before
-    fun init() {
+    fun addTestAssets() {
         addTestAssets("set04/standard")
-    }
-
-    @Test
-    fun testIndexWithBackup() {
-        throw NotImplementedError()
     }
 
     @Test
@@ -88,18 +83,5 @@ class IndexServiceTests : AbstractTest() {
             asset2.getAttr("system.timeCreated", String::class.java),
             asset2.getAttr("system.timeModified", String::class.java)
         )
-    }
-}
-
-@TestPropertySource(locations = ["classpath:test.properties", "classpath:jwt.properties"])
-class JwtTokenSecurityIndexServiceTests : AbstractTest() {
-
-    override fun requiresElasticSearch(): Boolean {
-        return true
-    }
-
-    @Before
-    fun init() {
-        addTestAssets("set04/standard")
     }
 }

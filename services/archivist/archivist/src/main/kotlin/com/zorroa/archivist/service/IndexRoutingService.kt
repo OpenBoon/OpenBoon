@@ -3,24 +3,23 @@ package com.zorroa.archivist.service
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.zorroa.archivist.clients.EsRestClient
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.common.clients.EsRestClient
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobPriority
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
@@ -36,8 +35,6 @@ import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.health.Health
-import org.springframework.context.ApplicationListener
-import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
@@ -91,7 +88,7 @@ interface IndexRoutingService {
      * Apply any outstanding mapping patches to the given [IndexRoute]
      *
      * @param route The IndexRoute to version up.
-     * @return the [ElasticMapping] the route was updated to.
+     * @return the [ElasticMapping] the route was updat to.
      */
     fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping?
 
@@ -121,15 +118,6 @@ interface IndexRoutingService {
      * is mainly used for testing, or something to run after a reindex.
      */
     fun refreshAll()
-
-    /**
-     * Setup the default index configured in application.properties.  This will update any
-     * route that is marked as being in the public pool with the value of the
-     * archivist.index.default-url property.
-     *
-     * This method will be removed as part of index routing phase 2
-     */
-    fun setupDefaultIndexRoute()
 
     /**
      * Launch a reindex job for the current authorized user's project.  The job
@@ -209,23 +197,15 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val properties: ApplicationProperties
-) :
-    IndexRoutingService, ApplicationListener<ContextRefreshedEvent> {
+) : IndexRoutingService {
 
     @Autowired
     lateinit var jobService: JobService
 
-    var esClientCache = EsClientCache()
+    @Autowired
+    lateinit var esClientCache: EsClientCache
 
     val migrated = AtomicBoolean(false)
-
-    override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        setupDefaultIndexRoute()
-        if (!ArchivistConfiguration.unittest) {
-            // This is run manually by unittests we can test it.
-            syncAllIndexRoutes()
-        }
-    }
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {
@@ -273,11 +253,6 @@ constructor(
     override fun isReIndexRoute(): Boolean {
         val req = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes
         return req.request.getHeader("X-Zorroa-Index-Route") != null
-    }
-
-    override fun setupDefaultIndexRoute() {
-        val defaultUrl = properties.getString("archivist.index.default-url")
-        indexRouteDao.updateDefaultIndexRoutes(defaultUrl)
     }
 
     override fun syncAllIndexRoutes() {
@@ -352,9 +327,7 @@ constructor(
     override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {
         val path = "db/migration/elasticsearch/V${majorVersion}__$mappingType.json"
         val resource = ClassPathResource(path)
-        val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(
-            resource.inputStream, Json.GENERIC_MAP
-        )
+        val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(resource.inputStream)
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
     }
 
@@ -362,13 +335,14 @@ constructor(
         val name = "Reindexing All Assets"
         val script = ZpsScript(
             name,
-            type = PipelineType.Import,
+            type = JobType.Import,
             settings = mutableMapOf("inline" to true),
             over = listOf(),
             execute = listOf(),
             generate = listOf(
                 ProcessorRef(
                     "zplugins.core.generators.AssetSearchGenerator",
+                    "zorroa-py3-core",
                     mapOf("search" to mapOf<String, Any>())
                 )
             )
@@ -383,7 +357,7 @@ constructor(
             pauseDurationSeconds = REINDEX_JOB_DELAY_SEC
         )
 
-        return jobService.create(spec, PipelineType.Import)
+        return jobService.create(spec, JobType.Import)
     }
 
     override fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping> {
@@ -400,7 +374,7 @@ constructor(
 
                 if (major == majorVersion && type == mappingType) {
                     val json = Json.Mapper.readValue<MutableMap<String, Any>>(
-                        resource.inputStream, Json.GENERIC_MAP
+                        resource.inputStream
                     )
                     result.add(ElasticMapping(mappingType, major, minor, json))
                 }
@@ -602,6 +576,10 @@ class EsClientCache {
      */
     fun get(route: EsClientCacheKey): EsRestClient {
         return EsRestClient(route, cache.get(route.clusterUrl))
+    }
+
+    fun getEsRestClient(url: String): RestHighLevelClient {
+        return cache.get(url)
     }
 
     /**

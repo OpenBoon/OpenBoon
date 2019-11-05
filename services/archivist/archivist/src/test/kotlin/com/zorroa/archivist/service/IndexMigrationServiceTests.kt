@@ -3,9 +3,9 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.common.domain.JobPriority
+import com.zorroa.archivist.domain.JobPriority
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -41,7 +41,7 @@ class IndexMigrationServiceTests : AbstractTest() {
          * Test that our migration job as all the right settings.
          */
         assertEquals(JobPriority.Reindex, job.priority)
-        assertEquals(PipelineType.Batch, job.type)
+        assertEquals(JobType.Batch, job.type)
         assertEquals(task?.script.generate!![0]!!.env["ZORROA_INDEX_ROUTE_ID"], "00000000-0000-0000-0000-000000000000")
         assertEquals(task?.script.execute!![1]!!.env["ZORROA_INDEX_ROUTE_ID"], route.id.toString())
 

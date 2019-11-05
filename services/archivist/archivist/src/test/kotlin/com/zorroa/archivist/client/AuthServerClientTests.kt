@@ -2,6 +2,7 @@ package com.zorroa.archivist.client
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.clients.AuthServerClientImpl
 import org.junit.Before
 import org.junit.Test
 import org.springframework.http.HttpMethod
@@ -24,7 +25,7 @@ class AuthServerClientTests : AbstractTest() {
 
     @Before
     fun init() {
-        authServerClient = AuthServerClient("http://localhost:9090")
+        authServerClient = AuthServerClientImpl("http://localhost:9090")
         mockServer = MockRestServiceServer.createServer(authServerClient.rest)
     }
 

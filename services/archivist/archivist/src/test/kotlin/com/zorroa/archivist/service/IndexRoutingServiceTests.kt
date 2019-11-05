@@ -6,8 +6,8 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobState
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobState
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
@@ -41,18 +41,6 @@ class IndexRoutingServiceTests : AbstractTest() {
     @After
     fun reset() {
         RequestContextHolder.resetRequestAttributes()
-    }
-
-    @Test
-    fun setupDefaultIndexRoute() {
-        indexRoutingService.setupDefaultIndexRoute()
-        assertEquals(1, jdbc.update("UPDATE index_route SET str_url='http://foo'"))
-        indexRoutingService.setupDefaultIndexRoute()
-        assertEquals(
-            "http://localhost:9200", jdbc.queryForObject(
-                "SELECT str_url FROM index_route", String::class.java
-            )
-        )
     }
 
     @Test

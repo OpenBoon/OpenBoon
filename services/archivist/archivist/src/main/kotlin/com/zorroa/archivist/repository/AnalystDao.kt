@@ -1,17 +1,16 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.Analyst
+import com.zorroa.archivist.domain.AnalystFilter
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.AnalystState
+import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.service.event
-import com.zorroa.common.domain.Analyst
-import com.zorroa.common.domain.AnalystFilter
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.LockState
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.JdbcUtils.insert
-import com.zorroa.common.util.JdbcUtils.update
+import com.zorroa.archivist.util.JdbcUtils.insert
+import com.zorroa.archivist.util.JdbcUtils.update
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.time.Duration

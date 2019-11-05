@@ -3,6 +3,7 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.filesystem.UUIDFileSystem
+import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileServerProviderImpl
 import com.zorroa.archivist.service.FileStorageService
@@ -31,7 +32,6 @@ import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 import java.io.File
 import java.io.IOException
-import java.net.URI
 import java.nio.file.Path
 import java.util.Properties
 
@@ -53,6 +53,11 @@ class ArchivistConfiguration {
         val host = props.getString("archivist.redis.host")
         val port = props.getInt("archivist.redis.port")
         return JedisPool(JedisPoolConfig(), host, port, 10000)
+    }
+
+    @Bean
+    fun esClientCache(): EsClientCache {
+        return EsClientCache()
     }
 
     @Bean
@@ -153,31 +158,6 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus(): EventBus {
         return EventBus()
-    }
-
-    @Bean
-    fun networkEnvironment(): NetworkEnvironment {
-        val props = properties()
-        val override = props.getMap("env.host-override")
-            .map { it.key.split('.').last() to it.value.toString() }.toMap()
-
-        logger.info("Host overrides: {}", override)
-
-        return when (props.getString("env.type")) {
-            "app-engine" -> {
-                val project: String = System.getenv("GCLOUD_PROJECT")
-                GoogleAppEngineEnvironment(project, override)
-            }
-            "static-vm" -> {
-                StaticVmEnvironment(props.getString("env.project", "dev"), override)
-            }
-            "docker-compose" -> {
-                DockerComposeEnvironment(override)
-            }
-            else -> {
-                DockerComposeEnvironment(override)
-            }
-        }
     }
 
     @Bean

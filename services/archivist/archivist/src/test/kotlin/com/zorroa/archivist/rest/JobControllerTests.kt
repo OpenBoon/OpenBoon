@@ -8,15 +8,15 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.JobUpdateSpec
-import com.zorroa.common.domain.TaskSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.JobUpdateSpec
+import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -87,28 +87,7 @@ class JobControllerTests : MockMvcTest() {
         assertEquals(1, t1.taskCounts!!["tasksTotal"])
         assertEquals(1, t1.taskCounts!!["tasksWaiting"])
     }
-
-    @Test
-    fun testCreateDifferentOrgWithSuperAdmin() {
-        val spec = JobSpec(
-            "test_job_2",
-            emptyZpsScript("test"),
-            args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar")
-        )
-
-        val headers = admin()
-        headers.set("X-Zorroa-Organization", UUID.randomUUID().toString())
-        val result = mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/jobs")
-                .headers(headers)
-                .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isNotFound)
-            .andReturn()
-    }
-
+    
     @Test
     fun testUpdate() {
         val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis(), 5)

@@ -3,10 +3,10 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.AnalystState
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.TaskState
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.AnalystState
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.TaskState
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
