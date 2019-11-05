@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.FileStat
 import com.zorroa.archivist.service.FileStorageService

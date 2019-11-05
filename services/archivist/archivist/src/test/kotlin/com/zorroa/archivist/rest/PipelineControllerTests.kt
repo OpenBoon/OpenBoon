@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ZpsSlot

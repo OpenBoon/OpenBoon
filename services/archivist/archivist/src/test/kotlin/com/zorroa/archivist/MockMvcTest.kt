@@ -1,13 +1,13 @@
-package com.zorroa.archivist.rest
+package com.zorroa.archivist
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.any
-import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.clients.ApiKey
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.util.Json
@@ -133,12 +133,5 @@ abstract class MockMvcTest : AbstractTest() {
 
     protected fun analyst(): MockHttpSession {
         return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
-    }
-
-    class StatusResult<T> {
-        var `object`: T? = null
-        var op: String? = null
-        var id: String? = null
-        var success: Boolean = false
     }
 }

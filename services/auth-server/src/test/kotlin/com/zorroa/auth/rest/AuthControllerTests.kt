@@ -1,8 +1,7 @@
 package com.zorroa.auth.rest
 
+import com.zorroa.auth.MockMvcTest
 import com.zorroa.auth.domain.ApiKeySpec
-import com.zorroa.auth.domain.Permission
-import com.zorroa.auth.domain.Role
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -19,7 +18,7 @@ class AuthControllerTests : MockMvcTest() {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.permissions",
-                        CoreMatchers.hasItem(Role.SUPERADMIN_ROLE)))
+                        CoreMatchers.hasItem("SuperAdmin")))
                 .andReturn()
     }
 
@@ -28,7 +27,7 @@ class AuthControllerTests : MockMvcTest() {
         val spec = ApiKeySpec(
                 "test",
                 UUID.randomUUID(),
-                listOf(Permission.READ_ASSETS)
+                listOf("Test")
         )
         val apiKey = apiKeyService.create(spec)
         mvc.perform(
