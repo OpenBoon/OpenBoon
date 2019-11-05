@@ -4,6 +4,7 @@
   "description": "Wallet Application",
   "main": "index.js",
   "scripts": {
+    "prepush": "npm run test:lint && npm run test:unit",
     "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --mode production --config webpack.prod.js",
     "test": "jest"
