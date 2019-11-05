@@ -21,7 +21,7 @@ wallet-frontend-lint:
   stage: test
   script:
     - npm install
-    - npx eslint ./ --quiet
+    - npx eslint ./src --quiet
     - npx stylelint '**/*.scss'
 
 wallet-frontend-unit-test:
