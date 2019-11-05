@@ -1,12 +1,12 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Pipeline
+import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 import javax.servlet.http.HttpServletResponse
@@ -51,14 +52,18 @@ class PipelineController @Autowired constructor(
         return Json.prettyString(pipeline).toByteArray()
     }
 
-    @ApiOperation("Get all Pipelines.",
-        notes = "Results are paginated.")
+    @ApiOperation(
+        "Get all Pipelines.",
+        notes = "Results are paginated."
+    )
     @GetMapping(value = ["/api/v1/pipelines"])
-    fun getPaged(
-        @ApiParam("Pages to return.") @RequestParam(value = "page", required = false) page: Int?,
-        @ApiParam("Results per page.") @RequestParam(value = "count", required = false) count: Int?
-    ): PagedList<Pipeline> {
-        return pipelineService.getAll(Pager(page, count))
+    fun getAll(@RequestBody(required = false) filter: PipelineFilter?): KPagedList<Pipeline> {
+        return pipelineService.getAll(filter ?: PipelineFilter())
+    }
+
+    @RequestMapping(value = ["/api/v1/pipelines/_findOne"], method = [RequestMethod.GET, RequestMethod.POST])
+    fun findOne(@RequestBody filter: PipelineFilter): Pipeline {
+        return pipelineService.findOne(filter)
     }
 
     @ApiOperation("Update a Pipeline.")
