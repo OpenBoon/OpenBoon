@@ -30,16 +30,12 @@ class FrontendAppView(View):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows Users to be viewed or edited.
-    """
+    """API endpoint that allows Users to be viewed or edited."""
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows Groups to be viewed or edited.
-    """
+    """API endpoint that allows Groups to be viewed or edited."""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
