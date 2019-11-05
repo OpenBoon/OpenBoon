@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.StackTraceElement
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.http.MediaType
