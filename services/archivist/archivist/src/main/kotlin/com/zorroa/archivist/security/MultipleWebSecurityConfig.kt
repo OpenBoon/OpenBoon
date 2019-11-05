@@ -119,7 +119,7 @@ class MultipleWebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
-                .hasAnyRole("SUPERADMIN", "MONITOR")
+                .hasAnyAuthority(Role.SUPERADMIN, Role.PROJADMIN, Perm.MONITOR_SERVER)
                 .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
@@ -153,7 +153,7 @@ class MultipleWebSecurityConfig {
             .authenticationProvider(apiKeyAuthenticationProvider())
             .inMemoryAuthentication()
             .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
-            .authorities(Role.MONITOR)
+            .authorities(Perm.MONITOR_SERVER)
     }
 
     @Bean
