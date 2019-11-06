@@ -18,7 +18,6 @@ google-cloud-datastore
 google-cloud-bigquery
 googleapis-common-protos
 backoff
-dlib
 cmake
 face_recognition
 mock
