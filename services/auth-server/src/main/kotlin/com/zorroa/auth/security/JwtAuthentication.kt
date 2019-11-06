@@ -15,12 +15,12 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
-import java.util.*
+import java.util.Date
+import java.util.UUID
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-
 
 const val TOKEN_PREFIX = "Bearer "
 const val AUTH_HEADER = "Authorization"
@@ -56,22 +56,28 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                 }
             }
 
-            val projectId = UUID.fromString(jwt.claims.getValue("projectId").asString())
             val keyId = UUID.fromString(jwt.claims.getValue("keyId").asString())
 
             /**
-             * Check the external key admin key, then user keys.  The external
-             * API key can be any project.
+             * Check to see if the key is the internal admin key.
              */
             val apiKey = if (externalApiKey.keyId == keyId) {
                 externalApiKey
             } else {
-                val tkey = apiKeyRepository.findById(keyId).get()
-                if (tkey.projectId != projectId) {
-                    throw RuntimeException(
-                            "Project ID did not match ${tkey.projectId} != $projectId")
-                }
-                tkey
+                apiKeyRepository.findById(keyId).get()
+            }
+
+            /**
+             * If the admin key is in use and the claims have a project
+             * Id attached then use it, otherwise default to the project
+             * Id in the database.
+             */
+            val projectId = if (apiKey.permissions.contains("SuperAdmin")
+                && jwt.claims.containsKey("projectId")
+            ) {
+                UUID.fromString(jwt.claims.getValue("projectId").asString())
+            } else {
+                apiKey.projectId
             }
 
             val alg = Algorithm.HMAC512(apiKey.sharedKey)

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
-import com.zorroa.archivist.clients.ApiKey
+import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
@@ -130,18 +130,6 @@ abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
     }
 
-    fun deleteAllIndexes() {
-        /*
-         * The Elastic index(s) has been created, but we have to delete it and recreate it
-         * so each test has a clean index.  Once this is done we can call setupDataSources()
-         * which adds some standard data to both databases.
-         */
-        /*
-         * Delete will throw here if the index doesn't exist.
-         */
-
-    }
-
     fun cleanElastic() {
         val clusterUrl = properties.getString("archivist.es.url")
         try {
@@ -159,8 +147,7 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val apiKey = ApiKey(
-            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+        val apiKey = ZmlpUser(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
             listOf("SEARCH")
         )
@@ -168,7 +155,6 @@ abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
                 apiKey,
-                apiKey.keyId,
                 apiKey.permissions.map { SimpleGrantedAuthority(it) })
     }
 

@@ -68,7 +68,7 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
 
     sb.append("ZEVENT zorroa.object='${obj.toString().toLowerCase()}' zorroa.action='${action.toString().toLowerCase()}'")
     if (user != null) {
-        sb.append(" zorroa.projectId='${user.projectId}' zorroa.keyId='${user.keyId}'")
+        sb.append(" zorroa.projectId='${user.projectId}'")
     }
     kvp?.forEach { e ->
         e?.forEach {

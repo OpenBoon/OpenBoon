@@ -55,6 +55,5 @@ class AuthServerClientTests : AbstractTest() {
 
         val apiKey = authServerClient.authenticate(token)
         assertEquals("cc7c2e6f-1e36-4731-9154-9598e22408b7", apiKey.projectId.toString())
-        assertEquals("11eaad16-d355-4006-90e4-6bd100c3cd81", apiKey.keyId.toString())
     }
 }
