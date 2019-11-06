@@ -28,4 +28,4 @@ wallet-frontend-unit-test:
   stage: test
   script:
     - npm install
-    - TZ=UTC npx jest --bail --silent --ci
+    - npx jest --bail --silent --ci
