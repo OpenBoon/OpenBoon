@@ -1,9 +1,30 @@
 stages:
-  - sdk-lint
+  - test
 
+# SDK Jobs
 sdk-lint:
   image: python:3.8
-  stage: sdk-lint
+  stage: test
   script:
     - python -m pip install flake8
     - flake8 sdk/python
+
+# Wallet Jobs
+.wallet-frontend-base:
+  image: node:12
+  before_script:
+    - cd services/wallet/app/frontend
+    - npm install
+
+wallet-frontend-lint:
+  extends: .wallet-frontend-base
+  stage: test
+  script:
+    - npx eslint ./src --quiet
+    - npx stylelint '**/*.scss'
+
+wallet-frontend-unit-test:
+  extends: .wallet-frontend-base
+  stage: test
+  script:
+    - npx jest --bail --silent --ci
