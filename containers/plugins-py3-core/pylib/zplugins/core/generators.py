@@ -2,7 +2,7 @@ import os
 
 from zorroa.zclient.exception import ArchivistException
 from zorroa.zsdk import Generator, Argument, Asset, Document, Frame
-from zorroa.zclient import get_zclient
+from zorroa import zclient
 
 class FileUploadGenerator(Generator):
     """
@@ -100,7 +100,9 @@ class AssetSearchGenerator(Generator):
                               default=32, toolTip=self.toolTips['page_size']))
         self.add_arg(Argument('scroll', 'string', required=False,
                               default="5m", toolTip=self.toolTips['scroll']))
-        self.client = get_zclient()
+
+        # Must be auto-configured via environment
+        self.client = zclient.from_env()
         self.total_consumed = 0
 
     def generate(self, consumer):

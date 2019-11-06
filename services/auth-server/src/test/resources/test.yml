@@ -1,0 +1,9 @@
+server:
+  port: 9091
+
+spring:
+  flyway:
+    schemas: auth_test
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test
+

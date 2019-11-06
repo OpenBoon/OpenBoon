@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ApiKey
+import com.zorroa.archivist.clients.ZmlpUser
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
@@ -67,14 +67,14 @@ fun generateRandomPassword(length: Int): String {
     return (1..length).map { allowedChars.random() }.joinToString("")
 }
 
-fun getApiKey(): ApiKey {
+fun getApiKey(): ZmlpUser {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
         throw SecurityException("No credentials")
     }
     else {
         try {
-            auth.principal as ApiKey
+            auth.principal as ZmlpUser
         }
         catch (e: java.lang.ClassCastException) {
             throw SecurityException("Invalid credentials", e)
@@ -82,7 +82,7 @@ fun getApiKey(): ApiKey {
     }
 }
 
-fun getApiKeyOrNull(): ApiKey? {
+fun getApiKeyOrNull(): ZmlpUser? {
     return try {
         getApiKey()
     } catch (ex: Exception) {

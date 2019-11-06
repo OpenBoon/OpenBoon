@@ -35,7 +35,7 @@ import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
@@ -202,7 +202,10 @@ class DispatchQueueManager @Autowired constructor(
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 task.env["ZORROA_DEBUG_MODE"] = "true"
             }
-            withAuth(SuperAdminAuthentication(task.projectId)) {
+            // TODO: allocate storage for task.
+            // Can't do with Analyst authentication
+
+            withAuth(InternalThreadAuthentication(task.projectId)) {
                 val fs = fileStorageService.get(task.getLogSpec())
                 val logFile = fileStorageService.getSignedUrl(
                     fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS

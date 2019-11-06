@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ApiKey
+import com.zorroa.archivist.clients.ZmlpUser
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import java.util.UUID
@@ -12,25 +12,24 @@ class SuperAdminAuthority : GrantedAuthority {
 }
 
 /**
- * The super-admin is both an admin for an org, and a super admin for the system overall
+ * An Authentication class for authorizing background threads.
  */
-class SuperAdminAuthentication constructor(projectId: UUID) :
+class InternalThreadAuthentication constructor(projectId: UUID) :
     AbstractAuthenticationToken(listOf(SuperAdminAuthority())) {
 
-    val apiKey: ApiKey = ApiKey(projectId,
-        UUID.fromString("00000000-0000-0000-0000-000000000000"),
+    val zmlpUser: ZmlpUser = ZmlpUser(projectId,
         listOf(Role.SUPERADMIN))
 
     override fun getDetails(): Any? {
-        return apiKey
+        return zmlpUser
     }
 
     override fun getCredentials(): Any? {
-        return ""
+        return zmlpUser.projectId
     }
 
     override fun getPrincipal(): Any {
-        return apiKey
+        return zmlpUser.projectId
     }
 
     override fun isAuthenticated(): Boolean {

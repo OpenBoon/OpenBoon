@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.any
-import com.zorroa.archivist.clients.ApiKey
+import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
@@ -55,8 +55,7 @@ abstract class MockMvcTest : AbstractTest() {
             .build()
 
         Mockito.`when`(authServerClient.authenticate(any())).then {
-            ApiKey(
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            ZmlpUser(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 listOf(Role.SUPERADMIN))
         }

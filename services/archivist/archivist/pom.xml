@@ -387,9 +387,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>${start-class}</mainClass>
                     <finalName>archivist</finalName>
-                    <layout>ZIP</layout>
                 </configuration>
                 <executions>
                     <execution>
