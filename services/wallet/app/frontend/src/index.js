@@ -1,13 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Wallet from './components/Wallet'
 
-class Wallet extends React.Component {
-  render() {
-    return <div>Hello World!</div>;
-  }
-}
-
-ReactDOM.render(
-  <Wallet />,
-  document.getElementById('root')
-);
+ReactDOM.render(<Wallet />, document.getElementById('root'))
