@@ -9,7 +9,7 @@ import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.archivist.security.getApiKey
+import com.zorroa.archivist.security.getZmlpUser
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -40,7 +40,7 @@ class IndexMigrationServiceImpl constructor(
         srcRoute: IndexRoute,
         dstRoute: IndexRoute
     ): Job {
-        val apiKey = getApiKey()
+        val apiKey = getZmlpUser()
         val name = "migration--${apiKey.projectId}-${dstRoute.indexUrl}"
         val script = ZpsScript(
             name,

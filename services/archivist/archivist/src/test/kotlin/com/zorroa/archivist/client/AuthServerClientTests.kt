@@ -37,7 +37,8 @@ class AuthServerClientTests : AbstractTest() {
         {
             "projectId": "cc7c2e6f-1e36-4731-9154-9598e22408b7",
             "keyId": "11eaad16-d355-4006-90e4-6bd100c3cd81",
-            "permissions": ["ROLE_SUPERADMIN"]
+            "name": "roflcopter",
+            "permissions": ["SuperAdmin"]
         }
         """.trimIndent()
 
