@@ -3,6 +3,7 @@ package com.zorroa.auth.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.zorroa.auth.domain.ApiKey
+import com.zorroa.auth.domain.ZmlpUser
 import com.zorroa.auth.repository.ApiKeyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,9 +36,9 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
-            req: HttpServletRequest,
-            res: HttpServletResponse,
-            chain: FilterChain
+        req: HttpServletRequest,
+        res: HttpServletResponse,
+        chain: FilterChain
     ) {
         try {
             val token = req.getHeader(AUTH_HEADER)?.let {
@@ -62,31 +63,28 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
              * Check to see if the key is the internal admin key.
              */
             val apiKey = if (externalApiKey.keyId == keyId) {
-                externalApiKey
+                val projectId = if (jwt.claims.containsKey("projectId")
+                ) {
+                    UUID.fromString(jwt.claims.getValue("projectId").asString())
+                } else {
+                    externalApiKey.projectId
+                }
+                ApiKey(
+                    externalApiKey.keyId,
+                    projectId,
+                    externalApiKey.sharedKey,
+                    externalApiKey.name, externalApiKey.permissions
+                )
             } else {
                 apiKeyRepository.findById(keyId).get()
-            }
-
-            /**
-             * If the admin key is in use and the claims have a project
-             * Id attached then use it, otherwise default to the project
-             * Id in the database.
-             */
-            val projectId = if (apiKey.permissions.contains("SuperAdmin")
-                && jwt.claims.containsKey("projectId")
-            ) {
-                UUID.fromString(jwt.claims.getValue("projectId").asString())
-            } else {
-                apiKey.projectId
             }
 
             val alg = Algorithm.HMAC512(apiKey.sharedKey)
             alg.verify(jwt)
 
             SecurityContextHolder.getContext().authentication =
-                    JwtAuthenticationToken(projectId, keyId, apiKey.getGrantedAuthorities())
+                JwtAuthenticationToken(apiKey.getZmlpUser(), apiKey.getGrantedAuthorities())
             chain.doFilter(req, res)
-
         } catch (e: Exception) {
             log.warn("JWT validation error: {}", e.message, e)
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
@@ -99,22 +97,20 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
 }
 
 class JwtAuthenticationToken constructor(
-        val projectId: UUID,
-        val keyId: UUID,
-        perms: List<GrantedAuthority>
-) : AbstractAuthenticationToken(perms) {
+    val user: ZmlpUser,
+    permissions: List<GrantedAuthority>
+) : AbstractAuthenticationToken(permissions) {
 
     override fun getCredentials(): Any {
-        return keyId
+        return user.keyId
     }
 
     override fun getPrincipal(): Any {
-        return projectId
+        return user
     }
 
     override fun isAuthenticated(): Boolean = false
 }
-
 
 /**
  * An AuthenticationProvider that specifically looks for JwtAuthenticationToken.  Pulls
@@ -126,7 +122,7 @@ class JwtAuthenticationProvider : AuthenticationProvider {
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as JwtAuthenticationToken
         return UsernamePasswordAuthenticationToken(
-                token.principal, token.credentials, token.authorities)
+            token.principal, token.credentials, token.authorities)
     }
 
     override fun supports(cls: Class<*>): Boolean {

@@ -17,7 +17,10 @@ class SuperAdminAuthority : GrantedAuthority {
 class InternalThreadAuthentication constructor(projectId: UUID) :
     AbstractAuthenticationToken(listOf(SuperAdminAuthority())) {
 
+    // TODO: security - need to fetch a real key.
     val zmlpUser: ZmlpUser = ZmlpUser(projectId,
+        UUID.randomUUID(),
+        "background-thread",
         listOf(Role.SUPERADMIN))
 
     override fun getDetails(): Any? {
@@ -29,7 +32,7 @@ class InternalThreadAuthentication constructor(projectId: UUID) :
     }
 
     override fun getPrincipal(): Any {
-        return zmlpUser.projectId
+        return zmlpUser
     }
 
     override fun isAuthenticated(): Boolean {

@@ -36,8 +36,11 @@ abstract class AbstractTest {
                         UUID.randomUUID(),
                         listOf("Test")))
 
-        SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
-                standardKey.projectId, standardKey.keyId, standardKey.getGrantedAuthorities())
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(
+                standardKey.getZmlpUser(),
+                standardKey.keyId,
+                standardKey.getGrantedAuthorities())
     }
 
 }

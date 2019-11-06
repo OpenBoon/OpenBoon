@@ -21,7 +21,9 @@ import java.util.concurrent.TimeUnit
  * @param permissions A list of permissions available to the key.
  */
 data class ZmlpUser(
+    val keyId: UUID,
     val projectId: UUID,
+    val name: String,
     val permissions: List<String>
 ) {
 

@@ -21,6 +21,7 @@ import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.schema.Proxy
 import com.zorroa.archivist.schema.ProxySchema
+import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.RequestOptions
@@ -147,15 +148,17 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val apiKey = ZmlpUser(
+        val user = ZmlpUser(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
-            listOf("SEARCH")
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            "unittest-key",
+            listOf(Role.PROJADMIN)
         )
 
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
-                apiKey,
-                apiKey.permissions.map { SimpleGrantedAuthority(it) })
+                user,
+                user.permissions.map { SimpleGrantedAuthority(it) })
     }
 
     fun logout() {

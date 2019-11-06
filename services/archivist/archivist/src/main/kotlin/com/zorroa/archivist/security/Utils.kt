@@ -67,7 +67,7 @@ fun generateRandomPassword(length: Int): String {
     return (1..length).map { allowedChars.random() }.joinToString("")
 }
 
-fun getApiKey(): ZmlpUser {
+fun getZmlpUser(): ZmlpUser {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
         throw SecurityException("No credentials")
@@ -82,16 +82,16 @@ fun getApiKey(): ZmlpUser {
     }
 }
 
-fun getApiKeyOrNull(): ZmlpUser? {
+fun getZmlpUserOrNull(): ZmlpUser? {
     return try {
-        getApiKey()
+        getZmlpUser()
     } catch (ex: Exception) {
         null
     }
 }
 
 fun getProjectId() : UUID {
-    return getApiKey().projectId
+    return getZmlpUser().projectId
 }
 
 fun getAnalystEndpoint(): String {
@@ -132,6 +132,6 @@ fun hasPermission(perms: Collection<String>): Boolean {
 
 
 fun getProjectFilter(): QueryBuilder {
-    return QueryBuilders.termQuery("system.projectId", getApiKey().projectId.toString())
+    return QueryBuilders.termQuery("system.projectId", getZmlpUser().projectId.toString())
 }
 

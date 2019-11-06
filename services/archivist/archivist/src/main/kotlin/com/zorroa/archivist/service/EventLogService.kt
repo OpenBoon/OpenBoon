@@ -3,7 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.getApiKeyOrNull
+import com.zorroa.archivist.security.getZmlpUserOrNull
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
@@ -63,7 +63,7 @@ object MeterRegistryHolder {
  * @return A formatted log string
  */
 fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?): String {
-    val user = getApiKeyOrNull()
+    val user = getZmlpUserOrNull()
     val sb = StringBuilder(256)
 
     sb.append("ZEVENT zorroa.object='${obj.toString().toLowerCase()}' zorroa.action='${action.toString().toLowerCase()}'")

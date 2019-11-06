@@ -262,7 +262,7 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
         }
 
         val e = id.split("___")
-        var path = getOrgRoot().resolve(e[0]).resolve(expandId(e[1]))
+        var path = getProjectRoot().resolve(e[0]).resolve(expandId(e[1]))
         for (item in e.subList(2, e.size)) {
             path = path.resolve(item)
         }
@@ -279,7 +279,7 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
         return "${parentType}___${spec.parentId.toLowerCase()}___$name"
     }
 
-    private fun getOrgRoot(): Path {
+    private fun getProjectRoot(): Path {
         return root.resolve("projects").resolve(getProjectId().toString())
     }
 

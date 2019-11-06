@@ -57,7 +57,10 @@ abstract class MockMvcTest : AbstractTest() {
         Mockito.`when`(authServerClient.authenticate(any())).then {
             ZmlpUser(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                listOf(Role.SUPERADMIN))
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                "unittest-key",
+                listOf(Role.SUPERADMIN)
+            )
         }
     }
 
