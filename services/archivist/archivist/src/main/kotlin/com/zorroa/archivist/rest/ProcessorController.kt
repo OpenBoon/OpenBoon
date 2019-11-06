@@ -2,13 +2,14 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.ProcessorService
 import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
-import com.zorroa.common.repository.KPagedList
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
+@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
 @RestController
 @Api(tags = ["Processor"], description = "Operations for interacting with Processors.")
 class ProcessorController @Autowired constructor(

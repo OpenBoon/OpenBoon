@@ -4,16 +4,16 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.LIST_OF_PREFS
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Pipeline
+import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineSpec
-import com.zorroa.archivist.domain.PipelineType
+import com.zorroa.archivist.domain.ZpsSlot
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.event
-import com.zorroa.common.util.JdbcUtils.insert
-import com.zorroa.common.util.JdbcUtils.isUUID
-import com.zorroa.common.util.JdbcUtils.update
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.JdbcUtils.insert
+import com.zorroa.archivist.util.JdbcUtils.isUUID
+import com.zorroa.archivist.util.JdbcUtils.update
+import com.zorroa.archivist.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -24,13 +24,11 @@ interface PipelineDao {
     fun get(name: String): Pipeline
     fun get(id: UUID): Pipeline
     fun update(pipeline: Pipeline): Boolean
-    fun exists(name: String): Boolean
     fun refresh(obj: Pipeline): Pipeline
-    fun getAll(): List<Pipeline>
-    fun getAll(type: PipelineType): List<Pipeline>
-    fun getAll(paging: Pager): PagedList<Pipeline>
-    fun count(): Long
     fun delete(id: UUID): Boolean
+    fun getAll(filter: PipelineFilter): KPagedList<Pipeline>
+    fun findOne(filter: PipelineFilter): Pipeline
+    fun count(filter: PipelineFilter): Long
 }
 
 @Repository
@@ -46,23 +44,27 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setString(2, spec.name)
-            ps.setInt(3, spec.type.ordinal)
-            ps.setString(4, Json.serializeToString(spec.processors, "[]"))
-            ps.setString(5, spec.description)
+            ps.setObject(2, getProjectId())
+            ps.setString(3, spec.name)
+            ps.setInt(4, spec.slot.ordinal)
+            ps.setString(5, Json.serializeToString(spec.processors, "[]"))
             ps.setLong(6, time)
             ps.setLong(7, time)
             ps
         }
         logger.event(
             LogObject.PIPELINE, LogAction.CREATE,
-                mapOf("pipelineId" to id, "pipelineName" to spec.name))
+            mapOf("pipelineId" to id, "pipelineName" to spec.name)
+        )
         return get(id)
     }
 
     override fun get(id: UUID): Pipeline {
         try {
-            return jdbc.queryForObject<Pipeline>("SELECT * FROM pipeline WHERE pk_pipeline=?", MAPPER, id)
+            return jdbc.queryForObject<Pipeline>(
+                "$GET WHERE pk_pipeline=? AND project_id=?",
+                MAPPER, id, getProjectId()
+            )
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to get pipeline: id=$id", 1)
         }
@@ -73,7 +75,10 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             return get(UUID.fromString(name))
         }
         try {
-            return jdbc.queryForObject<Pipeline>("SELECT * FROM pipeline WHERE str_name=?", MAPPER, name)
+            return jdbc.queryForObject<Pipeline>(
+                "$GET WHERE project_id=? AND str_name=? ",
+                MAPPER, getProjectId(), name
+            )
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to get pipeline: id=$name", 1)
         }
@@ -83,59 +88,69 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         return get(obj.id)
     }
 
-    override fun exists(name: String): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM pipeline WHERE str_name=?", Int::class.java, name) == 1
-    }
-
-    override fun getAll(): List<Pipeline> {
-        return jdbc.query("SELECT * FROM pipeline", MAPPER)
-    }
-
-    override fun getAll(type: PipelineType): List<Pipeline> {
-        return jdbc.query("SELECT * FROM pipeline WHERE int_type=?", MAPPER, type.ordinal)
-    }
-
-    override fun getAll(paging: Pager): PagedList<Pipeline> {
-        return PagedList(
-                paging.setTotalCount(count()),
-                jdbc.query<Pipeline>("SELECT * FROM pipeline ORDER BY pk_pipeline LIMIT ? OFFSET ?", MAPPER,
-                        paging.size, paging.from))
-    }
-
     override fun update(pipeline: Pipeline): Boolean {
-        return jdbc.update(UPDATE, pipeline.name,
-                Json.serializeToString(pipeline.processors),
-                pipeline.id) == 1
+        return jdbc.update(
+            UPDATE, pipeline.name,
+            Json.serializeToString(pipeline.processors),
+            pipeline.id
+        ) == 1
     }
 
     override fun delete(id: UUID): Boolean {
-        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=?", id) == 1
+        return jdbc.update(
+            "DELETE FROM pipeline WHERE pk_pipeline=? AND project_id=?", id, getProjectId()) == 1
     }
 
-    override fun count(): Long {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM pipeline", Long::class.java)
+    override fun getAll(filter: PipelineFilter): KPagedList<Pipeline> {
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun count(filter: PipelineFilter): Long {
+        val query = filter.getQuery(COUNT, true)
+        val values = filter.getValues(true)
+        return jdbc.queryForObject(query, Long::class.java, *values)
+    }
+
+    override fun findOne(filter: PipelineFilter): Pipeline {
+        filter.apply { page = KPage(0, 1) }
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return throwWhenNotFound("Pipeline not found") {
+            return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
+        }
     }
 
     companion object {
 
         private val MAPPER = RowMapper { rs, _ ->
-            Pipeline(rs.getObject("pk_pipeline") as UUID,
-                    rs.getString("str_name"),
-                    PipelineType.values()[rs.getInt("int_type")],
-                    Json.Mapper.readValue(rs.getString("json_processors"), LIST_OF_PREFS))
+            Pipeline(
+                rs.getObject("pk_pipeline") as UUID,
+                rs.getString("str_name"),
+                ZpsSlot.values()[rs.getInt("int_slot")],
+                Json.Mapper.readValue(rs.getString("json_processors"), LIST_OF_PREFS)
+            )
         }
 
-        private val INSERT = insert("pipeline",
-                "pk_pipeline",
-                "str_name",
-                "int_type",
-                "json_processors",
-                "str_description",
-                "time_created",
-                "time_modified")
+        private val GET = "SELECT * FROM pipeline"
+        private val COUNT = "SELECT COUNT(1) FROM pipeline"
 
-        private val UPDATE = update("pipeline", "pk_pipeline",
-                "str_name",
-                "json_processors")
+        private val INSERT = insert(
+            "pipeline",
+            "pk_pipeline",
+            "project_id",
+            "str_name",
+            "int_slot",
+            "json_processors",
+            "time_created",
+            "time_modified"
+        )
+
+        private val UPDATE = update(
+            "pipeline", "pk_pipeline",
+            "str_name",
+            "json_processors"
+        )
     }
 }

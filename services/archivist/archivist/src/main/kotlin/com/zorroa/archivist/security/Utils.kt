@@ -1,7 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.domain.Groups
-import com.zorroa.archivist.domain.UserAuthed
+import com.zorroa.archivist.clients.ZmlpUser
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
@@ -68,26 +67,31 @@ fun generateRandomPassword(length: Int): String {
     return (1..length).map { allowedChars.random() }.joinToString("")
 }
 
-fun getUser(): UserAuthed {
+fun getZmlpUser(): ZmlpUser {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
-        throw AuthenticationCredentialsNotFoundException("No login credentials specified")
-    } else {
+        throw SecurityException("No credentials")
+    }
+    else {
         try {
-            auth.principal as UserAuthed
-        } catch (e1: ClassCastException) {
-            try {
-                auth.details as UserAuthed
-            } catch (e2: ClassCastException) {
-                // Log this message so we can see what the type is.
-                SecurityLogger.logger.warn(
-                    "Invalid auth objects: principal='{}' details='{}'",
-                    auth?.principal, auth?.details
-                )
-                throw AuthenticationCredentialsNotFoundException("Invalid auth object, UserAuthed object not found")
-            }
+            auth.principal as ZmlpUser
+        }
+        catch (e: java.lang.ClassCastException) {
+            throw SecurityException("Invalid credentials", e)
         }
     }
+}
+
+fun getZmlpUserOrNull(): ZmlpUser? {
+    return try {
+        getZmlpUser()
+    } catch (ex: Exception) {
+        null
+    }
+}
+
+fun getProjectId() : UUID {
+    return getZmlpUser().projectId
 }
 
 fun getAnalystEndpoint(): String {
@@ -99,36 +103,16 @@ fun getAnalystEndpoint(): String {
     }
 }
 
-fun getUserOrNull(): UserAuthed? {
-    return try {
-        getUser()
-    } catch (ex: AuthenticationCredentialsNotFoundException) {
-        null
-    }
-}
-
-fun getUsername(): String {
-    return getUser().username
-}
-
-fun getUserId(): UUID {
-    return getUser().id
-}
-
-fun getOrgId(): UUID {
-    return getUser().organizationId
-}
-
 fun hasPermission(vararg perms: String): Boolean {
     return hasPermission(perms.toSet())
 }
 
 private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
-    return perms.isNotEmpty() and perms.all { it == Groups.SUPERADMIN }
+    return perms.isNotEmpty() and perms.all { it == Role.SUPERADMIN }
 }
 
 private fun containsSuperadmin(it: Collection<GrantedAuthority>) =
-    it.any { it.authority == Groups.SUPERADMIN }
+    it.any { it.authority == Role.SUPERADMIN }
 
 fun hasPermission(perms: Collection<String>): Boolean {
     val auth = SecurityContextHolder.getContext().authentication
@@ -147,7 +131,7 @@ fun hasPermission(perms: Collection<String>): Boolean {
 }
 
 
-fun getOrganizationFilter(): QueryBuilder {
-    return QueryBuilders.termQuery("system.organizationId", getOrgId().toString())
+fun getProjectFilter(): QueryBuilder {
+    return QueryBuilders.termQuery("system.projectId", getZmlpUser().projectId.toString())
 }
 

@@ -2,7 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.security.AnalystAuthentication
-import com.zorroa.common.domain.AnalystSpec
+import com.zorroa.archivist.domain.AnalystSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder

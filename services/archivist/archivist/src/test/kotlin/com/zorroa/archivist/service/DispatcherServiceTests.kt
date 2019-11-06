@@ -5,7 +5,6 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.OrganizationSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.TaskStatsEvent
@@ -16,14 +15,14 @@ import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.common.domain.AnalystSpec
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobPriority
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.LockState
-import com.zorroa.common.domain.TaskState
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.LockState
+import com.zorroa.archivist.domain.TaskState
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
@@ -157,7 +156,6 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun getTaskPriorityMultipleOrganizations() {
-        val org = organizationService.create(OrganizationSpec("kirk"))
 
         val spec1 = JobSpec(
             "test_job",
@@ -171,7 +169,7 @@ class DispatcherServiceTests : AbstractTest() {
             job.id
         )
 
-        withAuth(SuperAdminAuthentication(org.id)) {
+        withAuth(InternalThreadAuthentication(UUID.randomUUID())) {
             val spec2 = JobSpec(
                 "test_job",
                 emptyZpsScript("foo"),
@@ -236,11 +234,13 @@ class DispatcherServiceTests : AbstractTest() {
     @Test
     fun testGetNextFailureMaxRunningJob() {
         val analyst = "https://127.0.0.1:5000"
-        val spec = JobSpec("test_job",
+        val spec = JobSpec(
+            "test_job",
             emptyZpsScript("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar"),
-            maxRunningTasks = 0)
+            maxRunningTasks = 0
+        )
         jobService.create(spec)
         authenticateAsAnalyst()
         val next = dispatchQueueManager.getNext()
@@ -464,7 +464,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         val job = jobService.create(spec)
         val zps = emptyZpsScript("bar")
-        zps.execute = mutableListOf(ProcessorRef("foo"))
+        zps.execute = mutableListOf(ProcessorRef("foo", "bar"))
 
         val task = dispatcherService.expand(job, zps)
         val task2 = dispatcherService.expand(task, emptyZpsScript("bar"))

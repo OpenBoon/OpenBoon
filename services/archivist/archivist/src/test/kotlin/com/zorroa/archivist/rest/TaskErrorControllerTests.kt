@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
@@ -9,15 +10,14 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.TaskSpec
-import com.zorroa.common.repository.KPagedList
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.util.UUID
@@ -60,7 +60,6 @@ class TaskErrorControllerTests : MockMvcTest() {
         val result = mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/taskerrors/_search")
                 .headers(admin())
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter))
         )

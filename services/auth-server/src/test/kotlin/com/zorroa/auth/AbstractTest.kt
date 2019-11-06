@@ -1,6 +1,7 @@
+package com.zorroa.auth
+
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.ApiKeySpec
-import com.zorroa.auth.domain.Permission
 import com.zorroa.auth.service.ApiKeyService
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -9,11 +10,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
+@TestPropertySource(locations = ["classpath:test.yml"])
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 abstract class AbstractTest {
 
@@ -27,12 +30,17 @@ abstract class AbstractTest {
 
     @Before
     fun setup() {
-        val projectId = UUID.randomUUID()
+        // A tandard non-admin for testing.
         standardKey = apiKeyService.create(
-                ApiKeySpec("standard-key", UUID.randomUUID(), listOf(Permission.READ_ASSETS)))
+                ApiKeySpec("standard-key",
+                        UUID.randomUUID(),
+                        listOf("Test")))
 
-        SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
-                standardKey.projectId, standardKey.keyId, standardKey.getGrantedAuthorities())
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(
+                standardKey.getZmlpUser(),
+                standardKey.keyId,
+                standardKey.getGrantedAuthorities())
     }
 
 }

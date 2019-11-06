@@ -2,37 +2,35 @@ package com.zorroa.archivist.service
 
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.InternalTask
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobId
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
+import com.zorroa.archivist.domain.JobType
+import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.PipelineType
-import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskFilter
+import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStateChangeEvent
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.ZpsSlot
 import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.JobDao
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.getOrgId
-import com.zorroa.archivist.security.getUser
-import com.zorroa.common.domain.InternalTask
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobId
-import com.zorroa.common.domain.JobPriority
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.JobUpdateSpec
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskFilter
-import com.zorroa.common.domain.TaskSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.repository.KPagedList
+import com.zorroa.archivist.security.getZmlpUser
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
@@ -42,7 +40,7 @@ import java.util.concurrent.TimeUnit
 
 interface JobService {
     fun create(spec: JobSpec): Job
-    fun create(spec: JobSpec, type: PipelineType): Job
+    fun create(spec: JobSpec, type: JobType): Job
     fun get(id: UUID, forClient: Boolean = false): Job
     fun getTask(id: UUID): Task
     fun getJobTasks(jobId: UUID): KPagedList<Task>
@@ -85,13 +83,10 @@ class JobServiceImpl @Autowired constructor(
     @Autowired
     lateinit var fileStorageService: FileStorageService
 
-    @Value("\${archivist.pipeline.import-collector}")
-    lateinit var importCollector: String
-
     override fun create(spec: JobSpec): Job {
         if (spec.script != null) {
             val type = if (spec.script?.type == null) {
-                PipelineType.Import
+                JobType.Import
             } else {
                 spec.script!!.type
             }
@@ -101,17 +96,17 @@ class JobServiceImpl @Autowired constructor(
         }
     }
 
-    override fun create(spec: JobSpec, type: PipelineType): Job {
-        val user = getUser()
+    override fun create(spec: JobSpec, type: JobType): Job {
+        val user = getZmlpUser()
         if (spec.name == null) {
             val date = Date()
-            spec.name = "${type.name} job launched by ${user.getName()} on $date"
+            spec.name = "${type.name} job launched by ${user.projectId} on $date"
         }
 
         /**
          * Up the priority on export jobs to Interactive priority.
          */
-        if (type == PipelineType.Export && spec.priority > JobPriority.Interactive) {
+        if (type == JobType.Export && spec.priority > JobPriority.Interactive) {
             spec.priority = JobPriority.Interactive
         }
 
@@ -124,8 +119,7 @@ class JobServiceImpl @Autowired constructor(
             txevent.afterCommit(sync = false) {
                 val filter = JobFilter(
                     states = listOf(JobState.Active),
-                    names = listOf(job.name),
-                    organizationIds = listOf(getOrgId())
+                    names = listOf(job.name)
                 )
                 val oldJobs = jobDao.getAll(filter)
                 for (oldJob in oldJobs) {
@@ -142,32 +136,8 @@ class JobServiceImpl @Autowired constructor(
         }
 
         spec.script?.let { script ->
-
-            // Gather up all the procs for execute.
-            val execute = if (script.execute == null) {
-                pipelineService.resolveDefault(job.type).toMutableList()
-            } else {
-                pipelineService.resolve(job.type, script.execute).toMutableList()
-            }
-
-            when (type) {
-                PipelineType.Import -> {
-                    execute.addAll(pipelineService.loadFragment(importCollector))
-                }
-                PipelineType.Export -> {
-                    script.setSettting("inline", true)
-                    script.setGlobalArg(
-                        "exportArgs", mapOf(
-                            "exportId" to job.id,
-                            "exportName" to job.name
-                        )
-                    )
-                    execute.add(ProcessorRef("zplugins.core.collectors.ExportCollector"))
-                }
-                PipelineType.Batch, PipelineType.Generate -> {
-                }
-            }
-            script.execute = execute
+            // Execute may be empty
+            script.execute = pipelineService.resolve(ZpsSlot.Execute, script.execute)
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 

@@ -1,14 +1,20 @@
-package com.zorroa.archivist.rest
+package com.zorroa.archivist
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.zorroa.archivist.AbstractTest
+import com.nhaarman.mockito_kotlin.any
+import com.zorroa.archivist.clients.ZmlpUser
+import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.util.Json
 import org.junit.Before
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
@@ -24,14 +30,18 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import java.io.IOException
+import java.util.UUID
 
 abstract class MockMvcTest : AbstractTest() {
 
     @Autowired
-    protected var wac: WebApplicationContext? = null
+    lateinit var wac: WebApplicationContext
 
     @Autowired
-    protected var springSecurityFilterChain: FilterChainProxy? = null
+    lateinit var springSecurityFilterChain: FilterChainProxy
+
+    @MockBean
+    lateinit var authServerClient : AuthServerClient
 
     lateinit var mvc: MockMvc
 
@@ -39,10 +49,19 @@ abstract class MockMvcTest : AbstractTest() {
     @Throws(IOException::class)
     override fun setup() {
         super.setup()
-        this.mvc = MockMvcBuilders
-            .webAppContextSetup(this.wac!!)
-            .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain!!)
+        mvc = MockMvcBuilders
+            .webAppContextSetup(wac)
+            .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain)
             .build()
+
+        Mockito.`when`(authServerClient.authenticate(any())).then {
+            ZmlpUser(
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                "unittest-key",
+                listOf(Role.SUPERADMIN)
+            )
+        }
     }
 
     /**
@@ -109,17 +128,12 @@ abstract class MockMvcTest : AbstractTest() {
      * @return a session for an admin with the id 1.
      */
     protected fun admin(): HttpHeaders {
-        return HttpHeaders()
+        val headers = HttpHeaders()
+        headers["Authorization"] = "Bearer 123"
+        return headers
     }
 
     protected fun analyst(): MockHttpSession {
         return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
-    }
-
-    class StatusResult<T> {
-        var `object`: T? = null
-        var op: String? = null
-        var id: String? = null
-        var success: Boolean = false
     }
 }

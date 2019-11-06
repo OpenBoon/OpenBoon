@@ -4,14 +4,13 @@ import json
 import os
 import tempfile
 import unittest
-
 from unittest.mock import patch
 
 import zorroa.zsdk as zsdk
-from zplugins.core.generators import AssetSearchGenerator
-from zplugins.core.generators import FileGenerator, FileSystemGenerator
 from zorroa.zsdk import Context
 from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zplugins.core.generators import AssetSearchGenerator
+from zplugins.core.generators import FileGenerator, FileSystemGenerator
 
 
 class Consumer:
@@ -72,9 +71,8 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         self.consumer = UnittestConsumer()
         self.generator = AssetSearchGenerator()
 
-    @patch('zorroa.zclient.ZClient.post')
+    @patch('zorroa.zclient.ZmlpClient.post')
     def test_generate_scroll(self, post_patch):
-
         pwd = os.path.dirname(inspect.getfile(self.__class__))
         response_1 = json.load(open(pwd + '/response_1.json', 'r'))
 
@@ -101,9 +99,8 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         assert frame_1.asset.id == 'd4fa3a87-bd81-43d6-aa1b-b7a99fe0607b'
         assert frame_1.asset.get_attr('media.pages') == 618
 
-    @patch('zorroa.zclient.ZClient.post')
+    @patch('zorroa.zclient.ZmlpClient.post')
     def test_generate_page(self, post_patch):
-
         pwd = os.path.dirname(inspect.getfile(self.__class__))
         response_1 = json.load(open(pwd + '/response_1.json', 'r'))
 
@@ -129,7 +126,7 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         assert frame_1.asset.id == 'd4fa3a87-bd81-43d6-aa1b-b7a99fe0607b'
         assert frame_1.asset.get_attr('media.pages') == 618
 
-    @patch('zorroa.zclient.ZClient.post')
+    @patch('zorroa.zclient.ZmlpClient.post')
     def test_generate_max_assets(self, post_patch):
         pwd = os.path.dirname(inspect.getfile(self.__class__))
         response_1 = json.load(open(pwd + '/response_1.json', 'r'))

@@ -1,13 +1,12 @@
 package com.zorroa.auth.service
 
-import AbstractTest
+import com.zorroa.auth.AbstractTest
 import com.zorroa.auth.domain.ApiKeySpec
-import com.zorroa.auth.domain.Permission
 import com.zorroa.auth.security.getProjectId
-import junit.framework.Assert.assertEquals
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.*
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ApiKeyServiceTests : AbstractTest() {
@@ -17,12 +16,12 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 UUID.randomUUID(),
-                listOf(Permission.READ_ASSETS)
+                listOf("foo")
         )
         val key = apiKeyService.create(spec)
         assertEquals(spec.name, key.name)
         assertEquals(spec.projectId, key.projectId)
-        assertTrue(Permission.READ_ASSETS in key.permissions)
+        assertTrue("foo" in key.permissions)
     }
 
     @Test
@@ -30,7 +29,7 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 getProjectId(),
-                listOf(Permission.READ_ASSETS)
+                listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
         val key2 = apiKeyService.get(key1.keyId)
@@ -42,7 +41,7 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 getProjectId(),
-                listOf(Permission.READ_ASSETS)
+                listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
         val all = apiKeyService.findAll()
@@ -54,7 +53,7 @@ class ApiKeyServiceTests : AbstractTest() {
         val spec = ApiKeySpec(
                 "test",
                 getProjectId(),
-                listOf(Permission.READ_ASSETS)
+                listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
         apiKeyService.delete(key1)

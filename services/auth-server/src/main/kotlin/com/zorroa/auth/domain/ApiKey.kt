@@ -5,52 +5,68 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.UUID
+import javax.persistence.AttributeConverter
 import javax.persistence.Column
+import javax.persistence.Convert
+import javax.persistence.Converter
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
-object Permission {
-    val READ_ASSETS = "READ_ASSETS"
-}
-
-object Role {
-    val SUPERADMIN_PERM = "SUPERADMIN"
-    val SUPERADMIN_ROLE = "ROLE_SUPERADMIN"
-}
-
 class ApiKeySpec(
-        val name: String,
-        val projectId: UUID,
-        val permissions: List<String>
+    val name: String,
+    val projectId: UUID,
+    val permissions: List<String>
+)
+
+/**
+ * The minimum properties needed for a valid API signing key.
+ */
+class MinimalApiKey(
+    val keyId: UUID,
+    val projectId: UUID,
+    val sharedKey: String
+)
+
+/**
+ * The minimal properties for a ZMLP user.
+ */
+class ZmlpUser(
+    val keyId: UUID,
+    val projectId: UUID,
+    val name: String,
+    val permissions: List<String>
 )
 
 @Entity
 @Table(name = "api_key")
 class ApiKey(
-        @Id
-        @Column(name = "pk_api_key")
-        val keyId: UUID,
+    @Id
+    @Column(name = "pk_api_key")
+    val keyId: UUID,
 
-        @Column(name = "project_id", nullable = false)
-        val projectId: UUID,
+    @Column(name = "project_id", nullable = false)
+    val projectId: UUID,
 
-        @Column(name = "shared_key", nullable = false)
-        val sharedKey: String,
+    @Column(name = "shared_key", nullable = false)
+    val sharedKey: String,
 
-        @Column(name = "name", nullable = false)
-        val name: String,
+    @Column(name = "name", nullable = false)
+    val name: String,
 
-        @Column(name = "permissions", nullable = false)
-        val permissions: String
+    @Column(name = "permissions", nullable = false)
+    @Convert(converter = StringListConverter::class)
+    val permissions: List<String>
 ) {
     @JsonIgnore
     fun getGrantedAuthorities(): List<GrantedAuthority> {
         return if (permissions.isNullOrEmpty()) {
             listOf()
         } else {
-            permissions.split(",").map { SimpleGrantedAuthority(it) }
+            permissions.map { SimpleGrantedAuthority(it) }
         }
     }
 
@@ -58,16 +74,26 @@ class ApiKey(
     fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
         val algo = Algorithm.HMAC512(sharedKey)
         val spec = JWT.create().withIssuer("zorroa")
-                .withClaim("keyId", keyId.toString())
-                .withClaim("projectId", (projId ?: projectId).toString())
+            .withClaim("keyId", keyId.toString())
+            .withClaim("projectId", (projId ?: projectId).toString())
 
-        if (timeout != null) {
+        if (timeout > 0) {
             val c = Calendar.getInstance()
             c.time = Date()
             c.add(Calendar.SECOND, timeout)
             spec.withExpiresAt(c.time)
         }
         return spec.sign(algo)
+    }
+
+    @JsonIgnore
+    fun getMinimalApiKey(): MinimalApiKey {
+        return MinimalApiKey(keyId, projectId, sharedKey)
+    }
+
+    @JsonIgnore
+    fun getZmlpUser(): ZmlpUser {
+        return ZmlpUser(keyId, projectId, name, permissions)
     }
 
     override fun toString(): String {
@@ -93,5 +119,16 @@ class ApiKey(
         result = 31 * result + sharedKey.hashCode()
         return result
     }
+}
 
+@Converter
+class StringListConverter : AttributeConverter<List<String>, String> {
+
+    override fun convertToDatabaseColumn(list: List<String>): String {
+        return list.joinToString(",")
+    }
+
+    override fun convertToEntityAttribute(joined: String): List<String> {
+        return joined.split(",").map { it.trim() }
+    }
 }

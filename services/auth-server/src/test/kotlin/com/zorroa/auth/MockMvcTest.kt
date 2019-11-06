@@ -1,6 +1,5 @@
-package com.zorroa.auth.rest
+package com.zorroa.auth
 
-import AbstractTest
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.security.AUTH_HEADER
 import com.zorroa.auth.security.TOKEN_PREFIX

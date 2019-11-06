@@ -9,13 +9,23 @@ import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.DispatchPriority
+import com.zorroa.archivist.domain.DispatchTask
+import com.zorroa.archivist.domain.InternalTask
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobId
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskMessageEvent
+import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
@@ -25,22 +35,12 @@ import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.common.domain.DispatchTask
-import com.zorroa.common.domain.InternalTask
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobId
-import com.zorroa.common.domain.JobPriority
-import com.zorroa.common.domain.JobState
-import com.zorroa.common.domain.Task
-import com.zorroa.common.domain.TaskId
-import com.zorroa.common.domain.TaskSpec
-import com.zorroa.common.domain.TaskState
-import com.zorroa.common.util.Json
+import com.zorroa.archivist.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -58,16 +58,16 @@ import javax.annotation.PostConstruct
 interface DispatcherService {
     /**
      * Return a list of waiting [DispatchTask] instances for the given
-     * organization, sorted by highest priority first.
+     * project, sorted by highest priority first.
      *
-     * @param organizationId: The organization ID.
+     * @param projectId: The projectId ID.
      * @param count: The maximium number of tasks to return.
      */
-    fun getWaitingTasks(organizationId: UUID, count: Int): List<DispatchTask>
+    fun getWaitingTasks(projectId: UUID, count: Int): List<DispatchTask>
 
     /**
      * Return a list of waiting [DispatchTask] instances with at least
-     * the minimum priority.  Organization is not taken into account.
+     * the minimum priority.  Project is not taken into account.
      * Tasks are pre-sorted by highest priortity first.
      *
      * @param minPriority The minimum task priority.
@@ -86,7 +86,7 @@ interface DispatcherService {
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
 
     /**
-     * Return the [Organization] dispatch priority.
+     * Return the Project dispatch priority.
      */
     fun getDispatchPriority(): List<DispatchPriority>
 
@@ -120,7 +120,7 @@ class DispatchQueueManager @Autowired constructor(
     val cachedDispatchPriorityTimeoutSeconds = 10L
 
     /**
-     * Caches a task priority list which is currently just a list of organizations
+     * Caches a task priority list which is currently just a list of projects
      * sorted by the least number of tasks running first.
      */
     val cachedDispatchPriority: Supplier<List<DispatchPriority>> = Suppliers.memoizeWithExpiration({
@@ -156,13 +156,13 @@ class DispatchQueueManager @Autowired constructor(
         }
 
         /**
-         * If no interactive jobs can be found, pull tasks by organization with
+         * If no interactive jobs can be found, pull tasks by project with
          * least number of running tasks first.
          */
         for (priority in cachedDispatchPriority.get()) {
 
             val tasks = dispatcherService.getWaitingTasks(
-                priority.organizationId, numberOfTasksToPoll
+                priority.projectId, numberOfTasksToPoll
             )
 
             meterRegistry.counter(
@@ -194,7 +194,7 @@ class DispatchQueueManager @Autowired constructor(
 
             task.env["ZORROA_TASK_ID"] = task.id.toString()
             task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-            task.env["ZORROA_ORGANIZATION_ID"] = task.organizationId.toString()
+            task.env["ZORROA_PROJECT_ID"] = task.projectId.toString()
             task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
             // TODO: AUTH - supply correct token.
             task.env["ZORROA_AUTH_TOKEN"] = "abc123"
@@ -202,7 +202,10 @@ class DispatchQueueManager @Autowired constructor(
             if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 task.env["ZORROA_DEBUG_MODE"] = "true"
             }
-            withAuth(SuperAdminAuthentication(task.organizationId)) {
+            // TODO: allocate storage for task.
+            // Can't do with Analyst authentication
+
+            withAuth(InternalThreadAuthentication(task.projectId)) {
                 val fs = fileStorageService.get(task.getLogSpec())
                 val logFile = fileStorageService.getSignedUrl(
                     fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS
@@ -279,8 +282,8 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getWaitingTasks(organizationId: UUID, count: Int): List<DispatchTask> {
-        return dispatchTaskDao.getNextByOrg(organizationId, count)
+    override fun getWaitingTasks(projectId: UUID, count: Int): List<DispatchTask> {
+        return dispatchTaskDao.getNextByProject(projectId, count)
     }
 
     @Transactional(readOnly = true)

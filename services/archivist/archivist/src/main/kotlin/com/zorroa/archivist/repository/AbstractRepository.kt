@@ -12,7 +12,6 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.util.JdbcUtils
 import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -110,20 +109,13 @@ open class AbstractDao {
     protected lateinit var jdbc: JdbcTemplate
 
     protected lateinit var properties: ApplicationProperties
-
-    private lateinit var dbVendor: String
-
-    fun isDbVendor(vendor: String): Boolean {
-        return dbVendor == vendor
-    }
-
+    
     @Autowired
     lateinit var meterRegistry: MeterRegistry
 
     @Autowired
     fun setApplicationProperties(properties: ApplicationProperties) {
         this.properties = properties
-        this.dbVendor = properties.getString("archivist.datasource.primary.vendor")
     }
 
     @Autowired
@@ -200,7 +192,8 @@ abstract class DaoFilter {
         val sb = StringBuilder(1024)
         sb.append(base)
         sb.append(" ")
-        if (JdbcUtils.isValid(whereClause)) {
+
+        if (!whereClause.isNullOrEmpty()) {
             if (!base.contains("WHERE")) {
                 sb.append(" WHERE ")
             }
@@ -236,7 +229,7 @@ abstract class DaoFilter {
         val sb = StringBuilder(1024)
         sb.append("SELECT COUNT(1) FROM ")
         sb.append(base.substring(base.indexOf("FROM") + 5))
-        if (JdbcUtils.isValid(whereClause)) {
+        if (!whereClause.isNullOrEmpty()) {
             if (!base.contains("WHERE")) {
                 sb.append(" WHERE ")
             }
@@ -263,7 +256,7 @@ abstract class DaoFilter {
             built = true
             build()
 
-            if (JdbcUtils.isValid(where)) {
+            if (!where.isNullOrEmpty()) {
                 whereClause = where.joinToString(" AND ")
             }
             where.clear()

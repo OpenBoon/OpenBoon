@@ -1,7 +1,11 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.security.getUserOrNull
-import com.zorroa.common.domain.*
+import com.zorroa.archivist.domain.ArchivistException
+import com.zorroa.archivist.domain.ArchivistSecurityException
+import com.zorroa.archivist.domain.DuplicateEntityException
+import com.zorroa.archivist.domain.EntityNotFoundException
+import com.zorroa.archivist.domain.InvalidRequestException
+import com.zorroa.archivist.security.getZmlpUserOrNull
 import io.micrometer.core.annotation.Timed
 import org.elasticsearch.ElasticsearchException
 import org.slf4j.LoggerFactory
@@ -20,11 +24,16 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.HttpRequestMethodNotSupportedException
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import springfox.documentation.annotations.ApiIgnore
-import java.util.*
+import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -87,11 +96,11 @@ class RestApiExceptionHandler {
         val errorId = UUID.randomUUID().toString()
 
         if (doExtraLogging.contains(status) || debug) {
-            logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.username, errorId, e)
+            logger.error("endpoint='{}' project='{}', errorId='{}',",
+                    req.servletPath, getZmlpUserOrNull()?.projectId, errorId, e)
         } else {
-            logger.error("endpoint='{}' user='{}', errorId='{}',",
-                    req.servletPath, getUserOrNull()?.username, errorId)
+            logger.error("endpoint='{}' project='{}', errorId='{}',",
+                    req.servletPath, getZmlpUserOrNull()?.projectId, errorId)
         }
 
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)

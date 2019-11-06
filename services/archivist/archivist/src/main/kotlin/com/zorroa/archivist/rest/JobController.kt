@@ -1,17 +1,18 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobFilter
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.common.domain.Job
-import com.zorroa.common.domain.JobFilter
-import com.zorroa.common.domain.JobSpec
-import com.zorroa.common.domain.JobUpdateSpec
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
 import java.util.UUID
 
+@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
 @RestController
 @Timed
 @Api(tags = ["Job"], description = "Operations for interacting with jobs.")

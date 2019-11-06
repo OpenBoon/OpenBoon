@@ -1,8 +1,7 @@
 package com.zorroa.auth.security
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.zorroa.auth.JSON_MAPPER
 import com.zorroa.auth.domain.ApiKey
-import com.zorroa.auth.domain.Role
 import com.zorroa.auth.service.KeyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import java.util.*
+import java.util.UUID
 
 @Configuration
 @ConfigurationProperties("security")
@@ -39,14 +38,16 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http
-                .addFilterBefore(jwtAuthorizationFilter(),
-                        UsernamePasswordAuthenticationFilter::class.java)
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/v2/api-docs").hasRole(Role.SUPERADMIN_PERM)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .addFilterBefore(
+                jwtAuthorizationFilter(),
+                UsernamePasswordAuthenticationFilter::class.java
+            )
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/v2/api-docs").hasAuthority("MonitorServer")
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
     @Autowired
@@ -58,19 +59,19 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
     @Bean
     fun externalApiKey(): ApiKey {
         securityProperties.externalKey?.let {
-            val mapper = jacksonObjectMapper()
-            val key = mapper.readValue(it.inputStream, ApiKey::class.java)
-            logger.info("loading keyId: ${key.keyId}")
+            val key = JSON_MAPPER.readValue(it.inputStream, ApiKey::class.java)
+            logger.info("loading external keyId: ${key.keyId}")
             return key
         }
 
         // Otherwise return a random key that is impossible to use.
-        logger.warn("extenral key file not found, generating random key.")
+        logger.warn("external key file not found, generating random key.")
         return ApiKey(
-                UUID.randomUUID(),
-                UUID.randomUUID(),
-                KeyGenerator.generate(),
-                "random", "")
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            KeyGenerator.generate(),
+            "random", listOf()
+        )
     }
 
     @Bean
@@ -80,7 +81,5 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     companion object {
         private val logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java)
-
     }
-
 }
