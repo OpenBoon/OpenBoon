@@ -39,8 +39,5 @@ def main():
         if not args.image:
             logging.basicConfig(level=logging.DEBUG)
 
-        print(args.processor)
-        print(args.args)
-
         runner = ZpsRunner(args.processor, args.args, args.image, data)
         runner.run()
