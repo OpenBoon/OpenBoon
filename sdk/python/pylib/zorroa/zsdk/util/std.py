@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def str_time_now():
-    """Return an Archivist compatible string representation of the current time.
+    """Return an ZMLP compatible date string representation of the current time.
 
     The format of this value is "%Y-%m-%d %H:%M:%S %z"
 
