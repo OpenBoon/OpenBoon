@@ -20,7 +20,6 @@ __all__ = [
     "Processor",
     "Generator",
     "DocumentProcessor",
-    "Collector",
     "Argument",
     "Reactor",
     "ProcessorHelper"
@@ -382,8 +381,6 @@ class Processor(object):
 
     * Generators - create documents to process.
     * DocumentProcessors - process documents created by generators.
-    * Collectors - collect processed documents and executes batch actions on
-        them.
 
     Attributes:
         file_types(list) - An optional set of file types a subclass allows.
@@ -787,36 +784,3 @@ class ProcessorHelper(object):
     @property
     def logger(self):
         return self.processor.logger
-
-
-class Collector(DocumentProcessor):
-    """A collector is a type of DocumentProcessor which executes a collect()
-    function for every N documents that pass through.  Processing of documents
-    does not extend pass a collector, it is effectively a pipeline terminator.
-    """
-    def __init__(self, **kwargs):
-        super(Collector, self).__init__()
-        self.add_arg(Argument("batchSize", type="int", default=10))
-        self.frames = []
-
-    def _process(self, frame):
-        self.frames.append(frame)
-        if len(self.frames) >= self.arg_value("batchSize"):
-            self.__collect()
-
-    def collect(self, collected):
-        """Collected is called by the execution engine which passes in an array of
-        Frames that have been recently collected.
-
-        Args:
-            collected (`list`<:obj:`Frame`>): an array of frames that was collected.
-
-        """
-        pass
-
-    def teardown(self):
-        self.__collect()
-
-    def __collect(self):
-        self.collect(self.frames)
-        self.frames = []
