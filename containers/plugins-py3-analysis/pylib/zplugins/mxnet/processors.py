@@ -6,7 +6,7 @@ from pathlib2 import Path
 
 import cv2
 import numpy as np
-from zsdk import DocumentProcessor, Argument
+from zorroa.zsdk import DocumentProcessor, Argument
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
 
