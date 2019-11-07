@@ -188,7 +188,7 @@ def create_video_thumbnail(source_path, destination_path, seconds):
     logger.info("running command: %s" % cmd)
     try:
         check_call(cmd, shell=False)
-    except CalledProcessError as e:
+    except CalledProcessError:
         # Don't let CalledProcessError bubble out
         # we're only sending IOError
         pass

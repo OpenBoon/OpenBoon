@@ -44,10 +44,10 @@ class Tests(unittest.TestCase):
         fp = FileSystemGenerator()
         image_dir = tempfile.mkdtemp()
 
-        f1 = tempfile.NamedTemporaryFile(
+        tempfile.NamedTemporaryFile(
             prefix='\xe4\xb8\x89\xe9\xab\x98\xe8\x95\x83\xe8\x8c\x84\xe6\xa0\x91',
             suffix='jpg', dir=image_dir)
-        f2 = tempfile.NamedTemporaryFile(prefix='stra\xc3\x9fe', suffix='tif', dir=image_dir)
+        tempfile.NamedTemporaryFile(prefix='stra\xc3\x9fe', suffix='tif', dir=image_dir)
 
         fp.set_context(zsdk.Context(None, {"paths": [image_dir]}, {}))
         fp.generate(c)

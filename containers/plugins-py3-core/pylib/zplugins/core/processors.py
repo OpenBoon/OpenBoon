@@ -155,7 +155,7 @@ class DownloadAssetProcessor(DocumentProcessor):
         filename = Path(url).name
         destination_path = Path(self.arg_value('destination_directory')).joinpath(filename)
         urlretrieve(asset.get_attr(self.arg_value('url_attr')),
-                           filename=str(destination_path))
+                    filename=str(destination_path))
         asset.set_attr(self.arg_value('destination_attr'), str(destination_path))
         self.logger.info('Downloaded file to %s.' % destination_path)
 

@@ -2,7 +2,7 @@ from mock import patch
 from unittest import TestCase
 
 from zplugins.google.generators import GcsBucketGenerator
-from zsdk import Context, Asset
+from zorroa.zsdk import Context, Asset
 
 
 class Consumer:

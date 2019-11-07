@@ -46,4 +46,3 @@ class FFProbeKeyframeClipifier(AbstractClipifier):
         except OSError:
             self.logger.warning('Exception thrown waiting on process to complete.')
         return clips
-

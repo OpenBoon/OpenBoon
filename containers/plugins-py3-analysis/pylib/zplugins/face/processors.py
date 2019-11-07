@@ -48,7 +48,8 @@ class FaceRecognitionProcessor(DocumentProcessor):
             scaling_factor = max_width / float(height)
             if max_width / float(width) < scaling_factor:
                 scaling_factor = max_width / float(width)
-            img = cv2.resize(img, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+            img = cv2.resize(img, None, fx=scaling_factor, fy=scaling_factor,
+                             interpolation=cv2.INTER_AREA)
             width *= scaling_factor
             height *= scaling_factor
 
@@ -74,7 +75,7 @@ class FaceRecognitionProcessor(DocumentProcessor):
                 ymax = '{:7.5f}'.format(b[2] / float(height))
                 xmin = '{:7.5f}'.format(b[3] / float(width))
 
-                print (b)
+                print(b)
                 boxes.append(((xmin, ymin), (xmax, ymax)))
 
             kw = 'face' + str(len(face_locations))

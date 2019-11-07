@@ -4,8 +4,8 @@ import os
 
 from mock import patch
 from zplugins.google.processors import CloudVideoIntelligenceProcessor
-from zsdk import Asset, Frame
-from zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zorroa.zsdk import Asset, Frame
+from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 
 
 # Mocks Google's VideoAnnotationResults object

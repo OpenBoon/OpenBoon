@@ -4,6 +4,7 @@ from zorroa.zclient.exception import ArchivistException
 from zorroa.zsdk import Generator, Argument, Asset, Document, Frame
 from zorroa import zclient
 
+
 class FileUploadGenerator(Generator):
     """
     A Generator for handling file uploads.
@@ -186,5 +187,3 @@ class AssetSearchGenerator(Generator):
             if max_assets and self.total_consumed >= max_assets:
                 return False
         return True
-
-
