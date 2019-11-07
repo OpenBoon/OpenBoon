@@ -12,8 +12,13 @@ DATABASES = {
     }
 }
 
-
-MIDDLEWARE.append('wallet.middleware.local_dev_cors_middleware')
+# CORS Middleware for handling frontend server requests
+# for more customization: https://github.com/adamchainz/django-cors-headers
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080'
+]
+CORS_ALLOW_CREDENTIALS = True
 
 
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
