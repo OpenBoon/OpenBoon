@@ -18,6 +18,7 @@ MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080'
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
