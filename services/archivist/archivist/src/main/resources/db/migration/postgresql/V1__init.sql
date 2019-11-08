@@ -118,6 +118,23 @@ CREATE INDEX analyst_pk_task_idx ON analyst USING btree (pk_task);
 
 CREATE UNIQUE INDEX analyst_str_endpoint_idx ON analyst USING btree (str_endpoint);
 
+--
+-- Name: index_cluster;
+--
+
+
+CREATE TABLE index_cluster (
+    pk_index_cluster uuid PRIMARY KEY,
+    str_url text NOT NULL,
+    int_state smallint NOT NULL,
+    bool_autopool boolean NOT NULL,
+    time_created bigint NOT NULL,
+    time_modified bigint NOT NULL,
+    time_ping bigint NOT NULL,
+    json_attrs JSONB DEFAULT '{}' NOT NULL
+);
+
+CREATE UNIQUE INDEX index_cluster_idx_uniq ON index_cluster USING btree (str_url);
 
 --
 -- Name: index_route;
@@ -125,21 +142,22 @@ CREATE UNIQUE INDEX analyst_str_endpoint_idx ON analyst USING btree (str_endpoin
 
 CREATE TABLE index_route (
     pk_index_route uuid PRIMARY KEY,
+    pk_index_cluster uuid NOT NULL REFERENCES index_cluster (pk_index_cluster),
     project_id uuid NOT NULL,
-    str_url text NOT NULL,
     str_index text NOT NULL,
+    int_state smallint NOT NULL,
     str_mapping_type text NOT NULL,
     int_mapping_major_ver smallint NOT NULL,
     int_mapping_minor_ver integer NOT NULL,
     int_replicas smallint NOT NULL,
     int_shards smallint NOT NULL,
-    bool_closed boolean NOT NULL,
     time_created bigint NOT NULL,
     time_modified bigint NOT NULL,
     int_mapping_error_ver integer DEFAULT '-1'::integer NOT NULL
 );
 
-CREATE UNIQUE INDEX index_route_idx_uniq ON index_route USING btree (str_url, str_index);
+CREATE UNIQUE INDEX index_route_idx_uniq ON index_route USING btree (pk_index_cluster, str_index);
+CREATE UNIQUE INDEX index_route_project_state_idx_uniq ON index_route USING btree (project_id, int_state);
 
 --
 -- Name: job;

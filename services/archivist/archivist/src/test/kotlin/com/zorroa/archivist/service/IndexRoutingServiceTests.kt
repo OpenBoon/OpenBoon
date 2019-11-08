@@ -6,8 +6,6 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.archivist.domain.JobFilter
-import com.zorroa.archivist.domain.JobState
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
@@ -18,9 +16,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
-import java.util.UUID
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
@@ -33,6 +29,10 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var indexDao: IndexDao
+
+    val testSpec = IndexRouteSpec(
+        "test", 1
+    )
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -54,7 +54,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         val route = indexRouteDao.getProjectRoute()
         assertEquals(route.mappingMinorVer, 20001231)
-        assertTrue(indexRoutingService.getOrgRestClient().indexExists())
+        assertTrue(indexRoutingService.getProjectRestClient().indexExists())
     }
 
     /**
@@ -63,15 +63,8 @@ class IndexRoutingServiceTests : AbstractTest() {
      */
     @Test
     fun testSyncDeletedIndex() {
-
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "test",
-            1
-        )
-        val newRoute = indexRoutingService.createIndexRoute(spec)
-        val rest = indexRoutingService.getOrgRestClient()
+        val newRoute = indexRoutingService.createIndexRoute(testSpec)
+        val rest = indexRoutingService.getProjectRestClient()
         val reqDel = DeleteIndexRequest(newRoute.indexName)
 
         try {
@@ -87,7 +80,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         val lastMapping = indexRoutingService.syncIndexRouteVersion(route)
         assertEquals(route.mappingMinorVer, lastMapping!!.minorVersion)
-        assertTrue(indexRoutingService.getOrgRestClient().indexExists())
+        assertTrue(indexRoutingService.getProjectRestClient().indexExists())
     }
 
     @Test
@@ -103,7 +96,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         route = indexRouteDao.getProjectRoute()
         assertEquals(route.mappingMinorVer, 20001231)
 
-        assertTrue(indexRoutingService.getOrgRestClient().indexExists())
+        assertTrue(indexRoutingService.getProjectRestClient().indexExists())
     }
 
     @Test
@@ -114,7 +107,7 @@ class IndexRoutingServiceTests : AbstractTest() {
                 "int_mapping_minor_ver=0, str_index=?, int_shards=1, int_replicas=0", index
         )
 
-        val rest = indexRoutingService.getOrgRestClient()
+        val rest = indexRoutingService.getProjectRestClient()
         try {
             val reqDel = DeleteIndexRequest(index)
             rest.client.indices().delete(reqDel, RequestOptions.DEFAULT)
@@ -147,32 +140,14 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals(19991231, files[0].minorVersion)
         assertEquals(20001231, files[1].minorVersion)
     }
-    
+
     @Test
     fun getOrgRestClientReIndex() {
-
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "test",
-            1
-        )
-
-        val route = indexRoutingService.createIndexRoute(spec)
+        val route = indexRoutingService.createIndexRoute(testSpec)
         val request = MockHttpServletRequest()
         request.addHeader("X-Zorroa-Index-Route", route.id)
         RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
-        indexRoutingService.getOrgRestClient()
-    }
-
-    @Test(expected = EmptyResultDataAccessException::class)
-    fun getOrgRestClientReIndexMissing() {
-
-        val request = MockHttpServletRequest()
-        request.addHeader("X-Zorroa-Index-Route", UUID.randomUUID().toString())
-        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
-
-        indexRoutingService.getOrgRestClient()
+        indexRoutingService.getProjectRestClient()
     }
 
     @Test
@@ -188,7 +163,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         val good = indexRoutingService.performHealthCheck()
         assertEquals("UP", good.status.code)
 
-        jdbc.update("UPDATE index_route SET str_url='http://foo'")
+        jdbc.update("UPDATE index_cluster SET str_url='http://foo'")
 
         val bad = indexRoutingService.performHealthCheck()
         assertEquals("DOWN", bad.status.code)
@@ -212,28 +187,9 @@ class IndexRoutingServiceTests : AbstractTest() {
         }
         assertTrue(passed)
         assertEquals(0, indexDao.getAll(Pager.first()).size())
-        indexRoutingService.refreshAll()
+        refreshElastic()
         Thread.sleep(250)
         assertEquals(1, indexDao.getAll(Pager.first()).size())
-    }
-
-    @Test
-    fun testLaunchReindexJob() {
-        var job = indexRoutingService.launchReindexJob()
-        var jobCount = jobService.getAll(JobFilter(names = listOf(job.name))).size()
-        assertEquals(1, jobCount)
-
-        job = indexRoutingService.launchReindexJob()
-        jobCount = jobService.getAll(JobFilter(names = listOf(job.name))).size()
-        assertEquals(2, jobCount)
-
-        jobCount = jobService.getAll(
-            JobFilter(
-                states = listOf(JobState.Active),
-                names = listOf(job.name)
-            )
-        ).size()
-        assertEquals(1, jobCount)
     }
 
     @Test
@@ -244,28 +200,15 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "test",
-            1
-        )
-
-        val route = indexRoutingService.createIndexRoute(spec)
-        assertEquals(spec.clusterUrl, route.clusterUrl)
-        assertEquals(spec.indexName, route.indexName)
-        assertEquals(spec.mapping, route.mapping)
-        assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
+        val route = indexRoutingService.createIndexRoute(testSpec)
+        assertEquals(testSpec.mapping, route.mapping)
+        assertEquals(testSpec.mappingMajorVer, route.mappingMajorVer)
     }
 
     @Test
     fun testCloseAndDelete() {
         val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "v13_test",
-            "strict",
-            1
+            "strict", 1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
@@ -275,41 +218,16 @@ class IndexRoutingServiceTests : AbstractTest() {
     @Test(expected = IllegalArgumentException::class)
     fun testCreateMissingMapping() {
         val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
             "kirk",
             33
         )
-
         indexRoutingService.createIndexRoute(spec)
-    }
-
-    @Test
-    fun testIsReindexRoute() {
-        assertFalse(indexRoutingService.isReIndexRoute())
-
-        val request = MockHttpServletRequest()
-        request.addHeader("X-Zorroa-Index-Route", UUID.randomUUID().toString())
-        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
-
-        assertTrue(indexRoutingService.isReIndexRoute())
-    }
-
-    @Test
-    fun testOpenIndex() {
-        var route = indexRouteDao.getProjectRoute()
-        assertTrue(indexRoutingService.closeIndex(route))
-        assertTrue(indexRoutingService.openIndex(route))
-
-        val state = indexRoutingService.getEsIndexState(route)
-        assertEquals("open", state["status"])
     }
 
     @Test
     fun testCloseIndex() {
         var route = indexRouteDao.getProjectRoute()
         assertTrue(indexRoutingService.closeIndex(route))
-        assertFalse(indexRoutingService.closeIndex(route))
 
         val state = indexRoutingService.getEsIndexState(route)
         assertEquals("close", state["status"])
@@ -319,19 +237,16 @@ class IndexRoutingServiceTests : AbstractTest() {
     fun testGetEsIndexState() {
         val route = indexRouteDao.getProjectRoute()
         val result = indexRoutingService.getEsIndexState(route)
-        assertEquals("yellow", result["health"])
+        assertEquals("green", result["health"])
         assertEquals("open", result["status"])
-        assertEquals("5", result["pri"])
-        assertEquals("2", result["rep"])
+        assertEquals("2", result["pri"])
+        assertEquals("0", result["rep"])
     }
 
     @Test
     fun testDeleteIndex() {
         val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "v13_test",
-            "strict",
-            1
+            "strict", 1
         )
 
         val route = indexRoutingService.createIndexRoute(spec)
