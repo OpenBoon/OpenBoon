@@ -10,7 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import java.util.*
+import java.util.UUID
 
 class ApiKeyControllerTests : MockMvcTest() {
 
@@ -72,7 +72,7 @@ class ApiKeyControllerTests : MockMvcTest() {
 
     @Test
     fun testFindOne() {
-        val filter = ApiKeyFilter(names=listOf("standard-key"))
+        val filter = ApiKeyFilter(names = listOf("standard-key"))
 
         mvc.perform(
             MockMvcRequestBuilders.get("/auth/v1/apikey/_findOne")
@@ -82,14 +82,18 @@ class ApiKeyControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo("standard-key")))
-            .andExpect(jsonPath("$.permissions[0]",
-                CoreMatchers.containsString("Test")))
+            .andExpect(
+                jsonPath(
+                    "$.permissions[0]",
+                    CoreMatchers.containsString("Test")
+                )
+            )
             .andReturn()
     }
 
     @Test
     fun testFindOne_401() {
-        val filter = ApiKeyFilter(names=listOf("mrcatlady"))
+        val filter = ApiKeyFilter(names = listOf("mrcatlady"))
 
         mvc.perform(
             MockMvcRequestBuilders.get("/auth/v1/apikey/_findOne")

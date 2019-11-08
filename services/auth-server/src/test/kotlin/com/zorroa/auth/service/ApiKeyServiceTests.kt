@@ -6,7 +6,7 @@ import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.security.getProjectId
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -45,13 +45,13 @@ class ApiKeyServiceTests : AbstractTest() {
             listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
-        val key2 = apiKeyService.findOne(ApiKeyFilter(names=listOf("test")))
+        val key2 = apiKeyService.findOne(ApiKeyFilter(names = listOf("test")))
         assertEquals(key1, key2)
     }
 
-    @Test(expected=EmptyResultDataAccessException::class)
+    @Test(expected = EmptyResultDataAccessException::class)
     fun testFindOneFailure() {
-        apiKeyService.findOne(ApiKeyFilter(names=listOf("mrcatman")))
+        apiKeyService.findOne(ApiKeyFilter(names = listOf("mrcatman")))
     }
 
     @Test
