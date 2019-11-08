@@ -5,7 +5,7 @@ services:
   ## Unit testing services.
 
   # Elastic Search instance used for local development servers.
-  es:
+  es1:
     build:
       context: ../services/elasticsearch
       args:
@@ -50,7 +50,7 @@ services:
   # Local Archivist server.
   archivist:
     links:
-       - "es"
+       - "es1"
        - "postgres"
        - "auth-server"
     build:
