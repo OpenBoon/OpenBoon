@@ -33,10 +33,10 @@ module.exports = merge(common, {
   },
   plugins: [
     // Copy the images folder and optimize all the images
-    new CopyWebpackPlugin([{
-      from: 'src/images/',
-      to: 'images/'
-    }]),
+    // new CopyWebpackPlugin([{
+    //   from: 'src/images/',
+    //   to: 'images/'
+    // }]),
     new ImageminPlugin({
       test: /\.(png|svg|jpg|gif)$/
     })
