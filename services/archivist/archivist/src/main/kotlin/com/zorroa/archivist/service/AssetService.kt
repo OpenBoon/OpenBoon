@@ -200,14 +200,6 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun createOrReplaceAssets(batch: BatchCreateAssetsRequest): BatchIndexAssetsResponse {
-        /**
-         * We have to do this backwards here because we're relying on ES to
-         * merge existing docs and updates together.
-         */
-        if (indexRoutingService.isReIndexRoute()) {
-            batch.skipAssetPrep = true
-        }
-
         val prepped = prepAssets(batch)
         return batchIndexAssets(batch, prepped)
     }
@@ -266,7 +258,7 @@ class AssetServiceImpl : AssetService {
         return ssb
     }
     override fun search(query: Map<String, Any>, output: OutputStream) {
-        val client = indexRoutingService.getOrgRestClient()
+        val client = indexRoutingService.getProjectRestClient()
 
         val req = client.newSearchRequest()
         req.searchType(SearchType.DEFAULT)

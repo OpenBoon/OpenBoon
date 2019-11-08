@@ -1,7 +1,11 @@
 FROM plugins-py3-base:latest
 USER root
 
-RUN apt-get update && apt-get -y upgrade
+RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
+    python3-dev \
+    cmake \
+    build-essential \
+    libglib2.0-0
 
 COPY pylib /zps/pylib
 

@@ -3,10 +3,13 @@ stages:
 
 # SDK Jobs
 sdk-lint:
+pylib-linting:
   image: python:3.8
   stage: test
   script:
     - python -m pip install flake8
+    - flake8 containers/plugins-py3-analysis
+    - flake8 containers/plugins-py3-core
     - flake8 sdk/python
 
 # Wallet Jobs

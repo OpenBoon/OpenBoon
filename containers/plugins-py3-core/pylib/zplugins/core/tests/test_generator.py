@@ -4,14 +4,13 @@ import json
 import os
 import tempfile
 import unittest
-
 from unittest.mock import patch
 
 import zorroa.zsdk as zsdk
-from zplugins.core.generators import AssetSearchGenerator
-from zplugins.core.generators import FileGenerator, FileSystemGenerator
 from zorroa.zsdk import Context
 from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from zplugins.core.generators import AssetSearchGenerator
+from zplugins.core.generators import FileGenerator, FileSystemGenerator
 
 
 class Consumer:
@@ -45,9 +44,10 @@ class Tests(unittest.TestCase):
         fp = FileSystemGenerator()
         image_dir = tempfile.mkdtemp()
 
-        f1 = tempfile.NamedTemporaryFile(prefix='\xe4\xb8\x89\xe9\xab\x98\xe8\x95\x83\xe8\x8c\x84\xe6\xa0\x91',
-                                         suffix='jpg', dir=image_dir)
-        f2 = tempfile.NamedTemporaryFile(prefix='stra\xc3\x9fe', suffix='tif', dir=image_dir)
+        tempfile.NamedTemporaryFile(
+            prefix='\xe4\xb8\x89\xe9\xab\x98\xe8\x95\x83\xe8\x8c\x84\xe6\xa0\x91',
+            suffix='jpg', dir=image_dir)
+        tempfile.NamedTemporaryFile(prefix='stra\xc3\x9fe', suffix='tif', dir=image_dir)
 
         fp.set_context(zsdk.Context(None, {"paths": [image_dir]}, {}))
         fp.generate(c)
@@ -71,9 +71,8 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         self.consumer = UnittestConsumer()
         self.generator = AssetSearchGenerator()
 
-    @patch('zorroa.zclient.ZClient.post')
+    @patch('zorroa.zclient.ZmlpClient.post')
     def test_generate_scroll(self, post_patch):
-
         pwd = os.path.dirname(inspect.getfile(self.__class__))
         response_1 = json.load(open(pwd + '/response_1.json', 'r'))
 
@@ -90,7 +89,7 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
                                                 u'source.type',
                                                 u'source.fileSize',
                                                 u'source.path'], u'aggs': None,
-                           u'postFilter': None, u'size': 100},
+            u'postFilter': None, u'size': 100},
             'scroll': False}
         self.generator.set_context(Context(None, args))
         self.generator.init()
@@ -100,9 +99,8 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         assert frame_1.asset.id == 'd4fa3a87-bd81-43d6-aa1b-b7a99fe0607b'
         assert frame_1.asset.get_attr('media.pages') == 618
 
-    @patch('zorroa.zclient.ZClient.post')
+    @patch('zorroa.zclient.ZmlpClient.post')
     def test_generate_page(self, post_patch):
-
         pwd = os.path.dirname(inspect.getfile(self.__class__))
         response_1 = json.load(open(pwd + '/response_1.json', 'r'))
 
@@ -128,7 +126,7 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         assert frame_1.asset.id == 'd4fa3a87-bd81-43d6-aa1b-b7a99fe0607b'
         assert frame_1.asset.get_attr('media.pages') == 618
 
-    @patch('zorroa.zclient.ZClient.post')
+    @patch('zorroa.zclient.ZmlpClient.post')
     def test_generate_max_assets(self, post_patch):
         pwd = os.path.dirname(inspect.getfile(self.__class__))
         response_1 = json.load(open(pwd + '/response_1.json', 'r'))

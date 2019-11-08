@@ -3,6 +3,9 @@
 *.p12
 .DS_Store
 builds
+build
+dist
+zorroa.egg-info
 venv
 /**/target
 /**/dependency-reduced-pom.xml

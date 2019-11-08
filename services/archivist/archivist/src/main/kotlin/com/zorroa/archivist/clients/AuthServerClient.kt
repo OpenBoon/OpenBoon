@@ -19,13 +19,12 @@ import java.util.concurrent.TimeUnit
  * @param projectId The project ID of the key.
  * @param keyId  The keyId of the key.
  * @param permissions A list of permissions available to the key.
- * @param indexes The search indexes the key is allowed to use.
  */
-data class ApiKey(
-    val projectId: UUID,
+data class ZmlpUser(
     val keyId: UUID,
-    val permissions: List<String>,
-    val indexes: List<String>? = null
+    val projectId: UUID,
+    val name: String,
+    val permissions: List<String>
 ) {
 
     fun getAuthorities(): List<GrantedAuthority> {
@@ -37,7 +36,7 @@ interface AuthServerClient {
 
     val rest: RestTemplate
 
-    fun authenticate(authToken: String): ApiKey
+    fun authenticate(authToken: String): ZmlpUser
 }
 
 /**
@@ -45,8 +44,8 @@ interface AuthServerClient {
  */
 class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
 
-    val responseType: ParameterizedTypeReference<ApiKey> =
-        object : ParameterizedTypeReference<ApiKey>() {}
+    val responseType: ParameterizedTypeReference<ZmlpUser> =
+        object : ParameterizedTypeReference<ZmlpUser>() {}
 
     override val rest: RestTemplate = RestTemplate(HttpComponentsClientHttpRequestFactory())
 
@@ -54,9 +53,9 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
         .initialCapacity(128)
         .concurrencyLevel(8)
         .expireAfterWrite(10, TimeUnit.SECONDS)
-        .build(object : CacheLoader<String, ApiKey>() {
+        .build(object : CacheLoader<String, ZmlpUser>() {
             @Throws(Exception::class)
-            override fun load(token: String): ApiKey {
+            override fun load(token: String): ZmlpUser {
                 val req = RequestEntity.get(URI("${baseUri}/auth/v1/auth-token"))
                     .header("Authorization", "Bearer $token")
                     .accept(MediaType.APPLICATION_JSON).build()
@@ -69,7 +68,7 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
      *
      * @param authToken An authentication token, typically JWT
      */
-    override fun authenticate(authToken: String): ApiKey {
+    override fun authenticate(authToken: String): ZmlpUser {
         return cache.get(authToken)
     }
 }

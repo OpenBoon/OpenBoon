@@ -65,7 +65,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
         }
 
         // Otherwise return a random key that is impossible to use.
-        logger.warn("extenral key file not found, generating random key.")
+        logger.warn("external key file not found, generating random key.")
         return ApiKey(
             UUID.randomUUID(),
             UUID.randomUUID(),

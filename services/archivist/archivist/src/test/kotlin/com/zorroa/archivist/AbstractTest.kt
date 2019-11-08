@@ -4,25 +4,29 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
-import com.zorroa.archivist.clients.ApiKey
+import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.Source
+import com.zorroa.archivist.schema.Proxy
+import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.security.AnalystAuthentication
+import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.IndexClusterService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.archivist.schema.Proxy
-import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -76,6 +80,9 @@ abstract class AbstractTest {
     internal lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
+    internal lateinit var indexClusterService: IndexClusterService
+
+    @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
 
     @Autowired
@@ -127,49 +134,56 @@ abstract class AbstractTest {
     }
 
     fun authenticateAsAnalyst() {
-        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
-    }
-
-    fun deleteAllIndexes() {
-        /*
-         * The Elastic index(s) has been created, but we have to delete it and recreate it
-         * so each test has a clean index.  Once this is done we can call setupDataSources()
-         * which adds some standard data to both databases.
-         */
-        /*
-         * Delete will throw here if the index doesn't exist.
-         */
-
+        SecurityContextHolder.getContext().authentication =
+            AnalystAuthentication("https://127.0.0.1:5000")
     }
 
     fun cleanElastic() {
+        val cluster = indexClusterService.createDefaultCluster()
+        jdbc.update("UPDATE index_cluster SET int_state=1 WHERE pk_index_cluster=?", cluster.id)
+
         val clusterUrl = properties.getString("archivist.es.url")
         try {
-            val rest = esClientCache.getEsRestClient(clusterUrl)
+            val rest = esClientCache.getRestHighLevelClient(clusterUrl)
             val reqDel = DeleteIndexRequest("_all")
             rest.indices().delete(reqDel, RequestOptions.DEFAULT)
         } catch (e: Exception) {
             logger.warn("Failed to delete test index, this is usually ok.", e)
         }
 
-        indexRoutingService.createIndexRoute(IndexRouteSpec(clusterUrl, "unittest", "asset", 12))
+        indexRoutingService.createIndexRoute(
+            IndexRouteSpec(
+                "asset",
+                12,
+                state = IndexRouteState.CURRENT,
+                clusterId = cluster.id
+            )
+        )
+    }
+
+    fun refreshElastic() {
+
+        val cluster = indexClusterService.createDefaultCluster()
+        val client = indexClusterService.getRestHighLevelClient(cluster).lowLevelClient
+        val req = Request("POST", "/_refresh")
+        client.performRequest(req)
     }
 
     /**
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val apiKey = ApiKey(
+        val user = ZmlpUser(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
-            listOf("SEARCH")
+            "unittest-key",
+            listOf(Role.PROJADMIN)
         )
 
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
-                apiKey,
-                apiKey.keyId,
-                apiKey.permissions.map { SimpleGrantedAuthority(it) })
+                user,
+                user.permissions.map { SimpleGrantedAuthority(it) })
     }
 
     fun logout() {
@@ -282,6 +296,6 @@ abstract class AbstractTest {
     }
 
     fun refreshIndex(sleep: Long = 0) {
-        indexRoutingService.refreshAll()
+        refreshElastic()
     }
 }

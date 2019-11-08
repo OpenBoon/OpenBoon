@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ApiKey
+import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.clients.AuthServerClient
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
@@ -59,15 +59,15 @@ class ApiKeyAuthorizationFilter constructor(val authServerClient: AuthServerClie
 
 
 class ApiTokenAuthentication constructor(
-    val apiKey : ApiKey
+    val zmlpUser : ZmlpUser
 ) : AbstractAuthenticationToken(listOf()) {
 
     override fun getCredentials(): Any {
-        return apiKey.keyId
+        return zmlpUser.projectId
     }
 
     override fun getPrincipal(): Any {
-        return apiKey.projectId
+        return zmlpUser.projectId
     }
 
     override fun isAuthenticated(): Boolean = false
@@ -80,9 +80,9 @@ class ApiKeyAuthenticationProvider : AuthenticationProvider {
         val token = auth as ApiTokenAuthentication
 
         return UsernamePasswordAuthenticationToken(
-                token.apiKey,
+                token.zmlpUser,
                 token.credentials,
-                token.apiKey.permissions.map { SimpleGrantedAuthority(it)})
+                token.zmlpUser.getAuthorities())
     }
 
     override fun supports(cls: Class<*>): Boolean {

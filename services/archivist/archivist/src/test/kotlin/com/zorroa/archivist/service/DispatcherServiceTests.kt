@@ -15,7 +15,7 @@ import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.Job
@@ -169,7 +169,7 @@ class DispatcherServiceTests : AbstractTest() {
             job.id
         )
 
-        withAuth(SuperAdminAuthentication(UUID.randomUUID())) {
+        withAuth(InternalThreadAuthentication(UUID.randomUUID())) {
             val spec2 = JobSpec(
                 "test_job",
                 emptyZpsScript("foo"),

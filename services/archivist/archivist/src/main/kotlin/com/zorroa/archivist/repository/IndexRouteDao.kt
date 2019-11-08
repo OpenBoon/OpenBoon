@@ -3,9 +3,14 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.security.getApiKey
+import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpUser
+import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.archivist.util.randomString
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -33,12 +38,6 @@ interface IndexRouteDao {
     fun getAll(): List<IndexRoute>
 
     /**
-     * Updates all default pool routes to the cluster URL defined in the
-     * application.properties file.  This is called once at startup time.
-     */
-    fun updateDefaultIndexRoutes(clusterUrl: String)
-
-    /**
      * Return an [IndexRoute] by its unique Id.
      */
     fun get(id: UUID): IndexRoute
@@ -64,12 +63,7 @@ interface IndexRouteDao {
     fun findOne(filter: IndexRouteFilter): IndexRoute
 
     /**
-     * Set the given [IndexRoute] status to closed.  Closed indexes cannot be used.
-     */
-    fun setClosed(route: IndexRoute, state: Boolean): Boolean
-
-    /**
-     *
+     * Delete an IndexRoute.
      */
     fun delete(route: IndexRoute): Boolean
 }
@@ -80,38 +74,29 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     override fun create(spec: IndexRouteSpec): IndexRoute {
 
         val id = uuid1.generate()
-        val key = getApiKey()
+        val key = getZmlpUser()
         val time = System.currentTimeMillis()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setObject(2, key.projectId)
-            ps.setString(3, spec.clusterUrl)
-            ps.setString(4, spec.indexName)
-            ps.setString(5, spec.mapping)
-            ps.setInt(6, spec.mappingMajorVer)
-            ps.setInt(7, 0)
-            ps.setInt(8, spec.replicas)
-            ps.setInt(9, spec.shards)
-            ps.setBoolean(10, false)
+            ps.setObject(2, spec.clusterId)
+            ps.setObject(3, key.projectId)
+            ps.setInt(4, spec.state.ordinal)
+            ps.setString(5, randomString(16))
+            ps.setString(6, spec.mapping)
+            ps.setInt(7, spec.mappingMajorVer)
+            ps.setInt(8, 0)
+            ps.setInt(9, spec.replicas)
+            ps.setInt(10, spec.shards)
             ps.setLong(11, time)
             ps.setLong(12, time)
             ps.setInt(13, -1)
             ps
         }
 
+        logger.event(LogObject.INDEX_ROUTE, LogAction.CREATE, mapOf("indexRouteId" to id))
         return get(id)
-    }
-
-    override fun updateDefaultIndexRoutes(clusterUrl: String) {
-        val count = jdbc.update(
-            "UPDATE index_route SET str_url=? WHERE pk_index_route=?",
-            clusterUrl, UUID.fromString("00000000-0000-0000-0000-000000000000")
-        )
-        logger.info(
-            "Updated $count default ES cluster URLs to '$clusterUrl'"
-        )
     }
 
     override fun getAll(): List<IndexRoute> {
@@ -120,7 +105,10 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun getProjectRoute(): IndexRoute {
         return throwWhenNotFound("Project has no index") {
-            return jdbc.queryForObject("$GET WHERE project_id=?", MAPPER, getProjectId())
+            return jdbc.queryForObject(
+                "$GET WHERE project_id=? AND index_route.int_state=?",
+                MAPPER, getProjectId(), IndexRouteState.CURRENT.ordinal
+            )
         }
     }
 
@@ -158,16 +146,9 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         }
     }
 
-    override fun setClosed(route: IndexRoute, state: Boolean): Boolean {
-        return jdbc.update(
-            "UPDATE index_route SET bool_closed=? WHERE pk_index_route=? AND bool_closed=?",
-            state, route.id, !state
-        ) == 1
-    }
-
     override fun delete(route: IndexRoute): Boolean {
         return jdbc.update(
-            "DELETE FROM index_route WHERE pk_index_route=? AND bool_closed='t'",
+            "DELETE FROM index_route WHERE pk_index_route=?",
             route.id
         ) == 1
     }
@@ -178,12 +159,13 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             IndexRoute(
                 rs.getObject("pk_index_route") as UUID,
                 rs.getObject("project_id") as UUID,
+                rs.getObject("pk_index_cluster") as UUID,
                 rs.getString("str_url"),
+                IndexRouteState.values()[rs.getInt("int_state")],
                 rs.getString("str_index"),
                 rs.getString("str_mapping_type"),
                 rs.getInt("int_mapping_major_ver"),
                 rs.getInt("int_mapping_minor_ver"),
-                rs.getBoolean("bool_closed"),
                 rs.getInt("int_replicas"),
                 rs.getInt("int_shards")
             )
@@ -192,23 +174,31 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         val INSERT = JdbcUtils.insert(
             "index_route",
             "pk_index_route",
+            "pk_index_cluster",
             "project_id",
-            "str_url",
+            "int_state",
             "str_index",
             "str_mapping_type",
             "int_mapping_major_ver",
             "int_mapping_minor_ver",
             "int_replicas",
             "int_shards",
-            "bool_closed",
             "time_created",
             "time_modified",
             "int_mapping_error_ver"
         )
 
-        const val GET = "SELECT * FROM index_route"
+        const val GET = "SELECT index_cluster.str_url, index_route.* " +
+            "FROM " +
+            "index_route " +
+            "JOIN " +
+            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster)"
 
-        const val COUNT = "SELECT COUNT(1) FROM index_route"
+        const val COUNT = "SELECT COUNT(1) " +
+            "FROM " +
+            "index_route " +
+            "JOIN " +
+            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster)"
 
         const val UPDATE_MINOR_VER =
             "UPDATE " +

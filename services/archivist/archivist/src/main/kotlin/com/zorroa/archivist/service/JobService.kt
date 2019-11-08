@@ -28,7 +28,7 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.getApiKey
+import com.zorroa.archivist.security.getZmlpUser
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -97,7 +97,7 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun create(spec: JobSpec, type: JobType): Job {
-        val user = getApiKey()
+        val user = getZmlpUser()
         if (spec.name == null) {
             val date = Date()
             spec.name = "${type.name} job launched by ${user.projectId} on $date"

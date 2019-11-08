@@ -5,9 +5,9 @@ services:
   ## Unit testing services.
 
   # Elastic Search instance used for local development servers.
-  es:
+  es1:
     build:
-      context: elasticsearch
+      context: ../services/elasticsearch
       args:
         node_type: single
     ports:
@@ -36,21 +36,30 @@ services:
     ports:
        - 6379:6379
 
+  # Auth server
+  auth-server:
+    links:
+       - "postgres"
+    build:
+      context: ../services/auth-server
+    ports:
+      - 9090:9090
+    volumes:
+      - "./devkey.json:/service/config/key.json"
+
   # Local Archivist server.
   archivist:
     links:
-       - "es"
+       - "es1"
        - "postgres"
+       - "auth-server"
     build:
-      context: archivist
+      context: ../services/archivist
     ports:
       - 8080:8080
     volumes:
-      - "./archivist/localdev/shared:/shared"
-      - "./archivist/localdev/monitoring:/monitoring"
-      - "./archivist/localdev/zorroa-archivist-config:/config"
-      - "../zorroa-test-data:/zorroa-test-data"
+      - "../services/archivist/localdev/shared:/shared"
+      - "../services/archivist/localdev/monitoring:/monitoring"
+      - "../services/archivist/localdev/zorroa-archivist-config:/config"
+      - "../test-data:/test-data"
 
-secrets:
-  prometheus.yml:
-    file: ./localdev/monitoring/prometheus.yml

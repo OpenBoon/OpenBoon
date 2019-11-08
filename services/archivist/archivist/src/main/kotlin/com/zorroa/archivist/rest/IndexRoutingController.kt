@@ -1,34 +1,27 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.IndexMappingVersion
-import com.zorroa.archivist.domain.IndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.repository.KPagedList
-import com.zorroa.archivist.service.IndexMigrationService
 import com.zorroa.archivist.service.IndexRoutingService
-import com.zorroa.archivist.util.HttpUtils
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
+@PreAuthorize("hasAuthority('ProjectAdmin')")
 @RestController
 @Timed
 class IndexRoutingController @Autowired constructor(
-    val indexRoutingService: IndexRoutingService,
-    val indexMigrationService: IndexMigrationService
+    val indexRoutingService: IndexRoutingService
 ) {
 
     @PostMapping(value = ["/api/v1/index-routes"])
@@ -51,38 +44,7 @@ class IndexRoutingController @Autowired constructor(
         return indexRoutingService.findOne(filter)
     }
 
-    @GetMapping(value = ["/api/v1/index-routes/_mappings"])
-    fun getMappings(): List<IndexMappingVersion> {
-        return indexRoutingService.getIndexMappingVersions()
-    }
-
-    @PostMapping(value = ["/api/v1/index-routes/_migrate"])
-    fun migrate(@RequestBody mig: IndexMigrationSpec): Any {
-        return indexMigrationService.migrate(mig)
-    }
-
-    @PutMapping(value = ["/api/v1/index-routes/{id}/_close"])
-    fun close(@PathVariable id: UUID): Any {
-        val route = indexRoutingService.getIndexRoute(id)
-        val closed = indexRoutingService.closeIndex(route)
-        return HttpUtils.updated("index-route", route.id, closed, indexRoutingService.getIndexRoute(id))
-    }
-
-    @DeleteMapping(value = ["/api/v1/index-routes/{id}"])
-    fun delete(@PathVariable id: UUID): Any {
-        val route = indexRoutingService.getIndexRoute(id)
-        val deleted = indexRoutingService.deleteIndex(route)
-        return HttpUtils.deleted("index-route", route.id, deleted)
-    }
-
-    @PutMapping(value = ["/api/v1/index-routes/{id}/_open"])
-    fun open(@PathVariable id: UUID): Any {
-        val route = indexRoutingService.getIndexRoute(id)
-        val closed = indexRoutingService.openIndex(route)
-        return HttpUtils.updated("index-route", route.id, closed, indexRoutingService.getIndexRoute(id))
-    }
-
-    @GetMapping(value = ["/api/v1/index-routes/{id}/_state"])
+    @GetMapping(value = ["/api/v1/index-routes/{id}/_attrs"])
     fun getState(@PathVariable id: UUID): Map<String, Any> {
         val route = indexRoutingService.getIndexRoute(id)
         return indexRoutingService.getEsIndexState(route)

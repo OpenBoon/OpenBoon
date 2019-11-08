@@ -22,10 +22,23 @@ class ApiKeySpec(
     val permissions: List<String>
 )
 
+/**
+ * The minimum properties needed for a valid API signing key.
+ */
 class MinimalApiKey(
     val keyId: UUID,
     val projectId: UUID,
     val sharedKey: String
+)
+
+/**
+ * The minimal properties for a ZMLP user.
+ */
+class ZmlpUser(
+    val keyId: UUID,
+    val projectId: UUID,
+    val name: String,
+    val permissions: List<String>
 )
 
 @Entity
@@ -76,6 +89,11 @@ class ApiKey(
     @JsonIgnore
     fun getMinimalApiKey(): MinimalApiKey {
         return MinimalApiKey(keyId, projectId, sharedKey)
+    }
+
+    @JsonIgnore
+    fun getZmlpUser(): ZmlpUser {
+        return ZmlpUser(keyId, projectId, name, permissions)
     }
 
     override fun toString(): String {

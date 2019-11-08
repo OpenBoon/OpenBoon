@@ -14,19 +14,19 @@ class EsRestClientTests : AbstractTest() {
 
     @Test
     fun testIsAvailable() {
-        val client1 = indexRoutingService.getOrgRestClient()
+        val client1 = indexRoutingService.getProjectRestClient()
         assertTrue(client1.isAvailable())
     }
 
     @Test
     fun testIndexExists() {
-        val client1 = indexRoutingService.getOrgRestClient()
+        val client1 = indexRoutingService.getProjectRestClient()
         assertTrue(client1.indexExists())
     }
 
     @Test
     fun testUpdateAndGetMapping() {
-        val client = indexRoutingService.getOrgRestClient()
+        val client = indexRoutingService.getProjectRestClient()
         assertTrue(
             client.updateMapping(
                 mapOf("properties" to mapOf("name" to mutableMapOf<String, Any>("type" to "keyword")))
@@ -34,6 +34,7 @@ class EsRestClientTests : AbstractTest() {
         )
         val mapping = client.getMapping()
         val doc = Document(mapping)
-        assertEquals("keyword", doc.getAttr("unittest.mappings.asset.properties.name.type", String::class.java))
+        val index = client.route.indexName
+        assertEquals("keyword", doc.getAttr("${index}.mappings.asset.properties.name.type", String::class.java))
     }
 }
