@@ -17,19 +17,17 @@ class IndexRouteDaoTests : AbstractTest() {
     override fun requiresElasticSearch(): Boolean {
         return true
     }
+
+    fun getTestSpec(): IndexRouteSpec {
+        return IndexRouteSpec(
+            "testing123", 1, clusterId = indexClusterService.getNextAutoPoolCluster().id
+        )
+    }
     
     @Test
     fun testCreate() {
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "on_prem",
-            1
-        )
-
+        val spec = getTestSpec()
         val route = indexRouteDao.create(spec)
-        assertEquals(spec.clusterUrl, route.clusterUrl)
-        assertEquals(spec.indexName, route.indexName)
         assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
         assertEquals(0, route.mappingMinorVer)
         assertEquals(spec.shards, route.shards)
@@ -38,13 +36,7 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Test
     fun testGetById() {
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "on_prem",
-            1
-        )
-
+        val spec = getTestSpec()
         val route1 = indexRouteDao.create(spec)
         val route2 = indexRouteDao.get(route1.id)
         assertEquals(route1.id, route2.id)
@@ -52,13 +44,7 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Test
     fun testGetByUrl() {
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "on_prem",
-            1
-        )
-
+        val spec = getTestSpec()
         val route1 = indexRouteDao.create(spec)
         val route2 = indexRouteDao.get(route1.id)
         assertEquals(route1.id, route2.id)
@@ -66,14 +52,13 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Test
     fun testGetProjectRoute() {
+        val spec = getTestSpec()
+        indexRouteDao.create(spec)
         val route = indexRouteDao.getProjectRoute()
         assertEquals("http://localhost:9200", route.clusterUrl)
-        assertEquals("http://localhost:9200/unittest", route.indexUrl)
-        assertEquals("unittest", route.indexName)
         assertEquals("asset", route.mapping)
-        assertEquals(false, route.closed)
-        assertEquals(1, route.replicas)
-        assertEquals(5, route.shards)
+        assertEquals(0, route.replicas)
+        assertEquals(2, route.shards)
     }
 
     @Test
@@ -89,7 +74,7 @@ class IndexRouteDaoTests : AbstractTest() {
         val filter = IndexRouteFilter(
             ids = listOf(route.id),
             mappings = listOf(route.mapping),
-            clusterUrls = listOf(route.clusterUrl)
+            clusterIds = listOf(route.clusterId)
         )
 
         assertEquals(1, indexRouteDao.getAll(filter).size())
@@ -100,22 +85,6 @@ class IndexRouteDaoTests : AbstractTest() {
         val filter = IndexRouteFilter()
         filter.sort = listOf("id:a", "clusterUrl:a", "mapping:a", "timeCreated:a")
         assertEquals(1, indexRouteDao.getAll(filter).size())
-    }
-
-    @Test
-    fun testSetClosed() {
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "on_prem",
-            1
-        )
-
-        val route1 = indexRouteDao.create(spec)
-        assertTrue(indexRouteDao.setClosed(route1, true))
-        assertFalse(indexRouteDao.setClosed(route1, true))
-        assertTrue(indexRouteDao.setClosed(route1, false))
-        assertFalse(indexRouteDao.setClosed(route1, false))
     }
 
     @Test
@@ -144,16 +113,8 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Test
     fun testDelete() {
-
-        val spec = IndexRouteSpec(
-            "http://localhost:9200",
-            "testing123",
-            "on_prem",
-            1
-        )
-
+        val spec = getTestSpec()
         val route = indexRouteDao.create(spec)
-        indexRouteDao.setClosed(route, true)
         assertTrue(indexRouteDao.delete(route))
         assertFalse(indexRouteDao.delete(route))
     }

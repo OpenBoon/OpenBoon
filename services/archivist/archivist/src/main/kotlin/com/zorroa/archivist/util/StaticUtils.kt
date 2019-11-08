@@ -12,6 +12,7 @@ import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.channels.Channels
 import java.text.SimpleDateFormat
+import java.util.Random
 
 object StaticUtils {
 
@@ -65,3 +66,15 @@ inline fun <E : Any, T : Collection<E>> T?.whenNullOrEmpty(func: () -> Unit) {
         func()
     }
 }
+
+private const val SYMBOLS = "abcdefghijklmnopqrstuvwxyz0987654321"
+
+fun randomString(length: Int): String {
+    val random = Random()
+    val buf = CharArray(length)
+    for (i in 0 until length) {
+        buf[i] = SYMBOLS[random.nextInt(SYMBOLS.length)]
+    }
+    return String(buf)
+}
+
