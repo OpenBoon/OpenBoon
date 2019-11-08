@@ -126,16 +126,15 @@ class GcsLayoutProviderTests : AbstractTest() {
     }
 }
 
-@Ignore
+
 class GcsFileStorageServiceTests : AbstractTest() {
 
-    val bucketName = "rmaas-dit-2-zorroa-data"
+    val bucketName = "zorroa-dev-data"
     lateinit var fileStorage: GcsFileStorageService
 
     @Before
     fun init() {
-        fileStorage = GcsFileStorageService(bucketName,
-                Paths.get("unittest/config/data-credentials.json"))
+        fileStorage = GcsFileStorageService(bucketName)
         fileStorage.fileServerProvider = fileServerProvider
     }
 
@@ -145,7 +144,7 @@ class GcsFileStorageServiceTests : AbstractTest() {
         val spec = FileStorageSpec("asset", pid, "foo_bar.jpg")
         val uri = fileStorage.dlp.buildUri(spec)
 
-        val expectedPath = "/orgs/00000000-9998-8888-7777-666666666666/asset/$pid/foo_bar.jpg"
+        val expectedPath = "/projects/00000000-0000-0000-0000-000000000000/asset/$pid/foo_bar.jpg"
         val auri = URI.create(uri)
 
         assertEquals(bucketName, auri.authority)
@@ -163,6 +162,7 @@ class GcsFileStorageServiceTests : AbstractTest() {
         assertTrue(id.endsWith("_foo_bar.jpg"))
     }
 
+    @Ignore
     @Test
     fun testSignUrl() {
         val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")
@@ -171,6 +171,7 @@ class GcsFileStorageServiceTests : AbstractTest() {
         assertTrue(url.startsWith("https://storage.googleapis.com/"))
     }
 
+    @Ignore
     @Test
     fun testSignUrlGet() {
         val spec = FileStorageSpec("asset", UUID.randomUUID().toString(), "jpg")

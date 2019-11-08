@@ -26,6 +26,6 @@ abstract class AbstractElasticDao {
     fun refreshIndex() { }
 
     fun getClient(): EsRestClient {
-        return indexRoutingService.getOrgRestClient()
+        return indexRoutingService.getProjectRestClient()
     }
 }

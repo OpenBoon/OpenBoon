@@ -9,21 +9,24 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.Source
+import com.zorroa.archivist.schema.Proxy
+import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.security.AnalystAuthentication
+import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.FileServerProvider
+import com.zorroa.archivist.service.IndexClusterService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.archivist.schema.Proxy
-import com.zorroa.archivist.schema.ProxySchema
-import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.util.Json
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -77,6 +80,9 @@ abstract class AbstractTest {
     internal lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
+    internal lateinit var indexClusterService: IndexClusterService
+
+    @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
 
     @Autowired
@@ -128,20 +134,39 @@ abstract class AbstractTest {
     }
 
     fun authenticateAsAnalyst() {
-        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
+        SecurityContextHolder.getContext().authentication =
+            AnalystAuthentication("https://127.0.0.1:5000")
     }
 
     fun cleanElastic() {
+        val cluster = indexClusterService.createDefaultCluster()
+        jdbc.update("UPDATE index_cluster SET int_state=1 WHERE pk_index_cluster=?", cluster.id)
+
         val clusterUrl = properties.getString("archivist.es.url")
         try {
-            val rest = esClientCache.getEsRestClient(clusterUrl)
+            val rest = esClientCache.getRestHighLevelClient(clusterUrl)
             val reqDel = DeleteIndexRequest("_all")
             rest.indices().delete(reqDel, RequestOptions.DEFAULT)
         } catch (e: Exception) {
             logger.warn("Failed to delete test index, this is usually ok.", e)
         }
 
-        indexRoutingService.createIndexRoute(IndexRouteSpec(clusterUrl, "unittest", "asset", 12))
+        indexRoutingService.createIndexRoute(
+            IndexRouteSpec(
+                "asset",
+                12,
+                state = IndexRouteState.CURRENT,
+                clusterId = cluster.id
+            )
+        )
+    }
+
+    fun refreshElastic() {
+
+        val cluster = indexClusterService.createDefaultCluster()
+        val client = indexClusterService.getRestHighLevelClient(cluster).lowLevelClient
+        val req = Request("POST", "/_refresh")
+        client.performRequest(req)
     }
 
     /**
@@ -271,6 +296,6 @@ abstract class AbstractTest {
     }
 
     fun refreshIndex(sleep: Long = 0) {
-        indexRoutingService.refreshAll()
+        refreshElastic()
     }
 }
