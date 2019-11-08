@@ -2,7 +2,6 @@ stages:
   - test
 
 # SDK Jobs
-sdk-lint:
 pylib-linting:
   image: python:3.8
   stage: test
