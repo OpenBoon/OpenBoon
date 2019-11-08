@@ -4,9 +4,10 @@ services:
   # Starts a gunicorn server that serves out the wallet backend.
   wallet:
     image: wallet
+    ports:
+      - 80:80
     build:
       context: .
-      dockerfile: Dockerfile.app
     entrypoint: "sh /app/start-server.sh postgres"
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
@@ -14,17 +15,6 @@ services:
     depends_on:
       - postgres
 
-  # Nginx server that serves out the static files and sends all other requests through to
-  # wallet gunicorn server.
-  nginx:
-    image: nginx-wallet
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    ports:
-      - 80:80
-    depends_on:
-      - wallet
 
   # Postgres database backing the wallet server.
   postgres:

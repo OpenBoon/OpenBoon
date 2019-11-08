@@ -9,7 +9,7 @@ FROM python:3.7.4-alpine
 ENV PYTHONPATH /app:$PATH
 RUN apk update && apk upgrade && apk add ffmpeg postgresql postgresql-dev gcc musl-dev
 COPY Pipfile /Pipfile
-COPY Pipfile.lock /Pipefile.lock
+#COPY Pipfile.lock /Pipefile.lock
 RUN pip install --upgrade pip \
     && pip install pipenv \
     && cd / && pipenv lock --requirements > requirements.txt \

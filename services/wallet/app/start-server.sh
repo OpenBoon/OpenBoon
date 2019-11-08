@@ -10,7 +10,8 @@ until pg_isready -h $host; do
 done
 
 # Do any needed database migrations.
-./manage.py migrate --no-input
+python3 ./manage.py migrate --no-input
 
 # Start the server.
-gunicorn -b :8080 wallet.wsgi
+gunicorn -b :8080 wallet.wsgi &
+nginx -g "daemon off;"
