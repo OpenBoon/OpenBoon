@@ -2,12 +2,13 @@ package com.zorroa.auth.service
 
 import com.google.common.hash.Hashing
 import com.zorroa.auth.domain.ApiKey
+import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.repository.ApiKeyRepository
+import com.zorroa.auth.repository.ApiKeySearchRepository
 import com.zorroa.auth.security.getProjectId
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 interface ApiKeyService {
 
@@ -20,14 +21,17 @@ interface ApiKeyService {
 
     fun findAll(): List<ApiKey>
 
+    fun findOne(filter: ApiKeyFilter): ApiKey
+
     fun delete(apiKey: ApiKey)
 }
 
 @Service
-class ApiKeyServiceImpl : ApiKeyService {
+class ApiKeyServiceImpl constructor(
+    val apikeySearchRepository: ApiKeySearchRepository,
+    val apiKeyRepository: ApiKeyRepository
 
-    @Autowired
-    lateinit var apiKeyRepository: ApiKeyRepository
+) : ApiKeyService {
 
     override fun create(spec: ApiKeySpec): ApiKey {
         val key = ApiKey(
@@ -41,11 +45,15 @@ class ApiKeyServiceImpl : ApiKeyService {
     }
 
     override fun get(keyId: UUID): ApiKey {
-        return apiKeyRepository.findByKeyIdAndProjectId(keyId, getProjectId())
+        return apiKeyRepository.findByProjectIdAndKeyId(getProjectId(), keyId)
     }
 
     override fun findAll(): List<ApiKey> {
         return apiKeyRepository.findAllByProjectId(getProjectId())
+    }
+
+    override fun findOne(filter: ApiKeyFilter): ApiKey {
+        return apikeySearchRepository.findOne(filter)
     }
 
     override fun delete(apiKey: ApiKey) {

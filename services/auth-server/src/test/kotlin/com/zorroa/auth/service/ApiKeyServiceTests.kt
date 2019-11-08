@@ -1,6 +1,7 @@
 package com.zorroa.auth.service
 
 import com.zorroa.auth.AbstractTest
+import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.security.getProjectId
 import org.junit.Test
@@ -34,6 +35,23 @@ class ApiKeyServiceTests : AbstractTest() {
         val key1 = apiKeyService.create(spec)
         val key2 = apiKeyService.get(key1.keyId)
         assertEquals(key1, key2)
+    }
+
+    @Test
+    fun testFindOne() {
+        val spec = ApiKeySpec(
+            "test",
+            getProjectId(),
+            listOf("foo")
+        )
+        val key1 = apiKeyService.create(spec)
+        val key2 = apiKeyService.findOne(ApiKeyFilter(names=listOf("test")))
+        assertEquals(key1, key2)
+    }
+
+    @Test(expected=EmptyResultDataAccessException::class)
+    fun testFindOneFailure() {
+        apiKeyService.findOne(ApiKeyFilter(names=listOf("mrcatman")))
     }
 
     @Test
