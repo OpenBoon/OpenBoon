@@ -69,10 +69,10 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun findOne() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/projects/_search")
+            MockMvcRequestBuilders.get("/api/v1/projects/_findOne")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(mapOf("projectIds" to listOf(testProject.id))))
+                .content(Json.serialize(mapOf("ids" to listOf(testProject.id))))
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo(testProject.name)))
