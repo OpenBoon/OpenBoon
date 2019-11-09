@@ -1,7 +1,6 @@
 package com.zorroa.archivist.client
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.clients.AuthServerClientImpl
 import org.junit.Before
 import org.junit.Test
@@ -20,8 +19,6 @@ import kotlin.test.assertEquals
 class AuthServerClientTests : AbstractTest() {
 
     lateinit var mockServer: MockRestServiceServer
-
-    lateinit var authServerClient: AuthServerClient
 
     @Before
     fun init() {

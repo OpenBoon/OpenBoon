@@ -12,7 +12,6 @@ import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.filesystem.ObjectFileSystem
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.StaticUtils
 import org.slf4j.LoggerFactory
@@ -191,11 +190,10 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path? = n
  * LocalFileStorageService handles the location of files in an on-prem single tenant install.
  */
 class LocalFileStorageService constructor(
-    val root: Path,
-    ofs: ObjectFileSystem
+    val root: Path
 ) : FileStorageService {
 
-    val dlp = LocalLayoutProvider(root, ofs)
+    val dlp = LocalLayoutProvider(root)
 
     @Autowired
     lateinit var fileServerProvider: FileServerProvider
@@ -248,7 +246,7 @@ class LocalFileStorageService constructor(
     }
 }
 
-class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : LayoutProvider {
+class LocalLayoutProvider(val root: Path) : LayoutProvider {
 
     override fun buildUri(spec: FileStorageSpec): String {
         val id = buildId(spec)
@@ -256,11 +254,6 @@ class LocalLayoutProvider(val root: Path, private val ofs: ObjectFileSystem) : L
     }
 
     override fun buildUri(id: String): String {
-        // 0.39 backwards compatible.
-        if (id.startsWith("proxy/")) {
-            return ofs.get(id).path.toUri().toString()
-        }
-
         val e = id.split("___")
         var path = getProjectRoot().resolve(e[0]).resolve(expandId(e[1]))
         for (item in e.subList(2, e.size)) {

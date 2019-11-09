@@ -7,4 +7,4 @@ CREATE TABLE api_key (
     permissions TEXT NOT NULL
 );
 
-CREATE INDEX api_key_project_id_idx ON api_key (project_id);
+CREATE UNIQUE INDEX api_key_project_id_idx ON api_key (project_id, name);

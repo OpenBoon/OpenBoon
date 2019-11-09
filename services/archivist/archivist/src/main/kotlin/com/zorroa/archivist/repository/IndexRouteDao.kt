@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.security.getZmlpUser
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.randomString
@@ -74,14 +73,14 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     override fun create(spec: IndexRouteSpec): IndexRoute {
 
         val id = uuid1.generate()
-        val key = getZmlpUser()
+        val projectId = getProjectId()
         val time = System.currentTimeMillis()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, spec.clusterId)
-            ps.setObject(3, key.projectId)
+            ps.setObject(3, projectId)
             ps.setInt(4, spec.state.ordinal)
             ps.setString(5, randomString(16))
             ps.setString(6, spec.mapping)
@@ -106,7 +105,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     override fun getProjectRoute(): IndexRoute {
         return throwWhenNotFound("Project has no index") {
             return jdbc.queryForObject(
-                "$GET WHERE project_id=? AND index_route.int_state=?",
+                "$GET WHERE pk_project=? AND index_route.int_state=?",
                 MAPPER, getProjectId(), IndexRouteState.CURRENT.ordinal
             )
         }
@@ -158,7 +157,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         private val MAPPER = RowMapper { rs, _ ->
             IndexRoute(
                 rs.getObject("pk_index_route") as UUID,
-                rs.getObject("project_id") as UUID,
+                rs.getObject("pk_project") as UUID,
                 rs.getObject("pk_index_cluster") as UUID,
                 rs.getString("str_url"),
                 IndexRouteState.values()[rs.getInt("int_state")],
@@ -175,7 +174,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "index_route",
             "pk_index_route",
             "pk_index_cluster",
-            "project_id",
+            "pk_project",
             "int_state",
             "str_index",
             "str_mapping_type",

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.any
-import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
@@ -14,7 +13,6 @@ import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpSession
@@ -40,9 +38,6 @@ abstract class MockMvcTest : AbstractTest() {
     @Autowired
     lateinit var springSecurityFilterChain: FilterChainProxy
 
-    @MockBean
-    lateinit var authServerClient : AuthServerClient
-
     lateinit var mvc: MockMvc
 
     @Before
@@ -57,7 +52,7 @@ abstract class MockMvcTest : AbstractTest() {
         Mockito.`when`(authServerClient.authenticate(any())).then {
             ZmlpUser(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                project.id,
                 "unittest-key",
                 listOf(Role.SUPERADMIN, Role.PROJADMIN)
             )

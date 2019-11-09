@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.util.FileUtils
 import org.junit.Before
 import org.junit.Ignore
@@ -21,7 +20,7 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
 
     init {
         val shared = Paths.get("unittest/shared")
-        layout = LocalLayoutProvider(shared, UUIDFileSystem(shared.resolve("ofs")))
+        layout = LocalLayoutProvider(shared)
     }
 
     @Test
@@ -64,13 +63,6 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
         val id = "job___e415845c-e2f5-441b-a36e-36103d231169"
         val uri = layout.buildUri(id)
         assertTrue(uri.endsWith("job/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169"))
-    }
-
-    @Test
-    fun testBuildUriFrom39SlugId() {
-        val id = "proxy/c0eaa63b-36a2-5962-9dc5-3b560800251c_1024x768.jpg"
-        val uri = layout.buildUri(id)
-        assertTrue(uri.endsWith("shared/ofs/proxy/c/0/e/a/a/6/3/b/c0eaa63b-36a2-5962-9dc5-3b560800251c_1024x768.jpg"))
     }
 }
 
@@ -202,12 +194,11 @@ class GcsFileStorageServiceTests : AbstractTest() {
 class LocalFileStorageServiceTests : AbstractTest() {
 
     val testShared = Files.createTempDirectory("test")
-    val ofs: UUIDFileSystem = UUIDFileSystem(testShared.resolve("ofs"))
     lateinit var fileStorage: LocalFileStorageService
 
     @Before
     fun init() {
-        fileStorage = LocalFileStorageService(testShared, ofs)
+        fileStorage = LocalFileStorageService(testShared)
         fileStorage.fileServerProvider = fileServerProvider
     }
 

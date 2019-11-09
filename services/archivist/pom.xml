@@ -33,7 +33,6 @@
 
     <modules>
         <module>archivist</module>
-        <module>unittest-dispatcher</module>
     </modules>
 
     <dependencyManagement>

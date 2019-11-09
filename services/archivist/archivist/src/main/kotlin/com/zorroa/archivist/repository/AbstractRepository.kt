@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.uuid.EthernetAddress
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.NoArgGenerator
@@ -8,10 +7,8 @@ import com.fasterxml.uuid.TimestampSynchronizer
 import com.fasterxml.uuid.UUIDTimer
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
-import com.google.common.collect.Lists
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
+import com.zorroa.archivist.domain.Project
 import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -20,37 +17,13 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
-import java.util.Arrays
 import java.util.Random
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
+import javax.persistence.EntityManager
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.Predicate
 import javax.sql.DataSource
-
-interface GenericDao<T, in S> {
-
-    fun getAll(): List<T>
-
-    fun create(spec: S): T
-
-    fun get(id: UUID): T
-
-    fun refresh(obj: T): T
-
-    fun getAll(paging: Pager): PagedList<T>
-
-    fun update(id: UUID, spec: T): Boolean
-
-    fun delete(id: UUID): Boolean
-
-    fun count(): Long
-}
-
-interface GenericNamedDao<T, S> : GenericDao<T, S> {
-
-    fun get(name: String): T
-
-    fun exists(name: String): Boolean
-}
 
 /**
  * Lifted from M. Chamber's BBQ project.
@@ -69,42 +42,48 @@ inline fun <T> throwWhenNotFound(msg: String, body: () -> T): T {
     }
 }
 
-/**
- * Lifted from M. Chamber's BBQ project.
- *
- * Used to ensure a UUID generator does not generate colliding UUIDs.
- *
- * Apache II
- */
-class UUIDSyncMechanism : TimestampSynchronizer() {
+object UUIDGen {
 
-    val timer: AtomicLong = AtomicLong()
+    /**
+     * Lifted from M. Chamber's BBQ project.
+     *
+     * Used to ensure a UUID generator does not generate colliding UUIDs.
+     *
+     * Apache II
+     */
+    private class UUIDSyncMechanism : TimestampSynchronizer() {
 
-    override fun update(p0: Long): Long {
-        timer.set(p0)
-        return p0 + 1
+        val timer: AtomicLong = AtomicLong()
+
+        override fun update(p0: Long): Long {
+            timer.set(p0)
+            return p0 + 1
+        }
+
+        override fun deactivate() {}
+
+        override fun initialize(): Long {
+            timer.set(System.nanoTime())
+            return timer.toLong()
+        }
     }
 
-    override fun deactivate() {}
+    val uuid3 =
+        Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
-    override fun initialize(): Long {
-        timer.set(System.nanoTime())
-        return timer.toLong()
-    }
+    val uuid1: NoArgGenerator = TimeBasedGenerator(
+        EthernetAddress.fromInterface(),
+        UUIDTimer(Random(), UUIDSyncMechanism())
+    )
 }
 
 open class AbstractDao {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    protected val uuid1: NoArgGenerator =
-            TimeBasedGenerator(
-                EthernetAddress.fromInterface(),
-                    UUIDTimer(Random(), UUIDSyncMechanism())
-            )
+    protected val uuid1 = UUIDGen.uuid1
 
-    protected val uuid3 =
-            Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
+    protected val uuid3 = UUIDGen.uuid3
 
     protected lateinit var jdbc: JdbcTemplate
 
@@ -149,128 +128,5 @@ class LongRangeFilter(
             res.add(lessThan)
         }
         return res
-    }
-}
-
-abstract class DaoFilter {
-
-    @JsonIgnore
-    private var built = false
-
-    @JsonIgnore
-    private var whereClause: String? = null
-
-    @JsonIgnore
-    protected var where: MutableList<String> = Lists.newArrayList()
-
-    @JsonIgnore
-    protected var values: MutableList<Any> = Lists.newArrayList()
-
-    var sort: Map<String, String> = mutableMapOf()
-
-    @get:JsonIgnore
-    abstract val sortMap: Map<String, String>?
-
-    abstract fun build()
-
-    fun addToWhere(col: String) {
-        this.where.add(col)
-    }
-
-    fun addToValues(vararg `val`: Any) {
-        for (o in `val`) {
-            values.add(o)
-        }
-    }
-
-    fun addToValues(items: Collection<Any>) {
-        values.addAll(items)
-    }
-
-    fun getQuery(base: String, page: Pager?): String {
-        __build()
-        val sb = StringBuilder(1024)
-        sb.append(base)
-        sb.append(" ")
-
-        if (!whereClause.isNullOrEmpty()) {
-            if (!base.contains("WHERE")) {
-                sb.append(" WHERE ")
-            }
-            sb.append(whereClause)
-        }
-
-        if (sortMap != null && !sort.isEmpty()) {
-            val order = StringBuilder(64)
-            for ((key, value) in sort) {
-                val col = sortMap!![key]
-                if (col != null) {
-                    order.append(col + " " + if (value.startsWith("a")) "asc " else "desc ")
-                    order.append(",")
-                }
-            }
-            if (order.isNotEmpty()) {
-                order.deleteCharAt(order.length - 1)
-                sb.append(" ORDER BY ")
-                sb.append(order)
-            }
-        }
-
-        if (page != null) {
-            sb.append(" LIMIT ? OFFSET ?")
-        }
-
-        return sb.toString()
-    }
-
-    fun getCountQuery(base: String): String {
-        __build()
-
-        val sb = StringBuilder(1024)
-        sb.append("SELECT COUNT(1) FROM ")
-        sb.append(base.substring(base.indexOf("FROM") + 5))
-        if (!whereClause.isNullOrEmpty()) {
-            if (!base.contains("WHERE")) {
-                sb.append(" WHERE ")
-            }
-            sb.append(whereClause)
-        }
-        return sb.toString()
-    }
-
-    fun getValues(): Array<Any> {
-        __build()
-        return values.toTypedArray()
-    }
-
-    fun getValues(page: Pager): Array<Any> {
-        __build()
-        val result = Arrays.copyOf(values.toTypedArray(), values.size + 2)
-        result[values.size] = page.size
-        result[values.size + 1] = page.from
-        return result
-    }
-
-    private fun __build() {
-        if (!built) {
-            built = true
-            build()
-
-            if (!where.isNullOrEmpty()) {
-                whereClause = where.joinToString(" AND ")
-            }
-            where.clear()
-        }
-    }
-
-    @JsonIgnore
-    fun forceSort(sort: Map<String, String>): DaoFilter {
-        this.sort = sort
-        return this
-    }
-
-    companion object {
-
-        protected val logger = LoggerFactory.getLogger(DaoFilter::class.java)
     }
 }

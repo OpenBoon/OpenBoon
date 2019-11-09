@@ -5,11 +5,6 @@ package com.zorroa.archivist.domain
  */
 
 /**
- * Emitted when watermark settings have changed.
- */
-class WatermarkSettingsChanged
-
-/**
  * Emitted when a job state changes.
  */
 class JobStateChangeEvent(val job: Job, val newState: JobState, val oldState: JobState?)
