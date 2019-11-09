@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ae31fe784611030c277a769eb781c779c9eb4befb8ea91f60eb2b389623bec83"
+            "sha256": "72a7c0c4c500fcb3fd09186a6e7ba85ad080bc3eb90d77e2f3f1c787d4639e1d"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.7"
+            "python_version": "3.6"
         },
         "sources": [
             {
@@ -89,6 +89,14 @@
             ],
             "index": "pypi",
             "version": "==3.1.1"
+        },
+        "django-health-check": {
+            "hashes": [
+                "sha256:06efac9dcd30eb83c3d0184b834d7d86467bdb710da361f20c2c28853d7e6a5e",
+                "sha256:c9bcc1b3ef77db3a9ba2d33585916707963cbb958220689f77741235f5fa553a"
+            ],
+            "index": "pypi",
+            "version": "==3.11.1"
         },
         "djangorestframework": {
             "hashes": [
@@ -233,11 +241,11 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:cf4b0f8401f4d146e6b8c5579b24397273126c9a0576fa7eb9581ad27b330f13",
-                "sha256:f6e850f304382d87c5c52c01db8c0004d2ced6a0b073df2f2257168cf31b31aa"
+                "sha256:09e1e8f00f22ea580348f83bbbd880adf40b29f1dec494a8e4b33e22f77184fb",
+                "sha256:ff1fa7fb85703ae9414c8b427ee73f8363232767c9cd19158f08f6e4f0b58fc7"
             ],
             "index": "pypi",
-            "version": "==0.13.1"
+            "version": "==0.13.2"
         },
         "six": {
             "hashes": [

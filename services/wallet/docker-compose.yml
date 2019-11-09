@@ -8,13 +8,17 @@ services:
       - 80:80
     build:
       context: .
-    entrypoint: "sh /app/start-server.sh postgres"
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     depends_on:
       - postgres
-
 
   # Postgres database backing the wallet server.
   postgres:

@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 gunicorn = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
@@ -16,6 +16,7 @@ Django = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
+django-health-check = "*"
 
 [requires]
 python_version = "3.6"

@@ -3,9 +3,8 @@
 # hostname of the postgres instance to wait for.
 
 # Wait for postgres database to be ready.
-host="$1"
-until pg_isready -h $host; do
-  >&2 echo "Postgres is unavailable - sleeping"
+until pg_isready -h $PG_HOST; do
+  >&2 echo "Postgres is unavailable - waiting 1 second."
   sleep 1
 done
 
