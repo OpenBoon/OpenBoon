@@ -28,6 +28,8 @@ wallet-frontend-test-suite:
     - npx jest --bail --silent --ci
 
 wallet-container-build-validation:
+  only:
+    - development
   stage: test
   image: docker:18.09.8-dind
   services:
