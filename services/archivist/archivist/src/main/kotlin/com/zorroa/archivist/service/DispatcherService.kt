@@ -6,6 +6,7 @@ import com.google.common.base.Supplier
 import com.google.common.base.Suppliers
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
+import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.DispatchPriority
@@ -36,6 +37,8 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
+import com.zorroa.archivist.security.KnownKeys
+import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.getAnalystEndpoint
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
@@ -106,6 +109,7 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val fileStorageService: FileStorageService,
     val properties: ApplicationProperties,
+    val authServerClient: AuthServerClient,
     val meterRegistry: MeterRegistry
 ) {
 
@@ -161,7 +165,7 @@ class DispatchQueueManager @Autowired constructor(
          */
         for (priority in cachedDispatchPriority.get()) {
 
-            val tasks = dispatcherService.getWaitingTasks(
+            val waitingTasks = dispatcherService.getWaitingTasks(
                 priority.projectId, numberOfTasksToPoll
             )
 
@@ -169,7 +173,7 @@ class DispatchQueueManager @Autowired constructor(
                 METRICS_KEY, "op", "tasks-polled"
             ).increment(tasks.size.toDouble())
 
-            for (task in tasks) {
+            for (task in waitingTasks) {
                 if (queueAndDispatchTask(task, analyst)) {
                     return task
                 }
@@ -196,16 +200,11 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZORROA_JOB_ID"] = task.jobId.toString()
             task.env["ZORROA_PROJECT_ID"] = task.projectId.toString()
             task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
-            // TODO: AUTH - supply correct token.
-            task.env["ZORROA_AUTH_TOKEN"] = "abc123"
 
-            if (properties.getBoolean("archivist.debug-mode.enabled")) {
-                task.env["ZORROA_DEBUG_MODE"] = "true"
-            }
-            // TODO: allocate storage for task.
-            // Can't do with Analyst authentication
+            val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
+            task.env["ZMLP_APIKEY"] = key.toBase64()
 
-            withAuth(InternalThreadAuthentication(task.projectId)) {
+            withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.STORAGE_ADMIN))) {
                 val fs = fileStorageService.get(task.getLogSpec())
                 val logFile = fileStorageService.getSignedUrl(
                     fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS

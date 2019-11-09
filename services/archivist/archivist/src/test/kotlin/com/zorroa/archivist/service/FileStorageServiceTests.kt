@@ -64,13 +64,6 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
         val uri = layout.buildUri(id)
         assertTrue(uri.endsWith("job/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169"))
     }
-
-    @Test
-    fun testBuildUriFrom39SlugId() {
-        val id = "proxy/c0eaa63b-36a2-5962-9dc5-3b560800251c_1024x768.jpg"
-        val uri = layout.buildUri(id)
-        assertTrue(uri.endsWith("shared/ofs/proxy/c/0/e/a/a/6/3/b/c0eaa63b-36a2-5962-9dc5-3b560800251c_1024x768.jpg"))
-    }
 }
 
 class GcsLayoutProviderTests : AbstractTest() {

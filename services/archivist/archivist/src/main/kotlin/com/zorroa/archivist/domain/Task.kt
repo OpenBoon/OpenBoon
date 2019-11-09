@@ -186,7 +186,7 @@ class TaskFilter(
             sort = listOf("taskId:a")
         }
 
-        addToWhere("job.project_id=?")
+        addToWhere("job.pk_project=?")
         addToValues(getProjectId())
 
         ids?.let {
