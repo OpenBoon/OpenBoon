@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
+import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.withAuth
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
@@ -189,7 +190,7 @@ class MaintenanceServiceImpl @Autowired constructor(
             for (job in jobService.getExpiredJobs(config.archiveJobsAfterDays, TimeUnit.DAYS, 100)) {
                 logger.info("Deleting expired job {},", job.id)
                 if (jobService.deleteJob(job)) {
-                    withAuth(InternalThreadAuthentication(job.projectId)) {
+                    withAuth(InternalThreadAuthentication(job.projectId, listOf(Perm.STORAGE_ADMIN))) {
                         val storage = storageService.get(job.getStorageId())
                         storage.getServableFile().delete()
                     }

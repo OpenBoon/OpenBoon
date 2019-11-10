@@ -188,7 +188,7 @@ class JobFilter(
             "timeCreated" to "job.time_created",
             "state" to "job.int_state",
             "priority" to "job.int_priority",
-            "projectId" to "job.project_id"
+            "projectId" to "job.pk_project"
         )
 
     @JsonIgnore
@@ -198,7 +198,7 @@ class JobFilter(
             sort = listOf("timeCreated:desc")
         }
 
-        addToWhere("job.project_id=?")
+        addToWhere("job.pk_project=?")
         addToValues(getProjectId())
 
         ids?.let {

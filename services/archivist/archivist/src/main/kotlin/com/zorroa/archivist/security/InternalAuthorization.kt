@@ -2,26 +2,23 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.clients.ZmlpUser
 import org.springframework.security.authentication.AbstractAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.UUID
-
-class SuperAdminAuthority : GrantedAuthority {
-    override fun getAuthority(): String {
-        return Role.SUPERADMIN
-    }
-}
 
 /**
  * An Authentication class for authorizing background threads.
  */
-class InternalThreadAuthentication constructor(projectId: UUID) :
-    AbstractAuthenticationToken(listOf(SuperAdminAuthority())) {
+class InternalThreadAuthentication constructor(
+    projectId: UUID, perms: List<String>
+) :
+    AbstractAuthenticationToken(perms.map { SimpleGrantedAuthority(it) }) {
 
-    // TODO: security - need to fetch a real key.
-    val zmlpUser: ZmlpUser = ZmlpUser(projectId,
-        UUID.randomUUID(),
-        "background-thread",
-        listOf(Role.SUPERADMIN))
+    val zmlpUser: ZmlpUser = ZmlpUser(
+        KnownKeys.SUKEY,
+        projectId,
+        KnownKeys.BACKGROUND_THREAD,
+        perms
+    )
 
     override fun getDetails(): Any? {
         return zmlpUser

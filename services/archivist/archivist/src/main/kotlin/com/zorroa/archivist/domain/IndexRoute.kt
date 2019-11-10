@@ -37,7 +37,7 @@ enum class IndexRouteState {
 }
 
 /**
- * An IndexRoute points to a unqiue ES cluster and index name.
+ * An IndexRoute points to a unique ES cluster and index name.
  *
  * @property id The unique ID of the index route.
  * @property clusterId The unique ID of the cluster.

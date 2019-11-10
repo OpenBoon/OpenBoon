@@ -12,8 +12,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
+@Transactional
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @TestPropertySource(locations = ["classpath:test.yml"])

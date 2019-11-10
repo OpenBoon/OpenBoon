@@ -4,12 +4,18 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.capture
+import com.zorroa.archivist.clients.ApiKey
+import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.domain.Project
+import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.schema.Proxy
 import com.zorroa.archivist.schema.ProxySchema
@@ -22,19 +28,23 @@ import com.zorroa.archivist.service.IndexClusterService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.PipelineService
+import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.randomString
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.junit.Before
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
@@ -62,6 +72,9 @@ abstract class AbstractTest {
     protected lateinit var fileServerProvider: FileServerProvider
 
     @Autowired
+    protected lateinit var projectService: ProjectService
+
+    @Autowired
     protected lateinit var indexService: IndexService
 
     @Autowired
@@ -85,15 +98,18 @@ abstract class AbstractTest {
     @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
 
-    @Autowired
-    internal lateinit var transactionManager: DataSourceTransactionManager
+    @MockBean
+    lateinit var authServerClient: AuthServerClient
 
     protected lateinit var jdbc: JdbcTemplate
 
     protected lateinit var resources: Path
 
+    protected lateinit var project: Project
+
     init {
         ArchivistConfiguration.unittest = true
+        Json.Mapper.registerModule(KotlinModule())
     }
 
     fun requiresElasticSearch(): Boolean {
@@ -112,8 +128,22 @@ abstract class AbstractTest {
     @Before
     @Throws(IOException::class)
     fun setup() {
-        Json.Mapper.registerModule(KotlinModule())
-        /*
+        /**
+         * Setup a test project.
+         */
+        project = projectService.create(
+            ProjectSpec(
+                "unittest",
+                projectId = UUID.fromString("00000000-0000-0000-0000-000000000000")
+            )
+        )
+
+        /**
+         * Setup mocks for calls out to the authentication service.
+         */
+        setupAuthServerMocks()
+
+        /**
          * Ensures that all transaction events run within the unit test transaction.
          * If this was not set then  transaction events like AfterCommit would never execute
          * because unit test transactions are never committed.
@@ -121,12 +151,12 @@ abstract class AbstractTest {
         transactionEventManager.isImmediateMode = true
 
         /**
-         * Before we can do anything reliably we need a logged in user.
+         * Setup authentication.
          */
         authenticate()
 
         /**
-         * We need to be authed to clean elastic.
+         * If ES is required, setup the index.
          */
         if (requiresElasticSearch()) {
             cleanElastic()
@@ -136,6 +166,42 @@ abstract class AbstractTest {
     fun authenticateAsAnalyst() {
         SecurityContextHolder.getContext().authentication =
             AnalystAuthentication("https://127.0.0.1:5000")
+    }
+
+    fun setupAuthServerMocks() {
+        /**
+         * Stub out network calls to the authServerClient.
+         */
+        val proj = ArgumentCaptor.forClass(Project::class.java)
+        val permissions = ArgumentCaptor.forClass(listOf("foo").javaClass)
+
+        // Create ApiKey
+        Mockito.`when`(
+            authServerClient.createApiKey(
+                capture<Project>(proj),
+                any(),
+                capture<List<String>>(permissions)
+            )
+        ).then {
+            ApiKey(
+                UUID.randomUUID(),
+                proj.value.id,
+                randomString(64)
+            )
+        }
+
+        // Get ApiKey
+        Mockito.`when`(
+            authServerClient.getApiKey(
+                any(), any()
+            )
+        ).then {
+            ApiKey(
+                UUID.randomUUID(),
+                project.id,
+                randomString(64)
+            )
+        }
     }
 
     fun cleanElastic() {
@@ -175,7 +241,7 @@ abstract class AbstractTest {
     fun authenticate() {
         val user = ZmlpUser(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
-            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            project.id,
             "unittest-key",
             listOf(Role.PROJADMIN)
         )

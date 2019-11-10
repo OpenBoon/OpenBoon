@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.filesystem.UUIDFileSystem
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -69,14 +68,12 @@ class GcpFileServerServiceTests : AbstractTest() {
 class LocalFileServerServiceTests : AbstractTest() {
 
     val fileServer = LocalFileServerService()
-
     val testShared = Files.createTempDirectory("test")
-    val ofs: UUIDFileSystem = UUIDFileSystem(testShared.resolve("ofs"))
     lateinit var fileStorage: LocalFileStorageService
 
     @Before
     fun init() {
-        fileStorage = LocalFileStorageService(testShared, ofs)
+        fileStorage = LocalFileStorageService(testShared)
         fileStorage.fileServerProvider = fileServerProvider
     }
 

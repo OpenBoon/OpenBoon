@@ -39,7 +39,8 @@ interface DispatchTaskDao {
 class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
     override fun getNextByProject(projectId: UUID, count: Int): List<DispatchTask> {
-        return jdbc.query(GET_BY_ORG, MAPPER,
+        return jdbc.query(
+                GET_BY_PROJ, MAPPER,
                 JobState.Active.ordinal,
                 TaskState.Waiting.ordinal,
                 projectId,
@@ -57,7 +58,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
     override fun getDispatchPriority(): List<DispatchPriority> {
         val result = jdbc.query(GET_DISPATCH_PRIORITY) { rs, _ ->
             DispatchPriority(
-                    rs.getObject("project_id") as UUID,
+                    rs.getObject("pk_project") as UUID,
                     rs.getInt("priority"))
         }
         result.sortBy { it.priority }
@@ -76,7 +77,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
             DispatchTask(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
-                    rs.getObject("project_id") as UUID,
+                    rs.getObject("pk_project") as UUID,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")],
                     rs.getString("str_host"),
@@ -87,7 +88,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
         private const val GET_DISPATCH_PRIORITY =
             "SELECT " +
-                "job.project_id, " +
+                "job.pk_project, " +
                 "SUM(job_count.int_task_state_1) AS priority " +
             "FROM job " +
                 "INNER JOIN job_count ON (job.pk_job = job_count.pk_job) " +
@@ -96,11 +97,11 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "AND " +
                 "job_count.int_task_state_0 > 0 " +
             "GROUP BY " +
-                "job.project_id"
+                "job.pk_project"
 
         private const val GET =
             "SELECT " +
-                "job.project_id," +
+                "job.pk_project," +
                 "job.json_env," +
                 "job.json_args," +
                 "task.pk_task," +
@@ -130,9 +131,9 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
          * - job time created
          * - task time created
          */
-        private const val GET_BY_ORG = GET +
+        private const val GET_BY_PROJ = GET +
             "AND " +
-                "job.project_id=? " +
+                "job.pk_project=? " +
             "ORDER BY " +
                 "job.int_priority,job.time_created,task.time_created LIMIT ?"
 

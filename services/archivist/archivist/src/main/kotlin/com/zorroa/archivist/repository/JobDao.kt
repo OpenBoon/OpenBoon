@@ -211,7 +211,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         private val MAPPER = RowMapper { rs, _ ->
             val state = JobState.values()[rs.getInt("int_state")]
             Job(rs.getObject("pk_job") as UUID,
-                    rs.getObject("project_id") as UUID,
+                    rs.getObject("pk_project") as UUID,
                     rs.getString("str_name"),
                     JobType.values()[rs.getInt("int_type")],
                     state,
@@ -274,7 +274,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private val INSERT = insert("job",
                 "pk_job",
-                "project_id",
+                "pk_project",
                 "str_name",
                 "int_state",
                 "int_type",

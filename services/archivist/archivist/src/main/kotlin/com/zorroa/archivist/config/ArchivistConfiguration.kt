@@ -2,7 +2,6 @@ package com.zorroa.archivist.config
 
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
-import com.zorroa.archivist.filesystem.UUIDFileSystem
 import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.FileServerProviderImpl
@@ -114,8 +113,7 @@ class ArchivistConfiguration {
             "local" -> {
                 val path = properties().getPath("archivist.storage.path")
                 // OFS gets shoved into the OFS dir.
-                val ufs = UUIDFileSystem(path.resolve("ofs"))
-                LocalFileStorageService(path, ufs)
+                LocalFileStorageService(path)
             }
             "gcs" -> {
                 val bucket = properties().getString("archivist.storage.bucket")
