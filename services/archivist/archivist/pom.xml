@@ -213,12 +213,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zorroa.zmlp</groupId>
-            <artifactId>unittest-dispatcher</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.nhaarman</groupId>
             <artifactId>mockito-kotlin</artifactId>
             <version>1.6.0</version>
