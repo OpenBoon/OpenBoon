@@ -3,7 +3,7 @@ import json
 import os
 
 from zorroa.zsdk.testing import TestEventEmitter
-from zorroa.zsdk.zps.process import ProcessorExecutor
+from zorroa.zsdk.zpsd.process import ProcessorExecutor
 from zorroa.zsdk.processor import Reactor
 
 

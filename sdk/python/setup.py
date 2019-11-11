@@ -29,8 +29,7 @@ setup(
               'zorroa.zsdk.util',
               'zorroa.zsdk.ofs',
               'zorroa.zsdk.zpsd',
-              'zorroa.zsdk.zpsdebug',
-              'zorroa.zsdk.zps'],
+              'zorroa.zsdk.zpsdebug'],
     scripts=['bin/zpsd', 'bin/zpsdebug'],
 
     classifiers=[

@@ -4,7 +4,7 @@ import sys
 import zmq
 
 from zorroa.zsdk.processor import Reactor
-from zorroa.zsdk.zps.process import ProcessorExecutor
+from zorroa.zsdk.zpsd.process import ProcessorExecutor
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ class ZpsdServer(object):
 
         if not reactor:
             self.reactor = Reactor(ZmqEventEmitter(self.socket))
-        self.executor = ProcessorExecutor(reactor)
+        self.executor = ProcessorExecutor(self.reactor)
 
     def __setup_zmq_socket(self):
         ctx = zmq.Context()
