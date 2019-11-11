@@ -5,7 +5,6 @@ import threading
 
 logger = logging.getLogger(__name__)
 
-# TODO: move this into SDK.
 
 class ContainerizedZpsExecutor(object):
     """
@@ -38,7 +37,7 @@ class ContainerizedZpsExecutor(object):
         """
         # TODO: handle thread issues
         # TODO: validate task id
-        logger.info("killing %s, reason: %s" % (self.task["id"], reason))
+        logger.info("killing {}, reason: {}".format(self.task["id"], reason))
         if not self.is_killed and self.container:
             self.container.kill()
             self.is_killed = True
@@ -103,7 +102,7 @@ class ContainerizedZpsExecutor(object):
             # If any exceptions bubble out here, then the task is a hard failure
             # and the container is immediately stopped.
             exit_status = 16
-            logger.warning("Failed to execute script,", e)
+            logger.warning("Failed to execute script, unexpected {}".format(e))
             self.stop_container()
         finally:
             # Emit a task stopped to the archivist.
@@ -292,7 +291,7 @@ class DockerContainerProcess(object):
             # Send an exception up for a hard failure, which fails the
             # task and shuts down the container.
             elif event_type == "hardfailure":
-                raise RuntimeError("Container failure, exiting {}".format(event))
+                raise RuntimeError("Container failure, exiting event='{}'".format(event))
             else:
                 # Echo back to archivist.
                 self.client.emit_event(self.task, event_type, event["payload"])
