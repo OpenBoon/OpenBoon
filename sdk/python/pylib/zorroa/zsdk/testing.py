@@ -10,7 +10,8 @@ from filecmp import cmp
 
 from pathlib2 import Path
 
-from .processor import Reactor, Context, DocumentProcessor, Argument
+from .document.asset import Asset
+from .processor import Reactor, Context, DocumentProcessor, Generator, Argument, Frame
 from .ofs.core import AbstractObjectFileSystem, AbstractObjectFile
 from .ofs import set_ofs
 
@@ -44,6 +45,24 @@ class TestProcessor(DocumentProcessor):
 
     def teardown(self):
         self.logger.info("Running TestProcessor teardown()")
+
+
+class TestGenerator(Generator):
+    """
+    A test generator which generates frames from a supplied array
+    of files paths.
+    """
+    def __init__(self):
+        super(TestGenerator, self).__init__()
+        self.add_arg(Argument('files', 'list', default=[]))
+
+    def generate(self, consumer):
+        for file in self.arg_value('files'):
+            asset = Asset(file)
+            consumer.accept(Frame(asset))
+
+    def teardown(self):
+        self.logger.info("Running TestGenerator teardown()")
 
 
 class TestObjectFile(AbstractObjectFile):

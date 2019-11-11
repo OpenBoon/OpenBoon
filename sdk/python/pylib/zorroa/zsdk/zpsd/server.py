@@ -41,8 +41,9 @@ class ZpsdServer(object):
     def handle_event(self, event):
         etype = event["type"]
         if etype == "execute":
-            obj = self.executor.execute_processor(event["payload"])
-            self.reactor.emitter.write({"type": "object", "payload": obj})
+            self.executor.execute_processor(event["payload"])
+        elif etype == "generate":
+            self.executor.execute_generator(event["payload"])
         elif etype == "teardown":
             self.executor.teardown_processor(event["payload"])
         elif etype == "stop":

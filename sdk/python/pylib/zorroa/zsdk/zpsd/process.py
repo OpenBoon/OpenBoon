@@ -20,6 +20,15 @@ class ProcessorExecutor(object):
         self.reactor = reactor
         self.processors = {}
 
+    def execute_generator(self, request):
+        ref = request["ref"]
+        file_types = request.get("file_types", [])
+
+        logger.info("generating processor='{}'".format(ref["className"]))
+
+        wrapper = self.get_processor_wrapper(ref)
+        wrapper.generate(file_types)
+
     def execute_processor(self, request):
         """
         Executes a single processor on a single data object and returns
@@ -40,7 +49,7 @@ class ProcessorExecutor(object):
 
         wrapper = self.get_processor_wrapper(ref)
         wrapper.process(frame)
-        return frame.asset.for_json()
+        return frame
 
     def teardown_processor(self, request):
         """
@@ -163,6 +172,31 @@ class ProcessorWrapper(object):
                                               self.ref.get("args") or {}, {}))
             self.instance.init()
 
+    def generate(self, file_types):
+        consumer = FrameConsumer(self.reactor, file_types)
+        start_time = time.monotonic()
+        try:
+            if self.instance:
+                self.instance.generate(consumer)
+                total_time = round(time.monotonic() - start_time, 2)
+                self.increment_stat("generate_count")
+                self.increment_stat("total_time", total_time)
+            else:
+                logger.warning("Generate warning, instance for '{}' does not exist."
+                               .format(self.ref))
+        except UnrecoverableProcessorException as upe:
+            # Set the asset to be skipped for further processing
+            # It will not be included in result
+            self.increment_stat("unrecoverable_error_count")
+            self.reactor.error(None, self["ref"]["className"],
+                               upe, True, "execute", sys.exc_info()[2])
+        except Exception as e:
+            self.increment_stat("error_count")
+            self.reactor.error(None, self.instance, e, False, "execute", sys.exc_info()[2])
+        finally:
+            # Force an expand at the end of the frame.
+            consumer.check_expand(True)
+
     def process(self, frame):
         """
         Run the Processor instance on the given Frame.
@@ -172,10 +206,11 @@ class ProcessorWrapper(object):
         """
         start_time = time.monotonic()
         try:
-            if self.instance:
+            if self.instance and is_file_type_allowed(frame, self.instance.file_types):
                 self.instance.process(frame)
             else:
-                logger.warning("Execute warning, instance for '{}' does not exist.", self.ref)
+                logger.warning("Execute warning, instance for '{}' does not exist."
+                               .format(self.ref))
 
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
@@ -224,5 +259,91 @@ class ProcessorWrapper(object):
         Returns:
             (mixed): The new value
         """
-        self.stats[key] += value
-        return self.stats[key]
+        val = self.stats.get(key, 0) + value
+        self.stats[key] = val
+        return val
+
+
+class FrameConsumer(object):
+    """
+    The FrameConsumer handles expand tasks created by generators. The reason
+    to use FrameConsumer instead of just expanding directly from the Reactor
+    is that the file types need to be filtered.
+
+    For each file the generator finds, it calls the accept() method with the
+    frame.  If the file passes the defined file filters, then it is either
+    held for expand or processed inline.
+
+    """
+    def __init__(self, reactor, file_types):
+        """
+        Create a new FrameConsumer instance.
+
+        Args:
+            reactor(Reactor) - a reactor for talking back to the Archivist
+            file_types(iterable) - A set/list of file types to accept.
+
+        """
+        self.reactor = reactor
+        self.file_types = [ft.lower() for ft in file_types]
+        self.frame_count = 0
+        self.execute_count = 0
+        self.expand_count = 0
+        self.exit_status = 0
+        self.expand = []
+
+    def accept(self, frame):
+        """
+        Called by the generator once it finds a frame to emit.
+
+        Args:
+            frame(Document): The frame of data to filter for acceptance.
+
+        """
+        if not is_file_type_allowed(frame, self.file_types):
+            return
+        self.expand.append(frame)
+        self.check_expand()
+
+    def check_expand(self, force=False):
+        """
+        Checks to see if the current job should be expanded.
+
+        Args:
+            force(bool): force an expand even if the batchSize is not full.
+
+        """
+        waiting = len(self.expand)
+        if waiting > 0 and (waiting >= self.reactor.batch_size or force):
+            objects = [f.asset.for_json() for f in self.expand]
+            self.expand_count += 1
+            script = {
+                "over": objects
+            }
+            logger.info("#%d Expand %d frames into new task" % (self.expand_count, waiting))
+            self.reactor.expand(script)
+            self.expand = []
+
+
+def is_file_type_allowed(frame, file_types):
+    """
+    Determine if a given frame is filtered out by a set of file types.
+
+    Args:
+        frame(Frame): the frame to check
+        file_types(set): the file typed filter to check against
+
+    Returns:
+        True if the file is allowed.
+
+    """
+    if file_types:
+        result = False
+        ext = frame.asset.get_attr("source.extension")
+        if ext and ext.lower() in file_types:
+            result = True
+        return result
+    else:
+        return True
+
+
