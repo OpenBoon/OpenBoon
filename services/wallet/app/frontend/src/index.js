@@ -1,5 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Wallet from './components/Wallet'
 
-ReactDOM.render(<Wallet />, document.getElementById('root'))
+import App from './components/App'
+
+// Include all our app-wide style classes
+require('./styles/base/core.scss')
+
+ReactDOM.render(<App />, document.getElementById('root'))

@@ -78,7 +78,8 @@
     "classnames": "^2.2.6",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.1.2"
   },
   "optionalDependencies": {
     "husky": "^3.0.9"
