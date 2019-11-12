@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Page from '/components/Page'
+import Page from '../Page'
 
 class Login extends Component {
   constructor() {
@@ -9,7 +9,6 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      error: ''
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -18,7 +17,7 @@ class Login extends Component {
   onSubmit(e) {
     e.preventDefault()
 
-    const { email, password, error } = this.state
+    const { email, password } = this.state
 
     if (email !== '' && password !== '') {
       // Login async function here
@@ -26,7 +25,7 @@ class Login extends Component {
   }
 
   render() {
-    const { email, password, error } = this.state
+    const { email, password } = this.state
 
     return (
       <Page>
@@ -35,15 +34,27 @@ class Login extends Component {
             <div className="login-inputs">
               <div className="login-input">
                 <label htmlFor="email">Email</label>
-                <input type="text" value={email} name="email" onChange={(e) => this.setState({ email: e.target.value })} />
+                <input
+                  type="text"
+                  value={email}
+                  name="email"
+                  onChange={e => this.setState({ email: e.target.value })}
+                />
               </div>
 
               <div className="login-input">
                 <label htmlFor="password">Password</label>
-                <input type="password" value={password} name="password" onChange={(e) => this.setState({ password: e.target.value })} />
+                <input
+                  type="password"
+                  value={password}
+                  name="password"
+                  onChange={e => this.setState({ password: e.target.value })}
+                />
               </div>
 
-              <button className="login-button" type="submit">Login</button>
+              <button className="login-button" type="submit">
+                Login
+              </button>
             </div>
           </form>
         </div>
