@@ -4,12 +4,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const ENV = process.env.NODE_ENV
 const ROOT_DIR = resolve(__dirname)
 const SRC_DIR = join(ROOT_DIR, 'src')
 
 module.exports = {
-  mode: ENV,
   entry: SRC_DIR,
   output: {
     path: join(ROOT_DIR, 'build'),
@@ -51,11 +49,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['*', '.js']
-  },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './build',
-    hot: true
   },
   plugins: [
     new CleanWebpackPlugin(),
