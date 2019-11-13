@@ -3,6 +3,8 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
@@ -15,25 +17,36 @@ import java.util.UUID
  * mapping file name, not the ES type.
  * @property mappingMajorVer The major version of the mapping file.
  * @property mappingMinorVer The minor version of the mapping file in a date format.
- * @property closed True if the index is closed and not in use.
+ * @property closed "True if the index is closed and not in use."
  * @property replicas Number of index replicas.
  * @property shards Number of shards.
  * @property defaultPool True if the index route is in the default Pool.
  * @property indexUrl The ES index URL, or the cluster URL and index name combined.
  */
+@ApiModel("IndexRoute", description = "TaskErrorEvents are emitted by the processing system if an an exception is thrown while processing")
+
 class IndexRoute(
-    val id: UUID,
-    val projectId: UUID,
-    val clusterUrl: String,
-    val indexName: String,
-    val mapping: String,
-    val mappingMajorVer: Int,
-    val mappingMinorVer: Int,
-    val closed: Boolean,
-    val replicas: Int,
-    val shards: Int
+        @ApiModelProperty("The unique ID of the index route.")
+        val id: UUID,
+        val projectId: UUID,
+        @ApiModelProperty("The URL to the ES cluster.")
+        val clusterUrl: String,
+        @ApiModelProperty("The name of the ES index.")
+        val indexName: String,
+        @ApiModelProperty("The mapping type. This is extracted from the mapping file name, not the ES type.")
+        val mapping: String,
+        @ApiModelProperty("The major version of the mapping file.")
+        val mappingMajorVer: Int,
+        @ApiModelProperty("The minor version of the mapping file in a date format.")
+        val mappingMinorVer: Int,
+        @ApiModelProperty("True if the index is closed and not in use.")
+        val closed: Boolean,
+        @ApiModelProperty("Number of index replicas.")
+        val replicas: Int,
+        @ApiModelProperty("Number of shards.")
+        val shards: Int
 ) {
-    
+    @ApiModelProperty("The ES index URL, or the cluster URL and index name combined.")
     val indexUrl = "$clusterUrl/$indexName"
 
     /**
@@ -56,13 +69,20 @@ class IndexRoute(
  * @property replicas The number of replicas there should be for each shard. Defaults to 2.
  * @property shards The number of shards in the index. Defaults to 5.
  */
+@ApiModel("IndexRouteSpec", description = "The IndexRouteSpec defines all the values needed to create an index route.")
 class IndexRouteSpec(
-    var clusterUrl: String,
-    var indexName: String,
-    var mapping: String,
-    var mappingMajorVer: Int,
-    var replicas: Int = 1,
-    var shards: Int = 5
+        @ApiModelProperty("The URL of the ES cluster.")
+        var clusterUrl: String,
+        @ApiModelProperty("The name of the ES index.")
+        var indexName: String,
+        @ApiModelProperty("The type of mapping (not ES object type)")
+        var mapping: String,
+        @ApiModelProperty("The major version to use. It will be patched up to highest level.")
+        var mappingMajorVer: Int,
+        @ApiModelProperty("The number of replicas there should be for each shard. Defaults to 2.")
+        var replicas: Int = 1,
+        @ApiModelProperty(" The number of shards in the index. Defaults to 5.")
+        var shards: Int = 5
 )
 
 /**
@@ -72,9 +92,12 @@ class IndexRouteSpec(
  * @property mapping The name of the mapping.
  * @property mappingMajorVer The major version of the mapping.
  */
+@ApiModel("IndexMappingVersion", description = "An IndexMappingVersion is a version of an ES mapping found on disk or packaged with the Archivist that can be used to make an [IndexRoute]")
 class IndexMappingVersion(
-    val mapping: String,
-    val mappingMajorVer: Int
+        @ApiModelProperty("The name of the mapping.")
+        val mapping: String,
+        @ApiModelProperty("The major version of the mapping.")
+        val mappingMajorVer: Int
 )
 
 /**
@@ -85,11 +108,14 @@ class IndexMappingVersion(
  * @property indexName The name of the index.
  * @property indexUrl The full URL to the index.
  */
+@ApiModel("EsClientCacheKey", description = "The ESClientCacheKey is used to lookup or create cached ElasticSearch client instances.")
 class EsClientCacheKey(
-    val clusterUrl: String,
-    val indexName: String
+        @ApiModelProperty(" The url to the cluster")
+        val clusterUrl: String,
+        @ApiModelProperty("The name of the index.")
+        val indexName: String
 ) {
-
+    @ApiModelProperty("The full URL to the index.")
     val indexUrl = "$clusterUrl/$indexName"
 }
 
