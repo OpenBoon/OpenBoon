@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { authenticateUser } from '../../services/authServices'
 
 // import Page from '../Page'
 
@@ -20,7 +21,7 @@ class Login extends Component {
     const { email, password } = this.state
 
     if (email !== '' && password !== '') {
-      // Login async function here
+      authenticateUser(email, password)
     }
   }
 
