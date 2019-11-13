@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.BeanIds
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -40,7 +41,7 @@ class MultipleWebSecurityConfig {
     internal lateinit var properties: ApplicationProperties
 
     @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Order(Ordered.HIGHEST_PRECEDENCE+1)
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
@@ -49,12 +50,6 @@ class MultipleWebSecurityConfig {
 
         @Autowired
         lateinit var apiKeyAuthorizationFilter: ApiKeyAuthorizationFilter
-
-        @Bean(name = ["globalAuthenticationManager"])
-        @Throws(Exception::class)
-        fun globalAuthenticationManager(): AuthenticationManager {
-            return super.authenticationManagerBean()
-        }
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -125,9 +120,14 @@ class MultipleWebSecurityConfig {
     }
 
     @Configuration
-    @Order(Ordered.LOWEST_PRECEDENCE)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 4)
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class RootSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Bean(name = [BeanIds.AUTHENTICATION_MANAGER])
+        fun globalAuthenticationManager(): AuthenticationManager {
+            return super.authenticationManagerBean()
+        }
 
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
@@ -136,7 +136,7 @@ class MultipleWebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/v2/api-docs").authenticated()
+                .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/error").permitAll()
                 .and()
                 .csrf().disable()
@@ -172,11 +172,6 @@ class MultipleWebSecurityConfig {
     @Bean
     fun authServerClient(): AuthServerClient {
         return AuthServerClientImpl(properties.getString("security.auth-server.url"))
-    }
-
-    @Bean
-    fun apiKeyAuthenticationFilter(): ApiKeyAuthorizationFilter {
-        return ApiKeyAuthorizationFilter(authServerClient())
     }
 
     companion object {
