@@ -28,28 +28,27 @@ class ApiKeyAuthorizationFilter constructor(val authServerClient: AuthServerClie
         res: HttpServletResponse,
         chain: FilterChain
     ) {
-        chain.doFilter(req, res);
-//        val token = req.getHeader(HEADER)?.let {
-//            if (it.startsWith(PREFIX)) {
-//                it.removePrefix(PREFIX)
-//            } else {
-//                null
-//            }
-//        } ?: req.getParameter("token")
-//        if (token == null) {
-//            log.warn("No authentication token")
-//            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
-//            return
-//        }
-//
-//        try {
-//            val apiToken = authServerClient.authenticate(token)
-//            SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(apiToken)
-//            chain.doFilter(req, res)
-//        } catch (e: Exception) {
-//            log.warn("Invalid authentication token: ", e)
-//            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
-//        }
+        val token = req.getHeader(HEADER)?.let {
+            if (it.startsWith(PREFIX)) {
+                it.removePrefix(PREFIX)
+            } else {
+                null
+            }
+        } ?: req.getParameter("token")
+        if (token == null) {
+            log.warn("No authentication token")
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+            return
+        }
+
+        try {
+            val apiToken = authServerClient.authenticate(token)
+            SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(apiToken)
+            chain.doFilter(req, res)
+        } catch (e: Exception) {
+            log.warn("Invalid authentication token: ", e)
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+        }
     }
 
     companion object {
