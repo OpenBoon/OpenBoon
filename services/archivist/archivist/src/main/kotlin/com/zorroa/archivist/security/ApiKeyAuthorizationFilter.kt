@@ -31,7 +31,6 @@ class ApiKeyAuthorizationFilter constructor(
             res: HttpServletResponse,
             chain: FilterChain
     ) {
-
         val token = req.getHeader(HEADER)?.let {
             if (it.startsWith(PREFIX)) {
                 it.removePrefix(PREFIX)
