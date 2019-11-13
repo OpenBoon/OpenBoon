@@ -21,7 +21,7 @@ export function authenticateUser(username, password) {
     password
   }).then(response => {
     const tokens = response.data
-    storeAuthAccessTokens(tokens)
+    storeAuthTokens(tokens)
   })
   return tokenPromise
 }
@@ -35,7 +35,7 @@ export function refreshTokens(tokens) {
   console.log(tokens)
 }
 
-export function storeAuthAccessTokens(tokens) {
+export function storeAuthTokens(tokens) {
   localStorage.setItem(
     ACCESS_TOKEN,
     JSON.stringify(tokens['access'])
@@ -45,4 +45,12 @@ export function storeAuthAccessTokens(tokens) {
     REFRESH_TOKEN,
     JSON.stringify(tokens['refresh'])
   )
+}
+
+export function getAuthTokens() {
+  const accessToken = localStorage.getItem(ACCESS_TOKEN)
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN)
+  if (accessToken && refreshToken) {
+    return { accessToken, refreshToken }
+  }
 }

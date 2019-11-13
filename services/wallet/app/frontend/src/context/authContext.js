@@ -1,21 +1,18 @@
 import React from 'react'
-import { checkAuthentication } from '../services/authServices'
+import { checkAuthentication, getAuthTokens } from '../services/authServices'
 
 const AuthContext = React.createContext()
 
 function AuthProvider(props) {
   // add code to check if user is logged in (localStorage)
-  const isAuthenticated = checkAuthentication()
+  const tokens = getAuthTokens()
 
-  if (isAuthenticated) {
-    // request user info; display spinner while loading
-    return <div>{"Loading..."}</div>
-  }
-
-  const user = { data: {} }
+  // add some async logic for when use data is being fetched
+  const user = { data: { tokens } }
 
   const loginFn = () => {
-    // log user in
+    // log user in (i.e. add tokens to user)
+    user.data.tokens = getAuthTokens()
   }
 
   const registerFn = () => {

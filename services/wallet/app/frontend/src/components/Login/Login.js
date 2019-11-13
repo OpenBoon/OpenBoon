@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { authenticateUser } from '../../services/authServices'
 
 // import Page from '../Page'
-
 class Login extends Component {
   constructor() {
     super()
@@ -21,7 +20,9 @@ class Login extends Component {
     const { email, password } = this.state
 
     if (email !== '' && password !== '') {
-      authenticateUser(email, password)
+      authenticateUser(email, password).then(() => {
+        this.props.loginFn()
+      })
     }
   }
 
@@ -30,6 +31,7 @@ class Login extends Component {
 
     return (
       // <Page>
+
       <div className="login-container">
         <form className="login-form" onSubmit={this.onSubmit}>
           <div className="login-inputs">

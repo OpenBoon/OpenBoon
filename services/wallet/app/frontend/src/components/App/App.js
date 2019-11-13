@@ -1,11 +1,11 @@
 import React from 'react'
-import { useUser } from '../../context/userContext'
+import { useAuth } from '../../context/authContext'
 import Wallet from '../Wallet'
 import Login from '../Login'
 
-function App() {
-  const user = useUser()
-  return user ? <Wallet /> : <Login />
+function App(props) {
+  const { tokens } = props.user.data
+  return tokens ? <Wallet /> : <Login />
 }
 
 export default App
