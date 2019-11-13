@@ -7,3 +7,5 @@ function App() {
   const user = useUser()
   return user ? <Wallet /> : <Login />
 }
+
+export default App

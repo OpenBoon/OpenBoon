@@ -4,10 +4,11 @@ const AuthContext = React.createContext()
 
 function AuthProvider(props) {
   // add code to check if user is logged in (localStorage)
-  // const isAuthenticated = 'blah'
+  const user = { data: {} }
+  const isAuthenticated = true
 
   if (!isAuthenticated) {
-    return <Spinner />
+    return <div>{"Loading..."}</div>
   }
 
   const loginFn = () => {
