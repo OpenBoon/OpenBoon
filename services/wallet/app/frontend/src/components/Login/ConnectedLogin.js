@@ -7,8 +7,6 @@ function ConnectedLogin() {
   const authContext = useAuth()
   const userContext = useUser()
 
-  return (
-    <Login {...authContext} {...userContext} />
-  )
+  return <Login {...authContext} {...userContext} />
 }
 export default ConnectedLogin

@@ -16,13 +16,15 @@ export function checkAuthentication() {
 
 export function authenticateUser(username, password) {
   const instance = axiosCreate({})
-  const tokenPromise = instance.post('/auth/token/', {
-    username,
-    password
-  }).then(response => {
-    const tokens = response.data
-    storeAuthTokens(tokens)
-  })
+  const tokenPromise = instance
+    .post('/auth/token/', {
+      username,
+      password,
+    })
+    .then(response => {
+      const tokens = response.data
+      storeAuthTokens(tokens)
+    })
   return tokenPromise
 }
 
@@ -36,15 +38,9 @@ export function refreshTokens(tokens) {
 }
 
 export function storeAuthTokens(tokens) {
-  localStorage.setItem(
-    ACCESS_TOKEN,
-    JSON.stringify(tokens['access'])
-  )
+  localStorage.setItem(ACCESS_TOKEN, JSON.stringify(tokens.access))
 
-  localStorage.setItem(
-    REFRESH_TOKEN,
-    JSON.stringify(tokens['refresh'])
-  )
+  localStorage.setItem(REFRESH_TOKEN, JSON.stringify(tokens.refresh))
 }
 
 export function getAuthTokens() {

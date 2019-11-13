@@ -57,7 +57,7 @@ class Login extends Component {
 
             <button className="login-button" type="submit">
               Login
-              </button>
+            </button>
           </div>
         </form>
       </div>

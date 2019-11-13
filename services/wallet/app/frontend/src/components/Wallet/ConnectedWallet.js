@@ -7,8 +7,6 @@ function ConnectedWallet() {
   const authContext = useAuth()
   const userContext = useUser()
 
-  return (
-    <Wallet {...authContext} {...userContext} />
-  )
+  return <Wallet {...authContext} {...userContext} />
 }
 export default ConnectedWallet

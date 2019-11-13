@@ -7,8 +7,6 @@ function ConnectedApp() {
   const authContext = useAuth()
   const userContext = useUser()
 
-  return (
-    <App {...authContext} {...userContext} />
-  )
+  return <App {...authContext} {...userContext} />
 }
 export default ConnectedApp
