@@ -50,7 +50,7 @@ services:
   # Local Archivist server.
   archivist:
     links:
-#       - "es1"
+       - "es1"
        - "postgres"
        - "auth-server"
     environment:
