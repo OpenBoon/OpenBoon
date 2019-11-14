@@ -54,6 +54,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'health_check',
+    'health_check.db',
+    'health_check.cache',
+    'health_check.storage'
 ]
 
 MIDDLEWARE = [
@@ -101,7 +105,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'wallet',
-        'USER': 'admin',
+        'USER': 'wallet',
         'PASSWORD': os.environ.get('PG_PASSWORD', 'a8fnnbe934j'),
         'HOST': os.environ.get('PG_HOST', 'localhost'),
         'PORT': '5432',
