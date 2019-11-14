@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.stereotype.Component
+import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
@@ -20,11 +21,9 @@ import javax.servlet.http.HttpServletResponse
 val HEADER = "Authorization"
 val PREFIX = "Bearer "
 
-@Component
 class ApiKeyAuthorizationFilter constructor(
-    val authServerClient: AuthServerClient,
-    authenticatioinManager: AuthenticationManager
-) : BasicAuthenticationFilter(authenticatioinManager) {
+    val authServerClient: AuthServerClient
+) : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
