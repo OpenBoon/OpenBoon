@@ -1,31 +1,36 @@
-import React from 'react'
-import { checkAuthentication, getAuthTokens } from '../services/authServices'
+import React, { useState } from 'react'
+import { getAuthTokens } from '../services/authServices'
+import { authenticateUser, unauthenticateUser } from '../services/authServices'
 
 const AuthContext = React.createContext()
 
 function AuthProvider(props) {
-  // add code to check if user is logged in (localStorage)
+  // check if user is logged in (tokens in localStorage)
   const tokens = getAuthTokens()
-
-  // add some async logic for when use data is being fetched
   const user = { data: { tokens } }
 
-  const loginFn = () => {
-    // log user in (i.e. add tokens to user)
-    user.data.tokens = getAuthTokens()
+  const [localUser, setUser] = useState(user)
+
+  const login = (email, password) => {
+    authenticateUser(email, password).then(() => {
+      setUser({
+        user: { ...user, data: { tokens: getAuthTokens() } }
+      })
+    })
   }
 
-  const registerFn = () => {
+  const register = () => {
     // create user
   }
 
-  const logoutFn = () => {
-    // log user out
+  const logout = () => {
+    unauthenticateUser()
+    setUser({ user })
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, loginFn, logoutFn, registerFn }}
+      value={{ user, login, logout, register }}
       {...props}
     />
   )

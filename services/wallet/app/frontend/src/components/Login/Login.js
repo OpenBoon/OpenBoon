@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { authenticateUser } from '../../services/authServices'
 
 // import Page from '../Page'
 class Login extends Component {
@@ -14,15 +13,13 @@ class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  onSubmit(e) {
-    e.preventDefault()
+  onSubmit(event) {
+    event.preventDefault()
 
     const { email, password } = this.state
 
     if (email !== '' && password !== '') {
-      authenticateUser(email, password).then(() => {
-        this.props.loginFn()
-      })
+      this.props.login(email, password)
     }
   }
 
@@ -30,8 +27,6 @@ class Login extends Component {
     const { email, password } = this.state
 
     return (
-      // <Page>
-
       <div className="login-container">
         <form className="login-form" onSubmit={this.onSubmit}>
           <div className="login-inputs">
@@ -61,7 +56,6 @@ class Login extends Component {
           </div>
         </form>
       </div>
-      // </Page>
     )
   }
 }
