@@ -33,10 +33,6 @@ export function unauthenticateUser() {
   localStorage.setItem(REFRESH_TOKEN, '')
 }
 
-export function refreshTokens(tokens) {
-  console.log(tokens)
-}
-
 export function storeAuthTokens(tokens) {
   localStorage.setItem(ACCESS_TOKEN, JSON.stringify(tokens.access))
 
