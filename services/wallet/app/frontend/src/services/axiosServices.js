@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import axios from 'axios'
 
 const ORIGIN = 'http://localhost:8000'

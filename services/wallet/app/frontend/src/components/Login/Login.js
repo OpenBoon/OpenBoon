@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 // import Page from '../Page'
 class Login extends Component {
@@ -31,7 +32,7 @@ class Login extends Component {
         <form className="login-form" onSubmit={this.onSubmit}>
           <div className="login-inputs">
             <div className="login-input">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{'Email'}</label>
               <input
                 type="text"
                 value={email}
@@ -41,7 +42,7 @@ class Login extends Component {
             </div>
 
             <div className="login-input">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{'Password'}</label>
               <input
                 type="password"
                 value={password}
@@ -51,13 +52,17 @@ class Login extends Component {
             </div>
 
             <button className="login-button" type="submit">
-              Login
+              {'Login'}
             </button>
           </div>
         </form>
       </div>
     )
   }
+}
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
 }
 
 export default Login

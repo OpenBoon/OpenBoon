@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
-import { getAuthTokens } from '../services/authServices'
-import { authenticateUser, unauthenticateUser } from '../services/authServices'
+import {
+  getAuthTokens,
+  authenticateUser,
+  unauthenticateUser,
+} from '../services/authServices'
 
 const AuthContext = React.createContext()
 
 function AuthProvider(props) {
   // check if user is logged in (tokens in localStorage)
   const tokens = getAuthTokens()
-  const user = { data: { tokens } }
+  const initialUser = { data: { tokens } }
 
-  const [localUser, setUser] = useState(user)
+  const [user, setUser] = useState(initialUser)
 
   const login = (email, password) => {
     authenticateUser(email, password).then(() => {
-      setUser({
-        user: { ...user, data: { tokens: getAuthTokens() } }
-      })
+      const user = { ...initialUser, data: { tokens: getAuthTokens() } }
+      setUser(user)
     })
   }
 
@@ -25,7 +27,7 @@ function AuthProvider(props) {
 
   const logout = () => {
     unauthenticateUser()
-    setUser({ user })
+    setUser({ data: { tokens: undefined } })
   }
 
   return (
