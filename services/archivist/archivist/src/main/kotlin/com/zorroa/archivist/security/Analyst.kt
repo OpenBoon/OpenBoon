@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.stereotype.Component
+import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import javax.annotation.PostConstruct
 import javax.servlet.FilterChain
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AnalystAuthenticationFilter @Autowired constructor(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
+class AnalystAuthenticationFilter: OncePerRequestFilter() {
 
     @Autowired
     private lateinit var properties: ApplicationProperties
