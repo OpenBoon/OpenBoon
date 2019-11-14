@@ -1,5 +1,6 @@
 stages:
   - test
+  - build
 
 # SDK Jobs
 pylib-linting:
@@ -18,15 +19,21 @@ pylib-linting:
     - cd services/wallet/app/frontend
     - npm install
 
-wallet-frontend-lint:
+wallet-frontend-test-suite:
   extends: .wallet-frontend-base
   stage: test
   script:
     - npx eslint ./src --quiet
     - npx stylelint '**/*.scss'
-
-wallet-frontend-unit-test:
-  extends: .wallet-frontend-base
-  stage: test
-  script:
     - npx jest --bail --silent --ci
+
+wallet-container-build-validation:
+  only:
+    - development
+  stage: test
+  image: docker:18.09.8-dind
+  services:
+    - docker:18.09.8-dind
+  script:
+    - cd services/wallet
+    - docker build --pull --no-cache .
