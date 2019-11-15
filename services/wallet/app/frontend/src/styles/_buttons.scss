@@ -1,0 +1,27 @@
+/* === BUTTONS === */
+
+$btn-font-size: $body-font-size;
+$btn-font-family: $primary-font-family;
+$btn-line-height: 16px;
+$btn-border-radius: 2px;
+
+.btn {
+  font-size: $btn-font-size;
+  font-family: $btn-font-family;
+  line-height: $btn-line-height;
+  border-radius: $btn-border-radius;
+  padding: 10px 30px;
+  border: 0;
+  cursor: pointer;
+}
+
+.btn.btn-primary {
+  background-color: $primary-color;
+  color: $primary-font-color;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:active,
+.btn.btn-primary:focus {
+  background: lighten($primary-color, 15%);
+}

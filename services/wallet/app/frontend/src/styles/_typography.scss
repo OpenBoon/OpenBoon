@@ -1,0 +1,39 @@
+/* === TYPOGRAPHY === */
+
+$primary-font-family: 'Roboto', 'Avenir', 'sans-serif';
+
+$body-font-size: 14px;
+$body-line-height: 18px;
+
+$h3-font-size: 18px;
+$h3-line-height: 21px;
+
+$small-font-size: 12px;
+$small-line-height: 14px;
+
+$normal-font-weight: 400;
+$bold-font-weight: 700;
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: $body-font-size;
+  font-family: $primary-font-family;
+  font-weight: $normal-font-weight;
+  line-height: $body-line-height;
+  color: $primary-font-color;
+}
+
+h3 {
+  font-size: $h3-font-size;
+  font-weight: $normal-font-weight;
+  line-height: $h3-line-height;
+}
+
+small {
+  font-size: $small-font-size;
+  line-height: $small-line-height;
+}

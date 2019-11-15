@@ -26,7 +26,18 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              config: {
+                path: 'postcss.config.js'
+              }
+            }
+          },
+          {
+            loader: 'sass-loader', options: { sourceMap: true }
+          }
         ]
       }, {
         test: /\.(png|svg|jpg|gif)$/,
