@@ -21,7 +21,9 @@ function Login() {
           <small className="">- or -</small>
 
           <div className="login__form-group">
-            <label className="login__form-label" htmlFor="email">Email</label>
+            <label className="login__form-label" htmlFor="email">
+              Email
+            </label>
             <input
               id="email"
               type="text"
@@ -33,7 +35,9 @@ function Login() {
           </div>
 
           <div className="login__form-group">
-            <label className="login__form-label" htmlFor="password">Password</label>
+            <label className="login__form-label" htmlFor="password">
+              Password
+            </label>
             <input
               id="password"
               type="password"
@@ -48,7 +52,9 @@ function Login() {
             Login
           </button>
 
-          <small className="login__form-tagline">Forgot Password? Need login help?</small>
+          <small className="login__form-tagline">
+            Forgot Password? Need login help?
+          </small>
         </form>
       </div>
     </Page>
