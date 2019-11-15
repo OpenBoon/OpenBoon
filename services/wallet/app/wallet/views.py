@@ -1,6 +1,7 @@
 import os
 import logging
 
+from django.contrib.auth import get_user_model
 from django.views.generic import View
 from django.http import HttpResponse
 from django.conf import settings
@@ -31,7 +32,7 @@ class FrontendAppView(View):
 
 class UserViewSet(viewsets.ModelViewSet):
     """API endpoint that allows Users to be viewed or edited."""
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = get_user_model().objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
 

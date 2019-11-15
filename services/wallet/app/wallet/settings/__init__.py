@@ -45,6 +45,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'wallet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -169,3 +170,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+# General Application Configuration
+AUTH_USER_MODEL = 'users.User'
+ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
+PLATFORM = os.environ.get('PLATFORM', 'zmlp')

@@ -7,8 +7,12 @@ from wallet.settings import *  # noqa
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'wallet',
+        'USER': 'wallet',
+        'PASSWORD': os.environ.get('PG_PASSWORD', 'a8fnnbe934j'),
+        'HOST': os.environ.get('PG_HOST', 'localhost'),
+        'PORT': '5432',
     }
 }
 

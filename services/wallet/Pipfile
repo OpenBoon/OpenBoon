@@ -17,6 +17,8 @@ djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
 django-health-check = "*"
+zorroa = {path = "./../../sdk/python"}
+django-cryptography = "*"
 
 [requires]
 python_version = "3.6"
