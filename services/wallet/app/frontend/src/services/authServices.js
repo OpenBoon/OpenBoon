@@ -29,14 +29,16 @@ export function authenticateUser(username, password) {
 }
 
 export function unauthenticateUser() {
-  localStorage.setItem(ACCESS_TOKEN, '')
-  localStorage.setItem(REFRESH_TOKEN, '')
+  localStorage.removeItem(ACCESS_TOKEN)
+  localStorage.removeItem(REFRESH_TOKEN)
 }
 
 export function storeAuthTokens(tokens) {
-  localStorage.setItem(ACCESS_TOKEN, JSON.stringify(tokens.access))
-
-  localStorage.setItem(REFRESH_TOKEN, JSON.stringify(tokens.refresh))
+  localStorage.setItem(ACCESS_TOKEN, JSON.stringify(`Bearer ${tokens.access}`))
+  localStorage.setItem(
+    REFRESH_TOKEN,
+    JSON.stringify(`Bearer ${tokens.refresh}`),
+  )
 }
 
 export function getAuthTokens() {

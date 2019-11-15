@@ -1,24 +1,46 @@
 /* eslint-disable no-restricted-imports */
 import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
-import { REFRESH_TOKEN } from '../constants/authConstants'
-import { storeAuthTokens } from '../services/authServices'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/authConstants'
 
 const ORIGIN = 'http://localhost:8000'
 
 function axiosIntercept(axiosInstance) {
+  const refreshAuthTokens = failedRequest => {
+    const refreshTokenRaw = localStorage.getItem(REFRESH_TOKEN)
+    const refreshTokenParsed =
+      refreshTokenRaw && JSON.parse(localStorage[REFRESH_TOKEN]).split(' ')[1]
 
-  const refreshAuthTokens = (failedRequest) => {
-    const refreshToken = localStorage.getItem(REFRESH_TOKEN)
-    axiosInstance.post('/auth/refresh/', { refresh: refreshToken }).then(response => {
-      const tokens = response.data
-      storeAuthTokens(tokens)
-      failedRequest.response.config.headers['Authorization'] = `Bearer ${tokens.access}`
-    })
-    return Promise.resolve()
+    return axiosInstance
+      .post('/auth/refresh/', { refresh: refreshTokenParsed })
+      .then(response => {
+        const { access } = response.data
+        const stringifiedAccessToken = JSON.stringify(`Bearer ${access}`)
+        localStorage.setItem(ACCESS_TOKEN, stringifiedAccessToken)
+        failedRequest.response.config.headers.Authorization = stringifiedAccessToken
+        return Promise.resolve()
+      })
   }
 
   return createAuthRefreshInterceptor(axiosInstance, refreshAuthTokens)
+}
+
+function decorateHeaders(config) {
+  const accessToken = localStorage.getItem(ACCESS_TOKEN)
+  const authorization = accessToken && JSON.parse(localStorage[ACCESS_TOKEN])
+
+  const headers = {
+    ...config.headers,
+  }
+
+  if (authorization) {
+    headers.Authorization = authorization
+  }
+
+  return {
+    ...config,
+    headers,
+  }
 }
 
 export function axiosCreate(options = {}) {
@@ -30,6 +52,10 @@ export function axiosCreate(options = {}) {
   const axiosInstance = axios.create({
     ...customDefaultOptions,
     ...options,
+  })
+
+  axiosInstance.interceptors.request.use(decorateHeaders, function(error) {
+    return Promise.reject(error)
   })
 
   return axiosIntercept(axiosInstance)
