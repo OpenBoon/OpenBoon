@@ -1,66 +1,58 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
 import Page from '../Page'
 
-class Login extends Component {
-  constructor() {
-    super()
+function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-    this.state = {
-      email: '',
-      password: '',
-    }
-
-    this.onSubmit = this.onSubmit.bind(this)
-  }
-
-  onSubmit(e) {
+  function handleSubmit(e) {
+    console.log(email, password)
     e.preventDefault()
-
-    const { email, password } = this.state
-
-    if (email !== '' && password !== '') {
-      // Login async function here
-    }
   }
 
-  render() {
-    const { email, password } = this.state
+  return (
+    <Page>
+      <div className="login__page">
+        <form className="login__form" onSubmit={handleSubmit}>
+          <h3 className="login__form-heading">Welcome. Please login.</h3>
 
-    return (
-      <Page>
-        <div className="login-container">
-          <form className="login-form" onSubmit={this.onSubmit}>
-            <div className="login-inputs">
-              <div className="login-input">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="text"
-                  value={email}
-                  name="email"
-                  onChange={e => this.setState({ email: e.target.value })}
-                />
-              </div>
+          <small className="">- or -</small>
 
-              <div className="login-input">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  name="password"
-                  onChange={e => this.setState({ password: e.target.value })}
-                />
-              </div>
+          <div className="login__form-group">
+            <label className="login__form-label" htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              value={email}
+              name="email"
+              className="login__form-input"
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
 
-              <button className="login-button" type="submit">
-                Login
-              </button>
-            </div>
-          </form>
-        </div>
-      </Page>
-    )
-  }
+          <div className="login__form-group">
+            <label className="login__form-label" htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              name="password"
+              className="login__form-input"
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button className="login__btn btn btn-primary" type="submit">
+            Login
+          </button>
+
+          <small className="login__form-tagline">Forgot Password? Need login help?</small>
+        </form>
+      </div>
+    </Page>
+  )
 }
 
 export default Login

@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 
-class Page extends Component {
-  render() {
-    return <div className="page">{this.props.children}</div>
-  }
+function Page({ children }) {
+  return <div className="page">{children}</div>
 }
 
 Page.propTypes = {
   children: PropTypes.object,
+}
+
+Page.defaultProps = {
+  children: {},
 }
 
 export default Page

@@ -1,28 +1,44 @@
-@import '../../styles/base/colors.scss';
+@import '../../styles/core.scss';
 
-.login-container {
-  width: 100%;
-  height: 100%;
+.login__page {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
+}
 
-  .login-form {
-    width: 250px;
-    height: 250px;
-  }
+.login__form {
+  display: flex;
+  flex-direction: column;
+  padding: 65px;
+  width: 440px;
+  height: 580px;
+  // background-color: lighten($background-color, 25%);
+  background-color: #2d2d2d;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.59);
+}
 
-  .login-input {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+.login__form-heading {
+  text-align: center;
+}
 
-  .login-input label {
-    color: $wallet-font;
-  }
+.login__form-group {
+  margin-bottom: 15px;
+}
 
-  .login-button {
-    background-color: $wallet-primary;
-  }
+.login__form-input {
+  width: 100%;
+}
+
+.login__btn {
+  width: 95px;
+  margin: 30px auto;
+  font-weight: $bold-font-weight;
+}
+
+.login__form-tagline {
+  text-align: center;
+  opacity: 0.54;
 }
