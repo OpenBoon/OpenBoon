@@ -8,6 +8,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
+import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.util.Json
 import org.junit.Before
@@ -54,7 +55,7 @@ abstract class MockMvcTest : AbstractTest() {
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 project.id,
                 "unittest-key",
-                listOf(Role.SUPERADMIN, Role.PROJADMIN)
+                listOf(Role.SUPERADMIN, Role.PROJADMIN, Perm.MONITOR_SERVER)
             )
         }
     }

@@ -33,5 +33,6 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('health/', include('health_check.urls')),
     path('', wallet_views.FrontendAppView.as_view())
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

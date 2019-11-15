@@ -1,14 +1,16 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.clients.ZmlpUser
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import javax.servlet.FilterChain
@@ -19,8 +21,9 @@ import javax.servlet.http.HttpServletResponse
 val HEADER = "Authorization"
 val PREFIX = "Bearer "
 
-class ApiKeyAuthorizationFilter constructor(val authServerClient: AuthServerClient)
-    : OncePerRequestFilter() {
+class ApiKeyAuthorizationFilter constructor(
+    val authServerClient: AuthServerClient
+) : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
