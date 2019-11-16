@@ -74,11 +74,24 @@ info on the Django runserver can be found [here](https://docs.djangoproject.com/
 1. CD into the project directory: `cd app`
 1. Make sure you've built the Frontend if you expect the backend to serve it (instructions above).
 1. Make sure your database is up to date: `./manage.py migrate --settings=wallet.settings.local` 
+   - If you receive an error about a Role, User, or DB not existing when running migrate, check the "Postgres Setup" section below.
 1. `./manage.py runserver --settings=wallet.settings.local` 
 1. Your server will now be running on `http://localhost:8000`
 * *Note:* You can drop the `--settings=wallet.settings.local` from the previous commands
 if you specify this in the `DJANGO_SETTINGS_MODULE` env variable. For example: 
 `export DJANGO_SETTINGS_MODULE=wallet.settings.local`
+
+##### Postgres Setup
+
+The development server has been setup to use Postgres for it's DB rather than SQLite, due
+to us using some Postgres specific fields. The first time setting up Postgres, you'll need to
+create the wallet DB and User/Role.
+
+1. Make sure the `wallet` db has been created: `$ createdb wallet`
+2. Start the PG Console: `$ psql -h localhost`
+3. Create Role in the console (replace `$password` with password from settings file): `# CREATE ROLE wallet WITH LOGIN PASSWORD '$password';`
+4. Set permissions in the console: `# GRANT ALL PRIVILEGES ON DATABASE wallet TO wallet;`
+5. Give last permission to user in the console: `# ALTER USER wallet CREATEDB;`
 
 #### Browsable API
 

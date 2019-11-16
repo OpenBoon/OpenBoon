@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.views.generic import View
 from django.http import HttpResponse
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from rest_framework import viewsets
 from wallet.serializers import UserSerializer, GroupSerializer
 
