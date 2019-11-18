@@ -80,8 +80,6 @@ class IndexRoute(
     val mappingMajorVer: Int,
     @ApiModelProperty("The minor version of the mapping file in a date format.")
     val mappingMinorVer: Int,
-    @ApiModelProperty("True if the index is closed and not in use.")
-    val closed: Boolean,
     @ApiModelProperty("Number of index replicas.")
     val replicas: Int,
     @ApiModelProperty("Number of shards.")
@@ -112,7 +110,6 @@ class IndexRoute(
  */
 @ApiModel("IndexRouteSpec", description = "The IndexRouteSpec defines all the values needed to create an index route.")
 class IndexRouteSpec(
-
     @ApiModelProperty("The type of mapping (not ES object type)")
     var mapping: String,
     @ApiModelProperty("The major version to use. It will be patched up to highest level.")
