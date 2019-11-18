@@ -1,4 +1,4 @@
-FROM plugins-py3-base:latest
+FROM zmlp-py3-sdk:latest
 USER root
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \

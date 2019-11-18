@@ -9,8 +9,10 @@ import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
+import com.zorroa.archivist.domain.IndexAssetsEvent
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobId
@@ -251,6 +253,7 @@ class DispatcherServiceImpl @Autowired constructor(
     private val taskErrorDao: TaskErrorDao,
     private val analystDao: AnalystDao,
     private val eventBus: EventBus,
+    private val assetService: AssetService,
     private val meterRegistry: MeterRegistry
 ) : DispatcherService {
 
@@ -438,6 +441,13 @@ class DispatcherServiceImpl @Autowired constructor(
             TaskEventType.STATS -> {
                 val stats = Json.Mapper.convertValue<List<TaskStatsEvent>>(event.payload)
                 handleStatsEvent(stats)
+            }
+            TaskEventType.INDEX -> {
+                val index = Json.Mapper.convertValue<IndexAssetsEvent>(event.payload)
+                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_IMPORT))) {
+                    assetService.createOrReplaceAssets(BatchCreateAssetsRequest(
+                        index.assets, task.jobId, task.taskId))
+                }
             }
         }
     }

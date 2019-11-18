@@ -7,10 +7,10 @@ import unittest
 from unittest.mock import patch
 
 import zorroa.zsdk as zsdk
-from zorroa.zsdk import Context
+from zorroa.zsdk import Context, Asset
 from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
 from zplugins.core.generators import AssetSearchGenerator
-from zplugins.core.generators import FileGenerator, FileSystemGenerator
+from zplugins.core.generators import FileGenerator, FileSystemGenerator, GcsBucketGenerator
 
 
 class Consumer:
@@ -143,3 +143,14 @@ class AssetSearchGeneratorUnitTestCase(PluginUnitTestCase):
         self.generator.init()
         self.generator.generate(self.consumer)
         assert self.consumer.count == 1
+
+
+class GcsBucketGeneratorUnitTests(unittest.TestCase):
+
+    def test_file_generator(self):
+        #subprocess_patch.return_value = 'gs://zorroa-test-data/dummy.pdf\n'
+        consumer = Consumer()
+        generator = GcsBucketGenerator()
+        generator.set_context(Context(None, {"uri": 'gs://zorroa-dev-data'}, {}))
+        generator.generate(consumer)
+        self.assertEquals(1, consumer.count)

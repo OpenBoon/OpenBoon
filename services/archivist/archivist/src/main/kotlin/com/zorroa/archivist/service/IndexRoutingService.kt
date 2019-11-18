@@ -264,9 +264,6 @@ constructor(
             req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
             es.client.indices().create(req, RequestOptions.DEFAULT)
 
-
-
-
             result = mappingFile
         } else {
             logger.info("Not creating ${route.indexUrl}, already exists")

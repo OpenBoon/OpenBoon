@@ -82,20 +82,6 @@ class AnalystController @Autowired constructor(
     }
 
     @ApiOperation(
-        "Initiate a custom processor scan.",
-        notes = "If the processor-scan key is locked, then the \"success\" property on the response body is set to " +
-            "False. This means there is an active scan already running and the request was ignored."
-    )
-    @PostMapping(value = ["/api/v1/analysts/_processor_scan"])
-    fun processorScan(): Any {
-        // TODO: utilize redis/memcached for the locking services.
-        workQueue.execute {
-            analystService.doProcessorScan()
-        }
-        return HttpUtils.status("processor", "scan", true)
-    }
-
-    @ApiOperation(
         "Download the ZSDK.",
         notes = "Downloads a universal python wheel file which can be used to install the Python SDK."
     )

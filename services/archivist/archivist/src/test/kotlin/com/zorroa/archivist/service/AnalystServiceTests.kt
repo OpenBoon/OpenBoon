@@ -39,14 +39,4 @@ class AnalystServiceTests : AbstractTest() {
         assertEquals(spec2.freeRamMb, a2.freeRamMb)
         assertEquals(spec2.load, a2.load)
     }
-
-    /**
-     * This is going to be empty since there are no analysts running
-     * in this environment.
-     */
-    @Test
-    fun doProcessorScanFailure() {
-        val procs = analystService.doProcessorScan()
-        assertTrue(procs.isEmpty())
-    }
 }

@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -20,7 +21,9 @@ class IndexRouteDaoTests : AbstractTest() {
 
     fun getTestSpec(): IndexRouteSpec {
         return IndexRouteSpec(
-            "testing123", 1, clusterId = indexClusterService.getNextAutoPoolCluster().id
+            "testing123", 1,
+            IndexRouteState.BUILDING,
+            clusterId = indexClusterService.getNextAutoPoolCluster().id
         )
     }
     
