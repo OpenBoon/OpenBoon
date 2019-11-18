@@ -353,5 +353,3 @@ def is_file_type_allowed(frame, file_types):
         return result
     else:
         return True
-
-
