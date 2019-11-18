@@ -1,8 +1,38 @@
 import os
+from urllib.parse import urlparse
 
-from zorroa.zclient.exception import ArchivistException
-from zorroa.zsdk import Generator, Argument, Asset, Document, Frame
+from google.cloud import storage
+
 from zorroa import zclient
+from zorroa.zsdk import Generator, Argument, Asset, Document, Frame
+
+
+class GcsBucketGenerator(Generator):
+    """Simple generator that gets all of the objects in a GCS bucket and creates an asset.
+
+    Args:
+        bucket (str): Address of a bucket in the form "gs://<BUCKET_NAME>".
+
+    Important:
+    - The analysts must be configured with a service account that has access to the bucket.
+    - Best suited for testing purposes to easily ingest from a bucket. This is not
+    full-featured enough yet to be a good candidate for production use.
+
+    """
+
+    def __init__(self):
+        super(GcsBucketGenerator, self).__init__()
+        self.add_arg(Argument('uri', 'str', required=True))
+
+    def generate(self, consumer):
+        uri = urlparse(self.arg_value('uri'))
+        storage_client = storage.Client()
+
+        for blob in storage_client.list_blobs(uri.netloc, prefix=uri.path.lstrip("/")):
+            if blob.name.endswith("/"):
+                continue
+            gsuri = "gs://{}/{}".format(uri.netloc, blob.name)
+            consumer.accept(Frame(Asset(gsuri)))
 
 
 class FileUploadGenerator(Generator):

@@ -1,9 +1,7 @@
-import errno
 import json
 import logging
 import os
 import random
-import shlex
 import shutil
 import tempfile
 import threading
