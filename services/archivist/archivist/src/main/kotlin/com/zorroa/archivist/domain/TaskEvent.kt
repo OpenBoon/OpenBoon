@@ -8,7 +8,8 @@ enum class TaskEventType {
     ERROR,
     EXPAND,
     MESSAGE,
-    STATS
+    STATS,
+    INDEX
 }
 
 open class TaskEvent(
@@ -66,4 +67,8 @@ class TaskStatsEvent(
     val min: Double,
     val max: Double,
     val avg: Double
+)
+
+class IndexAssetsEvent(
+    val assets : List<Document>
 )

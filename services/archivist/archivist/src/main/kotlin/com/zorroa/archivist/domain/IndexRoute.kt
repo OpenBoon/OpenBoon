@@ -82,9 +82,11 @@ class IndexRoute(
  *
  * @property mapping The type of mapping (not ES object type)
  * @property mappingMajorVer The major version to use. It will be patched up to highest level.
+ * @property state The state of the index route.
  * @property replicas The number of replicas there should be for each shard. Defaults to 0.
  * @property shards The number of shards in the index. Defaults to 5.
  * @property clusterId The cluster ID to use for the index.
+ * @property projectId An optional projectID, not available for endpoints.
  */
 class IndexRouteSpec(
     var mapping: String,
@@ -92,7 +94,9 @@ class IndexRouteSpec(
     var state: IndexRouteState = IndexRouteState.BUILDING,
     var replicas: Int = 0,
     var shards: Int = 2,
-    var clusterId: UUID? = null
+    var clusterId: UUID? = null,
+    @JsonIgnore
+    var projectId: UUID? = null
 )
 
 /**
