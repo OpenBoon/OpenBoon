@@ -173,6 +173,7 @@ class ProcessorWrapper(object):
             self.instance.init()
 
     def generate(self, file_types):
+        logger.info("generating file_types=%s" % file_types)
         consumer = FrameConsumer(self.reactor, file_types)
         start_time = time.monotonic()
         try:
@@ -194,8 +195,11 @@ class ProcessorWrapper(object):
             self.increment_stat("error_count")
             self.reactor.error(None, self.instance, e, False, "execute", sys.exc_info()[2])
         finally:
-            # Force an expand at the end of the frame.
             consumer.check_expand(True)
+            self.reactor.emitter.write({
+                "type": "finished",
+                "payload": {}
+            })
 
     def process(self, frame):
         """
@@ -233,6 +237,10 @@ class ProcessorWrapper(object):
                     "skip": frame.skip
                 }
             })
+            self.reactor.emitter.write({
+                "type": "finished",
+                "payload": {}
+            })
 
     def teardown(self):
         """
@@ -244,7 +252,7 @@ class ProcessorWrapper(object):
             return
         try:
             self.instance.teardown()
-            self.reactor.emitter.write({"type": "stats", "payload": {"stats": self.stats}})
+            self.reactor.emitter.write({"type": "stats", "payload": [self.stats]})
         except Exception as e:
             self.reactor.error(None, self.instance, e, False, "teardown", sys.exc_info()[2])
 
