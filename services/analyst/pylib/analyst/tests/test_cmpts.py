@@ -51,7 +51,7 @@ def test_task(event_type=None, attrs=None):
                         "send_event": event_type,
                         "attrs": attrs
                     },
-                    "image": "plugins-py3-sdk"
+                    "image": "zmlp-py3-sdk"
                 }
             ]
         },

@@ -38,7 +38,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
                         "args": {
                             "files": ["/test-data/images/set01/toucan.jpg"]
                         },
-                        "image": "plugins-py3-sdk"
+                        "image": "zmlp-py3-sdk"
                     }
                 ]
             }

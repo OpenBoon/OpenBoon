@@ -45,7 +45,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - "./devkey.json:/service/config/key.json"
+      - "./zmlp-dev-key.json:/service/config/key.json"
 
   # Local Archivist server.
   archivist:
@@ -62,4 +62,14 @@ services:
       - "../services/archivist/localdev/monitoring:/monitoring"
       - "../services/archivist/localdev/zorroa-archivist-config:/config"
       - "../test-data:/test-data"
+      - "./zmlp-dev-key.json:/service/config/key.json"
 
+  analyst:
+    links:
+       - "archivist"
+    build:
+      context: ../services/analyst
+    ports:
+      - 5000:5000
+    volumes:
+       - "/var/run/docker.sock:/var/run/docker.sock"

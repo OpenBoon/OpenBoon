@@ -9,4 +9,5 @@ uritools
 docker
 pyzmq
 backoff
+pytest
 
