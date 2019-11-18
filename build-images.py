@@ -10,7 +10,7 @@ build_order = [
     ("services/analyst", "analyst")
 ]
 
-image = []
+images = []
 if len(sys.argv) > 1:
     images = sys.argv[1:]
 
