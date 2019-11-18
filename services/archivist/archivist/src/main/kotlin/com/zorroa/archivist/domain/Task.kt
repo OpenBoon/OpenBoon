@@ -67,9 +67,10 @@ interface TaskId {
  */
 @ApiModel("InternalTask", description = "An InternalTask implementation has enough properties to accomplish any internal operations but isn't intended for client use.")
 open class InternalTask(
+    @ApiModelProperty("The unique ID of the Task.")
     override val taskId: UUID,
+    @ApiModelProperty("The unique ID pf the Job")
     override val jobId: UUID,
-
     @ApiModelProperty("UUID of the Project this Task belongs to.")
     val projectId: UUID,
     @ApiModelProperty("name The [Task] name")
@@ -144,9 +145,13 @@ class DispatchTask(
     name: String,
     state: TaskState,
     val host: String?,
+    @ApiModelProperty("The ZpsScript to run.")
     val script: ZpsScript,
+    @ApiModelProperty("Extra ENV variables to apply before starting task.")
     var env: MutableMap<String, String>,
+    @ApiModelProperty("Extra script args to pass to the ZpsScript")
     var args: MutableMap<String, Any>,
+    @ApiModelProperty("The path to the Task log file.")
     var logFile: String? = null
 ) : InternalTask(id, jobId, projectId, name, state), TaskId {
 
