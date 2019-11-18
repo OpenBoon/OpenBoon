@@ -118,7 +118,6 @@ class IndexRouteSpec(
         var shards: Int = 2,
         @ApiModelProperty("The cluster ID to use for the index.")
         var clusterId: UUID? = null
-
 )
 
 /**
