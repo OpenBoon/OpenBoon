@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 
 import zmq
 
@@ -22,23 +23,27 @@ class ZpsdServer(object):
     def __setup_zmq_socket(self):
         ctx = zmq.Context()
         socket = ctx.socket(zmq.PAIR)
-        socket.bind("tcp://*:{}".format(self.port))
+        logger.info("Connecting to {}".format(os.environ.get("ZMLP_EVENT_HOST")))
+        socket.connect(os.environ.get("ZMLP_EVENT_HOST"))
+        socket.send_json({"type": "ready", "payload": {}})
         return socket
 
     def start(self):
-        logging.info("Starting ZPSD on port {}".format(self.port))
         while True:
+            logger.info("Waiting for events")
             event = self.socket.recv_json()
             try:
                 self.handle_event(event)
             except Exception as e:
                 logger.warning("Failed to handle event '{}', {}".format(event, e))
                 self.socket.send_json({"type": "hardfailure", "payload": {"message": str(e)}})
+                break
 
     def stop(self):
         self.socket.close()
 
     def handle_event(self, event):
+        logger.info("handling event: %s" % event)
         etype = event["type"]
         if etype == "execute":
             self.executor.execute_processor(event["payload"])

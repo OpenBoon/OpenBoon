@@ -21,6 +21,7 @@ from analyst.main import setup_routes
 
 logging.basicConfig(level=logging.INFO)
 
+logger = logging.getLogger(__name__)
 
 def read_build_version_file():
     with open(os.environ["ZORROA_BUILD_FILE"]) as fp:
@@ -33,7 +34,6 @@ def test_task(event_type=None, attrs=None):
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
-        "organizationId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "name": "process_me",
         "state": 1,
         "logFile": "file:///%s" % tempfile.mktemp("logfile"),
@@ -51,7 +51,7 @@ def test_task(event_type=None, attrs=None):
                         "send_event": event_type,
                         "attrs": attrs
                     },
-                    "image": "plugins-py3-base"
+                    "image": "plugins-py3-sdk"
                 }
             ]
         },
@@ -74,8 +74,17 @@ class MockArchivistClient:
         return test_task()
 
     def emit_event(self, task, etype, payload):
+        logger.info("ANALYST EVENT: {} {}".format(etype, payload))
         self.events.append((etype, task, payload))
 
+    def event_count(self, event_type):
+        return len(self.get_events(event_type))
+
+    def get_events(self, event_type):
+        return [e for e in self.events if e[0] == event_type]
+
+    def event_types(self):
+        return {e[0] for e in self.events}
 
 
 class ApiComponents(object):
@@ -229,7 +238,7 @@ class TestExecutor(unittest.TestCase):
         assert final_event["newState"] == "skipped"
 
 
-class TestContainerizedZpsWrapper(unittest.TestCase):
+class TestContainerizedZpsExecutor(unittest.TestCase):
 
     def test_run(self):
         task = test_task("--expand")
