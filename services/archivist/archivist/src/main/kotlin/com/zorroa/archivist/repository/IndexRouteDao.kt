@@ -73,8 +73,8 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     override fun create(spec: IndexRouteSpec): IndexRoute {
 
         val id = uuid1.generate()
-        val projectId = getProjectId()
         val time = System.currentTimeMillis()
+        val projectId = spec.projectId ?: getProjectId()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
@@ -94,7 +94,9 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             ps
         }
 
-        logger.event(LogObject.INDEX_ROUTE, LogAction.CREATE, mapOf("indexRouteId" to id))
+        logger.event(LogObject.INDEX_ROUTE, LogAction.CREATE,
+            mapOf("indexRouteId" to id,
+                "overrideProjectId" to projectId))
         return get(id)
     }
 

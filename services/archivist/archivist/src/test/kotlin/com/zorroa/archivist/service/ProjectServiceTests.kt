@@ -13,6 +13,10 @@ class ProjectServiceTests : AbstractTest() {
 
     val testSpec = ProjectSpec("project_test")
 
+    override fun requiresElasticSearch(): Boolean {
+        return true
+    }
+
     @Test
     fun createProject() {
         val project = projectService.create(testSpec)

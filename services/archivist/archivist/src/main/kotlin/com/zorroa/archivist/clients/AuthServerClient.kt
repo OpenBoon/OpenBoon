@@ -116,10 +116,11 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
             }
         })
 
-    val serviceKey: ApiKey? = detectServiceKey()
+    private val serviceKey: ApiKey? = detectServiceKey()
 
     private fun detectServiceKey(): ApiKey? {
-        val keyPath = Paths.get("/service/config/key.json")
+        val cfgPath = System.getenv().getOrDefault("ZMLP_CONFIG_PATH", "/zmlp-config")
+        val keyPath = Paths.get("$cfgPath/zmlp-service-key.json")
         return if (Files.exists(keyPath)) {
             Json.Mapper.readValue(keyPath.toFile())
         } else {
@@ -143,7 +144,7 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
             "name" to name,
             "permissions" to perms
         )
-        val req = signRequest(RequestEntity.post(URI("${baseUri}/auth/v1/api-key")))
+        val req = signRequest(RequestEntity.post(URI("${baseUri}/auth/v1/apikey")))
             .body(body)
         return rest.exchange(req, TYPE_APIKEY).body
     }
@@ -154,7 +155,7 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
             "names" to listOf(name)
         )
         val req = signRequest(
-            RequestEntity.post(URI("${baseUri}/auth/v1/api-key/_findOne"))
+            RequestEntity.post(URI("${baseUri}/auth/v1/apikey/_findOne"))
         ).body(body)
         return rest.exchange(req, TYPE_APIKEY).body
     }

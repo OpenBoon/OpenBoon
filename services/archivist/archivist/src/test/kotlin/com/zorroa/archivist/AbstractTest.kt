@@ -128,6 +128,16 @@ abstract class AbstractTest {
     @Before
     @Throws(IOException::class)
     fun setup() {
+
+        setupElastic()
+
+        /**
+         * If ES is required, cleanup the indexes.
+         */
+        if (requiresElasticSearch()) {
+            cleanElastic()
+        }
+
         /**
          * Setup a test project.
          */
@@ -137,6 +147,10 @@ abstract class AbstractTest {
                 projectId = UUID.fromString("00000000-0000-0000-0000-000000000000")
             )
         )
+
+        // TODO: Remove this once the indexRouteService can manage states.
+        // Set the project index route to the current state
+        jdbc.update("UPDATE index_route SET int_state=0")
 
         /**
          * Setup mocks for calls out to the authentication service.
@@ -154,13 +168,6 @@ abstract class AbstractTest {
          * Setup authentication.
          */
         authenticate()
-
-        /**
-         * If ES is required, setup the index.
-         */
-        if (requiresElasticSearch()) {
-            cleanElastic()
-        }
     }
 
     fun authenticateAsAnalyst() {
@@ -204,10 +211,12 @@ abstract class AbstractTest {
         }
     }
 
-    fun cleanElastic() {
+    fun setupElastic() {
         val cluster = indexClusterService.createDefaultCluster()
         jdbc.update("UPDATE index_cluster SET int_state=1 WHERE pk_index_cluster=?", cluster.id)
+    }
 
+    fun cleanElastic() {
         val clusterUrl = properties.getString("archivist.es.url")
         try {
             val rest = esClientCache.getRestHighLevelClient(clusterUrl)
@@ -216,19 +225,9 @@ abstract class AbstractTest {
         } catch (e: Exception) {
             logger.warn("Failed to delete test index, this is usually ok.", e)
         }
-
-        indexRoutingService.createIndexRoute(
-            IndexRouteSpec(
-                "asset",
-                12,
-                state = IndexRouteState.CURRENT,
-                clusterId = cluster.id
-            )
-        )
     }
 
     fun refreshElastic() {
-
         val cluster = indexClusterService.createDefaultCluster()
         val client = indexClusterService.getRestHighLevelClient(cluster).lowLevelClient
         val req = Request("POST", "/_refresh")
