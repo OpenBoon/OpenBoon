@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain
 
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 enum class TaskEventType {
@@ -37,13 +39,24 @@ class TaskStoppedEvent(
  * @property phase The phase at which the error occurred: generate, execute, teardown.
  * @property stackTrace The full stack trace from the error, if any. This is optional.
  */
+@ApiModel(
+    "TaskErrorEvent",
+    description = "TaskErrorEvents are emitted by the processing system if an an exception is thrown while processing"
+)
 class TaskErrorEvent(
+    @ApiModelProperty("The assetID that was being processed.", required = false)
     val assetId: UUID?,
+    @ApiModelProperty("The path that was being processed.", required = false)
     val path: String?,
+    @ApiModelProperty("The message from the exception that generated the event, or a custom message.")
     val message: String,
+    @ApiModelProperty("The processor class the error occurred in.")
     val processor: String?,
+    @ApiModelProperty("True if the error was fatal.")
     val fatal: Boolean,
+    @ApiModelProperty("The phase at which the error occurred: generate, execute, teardown.")
     val phase: String,
+    @ApiModelProperty("The full stack trace from the error, if any.", required = false)
     val stackTrace: List<StackTraceElement>? = null
 )
 
@@ -61,14 +74,28 @@ class TaskMessageEvent(
  * @property max The maximum time it took the processor to run.
  * @property avg The average time it took the processor to run.
  */
+@ApiModel(
+    "TaskStatsEvent",
+    description = "The TaskStatsEvent contains the run count, and min/max/avg exec times for each processor of a given task.  Emitted by the processing system once a task is completed."
+)
 class TaskStatsEvent(
+    @ApiModelProperty("The processor name")
     val processor: String,
+    @ApiModelProperty("The number of times the processor was run.")
     val count: Long,
+    @ApiModelProperty("The lowest time it took the processor to run.")
     val min: Double,
+    @ApiModelProperty("The maximum time it took the processor to run.")
     val max: Double,
+    @ApiModelProperty("The average time it took the processor to run.")
     val avg: Double
 )
 
+@ApiModel(
+    "IndexAssetsEvent",
+    description = "An event containing assets to index"
+)
 class IndexAssetsEvent(
+    @ApiModelProperty("A list of documents to index.")
     val assets : List<Document>
 )
