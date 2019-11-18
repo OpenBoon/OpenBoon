@@ -1,7 +1,9 @@
 import logging
 import threading
 import time
-
+import subprocess
+import os
+import socket
 import docker
 import zmq
 
@@ -34,9 +36,9 @@ class ContainerizedZpsExecutor(object):
 
         """
         ctx = zmq.Context()
-        socket = ctx.socket(zmq.PAIR)
-        port = socket.bind_to_random_port("tcp://*", min_port=2000, max_port=10000)
-        return socket, port
+        zsock = ctx.socket(zmq.PAIR)
+        port = zsock.bind_to_random_port("tcp://*", min_port=2000, max_port=10000)
+        return zsock, port
 
     def kill(self, reason="manually killed"):
         """
@@ -229,7 +231,7 @@ class DockerContainerProcess(object):
         self.log_thread.daemon = True
         self.log_thread.start()
 
-        # Wait for the container to fully initalized
+        # Wait for the container to fully initialized
         self.__wait_for_container()
 
     def __setup_container(self):
@@ -240,19 +242,27 @@ class DockerContainerProcess(object):
             Container: A running docker Container
 
         """
+        network = os.environ.get("ZMLP_NETWORK", "dev_default")
+
+        if in_container():
+            host = socket.gethostbyname(socket.gethostname())
+        else:
+            host = "host.docker.internal"
+
         volumes = {
             '/tmp':  {'bind': '/tmp', 'mode': 'rw'},
             'zmlp-config':
                   {'bind': '/zmlp-config', 'mode': 'ro'}
         }
         env = {
-            'ZMLP_EVENT_HOST': 'tcp://{}:{}'.format("host.docker.internal", self.port),
+            'ZMLP_EVENT_HOST': 'tcp://{}:{}'.format(host, self.port),
             'GOOGLE_APPLICATION_CREDENTIALS': '/zmlp-config/gcp-service-account.json'
         }
         logger.info("starting container {}".format(self.image))
         return self.docker_client.containers.run(self.image, detach=True,
                                                  environment=env, volumes=volumes,
                                                  entrypoint="/usr/local/bin/zpsd",
+                                                 network=network,
                                                  labels=["zpsd"])
 
     def __wait_for_container(self):
@@ -261,6 +271,7 @@ class DockerContainerProcess(object):
         know the container is up and operational.
 
         """
+        logger.info("Waiting for container to connect....")
         while True:
             # Timeout is in millis
             poll = self.socket.poll(timeout=5000)
@@ -270,6 +281,7 @@ class DockerContainerProcess(object):
                     raise RuntimeError("Container in bad state, did not send ready event")
                 break
             time.sleep(0.25)
+        logger.info("Container is ready to accept commands")
 
     def __iterate_logs(self):
         """
@@ -398,6 +410,29 @@ class DockerContainerProcess(object):
             raise RuntimeError("Container failure, exiting event='{}'".format(event))
         return event
 
+
+def in_container():
+    """
+    Return true if we're running from within a docker container.
+
+    Returns:
+        bool: True if we're running from within a docker container.
+    """
+    try:
+        out = subprocess.check_output('cat /proc/1/sched', shell=True)
+        out = out.decode('utf-8').lower()
+    except:
+        return False
+
+    checks = [
+        'docker' in out,
+        '/lxc/' in out,
+        out.split()[0] not in ('systemd', 'init',),
+        os.path.exists('/.dockerenv'),
+        os.path.exists('/.dockerinit'),
+        os.getenv('container', None) is not None
+    ]
+    return any(checks)
 
 
 
