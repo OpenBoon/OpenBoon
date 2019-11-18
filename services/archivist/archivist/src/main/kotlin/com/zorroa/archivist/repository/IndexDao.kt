@@ -418,8 +418,6 @@ class IndexDaoImpl constructor(
                 val doc = Document()
                 doc.document = hit.source
                 doc.id = hit.id
-                doc.score = hit.score
-                doc.type = hit.type
                 return doc
             }
         }
