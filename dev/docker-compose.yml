@@ -53,6 +53,8 @@ services:
        - "es1"
        - "postgres"
        - "auth-server"
+    environment:
+      SENTRY_ENVIRONMENT: localdev
     build:
       context: ../services/archivist
     ports:
