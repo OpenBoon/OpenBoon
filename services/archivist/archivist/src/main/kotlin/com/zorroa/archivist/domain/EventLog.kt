@@ -25,22 +25,8 @@ enum class LogAction {
     UPLOAD,
     KILL,
     STREAM,
-    LOCK,
-    UNLOCK,
-    APIKEY,
     EXPAND,
-    EDIT,
-    SEARCH,
-    SEARCH_STREAM,
-    SCROLL,
-    SUGGEST,
-    TAG,
-    UNTAG,
-    COMBINE,
-    BACKOFF,
-    EXPIRED,
-    SCAN,
-    ORGSWAP
+    SCAN
 }
 
 /**
@@ -48,25 +34,13 @@ enum class LogAction {
  */
 enum class LogObject {
     ASSET,
-    BLOB,
-    CLUSTER_LOCK,
-    DYHI,
-    EXPORT_FILE,
-    FILEQ,
-    FOLDER,
+    INDEX_ROUTE,
+    INDEX_CLUSTER,
     JOB,
-    ORGANIZATION,
-    PERMISSION,
     PIPELINE,
-    PROCESSOR,
     STORAGE,
     TASK,
-    TAXONOMY,
-    TRASH_FOLDER,
-    USER,
     ANALYST,
-    FIELD,
-    FIELD_EDIT,
-    FIELD_SET,
-    TASK_ERROR
+    TASK_ERROR,
+    PROJECT
 }

@@ -10,11 +10,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
+@Transactional
 @RunWith(SpringRunner::class)
 @SpringBootTest
+@TestPropertySource(locations = ["classpath:test.yml"])
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 abstract class AbstractTest {
 
@@ -34,8 +38,11 @@ abstract class AbstractTest {
                         UUID.randomUUID(),
                         listOf("Test")))
 
-        SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
-                standardKey.projectId, standardKey.keyId, standardKey.getGrantedAuthorities())
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(
+                standardKey.getZmlpUser(),
+                standardKey.keyId,
+                standardKey.getGrantedAuthorities())
     }
 
 }

@@ -3,14 +3,14 @@
 # hostname of the postgres instance to wait for.
 
 # Wait for postgres database to be ready.
-host="$1"
-until pg_isready -h $host; do
-  >&2 echo "Postgres is unavailable - sleeping"
+until pg_isready -h $PG_HOST; do
+  >&2 echo "Postgres is unavailable - waiting 1 second."
   sleep 1
 done
 
 # Do any needed database migrations.
-./manage.py migrate --no-input
+python3 ./manage.py migrate --no-input
 
 # Start the server.
-gunicorn -b :8080 wallet.wsgi
+gunicorn -b :8080 wallet.wsgi &
+nginx -g "daemon off;"

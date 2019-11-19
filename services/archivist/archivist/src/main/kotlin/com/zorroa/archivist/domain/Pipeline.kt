@@ -81,7 +81,11 @@ data class PipelineFilter(
     @JsonIgnore
     override fun build() {
 
-        addToWhere("pipeline.project_id=?")
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("name:asc")
+        }
+
+        addToWhere("pipeline.pk_project=?")
         addToValues(getProjectId())
 
         ids?.let {
@@ -98,6 +102,5 @@ data class PipelineFilter(
             addToWhere(JdbcUtils.inClause("pipeline.int_slot", it.size))
             addToValues(it.map { s -> s.ordinal })
         }
-
     }
 }

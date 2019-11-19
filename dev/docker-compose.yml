@@ -1,0 +1,81 @@
+
+version: '3.6'
+services:
+
+  ## Unit testing services.
+
+  # Elastic Search instance used for local development servers.
+  es1:
+    build:
+      context: ../services/elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+
+  # Postgres instance used for local development servers.
+  postgres:
+    image: "postgres:9.6.9"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: zorroa
+      POSTGRES_USER: zorroa
+      POSTGRES_DB: zorroa
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  redis:
+    image: redis:alpine
+    ports:
+       - 6379:6379
+
+  # Auth server
+  auth-server:
+    links:
+       - "postgres"
+    build:
+      context: ../services/auth-server
+    ports:
+      - 9090:9090
+    volumes:
+      - "zmlp-config:/zmlp-config"
+
+  # Local Archivist server.
+  archivist:
+    links:
+       - "es1"
+       - "postgres"
+       - "auth-server"
+    environment:
+      SENTRY_ENVIRONMENT: localdev
+    build:
+      context: ../services/archivist
+    ports:
+      - 8080:8080
+    volumes:
+      - "../services/archivist/localdev/shared:/shared"
+      - "../services/archivist/localdev/monitoring:/monitoring"
+      - "../services/archivist/localdev/zorroa-archivist-config:/config"
+      - "../test-data:/test-data"
+      - "zmlp-config:/zmlp-config"
+
+  analyst:
+    links:
+       - "archivist"
+    build:
+      context: ../services/analyst
+    ports:
+      - 5000:5000
+    volumes:
+       - "/var/run/docker.sock:/var/run/docker.sock"
+
+volumes:
+  zmlp-config:
+    external: true

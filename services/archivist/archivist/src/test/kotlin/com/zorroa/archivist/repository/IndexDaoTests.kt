@@ -3,12 +3,12 @@ package com.zorroa.archivist.repository
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.clients.SearchBuilder
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.PagedList
 import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.clients.SearchBuilder
 import com.zorroa.archivist.util.Json
 import org.elasticsearch.ElasticsearchException
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest
@@ -145,7 +145,7 @@ class IndexDaoTests : AbstractTest() {
 
     @Test(expected = ElasticsearchException::class)
     fun testIndexClusterBlockError() {
-        val client = indexRoutingService.getOrgRestClient()
+        val client = indexRoutingService.getProjectRestClient()
         val req = UpdateSettingsRequest(client.route.indexName)
         req.settings(Settings.builder().put("index.blocks.read_only_allow_delete", true).build())
         client.client.indices().putSettings(req, RequestOptions.DEFAULT)

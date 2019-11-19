@@ -88,16 +88,6 @@ class AssetStreamResolutionServiceTests {
         service = AssetStreamResolutionService(mockIndexService, mockFileServerProvider, mockFileStorageService)
     }
 
-    /**
-     * Access to source is allowed, and source is online.
-     */
-    @Test
-    fun getServableFileAllowedSource() {
-        val servableFile = service.getServableFile(id, listOf())
-        assertThat(servableFile).isNotNull
-        assertThat(servableFile!!.uri).isEqualTo(sourceFileUri)
-    }
-
     @Test
     fun getServableFileForceProxyByClip() {
         val asset = mockIndexService.get(id)

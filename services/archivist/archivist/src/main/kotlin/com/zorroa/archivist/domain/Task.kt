@@ -65,13 +65,16 @@ interface TaskId {
  * @property name The [Task] name
  * @property state The current [TaskState] of the [Task]
  */
+@ApiModel("InternalTask", description = "An InternalTask implementation has enough properties to accomplish any internal operations but isn't intended for client use.")
 open class InternalTask(
     override val taskId: UUID,
     override val jobId: UUID,
 
     @ApiModelProperty("UUID of the Project this Task belongs to.")
     val projectId: UUID,
+    @ApiModelProperty("name The [Task] name")
     val name: String,
+    @ApiModelProperty("The current [TaskState] of the [Task]")
     val state: TaskState
 
 ) : TaskId, JobId {
@@ -186,7 +189,7 @@ class TaskFilter(
             sort = listOf("taskId:a")
         }
 
-        addToWhere("job.project_id=?")
+        addToWhere("job.pk_project=?")
         addToValues(getProjectId())
 
         ids?.let {

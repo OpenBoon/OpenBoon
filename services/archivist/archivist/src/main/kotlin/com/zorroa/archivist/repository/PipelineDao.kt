@@ -62,7 +62,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     override fun get(id: UUID): Pipeline {
         try {
             return jdbc.queryForObject<Pipeline>(
-                "$GET WHERE pk_pipeline=? AND project_id=?",
+                "$GET WHERE pk_pipeline=? AND pk_project=?",
                 MAPPER, id, getProjectId()
             )
         } catch (e: EmptyResultDataAccessException) {
@@ -76,7 +76,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         }
         try {
             return jdbc.queryForObject<Pipeline>(
-                "$GET WHERE project_id=? AND str_name=? ",
+                "$GET WHERE pk_project=? AND str_name=? ",
                 MAPPER, getProjectId(), name
             )
         } catch (e: EmptyResultDataAccessException) {
@@ -98,7 +98,8 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun delete(id: UUID): Boolean {
         return jdbc.update(
-            "DELETE FROM pipeline WHERE pk_pipeline=? AND project_id=?", id, getProjectId()) == 1
+            "DELETE FROM pipeline WHERE pk_pipeline=? AND pk_project=?", id, getProjectId()
+        ) == 1
     }
 
     override fun getAll(filter: PipelineFilter): KPagedList<Pipeline> {
@@ -139,7 +140,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         private val INSERT = insert(
             "pipeline",
             "pk_pipeline",
-            "project_id",
+            "pk_project",
             "str_name",
             "int_slot",
             "json_processors",

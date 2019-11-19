@@ -89,6 +89,19 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+---
+--- Name: Project
+---
+
+CREATE TABLE project (
+    pk_project    uuid PRIMARY KEY,
+    str_name      VARCHAR(64) NOT NULL,
+    time_created  bigint      NOT NULL,
+    time_modified bigint      NOT NULL
+);
+
+CREATE UNIQUE INDEX project_str_name_idx ON project USING btree (str_name);
+
 --
 -- Name: analyst;
 --
@@ -120,26 +133,45 @@ CREATE UNIQUE INDEX analyst_str_endpoint_idx ON analyst USING btree (str_endpoin
 
 
 --
+-- Name: index_cluster;
+--
+
+
+CREATE TABLE index_cluster (
+    pk_index_cluster uuid PRIMARY KEY,
+    str_url text NOT NULL,
+    int_state smallint NOT NULL,
+    bool_autopool boolean NOT NULL,
+    time_created bigint NOT NULL,
+    time_modified bigint NOT NULL,
+    time_ping bigint NOT NULL,
+    json_attrs JSONB DEFAULT '{}' NOT NULL
+);
+
+CREATE UNIQUE INDEX index_cluster_idx_uniq ON index_cluster USING btree (str_url);
+
+--
 -- Name: index_route;
 --
 
 CREATE TABLE index_route (
     pk_index_route uuid PRIMARY KEY,
-    project_id uuid NOT NULL,
-    str_url text NOT NULL,
+    pk_index_cluster uuid NOT NULL REFERENCES index_cluster (pk_index_cluster),
+    pk_project uuid NULL REFERENCES project (pk_project),
     str_index text NOT NULL,
+    int_state smallint NOT NULL,
     str_mapping_type text NOT NULL,
     int_mapping_major_ver smallint NOT NULL,
     int_mapping_minor_ver integer NOT NULL,
     int_replicas smallint NOT NULL,
     int_shards smallint NOT NULL,
-    bool_closed boolean NOT NULL,
     time_created bigint NOT NULL,
     time_modified bigint NOT NULL,
     int_mapping_error_ver integer DEFAULT '-1'::integer NOT NULL
 );
 
-CREATE UNIQUE INDEX index_route_idx_uniq ON index_route USING btree (str_url, str_index);
+CREATE UNIQUE INDEX index_route_idx_uniq ON index_route USING btree (pk_index_cluster, str_index);
+CREATE UNIQUE INDEX index_route_project_state_idx_uniq ON index_route USING btree (pk_project, int_state);
 
 --
 -- Name: job;
@@ -147,7 +179,7 @@ CREATE UNIQUE INDEX index_route_idx_uniq ON index_route USING btree (str_url, st
 
 CREATE TABLE job (
     pk_job uuid PRIMARY KEY,
-    project_id uuid NOT NULL,
+    pk_project uuid NOT NULL REFERENCES project (pk_project),
     str_name text NOT NULL,
     int_type smallint DEFAULT 0 NOT NULL,
     int_state smallint DEFAULT 0 NOT NULL,
@@ -167,6 +199,7 @@ CREATE INDEX job_state_idx ON job USING btree (int_state);
 CREATE INDEX job_time_created_idx ON job USING btree (time_created);
 CREATE INDEX job_time_started_idx ON job USING btree (time_started);
 CREATE INDEX job_type_idx ON job USING btree (int_type);
+CREATE INDEX job_pk_project_idx ON job USING btree(pk_project);
 
 --
 -- Name: job_count;
@@ -209,7 +242,7 @@ CREATE TABLE job_stat (
 
 CREATE TABLE pipeline (
     pk_pipeline uuid PRIMARY KEY,
-    project_id uuid NOT NULL,
+    pk_project uuid NOT NULL REFERENCES project (pk_project),
     int_slot smallint NOT NULL,
     str_name text NOT NULL,
     json_processors text DEFAULT '[]'::text NOT NULL,
@@ -217,7 +250,7 @@ CREATE TABLE pipeline (
     time_modified bigint NOT NULL
 );
 
-CREATE UNIQUE INDEX pipeline_name_uidx ON pipeline USING btree (project_id, str_name);
+CREATE UNIQUE INDEX pipeline_name_uidx ON pipeline USING btree (pk_project, str_name);
 
 
 --
@@ -244,7 +277,7 @@ CREATE UNIQUE INDEX plugin_str_name_idx ON plugin USING btree (str_name);
 
 CREATE TABLE processor (
     pk_processor uuid PRIMARY KEY,
-    project_id uuid,
+    pk_project uuid REFERENCES project(pk_project),
     str_name text NOT NULL,
     str_file text NOT NULL,
     str_type text NOT NULL,
@@ -293,7 +326,6 @@ CREATE TABLE task_error (
     pk_task uuid NOT NULL REFERENCES task(pk_task) ON DELETE CASCADE,
     pk_job uuid NOT NULL REFERENCES job(pk_job) ON DELETE CASCADE,
     pk_asset uuid,
-    project_id uuid NOT NULL,
     str_message text,
     str_path text,
     str_processor text,
@@ -306,7 +338,7 @@ CREATE TABLE task_error (
     fti_keywords tsvector NOT NULL
 );
 
-CREATE INDEX task_error_project_id_idx ON task_error USING btree (project_id);
+
 CREATE INDEX task_error_fti_keywords_idx ON task_error USING gin (fti_keywords);
 CREATE INDEX task_error_pk_asset_idx ON task_error USING btree (pk_asset);
 CREATE INDEX task_error_pk_job_idx ON task_error USING btree (pk_job);

@@ -115,7 +115,7 @@ class TaskErrorFilter(
             sort = listOf("timeCreated:desc")
         }
 
-        addToWhere("task_error.project_id =?")
+        addToWhere("job.pk_project =?")
         addToValues(getProjectId())
 
         ids?.let {

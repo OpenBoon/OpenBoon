@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.clients.RestClient
 import com.zorroa.archivist.domain.Analyst
 import com.zorroa.archivist.domain.AnalystFilter
@@ -9,10 +8,8 @@ import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.ProcessorSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.repository.AnalystDao
-import com.zorroa.archivist.repository.KPage
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getAnalystEndpoint
@@ -24,7 +21,6 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicBoolean
 
 interface AnalystService {
     fun upsert(spec: AnalystSpec): Analyst
@@ -36,7 +32,6 @@ interface AnalystService {
     fun getUnresponsive(state: AnalystState, duration: Duration): List<Analyst>
     fun delete(analyst: Analyst): Boolean
     fun setState(analyst: Analyst, state: AnalystState): Boolean
-    fun doProcessorScan(): List<ProcessorSpec>
     fun getClient(endpoint: String): RestClient
     fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState): Boolean
     fun setTaskId(analyst: Analyst, taskId: UUID?): Boolean
@@ -47,26 +42,10 @@ interface AnalystService {
 @Transactional
 class AnalystServicImpl @Autowired constructor(
     val analystDao: AnalystDao,
-    val taskDao: TaskDao,
-    val txm: TransactionEventManager
+    val taskDao: TaskDao
 ) : AnalystService {
 
-    @Autowired
-    lateinit var processorService: ProcessorService
-
-    /**
-     * If the firstPing is true, then do a processor scan once
-     * the transaction has committed.
-     */
-    val firstPing = AtomicBoolean(true)
-
     override fun upsert(spec: AnalystSpec): Analyst {
-        // First ping of any analyst we'll do a scan.
-        if (firstPing.compareAndSet(true, false)) {
-            txm.afterCommit(false) {
-                doProcessorScan()
-            }
-        }
         val endpoint = getAnalystEndpoint()
         spec.taskId?.let {
             taskDao.updatePingTime(it, endpoint)
@@ -150,37 +129,6 @@ class AnalystServicImpl @Autowired constructor(
 
     override fun delete(analyst: Analyst): Boolean {
         return analystDao.delete(analyst)
-    }
-
-    override fun doProcessorScan(): List<ProcessorSpec> {
-        // TODO: cluster lock
-        val filter = AnalystFilter(states = listOf(AnalystState.Up))
-        filter.apply {
-            this.page = KPage(0, 5)
-            this.sort = listOf("timePing:d", "load:a")
-        }
-
-        val analysts = analystDao.getAll(filter)
-        var processors = mutableListOf<ProcessorSpec>()
-        for (analyst in analysts) {
-            logger.event(
-                LogObject.ANALYST, LogAction.SCAN,
-                mapOf("analystEndpoint" to analyst.endpoint)
-            )
-            val client = getClient(analyst.endpoint)
-            try {
-                val procs = client.get("/processors",
-                    object : TypeReference<List<ProcessorSpec>>() {})
-                if (procs.isNotEmpty()) {
-                    processorService.replaceAll(procs)
-                    processors.addAll(procs)
-                    break
-                }
-            } catch (e: Exception) {
-                logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
-            }
-        }
-        return processors
     }
 
     override fun getClient(endpoint: String): RestClient {

@@ -3,6 +3,8 @@ package com.zorroa.auth.domain
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.Calendar
@@ -16,36 +18,78 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
+@ApiModel("ApiKey Spec", description = "The attributes required to create a new API key.")
 class ApiKeySpec(
+    @ApiModelProperty("A unique name or label for the key.")
     val name: String,
+
+    @ApiModelProperty("The project ID of the ApiKey")
     val projectId: UUID,
+
+    @ApiModelProperty("A list of permissions associated with key.")
     val permissions: List<String>
 )
 
-class MinimalApiKey(
+/**
+ * The minimum properties needed for a valid API signing key.
+ */
+@ApiModel("SigningApiKey", description = "The attributes required to sign JWT requests.")
+class SigningApiKey(
+    @ApiModelProperty("The unique ID of the ApiKey")
     val keyId: UUID,
+
+    @ApiModelProperty("The project ID of the ApiKey")
     val projectId: UUID,
+
+    @ApiModelProperty("A shared key used to sign API requests.")
     val sharedKey: String
 )
 
+/**
+ * The minimal properties for a ZMLP user.
+ */
+@ApiModel("AuthenticatedApiKey", description = "An authenticated ApiKey")
+class ZmlpUser(
+
+    @ApiModelProperty("The unique ID of the ApiKey")
+    val keyId: UUID,
+
+    @ApiModelProperty("The project ID of the ApiKey")
+    val projectId: UUID,
+
+    @ApiModelProperty("A unique name or label.")
+    val name: String,
+
+    @ApiModelProperty("A list of permissions associated with key.")
+    val permissions: List<String>
+)
+
+
 @Entity
 @Table(name = "api_key")
+@ApiModel("ApiKey", description = "An API key allows remote users to acccess ZMLP resources.")
 class ApiKey(
+
     @Id
     @Column(name = "pk_api_key")
+    @ApiModelProperty("The unique ID of the ApiKey")
     val keyId: UUID,
 
     @Column(name = "project_id", nullable = false)
+    @ApiModelProperty("The Project ID the ApiKey belongs in.")
     val projectId: UUID,
 
     @Column(name = "shared_key", nullable = false)
+    @ApiModelProperty("A shared key used to sign API requests.")
     val sharedKey: String,
 
     @Column(name = "name", nullable = false)
+    @ApiModelProperty("A unique name for the key.")
     val name: String,
 
     @Column(name = "permissions", nullable = false)
     @Convert(converter = StringListConverter::class)
+    @ApiModelProperty("The permissions or roles for the ApiKey")
     val permissions: List<String>
 ) {
     @JsonIgnore
@@ -74,8 +118,13 @@ class ApiKey(
     }
 
     @JsonIgnore
-    fun getMinimalApiKey(): MinimalApiKey {
-        return MinimalApiKey(keyId, projectId, sharedKey)
+    fun getMinimalApiKey(): SigningApiKey {
+        return SigningApiKey(keyId, projectId, sharedKey)
+    }
+
+    @JsonIgnore
+    fun getZmlpUser(): ZmlpUser {
+        return ZmlpUser(keyId, projectId, name, permissions)
     }
 
     override fun toString(): String {
@@ -114,3 +163,28 @@ class StringListConverter : AttributeConverter<List<String>, String> {
         return joined.split(",").map { it.trim() }
     }
 }
+
+/**
+ * Used for getting a filtered list of API keys.
+ */
+@ApiModel("Api Key Filter", description = "Search filter for finding API keys.")
+class ApiKeyFilter(
+
+    /**
+     * A list of unique ApiKey  IDs.
+     */
+    @ApiModelProperty("The ApiKey IDs to match.")
+    val keyIds: List<UUID>? = null,
+
+    /**
+     * A list of unqiue Project ids
+     */
+    @ApiModelProperty("The project IDs to match")
+    val projectIds: List<UUID>? = null,
+
+    /**
+     * A list of unique names.
+     */
+    @ApiModelProperty("The key names to match")
+    val names: List<String>? = null
+)

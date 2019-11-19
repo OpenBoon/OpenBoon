@@ -2,11 +2,18 @@ package com.zorroa.archivist.service
 
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
@@ -15,14 +22,9 @@ import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.SuperAdminAuthentication
+import com.zorroa.archivist.security.InternalThreadAuthentication
+import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.archivist.domain.AnalystSpec
-import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobPriority
-import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.LockState
-import com.zorroa.archivist.domain.TaskState
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
@@ -58,7 +60,6 @@ class GCPDispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNext() {
-
         val spec = JobSpec(
             "test_job",
             emptyZpsScript("foo"),
@@ -169,7 +170,10 @@ class DispatcherServiceTests : AbstractTest() {
             job.id
         )
 
-        withAuth(SuperAdminAuthentication(UUID.randomUUID())) {
+        val pspec = ProjectSpec("foojam", projectId = UUID.randomUUID())
+        val project = projectService.create(pspec)
+
+        withAuth(InternalThreadAuthentication(project.id, listOf(Perm.STORAGE_CREATE))) {
             val spec2 = JobSpec(
                 "test_job",
                 emptyZpsScript("foo"),
@@ -220,6 +224,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         authenticateAsAnalyst()
         val next = dispatchQueueManager.getNext()
+
         assertNotNull(next)
         next?.let {
             assertEquals(job.id, it.jobId)

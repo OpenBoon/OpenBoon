@@ -29,9 +29,9 @@ module.exports = {
   mode: ENV,
   entry: SRC_DIR,
   output: {
-    path: join(ROOT_DIR, 'dist'),
-    publicPath: '/',
-    filename: 'bundle.[hash].js',
+    path: join(ROOT_DIR, 'build'),
+    publicPath: 'wallet',
+    filename: 'bundle.[hash].js'
   },
   module: {
     rules: [
@@ -71,8 +71,8 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './dist',
-    hot: true,
+    contentBase: './build',
+    hot: true
     historyApiFallback: true,
   },
   plugins: [
@@ -80,7 +80,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: join(SRC_DIR, 'index.html'),
-      filename: join(ROOT_DIR, 'dist/index.html')
+      filename: join(ROOT_DIR, 'build/index.html')
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css'

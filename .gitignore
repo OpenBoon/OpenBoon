@@ -3,6 +3,9 @@
 *.p12
 .DS_Store
 builds
+build
+dist
+zorroa.egg-info
 venv
 /**/target
 /**/dependency-reduced-pom.xml
@@ -14,7 +17,6 @@ data-credentials.json
 docker-compose.override.yml
 db.sqlite3
 *.pyc
-venv
 .venv
 node_modules/
 /.pnp
@@ -29,3 +31,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .eslintcache
+health_check_storage_test/
+*.tfvars
+*.jks
+*.pem
+*.cert
+*.tfstate*
+.terraform

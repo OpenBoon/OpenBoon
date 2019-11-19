@@ -301,18 +301,6 @@ open class Document {
     @ApiModelProperty("UUID of the Document.")
     var id: String = UUID.randomUUID().toString()
 
-    @ApiModelProperty("Type of the Document.")
-    var type = "asset"
-
-    @ApiModelProperty("Permissions associated with the Document.")
-    var permissions: MutableMap<String, Int>? = null
-
-    @ApiModelProperty("Links associated with the Document.")
-    var links: MutableList<Tuple<String, Any>>? = null
-
-    @ApiModelProperty("Search result score.")
-    var score: Float? = null
-
     @ApiModelProperty(hidden = true)
     var replace = false
 
@@ -322,7 +310,6 @@ open class Document {
 
     constructor(doc: Document) {
         this.id = doc.id
-        this.type = doc.type
         this.document = doc.document
     }
 
@@ -343,26 +330,6 @@ open class Document {
 
     constructor(doc: Map<String, Any>) {
         this.document = doc
-    }
-
-    fun addToLinks(type: String, id: Any): Document {
-        if (links == null) {
-            links = mutableListOf()
-        }
-        links?.apply {
-            this.add(Tuple(type, id))
-        }
-        return this
-    }
-
-    fun addToPermissions(group: String, access: Int): Document {
-        if (permissions == null) {
-            permissions = mutableMapOf()
-        }
-        permissions?.apply {
-            this[group] = access
-        }
-        return this
     }
 
     /**

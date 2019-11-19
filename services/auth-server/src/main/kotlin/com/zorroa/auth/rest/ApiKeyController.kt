@@ -2,8 +2,10 @@ package com.zorroa.auth.rest
 
 import com.zorroa.auth.JSON_MAPPER
 import com.zorroa.auth.domain.ApiKey
+import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.service.ApiKeyService
+import io.swagger.models.HttpMethod
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -33,6 +37,11 @@ class ApiKeyController {
     @GetMapping("/auth/v1/apikey/{id}")
     fun get(@PathVariable id: UUID): ApiKey {
         return apiKeyService.get(id)
+    }
+
+    @RequestMapping("/auth/v1/apikey/_findOne", method=[RequestMethod.GET,  RequestMethod.POST])
+    fun get(@RequestBody(required=false) filter: ApiKeyFilter?): ApiKey {
+        return apiKeyService.findOne(filter ?: ApiKeyFilter())
     }
 
     @GetMapping("/auth/v1/apikey/{id}/_download")

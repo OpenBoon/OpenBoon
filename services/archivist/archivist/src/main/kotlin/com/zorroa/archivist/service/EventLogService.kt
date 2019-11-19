@@ -2,8 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.search.AssetSearch
-import com.zorroa.archivist.security.getApiKeyOrNull
+import com.zorroa.archivist.security.getZmlpUserOrNull
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
@@ -63,12 +62,12 @@ object MeterRegistryHolder {
  * @return A formatted log string
  */
 fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?): String {
-    val user = getApiKeyOrNull()
+    val user = getZmlpUserOrNull()
     val sb = StringBuilder(256)
 
     sb.append("ZEVENT zorroa.object='${obj.toString().toLowerCase()}' zorroa.action='${action.toString().toLowerCase()}'")
     if (user != null) {
-        sb.append(" zorroa.projectId='${user.projectId}' zorroa.keyId='${user.keyId}'")
+        sb.append(" zorroa.authedProjectId='${user.projectId}' zorroa.authedKey='${user.name}'")
     }
     kvp?.forEach { e ->
         e?.forEach {
@@ -112,59 +111,5 @@ fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Ma
     MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "warn"))
     if (this.isWarnEnabled) {
         this.warn(formatLogMessage(obj, action, kvp, mapOf("message" to message)), ex)
-    }
-}
-
-/**
- * Increments metrics for the given asset Search.
- */
-fun applyAssetSearchMetrics(search: AssetSearch) {
-
-    if (search.filter == null || search.filter.isEmpty) {
-        return
-    }
-    val counter = "zorroa.asset.search.filter"
-    val filter = search.filter
-    if (!filter.exists.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "exists"))
-    }
-    if (!filter.missing.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "missing"))
-    }
-    if (!filter.terms.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "terms"))
-    }
-    if (!filter.prefix.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "prefix"))
-    }
-    if (!filter.range.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "range"))
-    }
-    if (!filter.scripts.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "scripts"))
-    }
-    if (!filter.links.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "links"))
-    }
-    if (!filter.similarity.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "similarity"))
-    }
-    if (!filter.kwconf.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "kwconf"))
-    }
-    if (!filter.geo_bounding_box.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "geo_bounding_box"))
-    }
-    if (!filter.mustNot.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "must_not"))
-    }
-    if (!filter.must.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "must"))
-    }
-    if (!filter.should.isNullOrEmpty()) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "must_not"))
-    }
-    if (filter.recursive == true) {
-        MeterRegistryHolder.increment(counter, Tag.of("type", "recursive"))
     }
 }

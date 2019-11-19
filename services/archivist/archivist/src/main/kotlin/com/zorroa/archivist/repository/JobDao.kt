@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.TaskState
-import com.zorroa.archivist.security.getApiKey
+import com.zorroa.archivist.security.getZmlpUser
 import com.zorroa.archivist.service.MeterRegistryHolder
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
@@ -46,7 +46,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
-        val key = getApiKey()
+        val key = getZmlpUser()
 
         val pauseUntil = if (spec.pauseDurationSeconds == null) {
             -1
@@ -211,7 +211,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         private val MAPPER = RowMapper { rs, _ ->
             val state = JobState.values()[rs.getInt("int_state")]
             Job(rs.getObject("pk_job") as UUID,
-                    rs.getObject("project_id") as UUID,
+                    rs.getObject("pk_project") as UUID,
                     rs.getString("str_name"),
                     JobType.values()[rs.getInt("int_type")],
                     state,
@@ -274,7 +274,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private val INSERT = insert("job",
                 "pk_job",
-                "project_id",
+                "pk_project",
                 "str_name",
                 "int_state",
                 "int_type",

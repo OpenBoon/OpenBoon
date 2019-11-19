@@ -11,12 +11,7 @@ import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobPriority
-import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.JobType
-import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.util.Json
@@ -25,7 +20,6 @@ import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
-import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
@@ -39,8 +33,6 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -73,7 +65,7 @@ interface IndexRoutingService {
      *
      * @return: EsRestClient
      */
-    fun getOrgRestClient(): EsRestClient
+    fun getProjectRestClient(): EsRestClient
 
     /**
      * Get an non-routed [EsRestClient] for cluster wide operations.
@@ -114,18 +106,6 @@ interface IndexRoutingService {
     fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping
 
     /**
-     * Refresh all index routes, this flushes all changes from memory to disk. This
-     * is mainly used for testing, or something to run after a reindex.
-     */
-    fun refreshAll()
-
-    /**
-     * Launch a reindex job for the current authorized user's project.  The job
-     * will kill any existing reindex job.
-     */
-    fun launchReindexJob(): Job
-
-    /**
      * Perform a health check on all active [IndexRoute]s
      */
     fun performHealthCheck(): Health
@@ -139,11 +119,6 @@ interface IndexRoutingService {
      * Return a given [IndexRoute] by its unique Id.
      */
     fun getIndexRoute(id: UUID): IndexRoute
-
-    /**
-     * Return true if the index route being used is for reindexing.
-     */
-    fun isReIndexRoute(): Boolean
 
     /**
      * Return all [IndexRoute]s that match the [IndexRouteFilter]
@@ -160,11 +135,6 @@ interface IndexRoutingService {
      * Close the index and return True.  If the index is already closed then return false.
      */
     fun closeIndex(route: IndexRoute): Boolean
-
-    /**
-     * Open the index and return True.  If the index is already open then return false.
-     */
-    fun openIndex(route: IndexRoute): Boolean
 
     /**
      * Return the ES index state as a Map
@@ -196,6 +166,7 @@ class ElasticMapping(
 class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
+    val indexClusterDao: IndexClusterDao,
     val properties: ApplicationProperties
 ) : IndexRoutingService {
 
@@ -214,6 +185,12 @@ constructor(
             throw IllegalArgumentException(
                 "Failed to find index mapping ${spec.mapping} v${spec.mappingMajorVer}"
             )
+        }
+
+        // If no cluster ID was specified, find a ES cluster to use.
+        if (spec.clusterId == null) {
+            val cluster = indexClusterDao.getNextAutoPoolCluster()
+            spec.clusterId = cluster.id
         }
 
         val route = indexRouteDao.create(spec)
@@ -250,27 +227,11 @@ constructor(
         return result
     }
 
-    override fun isReIndexRoute(): Boolean {
-        val req = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes
-        return req.request.getHeader("X-Zorroa-Index-Route") != null
-    }
-
     override fun syncAllIndexRoutes() {
         val routes = indexRouteDao.getAll()
         logger.info("Syncing all ${routes.size} index routes.")
         routes.forEach { syncIndexRouteVersion(it) }
         migrated.set(true)
-    }
-
-    override fun refreshAll() {
-        indexRouteDao.getAll().forEach {
-            if (!it.closed) {
-                logger.info("refreshing index route ${it.indexUrl}")
-                val req = Request("POST", "/_refresh")
-                val client = getClusterRestClient(it).client.lowLevelClient
-                client.performRequest(req)
-            }
-        }
     }
 
     override fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping? {
@@ -302,6 +263,7 @@ constructor(
             req.index(route.indexName)
             req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
             es.client.indices().create(req, RequestOptions.DEFAULT)
+
             result = mappingFile
         } else {
             logger.info("Not creating ${route.indexUrl}, already exists")
@@ -331,35 +293,6 @@ constructor(
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
     }
 
-    override fun launchReindexJob(): Job {
-        val name = "Reindexing All Assets"
-        val script = ZpsScript(
-            name,
-            type = JobType.Import,
-            settings = mutableMapOf("inline" to true),
-            over = listOf(),
-            execute = listOf(),
-            generate = listOf(
-                ProcessorRef(
-                    "zplugins.core.generators.AssetSearchGenerator",
-                    "zorroa-py3-core",
-                    mapOf("search" to mapOf<String, Any>())
-                )
-            )
-        )
-
-        val spec = JobSpec(
-            name,
-            script,
-            priority = JobPriority.Reindex,
-            replace = true,
-            paused = true,
-            pauseDurationSeconds = REINDEX_JOB_DELAY_SEC
-        )
-
-        return jobService.create(spec, JobType.Import)
-    }
-
     override fun getMinorVersionMappingFiles(mappingType: String, majorVersion: Int): List<ElasticMapping> {
         val result = mutableListOf<ElasticMapping>()
         val resolver = PathMatchingResourcePatternResolver(javaClass.classLoader)
@@ -386,17 +319,8 @@ constructor(
         return result
     }
 
-    override fun getOrgRestClient(): EsRestClient {
-
-        val req = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?
-        val routeId = req?.request?.getHeader("X-Zorroa-Index-Route")
-
-        val route = if (routeId != null) {
-            indexRouteDao.get(UUID.fromString(routeId))
-        } else {
-            indexRouteDao.getProjectRoute()
-        }
-
+    override fun getProjectRestClient(): EsRestClient {
+        val route = indexRouteDao.getProjectRoute()
         return esClientCache.get(route.esClientCacheKey())
     }
 
@@ -418,9 +342,6 @@ constructor(
             ).build()
         }
         for (route in indexRouteDao.getAll()) {
-            if (route.closed) {
-                continue
-            }
             val client = getClusterRestClient(route)
             if (!client.isAvailable()) {
                 return Health.down().withDetail(
@@ -488,17 +409,10 @@ constructor(
     override fun closeIndex(route: IndexRoute): Boolean {
         val rsp = getClusterRestClient(route).client.indices()
             .close(CloseIndexRequest(route.indexName), RequestOptions.DEFAULT)
-        if (rsp.isAcknowledged) {
-            return indexRouteDao.setClosed(route, true)
-        }
-        return false
+        return rsp.isAcknowledged
     }
 
     override fun deleteIndex(route: IndexRoute, force: Boolean): Boolean {
-        if (!force) {
-            require(route.closed) { "The index must be closed before it can be deleted" }
-        }
-
         val rsp = getClusterRestClient(route).client.indices()
             .delete(DeleteIndexRequest(route.indexName), RequestOptions.DEFAULT)
         if (rsp.isAcknowledged) {
@@ -510,15 +424,6 @@ constructor(
     override fun closeAndDeleteIndex(route: IndexRoute): Boolean {
         closeIndex(route)
         return deleteIndex(route, force = true)
-    }
-
-    override fun openIndex(route: IndexRoute): Boolean {
-        val rsp = getClusterRestClient(route).client.indices()
-            .open(OpenIndexRequest(route.indexName), RequestOptions.DEFAULT)
-        if (rsp.isAcknowledged) {
-            return indexRouteDao.setClosed(route, false)
-        }
-        return false
     }
 
     override fun getEsIndexState(route: IndexRoute): Map<String, Any> {
@@ -578,7 +483,7 @@ class EsClientCache {
         return EsRestClient(route, cache.get(route.clusterUrl))
     }
 
-    fun getEsRestClient(url: String): RestHighLevelClient {
+    fun getRestHighLevelClient(url: String): RestHighLevelClient {
         return cache.get(url)
     }
 

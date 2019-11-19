@@ -22,7 +22,7 @@ import java.util.UUID
 @ConfigurationProperties("security")
 class SecurityProperties {
 
-    var externalKey: Resource? = null
+    var serviceKey: Resource? = null
 }
 
 @Configuration
@@ -57,15 +57,15 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    fun externalApiKey(): ApiKey {
-        securityProperties.externalKey?.let {
+    fun serviceKey(): ApiKey {
+        securityProperties.serviceKey?.let {
             val key = JSON_MAPPER.readValue(it.inputStream, ApiKey::class.java)
             logger.info("loading external keyId: ${key.keyId}")
             return key
         }
 
         // Otherwise return a random key that is impossible to use.
-        logger.warn("extenral key file not found, generating random key.")
+        logger.warn("external key file not found, generating random key.")
         return ApiKey(
             UUID.randomUUID(),
             UUID.randomUUID(),
