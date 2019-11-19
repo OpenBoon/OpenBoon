@@ -5,9 +5,8 @@ import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.repository.KPage
 import com.zorroa.archivist.schema.ProxySchema
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,9 +31,9 @@ interface IndexService {
 
     fun getAll(ids: List<String>): List<Document>
 
-    fun getProxies(id: String): ProxySchema
+    fun getAll(page: KPage): List<Document>
 
-    fun getAll(page: Pager): PagedList<Document>
+    fun getProxies(id: String): ProxySchema
 
     fun index(assets: List<Document>): BatchIndexAssetsResponse
 
@@ -76,14 +75,14 @@ class IndexServiceImpl @Autowired constructor(
         return indexDao.getAll(ids)
     }
 
+    override fun getAll(page: KPage): List<Document> {
+        return indexDao.getAll(page)
+    }
+
     override fun getProxies(id: String): ProxySchema {
         val asset = get(id)
         val proxies = asset.getAttr("proxies", ProxySchema::class.java)
         return proxies ?: ProxySchema()
-    }
-
-    override fun getAll(page: Pager): PagedList<Document> {
-        return indexDao.getAll(page)
     }
 
     override fun index(doc: Document): Document {
