@@ -1,14 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.collect.Lists
-import com.zorroa.archivist.clients.SearchBuilder
 import com.zorroa.archivist.domain.BatchDeleteAssetsResponse
 import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.elastic.AbstractElasticDao
 import com.zorroa.archivist.elastic.SearchHitRowMapper
 import com.zorroa.archivist.elastic.SingleHit
@@ -26,7 +23,6 @@ import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.index.IndexResponse
-import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.xcontent.XContentType
@@ -34,8 +30,6 @@ import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Repository
-import java.io.IOException
-import java.io.OutputStream
 import java.nio.file.Path
 import java.util.regex.Pattern
 
@@ -55,33 +49,7 @@ interface IndexDao {
 
     fun getAll(ids: List<String>): List<Document>
 
-    /**
-     * Return the next page of an asset scroll.
-     *
-     * @param scrollId
-     * @param timeout
-     * @return
-     */
-    fun getAll(scrollId: String, timeout: String): PagedList<Document>
-
-    /**
-     * Get all assets given the page and SearchRequestBuilder.
-     *
-     * @param page
-     * @param search
-     * @return
-     */
-    fun getAll(page: Pager, search: SearchBuilder): PagedList<Document>
-
-    fun getAll(page: Pager, search: SearchBuilder, stream: OutputStream)
-
-    /**
-     * Get all assets by page.
-     *
-     * @param page
-     * @return
-     */
-    fun getAll(page: Pager): PagedList<Document>
+    fun getAll(page: KPage): List<Document>
 
     fun exists(id: String): Boolean
 
@@ -354,6 +322,14 @@ class IndexDaoImpl constructor(
         return elastic.query(req, MAPPER)
     }
 
+    override fun getAll(page: KPage): List<Document> {
+        val rest = getClient()
+        val req = rest.newSearchBuilder()
+        req.source.size(page.size)
+        req.source.from(page.from)
+        return elastic.query(req, MAPPER)
+    }
+
     override fun exists(id: String): Boolean {
         val rest = getClient()
         return rest.client.get(
@@ -376,35 +352,6 @@ class IndexDaoImpl constructor(
             throw EmptyResultDataAccessException("Asset $path does not exist", 1)
         }
         return assets[0]
-    }
-
-    override fun getAll(scrollId: String, timeout: String): PagedList<Document> {
-        return elastic.scroll(scrollId, timeout, MAPPER)
-    }
-
-    override fun getAll(page: Pager, search: SearchBuilder): PagedList<Document> {
-        return elastic.page(search, page, MAPPER)
-    }
-
-    @Throws(IOException::class)
-    override fun getAll(page: Pager, search: SearchBuilder, stream: OutputStream) {
-        elastic.page(search, page, stream)
-    }
-
-    override fun getAll(page: Pager): PagedList<Document> {
-        val rest = getClient()
-        val req = rest.newSearchBuilder()
-        rest.routeSearchRequest(req.request)
-
-        req.request.apply {
-            searchType(SearchType.DFS_QUERY_THEN_FETCH)
-        }
-        req.source.apply {
-            version(true)
-            query(QueryBuilders.matchAllQuery())
-        }
-
-        return elastic.page(req, page, MAPPER)
     }
 
     override fun getMapping(): Map<String, Any> {
