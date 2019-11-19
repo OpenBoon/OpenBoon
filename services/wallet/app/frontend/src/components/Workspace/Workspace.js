@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 function Workspace(props) {
   return (
@@ -7,6 +8,10 @@ function Workspace(props) {
       <button onClick={props.logout}>{'Logout'}</button>
     </div>
   )
+}
+
+Workspace.propTypes = {
+  logout: PropTypes.func.isRequired,
 }
 
 export default Workspace

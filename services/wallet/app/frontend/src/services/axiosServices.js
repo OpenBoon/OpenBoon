@@ -2,8 +2,7 @@
 import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/authConstants'
-
-const ORIGIN = 'http://localhost:8000'
+import { ARCHIVIST_API_URL } from '../constants/envConfigs'
 
 function axiosIntercept(axiosInstance) {
   const refreshAuthTokens = failedRequest => {
@@ -45,7 +44,7 @@ function decorateHeaders(config) {
 
 export function axiosCreate(options = {}) {
   const customDefaultOptions = {
-    baseURL: ORIGIN,
+    baseURL: ARCHIVIST_API_URL,
     withCredentials: true,
   }
 

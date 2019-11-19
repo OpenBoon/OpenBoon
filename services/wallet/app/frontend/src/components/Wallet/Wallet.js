@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 import Workspace from '../Workspace'
 
 function Wallet(props) {
-  return (
-    <Workspace {...props} />
-  )
+  return <Workspace {...props} />
 }
 
 Wallet.propTypes = {

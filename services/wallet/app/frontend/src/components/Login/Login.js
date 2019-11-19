@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 
+import User from '../../models/User'
+
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -68,6 +70,7 @@ class Login extends Component {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  user: PropTypes.instanceOf(User).isRequired,
 }
 
 export default Login
