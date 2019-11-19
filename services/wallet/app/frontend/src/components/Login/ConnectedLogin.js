@@ -3,10 +3,10 @@ import Login from './Login'
 import { useAuth } from '../../context/authContext'
 import { useUser } from '../../context/userContext'
 
-function ConnectedLogin() {
+function ConnectedLogin(props) {
   const authContext = useAuth()
   const userContext = useUser()
 
-  return <Login {...authContext} {...userContext} />
+  return <Login {...authContext} {...userContext} {...props} />
 }
 export default ConnectedLogin

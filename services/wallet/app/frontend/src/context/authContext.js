@@ -10,7 +10,7 @@ const AuthContext = React.createContext()
 
 function AuthProvider(props) {
   // check if user is logged in (tokens in localStorage)
-  const initialUser = new User({})
+  const initialUser = new User({ attrs: { tokens: getAuthTokens() } })
 
   const [user, setUser] = useState(initialUser)
 

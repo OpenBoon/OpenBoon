@@ -1,12 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Workspace from '../Workspace'
 
 function Wallet(props) {
   return (
-    <div>
-      <div className="Wallet">{'Hello World!'}</div>
-      <button onClick={props.logout}>{'Logout'}</button>
-    </div>
+    <Workspace {...props} />
   )
 }
 

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Redirect } from 'react-router-dom'
 
-// import Page from '../Page'
 class Login extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       email: '',
@@ -26,6 +26,11 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state
+    const { user } = this.props
+
+    if (user.attrs.tokens) {
+      return <Redirect to={'/'} />
+    }
 
     return (
       <div className="login-container">

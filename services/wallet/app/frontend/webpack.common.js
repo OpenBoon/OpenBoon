@@ -13,8 +13,8 @@ module.exports = {
   entry: SRC_DIR,
   output: {
     path: join(ROOT_DIR, 'dist'),
-    publicPath: '',
-    filename: 'bundle.[hash].js'
+    publicPath: '/',
+    filename: 'bundle.[hash].js',
   },
   module: {
     rules: [
@@ -55,7 +55,8 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
-    hot: true
+    hot: true,
+    historyApiFallback: true,
   },
   plugins: [
     new CleanWebpackPlugin(),
