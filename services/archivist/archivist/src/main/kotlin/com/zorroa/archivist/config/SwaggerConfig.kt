@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.spi.DocumentationType
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
 import springfox.documentation.service.ApiInfo
 import springfox.documentation.service.Contact
+import java.lang.RuntimeException
 import java.util.*
 
 
@@ -82,5 +84,7 @@ class SwaggerConfig : WebMvcConfigurationSupport() {
         registry.addResourceHandler("**/**").addResourceLocations("/dist/")
     }
 
-
+    override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer) {
+        configurer.favorPathExtension(false)
+    }
 }

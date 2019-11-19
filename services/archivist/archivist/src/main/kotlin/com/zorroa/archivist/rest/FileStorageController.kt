@@ -36,7 +36,7 @@ class FileStorageController @Autowired constructor(
     }
 
     @ApiOperation("Get a File Storage object.")
-    @GetMapping("/api/v1/file-storage/{id}")
+    @GetMapping("/api/v1/file-storage/{id:.+}")
     fun get(@ApiParam("UUID of the File Storage object.") @PathVariable id: String): FileStorage {
         return fileStorageService.get(id)
     }
