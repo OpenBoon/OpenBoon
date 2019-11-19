@@ -2,10 +2,9 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.repository.IndexDao
+import com.zorroa.archivist.repository.KPage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
@@ -13,7 +12,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.TestPropertySource
 import java.nio.file.Paths
 
 /**
@@ -35,7 +33,7 @@ class IndexServiceTests : AbstractTest() {
 
     @Test
     fun testGet() {
-        val assets = indexService.getAll(Pager.first())
+        val assets = indexService.getAll(KPage())
         for (a in assets) {
             assertEquals(
                 a.id,
@@ -45,14 +43,8 @@ class IndexServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testGetAll() {
-        val assets = indexService.getAll(Pager.first())
-        assertEquals(2, assets.size())
-    }
-
-    @Test
     fun testDelete() {
-        val assets = indexService.getAll(Pager.first())
+        val assets = indexService.getAll(KPage())
         for (a in assets) {
             assertTrue(indexService.delete(a.id))
         }

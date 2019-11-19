@@ -1,31 +1,21 @@
 package com.zorroa.archivist.repository
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableList
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.clients.SearchBuilder
 import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.util.Json
 import org.elasticsearch.ElasticsearchException
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.settings.Settings
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 class IndexDaoTests : AbstractTest() {
 
@@ -71,62 +61,6 @@ class IndexDaoTests : AbstractTest() {
     fun testExistsById() {
         assertTrue(indexDao.exists(asset1.id))
         assertFalse(indexDao.exists("abc"))
-    }
-
-    @Test
-    fun testGetAll() {
-        val assets = indexDao.getAll(Pager.first(10))
-        assertEquals(1, assets.list.size.toLong())
-    }
-
-    @Test
-    fun testGetAllBySearchRequest() {
-        val sb = SearchBuilder()
-        sb.source.query(QueryBuilders.matchAllQuery())
-        val assets = indexDao.getAll(Pager.first(10), sb)
-        assertEquals(1, assets.list.size.toLong())
-    }
-
-    @Test
-    @Throws(IOException::class)
-    fun testGetAllBySearchRequestIntoStream() {
-        indexDao.index(Source(getTestImagePath("set01/standard/faces.jpg")))
-        refreshIndex()
-        val stream = ByteArrayOutputStream()
-
-        val sb = SearchBuilder()
-        sb.source.query(QueryBuilders.matchAllQuery())
-        sb.source.aggregation(AggregationBuilders.terms("path").field("source.path.raw"))
-
-        indexDao.getAll(Pager.first(10), sb, stream)
-        val result = Json.deserialize(stream.toString(), object : TypeReference<PagedList<Document>>() {})
-        assertEquals(2, result.list.size.toLong())
-        assertEquals(1, result.aggregations.entries.size)
-    }
-
-    @Test
-    fun testGetAllScroll() {
-        indexDao.index(Source(getTestImagePath("set01/standard/faces.jpg")))
-        indexDao.index(Source(getTestImagePath("set01/standard/hyena.jpg")))
-        indexDao.index(Source(getTestImagePath("set01/standard/toucan.jpg")))
-        indexDao.index(Source(getTestImagePath("set01/standard/visa.jpg")))
-        indexDao.index(Source(getTestImagePath("set01/standard/visa12.jpg")))
-        refreshIndex()
-
-        val sb = SearchBuilder()
-        sb.source.query(QueryBuilders.matchAllQuery())
-        sb.request.scroll("1m")
-
-        var assets = indexDao.getAll(Pager.first(1), sb)
-        assertEquals(1, assets.list.size.toLong())
-        assertEquals(6, assets.page.totalCount as Long)
-        assertNotNull(assets.scroll)
-        val asset = assets.get(0)
-
-        assets = indexDao.getAll(assets.scroll.id, "1m")
-        assertEquals(1, assets.list.size.toLong())
-        assertNotNull(assets.scroll)
-        assertNotEquals(asset.id, assets.get(0).id)
     }
 
     @Test

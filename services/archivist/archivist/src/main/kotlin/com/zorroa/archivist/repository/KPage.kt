@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.search.Scroll
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.stream.Stream
@@ -38,9 +37,6 @@ class KPagedList<T> : Iterable<T> {
 
     @ApiModelProperty("Aggregations to apply.")
     var aggregations: Map<String, Any>? = null
-
-    @ApiModelProperty("Scroll used to retrieve the next page.")
-    var scroll: Scroll? = null
 
     constructor() {
         list = ArrayList()

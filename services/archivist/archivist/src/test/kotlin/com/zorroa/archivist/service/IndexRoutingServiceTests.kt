@@ -3,9 +3,9 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.Pager
 import com.zorroa.archivist.repository.IndexDao
 import com.zorroa.archivist.repository.IndexRouteDao
+import com.zorroa.archivist.repository.KPage
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
@@ -186,10 +186,10 @@ class IndexRoutingServiceTests : AbstractTest() {
             passed = true
         }
         assertTrue(passed)
-        assertEquals(0, indexDao.getAll(Pager.first()).size())
+        assertEquals(0, indexDao.getAll(KPage()).size)
         refreshElastic()
         Thread.sleep(250)
-        assertEquals(1, indexDao.getAll(Pager.first()).size())
+        assertEquals(1, indexDao.getAll(KPage()).size)
     }
 
     @Test

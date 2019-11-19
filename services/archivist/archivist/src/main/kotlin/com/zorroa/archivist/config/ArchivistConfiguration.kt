@@ -13,10 +13,13 @@ import com.zorroa.archivist.service.NullMessagingService
 import com.zorroa.archivist.service.PubSubMessagingService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
+import io.sentry.spring.SentryExceptionResolver
+import io.sentry.spring.SentryServletContextInitializer
 import org.slf4j.LoggerFactory
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.web.servlet.ServletContextInitializer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
@@ -26,6 +29,7 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.web.filter.CommonsRequestLoggingFilter
+import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
@@ -184,6 +188,12 @@ class ArchivistConfiguration {
             .getPath("archivist.config.path")
             .resolve("data-credentials.json")
     }
+
+    @Bean
+    fun sentryExceptionResolver(): HandlerExceptionResolver = SentryExceptionResolver()
+
+    @Bean
+    fun sentryServletContextInitializer(): ServletContextInitializer = SentryServletContextInitializer()
 
     companion object {
 
