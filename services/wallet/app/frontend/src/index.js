@@ -1,5 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Wallet from './components/Wallet'
+import AppProviders from './components/AppProviders'
+import App from './components/App'
 
-ReactDOM.render(<Wallet />, document.getElementById('root'))
+ReactDOM.render(
+  <AppProviders>
+    <App />
+  </AppProviders>,
+  document.getElementById('root'),
+)

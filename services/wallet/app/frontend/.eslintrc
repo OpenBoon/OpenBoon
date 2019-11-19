@@ -50,6 +50,11 @@
   "settings": {
     "react": {
       "version": "15.0"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
     }
   },
   "rules": {
