@@ -49,7 +49,7 @@ wallet-backend-test-suite:
   script:
     - cd services/wallet
     - pipenv sync
-    - pytest
+    - pipenv run pytest
 
 wallet-container-build-validation:
   only:
