@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from pathlib import Path
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -45,6 +44,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jobs',
+    'projects',
     'wallet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -169,3 +170,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+# General Application Configuration
+ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
+PLATFORM = os.environ.get('PLATFORM', 'zmlp')
