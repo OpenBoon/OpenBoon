@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.stereotype.Component
+import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
@@ -20,19 +21,16 @@ import javax.servlet.http.HttpServletResponse
 val HEADER = "Authorization"
 val PREFIX = "Bearer "
 
-@Component
 class ApiKeyAuthorizationFilter constructor(
-    val authServerClient: AuthServerClient,
-    authenticatioinManager: AuthenticationManager
-) : BasicAuthenticationFilter(authenticatioinManager) {
+        val authServerClient: AuthServerClient
+) : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
-        req: HttpServletRequest,
-        res: HttpServletResponse,
-        chain: FilterChain
+            req: HttpServletRequest,
+            res: HttpServletResponse,
+            chain: FilterChain
     ) {
-
         val token = req.getHeader(HEADER)?.let {
             if (it.startsWith(PREFIX)) {
                 it.removePrefix(PREFIX)
@@ -45,7 +43,7 @@ class ApiKeyAuthorizationFilter constructor(
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
             return
         }
-        
+
         try {
             val apiToken = authServerClient.authenticate(token)
             SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(apiToken)
@@ -63,7 +61,7 @@ class ApiKeyAuthorizationFilter constructor(
 
 
 class ApiTokenAuthentication constructor(
-    val zmlpUser : ZmlpUser
+        val zmlpUser : ZmlpUser
 ) : AbstractAuthenticationToken(listOf()) {
 
     override fun getCredentials(): Any {
@@ -79,7 +77,7 @@ class ApiTokenAuthentication constructor(
 
 
 class ApiKeyAuthenticationProvider : AuthenticationProvider {
-    
+
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as ApiTokenAuthentication
 

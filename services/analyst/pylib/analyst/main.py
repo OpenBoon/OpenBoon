@@ -34,6 +34,8 @@ def main():
     setup_routes(api)
 
     create_ssl_files()
+
+    print("Listening on port {}".format(args.port))
     server = WSGIServer(('0.0.0.0', int(args.port)), app, certfile='certs/analyst.cert', keyfile='certs/analyst.key')
     server.serve_forever()
 
@@ -85,13 +87,3 @@ def setup_routes(api):
     @app.route('/info', methods=['GET'])
     def info():
         return jsonify({"version": components.get_sdk_version()})
-
-    @app.route('/processors', methods=['GET'])
-    def processors():
-        return jsonify(scanner.scan_processors())
-
-    @app.route('/zsdk', methods=['GET'])
-    def zsdk():
-        """Endpoint that returns the zsdk wheel file."""
-        wheel = list(Path('/opt/app-root/src/dist/').glob('zsdk*-py2.py3-none-any.whl'))[0]
-        return send_file(str(wheel), as_attachment=True, attachment_filename=wheel.name)

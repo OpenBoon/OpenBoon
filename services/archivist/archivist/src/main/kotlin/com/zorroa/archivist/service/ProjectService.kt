@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.Project
@@ -50,7 +52,10 @@ interface ProjectService {
 class ProjectServiceImpl constructor(
     val projectDao: ProjectDao,
     val projectFilterDao: ProjectFilterDao,
-    val authServerClient: AuthServerClient
+    val authServerClient: AuthServerClient,
+    val indexRoutingService: IndexRoutingService,
+    val txEvent: TransactionEventManager
+
 ) : ProjectService {
 
     override fun create(spec: ProjectSpec): Project {
@@ -63,8 +68,8 @@ class ProjectServiceImpl constructor(
                 time
             )
         )
-
         createStandardKeys(project)
+        createIndexRoute(project)
 
         logger.event(
             LogObject.PROJECT, LogAction.CREATE,
@@ -74,6 +79,13 @@ class ProjectServiceImpl constructor(
             )
         )
         return project
+    }
+
+    private fun createIndexRoute(project: Project) {
+        indexRoutingService.createIndexRoute(
+            IndexRouteSpec("asset", 12, projectId = project.id,
+                state = IndexRouteState.CURRENT)
+        )
     }
 
     /**

@@ -1,10 +1,11 @@
 import logging
 import sys
+import os
 
 import zmq
 
 from zorroa.zsdk.processor import Reactor
-from zorroa.zsdk.zps.process import ProcessorExecutor
+from zorroa.zsdk.zpsd.process import ProcessorExecutor
 
 logger = logging.getLogger(__name__)
 
@@ -17,32 +18,37 @@ class ZpsdServer(object):
 
         if not reactor:
             self.reactor = Reactor(ZmqEventEmitter(self.socket))
-        self.executor = ProcessorExecutor(reactor)
+        self.executor = ProcessorExecutor(self.reactor)
 
     def __setup_zmq_socket(self):
         ctx = zmq.Context()
         socket = ctx.socket(zmq.PAIR)
-        socket.bind("tcp://*:{}".format(self.port))
+        logger.info("Connecting to {}".format(os.environ.get("ZMLP_EVENT_HOST")))
+        socket.connect(os.environ.get("ZMLP_EVENT_HOST"))
+        socket.send_json({"type": "ready", "payload": {}})
         return socket
 
     def start(self):
-        logging.info("Starting ZPSD on port {}".format(self.port))
         while True:
+            logger.info("Waiting for events")
             event = self.socket.recv_json()
             try:
                 self.handle_event(event)
             except Exception as e:
                 logger.warning("Failed to handle event '{}', {}".format(event, e))
                 self.socket.send_json({"type": "hardfailure", "payload": {"message": str(e)}})
+                break
 
     def stop(self):
         self.socket.close()
 
     def handle_event(self, event):
+        logger.info("handling event: %s" % event)
         etype = event["type"]
         if etype == "execute":
-            obj = self.executor.execute_processor(event["payload"])
-            self.reactor.emitter.write({"type": "object", "payload": obj})
+            self.executor.execute_processor(event["payload"])
+        elif etype == "generate":
+            self.executor.execute_generator(event["payload"])
         elif etype == "teardown":
             self.executor.teardown_processor(event["payload"])
         elif etype == "stop":

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -20,7 +21,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
     }
 
     val testSpec = IndexRouteSpec(
-        "test", 1
+        "test", 1, state = IndexRouteState.BUILDING
     )
 
     @Test
