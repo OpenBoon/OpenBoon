@@ -51,7 +51,7 @@ wallet-backend-test-suite:
     - cd services/wallet
     - pipenv sync
     - cd app
-    - pipenv run pytest
+    - pipenv run pytest --cov=.
 
 wallet-container-build-validation:
   only:
