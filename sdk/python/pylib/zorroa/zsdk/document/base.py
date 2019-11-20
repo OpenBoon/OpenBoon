@@ -143,7 +143,7 @@ class Document(object):
         """
         doc = self.document
         parts = attr.split(".")
-        for k in parts[0:len(parts)-1]:
+        for k in parts[0:len(parts) - 1]:
             if k not in doc:
                 return False
             doc = doc.get(k)
@@ -297,7 +297,7 @@ class Document(object):
         """
         doc = self.document
         parts = attr.split(".")
-        for k in parts[0:len(parts)-1]:
+        for k in parts[0:len(parts) - 1]:
             if k not in doc:
                 doc[k] = {}
             doc = doc[k]

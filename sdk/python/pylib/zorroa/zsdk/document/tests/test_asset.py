@@ -118,10 +118,9 @@ class AssetUnitTests(PluginUnitTestCase):
             zsdk.Asset(path)
 
     def test_from_document(self):
-        data = {"document": {"irm": {"companyId": 25274}, "source": {
-                    "path": zorroa_test_data("/images/set01/faces.jpg")}},
-                "id": "e3573b90-a18b-4e13-8efc-ae9cd7fba143",
-                "replace": False}
+        data = {"document": {"irm": {"companyId": 25274},
+                             "source": {"path": zorroa_test_data("/images/set01/faces.jpg")}},
+                "id": "e3573b90-a18b-4e13-8efc-ae9cd7fba143", "replace": False}
         document = zsdk.Document(data)
         asset = zsdk.Asset.from_document(document)
         assert asset.id == document.id
@@ -244,6 +243,6 @@ class AssetUnitTests(PluginUnitTestCase):
         asset.add_proxy(proxy1)
         asset.add_proxy(proxy2)
         assert asset.proxies == asset._find_proxies(lambda p: True)
-        assert asset.proxies == asset._find_proxies(lambda p: p["width"] == 1024 and
-                                                    p["height"] == 768)
+        assert asset.proxies == asset._find_proxies(
+            lambda p: p["width"] == 1024 and p["height"] == 768)
         assert [proxy1] == asset._find_proxies(lambda p: p["mimetype"] == "image/jpeg")
