@@ -5,6 +5,8 @@ stages:
 # SDK Jobs
 pylib-linting:
   image: python:3.8
+  only:
+    - /^sdk\/.*$/i
   stage: test
   script:
     - python -m pip install flake8
