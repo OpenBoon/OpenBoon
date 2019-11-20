@@ -27,6 +27,6 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: "a8fnnbe934j"
-      POSTGRES_USER: "admin"
+      POSTGRES_USER: "wallet"
       POSTGRES_DB: "wallet"
       PGDATA: "/var/lib/postgresql/data/pgdata"
