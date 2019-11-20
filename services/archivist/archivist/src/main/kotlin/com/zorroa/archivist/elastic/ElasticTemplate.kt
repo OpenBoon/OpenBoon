@@ -2,15 +2,10 @@ package com.zorroa.archivist.elastic
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.clients.SearchBuilder
-import com.zorroa.archivist.domain.PagedList
-import com.zorroa.archivist.domain.Pager
-import com.zorroa.archivist.search.Scroll
+import com.zorroa.archivist.repository.KPage
 import com.zorroa.archivist.service.IndexRoutingService
-import com.zorroa.archivist.util.Json
 import org.elasticsearch.action.index.IndexRequestBuilder
 import org.elasticsearch.action.search.SearchRequestBuilder
-import org.elasticsearch.action.search.SearchScrollRequest
-import org.elasticsearch.common.Strings
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.rest.action.search.RestSearchAction
@@ -56,28 +51,6 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
         }
     }
 
-    fun <T> scroll(id: String, timeout: String, mapper: SearchHitRowMapper<T>): PagedList<T> {
-        val rest = indexRoutingService.getProjectRestClient()
-        // already routed
-        val req = SearchScrollRequest(id).scroll(timeout)
-        val rsp = rest.client.searchScroll(req)
-
-        val list = mutableListOf<T>()
-        for (hit in rsp.hits.hits) {
-            try {
-                list.add(mapper.mapRow(SingleHit(hit)))
-            } catch (e: Exception) {
-                throw DataRetrievalFailureException("Failed to parse record, $e", e)
-            }
-        }
-
-        val totalCount = rsp.hits.totalHits
-        val result = PagedList(Pager().setTotalCount(totalCount), list)
-        result.scroll = Scroll(rsp.scrollId)
-
-        return result
-    }
-
     fun <T> query(builder: SearchBuilder, mapper: SearchHitRowMapper<T>): List<T> {
         val rest = indexRoutingService.getProjectRestClient()
         rest.routeSearchRequest(builder.request)
@@ -96,46 +69,8 @@ class ElasticTemplate(private val indexRoutingService: IndexRoutingService) {
         return result
     }
 
-    fun <T> page(builder: SearchBuilder, paging: Pager, mapper: SearchHitRowMapper<T>): PagedList<T> {
-        val rest = indexRoutingService.getProjectRestClient()
-        rest.routeSearchRequest(builder.request)
-        builder.source.size(paging.size)
-        builder.source.from(paging.from)
-
-        val r = rest.client.search(builder.request)
-        val list = Lists.newArrayListWithCapacity<T>(r.hits.hits.size)
-        for (hit in r.hits.hits) {
-            try {
-                list.add(mapper.mapRow(SingleHit(hit)))
-            } catch (e: Exception) {
-                throw DataRetrievalFailureException("Failed to parse record, $e", e)
-            }
-        }
-
-        paging.totalCount = r.hits.totalHits
-        val result = PagedList(paging, list)
-        result.scroll = Scroll(r.scrollId)
-
-        if (r.aggregations != null) {
-            try {
-                val aggregations = r.aggregations
-                val builder = XContentFactory.jsonBuilder().use { jb ->
-                    jb.startObject()
-                    aggregations.toXContent(jb, xContentParams)
-                    jb.endObject()
-                }
-                var json = Strings.toString(builder).replace(REGEX_AGG_NAME_FIX, "\"$1\":")
-                result.aggregations = Json.Mapper.readValue(json, Json.GENERIC_MAP)
-            } catch (e: IOException) {
-                logger.warn("Failed to deserialize aggregations.", e)
-            }
-        }
-
-        return result
-    }
-
     @Throws(IOException::class)
-    fun page(builder: SearchBuilder, paging: Pager, out: OutputStream) {
+    fun page(builder: SearchBuilder, paging: KPage, out: OutputStream) {
         val rest = indexRoutingService.getProjectRestClient()
         rest.routeSearchRequest(builder.request)
         builder.source.size(paging.size)
