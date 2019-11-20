@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-function Workspace(props) {
+function Workspace({ user, logout }) {
+  if (user.attrs.tokens) {
+    return <Redirect to={'/login'} />
+  }
+
   return (
     <div>
       <div className="Wallet">{'Hello World!'}</div>

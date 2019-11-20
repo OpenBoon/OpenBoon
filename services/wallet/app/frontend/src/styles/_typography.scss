@@ -3,7 +3,7 @@
 $primary-font-family: 'Roboto', 'Avenir', 'sans-serif';
 
 $body-font-size: 14px;
-$body-line-height: 18px;
+$body-line-height: 16px;
 
 $h3-font-size: 18px;
 $h3-line-height: 21px;
@@ -12,7 +12,7 @@ $small-font-size: 12px;
 $small-line-height: 14px;
 
 $normal-font-weight: 400;
-$bold-font-weight: 700;
+$bold-font-weight: 500;
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -36,4 +36,14 @@ h3 {
 small {
   font-size: $small-font-size;
   line-height: $small-line-height;
+}
+
+a {
+  color: $primary-font-color;
+  opacity: 0.54;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

@@ -13,15 +13,24 @@ $btn-border-radius: 2px;
   padding: 10px 30px;
   border: 0;
   cursor: pointer;
+
+  &.btn-primary {
+    background-color: $primary-color;
+    color: $primary-font-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background: lighten($primary-color, 15%);
+    }
+
+    &[disabled],
+    &[disabled]:hover,
+    &[disabled]:active,
+    &[disabled]:focus {
+      background: $secondary-font-color;
+    }
+  }
 }
 
-.btn.btn-primary {
-  background-color: $primary-color;
-  color: $primary-font-color;
-}
 
-.btn.btn-primary:hover,
-.btn.btn-primary:active,
-.btn.btn-primary:focus {
-  background: lighten($primary-color, 15%);
-}
