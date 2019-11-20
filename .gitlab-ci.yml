@@ -46,6 +46,7 @@ wallet-backend-test-suite:
     POSTGRES_PASSWORD: a8fnnbe934j
     POSTGRES_USER: wallet
     POSTGRES_DB: wallet
+    PG_HOST: postgres
   script:
     - cd services/wallet
     - pipenv sync
