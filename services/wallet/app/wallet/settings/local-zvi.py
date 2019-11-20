@@ -5,17 +5,6 @@ import os
 
 from wallet.settings import *  # noqa
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wallet',
-        'USER': 'wallet',
-        'PASSWORD': os.environ.get('PG_PASSWORD', 'a8fnnbe934j'),
-        'HOST': os.environ.get('PG_HOST', 'localhost'),
-        'PORT': '5432',
-    }
-}
-
 # CORS Middleware for handling frontend server requests
 # for more customization: https://github.com/adamchainz/django-cors-headers
 MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
@@ -32,3 +21,4 @@ REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
 ]
 
 PLATFORM = 'zvi'
+ARCHIVIST_URL = 'https://dev.zorroa.com/'

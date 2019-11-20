@@ -19,6 +19,7 @@ django-cors-headers = "*"
 django-health-check = "*"
 zorroa = {path = "./../../sdk/python"}
 django-cryptography = "*"
+drf-nested-routers = "*"
 
 [requires]
 python_version = "3.6"
