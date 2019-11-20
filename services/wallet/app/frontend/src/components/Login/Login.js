@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import Page from '../Page'
+import { Redirect } from 'react-router-dom'
+
+import User from '../../models/User'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -10,6 +14,14 @@ function Login() {
   function handleSubmit(e) {
     console.log(email, password)
     e.preventDefault()
+
+    if (email !== '' && password !== '') {
+      this.props.login(email, password)
+    }
+  }
+
+  if (user.attrs.tokens) {
+    return <Redirect to={'/'} />
   }
 
   return (
@@ -59,6 +71,12 @@ function Login() {
       </div>
     </Page>
   )
+}
+
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  user: PropTypes.instanceOf(User).isRequired,
 }
 
 export default Login

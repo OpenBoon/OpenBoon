@@ -1,3 +1,3 @@
-import Login from './Login'
+import Login from './ConnectedLogin'
 import './Login.scss'
 export default Login
