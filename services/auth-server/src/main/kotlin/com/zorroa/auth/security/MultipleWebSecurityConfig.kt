@@ -5,9 +5,13 @@ import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.service.KeyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.core.io.Resource
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -25,10 +29,8 @@ class SecurityProperties {
     var serviceKey: Resource? = null
 }
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
+class MultipleWebSecurityConfig {
 
     @Autowired
     lateinit var securityProperties: SecurityProperties
@@ -36,18 +38,53 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
     @Autowired
     lateinit var jwtAuthenticationProvider: JwtAuthenticationProvider
 
-    override fun configure(http: HttpSecurity) {
-        http
-            .addFilterBefore(
-                jwtAuthorizationFilter(),
-                UsernamePasswordAuthenticationFilter::class.java
-            )
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/v2/api-docs").hasAuthority("MonitorServer")
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    @Configuration
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
+
+        @Autowired
+        lateinit var jwtAuthorizationFilter: JWTAuthorizationFilter
+
+        override fun configure(http: HttpSecurity) {
+            http
+                .addFilterAfter(
+                    jwtAuthorizationFilter,
+                    UsernamePasswordAuthenticationFilter::class.java
+                )
+                .csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        }
+    }
+
+    @Configuration
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    class SwaggerConfigSecurity : WebSecurityConfigurerAdapter() {
+
+        @Value("\${swagger.isPublic}")
+        lateinit var isPublic: String
+
+        override fun configure(http: HttpSecurity) {
+            http
+                .antMatcher("/**")
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf().disable()
+
+            if (isPublic.toBoolean()) {
+                http.authorizeRequests()
+                    .antMatchers("/v2/api-docs").permitAll()
+                    .antMatchers("/swagger-ui.html").permitAll()
+                    .antMatchers("/error").permitAll()
+            }else{
+                http.authorizeRequests()
+                    .antMatchers("/v2/api-docs").denyAll()
+                    .antMatchers("/swagger-ui.html").denyAll()
+                    .antMatchers("/error").denyAll()
+            }
+        }
     }
 
     @Autowired
@@ -79,7 +116,18 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
         return JWTAuthorizationFilter()
     }
 
+    @Bean
+    fun jwtKeyFilterRegistration(): FilterRegistrationBean<JWTAuthorizationFilter> {
+        val bean = FilterRegistrationBean<JWTAuthorizationFilter>()
+        bean.filter = jwtAuthorizationFilter()
+        bean.isEnabled = false
+        return bean
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java)
     }
 }
+
+
+

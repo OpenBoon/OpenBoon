@@ -5,6 +5,8 @@ import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.service.ApiKeyService
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import io.swagger.models.HttpMethod
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
@@ -24,27 +26,32 @@ import java.util.UUID
 
 @RestController
 @PreAuthorize("hasAuthority('SuperAdmin')")
+@Api(tags = ["API Key"], description = "Operations for managing API Keys.")
 class ApiKeyController {
 
     @Autowired
     lateinit var apiKeyService: ApiKeyService
 
     @PostMapping("/auth/v1/apikey")
+    @ApiOperation("Create Api Key")
     fun create(@RequestBody spec: ApiKeySpec): ApiKey {
         return apiKeyService.create(spec)
     }
 
     @GetMapping("/auth/v1/apikey/{id}")
+    @ApiOperation("Create Api Key by Id")
     fun get(@PathVariable id: UUID): ApiKey {
         return apiKeyService.get(id)
     }
 
     @RequestMapping("/auth/v1/apikey/_findOne", method=[RequestMethod.GET,  RequestMethod.POST])
+    @ApiOperation("Create Unique Api Key by Filtering")
     fun get(@RequestBody(required=false) filter: ApiKeyFilter?): ApiKey {
         return apiKeyService.findOne(filter ?: ApiKeyFilter())
     }
 
     @GetMapping("/auth/v1/apikey/{id}/_download")
+    @ApiOperation("Download API Key")
     fun download(@PathVariable id: UUID): ResponseEntity<ByteArray> {
         val key = apiKeyService.get(id)
         val bytes = JSON_MAPPER.writeValueAsBytes(key.getMinimalApiKey())
@@ -59,11 +66,13 @@ class ApiKeyController {
     }
 
     @DeleteMapping("/auth/v1/apikey/{id}")
+    @ApiOperation("Delete Operation")
     fun delete(@PathVariable id: UUID) {
         apiKeyService.delete(apiKeyService.get(id))
     }
 
     @GetMapping("/auth/v1/apikey")
+    @ApiOperation("Retrieve all Keys")
     fun findAll(): List<ApiKey> {
         return apiKeyService.findAll()
     }
