@@ -37,7 +37,7 @@ wallet-frontend-test-suite:
 
 wallet-backend-test-suite:
   extends: .wallet-base
-  image: mc706/pipenv-3.7
+  image: mc706/pipenv-3.6
   stage: test
   services:
      - name: postgres:9.6.9
