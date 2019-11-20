@@ -15,7 +15,7 @@ pylib-linting:
 # Wallet Jobs
 .wallet-base:
   only:
-    - ^wallet\/.*$
+    - /^wallet\/.*$/i
     - development
     - qa
     - master
