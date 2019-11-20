@@ -5,6 +5,8 @@ stages:
 # SDK Jobs
 pylib-linting:
   image: python:3.8
+  only:
+    - /^sdk\/.*$/i
   stage: test
   script:
     - python -m pip install flake8
@@ -13,7 +15,15 @@ pylib-linting:
     - flake8 sdk/python
 
 # Wallet Jobs
+.wallet-base:
+  only:
+    - /^wallet\/.*$/i
+    - development
+    - qa
+    - master
+
 .wallet-frontend-base:
+  extends: .wallet-base
   image: node:12
   before_script:
     - cd services/wallet/app/frontend
@@ -26,6 +36,24 @@ wallet-frontend-test-suite:
     - npx eslint ./src --quiet
     - npx stylelint '**/*.scss'
     - npx jest --bail --silent --ci
+
+wallet-backend-test-suite:
+  extends: .wallet-base
+  image: mc706/pipenv-3.6
+  stage: test
+  services:
+     - name: postgres:9.6.9
+       alias: postgres
+  variables:
+    POSTGRES_PASSWORD: a8fnnbe934j
+    POSTGRES_USER: wallet
+    POSTGRES_DB: wallet
+    PG_HOST: postgres
+  script:
+    - cd services/wallet
+    - pipenv sync
+    - cd app
+    - pipenv run pytest --cov=.
 
 wallet-container-build-validation:
   only:

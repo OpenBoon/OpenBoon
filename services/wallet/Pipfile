@@ -20,6 +20,8 @@ django-health-check = "*"
 zorroa = {path = "./../../sdk/python"}
 django-cryptography = "*"
 drf-nested-routers = "*"
+requests = "*"
+uritools = "*"
 
 [requires]
 python_version = "3.6"
