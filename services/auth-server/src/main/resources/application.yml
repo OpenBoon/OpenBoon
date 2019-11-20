@@ -18,7 +18,7 @@ security:
 
 #Swagger info
 swagger:
-  isPublic: false
+  isPublic: true
   title: Oauth Documentation
   description: Oauth API Documentation
   version: 1.0.0
