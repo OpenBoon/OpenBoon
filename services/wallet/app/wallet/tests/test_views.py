@@ -21,5 +21,3 @@ def test_get_users(api_client, superuser):
     api_client.force_authenticate(superuser)
     response = api_client.get(reverse('user-list'))
     assert response.status_code == 200
-
-

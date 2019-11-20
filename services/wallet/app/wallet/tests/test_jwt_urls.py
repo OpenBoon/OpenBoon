@@ -6,10 +6,8 @@ pytestmark = pytest.mark.django_db
 
 
 def test_obtain_token_pair(api_client, user):
-    response = api_client.post('/auth/token/',
-                                {'username': 'user',
-                                 'password': 'letmein'},
-                                format='json')
+    response = api_client.post('/auth/token/', {'username': 'user', 'password': 'letmein'},
+                               format='json')
     assert response.status_code == 200
     assert 'refresh' in response.json()
     assert 'access' in response.json()

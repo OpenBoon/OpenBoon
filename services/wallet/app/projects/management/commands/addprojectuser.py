@@ -9,7 +9,7 @@ from projects.models import Project
 
 
 class Command(BaseCommand):
-    help = 'Creates a project user and adds their ZMLP Api Key'
+    help = 'Adds an existing user to a project and adds their ZMLP Api Key'
 
     def add_arguments(self, parser):
         parser.add_argument('username', type=str)

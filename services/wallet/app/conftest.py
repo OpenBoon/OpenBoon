@@ -16,10 +16,12 @@ def user(django_user_model, api_client):
     user = django_user_model.objects.create_user('user', 'user@fake.com', 'letmein')
     return user
 
+
 @pytest.fixture
 def superuser(django_user_model, api_client):
     user = django_user_model.objects.create_superuser('superuser', 'superuser@fake.com', 'letmein')
     return user
+
 
 @pytest.fixture
 def project():
@@ -42,9 +44,9 @@ def zmlp_project_membership(project, user):
 
 @pytest.fixture()
 def zvi_project_membership(project, user):
-    apikey = b"""{"userId": "00000000-7b0b-480e-8c36-f06f04aed2f1", 
-    "user": "admin", 
-    "key": "65950f84a6f97c111be559f54666308c719210468c3476e9bae813484bc703ce", 
+    apikey = b"""{"userId": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+    "user": "admin",
+    "key": "65950f84a6f97c111be559f54666308c719210468c3476e9bae813484bc703ce",
     "server": "https://dev.zorroa.com/"}"""
     apikey = b64encode(apikey).decode('utf-8')
     return Membership.objects.create(user=user, project=project, apikey=apikey)
