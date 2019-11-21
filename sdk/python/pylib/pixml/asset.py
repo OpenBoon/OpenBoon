@@ -5,13 +5,14 @@ from pixml.analysis.storage import get_lfs
 
 __all__ = [
     "Asset",
-    "AssetSpec"
+    "AssetSpec",
+    "Clip"
 ]
 
 logger = logging.getLogger(__name__)
 
 
-class BaseAsset(object):
+class AssetBase(object):
 
     def __init__(self):
         self.document = {}
@@ -158,13 +159,14 @@ class BaseAsset(object):
                 doc[parts[-1]] = value
 
 
-class AssetSpec(BaseAsset):
+class AssetSpec(AssetBase):
     """
 
     """
-    def __init__(self, uri):
+    def __init__(self, uri, clip=None):
         super(AssetSpec, self).__init__()
         self.uri = uri
+        self.clip = clip
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -181,7 +183,7 @@ class AssetSpec(BaseAsset):
         }
 
 
-class Asset(BaseAsset):
+class Asset(AssetBase):
 
     def __init__(self, data):
         super(Asset, self).__init__()
@@ -194,7 +196,7 @@ class Asset(BaseAsset):
         if not data:
             raise ValueError("Error creating Asset instance, Assets must have an id.")
         self.id = data.get("id")
-        self.document = data.get("document")
+        self.document = data.get("document", {})
 
     @property
     def uri(self):
@@ -214,3 +216,47 @@ class Asset(BaseAsset):
             "id": self.id,
             "document": self.document
         }
+
+
+class Clip(object):
+    """
+    A Clip object is used to define some frame range
+    or sub-section of an asset.
+    """
+    def __init__(self, type, start, stop, timeline=None):
+        """Initialize a new clip.
+
+        Args:
+            type (str): The clip type (image, video, page)
+            start (float): The start of the clip
+            stop (float): The end of the clip
+            timeline (str): Put the clip on a unique timeline in case it
+                collides with other clips.
+        """
+        self.type = type
+        self.start = float(start)
+        self.stop = float(stop)
+        self.length = max(1.0, self.stop - self.start + 1.0)
+        self.timeline = timeline
+
+    def tokens(self):
+        """Return tokens that make the clip unique.
+
+        Returns:
+            :obj:`list` of str: A list of tokens.
+
+        """
+        return ["start=%0.3f" % self.start, "stop=%0.3f" % self.stop]
+
+    def for_json(self):
+        """Return a JSON serializale copy.
+
+        Returns:
+            :obj:`dict`: A json serializable dict.
+        """
+        serializable_dict = {}
+        attrs = ['type', 'start', 'stop', 'length', 'timeline']
+        for attr in attrs:
+            if getattr(self, attr, None) is not None:
+                serializable_dict[attr] = getattr(self, attr)
+        return serializable_dict

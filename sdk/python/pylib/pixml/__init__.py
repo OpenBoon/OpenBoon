@@ -1,1 +1,1 @@
-from .asset import Asset, AssetSpec
+from .asset import *

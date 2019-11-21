@@ -1,13 +1,14 @@
+import json
 import logging
 import os
 import shutil
 import tempfile
-import unittest
 import time
-import json
+import unittest
+import uuid
 
-from pixml.asset import AssetSpec
 from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument
+from pixml.asset import AssetSpec, Asset
 
 logger = logging.getLogger(__name__)
 
@@ -183,6 +184,24 @@ class TestEventEmitter(object):
             if event["type"] == etype:
                 result.append(event)
         return result
+
+
+class TestAsset(Asset):
+    """
+    A TestAsset is used for testing processors with local files.
+    """
+    def __init__(self, path, attrs=None):
+        super(TestAsset, self).__init__({"id": str(uuid.uuid4())})
+        self.path = path
+        self.set_attr("source.path", path)
+        self.set_attr("source.extension",
+                      os.path.basename(path).split(".")[-1])
+        if attrs:
+            for k, v in attrs.items():
+                self.set_attr(k, v)
+
+    def get_local_source_path(self):
+        return self.path
 
 
 def zorroa_test_data(rel_path=""):
