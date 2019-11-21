@@ -1,76 +1,129 @@
-import React, { Component } from 'react'
+import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { Redirect } from 'react-router-dom'
+import cx from 'classnames'
+import { Redirect, Link } from 'react-router-dom'
 
 import User from '../../models/User'
+import Page from '../Page'
+import Logo from '../Logo'
 
-class Login extends Component {
-  constructor(props) {
-    super(props)
+const ERROR_MESSAGE = 'Invalid email or password'
 
-    this.state = {
-      email: '',
-      password: '',
-    }
+function Login({ user, login, history }) {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  // const [loading, setLoading] = useState(false)
+  const emailInput = useRef(null)
 
-    this.onSubmit = this.onSubmit.bind(this)
-  }
-
-  onSubmit(event) {
-    event.preventDefault()
-
-    const { email, password } = this.state
+  function handleSubmit(e) {
+    e.preventDefault()
+    setError('')
 
     if (email !== '' && password !== '') {
-      this.props.login(email, password)
+      // setLoading(true)
+
+      login(email, password)
+        .then(() => {
+          // setLoading(false)
+          history.push('/workspace')
+        })
+        .catch(() => {
+          // setLoading(false)
+          setError(ERROR_MESSAGE)
+          emailInput.current.focus()
+        })
+    } else {
+      setError(ERROR_MESSAGE)
+      emailInput.current.focus()
     }
   }
 
-  render() {
-    const { email, password } = this.state
-    const { user } = this.props
+  if (user.attrs.tokens) {
+    return <Redirect to={'/workspace'} />
+  }
 
-    if (user.attrs.tokens) {
-      return <Redirect to={'/'} />
-    }
+  return (
+    <Page>
+      <div className="login__page">
+        <form className="login__form" onSubmit={handleSubmit}>
+          <Logo width="143" height="42" />
+          <h3 className="login__form-heading">Welcome. Please login.</h3>
 
-    return (
-      <div className="login-container">
-        <form className="login-form" onSubmit={this.onSubmit}>
-          <div className="login-inputs">
-            <div className="login-input">
-              <label htmlFor="email">{'Email'}</label>
-              <input
-                type="text"
-                value={email}
-                name="email"
-                onChange={e => this.setState({ email: e.target.value })}
-              />
+          {/*
+          (loading) && (
+            <p className="login__form-loader">Loading</p>
+          )
+          */}
+
+          {error && (
+            <div className="login__form-error-container">
+              <i className="fas fa-exclamation-triangle"></i>
+              <p className="login__form-error-message">{error}</p>
             </div>
+          )}
 
-            <div className="login-input">
-              <label htmlFor="password">{'Password'}</label>
-              <input
-                type="password"
-                value={password}
-                name="password"
-                onChange={e => this.setState({ password: e.target.value })}
-              />
-            </div>
+          {/* <p className="login__form-sub-heading">- or -</p> */}
 
-            <button className="login-button" type="submit">
-              {'Login'}
-            </button>
+          <div className="login__form-group">
+            <label className="login__form-label" htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              ref={emailInput}
+              type="text"
+              value={email}
+              name="email"
+              className={cx(
+                error ? 'login__form-input--error' : 'login__form-input',
+              )}
+              onChange={e => {
+                setEmail(e.target.value)
+                setError('')
+              }}
+            />
           </div>
+
+          <div className="login__form-group">
+            <label className="login__form-label" htmlFor="password">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              name="password"
+              className={cx(
+                error ? 'login__form-input--error' : 'login__form-input',
+              )}
+              onChange={e => {
+                setPassword(e.target.value)
+                setError('')
+              }}
+            />
+          </div>
+
+          <button
+            className="login__btn btn btn-primary"
+            type="submit"
+            disabled={error.length}>
+            Login
+          </button>
+
+          <Link to="/" className="login__form-tagline">
+            Forgot Password? Need login help?
+          </Link>
         </form>
       </div>
-    )
-  }
+    </Page>
+  )
 }
 
 Login.propTypes = {
-  login: PropTypes.func.isRequired,
   user: PropTypes.instanceOf(User).isRequired,
+  login: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default Login

@@ -26,13 +26,7 @@ const envKeys = Object.keys(defaultEnv).reduce((current, nextKey) => {
 const envConfig = { 'process.env': { ...envKeys } }
 
 module.exports = {
-  mode: ENV,
   entry: SRC_DIR,
-  output: {
-    path: join(ROOT_DIR, 'build'),
-    publicPath: 'wallet',
-    filename: 'bundle.[hash].js'
-  },
   module: {
     rules: [
       {
@@ -45,7 +39,18 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              config: {
+                path: 'postcss.config.js'
+              }
+            }
+          },
+          {
+            loader: 'sass-loader', options: { sourceMap: true }
+          }
         ]
       }, {
         test: /\.(png|svg|jpg|gif)$/,
@@ -68,12 +73,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['*', '.js']
-  },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './build',
-    hot: true
-    historyApiFallback: true,
   },
   plugins: [
     new CleanWebpackPlugin(),
