@@ -29,7 +29,7 @@ module.exports = {
   entry: SRC_DIR,
   output: {
     path: join(ROOT_DIR, 'build'),
-    publicPath: '/wallet',
+    publicPath: '/wallet/',
     filename: 'bundle.[hash].js'
   },
   module: {
