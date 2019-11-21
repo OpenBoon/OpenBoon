@@ -290,7 +290,9 @@ class PixmlClient(object):
 
     def __load_apikey(self, apikey):
         key_data = None
-        if hasattr(apikey, 'read'):
+        if not apikey:
+            return key_data
+        elif hasattr(apikey, 'read'):
             key_data = json.load(apikey)
         elif isinstance(apikey, dict):
             key_data = apikey
