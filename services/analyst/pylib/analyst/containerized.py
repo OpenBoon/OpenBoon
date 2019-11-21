@@ -64,11 +64,11 @@ class ContainerizedZpsExecutor(object):
         try:
             if self.script.get("generate"):
                 self.generate()
-            if self.script.get("over"):
-                objects = self.process()
-                if objects:
+            if self.script.get("assets"):
+                assets = self.process()
+                if assets:
                     self.client.emit_event(
-                        self.task, "index", {"assets": objects})
+                        self.task, "index", {"assets": assets})
         except Exception as e:
             logger.warning("Failed to execute ZPS script, {}".format(e))
             exit_status = 1
@@ -120,10 +120,10 @@ class ContainerizedZpsExecutor(object):
         Iterate over the document processors and execute each one.
         """
         processors = self.script.get("execute", [])
-        objects = self.script.get("over", [])
+        assets = self.script.get("assets", [])
 
         logger.info("running {} processors in execute, {} objects"
-                    .format(len(processors), len(objects)))
+                    .format(len(processors), len(assets)))
 
         try:
             for idx, proc in enumerate(processors):
@@ -137,7 +137,7 @@ class ContainerizedZpsExecutor(object):
 
                 # Runs all objects through the processor, returning
                 # objects in their new state.
-                objects = self.run_containerized_processor(proc, objects)
+                assets = self.run_containerized_processor(proc, assets)
 
                 # Tear down the processor, optionally keeping the container
                 # if its needed again.
@@ -148,7 +148,7 @@ class ContainerizedZpsExecutor(object):
             logger.warning("Failed to execute script, unexpected {}".format(e))
             self.stop_container()
 
-        return objects
+        return assets
 
     def teardown_processor(self, ref, keep_container):
         """
@@ -165,13 +165,13 @@ class ContainerizedZpsExecutor(object):
         if not keep_container:
             self.stop_container()
 
-    def run_containerized_processor(self, ref, objs):
+    def run_containerized_processor(self, ref, assets):
         """
         Runs a given DocumentProcessor on a list of objects.
 
         Args:
             ref (dict): The processor reference.
-            objs: (list): A list of objects to iterate over.
+            assets: (list): A list of asset Ids to iterate over.
 
         Returns:
             list: Returns the objects in their processed state.
@@ -181,13 +181,13 @@ class ContainerizedZpsExecutor(object):
         if not self.container:
             self.container = DockerContainerProcess(self, self.task, ref["image"])
 
-        if objs:
-            for obj in objs:
-                result = self.container.execute_processor(ref, obj)
+        if assets:
+            for asset in assets:
+                result = self.container.execute_processor(ref, asset)
                 # Check to see if the object got skipped before adding
                 # it to the result.
                 if not result.get("skip"):
-                    results.append(result["object"])
+                    results.append(result["asset"])
         return results
 
     def stop_container(self):
@@ -261,9 +261,9 @@ class DockerContainerProcess(object):
         logger.info("starting container {}".format(self.image))
         return self.docker_client.containers.run(self.image, detach=True,
                                                  environment=env, volumes=volumes,
-                                                 entrypoint="/usr/local/bin/zpsd",
+                                                 entrypoint="/usr/local/bin/entrypoint",
                                                  network=network,
-                                                 labels=["zpsd"])
+                                                 labels=["containerizer"])
 
     def __wait_for_container(self):
         """
@@ -352,7 +352,7 @@ class DockerContainerProcess(object):
             else:
                 self.client.emit_event(self.task, event_type, event["payload"])
 
-    def execute_processor(self, ref, obj):
+    def execute_processor(self, ref, asset):
         """
         Execute a given Processor ref on an object.  In the case of
         a Generator, obj may be None.
@@ -363,14 +363,14 @@ class DockerContainerProcess(object):
 
         Args:
             ref (dict): The Processor reference.
-            obj (dict): The object or possibly None.
+            asset (dict): The asset or possibly None.
 
         """
         request = {
             "type": "execute",
             "payload": {
                 "ref": ref,
-                "object": obj
+                "asset": asset
             }
         }
         response = None
@@ -382,7 +382,7 @@ class DockerContainerProcess(object):
             # Once we find the resulting object, return it back ou
             # so it can be passed into the next processor.
             event_type = event["type"]
-            if event_type == "object":
+            if event_type == "asset":
                 response = event["payload"]
             elif event_type == "finished":
                 break

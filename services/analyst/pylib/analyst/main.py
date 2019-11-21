@@ -36,7 +36,8 @@ def main():
     create_ssl_files()
 
     print("Listening on port {}".format(args.port))
-    server = WSGIServer(('0.0.0.0', int(args.port)), app, certfile='certs/analyst.cert', keyfile='certs/analyst.key')
+    server = WSGIServer(('0.0.0.0', int(args.port)), app,
+                        certfile='certs/analyst.cert', keyfile='certs/analyst.key')
     server.serve_forever()
 
 

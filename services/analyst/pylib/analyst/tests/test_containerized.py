@@ -34,11 +34,11 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
             "script": {
                 "generate": [
                     {
-                        "className": "zorroa.zsdk.testing.TestGenerator",
+                        "className": "pixml.testing.TestGenerator",
                         "args": {
                             "files": ["/test-data/images/set01/toucan.jpg"]
                         },
-                        "image": "zmlp-py3-sdk"
+                        "image": "zmlp-plugins-base"
                     }
                 ]
             }
