@@ -12,7 +12,7 @@ module.exports = merge(common, {
   mode: 'production',
   output: {
     path: join(ROOT_DIR, 'build'),
-    publicPath: '/wallet',
+    publicPath: '/wallet/',
     filename: 'bundle.[hash].js'
   },
   devtool: false,
