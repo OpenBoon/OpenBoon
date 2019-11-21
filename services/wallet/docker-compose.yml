@@ -12,7 +12,6 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
-      ARCHIVIST_API_URL:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
