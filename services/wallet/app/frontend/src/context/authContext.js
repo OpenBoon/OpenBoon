@@ -15,7 +15,7 @@ function AuthProvider(props) {
   const [user, setUser] = useState(initialUser)
 
   const login = (email, password) => {
-    authenticateUser(email, password).then(() => {
+    return authenticateUser(email, password).then(() => {
       const user = new User({
         ...initialUser,
         email,
