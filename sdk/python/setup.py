@@ -16,21 +16,14 @@ with open('requirements.txt') as f:
     reqs = f.read().strip().splitlines()
 
 setup(
-    name='zorroa',
+    name='pixml',
     version=open("VERSION").read().strip(),
-    description='Zorroa Python SDK',
+    description='PixelML Python SDK',
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['zorroa',
-              'zorroa.zclient',
-              'zorroa.zsdk',
-              'zorroa.zsdk.document',
-              'zorroa.zsdk.util',
-              'zorroa.zsdk.ofs',
-              'zorroa.zsdk.zpsd',
-              'zorroa.zsdk.zpsdebug'],
-    scripts=['bin/zpsd', 'bin/zpsdebug'],
+    packages=['pixml'],
+    scripts=[],
 
     classifiers=[
         "Programming Language :: Python :: 3",
