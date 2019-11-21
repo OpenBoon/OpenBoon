@@ -27,11 +27,6 @@ const envConfig = { 'process.env': { ...envKeys } }
 
 module.exports = {
   entry: SRC_DIR,
-  output: {
-    path: join(ROOT_DIR, 'build'),
-    publicPath: '/wallet/',
-    filename: 'bundle.[hash].js'
-  },
   module: {
     rules: [
       {
@@ -78,12 +73,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['*', '.js']
-  },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './build',
-    hot: true,
-    historyApiFallback: true
   },
   plugins: [
     new CleanWebpackPlugin(),
