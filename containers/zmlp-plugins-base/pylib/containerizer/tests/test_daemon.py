@@ -1,31 +1,37 @@
 import logging
+import time
 import unittest
 
 import zmq
 
+from containerizer.daemon import PixmlContainerDaemon
 from pixml.processor import Reactor
 from pixml.testing import TestEventEmitter
-from containerizer.server import PixmlContainerDaemon
 
 logging.basicConfig(level=logging.DEBUG)
 
 
-class ZpsdServerTests(unittest.TestCase):
+class PixmlContainerDaemonTests(unittest.TestCase):
 
     def tearDown(self):
+        self.server.close()
         self.zpsd.stop()
 
     def setUp(self):
         self.emitter = TestEventEmitter()
-        self.zpsd = PixmlContainerDaemon(Reactor(self.emitter))
+        self.zpsd = PixmlContainerDaemon(None, Reactor(self.emitter))
+
+        context = zmq.Context()
+        self.server = context.socket(zmq.PAIR)
+        self.server.bind("tcp://*:9999")
 
     def test_event_handler_generate(self):
         event = {
             "type": "generate",
             "payload": {
                 "ref": {
-                    "className": "zorroa.zsdk.testing.TestGenerator",
-                    "image": "plugins-py3-base",
+                    "className": "pixml.testing.TestGenerator",
+                    "image": "zmlp-plugins-base",
                     "args": {
                         "files": [
                             "/test-data/images/set01/toucan.jpg",
@@ -45,13 +51,13 @@ class ZpsdServerTests(unittest.TestCase):
             "type": "execute",
             "payload": {
                 "ref": {
-                    "className": "zorroa.zsdk.testing.TestProcessor",
-                    "image": "plugins-py3-base",
+                    "className": "pixml.testing.TestProcessor",
+                    "image": "zmlp-plugins-base",
                     "args": {
 
                     }
                 },
-                "object": {
+                "asset": {
                     "id": "1234",
                     "document": {
                         "kirk": "spock"
@@ -62,7 +68,7 @@ class ZpsdServerTests(unittest.TestCase):
         # Run twice
         self.zpsd.handle_event(event)
         self.zpsd.handle_event(event)
-        assert self.emitter.event_count("object") == 2
+        assert self.emitter.event_count("asset") == 2
         assert self.emitter.event_count("error") == 0
 
     def test_event_handler_failure(self):
@@ -71,16 +77,19 @@ class ZpsdServerTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "foo.DoesNotExist",
-                    "image": "plugins-py3-base",
+                    "image": "zmlp-plugins-base",
                     "args": {}
                 },
-                "object": {}
+                "asset": {
+                    "id": "abc123"
+                }
             }
         }
         self.zpsd.handle_event(event)
         assert self.emitter.event_count("error") == 1
 
     def test_receive_event(self):
+
         context = zmq.Context()
         socket = context.socket(zmq.PAIR)
         socket.connect("tcp://localhost:9999")
@@ -89,15 +98,23 @@ class ZpsdServerTests(unittest.TestCase):
             "type": "execute",
             "payload": {
                 "ref": {
-                    "className": "zorroa.zsdk.testing.TestProcessor",
-                    "image": "plugins-py3-base",
-                    "args": {
-
-                    }
+                    "className": "pixml.testing.TestProcessor",
+                    "image": "zmlp-plugins-base",
+                    "args": {}
                 },
-                "asset": {}
+                "asset": {
+                    "id": "123"
+                }
             }
         }
-        socket.send_json(event)
-        packet = self.zpsd.socket.recv_json()
-        assert packet == event
+        self.server.send_json(event)
+        tries = 0
+        while True:
+            tries += 1
+            poll = socket.poll(timeout=1000)
+            if poll == 1:
+                tries = -1
+                break
+            else:
+                time.sleep(0.25)
+        assert tries == -1

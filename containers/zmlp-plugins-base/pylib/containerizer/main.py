@@ -1,18 +1,21 @@
 import argparse
 import logging
+import os
 
-from .server import PixmlContainerDaemon
+from .daemon import PixmlContainerDaemon
 
 logger = logging.getLogger(__file__)
 
 
 def main():
-    parser = argparse.ArgumentParser(prog='pixmld')
-    parser.add_argument("-p", "--port", default=5557, help="TCP port to listen on.")
+    parser = argparse.ArgumentParser(prog='containerized')
+    parser.add_argument("-a", "--analyst",
+                        help="The Analyst URI to connect to in ZMQ format.")
 
     args = parser.parse_args()
+    host = args.analyst or os.environ.get("ZMLP_EVENT_HOST")
 
     logging.basicConfig(level=logging.DEBUG)
 
-    server = PixmlContainerDaemon(int(args.port))
+    server = PixmlContainerDaemon(host)
     server.start()

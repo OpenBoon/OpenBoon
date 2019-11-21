@@ -1,17 +1,17 @@
 import logging
 import sys
-import os
 
 import zmq
 
-from pixml.processor import Reactor
 from containerizer.process import ProcessorExecutor
+from pixml.processor import Reactor
 
 logger = logging.getLogger(__name__)
 
 
 class PixmlContainerDaemon(object):
-    def __init__(self, reactor=None):
+    def __init__(self, host, reactor=None):
+        self.host = host
         self.socket = self.__setup_zmq_socket()
         self.reactor = reactor
 
@@ -22,9 +22,12 @@ class PixmlContainerDaemon(object):
     def __setup_zmq_socket(self):
         ctx = zmq.Context()
         socket = ctx.socket(zmq.PAIR)
-        logger.info("Connecting to {}".format(os.environ.get("ZMLP_EVENT_HOST")))
-        socket.connect(os.environ.get("ZMLP_EVENT_HOST"))
-        socket.send_json({"type": "ready", "payload": {}})
+        if self.host:
+            logger.info("Connecting to {}".format(self.host))
+            socket.connect(self.host)
+            socket.send_json({"type": "ready", "payload": {}})
+        else:
+            logger.warning("No Analyst host specified, not connecting...")
         return socket
 
     def start(self):

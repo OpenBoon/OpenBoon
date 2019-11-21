@@ -44,7 +44,7 @@ class ProcessorExecutor(object):
         frame = Frame(Asset(obj))
 
         logger.info("executing processor='{}' on asset={}'"
-                    .format(ref["className"], frame.asset.id))
+                    .format(ref["className"], obj))
 
         wrapper = self.get_processor_wrapper(ref)
         wrapper.process(frame)
@@ -322,7 +322,7 @@ class FrameConsumer(object):
         """
         waiting = len(self.expand)
         if waiting > 0 and (waiting >= self.reactor.batch_size or force):
-            assets = [f.asset.for_json() for f in self.expand]
+            assets = [asset.for_json() for asset in self.expand]
             self.expand_count += 1
 
             logger.info("#%d Expand %d frames into new task" % (self.expand_count, waiting))
