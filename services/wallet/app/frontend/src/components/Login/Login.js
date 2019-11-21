@@ -24,14 +24,16 @@ function Login({ user, login, history }) {
     if (emailValidator(email) && passwordValidator(password)) {
       setLoading(true)
 
-      login(email, password).then(() => {
-        setLoading(false)
-        history.push('/')
-      }).catch(() => {
-        setLoading(false)
-        setError(ERROR_MESSAGE)
-        emailInput.current.focus()
-      })
+      login(email, password)
+        .then(() => {
+          setLoading(false)
+          history.push('/')
+        })
+        .catch(() => {
+          setLoading(false)
+          setError(ERROR_MESSAGE)
+          emailInput.current.focus()
+        })
     } else {
       setError(ERROR_MESSAGE)
       emailInput.current.focus()
@@ -55,7 +57,7 @@ function Login({ user, login, history }) {
           )
           */}
 
-          {(error) && (
+          {error && (
             <div className="login__form-error-container">
               <i className="fas fa-exclamation-triangle"></i>
               <p className="login__form-error-message">{error}</p>
@@ -63,11 +65,11 @@ function Login({ user, login, history }) {
             </div>
           )}
 
-          <p className="login__form-sub-heading">- or -</p>
+          {/* <p className="login__form-sub-heading">- or -</p> */}
 
           <div className="login__form-group">
             <label className="login__form-label" htmlFor="email">
-              Email
+              <Email></Email>
             </label>
             <input
               id="email"
@@ -75,7 +77,9 @@ function Login({ user, login, history }) {
               type="text"
               value={email}
               name="email"
-              className={cx(error ? "login__form-input--error" : "login__form-input")}
+              className={cx(
+                error ? 'login__form-input--error' : 'login__form-input',
+              )}
               onChange={e => {
                 setEmail(e.target.value)
                 setError('')
@@ -92,7 +96,9 @@ function Login({ user, login, history }) {
               type="password"
               value={password}
               name="password"
-              className={cx(error ? "login__form-input--error" : "login__form-input")}
+              className={cx(
+                error ? 'login__form-input--error' : 'login__form-input',
+              )}
               onChange={e => {
                 setPassword(e.target.value)
                 setError('')
@@ -100,11 +106,14 @@ function Login({ user, login, history }) {
             />
           </div>
 
-          <button className="login__btn btn btn-primary" type="submit" disabled={error.length}>
+          <button
+            className="login__btn btn btn-primary"
+            type="submit"
+            disabled={error.length}>
             Login
           </button>
 
-          <Link to='/' className="login__form-tagline">
+          <Link to="/" className="login__form-tagline">
             Forgot Password? Need login help?
           </Link>
         </form>

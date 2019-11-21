@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from '../../../enzymeAdapter'
+import {shallow} from '../../../enzymeAdapter'
 import App from '../App'
 
 describe('<App />', () => {
