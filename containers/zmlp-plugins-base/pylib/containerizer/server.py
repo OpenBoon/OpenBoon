@@ -4,15 +4,14 @@ import os
 
 import zmq
 
-from zorroa.zsdk.processor import Reactor
-from zorroa.zsdk.zpsd.process import ProcessorExecutor
+from pixml.processor import Reactor
+from containerizer.process import ProcessorExecutor
 
 logger = logging.getLogger(__name__)
 
 
-class ZpsdServer(object):
-    def __init__(self, port, reactor=None):
-        self.port = port
+class PixmlContainerDaemon(object):
+    def __init__(self, reactor=None):
         self.socket = self.__setup_zmq_socket()
         self.reactor = reactor
 

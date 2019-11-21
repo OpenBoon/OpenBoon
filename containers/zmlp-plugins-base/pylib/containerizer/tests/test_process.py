@@ -1,9 +1,9 @@
 import unittest
 import logging
 
-from zorroa.zsdk.zpsd.process import ProcessorExecutor
-from zorroa.zsdk.testing import TestEventEmitter
-from zorroa.zsdk.processor import Reactor
+from containerizer.process import ProcessorExecutor
+from pixml.testing import TestEventEmitter
+from pixml.processor import Reactor
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -34,14 +34,15 @@ class ProcessorExecutorTests(unittest.TestCase):
                 "args": {},
                 "image": "plugins-py3-base"
             },
-            "object": {
+            "asset": {
                 "id": "1234"
             }
         }
         self.pe.execute_processor(req)
-        assert self.emitter.event_count("object") == 1
+        assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 0
-        assert self.emitter.event_total() == 1
+        assert self.emitter.event_count("finished") == 1
+        assert self.emitter.event_total() == 2
 
     def test_teardown_processor(self):
         req = {
@@ -50,7 +51,7 @@ class ProcessorExecutorTests(unittest.TestCase):
                 "args": {},
                 "image": "plugins-py3-base"
             },
-            "object": {
+            "asset": {
                 "id": "1234"
             }
         }

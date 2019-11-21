@@ -3,9 +3,9 @@ import unittest
 
 import zmq
 
-from zorroa.zsdk.processor import Reactor
-from zorroa.zsdk.testing import TestEventEmitter
-from zorroa.zsdk.zpsd.server import ZpsdServer
+from pixml.processor import Reactor
+from pixml.testing import TestEventEmitter
+from containerizer.server import PixmlContainerDaemon
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -17,7 +17,7 @@ class ZpsdServerTests(unittest.TestCase):
 
     def setUp(self):
         self.emitter = TestEventEmitter()
-        self.zpsd = ZpsdServer(9999, Reactor(self.emitter))
+        self.zpsd = PixmlContainerDaemon(Reactor(self.emitter))
 
     def test_event_handler_generate(self):
         event = {

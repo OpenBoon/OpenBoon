@@ -4,9 +4,8 @@ import logging
 import sys
 import time
 
-from zorroa.zsdk.document.asset import Asset, Document
-from zorroa.zsdk.exception import UnrecoverableProcessorException
-from zorroa.zsdk.processor import Frame, Context
+from pixml.asset import Asset
+from pixml.processor import Frame, Context, PixmlUnrecoverableProcessorException
 
 logger = logging.getLogger(__name__)
 
@@ -41,8 +40,8 @@ class ProcessorExecutor(object):
             The processed data object.
         """
         ref = request["ref"]
-        obj = request.get("object")
-        frame = Frame(Asset.from_document(Document(obj)))
+        obj = request.get("asset")
+        frame = Frame(Asset(obj))
 
         logger.info("executing processor='{}' on asset={}'"
                     .format(ref["className"], frame.asset.id))
@@ -185,7 +184,7 @@ class ProcessorWrapper(object):
             else:
                 logger.warning("Generate warning, instance for '{}' does not exist."
                                .format(self.ref))
-        except UnrecoverableProcessorException as upe:
+        except PixmlUnrecoverableProcessorException as upe:
             # Set the asset to be skipped for further processing
             # It will not be included in result
             self.increment_stat("unrecoverable_error_count")
@@ -219,7 +218,7 @@ class ProcessorWrapper(object):
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
             self.increment_stat("total_time", total_time)
-        except UnrecoverableProcessorException as upe:
+        except PixmlUnrecoverableProcessorException as upe:
             # Set the asset to be skipped for further processing
             # It will not be included in result
             frame.skip = True
@@ -231,9 +230,9 @@ class ProcessorWrapper(object):
             self.reactor.error(frame, self.instance, e, False, "execute", sys.exc_info()[2])
         finally:
             self.reactor.emitter.write({
-                "type": "object",
+                "type": "asset",
                 "payload": {
-                    "object": frame.asset.for_json(),
+                    "asset": frame.asset.for_json(),
                     "skip": frame.skip
                 }
             })
@@ -300,17 +299,17 @@ class FrameConsumer(object):
         self.exit_status = 0
         self.expand = []
 
-    def accept(self, frame):
+    def accept(self, asset):
         """
         Called by the generator once it finds a frame to emit.
 
         Args:
-            frame(Document): The frame of data to filter for acceptance.
+            asset (Asset): The asset to consume.
 
         """
-        if not is_file_type_allowed(frame, self.file_types):
+        if not is_file_type_allowed(asset, self.file_types):
             return
-        self.expand.append(frame)
+        self.expand.append(asset)
         self.check_expand()
 
     def check_expand(self, force=False):
@@ -323,17 +322,15 @@ class FrameConsumer(object):
         """
         waiting = len(self.expand)
         if waiting > 0 and (waiting >= self.reactor.batch_size or force):
-            objects = [f.asset.for_json() for f in self.expand]
+            assets = [f.asset.for_json() for f in self.expand]
             self.expand_count += 1
-            script = {
-                "over": objects
-            }
+
             logger.info("#%d Expand %d frames into new task" % (self.expand_count, waiting))
-            self.reactor.expand(script)
+            self.reactor.expand(assets)
             self.expand = []
 
 
-def is_file_type_allowed(frame, file_types):
+def is_file_type_allowed(asset, file_types):
     """
     Determine if a given frame is filtered out by a set of file types.
 
@@ -347,7 +344,7 @@ def is_file_type_allowed(frame, file_types):
     """
     if file_types:
         result = False
-        ext = frame.asset.get_attr("source.extension")
+        ext = asset.get_attr("source.extension")
         if ext and ext.lower() in file_types:
             result = True
         return result
