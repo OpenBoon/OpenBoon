@@ -63,11 +63,11 @@ function Login({ user, login, history }) {
             </div>
           )}
 
-          <p className="login__form-sub-heading">- or -</p>
+          {/*<p className="login__form-sub-heading">- or -</p>*/}
 
           <div className="login__form-group">
             <label className="login__form-label" htmlFor="email">
-              Email
+              <Email></Email>
             </label>
             <input
               id="email"
