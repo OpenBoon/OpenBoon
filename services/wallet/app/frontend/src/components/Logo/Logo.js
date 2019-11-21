@@ -1,9 +1,14 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 function Logo({ width, height }) {
   return (
-    <img width={width} height={height} className="Logo" src={require('../../images/logo.svg')} />
+    <img
+      width={width}
+      height={height}
+      className="Logo"
+      src={require('../../images/logo.svg')}
+    />
   )
 }
 
