@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { Redirect, Link } from 'react-router-dom'
 
-import { emailValidator, passwordValidator } from '../../validators'
 import User from '../../models/User'
 import Page from '../Page'
 import Logo from '../Logo'
@@ -14,23 +13,23 @@ function Login({ user, login, history }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
   const emailInput = useRef(null)
 
   function handleSubmit(e) {
     e.preventDefault()
     setError('')
 
-    if (emailValidator(email) && passwordValidator(password)) {
-      setLoading(true)
+    if (email !== '' && password !== '') {
+      // setLoading(true)
 
       login(email, password)
         .then(() => {
-          setLoading(false)
-          history.push('/')
+          // setLoading(false)
+          history.push('/workspace')
         })
         .catch(() => {
-          setLoading(false)
+          // setLoading(false)
           setError(ERROR_MESSAGE)
           emailInput.current.focus()
         })
@@ -41,14 +40,14 @@ function Login({ user, login, history }) {
   }
 
   if (user.attrs.tokens) {
-    return <Redirect to={'/'} />
+    return <Redirect to={'/workspace'} />
   }
 
   return (
     <Page>
       <div className="login__page">
         <form className="login__form" onSubmit={handleSubmit}>
-          <Logo width={143} height={42} />
+          <Logo width="143" height="42" />
           <h3 className="login__form-heading">Welcome. Please login.</h3>
 
           {/*
@@ -61,7 +60,6 @@ function Login({ user, login, history }) {
             <div className="login__form-error-container">
               <i className="fas fa-exclamation-triangle"></i>
               <p className="login__form-error-message">{error}</p>
-              <i className="fas fa-exclamation-triangle"></i>
             </div>
           )}
 
@@ -69,7 +67,7 @@ function Login({ user, login, history }) {
 
           <div className="login__form-group">
             <label className="login__form-label" htmlFor="email">
-              <Email></Email>
+              Email
             </label>
             <input
               id="email"
@@ -123,8 +121,9 @@ function Login({ user, login, history }) {
 }
 
 Login.propTypes = {
-  login: PropTypes.func.isRequired,
   user: PropTypes.instanceOf(User).isRequired,
+  login: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default Login

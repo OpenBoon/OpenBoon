@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import * as Sentry from '@sentry/browser'
 
 // Include all our app-wide style classes
-
 import './styles/core.scss'
+
 import AppProviders from './components/AppProviders'
 import App from './components/App'
 

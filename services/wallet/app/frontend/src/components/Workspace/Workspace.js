@@ -1,21 +1,22 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { Redirect } from 'react-router-dom'
 
-function Workspace({ user, logout }) {
-  if (user.attrs.tokens) {
-    return <Redirect to={'/login'} />
+import { ACCESS_TOKEN } from '../../constants/authConstants'
+import Page from '../Page'
+
+function Workspace() {
+  const token = localStorage.getItem(ACCESS_TOKEN)
+  if (!token) {
+    return <Redirect to={'/'} />
   }
 
   return (
-    <div>
-      <div className="Wallet">{'Hello World!'}</div>
-      <button onClick={props.logout}>{'Logout'}</button>
-    </div>
+    <Page>
+      <div className="Workspace">
+        <p>{'Hello World!'}</p>
+      </div>
+    </Page>
   )
-}
-
-Workspace.propTypes = {
-  logout: PropTypes.func.isRequired,
 }
 
 export default Workspace

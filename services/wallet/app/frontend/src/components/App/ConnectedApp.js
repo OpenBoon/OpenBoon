@@ -9,4 +9,5 @@ function ConnectedApp() {
 
   return <App {...authContext} {...userContext} />
 }
+
 export default ConnectedApp
