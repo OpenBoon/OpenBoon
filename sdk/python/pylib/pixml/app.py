@@ -1,4 +1,3 @@
-import base64
 import json
 import logging
 import os
@@ -10,6 +9,7 @@ from .rest import PixmlClient
 logger = logging.getLogger(__name__)
 
 DEFAULT_SERVER = 'https://api.pixelml.com'
+
 
 class PixmlApp(object):
     """
