@@ -26,7 +26,7 @@ class PixmlApp(object):
         """
         logger.debug("Initializing PixmlApp to {}".format(server))
         self.client = PixmlClient(apikey, server or DEFAULT_SERVER)
-        self.lfc = LocalFileCache(self)
+        self.file_cache = LocalFileCache(self)
 
     def bulk_process_assets(self, assets):
         """
@@ -37,7 +37,7 @@ class PixmlApp(object):
         Returns:
 
         """
-        raise NotImplemented()
+        self.client.post("/api/v1/assets")
 
     def bulk_process_datasource(self, uri):
         """
@@ -91,7 +91,10 @@ class PixmlApp(object):
             str: a local file path to a remote file
 
         """
-        return self.lfc.localize_remote_file(obj)
+        return self.file_cache.localize_remote_file(obj)
+
+
+
 
 
 @lru_cache(maxsize=32)

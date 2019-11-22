@@ -92,7 +92,7 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
 
     # Store the path to the proxy in our local file storage
     # because a processor will need it down the line.
-    app.lfc.localize_pixml_file(result, path)
+    app.file_cache.localize_pixml_file(result, path)
 
     if not asset.get_files(name=name, category=category):
         files = asset.get_attr("files") or []
