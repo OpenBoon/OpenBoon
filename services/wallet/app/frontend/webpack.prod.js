@@ -3,8 +3,6 @@ const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
-const CopyWebpackPlugin = require("copy-webpack-plugin")
-const ImageminPlugin = require("imagemin-webpack-plugin").default
 
 const ROOT_DIR = resolve(__dirname)
 
@@ -15,7 +13,6 @@ module.exports = merge(common, {
     publicPath: '/wallet/',
     filename: 'bundle.[hash].js'
   },
-  devtool: false,
   optimization: {
     splitChunks: {
       cacheGroups: {

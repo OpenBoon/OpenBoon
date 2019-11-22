@@ -14,7 +14,7 @@ module.exports = merge(common, {
   },
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './build',
+    contentBase: '/build',
     hot: true,
     historyApiFallback: true,
     publicPath: '',

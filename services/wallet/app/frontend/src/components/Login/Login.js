@@ -13,7 +13,6 @@ function Login({ user, login, history }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  // const [loading, setLoading] = useState(false)
   const emailInput = useRef(null)
 
   function handleSubmit(e) {
@@ -21,15 +20,11 @@ function Login({ user, login, history }) {
     setError('')
 
     if (email !== '' && password !== '') {
-      // setLoading(true)
-
       login(email, password)
         .then(() => {
-          // setLoading(false)
           history.push('/workspace')
         })
         .catch(() => {
-          // setLoading(false)
           setError(ERROR_MESSAGE)
           emailInput.current.focus()
         })

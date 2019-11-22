@@ -17,7 +17,11 @@ module.exports = {
         use: ['babel-loader']
       },
       {
-        test: [/.css$|.scss$/],
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
+      },
+      {
+        test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -31,24 +35,31 @@ module.exports = {
             }
           },
           {
-            loader: 'sass-loader', options: { sourceMap: true }
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true
+            }
           }
-        ]
+        ],
       }, {
         test: /\.(png|svg|jpg|gif)$/,
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]',
-              outputPath: './images'
+              name: 'images/[name].[hash].[ext]'
             }
-          }
-        ]
+          },
+        ],
       }, {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [
-          'file-loader'
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'fonts/[name].[hash].[ext]'
+            }
+          }
         ]
       }
     ]
@@ -59,8 +70,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: join(SRC_DIR, '/index.html'),
-      filename: join(ROOT_DIR, '/build/index.html')
+      template: join(SRC_DIR, 'index.html'),
+      filename: join(ROOT_DIR, 'build/index.html')
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css'
