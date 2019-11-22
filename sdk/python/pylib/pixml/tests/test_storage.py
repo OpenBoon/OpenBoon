@@ -5,7 +5,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from pixml import storage
-from pixml.analysis.testing import zorroa_test_data
+from pixml.analysis.testing import zorroa_test_data, TestAsset
 from pixml.app import app_from_env
 from pixml.rest import PixmlClient
 
@@ -19,7 +19,7 @@ class LocalFileCacheTests(TestCase):
         self.lfc.clear()
 
     def test_localize_http(self):
-        path = self.lfc.localize_uri("https://i.imgur.com/WkomVeG.jpg")
+        path = self.lfc.localize_uri()
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
@@ -59,8 +59,28 @@ class LocalFileCacheTests(TestCase):
         }
         post_patch.return_value = "/tmp/toucan.jpg"
         bird = zorroa_test_data("images/set01/toucan.jpg")
-        path = self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))
+        path = self.lfc.localize_pixml_file(pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
+
+    def test_localize_file_obj_with_uri(self):
+        test_asset = TestAsset("https://i.imgur.com/WkomVeG.jpg")
+        path = self.lfc.localize_file(test_asset)
+        assert os.path.exists(path)
+
+    def test_localize_file_str(self):
+        path = self.lfc.localize_file("https://i.imgur.com/WkomVeG.jpg")
+        assert os.path.exists(path)
+
+    @patch.object(PixmlClient, 'stream')
+    def test_localize_file_pixml_file_dict(self, post_patch):
+        post_patch.return_value = "/tmp/toucan.jpg"
+        pfile = {
+            "name": "cat.jpg",
+            "category": "proxy",
+            "assetId": "123456"
+        }
+        path = self.lfc.localize_pixml_file(pfile)
+        assert path.endswith("c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg")
 
     def test_close(self):
         self.lfc.close()
