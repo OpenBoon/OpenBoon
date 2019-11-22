@@ -1,6 +1,7 @@
 const { join, resolve } = require('path')
-const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
+const merge = require('webpack-merge')
+const webpack = require('webpack')
 
 const ROOT_DIR = resolve(__dirname)
 
@@ -16,6 +17,9 @@ module.exports = merge(common, {
     contentBase: './build',
     hot: true,
     historyApiFallback: true,
-    publicPath: ''
-  }
+    publicPath: '',
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ]
 })

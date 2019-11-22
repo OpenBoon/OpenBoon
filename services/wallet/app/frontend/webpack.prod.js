@@ -12,7 +12,7 @@ module.exports = merge(common, {
   mode: 'production',
   output: {
     path: join(ROOT_DIR, 'build'),
-    publicPath: '/wallet',
+    publicPath: '/wallet/',
     filename: 'bundle.[hash].js'
   },
   devtool: false,
@@ -38,15 +38,5 @@ module.exports = merge(common, {
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
-  },
-  plugins: [
-    // Copy the images folder and optimize all the images
-    new CopyWebpackPlugin([{
-      from: 'src/images/',
-      to: 'images/'
-    }]),
-    new ImageminPlugin({
-      test: /\.(png|svg|jpg|gif)$/
-    })
-  ]
+  }
 })
