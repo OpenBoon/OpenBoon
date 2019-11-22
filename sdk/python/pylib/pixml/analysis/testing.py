@@ -7,6 +7,8 @@ import time
 import unittest
 import uuid
 
+from urllib.parse import urlparse
+
 from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument
 from pixml.asset import AssetSpec, Asset
 
@@ -190,27 +192,43 @@ class TestAsset(Asset):
     """
     A TestAsset is used for testing processors with local files.
     """
-    def __init__(self, path, attrs=None):
+    mimetype_lookup = {
+        "jpg": "image/jpeg",
+        "mp4": "video/mp4",
+        "png": "image/png"
+    }
+
+    def __init__(self, path=None, attrs=None):
+        """
+        Construct a test Asset.
+
+        Args:
+            path (str): A URL to a local file.
+            attrs(dict): Addtional attributes in key/value pair form Eg {"a.b.c": 123})
+        """
         super(TestAsset, self).__init__({"id": str(uuid.uuid4())})
-        self.path = path
         self.set_attr("source.path", path)
-        self.set_attr("source.extension",
-                      os.path.basename(path).split(".")[-1])
+
+        if path:
+            parsed_uri = urlparse(path)
+            ext = os.path.basename(parsed_uri.path).split(".")[-1]
+
+            self.set_attr("source.extension", ext)
+            self.set_attr("source.mimetype",
+                          self.mimetype_lookup.get(ext, "application/octet-stream"))
+
         if attrs:
             for k, v in attrs.items():
                 self.set_attr(k, v)
 
-    def get_local_source_path(self):
-        return self.path
 
-
-def zorroa_test_data(rel_path=""):
+def zorroa_test_data(rel_path="", uri=True):
     """
     Return the absolute path to the given test file.
 
     Args:
         rel_path (str): A path relative to the zorroa-test-data local sub module.
-
+        uri (bool): return a file:// URI rather than a path.
     Returns:
         str: the absolute path to the test file.
 
@@ -220,4 +238,9 @@ def zorroa_test_data(rel_path=""):
     else:
         path = os.path.join(os.path.join(os.path.dirname(__file__)),
                             "../../../../../test-data", rel_path)
-    return os.path.abspath(os.path.normpath(path))
+
+    full_path = os.path.abspath(os.path.normpath(path))
+    if uri:
+        return "file://{}".format(full_path)
+    else:
+        return full_path
