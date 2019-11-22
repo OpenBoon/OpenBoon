@@ -213,12 +213,14 @@ class Asset(AssetBase):
         """
         return self.get_attr("source.path")
 
-    def get_files(self, mimetype=None, extension=None, attrs=None):
+    def get_files(self, name=None, category=None, mimetype=None, extension=None, attrs=None):
         """
         Return all stored files associated with this asset.  Optionally
         filter the results.
 
         Args:
+            name (str): The associated files name.
+            category (str): The associated files category, eg proxy, backup, etc.
             mimetype (str): The mimetype must start with this string.
             extension: (str): The file name must have the given extension.
             attrs (dict): The file must have all of the given attributes.
@@ -227,14 +229,20 @@ class Asset(AssetBase):
             list of dict: A list of pixml file records.
         """
         result = []
-        files = self.get_attr("files", [])
+        files = self.get_attr("files") or []
         for fs in files:
             match = True
-            if mimetype and not any((mt for mt in as_collection(mimetype)
-                                     if fs["mimetype"].startswith(mt))):
+            if name and not any((item for item in as_collection(name)
+                                 if fs["name"] == item)):
                 match = False
-            if extension and not any((ext for ext in as_collection(extension)
-                                      if fs["name"].endswith("." + ext))):
+            if category and not any((item for item in as_collection(category)
+                                     if fs["category"] == item)):
+                match = False
+            if mimetype and not any((item for item in as_collection(mimetype)
+                                     if fs["mimetype"].startswith(item))):
+                match = False
+            if extension and not any((item for item in as_collection(extension)
+                                      if fs["name"].endswith("." + item))):
                 match = False
             if attrs:
                 for k, v in attrs.items():
@@ -242,7 +250,6 @@ class Asset(AssetBase):
                         match = False
             if match:
                 result.append(fs)
-
         return result
 
     def for_json(self):
