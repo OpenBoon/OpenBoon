@@ -1,9 +1,10 @@
 import logging
-import threading
-import time
-import subprocess
 import os
 import socket
+import subprocess
+import threading
+import time
+
 import docker
 import zmq
 
@@ -254,10 +255,13 @@ class DockerContainerProcess(object):
             'zmlp-config':
                   {'bind': '/zmlp-config', 'mode': 'ro'}
         }
-        env = {
+
+        env = self.task.get("env", {})
+        env.update({
             'ZMLP_EVENT_HOST': 'tcp://{}:{}'.format(host, self.port),
-            'GOOGLE_APPLICATION_CREDENTIALS': '/zmlp-config/gcp-service-account.json'
-        }
+            'GOOGLE_APPLICATION_CREDENTIALS': '/zmlp-config/gcp-service-account.json',
+        })
+
         logger.info("starting container {}".format(self.image))
         return self.docker_client.containers.run(self.image, detach=True,
                                                  environment=env, volumes=volumes,

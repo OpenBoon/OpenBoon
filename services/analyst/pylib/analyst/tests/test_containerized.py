@@ -31,6 +31,9 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
             "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
             "name": "process_me",
             "logFile": "file:///%s" % tempfile.mktemp("logfile"),
+            "env": {
+                "CAT" : "DOG"
+            },
             "script": {
                 "generate": [
                     {
