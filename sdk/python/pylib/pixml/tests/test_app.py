@@ -1,8 +1,8 @@
-import unittest
-import logging
 import base64
-import os
 import json
+import logging
+import os
+import unittest
 
 import pixml.app
 
@@ -31,6 +31,11 @@ class PixmlAppTests(unittest.TestCase):
         assert app.client
         assert app.file_cache
 
+    def test_create_app_with_key_str(self):
+        app = pixml.app.PixmlApp(self.key_str)
+        assert app.client
+        assert app.file_cache
+
     def test_create_app_from_env(self):
         server = "https://localhost:9999"
         os.environ['PIXML_APIKEY'] = self.key_str.decode()
@@ -45,4 +50,20 @@ class PixmlAppTests(unittest.TestCase):
             assert app1.client.server == server
         finally:
             del os.environ['PIXML_APIKEY']
+            del os.environ['PIXML_SERVER']
+
+    def test_create_app_from_file_env(self):
+        server = "https://localhost:9999"
+        os.environ['PIXML_APIKEY_FILE'] = "test_key.json"
+        os.environ['PIXML_SERVER'] = server
+        try:
+            app1 = pixml.app.app_from_env()
+            app2 = pixml.app.app_from_env()
+            # Check these are the same PixmlApp instance.
+            assert app1 == app2
+            # Assert we can sign a request
+            assert app1.client.headers()
+            assert app1.client.server == server
+        finally:
+            del os.environ['PIXML_APIKEY_FILE']
             del os.environ['PIXML_SERVER']

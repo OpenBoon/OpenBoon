@@ -321,7 +321,7 @@ class PixmlClient(object):
             key_data = json.load(apikey)
         elif isinstance(apikey, dict):
             key_data = apikey
-        elif isinstance(apikey, str):
+        elif isinstance(apikey, (str, bytes)):
             try:
                 key_data = json.loads(base64.b64decode(apikey))
             except binascii.Error:
@@ -331,7 +331,7 @@ class PixmlClient(object):
 
     def __sign_request(self):
         if not self.apikey:
-            raise PixmlClientException("Unable to make request, no ApiKey has been specified.")
+            raise RuntimeError("Unable to make request, no ApiKey has been specified.")
         claims = {
             'aud': self.server,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
