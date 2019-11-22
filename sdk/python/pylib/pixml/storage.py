@@ -37,8 +37,17 @@ class LocalFileCache(object):
             app (PixmlApp): Optionally provide a PixmlApp instance,
                 defaults to None.
         """
-        self.root = tempfile.mkdtemp('pixml', 'lfc')
+        self.root = None
         self.app = app
+
+    def __init_root(self):
+        """
+        This methods builds the root cache directory if the cache is
+        used, otherwise it may leave lots of empty cache temp dirs
+        in containers or other places.
+        """
+        if not self.root:
+            self.root = tempfile.mkdtemp('pixml', 'lfc')
 
     def localize_remote_file(self, rep):
         """
@@ -71,6 +80,7 @@ class LocalFileCache(object):
             str: The path within the local file cache.
 
         """
+        self.__init_root()
         logger.debug('Localizing URI: {}'.format(uri))
         _, ext = os.path.splitext(uri)
         path = self.get_path(str(uri), ext)
@@ -99,18 +109,21 @@ class LocalFileCache(object):
         location with that file.
 
         Args:
-            storage (dict): a file storage dict
+            pixml_file (dict): a file storage dict
             copy_path (str): an optional path to a file to copy into the cache location.
 
         Returns:
             str: a path to a location in the local file cache.
 
         """
+        self.__init_root()
         _, suffix = os.path.splitext(copy_path or pixml_file['name'])
         key = ''.join((pixml_file['assetId'], pixml_file['name'], pixml_file['category']))
         cache_path = self.get_path(key, suffix)
         if copy_path:
-            shutil.copy(copy_path, cache_path)
+            copy_path = urlparse(str(copy_path)).path
+            logger.debug("Copying to cache {} to {}", copy_path, cache_path)
+            shutil.copy(urlparse(copy_path).path, cache_path)
         elif not os.path.exists(cache_path):
             self.app.client.stream('/api/v2/assets/{}/_files/{}/_stream'
                                    .format(pixml_file['assetId'], pixml_file['name']), cache_path)
@@ -127,6 +140,7 @@ class LocalFileCache(object):
         Returns:
             str: The path
         """
+        self.__init_root()
         sha = hashlib.sha1()
         sha.update(key.encode('utf-8'))
         sha.update(suffix.encode('utf-8'))
@@ -138,6 +152,8 @@ class LocalFileCache(object):
         Clear out the local storage directory.
 
         """
+        if not self.root:
+            return
         logger.debug('clearing out local file cache: "{}"'.format(self.root))
         files = glob.glob('{}/*'.format(self.root))
         for f in files:
@@ -149,5 +165,7 @@ class LocalFileCache(object):
         not be usable after this is called.
 
         """
+        if not self.root:
+            return
         logger.info('closing local file cache : "{}"'.format(self.root))
         shutil.rmtree(self.root)
