@@ -1,8 +1,0 @@
-_build
-*.html
-_static
-.buildinfo
-.doctrees
-_sources
-objects.inv
-*.js

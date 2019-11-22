@@ -28,6 +28,15 @@ class TaskStoppedEvent(
 )
 
 /**
+ * An event which defines new asset specs to process.
+ *
+ * @param assets The list of asset specs.
+ */
+class TaskExpandEvent(
+    val assets: List<AssetSpec>
+)
+
+/**
  * TaskErrorEvents are emitted by the processing system if an an exception is thrown
  * while processing.
  *

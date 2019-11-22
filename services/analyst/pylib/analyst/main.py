@@ -6,14 +6,13 @@ import os
 import socket
 import subprocess
 
-from flask import Flask, jsonify, request, abort, send_file
+from flask import Flask, jsonify, request, abort
 from gevent.pywsgi import WSGIServer
 from pathlib2 import Path
 
 import analyst.components as components
 
 app = Flask(__name__)
-scanner = components.ProcessorScanner()
 
 
 def main():
@@ -36,7 +35,8 @@ def main():
     create_ssl_files()
 
     print("Listening on port {}".format(args.port))
-    server = WSGIServer(('0.0.0.0', int(args.port)), app, certfile='certs/analyst.cert', keyfile='certs/analyst.key')
+    server = WSGIServer(('0.0.0.0', int(args.port)), app,
+                        certfile='certs/analyst.cert', keyfile='certs/analyst.key')
     server.serve_forever()
 
 

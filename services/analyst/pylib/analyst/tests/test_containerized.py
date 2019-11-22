@@ -31,14 +31,17 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
             "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
             "name": "process_me",
             "logFile": "file:///%s" % tempfile.mktemp("logfile"),
+            "env": {
+                "CAT" : "DOG"
+            },
             "script": {
                 "generate": [
                     {
-                        "className": "zorroa.zsdk.testing.TestGenerator",
+                        "className": "pixml.testing.TestGenerator",
                         "args": {
                             "files": ["/test-data/images/set01/toucan.jpg"]
                         },
-                        "image": "zmlp-py3-sdk"
+                        "image": "zmlp-plugins-base"
                     }
                 ]
             }
