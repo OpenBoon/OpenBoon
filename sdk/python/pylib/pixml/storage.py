@@ -9,10 +9,8 @@ from urllib.parse import urlparse
 
 import google.cloud.storage as gcs
 
-import pixml.app
-
 __all__ = [
-    "local_file_cache"
+    "LocalFileCache"
 ]
 
 logger = logging.getLogger(__name__)
@@ -39,7 +37,26 @@ class LocalFileCache(object):
                 defaults to None.
         """
         self.root = tempfile.mkdtemp('pixml', 'lfc')
-        self.app = app or pixml.app.from_env()
+        self.app = app
+
+    def localize_file(self, rep):
+        """
+        Localize a remote file.
+
+        Args:
+            rep:
+
+        Returns:
+
+        """
+        if isinstance(rep, dict):
+            return self.localize_pixml_file(rep)
+        elif isinstance(rep, str):
+            return self.localize_uri(rep)
+        elif hasattr(rep, "uri"):
+            return self.localize_uri(rep.uri)
+        else:
+            raise ValueError("cannot localize file, unable to determine the remote file source")
 
     def localize_uri(self, uri):
         """
@@ -55,23 +72,23 @@ class LocalFileCache(object):
         logger.info('Localizing URI: {}'.format(uri))
         _, ext = os.path.splitext(uri)
         path = self.get_path(str(uri), ext)
-        _uri = urlparse(uri)
-        if _uri.scheme in ('http', 'https'):
+        parsed_uri = urlparse(uri)
+        if parsed_uri.scheme in ('http', 'https'):
             urllib.request.urlretrieve(uri, filename=str(path))
-        elif _uri.scheme == 'gs':
+        elif parsed_uri.scheme == 'gs':
             try:
                 # Attempt to use credentials.
                 gcs_client = gcs.Client()
             except OSError:
                 gcs_client = gcs.Client.create_anonymous_client()
-            bucket = gcs_client.get_bucket(_uri.netloc)
-            blob = bucket.blob(_uri.path[1:])
+            bucket = gcs_client.get_bucket(parsed_uri.netloc)
+            blob = bucket.blob(parsed_uri.path[1:])
             blob.download_to_filename(path)
         else:
-            raise ValueError('Invalid URI, unsupported scheme: {}'.format(schema))
+            raise ValueError('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
         return path
 
-    def localize_file_storage(self, storage, copy_path=None):
+    def localize_pixml_file(self, pixml_file, copy_path=None):
         """
         Localize the file described by the storage dict.  If a
         path argument is provided, overwrite the file cache
@@ -85,14 +102,14 @@ class LocalFileCache(object):
             str: a path to a location in the local file cache.
 
         """
-        _, suffix = os.path.splitext(copy_path or storage['name'])
-        key = ''.join((storage['assetId'], storage['name'], storage['category']))
+        _, suffix = os.path.splitext(copy_path or pixml_file['name'])
+        key = ''.join((pixml_file['assetId'], pixml_file['name'], pixml_file['category']))
         cache_path = self.get_path(key, suffix)
         if copy_path:
             shutil.copy(copy_path, cache_path)
         elif not os.path.exists(cache_path):
             self.app.client.stream('/api/v2/assets/{}/_files/{}/_stream'
-                                   .format(storage['assetId'], storage['name']), cache_path)
+                                   .format(pixml_file['assetId'], pixml_file['name']), cache_path)
         return cache_path
 
     def get_path(self, key, suffix=""):
@@ -122,9 +139,3 @@ class LocalFileCache(object):
         for f in files:
             os.remove(f)
 
-
-__lfc = LocalFileCache()
-
-
-def local_file_cache():
-    return __lfc

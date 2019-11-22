@@ -1,17 +1,17 @@
 import os
-
 from unittest import TestCase
 from unittest.mock import patch
 
-from pixml.analysis import storage
+from pixml import storage
 from pixml.analysis.testing import zorroa_test_data
+from pixml.app import from_env
 from pixml.rest import PixmlClient
 
 
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
-        self.lfc = storage.LocalFileCache()
+        self.lfc = storage.LocalFileCache(from_env())
 
     def tearDown(self):
         self.lfc.clear()
@@ -38,18 +38,18 @@ class LocalFileCacheTests(TestCase):
         assert not os.path.exists(path)
 
     @patch.object(PixmlClient, 'stream')
-    def test_localize_file_storage(self, post_patch):
+    def test_localize_pixml_file(self, post_patch):
         storage = {
             "name": "cat.jpg",
             "category": "proxy",
             "assetId": "123456"
         }
         post_patch.return_value = "/tmp/cat.jpg"
-        path = self.lfc.localize_file_storage(storage)
+        path = self.lfc.localize_pixml_file(storage)
         assert path.endswith("c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg")
 
     @patch.object(PixmlClient, 'stream')
-    def test_localize_file_storage_with_copy(self, post_patch):
+    def test_localize_pixml_file_with_copy(self, post_patch):
         storage = {
             "name": "cat.jpg",
             "category": "proxy",
@@ -57,6 +57,5 @@ class LocalFileCacheTests(TestCase):
         }
         post_patch.return_value = "/tmp/toucan.jpg"
         bird = zorroa_test_data("images/set01/toucan.jpg")
-        path = self.lfc.localize_file_storage(storage, zorroa_test_data("images/set01/toucan.jpg"))
+        path = self.lfc.localize_pixml_file(storage, zorroa_test_data("images/set01/toucan.jpg"))
         assert os.path.getsize(path) == os.path.getsize(bird)
-
