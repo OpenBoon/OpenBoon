@@ -1,18 +1,117 @@
+image: docker:18.09.8-dind # A Docker 19 based image does not work on Gitlab shared runners (November 2019)
+services:
+  - docker:18.09.8-dind
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
+  LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
+
 stages:
-  - test
   - build
+  - pretest
+  - test
+
+# Kotlin services - Unit tests - Step 1
+services_build_artifacts:
+  image: maven:3.6.2-jdk-11-slim
+  stage: build
+  only:
+    - merge_requests
+    - development
+  script:
+    - cd services/elasticsearch/es-similarity
+    - mvn package
+    - cd ../
+    - cd es-kwconf
+    - mvn package
+    - cd ../
+    - mvn clean install -Dmaven.test.skip=true
+#    - mvn project-info-reports:dependencies # not sure if this is still required
+  artifacts:
+    paths:
+      - services/elasticsearch/es-kwconf/target/releases/es-kwconf.zip
+      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
+
+# Kotlin services - Unit tests - Step 2
+services_push_to_local_registry:
+  stage: pretest
+  only:
+    - merge_requests
+    - development
+  retry: 2
+  script:
+    - cd services/elasticsearch
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker build -t $LOCAL_ES_NAME .
+    - docker push $LOCAL_ES_NAME
+
+# Kotlin services - Unit tests - Step 3
+#services_unit_tests:
+#  stage: test
+#  image: maven:3.6.1-jdk-11-slim
+#  only:
+#    - merge_requests
+#    - development
+#  services:
+#    - name: redis:alpine
+#      alias: redis
+#    - name: postgres:9.6.9
+#      alias: postgres
+#    - name: $LOCAL_ES_NAME
+#      alias: elasticsearch
+#      command: [ "bin/elasticsearch", "-Ediscovery.type=single-node"]
+#  variables:
+#    POSTGRES_PASSWORD: zorroa
+#    POSTGRES_USER: zorroa
+#    POSTGRES_DB: zorroa
+#    PGDATA: /var/lib/postgresql/data/pgdata
+#
+#    # This environment variable defined here does *NOT* override the value in services test.properties file when run
+#    # in this Gitlab services job. It should work if this step is converted to docker-compose and the variable is
+#    # conditionally defined in test.properties.
+#    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=archivist_test"
+#
+#    LOGGING_LEVEL_COM_ZORROA: WARN
+#    USER: gitlab
+#  script:
+#    - mvn test verify -f services/archivist -q
+#    - mvn test verify -f services/auth-server -q
+#    - mvn test verify -f services/officer -q
+
+# Kotlin Services Jobs
+#kotlin-lint:
+#  image: java:latest
+#  stage: test
+#  script:
+#    - apk update && apk add ca-certificates wget && update-ca-certificates
+#    - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
+#    - chmod a+x ktlint
+#    - ./ktlint services/archivist/src/**/*.kt
+#    - ./ktlint services/auth-server/src/**/*.kt
+#    - ./ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
+#    - ./ktlint services/officer/src/**/*.kt
 
 # SDK Jobs
-pylib-linting:
-  image: python:3.8
-  only:
-    - /^sdk\/.*$/i
-  stage: test
-  script:
-    - python -m pip install flake8
-    - flake8 containers/plugins-py3-analysis
-    - flake8 containers/plugins-py3-core
-    - flake8 sdk/python
+#python-lint:
+#  image: python:3.8
+#  only:
+#    - /^sdk\/.*$/i
+#  stage: test
+#  script:
+#    - python -m pip install flake8
+#    - flake8 containers/plugins-py3-analysis
+#    - flake8 containers/plugins-py3-core
+#    - flake8 sdk/python
+
+#sdk-containers-tests:
+#  stage: test
+#  before_script:
+#    - apk add --no-cache python3 # for build-images.py
+#    - pip3 install wheel
+#    - ./build-images.py
+#  script:
+#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zps/pylib/zplugins
+#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
 
 # Wallet Jobs
 .wallet-base:

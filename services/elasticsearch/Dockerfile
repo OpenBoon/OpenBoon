@@ -1,6 +1,10 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.4.3
 
-COPY ./dist /usr/share/elasticsearch/plugins/
+# After running build steps locally there is no dist directory
+#COPY ./dist /usr/share/elasticsearch/plugins/
+
+COPY ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
+COPY ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 
 WORKDIR /usr/share/elasticsearch/plugins
 
