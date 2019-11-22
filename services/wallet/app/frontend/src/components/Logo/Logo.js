@@ -4,14 +4,7 @@ import PropTypes from 'prop-types'
 import LogoSrc from '../../assets/images/logo.svg'
 
 function Logo({ width, height }) {
-  return (
-    <img
-      width={width}
-      height={height}
-      className="Logo"
-      src={LogoSrc}
-    />
-  )
+  return <img width={width} height={height} className="Logo" src={LogoSrc} />
 }
 
 Logo.propTypes = {
