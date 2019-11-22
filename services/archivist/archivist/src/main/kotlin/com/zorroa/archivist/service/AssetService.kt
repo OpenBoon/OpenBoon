@@ -286,8 +286,7 @@ class AssetServiceImpl : AssetService {
 
     fun createAnalysisJob(assets: List<Asset>): Job {
         val execute = listOf(
-            ProcessorRef("zplugins.image.importers.ImageImporter", "zmlp-py3-core"),
-            ProcessorRef("zplugins.proxies.processors.ImageProxyProcessor", "zmlp-py3-core")
+            ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core")
         )
         val name = "Analyze ${assets.size} assets"
         val script = ZpsScript(name, null, assets, execute)
