@@ -3,6 +3,8 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.util.JdbcUtils
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 enum class IndexClusterState {
@@ -44,13 +46,21 @@ class IndexClusterSpec(
  * @property attrs Arbitrary cluster attributes gathered from a ping.
  */
 class IndexCluster(
+    @ApiModelProperty("The unique ID of the cluster.")
     val id: UUID,
+    @ApiModelProperty("The base url of the cluster.")
     val url: String,
+    @ApiModelProperty("If the cluster is in the auto selection pool.")
     val autoPool: Boolean,
+    @ApiModelProperty("The state of the cluster.")
     val state: IndexClusterState,
+    @ApiModelProperty("The timestamp the cluster was created on.")
     val createdTime: Long,
+    @ApiModelProperty("The timestamp of the last time the cluster was modified.")
     val modifiedTime: Long,
+    @ApiModelProperty("The timestamp of the last cluster ping.")
     val lastPingTime: Long,
+    @ApiModelProperty("Arbitrary cluster attributes gathered from a ping.")
     val attrs: Map<String, Any>
 ) {
 
