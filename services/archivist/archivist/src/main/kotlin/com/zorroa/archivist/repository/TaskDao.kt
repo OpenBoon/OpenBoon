@@ -88,7 +88,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps
         }
 
-        val totalAssets = spec.script?.over?.size ?: 0
+        val totalAssets = spec.script?.assets?.size ?: 0
         jdbc.update("INSERT INTO task_stat (pk_task, pk_job,int_asset_total_count) VALUES (?,?,?)",
                 id, job.jobId, totalAssets)
         logger.event(LogObject.TASK, LogAction.CREATE,

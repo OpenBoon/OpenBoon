@@ -38,7 +38,7 @@ def test_task(event_type=None, attrs=None):
         "state": 1,
         "logFile": "file:///%s" % tempfile.mktemp("logfile"),
         "script": {
-            "over": [
+            "assets": [
                 {
                     "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
                     "document": {"foo": "bar"}
@@ -46,12 +46,12 @@ def test_task(event_type=None, attrs=None):
             ],
             "execute": [
                 {
-                    "className": "zorroa.zsdk.testing.TestProcessor",
+                    "className": "pixml.testing.TestProcessor",
                     "args": {
                         "send_event": event_type,
                         "attrs": attrs
                     },
-                    "image": "zmlp-py3-sdk"
+                    "image": "zmlp-plugins-base"
                 }
             ]
         },

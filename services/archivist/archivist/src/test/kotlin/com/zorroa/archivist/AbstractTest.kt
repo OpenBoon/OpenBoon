@@ -2,7 +2,6 @@ package com.zorroa.archivist
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.capture
@@ -12,11 +11,8 @@ import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.domain.Source
 import com.zorroa.archivist.schema.Proxy
 import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.security.AnalystAuthentication
@@ -268,11 +264,11 @@ abstract class AbstractTest {
         return Paths.get("/tmp/images/$subdir")
     }
 
-    fun getTestAssets(subdir: String): List<Source> {
+    fun getTestAssets(subdir: String): List<TestAsset> {
 
         val formats = setOf("jpg", "pdf", "m4v", "gif", "tif")
 
-        val result = mutableListOf<Source>()
+        val result = mutableListOf<TestAsset>()
         val imagePaths = Json.Mapper.readValue<List<String>>(File("src/test/resources/test-data/files.json"))
         for (path in imagePaths) {
             if (!path.contains(subdir) || !formats.contains(FileUtils.extension(path).toLowerCase())) {
@@ -280,7 +276,7 @@ abstract class AbstractTest {
             }
 
             val f = File(path)
-            val b = Source(f)
+            val b = TestAsset(f)
             // b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString())
             b.setAttr("location.point", mapOf("lat" to "36.996460", "lon" to "-109.043360"))
             b.setAttr("location.state", "New Mexico")
@@ -309,7 +305,7 @@ abstract class AbstractTest {
     }
 
     fun addTestVideoAssets() {
-        val videoAssets = mutableListOf<Source>()
+        val videoAssets = mutableListOf<TestAsset>()
         val paths = Json.Mapper.readValue<List<String>>(File("src/test/resources/test-data/files.json"))
 
         for (path in paths) {
@@ -317,7 +313,7 @@ abstract class AbstractTest {
                 continue
             }
             val file = File(path)
-            val source = Source(file)
+            val source = TestAsset(file) // file
             source.setAttr("test.path", file.toPath().toAbsolutePath().toString())
             val id = UUID.randomUUID().toString()
             val proxies = Lists.newArrayList<Proxy>()
@@ -342,18 +338,16 @@ abstract class AbstractTest {
      * @param commitToDb: Set to true if the assets should be committed in a separate TX.
      *
      */
-    fun addTestAssets(builders: List<Source>, commitToDb: Boolean = true) {
+    fun addTestAssets(builders: List<TestAsset>, commitToDb: Boolean = true) {
         logger.info("addiing test assets2")
         for (source in builders) {
-
             logger.info("Adding test asset: {}", source.path.toString())
             source.setAttr(
-                "source.keywords", ImmutableList.of(
-                    source.sourceSchema.filename,
-                    source.sourceSchema.extension
+                "source.keywords", listOf(
+                    source.getAttr<String>("source.filename"),
+                    source.getAttr<String>("source.extension")
                 )
             )
-
             val req = BatchCreateAssetsRequest(listOf(source)).apply { isUpload = true }
             assetService.createOrReplaceAssets(req)
         }

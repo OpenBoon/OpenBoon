@@ -49,7 +49,11 @@ public class HttpUtils {
             content.endObject();
         } finally {
             content.close();
-            FileUtils.close(out);
+            try {
+                out.close();
+            } catch (IOException e) {
+                //ignore
+            }
         }
     }
 

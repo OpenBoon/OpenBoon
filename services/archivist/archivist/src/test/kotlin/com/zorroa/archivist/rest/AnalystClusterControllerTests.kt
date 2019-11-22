@@ -17,8 +17,10 @@ import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.Analyst
 import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.util.Json
 import org.junit.Test
@@ -156,7 +158,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val te = TaskEvent(TaskEventType.EXPAND,
                     task.id,
                     job.id,
-                    emptyZpsScript("bob"))
+                    TaskExpandEvent(listOf(AssetSpec("http://foo/bar/dog.jpg"))))
 
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                     .session(analyst())

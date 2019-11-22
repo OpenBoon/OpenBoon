@@ -10,6 +10,7 @@ import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchProvisionAssetsRequest
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.IndexAssetsEvent
@@ -25,6 +26,7 @@ import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskMessageEvent
 import com.zorroa.archivist.domain.TaskSpec
@@ -84,8 +86,7 @@ interface DispatcherService {
     fun stopTask(task: InternalTask, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
     fun handleTaskError(task: InternalTask, error: TaskErrorEvent)
-    fun expand(parentTask: InternalTask, script: ZpsScript): Task
-    fun expand(job: JobId, script: ZpsScript): Task
+    fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task
     fun retryTask(task: InternalTask, reason: String): Boolean
     fun skipTask(task: InternalTask): Boolean
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
@@ -204,7 +205,7 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
 
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
-            task.env["ZMLP_APIKEY"] = key.toBase64()
+            task.env["PIXML_APIKEY"] = key.toBase64()
 
             withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.STORAGE_ADMIN))) {
                 val fs = fileStorageService.get(task.getLogSpec())
@@ -349,10 +350,10 @@ class DispatcherServiceImpl @Autowired constructor(
 
             if (!event.manualKill && event.exitStatus != 0 && newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.taskId)
-                val assetCount = script.over?.size ?: 0
+                val assetCount = script.assets?.size ?: 0
                 jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
 
-                taskErrorDao.batchCreate(task, script.over?.map {
+                taskErrorDao.batchCreate(task, script.assets?.map {
                     TaskErrorEvent(
                         UUID.fromString(it.id),
                         it.getAttr("source.path"),
@@ -369,18 +370,21 @@ class DispatcherServiceImpl @Autowired constructor(
         return stopped
     }
 
-    override fun expand(parentTask: InternalTask, script: ZpsScript): Task {
+    override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
 
+        val result = assetService.batchProvisionAssets(
+            BatchProvisionAssetsRequest(event.assets, analyze = false)
+        )
+
+        val name = "Expand ${result.status.size} assets"
         val parentScript = taskDao.getScript(parentTask.taskId)
-        script.globalArgs = parentScript.globalArgs
-        script.type = parentScript.type
-        script.settings = parentScript.settings
+        val newScript = ZpsScript(name, null, result.assets, parentScript.execute)
 
-        if (script.execute.orEmpty().isEmpty()) {
-            script.execute = parentScript.execute
-        }
+        newScript.globalArgs = parentScript.globalArgs
+        newScript.type = parentScript.type
+        newScript.settings = parentScript.settings
 
-        val newTask = taskDao.create(parentTask, TaskSpec(zpsTaskName(script), script))
+        val newTask = taskDao.create(parentTask, TaskSpec(name, newScript))
         logger.event(
             LogObject.JOB, LogAction.EXPAND,
             mapOf(
@@ -388,15 +392,6 @@ class DispatcherServiceImpl @Autowired constructor(
                 "taskId" to newTask.id,
                 "jobId" to newTask.jobId
             )
-        )
-        return newTask
-    }
-
-    override fun expand(job: JobId, script: ZpsScript): Task {
-        val newTask = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
-        logger.event(
-            LogObject.JOB, LogAction.EXPAND,
-            mapOf("jobId" to newTask.jobId, "taskId" to newTask.id)
         )
         return newTask
     }
@@ -431,8 +426,10 @@ class DispatcherServiceImpl @Autowired constructor(
                 handleTaskError(task, payload)
             }
             TaskEventType.EXPAND -> {
-                val script = Json.Mapper.convertValue<ZpsScript>(event.payload)
-                expand(task, script)
+                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_IMPORT))) {
+                    val payload = Json.Mapper.convertValue<TaskExpandEvent>(event.payload)
+                    expand(task, payload)
+                }
             }
             TaskEventType.MESSAGE -> {
                 val message = Json.Mapper.convertValue<TaskMessageEvent>(event.payload)
