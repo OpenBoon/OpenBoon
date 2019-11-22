@@ -6,10 +6,10 @@ import cv2
 import face_recognition
 import numpy as np
 
-from zorroa.zsdk.processor import DocumentProcessor, Argument
+from pixml.analysis import AssetBuilder, Argument, get_proxy_file
 
 
-class FaceRecognitionProcessor(DocumentProcessor):
+class FaceRecognitionProcessor(AssetBuilder):
     """Detect and recognize faces.
     Generate a face similarity hash
     """
@@ -35,10 +35,11 @@ class FaceRecognitionProcessor(DocumentProcessor):
                 self.known_names.append(name)
                 self.known_encodings.append(face_recognition.face_encodings(image)[0])
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
 
-        p_path = asset.get_thumbnail_path()
+        name, p_path = get_proxy_file(asset, min_width=1024, fallback=True)
+
         img = cv2.imread(p_path)
         height, width = img.shape[:2]
 

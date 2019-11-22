@@ -9,8 +9,9 @@ from pathlib2 import Path
 
 import pixml
 from pixml.analysis import AssetBuilder, Argument
+from pixml.analysis.util import add_proxy_file
 from zplugins.util.media import get_output_dimension, media_size
-from zplugins.util.files import add_file
+
 
 logger = logging.getLogger(__file__)
 
@@ -71,9 +72,7 @@ class ProxyProcessor(AssetBuilder):
         self.logger.info('Asset File Size: %s' % os.stat(source_path).st_size)
         proxy_paths = self._create_proxy_images(asset)
         for proxy in proxy_paths:
-            proxy_name = "proxy_{}x{}.jpg".format( proxy[0], proxy[1])
-            add_file(asset, 'proxy', proxy[2], rename=proxy_name,
-                     attrs={'width': proxy[0], 'height': proxy[1]})
+            add_proxy_file(asset, proxy[2], (proxy[0], proxy[1]))
         set_tiny_proxy_colors(asset)
 
     def _create_proxy_images(self, asset):

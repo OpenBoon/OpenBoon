@@ -1,13 +1,14 @@
 
-import zorroa.zsdk
-from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
-from zorroa.zsdk.exception import UnrecoverableProcessorException
-from zplugins.util.proxy import add_proxy_file
-from zplugins.google.processors import CloudVisionProcessor
-from mock import patch
 from google.cloud.vision import types
+from mock import patch
 
-patch_path = 'zplugins.google.processors.vision.ImageAnnotatorClient'
+from ..processors import CloudVisionProcessor
+from pixml.analysis.util import add_proxy_file
+
+from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
+
+patch_path = 'pixml_analysis.google.processors.vision.ImageAnnotatorClient'
 
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 EIFFEL = zorroa_test_data("images/set08/eiffel_tower.jpg")
@@ -338,21 +339,22 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_too_big(self, mock_image_annotator):
         # initialize doomed asset and initialize the processor
-        asset = zorroa.zsdk.Asset(TOOBIG)
-        frame = zorroa.zsdk.Frame(asset)
+        asset = TestAsset(TOOBIG)
+        frame = Frame(asset)
         add_proxy_file(asset, TOOBIG)
         processor = self.init_processor(CloudVisionProcessor(), {})
 
         # see if the processor throws an exception for the image being too big
-        self.assertRaises(UnrecoverableProcessorException, processor.process,
+        self.assertRaises(PixmlUnrecoverableProcessorException, processor.process,
                           frame)
 
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_label(self, mock_image_annotator):
         # initialize asset and processor
-        asset = zorroa.zsdk.Asset(TOUCAN)
-        frame = zorroa.zsdk.Frame(asset)
+        asset = TestAsset(TOUCAN)
+        frame = Frame(asset)
         add_proxy_file(asset, TOUCAN)
+
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -383,8 +385,8 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_label_with_debug(self, mock_image_annotator):
         # initialize asset and processor
-        asset = zorroa.zsdk.Asset(TOUCAN)
-        frame = zorroa.zsdk.Frame(asset)
+        asset = TestAsset(TOUCAN)
+        frame = Frame(asset)
         add_proxy_file(asset, TOUCAN)
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
@@ -475,8 +477,8 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_landmark(self, mock_image_annotator):
         # initialize asset and processor
-        asset = zorroa.zsdk.Asset(EIFFEL)
-        frame = zorroa.zsdk.Frame(asset)
+        asset = TestAsset(EIFFEL)
+        frame = Frame(asset)
         add_proxy_file(asset, EIFFEL)
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
@@ -508,8 +510,8 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_explicit(self, mock_image_annotator):
         # initialize asset and processor
-        asset = zorroa.zsdk.Asset(PUNCH)
-        frame = zorroa.zsdk.Frame(asset)
+        asset = TestAsset(PUNCH)
+        frame = Frame(asset)
         add_proxy_file(asset, PUNCH)
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
@@ -539,8 +541,8 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_faces(self, mock_image_annotator):
         # initialize the asset and processor
-        asset = zorroa.zsdk.Asset(FACES)
-        frame = zorroa.zsdk.Frame(asset)
+        asset = TestAsset(FACES)
+        frame = Frame(asset)
         add_proxy_file(asset, FACES)
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
@@ -590,8 +592,8 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     def test_detect_image_text(self, mock_image_annotator):
 
         # initialize the asset and processor
-        asset = zorroa.zsdk.Asset(STREETSIGN)
-        frame = zorroa.zsdk.Frame(asset)
+        asset = TestAsset(STREETSIGN)
+        frame = Frame(asset)
         add_proxy_file(asset, STREETSIGN)
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": True,
@@ -615,9 +617,9 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     def test_detect_document_text(self, mock_image_annotator):
         self.maxDiff = None
         # initialize the asset and processor
-        asset = zorroa.zsdk.Asset(MANUAL)
-        frame = zorroa.zsdk.Frame(asset)
-        add_proxy_file(asset, MANUAL)
+        asset = TestAsset(MANUAL)
+        frame = Frame(asset)
+        add_proxy_file(asset, MANUAL, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": True,

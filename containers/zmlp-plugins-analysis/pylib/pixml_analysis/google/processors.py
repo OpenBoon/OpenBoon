@@ -1,5 +1,3 @@
-
-
 import io
 import os
 import re
@@ -16,13 +14,10 @@ from google.cloud import videointelligence_v1p2beta1 as videointelligence
 from google.cloud import speech_v1p1beta1 as speech
 from google.api_core.exceptions import ResourceExhausted
 
-from zplugins.google.base import GoogleApiDocumentProcessor
-from zplugins.google.base import AutoMLModelProcessor
+from .base import GoogleApiDocumentProcessor
+from .base import AutoMLModelProcessor
 
-from zorroa.zsdk import Argument
-from zorroa.zsdk.exception import UnrecoverableProcessorException
-
-import archivist
+from pixml.analysis import get_proxy_file, Argument, PixmlUnrecoverableProcessorException
 
 
 class CloudVisionProcessor(GoogleApiDocumentProcessor):
@@ -81,11 +76,11 @@ class CloudVisionProcessor(GoogleApiDocumentProcessor):
         super(CloudVisionProcessor, self).init()
         self.image_annotator = self.initialize_gcp_client(vision.ImageAnnotatorClient)
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
-        path = asset.get_thumbnail_path()
+        _, path = get_proxy_file(asset, 512, fallback=True)
         if Path(path).stat().st_size > 10485760:
-            raise UnrecoverableProcessorException(
+            raise PixmlUnrecoverableProcessorException(
                 'The image is too large to submit to Google ML. Image size must '
                 'be < 10485760 bytes')
         with io.open(path, 'rb') as image_file:
@@ -303,7 +298,7 @@ class CloudVideoIntelligenceProcessor(GoogleApiDocumentProcessor):
         self.video_intel_client = self.initialize_gcp_client(
             videointelligence.VideoIntelligenceServiceClient)
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
         if not asset.is_clip():
             self.logger.info('Skipping this frame, it is not a video clip.')
@@ -425,7 +420,7 @@ class CloudSpeechToTextProcessor(GoogleApiDocumentProcessor):
         super(CloudSpeechToTextProcessor, self).init()
         self.speech_client = self.initialize_gcp_client(speech.SpeechClient)
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
         analysis_field = 'google.speechRecognition'
         if not asset.is_clip():
@@ -535,7 +530,7 @@ class CloudNaturalLanguageProcessor(GoogleApiDocumentProcessor):
         if type(content) == str or type(content) == str:
             return content
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
         content = asset.get_attr(self.arg_value('field'))
         self.logger.info('Content: {}'.format(content))
@@ -574,7 +569,7 @@ class AutoMLVisionModelProcessor(AutoMLModelProcessor):
         return 'automl_vision'
 
     def _create_payload(self, asset):
-        file_path = asset.get_thumbnail_path()
+        _, file_path = get_proxy_file(asset, 512, fallback=True)
         with open(file_path, 'rb') as fh:
             content = fh.read()
 
@@ -626,7 +621,12 @@ class AutoMLNLPModelProcessor(AutoMLModelProcessor):
         page_count = int(asset.get_attr('media.pages'))
         # self.logger.debug("\tPage count: {}".format(page_count))
         pages = [''] * (page_count + 1)
-        search = archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
+
+        #
+        # TODO: a pixml search instead.
+        #archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
+        #
+        search = []
         for child in search:
             # self.logger.debug("\t\tChild ID: {}".format(child.id))
             page_num = int(child.get_attr("media.clip.start"))

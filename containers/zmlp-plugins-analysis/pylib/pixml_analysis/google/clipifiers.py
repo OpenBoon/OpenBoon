@@ -1,7 +1,7 @@
 
 import backoff
-from zorroa.zsdk.helpers import AbstractClipifier
-from zorroa.zsdk.exception import UnrecoverableProcessorException
+from pixml.analysis import AbstractClipifier
+from pixml.analysis import PixmlUnrecoverableProcessorException
 
 from google.cloud import videointelligence
 from google.cloud import storage
@@ -22,8 +22,9 @@ class GoogleVideoIntelligenceClipifier(AbstractClipifier):
 
     def _get_clips(self, asset):
         if not len(self.gcp_temp_bucket_name):
-            raise UnrecoverableProcessorException("Parameter gcp_temp_bucket_name must be set to "
-                                                  "use GoogleVideoIntelligenceClipifier")
+            raise PixmlUnrecoverableProcessorException(
+                "Parameter gcp_temp_bucket_name must be set to "
+                "use GoogleVideoIntelligenceClipifier")
 
         movie_file = asset.get_local_source_path()
         self._copy_file_to_bucket(movie_file)

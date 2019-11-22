@@ -1,16 +1,17 @@
 import os
 from collections import namedtuple
 
+import cv2
 import mxnet
+import numpy as np
 from pathlib2 import Path
 
-import cv2
-import numpy as np
-from zorroa.zsdk import DocumentProcessor, Argument
+from pixml.analysis import AssetBuilder, Argument, get_proxy_file
+
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
 
-class ResNetClassifyProcessor(DocumentProcessor):
+class ResNetClassifyProcessor(AssetBuilder):
     """
     Classify with ResNet
     """
@@ -34,10 +35,10 @@ class ResNetClassifyProcessor(DocumentProcessor):
         with open(self.model_path + '/synset.txt', 'r') as f:
             self.labels = [l.rstrip() for l in f]
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
 
-        p_path = asset.get_thumbnail_path()
+        _, p_path = get_proxy_file(asset, 384, fallback=True)
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
         img = np.swapaxes(img, 0, 2)
@@ -75,7 +76,7 @@ class ResNetClassifyProcessor(DocumentProcessor):
         asset.add_analysis("imageClassify", struct)
 
 
-class ResNetSimilarityProcessor(DocumentProcessor):
+class ResNetSimilarityProcessor(AssetBuilder):
     """
     make a hash with ResNet
     """
@@ -99,10 +100,9 @@ class ResNetSimilarityProcessor(DocumentProcessor):
         with open(self.model_path + '/synset.txt', 'r') as f:
             self.labels = [l.rstrip() for l in f]
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
-
-        p_path = asset.get_attr('tmp.proxy_source_image') or asset.get_thumbnail_path()
+        _, p_path = get_proxy_file(asset, 384, fallback=True)
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
         if img.shape == (224, 224):

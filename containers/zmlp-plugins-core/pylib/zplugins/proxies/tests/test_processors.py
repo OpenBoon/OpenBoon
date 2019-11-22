@@ -9,7 +9,7 @@ from pixml.rest import PixmlClient
 
 from zplugins.proxies.processors import ProxyProcessor, get_tiny_proxy_colors
 
-
+TOUCAN_PATH = zorroa_test_data("images/set01/toucan.jpg", uri=False)
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 BEER = zorroa_test_data("images/set02/beer_kettle_01.jpg")
 VIDEO = zorroa_test_data("video/dc.webm")
@@ -17,12 +17,12 @@ VIDEO = zorroa_test_data("video/dc.webm")
 
 class ProxyIngestorUnitTestCase(PluginUnitTestCase):
     def setUp(self):
-        self.source_path = "file://" + TOUCAN
+        self.source_path = TOUCAN
         self.frame = Frame(TestAsset(self.source_path))
         self.frame.asset.set_attr("source.type", "image")
         self.frame.asset.set_attr('media.width', 512)
         self.frame.asset.set_attr('media.height', 341)
-        self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
+        self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN_PATH)
         self.processor = self.init_processor(ProxyProcessor(), {})
 
         self.storage_patch = {
@@ -54,7 +54,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         frame = Frame(TestAsset(self.source_path))
         frame.asset.set_attr('media.width', 1024)
         frame.asset.set_attr('media.height', 768)
-        frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
+        frame.asset.set_attr('tmp.proxy_source_image', TOUCAN_PATH)
 
         processor = self.init_processor(ProxyProcessor(), {"sizes": [384]})
         processor.process(frame)
@@ -112,7 +112,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         assert len(self.frame.asset.get_attr('files')) == 2
 
     def test_get_tiny_proxy_colors(self):
-        colors = get_tiny_proxy_colors(TOUCAN)
+        colors = get_tiny_proxy_colors(TOUCAN_PATH)
         assert len(colors) == 9
 
     def test_get_valid_sizes(self):

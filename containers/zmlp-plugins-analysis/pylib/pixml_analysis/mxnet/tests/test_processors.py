@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+from unittest.mock import patch
 
-import zorroa.zsdk
-from zplugins.mxnet.processors import ResNetSimilarityProcessor, ResNetClassifyProcessor
-from zorroa.zsdk import Asset
+from ..processors import ResNetSimilarityProcessor, ResNetClassifyProcessor
 
-from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
-from zplugins.util.proxy import add_proxy_file
+from pixml import PixmlClient
+from pixml.analysis import Frame
+from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from pixml.analysis.util import add_proxy_file
 
 
 class MxUnitTests(PluginUnitTestCase):
@@ -15,20 +15,40 @@ class MxUnitTests(PluginUnitTestCase):
         cls.toucan_path = zorroa_test_data("images/set01/toucan.jpg")
 
     def setUp(self):
-        self.frame = zorroa.zsdk.Frame(Asset(self.toucan_path))
-        asset = self.frame.asset
-        add_proxy_file(asset, self.toucan_path)
-        add_proxy_file(asset, self.toucan_path)
-        add_proxy_file(asset, self.toucan_path)
+        self.frame = Frame(TestAsset(self.toucan_path))
 
-    def test_ResNetSimilarity_defaults(self):
+    @patch.object(PixmlClient, 'upload_file')
+    def test_ResNetSimilarity_defaults(self, upload_patch):
+        upload_patch.return_value = {
+            "name": "proxy_200x200.jpg",
+            "category": "proxy",
+            "assetId": "12345",
+            "mimetype": "image/jpeg",
+            "attrs": {
+                "width": 1023,
+                "height": 1024
+            }
+        }
+        add_proxy_file(self.frame.asset, self.toucan_path, (512, 512))
         processor = self.init_processor(ResNetSimilarityProcessor(), {"debug": True})
         processor.process(self.frame)
 
         self.assertEquals(2053,
                           len(self.frame.asset.get_attr("analysis")["imageSimilarity"]["shash"]))
 
-    def test_MxNetClassify_defaults(self):
+    @patch.object(PixmlClient, 'upload_file')
+    def test_MxNetClassify_defaults(self, upload_patch):
+        upload_patch.return_value = {
+            "name": "proxy_200x200.jpg",
+            "category": "proxy",
+            "assetId": "12345",
+            "mimetype": "image/jpeg",
+            "attrs": {
+                "width": 1023,
+                "height": 1024
+            }
+        }
+        add_proxy_file(self.frame.asset, self.toucan_path, (512, 512))
         processor = self.init_processor(ResNetClassifyProcessor(), {"debug": True})
         processor.process(self.frame)
 

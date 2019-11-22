@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
 import os
-import zorroa.zsdk
-from zplugins.google.processors import AutoMLVisionModelProcessor
-from zplugins.util.proxy import add_proxy_file
 
-from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from pixml.analysis import Frame
+from pixml.analysis import add_proxy_file
+
+from ..processors import AutoMLVisionModelProcessor
+
 
 
 class AutoMLVisionUnitTests(PluginUnitTestCase):
@@ -13,10 +15,11 @@ class AutoMLVisionUnitTests(PluginUnitTestCase):
     # Test disabled until Travis or GitLab have latest version of zorroa-test-data
     def do_not_test_model_eval(self):
         # Prep the frame, asset, and proxy
-        toucan_fname = os.path.join(zorroa_test_data(), 'images/set01/toucan.jpg')
-        asset = zorroa.zsdk.Asset(toucan_fname)
-        frame = zorroa.zsdk.Frame(asset)
-        add_proxy_file(asset, toucan_fname)
+        toucan_fname = zorroa_test_data('images/set01/toucan.jpg')
+        asset = TestAsset(toucan_fname)
+        frame = Frame(asset)
+
+        add_proxy_file(asset, toucan_fname, (512, 512))
 
         # Prep the processor
         # The model_id below corresponds to a pre-trained model in the zorroa-poc-dev project:

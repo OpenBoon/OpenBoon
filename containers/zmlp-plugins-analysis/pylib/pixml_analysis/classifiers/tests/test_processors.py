@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-import zorroa.zsdk
-from zplugins.classifiers.processors import NeuralNetClassifierProcessor
-from zorroa.zsdk.testing import PluginUnitTestCase
+
+from pixml.analysis.testing import PluginUnitTestCase, TestAsset
+from pixml.analysis import Frame
+from pixml_analysis.classifiers.processors import NeuralNetClassifierProcessor
 
 
 class ClassifiersUnitTests(PluginUnitTestCase):
@@ -10,8 +11,7 @@ class ClassifiersUnitTests(PluginUnitTestCase):
         super(ClassifiersUnitTests, cls).setUpClass()
 
     def setUp(self):
-        self.frame = zorroa.zsdk.Frame(zorroa.zsdk.Document(
-            data={'id': '9f0f8a1d-4719-5cf8-b427-4612c5597811'}))
+        self.frame = Frame(TestAsset("gs://foo/bar/jpg"))
         self.frame.asset.set_attr(
             'analysis.imageSimilarity.shash',
             '0050FPPOGPPKPIPCAPPPDHHIGPCLJEPLPPPAPPGPDPFPPGPADCBFGIPGDDCIPIGPPDPABPOMPNPAPBPPDKP' +

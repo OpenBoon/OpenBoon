@@ -3,9 +3,10 @@
 import os
 
 from mock import patch
-from zplugins.google.processors import CloudVideoIntelligenceProcessor
-from zorroa.zsdk import Asset, Frame
-from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from ..processors import CloudVideoIntelligenceProcessor
+
+from pixml.analysis import Frame
+from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 
 
 # Mocks Google's VideoAnnotationResults object
@@ -62,10 +63,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_not_clip(self, get_video_annotations, get_clip_bytes):
         # Note: In order to prove that the 'process' method is returning early and skipping all of
@@ -98,7 +99,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_labels'].value = True
         self.processor.args['detect_text'].value = False
 
-        frame = Frame(Asset(os.path.join(self.full_mock_data_dir, file_path)))
+        frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
 
         self.processor._process(frame)
 
@@ -128,7 +129,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_labels'].value = True
         self.processor.args['detect_text'].value = True
 
-        frame = Frame(Asset(os.path.join(self.full_mock_data_dir, file_path)))
+        frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
@@ -186,7 +187,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_text'].value = False
 
         # Establish frame object and pass in your asset.
-        frame = Frame(Asset(os.path.join(self.full_mock_data_dir, file_path)))
+        frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
@@ -245,7 +246,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_text'].value = False
 
         # Establish frame object and pass in your asset.
-        frame = Frame(Asset(os.path.join(self.full_mock_data_dir, file_path)))
+        frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
@@ -296,7 +297,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_text'].value = False
 
         # Establish frame object and pass in your asset.
-        frame = Frame(Asset(os.path.join(self.full_mock_data_dir, file_path)))
+        frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
@@ -353,7 +354,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_text'].value = True
 
         # Establish frame object and pass in your asset.
-        frame = Frame(Asset(os.path.join(self.full_mock_data_dir, file_path)))
+        frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
@@ -463,11 +464,11 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_text'].value = True
 
         # Establish frame object and pass in your asset.
-        frame = Frame(Asset(os.path.join(self.full_mock_data_dir, file_path)))
+        frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
-        self.processor._process(frame)
+        self.processor.process(frame)
 
         # Confirm that all entity descriptions from all segments made it to the attributes
         # dictionary as intended.

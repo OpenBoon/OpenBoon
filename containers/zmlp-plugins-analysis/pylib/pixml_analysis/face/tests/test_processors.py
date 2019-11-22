@@ -1,20 +1,32 @@
 #!/usr/bin/env python
+from unittest.mock import patch
 
-import zorroa.zsdk
-from zplugins.face.processors import FaceRecognitionProcessor
-from zorroa.zsdk import Asset
-from zorroa.zsdk.testing import PluginUnitTestCase, zorroa_test_data
+from pixml import PixmlClient
+from pixml.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from pixml.analysis import Frame
+from pixml.analysis.util import add_proxy_file
 
+from pixml_analysis.face.processors import FaceRecognitionProcessor
 
 class FaceUnitTestCase(PluginUnitTestCase):
-    def test_FaceRecognition(self):
-        test_faces_path = zorroa_test_data("images/set01/faces.jpg")
-        frame = zorroa.zsdk.Frame(Asset(test_faces_path))
-        ofile = self.ofs.prepare("asset", frame.asset, "proxy.jpg")
-        ofile.store(open(test_faces_path))
 
-        frame.asset.set_attr("proxies.proxies", [{"id": ofile.id}, {"id": ofile.id},
-                                                 {"id": ofile.id}])
+    @patch.object(PixmlClient, 'upload_file')
+    def test_FaceRecognition(self, upload_patch):
+        upload_patch.return_value = {
+            "name": "proxy_200x200.jpg",
+            "category": "proxy",
+            "assetId": "12345",
+            "mimetype": "image/jpeg",
+            "attrs": {
+                "width": 1023,
+                "height": 1024
+            }
+        }
+
+        test_faces_path = zorroa_test_data("images/set01/faces.jpg")
+        frame = Frame(TestAsset(test_faces_path))
+
+        add_proxy_file(frame.asset, test_faces_path, (1024, 1024))
 
         processor = self.init_processor(FaceRecognitionProcessor(), {})
         processor.process(frame)
