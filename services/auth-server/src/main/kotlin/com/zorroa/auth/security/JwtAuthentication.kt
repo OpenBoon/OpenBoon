@@ -122,7 +122,8 @@ class JwtAuthenticationProvider : AuthenticationProvider {
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as JwtAuthenticationToken
         return UsernamePasswordAuthenticationToken(
-            token.principal, token.credentials, token.authorities)
+            token.principal, token.credentials, token.authorities
+        )
     }
 
     override fun supports(cls: Class<*>): Boolean {

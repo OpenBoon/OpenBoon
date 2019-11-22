@@ -1,6 +1,7 @@
 package com.zorroa.auth.rest
 
 import com.zorroa.auth.domain.ZmlpUser
+import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpHeaders
 import org.springframework.security.core.Authentication
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@Api(tags = ["Auth"], description = "Auth Operations")
 class AuthController {
 
     @ApiOperation("Authenticate a signed JWT token and return the projectId and permissions.")
