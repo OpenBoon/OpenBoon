@@ -1,13 +1,15 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobPriority
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobPriority
-import com.zorroa.archivist.domain.JobSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -73,11 +75,11 @@ class DispatchTaskDaoTests : AbstractTest() {
         assertEquals(job2.id, tasks[1].jobId)
         assertEquals(job3.id, tasks[2].jobId)
 
-        dispatcherService.expand(job1, emptyZpsScript("job1"))
+        dispatcherService.expand(tasks[0], TaskExpandEvent(listOf(AssetSpec("http://foo/123.jpg"))))
         Thread.sleep(2)
-        dispatcherService.expand(job2, emptyZpsScript("job2"))
+        dispatcherService.expand(tasks[1], TaskExpandEvent(listOf(AssetSpec("http://foo/123.jpg"))))
         Thread.sleep(2)
-        dispatcherService.expand(job3, emptyZpsScript("job3"))
+        dispatcherService.expand(tasks[2], TaskExpandEvent(listOf(AssetSpec("http://foo/123.jpg"))))
 
         tasks = dispatchTaskDao.getNextByProject(getProjectId(), 6)
 
