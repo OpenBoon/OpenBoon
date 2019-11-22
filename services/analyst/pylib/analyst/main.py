@@ -6,14 +6,13 @@ import os
 import socket
 import subprocess
 
-from flask import Flask, jsonify, request, abort, send_file
+from flask import Flask, jsonify, request, abort
 from gevent.pywsgi import WSGIServer
 from pathlib2 import Path
 
 import analyst.components as components
 
 app = Flask(__name__)
-scanner = components.ProcessorScanner()
 
 
 def main():
