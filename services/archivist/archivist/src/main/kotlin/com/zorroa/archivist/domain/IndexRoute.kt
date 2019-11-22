@@ -110,7 +110,6 @@ class IndexRoute(
  */
 @ApiModel("IndexRouteSpec", description = "The IndexRouteSpec defines all the values needed to create an index route.")
 class IndexRouteSpec(
-
     @ApiModelProperty("The type of mapping (not ES object type)")
     var mapping: String,
     @ApiModelProperty("The major version to use. It will be patched up to highest level.")
