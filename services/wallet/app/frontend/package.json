@@ -4,7 +4,6 @@
   "description": "Wallet Application",
   "main": "index.js",
   "scripts": {
-    "prepush": "npm run test:lint && npm run test:unit",
     "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --mode production --config webpack.prod.js",
     "test": "npm run test:lint && npm run test:unit",
@@ -98,5 +97,10 @@
   },
   "optionalDependencies": {
     "husky": "^3.0.9"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run test:lint && npm run test:unit"
+    }
   }
 }
