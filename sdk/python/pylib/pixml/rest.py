@@ -88,6 +88,31 @@ class PixmlClient(object):
         except requests.exceptions.ConnectionError as e:
             raise PixmlConnectionException(e)
 
+    def upload_file(self, path, file, body={}, json_rsp=True, field="file"):
+        """
+        Upload the given list of file paths to the Archivist.
+
+        Args:
+            path (str): The URL to upload to.
+            file (str): The file path to upload.
+            body (dict): A request body
+            json_rsp (bool): Set to true if the result returned is JSON
+            field (string): The multi-part form field to use for the files.
+        """
+        try:
+            post_files = [(field, (os.path.basename(file), open(file, 'rb')))]
+            if body is not None:
+                post_files.append(
+                    ["body", (None, json.dumps(body), 'application/json')])
+
+            return self.__handle_rsp(requests.post(
+                self.get_url(path), headers=self.headers(content_type=""),
+                files=post_files), json_rsp)
+
+        except requests.exceptions.ConnectionError as e:
+            raise PixmlClientException(e)
+
+
     def get(self, path, body=None, is_json=True):
         """
         Performs a get request.

@@ -134,8 +134,16 @@ class LocalFileCache(object):
         Clear out the local storage directory.
 
         """
-        logger.info('clearing out temp files: "{}"'.format(self.root))
+        logger.debug('clearing out local file cache: "{}"'.format(self.root))
         files = glob.glob('{}/*'.format(self.root))
         for f in files:
             os.remove(f)
 
+    def close(self):
+        """
+        Close the local file cache and remove all files. The cache will
+        not be usable after this is called.
+
+        """
+        logger.info('closing local file cache : "{}"'.format(self.root))
+        shutil.rmtree(self.root)
