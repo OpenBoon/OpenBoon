@@ -5,8 +5,8 @@ import unittest
 import zmq
 
 from containerizer.daemon import PixmlContainerDaemon
-from pixml.processor import Reactor
-from pixml.testing import TestEventEmitter
+from pixml.analysis import Reactor
+from pixml.analysis.testing import TestEventEmitter
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -30,7 +30,7 @@ class PixmlContainerDaemonTests(unittest.TestCase):
             "type": "generate",
             "payload": {
                 "ref": {
-                    "className": "pixml.testing.TestGenerator",
+                    "className": "pixml.analysis.testing.TestGenerator",
                     "image": "zmlp-plugins-base",
                     "args": {
                         "files": [
@@ -51,7 +51,7 @@ class PixmlContainerDaemonTests(unittest.TestCase):
             "type": "execute",
             "payload": {
                 "ref": {
-                    "className": "pixml.testing.TestProcessor",
+                    "className": "pixml.analysis.testing.TestProcessor",
                     "image": "zmlp-plugins-base",
                     "args": {
 

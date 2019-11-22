@@ -331,8 +331,7 @@ class PixmlClient(object):
 
     def __sign_request(self):
         if not self.apikey:
-            raise PixmlInvalidRequestException("Unable to make request,"
-                                               "No ApiKey has been specified.")
+            raise PixmlClientException("Unable to make request, no ApiKey has been specified.")
         claims = {
             'aud': self.server,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),

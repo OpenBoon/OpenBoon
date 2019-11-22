@@ -19,7 +19,7 @@ class LocalFileCacheTests(TestCase):
         self.lfc.clear()
 
     def test_localize_http(self):
-        path = self.lfc.localize_uri()
+        path = self.lfc.localize_uri("https://i.imgur.com/WkomVeG.jpg")
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
@@ -64,11 +64,11 @@ class LocalFileCacheTests(TestCase):
 
     def test_localize_file_obj_with_uri(self):
         test_asset = TestAsset("https://i.imgur.com/WkomVeG.jpg")
-        path = self.lfc.localize_file(test_asset)
+        path = self.lfc.localize_remote_file(test_asset)
         assert os.path.exists(path)
 
     def test_localize_file_str(self):
-        path = self.lfc.localize_file("https://i.imgur.com/WkomVeG.jpg")
+        path = self.lfc.localize_remote_file("https://i.imgur.com/WkomVeG.jpg")
         assert os.path.exists(path)
 
     @patch.object(PixmlClient, 'stream')

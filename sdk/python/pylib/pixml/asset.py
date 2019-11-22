@@ -1,7 +1,6 @@
 import logging
 
 from .util import as_collection
-from pixml.analysis.storage import get_lfs
 
 __all__ = [
     "Asset",
@@ -126,10 +125,6 @@ class AssetBase(object):
         except AttributeError:
             all_items.extend(items)
 
-    def get_local_path(self):
-        lfs = get_lfs()
-        return lfs.localize_uri(self.get_attr("source.path"))
-
     def __set_attr(self, attr, value):
         """
         A private set_attr method that handles just the setting of the
@@ -161,9 +156,17 @@ class AssetBase(object):
 
 class AssetSpec(AssetBase):
     """
-
+    An AssetSpec is used to create a new Asset.
     """
     def __init__(self, uri, clip=None):
+        """
+        Construct an AssetSpec
+
+        Args:
+            uri (str): a URI locator to the file asset.
+            clip (Clip): Defines a subset of the asset to be processed, for example a
+                page of a PDF or time code from a video.
+        """
         super(AssetSpec, self).__init__()
         self.uri = uri
         self.clip = clip
@@ -179,7 +182,8 @@ class AssetSpec(AssetBase):
         """
         return {
             "uri": self.uri,
-            "document": self.document
+            "document": self.document,
+            "clip": self.clip
         }
 
 
@@ -200,8 +204,46 @@ class Asset(AssetBase):
 
     @property
     def uri(self):
+        """
+        The URI of the asset.
+
+        Returns:
+            str: The URI of the data.
+
+        """
         return self.get_attr("source.path")
 
+    def get_files(self, mimetype=None, extension=None, attrs=None):
+        """
+        Return all stored files associated with this asset.  Optionally
+        filter the results.
+
+        Args:
+            mimetype (str): The mimetype must start with this string.
+            extension: (str): The file name must have the given extension.
+            attrs (dict): The file must have all of the given attributes.
+
+        Returns:
+            list of dict: A list of pixml file records.
+        """
+        result = []
+        files = self.get_attr("files", [])
+        for fs in files:
+            match = True
+            if mimetype and not any((mt for mt in as_collection(mimetype)
+                                     if fs["mimetype"].startswith(mt))):
+                match = False
+            if extension and not any((ext for ext in as_collection(extension)
+                                      if fs["name"].endswith("." + ext))):
+                match = False
+            if attrs:
+                for k, v in attrs.items():
+                    if fs.get("attrs", {}).get(k) != v:
+                        match = False
+            if match:
+                result.append(fs)
+
+        return result
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -230,8 +272,8 @@ class Clip(object):
             type (str): The clip type (image, video, page)
             start (float): The start of the clip
             stop (float): The end of the clip
-            timeline (str): Put the clip on a unique timeline in case it
-                collides with other clips.
+            timeline (str): Put the clip on 1 unique timeline in case it
+                collides with other clips with similar in/out points.
         """
         self.type = type
         self.start = float(start)
@@ -249,7 +291,7 @@ class Clip(object):
         return ["start=%0.3f" % self.start, "stop=%0.3f" % self.stop]
 
     def for_json(self):
-        """Return a JSON serializale copy.
+        """Return a JSON serialized copy.
 
         Returns:
             :obj:`dict`: A json serializable dict.

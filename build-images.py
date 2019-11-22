@@ -5,9 +5,9 @@ import subprocess
 build_order = [
     ("containers/zmlp-py3-base", "zmlp-py3-base"),
     ("sdk/python", "zmlp-py3-sdk"),
+    ("containers/zmlp-plugins-base", "zmlp-plugins-base"),
     ("containers/zmlp-plugins-core", "zmlp-plugins-core"),
-    ("containers/zmlp-plugins-analysis", "zmlp-plugins-analysis"),
-    ("services/analyst", "analyst")
+    ("containers/zmlp-plugins-analysis", "zmlp-plugins-analysis")
 ]
 
 images = []

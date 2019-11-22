@@ -9,20 +9,19 @@ logger = logging.getLogger(__name__)
 
 def add_file(asset, category, path, rename=None, attrs=None):
     """
-    Add a support file to the asset and optionally upload
-    the file to Pixml Storage.
+    Add a support file to the asset and upload to PixelML storage.
 
     Args:
         asset (Asset): The purpose of the file, ex proxy.
         category (str): The purpose of the file, ex proxy.
         path (str): The local path to the file.
         rename (str): Rename the file to something better.
+        attrs (dict): Arbitrary attributes to attach to the file.
     Returns:
         dict: The new proxy information.
 
     """
-    lfc = pixml.analysis.local_file_cache()
-    app = pixml.app.from_env()
+    app = pixml.app.app_from_env()
     name = rename or Path(path).name
     spec = {
         "name": name,
@@ -30,12 +29,14 @@ def add_file(asset, category, path, rename=None, attrs=None):
         "attrs": {}
     }
     if attrs:
-        spec.attrs.update(attrs)
+        spec["attrs"].update(attrs)
 
-    result = app.client.post("/api/v2/assets/_files", spec)
+    result = app.client.upload_file(
+        "/api/v2/assets/{}/_files".format(asset.id), path, spec)
+
     # Store the path to the proxy in our local file storage
-    # because if someone needs one they will check there.
-    lfc.localize_file_storage(result, path)
+    # because a processor will need it down the line.
+    app.lfc.localize_pixml_file(result, path)
 
     files = asset.get_attr("files") or []
     files.append(result)

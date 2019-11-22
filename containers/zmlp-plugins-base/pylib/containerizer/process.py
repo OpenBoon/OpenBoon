@@ -5,7 +5,7 @@ import sys
 import time
 
 from pixml.asset import Asset
-from pixml.processor import Frame, Context, PixmlUnrecoverableProcessorException
+from pixml.analysis import Frame, Context, PixmlUnrecoverableProcessorException
 
 logger = logging.getLogger(__name__)
 

@@ -26,6 +26,7 @@ class LocalFileCache(object):
         "gs",
         "http",
         "https"
+        "file"
     ]
 
     def __init__(self, app=None):
@@ -39,14 +40,15 @@ class LocalFileCache(object):
         self.root = tempfile.mkdtemp('pixml', 'lfc')
         self.app = app
 
-    def localize_file(self, rep):
+    def localize_remote_file(self, rep):
         """
         Localize a remote file.
 
         Args:
-            rep:
+            obj(mixed): The uri, asset, or file storage definition to localize.
 
         Returns:
+            str: a local file path to a remote file
 
         """
         if isinstance(rep, dict):
@@ -69,12 +71,14 @@ class LocalFileCache(object):
             str: The path within the local file cache.
 
         """
-        logger.info('Localizing URI: {}'.format(uri))
+        logger.debug('Localizing URI: {}'.format(uri))
         _, ext = os.path.splitext(uri)
         path = self.get_path(str(uri), ext)
         parsed_uri = urlparse(uri)
         if parsed_uri.scheme in ('http', 'https'):
             urllib.request.urlretrieve(uri, filename=str(path))
+        elif parsed_uri.scheme == 'file':
+            return parsed_uri.path
         elif parsed_uri.scheme == 'gs':
             try:
                 # Attempt to use credentials.

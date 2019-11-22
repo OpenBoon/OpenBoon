@@ -7,24 +7,23 @@ from pathlib2 import Path
 from unittest.mock import patch, Mock
 
 from zplugins.office.importers import OfficeImporter, _content_sanitizer
-from zorroa.zsdk import Frame, Asset
-from zorroa.zsdk.exception import UnrecoverableProcessorException
-from zorroa.zsdk.testing import PluginUnitTestCase
+from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
+from pixml.analysis.testing import PluginUnitTestCase, TestAsset
 
 
 class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     def setUp(self):
         self.path = Path('/tmp/path/file.pdf')
-        self.asset = Asset(str(self.path))
+        self.asset = TestAsset(str(self.path))
 
     def test_bad_extension(self):
         path = Path('/tmp/file.bad')
         try:
             path.touch()
-            frame = Frame(Asset(str(path)))
+            frame = Frame(TestAsset(str(path)))
             processor = self.init_processor(OfficeImporter(), {})
-            with pytest.raises(UnrecoverableProcessorException) as error:
+            with pytest.raises(PixmlUnrecoverableProcessorException) as error:
                 processor.process(frame)
             assert error.value.args[0] == ('An exception was returned while '
                                            'communicating with the Officer service')
@@ -64,7 +63,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         metadata_file = tempfile.NamedTemporaryFile(prefix='metadata.', suffix='.json')
         path, filename = os.path.split(metadata_file.name)
         clip_start = filename.split('.')
-        asset = Asset(metadata_file.name)
+        asset = TestAsset(metadata_file.name)
         asset.set_attr('media.clip.start', clip_start)
         asset.set_attr('tmp.office_output_dir', path)
 
@@ -75,7 +74,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         metadata_file = tempfile.NamedTemporaryFile(prefix='proxy.', suffix='.json')
         path, filename = os.path.split(metadata_file.name)
         clip_start = filename.split('.')
-        asset = Asset(metadata_file.name)
+        asset = TestAsset(metadata_file.name)
         asset.set_attr('media.clip.start', clip_start)
         asset.set_attr('tmp.office_output_dir', path)
 
@@ -110,7 +109,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         assert body['output_dir'] == "foo"
         assert body['dpi'] == 75
 
-    @patch.object(Asset, 'get_local_source_path', return_value='/fake')
+    @patch.object(TestAsset, 'get_local_source_path', return_value='/fake')
     @patch.object(OfficeImporter, '_is_content_extractable', return_value=True)
     def test_get_request_body_with_content_page_dpi(self, _, __):
         self.asset.set_attr('media.clip.start', 12)
@@ -136,7 +135,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
                   side_effect=requests.exceptions.HTTPError)
     def test_render_outputs_exception(self, _, __):
         processor = self.init_processor(OfficeImporter(), {})
-        with pytest.raises(UnrecoverableProcessorException):
+        with pytest.raises(PixmlUnrecoverableProcessorException):
             processor._render_outputs(self.asset)
 
     @patch.object(OfficeImporter, '_load_metadata',
@@ -144,7 +143,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, '_render_outputs', return_value='/fake')
     def test_process_loads_metadata_to_asset(self, _, __):
         processor = self.init_processor(OfficeImporter(), {'extract_pages': False})
-        processor._process(Frame(self.asset))
+        processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') == 'temp'
 
@@ -154,7 +153,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     def test_process_saves_previous_media_info(self, _, __):
         self.asset.set_attr('media.clip.test', 'test')
         processor = self.init_processor(OfficeImporter(), {'extract_pages': False})
-        processor._process(Frame(self.asset))
+        processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') == 'temp'
         assert self.asset.get_attr('media.clip.test') == 'test'
@@ -165,7 +164,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     def test_process_loads_metadata_but_no_content(self, _, __):
         processor = self.init_processor(OfficeImporter(), {'extract_pages': False,
                                                            'extract_content': False})
-        processor._process(Frame(self.asset))
+        processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') is None
 
@@ -174,5 +173,5 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, '_render_outputs', return_value='/fake')
     def test_process_expands_children(self, _, __, expand_patch):
         processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
-        processor._process(Frame(self.asset))
+        processor.process(Frame(self.asset))
         assert expand_patch.call_count == 3

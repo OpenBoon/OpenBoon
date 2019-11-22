@@ -4,7 +4,7 @@ import sys
 import zmq
 
 from containerizer.process import ProcessorExecutor
-from pixml.processor import Reactor
+from pixml.analysis import Reactor
 
 logger = logging.getLogger(__name__)
 

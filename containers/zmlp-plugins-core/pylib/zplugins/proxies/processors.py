@@ -7,14 +7,15 @@ import logging
 from PIL import Image
 from pathlib2 import Path
 
-from zorroa.zsdk import DocumentProcessor, Argument
+import pixml
+from pixml.analysis import AssetBuilder, Argument
 from zplugins.util.media import get_output_dimension, media_size
-from zplugins.util.proxy import add_proxy_file, add_proxy_link
+from zplugins.util.files import add_file
 
 logger = logging.getLogger(__file__)
 
 
-class ProxyProcessor(DocumentProcessor):
+class ProxyProcessor(AssetBuilder):
     toolTips = {
         'force': 'Force re-creation of proxies, even if they already exist.',
         'sizes': 'Sizes of the proxies to create.',
@@ -50,7 +51,7 @@ class ProxyProcessor(DocumentProcessor):
             raise ValueError('"%s" is not a valid type (%s)' %
                              (file_type, self.VALID_FILE_TYPES.keys()))
 
-    def _process(self, frame):
+    def process(self, frame):
         # Inherits parent docstring.
         asset = frame.asset
         source_path = self._get_source_path(asset)
@@ -61,17 +62,19 @@ class ProxyProcessor(DocumentProcessor):
         # on word docs and stuff like that.
         # In the future the server side will detect missing proxy images.
         if not source_path:
-            self.logger.info("No suitable proxy path found for asset '{}'"
-                             .format(asset.get_attr("source.path")))
+            self.logger.info('No suitable proxy path found for asset "{}"'
+                             .format(asset.get_attr('source.path')))
             return
 
         self.logger.info('Creating %s proxies for %s.' % (self.arg_value('file_type'),
                                                           source_path))
         self.logger.info('Asset File Size: %s' % os.stat(source_path).st_size)
         proxy_paths = self._create_proxy_images(asset)
-        for path in proxy_paths:
-            add_proxy_file(asset, path)
-        set_tiny_proxy_colors(asset, self.ofs)
+        for proxy in proxy_paths:
+            proxy_name = "proxy_{}x{}.jpg".format( proxy[0], proxy[1])
+            add_file(asset, 'proxy', proxy[2], rename=proxy_name,
+                     attrs={'width': proxy[0], 'height': proxy[1]})
+        set_tiny_proxy_colors(asset)
 
     def _create_proxy_images(self, asset):
         """
@@ -98,7 +101,7 @@ class ProxyProcessor(DocumentProcessor):
             self.created_proxy_count += len(proxy_descriptors)
         else:
             self.logger.info('All proxies already exist. No proxies will be created.')
-        return [str(d[2]) for d in proxy_descriptors]
+        return proxy_descriptors
 
     def _get_oiio_command_line(self, asset, proxy_descriptors):
         """
@@ -150,7 +153,7 @@ class ProxyProcessor(DocumentProcessor):
         Returns:
             A list of (width, height) pairs with the proxy sizes.
         """
-        self.logger.info("Existing proxies: %s" % asset.proxies)
+        self.logger.info("Existing proxies: %s" % asset.get_files())
         source_width, source_height = self._get_source_dimensions(asset)
         tmp_dir = Path(tempfile.gettempdir())
         # Determine list of (width, height) for proxies to be made.
@@ -160,7 +163,9 @@ class ProxyProcessor(DocumentProcessor):
 
             mime_type = self.VALID_FILE_TYPES[self.arg_value('file_type')]
             # If the proxy already exists and we aren't forcing creation then move on.
-            if asset.get_proxy(width, height, mime_type) and not self.arg_value('force'):
+
+            if asset.get_files(mimetype=mime_type, attrs={"width": width, "height": height}) \
+                    and not self.arg_value('force'):
                 self.logger.debug('skipping proxy %dx%d %s, already exists.')
                 continue
             output_path = tmp_dir.joinpath('%s_%sx%s.%s' %
@@ -199,7 +204,7 @@ class ProxyProcessor(DocumentProcessor):
         # has no chance of making a proxy, so we're going to skip
         # generating an error.
         if asset.get_attr("source.type") == "image":
-            return asset.get_local_source_path()
+            return self.app.localize_remote_file(asset.uri)
         return None
 
     def _get_valid_sizes(self, width, height):
@@ -223,85 +228,25 @@ class ProxyProcessor(DocumentProcessor):
         return valid_sizes
 
 
-class ExistingProxyProcessor(DocumentProcessor):
-    """Processor that adds existing files as proxies for assets. The files
-    can be either video or images.
-
-    """
-    toolTips = {
-        'search_file_types': 'List of file types to search for and add as proxies.',
-        'search_directories': 'List of directories to search for proxies.',
-        'paths': 'List of specific path to use as proxies.',
-        'symlink': "Symlink existing files rather than copy. Defaults to True"
-    }
-
-    def __init__(self):
-        super(ExistingProxyProcessor, self).__init__()
-        self.add_arg(Argument('search_file_types', 'list', default=['jpg', 'png', 'gif'],
-                              toolTip=self.toolTips['search_file_types']))
-        self.add_arg(Argument('search_directories', 'list', required=False, default=[],
-                              toolTip=self.toolTips['search_directories']))
-        self.add_arg(Argument('paths', 'list', required=False, default=[],
-                              toolTip=self.toolTips['paths']))
-        self.add_arg(Argument('symlink', 'bool', required=True, default=True,
-                              toolTip=self.toolTips['symlink']))
-
-    def _process(self, frame):
-        # Inherits parent docstring.
-        proxy_paths = []
-        asset = frame.asset
-        file_types = self.arg_value('search_file_types')
-
-        # Search in given directories for proxies to add.
-        for directory in self.arg_value('search_directories'):
-            self.logger.info('Searching %s for %s proxies.' % (directory, file_types))
-            for item in Path(directory).iterdir():
-                if item.is_file() and item.suffix.strip('.') in file_types:
-                    proxy_paths.append(item)
-
-        # Verify list of path to add as proxies.
-        paths = self.arg_value('paths')
-        self.logger.info('Verifying the following paths can be added as proxies - %s.' % paths)
-        for path in paths:
-            path = Path(path)
-            if path.exists():
-                proxy_paths.append(path)
-            else:
-                self.logger.info('%s does not exist. It will not be added as a proxy' % path)
-
-        # Add proxies.
-        for proxy_path in set(proxy_paths):
-            if self.arg_value("symlink"):
-                self.logger.info('Added %s as a proxy link for %s.' % (proxy_path, asset))
-                add_proxy_link(asset, str(proxy_path))
-            else:
-                self.logger.info('Added %s as a proxy file for %s.' % (proxy_path, asset))
-                add_proxy_file(asset, str(proxy_path))
-
-        # Add tiny proxies.
-        if proxy_paths:
-            set_tiny_proxy_colors(asset, self.ofs)
-
-
-def set_tiny_proxy_colors(asset, ofs):
+def set_tiny_proxy_colors(asset):
     """Select the smallest available image proxy and create a tiny proxy.
 
     Args:
         asset (Asset): Asset to set the tiny proxy colors on.
-        ofs (ObjectFileSystem): The OFS instance needed to obtain proxy file paths.
 
     """
     if not asset.get_attr('tmp.proxies.tinyProxyGenerated'):
 
-        proxies = asset.get_attr("proxies.proxies") or []
-        image_proxies = [proxy for proxy in proxies if proxy["mimetype"].startswith("image/")]
+        files = asset.get_attr("files") or []
+        image_proxies = [fs for fs in files if fs.get("mimetype").startswith("image/")]
 
         if image_proxies:
-            smallest_proxy = sorted(image_proxies, key=lambda prx: prx['width'])[0]
-            tiny_proxy_path = ofs.get(smallest_proxy["id"]).path
+            app = pixml.app_from_env()
+            smallest_proxy = sorted(image_proxies, key=lambda prx: prx['attrs']['width'])[0]
+            tiny_proxy_path = app.localize_remote_file(smallest_proxy)
 
             logger.info('Creating tiny proxy colors for %s.' % tiny_proxy_path)
-            asset.set_attr('proxies.tinyProxy', get_tiny_proxy_colors(tiny_proxy_path) or None)
+            asset.set_attr('analysis.pixelml.tinyProxy', get_tiny_proxy_colors(tiny_proxy_path) or None)
 
             # Mark that the tiny proxy was generated so we don't do this multiple times
             # if the customer has multiple proxy importers.

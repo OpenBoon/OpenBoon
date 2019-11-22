@@ -196,3 +196,30 @@ def create_video_thumbnail(source_path, destination_path, seconds):
     if not file_exists(destination_path):
         # Don't let the CalledProcessError impl detail leak out
         raise IOError('FFMpeg failed to create a thumbnail, command failed: {}'.format(cmd))
+
+
+def set_resolution_attrs(asset, width, height):
+    """Adds resolution metadata to the "media" namespace.
+
+    Entries include height, width, aspect, and orientation.
+
+    Args:
+        width (number): Width of the asset in pixels.
+        height (number): Height of the asset in pixels.
+
+    """
+    if width <= 0 or height <= 0:
+        raise ValueError('Width and height must be greater than 0 to set '
+                         'resolution metadata. %sx%s is invalid.' %
+                         (width, height))
+    asset.set_attr('media.width', int(width))
+    asset.set_attr('media.height', int(height))
+    aspect = round(float(width) / float(height), 2)
+    asset.set_attr('media.aspect', aspect)
+    if aspect <= 0.95:
+        orientation = 'portrait'
+    elif aspect <= 1.05:
+        orientation = 'square'
+    else:
+        orientation = 'landscape'
+    asset.set_attr('media.orientation', orientation)

@@ -2,8 +2,8 @@ import logging
 import unittest
 
 from containerizer.process import ProcessorExecutor
-from pixml.processor import Reactor
-from pixml.testing import TestEventEmitter
+from pixml.analysis import Reactor
+from pixml.analysis.testing import TestEventEmitter
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -30,7 +30,7 @@ class ProcessorExecutorTests(unittest.TestCase):
     def test_execute_processor(self):
         req = {
             "ref": {
-                "className": "zorroa.zsdk.testing.TestProcessor",
+                "className": "pixml.analysis.testing.TestProcessor",
                 "args": {},
                 "image": "plugins-py3-base"
             },
@@ -47,7 +47,7 @@ class ProcessorExecutorTests(unittest.TestCase):
     def test_teardown_processor(self):
         req = {
             "ref": {
-                "className": "zorroa.zsdk.testing.TestProcessor",
+                "className": "pixml.analysis.testing.TestProcessor",
                 "args": {},
                 "image": "plugins-py3-base"
             },
@@ -62,7 +62,7 @@ class ProcessorExecutorTests(unittest.TestCase):
 
     def test_get_processor_wrapper(self):
         ref = {
-            "className": "zorroa.zsdk.testing.TestProcessor",
+            "className": "pixml.analysis.testing.TestProcessor",
             "args": {},
             "image": "plugins-py3-base"
         }
@@ -76,7 +76,7 @@ class ProcessorExecutorTests(unittest.TestCase):
 
     def test_new_processor_instance(self):
         ref = {
-            "className": "zorroa.zsdk.testing.TestProcessor",
+            "className": "pixml.analysis.testing.TestProcessor",
             "args": {},
             "image": "plugins-py3-base"
         }

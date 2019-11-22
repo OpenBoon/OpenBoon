@@ -1,15 +1,17 @@
 import operator
 import re
 from datetime import datetime
+from functools import reduce
+
 import dateutil.parser
 from pathlib2 import Path
 
-from zorroa.zsdk import DocumentProcessor, Argument, Clip, ExpandFrame, Asset
-from ..util.media import get_image_metadata
-from functools import reduce
+from pixml import Clip, AssetSpec
+from pixml.analysis import AssetBuilder, Argument, ExpandFrame
+from ..util.media import get_image_metadata, set_resolution_attrs
 
 
-class ImageImporter(DocumentProcessor):
+class ImageImporter(AssetBuilder):
     default_fields = ['XResolution', 'YResolution', 'ResolutionUnit',
                       'Exif.ExposureBiasValue', 'Exif.ExposureProgram', 'ExposureTime',
                       'Exif.ExposureTime', 'Exif.Flash', 'FNumber', 'Exif.FNumber',
@@ -19,9 +21,8 @@ class ImageImporter(DocumentProcessor):
                       'Model', 'XMP.Model', 'XMP.Rating', 'IPTC.Country', 'IPTC.State',
                       'Keywords', 'Copyright', 'Artist', 'ImageDescription',
                       'IPTC.Headline', 'IPTC.Creator', 'IPTC.ObjectName',
-                      'IPTC.AuthorsPosition']
-    default_keyword_fields = ['Keywords', 'IPTC.Keywords', 'IPTC.Country', 'IPTC.State',
-                              'ImageDescription', 'IPTC.Headline']
+                      'IPTC.AuthorsPosition', 'Keywords', 'IPTC.Keywords',
+                      'IPTC.Country', 'IPTC.State', 'ImageDescription', 'IPTC.Headline']
     date_fields = ['Exif.DateTimeOriginal', 'Exif.DateTimeDigitized',
                    'Exif.DateTime', 'IPTC.DateCreated', 'IPTC.TimeCreated', 'DateTime',
                    'File.FileModifiedDate', 'Date']
@@ -34,16 +35,14 @@ class ImageImporter(DocumentProcessor):
     def __init__(self):
         super(ImageImporter, self).__init__()
         self.add_arg(Argument('included_tags', 'list[str]', default=self.default_fields))
-        self.add_arg(Argument('keyword_tags', 'list[str]',
-                              default=self.default_keyword_fields))
         self.add_arg(Argument('extract_pages', 'bool', default=False))
         self.add_arg(Argument('extract_extended_metadata', 'bool', default=False))
 
-    def _process(self, frame):
+    def process(self, frame):
         asset = frame.asset
         path = Path(asset.get_local_source_path())
         metadata = get_image_metadata(path)
-        asset.set_resolution(int(metadata.get('full_width')), int(metadata.get('full_height')))
+        set_resolution_attrs(asset, int(metadata.get('full_width')), int(metadata.get('full_height')))
         self.set_location(asset, metadata)
         self.set_date(asset, metadata)
         self.set_metadata(asset, metadata)
@@ -136,9 +135,10 @@ class ImageImporter(DocumentProcessor):
         document.set_attr('media.pages', subimages)
         source_path = document.get_attr('source.path')
         for i in range(1, subimages + 1):
-            clip = Clip(name=None, type='image', start=i,
-                        stop=i, parent=document.id)
-            expand = ExpandFrame(Asset(source_path, clip))
+
+
+            clip = Clip('image', i, i)
+            expand = ExpandFrame(AssetSpec(source_path, clip))
             self.expand(frame, expand)
 
     def set_metadata(self, document, metadata, namespace=None):
@@ -155,7 +155,6 @@ class ImageImporter(DocumentProcessor):
 
         """
         included_tags = self.arg_value('included_tags')
-        keyword_tags = self.arg_value('keyword_tags')
         non_alphanum_regex = re.compile(r'[\W_]+')
         for key, value in metadata.items():
             clean_key = non_alphanum_regex.sub('', key)
@@ -165,8 +164,6 @@ class ImageImporter(DocumentProcessor):
                 field = clean_key
             if field in included_tags and self.arg_value('extract_extended_metadata'):
                 document.set_attr('media.attrs.%s' % clean_key, value)
-            if field in keyword_tags:
-                self.add_keywords(document, value)
 
             if isinstance(value, dict):
                 self.set_metadata(document, value, namespace=field)

@@ -5,14 +5,14 @@ import requests
 
 from requests import RequestException
 
-from zorroa.zsdk import DocumentProcessor, Argument, Clip, ExpandFrame, Asset
-from zorroa.zsdk.exception import UnrecoverableProcessorException
+from pixml import AssetSpec, Clip
+from pixml.analysis import AssetBuilder, Argument, ExpandFrame, PixmlUnrecoverableProcessorException
 
 
 __all__ = ["OfficeImporter", "_content_sanitizer"]
 
 
-class OfficeImporter(DocumentProcessor):
+class OfficeImporter(AssetBuilder):
 
     file_types = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
     content_extractable_file_types = ['pdf', 'doc', 'docx', 'ppt', 'pptx']
@@ -74,7 +74,7 @@ class OfficeImporter(DocumentProcessor):
         return False
 
     def _get_request_body(self, asset):
-        asset_path = asset.source_path
+        asset_path = asset.uri
         page = asset.get_attr("media.clip.start")
         # The output dir is always the parent directory.
         output_dir = asset.get_attr("media.clip.parent") or asset.id
@@ -105,7 +105,7 @@ class OfficeImporter(DocumentProcessor):
                 self.logger.warning('Request: %s' % e.request.body)
             if e.response is not None:
                 self.logger.warning('Response: %s' % e.response.content)
-            raise UnrecoverableProcessorException(
+            raise PixmlUnrecoverableProcessorException(
                 'An exception was returned while communicating with the Officer service')
 
         return response.json()['output']
@@ -117,7 +117,7 @@ class OfficeImporter(DocumentProcessor):
         response.raise_for_status()
         return response
 
-    def _process(self, frame):
+    def process(self, frame):
         """Processes the given frame by sending it to the Officer service for render.
 
         If a Parent asset is given, it'll be sent to Officer to have all of it's pages
@@ -177,9 +177,8 @@ class OfficeImporter(DocumentProcessor):
             num_pages = asset.get_attr("media.pages")
             if not asset.attr_exists("media.clip") and num_pages > 1:
                 for page_num in range(1, num_pages + 1):
-                    clip = Clip(name=None, type='page', start=page_num,
-                                stop=page_num, parent=asset.id)
-                    child_asset = Asset(asset.get_attr('source.path'), clip)
+                    clip = Clip('page',page_num, page_num)
+                    child_asset = AssetSpec(asset.get_attr('source.path'), clip)
                     child_asset.set_attr(self.tmp_loc_attr, output_dir)
                     expand = ExpandFrame(child_asset)
                     self.expand(frame, expand)

@@ -8,6 +8,7 @@ import traceback
 from shutil import copyfile
 
 from pixml.util import import_and_instantiate, as_collection
+from pixml.app import app_from_env
 
 logger = logging.getLogger(__name__)
 
@@ -400,6 +401,7 @@ class Processor(object):
         self.reactor = None
         self.expressions = {}
         self.reset_logger()
+        self.app = app_from_env()
 
     def full_class_name(self):
         c = self.__class__.__mro__[0]
