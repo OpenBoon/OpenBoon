@@ -3,7 +3,8 @@ package com.zorroa.archivist.service
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AnalystSpec
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.Job
@@ -13,6 +14,7 @@ import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
@@ -24,6 +26,7 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.Perm
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.withAuth
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
@@ -315,10 +318,10 @@ class DispatcherServiceTests : AbstractTest() {
         val id1 = UUID.randomUUID().toString()
         val id2 = UUID.randomUUID().toString()
 
-        val doc1 = Document(id1)
+        val doc1 = Asset(id1)
         doc1.setAttr("source.path", "/foo/bar.jpg")
 
-        val doc2 = Document(id2)
+        val doc2 = Asset(id2)
         doc2.setAttr("source.path", "/flim/flam.jpg")
 
         val spec = JobSpec(
@@ -327,7 +330,7 @@ class DispatcherServiceTests : AbstractTest() {
                 "foo",
                 generate = null,
                 execute = null,
-                over = listOf(doc1, doc2)
+                assets = listOf(doc1, doc2)
             )
         )
         jobService.create(spec)
@@ -358,10 +361,10 @@ class DispatcherServiceTests : AbstractTest() {
         val id1 = UUID.randomUUID().toString()
         val id2 = UUID.randomUUID().toString()
 
-        val doc1 = Document(id1)
+        val doc1 = Asset(id1)
         doc1.setAttr("source.path", "/foo/bar.jpg")
 
-        val doc2 = Document(id2)
+        val doc2 = Asset(id2)
         doc2.setAttr("source.path", "/flim/flam.jpg")
 
         val spec = JobSpec(
@@ -370,7 +373,7 @@ class DispatcherServiceTests : AbstractTest() {
                 "foo",
                 generate = null,
                 execute = null,
-                over = listOf(doc1, doc2)
+                assets = listOf(doc1, doc2)
             )
         )
         jobService.create(spec)
@@ -401,10 +404,10 @@ class DispatcherServiceTests : AbstractTest() {
         val id1 = UUID.randomUUID().toString()
         val id2 = UUID.randomUUID().toString()
 
-        val doc1 = Document(id1)
+        val doc1 = Asset(id1)
         doc1.setAttr("source.path", "/foo/bar.jpg")
 
-        val doc2 = Document(id2)
+        val doc2 = Asset(id2)
         doc2.setAttr("source.path", "/flim/flam.jpg")
 
         val spec = JobSpec(
@@ -413,7 +416,7 @@ class DispatcherServiceTests : AbstractTest() {
                 "foo",
                 generate = null,
                 execute = null,
-                over = listOf(doc1, doc2)
+                assets = listOf(doc1, doc2)
             )
         )
         jobService.create(spec)
@@ -445,20 +448,6 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testExpand() {
-        val spec = JobSpec(
-            "test_job",
-            emptyZpsScript("foo"),
-            args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar")
-        )
-
-        val job = jobService.create(spec)
-        val task = dispatcherService.expand(job, emptyZpsScript("bar"))
-        assertEquals(job.id, task.jobId)
-    }
-
-    @Test
     fun testExpandFromParentTask() {
         val spec = JobSpec(
             "test_job",
@@ -471,8 +460,11 @@ class DispatcherServiceTests : AbstractTest() {
         val zps = emptyZpsScript("bar")
         zps.execute = mutableListOf(ProcessorRef("foo", "bar"))
 
-        val task = dispatcherService.expand(job, zps)
-        val task2 = dispatcherService.expand(task, emptyZpsScript("bar"))
+        val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
+        val task2 = dispatcherService.expand(
+            task1[0],
+            TaskExpandEvent(listOf(AssetSpec("http://foo/123.jpg")))
+        )
         val zps2 = taskDao.getScript(task2.id)
 
         assertNotNull(zps2.execute)

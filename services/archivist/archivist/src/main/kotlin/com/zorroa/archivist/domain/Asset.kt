@@ -6,12 +6,15 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.google.common.base.MoreObjects
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
 import java.net.URI
+import java.security.MessageDigest
+import java.util.Base64
 import java.util.UUID
 import java.util.regex.Pattern
 
@@ -277,16 +280,186 @@ class BatchDeleteAssetsResponse(
     }
 }
 
-enum class AssetState {
+@ApiModel("Batch Provision Assets Request",
+    description = "Defines the properties necessary to provision a batch of assets.")
+class BatchProvisionAssetsRequest(
+
+    @ApiModelProperty("The list of assets to be provisioned")
+    val assets: List<AssetSpec>,
+
+    @ApiModelProperty("Set to true if the assets should undergo " +
+        "further analysis, or false to stay in the provisioned state.")
+    val analyze: Boolean = true,
+
+    @ApiModelProperty("The analysis to apply.")
+    val analysis: List<String>? = null
+)
+
+
+@ApiModel("Batch Provision Assets Response",
+    description = "The response returned after provisioning assets.")
+class BatchProvisionAssetsResponse(
+
+    @ApiModelProperty("A map of the assetId to provisioned status. " +
+        "An asset will fail to provision if it already exists.")
+    val status: Map<String, String>,
+
+    @ApiModelProperty("The last of assets that was provisioned")
+    var assets: List<Asset>,
+
+    @ApiModelProperty("The ID of the analysis job, if analysis was selected")
+    val jobId: UUID? = null
+)
+
+@ApiModel("Asset Spec",
+    description = "Defines all the properties required to create an Asset.")
+class AssetSpec(
+
+    @ApiModelProperty("The URI location of the asset.")
+    val uri: String,
+
+    @ApiModelProperty("Additional metadata fields to add to the Asset.")
+    val document: Map<String, Any>? = null,
+
+    @ApiModelProperty("An optional unique ID for the asset to override an auto-generated ID.")
+    val id: String? = null
+)
+
+@ApiModel("Asset",
+    description = "The file information and all the metadata generated during Analysis.")
+class Asset(
+    @ApiModelProperty("The unique ID of the Asset.")
+    val id: String,
+
+    @ApiModelProperty("The assets metadata.")
+    val document: Map<String, Any> = mutableMapOf()
+) {
     /**
-     * The default state for an Asset.
+     * Remove an attribute.  If the attr cannot be remove it is set to null.
+     *
+     * @param attr
      */
-    Active,
+    fun removeAttr(attr: String): Boolean {
+        val current = getContainer(attr, true)
+        val key = Attr.name(attr)
+
+        /*
+         * Finally, just try treating it like a map.
+         */
+        try {
+            return (current as MutableMap<String, Any>).remove(key) != null
+        } catch (ex: ClassCastException) {
+            throw IllegalArgumentException("Invalid attribute: $attr")
+        }
+    }
 
     /**
-     * The asset has been deleted from ES.
+     * Get an attribute value  by its fully qualified name.
+     *
+     * @param attr
+     * @param <T>
+     * @return
+    </T> */
+    fun <T> getAttr(attr: String): T? {
+        val current = getContainer(attr, false)
+        return getChild(current, Attr.name(attr)) as T?
+    }
+
+    /**
+     * Get an attribute value by its fully qualified name.  Uses a JSON mapper
+     * to map the data into the specified class.
+     *
+     * @param attr
+     * @param type
+     * @param <T>
+     * @return
+    </T> */
+    fun <T> getAttr(attr: String, type: Class<T>): T? {
+        val current = getContainer(attr, false)
+        return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
+    }
+
+    /**
+     * Get an attribute value by its fully qualified name.  Uses a JSON mapper
+     * to map the data into the specified TypeReference.
+     *
+     * @param attr
+     * @param type
+     * @param <T>
+     * @return
+    </T> */
+    fun <T> getAttr(attr: String, type: TypeReference<T>): T {
+        val current = getContainer(attr, false)
+        return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
+    }
+
+    /**
+     * Set an attribute value.
+     *
+     * @param attr
+     * @param value
      */
-    Deleted
+    fun setAttr(attr: String, value: Any?) {
+        val current = getContainer(attr, true)
+        val key = Attr.name(attr)
+
+        try {
+            (current as MutableMap<String, Any?>)[key] = Json.Mapper.convertValue(value as Any)
+        } catch (ex: ClassCastException) {
+            throw IllegalArgumentException("Invalid attribute: $attr", ex)
+        }
+    }
+
+    private fun getContainer(attr: String, forceExpand: Boolean): Any? {
+        val parts = PATTERN_ATTR.split(attr)
+
+        var current: Any? = document
+        for (i in 0 until parts.size - 1) {
+
+            var child = getChild(current, parts[i])
+            if (child == null) {
+                if (forceExpand) {
+                    child = createChild(current, parts[i])
+                } else {
+                    return null
+                }
+            }
+            current = child
+        }
+        return current
+    }
+
+    private fun getChild(`object`: Any?, key: String): Any? {
+        if (`object` == null) {
+            return null
+        }
+        try {
+            return (`object` as Map<String, Any>)[key]
+        } catch (ex: ClassCastException) {
+            return null
+        }
+    }
+
+    private fun createChild(parent: Any?, key: String): Any {
+        val result = mutableMapOf<String, Any>()
+        try {
+            (parent as MutableMap<String, Any>)[key] = result
+        } catch (ex: ClassCastException) {
+            throw IllegalArgumentException("Invalid attribute: $key parent: $parent")
+        }
+        return result
+    }
+
+    override fun toString(): String {
+        return "<Asset $id - $document>"
+    }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(Asset::class.java)
+
+        private val PATTERN_ATTR = Pattern.compile(Attr.DELIMITER, Pattern.LITERAL)
+    }
 }
 
 /**
@@ -565,7 +738,7 @@ open class Document {
     }
 
     override fun toString(): String {
-        return "<Document $id - $document>"
+        return "<Asset $id - $document>"
     }
 
     companion object {
@@ -625,55 +798,17 @@ object IdGen {
      * @param value
      * @return
      */
-    fun getId(value: String): String {
-        return uuidGenerator.generate(value).toString()
-    }
-
-    /**
-     * Returns a readable unique string for an asset that is based
-     * on the file path and clip properties.
-     *
-     * @param source
-     * @return
-     */
-    fun getRef(source: Document): String? {
-        val idkey = source.getAttr("source.idkey", String::class.java)
-        var key = source.getAttr("source.path", String::class.java)
-
-        if (idkey != null) {
-            key = "$key?$idkey"
+    fun getId(value: String, idKey: String?=null): String {
+        val sb = StringBuilder(128)
+        sb.append(getProjectId().toString().replace("-", ""))
+        sb.append(value)
+        idKey?.let {
+            sb.append(idKey)
         }
-        return key
-    }
 
-    /**
-     * Return the unique ID for the given source.
-     *
-     * @param source
-     * @return
-     */
-    fun getId(source: Document): String {
-        return uuidGenerator.generate(getRef(source)).toString()
+        val digester = MessageDigest.getInstance("SHA-1")
+        digester.update(sb.toString().toByteArray())
+        return Base64.getEncoder().encodeToString(digester.digest()).trim('=')
     }
 }
 
-/**
- * Copied from IRM source.
- */
-enum class DocumentState private constructor(val value: Long) {
-    METADATA_UPLOADED(10), DOCUMENT_UPLOADED(20), PROCESSED(30), INDEXED(40), REPROCESS(50);
-
-    companion object {
-        fun findByValue(value: Long): DocumentState? {
-            for (state in DocumentState.values()) {
-                if (state.value == value) {
-                    return state
-                }
-            }
-            return null
-        }
-    }
-}
-
-class Tuple<L, R>(val left: L, val right: R)
-class MutableTuple<L, R>(var left: L, var right: R)

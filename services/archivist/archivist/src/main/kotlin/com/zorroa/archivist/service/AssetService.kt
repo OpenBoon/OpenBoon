@@ -1,16 +1,28 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetUploadedResponse
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchIndexAssetsResponse
+import com.zorroa.archivist.domain.BatchProvisionAssetsRequest
+import com.zorroa.archivist.domain.BatchProvisionAssetsResponse
 import com.zorroa.archivist.domain.Document
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.IdGen
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectFilter
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
 import org.apache.lucene.search.join.ScoreMode
+import org.elasticsearch.action.DocWriteRequest
+import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.search.SearchType
+import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.Strings
 import org.elasticsearch.common.settings.Settings
@@ -29,6 +41,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.OutputStream
+import java.util.Calendar
 import java.util.Date
 import java.util.UUID
 
@@ -45,6 +58,18 @@ interface AssetService {
     fun search(query: Map<String, Any>, output: OutputStream)
     fun createOrReplaceAssets(batch: BatchCreateAssetsRequest): BatchIndexAssetsResponse
     fun get(assetId: String): Document
+
+    /**
+     * Batch provision a list of assets.  Provisioning adds a base asset with
+     * just source data to ElasticSearch.  A provisioned asset still needs
+     * to be processed.
+     *
+     * @param request: A BatchProvisionAssetsRequest
+     * @return A BatchProvisionAssetsResponse which contains the assets and their provision status.
+     *
+     * TODO: handle clips
+     */
+    fun batchProvisionAssets(request: BatchProvisionAssetsRequest): BatchProvisionAssetsResponse
 }
 
 /**
@@ -197,6 +222,78 @@ class AssetServiceImpl : AssetService {
 
     override fun get(assetId: String): Document {
         return indexService.get(assetId)
+    }
+
+    override fun batchProvisionAssets(request: BatchProvisionAssetsRequest): BatchProvisionAssetsResponse {
+        if (request.assets.size > 100) {
+            throw IllegalArgumentException("Cannot provision more than 100 assets at a time.")
+        }
+
+        val rest = indexRoutingService.getProjectRestClient()
+
+        val bulkRequest = BulkRequest()
+        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
+        val assets = request.assets.map { spec ->
+
+            val id = IdGen.getId(spec.uri)
+            val asset = Asset(id, spec.document ?: mutableMapOf())
+
+            asset.setAttr("source.path", spec.uri)
+            asset.setAttr("source.filename", FileUtils.filename(spec.uri))
+            asset.setAttr("source.directory", FileUtils.dirname(spec.uri))
+            asset.setAttr("source.extension", FileUtils.extension(spec.uri))
+
+            val mediaType = FileUtils.getMediaType(spec.uri)
+            asset.setAttr("source.mimetype", mediaType)
+            asset.setAttr("source.type", mediaType.split("/")[0])
+            asset.setAttr("source.subtype", mediaType.split("/")[1])
+
+            asset.setAttr("system.projectId", getProjectId().toString())
+            asset.setAttr("system.timeCreated",
+                java.time.Clock.systemUTC().instant().toString())
+            asset.setAttr("system.state", "provisioned")
+            asset
+        }
+
+        assets.forEach {
+            val ireq = rest.newIndexRequest(it.id)
+            ireq.opType(DocWriteRequest.OpType.CREATE)
+            ireq.source(it.document)
+            bulkRequest.add(ireq)
+        }
+
+        val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
+        val esBatchResult = mutableMapOf<String, String>()
+        for (response in bulk.items) {
+            if (response.isFailed) {
+                // TODO: mark the dups
+                esBatchResult[response.id] = response.failureMessage
+            } else {
+                esBatchResult[response.id] = "provisioned"
+            }
+        }
+
+        // Launch analysis job.
+        val jobId = if (request.analyze) {
+            createAnalysisJob(assets).id
+        } else {
+            null
+        }
+
+        return BatchProvisionAssetsResponse(esBatchResult, assets, jobId)
+    }
+
+    fun createAnalysisJob(assets: List<Asset>): Job {
+        val execute = listOf(
+            ProcessorRef("zplugins.image.importers.ImageImporter", "zmlp-py3-core"),
+            ProcessorRef("zplugins.proxies.processors.ImageProxyProcessor", "zmlp-py3-core")
+        )
+        val name = "Analyze ${assets.size} assets"
+        val script = ZpsScript(name, null, assets, execute)
+        val spec = JobSpec(name, script)
+
+        return jobService.create(spec)
     }
 
     override fun createOrReplaceAssets(batch: BatchCreateAssetsRequest): BatchIndexAssetsResponse {
