@@ -2,6 +2,7 @@ import logging
 import os
 
 from pathlib2 import Path
+from urllib.parse import urlparse
 
 from ..app import app_from_env
 
@@ -84,6 +85,8 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
     if attrs:
         spec["attrs"].update(attrs)
 
+    # handle file:// urls
+    path = urlparse(path).path
     result = app.client.upload_file(
         "/api/v2/assets/{}/_files".format(asset.id), path, spec)
 

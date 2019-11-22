@@ -382,7 +382,7 @@ class Processor(object):
     There are currently three types of processors:
 
     * Generators - create documents to process.
-    * DocumentProcessors - process documents created by generators.
+    * AssetBuilders - process assets created by generators.
 
     Attributes:
         file_types(list) - An optional set of file types a subclass allows.
@@ -400,16 +400,13 @@ class Processor(object):
         self.execute_refs = []
         self.reactor = None
         self.expressions = {}
-        self.reset_logger()
         self.app = app_from_env()
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def full_class_name(self):
         c = self.__class__.__mro__[0]
         name = c.__module__ + "." + c.__name__
         return name
-
-    def reset_logger(self):
-        self.logger = logging.getLogger(self.__class__.__name__)
 
     def add_arg(self, arg):
         """Adds a predefined Argument to the Processor. Arguments should be added
