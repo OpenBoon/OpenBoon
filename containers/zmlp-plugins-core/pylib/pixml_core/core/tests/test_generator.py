@@ -2,7 +2,7 @@
 import unittest
 
 from pixml.analysis import Context
-from zplugins.core.generators import GcsBucketGenerator
+from pixml_core.core.generators import GcsBucketGenerator
 
 
 class TestConsumer:

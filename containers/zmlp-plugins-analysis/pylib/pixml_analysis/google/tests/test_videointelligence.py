@@ -46,7 +46,7 @@ class MockEntity:
 class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
     # Mock the processor client to bypass google authentication
-    @patch('zplugins.google.processors.videointelligence.'
+    @patch('pixml_analysis.google.processors.videointelligence.'
            'VideoIntelligenceServiceClient', autospec=True)
     def setUp(self, mock_videointelligence_client):
         self.mock_videointelligence_client = mock_videointelligence_client
@@ -101,7 +101,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
         frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
 
-        self.processor._process(frame)
+        self.processor.process(frame)
 
         # If the process doesn't run, then the work isn't performed and data isn't stored within
         # asset attributes.
@@ -111,10 +111,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed. Patch get_video_annotations since it relies on google.cloud and instead return mock
     # results.
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_no_results(self, get_video_annotations, get_clip_bytes):
         # Note: Here's we run a normal test but we don't pass in any label results
@@ -143,10 +143,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed. Patch get_video_annotations since it relies on google.cloud and instead return mock
     # results.
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_segment_labels_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -191,7 +191,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
-        self.processor._process(frame)
+        self.processor.process(frame)
 
         # Confirm that all entity descriptions made it to the attributes dictionary as intended.
         self.assertIn('person', frame.asset.get_attr('analysis.google.videoLabel.segment.keywords'))
@@ -209,10 +209,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_shot_labels_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -250,7 +250,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
-        self.processor._process(frame)
+        self.processor.process(frame)
 
         # Confirm that all entity descriptions made it to the attributes dictionary as intended.
         self.assertIn('person', frame.asset.get_attr('analysis.google.videoLabel.shot.keywords'))
@@ -267,10 +267,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_frame_labels_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -301,7 +301,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
-        self.processor._process(frame)
+        self.processor.process(frame)
 
         # Confirm that all entity descriptions made it to the attributes dictionary as intended.
         self.assertIn('text', frame.asset.get_attr('analysis.google.videoLabel.frame.keywords'))
@@ -316,10 +316,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_video_text_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -358,7 +358,7 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         frame.asset.set_attr('media.clip.start', 0.0)
         frame.asset.set_attr('media.clip.length', 111.0)
 
-        self.processor._process(frame)
+        self.processor.process(frame)
 
         # Confirm that all video text made it to the attributes dictionary as intended.
         self.assertEqual(frame.asset.get_attr('analysis.google.videoText.content'),
@@ -372,10 +372,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zplugins.google.processors.CloudVideoIntelligenceProcessor.'
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_all_annotations(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"

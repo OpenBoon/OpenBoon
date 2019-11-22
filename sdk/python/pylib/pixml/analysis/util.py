@@ -86,7 +86,7 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
         spec["attrs"].update(attrs)
 
     # handle file:// urls
-    path = urlparse(path).path
+    path = urlparse(str(path)).path
     result = app.client.upload_file(
         "/api/v2/assets/{}/_files".format(asset.id), path, spec)
 

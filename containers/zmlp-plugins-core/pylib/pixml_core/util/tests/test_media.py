@@ -3,8 +3,8 @@ import os
 import shutil
 
 from unittest.mock import patch
-from zplugins.util import media
-from zorroa.zsdk.testing import zorroa_test_data
+from pixml_core.util import media
+from pixml.analysis.testing import zorroa_test_data
 
 IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr')
 IMAGE_PSD = zorroa_test_data('images/set06/psd_123.psd')
@@ -21,7 +21,7 @@ def test_get_image_metadata():
     assert metadata["height"] == "2448"
 
 
-@patch('zplugins.util.media.check_output')
+@patch('pixml_core.util.check_output')
 def test_get_image_metadata_invalid_chars(check_out_patch):
 
     xml = """

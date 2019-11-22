@@ -3,8 +3,8 @@ from google.cloud.vision import types
 from mock import patch
 
 from ..processors import CloudVisionProcessor
+from pixml import PixmlClient
 from pixml.analysis.util import add_proxy_file
-
 from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
 
@@ -18,6 +18,16 @@ STREETSIGN = zorroa_test_data("images/set09/streetsign.jpg")
 MANUAL = zorroa_test_data("images/set09/nvidia_manual_page.jpg")
 TOOBIG = zorroa_test_data("images/set09/heckabig.jpg")
 
+PIXML_FILE = {
+    "name": "proxy_512x341.jpg",
+    "category": "proxy",
+    "mimetype": "image/jpeg",
+    "assetId": "12345",
+    "attrs": {
+        "width": 512,
+        "height": 341
+    }
+}
 
 # simulate the gcp client that calls the google APIs
 class MockImageAnnotatorClient:
@@ -336,24 +346,28 @@ class MockImageAnnotatorClient:
 
 class GoogleVisionUnitTestCase(PluginUnitTestCase):
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_too_big(self, mock_image_annotator):
+    def test_too_big(self, mock_image_annotator, upload_patch):
         # initialize doomed asset and initialize the processor
+        upload_patch.return_value = PIXML_FILE
         asset = TestAsset(TOOBIG)
         frame = Frame(asset)
-        add_proxy_file(asset, TOOBIG)
+        add_proxy_file(asset, TOOBIG, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {})
 
         # see if the processor throws an exception for the image being too big
         self.assertRaises(PixmlUnrecoverableProcessorException, processor.process,
                           frame)
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_label(self, mock_image_annotator):
+    def test_detect_label(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
+        upload_patch.return_value = PIXML_FILE
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
-        add_proxy_file(asset, TOUCAN)
+        add_proxy_file(asset, TOUCAN, (200, 200))
 
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
@@ -382,12 +396,14 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         self.assertIn(u'Organism', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Bird', frame.asset.get_attr(keyword_pth))
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_label_with_debug(self, mock_image_annotator):
+    def test_detect_label_with_debug(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
+        upload_patch.return_value = PIXML_FILE
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
-        add_proxy_file(asset, TOUCAN)
+        add_proxy_file(asset, TOUCAN, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -474,12 +490,14 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
             "analysis.google.visionLabelDetection.scores"),
             0.9937642216682434, places=5)
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_landmark(self, mock_image_annotator):
+    def test_detect_landmark(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
+        upload_patch.return_value = PIXML_FILE
         asset = TestAsset(EIFFEL)
         frame = Frame(asset)
-        add_proxy_file(asset, EIFFEL)
+        add_proxy_file(asset, EIFFEL, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -507,12 +525,14 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
             "analysis.google.landmarkDetection.score"),
             0.5427713990211487, places=5)
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_explicit(self, mock_image_annotator):
+    def test_detect_explicit(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
+        upload_patch.return_value = PIXML_FILE
         asset = TestAsset(PUNCH)
         frame = Frame(asset)
-        add_proxy_file(asset, PUNCH)
+        add_proxy_file(asset, PUNCH, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -538,12 +558,14 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         self.assertEqual(frame.asset.get_attr(
             "analysis.google.explicit.violence"), 0.0)
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_faces(self, mock_image_annotator):
+    def test_detect_faces(self, mock_image_annotator, upload_patch):
         # initialize the asset and processor
+        upload_patch.return_value = PIXML_FILE
         asset = TestAsset(FACES)
         frame = Frame(asset)
-        add_proxy_file(asset, FACES)
+        add_proxy_file(asset, FACES, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -588,13 +610,14 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
                                -5.038763046264648, places=5)
         self.assertEqual(frame.asset.get_attr(ex_attr), 1)
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_image_text(self, mock_image_annotator):
-
+    def test_detect_image_text(self, mock_image_annotator, upload_patch):
+        upload_patch.return_value = PIXML_FILE
         # initialize the asset and processor
         asset = TestAsset(STREETSIGN)
         frame = Frame(asset)
-        add_proxy_file(asset, STREETSIGN)
+        add_proxy_file(asset, STREETSIGN, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": True,
             "detect_document_text": False,
@@ -613,9 +636,11 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset_attr = "analysis.google.imageTextDetection.content"
         self.assertEqual(frame.asset.get_attr(asset_attr), sign_content)
 
+    @patch.object(PixmlClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_document_text(self, mock_image_annotator):
+    def test_detect_document_text(self, mock_image_annotator, upload_patch):
         self.maxDiff = None
+        upload_patch.return_value = PIXML_FILE
         # initialize the asset and processor
         asset = TestAsset(MANUAL)
         frame = Frame(asset)

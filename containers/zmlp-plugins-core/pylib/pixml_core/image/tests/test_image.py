@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pixml import analysis
 from pixml.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
-from zplugins.image.importers import ImageImporter
+from pixml_core.image.importers import ImageImporter
 
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 OFFICE = zorroa_test_data("office/multipage_tiff_small.tif")

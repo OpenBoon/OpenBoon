@@ -10,7 +10,7 @@ from pathlib2 import Path
 import pixml
 from pixml.analysis import AssetBuilder, Argument
 from pixml.analysis.util import add_proxy_file
-from zplugins.util.media import get_output_dimension, media_size
+from pixml_core.util.media import get_output_dimension, media_size
 
 
 logger = logging.getLogger(__file__)

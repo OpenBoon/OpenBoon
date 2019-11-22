@@ -7,7 +7,7 @@ from pixml.analysis import Frame
 from pixml.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from pixml.rest import PixmlClient
 
-from zplugins.proxies.processors import ProxyProcessor, get_tiny_proxy_colors
+from pixml_core.proxies.processors import ProxyProcessor, get_tiny_proxy_colors
 
 TOUCAN_PATH = zorroa_test_data("images/set01/toucan.jpg", uri=False)
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")

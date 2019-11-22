@@ -1,6 +1,6 @@
 from pathlib2 import Path
 
-from zplugins.core.processors import SetAttributesProcessor
+from pixml_core.core.processors import SetAttributesProcessor
 from pixml import Asset
 from pixml.analysis import Frame
 from pixml.analysis.testing import PluginUnitTestCase, TestAsset
