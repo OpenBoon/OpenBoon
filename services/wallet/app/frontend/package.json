@@ -16,8 +16,7 @@
   "license": "ISC",
   "jest": {
     "moduleNameMapper": {
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy",
-      "^.+\\.(jpg|png|jpeg|svg)$": "<rootDir>/src/tests/MediaStub.js"
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
     }
   },
   "prettier": {
