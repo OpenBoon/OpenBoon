@@ -23,7 +23,7 @@ class TaskError(
     val jobId: UUID,
 
     @ApiModelProperty("UUID of the Asset the Task was processing.")
-    val assetId: UUID?,
+    val assetId: String?,
 
     @ApiModelProperty("File path or URI that was being processed.")
     val path: String?,
@@ -82,7 +82,7 @@ class TaskErrorFilter(
     var taskIds: List<UUID>? = null,
 
     @ApiModelProperty("Asset UUIDs to match.")
-    var assetIds: List<UUID>? = null,
+    var assetIds: List<String>? = null,
 
     @ApiModelProperty("Paths to match.")
     val paths: List<String>? = null,
