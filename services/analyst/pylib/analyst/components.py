@@ -1,20 +1,14 @@
-import json
 import logging
 import os
 import random
-import shutil
+import socket
 import tempfile
 import threading
 import time
-import uuid
-import socket
-import subprocess
-
 from sys import platform
 
 import psutil
 import requests
-from pathlib2 import Path
 
 from .containerized import ContainerizedZpsExecutor
 
@@ -34,9 +28,7 @@ ZpsFooter = "######## END ##########"
 __all__ = [
     "ApiComponents",
     "ClusterClient",
-    "Executor",
-    "ProcessorScanner",
-    "get_sdk_version"
+    "Executor"
 ]
 
 
@@ -343,58 +335,3 @@ def get_sdk_version():
     except IOError as e:
         logger.warning("Failed to open processors.json, %s" % e)
         return "unknown"
-
-
-class ProcessorScanner(object):
-    """Has methods for scanning for processors that the analyst can use."""
-    def __init__(self, zpyfind_path='zpyfind'):
-        self.zpyfind_path = zpyfind_path
-        self.core_plugin_path = os.environ.get('ZORROA_CORE_PLUGIN_PATH',
-                                               os.path.dirname(__file__) + "/../zplugins")
-        self.ext_plugin_path = os.environ.get('ZORROA_EXT_PLUGIN_PATH', '/zorroa/plugins/local')
-        self.gcs_plugin_path = os.environ.get('ZORROA_GCS_PLUGIN_PATH', '/zorroa/plugins/gcs')
-        self.gcs_plugin_bucket = os.environ.get('GCS_EXT_PLUGIN_BUCKET')
-
-    def get_processors(self):
-        """
-        Shell out to zpyfind and search specific python packages for zorroa
-        processor sub-classes.
-
-        Returns
-            :obj:`list` of :obj:`str`: a list of detected search paths used.
-        """
-        search_paths = [self.core_plugin_path, self.ext_plugin_path, self.gcs_plugin_path]
-        processors = None
-        if not search_paths:
-            logger.warn("No plugin search paths defined, skipping processors.json generation")
-        else:
-            cmd = [self.zpyfind_path]
-            cmd.extend(search_paths)
-            output = subprocess.check_output(cmd, shell=False)
-            processors = json.loads(output)
-        return processors
-
-    def download_remote_processors(self):
-        """Downloads processors from the configured remote location and places them in the
-        python path.
-
-        """
-        bucket_path = self.gcs_plugin_bucket
-        if bucket_path:
-            destination_path = Path(self.gcs_plugin_path)
-            destination_path.mkdir(exist_ok=True, parents=True)
-            tmp_destination = destination_path.parent.joinpath('.zorroa_gcs_plugin_tmp')
-            tmp_destination.mkdir(exist_ok=True, parents=True)
-            subprocess.check_call(['gsutil', '-m', 'cp', '-r', bucket_path, str(tmp_destination)])
-            bak_path = str(destination_path) + '.%s_bak' % uuid.uuid4()
-            shutil.move(str(destination_path), bak_path)
-            shutil.move(str(tmp_destination), str(destination_path))
-            shutil.rmtree(bak_path)
-
-    def scan_processors(self):
-        """Downloads any new processors from the remote location and updates the
-        processors registry file.
-
-        """
-        self.download_remote_processors()
-        return self.get_processors()

@@ -16,7 +16,7 @@ fun zpsTaskName(zps: ZpsScript): String {
             list.add("Processors=${it.size}")
         }
 
-        zps.over?.let {
+        zps.assets?.let {
             list.add("Assets=${it.size}")
         }
         return list.joinToString(" ")
@@ -41,7 +41,7 @@ class ZpsScript(
     var generate: List<ProcessorRef>?,
 
     @ApiModelProperty("List of Processor Refs to add to the 'over' section of the ZPS Script.")
-    var over: List<Document>?,
+    var assets: List<Asset>?,
 
     @ApiModelProperty("List of Processor Refs to add to the 'execute' section of the ZPS Script.")
     var execute: List<ProcessorRef>?,
@@ -54,7 +54,8 @@ class ZpsScript(
 
     @ApiModelProperty("Settings for the run of this ZPS Script.")
     var settings: MutableMap<String, Any>? = null
-) {
+
+    ) {
     /**
      * Set a key/value in the settings map.  If the settings map is
      * null then one is created.

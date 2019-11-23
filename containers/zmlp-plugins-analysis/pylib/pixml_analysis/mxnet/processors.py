@@ -1,0 +1,142 @@
+import os
+from collections import namedtuple
+
+import cv2
+import mxnet
+import numpy as np
+from pathlib2 import Path
+
+from pixml.analysis import AssetBuilder, Argument, get_proxy_file
+
+package_directory = os.path.dirname(os.path.abspath(__file__))
+
+
+class ResNetClassifyProcessor(AssetBuilder):
+    """
+    Classify with ResNet
+    """
+    toolTips = {
+        'debug': 'Run in debug mode. This creates a few extra fields, including confidence values.'
+    }
+
+    def __init__(self):
+        super(ResNetClassifyProcessor, self).__init__()
+        self.add_arg(Argument("debug", "boolean", default=False, toolTip=self.toolTips['debug']))
+        self.labels = []
+        self.mod = None
+
+    def init(self):
+        self.model_path = str(Path(__file__).parent.joinpath('models/resnet-152'))
+        sym, self.arg_params, self.aux_params = mxnet.model.load_checkpoint(self.model_path +
+                                                                            "/resnet-152", 0)
+        self.mod = mxnet.mod.Module(symbol=sym, context=mxnet.cpu(), label_names=None)
+        self.mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
+        self.mod.set_params(self.arg_params, self.aux_params, allow_missing=True)
+        with open(self.model_path + '/synset.txt', 'r') as f:
+            self.labels = [l.rstrip() for l in f]
+
+    def process(self, frame):
+        asset = frame.asset
+
+        _, p_path = get_proxy_file(asset, 384, fallback=True)
+        img = cv2.imread(p_path)
+        img = cv2.resize(img, (224, 224))
+        img = np.swapaxes(img, 0, 2)
+        img = np.swapaxes(img, 1, 2)
+        img = img[np.newaxis, :]
+
+        Batch = namedtuple('Batch', ['data'])
+
+        self.mod.forward(Batch([mxnet.nd.array(img)]))
+        prob = self.mod.get_outputs()[0].asnumpy()
+        prob = np.squeeze(prob)
+
+        # psort is a sorting of prob. We need to keep prob in order to assign
+        # the floating point probabilities attrs
+        psort = np.argsort(prob)[::-1]
+        kw = []
+
+        # All other values are added via debug mode only to limit ES field creation
+        struct = {}
+
+        for j, i in enumerate(psort[0:5]):
+            if self.arg_value("debug"):
+                struct["pred" + str(j)] = ','.join(self.labels[i].replace(',', '').split(' ')[1:])
+                struct["prob" + str(j)] = prob[i]
+            kw.extend([k.strip() for k in self.labels[i].split(',') if k])
+
+        # No need to duplicate into suggest
+        struct["keywords"] = list(set(kw))
+
+        if self.arg_value("debug"):
+            struct["type"] = "mxnet"
+            struct["model"] = os.path.basename(self.model_path)
+            struct["scores"] = prob[0]
+
+        asset.add_analysis("imageClassify", struct)
+
+
+class ResNetSimilarityProcessor(AssetBuilder):
+    """
+    make a hash with ResNet
+    """
+    def __init__(self):
+        super(ResNetSimilarityProcessor, self).__init__()
+        self.add_arg(Argument("debug", "boolean", default=False))
+        self.labels = []
+        self.mod = None
+        self.sym = None
+        self.arg_params = None
+        self.aux_params = None
+
+    def init(self):
+        self.model_path = str(Path(__file__).parent.joinpath('models/resnet-152'))
+        # self.model_path = self.context.shared_data.model_path + '/mxnet/resnet-152'
+        self.sym, self.arg_params, self.aux_params = mxnet.model.load_checkpoint(self.model_path +
+                                                                                 "/resnet-152", 0)
+        self.mod = mxnet.mod.Module(symbol=self.sym, context=mxnet.cpu(), label_names=None)
+        self.mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
+        self.mod.set_params(self.arg_params, self.aux_params, allow_missing=True)
+        with open(self.model_path + '/synset.txt', 'r') as f:
+            self.labels = [l.rstrip() for l in f]
+
+    def process(self, frame):
+        asset = frame.asset
+        _, p_path = get_proxy_file(asset, 384, fallback=True)
+        img = cv2.imread(p_path)
+        img = cv2.resize(img, (224, 224))
+        if img.shape == (224, 224):
+            img = cv2.cvtColor(img, cv2.CV_GRAY2RGB)
+        img = np.swapaxes(img, 0, 2)
+        img = np.swapaxes(img, 1, 2)
+        img = img[np.newaxis, :]
+
+        Batch = namedtuple('Batch', ['data'])
+
+        all_layers = self.sym.get_internals()
+        fe_sym = all_layers['flatten0_output']
+        fe_mod = mxnet.mod.Module(symbol=fe_sym, context=mxnet.cpu(), label_names=None)
+        fe_mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
+        fe_mod.set_params(self.arg_params, self.aux_params)
+
+        fe_mod.forward(Batch([mxnet.nd.array(img)]))
+        features = fe_mod.get_outputs()[0].asnumpy()
+        features = np.squeeze(features)
+
+        mxh = np.clip((features*16).astype(int), 0, 15) + 65
+
+        mxhash = "".join([chr(item) for item in mxh])
+        # Prepend the hash header
+        # char 0: the version of the hash. The plugin only compares hashes of the same version.
+        # char 1-2: (HEX) the position of the hash where the data starts.
+        # char 3-4: (HEX) the resolution of the hash.
+
+        mxhash = '0050F' + mxhash
+        struct = {
+            "shash": mxhash
+        }
+        if self.arg_value("debug"):
+            struct["type"] = "mxnet"
+            struct["model"] = os.path.basename(self.model_path)
+
+        asset.add_analysis("imageSimilarity", struct)
