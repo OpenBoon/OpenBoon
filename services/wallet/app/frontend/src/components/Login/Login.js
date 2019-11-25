@@ -9,27 +9,27 @@ import Logo from '../Logo'
 
 const ERROR_MESSAGE = 'Invalid email or password'
 
-function Login({ user, login, history }) {
+function Login({ user, login }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  // const [loading, setLoading] = useState(false)
   const emailInput = useRef(null)
+  const { isAuthenticated } = user.attrs
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  if (isAuthenticated) {
+    return <Redirect to={'/workspace'} />
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
     setError('')
 
     if (email !== '' && password !== '') {
-      // setLoading(true)
-
       login(email, password)
         .then(() => {
-          // setLoading(false)
-          history.push('/workspace')
+          return <Redirect to={'/workspace'} />
         })
         .catch(() => {
-          // setLoading(false)
           setError(ERROR_MESSAGE)
           emailInput.current.focus()
         })
@@ -39,23 +39,12 @@ function Login({ user, login, history }) {
     }
   }
 
-  if (user.attrs.tokens) {
-    return <Redirect to={'/workspace'} />
-  }
-
   return (
     <Page>
       <div className="login__page">
         <form className="login__form" onSubmit={handleSubmit}>
           <Logo width="143" height="42" />
-          <h3 className="login__form-heading">Welcome. Please login.</h3>
-
-          {/*
-          (loading) && (
-            <p className="login__form-loader">Loading</p>
-          )
-          */}
-
+          <h3 className="login__form-heading">{'Welcome. Please login.'}</h3>
           {error && (
             <div className="login__form-error-container">
               <i className="fas fa-exclamation-triangle"></i>
@@ -63,11 +52,9 @@ function Login({ user, login, history }) {
             </div>
           )}
 
-          {/* <p className="login__form-sub-heading">- or -</p> */}
-
           <div className="login__form-group">
             <label className="login__form-label" htmlFor="email">
-              Email
+              {'Email'}
             </label>
             <input
               id="email"
@@ -78,8 +65,8 @@ function Login({ user, login, history }) {
               className={cx(
                 error ? 'login__form-input--error' : 'login__form-input',
               )}
-              onChange={e => {
-                setEmail(e.target.value)
+              onChange={event => {
+                setEmail(event.target.value)
                 setError('')
               }}
             />
@@ -87,7 +74,7 @@ function Login({ user, login, history }) {
 
           <div className="login__form-group">
             <label className="login__form-label" htmlFor="password">
-              Password
+              {'Password'}
             </label>
             <input
               id="password"
@@ -97,8 +84,8 @@ function Login({ user, login, history }) {
               className={cx(
                 error ? 'login__form-input--error' : 'login__form-input',
               )}
-              onChange={e => {
-                setPassword(e.target.value)
+              onChange={event => {
+                setPassword(event.target.value)
                 setError('')
               }}
             />
@@ -108,11 +95,11 @@ function Login({ user, login, history }) {
             className="login__btn btn btn-primary"
             type="submit"
             disabled={error.length}>
-            Login
+            {'Login'}
           </button>
 
           <Link to="/" className="login__form-tagline">
-            Forgot Password? Need login help?
+            {'Forgot Password? Need login help?'}
           </Link>
         </form>
       </div>
@@ -123,7 +110,6 @@ function Login({ user, login, history }) {
 Login.propTypes = {
   user: PropTypes.instanceOf(User).isRequired,
   login: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
 }
 
 export default Login

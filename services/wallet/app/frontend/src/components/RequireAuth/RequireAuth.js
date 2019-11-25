@@ -9,8 +9,8 @@ const RequireAuth = ({ component: Component, user, ...rest }) => {
     <Route
       {...rest}
       render={props => {
-        const authenticated = !!user.getAttr('tokens')
-        if (authenticated === true) {
+        const { isAuthenticated } = user.attrs
+        if (isAuthenticated) {
           return <Component {...props} />
         }
         return <Redirect to={'/login'} />
