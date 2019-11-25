@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
-import classnames from 'classnames'
+import cx from 'classnames'
 import { Redirect, Link } from 'react-router-dom'
 
 import User from '../../models/User'
@@ -62,7 +62,7 @@ function Login({ user, login }) {
               type="text"
               value={email}
               name="email"
-              className={classnames(
+              className={cx(
                 error ? 'login__form-input--error' : 'login__form-input',
               )}
               onChange={event => {
@@ -81,7 +81,7 @@ function Login({ user, login }) {
               type="password"
               value={password}
               name="password"
-              className={classnames(
+              className={cx(
                 error ? 'login__form-input--error' : 'login__form-input',
               )}
               onChange={event => {
