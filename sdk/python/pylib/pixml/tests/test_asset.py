@@ -1,6 +1,13 @@
+import logging
 import unittest
+from unittest.mock import patch
 
 from pixml import Asset
+from pixml import PixmlClient, app_from_env
+from pixml.asset import AssetSpec
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 class AssetTests(unittest.TestCase):
@@ -63,3 +70,50 @@ class AssetTests(unittest.TestCase):
         assert 1 == len(asset.get_files(mimetype="image/jpeg",
                                         extension=["png", "jpg"],
                                         attrs={"width": 200}))
+
+    def test_equal(self):
+        assert Asset({"id": "123"}) == Asset({"id": "123"})
+
+
+class AssetAppTests(unittest.TestCase):
+
+    def setUp(self):
+        self.app = app_from_env()
+
+    @patch.object(PixmlClient, 'post')
+    def test_create_assets(self, post_patch):
+        post_patch.return_value = {
+            "status": [
+                {"assetId": "abc123", "failed": False}
+            ],
+            "assets": [
+                {
+                    "id": "abc123",
+                    "document": {
+                        "source": {
+                            "path": "gs://zorroa-dev-data/image/pluto.png"
+                        }
+                    }
+                }
+            ]
+        }
+        assets = [AssetSpec("gs://zorroa-dev-data/image/pluto.png")]
+        rsp = self.app.assets.bulk_process_assets(assets)
+        assert rsp["status"][0]["assetId"] == "abc123"
+        assert not rsp["status"][0]["failed"]
+
+    @patch.object(PixmlClient, 'get')
+    def test_get_asset(self, get_patch):
+        get_patch.return_value = {
+            "id": "abc13",
+            "document": {
+                "source": {
+                    "path": "gs://zorroa-dev-data/image/pluto.png"
+                }
+            }
+        }
+        asset = self.app.assets.get_asset("abc123")
+        assert type(asset) == Asset
+        assert asset.uri is not None
+        assert asset.id is not None
+        assert asset.document is not None

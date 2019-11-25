@@ -1,10 +1,7 @@
 package com.zorroa.archivist.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.uuid.Generators
-import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
 import com.zorroa.archivist.util.randomString
@@ -314,16 +311,14 @@ object IdGen {
      * @return
      */
     fun getId(value: String, idKey: String?=null): String {
-        val sb = StringBuilder(128)
-        sb.append(getProjectId().toString().replace("-", ""))
-        sb.append(value)
-        idKey?.let {
-            sb.append(idKey)
-        }
-
+        val project = getProjectId()
         val digester = MessageDigest.getInstance("SHA-1")
-        digester.update(sb.toString().toByteArray())
-        return Base64.getEncoder().encodeToString(digester.digest()).trim('=')
+        digester.update(value.toByteArray())
+        idKey?.let {
+            digester.update(it.toByteArray())
+        }
+        digester.update(project.toString().toByteArray())
+        return Base64.getUrlEncoder().encodeToString(digester.digest()).trim('=')
     }
 }
 
