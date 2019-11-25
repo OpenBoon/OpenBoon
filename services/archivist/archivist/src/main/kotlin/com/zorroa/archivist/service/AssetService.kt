@@ -2,18 +2,18 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
-import com.zorroa.archivist.domain.AssetUploadedResponse
+import com.zorroa.archivist.domain.BatchAssetOpStatus
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchIndexAssetsResponse
-import com.zorroa.archivist.domain.BatchProvisionAssetsRequest
-import com.zorroa.archivist.domain.BatchProvisionAssetsResponse
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.IdGen
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.elastic.ElasticSearchErrorTranslator
+import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.security.getProjectFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.FileUtils
@@ -21,6 +21,7 @@ import com.zorroa.archivist.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
@@ -41,9 +42,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.OutputStream
-import java.util.Calendar
-import java.util.Date
-import java.util.UUID
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -54,43 +52,54 @@ import java.util.UUID
  * the full doc, we could switch this behavior.
  */
 interface AssetService {
-    fun handleAssetUpload(name: String, bytes: ByteArray): AssetUploadedResponse
+
+    /**
+     * Execute an arbitrary ES search and send the result
+     * to the given OutputStream.
+     */
     fun search(query: Map<String, Any>, output: OutputStream)
-    fun createOrReplaceAssets(batch: BatchCreateAssetsRequest): BatchIndexAssetsResponse
-    fun get(assetId: String): Document
+
+    /**
+     * Get an Asset by ID.
+     */
+    fun get(assetId: String): Asset
+
+    fun getAll(ids: List<String>): List<Asset>
+
+    fun getValidAssetIds(ids: List<String>): Set<String>
+
+    fun getProxies(id: String): ProxySchema
 
     /**
      * Batch provision a list of assets.  Provisioning adds a base asset with
      * just source data to ElasticSearch.  A provisioned asset still needs
      * to be processed.
      *
-     * @param request: A BatchProvisionAssetsRequest
-     * @return A BatchProvisionAssetsResponse which contains the assets and their provision status.
+     * @param request: A BatchCreateAssetsRequest
+     * @return A BatchCreateAssetsResponse which contains the assets and their provision status.
      *
      * TODO: handle clips
      */
-    fun batchProvisionAssets(request: BatchProvisionAssetsRequest): BatchProvisionAssetsResponse
+    fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse
+
+    /**
+     * Batch update the given batch of Assets. The fully composed asset must be
+     * provided, not a partial update.
+     *
+     * @param request: A BatchUpdateAssetsRequest
+     * @return A BatchUpdateAssetsResponse which contains success/fail status for each asst.
+     *
+     */
+    fun batchUpdate(request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
 }
 
-/**
- * PreppedAssets is the result of preparing assets to be indexed.
- *
- * @property assets a list of assets prepped and ready to be ingested.
- * @property auditLogs uncommitted field change logs detected for each asset
- */
-class PreppedAssets(
-        val assets: List<Document>,
-        val scope: String
-)
+
 
 @Service
 class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var properties: ApplicationProperties
-
-    @Autowired
-    lateinit var indexService: IndexService
 
     @Autowired
     lateinit var jobService: JobService
@@ -101,130 +110,50 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var fileStorageService: FileStorageService
 
-    @Autowired
-    lateinit var messagingService: MessagingService
-
-    /**
-     * Prepare a list of assets to be created.  Updated assets are not prepped.
-     *
-     * - Removing tmp/system namespaces
-     * - Applying the project Id
-     * - Applying modified / created times
-     * - Applying default permissions
-     * - Applying links
-     *
-     * Return a PreppedAssets object which contains the updated assets as well as
-     * the field change audit logs.  The audit logs for successful assets are
-     * added to the audit log table.
-     *
-     * @param assets The list of assets to prepare
-     * @return PreppedAssets
-     */
-    fun prepAssets(req: BatchCreateAssetsRequest): PreppedAssets {
-        if (req.skipAssetPrep) {
-            return PreppedAssets(req.sources, req.scope)
-        }
-
-        val assets = req.sources
-        val projectId = getProjectId()
-
-        val prepped = PreppedAssets(assets.map { newSource ->
-
-            val existingSource: Document = try {
-                get(newSource.id)
-            } catch (e: Exception) {
-                Document(newSource.id)
-            }
-
-            /**
-             * Remove parts protected by API.
-             */
-            PROTECTED_NAMESPACES.forEach { n -> newSource.removeAttr(n) }
-
-            newSource.setAttr("system.projectId", projectId.toString())
-            handleTimes(existingSource, newSource)
-            newSource
-        }, req.scope)
-
-        return prepped
+    override fun get(id: String): Asset {
+        val rest = indexRoutingService.getProjectRestClient()
+        val rsp = rest.client.get(GetRequest(id), RequestOptions.DEFAULT)
+        return Asset(rsp.id, rsp.sourceAsMap)
     }
 
-    /**
-     * Handles updating the system.timeCreated and system.timeModified fields.
-     *
-     * @param oldAsset the original asset
-     * @param newAsset the new asset
-     */
-    private fun handleTimes(oldAsset: Document, newAsset: Document) {
-        /**
-         * Update created and modified times.
-         */
-        val time = Date()
+    override fun getValidAssetIds(ids: List<String>): Set<String> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchBuilder()
+        val query = QueryBuilders.boolQuery()
+            .must(QueryBuilders.termsQuery("_id", ids))
+        req.source.size(ids.size)
+        req.source.query(query)
+        req.source.fetchSource(false)
 
-        if (oldAsset.attrExists("system.timeCreated")) {
-            newAsset.setAttr("system.timeModified", time)
-            newAsset.setAttr("system.timeCreated", oldAsset.getAttr("system.timeCreated"))
-        } else {
-            newAsset.setAttr("system.timeModified", time)
-            newAsset.setAttr("system.timeCreated", time)
+        val result = mutableSetOf<String>()
+        val r = rest.client.search(req.request, RequestOptions.DEFAULT)
+        r.hits.forEach {
+            result.add(it.id)
+        }
+        return result
+    }
+
+    override fun getAll(ids: List<String>): List<Asset> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchBuilder()
+        val query = QueryBuilders.boolQuery()
+            .must(QueryBuilders.termsQuery("_id", ids))
+        req.source.size(ids.size)
+        req.source.query(query)
+
+        val r = rest.client.search(req.request, RequestOptions.DEFAULT)
+        return r.hits.map {
+            Asset(it.id, it.sourceAsMap)
         }
     }
 
-    /**
-     * Increment any job counters for index requests coming from the job system.
-     */
-    fun incrementJobCounters(req: BatchCreateAssetsRequest, rsp: BatchIndexAssetsResponse) {
-        req.taskId?.let {
-            val task = jobService.getTask(it)
-            jobService.incrementAssetCounters(task, rsp.getAssetCounters())
-        }
+    override fun getProxies(id: String): ProxySchema {
+        val asset = get(id)
+        val proxies = asset.getAttr("proxies", ProxySchema::class.java)
+        return proxies ?: ProxySchema()
     }
 
-    /**
-     * Index a batch of PreppedAssets
-     */
-    fun batchIndexAssets(
-            req: BatchCreateAssetsRequest?,
-            prepped: PreppedAssets,
-            batchUpdateResult: Map<String, Boolean>? = null
-    ): BatchIndexAssetsResponse {
-
-        val docsToIndex = if (batchUpdateResult != null) {
-            // Filter out the docs that didn't make it into the DB, but default allow anything else to go in.
-            prepped.assets.filter {
-                batchUpdateResult.getOrDefault(it.id, true)
-            }
-        } else {
-            prepped.assets
-        }
-
-        val rsp = indexService.index(docsToIndex)
-        if (req != null) {
-            incrementJobCounters(req, rsp)
-        }
-
-        if (rsp.createdAssetIds.isNotEmpty()) {
-            messagingService.sendMessage(
-                    actionType = ActionType.AssetsCreated,
-                    projectId = getProjectId(),
-                    data = mapOf("ids" to rsp.createdAssetIds)
-            )
-        }
-        if (rsp.replacedAssetIds.isNotEmpty()) {
-            messagingService.sendMessage(
-                    actionType = ActionType.AssetsDeleted,
-                    projectId = getProjectId(),
-                    data = mapOf("ids" to rsp.replacedAssetIds)
-            )
-        }
-        return rsp
-    }
-
-    override fun get(assetId: String): Document {
-        return indexService.get(assetId)
-    }
-
-    override fun batchProvisionAssets(request: BatchProvisionAssetsRequest): BatchProvisionAssetsResponse {
+    override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
         if (request.assets.size > 100) {
             throw IllegalArgumentException("Cannot provision more than 100 assets at a time.")
         }
@@ -264,13 +193,13 @@ class AssetServiceImpl : AssetService {
         }
 
         val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
-        val esBatchResult = mutableMapOf<String, String>()
-        for (response in bulk.items) {
-            if (response.isFailed) {
-                // TODO: mark the dups
-                esBatchResult[response.id] = response.failureMessage
+        val result =  BatchCreateAssetsResponse()
+        for (item in bulk.items) {
+            if (item.isFailed) {
+                result.status.add(BatchAssetOpStatus(item.id,
+                    ElasticSearchErrorTranslator.translate(item.failureMessage)))
             } else {
-                esBatchResult[response.id] = "provisioned"
+                result.status.add(BatchAssetOpStatus(item.id))
             }
         }
 
@@ -281,7 +210,65 @@ class AssetServiceImpl : AssetService {
             null
         }
 
-        return BatchProvisionAssetsResponse(esBatchResult, assets, jobId)
+        result.assets = assets
+        result.jobId = jobId
+        return result
+    }
+
+    override fun batchUpdate(request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
+        val result = BatchUpdateAssetsResponse(request.assets.size)
+        val assets = request.assets
+        if (assets.isEmpty()) {
+            return result
+        }
+
+        val rest = indexRoutingService.getProjectRestClient()
+        val bulkRequest = BulkRequest()
+        if (request.resfresh) {
+            bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+        }
+        val validAssetIds = getValidAssetIds(assets.map { it.id })
+        var bulkRequestValid = false
+
+        val time = java.time.Clock.systemUTC().instant().toString()
+        assets.forEachIndexed { idx, asset ->
+
+            if (asset.id !in validAssetIds) {
+                result.status[idx] = BatchAssetOpStatus(asset.id, "Asset does not exist")
+            }
+            else {
+                bulkRequestValid = true
+                asset.setAttr("system.projectId", getProjectId().toString())
+                asset.setAttr("system.timeModified", time)
+                asset.setAttr("system.state", "processed")
+
+                bulkRequest.add(
+                    rest.newIndexRequest(asset.id)
+                        .source(asset.document)
+                        .opType(DocWriteRequest.OpType.INDEX)
+                )
+            }
+        }
+
+        if (!bulkRequestValid) {
+            return result
+        }
+
+        val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
+        var idxPlus = 0
+        bulk.items.forEachIndexed { idx, item ->
+            while (result.status[idx + idxPlus] != null) {
+                idxPlus += 1
+            }
+            val status = if (item.isFailed) {
+                BatchAssetOpStatus(item.id,
+                        ElasticSearchErrorTranslator.translate(item.failureMessage))
+            } else {
+                BatchAssetOpStatus(item.id)
+            }
+            result.status[idx + idxPlus] = status
+        }
+        return result
     }
 
     fun createAnalysisJob(assets: List<Asset>): Job {
@@ -293,18 +280,6 @@ class AssetServiceImpl : AssetService {
         val spec = JobSpec(name, script)
 
         return jobService.create(spec)
-    }
-
-    override fun createOrReplaceAssets(batch: BatchCreateAssetsRequest): BatchIndexAssetsResponse {
-        val prepped = prepAssets(batch)
-        return batchIndexAssets(batch, prepped)
-    }
-
-    override fun handleAssetUpload(name: String, bytes: ByteArray): AssetUploadedResponse {
-        val id = UUID.randomUUID()
-        val fss = fileStorageService.get(FileStorageSpec("asset", id, name))
-        fileStorageService.write(fss.id, bytes)
-        return AssetUploadedResponse(id, fss.uri)
     }
 
     fun getDeepQuery(search: Map<String, Any>): QueryBuilder? {

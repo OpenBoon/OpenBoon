@@ -95,7 +95,7 @@ class ProjectServiceImpl constructor(
         authServerClient.createApiKey(
             project, KnownKeys.JOB_RUNNER, listOf(
                 Role.JOBRUNNER,
-                Perm.ASSETS_IMPORT,
+                Perm.ASSETS_WRITE,
                 Perm.ASSETS_READ,
                 Perm.STORAGE_CREATE
             )
