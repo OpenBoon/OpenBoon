@@ -363,11 +363,12 @@ class AssetApp(object):
 
     def get_asset(self, id):
         """
+        Return the asset with the given unique Id.
 
         Args:
-            id:
+            id (str): The unique ID of the asset.
 
         Returns:
-
+            Asset: The Asset
         """
-        raise NotImplemented()
+        return self.app.client.get("/api/v3/assets/{}".format(id))
