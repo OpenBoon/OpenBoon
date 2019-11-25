@@ -37,7 +37,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
             "script": {
                 "generate": [
                     {
-                        "className": "pixml.testing.TestGenerator",
+                        "className": "pixml.analysis.testing.TestGenerator",
                         "args": {
                             "files": ["/test-data/images/set01/toucan.jpg"]
                         },
