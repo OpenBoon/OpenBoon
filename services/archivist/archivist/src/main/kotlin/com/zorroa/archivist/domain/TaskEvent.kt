@@ -54,7 +54,7 @@ class TaskExpandEvent(
 )
 class TaskErrorEvent(
     @ApiModelProperty("The assetID that was being processed.", required = false)
-    val assetId: UUID?,
+    val assetId: String?,
     @ApiModelProperty("The path that was being processed.", required = false)
     val path: String?,
     @ApiModelProperty("The message from the exception that generated the event, or a custom message.")
@@ -106,5 +106,5 @@ class TaskStatsEvent(
 )
 class IndexAssetsEvent(
     @ApiModelProperty("A list of documents to index.")
-    val assets : List<Document>
+    val assets : List<Asset>
 )

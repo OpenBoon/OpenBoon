@@ -11,6 +11,7 @@ import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.util.randomString
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.Random
@@ -41,7 +42,7 @@ class TaskErrorDaoTests : AbstractTest() {
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
-            UUID.randomUUID(), "/foo/bar.jpg",
+            randomString(), "/foo/bar.jpg",
             "it broke", "com.zorroa.ImageIngestor", true, "execute",
             listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()"))
         )
@@ -67,7 +68,7 @@ class TaskErrorDaoTests : AbstractTest() {
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
-            UUID.randomUUID(), "/foo/bar.jpg",
+            randomString(), "/foo/bar.jpg",
             "it broke", "com.zorroa.ImageIngestor", true, "execute"
         )
 
@@ -93,7 +94,7 @@ class TaskErrorDaoTests : AbstractTest() {
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
-            UUID.randomUUID(), "/foo/bar.jpg",
+            randomString(), "/foo/bar.jpg",
             "it broke", "com.zorroa.ImageIngestor", true, "execute",
             listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()"))
         )
@@ -137,7 +138,7 @@ class TaskErrorDaoTests : AbstractTest() {
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
-            UUID.randomUUID(), "/foo/bar.jpg",
+            randomString(), "/foo/bar.jpg",
             "it broke", "com.zorroa.ImageIngestor", true, "execute",
             listOf(StackTraceElement("foo.py", 100, "Bar", "jimbob()"))
         )
@@ -215,14 +216,14 @@ class TaskErrorDaoTests : AbstractTest() {
     @Test
     fun testGetAllByAssetId() {
         val task = createTaskErrors()
-        val assetId = UUID.randomUUID()
-        jdbc.update("UPDATE task_error SET pk_asset=?", assetId)
+        val assetId = randomString()
+        jdbc.update("UPDATE task_error SET asset_id=?", assetId)
 
         var filter = TaskErrorFilter(assetIds = listOf(assetId))
         assertEquals(1, taskErrorDao.count(filter))
         assertEquals(assetId, taskErrorDao.getAll(filter)[0].assetId)
 
-        filter = TaskErrorFilter(assetIds = listOf(UUID.randomUUID()))
+        filter = TaskErrorFilter(assetIds = listOf(randomString()))
         assertEquals(0, taskErrorDao.count(filter))
     }
 
@@ -262,7 +263,7 @@ class TaskErrorDaoTests : AbstractTest() {
         for (i in 0..10) {
             val num = Random().nextInt(1000)
             val error = TaskErrorEvent(
-                UUID.randomUUID(), String.format("%04d", num),
+                randomString(), String.format("%04d", num),
                 "it broke", "foo", true, "teardown"
             )
             val event = TaskEvent(TaskEventType.ERROR, task.id, task.jobId, error)

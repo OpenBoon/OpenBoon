@@ -325,7 +325,7 @@ CREATE TABLE task_error (
     pk_task_error uuid PRIMARY KEY,
     pk_task uuid NOT NULL REFERENCES task(pk_task) ON DELETE CASCADE,
     pk_job uuid NOT NULL REFERENCES job(pk_job) ON DELETE CASCADE,
-    pk_asset uuid,
+    asset_id text,
     str_message text,
     str_path text,
     str_processor text,
@@ -340,7 +340,7 @@ CREATE TABLE task_error (
 
 
 CREATE INDEX task_error_fti_keywords_idx ON task_error USING gin (fti_keywords);
-CREATE INDEX task_error_pk_asset_idx ON task_error USING btree (pk_asset);
+CREATE INDEX task_error_asset_id_idx ON task_error USING btree (asset_id);
 CREATE INDEX task_error_pk_job_idx ON task_error USING btree (pk_job);
 CREATE INDEX task_error_pk_task_idx ON task_error USING btree (pk_task);
 CREATE INDEX task_error_str_path_idx ON task_error USING btree (str_path);

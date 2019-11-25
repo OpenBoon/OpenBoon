@@ -103,7 +103,7 @@ class TaskErrorFilter(
             "id" to "pk_task_error",
             "taskId" to "pk_task",
             "jobId" to "pk_job",
-            "assetId" to "pk_asset",
+            "assetId" to "asset_id",
             "path" to "str_path",
             "processors" to "str_processor",
             "timeCreated" to "time_created")
@@ -134,7 +134,7 @@ class TaskErrorFilter(
         }
 
         assetIds?.let {
-            addToWhere(JdbcUtils.inClause("task_error.pk_asset", it.size))
+            addToWhere(JdbcUtils.inClause("task_error.asset_id", it.size))
             addToValues(it)
         }
 
