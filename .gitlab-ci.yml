@@ -116,7 +116,7 @@ services_push_to_local_registry:
 # Wallet Jobs
 .wallet-base:
   only:
-    - /^wallet\/.*$/
+    - merge_requests
     - development
     - qa
     - master
