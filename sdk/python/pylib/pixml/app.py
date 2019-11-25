@@ -3,7 +3,8 @@ import logging
 import os
 from functools import lru_cache
 
-from pixml.storage import LocalFileCache
+from .asset import AssetApp
+from .cache import LocalFileCache
 from .rest import PixmlClient
 
 logger = logging.getLogger(__name__)
@@ -26,83 +27,8 @@ class PixmlApp(object):
         """
         logger.debug("Initializing PixmlApp to {}".format(server))
         self.client = PixmlClient(apikey, server or DEFAULT_SERVER)
-        self.file_cache = LocalFileCache(self)
+        self.cache = LocalFileCache(self)
         self.assets = AssetApp(self)
-
-    def localize_remote_file(self, obj):
-        """
-        Localize a remote file.
-
-        Args:
-            obj(mixed): The uri, asset, or file storage definition to localize.
-
-        Returns:
-            str: a local file path to a remote file
-
-        """
-        return self.file_cache.localize_remote_file(obj)
-
-
-class AssetApp(object):
-
-    def __init__(self, app):
-        self.app = app
-
-    def bulk_process_assets(self, assets):
-        """
-        Provision and process a list of AssetSpec instances.
-
-        Args:
-            assets (list of AssetSpec): The list of assets to process.
-
-        Returns:
-            dict: A dictionary containing the provisioning status of each asset,
-                a list of assets to be processed, and a analysis job id.
-
-        """
-        body = {"assets": assets}
-        return self.app.client.post("/api/v3/assets", body)
-
-    def bulk_process_datasource(self, uri):
-        """
-
-        If URI is a local file path, the data has to be uploaded for processing.
-
-        Returns:
-
-        """
-        raise NotImplemented()
-
-    def bulk_process_asset_search(self, query):
-        """
-        If URI is a local file path, the data has to be uploaded for processing.
-
-        Returns:
-        """
-        raise NotImplemented()
-
-    def asset_search(self, query):
-        """
-        Perform an asset search.
-
-        Args:
-            query:
-
-        Returns:
-
-        """
-        raise NotImplemented()
-
-    def get_asset(self, id):
-        """
-
-        Args:
-            id:
-
-        Returns:
-
-        """
-        raise NotImplemented()
 
 
 @lru_cache(maxsize=32)
@@ -145,7 +71,4 @@ def app_from_env():
             apikey = base64.b64encode(fp.read())
     return get_app_cached(apikey, os.environ.get('PIXML_SERVER'))
 
-
-class PixmlException(Exception):
-    pass
 

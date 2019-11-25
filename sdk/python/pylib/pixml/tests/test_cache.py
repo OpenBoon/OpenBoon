@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from pixml import storage
+from pixml import cache
 from pixml.analysis.testing import zorroa_test_data, TestAsset
 from pixml.app import app_from_env
 from pixml.rest import PixmlClient
@@ -13,7 +13,7 @@ from pixml.rest import PixmlClient
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
-        self.lfc = storage.LocalFileCache(app_from_env())
+        self.lfc = cache.LocalFileCache(app_from_env())
 
     def tearDown(self):
         self.lfc.clear()
@@ -58,7 +58,7 @@ class LocalFileCacheTests(TestCase):
             "assetId": "123456"
         }
         post_patch.return_value = "/tmp/toucan.jpg"
-        bird = zorroa_test_data("images/set01/toucan.jpg")
+        bird = zorroa_test_data("images/set01/toucan.jpg", uri=False)
         path = self.lfc.localize_pixml_file(pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
@@ -83,11 +83,13 @@ class LocalFileCacheTests(TestCase):
         assert path.endswith("c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg")
 
     def test_close(self):
-        self.lfc.close()
         pfile = {
             "name": "cat.jpg",
             "category": "proxy",
             "assetId": "123456"
         }
+        self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))
+        self.lfc.close()
+
         with pytest.raises(FileNotFoundError):
             self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))

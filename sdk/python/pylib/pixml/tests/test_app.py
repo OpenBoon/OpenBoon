@@ -24,17 +24,14 @@ class PixmlAppTests(unittest.TestCase):
     def test_create_app_with_key_dict(self):
         app = pixml.app.PixmlApp(self.key_dict)
         assert app.client
-        assert app.file_cache
+        assert app.client.apikey
+        assert app.client.headers()
 
     def test_create_app_with_key_str(self):
         app = pixml.app.PixmlApp(self.key_str)
         assert app.client
-        assert app.file_cache
-
-    def test_create_app_with_key_str(self):
-        app = pixml.app.PixmlApp(self.key_str)
-        assert app.client
-        assert app.file_cache
+        assert app.client.apikey
+        assert app.client.headers()
 
     def test_create_app_from_env(self):
         server = "https://localhost:9999"

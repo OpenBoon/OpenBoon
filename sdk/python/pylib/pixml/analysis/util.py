@@ -17,15 +17,18 @@ logger = logging.getLogger(__name__)
 
 def get_proxy_file(asset, min_width=1024, mimetype="image/", fallback=False):
     """
-    Return a suitable proxy file or fallback to the source media.
+    Return a tuple containing a suitable proxy file or fallback to the source media.
+    The first element of the tuple is the name of proxy file such as "proxy_200x200.jpg"
+    or simply "source" if the source was selecte.
 
     Args:
-        asset:
-        min_width:
-        mimetype:
-        fallback:
+        asset (Asset): an Asset instance
+        min_width (int): The minimum width to accept for the proxy.
+        mimetype (str): A mimetype filter, returns only files that start with this filter.
+        fallback (bool): Fallback to the source if the proxy is not available.
 
     Returns:
+        tuple: a tuple of name, path
 
     """
     files = asset.get_files(mimetype=mimetype, category="proxy")
@@ -34,23 +37,26 @@ def get_proxy_file(asset, min_width=1024, mimetype="image/", fallback=False):
 
     app = app_from_env()
     if files:
-        return files[0]["name"], app.localize_remote_file(files[0])
+        return files[0]["name"], app.cache.localize_remote_file(files[0])
     elif fallback and asset.get_attr("source.mimetype").startswith(mimetype):
         logger.warning("No suitable proxy mimetype={} minwidth={}, "
                        "falling back to source".format(mimetype, min_width))
-        return 'source', app.localize_remote_file(asset)
+        return 'source', app.cache.localize_remote_file(asset)
     else:
         raise ValueError("No suitable proxy file was found.")
 
 
 def add_proxy_file(asset, path, size):
     """
-    Add a support file with the proxy category to the given asset.
+    Add a proxy file with the proxy category to the given asset.
 
     Args:
         asset (Asset): The purpose of the file, ex proxy.
         path (str): The local path to the file.
         size (tuple of int): a tuple of width, height
+
+    Returns:
+        dict: a pixml file dictionary
     """
     _, ext = os.path.splitext(path)
     if not ext:
@@ -71,8 +77,9 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
         path (str): The local path to the file.
         rename (str): Rename the file to something better.
         attrs (dict): Arbitrary attributes to attach to the file.
+
     Returns:
-        dict: The new proxy information.
+        dict: a Pixml file dictionary.
 
     """
     app = app_from_env()
@@ -92,8 +99,9 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
 
     # Store the path to the proxy in our local file storage
     # because a processor will need it down the line.
-    app.file_cache.localize_pixml_file(result, path)
+    app.cache.localize_pixml_file(result, path)
 
+    # Ensure the file doesn't already exist in the metadata
     if not asset.get_files(name=name, category=category):
         files = asset.get_attr("files") or []
         files.append(result)

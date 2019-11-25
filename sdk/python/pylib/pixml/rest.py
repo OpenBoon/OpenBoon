@@ -14,6 +14,8 @@ import requests
 import uritools
 import urllib3
 
+from .exception import PixmlException
+
 logger = logging.getLogger(__name__)
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -288,13 +290,11 @@ class PixmlClient(object):
             logger.debug("url: '%s' path: '%s' body: '%s'" % (url, path, body))
         return url
 
-    def headers(self, with_token=True, content_type="application/json"):
+    def headers(self, content_type="application/json"):
         """
         Generate the return some request headers.
 
         Args:
-            with_token (bool): Set to true if JWT token should be included in
-                the header.  Defaults to true.
             content_type(str):  The content-type for the request. Defaults to
                 'application/json'
 
@@ -302,8 +302,7 @@ class PixmlClient(object):
             dict: An http header struct.
 
         """
-        header = {}
-        header['Authorization'] = "Bearer {}".format(self.__sign_request())
+        header = {'Authorization': "Bearer {}".format(self.__sign_request())}
 
         if content_type:
             header['Content-Type'] = content_type
@@ -369,7 +368,8 @@ class PixmlJsonEncoder(json.JSONEncoder):
         # Let the base class default method raise the TypeError
         return json.JSONEncoder.default(self, obj)
 
-class PixmlClientException(Exception):
+
+class PixmlClientException(PixmlException):
     """The base exception class for all PixmlClient related Exceptions."""
     pass
 
