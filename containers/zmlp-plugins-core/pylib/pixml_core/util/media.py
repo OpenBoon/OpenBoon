@@ -3,8 +3,8 @@ import logging
 import xmltodict
 import re
 import magic
+import os
 
-from zorroa.zsdk.util.std import file_exists
 from pathlib2 import Path
 from subprocess import check_output, check_call, CalledProcessError
 
@@ -193,7 +193,7 @@ def create_video_thumbnail(source_path, destination_path, seconds):
         # we're only sending IOError
         pass
 
-    if not file_exists(destination_path):
+    if not os.path.exists(destination_path):
         # Don't let the CalledProcessError impl detail leak out
         raise IOError('FFMpeg failed to create a thumbnail, command failed: {}'.format(cmd))
 

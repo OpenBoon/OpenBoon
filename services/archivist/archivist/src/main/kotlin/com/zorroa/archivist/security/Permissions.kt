@@ -27,9 +27,9 @@ object Perm {
     val ASSETS_READ = "AssetsRead"
 
     /**
-     * Import asset data.
+     * Create and update assets.
      */
-    val ASSETS_IMPORT = "AssetsImport"
+    val ASSETS_WRITE = "AssetsWrite"
 
     /**
      * Store files assoicated with an asset.

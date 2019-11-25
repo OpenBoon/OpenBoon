@@ -1,13 +1,13 @@
 package com.zorroa.archivist
 
-import com.zorroa.archivist.domain.Document
-import com.zorroa.archivist.domain.IdGen
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.archivist.util.randomString
 import java.io.File
 
 class TestAsset (
     val path: File
-) : Document(IdGen.getId(path.toString())) {
+) : Asset(randomString(16)) {
 
     init {
         setAttr("source.path", path)
@@ -15,5 +15,4 @@ class TestAsset (
         setAttr("source.basename", FileUtils.basename(path))
         setAttr("source.directory", FileUtils.dirname(path))
     }
-
 }

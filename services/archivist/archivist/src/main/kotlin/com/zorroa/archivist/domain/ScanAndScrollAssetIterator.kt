@@ -15,10 +15,10 @@ class ScanAndScrollAssetIterator(
     private val client: RestHighLevelClient,
     private val rsp: SearchResponse,
     private var maxResults: Long
-) : Iterable<Document> {
+) : Iterable<Asset> {
 
-    override fun iterator(): Iterator<Document> {
-        return object : Iterator<Document> {
+    override fun iterator(): Iterator<Asset> {
+        return object : Iterator<Asset> {
 
             var hits = rsp.hits.hits
             private var index = 0
@@ -48,9 +48,9 @@ class ScanAndScrollAssetIterator(
                 return hasMore
             }
 
-            override fun next(): Document {
+            override fun next(): Asset {
                 val hit = hits[index++]
-                val asset = Document(
+                val asset = Asset(
                         hit.id,
                         hit.sourceAsMap)
 
@@ -58,17 +58,17 @@ class ScanAndScrollAssetIterator(
                 return asset
             }
 
-            override fun forEachRemaining(action: Consumer<in Document>) {
+            override fun forEachRemaining(action: Consumer<in Asset>) {
                 throw UnsupportedOperationException()
             }
         }
     }
 
-    override fun forEach(action: Consumer<in Document>) {
+    override fun forEach(action: Consumer<in Asset>) {
         throw UnsupportedOperationException()
     }
 
-    override fun spliterator(): Spliterator<Document> {
+    override fun spliterator(): Spliterator<Asset> {
         throw UnsupportedOperationException()
     }
 }

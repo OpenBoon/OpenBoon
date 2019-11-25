@@ -1,4 +1,6 @@
 
+from importlib import import_module
+
 def as_collection(value):
     """If the given value is not a collection of some type, return
     the value wrapped in a list.

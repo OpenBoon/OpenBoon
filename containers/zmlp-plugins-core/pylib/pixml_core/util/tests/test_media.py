@@ -6,7 +6,7 @@ from unittest.mock import patch
 from pixml_core.util import media
 from pixml.analysis.testing import zorroa_test_data
 
-IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr')
+IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr',  false)
 IMAGE_PSD = zorroa_test_data('images/set06/psd_123.psd')
 IMAGE_JPG = zorroa_test_data('images/set02/beer_kettle_01.jpg')
 VIDEO_WEBM = zorroa_test_data('video/dc.webm')

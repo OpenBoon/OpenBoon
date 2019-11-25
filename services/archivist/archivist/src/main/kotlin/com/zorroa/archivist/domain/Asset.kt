@@ -5,225 +5,92 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.uuid.Generators
 import com.fasterxml.uuid.impl.NameBasedGenerator
-import com.google.common.base.MoreObjects
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.randomString
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory
-import org.springframework.security.access.AccessDeniedException
-import java.net.URI
 import java.security.MessageDigest
 import java.util.Base64
 import java.util.UUID
 import java.util.regex.Pattern
 
-/**
- * The response from a request to create an asset from an uploaded source.
- * @property assetId The assetId that was created
- * @property uri The URI where the source file was placed.
- */
-class AssetUploadedResponse(
-    val assetId: UUID,
-    val uri: URI
-)
-
-@ApiModel("Update Asset Request", description = "Request structure to update an Asset.")
-class UpdateAssetRequest(
-
-    @ApiModelProperty("Key/vaue pairs to be updated.")
-    val update: Map<String, Any>? = null,
-
-    @ApiModelProperty("Array of fields to remove.")
-    val remove: List<String>? = null,
-
-    @ApiModelProperty("Append values to a list attribute.")
-    val appendToList: Map<String, Any>? = null,
-
-    @ApiModelProperty("Append values to a list attribute and ensure the result is unique.")
-    val appendToUniqueList: Map<String, Any>? = null,
-
-    @ApiModelProperty("Remove values from a list attribute.")
-    val removeFromList: Map<String, Any>? = null,
-
-    @JsonIgnore
-    @ApiModelProperty("Allow systems vars to be set. Default to false. Cannot be set over wire.")
-    val allowSystem: Boolean = false
-)
-
-@ApiModel("Batch Update Assets Request", description = "Defines how to batch update a list of assets.")
-class BatchUpdateAssetsRequest(
-    @ApiModelProperty(
-        "Attributes to update. They should be in dot notation. " +
-            "Example: { \"foo.bar\" : 1, \"source.ext\": \"png\"}"
-    ) val batch: Map<String, UpdateAssetRequest>
+@ApiModel("Batch Asset Op Status",
+    description = "Used to describe the result of a batch asset operation")
+class BatchAssetOpStatus(
+    val assetId: String,
+    val failureMessage: String?=null
 ) {
-    override fun toString(): String {
-        return "<BatchUpdateAssetRequest update='$batch'>"
-    }
+    val failed : Boolean = failureMessage != null
 }
 
-@ApiModel(
-    "Batch Update Assets Response", description = "Response object for batch updating large numbers of " +
-        "assets. Batch updates are able to edit individual attributes however the entire document is rewritten."
+
+@ApiModel("Batch Index Assets Request",
+    description = "Defines the properties necessary to reindex a batch of Assets.")
+class BatchUpdateAssetsRequest(
+
+    @ApiModelProperty("The list of assets to be indexed.  The assets must already exist.")
+    val assets: List<Asset>,
+
+    @ApiModelProperty("Set to true if the batch should be flushed immedately.")
+    val resfresh: Boolean = false
+
 )
-class BatchUpdateAssetsResponse {
 
-    @ApiModelProperty("UUIDs of updated Assets.")
-    val updatedAssetIds = mutableSetOf<String>()
+@ApiModel("Batch Index Assets Response",
+    description = "Defines the properties necessary to index a batch of assets. ")
+class BatchUpdateAssetsResponse(size: Int) {
 
-    @ApiModelProperty("UUIDs of Assets that encountered errors.")
-    val erroredAssetIds = mutableSetOf<String>()
-
-    @ApiModelProperty("UUIDs of Assets that were denied write access.")
-    val accessDeniedAssetIds = mutableSetOf<String>()
-
-    operator fun plus(other: BatchUpdateAssetsResponse) {
-        updatedAssetIds.addAll(other.updatedAssetIds)
-        erroredAssetIds.addAll(other.erroredAssetIds)
-        accessDeniedAssetIds.addAll(other.accessDeniedAssetIds)
-    }
-
-    /**
-     * Add the counts from an BatchIndexAssetsResponse to this object.
-     */
-    operator fun plus(other: BatchIndexAssetsResponse) {
-        updatedAssetIds.addAll(other.replacedAssetIds)
-        updatedAssetIds.addAll(other.replacedAssetIds)
-        erroredAssetIds.addAll(other.erroredAssetIds)
-    }
-
-    override fun toString(): String {
-        return "<BatchUpdateAssetsResponse " +
-            "updated=${updatedAssetIds.size} " +
-            "errored=${erroredAssetIds.size} " +
-            "accessDenied=${accessDeniedAssetIds.size}"
-    }
-
-    @JsonIgnore
-    fun getThrowableError(): Throwable {
-        return when {
-            accessDeniedAssetIds.isNotEmpty() -> AccessDeniedException(
-                "Access denied updating assets: $accessDeniedAssetIds"
-            )
-            erroredAssetIds.isNotEmpty() -> EntityNotFoundException(
-                "Cannot update missing assets: $erroredAssetIds"
-            )
-            // Should never get here.
-            else -> ArchivistWriteException("Unspecified update exception")
-        }
-    }
-
-    @JsonIgnore
-    fun isSuccess(): Boolean {
-        return updatedAssetIds.isNotEmpty() &&
-            erroredAssetIds.isEmpty() && accessDeniedAssetIds.isEmpty()
-    }
+    @ApiModelProperty("A map of the assetId to indexed status. " +
+        "An asset will fail to index unless it already exists")
+    val status: Array<BatchAssetOpStatus?> = arrayOfNulls<BatchAssetOpStatus?>(size)
 }
 
-@ApiModel("Batch Update Permissions Response", description = "Response object for a BatchUpdatePermissionsRequest.")
-class BatchUpdatePermissionsResponse {
-
-    @ApiModelProperty("UUIDs of Assets that were updated.")
-    val updatedAssetIds = mutableSetOf<String>()
-
-    @ApiModelProperty("Errors that occurred while processing.")
-    val errors = mutableMapOf<String, String>()
-
-    operator fun plus(other: BatchIndexAssetsResponse) {
-        updatedAssetIds.addAll(other.replacedAssetIds)
-    }
-}
-
-@ApiModel("Batch Create Assets Request", description = "Structure for upserting a batch of assets.")
+@ApiModel("Batch Create Assets Request",
+    description = "Defines the properties necessary to provision a batch of assets.")
 class BatchCreateAssetsRequest(
 
-    @ApiModelProperty("List of Documents to upsert.")
-    val sources: List<Document>,
+    @ApiModelProperty("The list of assets to be provisioned")
+    val assets: List<AssetSpec>,
 
-    @ApiModelProperty("UUID of the Job doing the upsert.")
-    val jobId: UUID?,
+    @ApiModelProperty("Set to true if the assets should undergo " +
+        "further analysis, or false to stay in the provisioned state.")
+    val analyze: Boolean = true,
 
-    @ApiModelProperty("UUID of the Task doing to upsert.")
-    val taskId: UUID?
-) {
+    @ApiModelProperty("The analysis to apply.")
+    val analysis: List<String>? = null
+)
 
-    /**
-     * A convenience constructor for unit tests.
-     */
-    constructor(doc: Document) : this(listOf(doc))
 
-    @JsonIgnore
-    var skipAssetPrep = false
+@ApiModel("Batch Provision Assets Response",
+    description = "The response returned after provisioning assets.")
+class BatchCreateAssetsResponse(
 
-    @JsonIgnore
-    var scope = "index"
+    @ApiModelProperty("A map of the assetId to provisioned status. " +
+        "An asset will fail to provision if it already exists.")
+    val status: MutableList<BatchAssetOpStatus> = mutableListOf(),
 
-    var isUpload = false
+    @ApiModelProperty("The last of assets that was provisioned")
+    var assets: List<Asset> = mutableListOf(),
 
-    constructor(sources: List<Document>, scope: String = "index", skipAssetPrep: Boolean = false) :
-        this(sources, null, null) {
-        this.scope = scope
-        this.skipAssetPrep = skipAssetPrep
-    }
-}
+    @ApiModelProperty("The ID of the analysis job, if analysis was selected")
+    var jobId: UUID? = null
+)
 
-@ApiModel("Batch Create Assets Response", description = "The response after batch creating an array of assets.")
-class BatchIndexAssetsResponse(val total: Int) {
+@ApiModel("Asset Spec",
+    description = "Defines all the properties required to create an Asset.")
+class AssetSpec(
 
-    @ApiModelProperty("UUIDs of Assets that were created.")
-    var createdAssetIds = mutableSetOf<String>()
+    @ApiModelProperty("The URI location of the asset.")
+    var uri: String,
 
-    @ApiModelProperty("UUIDs of Assets that were replaced.")
-    var replacedAssetIds = mutableSetOf<String>()
+    @ApiModelProperty("Additional metadata fields to add to the Asset.")
+    var document: Map<String, Any>? = null,
 
-    @ApiModelProperty("UUIDs of Assets that had errors.")
-    var erroredAssetIds = mutableSetOf<String>()
-
-    @ApiModelProperty("UUIDs of Assets that had warnings.")
-    var warningAssetIds = mutableSetOf<String>()
-
-    @ApiModelProperty("Number of retries it took finish this batch request.")
-    var retryCount = 0
-
-    fun add(other: BatchIndexAssetsResponse): BatchIndexAssetsResponse {
-        createdAssetIds.addAll(other.createdAssetIds)
-        replacedAssetIds.addAll(other.replacedAssetIds)
-        erroredAssetIds.addAll(other.erroredAssetIds)
-        warningAssetIds.addAll(other.warningAssetIds)
-        retryCount += other.retryCount
-        return this
-    }
-
-    /**
-     * Return true if assets were created or replaced.
-     */
-    fun assetsChanged(): Boolean {
-        return createdAssetIds.isNotEmpty() || replacedAssetIds.isNotEmpty()
-    }
-
-    /**
-     * Return an AssetCounters instance for incrementing job and task counts.
-     */
-    fun getAssetCounters(): AssetCounters {
-        return AssetCounters(
-            created = createdAssetIds.size,
-            replaced = replacedAssetIds.size,
-            errors = erroredAssetIds.size,
-            warnings = warningAssetIds.size
-        )
-    }
-
-    override fun toString(): String {
-        return MoreObjects.toStringHelper(this)
-            .add("created", createdAssetIds.size)
-            .add("replaced", replacedAssetIds.size)
-            .add("warnings", warningAssetIds)
-            .add("errors", erroredAssetIds.size)
-            .add("retries", retryCount)
-            .toString()
-    }
-}
+    @ApiModelProperty("An optional unique ID for the asset to override an auto-generated ID.")
+    var id: String? = null
+)
 
 @ApiModel("Asset Counters", description = "Stores the types of asset counters we keep track off.")
 class AssetCounters(
@@ -244,96 +111,22 @@ class AssetCounters(
     val replaced: Int = 0
 )
 
-@ApiModel("Batch Delete Assets Request", description = "Describes a request to delete Assets.")
-class BatchDeleteAssetsRequest(
-    @ApiModelProperty("UUIDs of Assets to delete.") val assetIds: List<String>
-)
-
-@ApiModel("Batch Delete Assets Response", description = "Response returned when Assets are deleted.")
-class BatchDeleteAssetsResponse(
-    @ApiModelProperty("Number of assets requested to be deleted. Includes the resolved number of clips.")
-    var totalRequested: Int = 0,
-
-    @ApiModelProperty("Number of assets deleted.")
-    var deletedAssetIds: MutableSet<String> = mutableSetOf(),
-
-    @ApiModelProperty("UUIDS o Assets skipped due to being on hold.")
-    var onHoldAssetIds: MutableSet<String> = mutableSetOf(),
-
-    @ApiModelProperty("UUIDs of Assets skipped due to permissions")
-    var accessDeniedAssetIds: MutableSet<String> = mutableSetOf(),
-
-    @ApiModelProperty("UUIDS of Assets that have already been deleted.")
-    var missingAssetIds: MutableSet<String> = mutableSetOf(),
-
-    @ApiModelProperty("Map of AssetID/Message for all errors encountered.")
-    var errors: MutableMap<String, String> = mutableMapOf()
-) {
-
-    operator fun plus(other: BatchDeleteAssetsResponse) {
-        totalRequested += other.totalRequested
-        deletedAssetIds.addAll(other.deletedAssetIds)
-        onHoldAssetIds.addAll(other.onHoldAssetIds)
-        accessDeniedAssetIds.addAll(other.accessDeniedAssetIds)
-        missingAssetIds.addAll(other.missingAssetIds)
-        errors.putAll(other.errors)
-    }
-}
-
-@ApiModel("Batch Provision Assets Request",
-    description = "Defines the properties necessary to provision a batch of assets.")
-class BatchProvisionAssetsRequest(
-
-    @ApiModelProperty("The list of assets to be provisioned")
-    val assets: List<AssetSpec>,
-
-    @ApiModelProperty("Set to true if the assets should undergo " +
-        "further analysis, or false to stay in the provisioned state.")
-    val analyze: Boolean = true,
-
-    @ApiModelProperty("The analysis to apply.")
-    val analysis: List<String>? = null
-)
-
-
-@ApiModel("Batch Provision Assets Response",
-    description = "The response returned after provisioning assets.")
-class BatchProvisionAssetsResponse(
-
-    @ApiModelProperty("A map of the assetId to provisioned status. " +
-        "An asset will fail to provision if it already exists.")
-    val status: Map<String, String>,
-
-    @ApiModelProperty("The last of assets that was provisioned")
-    var assets: List<Asset>,
-
-    @ApiModelProperty("The ID of the analysis job, if analysis was selected")
-    val jobId: UUID? = null
-)
-
-@ApiModel("Asset Spec",
-    description = "Defines all the properties required to create an Asset.")
-class AssetSpec(
-
-    @ApiModelProperty("The URI location of the asset.")
-    val uri: String,
-
-    @ApiModelProperty("Additional metadata fields to add to the Asset.")
-    val document: Map<String, Any>? = null,
-
-    @ApiModelProperty("An optional unique ID for the asset to override an auto-generated ID.")
-    val id: String? = null
-)
-
 @ApiModel("Asset",
     description = "The file information and all the metadata generated during Analysis.")
-class Asset(
+open class Asset(
+
     @ApiModelProperty("The unique ID of the Asset.")
     val id: String,
 
     @ApiModelProperty("The assets metadata.")
     val document: Map<String, Any> = mutableMapOf()
 ) {
+
+    constructor() : this(randomString(24))
+
+    constructor(document: Map<String, Any>) :
+        this(randomString(24), document)
+
     /**
      * Remove an attribute.  If the attr cannot be remove it is set to null.
      *
@@ -363,6 +156,17 @@ class Asset(
     fun <T> getAttr(attr: String): T? {
         val current = getContainer(attr, false)
         return getChild(current, Attr.name(attr)) as T?
+    }
+
+    /**
+     * Return true if the attribute is not null.
+     *
+     * @param attr The attr name
+     * @return true if attr exists
+     */
+    fun attrExists(attr: String): Boolean {
+        val current = getContainer(attr, false)
+        return getChild(current, Attr.name(attr)) != null
     }
 
     /**
@@ -462,293 +266,6 @@ class Asset(
     }
 }
 
-/**
- * The ES document
- */
-@ApiModel("Document", description = "Represents an Elasticsearch (ES) document.")
-open class Document {
-
-    @ApiModelProperty("Contents of the Document.")
-    var document: Map<String, Any>
-
-    @ApiModelProperty("UUID of the Document.")
-    var id: String = UUID.randomUUID().toString()
-
-    @ApiModelProperty(hidden = true)
-    var replace = false
-
-    constructor() {
-        document = mutableMapOf()
-    }
-
-    constructor(doc: Document) {
-        this.id = doc.id
-        this.document = doc.document
-    }
-
-    constructor(id: String, doc: Map<String, Any>) {
-        this.id = id
-        this.document = doc
-    }
-
-    constructor(id: String) {
-        this.id = id
-        this.document = mutableMapOf()
-    }
-
-    constructor(id: UUID) {
-        this.id = id.toString()
-        this.document = mutableMapOf()
-    }
-
-    constructor(doc: Map<String, Any>) {
-        this.document = doc
-    }
-
-    /**
-     * Get an attribute value  by its fully qualified name.
-     *
-     * @param attr
-     * @param <T>
-     * @return
-    </T> */
-    fun <T> getAttr(attr: String): T? {
-        val current = getContainer(attr, false)
-        return getChild(current, Attr.name(attr)) as T?
-    }
-
-    /**
-     * Get an attribute value by its fully qualified name.  Uses a JSON mapper
-     * to map the data into the specified class.
-     *
-     * @param attr
-     * @param type
-     * @param <T>
-     * @return
-    </T> */
-    fun <T> getAttr(attr: String, type: Class<T>): T? {
-        val current = getContainer(attr, false)
-        return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
-    }
-
-    /**
-     * Get an attribute value by its fully qualified name.  Uses a JSON mapper
-     * to map the data into the specified TypeReference.
-     *
-     * @param attr
-     * @param type
-     * @param <T>
-     * @return
-    </T> */
-    fun <T> getAttr(attr: String, type: TypeReference<T>): T {
-        val current = getContainer(attr, false)
-        return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
-    }
-
-    /**
-     * Assumes the target attribute is a collection of some sort and tries to add
-     * the given value.
-     *
-     * @param attr The attr name in dot notation, must point to a collection.
-     * @param value The value to append to the collection.
-     * @param unique If true, uniquify the collection.
-     * @return Return true if the value was added to the collection.
-     */
-    fun addToAttr(attr: String, value: Any, unique: Boolean = true): Boolean {
-        val key = Attr.name(attr)
-
-        try {
-            var container = getContainer(attr, true) as MutableMap<String, Any>
-            var collection = container[key] as MutableCollection<Any?>?
-            if (collection == null) {
-                collection = mutableListOf()
-                container[key] = collection
-            }
-
-            val res = if (value is Collection<*>) {
-                collection.addAll(value)
-            } else {
-                collection.add(value)
-            }
-
-            if (unique) {
-                val uniqList = collection.distinct()
-                collection.clear()
-                collection.addAll(uniqList)
-            }
-
-            return res
-        } catch (e: Exception) {
-            logger.warn("Unable to append to attr '$attr', it maybe not be a collection")
-        }
-
-        return false
-    }
-
-    /**
-     * Assumes the target attribute is a collection of some sort and tries to remove
-     * the given value.
-     *
-     * @param attr The attr name in dot notation, must point to a collection.
-     * @param value The value to remove from the collection.
-     */
-    fun removeFromAttr(attr: String, value: Any, unique: Boolean = true): Boolean {
-        val key = Attr.name(attr)
-
-        try {
-            var container = getContainer(attr, true) as MutableMap<String, Any>
-            var collection = container[key] as MutableCollection<Any?>?
-            if (collection == null) {
-                collection = mutableListOf()
-                container[key] = collection
-            }
-
-            return if (value is Collection<*>) {
-                collection.removeAll(value)
-            } else {
-                collection.remove(value)
-            }
-        } catch (e: Exception) {
-            logger.warn("Unable to remove from attr '$attr', it maybe not be a collection")
-        }
-
-        return false
-    }
-
-    /**
-     * Set an attribute value.
-     *
-     * @param attr
-     * @param value
-     */
-    fun setAttr(attr: String, value: Any?) {
-        val current = getContainer(attr, true)
-        val key = Attr.name(attr)
-
-        try {
-            (current as MutableMap<String, Any?>)[key] = Json.Mapper.convertValue(value as Any)
-        } catch (ex: ClassCastException) {
-            throw IllegalArgumentException("Invalid attribute: $attr", ex)
-        }
-    }
-
-    /**
-     * Remove an attribute.  If the attr cannot be remove it is set to null.
-     *
-     * @param attr
-     */
-    fun removeAttr(attr: String): Boolean {
-        val current = getContainer(attr, true)
-        val key = Attr.name(attr)
-
-        /*
-         * Finally, just try treating it like a map.
-         */
-        try {
-            return (current as MutableMap<String, Any>).remove(key) != null
-        } catch (ex: ClassCastException) {
-            throw IllegalArgumentException("Invalid attribute: $attr")
-        }
-    }
-
-    /**
-     * Return true if the document has the given namespace.
-     * @param attr
-     * @return
-     */
-    fun attrExists(attr: String): Boolean {
-        val container = getContainer(attr, false)
-        return getChild(container, Attr.name(attr)) != null
-    }
-
-    /**
-     * Return true if the given element is empty.
-     *
-     * @param attr
-     * @return
-     */
-    fun isEmpty(attr: String): Boolean {
-        val container = getContainer(attr, false)
-        val child = getChild(container, Attr.name(attr))
-
-        return try {
-            val map = child as MutableMap<String, Any>?
-            map?.isEmpty() ?: true
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    /**
-     * Return true if the value of an attribute contains the given value.
-     *
-     * @param attr
-     * @return
-     */
-    fun attrContains(attr: String, value: Any): Boolean {
-        val parent = getContainer(attr, false)
-        val child = getChild(parent, Attr.name(attr))
-
-        if (child is Collection<*>) {
-            return child.contains(value)
-        } else if (child is String) {
-            return child.contains(value.toString())
-        }
-        return false
-    }
-
-    private fun getContainer(attr: String, forceExpand: Boolean): Any? {
-        val parts = PATTERN_ATTR.split(attr)
-
-        var current: Any? = document
-        for (i in 0 until parts.size - 1) {
-
-            var child = getChild(current, parts[i])
-            if (child == null) {
-                if (forceExpand) {
-                    child = createChild(current, parts[i])
-                } else {
-                    return null
-                }
-            }
-            current = child
-        }
-        return current
-    }
-
-    private fun getChild(`object`: Any?, key: String): Any? {
-        if (`object` == null) {
-            return null
-        }
-        try {
-            return (`object` as Map<String, Any>)[key]
-        } catch (ex: ClassCastException) {
-            return null
-        }
-    }
-
-    private fun createChild(parent: Any?, key: String): Any {
-        val result = mutableMapOf<String, Any>()
-        try {
-            (parent as MutableMap<String, Any>)[key] = result
-        } catch (ex: ClassCastException) {
-            throw IllegalArgumentException("Invalid attribute: $key parent: $parent")
-        }
-        return result
-    }
-
-    override fun toString(): String {
-        return "<Asset $id - $document>"
-    }
-
-    companion object {
-
-        private val logger = LoggerFactory.getLogger(Document::class.java)
-
-        private val PATTERN_ATTR = Pattern.compile(Attr.DELIMITER, Pattern.LITERAL)
-    }
-}
-
 object Attr {
 
     const val DELIMITER = "."
@@ -789,8 +306,6 @@ object Attr {
 }
 
 object IdGen {
-
-    private val uuidGenerator = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL)
 
     /**
      * Generate an UUID string utilizing the given value.

@@ -8,15 +8,13 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchProvisionAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.IndexAssetsEvent
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
@@ -34,7 +32,6 @@ import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
@@ -351,11 +348,13 @@ class DispatcherServiceImpl @Autowired constructor(
             if (!event.manualKill && event.exitStatus != 0 && newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.taskId)
                 val assetCount = script.assets?.size ?: 0
-                jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
+
+                // TODO: part of job and asset stats
+                //jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
 
                 taskErrorDao.batchCreate(task, script.assets?.map {
                     TaskErrorEvent(
-                        UUID.fromString(it.id),
+                        it.id,
                         it.getAttr("source.path"),
                         "Hard Task failure, exit ${event.exitStatus}",
                         "unknown",
@@ -372,8 +371,8 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
 
-        val result = assetService.batchProvisionAssets(
-            BatchProvisionAssetsRequest(event.assets, analyze = false)
+        val result = assetService.batchCreate(
+            BatchCreateAssetsRequest(event.assets, analyze = false)
         )
 
         val name = "Expand ${result.status.size} assets"
@@ -398,7 +397,8 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
         taskErrorDao.create(task, error)
-        jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
+        // TODO: part of job stats update
+        //jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
     }
 
     override fun handleStatsEvent(stats: List<TaskStatsEvent>) {
@@ -426,7 +426,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 handleTaskError(task, payload)
             }
             TaskEventType.EXPAND -> {
-                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_IMPORT))) {
+                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_WRITE))) {
                     val payload = Json.Mapper.convertValue<TaskExpandEvent>(event.payload)
                     expand(task, payload)
                 }
@@ -441,9 +441,8 @@ class DispatcherServiceImpl @Autowired constructor(
             }
             TaskEventType.INDEX -> {
                 val index = Json.Mapper.convertValue<IndexAssetsEvent>(event.payload)
-                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_IMPORT))) {
-                    assetService.createOrReplaceAssets(BatchCreateAssetsRequest(
-                        index.assets, task.jobId, task.taskId))
+                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_WRITE))) {
+                    assetService.batchUpdate(BatchUpdateAssetsRequest(index.assets))
                 }
             }
         }

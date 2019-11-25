@@ -48,25 +48,6 @@ fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication
 }
 
-fun getSecurityContext(): SecurityContext {
-    return SecurityContextHolder.getContext()
-}
-
-fun createPasswordHash(plainPassword: String): String {
-    return BCrypt.hashpw(plainPassword, BCrypt.gensalt())
-}
-
-/**
- * Generate a alpha-numeric random password of the given length.
- *
- * @param length The password length
- * @return A random password.
- */
-fun generateRandomPassword(length: Int): String {
-    val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    return (1..length).map { allowedChars.random() }.joinToString("")
-}
-
 fun getZmlpUser(): ZmlpUser {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
@@ -101,10 +82,6 @@ fun getAnalystEndpoint(): String {
     } else {
         return SecurityContextHolder.getContext().authentication.principal as String
     }
-}
-
-fun hasPermission(vararg perms: String): Boolean {
-    return hasPermission(perms.toSet())
 }
 
 private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {

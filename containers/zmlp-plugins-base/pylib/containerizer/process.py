@@ -132,6 +132,10 @@ class ProcessorExecutor(object):
         except Exception as e:
             logger.warning("Failed to create new instance of {}, {}".format(ref["className"], e))
             self.reactor.error(None, ref.get("className"), e, True, "initialize", sys.exc_info()[2])
+            self.reactor.emitter.write({
+                "type": "hardfailure",
+                "payload": {}
+            })
             # Return an empty wrapper here so we can centralize the point
             # where the 'final' event is emitted.
             return None
@@ -209,7 +213,7 @@ class ProcessorWrapper(object):
         """
         start_time = time.monotonic()
         try:
-            if self.instance and is_file_type_allowed(frame, self.instance.file_types):
+            if self.instance and is_file_type_allowed(frame.asset, self.instance.file_types):
                 self.instance.process(frame)
             else:
                 logger.warning("Execute warning, instance for '{}' does not exist."
@@ -247,7 +251,7 @@ class ProcessorWrapper(object):
 
         """
         if not self.instance:
-            logger.warning("Teardown error, instance for '{}' does not exist.", self.ref)
+            logger.warning("Teardown error, instance for '{}' does not exist.".format(self.ref))
             return
         try:
             self.instance.teardown()
