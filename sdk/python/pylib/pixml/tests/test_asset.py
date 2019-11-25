@@ -71,6 +71,9 @@ class AssetTests(unittest.TestCase):
                                         extension=["png", "jpg"],
                                         attrs={"width": 200}))
 
+    def test_equal(self):
+        assert Asset({"id": "123"}) == Asset({"id": "123"})
+
 
 class AssetAppTests(unittest.TestCase):
 
@@ -87,20 +90,30 @@ class AssetAppTests(unittest.TestCase):
                 {
                     "id": "abc123",
                     "document": {
-
+                        "source": {
+                            "path": "gs://zorroa-dev-data/image/pluto.png"
+                        }
                     }
                 }
             ]
         }
         assets = [AssetSpec("gs://zorroa-dev-data/image/pluto.png")]
-        self.app.assets.bulk_process_assets(assets)
+        rsp = self.app.assets.bulk_process_assets(assets)
+        assert rsp["status"][0]["assetId"] == "abc123"
+        assert not rsp["status"][0]["failed"]
 
     @patch.object(PixmlClient, 'get')
     def test_get_asset(self, get_patch):
         get_patch.return_value = {
             "id": "abc13",
             "document": {
-                "foo": "bar"
+                "source": {
+                    "path": "gs://zorroa-dev-data/image/pluto.png"
+                }
             }
         }
-        self.app.assets.get_asset("abc123")
+        asset = self.app.assets.get_asset("abc123")
+        assert type(asset) == Asset
+        assert asset.uri is not None
+        assert asset.id is not None
+        assert asset.document is not None
