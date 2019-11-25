@@ -112,7 +112,7 @@ class AssetServiceImpl : AssetService {
 
     override fun get(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
-        val rsp = rest.client.get(GetRequest(id), RequestOptions.DEFAULT)
+        val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
         return Asset(rsp.id, rsp.sourceAsMap)
     }
 
@@ -241,7 +241,8 @@ class AssetServiceImpl : AssetService {
                 asset.setAttr("system.projectId", getProjectId().toString())
                 asset.setAttr("system.timeModified", time)
                 asset.setAttr("system.state", "processed")
-
+                asset.removeAttr("tmp")
+                asset.removeAttr("temp")
                 bulkRequest.add(
                     rest.newIndexRequest(asset.id)
                         .source(asset.document)
@@ -348,11 +349,6 @@ class AssetServiceImpl : AssetService {
 
         val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
 
-        /**
-         * Namespaces that are protected or unable to be set via the API.
-         */
-        val PROTECTED_NAMESPACES = setOf("system", "tmp")
-        
         val logger: Logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
     }
 }
