@@ -24,7 +24,7 @@ class ProjectSpec (
      * Allow unittests to specify a project Id. Not allowed
      * for REST clients.
      */
-    @JsonIgnore
+    @ApiModelProperty("An optional unique ID for the project.")
     val projectId: UUID?=null
 )
 

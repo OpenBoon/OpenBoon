@@ -6,7 +6,7 @@ import requests
 from pathlib2 import Path
 from unittest.mock import patch, Mock
 
-from pixml import PixmlApp
+from pixml.cache import LocalFileCache
 from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
 from pixml.analysis.testing import PluginUnitTestCase, TestAsset
 
@@ -111,7 +111,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         assert body['output_dir'] == "foo"
         assert body['dpi'] == 75
 
-    @patch.object(PixmlApp, 'localize_remote_file', return_value='/fake')
+    @patch.object(LocalFileCache, 'localize_remote_file', return_value='/fake')
     @patch.object(OfficeImporter, '_is_content_extractable', return_value=True)
     def test_get_request_body_with_content_page_dpi(self, _, __):
         self.asset.set_attr('media.clip.start', 12)

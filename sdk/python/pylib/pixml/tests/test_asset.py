@@ -6,7 +6,7 @@ from pixml import Asset
 class AssetTests(unittest.TestCase):
 
     def setUp(self):
-        self.test_files =  [{
+        self.test_files = [{
             "assetId": "123",
             "category": "proxy",
             "name": "proxy_200x200.jpg",
@@ -32,7 +32,6 @@ class AssetTests(unittest.TestCase):
         assert 1 == len(asset.get_files(category="proxy"))
         assert 1 == len(asset.get_files(category=["proxy"]))
         assert 0 == len(asset.get_files(name="face"))
-
 
     def test_get_files_filter_mimetype(self):
         asset = Asset({"id": "123"})

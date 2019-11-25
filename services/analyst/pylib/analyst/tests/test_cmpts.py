@@ -46,7 +46,7 @@ def test_task(event_type=None, attrs=None):
             ],
             "execute": [
                 {
-                    "className": "pixml.testing.TestProcessor",
+                    "className": "pixml.analysis.testing.TestProcessor",
                     "args": {
                         "send_event": event_type,
                         "attrs": attrs

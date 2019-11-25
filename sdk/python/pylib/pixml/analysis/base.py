@@ -4,11 +4,11 @@ import logging
 import os
 import stat
 import traceback
-
 from shutil import copyfile
 
-from pixml.util import import_and_instantiate, as_collection
-from pixml.app import app_from_env
+from ..app import app_from_env
+from ..exception import PixmlException
+from ..util import import_and_instantiate, as_collection
 
 logger = logging.getLogger(__name__)
 
@@ -767,10 +767,6 @@ class ProcessorHelper(object):
     @property
     def logger(self):
         return self.processor.logger
-
-
-class PixmlException(Exception):
-    pass
 
 
 class PixmlProcessorException(PixmlException):

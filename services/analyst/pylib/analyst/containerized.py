@@ -112,7 +112,6 @@ class ContainerizedZpsExecutor(object):
         except Exception as e:
             # If any exceptions bubble out here, then the task is a hard failure
             # and the container is immediately stopped.
-            print(e)
             logger.warning("Failed to execute script, unexpected {}".format(e))
             self.stop_container()
 
@@ -165,6 +164,8 @@ class ContainerizedZpsExecutor(object):
         # Destroy container if we don't need it for next iteration
         if not keep_container:
             self.stop_container()
+        else:
+            logger.info("keeping container {}".format(ref["image"]))
 
     def run_containerized_processor(self, ref, assets):
         """

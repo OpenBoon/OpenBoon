@@ -5,7 +5,7 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.clients.EsRestClient
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
@@ -255,7 +255,7 @@ constructor(
                 route.mapping, route.mappingMajorVer
             )
 
-            val mapping = Document(mappingFile.mapping)
+            val mapping = Asset(mappingFile.mapping)
             mapping.setAttr("settings.index.number_of_shards", route.shards)
             mapping.setAttr("settings.index.number_of_replicas", route.replicas)
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.apache.commons.lang3.RandomStringUtils
 import org.apache.tika.Tika
 import java.io.InputStream
 import java.io.OutputStream
@@ -69,7 +70,7 @@ inline fun <E : Any, T : Collection<E>> T?.whenNullOrEmpty(func: () -> Unit) {
 
 private const val SYMBOLS = "abcdefghijklmnopqrstuvwxyz0987654321"
 
-fun randomString(length: Int): String {
+fun randomString(length: Int=16): String {
     val random = Random()
     val buf = CharArray(length)
     for (i in 0 until length) {
