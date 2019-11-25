@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
+from pixml import PixmlClient
 from rest_framework import viewsets
 from rest_framework.viewsets import ViewSet
-from zorroa import ZmlpClient
 
 from projects.clients import ZviClient
 from projects.models import Membership
@@ -41,7 +41,7 @@ class BaseProjectViewSet(ViewSet):
         if settings.PLATFORM == 'zvi':
             return ZviClient(apikey=apikey, server=settings.ARCHIVIST_URL)
         else:
-            return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL)
+            return PixmlClient(apikey=apikey, server=settings.ARCHIVIST_URL)
 
 
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
