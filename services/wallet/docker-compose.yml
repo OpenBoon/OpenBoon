@@ -10,7 +10,7 @@ services:
       context: ../../
       dockerfile: services/wallet/Dockerfile
     environment:
-      DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
+      DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
