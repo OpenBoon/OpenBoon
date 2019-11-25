@@ -1,8 +1,8 @@
 import os
-import pytest
-
 from unittest import TestCase
 from unittest.mock import patch
+
+import pytest
 
 from pixml import storage
 from pixml.analysis.testing import zorroa_test_data, TestAsset
@@ -91,4 +91,3 @@ class LocalFileCacheTests(TestCase):
         }
         with pytest.raises(FileNotFoundError):
             self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))
-
