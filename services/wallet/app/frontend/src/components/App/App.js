@@ -10,7 +10,12 @@ import Workspace from '../Workspace'
 function App(props) {
   return (
     <Router>
-      <RequireAuth exact path={['/', '/workspace']} component={Workspace} {...props} />
+      <RequireAuth
+        exact
+        path={['/', '/workspace']}
+        component={Workspace}
+        {...props}
+      />
       <Route path="/login" component={Login} {...props} />
     </Router>
   )

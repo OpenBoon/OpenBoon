@@ -11,7 +11,9 @@ const AuthContext = React.createContext()
 function AuthProvider(props) {
   // check if user is logged in (tokens in localStorage)
   const tokens = getAuthTokens()
-  const initialUser = new User({ attrs: { isAuthenticated: tokens !== undefined, tokens } })
+  const initialUser = new User({
+    attrs: { isAuthenticated: tokens !== undefined, tokens },
+  })
 
   const [user, setUser] = useState(initialUser)
 
