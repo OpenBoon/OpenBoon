@@ -14,6 +14,7 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.randomString
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,7 +45,7 @@ class TaskErrorControllerTests : MockMvcTest() {
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
-            UUID.randomUUID(), "/foo/bar.jpg",
+            randomString(), "/foo/bar.jpg",
             "it broke", "com.zorroa.OfficeIngestor", true, "execute"
         )
         val event = TaskEvent(TaskEventType.ERROR, task.id, job.id, error)

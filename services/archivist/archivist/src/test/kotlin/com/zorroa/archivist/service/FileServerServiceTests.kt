@@ -2,7 +2,8 @@ package com.zorroa.archivist.service
 
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.util.randomString
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -79,7 +80,7 @@ class LocalFileServerServiceTests : AbstractTest() {
 
     @Test
     fun testGetStorageUriPathWithSpace() {
-        val doc = Document()
+        val doc = Asset(randomString())
         doc.setAttr("source.path", "/foo/bar/bing bang.jpg")
         val uri = fileStorage.fileServerProvider.getStorageUri(doc)
         assertEquals("file:///foo/bar/bing%20bang.jpg", uri.toString())
@@ -87,7 +88,7 @@ class LocalFileServerServiceTests : AbstractTest() {
 
     @Test
     fun testGetStorageUrWithSpace() {
-        val doc = Document()
+        val doc = Asset(randomString())
         doc.setAttr("source.path", "file:///foo/bar/bing bang.jpg")
         val uri = fileStorage.fileServerProvider.getStorageUri(doc)
         assertEquals("file:///foo/bar/bing%20bang.jpg", uri.toString())

@@ -2,10 +2,17 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.Analyst
+import com.zorroa.archivist.domain.AnalystSpec
+import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.StackTraceElement
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
+import com.zorroa.archivist.domain.TaskExpandEvent
+import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
@@ -15,21 +22,14 @@ import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.archivist.domain.Analyst
-import com.zorroa.archivist.domain.AnalystSpec
-import com.zorroa.archivist.domain.AssetSpec
-import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.TaskExpandEvent
-import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.randomString
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -185,12 +185,16 @@ class AnalystClusterControllerTests : MockMvcTest() {
         if (task != null) {
 
             assertTrue(dispatcherService.startTask(task))
-            val tev = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg", "it broke",
-                "com.zorroa.ImageIngestor", true, "execute")
-            val te = TaskEvent(TaskEventType.ERROR,
+            val tev = TaskErrorEvent(
+                randomString(), "/foo/bar.jpg", "it broke",
+                "com.zorroa.ImageIngestor", true, "execute"
+            )
+            val te = TaskEvent(
+                TaskEventType.ERROR,
                 task.id,
                 job.id,
-                tev)
+                tev
+            )
 
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                 .session(analyst())
@@ -222,13 +226,17 @@ class AnalystClusterControllerTests : MockMvcTest() {
         if (task != null) {
 
             assertTrue(dispatcherService.startTask(task))
-            val tev = TaskErrorEvent(UUID.randomUUID(), "/foo/bar.jpg", "it broke",
-                "com.zorroa.ImageIngestor", true, "execute", stackTrace = listOf(StackTraceElement()))
+            val tev = TaskErrorEvent(
+                randomString(), "/foo/bar.jpg", "it broke",
+                "com.zorroa.ImageIngestor", true, "execute", stackTrace = listOf(StackTraceElement())
+            )
 
-            val te = TaskEvent(TaskEventType.ERROR,
+            val te = TaskEvent(
+                TaskEventType.ERROR,
                 task.id,
                 job.id,
-                tev)
+                tev
+            )
 
             mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
                 .session(analyst())

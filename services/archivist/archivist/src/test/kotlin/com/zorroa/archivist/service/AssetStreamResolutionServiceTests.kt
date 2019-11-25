@@ -1,9 +1,10 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.schema.Proxy
 import com.zorroa.archivist.schema.ProxySchema
+import com.zorroa.archivist.util.randomString
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -30,7 +31,7 @@ class AssetStreamResolutionServiceTests {
     var expectedException = ExpectedException.none()!!
 
     @Mock
-    lateinit var mockIndexService: IndexService
+    lateinit var mockAssetService: AssetService
 
     @Mock
     lateinit var mockFileStorageService: FileStorageService
@@ -65,7 +66,7 @@ class AssetStreamResolutionServiceTests {
 
         val document = testDocument(id)
 
-        given(mockIndexService.get(id)).willReturn(document)
+        given(mockAssetService.get(id)).willReturn(document)
 
         given(mockFileServerService.storedLocally).willReturn(true)
         given(mockFileServerService.objectExists(sourceFileUri)).willReturn(true)
@@ -85,12 +86,12 @@ class AssetStreamResolutionServiceTests {
         given(mockFileServerProvider.getServableFile(imageProxyUri))
             .willReturn(ServableFile(mockFileServerService, imageProxyUri))
 
-        service = AssetStreamResolutionService(mockIndexService, mockFileServerProvider, mockFileStorageService)
+        service = AssetStreamResolutionService(mockAssetService, mockFileServerProvider, mockFileStorageService)
     }
 
     @Test
     fun getServableFileForceProxyByClip() {
-        val asset = mockIndexService.get(id)
+        val asset = mockAssetService.get(id)
         asset.setAttr("media.clip.parent", "foo")
 
         val servableFile = service.getServableFile(id, listOf())
@@ -112,7 +113,7 @@ class AssetStreamResolutionServiceTests {
 
     @Test
     fun testCanDisplaySource() {
-        val asset = mockIndexService.get(id)
+        val asset = mockAssetService.get(id)
         assertFalse(service.canDisplaySource(asset, listOf(MediaType.parseMediaType("video/mp4"))))
         assertTrue(service.canDisplaySource(asset, listOf(MediaType.parseMediaType("video/mov"))))
         assertTrue(service.canDisplaySource(asset, listOf(MediaType.ALL)))
@@ -121,7 +122,7 @@ class AssetStreamResolutionServiceTests {
 
     @Test
     fun testGetProxyAnyType() {
-        val asset = mockIndexService.get(id)
+        val asset = mockAssetService.get(id)
         val proxy = service.getProxy(asset, listOf())
         assertNotNull(proxy)
         assertEquals(videoProxyUri, proxy?.uri)
@@ -129,7 +130,7 @@ class AssetStreamResolutionServiceTests {
 
     @Test
     fun testGetProxyVideoType() {
-        val asset = mockIndexService.get(id)
+        val asset = mockAssetService.get(id)
         val proxy = service.getProxy(asset, listOf(MediaType.parseMediaType("video/mp4")))
         assertNotNull(proxy)
         assertEquals(videoProxyUri, proxy?.uri)
@@ -137,14 +138,14 @@ class AssetStreamResolutionServiceTests {
 
     @Test
     fun testGetProxyImageType() {
-        val asset = mockIndexService.get(id)
+        val asset = mockAssetService.get(id)
         val proxy = service.getProxy(asset, listOf(MediaType.IMAGE_JPEG))
         assertNotNull(proxy)
         assertEquals(imageProxyUri, proxy?.uri)
     }
 
-    private fun testDocument(id: String): Document {
-        val document = Document()
+    private fun testDocument(id: String): Asset {
+        val document = Asset(randomString())
         document.setAttr("source.mediaType", "video/mov")
         document.setAttr("source.type", "video")
         val proxies = mutableListOf<Proxy>()

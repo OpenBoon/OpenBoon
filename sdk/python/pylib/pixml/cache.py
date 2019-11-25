@@ -51,10 +51,15 @@ class LocalFileCache(object):
 
     def localize_remote_file(self, rep):
         """
-        Localize a remote file.
+        Localize a remote file representation.
+
+        The 'rep' value can be:
+            - URI
+            - Asset instance
+            - Pixml file dictionary
 
         Args:
-            obj(mixed): The uri, asset, or file storage definition to localize.
+            rep(mixed): The uri, asset, or file pixml file definition to localize.
 
         Returns:
             str: a local file path to a remote file
@@ -122,7 +127,7 @@ class LocalFileCache(object):
         cache_path = self.get_path(key, suffix)
         if copy_path:
             copy_path = urlparse(str(copy_path)).path
-            logger.debug("Copying to cache {} to {}", copy_path, cache_path)
+            logger.debug("Copying to cache {} to {}".format(copy_path, cache_path))
             shutil.copy(urlparse(copy_path).path, cache_path)
         elif not os.path.exists(cache_path):
             self.app.client.stream('/api/v2/assets/{}/_files/{}/_stream'

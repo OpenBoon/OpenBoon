@@ -8,7 +8,7 @@ import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import com.google.common.net.UrlEscapers
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
@@ -105,7 +105,7 @@ class ServableFile(
  */
 interface FileServerProvider {
 
-    fun getStorageUri(doc: Document): URI {
+    fun getStorageUri(doc: Asset): URI {
         val stream: String = doc.getAttr("source.path") ?: throw IllegalStateException("${doc.id} has no source.path")
         return if (stream.contains(":/")) {
             URI(UrlEscapers.urlFragmentEscaper().escape(stream))
@@ -116,7 +116,7 @@ interface FileServerProvider {
 
     fun getServableFile(storage: FileStorage): ServableFile = getServableFile(storage.uri)
     fun getServableFile(uri: URI): ServableFile
-    fun getServableFile(doc: Document): ServableFile
+    fun getServableFile(doc: Asset): ServableFile
     fun getServableFile(uri: String): ServableFile = getServableFile(URI(uri))
 }
 
@@ -154,7 +154,7 @@ open class FileServerProviderImpl @Autowired constructor (
         return ServableFile(service, uri)
     }
 
-    override fun getServableFile(doc: Document): ServableFile {
+    override fun getServableFile(doc: Asset): ServableFile {
         val uri = getStorageUri(doc)
         return getServableFile(uri)
     }

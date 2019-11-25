@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.schema.ProxySchema
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class AssetStreamResolutionService constructor(
-    private val indexService: IndexService,
+    private val assetService: AssetService,
     private val fileServerProvider: FileServerProvider,
     private val fileStorageService: FileStorageService
 ) {
@@ -24,7 +24,7 @@ class AssetStreamResolutionService constructor(
      * @return A [ServableFile] or null none could be found.
      */
     fun getServableFile(id: String, types: List<MediaType>): ServableFile? {
-        val asset = indexService.get(id)
+        val asset = assetService.get(id)
         val canDisplay = canDisplaySource(asset, types)
         // TODO: ZMLP always force proxy?
         val forceProxy = true
@@ -70,7 +70,7 @@ class AssetStreamResolutionService constructor(
      * @return A [ServableFile] or null if one can't be found.
      *
      */
-    fun getProxy(asset: Document, mimeTypes: List<MediaType>): ServableFile? {
+    fun getProxy(asset: Asset, mimeTypes: List<MediaType>): ServableFile? {
 
         /**
          * Grab the proxies or return null.
@@ -104,7 +104,7 @@ class AssetStreamResolutionService constructor(
      * @param mimeTypes The accepted list of mimeTypes
      * @return True if the asset's mimeType is in the list of types
      */
-    fun canDisplaySource(asset: Document, mimeTypes: List<MediaType>): Boolean {
+    fun canDisplaySource(asset: Asset, mimeTypes: List<MediaType>): Boolean {
         /**
          * If no acceptable types are sent, or all types are allowed, then return true.
          */

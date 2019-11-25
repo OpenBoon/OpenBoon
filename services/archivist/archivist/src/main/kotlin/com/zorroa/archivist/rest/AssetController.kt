@@ -2,16 +2,18 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.AssetStreamResolutionService
 import com.zorroa.archivist.service.ImageService
-import com.zorroa.archivist.service.IndexService
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.StaticUtils
-import io.micrometer.core.annotation.Timed
 import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -24,6 +26,8 @@ import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -36,14 +40,12 @@ import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@PreAuthorize("hasAuthority('AssetsRead')")
 @RestController
 @Api(
     tags = ["Asset"],
     description = "Operations for interacting with Assets including CRUD, streaming, proxies and more."
 )
 class AssetController @Autowired constructor(
-    private val indexService: IndexService,
     private val assetService: AssetService,
     private val imageService: ImageService,
     private val assetStreamResolutionService: AssetStreamResolutionService,
@@ -57,7 +59,7 @@ class AssetController @Autowired constructor(
         .build(object : CacheLoader<String, ProxySchema>() {
             @Throws(Exception::class)
             override fun load(id: String): ProxySchema {
-                return indexService.getProxies(id)
+                return assetService.getProxies(id)
             }
         })
 
@@ -66,12 +68,7 @@ class AssetController @Autowired constructor(
             it.size().toDouble()
         }
     }
-
-    val mapping: Map<String, Any>
-        @GetMapping(value = ["/api/v1/assets/_mapping"])
-        @Throws(IOException::class)
-        get() = indexService.getMapping()
-
+    
     @ApiOperation(
         "Handle a HEAD request which a client can use to fetch a singed URL for the asset.",
         notes = "The signed url is a fqdn that has authentication built in and can be used by a browser to retrieve the asset " +
@@ -233,6 +230,19 @@ class AssetController @Autowired constructor(
     @RequestMapping("/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
     fun search(@RequestBody query: Map<String, Any>, out: ServletOutputStream) {
         assetService.search(query, out)
+    }
+
+    @PreAuthorize("hasAnyAuthority('AssetsImport', 'ProjectAdmin', 'AssetsWrite')")
+    @PostMapping("/api/v3/assets/_batchCreate")
+    fun batchCreate(@RequestBody request: BatchCreateAssetsRequest)
+        : BatchCreateAssetsResponse {
+        return assetService.batchCreate(request)
+    }
+
+    @PreAuthorize("hasAnyAuthority('AssetsImport', 'ProjectAdmin', 'AssetsWrite')")
+    @PutMapping("/api/v3/assets/_batchUpdate")
+    fun batchUpdate(@RequestBody request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
+        return assetService.batchUpdate(request)
     }
 
     companion object {

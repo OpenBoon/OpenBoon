@@ -309,3 +309,65 @@ class Clip(object):
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict
+
+
+class AssetApp(object):
+
+    def __init__(self, app):
+        self.app = app
+
+    def bulk_process_assets(self, assets):
+        """
+        Provision and process a list of AssetSpec instances.
+
+        Args:
+            assets (list of AssetSpec): The list of assets to process.
+
+        Returns:
+            dict: A dictionary containing the provisioning status of each asset,
+                a list of assets to be processed, and a analysis job id.
+
+        """
+        body = {"assets": assets}
+        return self.app.client.post("/api/v3/assets", body)
+
+    def bulk_process_datasource(self, uri):
+        """
+
+        If URI is a local file path, the data has to be uploaded for processing.
+
+        Returns:
+
+        """
+        raise NotImplemented()
+
+    def bulk_process_asset_search(self, query):
+        """
+        If URI is a local file path, the data has to be uploaded for processing.
+
+        Returns:
+        """
+        raise NotImplemented()
+
+    def asset_search(self, query):
+        """
+        Perform an asset search.
+
+        Args:
+            query:
+
+        Returns:
+
+        """
+        raise NotImplemented()
+
+    def get_asset(self, id):
+        """
+
+        Args:
+            id:
+
+        Returns:
+
+        """
+        raise NotImplemented()

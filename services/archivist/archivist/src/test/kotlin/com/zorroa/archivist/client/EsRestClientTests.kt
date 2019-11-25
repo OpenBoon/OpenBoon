@@ -1,7 +1,7 @@
 package com.zorroa.archivist.client
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Document
+import com.zorroa.archivist.domain.Asset
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -33,7 +33,7 @@ class EsRestClientTests : AbstractTest() {
             )
         )
         val mapping = client.getMapping()
-        val doc = Document(mapping)
+        val doc = Asset(mapping)
         val index = client.route.indexName
         assertEquals("keyword", doc.getAttr("${index}.mappings.asset.properties.name.type", String::class.java))
     }

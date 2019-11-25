@@ -162,15 +162,6 @@ class ArchivistConfiguration {
         return EventBus()
     }
 
-    @Bean
-    @ConditionalOnProperty(name = ["archivist.debug-mode.enabled"], havingValue = "true")
-    fun requestLoggingFilter(): CommonsRequestLoggingFilter {
-        val filter = CommonsRequestLoggingFilter()
-        filter.setIncludePayload(true)
-        filter.setMaxPayloadLength(1024)
-        return filter
-    }
-
     /**
      * The service credentials key.
      */

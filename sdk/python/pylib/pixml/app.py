@@ -1,9 +1,10 @@
-import json
+import base64
 import logging
 import os
 from functools import lru_cache
 
-from pixml.storage import LocalFileCache
+from .asset import AssetApp
+from .cache import LocalFileCache
 from .rest import PixmlClient
 
 logger = logging.getLogger(__name__)
@@ -26,72 +27,8 @@ class PixmlApp(object):
         """
         logger.debug("Initializing PixmlApp to {}".format(server))
         self.client = PixmlClient(apikey, server or DEFAULT_SERVER)
-        self.lfc = LocalFileCache(self)
-
-    def bulk_process_assets(self, assets):
-        """
-
-        Args:
-            assets:
-
-        Returns:
-
-        """
-        raise NotImplemented()
-
-    def bulk_process_datasource(self, uri):
-        """
-
-        If URI is a local file path, the data has to be uploaded for processing.
-
-        Returns:
-
-        """
-        raise NotImplemented()
-
-    def bulk_process_asset_search(self, query):
-        """
-        If URI is a local file path, the data has to be uploaded for processing.
-
-        Returns:
-        """
-        raise NotImplemented()
-
-    def asset_search(self, query):
-        """
-        Perform an asset search.
-
-        Args:
-            query:
-
-        Returns:
-
-        """
-        raise NotImplemented()
-
-    def get_asset(self, id):
-        """
-
-        Args:
-            id:
-
-        Returns:
-
-        """
-        raise NotImplemented()
-
-    def localize_remote_file(self, obj):
-        """
-        Localize a remote file.
-
-        Args:
-            obj(mixed): The uri, asset, or file storage definition to localize.
-
-        Returns:
-            str: a local file path to a remote file
-
-        """
-        return self.lfc.localize_remote_file(obj)
+        self.cache = LocalFileCache(self)
+        self.assets = AssetApp(self)
 
 
 @lru_cache(maxsize=32)
@@ -130,6 +67,8 @@ def app_from_env():
     if 'PIXML_APIKEY' in os.environ:
         apikey = os.environ['PIXML_APIKEY']
     elif 'PIXML_APIKEY_FILE' in os.environ:
-        with open(os.environ['PIXML_APIKEY_FILE'], 'r') as fp:
-            apikey = json.load(fp)
+        with open(os.environ['PIXML_APIKEY_FILE'], 'rb') as fp:
+            apikey = base64.b64encode(fp.read())
     return get_app_cached(apikey, os.environ.get('PIXML_SERVER'))
+
+

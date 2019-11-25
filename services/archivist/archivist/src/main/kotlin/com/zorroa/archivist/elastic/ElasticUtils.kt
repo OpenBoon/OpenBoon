@@ -1,5 +1,6 @@
 package com.zorroa.archivist.elastic
 
+import com.zorroa.archivist.util.randomString
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.NamedXContentRegistry
@@ -8,6 +9,9 @@ import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.util.regex.Pattern
 
 /**
  * ElasticSearch utility functions.
@@ -28,4 +32,42 @@ object ElasticUtils {
         val ssb = SearchSourceBuilder.fromXContent(parser)
         return ssb.query()
     }
+}
+
+/**
+ * The ElasticSearchErrorTranslator takes error messages from ElasticSearch
+ * and sanitizes them so they don't reveal information that could be
+ * a security concern. This is specifically required for various security
+ * audits.
+ */
+object ElasticSearchErrorTranslator {
+
+    val logger: Logger = LoggerFactory.getLogger(ElasticSearchErrorTranslator::class.java)
+
+    fun translate(message: String) : String {
+        val errorId = randomString(24)
+        logger.warn("ElasticSearch Error '${errorId}' $message")
+
+        if ("document already exists" in message) {
+            return "asset already exists"
+        }
+        else {
+            for (pattern in RECOVERABLE_BULK_ERRORS) {
+                val matcher = pattern.matcher(message)
+
+                if (matcher.find()) {
+                    val field = matcher.group(1)
+                    return "field '$field' is the wrong data type or format"
+                }
+            }
+        }
+
+        return "Untranslatable asset error, reference id ='$errorId'"
+    }
+
+    private val RECOVERABLE_BULK_ERRORS = arrayOf(
+        Pattern.compile("reason=failed to parse \\[(.*?)\\]"),
+        Pattern.compile("\"term in field=\"(.*?)\"\""),
+        Pattern.compile("mapper \\[(.*?)\\] of different type")
+    )
 }
