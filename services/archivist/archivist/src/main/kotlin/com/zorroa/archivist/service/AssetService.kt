@@ -275,7 +275,7 @@ class AssetServiceImpl : AssetService {
         val execute = listOf(
             ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core")
         )
-        val name = "Analyze ${assets.size} assets"
+        val name = "Analyze ${assets.size} created assets"
         val script = ZpsScript(name, null, assets, execute)
         val spec = JobSpec(name, script)
 
