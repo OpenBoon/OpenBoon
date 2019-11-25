@@ -2,6 +2,7 @@ const { join, resolve } = require('path')
 const common = require('./webpack.common.js')
 const merge = require('webpack-merge')
 const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack')
 
 const ROOT_DIR = resolve(__dirname)
 
@@ -21,5 +22,9 @@ module.exports = merge(common, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new Dotenv({
+      path: './.env.development',
+      safe: true
+    })
   ]
 })

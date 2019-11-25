@@ -1,6 +1,7 @@
 const { join, resolve } = require('path')
 const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
+const Dotenv = require('dotenv-webpack')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 
@@ -24,6 +25,10 @@ module.exports = merge(common, {
       }
     },
     minimizer: [
+      new Dotenv({
+        path: './.env.production',
+        safe: true
+      }),
       new TerserPlugin({
         cache: true,
         parallel: true,
