@@ -266,6 +266,14 @@ class Asset(AssetBase):
             "document": self.document
         }
 
+    def __str__(self):
+        return "<Asset id='{} uri='{}'/>".format(self.id, self.uri)
+
+    def __eq__(self, other):
+        if not getattr(other, "id"):
+            return False
+        return other.id == self.id
+
 
 class Clip(object):
     """
@@ -329,7 +337,7 @@ class AssetApp(object):
 
         """
         body = {"assets": assets}
-        return self.app.client.post("/api/v3/assets", body)
+        return self.app.client.post("/api/v3/assets/_batchCreate", body)
 
     def bulk_process_datasource(self, uri):
         """
@@ -363,11 +371,12 @@ class AssetApp(object):
 
     def get_asset(self, id):
         """
+        Return the asset with the given unique Id.
 
         Args:
-            id:
+            id (str): The unique ID of the asset.
 
         Returns:
-
+            Asset: The Asset
         """
-        raise NotImplemented()
+        return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))

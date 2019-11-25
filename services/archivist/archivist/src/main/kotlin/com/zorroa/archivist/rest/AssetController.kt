@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
@@ -232,14 +233,20 @@ class AssetController @Autowired constructor(
         assetService.search(query, out)
     }
 
-    @PreAuthorize("hasAnyAuthority('AssetsImport', 'ProjectAdmin', 'AssetsWrite')")
+    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsRead')")
+    @GetMapping("/api/v3/assets/{id}")
+    fun get(@ApiParam("Unique ID of the Asset") @PathVariable id: String) : Asset {
+        return assetService.get(id)
+    }
+
+    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsWrite')")
     @PostMapping("/api/v3/assets/_batchCreate")
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest)
         : BatchCreateAssetsResponse {
         return assetService.batchCreate(request)
     }
 
-    @PreAuthorize("hasAnyAuthority('AssetsImport', 'ProjectAdmin', 'AssetsWrite')")
+    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsWrite')")
     @PutMapping("/api/v3/assets/_batchUpdate")
     fun batchUpdate(@RequestBody request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
         return assetService.batchUpdate(request)
