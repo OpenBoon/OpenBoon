@@ -1,3 +1,3 @@
-import Login from '../src/Login'
+import Jobs from '../src/Jobs'
 
-export default Login
+export default Jobs

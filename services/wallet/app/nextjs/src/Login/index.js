@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
@@ -10,7 +11,7 @@ const WIDTH = 440
 const HEIGHT = 580
 const LOGO_WIDTH = 143
 
-const Login = () => {
+const Login = ({ onSubmit }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -57,12 +58,38 @@ const Login = () => {
           value={password}
           onChange={({ target: { value } }) => setPassword(value)}
         />
+        <div css={{ padding: spacing.spacious, textAlign: 'center' }}>
+          <button
+            type="button"
+            onClick={onSubmit}
+            css={{
+              backgroundColor: colors.primary,
+              color: colors.primaryFont,
+              width: '95px',
+              fontSize: typography.size.hecto,
+              lineHeight: typography.height.hecto,
+              fontWeight: typography.weight.medium,
+              borderRadius: constants.borderRadius.small,
+              padding: `${spacing.moderate}px ${spacing.spacious}px`,
+              border: 0,
+              cursor: 'pointer',
+              ':hover': {
+                backgroundColor: colors.primaryHover,
+              },
+            }}>
+            Login
+          </button>
+        </div>
         <a href="/" css={{ textAlign: 'center' }}>
           Forgot Password? Need login help?
         </a>
       </form>
     </div>
   )
+}
+
+Login.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default Login

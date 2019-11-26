@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-8 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +17,7 @@ exports[`<Login /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-7 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59,15 +59,37 @@ exports[`<Login /> should render properly 1`] = `
   width: 100%;
 }
 
+.emotion-7 {
+  padding: 32px;
+  text-align: center;
+}
+
 .emotion-6 {
+  background-color: #82be3c;
+  color: #fff;
+  width: 95px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border-radius: 2px;
+  padding: 12px 32px;
+  border: 0;
+  cursor: pointer;
+}
+
+.emotion-6:hover {
+  background-color: #a7d374;
+}
+
+.emotion-8 {
   text-align: center;
 }
 
 <div
-  className="emotion-8"
+  className="emotion-10"
 >
   <form
-    className="emotion-7"
+    className="emotion-9"
   >
     <svg
       className="emotion-0"
@@ -111,8 +133,18 @@ exports[`<Login /> should render properly 1`] = `
         value=""
       />
     </div>
+    <div
+      className="emotion-7"
+    >
+      <button
+        className="emotion-6"
+        type="button"
+      >
+        Login
+      </button>
+    </div>
     <a
-      className="emotion-6"
+      className="emotion-8"
       href="/"
     >
       Forgot Password? Need login help?
