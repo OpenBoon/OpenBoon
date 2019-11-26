@@ -50,7 +50,7 @@ export function axiosCreate(options = {}) {
     ...options,
   })
 
-  axiosInstance.interceptors.request.use(decorateHeaders, function (error) {
+  axiosInstance.interceptors.request.use(decorateHeaders, function(error) {
     return Promise.reject(error)
   })
 
