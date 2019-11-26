@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
+const HEIGHT = 39
+
 const Input = ({ id, type, label, value }) => (
   <div>
     <label
@@ -15,7 +17,7 @@ const Input = ({ id, type, label, value }) => (
       name={id}
       value={value}
       css={{
-        height: 39,
+        height: HEIGHT,
         borderRadius: constants.borderRadius.small,
         boxShadow: constants.boxShadows.input,
         width: '100%',
