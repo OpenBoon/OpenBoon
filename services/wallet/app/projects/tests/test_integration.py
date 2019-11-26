@@ -2,7 +2,7 @@ import pytest
 from django.http import JsonResponse, HttpResponseForbidden
 from django.test import RequestFactory
 from django.urls import reverse
-from zorroa import ZmlpClient
+from pixml import PixmlClient
 
 from projects.clients import ZviClient
 from projects.views import BaseProjectViewSet
@@ -11,13 +11,13 @@ from projects.views import BaseProjectViewSet
 pytestmark = pytest.mark.django_db
 
 
-def test_get_zmlp_client(user, project, settings, zmlp_project_membership):
+def test_get_zmlp_client(user, project, settings, pixml_project_membership):
     settings.PLATFORM = 'zmlp'
     request = RequestFactory().get('/bunk/')
     request.user = user
     view = BaseProjectViewSet()
     client = view._get_archivist_client(request, project)
-    assert type(client) == ZmlpClient
+    assert type(client) == PixmlClient
 
 
 def test_get_zvi_client(user, project, settings, zvi_project_membership):
@@ -51,7 +51,7 @@ def test_projects_view_no_projects(project, user, api_client):
     assert response['count'] == 0
 
 
-def test_projects_view_with_projects(project, user, api_client, zmlp_project_membership):
+def test_projects_view_with_projects(project, user, api_client, pixml_project_membership):
     api_client.force_authenticate(user)
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 1
