@@ -1,5 +1,7 @@
 import { colors, constants, typography, spacing } from '../Styles'
 
+import Input from '../Input'
+
 import LogoSvg from './logo.svg'
 
 const WIDTH = 440
@@ -35,44 +37,8 @@ const Login = () => (
         }}>
         Welcome. Please login.
       </h3>
-      <div>
-        <label
-          htmlFor="email"
-          css={{ display: 'block', paddingBottom: spacing.moderate }}>
-          Email
-        </label>
-        <input
-          id="email"
-          type="text"
-          name="email"
-          value=""
-          css={{
-            height: 39,
-            borderRadius: constants.borderRadius.small,
-            boxShadow: constants.boxShadows.input,
-            width: '100%',
-          }}
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="password"
-          css={{ display: 'block', paddingBottom: spacing.moderate }}>
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          value=""
-          css={{
-            height: 39,
-            borderRadius: constants.borderRadius.small,
-            boxShadow: constants.boxShadows.input,
-            width: '100%',
-          }}
-        />
-      </div>
+      <Input id="email" label="Email" type="text" value="" />
+      <Input id="password" label="Password" type="password" value="" />
       <a href="/" css={{ textAlign: 'center' }}>
         Forgot Password? Need login help?
       </a>
