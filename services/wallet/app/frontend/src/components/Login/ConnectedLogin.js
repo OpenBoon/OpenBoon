@@ -1,5 +1,4 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
 
 import { useAuth } from '../../context/authContext'
 import { useUser } from '../../context/userContext'
@@ -11,4 +10,4 @@ function ConnectedLogin(props) {
 
   return <Login {...authContext} {...userContext} {...props} />
 }
-export default withRouter(ConnectedLogin)
+export default ConnectedLogin
