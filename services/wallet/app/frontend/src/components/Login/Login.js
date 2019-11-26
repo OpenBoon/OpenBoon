@@ -8,13 +8,14 @@ import Page from '../Page'
 import Logo from '../Logo'
 
 const ERROR_MESSAGE = 'Invalid email or password'
+const TIMEOUT_MESSAGE = 'Your session expired. Please log in.'
 
 function Login({ user, login }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const emailInput = useRef(null)
-  const { isAuthenticated } = user.attrs
+  const { isAuthenticated, isTimedOut } = user.attrs
 
   if (isAuthenticated) {
     return <Redirect to={'/workspace'} />
@@ -44,11 +45,18 @@ function Login({ user, login }) {
       <div className="login__page">
         <form className="login__form" onSubmit={handleSubmit}>
           <Logo width="143" height="42" />
-          <h3 className="login__form-heading">{'Welcome. Please login.'}</h3>
+          <h3 className="login__form-heading">{'Welcome. Please log in.'}</h3>
           {error && (
             <div className="login__form-error-container">
               <i className="fas fa-exclamation-triangle"></i>
               <p className="login__form-error-message">{error}</p>
+            </div>
+          )}
+
+          {isTimedOut && (
+            <div className="login__form-error-container">
+              <i className="fas fa-exclamation-triangle"></i>
+              <p className="login__form-error-message">{TIMEOUT_MESSAGE}</p>
             </div>
           )}
 

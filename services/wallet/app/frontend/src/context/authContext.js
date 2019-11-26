@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import {
+  isUserAuthenticated,
   getAuthTokens,
   authenticateUser,
-  unauthenticateUser,
+  clearAuthTokens,
+  getTokenTimeout,
 } from '../services/authServices'
 import User from '../models/User'
 
@@ -10,9 +12,8 @@ const AuthContext = React.createContext()
 
 function AuthProvider(props) {
   // check if user is logged in (tokens in localStorage)
-  const tokens = getAuthTokens()
   const initialUser = new User({
-    attrs: { isAuthenticated: tokens !== undefined, tokens },
+    attrs: { isAuthenticated: isUserAuthenticated(), tokens: getAuthTokens() },
   })
 
   const [user, setUser] = useState(initialUser)
@@ -33,8 +34,18 @@ function AuthProvider(props) {
   }
 
   const logout = () => {
-    unauthenticateUser()
+    clearAuthTokens()
     setUser(new User({}))
+  }
+
+  const sessionTimeout = () => {
+    clearAuthTokens()
+    setUser(new User({ ...user, attrs: { isTimedOut: true } }))
+  }
+
+  if (user.attrs.isAuthenticated) {
+    const { refreshToken } = user.attrs.tokens
+    setTimeout(sessionTimeout, getTokenTimeout(refreshToken))
   }
 
   return (
