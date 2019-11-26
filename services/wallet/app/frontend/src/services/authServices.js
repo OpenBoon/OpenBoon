@@ -3,8 +3,8 @@ import { axiosCreate } from './axiosServices'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/authConstants'
 
 export function getAuthTokens() {
-  const accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN))
-  const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN))
+  const accessToken = localStorage.getItem(ACCESS_TOKEN)
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN)
   if (accessToken && refreshToken) {
     return { accessToken, refreshToken }
   }
@@ -15,9 +15,9 @@ export function isUserAuthenticated() {
   if (!tokens) return false
 
   const { refreshToken } = tokens
-  const parsedToken = jwtDecode(refreshToken.slice(7)) // slice off 'Bearer' and feed token only
+  const decodedToken = jwtDecode(refreshToken)
   const currentTime = Date.now() / 1000
-  const expirationTime = parsedToken.exp
+  const expirationTime = decodedToken.exp
 
   const isAuthenticated = currentTime < expirationTime
   return isAuthenticated
@@ -43,17 +43,14 @@ export function clearAuthTokens() {
 }
 
 export function storeAuthTokens(tokens) {
-  localStorage.setItem(ACCESS_TOKEN, JSON.stringify(`Bearer ${tokens.access}`))
-  localStorage.setItem(
-    REFRESH_TOKEN,
-    JSON.stringify(`Bearer ${tokens.refresh}`),
-  )
+  localStorage.setItem(ACCESS_TOKEN, tokens.access)
+  localStorage.setItem(REFRESH_TOKEN, tokens.refresh)
 }
 
 export function getTokenTimeout(refreshToken) {
-  const parsedToken = jwtDecode(refreshToken.slice(7))
+  const decodedToken = jwtDecode(refreshToken)
   const currentTime = Date.now() / 1000
-  const expirationTime = parsedToken.exp
+  const expirationTime = decodedToken.exp
 
   return (expirationTime - currentTime - 30) * 1000 // set to 30 seconds before expiration
 }
