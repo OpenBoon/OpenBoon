@@ -2,7 +2,7 @@ import pytest
 from django.http import JsonResponse, HttpResponseForbidden
 from django.test import RequestFactory
 from django.urls import reverse
-from zorroa import ZmlpClient
+from pixml import PixmlClient
 
 from projects.clients import ZviClient
 from projects.views import BaseProjectViewSet
@@ -17,7 +17,7 @@ def test_get_zmlp_client(user, project, settings, zmlp_project_membership):
     request.user = user
     view = BaseProjectViewSet()
     client = view._get_archivist_client(request, project)
-    assert type(client) == ZmlpClient
+    assert type(client) == PixmlClient
 
 
 def test_get_zvi_client(user, project, settings, zvi_project_membership):
