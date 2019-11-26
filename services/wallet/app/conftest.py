@@ -37,7 +37,7 @@ def zmlp_project_membership(project, user):
     "keyId": "4338a83f-a920-hedb-a251-a123b17df1ba",
     "sharedKey": "beecda19ed4120b8172309e47242ea88bf35d86aca19bdefb189fe468641b48c8e17241ec955b6a6653b5f1b96ed6e88ccb5f251a04efe70d0e2ef93b60bf9b3",
     "permissions": ["SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport"]
-}"""
+}""" # noqa
     apikey = b64encode(apikey).decode('utf-8')
     return Membership.objects.create(user=user, project=project, apikey=apikey)
 
