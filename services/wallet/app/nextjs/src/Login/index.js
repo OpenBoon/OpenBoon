@@ -27,7 +27,12 @@ const Login = () => (
         boxShadow: constants.boxShadows.default,
       }}>
       <LogoSvg width={LOGO_WIDTH} css={{ margin: '0 auto' }} />
-      <h3 css={{ textAlign: 'center', fontWeight: typography.weight.medium }}>
+      <h3
+        css={{
+          textAlign: 'center',
+          fontWeight: typography.weight.medium,
+          paddingBottom: spacing.spacious,
+        }}>
         Welcome. Please login.
       </h3>
       <div>
@@ -68,7 +73,9 @@ const Login = () => (
           }}
         />
       </div>
-      <a href="#">Forgot Password? Need login help?</a>
+      <a href="/" css={{ textAlign: 'center' }}>
+        Forgot Password? Need login help?
+      </a>
     </form>
   </div>
 )
