@@ -90,6 +90,7 @@ exports[`<Login /> should render properly 1`] = `
         className="emotion-3"
         id="email"
         name="email"
+        onChange={[Function]}
         type="text"
         value=""
       />
@@ -105,6 +106,7 @@ exports[`<Login /> should render properly 1`] = `
         className="emotion-3"
         id="password"
         name="password"
+        onChange={[Function]}
         type="password"
         value=""
       />

@@ -4,7 +4,7 @@ import { constants, spacing } from '../Styles'
 
 const HEIGHT = 39
 
-const Input = ({ id, type, label, value }) => (
+const Input = ({ id, type, label, value, onChange }) => (
   <div>
     <label
       htmlFor={id}
@@ -16,6 +16,7 @@ const Input = ({ id, type, label, value }) => (
       type={type}
       name={id}
       value={value}
+      onChange={onChange}
       css={{
         height: HEIGHT,
         borderRadius: constants.borderRadius.small,
@@ -31,6 +32,7 @@ Input.propTypes = {
   type: PropTypes.oneOf(['text', 'password']).isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default Input
