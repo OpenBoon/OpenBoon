@@ -30,7 +30,7 @@ def project():
 
 
 @pytest.fixture()
-def zmlp_project_membership(project, user):
+def pixml_project_membership(project, user):
     apikey = b"""{
     "name": "admin-key",
     "projectId": "97271bd2-5b51-427a-8fbf-93b4cdb2ba85",
