@@ -1,10 +1,12 @@
 import logging
+import os
 
 from .util import as_collection
 
 __all__ = [
     "Asset",
     "AssetSpec",
+    "AssetUpload",
     "Clip"
 ]
 
@@ -187,6 +189,24 @@ class AssetSpec(AssetBase):
         }
 
 
+class AssetUpload(AssetSpec):
+    """
+    AssetUpload instances point to a local file that will be
+    uploaded for processing.
+    """
+    def __init__(self, path, clip=None):
+        """
+        Create a new AssetUpload instance.
+
+        Args:
+            path (str): A path to a file, the file must exist.
+            clip (Clip): Clip settings if applicable.
+        """
+        super(AssetUpload, self).__init__(path, clip)
+        if not os.path.exists(path):
+            raise ValueError('The path "{}" does not exist'.format(path))
+
+
 class Asset(AssetBase):
 
     def __init__(self, data):
@@ -339,23 +359,23 @@ class AssetApp(object):
         body = {"assets": assets}
         return self.app.client.post("/api/v3/assets/_batchCreate", body)
 
-    def bulk_process_datasource(self, uri):
+    def batch_upload_assets(self, assets):
         """
+        Batch upload a list of Assets.
 
-        If URI is a local file path, the data has to be uploaded for processing.
+        Args:
+            assets (list of AssetUpload):
 
         Returns:
 
         """
-        raise NotImplemented()
-
-    def bulk_process_asset_search(self, query):
-        """
-        If URI is a local file path, the data has to be uploaded for processing.
-
-        Returns:
-        """
-        raise NotImplemented()
+        assets = as_collection(assets)
+        files = [asset.uri for asset in assets]
+        body = {
+            "assets": assets
+        }
+        return self.app.client.upload_files("/api/v3/assets/_batchUpload",
+                                            files, body)
 
     def asset_search(self, query):
         """

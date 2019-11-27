@@ -5,10 +5,14 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
+import org.junit.Ignore
 import org.junit.Test
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.io.File
 
 class AssetControllerTests : MockMvcTest() {
 
@@ -56,5 +60,36 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.equalTo(id)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.document", CoreMatchers.anything()))
             .andReturn()
+    }
+
+    @Test
+    fun testBatchUpload() {
+
+        val file = MockMultipartFile(
+            "files", "file-name.data", "image/jpeg",
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+        )
+
+        val body = MockMultipartFile(
+            "body", "",
+            "application/json", "{\"assets\":[{\"uri\": \"src/test/resources/test-data/toucan.jpg\"}]}".toByteArray()
+        )
+
+        mvc.perform(
+            multipart("/api/v3/assets/_batchUpload")
+                .file(body)
+                .file(file)
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.assets[0].id", CoreMatchers.anything()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.status[0].assetId", CoreMatchers.anything()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.status[0].failed", CoreMatchers.equalTo(false)))
+    }
+
+    @Test
+    @Ignore
+    fun testSteamAsset() {
+        // TODO: implement this test once the storage part is ready.
     }
 }
