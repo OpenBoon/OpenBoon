@@ -1,10 +1,10 @@
 package com.zorroa.archivist.rest
 
 import com.google.cloud.storage.HttpMethod
+import com.zorroa.archivist.domain.FileStat
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.FileStat
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.ImageService
 import io.micrometer.core.annotation.Timed
@@ -32,7 +32,8 @@ class FileStorageController @Autowired constructor(
     @ApiOperation("Create a File Storage object.")
     @RequestMapping("/api/v1/file-storage", method = [RequestMethod.POST, RequestMethod.GET])
     fun create(@ApiParam("Description of the file to be stored.") @RequestBody spec: FileStorageSpec): FileStorage {
-        return fileStorageService.get(spec)
+        val get = fileStorageService.get(spec)
+        return get
     }
 
     @ApiOperation("Get a File Storage object.")
