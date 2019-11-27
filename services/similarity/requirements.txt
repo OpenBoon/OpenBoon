@@ -1,0 +1,6 @@
+flask
+requests
+jsonpickle
+mxnet
+numpy
+opencv-python
