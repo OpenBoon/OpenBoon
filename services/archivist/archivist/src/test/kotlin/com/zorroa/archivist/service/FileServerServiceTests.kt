@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.config.SpringApplicationProperties
 import com.zorroa.archivist.domain.Document
 import org.junit.Before
 import org.junit.Ignore
@@ -27,8 +28,8 @@ class GcpFileServerServiceTests : AbstractTest() {
 
     @Before
     fun init() {
-        fileStorage = GcsFileStorageService(bucketName, creds)
-        fileStorage.fileServerProvider = fileServerProvider
+        fileStorage = GcsFileStorageService(bucketName, SpringApplicationProperties(), fileServerProvider, creds)
+        //fileStorage.fileServerProvider = fileServerProvider
     }
 
     @Test
@@ -64,7 +65,7 @@ class GcpFileServerServiceTests : AbstractTest() {
         assertTrue(fileServer.delete(fs.uri))
     }
 }
-
+/*
 class LocalFileServerServiceTests : AbstractTest() {
 
     val fileServer = LocalFileServerService()
@@ -112,3 +113,4 @@ class LocalFileServerServiceTests : AbstractTest() {
         assertTrue(fileServer.delete(fs.uri))
     }
 }
+*/

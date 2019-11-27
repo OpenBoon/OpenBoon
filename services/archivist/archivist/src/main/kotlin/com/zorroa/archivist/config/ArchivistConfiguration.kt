@@ -3,11 +3,6 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.service.EsClientCache
-import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.FileServerProviderImpl
-import com.zorroa.archivist.service.FileStorageService
-import com.zorroa.archivist.service.GcsFileStorageService
-import com.zorroa.archivist.service.LocalFileStorageService
 import com.zorroa.archivist.service.MessagingService
 import com.zorroa.archivist.service.NullMessagingService
 import com.zorroa.archivist.service.PubSubMessagingService
@@ -100,16 +95,16 @@ class ArchivistConfiguration {
         return adapter
     }
 
-    @Bean
-    fun fileServerProvider(): FileServerProvider {
-        return FileServerProviderImpl(properties(), dataCredentials())
-    }
+    // @Bean
+    // fun fileServerProvider(): FileServerProvider {
+    //     return FileServerProviderImpl(properties(), dataCredentials())
+    // }
 
     /**
      * Initialize the internal file storage system.  This is either "local" for a shared
      * NFS mount or "gcs" for Google Cloud Storage.
      */
-    @Bean
+/*    @Bean
     fun fileStorageService(): FileStorageService {
         val props = properties()
         val type = props.getString("archivist.storage.type")
@@ -127,7 +122,7 @@ class ArchivistConfiguration {
                 throw IllegalStateException("Invalid storage type: $type")
             }
         }
-    }
+    }*/
 
     @Bean
     fun messagingService(): MessagingService {

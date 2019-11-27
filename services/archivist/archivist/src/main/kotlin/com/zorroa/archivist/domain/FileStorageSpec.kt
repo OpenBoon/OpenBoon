@@ -2,7 +2,6 @@ package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.ServableFile
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.net.URI
