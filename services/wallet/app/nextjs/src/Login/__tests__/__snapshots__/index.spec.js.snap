@@ -67,7 +67,6 @@ exports[`<Login /> should render properly 1`] = `
 .emotion-6 {
   background-color: #82be3c;
   color: #fff;
-  width: 95px;
   font-size: 14px;
   line-height: 16px;
   font-weight: 500;
@@ -138,6 +137,7 @@ exports[`<Login /> should render properly 1`] = `
     >
       <button
         className="emotion-6"
+        onClick={[Function]}
         type="button"
       >
         Login

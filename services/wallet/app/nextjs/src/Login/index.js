@@ -65,7 +65,6 @@ const Login = ({ onSubmit }) => {
             css={{
               backgroundColor: colors.primary,
               color: colors.primaryFont,
-              width: '95px',
               fontSize: typography.size.hecto,
               lineHeight: typography.height.hecto,
               fontWeight: typography.weight.medium,
