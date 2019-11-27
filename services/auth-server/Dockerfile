@@ -17,8 +17,6 @@ COPY ./docker/config /service/config
 COPY --from=build /build/target/auth-server.jar /service/service.jar
 COPY ./docker/run_server.sh /service
 
-RUN /service/config/keygen.py /service/config/key.json
-
 WORKDIR /service
 USER service
 CMD ["./run_server.sh"]

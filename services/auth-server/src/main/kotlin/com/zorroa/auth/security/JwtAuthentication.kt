@@ -3,7 +3,7 @@ package com.zorroa.auth.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.zorroa.auth.domain.ApiKey
-import com.zorroa.auth.domain.ZmlpUser
+import com.zorroa.auth.domain.ZmlpActor
 import com.zorroa.auth.repository.ApiKeyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -83,7 +83,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             alg.verify(jwt)
 
             SecurityContextHolder.getContext().authentication =
-                JwtAuthenticationToken(apiKey.getZmlpUser(), apiKey.getGrantedAuthorities())
+                JwtAuthenticationToken(apiKey.getZmlpActor(), apiKey.getGrantedAuthorities())
             chain.doFilter(req, res)
         } catch (e: Exception) {
             log.warn("JWT validation error: {}", e.message, e)
@@ -97,7 +97,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
 }
 
 class JwtAuthenticationToken constructor(
-    val user: ZmlpUser,
+    val user: ZmlpActor,
     permissions: List<GrantedAuthority>
 ) : AbstractAuthenticationToken(permissions) {
 
