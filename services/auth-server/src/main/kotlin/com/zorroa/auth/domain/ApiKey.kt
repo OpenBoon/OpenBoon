@@ -49,7 +49,7 @@ class SigningApiKey(
  * The minimal properties for a ZMLP user.
  */
 @ApiModel("AuthenticatedApiKey", description = "An authenticated ApiKey")
-class ZmlpUser(
+class ZmlpActor(
 
     @ApiModelProperty("The unique ID of the ApiKey")
     val keyId: UUID,
@@ -123,8 +123,8 @@ class ApiKey(
     }
 
     @JsonIgnore
-    fun getZmlpUser(): ZmlpUser {
-        return ZmlpUser(keyId, projectId, name, permissions)
+    fun getZmlpActor(): ZmlpActor {
+        return ZmlpActor(keyId, projectId, name, permissions)
     }
 
     override fun toString(): String {

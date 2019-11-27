@@ -1,6 +1,5 @@
 package com.zorroa.auth.service
 
-import com.google.common.hash.Hashing
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
@@ -8,7 +7,9 @@ import com.zorroa.auth.repository.ApiKeyRepository
 import com.zorroa.auth.repository.ApiKeySearchRepository
 import com.zorroa.auth.security.getProjectId
 import org.springframework.stereotype.Service
+import java.util.Base64
 import java.util.UUID
+import java.util.concurrent.ThreadLocalRandom
 
 interface ApiKeyService {
 
@@ -62,17 +63,10 @@ class ApiKeyServiceImpl constructor(
 }
 
 object KeyGenerator {
-
-    private val hashFunc = Hashing.sha256()
-
     fun generate(): String {
-        val id1 = UUID.randomUUID()
-        val id2 = UUID.randomUUID()
-        return hashFunc.newHasher()
-            .putLong(id1.mostSignificantBits)
-            .putLong(id1.leastSignificantBits)
-            .putLong(id2.mostSignificantBits)
-            .putLong(id2.leastSignificantBits)
-            .hash().toString()
+        val random = ThreadLocalRandom.current()
+        val r = ByteArray(48)
+        random.nextBytes(r)
+        return Base64.getUrlEncoder().encodeToString(r).trimEnd('=')
     }
 }

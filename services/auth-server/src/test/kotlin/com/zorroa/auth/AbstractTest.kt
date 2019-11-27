@@ -32,7 +32,7 @@ abstract class AbstractTest {
 
     @Before
     fun setup() {
-        // A tandard non-admin for testing.
+        // A standard non-admin for testing.
         standardKey = apiKeyService.create(
                 ApiKeySpec("standard-key",
                         UUID.randomUUID(),
@@ -40,7 +40,7 @@ abstract class AbstractTest {
 
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
-                standardKey.getZmlpUser(),
+                standardKey.getZmlpActor(),
                 standardKey.keyId,
                 standardKey.getGrantedAuthorities())
     }
