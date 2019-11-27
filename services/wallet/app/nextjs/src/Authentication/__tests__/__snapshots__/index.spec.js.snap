@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Authentication /> should render properly 1`] = `
+<Login
+  onSubmit={[Function]}
+/>
+`;
+
+exports[`<Authentication /> should render properly 2`] = `"Hello World!"`;
