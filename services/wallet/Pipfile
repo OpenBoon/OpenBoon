@@ -21,7 +21,9 @@ django-cryptography = "*"
 drf-nested-routers = "*"
 requests = "*"
 uritools = "*"
+flake8 = "*"
 pixml = {path = "./../../sdk/python"}
+
 
 [requires]
 python_version = "3.6"
