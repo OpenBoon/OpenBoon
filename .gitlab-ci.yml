@@ -113,6 +113,7 @@ services_push_to_local_registry:
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zps/pylib/zplugins
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
 
+
 # Wallet Jobs
 .wallet-base:
   only:
@@ -152,6 +153,7 @@ wallet-backend-test-suite:
     - cd services/wallet
     - pipenv sync
     - cd app
+    - pipenv run flake8
     - pipenv run pytest --cov=.
 
 wallet-container-build-validation:
