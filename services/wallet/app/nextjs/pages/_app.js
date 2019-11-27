@@ -8,7 +8,7 @@ class MyApp extends App {
 
     return (
       <Authentication>
-        <Component {...pageProps} />
+        {({ user }) => <Component user={user} {...pageProps} />}
       </Authentication>
     )
   }

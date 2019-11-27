@@ -60,8 +60,8 @@ const Login = ({ onSubmit }) => {
         />
         <div css={{ padding: spacing.spacious, textAlign: 'center' }}>
           <button
-            type="button"
-            onClick={onSubmit}
+            type="submit"
+            onClick={onSubmit({ email, password })}
             css={{
               backgroundColor: colors.primary,
               color: colors.primaryFont,

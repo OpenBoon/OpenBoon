@@ -4,7 +4,7 @@ import Jobs from '../'
 
 describe('<Jobs />', () => {
   it('should render properly', () => {
-    const component = TestRenderer.create(<Jobs />)
+    const component = TestRenderer.create(<Jobs user={{ email: 'World' }} />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })

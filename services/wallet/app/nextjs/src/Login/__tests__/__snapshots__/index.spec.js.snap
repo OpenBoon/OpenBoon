@@ -138,7 +138,7 @@ exports[`<Login /> should render properly 1`] = `
       <button
         className="emotion-6"
         onClick={[Function]}
-        type="button"
+        type="submit"
       >
         Login
       </button>

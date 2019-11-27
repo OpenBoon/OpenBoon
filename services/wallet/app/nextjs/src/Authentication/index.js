@@ -6,10 +6,15 @@ const Authentication = ({ children }) => {
   const [user, setUser] = useState({ isAuthenticated: false })
 
   if (!user.isAuthenticated) {
-    return <Login onSubmit={() => setUser({ isAuthenticated: true })} />
+    return (
+      <Login
+        onSubmit={({ email }) => () =>
+          setUser({ isAuthenticated: true, email })}
+      />
+    )
   }
 
-  return children
+  return children({ user })
 }
 
 export default Authentication

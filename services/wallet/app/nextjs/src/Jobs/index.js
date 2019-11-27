@@ -1,3 +1,3 @@
-const Jobs = () => 'Hello World!'
+const Jobs = ({ user }) => `Hello ${user.email}!`
 
 export default Jobs
