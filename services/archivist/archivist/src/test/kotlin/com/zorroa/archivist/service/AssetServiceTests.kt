@@ -5,7 +5,10 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import org.junit.Test
+import org.springframework.mock.web.MockMultipartFile
+import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -27,10 +30,9 @@ class AssetServiceTests : AbstractTest() {
 
         val rsp = assetService.batchCreate(req)
         assertEquals(1, rsp.status.size)
-        assertEquals(1, rsp.assets.size)
         assertFalse(rsp.status[0].failed)
 
-        val asset = rsp.assets[0]
+        val asset = assetService.get(rsp.status[0].assetId)
         assertEquals(asset.getAttr("source.path", String::class.java), req.assets[0].uri)
     }
 
@@ -46,7 +48,6 @@ class AssetServiceTests : AbstractTest() {
         assetService.batchCreate(req)
         val rsp = assetService.batchCreate(req)
         assertEquals(1, rsp.status.size)
-        assertEquals(1, rsp.assets.size)
         assertTrue(rsp.status[0].failed)
         assertEquals("asset already exists", rsp.status[0].failureMessage)
     }
@@ -57,10 +58,10 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val createRsp = assetService.batchCreate(batchCreate)
-        createRsp.assets[0].setAttr("test.field", 1)
-
+        val asset = assetService.get(createRsp.status[0].assetId)
+        asset.setAttr("test.field", 1)
         val batchIndex = BatchUpdateAssetsRequest(
-            assets = createRsp.assets
+            assets = listOf(asset)
         )
         val indexRsp = assetService.batchUpdate(batchIndex)
         assertFalse(indexRsp.status[0]!!.failed)
@@ -84,13 +85,14 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val createRsp = assetService.batchCreate(batchCreate)
+        val asset = assetService.get(createRsp.status[0].assetId)
 
         val req = BatchUpdateAssetsRequest(
             assets = listOf(
                 Asset(),
-                Asset(createRsp.assets[0].id),
+                Asset(asset.id),
                 Asset(),
-                Asset(createRsp.assets[0].id)
+                Asset(asset.id)
             )
         )
 
@@ -99,5 +101,23 @@ class AssetServiceTests : AbstractTest() {
         assertFalse(rsp.status[1]!!.failed)
         assertTrue(rsp.status[2]!!.failed)
         assertFalse(rsp.status[3]!!.failed)
+    }
+
+    @Test
+    fun testBatchUploadAssets() {
+        val batchUpload = BatchUploadAssetsRequest(
+            assets = listOf(AssetSpec("/foo/bar/toucan.jpg"))
+        )
+
+        batchUpload.files = arrayOf(
+            MockMultipartFile(
+                "files", "file-name.data", "image/jpeg",
+                File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+            )
+        )
+
+        val rsp = assetService.batchUpload(batchUpload)
+        assertEquals("toucan.jpg", rsp.assets[0].getAttr("source.filename", String::class.java))
+        assertFalse(rsp.status[0].failed)
     }
 }

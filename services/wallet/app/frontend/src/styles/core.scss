@@ -1,13 +1,12 @@
 /* CORE CSS
   1. LAYOUT
-  2. COLORS
-  3. TYPOGRAPHY
-  4. BUTTONS
-  5. INPUTS
+  2. TYPOGRAPHY
+  3. BUTTONS
+  4. INPUTS
 */
 
+@import './variables.scss';
 @import './layout.scss';
-@import './colors.scss';
 @import './typography.scss';
 @import './buttons.scss';
 @import './inputs.scss';

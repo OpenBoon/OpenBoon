@@ -7,34 +7,35 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.service.AssetService
-import com.zorroa.archivist.service.AssetStreamResolutionService
+import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.ImageService
-import com.zorroa.archivist.service.event
-import com.zorroa.archivist.util.StaticUtils
 import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpHeaders
+import org.springframework.core.io.InputStreamResource
+import org.springframework.core.io.Resource
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestPart
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
@@ -49,7 +50,7 @@ import javax.servlet.http.HttpServletResponse
 class AssetController @Autowired constructor(
     private val assetService: AssetService,
     private val imageService: ImageService,
-    private val assetStreamResolutionService: AssetStreamResolutionService,
+    private val fileServerProvider: FileServerProvider,
     meterRegistry: MeterRegistry
 ) {
 
@@ -69,84 +70,24 @@ class AssetController @Autowired constructor(
             it.size().toDouble()
         }
     }
-    
-    @ApiOperation(
-        "Handle a HEAD request which a client can use to fetch a singed URL for the asset.",
-        notes = "The signed url is a fqdn that has authentication built in and can be used by a browser to retrieve the asset " +
-            "from a bucket storage location such as GCS or S3. The Accept header should be used to specify media types " +
-            "that the requesting application can display.  For example if the application can display EXR files, it " +
-            "should send \"image/x-exr\" in the accept header."
-    )
-    @RequestMapping(value = ["/api/v1/assets/{id}/_stream"], method = [RequestMethod.HEAD])
-    fun streamAsset(
-        @ApiParam("UUID of the asset") @PathVariable id: String,
-        @RequestHeader headers: HttpHeaders,
-        rsp: HttpServletResponse
-    ) {
 
-        val servableFile = assetStreamResolutionService.getServableFile(id, headers.accept)
-        if (servableFile == null) {
-            rsp.status = 404
-        } else {
-            if (!servableFile.isLocal()) {
-                rsp.setHeader("X-Zorroa-Signed-URL", servableFile.getSignedUrl().toString())
-            }
-        }
-    }
-
-    @ApiOperation(
-        "Stream the best possible representation for the asset.",
-        notes = "The ext parameter can be used to short circuit the content negotiation logic and ask for a specific " +
-            "file extension. The Accept header should be used to specify media types that the requesting application " +
-            "can display. For example if the application can display EXR files, it should send \"image/x-exr\" in " +
-            "the accept header."
-    )
+    @ApiOperation("Stream the source file for the asset if available")
     @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
     fun streamAsset(
-        @ApiParam("UUID of the Asset.") @PathVariable id: String,
-        @ApiParam("An optional file extension to serve.") @RequestParam(value = "ext", required = false) ext: String?,
-        @RequestHeader headers: HttpHeaders,
-        req: HttpServletRequest,
-        rsp: HttpServletResponse
-    ) {
+        @ApiParam("Unique ID of the Asset.") @PathVariable id: String
+    ): ResponseEntity<Resource> {
+        val asset = assetService.get(id)
+        val storage = fileServerProvider.getServableFile(asset)
+        val resource = InputStreamResource(storage.getInputStream())
 
-        try {
-            /**
-             * Handle converting the ext query param to a media type, otherwise
-             * default to accept headers.
-             */
-            val mediaTypes = if (ext != null) {
-                listOf(MediaType.parseMediaType(StaticUtils.tika.detect(".$ext")))
-            } else {
-                headers.accept
-            }
-
-            val servableFile = assetStreamResolutionService.getServableFile(id, mediaTypes)
-            if (servableFile != null) {
-
-                logger.event(LogObject.ASSET, LogAction.STREAM, mapOf("assetId" to id, "url" to servableFile.uri))
-
-                if (!servableFile.isLocal()) {
-                    servableFile.copyTo(rsp)
-                } else {
-                    MultipartFileSender.fromPath(servableFile.getLocalFile())
-                        .with(req)
-                        .with(rsp)
-                        .setContentType(servableFile.getStat().mediaType)
-                        .serveResource()
-                }
-            } else {
-                logger.warn("Failed to stream asset ID $id, with media types $mediaTypes")
-                rsp.status = 404
-            }
-        } catch (e: Exception) {
-            if (logger.isDebugEnabled) {
-                logger.debug("Interrupted while streaming $id", e)
-            } else {
-                logger.warn("Interrupted while streaming Asset $id")
-            }
-
-            rsp.status = 404
+        val fileSize = asset.getAttr("source.fileSize", Long::class.java)
+        return if (fileSize == null) {
+            ResponseEntity.noContent().build()
+        } else {
+            ResponseEntity.ok()
+                .contentLength(fileSize)
+                .contentType(MediaType.parseMediaType(asset.getAttr("source.mimetype")))
+                .body(resource)
         }
     }
 
@@ -250,6 +191,19 @@ class AssetController @Autowired constructor(
     @PutMapping("/api/v3/assets/_batchUpdate")
     fun batchUpdate(@RequestBody request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
         return assetService.batchUpdate(request)
+    }
+
+    @ApiOperation("Create or reprocess assets via a file upload.")
+    @PostMapping(value = ["/api/v3/assets/_batchUpload"], consumes = ["multipart/form-data"])
+    @ResponseBody
+    fun batchUpload(
+        @RequestPart(value = "files") files: Array<MultipartFile>,
+        @RequestPart(value = "body") req: BatchUploadAssetsRequest
+    ): Any {
+        req.apply {
+            this.files = files
+        }
+        return assetService.batchUpload(req)
     }
 
     companion object {

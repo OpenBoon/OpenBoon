@@ -6,7 +6,7 @@ from functools import reduce
 import dateutil.parser
 from pathlib2 import Path
 
-from pixml import Clip, AssetSpec
+from pixml import Clip, AssetImport
 from pixml.analysis import AssetBuilder, Argument, ExpandFrame
 from ..util.media import get_image_metadata, set_resolution_attrs
 
@@ -135,10 +135,8 @@ class ImageImporter(AssetBuilder):
         document.set_attr('media.pages', subimages)
         source_path = document.get_attr('source.path')
         for i in range(1, subimages + 1):
-
-
             clip = Clip('image', i, i)
-            expand = ExpandFrame(AssetSpec(source_path, clip))
+            expand = ExpandFrame(AssetImport(source_path, clip))
             self.expand(frame, expand)
 
     def set_metadata(self, document, metadata, namespace=None):

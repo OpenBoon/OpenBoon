@@ -4,7 +4,8 @@ from unittest.mock import patch
 
 from pixml import Asset
 from pixml import PixmlClient, app_from_env
-from pixml.asset import AssetSpec
+from pixml.asset import AssetImport, AssetUpload
+from pixml.analysis.testing import zorroa_test_data
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -81,7 +82,7 @@ class AssetAppTests(unittest.TestCase):
         self.app = app_from_env()
 
     @patch.object(PixmlClient, 'post')
-    def test_create_assets(self, post_patch):
+    def test_batch_import_assets(self, post_patch):
         post_patch.return_value = {
             "status": [
                 {"assetId": "abc123", "failed": False}
@@ -97,8 +98,8 @@ class AssetAppTests(unittest.TestCase):
                 }
             ]
         }
-        assets = [AssetSpec("gs://zorroa-dev-data/image/pluto.png")]
-        rsp = self.app.assets.bulk_process_assets(assets)
+        assets = [AssetImport("gs://zorroa-dev-data/image/pluto.png")]
+        rsp = self.app.assets.batch_import_assets(assets)
         assert rsp["status"][0]["assetId"] == "abc123"
         assert not rsp["status"][0]["failed"]
 
@@ -117,3 +118,25 @@ class AssetAppTests(unittest.TestCase):
         assert asset.uri is not None
         assert asset.id is not None
         assert asset.document is not None
+
+    @patch.object(PixmlClient, 'upload_files')
+    def test_batch_upload_assets(self, post_patch):
+        post_patch.return_value = {
+            "status": [
+                {"assetId": "abc123", "failed": False}
+            ],
+            "assets": [
+                {
+                    "id": "abc123",
+                    "document": {
+                        "source": {
+                            "path": "zmlp:///abc123/source/toucan.jpg"
+                        }
+                    }
+                }
+            ]
+        }
+        print(zorroa_test_data("images/set01/toucan.jpg", False))
+        assets = [AssetUpload(zorroa_test_data("images/set01/toucan.jpg", False))]
+        rsp = self.app.assets.batch_upload_assets(assets)
+        assert rsp["status"][0]["assetId"] == "abc123"

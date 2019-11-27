@@ -1,10 +1,12 @@
 import logging
+import os
 
 from .util import as_collection
 
 __all__ = [
     "Asset",
-    "AssetSpec",
+    "AssetImport",
+    "AssetUpload",
     "Clip"
 ]
 
@@ -154,20 +156,20 @@ class AssetBase(object):
                 doc[parts[-1]] = value
 
 
-class AssetSpec(AssetBase):
+class AssetImport(AssetBase):
     """
-    An AssetSpec is used to create a new Asset.
+    An AssetImport is used to import a new Asset into PixelML.
     """
     def __init__(self, uri, clip=None):
         """
-        Construct an AssetSpec
+        Construct an AssetImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
             clip (Clip): Defines a subset of the asset to be processed, for example a
                 page of a PDF or time code from a video.
         """
-        super(AssetSpec, self).__init__()
+        super(AssetImport, self).__init__()
         self.uri = uri
         self.clip = clip
 
@@ -187,16 +189,33 @@ class AssetSpec(AssetBase):
         }
 
 
-class Asset(AssetBase):
-
-    def __init__(self, data):
-        super(Asset, self).__init__()
+class AssetUpload(AssetImport):
+    """
+    AssetUpload instances point to a local file that will be uploaded for analysis.
+    """
+    def __init__(self, path, clip=None):
         """
+        Create a new AssetUpload instance.
 
         Args:
-            id:
-            document:
+            path (str): A path to a file, the file must exist.
+            clip (Clip): Clip settings if applicable.
         """
+        super(AssetUpload, self).__init__(path, clip)
+        if not os.path.exists(path):
+            raise ValueError('The path "{}" does not exist'.format(path))
+
+
+class Asset(AssetBase):
+    """
+    An Asset represents a single processed file or a clip/segment of a
+    file. Assets start out in the 'CREATED' state, which indicates
+    they've been created by not processed.  Once an asset has been processed
+    and augmented with files created by various analysis modules, the Asset
+    will move into the 'ANALYZED' state.
+    """
+    def __init__(self, data):
+        super(Asset, self).__init__()
         if not data:
             raise ValueError("Error creating Asset instance, Assets must have an id.")
         self.id = data.get("id")
@@ -212,6 +231,15 @@ class Asset(AssetBase):
 
         """
         return self.get_attr("source.path")
+
+    @property
+    def state(self):
+        """
+
+        Returns:
+
+        """
+        return self.get_attr("system.state")
 
     def get_files(self, name=None, category=None, mimetype=None, extension=None, attrs=None):
         """
@@ -324,12 +352,12 @@ class AssetApp(object):
     def __init__(self, app):
         self.app = app
 
-    def bulk_process_assets(self, assets):
+    def batch_import_assets(self, assets):
         """
-        Provision and process a list of AssetSpec instances.
+        Provision and process a list of AssetImport instances.
 
         Args:
-            assets (list of AssetSpec): The list of assets to process.
+            assets (list of AssetImport): The list of assets to process.
 
         Returns:
             dict: A dictionary containing the provisioning status of each asset,
@@ -339,23 +367,23 @@ class AssetApp(object):
         body = {"assets": assets}
         return self.app.client.post("/api/v3/assets/_batchCreate", body)
 
-    def bulk_process_datasource(self, uri):
+    def batch_upload_assets(self, assets):
         """
+        Batch upload a list of Assets.
 
-        If URI is a local file path, the data has to be uploaded for processing.
+        Args:
+            assets (list of AssetUpload):
 
         Returns:
 
         """
-        raise NotImplemented()
-
-    def bulk_process_asset_search(self, query):
-        """
-        If URI is a local file path, the data has to be uploaded for processing.
-
-        Returns:
-        """
-        raise NotImplemented()
+        assets = as_collection(assets)
+        files = [asset.uri for asset in assets]
+        body = {
+            "assets": assets
+        }
+        return self.app.client.upload_files("/api/v3/assets/_batchUpload",
+                                            files, body)
 
     def asset_search(self, query):
         """

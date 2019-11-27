@@ -75,7 +75,8 @@ services:
       - 5000:5000
     volumes:
        - "/var/run/docker.sock:/var/run/docker.sock"
-
+    environment:
+      PIXML_SERVER: http://archivist:8080
 volumes:
   zmlp-config:
     external: true

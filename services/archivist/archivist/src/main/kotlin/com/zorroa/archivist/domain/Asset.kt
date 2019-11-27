@@ -8,17 +8,35 @@ import com.zorroa.archivist.util.randomString
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory
+import org.springframework.web.multipart.MultipartFile
 import java.security.MessageDigest
 import java.util.Base64
 import java.util.UUID
 import java.util.regex.Pattern
 
+@ApiModel("AssetState",
+    description = "Describes the different states can asset can be in.")
+enum class AssetState {
+
+    @ApiModelProperty("The Asset been created in the database but not analyzed.")
+    CREATED,
+
+    @ApiModelProperty("The Asset has been analyzed and augmented with fields.")
+    ANALYZED
+}
+
 @ApiModel("Batch Asset Op Status",
     description = "Used to describe the result of a batch asset operation")
 class BatchAssetOpStatus(
+
+    @ApiModelProperty("The ID of the asset.")
     val assetId: String,
+
+    @ApiModelProperty("A failure message will be set if the operation filed.")
     val failureMessage: String?=null
 ) {
+
+    @ApiModelProperty("True of the operation failed.")
     val failed : Boolean = failureMessage != null
 }
 
@@ -48,7 +66,7 @@ class BatchUpdateAssetsResponse(size: Int) {
     description = "Defines the properties necessary to provision a batch of assets.")
 class BatchCreateAssetsRequest(
 
-    @ApiModelProperty("The list of assets to be provisioned")
+    @ApiModelProperty("The list of assets to be created")
     val assets: List<AssetSpec>,
 
     @ApiModelProperty("Set to true if the assets should undergo " +
@@ -59,21 +77,42 @@ class BatchCreateAssetsRequest(
     val analysis: List<String>? = null
 )
 
-
 @ApiModel("Batch Provision Assets Response",
     description = "The response returned after provisioning assets.")
 class BatchCreateAssetsResponse(
+
+    @ApiModelProperty("The initial state of the assets added to the database.")
+    var assets: List<Asset>,
 
     @ApiModelProperty("A map of the assetId to provisioned status. " +
         "An asset will fail to provision if it already exists.")
     val status: MutableList<BatchAssetOpStatus> = mutableListOf(),
 
-    @ApiModelProperty("The last of assets that was provisioned")
-    var assets: List<Asset> = mutableListOf(),
-
     @ApiModelProperty("The ID of the analysis job, if analysis was selected")
     var jobId: UUID? = null
 )
+
+@ApiModel(
+    "Batch Upload Assets Request",
+    description = "Defines the properties required to batch upload a list of assets."
+)
+class BatchUploadAssetsRequest(
+
+    @ApiModelProperty("A list of AssetSpec objects which define the Assets starting metadata.")
+    var assets: List<AssetSpec>,
+
+    @ApiModelProperty(
+        "Set to true if the assets should undergo " +
+            "further analysis, or false to stay in the provisioned state."
+    )
+    val analyze: Boolean = true,
+
+    @ApiModelProperty("The analysis to apply.")
+    val analysis: List<String>? = null
+) {
+
+    lateinit var files: Array<MultipartFile>
+}
 
 @ApiModel("Asset Spec",
     description = "Defines all the properties required to create an Asset.")
@@ -268,18 +307,6 @@ object Attr {
     const val DELIMITER = "."
 
     /**
-     * A convenience method which takes a variable list of strings and
-     * turns it into an attribute name.  This is preferred over using
-     * string concatenation.
-     *
-     * @param name
-     * @return
-     */
-    fun attr(vararg name: String): String {
-        return name.joinToString(DELIMITER)
-    }
-
-    /**
      * Return the last part of an attribute string.  For example, if fully qualified
      * name is "a:b:c:d", this method will return "d".
      *
@@ -288,17 +315,6 @@ object Attr {
      */
     fun name(attr: String): String {
         return attr.substring(attr.lastIndexOf(DELIMITER) + 1)
-    }
-
-    /**
-     * Return the fully qualified namespace for the attribute.  For example, if
-     * the attribute is "a:b:c:d", this method will return "a:b:c"
-     *
-     * @param attr
-     * @return
-     */
-    fun namespace(attr: String): String {
-        return attr.substring(0, attr.lastIndexOf(DELIMITER))
     }
 }
 

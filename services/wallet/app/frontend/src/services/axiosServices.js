@@ -2,21 +2,17 @@
 import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/authConstants'
-import { ARCHIVIST_API_URL } from '../constants/envConfigs'
 
 function axiosIntercept(axiosInstance) {
   const refreshAuthTokens = failedRequest => {
-    const refreshTokenRaw = localStorage.getItem(REFRESH_TOKEN)
-    const refreshTokenParsed =
-      refreshTokenRaw && JSON.parse(localStorage[REFRESH_TOKEN]).split(' ')[1]
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN)
 
     return axiosInstance
-      .post('/auth/refresh/', { refresh: refreshTokenParsed })
+      .post('/auth/refresh/', { refresh: refreshToken })
       .then(response => {
         const { access } = response.data
-        const stringifiedAccessToken = JSON.stringify(`Bearer ${access}`)
-        localStorage.setItem(ACCESS_TOKEN, stringifiedAccessToken)
-        failedRequest.response.config.headers.Authorization = stringifiedAccessToken
+        localStorage.setItem(ACCESS_TOKEN, access)
+        failedRequest.response.config.headers.Authorization = `Bearer ${access}`
         return Promise.resolve()
       })
   }
@@ -26,7 +22,7 @@ function axiosIntercept(axiosInstance) {
 
 function decorateHeaders(config) {
   const accessToken = localStorage.getItem(ACCESS_TOKEN)
-  const authorization = accessToken && JSON.parse(localStorage[ACCESS_TOKEN])
+  const authorization = accessToken && `Bearer ${accessToken}`
 
   const headers = {
     ...config.headers,
@@ -44,7 +40,7 @@ function decorateHeaders(config) {
 
 export function axiosCreate(options = {}) {
   const customDefaultOptions = {
-    baseURL: ARCHIVIST_API_URL,
+    baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost' : '',
     withCredentials: true,
   }
 

@@ -26,7 +26,8 @@ class PixmlApp(object):
             server (str): The URL to the PixelML API server, defaults cloud api.
         """
         logger.debug("Initializing PixmlApp to {}".format(server))
-        self.client = PixmlClient(apikey, server or DEFAULT_SERVER)
+        self.client = PixmlClient(apikey, server or
+                                  os.environ.get("PIXML_SERVER", DEFAULT_SERVER))
         self.cache = LocalFileCache(self)
         self.assets = AssetApp(self)
 

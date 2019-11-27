@@ -15,7 +15,6 @@ import javax.sql.DataSource
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 
 
-
 @EnableTransactionManagement
 @Configuration
 class DatabaseConfiguration {

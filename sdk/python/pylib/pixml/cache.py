@@ -26,7 +26,8 @@ class LocalFileCache(object):
         "gs",
         "http",
         "https"
-        "file"
+        "file",
+        "pixml"
     ]
 
     def __init__(self, app=None):
@@ -92,6 +93,15 @@ class LocalFileCache(object):
         parsed_uri = urlparse(uri)
         if parsed_uri.scheme in ('http', 'https'):
             urllib.request.urlretrieve(uri, filename=str(path))
+        elif parsed_uri.scheme == 'pixml':
+            #
+            # TODO: move to new storage system, for now we'll use stream
+            # endpoint but it's probably not going to work without server
+            # side changes.
+            #
+            asset_id, _, filename = parsed_uri.path[1:].split("/")
+            self.app.client.stream("/api/v1/assets/{}/_stream".format(asset_id), str(path))
+
         elif parsed_uri.scheme == 'file':
             return parsed_uri.path
         elif parsed_uri.scheme == 'gs':

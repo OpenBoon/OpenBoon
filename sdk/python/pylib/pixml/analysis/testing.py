@@ -10,7 +10,7 @@ import uuid
 from urllib.parse import urlparse
 
 from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument
-from pixml.asset import AssetSpec, Asset
+from pixml.asset import AssetImport, Asset
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +55,7 @@ class TestGenerator(Generator):
 
     def generate(self, consumer):
         for file in self.arg_value('files'):
-            spec = AssetSpec(file)
+            spec = AssetImport(file)
             consumer.accept(spec)
 
     def teardown(self):
