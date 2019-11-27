@@ -10,15 +10,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.UUID
 
 @Transactional
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource(locations = ["classpath:test.yml"])
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 abstract class AbstractTest {
 
@@ -32,7 +32,7 @@ abstract class AbstractTest {
 
     @Before
     fun setup() {
-        // A tandard non-admin for testing.
+        // A standard non-admin for testing.
         standardKey = apiKeyService.create(
                 ApiKeySpec("standard-key",
                         UUID.randomUUID(),
@@ -40,7 +40,7 @@ abstract class AbstractTest {
 
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
-                standardKey.getZmlpUser(),
+                standardKey.getZmlpActor(),
                 standardKey.keyId,
                 standardKey.getGrantedAuthorities())
     }

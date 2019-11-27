@@ -40,7 +40,7 @@ class MultipleWebSecurityConfig {
 
     @Configuration
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
         @Autowired
@@ -48,6 +48,7 @@ class MultipleWebSecurityConfig {
 
         override fun configure(http: HttpSecurity) {
             http
+                .antMatcher("/auth/**")
                 .addFilterAfter(
                     jwtAuthorizationFilter,
                     UsernamePasswordAuthenticationFilter::class.java
@@ -60,11 +61,11 @@ class MultipleWebSecurityConfig {
 
     @Configuration
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     class SwaggerConfigSecurity : WebSecurityConfigurerAdapter() {
 
         @Value("\${swagger.isPublic}")
-        lateinit var isPublic: String
+        var isPublic: Boolean = true
 
         override fun configure(http: HttpSecurity) {
             http
@@ -73,7 +74,7 @@ class MultipleWebSecurityConfig {
                 .and()
                 .csrf().disable()
 
-            if (isPublic.toBoolean()) {
+            if (isPublic) {
                 http.authorizeRequests()
                     .antMatchers("/v2/api-docs").permitAll()
                     .antMatchers("/swagger-ui.html").permitAll()
