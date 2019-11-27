@@ -1,61 +1,47 @@
 package com.zorroa.auth.conf
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.Ordered
-import org.springframework.core.annotation.Order
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
+import springfox.documentation.service.ApiInfo
+import springfox.documentation.service.Contact
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
-import springfox.documentation.service.ApiInfo
-import springfox.documentation.service.Contact
-import java.util.*
+import java.util.Collections
+
+@Configuration
+@ConfigurationProperties(prefix = "swagger")
+class SwaggerConfigurationProperties {
+    var title: String? = null
+    var description: String? = null
+    var version: String? = null
+    var termOfService: String? = null
+    var contactCompanyName: String? = null
+    var contactCompanyWebsite: String? = null
+    var contactCompanySupportEmail: String? = null
+    var restBasePackage: String? = null
+    var licenseUrl: String? = null
+    var licenseName: String? = null
+}
 
 @Configuration
 @EnableSwagger2
-@ConfigurationProperties(prefix = "swagger")
-class SwaggerConfig : WebMvcConfigurationSupport() {
+class SwaggerConfig : WebMvcConfigurer {
 
-    @Value("\${swagger.title}")
-    lateinit var title: String
-    @Value("\${swagger.description}")
-    lateinit var description: String
-    @Value("\${swagger.version}")
-    lateinit var version: String
-    @Value("\${swagger.termOfService}")
-    lateinit var termOfService: String
-
-    @Value("\${swagger.contactCompanyName}")
-    lateinit var contactCompanyName: String
-    @Value("\${swagger.contactCompanyWebsite}")
-    lateinit var contactCompanyWebsite: String
-    @Value("\${swagger.contactCompanySupportEmail}")
-    lateinit var contactCompanySupportEmail: String
-
-    @Value("\${swagger.restBasePackage}")
-    lateinit var restBasePackage: String
-
-    @Value("\${swagger.licenseName}")
-    lateinit var licenseName: String
-    @Value("\${swagger.licenseUrl}")
-    lateinit var licenseUrl: String
+    @Autowired
+    lateinit var config: SwaggerConfigurationProperties
 
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
             .select()
-            .apis(RequestHandlerSelectors.basePackage(restBasePackage))
+            .apis(RequestHandlerSelectors.basePackage(config.restBasePackage))
             .paths(PathSelectors.any())
             .build()
             .apiInfo(getApiInfo())
@@ -64,13 +50,13 @@ class SwaggerConfig : WebMvcConfigurationSupport() {
     private fun getApiInfo(): ApiInfo {
 
         return ApiInfo(
-            title,
-            description,
-            version,
-            termOfService,
-            Contact(contactCompanyName, contactCompanyWebsite, contactCompanySupportEmail),
-            licenseName,
-            licenseUrl,
+            config.title,
+            config.description,
+            config.version,
+            config.termOfService,
+            Contact(config.contactCompanyName, config.contactCompanyWebsite, config.contactCompanySupportEmail),
+            config.licenseName,
+            config.licenseUrl,
             Collections.emptyList()
         )
     }
