@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Jobs /> should render properly 1`] = `"Hello World!"`;

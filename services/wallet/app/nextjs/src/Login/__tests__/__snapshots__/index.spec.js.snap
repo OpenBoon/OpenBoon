@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Login /> should render properly 1`] = `
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: space-evenly;
+  -webkit-justify-content: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
+  padding: 32px 64px;
+  width: 440px;
+  height: 580px;
+  background-color: #2d2d2d;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.59);
+}
+
+.emotion-0 {
+  margin: 0 auto;
+}
+
+.emotion-1 {
+  text-align: center;
+  font-weight: 500;
+  padding-bottom: 32px;
+}
+
+.emotion-2 {
+  display: block;
+  padding-bottom: 12px;
+}
+
+.emotion-3 {
+  height: 39px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+}
+
+.emotion-7 {
+  padding: 32px;
+  text-align: center;
+}
+
+.emotion-6 {
+  background-color: #82be3c;
+  color: #fff;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border-radius: 2px;
+  padding: 12px 32px;
+  border: 0;
+  cursor: pointer;
+}
+
+.emotion-6:hover {
+  background-color: #a7d374;
+}
+
+.emotion-8 {
+  text-align: center;
+}
+
+<div
+  className="emotion-10"
+>
+  <form
+    className="emotion-9"
+  >
+    <svg
+      className="emotion-0"
+      data-file-name="logo.svg"
+      width={143}
+    />
+    <h3
+      className="emotion-1"
+    >
+      Welcome. Please login.
+    </h3>
+    <div>
+      <label
+        className="emotion-2"
+        htmlFor="email"
+      >
+        Email
+      </label>
+      <input
+        className="emotion-3"
+        id="email"
+        name="email"
+        onChange={[Function]}
+        type="text"
+        value=""
+      />
+    </div>
+    <div>
+      <label
+        className="emotion-2"
+        htmlFor="password"
+      >
+        Password
+      </label>
+      <input
+        className="emotion-3"
+        id="password"
+        name="password"
+        onChange={[Function]}
+        type="password"
+        value=""
+      />
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <button
+        className="emotion-6"
+        onClick={[Function]}
+        type="submit"
+      >
+        Login
+      </button>
+    </div>
+    <a
+      className="emotion-8"
+      href="/"
+    >
+      Forgot Password? Need login help?
+    </a>
+  </form>
+</div>
+`;
