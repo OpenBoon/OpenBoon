@@ -18,19 +18,14 @@ import io.sentry.spring.SentryServletContextInitializer
 import org.slf4j.LoggerFactory
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.web.servlet.ServletContextInitializer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.task.AsyncListenableTaskExecutor
-import org.springframework.http.converter.HttpMessageConverter
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
-import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 import java.io.File
@@ -89,15 +84,6 @@ class ArchivistConfiguration {
         }
 
         return InfoEndpoint(ImmutableList.of(info))
-    }
-
-    @Bean
-    fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
-        val adapter = RequestMappingHandlerAdapter()
-        adapter.messageConverters = listOf<HttpMessageConverter<*>>(
-            MappingJackson2HttpMessageConverter()
-        )
-        return adapter
     }
 
     @Bean
