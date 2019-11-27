@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchAssetOpStatus
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
@@ -74,12 +75,12 @@ interface AssetService {
     fun getProxies(id: String): ProxySchema
 
     /**
-     * Batch provision a list of assets.  Provisioning adds a base asset with
-     * just source data to ElasticSearch.  A provisioned asset still needs
-     * to be processed.
+     * Batch create a list of assets.  Creating adds a base asset with
+     * just source data to ElasticSearch.  A created asset still needs
+     * to be analyed.
      *
      * @param request: A BatchCreateAssetsRequest
-     * @return A BatchCreateAssetsResponse which contains the assets and their provision status.
+     * @return A BatchCreateAssetsResponse which contains the assets and their created status.
      *
      * TODO: handle clips
      */
@@ -96,7 +97,10 @@ interface AssetService {
     fun batchUpdate(request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
 
     /**
+     * Handle a batch upload request and return a BatchCreateAssetsResponse
      *
+     * @param req: a BatchUploadAssetsRequest
+     * @returns a BatchCreateAssetsResponse
      */
     fun batchUpload(req: BatchUploadAssetsRequest): BatchCreateAssetsResponse
 }
@@ -177,7 +181,7 @@ class AssetServiceImpl : AssetService {
             "system.timeCreated",
             java.time.Clock.systemUTC().instant().toString()
         )
-        asset.setAttr("system.state", "provisioned")
+        asset.setAttr("system.state", AssetState.CREATED.toString())
 
         return asset
     }
@@ -239,7 +243,7 @@ class AssetServiceImpl : AssetService {
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
         if (request.assets.size > 100) {
-            throw IllegalArgumentException("Cannot provision more than 100 assets at a time.")
+            throw IllegalArgumentException("Cannot create more than 100 assets at a time.")
         }
 
         val rest = indexRoutingService.getProjectRestClient()
@@ -301,11 +305,16 @@ class AssetServiceImpl : AssetService {
             }
             else {
                 bulkRequestValid = true
-                asset.setAttr("system.projectId", getProjectId().toString())
-                asset.setAttr("system.timeModified", time)
-                asset.setAttr("system.state", "processed")
+
+                // Remove these which are used for temp attrs
                 asset.removeAttr("tmp")
                 asset.removeAttr("temp")
+
+                // Update various system properties.
+                asset.setAttr("system.projectId", getProjectId().toString())
+                asset.setAttr("system.timeModified", time)
+                asset.setAttr("system.state", AssetState.ANALYZED.toString())
+
                 bulkRequest.add(
                     rest.newIndexRequest(asset.id)
                         .source(asset.document)

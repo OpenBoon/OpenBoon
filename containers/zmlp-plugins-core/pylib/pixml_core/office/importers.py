@@ -5,7 +5,7 @@ import requests
 
 from requests import RequestException
 
-from pixml import AssetSpec, Clip
+from pixml import AssetImport, Clip
 from pixml.analysis import AssetBuilder, Argument, ExpandFrame, PixmlUnrecoverableProcessorException
 
 
@@ -178,7 +178,7 @@ class OfficeImporter(AssetBuilder):
             if not asset.attr_exists("media.clip") and num_pages > 1:
                 for page_num in range(1, num_pages + 1):
                     clip = Clip('page',page_num, page_num)
-                    child_asset = AssetSpec(asset.get_attr('source.path'), clip)
+                    child_asset = AssetImport(asset.get_attr('source.path'), clip)
                     child_asset.set_attr(self.tmp_loc_attr, output_dir)
                     expand = ExpandFrame(child_asset)
                     self.expand(frame, expand)
