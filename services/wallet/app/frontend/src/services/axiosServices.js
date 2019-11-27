@@ -2,7 +2,6 @@
 import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/authConstants'
-import { ARCHIVIST_API_URL } from '../constants/envConfigs'
 
 function axiosIntercept(axiosInstance) {
   const refreshAuthTokens = failedRequest => {
@@ -41,7 +40,7 @@ function decorateHeaders(config) {
 
 export function axiosCreate(options = {}) {
   const customDefaultOptions = {
-    baseURL: ARCHIVIST_API_URL,
+    baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost' : '',
     withCredentials: true,
   }
 

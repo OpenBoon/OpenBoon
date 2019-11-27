@@ -7,7 +7,7 @@ function Logo({ width, height }) {
       width={width}
       height={height}
       className="Logo"
-      src={require('../../images/logo.svg')}
+      src={require('../../assets/images/logo.svg')}
     />
   )
 }
