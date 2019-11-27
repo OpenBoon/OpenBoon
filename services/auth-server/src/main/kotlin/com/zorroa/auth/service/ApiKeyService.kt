@@ -61,15 +61,18 @@ class ApiKeyServiceImpl constructor(
     }
 }
 
-
 object KeyGenerator {
 
-    private val hashFunc = Hashing.sha512()
+    private val hashFunc = Hashing.sha256()
 
     fun generate(): String {
+        val id1 = UUID.randomUUID()
+        val id2 = UUID.randomUUID()
         return hashFunc.newHasher()
-                .putString(UUID.randomUUID().toString(), Charsets.UTF_8)
-                .putString(UUID.randomUUID().toString(), Charsets.UTF_8)
-                .hash().toString()
+            .putLong(id1.mostSignificantBits)
+            .putLong(id1.leastSignificantBits)
+            .putLong(id2.mostSignificantBits)
+            .putLong(id2.leastSignificantBits)
+            .hash().toString()
     }
 }
