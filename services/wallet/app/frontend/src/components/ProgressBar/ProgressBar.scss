@@ -1,0 +1,25 @@
+@import '../../styles/core.scss';
+
+.ProgressBar {
+  height: $zorroa-metric-base * 2;
+  width: $zorroa-metric-base * 25;
+  background-color: $green-1;
+  border-radius: $zorroa-metric-base / 4;
+  display: flex;
+
+  &__Succeeded {
+    background-color: $green-1;
+  }
+
+  &__Failed {
+    background-color: $error-color;
+  }
+
+  &__Running {
+    background-color: $blue-1;
+  }
+
+  &__Pending {
+    background-color: $grey-6;
+  }
+}
