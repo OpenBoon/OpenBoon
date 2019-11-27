@@ -1,0 +1,131 @@
+{
+  "extends": ["plugin:react/recommended", "standard", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "impliedStrict": true,
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "plugins": ["react", "prettier"],
+  "globals": {
+    "jest": true,
+    "describe": true,
+    "jasmine": true,
+    "jasmineRequire": true,
+    "it": true,
+    "fit": true,
+    "xit": true,
+    "expect": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "beforeAll": true,
+    "afterAll": true,
+    "React": true,
+    "DEBUG": true,
+    "PROD": true,
+    "PRODLOCAL": true,
+    "zvBranch": true,
+    "zvCommit": true,
+    "zvCount": true,
+    "zvDateStr": true,
+    "zvDateMs": true,
+    "zvVersion": true,
+    "emailjs": true
+  },
+  "settings": {
+    "react": {
+      "version": "15.0"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "rules": {
+    "no-warning-comments": "error",
+    "standard/computed-property-even-spacing": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "argsIgnorePattern": "_|event|response",
+        "ignoreRestSiblings": false
+      }
+    ],
+    "max-classes-per-file": ["error", 1],
+    "prefer-promise-reject-errors": "warn",
+    "no-use-before-define": "warn",
+    "prettier/prettier": "error",
+    "react/no-unescaped-entities": "warn",
+    "react/no-deprecated": "error",
+    "react/no-string-refs": "warn",
+    "react/jsx-no-literals": 1,
+    "react/no-access-state-in-setstate": "error",
+    "react/boolean-prop-naming": "error",
+    "react/default-props-match-prop-types": "error",
+    "react/no-array-index-key": "error",
+    "react/no-this-in-sfc": "error",
+    "react/no-danger": "error",
+    "react/no-did-mount-set-state": "error",
+    "react/no-did-update-set-state": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-is-mounted": "error",
+    "react/no-multi-comp": "error",
+    "react/no-redundant-should-component-update": "error",
+    "react/no-typos": "error",
+    "react/no-unused-prop-types": "error",
+    "react/no-unused-state": "error",
+    "react/prop-types": "error",
+    "react/react-in-jsx-scope": "error",
+    "react/require-default-props": "warn",
+    "react/void-dom-elements-no-children": "error",
+    "import/no-unresolved": [
+      2,
+      {
+        "caseSensitive": true,
+        "ignore": ["^@.*"]
+      }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "axios",
+            "message": "Use services/axiosintercept or services/axioscreate instead"
+          }
+        ]
+      }
+    ],
+    "no-restricted-globals": [
+      "error",
+      {
+        "name": "xdescribe",
+        "message": "Do not use xdescribe. Use describe instead or remove the tests."
+      },
+      {
+        "name": "xit",
+        "message": "Do not xit. Use it instead or remove the test."
+      },
+      {
+        "name": "fit",
+        "message": "Do not commit fit. Use it instead."
+      },
+      {
+        "name": "fdescribe",
+        "message": "Do not commit fdescribe. Use describe instead."
+      }
+    ]
+  }
+}
