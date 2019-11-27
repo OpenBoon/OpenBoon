@@ -56,7 +56,7 @@ class PixmlClient(object):
                                         headers=self.headers(), stream=True)
 
                 if not response.ok:
-                    raise PixmlInvalidRequestException(
+                    raise PixmlClientException(
                         "Failed to stream asset: %s" % response)
 
                 for block in response.iter_content(1024):
@@ -80,7 +80,7 @@ class PixmlClient(object):
             response = requests.get(self.get_url(url), verify=False,
                                     headers=self.headers(), stream=True)
             if not response.ok:
-                raise PixmlRequestException(
+                raise PixmlClientException(
                     "Failed to stream asset: %s" % response)
 
             for line in response.iter_lines():
@@ -90,37 +90,70 @@ class PixmlClient(object):
         except requests.exceptions.ConnectionError as e:
             raise PixmlConnectionException(e)
 
-    def upload_file(self, path, file, body={}, json_rsp=True, field="file"):
+    def upload_file(self, path, file, body={}, json_rsp=True):
         """
-        Upload the given list of file paths to the Archivist.
+        Upload a single file and a request to the given endpoint path.
 
         Args:
             path (str): The URL to upload to.
             file (str): The file path to upload.
             body (dict): A request body
             json_rsp (bool): Set to true if the result returned is JSON
-            field (string): The multi-part form field to use for the files.
+
+        Returns:
+            dict: The response body of the request.
         """
         try:
-            post_files = [(field, (os.path.basename(file), open(file, 'rb')))]
+            post_files = [("file", (os.path.basename(file), open(file, 'rb')))]
             if body is not None:
                 post_files.append(
-                    ["body", (None, json.dumps(body), 'application/json')])
+                    ["body", (None, json.dumps(body, cls=PixmlJsonEncoder), 'application/json')])
 
             return self.__handle_rsp(requests.post(
                 self.get_url(path), headers=self.headers(content_type=""),
                 files=post_files), json_rsp)
 
         except requests.exceptions.ConnectionError as e:
-            raise PixmlClientException(e)
+            raise PixmlConnectionException(e)
 
+    def upload_files(self, path, files, body, json_rsp=True):
+        """
+        Upload an array of files and a reques to the given endpoint path.
+
+        Args:
+            path (str): The URL to upload to
+            files (list of str): The file paths to upload
+            body (dict): A request body
+            json_rsp (bool): Set to true if the result returned is JSON
+
+        Returns:
+            dict: The response body of the request.
+        """
+        try:
+            post_files = []
+            for f in files:
+                post_files.append(
+                    ("files", (os.path.basename(f), open(f, 'rb'))))
+
+            if body is not None:
+                post_files.append(
+                    ("body", ("", json.dumps(body, cls=PixmlJsonEncoder),
+                              'application/json')))
+
+            return self.__handle_rsp(requests.post(
+                self.get_url(path), headers=self.headers(content_type=""),
+                files=post_files), json_rsp)
+
+        except requests.exceptions.ConnectionError as e:
+            raise PixmlConnectionException(e)
 
     def get(self, path, body=None, is_json=True):
         """
         Performs a get request.
+
         Args:
             path (str): An archivist URI path.
-            body (object): The request body which will be serialized to json.
+            body (dict): The request body which will be serialized to json.
             is_json (bool): Set to true to specify a JSON return value
 
         Returns:
@@ -136,6 +169,7 @@ class PixmlClient(object):
     def post(self, path, body=None, is_json=True):
         """
         Performs a post request.
+
         Args:
             path (str): An archivist URI path.
             body (object): The request body which will be serialized to json.
@@ -154,6 +188,7 @@ class PixmlClient(object):
     def put(self, path, body=None, is_json=True):
         """
         Performs a put request.
+
         Args:
             path (str): An archivist URI path.
             body (object): The request body which will be serialized to json.
@@ -172,6 +207,7 @@ class PixmlClient(object):
     def delete(self, path, body=None, is_json=True):
         """
          Performs a delete request.
+
          Args:
              path (str): An archivist URI path.
              body (object): The request body which will be serialized to json.
