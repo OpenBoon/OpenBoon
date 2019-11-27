@@ -1,6 +1,8 @@
 const { join, resolve } = require('path')
-const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
+const merge = require('webpack-merge')
+const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack')
 
 const ROOT_DIR = resolve(__dirname)
 
@@ -13,9 +15,16 @@ module.exports = merge(common, {
   },
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './build',
+    contentBase: '/build',
     hot: true,
     historyApiFallback: true,
-    publicPath: ''
-  }
+    publicPath: '',
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new Dotenv({
+      path: './.env.development',
+      safe: true
+    })
+  ]
 })

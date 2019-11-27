@@ -2,8 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import * as Sentry from '@sentry/browser'
 
-// Include all our app-wide style classes
+// Include app-wide style classes
 import './styles/core.scss'
+
+// Include fonts
+import './assets/fonts/Roboto/Roboto.css'
+import './assets/fonts/Roboto_Condensed/Roboto_Condensed.css'
 
 import AppProviders from './components/AppProviders'
 import App from './components/App'
