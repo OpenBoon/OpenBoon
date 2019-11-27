@@ -24,7 +24,8 @@ class BaseProjectViewSet(ViewSet):
         try:
             kwargs['client'] = self._get_archivist_client(request, kwargs['project_pk'])
         except ObjectDoesNotExist:
-            return HttpResponseForbidden(f'{request.user.username} is not a member of the project {kwargs["project_pk"]}')
+            return HttpResponseForbidden(f'{request.user.username} is not a member of '
+                                         f'the project {kwargs["project_pk"]}')
         return super().dispatch(request, *args, **kwargs)
 
     def _get_archivist_client(self, request, project):
