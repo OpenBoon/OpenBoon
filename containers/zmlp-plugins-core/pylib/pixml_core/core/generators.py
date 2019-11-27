@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 from google.cloud import storage
 
 from pixml.analysis import Generator, Argument
-from pixml.asset import AssetSpec
+from pixml.asset import AssetImport
 
 
 class GcsBucketGenerator(Generator):
@@ -34,4 +34,4 @@ class GcsBucketGenerator(Generator):
             if blob.name.endswith("/"):
                 continue
             gsuri = "gs://{}/{}".format(uri.netloc, blob.name)
-            consumer.accept(AssetSpec(gsuri))
+            consumer.accept(AssetImport(gsuri))

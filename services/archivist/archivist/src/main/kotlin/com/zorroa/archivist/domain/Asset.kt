@@ -14,12 +14,29 @@ import java.util.Base64
 import java.util.UUID
 import java.util.regex.Pattern
 
+@ApiModel("AssetState",
+    description = "Describes the different states can asset can be in.")
+enum class AssetState {
+
+    @ApiModelProperty("The Asset been created in the database but not analyzed.")
+    CREATED,
+
+    @ApiModelProperty("The Asset has been analyzed and augmented with fields.")
+    ANALYZED
+}
+
 @ApiModel("Batch Asset Op Status",
     description = "Used to describe the result of a batch asset operation")
 class BatchAssetOpStatus(
+
+    @ApiModelProperty("The ID of the asset.")
     val assetId: String,
+
+    @ApiModelProperty("A failure message will be set if the operation filed.")
     val failureMessage: String?=null
 ) {
+
+    @ApiModelProperty("True of the operation failed.")
     val failed : Boolean = failureMessage != null
 }
 
@@ -290,18 +307,6 @@ object Attr {
     const val DELIMITER = "."
 
     /**
-     * A convenience method which takes a variable list of strings and
-     * turns it into an attribute name.  This is preferred over using
-     * string concatenation.
-     *
-     * @param name
-     * @return
-     */
-    fun attr(vararg name: String): String {
-        return name.joinToString(DELIMITER)
-    }
-
-    /**
      * Return the last part of an attribute string.  For example, if fully qualified
      * name is "a:b:c:d", this method will return "d".
      *
@@ -310,17 +315,6 @@ object Attr {
      */
     fun name(attr: String): String {
         return attr.substring(attr.lastIndexOf(DELIMITER) + 1)
-    }
-
-    /**
-     * Return the fully qualified namespace for the attribute.  For example, if
-     * the attribute is "a:b:c:d", this method will return "a:b:c"
-     *
-     * @param attr
-     * @return
-     */
-    fun namespace(attr: String): String {
-        return attr.substring(0, attr.lastIndexOf(DELIMITER))
     }
 }
 
