@@ -49,7 +49,7 @@ class ClusterClient(object):
 
     """
     def __init__(self, remote_url, my_port=8089):
-        self.remote_url = remote_url or os.environ.get("ZORROA_ARCHIVIST_URL")
+        self.remote_url = remote_url or os.environ.get("PIXML_SERVER")
         self.headers = {
             "Content-Type": "application/json",
             "X-Analyst-Port": str(my_port)

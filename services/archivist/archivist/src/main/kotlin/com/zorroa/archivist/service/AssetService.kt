@@ -2,11 +2,14 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchAssetOpStatus
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
+import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.IdGen
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
@@ -18,10 +21,10 @@ import com.zorroa.archivist.security.getProjectFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.randomString
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
-import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
@@ -91,8 +94,12 @@ interface AssetService {
      *
      */
     fun batchUpdate(request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
-}
 
+    /**
+     *
+     */
+    fun batchUpload(req: BatchUploadAssetsRequest): BatchCreateAssetsResponse
+}
 
 
 @Service
@@ -153,36 +160,94 @@ class AssetServiceImpl : AssetService {
         return proxies ?: ProxySchema()
     }
 
+    fun assetSpecToAsset(id: String, spec: AssetSpec): Asset {
+        val asset = Asset(id, spec.document ?: mutableMapOf())
+
+        asset.setAttr("source.path", spec.uri)
+        asset.setAttr("source.filename", FileUtils.filename(spec.uri))
+        asset.setAttr("source.extension", FileUtils.extension(spec.uri))
+
+        val mediaType = FileUtils.getMediaType(spec.uri)
+        asset.setAttr("source.mimetype", mediaType)
+        asset.setAttr("source.type", mediaType.split("/")[0])
+        asset.setAttr("source.subtype", mediaType.split("/")[1])
+
+        asset.setAttr("system.projectId", getProjectId().toString())
+        asset.setAttr(
+            "system.timeCreated",
+            java.time.Clock.systemUTC().instant().toString()
+        )
+        asset.setAttr("system.state", "provisioned")
+
+        return asset
+    }
+
+    override fun batchUpload(req: BatchUploadAssetsRequest)
+        : BatchCreateAssetsResponse {
+
+        val rest = indexRoutingService.getProjectRestClient()
+        val bulkRequest = BulkRequest()
+        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
+        var assets = mutableListOf<Asset>()
+
+        for ((idx, mpfile) in req.files.withIndex()) {
+            val spec = req.assets[idx]
+            val id = IdGen.getId(spec.uri + randomString(16))
+
+            val asset = assetSpecToAsset(id, spec)
+            val storageSpec = FileStorageSpec("asset", asset.id, mpfile.originalFilename)
+            val storage = fileStorageService.get(storageSpec)
+            fileStorageService.write(storage.id, mpfile.inputStream.readAllBytes())
+
+            asset.setAttr("source.originPath", asset.getAttr("source.path"))
+            asset.setAttr("source.path", "pixml:///$id/source/${mpfile.originalFilename}")
+            asset.setAttr("source.fileSize", mpfile.size)
+
+            val ireq = rest.newIndexRequest(asset.id)
+            ireq.opType(DocWriteRequest.OpType.CREATE)
+            ireq.source(asset.document)
+            bulkRequest.add(ireq)
+
+            assets.add(asset)
+        }
+
+        val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
+        val result = BatchCreateAssetsResponse(assets)
+        for (item in bulk.items) {
+            if (item.isFailed) {
+                result.status.add(
+                    BatchAssetOpStatus(
+                        item.id,
+                        ElasticSearchErrorTranslator.translate(item.failureMessage)
+                    )
+                )
+            } else {
+                result.status.add(BatchAssetOpStatus(item.id))
+            }
+        }
+
+        // Launch analysis job.
+        val jobId = if (req.analyze) {
+            createAnalysisJob(assets).id
+        } else {
+            null
+        }
+        result.jobId = jobId
+        return result
+    }
+
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
         if (request.assets.size > 100) {
             throw IllegalArgumentException("Cannot provision more than 100 assets at a time.")
         }
 
         val rest = indexRoutingService.getProjectRestClient()
-
         val bulkRequest = BulkRequest()
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
         val assets = request.assets.map { spec ->
-
-            val id = IdGen.getId(spec.uri)
-            val asset = Asset(id, spec.document ?: mutableMapOf())
-
-            asset.setAttr("source.path", spec.uri)
-            asset.setAttr("source.filename", FileUtils.filename(spec.uri))
-            asset.setAttr("source.directory", FileUtils.dirname(spec.uri))
-            asset.setAttr("source.extension", FileUtils.extension(spec.uri))
-
-            val mediaType = FileUtils.getMediaType(spec.uri)
-            asset.setAttr("source.mimetype", mediaType)
-            asset.setAttr("source.type", mediaType.split("/")[0])
-            asset.setAttr("source.subtype", mediaType.split("/")[1])
-
-            asset.setAttr("system.projectId", getProjectId().toString())
-            asset.setAttr("system.timeCreated",
-                java.time.Clock.systemUTC().instant().toString())
-            asset.setAttr("system.state", "provisioned")
-            asset
+            assetSpecToAsset(IdGen.getId(spec.uri), spec)
         }
 
         assets.forEach {
@@ -193,7 +258,7 @@ class AssetServiceImpl : AssetService {
         }
 
         val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
-        val result =  BatchCreateAssetsResponse()
+        val result = BatchCreateAssetsResponse(assets)
         for (item in bulk.items) {
             if (item.isFailed) {
                 result.status.add(BatchAssetOpStatus(item.id,
@@ -209,8 +274,6 @@ class AssetServiceImpl : AssetService {
         } else {
             null
         }
-
-        result.assets = assets
         result.jobId = jobId
         return result
     }

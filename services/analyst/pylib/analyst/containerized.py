@@ -261,6 +261,7 @@ class DockerContainerProcess(object):
         env.update({
             'ZMLP_EVENT_HOST': 'tcp://{}:{}'.format(host, self.port),
             'GOOGLE_APPLICATION_CREDENTIALS': '/zmlp-config/gcp-service-account.json',
+            'PIXML_SERVER': os.environ.get("PIXML_SERVER")
         })
 
         logger.info("starting container {}".format(self.image))
