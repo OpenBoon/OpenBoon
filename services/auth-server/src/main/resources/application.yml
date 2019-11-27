@@ -13,7 +13,7 @@ spring:
     allow-bean-definition-overriding: true
 
 security:
-    service-key: classpath:key.json
+    service-key: /zmlp-config/zmlp-service-key.json
 
 
 #Swagger info

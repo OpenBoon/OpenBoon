@@ -41,7 +41,6 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         chain: FilterChain
     ) {
         try {
-            logger.info("0-------------------------------------")
             val token = req.getHeader(AUTH_HEADER)?.let {
                 if (it.startsWith(TOKEN_PREFIX)) {
                     it.removePrefix(TOKEN_PREFIX)
