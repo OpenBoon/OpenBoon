@@ -1,6 +1,5 @@
 import React from 'react'
 import Page from '../Page'
-import DataQueue from '../DataQueue'
 
 function Workspace() {
   return (
@@ -8,7 +7,6 @@ function Workspace() {
       <div className="Workspace">
         {'Hello World!'}
       </div>
-      <DataQueue />
     </Page>
   )
 }
