@@ -21,14 +21,14 @@ const Authentication = ({ children }) => {
     if (user.isLoading) {
       setUser({
         hasLoaded: true,
-        isAuthenticated: isUserAuthenticated({ refreshToken }),
+        isAuthenticated: isUserAuthenticated({ now: Date.now(), refreshToken }),
       })
     }
 
     if (user.isAuthenticated) {
       timeoutId = setTimeout(
         logout({ setUser }),
-        getTokenTimeout({ refreshToken }),
+        getTokenTimeout({ now: Date.now(), refreshToken }),
       )
     }
 
