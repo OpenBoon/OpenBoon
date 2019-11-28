@@ -6,7 +6,9 @@ const noop = () => () => {}
 
 describe('<Login />', () => {
   it('should render properly', () => {
-    const component = TestRenderer.create(<Login onSubmit={noop} />)
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(<Login onSubmit={mockFn} />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -14,11 +16,22 @@ describe('<Login />', () => {
     const passwordInput = component.root.findByProps({ id: 'password' })
 
     act(() => {
-      usernameInput.props.onChange({ target: { value: 'foo@bar.baz' } })
+      usernameInput.props.onChange({ target: { value: 'username' } })
       passwordInput.props.onChange({ target: { value: 'password' } })
     })
 
-    expect(usernameInput.props.value).toEqual('foo@bar.baz')
+    expect(usernameInput.props.value).toEqual('username')
     expect(passwordInput.props.value).toEqual('password')
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Login' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockFn).toHaveBeenCalledWith({
+      username: 'username',
+      password: 'password',
+    })
   })
 })
