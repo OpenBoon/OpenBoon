@@ -47,7 +47,7 @@ export const getTokenTimeout = ({ refreshToken }) => {
   return (expirationTime - currentTime - 30) * 1000 // set to 30 seconds before expiration
 }
 
-export const authenticateUser = ({ username, password, setUser }) => {
+export const authenticateUser = ({ setUser }) => ({ username, password }) => {
   const instance = axiosCreate({})
 
   return instance
@@ -58,4 +58,9 @@ export const authenticateUser = ({ username, password, setUser }) => {
       setUser({ isAuthenticated: true })
     })
     .catch(error => console.error(error))
+}
+
+export const logout = ({ setUser }) => () => {
+  clearTokens()
+  setUser({ isAuthenticated: false })
 }

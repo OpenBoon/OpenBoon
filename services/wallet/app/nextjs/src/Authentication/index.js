@@ -5,9 +5,9 @@ import Login from '../Login'
 import {
   getTokens,
   isUserAuthenticated,
-  clearTokens,
   authenticateUser,
   getTokenTimeout,
+  logout,
 } from './helpers'
 
 const Authentication = ({ children }) => {
@@ -26,27 +26,22 @@ const Authentication = ({ children }) => {
     }
 
     if (user.isAuthenticated) {
-      timeoutId = setTimeout(() => {
-        clearTokens()
-        setUser({ isAuthenticated: false, isTimedOut: true })
-      }, getTokenTimeout({ refreshToken }))
+      timeoutId = setTimeout(
+        logout({ setUser }),
+        getTokenTimeout({ refreshToken }),
+      )
     }
 
     return () => clearTimeout(timeoutId)
   }, [user])
 
-  const logout = () => {
-    clearTokens()
-    setUser({ isAuthenticated: false })
-  }
-
   if (user.isLoading) return null
 
   if (!user.isAuthenticated) {
-    return <Login onSubmit={authenticateUser} />
+    return <Login onSubmit={authenticateUser({ setUser })} />
   }
 
-  return children({ user, logout })
+  return children({ user, logout: logout({ setUser }) })
 }
 
 export default Authentication
