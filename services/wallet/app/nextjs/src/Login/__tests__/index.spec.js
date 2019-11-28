@@ -10,15 +10,15 @@ describe('<Login />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    const emailInput = component.root.findByProps({ id: 'email' })
+    const usernameInput = component.root.findByProps({ id: 'username' })
     const passwordInput = component.root.findByProps({ id: 'password' })
 
     act(() => {
-      emailInput.props.onChange({ target: { value: 'foo@bar.baz' } })
+      usernameInput.props.onChange({ target: { value: 'foo@bar.baz' } })
       passwordInput.props.onChange({ target: { value: 'password' } })
     })
 
-    expect(emailInput.props.value).toEqual('foo@bar.baz')
+    expect(usernameInput.props.value).toEqual('foo@bar.baz')
     expect(passwordInput.props.value).toEqual('password')
   })
 })
