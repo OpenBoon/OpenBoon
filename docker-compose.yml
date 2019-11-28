@@ -1,0 +1,113 @@
+
+version: '3.6'
+services:
+
+  ## Unit testing services.
+
+  # Postgres instance used for local development servers.
+  postgres:
+    image: "postgres:9.6.9"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./dev/postgres_init_scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  redis:
+    image: redis:alpine
+    ports:
+       - 6379:6379
+
+  # Elastic Search instance used for local development servers.
+  es1:
+    build:
+      context: services/elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+
+  # Auth server
+  auth-server:
+    links:
+       - "postgres"
+    build:
+      context: services/auth-server
+    ports:
+      - 9090:9090
+    volumes:
+      - "zmlp-config:/zmlp-config"
+
+  # Local Archivist server.
+  archivist:
+    links:
+       - "es1"
+       - "postgres"
+       - "auth-server"
+       - "copy-config-files"
+    environment:
+      SENTRY_ENVIRONMENT: localdev
+    build:
+      context: services/archivist
+    ports:
+      - 8080:8080
+    volumes:
+      - "./services/archivist/localdev/shared:/shared"
+      - "./services/archivist/localdev/monitoring:/monitoring"
+      - "./services/archivist/localdev/zorroa-archivist-config:/config"
+      - "./test-data:/test-data"
+      - "zmlp-config:/zmlp-config"
+
+  analyst:
+    links:
+       - "archivist"
+       - "copy-config-files"
+    build:
+      context: services/analyst
+    ports:
+      - 5000:5000
+    volumes:
+       - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      PIXML_SERVER: http://archivist:8080
+
+  # Console web application.
+  wallet:
+    image: wallet
+    ports:
+      - 80:80
+    build:
+      context: .
+      dockerfile: services/wallet/Dockerfile
+    environment:
+      DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
+      PG_HOST: postgres
+      ARCHIVIST_URL: http://archivist:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - postgres
+
+  copy-config-files:
+    image: ubuntu:disco
+    volumes:
+      - zmlp-config:/zmlp-config
+      - ./dev/zmlp-config:/new-zmlp-config
+    command: ['/bin/bash', '-v', '-c', 'cp /new-zmlp-config/* /zmlp-config']
+
+volumes:
+  zmlp-config:
