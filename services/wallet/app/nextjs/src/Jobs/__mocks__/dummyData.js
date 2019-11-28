@@ -1,7 +1,6 @@
-
 const range = len => {
   const arr = []
-  for (let i = 0;i < len;i++) {
+  for (let i = 0; i < len; i++) {
     arr.push(i)
   }
   return arr
@@ -14,19 +13,12 @@ function generateStatus() {
   return randomStatus
 }
 
-function generateDateTimeCreated() {
-  const milliseconds = Date.now()
-  const date = new Date(milliseconds).toString()
-
-  return date
-}
-
 function generateProgress() {
   const status = {
     succeeded: Math.floor(Math.random() * 100),
     failed: Math.floor(Math.random() * 100),
     running: Math.floor(Math.random() * 100),
-    pending: Math.floor(Math.random() * 100)
+    pending: Math.floor(Math.random() * 100),
   }
 
   return status
@@ -38,7 +30,7 @@ const newJob = () => {
     jobName: 'FooBar',
     createdBy: 'userX',
     priority: Math.floor(Math.random() * 100),
-    createdDateTime: generateDateTimeCreated(),
+    createdDateTime: new Date(),
     failed: 'failed',
     errors: 'errors',
     numAssets: 'numAsets',
@@ -49,7 +41,7 @@ const newJob = () => {
 export function makeData(...lens) {
   const makeDataLevel = (depth = 0) => {
     const len = lens[depth]
-    return range(len).map(d => {
+    return range(len).map(() => {
       return {
         ...newJob(),
         subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
@@ -59,4 +51,3 @@ export function makeData(...lens) {
 
   return makeDataLevel()
 }
-

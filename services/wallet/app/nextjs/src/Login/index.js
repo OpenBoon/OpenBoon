@@ -42,7 +42,7 @@ const Login = ({ onSubmit }) => {
             fontWeight: typography.weight.medium,
             paddingBottom: spacing.spacious,
           }}>
-          Welcome. Please login.
+          {'Welcome. Please login.'}
         </h3>
         <Input
           id="username"
@@ -79,11 +79,11 @@ const Login = ({ onSubmit }) => {
                 backgroundColor: colors.primaryHover,
               },
             }}>
-            Login
+            {'Login'}
           </button>
         </div>
         <a href="/" css={{ textAlign: 'center' }}>
-          Forgot Password? Need login help?
+          {'Forgot Password? Need login help?'}
         </a>
       </form>
     </div>

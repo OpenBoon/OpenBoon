@@ -1,5 +1,5 @@
 const spacing = {
-  cozy: 8,
+  base: 8,
   moderate: 12,
   normal: 16,
   comfy: 24,
