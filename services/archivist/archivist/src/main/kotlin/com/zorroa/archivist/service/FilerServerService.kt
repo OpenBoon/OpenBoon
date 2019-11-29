@@ -11,6 +11,8 @@ import com.zorroa.archivist.config.SpringApplicationProperties
 import com.zorroa.archivist.domain.FileStat
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.util.StaticUtils
+import com.zorroa.archivist.util.copyInputToOuput
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Profile
@@ -19,6 +21,8 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.util.FileSystemUtils
+import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.io.OutputStream
@@ -27,6 +31,7 @@ import java.net.URL
 import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
 
@@ -67,7 +72,9 @@ interface FileServerService {
     fun delete(url: URI): Boolean
 }
 
-/*class LocalFileServerService : FileServerService {
+@Profile("local")
+@Service
+class LocalFileServerService : FileServerService {
 
     override val storedLocally: Boolean
         get() = true
@@ -139,7 +146,7 @@ interface FileServerService {
     companion object {
         private val logger = LoggerFactory.getLogger(LocalFileServerService::class.java)
     }
-}*/
+}
 
 @Profile("gcs")
 @Service

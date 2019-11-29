@@ -17,11 +17,13 @@ import com.zorroa.archivist.util.StaticUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import java.io.FileInputStream
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
 /**
@@ -113,6 +115,7 @@ interface LayoutProvider {
  * The GcsFileStorageService handles the location and placement of files withing GCS.
  */
 @Service
+@Profile("gcs")
 class GcsFileStorageService @Autowired constructor(
     @Value("\${archivist.storage.bucket}") private val bucket: String,
     val properties: ApplicationProperties,
@@ -226,16 +229,23 @@ class GcsFileStorageService @Autowired constructor(
 /**
  * LocalFileStorageService handles the location of files in an on-prem single tenant install.
  */
-/*class LocalFileStorageService constructor(
-    val root: Path
+
+@Service
+@Profile("local")
+class LocalFileStorageService(
+    @Value("\${archivist.storage.path}") private val rootPathUrl: String
 ) : FileStorageService {
 
-    val dlp = LocalLayoutProvider(root)
+    lateinit var root: Path
+    lateinit var dlp: LayoutProvider
 
     @Autowired
     lateinit var fileServerProvider: FileServerProvider
 
     init {
+        root = Path.of(rootPathUrl)
+        dlp = LocalLayoutProvider(root)
+
         logger.info("Initializing LocalFileStorageService at {}", root)
         if (!Files.exists(root)) {
             logger.info("LocalFileStorageService creating directory: {}", root)
@@ -271,17 +281,18 @@ class GcsFileStorageService @Autowired constructor(
 
     private fun buildFileStorage(id: String, url: String): FileStorage {
         return FileStorage(
-                unslashed(id),
-                URI(url),
-                "file",
-                StaticUtils.tika.detect(url),
-                fileServerProvider)
+            unslashed(id),
+            URI(url),
+            "file",
+            StaticUtils.tika.detect(url),
+            fileServerProvider
+        )
     }
 
     companion object {
         private val logger = LoggerFactory.getLogger(LocalFileStorageService::class.java)
     }
-}*/
+}
 
 class LocalLayoutProvider(val root: Path) : LayoutProvider {
 

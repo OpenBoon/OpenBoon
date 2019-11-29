@@ -2,12 +2,14 @@ package com.zorroa.archivist.service
 
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.SpringApplicationProperties
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.util.FileUtils
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -122,12 +124,15 @@ class GcsLayoutProviderTests : AbstractTest() {
 
 class GcsFileStorageServiceTests : AbstractTest() {
 
+    @Autowired
+    lateinit var applicationProperties: ApplicationProperties
+
     val bucketName = "zorroa-dev-data"
     lateinit var fileStorage: GcsFileStorageService
 
     @Before
     fun init() {
-        fileStorage = GcsFileStorageService(bucketName, SpringApplicationProperties(), fileServerProvider)
+        fileStorage = GcsFileStorageService(bucketName, applicationProperties, fileServerProvider)
 
         // fileStorage = GcsFileStorageService(bucketName)
         // fileStorage.fileServerProvider = fileServerProvider
