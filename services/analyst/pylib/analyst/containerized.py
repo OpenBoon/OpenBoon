@@ -252,15 +252,12 @@ class DockerContainerProcess(object):
             host = "host.docker.internal"
 
         volumes = {
-            '/tmp':  {'bind': '/tmp', 'mode': 'rw'},
-            'zmlp-config':
-                  {'bind': '/zmlp-config', 'mode': 'ro'}
+            '/tmp':  {'bind': '/tmp', 'mode': 'rw'}
         }
 
         env = self.task.get("env", {})
         env.update({
             'ZMLP_EVENT_HOST': 'tcp://{}:{}'.format(host, self.port),
-            'GOOGLE_APPLICATION_CREDENTIALS': '/zmlp-config/gcp-service-account.json',
             'PIXML_SERVER': os.environ.get("PIXML_SERVER")
         })
 
