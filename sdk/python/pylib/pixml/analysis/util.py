@@ -1,9 +1,10 @@
 import logging
 import os
-
-from pathlib2 import Path
 from urllib.parse import urlparse
 
+from pathlib2 import Path
+
+from .storage import file_cache
 from ..app import app_from_env
 
 __all__ = [
@@ -35,13 +36,12 @@ def get_proxy_file(asset, min_width=1024, mimetype="image/", fallback=False):
     files = [file for file in files if file["attrs"]["width"] >= min_width]
     sorted(files, key=lambda f: f['attrs']['width'])
 
-    app = app_from_env()
     if files:
-        return files[0]["name"], app.cache.localize_remote_file(files[0])
+        return files[0]["name"], file_cache.localize_remote_file(files[0])
     elif fallback and asset.get_attr("source.mimetype").startswith(mimetype):
         logger.warning("No suitable proxy mimetype={} minwidth={}, "
                        "falling back to source".format(mimetype, min_width))
-        return 'source', app.cache.localize_remote_file(asset)
+        return 'source', file_cache.localize_remote_file(asset)
     else:
         raise ValueError("No suitable proxy file was found.")
 
@@ -99,7 +99,7 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
 
     # Store the path to the proxy in our local file storage
     # because a processor will need it down the line.
-    app.cache.localize_pixml_file(result, path)
+    file_cache.localize_pixml_file(result, path)
 
     # Ensure the file doesn't already exist in the metadata
     if not asset.get_files(name=name, category=category):

@@ -9,6 +9,7 @@ from pathlib2 import Path
 
 import pixml
 from pixml.analysis import AssetBuilder, Argument
+from pixml.analysis.storage import file_cache
 from pixml.analysis.util import add_proxy_file
 from pixml_core.util.media import get_output_dimension, media_size
 
@@ -203,7 +204,7 @@ class ProxyProcessor(AssetBuilder):
         # has no chance of making a proxy, so we're going to skip
         # generating an error.
         if asset.get_attr("source.type") == "image":
-            return self.app.cache.localize_remote_file(asset.uri)
+            return file_cache.localize_remote_file(asset.uri)
         return None
 
     def _get_valid_sizes(self, width, height):
@@ -242,7 +243,7 @@ def set_tiny_proxy_colors(asset):
         if image_proxies:
             app = pixml.app_from_env()
             smallest_proxy = sorted(image_proxies, key=lambda prx: prx['attrs']['width'])[0]
-            tiny_proxy_path = app.cache.localize_remote_file(smallest_proxy)
+            tiny_proxy_path = file_cache.localize_remote_file(smallest_proxy)
 
             logger.info('Creating tiny proxy colors for %s.' % tiny_proxy_path)
             asset.set_attr('analysis.pixelml.tinyProxy', get_tiny_proxy_colors(tiny_proxy_path) or None)
