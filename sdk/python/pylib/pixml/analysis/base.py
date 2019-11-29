@@ -23,7 +23,8 @@ __all__ = [
     "Reactor",
     "ProcessorHelper",
     "PixmlUnrecoverableProcessorException",
-    "PixmlProcessorException"
+    "PixmlProcessorException",
+    "AnalysisEnv"
 ]
 
 
@@ -766,6 +767,31 @@ class ProcessorHelper(object):
     @property
     def logger(self):
         return self.processor.logger
+
+
+class AnalysisEnv:
+
+    @staticmethod
+    def get_project_id():
+        """
+        Return the PixelML project id from the environment.  The project
+        should always exist.
+
+        Returns:
+            str: The PixelML project Id.
+        """
+        return os.environ.get("PIXML_PROJECT_ID")
+
+    @staticmethod
+    def get_dataset_id():
+        """
+        Return the PixelML dataset id from the environment.  The DataSet ID
+        may or may not exist.
+
+        Returns:
+            str: The PixelML dataset Id or None
+        """
+        return os.environ.get("PIXML_DATASET_ID")
 
 
 class PixmlProcessorException(PixmlException):
