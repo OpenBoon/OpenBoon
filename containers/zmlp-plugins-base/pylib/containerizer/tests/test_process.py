@@ -1,9 +1,10 @@
 import logging
 import unittest
 
-from containerizer.process import ProcessorExecutor
+from containerizer.process import ProcessorExecutor, is_file_type_allowed
+
 from pixml.analysis import Reactor
-from pixml.analysis.testing import TestEventEmitter
+from pixml.analysis.testing import TestEventEmitter, TestAsset
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -82,3 +83,18 @@ class ProcessorExecutorTests(unittest.TestCase):
         }
         instance = self.pe.new_processor_instance(ref)
         assert instance.__class__.__name__ == "TestProcessor"
+
+
+class TypeFilterTests(unittest.TestCase):
+
+    def test_is_file_type_allowed(self):
+        asset = TestAsset()
+        asset.set_attr("source.extension", "jpg")
+        asset.set_attr("source.mimetype", "image/jpeg")
+
+        assert is_file_type_allowed(asset, ["jpg"])
+        assert not is_file_type_allowed(asset, ["png"])
+        assert is_file_type_allowed(asset, ["image/*"])
+        assert is_file_type_allowed(asset, ["image/"])
+        assert is_file_type_allowed(asset, ["video/", "image/"])
+        assert not is_file_type_allowed(asset, ["video/"])

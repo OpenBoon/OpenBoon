@@ -3,6 +3,7 @@ import json
 import logging
 import sys
 import time
+import re
 
 from pixml.asset import Asset
 from pixml.analysis import Frame, Context, PixmlUnrecoverableProcessorException
@@ -339,18 +340,24 @@ def is_file_type_allowed(asset, file_types):
     Determine if a given frame is filtered out by a set of file types.
 
     Args:
-        frame(Frame): the frame to check
-        file_types(set): the file typed filter to check against
+        asset (Asset): the frame to check
+        file_types (list of string): the file types and/or mimetypes filter to check against
 
     Returns:
         True if the file is allowed.
 
     """
     if file_types:
-        result = False
-        ext = asset.get_attr("source.extension")
-        if ext and ext.lower() in file_types:
-            result = True
-        return result
+        ext = asset.get_attr("source.extension").lower()
+        mimetype = asset.get_attr("source.mimetype").lower()
+
+        for file_type in file_types:
+            if "/" in file_type:
+                if re.match(file_type, mimetype):
+                    return True
+            else:
+                if file_type == ext:
+                    return True
+        return False
     else:
         return True
