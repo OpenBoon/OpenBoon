@@ -1,9 +1,6 @@
-from pathlib2 import Path
-
-from pixml_core.core.processors import SetAttributesProcessor
-from pixml import Asset
 from pixml.analysis import Frame
 from pixml.analysis.testing import PluginUnitTestCase, TestAsset
+from pixml_core.core.processors import SetAttributesProcessor
 
 MOCK_PERMISSION = {
     'authority': 'string',
