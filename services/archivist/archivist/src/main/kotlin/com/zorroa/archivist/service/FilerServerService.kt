@@ -172,7 +172,6 @@ class GcpFileServerService @Autowired constructor
     }
 
     fun loadStorage(path: Path) {
-
         this.credentials = path
 
         this.storage =

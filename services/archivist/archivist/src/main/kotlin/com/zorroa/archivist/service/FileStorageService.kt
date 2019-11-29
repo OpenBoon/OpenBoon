@@ -229,7 +229,6 @@ class GcsFileStorageService @Autowired constructor(
 /**
  * LocalFileStorageService handles the location of files in an on-prem single tenant install.
  */
-
 @Service
 @Profile("local")
 class LocalFileStorageService(
