@@ -3,15 +3,12 @@ package com.zorroa.archivist.service
 import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.config.SpringApplicationProperties
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.util.FileUtils
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.URI
-import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -29,9 +26,10 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
     @Test
     fun testBuildIdFromSpec() {
         val spec = FileStorageSpec(
-                "asset",
-                "e415845c-e2f5-441b-a36e-36103d231169",
-                "proxy/100x200.jpg")
+            "asset",
+            "e415845c-e2f5-441b-a36e-36103d231169",
+            "proxy/100x200.jpg"
+        )
 
         assertEquals("asset___e415845c-e2f5-441b-a36e-36103d231169___proxy___100x200.jpg", layout.buildId(spec))
     }
@@ -39,15 +37,19 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
     @Test
     fun testBuildUriFromSpec() {
         val spec = FileStorageSpec(
-                "job",
-                "e415845c-e2f5-441b-a36e-36103d231169",
-                "export/exported_files.zip")
+            "job",
+            "e415845c-e2f5-441b-a36e-36103d231169",
+            "export/exported_files.zip"
+        )
 
         val proxyUri = layout.buildUri(spec)
         println(proxyUri)
         assertTrue(proxyUri.startsWith("file:///"))
-        assertTrue(proxyUri.endsWith(
-                "shared/projects/00000000-0000-0000-0000-000000000000/job/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169/export/exported_files.zip"))
+        assertTrue(
+            proxyUri.endsWith(
+                "shared/projects/00000000-0000-0000-0000-000000000000/job/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169/export/exported_files.zip"
+            )
+        )
     }
 
     @Test
@@ -57,8 +59,11 @@ class DefaultLocalLayoutProviderTests : AbstractTest() {
         val proxyUri = layout.buildUri(id)
         println(proxyUri)
         assertTrue(proxyUri.startsWith("file:///"))
-        assertTrue(proxyUri.endsWith(
-                "shared/projects/00000000-0000-0000-0000-000000000000/asset/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169/proxy/100x200.jpg"))
+        assertTrue(
+            proxyUri.endsWith(
+                "shared/projects/00000000-0000-0000-0000-000000000000/asset/e/4/1/5/e415845c-e2f5-441b-a36e-36103d231169/proxy/100x200.jpg"
+            )
+        )
     }
 
     @Test
@@ -77,9 +82,10 @@ class GcsLayoutProviderTests : AbstractTest() {
     fun testBuildIdFromSpec() {
         val pid = UUID.randomUUID()
         val spec = FileStorageSpec(
-                "asset",
-                pid,
-                "so_urgent_x_100_y_100.jpg")
+            "asset",
+            pid,
+            "so_urgent_x_100_y_100.jpg"
+        )
 
         val id = layout.buildId(spec)
         assertEquals("asset___${pid}___so_urgent_x_100_y_100.jpg", id)
@@ -89,9 +95,10 @@ class GcsLayoutProviderTests : AbstractTest() {
     fun testBuildUriFromId() {
         val pid = UUID.randomUUID()
         val spec = FileStorageSpec(
-                "asset",
-                pid,
-                "proxy/500x500.jpg")
+            "asset",
+            pid,
+            "proxy/500x500.jpg"
+        )
 
         val id1 = layout.buildId(spec)
         val uri = layout.buildUri(id1)
@@ -102,9 +109,10 @@ class GcsLayoutProviderTests : AbstractTest() {
     fun testBuildUriFromSpec() {
         val pid = UUID.randomUUID()
         val spec = FileStorageSpec(
-                "asset",
-                pid,
-                "proxy/500x500.jpg")
+            "asset",
+            pid,
+            "proxy/500x500.jpg"
+        )
 
         val uri = layout.buildUri(spec)
         val id1 = layout.buildId(spec)
@@ -116,11 +124,11 @@ class GcsLayoutProviderTests : AbstractTest() {
     fun testBuildUriFromDeprecatedIdStyle() {
         val id = "proxy___098c296c-33dd-594a-827c-26118ff62882___098c296c-33dd-594a-827c-26118ff62882_256x144.jpg"
         val uri = layout.buildUri(id)
-        val expected = "gs://foo/projects/00000000-0000-0000-0000-000000000000/ofs/proxy/098c296c-33dd-594a-827c-26118ff62882/098c296c-33dd-594a-827c-26118ff62882_256x144.jpg"
+        val expected =
+            "gs://foo/projects/00000000-0000-0000-0000-000000000000/ofs/proxy/098c296c-33dd-594a-827c-26118ff62882/098c296c-33dd-594a-827c-26118ff62882_256x144.jpg"
         assertEquals(expected, uri)
     }
 }
-
 
 class GcsFileStorageServiceTests : AbstractTest() {
 

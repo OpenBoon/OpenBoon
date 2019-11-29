@@ -233,17 +233,17 @@ class GcsFileStorageService @Autowired constructor(
 @Service
 @Profile("local")
 class LocalFileStorageService(
-    @Value("\${archivist.storage.path}") private val rootPathUrl: String
+    @Value("\${archivist.storage.path}")
+    private val rootPathUrl: String
 ) : FileStorageService {
 
-    lateinit var root: Path
+    var root: Path = Path.of(rootPathUrl)
     lateinit var dlp: LayoutProvider
 
     @Autowired
     lateinit var fileServerProvider: FileServerProvider
 
     init {
-        root = Path.of(rootPathUrl)
         dlp = LocalLayoutProvider(root)
 
         logger.info("Initializing LocalFileStorageService at {}", root)
