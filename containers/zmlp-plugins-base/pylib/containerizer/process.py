@@ -4,6 +4,7 @@ import logging
 import sys
 import time
 import re
+import os
 
 from pixml.asset import Asset
 from pixml.analysis import Frame, Context, PixmlUnrecoverableProcessorException
@@ -178,7 +179,7 @@ class ProcessorWrapper(object):
 
     def generate(self, file_types):
         logger.info("generating file_types=%s" % file_types)
-        consumer = FrameConsumer(self.reactor, file_types)
+        consumer = AssetConsumer(self.reactor, file_types)
         start_time = time.monotonic()
         try:
             if self.instance:
@@ -276,10 +277,10 @@ class ProcessorWrapper(object):
         return val
 
 
-class FrameConsumer(object):
+class AssetConsumer(object):
     """
-    The FrameConsumer handles expand tasks created by generators. The reason
-    to use FrameConsumer instead of just expanding directly from the Reactor
+    The AssetConsumer handles expand tasks created by generators. The reason
+    to use AssetConsumer instead of just expanding directly from the Reactor
     is that the file types need to be filtered.
 
     For each file the generator finds, it calls the accept() method with the
@@ -289,15 +290,15 @@ class FrameConsumer(object):
     """
     def __init__(self, reactor, file_types):
         """
-        Create a new FrameConsumer instance.
+        Create a new AssetConsumer instance.
 
         Args:
-            reactor(Reactor) - a reactor for talking back to the Archivist
-            file_types(iterable) - A set/list of file types to accept.
+            reactor (Reactor):  a reactor for talking back to the Archivist
+            file_types(iterable):  A set/list of file types to accept.
 
         """
         self.reactor = reactor
-        self.file_types = [ft.lower() for ft in file_types]
+        self.file_types = {ft.lower() for ft in file_types}
         self.frame_count = 0
         self.execute_count = 0
         self.expand_count = 0
@@ -313,9 +314,10 @@ class FrameConsumer(object):
 
         """
         if not is_file_type_allowed(asset, self.file_types):
-            return
+            return False
         self.expand.append(asset)
         self.check_expand()
+        return True
 
     def check_expand(self, force=False):
         """
@@ -348,16 +350,12 @@ def is_file_type_allowed(asset, file_types):
 
     """
     if file_types:
-        ext = asset.get_attr("source.extension").lower()
-        mimetype = asset.get_attr("source.mimetype").lower()
-
-        for file_type in file_types:
-            if "/" in file_type:
-                if re.match(file_type, mimetype):
-                    return True
-            else:
-                if file_type == ext:
-                    return True
-        return False
+        try:
+            _, ext = os.path.splitext(asset.uri)
+            ext = ext[1:].lower()
+            return ext in file_types
+        except Exception as e:
+            logger.warning('Failed to parse extension for file: {}'.format(asset.uri, e))
+            return False
     else:
         return True
