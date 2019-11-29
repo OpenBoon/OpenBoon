@@ -23,7 +23,6 @@ __all__ = [
     "Reactor",
     "ProcessorHelper",
     "PixmlUnrecoverableProcessorException",
-    "PixmlException",
     "PixmlProcessorException"
 ]
 
