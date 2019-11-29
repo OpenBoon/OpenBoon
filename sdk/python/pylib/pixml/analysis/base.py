@@ -783,15 +783,15 @@ class AnalysisEnv:
         return os.environ.get("PIXML_PROJECT_ID")
 
     @staticmethod
-    def get_dataset_id():
+    def get_datasource_id():
         """
-        Return the PixelML dataset id from the environment.  The DataSet ID
+        Return the PixelML DataSource id from the environment.  The DataSource ID
         may or may not exist.
 
         Returns:
-            str: The PixelML dataset Id or None
+            str: The PixelML DataSource Id or None
         """
-        return os.environ.get("PIXML_DATASET_ID")
+        return os.environ.get("PIXML_DATASOURCE_ID")
 
 
 class PixmlProcessorException(PixmlException):

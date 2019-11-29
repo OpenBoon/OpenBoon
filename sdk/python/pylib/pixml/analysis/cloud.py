@@ -13,7 +13,7 @@ def get_google_storage_client():
     Returns:
         Credentials: A google credentials object.
     """
-    dataset = AnalysisEnv.get_dataset_id()
+    dataset = AnalysisEnv.get_datasource_id()
     if dataset:
         app = app_from_env()
         creds = app.client.get(
