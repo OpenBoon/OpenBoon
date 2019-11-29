@@ -25,6 +25,5 @@ export function createJobsData(jobsArray) {
   const dataRows = jobsArray.map(job => {
     return newJob(job)
   })
-  console.log(dataRows)
   return dataRows
 }
