@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
-import { makeData } from './__mocks__/dummyData'
 import Button from '../Button'
 import ProgressBar from '../ProgressBar'
 import { colors, spacing } from '../Styles'
 import DateComponent from '../Date'
 import Table from '../Table'
-import { StyleCell } from './helpers'
+import { ColumnStyle, createJobsData } from './helpers'
+// import { makeData } from './__mocks__/dummyData'
+import { jobs } from './__mocks__/jobs'
 
 const Jobs = () => {
   const columns = useMemo(
@@ -41,14 +42,14 @@ const Jobs = () => {
         Header: 'Failed',
         accessor: 'failed',
         Cell: ({ cell }) => {
-          return StyleCell({ color: 'red' }, cell.value)
+          return ColumnStyle({ color: 'red' }, cell.value)
         },
       },
       {
         Header: 'Errors',
         accessor: 'errors',
         Cell: ({ cell }) => {
-          return StyleCell({ color: 'red' }, cell.value)
+          return ColumnStyle({ color: 'red' }, cell.value)
         },
       },
       {
@@ -66,7 +67,8 @@ const Jobs = () => {
     [],
   )
 
-  const data = useMemo(() => makeData(20), [])
+  const data = useMemo(() => createJobsData(jobs.list), [])
+  // const data = useMemo(() => makeData(20), [])
 
   return (
     <div

@@ -1,14 +1,15 @@
 const DateComponent = ({ date }) => {
-  let month = date.getMonth() + 1
+  const dateObj = new Date(date)
+  let month = dateObj.getMonth() + 1
   if (month < 10) {
     month = `0${month}`
   }
-  const day = date.getDate()
-  const year = date.getFullYear()
+  const day = dateObj.getDate()
+  const year = dateObj.getFullYear()
 
-  const hour = date.getHours()
-  const minutes = date.getMinutes()
-  let seconds = date.getSeconds()
+  const hour = dateObj.getHours()
+  const minutes = dateObj.getMinutes()
+  let seconds = dateObj.getSeconds()
   if (seconds < 10) {
     seconds = `0${seconds}`
   }

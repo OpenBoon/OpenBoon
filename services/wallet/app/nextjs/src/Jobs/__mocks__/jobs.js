@@ -1,4 +1,4 @@
-const jobs = {
+export const jobs = {
   list: [
     {
       id: '82d5308b-67c2-1433-8fef-0a580a000955',
