@@ -4,7 +4,7 @@ export const ColumnStyle = (style, value) => {
 
 const newJob = job => {
   return {
-    status: job.paused || job.state,
+    status: job.paused ? 'Paused' : job.state,
     jobName: job.name,
     createdBy: job.createdUser.username,
     priority: job.priority,

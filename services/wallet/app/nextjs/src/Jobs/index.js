@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
+import { colors, spacing } from '../Styles'
+import { ColumnStyle, createJobsData } from './helpers'
+import { jobs } from './__mocks__/jobs'
+
 import Button from '../Button'
 import ProgressBar from '../ProgressBar'
-import { colors, spacing } from '../Styles'
 import DateComponent from '../Date'
 import Table from '../Table'
-import { ColumnStyle, createJobsData } from './helpers'
-// import { makeData } from './__mocks__/dummyData'
-import { jobs } from './__mocks__/jobs'
 
 const Jobs = () => {
   const columns = useMemo(
@@ -15,8 +15,8 @@ const Jobs = () => {
       {
         Header: 'Status',
         accessor: 'status',
-        Cell: ({ cell }) => {
-          return Button({ status: cell.value })
+        Cell: ({ cell: { value } }) => {
+          return Button({ status: value })
         },
       },
       {
@@ -34,22 +34,28 @@ const Jobs = () => {
       {
         Header: 'Created (Date/TIme)',
         accessor: 'createdDateTime',
-        Cell: ({ cell }) => {
-          return DateComponent({ date: cell.value })
+        Cell: ({ cell: { value } }) => {
+          return DateComponent({ timeCreated: value })
         },
       },
       {
         Header: 'Failed',
         accessor: 'failed',
-        Cell: ({ cell }) => {
-          return ColumnStyle({ color: 'red' }, cell.value)
+        Cell: ({ cell: { value } }) => {
+          if (value === 0) {
+            return ColumnStyle({ display: 'none' }, value)
+          }
+          return ColumnStyle({ color: 'red' }, value)
         },
       },
       {
         Header: 'Errors',
         accessor: 'errors',
-        Cell: ({ cell }) => {
-          return ColumnStyle({ color: 'red' }, cell.value)
+        Cell: ({ cell: { value } }) => {
+          if (value === 0) {
+            return ColumnStyle({ display: 'none' }, value)
+          }
+          return ColumnStyle({ color: 'red' }, value)
         },
       },
       {
@@ -59,8 +65,8 @@ const Jobs = () => {
       {
         Header: 'Progress',
         accessor: 'progress',
-        Cell: ({ cell }) => {
-          return ProgressBar({ status: cell.value })
+        Cell: ({ cell: { value } }) => {
+          return ProgressBar({ status: value })
         },
       },
     ],
@@ -68,7 +74,6 @@ const Jobs = () => {
   )
 
   const data = useMemo(() => createJobsData(jobs.list), [])
-  // const data = useMemo(() => makeData(20), [])
 
   return (
     <div

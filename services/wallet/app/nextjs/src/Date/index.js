@@ -1,5 +1,5 @@
-const DateComponent = ({ date }) => {
-  const dateObj = new Date(date)
+const DateComponent = ({ timeCreated }) => {
+  const dateObj = new Date(timeCreated)
   let month = dateObj.getMonth() + 1
   if (month < 10) {
     month = `0${month}`
