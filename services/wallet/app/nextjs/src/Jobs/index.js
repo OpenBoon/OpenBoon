@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
-import { colors, spacing } from '../Styles'
+import { colors } from '../Styles'
 import { ColumnStyle, createJobsData } from './helpers'
 import { jobs } from './__mocks__/jobs'
 
@@ -85,12 +85,16 @@ const Jobs = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <div className="DataQueue__container">
+      <div
+        className="DataQueue__container"
+        css={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
         <div
           className="DataQueue__title"
           css={{
             color: colors.grey2,
-            marginBottom: spacing.base,
           }}>
           {'DATA QUEUE'}
         </div>

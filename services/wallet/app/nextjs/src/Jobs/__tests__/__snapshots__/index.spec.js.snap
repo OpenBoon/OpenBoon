@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Jobs /> should render properly 1`] = `
-.emotion-20 {
+.emotion-27 {
   height: 100%;
   width: 100%;
   display: -webkit-box;
@@ -18,13 +18,34 @@ exports[`<Jobs /> should render properly 1`] = `
   align-items: center;
 }
 
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
 .emotion-0 {
   color: #B3B3B3;
-  margin-bottom: 8px;
+}
+
+.emotion-25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-19 {
   border-spacing: 0;
+  box-shadow: 0 0 4px #000;
+  margin: 8px 0;
 }
 
 .emotion-2 {
@@ -47,11 +68,77 @@ exports[`<Jobs /> should render properly 1`] = `
   display: flex;
 }
 
+.emotion-24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #4D4948;
+}
+
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-20 {
+  width: 40px;
+  height: 32px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #B3B3B3;
+  cursor: pointer;
+  background-color: #4D4948;
+}
+
+.emotion-21 {
+  width: 40px;
+  height: 32px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #B3B3B3;
+  cursor: pointer;
+  border: 1px solid #4D4948;
+}
+
 <div
-  className="DataQueue emotion-20"
+  className="DataQueue emotion-27"
 >
   <div
-    className="DataQueue__container"
+    className="DataQueue__container emotion-26"
   >
     <div
       className="DataQueue__title emotion-0"
@@ -61,119 +148,159 @@ exports[`<Jobs /> should render properly 1`] = `
     <div
       className="DataQueue__table"
     >
-      <table
-        className="emotion-19"
-        style={Object {}}
+      <div
+        className="emotion-25"
       >
-        <thead>
-          <tr
-            style={Object {}}
-          >
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Status
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Job Name
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Created By
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Priority
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Created (Date/TIme)
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Failed
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Errors
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                # Assets
-              </div>
-            </th>
-            <th
-              className="emotion-2"
-              colSpan={1}
-              style={Object {}}
-            >
-              <div
-                className="Header__title emotion-1"
-              >
-                Progress
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody
+        <table
+          className="emotion-19"
           style={Object {}}
-        />
-      </table>
+        >
+          <thead>
+            <tr
+              style={Object {}}
+            >
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Status
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Job Name
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Created By
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Priority
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Created (Date/TIme)
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Failed
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Errors
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  # Assets
+                </div>
+              </th>
+              <th
+                className="emotion-2"
+                colSpan={1}
+                style={Object {}}
+              >
+                <div
+                  className="Header__title emotion-1"
+                >
+                  Progress
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            style={Object {}}
+          />
+        </table>
+        <div
+          className="emotion-24"
+        >
+          <div>
+            Jobs: 1 of 0
+          </div>
+          <div>
+            Page:
+          </div>
+          <div
+            className="emotion-23"
+          >
+            <div
+              className="emotion-20"
+              disabled={true}
+              onClick={[Function]}
+            >
+              &lt;
+            </div>
+            <div
+              className="emotion-21"
+            >
+              1
+            </div>
+            <div>
+              of 0
+            </div>
+            <div
+              className="emotion-20"
+              disabled={true}
+              onClick={[Function]}
+            >
+              &gt;
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
