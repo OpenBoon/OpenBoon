@@ -1,6 +1,9 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.repository.KDaoFilter
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.StringListConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -112,3 +115,49 @@ class DataSourceCredentials(
     @ApiModelProperty("The SALT used to encrypt the credentials.", hidden = true)
     var salt: String? = null
 )
+
+@ApiModel("DataSource Filter", description = "A search filter for DataSources")
+class DataSourceFilter (
+
+    /**
+     * A list of unique Project IDs.
+     */
+    @ApiModelProperty("The DataSource IDs to match.")
+    val ids: List<UUID>? = null,
+
+    /**
+     * A list of unique Project names.
+     */
+    @ApiModelProperty("The DataSource names to match")
+    val names: List<String>? = null
+
+) : KDaoFilter()
+{
+    @JsonIgnore
+    override val sortMap: Map<String, String> = mapOf(
+        "name" to "datasource.str_name",
+        "timeCreated" to "datasource.time_created",
+        "timeModified" to "datasource.time_modified",
+        "id" to "pk_datasource")
+
+    @JsonIgnore
+    override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("name:asc")
+        }
+
+        addToWhere("datasource.pk_project=?")
+        addToValues(getProjectId())
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("datasource.pk_datasource", it.size))
+            addToValues(it)
+        }
+
+        names?.let {
+            addToWhere(JdbcUtils.inClause("datasource.str_name", it.size))
+            addToValues(it)
+        }
+    }
+}

@@ -225,6 +225,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             InternalTask(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_project") as UUID,
+                rs.getObject("pk_datasource") as UUID?,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")])
         }
@@ -233,6 +234,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             Task(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_project") as UUID,
+                rs.getObject("pk_datasource") as UUID?,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")],
                     rs.getString("str_host"),
@@ -290,7 +292,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task.pk_job," +
                 "task.str_name," +
                 "task.int_state, " +
-                "job.pk_project " +
+                "job.pk_project, " +
+                "job.pk_datasource " +
             "FROM " +
                 "task INNER JOIN job ON (task.pk_job = job.pk_job)"
 
@@ -336,8 +339,9 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "task_stat.int_asset_replace_count," +
                 "task_stat.int_asset_error_count," +
                 "task_stat.int_asset_warning_count," +
-            "job.pk_project " +
-                "FROM " +
+                "job.pk_project, " +
+                "job.pk_datasource " +
+            "FROM " +
                 "task " +
                 "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
                 "JOIN job ON task.pk_job = job.pk_job "

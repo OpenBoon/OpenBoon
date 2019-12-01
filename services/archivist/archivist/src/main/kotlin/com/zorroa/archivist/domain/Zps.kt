@@ -53,7 +53,7 @@ class ZpsScript(
     var type: JobType = JobType.Import,
 
     @ApiModelProperty("Settings for the run of this ZPS Script.")
-    var settings: MutableMap<String, Any>? = null
+    var settings: MutableMap<String, Any?>? = null
 
     ) {
     /**
@@ -63,7 +63,7 @@ class ZpsScript(
      * @param key: The name of the setting
      * @param value: value for the setting.
      */
-    fun setSettting(key: String, value: Any) {
+    fun setSettting(key: String, value: Any?) {
         if (settings == null) {
             settings = mutableMapOf()
         }
@@ -127,7 +127,7 @@ class ProcessorRef(
     var filters: List<ZpsFilter>? = mutableListOf(),
 
     @ApiModelProperty("File types to filter on.")
-    var fileTypes: Set<String>? = mutableSetOf(),
+    var fileTypes: List<String>? = mutableListOf(),
 
     @ApiModelProperty("Envrironment variables that should be present during processor execution.")
     val env: Map<String, String> = mutableMapOf()

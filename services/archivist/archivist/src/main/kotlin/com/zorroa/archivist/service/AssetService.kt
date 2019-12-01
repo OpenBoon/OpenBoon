@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetIdBuilder
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchAssetOpStatus
@@ -11,10 +12,10 @@ import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.IdGen
+import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.elastic.ElasticSearchErrorTranslator
 import com.zorroa.archivist.schema.ProxySchema
@@ -164,7 +165,7 @@ class AssetServiceImpl : AssetService {
         return proxies ?: ProxySchema()
     }
 
-    fun assetSpecToAsset(id: String, spec: AssetSpec): Asset {
+    fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
         val asset = Asset(id, spec.document ?: mutableMapOf())
 
         asset.setAttr("source.path", spec.uri)
@@ -177,6 +178,10 @@ class AssetServiceImpl : AssetService {
         asset.setAttr("source.subtype", mediaType.split("/")[1])
 
         asset.setAttr("system.projectId", getProjectId().toString())
+        task?.let {
+            asset.setAttr("system.dataSourceId", it.dataSourceId)
+            asset.setAttr("system.jobId", it.jobId)
+        }
         asset.setAttr(
             "system.timeCreated",
             java.time.Clock.systemUTC().instant().toString()
@@ -197,7 +202,7 @@ class AssetServiceImpl : AssetService {
 
         for ((idx, mpfile) in req.files.withIndex()) {
             val spec = req.assets[idx]
-            val id = IdGen.getId(spec.uri + randomString(16))
+            val id = AssetIdBuilder(spec, randomString(16)).build()
 
             val asset = assetSpecToAsset(id, spec)
             val storageSpec = FileStorageSpec("asset", asset.id, mpfile.originalFilename)
@@ -251,7 +256,8 @@ class AssetServiceImpl : AssetService {
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
         val assets = request.assets.map { spec ->
-            assetSpecToAsset(IdGen.getId(spec.uri), spec)
+            val id = AssetIdBuilder(spec).dataSource(request.task?.dataSourceId).build()
+            assetSpecToAsset(id, spec, request.task)
         }
 
         assets.forEach {
@@ -345,11 +351,8 @@ class AssetServiceImpl : AssetService {
     }
 
     fun createAnalysisJob(assets: List<Asset>): Job {
-        val execute = listOf(
-            ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core")
-        )
         val name = "Analyze ${assets.size} created assets"
-        val script = ZpsScript(name, null, assets, execute)
+        val script = ZpsScript(name, null, assets, STANDARD_PIPELINE)
         val spec = JobSpec(name, script)
 
         return jobService.create(spec)

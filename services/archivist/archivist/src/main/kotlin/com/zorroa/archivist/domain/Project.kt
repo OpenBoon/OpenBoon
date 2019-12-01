@@ -74,7 +74,7 @@ class ProjectFilter (
     /**
      * A list of unique Project IDs.
      */
-    @ApiModelProperty("The ApiKey IDs to match.")
+    @ApiModelProperty("The Project IDs to match.")
     val ids: List<UUID>? = null,
 
     /**

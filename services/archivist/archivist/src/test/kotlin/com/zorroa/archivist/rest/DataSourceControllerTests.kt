@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.DataSourceCredentials
+import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.service.DataSourceService
 import com.zorroa.archivist.util.Json
@@ -48,6 +49,42 @@ class DataSourceControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.uri", CoreMatchers.equalTo(testSpec.uri)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(testSpec.name)))
+            .andReturn()
+    }
+
+
+    @Test
+    fun testFindOne() {
+        val ds = dataSourceService.create(testSpec)
+        val filter = DataSourceFilter(ids=listOf(ds.id))
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/data-sources/_findOne")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(filter))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.uri", CoreMatchers.equalTo(testSpec.uri)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(testSpec.name)))
+            .andReturn()
+    }
+
+
+    @Test
+    fun testFind() {
+        val ds = dataSourceService.create(testSpec)
+        val filter = DataSourceFilter(ids=listOf(ds.id))
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/data-sources/_find")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(filter))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].uri", CoreMatchers.equalTo(testSpec.uri)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(testSpec.name)))
             .andReturn()
     }
 

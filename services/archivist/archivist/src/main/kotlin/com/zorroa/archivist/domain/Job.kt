@@ -63,6 +63,14 @@ class JobSpec(
     @ApiModelProperty("ZPS Script this Job will run.")
     var script: ZpsScript?,
 
+    /**
+     * Cannot be specified from external source, can only be set
+     * by the DataSourceService.
+     */
+    @JsonIgnore
+    @ApiModelProperty("Unique ID of the DataSource, if any.", hidden = true)
+    var dataSourceId: UUID? = null,
+
     @ApiModelProperty("Args to run the ZPS script with.")
     val args: MutableMap<String, Any>? = mutableMapOf(),
 
@@ -113,6 +121,9 @@ class Job(
 
     @ApiModelProperty("UUID of the Organization this Job belongs to.")
     val projectId: UUID,
+
+    @ApiModelProperty("Unique ID of the DataSource, if any.")
+    var dataSourceId: UUID?,
 
     @ApiModelProperty("Name of the Job.")
     val name: String,
@@ -175,7 +186,10 @@ class JobFilter(
     val names: List<String>? = null,
 
     @ApiModelProperty("Paused status to match.")
-    val paused: Boolean? = null
+    val paused: Boolean? = null,
+
+    @ApiModelProperty("The DataSource Ids to match")
+    val datasourceIds: List<UUID>? = null
 
 ) : KDaoFilter() {
 
@@ -188,7 +202,8 @@ class JobFilter(
             "timeCreated" to "job.time_created",
             "state" to "job.int_state",
             "priority" to "job.int_priority",
-            "projectId" to "job.pk_project"
+            "projectId" to "job.pk_project",
+            "dataSourceId" to "job.pk_datasource"
         )
 
     @JsonIgnore
@@ -203,6 +218,11 @@ class JobFilter(
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("job.pk_job", it.size))
+            addToValues(it)
+        }
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("job.pk_datasource", it.size))
             addToValues(it)
         }
 

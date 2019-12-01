@@ -65,7 +65,10 @@ interface TaskId {
  * @property name The [Task] name
  * @property state The current [TaskState] of the [Task]
  */
-@ApiModel("InternalTask", description = "An InternalTask implementation has enough properties to accomplish any internal operations but isn't intended for client use.")
+@ApiModel(
+    "InternalTask",
+    description = "An InternalTask implementation has enough properties to accomplish any internal operations but isn't intended for client use."
+)
 open class InternalTask(
     @ApiModelProperty("The unique ID of the Task.")
     override val taskId: UUID,
@@ -73,6 +76,8 @@ open class InternalTask(
     override val jobId: UUID,
     @ApiModelProperty("UUID of the Project this Task belongs to.")
     val projectId: UUID,
+    @ApiModelProperty("The DataSource this task is processing.")
+    val dataSourceId: UUID?,
     @ApiModelProperty("name The [Task] name")
     val name: String,
     @ApiModelProperty("The current [TaskState] of the [Task]")
@@ -103,6 +108,8 @@ open class Task(
 
     projectId: UUID,
 
+    dataSourceId: UUID?,
+
     name: String,
 
     state: TaskState,
@@ -125,7 +132,7 @@ open class Task(
     @ApiModelProperty("Counters for the total number of assets created, updated, etc.")
     val assetCounts: Map<String, Int>
 
-) : InternalTask(id, jobId, projectId, name, state)
+) : InternalTask(id, jobId, projectId, dataSourceId, name, state)
 
 /**
  * A DispatchTask is used by the Analysts to start a new task.
@@ -142,6 +149,7 @@ class DispatchTask(
     val id: UUID,
     jobId: UUID,
     projectId: UUID,
+    dataSourceId: UUID?,
     name: String,
     state: TaskState,
     val host: String?,
@@ -153,7 +161,7 @@ class DispatchTask(
     var args: MutableMap<String, Any>,
     @ApiModelProperty("The path to the Task log file.")
     var logFile: String? = null
-) : InternalTask(id, jobId, projectId, name, state), TaskId {
+) : InternalTask(id, jobId, projectId, dataSourceId, name, state), TaskId {
 
     override val taskId = id
 }
@@ -164,6 +172,9 @@ class TaskFilter(
     @ApiModelProperty("Task UUIDs to match.")
     val ids: List<UUID>? = null,
 
+    @ApiModelProperty("DataSource UUIDs to match.")
+    val dataSourceIds: List<UUID>? = null,
+
     @ApiModelProperty("States to match.")
     val states: List<TaskState>? = null,
 
@@ -171,10 +182,7 @@ class TaskFilter(
     val jobIds: List<UUID>? = null,
 
     @ApiModelProperty("Task names to match.")
-    val names: List<String>? = null,
-
-    @ApiModelProperty("Project UUIDs to match.")
-    val projectIds: List<UUID>? = null
+    val names: List<String>? = null
 
 ) : KDaoFilter() {
 
@@ -199,6 +207,11 @@ class TaskFilter(
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("task.pk_task", it.size))
+            addToValues(it)
+        }
+
+        dataSourceIds?.let {
+            addToWhere(JdbcUtils.inClause("job.pk_datasource", it.size))
             addToValues(it)
         }
 

@@ -3,9 +3,12 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceCredentials
+import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.repository.DataSourceJdbcDao
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.service.DataSourceService
 import com.zorroa.archivist.util.RestUtils
@@ -25,34 +28,49 @@ import java.util.UUID
 
 @RestController
 class DataSourceController(
-    val dataSourceService: DataSourceService
+    val dataSourceService: DataSourceService,
+    val dataSourceJdbcDao: DataSourceJdbcDao
 ) {
 
     @ApiOperation("Create a DataSource")
+    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @PostMapping("/api/v1/data-sources")
-    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
     fun create(@ApiParam("Create a new data set.") @RequestBody spec: DataSourceSpec): DataSource {
         return dataSourceService.create(spec)
     }
 
     @ApiOperation("Get a DataSource by id.")
+    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @GetMapping("/api/v1/data-sources/{id}")
-    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
     fun get(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): DataSource {
         return dataSourceService.get(id)
     }
 
+    @ApiOperation("Get a DataSource by id.")
+    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
+    @PostMapping("/api/v1/data-sources/_find")
+    fun find(@RequestBody(required = false) filter: DataSourceFilter?): KPagedList<DataSource> {
+        return dataSourceJdbcDao.find(filter ?: DataSourceFilter())
+    }
+
+    @ApiOperation("Get a DataSource by id.")
+    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
+    @PostMapping("/api/v1/data-sources/_findOne")
+    fun findOne(@RequestBody(required = false) filter: DataSourceFilter?): DataSource {
+        return dataSourceJdbcDao.findOne(filter ?: DataSourceFilter())
+    }
+
     @ApiOperation("Import assets from a DataSource.")
+    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @PostMapping("/api/v1/data-sources/{id}/_import")
-    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
     fun importAssets(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): Job {
         val ds = dataSourceService.get(id)
         return dataSourceService.createAnalysisJob(ds)
     }
 
     @ApiOperation("Update or remove DataSource credentials.")
+    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @PutMapping("/api/v1/data-sources/{id}/_credentials")
-    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
     fun updateCredentials(
         @ApiParam("The DataSource Id") @PathVariable id: UUID,
         @ApiParam("A credentials blob") @RequestBody creds: DataSourceCredentials
@@ -64,8 +82,8 @@ class DataSourceController(
     }
 
     @ApiOperation("Get DataSource credentials.  Only obtainable by a JobRunner key.", hidden = true)
-    @GetMapping("/api/v1/data-sources/{id}/_credentials")
     @PreAuthorize("hasAuthority('JobRunner')")
+    @GetMapping("/api/v1/data-sources/{id}/_credentials")
     fun getCredentials(
         @ApiParam("The DataSource Id") @PathVariable id: UUID
     ): DataSourceCredentials {

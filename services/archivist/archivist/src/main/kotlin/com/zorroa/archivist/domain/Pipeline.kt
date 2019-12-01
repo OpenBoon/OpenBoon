@@ -104,3 +104,13 @@ data class PipelineFilter(
         }
     }
 }
+
+/**
+ * TODO: replace with configuration file.
+ *
+ * This is the basic pipeline we're running for now until we
+ * get into the Analysis dev phase.
+ */
+val STANDARD_PIPELINE = listOf(
+    ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core")
+)
