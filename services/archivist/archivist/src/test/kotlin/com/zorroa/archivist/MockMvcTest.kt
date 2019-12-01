@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
 import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
@@ -50,7 +51,24 @@ abstract class MockMvcTest : AbstractTest() {
             .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain)
             .build()
 
-        Mockito.`when`(authServerClient.authenticate(any())).then {
+        /**
+         * When using the 'job()' method to authenticate in a controller test,
+         * this will be your PixmlActor.
+         */
+        Mockito.`when`(authServerClient.authenticate(eq("JOBRUNNER"))).then {
+            ZmlpUser(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                project.id,
+                "JobRunner",
+                listOf(Role.JOBRUNNER)
+            )
+        }
+
+        /**
+         * When using the 'admin()' method to authenticate in a controller test,
+         * this will be your PixmlActor.
+         */
+        Mockito.`when`(authServerClient.authenticate(eq("ADMIN"))).then {
             ZmlpUser(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 project.id,
@@ -125,9 +143,16 @@ abstract class MockMvcTest : AbstractTest() {
      */
     protected fun admin(): HttpHeaders {
         val headers = HttpHeaders()
-        headers["Authorization"] = "Bearer 123"
+        headers["Authorization"] = "Bearer ADMIN"
         return headers
     }
+
+    protected fun job(): HttpHeaders {
+        val headers = HttpHeaders()
+        headers["Authorization"] = "Bearer JOBRUNNER"
+        return headers
+    }
+
 
     protected fun analyst(): MockHttpSession {
         return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
