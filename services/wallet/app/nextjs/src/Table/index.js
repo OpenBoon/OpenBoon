@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useTable, usePagination } from 'react-table'
 import { css } from '@emotion/core'
 import { colors, spacing } from '../Styles'
-import { getPagination } from './helpers'
+import { getPageDescription } from './helpers'
 
 const Table = ({ columns, data }) => {
   const {
@@ -117,7 +117,7 @@ const Table = ({ columns, data }) => {
           color: colors.grey5,
         }}>
         <div>
-          {getPagination(
+          {getPageDescription(
             pageSize,
             pageIndex,
             page.length,
@@ -137,7 +137,11 @@ const Table = ({ columns, data }) => {
             css={{ ...paginationBoxCSS, border: `1px solid ${colors.grey5}` }}>
             {pageIndex + 1}
           </div>
-          <div css={{ ...paginationBoxCSS }}>{`of ${pageOptions.length}`}</div>
+          <div
+            css={{
+              ...paginationBoxCSS,
+              color: colors.grey5,
+            }}>{`of ${pageOptions.length}`}</div>
           <div
             onClick={() => nextPage()}
             disabled={!canNextPage}
