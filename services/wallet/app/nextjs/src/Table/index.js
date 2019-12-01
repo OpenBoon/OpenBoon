@@ -53,20 +53,20 @@ const Table = ({ columns, data }) => {
         background-color: ${isHovered && colors.grey1};
         border: 1px solid transparent;
 
-        :first-child {
+        :first-of-type {
           border-top: ${isHovered && `1px solid ${colors.grey5}`};
           border-left: ${isHovered && `1px solid ${colors.grey5}`};
           border-bottom: ${isHovered && `1px solid ${colors.grey5}`};
         }
 
-        :last-child {
+        :last-of-type {
           border-top: ${isHovered && `1px solid ${colors.grey5}`};
           border-right: ${isHovered && `1px solid ${colors.grey5}`};
           border-bottom: ${isHovered && `1px solid ${colors.grey5}`};
         }
 
-        :not(:first-child),
-        :not(:last-child) {
+        :not(:first-of-type),
+        :not(:last-of-type) {
           border-top: ${isHovered && `1px solid ${colors.grey5}`};
           border-bottom: ${isHovered && `1px solid ${colors.grey5}`};
         }
