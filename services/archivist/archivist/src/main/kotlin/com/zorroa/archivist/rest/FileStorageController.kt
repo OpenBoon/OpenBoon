@@ -4,7 +4,7 @@ import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.FileStat
+import com.zorroa.archivist.domain.FileStat
 import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.ImageService
 import io.micrometer.core.annotation.Timed
