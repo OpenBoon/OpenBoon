@@ -137,7 +137,7 @@ const Table = ({ columns, data }) => {
             css={{ ...paginationBoxCSS, border: `1px solid ${colors.grey5}` }}>
             {pageIndex + 1}
           </div>
-          <div>{`of ${pageOptions.length}`}</div>
+          <div css={{ ...paginationBoxCSS }}>{`of ${pageOptions.length}`}</div>
           <div
             onClick={() => nextPage()}
             disabled={!canNextPage}
