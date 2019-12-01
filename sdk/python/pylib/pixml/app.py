@@ -1,10 +1,9 @@
 import base64
 import logging
 import os
-from functools import lru_cache
 
 from .asset import AssetApp
-from .cache import LocalFileCache
+from .datasource import DataSourceApp
 from .rest import PixmlClient
 
 logger = logging.getLogger(__name__)
@@ -28,25 +27,8 @@ class PixmlApp(object):
         logger.debug("Initializing PixmlApp to {}".format(server))
         self.client = PixmlClient(apikey, server or
                                   os.environ.get("PIXML_SERVER", DEFAULT_SERVER))
-        self.cache = LocalFileCache(self)
         self.assets = AssetApp(self)
-
-
-@lru_cache(maxsize=32)
-def get_app_cached(apikey, server):
-    """
-    Return a possibly cached PixmlApp instance.  The caching system
-    allows app_from_env() to be called from different parts of an
-    application which share the same local file cache.
-
-    Args:
-        apikey (str): The api key
-        server (str): The server url.
-
-    Returns:
-        PixmlApp: A PixmlApp instance.
-    """
-    return PixmlApp(apikey, server)
+        self.datasource = DataSourceApp(self)
 
 
 def app_from_env():
@@ -70,6 +52,6 @@ def app_from_env():
     elif 'PIXML_APIKEY_FILE' in os.environ:
         with open(os.environ['PIXML_APIKEY_FILE'], 'rb') as fp:
             apikey = base64.b64encode(fp.read())
-    return get_app_cached(apikey, os.environ.get('PIXML_SERVER'))
+    return PixmlApp(apikey, os.environ.get('PIXML_SERVER'))
 
 

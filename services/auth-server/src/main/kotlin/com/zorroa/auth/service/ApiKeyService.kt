@@ -3,13 +3,12 @@ package com.zorroa.auth.service
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
+import com.zorroa.auth.domain.KeyGenerator
 import com.zorroa.auth.repository.ApiKeyRepository
 import com.zorroa.auth.repository.ApiKeySearchRepository
 import com.zorroa.auth.security.getProjectId
 import org.springframework.stereotype.Service
-import java.util.Base64
 import java.util.UUID
-import java.util.concurrent.ThreadLocalRandom
 
 interface ApiKeyService {
 
@@ -59,14 +58,5 @@ class ApiKeyServiceImpl constructor(
 
     override fun delete(apiKey: ApiKey) {
         apiKeyRepository.delete(apiKey)
-    }
-}
-
-object KeyGenerator {
-    fun generate(): String {
-        val random = ThreadLocalRandom.current()
-        val r = ByteArray(48)
-        random.nextBytes(r)
-        return Base64.getUrlEncoder().encodeToString(r).trimEnd('=')
     }
 }

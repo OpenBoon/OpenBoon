@@ -45,6 +45,13 @@ interface ProjectService {
      * Find a single project with supplied [ProjectFilter]
      */
     fun findOne(filter: ProjectFilter): Project
+
+    /**
+     * Return the project's credentials key.  Use care if/when rotating this
+     * key, any stored data would first have to be decrypted with the
+     * old key.
+     */
+    fun getCredentialsKey() : String
 }
 
 @Service
@@ -53,9 +60,7 @@ class ProjectServiceImpl constructor(
     val projectDao: ProjectDao,
     val projectFilterDao: ProjectFilterDao,
     val authServerClient: AuthServerClient,
-    val indexRoutingService: IndexRoutingService,
-    val txEvent: TransactionEventManager
-
+    val indexRoutingService: IndexRoutingService
 ) : ProjectService {
 
     override fun create(spec: ProjectSpec): Project {
@@ -100,6 +105,13 @@ class ProjectServiceImpl constructor(
                 Perm.STORAGE_CREATE
             )
         )
+    }
+
+    override fun getCredentialsKey() : String {
+        // TODO: implement per project credentials key
+        // This is a temp solution until we have a place (not in the database)
+        // to store keys.
+        return "823d581fecb92a048812c78ff7257b7b23b0fd668e4bcef34916c04a5aa970db"
     }
 
     override fun get(id: UUID): Project {

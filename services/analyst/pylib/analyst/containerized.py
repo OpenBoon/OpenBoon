@@ -86,7 +86,7 @@ class ContainerizedZpsExecutor(object):
         Iterate over the generators and execute each one.
         """
         generators = self.script.get("generate", [])
-        file_types = self.script.get("settings", {}).get("fileTypes", [])
+        settings = self.script.get("settings", {})
 
         logger.info("running {} processors in generate".format(len(generators)))
 
@@ -103,7 +103,7 @@ class ContainerizedZpsExecutor(object):
                 # Run containerized generator
                 if not self.container:
                     self.container = DockerContainerProcess(self, self.task, proc["image"])
-                self.container.execute_generator(proc, file_types)
+                self.container.execute_generator(proc, settings)
 
                 # Tear down the processor, optionally keeping the container
                 # if its needed again.
@@ -252,15 +252,12 @@ class DockerContainerProcess(object):
             host = "host.docker.internal"
 
         volumes = {
-            '/tmp':  {'bind': '/tmp', 'mode': 'rw'},
-            'zmlp-config':
-                  {'bind': '/zmlp-config', 'mode': 'ro'}
+            '/tmp':  {'bind': '/tmp', 'mode': 'rw'}
         }
 
         env = self.task.get("env", {})
         env.update({
             'ZMLP_EVENT_HOST': 'tcp://{}:{}'.format(host, self.port),
-            'GOOGLE_APPLICATION_CREDENTIALS': '/zmlp-config/gcp-service-account.json',
             'PIXML_SERVER': os.environ.get("PIXML_SERVER")
         })
 
@@ -328,7 +325,7 @@ class DockerContainerProcess(object):
         # Emit the teardown event.
         self.client.emit_event(self.task, rsp["type"], rsp["payload"])
 
-    def execute_generator(self, ref, file_types):
+    def execute_generator(self, ref, settings):
         """
         Execute a single generator with the file_types filter.
 
@@ -338,14 +335,14 @@ class DockerContainerProcess(object):
 
         Args:
             ref (dict): The Processor reference.
-            file_types (list): A list of file types
+            settings (list): A dictionary of global script settings.
 
         """
         request = {
             "type": "generate",
             "payload": {
                 "ref": ref,
-                "file_types": file_types
+                "settings": settings
             }
         }
         self.socket.send_json(request)

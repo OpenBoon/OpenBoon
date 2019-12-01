@@ -103,6 +103,26 @@ CREATE TABLE project (
 CREATE UNIQUE INDEX project_str_name_idx ON project USING btree (str_name);
 
 --
+-- Name: dataset;
+--
+CREATE TABLE datasource (
+     pk_datasource uuid PRIMARY KEY,
+     pk_project uuid NOT NULL REFERENCES project (pk_project),
+     str_name  varchar(64) NOT NULL,
+     str_uri text NOT NULL,
+     str_credentials text,
+     str_salt text,
+     str_file_types text,
+     str_analysis text,
+     time_created  bigint NOT NULL,
+     time_modified bigint NOT NULL,
+     actor_created text NOT NULL,
+     actor_modified text NOT NULL
+);
+
+CREATE UNIQUE INDEX datasource_str_name_idx ON datasource USING btree (str_name);
+
+--
 -- Name: analyst;
 --
 
@@ -180,6 +200,7 @@ CREATE UNIQUE INDEX index_route_project_state_idx_uniq ON index_route USING btre
 CREATE TABLE job (
     pk_job uuid PRIMARY KEY,
     pk_project uuid NOT NULL REFERENCES project (pk_project),
+    pk_datasource uuid REFERENCES datasource (pk_datasource),
     str_name text NOT NULL,
     int_type smallint DEFAULT 0 NOT NULL,
     int_state smallint DEFAULT 0 NOT NULL,
@@ -187,8 +208,8 @@ CREATE TABLE job (
     json_args text DEFAULT '{}'::text NOT NULL,
     json_env text DEFAULT '{}'::text NOT NULL,
     int_priority smallint DEFAULT 0 NOT NULL,
-    time_created bigint DEFAULT '1536693258000'::bigint NOT NULL,
-    time_modified bigint DEFAULT '1536693258000'::bigint NOT NULL,
+    time_created bigint NOT NULL,
+    time_modified bigint NOT NULL,
     time_pause_expired bigint DEFAULT '-1'::integer NOT NULL,
     bool_paused boolean DEFAULT false NOT NULL
 );
@@ -200,6 +221,8 @@ CREATE INDEX job_time_created_idx ON job USING btree (time_created);
 CREATE INDEX job_time_started_idx ON job USING btree (time_started);
 CREATE INDEX job_type_idx ON job USING btree (int_type);
 CREATE INDEX job_pk_project_idx ON job USING btree(pk_project);
+CREATE INDEX job_pk_datasource_idx ON job USING btree(pk_datasource);
+
 
 --
 -- Name: job_count;

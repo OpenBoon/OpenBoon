@@ -8,6 +8,7 @@ from pathlib2 import Path
 
 from pixml import Clip, AssetImport
 from pixml.analysis import AssetBuilder, Argument, ExpandFrame
+from pixml.analysis.storage import file_cache
 from ..util.media import get_image_metadata, set_resolution_attrs
 
 
@@ -40,7 +41,7 @@ class ImageImporter(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        path = Path(self.app.cache.localize_remote_file(asset))
+        path = Path(file_cache.localize_remote_file(asset))
         metadata = get_image_metadata(path)
         set_resolution_attrs(asset, int(metadata.get('full_width')), int(metadata.get('full_height')))
         self.set_location(asset, metadata)

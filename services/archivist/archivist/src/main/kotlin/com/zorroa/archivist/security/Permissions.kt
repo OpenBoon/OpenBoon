@@ -9,12 +9,17 @@ object Role {
     val SUPERADMIN = "SuperAdmin"
 
     /**
-     * Project admins can launch jobs, create pipelines, etc.
+     * Project admins can do anything to a [Project]
      */
     val PROJADMIN = "ProjectAdmin"
 
     /**
-     * Project admins can launch jobs, create pipelines, etc.
+     * DataAdmins admins can launch jobs, create pipelines, create data sources, import assets.
+     */
+    val DATAADMIN = "DataAdmin"
+
+    /**
+     * Job runners can access endpoints specific for jobs.
      */
     val JOBRUNNER = "JobRunner"
 }
