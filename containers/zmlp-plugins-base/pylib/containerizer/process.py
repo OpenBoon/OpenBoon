@@ -3,7 +3,6 @@ import json
 import logging
 import sys
 import time
-import re
 import os
 
 from pixml.asset import Asset
@@ -22,13 +21,15 @@ class ProcessorExecutor(object):
         self.processors = {}
 
     def execute_generator(self, request):
-        ref = request["ref"]
-        file_types = request.get("file_types", [])
+        logger.info('--Generating------------')
+        logger.info(json.dumps(request, indent=4))
+        logger.info('------------------------')
 
-        logger.info("generating processor='{}'".format(ref["className"]))
+        ref = request["ref"]
+        settings = request.get("settings", {})
 
         wrapper = self.get_processor_wrapper(ref)
-        wrapper.generate(file_types)
+        wrapper.generate(settings)
 
     def execute_processor(self, request):
         """
@@ -41,12 +42,13 @@ class ProcessorExecutor(object):
         Returns:
             The processed data object.
         """
+        logger.info('--Processing------------')
+        logger.info(json.dumps(request, indent=4))
+        logger.info('------------------------')
+
         ref = request["ref"]
         obj = request.get("asset")
         frame = Frame(Asset(obj))
-
-        logger.info("executing processor='{}' on asset={}'"
-                    .format(ref["className"], obj))
 
         wrapper = self.get_processor_wrapper(ref)
         wrapper.process(frame)
@@ -177,9 +179,8 @@ class ProcessorWrapper(object):
                                               self.ref.get("args") or {}, {}))
             self.instance.init()
 
-    def generate(self, file_types):
-        logger.info("generating file_types=%s" % file_types)
-        consumer = AssetConsumer(self.reactor, file_types)
+    def generate(self, settings):
+        consumer = AssetConsumer(self.reactor, settings)
         start_time = time.monotonic()
         try:
             if self.instance:
@@ -288,7 +289,7 @@ class AssetConsumer(object):
     held for expand or processed inline.
 
     """
-    def __init__(self, reactor, file_types):
+    def __init__(self, reactor, settings):
         """
         Create a new AssetConsumer instance.
 
@@ -298,7 +299,8 @@ class AssetConsumer(object):
 
         """
         self.reactor = reactor
-        self.file_types = {ft.lower() for ft in file_types}
+        self.file_types = {ft.lower() for ft in settings.get("fileTypes", [])}
+        self.batch_size = int(settings.get("batchSize", reactor.default_batch_size))
         self.frame_count = 0
         self.execute_count = 0
         self.expand_count = 0
@@ -328,7 +330,7 @@ class AssetConsumer(object):
 
         """
         waiting = len(self.expand)
-        if waiting > 0 and (waiting >= self.reactor.batch_size or force):
+        if waiting > 0 and (waiting >= self.batch_size or force):
             assets = [asset.for_json() for asset in self.expand]
             self.expand_count += 1
 

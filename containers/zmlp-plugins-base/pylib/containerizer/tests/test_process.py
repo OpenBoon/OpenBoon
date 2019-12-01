@@ -90,7 +90,7 @@ class TestAssetConsumer(unittest.TestCase):
     def setUp(self):
         self.emitter = TestEventEmitter()
         self.reactor = Reactor(self.emitter)
-        self.consumer = AssetConsumer(self.reactor, ["jpg", "mp4"])
+        self.consumer = AssetConsumer(self.reactor, {"fileTypes": ["jpg", "mp4"]})
 
     def testAccept(self):
         asset1 = TestAsset("gs://foo/bar/bing.jpg")
@@ -100,7 +100,7 @@ class TestAssetConsumer(unittest.TestCase):
         assert not self.consumer.accept(asset2)
 
     def testExpand(self):
-        self.reactor.batch_size = 2
+        self.consumer.batch_size = 2
         asset1 = TestAsset("gs://foo/bar/bing.jpg")
         assert self.consumer.accept(asset1)
         assert len(self.consumer.expand) == 1
