@@ -3,7 +3,25 @@ import { css } from '@emotion/core'
 import { colors, spacing } from '../Styles'
 
 const ProgressBar = ({ status }) => {
-  const { succeeded, failed, running, pending } = status
+  const {
+    isGenerating,
+    isCanceled,
+    canceledBy,
+    succeeded,
+    failed,
+    running,
+    pending,
+  } = status
+
+  if (isGenerating) {
+    return <div css={{ color: colors.blue1 }}>{'[ICON] Generating'}</div>
+  }
+
+  if (isCanceled) {
+    return (
+      <div css={{ color: colors.grey5 }}>{`Canceled by: ${canceledBy}`}</div>
+    )
+  }
 
   const containerCSS = css`
      {
@@ -73,6 +91,9 @@ const ProgressBar = ({ status }) => {
 
 ProgressBar.propTypes = {
   status: PropTypes.shape({
+    isGenerating: PropTypes.bool,
+    isCanceled: PropTypes.bool,
+    canceledBy: PropTypes.string,
     succeeded: PropTypes.number,
     failed: PropTypes.number,
     running: PropTypes.number,

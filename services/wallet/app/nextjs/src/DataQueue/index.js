@@ -57,7 +57,6 @@ const DataQueue = () => {
           }
           return ColumnStyle({ color: 'red' }, value)
         },
-        width: 50,
       },
       {
         Header: '# Assets',

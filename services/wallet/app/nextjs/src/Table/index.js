@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useTable, usePagination } from 'react-table'
+import { useTable, useRowState, usePagination } from 'react-table'
 import { css } from '@emotion/core'
 import { colors, spacing } from '../Styles'
 import { getPageDescription } from './helpers'
@@ -23,7 +23,11 @@ const Table = ({ columns, data }) => {
     nextPage,
     canPreviousPage,
     canNextPage,
-  } = useTable({ columns, data, initialState: { pageSize: 5 } }, usePagination)
+  } = useTable(
+    { columns, data, initialState: { pageSize: 5 } },
+    useRowState,
+    usePagination,
+  )
 
   const thCSS = css`
      {
@@ -39,14 +43,36 @@ const Table = ({ columns, data }) => {
     }
   `
 
-  const tdCSS = css`
-     {
-      height: ${spacing.spacious}px;
-      font-weight: 200;
-      color: ${colors.grey2};
-      padding: ${spacing.base}px ${spacing.normal}px;
-    }
-  `
+  const tdCSS = isHovered => {
+    return css`
+       {
+        height: ${spacing.spacious}px;
+        font-weight: 200;
+        color: ${colors.grey2};
+        padding: ${spacing.base}px ${spacing.normal}px;
+        background-color: ${isHovered && colors.grey1};
+        border: 1px solid transparent;
+
+        :first-child {
+          border-top: ${isHovered && `1px solid ${colors.grey5}`};
+          border-left: ${isHovered && `1px solid ${colors.grey5}`};
+          border-bottom: ${isHovered && `1px solid ${colors.grey5}`};
+        }
+
+        :last-child {
+          border-top: ${isHovered && `1px solid ${colors.grey5}`};
+          border-right: ${isHovered && `1px solid ${colors.grey5}`};
+          border-bottom: ${isHovered && `1px solid ${colors.grey5}`};
+        }
+
+        :not(:first-child),
+        :not(:last-child) {
+          border-top: ${isHovered && `1px solid ${colors.grey5}`};
+          border-bottom: ${isHovered && `1px solid ${colors.grey5}`};
+        }
+      }
+    `
+  }
 
   const trCSS = css`
      {
@@ -104,11 +130,23 @@ const Table = ({ columns, data }) => {
             prepareRow(row)
             const { key, ...rest } = row.getRowProps()
             return (
-              <tr key={key} {...rest} css={trCSS}>
+              <tr
+                key={key}
+                css={trCSS}
+                onMouseEnter={() => {
+                  row.setState({ isHovered: true })
+                }}
+                onMouseLeave={() => {
+                  row.setState({ isHovered: false })
+                }}
+                {...rest}>
                 {row.cells.map(cell => {
                   const { key, ...rest } = cell.getCellProps()
                   return (
-                    <td key={key} {...rest} css={tdCSS}>
+                    <td
+                      key={key}
+                      {...rest}
+                      css={tdCSS(cell.row.state.isHovered)}>
                       {cell.render('Cell')}
                     </td>
                   )
