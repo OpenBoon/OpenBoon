@@ -7,9 +7,11 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import java.util.Base64
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
+import java.util.concurrent.ThreadLocalRandom
 import javax.persistence.AttributeConverter
 import javax.persistence.Column
 import javax.persistence.Convert
@@ -188,3 +190,15 @@ class ApiKeyFilter(
     @ApiModelProperty("The key names to match")
     val names: List<String>? = null
 )
+
+/**
+ * Generates API signing keys.
+ */
+object KeyGenerator {
+    fun generate(): String {
+        val random = ThreadLocalRandom.current()
+        val r = ByteArray(64)
+        random.nextBytes(r)
+        return Base64.getUrlEncoder().encodeToString(r).trimEnd('=')
+    }
+}
