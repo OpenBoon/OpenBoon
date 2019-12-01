@@ -32,15 +32,15 @@ class TetCloudUtilFunction(TestCase):
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch.object(PixmlClient, 'get')
-    def test_get_google_storage_client_dataset(self, get_patch):
+    def test_get_google_storage_client_creds_file(self, get_patch):
         with open("fake_gcs_account.json", "r") as fp:
             gcs_creds = json.load(fp)
 
         get_patch.return_value = gcs_creds
-        os.environ['PIXML_DATASET_ID'] = "abc123"
+        os.environ['PIXML_DATASOURCE_ID'] = "abc123"
         try:
             client = get_google_storage_client()
             assert "fake_service_account@zorroa-deploy.iam.gserviceaccount.com" == \
                    client._credentials._service_account_email
         finally:
-            del os.environ['PIXML_DATASET_ID']
+            del os.environ['PIXML_DATASOURCE_ID']

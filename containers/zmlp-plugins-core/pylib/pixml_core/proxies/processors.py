@@ -9,8 +9,7 @@ from pathlib2 import Path
 
 import pixml
 from pixml.analysis import AssetBuilder, Argument
-from pixml.analysis.storage import file_cache
-from pixml.analysis.util import add_proxy_file
+from pixml.analysis.storage import file_cache, add_proxy_file
 from pixml_core.util.media import get_output_dimension, media_size
 
 
