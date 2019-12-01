@@ -1,3 +1,4 @@
+import json
 
 from google.cloud import storage as gcs
 from google.oauth2 import service_account
@@ -36,10 +37,10 @@ def get_google_storage_client():
     datasource = AnalysisEnv.get_datasource_id()
     if datasource:
         app = app_from_env()
-        creds = app.client.get(
-            "/api/v1/datasources/{}/_credentials".format(datasource))
-        gcp_creds = service_account.Credentials.from_service_account_info(creds)
-        return gcs.Client(project=creds["project_id"], credentials=gcp_creds)
+        creds = app.client.get('/api/v1/data-sources/{}/_credentials'.format(datasource))
+        blob = json.loads(creds['blob'])
+        gcp_creds = service_account.Credentials.from_service_account_info(blob)
+        return gcs.Client(project=blob['project_id'], credentials=gcp_creds)
     else:
         try:
             return gcs.Client()

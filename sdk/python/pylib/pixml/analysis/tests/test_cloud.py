@@ -32,9 +32,9 @@ class TetCloudUtilFunction(TestCase):
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch.object(PixmlClient, 'get')
-    def test_get_google_storage_client_creds_file(self, get_patch):
+    def test_get_google_storage_client_datasource(self, get_patch):
         with open("fake_gcs_account.json", "r") as fp:
-            gcs_creds = json.load(fp)
+            gcs_creds = {'blob': fp.read()}
 
         get_patch.return_value = gcs_creds
         os.environ['PIXML_DATASOURCE_ID'] = "abc123"
