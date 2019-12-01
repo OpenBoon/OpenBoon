@@ -22,6 +22,9 @@ class TaskError(
     @ApiModelProperty("UUID of the Job the Task belongs to.")
     val jobId: UUID,
 
+    @ApiModelProperty("The DataSource the error occurred on, if any.")
+    val dataSourceId: UUID?,
+
     @ApiModelProperty("UUID of the Asset the Task was processing.")
     val assetId: String?,
 
@@ -84,6 +87,9 @@ class TaskErrorFilter(
     @ApiModelProperty("Asset UUIDs to match.")
     var assetIds: List<String>? = null,
 
+    @ApiModelProperty("DataSource UUIDs to match.")
+    var dataSourceIds: List<UUID>? = null,
+
     @ApiModelProperty("Paths to match.")
     val paths: List<String>? = null,
 
@@ -104,6 +110,7 @@ class TaskErrorFilter(
             "taskId" to "pk_task",
             "jobId" to "pk_job",
             "assetId" to "asset_id",
+        "dataSourceId" to "job.pk_datasource",
             "path" to "str_path",
             "processors" to "str_processor",
             "timeCreated" to "time_created")
@@ -120,6 +127,11 @@ class TaskErrorFilter(
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("task_error.pk_task_error", it.size))
+            addToValues(it)
+        }
+
+        dataSourceIds?.let {
+            addToWhere(JdbcUtils.inClause("job.pk_datasource", it.size))
             addToValues(it)
         }
 

@@ -6,7 +6,7 @@ import requests
 from pathlib2 import Path
 from unittest.mock import patch, Mock
 
-from pixml.cache import LocalFileCache
+from pixml.analysis.storage import LocalFileCache
 from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
 from pixml.analysis.testing import PluginUnitTestCase, TestAsset
 

@@ -17,8 +17,8 @@ from google.api_core.exceptions import ResourceExhausted
 from .base import GoogleApiDocumentProcessor
 from .base import AutoMLModelProcessor
 
-from pixml.analysis import get_proxy_file, Argument, PixmlUnrecoverableProcessorException
-
+from pixml.analysis import Argument, PixmlUnrecoverableProcessorException
+from pixml.analysis.storage import get_proxy_file
 
 class CloudVisionProcessor(GoogleApiDocumentProcessor):
     """Use Google Cloud Vision API to analyze images."""

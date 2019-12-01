@@ -6,7 +6,8 @@ import mxnet
 import numpy as np
 from pathlib2 import Path
 
-from pixml.analysis import AssetBuilder, Argument, get_proxy_file
+from pixml.analysis import AssetBuilder, Argument
+from pixml.analysis.storage import get_proxy_file
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 

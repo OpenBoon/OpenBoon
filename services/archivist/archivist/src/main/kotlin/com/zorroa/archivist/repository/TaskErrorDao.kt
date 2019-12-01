@@ -68,6 +68,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 id,
                 task.taskId,
                 task.jobId,
+                task.dataSourceId,
                 spec.assetId,
                 spec.path,
                 spec.message,
@@ -181,6 +182,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             TaskError(rs.getObject("pk_task_error") as UUID,
                     rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
+                    rs.getObject("pk_datasource") as UUID?,
                     rs.getString("asset_id"),
                     rs.getString("str_path"),
                     rs.getString("str_message"),
@@ -192,9 +194,18 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                     Json.Mapper.readValueOrNull(rs.getString("json_stack_trace")))
         }
 
-        private const val COUNT = "SELECT COUNT(1) FROM task_error INNER JOIN job ON (job.pk_job = task_error.pk_job)"
+        private const val COUNT = "SELECT COUNT(1) FROM " +
+                "task_error " +
+            "INNER JOIN " +
+                "job ON (job.pk_job = task_error.pk_job)"
 
-        private const val GET = "SELECT task_error.* FROM task_error INNER JOIN job ON (job.pk_job = task_error.pk_job)"
+        private const val GET = "SELECT " +
+                "task_error.*, " +
+                "job.pk_datasource " +
+            "FROM " +
+                "task_error " +
+            "INNER JOIN " +
+                "job ON (job.pk_job = task_error.pk_job)"
 
         private val INSERT = JdbcUtils.insert("task_error",
                 "pk_task_error",

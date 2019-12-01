@@ -169,9 +169,9 @@ class AssetController @Autowired constructor(
         }
     }
 
-    @RequestMapping("/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
-    fun search(@RequestBody query: Map<String, Any>, out: ServletOutputStream) {
-        assetService.search(query, out)
+    @RequestMapping("/api/v3/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
+    fun search(@RequestBody(required = false) query: Map<String, Any>?, out: ServletOutputStream) {
+        assetService.search(query ?: mapOf(), out)
     }
 
     @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsRead')")

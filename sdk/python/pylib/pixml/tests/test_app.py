@@ -39,9 +39,6 @@ class PixmlAppTests(unittest.TestCase):
         os.environ['PIXML_SERVER'] = server
         try:
             app1 = pixml.app.app_from_env()
-            app2 = pixml.app.app_from_env()
-            # Check these are the same PixmlApp instance.
-            assert app1 == app2
             # Assert we can sign a request
             assert app1.client.headers()
             assert app1.client.server == server
@@ -55,9 +52,6 @@ class PixmlAppTests(unittest.TestCase):
         os.environ['PIXML_SERVER'] = server
         try:
             app1 = pixml.app.app_from_env()
-            app2 = pixml.app.app_from_env()
-            # Check these are the same PixmlApp instance.
-            assert app1 == app2
             # Assert we can sign a request
             assert app1.client.headers()
             assert app1.client.server == server

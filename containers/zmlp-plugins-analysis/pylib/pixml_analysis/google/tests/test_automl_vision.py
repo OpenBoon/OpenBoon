@@ -4,7 +4,7 @@ import os
 
 from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from pixml.analysis import Frame
-from pixml.analysis import add_proxy_file
+from pixml.analysis.storage import add_proxy_file
 
 from ..processors import AutoMLVisionModelProcessor
 

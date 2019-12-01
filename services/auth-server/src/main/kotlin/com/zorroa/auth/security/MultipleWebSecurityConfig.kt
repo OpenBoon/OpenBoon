@@ -2,7 +2,7 @@ package com.zorroa.auth.security
 
 import com.zorroa.auth.JSON_MAPPER
 import com.zorroa.auth.domain.ApiKey
-import com.zorroa.auth.service.KeyGenerator
+import com.zorroa.auth.domain.KeyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

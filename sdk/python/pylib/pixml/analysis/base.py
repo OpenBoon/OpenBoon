@@ -8,7 +8,7 @@ from shutil import copyfile
 
 from ..app import app_from_env
 from ..exception import PixmlException
-from ..util import import_and_instantiate, as_collection
+from ..util import as_collection
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +23,8 @@ __all__ = [
     "Reactor",
     "ProcessorHelper",
     "PixmlUnrecoverableProcessorException",
-    "PixmlException",
-    "PixmlProcessorException"
+    "PixmlProcessorException",
+    "AnalysisEnv"
 ]
 
 
@@ -258,22 +258,20 @@ class Reactor(object):
                                                        attr))
 
                 over.append(group_frame.asset.for_json())
-
-            script = {"over": over}
-            self.expand(script)
+            self.expand(over)
 
         self.clear_expand_frames()
         return batch_count
 
-    def expand(self, script):
+    def expand(self, assets):
         """Emit an Expand event.  An Expand event will create a new task for the
         current job.
 
         Args:
-            script (:obj:`dict`): A ZPS script structure.
+            assets (list of dict): A list of assets to process.
 
         """
-        self.emitter.write({"type": "expand", "payload": script})
+        self.emitter.write({"type": "expand", "payload": {"assets": assets}})
 
     def error(self, frame, processor, exp, fatal, phase, exec_traceback=None):
         """Emit an Error
@@ -660,6 +658,7 @@ class Processor(object):
             except Exception:
                 pass
 
+    @DeprecationWarning
     def instantiate_helper(self, helper_data):
         """Dynamically imports a ProcessorHelper subclass and instantiates it.
 
@@ -682,9 +681,7 @@ class Processor(object):
         Returns:
             object: Object described by the helper data.
         """
-        dot_path = helper_data['className']
-        kwargs = helper_data.get('args', {})
-        return import_and_instantiate(dot_path, self, **kwargs)
+        raise NotImplemented('instantiate_helper is not implemented')
 
 
 class Generator(Processor):
@@ -767,6 +764,31 @@ class ProcessorHelper(object):
     @property
     def logger(self):
         return self.processor.logger
+
+
+class AnalysisEnv:
+
+    @staticmethod
+    def get_project_id():
+        """
+        Return the PixelML project id from the environment.  The project
+        should always exist.
+
+        Returns:
+            str: The PixelML project Id.
+        """
+        return os.environ.get("PIXML_PROJECT_ID")
+
+    @staticmethod
+    def get_datasource_id():
+        """
+        Return the PixelML DataSource id from the environment.  The DataSource ID
+        may or may not exist.
+
+        Returns:
+            str: The PixelML DataSource Id or None
+        """
+        return os.environ.get("PIXML_DATASOURCE_ID")
 
 
 class PixmlProcessorException(PixmlException):

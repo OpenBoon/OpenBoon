@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.zorroa.archivist.security.getProjectId
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
+import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.Base64
 import java.util.UUID
@@ -74,7 +76,11 @@ class BatchCreateAssetsRequest(
     val analyze: Boolean = true,
 
     @ApiModelProperty("The analysis to apply.")
-    val analysis: List<String>? = null
+    val analysis: List<String>? = null,
+
+    @JsonIgnore
+    @ApiModelProperty("The task that is creating the assets")
+    val task: InternalTask? = null
 )
 
 @ApiModel("Batch Provision Assets Response",
@@ -125,7 +131,7 @@ class AssetSpec(
     var document: Map<String, Any>? = null,
 
     @ApiModelProperty("An optional unique ID for the asset to override an auto-generated ID.")
-    var id: String? = null
+    val id: String? = null
 )
 
 @ApiModel("Asset Counters", description = "Stores the types of asset counters we keep track off.")
@@ -244,7 +250,12 @@ open class Asset(
         val key = Attr.name(attr)
 
         try {
-            (current as MutableMap<String, Any?>)[key] = Json.Mapper.convertValue(value as Any)
+            if (value == null) {
+                (current as MutableMap<String, Any?>)[key] = null
+            }
+            else {
+                (current as MutableMap<String, Any?>)[key] = Json.Mapper.convertValue(value)
+            }
         } catch (ex: ClassCastException) {
             throw IllegalArgumentException("Invalid attribute: $attr", ex)
         }
@@ -318,23 +329,38 @@ object Attr {
     }
 }
 
-object IdGen {
+class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
 
-    /**
-     * Generate an UUID string utilizing the given value.
-     *
-     * @param value
-     * @return
-     */
-    fun getId(value: String, idKey: String?=null): String {
-        val project = getProjectId()
-        val digester = MessageDigest.getInstance("SHA-1")
-        digester.update(value.toByteArray())
-        idKey?.let {
-            digester.update(it.toByteArray())
+    private val projectId = getProjectId()
+    private var dataSourceId: UUID? = null
+
+    private fun uuidToByteArray(uuid: UUID): ByteBuffer {
+        val bb: ByteBuffer = ByteBuffer.wrap(ByteArray(16))
+        bb.putLong(uuid.mostSignificantBits)
+        bb.putLong(uuid.leastSignificantBits)
+        return bb.asReadOnlyBuffer()
+    }
+
+    fun dataSource(dataSource: UUID?): AssetIdBuilder {
+        dataSource?.let { this.dataSourceId = it }
+        return this
+    }
+
+    fun build(): String {
+        if (spec.id != null) {
+            return spec.id
         }
-        digester.update(project.toString().toByteArray())
+
+        val digester = MessageDigest.getInstance("SHA-256")
+        digester.update(spec.uri.toByteArray())
+        digester.update(uuidToByteArray(projectId))
+        dataSourceId?.let {
+            digester.update(uuidToByteArray(it))
+        }
+        // TODO: clip tokens.
+        randomness?.let {
+            digester.update(randomness.toByteArray())
+        }
         return Base64.getUrlEncoder().encodeToString(digester.digest()).trim('=')
     }
 }
-

@@ -65,9 +65,6 @@ class TaskDaoTests : AbstractTest() {
 
         val filter4 = TaskFilter(states = listOf(TaskState.Skipped))
         assertEquals(0, taskDao.getAll(filter4).size())
-
-        val filter5 = TaskFilter(projectIds = listOf(getProjectId()))
-        assertEquals(11, taskDao.getAll(filter5).size())
     }
 
     @Test
