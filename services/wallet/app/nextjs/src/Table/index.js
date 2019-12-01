@@ -4,6 +4,11 @@ import { css } from '@emotion/core'
 import { colors, spacing } from '../Styles'
 import { getPageDescription } from './helpers'
 
+const STATIC_COLUMN_WIDTHS = {
+  status: '108px',
+  progress: '200px',
+}
+
 const Table = ({ columns, data }) => {
   const {
     getTableProps,
@@ -79,7 +84,11 @@ const Table = ({ columns, data }) => {
                 {headerGroup.headers.map(column => {
                   const { key, ...rest } = column.getHeaderProps()
                   return (
-                    <th key={key} {...rest} css={thCSS}>
+                    <th
+                      key={key}
+                      {...rest}
+                      css={thCSS}
+                      style={{ width: STATIC_COLUMN_WIDTHS[column.id] }}>
                       <div className="Header__title" css={{ display: 'flex' }}>
                         {column.render('Header')}
                       </div>

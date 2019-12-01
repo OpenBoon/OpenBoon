@@ -188,7 +188,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": "108px",
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -199,7 +203,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": undefined,
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -210,7 +218,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": undefined,
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -221,7 +233,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": undefined,
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -232,7 +248,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": undefined,
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -243,7 +263,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": undefined,
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -254,7 +278,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": undefined,
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -265,7 +293,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": undefined,
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
@@ -276,7 +308,11 @@ exports[`<Jobs /> should render properly 1`] = `
               <th
                 className="emotion-2"
                 colSpan={1}
-                style={Object {}}
+                style={
+                  Object {
+                    "width": "200px",
+                  }
+                }
               >
                 <div
                   className="Header__title emotion-1"
