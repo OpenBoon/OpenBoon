@@ -1,4 +1,23 @@
 import functools
+import uuid
+
+
+def is_valid_uuid(val):
+    """
+    Return true if the given value is a valid UUID.
+
+    Args:
+        val (str): a string which might be a UUID.
+
+    Returns:
+        bool: True if UUID
+
+    """
+    try:
+        uuid.UUID(str(val))
+        return True
+    except ValueError:
+        return False
 
 
 def as_collection(value):
