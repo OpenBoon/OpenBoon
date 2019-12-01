@@ -13,14 +13,14 @@ spring:
     allow-bean-definition-overriding: true
 
 security:
-    service-key: classpath:key.json
+    service-key: /zmlp-config/zmlp-service-key.json
 
 
 #Swagger info
 swagger:
   isPublic: true
-  title: Oauth Documentation
-  description: Oauth API Documentation
+  title: PixelML APIKey Server
+  description: Validates PixmlML API keys
   version: 1.0.0
 
   termOfService: http://www.zorroa.com/terms
@@ -29,5 +29,5 @@ swagger:
   contactCompanyWebsite: http://www.zorroa.com/contact
   contactCompanySupportEmail: support@zorroa.com
   restBasePackage: com.zorroa.auth.rest
-  licenseName: License Name
-  licenseUrl: License URL
+  licenseName: Commercial
+  licenseUrl: http://www.zorroa.com/contact

@@ -6,11 +6,15 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.InternalTask
+import com.zorroa.archivist.domain.TaskState
 import org.junit.Test
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
@@ -26,14 +30,23 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testBatchCreateAssets() {
         val req = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")))
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
+            task = InternalTask(
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                "test",
+                TaskState.Success))
 
         val rsp = assetService.batchCreate(req)
         assertEquals(1, rsp.status.size)
         assertFalse(rsp.status[0].failed)
 
         val asset = assetService.get(rsp.status[0].assetId)
-        assertEquals(asset.getAttr("source.path", String::class.java), req.assets[0].uri)
+        assertEquals(req.assets[0].uri, asset.getAttr("source.path", String::class.java))
+        assertNotNull(asset.getAttr("system.jobId"))
+        assertNotNull(asset.getAttr("system.dataSourceId"))
     }
 
     /**

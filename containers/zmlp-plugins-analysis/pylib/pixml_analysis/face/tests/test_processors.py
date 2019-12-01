@@ -4,8 +4,7 @@ from unittest.mock import patch
 from pixml import PixmlClient
 from pixml.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from pixml.analysis import Frame
-from pixml.analysis.util import add_proxy_file
-
+from pixml.analysis.storage import add_proxy_file
 from pixml_analysis.face.processors import FaceRecognitionProcessor
 
 class FaceUnitTestCase(PluginUnitTestCase):

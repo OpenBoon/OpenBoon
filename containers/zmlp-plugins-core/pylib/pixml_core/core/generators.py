@@ -1,8 +1,7 @@
 from urllib.parse import urlparse
 
-from google.cloud import storage
-
-from pixml.analysis import Generator, Argument
+from pixml.analysis import Generator, Argument, AnalysisEnv
+from pixml.analysis.cloud import get_google_storage_client
 from pixml.asset import AssetImport
 
 
@@ -16,6 +15,7 @@ class GcsBucketGenerator(Generator):
 
     Args:
         uri (str): Address of a bucket in the form "gs://<BUCKET_NAME>".
+
     """
 
     def __init__(self):
@@ -24,12 +24,7 @@ class GcsBucketGenerator(Generator):
 
     def generate(self, consumer):
         uri = urlparse(self.arg_value('uri'))
-        try:
-            # Attempt to use credentials.
-            storage_client = storage.Client()
-        except OSError:
-            storage_client = storage.Client.create_anonymous_client()
-
+        storage_client = get_google_storage_client()
         for blob in storage_client.list_blobs(uri.netloc, prefix=uri.path.lstrip("/")):
             if blob.name.endswith("/"):
                 continue

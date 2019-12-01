@@ -59,17 +59,18 @@ class JobDaoImpl : AbstractDao(), JobDao {
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
             ps.setObject(2, key.projectId)
-            ps.setString(3, spec.name)
-            ps.setInt(4, JobState.Active.ordinal)
-            ps.setInt(5, type.ordinal)
-            ps.setLong(6, time)
+            ps.setObject(3, spec.dataSourceId)
+            ps.setString(4, spec.name)
+            ps.setInt(5, JobState.Active.ordinal)
+            ps.setInt(6, type.ordinal)
             ps.setLong(7, time)
-            ps.setLong(8, -1)
-            ps.setString(9, Json.serializeToString(spec.args, "{}"))
-            ps.setString(10, Json.serializeToString(spec.env, "{}"))
-            ps.setInt(11, spec.priority)
-            ps.setBoolean(12, spec.paused)
-            ps.setLong(13, pauseUntil)
+            ps.setLong(8, time)
+            ps.setLong(9, -1)
+            ps.setString(10, Json.serializeToString(spec.args, "{}"))
+            ps.setString(11, Json.serializeToString(spec.env, "{}"))
+            ps.setInt(12, spec.priority)
+            ps.setBoolean(13, spec.paused)
+            ps.setLong(14, pauseUntil)
             ps
         }
 
@@ -212,6 +213,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             val state = JobState.values()[rs.getInt("int_state")]
             Job(rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_project") as UUID,
+                rs.getObject("pk_datasource") as UUID?,
                     rs.getString("str_name"),
                     JobType.values()[rs.getInt("int_type")],
                     state,
@@ -275,6 +277,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         private val INSERT = insert("job",
                 "pk_job",
                 "pk_project",
+            "pk_datasource",
                 "str_name",
                 "int_state",
                 "int_type",

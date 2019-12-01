@@ -187,7 +187,7 @@ class JobDaoTests : AbstractTest() {
 
         // All the columns we can sort by.
         val sortFields = listOf(
-            "id", "type", "name", "timeCreated", "state", "priority", "projectId"
+            "id", "type", "name", "timeCreated", "state", "priority", "projectId", "dataSourceId"
         )
 
         // Just test the DB allows us to sort

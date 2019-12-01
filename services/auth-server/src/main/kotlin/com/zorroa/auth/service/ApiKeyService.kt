@@ -1,9 +1,9 @@
 package com.zorroa.auth.service
 
-import com.google.common.hash.Hashing
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
+import com.zorroa.auth.domain.KeyGenerator
 import com.zorroa.auth.repository.ApiKeyRepository
 import com.zorroa.auth.repository.ApiKeySearchRepository
 import com.zorroa.auth.security.getProjectId
@@ -58,18 +58,5 @@ class ApiKeyServiceImpl constructor(
 
     override fun delete(apiKey: ApiKey) {
         apiKeyRepository.delete(apiKey)
-    }
-}
-
-
-object KeyGenerator {
-
-    private val hashFunc = Hashing.sha512()
-
-    fun generate(): String {
-        return hashFunc.newHasher()
-                .putString(UUID.randomUUID().toString(), Charsets.UTF_8)
-                .putString(UUID.randomUUID().toString(), Charsets.UTF_8)
-                .hash().toString()
     }
 }

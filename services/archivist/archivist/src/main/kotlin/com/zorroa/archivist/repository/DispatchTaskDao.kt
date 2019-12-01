@@ -78,6 +78,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             DispatchTask(rs.getObject("pk_task") as UUID,
                     rs.getObject("pk_job") as UUID,
                     rs.getObject("pk_project") as UUID,
+                rs.getObject("pk_datasource") as UUID?,
                     rs.getString("str_name"),
                     TaskState.values()[rs.getInt("int_state")],
                     rs.getString("str_host"),
@@ -102,6 +103,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
         private const val GET =
             "SELECT " +
                 "job.pk_project," +
+                "job.pk_datasource," +
                 "job.json_env," +
                 "job.json_args," +
                 "task.pk_task," +

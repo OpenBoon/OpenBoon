@@ -15,7 +15,7 @@ def main():
     args = parser.parse_args()
     host = args.analyst or os.environ.get("ZMLP_EVENT_HOST")
 
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     server = PixmlContainerDaemon(host)
     server.start()

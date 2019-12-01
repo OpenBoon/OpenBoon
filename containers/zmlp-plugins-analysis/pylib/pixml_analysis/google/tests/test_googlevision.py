@@ -4,7 +4,7 @@ from mock import patch
 
 from ..processors import CloudVisionProcessor
 from pixml import PixmlClient
-from pixml.analysis.util import add_proxy_file
+from pixml.analysis.storage import add_proxy_file
 from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
 

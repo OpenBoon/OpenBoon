@@ -41,7 +41,8 @@ def test_project_view_user_does_not_belong_to_project(user, project):
     view.kwargs = {'project_pk': project.id}
     response = view.dispatch(view.request, *view.args, **view.kwargs)
     assert type(response) == HttpResponseForbidden
-    assert response.content == b'user is not a member of the project 6abc33f0-4acf-4196-95ff-4cbb7f640a06'
+    assert response.content == (b'user is not a member of the project '
+                                b'6abc33f0-4acf-4196-95ff-4cbb7f640a06')
 
 
 def test_projects_view_no_projects(project, user, api_client):
