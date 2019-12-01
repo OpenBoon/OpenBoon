@@ -116,7 +116,7 @@ const Table = ({ columns, data }) => {
           alignItems: 'center',
           color: colors.grey5,
         }}>
-        <div>
+        <div css={{ paddingRight: `${spacing.base}px` }}>
           {getPageDescription(
             pageSize,
             pageIndex,
@@ -125,7 +125,7 @@ const Table = ({ columns, data }) => {
             canNextPage,
           )}
         </div>
-        <div>{'Page:'}</div>
+        <div css={{ paddingRight: `${spacing.base}px` }}>{'Page:'}</div>
         <div css={{ display: 'flex', alignItems: 'center' }}>
           <div
             onClick={() => previousPage()}
