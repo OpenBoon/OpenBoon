@@ -37,7 +37,7 @@ def get_google_storage_client():
     if datasource:
         app = app_from_env()
         creds = app.client.get(
-            "/api/v1/datasources/{}/_credentials".format(datasource), decrypt=True)
+            "/api/v1/datasources/{}/_credentials".format(datasource))
         gcp_creds = service_account.Credentials.from_service_account_info(creds)
         return gcs.Client(project=creds["project_id"], credentials=gcp_creds)
     else:
