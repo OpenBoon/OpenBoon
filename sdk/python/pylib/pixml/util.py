@@ -25,7 +25,7 @@ def memoize(func):
         func (function): A function to wrap.
 
     Returns:
-        function: a wapped function
+        function: a wrapped function
     """
     cache = func.cache = {}
 
