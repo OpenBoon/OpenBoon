@@ -7,6 +7,7 @@ __all__ = [
     "Asset",
     "AssetImport",
     "AssetUpload",
+    "AssetApp",
     "Clip"
 ]
 

@@ -6,8 +6,8 @@ import cv2
 import face_recognition
 import numpy as np
 
-from pixml.analysis import AssetBuilder, Argument, get_proxy_file
-
+from pixml.analysis import AssetBuilder, Argument
+from pixml.analysis.storage import get_proxy_file
 
 class FaceRecognitionProcessor(AssetBuilder):
     """Detect and recognize faces.

@@ -3,11 +3,6 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.service.EsClientCache
-import com.zorroa.archivist.service.FileServerProvider
-import com.zorroa.archivist.service.FileServerProviderImpl
-import com.zorroa.archivist.service.FileStorageService
-import com.zorroa.archivist.service.GcsFileStorageService
-import com.zorroa.archivist.service.LocalFileStorageService
 import com.zorroa.archivist.service.MessagingService
 import com.zorroa.archivist.service.NullMessagingService
 import com.zorroa.archivist.service.PubSubMessagingService
@@ -24,8 +19,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.task.AsyncListenableTaskExecutor
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.web.servlet.HandlerExceptionResolver
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 import java.io.File
@@ -87,15 +85,24 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun fileServerProvider(): FileServerProvider {
-        return FileServerProviderImpl(properties(), dataCredentials())
+    fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
+        val adapter = RequestMappingHandlerAdapter()
+        adapter.messageConverters = listOf<HttpMessageConverter<*>>(
+            MappingJackson2HttpMessageConverter()
+        )
+        return adapter
     }
+
+    // @Bean
+    // fun fileServerProvider(): FileServerProvider {
+    //     return FileServerProviderImpl(properties(), dataCredentials())
+    // }
 
     /**
      * Initialize the internal file storage system.  This is either "local" for a shared
      * NFS mount or "gcs" for Google Cloud Storage.
      */
-    @Bean
+/*    @Bean
     fun fileStorageService(): FileStorageService {
         val props = properties()
         val type = props.getString("archivist.storage.type")
@@ -113,7 +120,7 @@ class ArchivistConfiguration {
                 throw IllegalStateException("Invalid storage type: $type")
             }
         }
-    }
+    }*/
 
     @Bean
     fun messagingService(): MessagingService {

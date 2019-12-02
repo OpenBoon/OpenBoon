@@ -20,6 +20,7 @@ import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -199,6 +200,7 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZORROA_TASK_ID"] = task.id.toString()
             task.env["ZORROA_JOB_ID"] = task.jobId.toString()
             task.env["ZORROA_PROJECT_ID"] = task.projectId.toString()
+            task.env["PIXML_DATASOURCE_ID"] = task.dataSourceId.toString()
             task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
 
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
@@ -370,14 +372,13 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
-
         val result = assetService.batchCreate(
-            BatchCreateAssetsRequest(event.assets, analyze = false)
+            BatchCreateAssetsRequest(event.assets, analyze = false, task=parentTask)
         )
 
         val name = "Expand ${result.status.size} assets"
         val parentScript = taskDao.getScript(parentTask.taskId)
-        val newScript = ZpsScript(name, null, result.assets, parentScript.execute)
+        val newScript = ZpsScript(name, null, result.assets, STANDARD_PIPELINE)
 
         newScript.globalArgs = parentScript.globalArgs
         newScript.type = parentScript.type

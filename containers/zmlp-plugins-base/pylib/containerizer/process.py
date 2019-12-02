@@ -3,6 +3,7 @@ import json
 import logging
 import sys
 import time
+import os
 
 from pixml.asset import Asset
 from pixml.analysis import Frame, Context, PixmlUnrecoverableProcessorException
@@ -20,13 +21,15 @@ class ProcessorExecutor(object):
         self.processors = {}
 
     def execute_generator(self, request):
-        ref = request["ref"]
-        file_types = request.get("file_types", [])
+        logger.info('--Generating------------')
+        logger.info(json.dumps(request, indent=4))
+        logger.info('------------------------')
 
-        logger.info("generating processor='{}'".format(ref["className"]))
+        ref = request["ref"]
+        settings = request.get("settings", {})
 
         wrapper = self.get_processor_wrapper(ref)
-        wrapper.generate(file_types)
+        wrapper.generate(settings)
 
     def execute_processor(self, request):
         """
@@ -39,12 +42,13 @@ class ProcessorExecutor(object):
         Returns:
             The processed data object.
         """
+        logger.info('--Processing------------')
+        logger.info(json.dumps(request, indent=4))
+        logger.info('------------------------')
+
         ref = request["ref"]
         obj = request.get("asset")
         frame = Frame(Asset(obj))
-
-        logger.info("executing processor='{}' on asset={}'"
-                    .format(ref["className"], obj))
 
         wrapper = self.get_processor_wrapper(ref)
         wrapper.process(frame)
@@ -175,9 +179,8 @@ class ProcessorWrapper(object):
                                               self.ref.get("args") or {}, {}))
             self.instance.init()
 
-    def generate(self, file_types):
-        logger.info("generating file_types=%s" % file_types)
-        consumer = FrameConsumer(self.reactor, file_types)
+    def generate(self, settings):
+        consumer = AssetConsumer(self.reactor, settings)
         start_time = time.monotonic()
         try:
             if self.instance:
@@ -275,10 +278,10 @@ class ProcessorWrapper(object):
         return val
 
 
-class FrameConsumer(object):
+class AssetConsumer(object):
     """
-    The FrameConsumer handles expand tasks created by generators. The reason
-    to use FrameConsumer instead of just expanding directly from the Reactor
+    The AssetConsumer handles expand tasks created by generators. The reason
+    to use AssetConsumer instead of just expanding directly from the Reactor
     is that the file types need to be filtered.
 
     For each file the generator finds, it calls the accept() method with the
@@ -286,17 +289,18 @@ class FrameConsumer(object):
     held for expand or processed inline.
 
     """
-    def __init__(self, reactor, file_types):
+    def __init__(self, reactor, settings):
         """
-        Create a new FrameConsumer instance.
+        Create a new AssetConsumer instance.
 
         Args:
-            reactor(Reactor) - a reactor for talking back to the Archivist
-            file_types(iterable) - A set/list of file types to accept.
+            reactor (Reactor):  a reactor for talking back to the Archivist
+            file_types(iterable):  A set/list of file types to accept.
 
         """
         self.reactor = reactor
-        self.file_types = [ft.lower() for ft in file_types]
+        self.file_types = {ft.lower() for ft in settings.get("fileTypes", [])}
+        self.batch_size = int(settings.get("batchSize", reactor.default_batch_size))
         self.frame_count = 0
         self.execute_count = 0
         self.expand_count = 0
@@ -312,9 +316,10 @@ class FrameConsumer(object):
 
         """
         if not is_file_type_allowed(asset, self.file_types):
-            return
+            return False
         self.expand.append(asset)
         self.check_expand()
+        return True
 
     def check_expand(self, force=False):
         """
@@ -325,7 +330,7 @@ class FrameConsumer(object):
 
         """
         waiting = len(self.expand)
-        if waiting > 0 and (waiting >= self.reactor.batch_size or force):
+        if waiting > 0 and (waiting >= self.batch_size or force):
             assets = [asset.for_json() for asset in self.expand]
             self.expand_count += 1
 
@@ -339,18 +344,20 @@ def is_file_type_allowed(asset, file_types):
     Determine if a given frame is filtered out by a set of file types.
 
     Args:
-        frame(Frame): the frame to check
-        file_types(set): the file typed filter to check against
+        asset (Asset): the frame to check
+        file_types (list of string): the file types and/or mimetypes filter to check against
 
     Returns:
         True if the file is allowed.
 
     """
     if file_types:
-        result = False
-        ext = asset.get_attr("source.extension")
-        if ext and ext.lower() in file_types:
-            result = True
-        return result
+        try:
+            _, ext = os.path.splitext(asset.uri)
+            ext = ext[1:].lower()
+            return ext in file_types
+        except Exception as e:
+            logger.warning('Failed to parse extension for file: {}'.format(asset.uri, e))
+            return False
     else:
         return True

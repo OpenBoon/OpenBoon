@@ -16,6 +16,9 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.StaticUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
+import org.springframework.stereotype.Service
 import java.io.FileInputStream
 import java.net.URI
 import java.nio.file.Files
@@ -27,17 +30,18 @@ import java.util.concurrent.TimeUnit
  * The allowed parent types for file storage.
  */
 private val allowedParentTypes = setOf(
-        "asset",
-        "folder",
-        "job",
-        "pipeline",
-        "user"
+    "asset",
+    "folder",
+    "job",
+    "pipeline",
+    "user"
 )
 
 /**
  * The FileStorageService is for determining the location of files associated with
  * assets, exports, etc.
  */
+@Service
 interface FileStorageService {
 
     /**
@@ -106,52 +110,84 @@ interface LayoutProvider {
      */
     fun buildId(spec: FileStorageSpec): String
 }
+
 /**
  * The GcsFileStorageService handles the location and placement of files withing GCS.
  */
-class GcsFileStorageService constructor(val bucket: String, credsFile: Path? = null) : FileStorageService {
+@Service
+@Profile("gcs")
+class GcsFileStorageService @Autowired constructor(
+    @Value("\${archivist.storage.bucket}") private val bucket: String,
+    val properties: ApplicationProperties,
+    val fileServerProvider: FileServerProvider
 
-    @Autowired
-    lateinit var properties: ApplicationProperties
-
-    @Autowired
-    lateinit var fileServerProvider: FileServerProvider
+) : FileStorageService {
 
     private val gcs: Storage
+
+    var credsFile: Path? = null
 
     val dlp = GcsLayoutProvider(bucket)
 
     init {
+
+        credsFile = credsFile ?: dataCredentials()
+
         gcs = if (credsFile != null && Files.exists(credsFile)) {
             StorageOptions.newBuilder()
-                    .setCredentials(
-                    GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))).build().service
+                .setCredentials(
+                    GoogleCredentials.fromStream(FileInputStream(credsFile?.toFile()))
+                ).build().service
         } else {
             StorageOptions.newBuilder().build().service
         }
+    }
+
+    constructor(
+        bucketName: String,
+        properties: ApplicationProperties,
+        fileServerProvider: FileServerProvider,
+        credsFile: Path
+    ) : this(bucketName, properties, fileServerProvider) {
+        this.credsFile = credsFile
+    }
+
+    fun dataCredentials(): Path {
+        return properties
+            .getPath("archivist.config.path")
+            .resolve("data-credentials.json")
     }
 
     override fun get(spec: FileStorageSpec): FileStorage {
         val uri = dlp.buildUri(spec)
         val id = dlp.buildId(spec)
 
-        logger.event(LogObject.STORAGE, LogAction.GET,
-                mapOf("fileStorageId" to id,
-                        "fileStorageUri" to uri))
+        logger.event(
+            LogObject.STORAGE, LogAction.GET,
+            mapOf(
+                "fileStorageId" to id,
+                "fileStorageUri" to uri
+            )
+        )
 
         return FileStorage(id, URI(uri), "gs", StaticUtils.tika.detect(uri), fileServerProvider)
     }
 
     override fun get(id: String): FileStorage {
         val storage = FileStorage(
-                unslashed(id),
-                URI(dlp.buildUri(id)),
-                "gs",
-                StaticUtils.tika.detect(id),
-                fileServerProvider)
-        logger.event(LogObject.STORAGE, LogAction.GET,
-                mapOf("fileStorageId" to storage.id,
-                        "fileStorageUri" to storage.uri))
+            unslashed(id),
+            URI(dlp.buildUri(id)),
+            "gs",
+            StaticUtils.tika.detect(id),
+            fileServerProvider
+        )
+        logger.event(
+            LogObject.STORAGE, LogAction.GET,
+            mapOf(
+                "fileStorageId" to storage.id,
+                "fileStorageUri" to storage.uri
+            )
+        )
         return storage
     }
 
@@ -160,9 +196,13 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path? = n
         val path = uri.path
         val contentType = StaticUtils.tika.detect(path)
 
-        logger.event(LogObject.STORAGE, LogAction.AUTHORIZE,
-                mapOf("method" to method.toString(), "contentType" to contentType,
-                        "storageId" to uri, "bucket" to bucket, "path" to path))
+        logger.event(
+            LogObject.STORAGE, LogAction.AUTHORIZE,
+            mapOf(
+                "method" to method.toString(), "contentType" to contentType,
+                "storageId" to uri, "bucket" to bucket, "path" to path
+            )
+        )
 
         val info = BlobInfo.newBuilder(bucket, path).setContentType(contentType).build()
         val opts = if (method == HttpMethod.PUT) {
@@ -189,16 +229,22 @@ class GcsFileStorageService constructor(val bucket: String, credsFile: Path? = n
 /**
  * LocalFileStorageService handles the location of files in an on-prem single tenant install.
  */
-class LocalFileStorageService constructor(
-    val root: Path
+@Service
+@Profile("local")
+class LocalFileStorageService(
+    @Value("\${archivist.storage.path}")
+    private val rootPathUrl: String
 ) : FileStorageService {
 
-    val dlp = LocalLayoutProvider(root)
+    var root: Path = Path.of(rootPathUrl)
+    lateinit var dlp: LayoutProvider
 
     @Autowired
     lateinit var fileServerProvider: FileServerProvider
 
     init {
+        dlp = LocalLayoutProvider(root)
+
         logger.info("Initializing LocalFileStorageService at {}", root)
         if (!Files.exists(root)) {
             logger.info("LocalFileStorageService creating directory: {}", root)
@@ -234,11 +280,12 @@ class LocalFileStorageService constructor(
 
     private fun buildFileStorage(id: String, url: String): FileStorage {
         return FileStorage(
-                unslashed(id),
-                URI(url),
-                "file",
-                StaticUtils.tika.detect(url),
-                fileServerProvider)
+            unslashed(id),
+            URI(url),
+            "file",
+            StaticUtils.tika.detect(url),
+            fileServerProvider
+        )
     }
 
     companion object {

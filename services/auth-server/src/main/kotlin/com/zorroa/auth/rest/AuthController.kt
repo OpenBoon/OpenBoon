@@ -1,6 +1,6 @@
 package com.zorroa.auth.rest
 
-import com.zorroa.auth.domain.ZmlpUser
+import com.zorroa.auth.domain.ZmlpActor
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpHeaders
@@ -17,7 +17,7 @@ class AuthController {
     @ApiOperation("Authenticate a signed JWT token and return the projectId and permissions.")
     @RequestMapping("/auth/v1/auth-token", method = [RequestMethod.GET, RequestMethod.POST])
     fun authToken(@RequestHeader headers: HttpHeaders, auth: Authentication): Map<String, Any> {
-        val user = auth.principal as ZmlpUser
+        val user = auth.principal as ZmlpActor
         return mapOf(
                 "name" to user.name,
                 "projectId" to user.projectId,
