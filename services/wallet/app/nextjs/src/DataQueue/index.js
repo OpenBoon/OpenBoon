@@ -6,9 +6,9 @@ import { jobs } from './__mocks__/jobs'
 
 import Button from '../Button'
 import ProgressBar from '../ProgressBar'
-import DateFormatted from '../Date/Format'
+import FormattedDate from '../Format/Date'
 import Table from '../Table'
-import TableColumnStyler from '../TableColumnStyler'
+import FormattedColumn from '../Format/Column'
 
 const COLUMN_OPTIONS = [
   {
@@ -34,7 +34,7 @@ const COLUMN_OPTIONS = [
     Header: 'Created (Date/TIme)',
     accessor: 'createdDateTime',
     Cell: ({ cell: { value } }) => {
-      return DateFormatted({ timeCreated: value })
+      return FormattedDate({ timeCreated: value })
     },
   },
   {
@@ -42,9 +42,9 @@ const COLUMN_OPTIONS = [
     accessor: 'failed',
     Cell: ({ cell: { value } }) => {
       if (value === 0) {
-        return TableColumnStyler({ display: 'none' }, value)
+        return FormattedColumn({ display: 'none' }, { content: value })
       }
-      return TableColumnStyler({ color: 'red' }, value)
+      return FormattedColumn({ color: 'red' }, { content: value })
     },
   },
   {
@@ -52,9 +52,9 @@ const COLUMN_OPTIONS = [
     accessor: 'errors',
     Cell: ({ cell: { value } }) => {
       if (value === 0) {
-        return TableColumnStyler({ display: 'none' }, value)
+        return FormattedColumn({ display: 'none' }, { content: value })
       }
-      return TableColumnStyler({ color: 'red' }, value)
+      return FormattedColumn({ color: 'red' }, { content: value })
     },
   },
   {
