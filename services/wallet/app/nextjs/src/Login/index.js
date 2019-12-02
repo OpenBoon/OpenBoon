@@ -12,7 +12,7 @@ const HEIGHT = 580
 const LOGO_WIDTH = 143
 
 const Login = ({ onSubmit }) => {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   return (
@@ -45,11 +45,11 @@ const Login = ({ onSubmit }) => {
           Welcome. Please login.
         </h3>
         <Input
-          id="email"
-          label="Email"
+          id="username"
+          label="Username"
           type="text"
-          value={email}
-          onChange={({ target: { value } }) => setEmail(value)}
+          value={username}
+          onChange={({ target: { value } }) => setUsername(value)}
         />
         <Input
           id="password"
@@ -61,7 +61,10 @@ const Login = ({ onSubmit }) => {
         <div css={{ padding: spacing.spacious, textAlign: 'center' }}>
           <button
             type="submit"
-            onClick={onSubmit({ email, password })}
+            onClick={event => {
+              event.preventDefault()
+              onSubmit({ username, password })
+            }}
             css={{
               backgroundColor: colors.primary,
               color: colors.primaryFont,
