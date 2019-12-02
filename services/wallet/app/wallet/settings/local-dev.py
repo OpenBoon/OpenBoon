@@ -12,7 +12,6 @@ MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
 
 # Remove the CSRF checks for easier API development
 MIDDLEWARE.remove('django.middleware.csrf.CsrfViewMiddleware')
-print(MIDDLEWARE)
 
 # Allow requests from the frontend development server
 CORS_ORIGIN_WHITELIST = [
@@ -22,8 +21,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
-    # 'rest_framework.authentication.BasicAuthentication',
-    # 'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.BasicAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
     'rest_framework_simplejwt.authentication.JWTAuthentication',
 ]
 

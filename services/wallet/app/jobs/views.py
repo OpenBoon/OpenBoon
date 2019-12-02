@@ -10,6 +10,7 @@ class JobsViewSet(BaseProjectViewSet):
         current_url = request.build_absolute_uri(request.get_full_path())
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size', 25)}}
+        # TODO: Need to handle when the server is unreachable, for all these
         response = client.post('/api/v1/jobs/_search', payload)
         content = response.json()
         for item in content['list']:
