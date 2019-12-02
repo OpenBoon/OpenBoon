@@ -2,7 +2,7 @@ FROM node:8.16.2 as node_build
 COPY services/wallet/app /app
 ENV NODE_ENV=production
 
-WORKDIR /app/nextjs
+WORKDIR /app/frontend
 RUN mkdir -p .git/hooks  # Required for husky to succeed and not kill the build.
 RUN npm install webpack webpack-cli webpack-merge -g
 RUN npm install && npm run build
