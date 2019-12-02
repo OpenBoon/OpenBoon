@@ -103,14 +103,14 @@ exports[`<Login /> should render properly 1`] = `
     <div>
       <label
         className="emotion-2"
-        htmlFor="email"
+        htmlFor="username"
       >
-        Email
+        Username
       </label>
       <input
         className="emotion-3"
-        id="email"
-        name="email"
+        id="username"
+        name="username"
         onChange={[Function]}
         type="text"
         value=""

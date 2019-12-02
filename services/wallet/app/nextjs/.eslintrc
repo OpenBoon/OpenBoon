@@ -14,7 +14,7 @@
     "node": true
   },
   "parser": "babel-eslint",
-  "plugins": ["react", "prettier"],
+  "plugins": ["react", "prettier", "react-hooks"],
   "globals": {
     "jest": true,
     "describe": true,
@@ -51,6 +51,8 @@
     }
   },
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
     "no-warning-comments": "error",
     "standard/computed-property-even-spacing": "off",
     "no-unused-vars": [
