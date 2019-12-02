@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
 import { colors, spacing } from '../Styles'
-import { createJobsData } from './helpers'
+import { createJobsData, createColumns } from './helpers'
 import { jobs } from './__mocks__/jobs'
 
 import Button from '../Button'
@@ -10,69 +10,70 @@ import DateFormatted from '../Date/Format'
 import Table from '../Table'
 import TableColumnStyler from '../TableColumnStyler'
 
+const COLUMN_OPTIONS = [
+  {
+    Header: 'Status',
+    accessor: 'status',
+    Cell: ({ cell: { value } }) => {
+      return Button({ status: value })
+    },
+  },
+  {
+    Header: 'Job Name',
+    accessor: 'jobName',
+  },
+  {
+    Header: 'Created By',
+    accessor: 'createdBy',
+  },
+  {
+    Header: 'Priority',
+    accessor: 'priority',
+  },
+  {
+    Header: 'Created (Date/TIme)',
+    accessor: 'createdDateTime',
+    Cell: ({ cell: { value } }) => {
+      return DateFormatted({ timeCreated: value })
+    },
+  },
+  {
+    Header: 'Failed',
+    accessor: 'failed',
+    Cell: ({ cell: { value } }) => {
+      if (value === 0) {
+        return TableColumnStyler({ display: 'none' }, value)
+      }
+      return TableColumnStyler({ color: 'red' }, value)
+    },
+  },
+  {
+    Header: 'Errors',
+    accessor: 'errors',
+    Cell: ({ cell: { value } }) => {
+      if (value === 0) {
+        return TableColumnStyler({ display: 'none' }, value)
+      }
+      return TableColumnStyler({ color: 'red' }, value)
+    },
+  },
+  {
+    Header: '# Assets',
+    accessor: 'numAssets',
+  },
+  {
+    Header: 'Progress',
+    accessor: 'progress',
+    Cell: ({ cell: { value } }) => {
+      return ProgressBar({ status: value })
+    },
+  },
+]
+
 const DataQueue = () => {
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Status',
-        accessor: 'status',
-        Cell: ({ cell: { value } }) => {
-          return Button({ status: value })
-        },
-      },
-      {
-        Header: 'Job Name',
-        accessor: 'jobName',
-      },
-      {
-        Header: 'Created By',
-        accessor: 'createdBy',
-      },
-      {
-        Header: 'Priority',
-        accessor: 'priority',
-      },
-      {
-        Header: 'Created (Date/TIme)',
-        accessor: 'createdDateTime',
-        Cell: ({ cell: { value } }) => {
-          return DateFormatted({ timeCreated: value })
-        },
-      },
-      {
-        Header: 'Failed',
-        accessor: 'failed',
-        Cell: ({ cell: { value } }) => {
-          if (value === 0) {
-            return TableColumnStyler({ display: 'none' }, value)
-          }
-          return TableColumnStyler({ color: 'red' }, value)
-        },
-      },
-      {
-        Header: 'Errors',
-        accessor: 'errors',
-        Cell: ({ cell: { value } }) => {
-          if (value === 0) {
-            return TableColumnStyler({ display: 'none' }, value)
-          }
-          return TableColumnStyler({ color: 'red' }, value)
-        },
-      },
-      {
-        Header: '# Assets',
-        accessor: 'numAssets',
-      },
-      {
-        Header: 'Progress',
-        accessor: 'progress',
-        Cell: ({ cell: { value } }) => {
-          return ProgressBar({ status: value })
-        },
-      },
-    ],
-    [],
-  )
+  const columns = createColumns({
+    columnOptions: COLUMN_OPTIONS,
+  })
 
   const data = useMemo(() => createJobsData({ jobs: jobs.list }), [])
 
