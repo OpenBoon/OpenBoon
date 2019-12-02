@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
 import { colors, spacing } from '../Styles'
-import { ColumnStyle, createJobsData } from './helpers'
+import { createJobsData } from './helpers'
 import { jobs } from './__mocks__/jobs'
 
 import Button from '../Button'
 import ProgressBar from '../ProgressBar'
 import DateComponent from '../Date'
 import Table from '../Table'
+import TableColumnStyler from '../TableColumnStyler'
 
 const DataQueue = () => {
   const columns = useMemo(
@@ -43,9 +44,9 @@ const DataQueue = () => {
         accessor: 'failed',
         Cell: ({ cell: { value } }) => {
           if (value === 0) {
-            return ColumnStyle({ display: 'none' }, value)
+            return TableColumnStyler({ display: 'none' }, value)
           }
-          return ColumnStyle({ color: 'red' }, value)
+          return TableColumnStyler({ color: 'red' }, value)
         },
       },
       {
@@ -53,9 +54,9 @@ const DataQueue = () => {
         accessor: 'errors',
         Cell: ({ cell: { value } }) => {
           if (value === 0) {
-            return ColumnStyle({ display: 'none' }, value)
+            return TableColumnStyler({ display: 'none' }, value)
           }
-          return ColumnStyle({ color: 'red' }, value)
+          return TableColumnStyler({ color: 'red' }, value)
         },
       },
       {
@@ -73,7 +74,7 @@ const DataQueue = () => {
     [],
   )
 
-  const data = useMemo(() => createJobsData(jobs.list), [])
+  const data = useMemo(() => createJobsData({ jobs: jobs.list }), [])
 
   return (
     <div

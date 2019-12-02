@@ -5,9 +5,7 @@ jest.mock('../__mocks__/jobs')
 
 describe('<Jobs />', () => {
   it('should render properly', () => {
-    const component = TestRenderer.create(
-      <DataQueue user={{ email: 'World' }} />,
-    )
+    const component = TestRenderer.create(<DataQueue />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })

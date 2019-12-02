@@ -1,8 +1,4 @@
-export const ColumnStyle = (style, value) => {
-  return <div style={style}>{value}</div>
-}
-
-const newJob = job => {
+const newJob = ({ job }) => {
   return {
     status: job.paused ? 'Paused' : job.state,
     jobName: job.name,
@@ -24,9 +20,9 @@ const newJob = job => {
   }
 }
 
-export function createJobsData(jobsArray) {
-  const dataRows = jobsArray.map(job => {
-    return newJob(job)
+export const createJobsData = ({ jobs }) => {
+  const dataRows = jobs.map(job => {
+    return newJob({ job })
   })
   return dataRows
 }
