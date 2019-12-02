@@ -11,14 +11,14 @@ import {
 } from './helpers'
 
 const Authentication = ({ children }) => {
-  const [user, setUser] = useState({ isLoading: true, isAuthenticated: false })
+  const [user, setUser] = useState({ hasLoaded: false, isAuthenticated: false })
 
   useEffect(() => {
     let timeoutId
 
     const { refreshToken } = getTokens()
 
-    if (user.isLoading) {
+    if (!user.hasLoaded) {
       setUser({
         hasLoaded: true,
         isAuthenticated: isUserAuthenticated({ now: Date.now(), refreshToken }),
@@ -35,7 +35,7 @@ const Authentication = ({ children }) => {
     return () => clearTimeout(timeoutId)
   }, [user])
 
-  if (user.isLoading) return null
+  if (!user.hasLoaded) return null
 
   if (!user.isAuthenticated) {
     return <Login onSubmit={authenticateUser({ setUser })} />
