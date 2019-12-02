@@ -6,7 +6,7 @@ import { jobs } from './__mocks__/jobs'
 
 import Button from '../Button'
 import ProgressBar from '../ProgressBar'
-import DateComponent from '../Date'
+import DateFormatted from '../Date/Format'
 import Table from '../Table'
 import TableColumnStyler from '../TableColumnStyler'
 
@@ -36,7 +36,7 @@ const DataQueue = () => {
         Header: 'Created (Date/TIme)',
         accessor: 'createdDateTime',
         Cell: ({ cell: { value } }) => {
-          return DateComponent({ timeCreated: value })
+          return DateFormatted({ timeCreated: value })
         },
       },
       {

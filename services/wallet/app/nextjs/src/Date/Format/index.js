@@ -1,4 +1,4 @@
-const DateComponent = ({ timeCreated }) => {
+const DateFormatted = ({ timeCreated }) => {
   const dateObj = new Date(timeCreated)
   let month = dateObj.getMonth() + 1
   if (month < 10) {
@@ -17,4 +17,4 @@ const DateComponent = ({ timeCreated }) => {
   return `${month}-${day}-${year} ${hour}:${minutes}:${seconds}`
 }
 
-export default DateComponent
+export default DateFormatted
