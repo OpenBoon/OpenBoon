@@ -42,9 +42,9 @@ const COLUMN_OPTIONS = [
     accessor: 'failed',
     Cell: ({ cell: { value } }) => {
       if (value === 0) {
-        return FormattedColumn({ display: 'none' }, { content: value })
+        return FormattedColumn({ style: { display: 'none' }, content: value })
       }
-      return FormattedColumn({ color: 'red' }, { content: value })
+      return FormattedColumn({ style: { color: 'red' }, content: value })
     },
   },
   {
@@ -52,9 +52,9 @@ const COLUMN_OPTIONS = [
     accessor: 'errors',
     Cell: ({ cell: { value } }) => {
       if (value === 0) {
-        return FormattedColumn({ display: 'none' }, { content: value })
+        return FormattedColumn({ style: { display: 'none' }, content: value })
       }
-      return FormattedColumn({ color: 'red' }, { content: value })
+      return FormattedColumn({ style: { color: 'red' }, content: value })
     },
   },
   {
