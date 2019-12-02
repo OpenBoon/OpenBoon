@@ -4,24 +4,26 @@ import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../Authentication/constants'
 
-const axiosIntercept = ({ axiosInstance }) => {
-  const refreshAuthTokens = failedRequest => {
-    const refreshToken = localStorage.getItem(REFRESH_TOKEN)
+export const refreshAuthTokens = ({ axiosInstance }) => failedRequest => {
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN)
 
-    return axiosInstance
-      .post('/auth/refresh/', { refresh: refreshToken })
-      .then(response => {
-        const { access } = response.data
-        localStorage.setItem(ACCESS_TOKEN, access)
-        failedRequest.response.config.headers.Authorization = `Bearer ${access}`
-        return Promise.resolve()
-      })
-  }
-
-  return createAuthRefreshInterceptor(axiosInstance, refreshAuthTokens)
+  return axiosInstance
+    .post('/auth/refresh/', { refresh: refreshToken })
+    .then(({ data: { access } }) => {
+      localStorage.setItem(ACCESS_TOKEN, access)
+      failedRequest.response.config.headers.Authorization = `Bearer ${access}`
+      return Promise.resolve()
+    })
 }
 
-const decorateHeaders = config => {
+export const axiosIntercept = ({ axiosInstance }) => {
+  return createAuthRefreshInterceptor(
+    axiosInstance,
+    refreshAuthTokens({ axiosInstance }),
+  )
+}
+
+export const decorateHeaders = config => {
   const accessToken = localStorage.getItem(ACCESS_TOKEN)
   const authorization = accessToken && `Bearer ${accessToken}`
 
@@ -39,6 +41,8 @@ const decorateHeaders = config => {
   }
 }
 
+export const errorHandler = error => Promise.reject(error)
+
 export const axiosCreate = (options = {}) => {
   const customDefaultOptions = {
     baseURL: '',
@@ -50,9 +54,7 @@ export const axiosCreate = (options = {}) => {
     ...options,
   })
 
-  axiosInstance.interceptors.request.use(decorateHeaders, error =>
-    Promise.reject(error),
-  )
+  axiosInstance.interceptors.request.use(decorateHeaders, errorHandler)
 
   return axiosIntercept({ axiosInstance })
 }

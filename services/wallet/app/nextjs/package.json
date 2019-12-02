@@ -52,7 +52,7 @@
       "prettier --write",
       "git add",
       "eslint",
-      "yarn test:hook"
+      "npm run test:hook"
     ]
   },
   "dependencies": {
