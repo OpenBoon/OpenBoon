@@ -1,26 +1,25 @@
 import PropTypes from 'prop-types'
-import { colors, spacing } from '../Styles'
+import { colors, spacing, constants } from '../Styles'
+
+const BACKGROUND_COLORS = {
+  Active: colors.blue1,
+  Paused: colors.yellow1,
+  Canceled: colors.grey2,
+  Finished: colors.green1,
+}
 
 const Button = ({ status }) => {
-  const backgroundColor = {
-    Active: colors.blue1,
-    Paused: colors.yellow1,
-    Canceled: colors.grey2,
-    Finished: colors.green1,
-  }
-
   return (
     <div
-      className={`Button Button__${status}`}
       css={{
         display: 'inline-flex',
         alignItems: 'center',
-        padding: `${spacing.base}px`,
-        height: `${spacing.comfy}px`,
+        padding: spacing.base,
+        height: spacing.comfy,
         width: 'auto',
-        borderRadius: `${spacing.base / 2}px`,
+        borderRadius: constants.borderRadius.small,
         color: status === 'Canceled' ? colors.black : colors.primaryFont,
-        backgroundColor: backgroundColor[status],
+        backgroundColor: BACKGROUND_COLORS[status],
       }}>
       {status}
     </div>
@@ -28,8 +27,7 @@ const Button = ({ status }) => {
 }
 
 Button.propTypes = {
-  status: PropTypes.oneOf(['Active', 'Paused', 'Canceled', 'Finished'])
-    .isRequired,
+  status: PropTypes.oneOf(Object.keys(BACKGROUND_COLORS)).isRequired,
 }
 
 export default Button
