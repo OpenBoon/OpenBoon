@@ -5,7 +5,7 @@ function Workspace() {
   return (
     <Page>
       <div className="Workspace">
-        {'Hello World!'}
+        <p>Hello World!</p>
       </div>
     </Page>
   )
