@@ -1,9 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Authentication /> should render properly 1`] = `
+exports[`<Authentication /> should render properly when user is logged in 1`] = `null`;
+
+exports[`<Authentication /> should render properly when user is logged in 2`] = `"Hello World!"`;
+
+exports[`<Authentication /> should render properly when user is logged out 1`] = `null`;
+
+exports[`<Authentication /> should render properly when user is logged out 2`] = `
 <Login
   onSubmit={[Function]}
 />
 `;
-
-exports[`<Authentication /> should render properly 2`] = `"Hello World!"`;

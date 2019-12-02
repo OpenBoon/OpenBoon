@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Axios /> helpers axiosCreate() should return a function 1`] = `[Function]`;
+
+exports[`<Axios /> helpers decorateHeaders() should return a function 1`] = `[Function]`;
+
+exports[`<Axios /> helpers decorateHeaders() should return an object with accessToken 1`] = `
+Object {
+  "headers": Object {
+    "Authorization": "Bearer ACCESS_TOKEN",
+    "content-type": "application/json",
+  },
+}
+`;
+
+exports[`<Axios /> helpers decorateHeaders() should return an object without accessToken 1`] = `
+Object {
+  "headers": Object {
+    "content-type": "application/json",
+  },
+}
+`;
+
+exports[`<Axios /> helpers refreshAuthTokens() should refresh the tokens 1`] = `
+Object {
+  "response": Object {
+    "config": Object {
+      "headers": Object {
+        "Authorization": "Bearer ACCESS_TOKEN",
+      },
+    },
+  },
+}
+`;
