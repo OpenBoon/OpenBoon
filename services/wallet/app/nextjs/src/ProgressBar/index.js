@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import { colors, spacing, constants } from '../Styles'
+import { colors, constants } from '../Styles'
 
+const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 200
 
 const getStatusStyles = ({ status, statusColor }) => {
@@ -47,7 +48,7 @@ const ProgressBar = ({ status }) => {
       className="ProgressBar__container"
       css={{
         display: 'flex',
-        height: spacing.normal,
+        height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
       {succeeded > 0 && (
