@@ -1,6 +1,28 @@
 import PropTypes from 'prop-types'
 import { css } from '@emotion/core'
-import { colors, spacing } from '../Styles'
+import { colors, spacing, constants } from '../Styles'
+
+const CONTAINER_WIDTH = 200
+
+const getStatusStyles = ({ status, statusColor }) => {
+  const statusCSS = css`
+     {
+      height: 100%;
+      flex: ${status} 0 auto;
+      background-color: ${statusColor};
+      :first-of-type {
+        border-top-left-radius: ${constants.borderRadius.small}px;
+        border-bottom-left-radius: ${constants.borderRadius.small}px;
+      }
+      :last-of-type {
+        border-top-right-radius: ${constants.borderRadius.small}px;
+        border-bottom-right-radius: ${constants.borderRadius.small}px;
+      }
+    }
+  `
+
+  return statusCSS
+}
 
 const ProgressBar = ({ status }) => {
   const {
@@ -27,62 +49,45 @@ const ProgressBar = ({ status }) => {
      {
       display: flex;
       height: ${spacing.normal}px;
-      width: ${spacing.base * 25}px;
+      width: ${CONTAINER_WIDTH}px;
       :first-of-type {
-        border-top-left-radius: ${spacing.base / 4}px;
-        border-bottom-left-radius: ${spacing.base / 4}px;
+        border-top-left-radius: ${constants.borderRadius.small}px;
+        border-bottom-left-radius: ${constants.borderRadius.small}px;
       }
       :last-of-type {
-        border-top-right-radius: ${spacing.base / 4}px;
-        border-bottom-right-radius: ${spacing.base / 4}px;
+        border-top-right-radius: ${constants.borderRadius.small}px;
+        border-bottom-right-radius: ${constants.borderRadius.small}px;
       }
     }
   `
-
-  function getStatusCSS(status, statusColor) {
-    const statusCSS = css`
-       {
-        height: 100%;
-        flex: ${status} 0 auto;
-        background-color: ${statusColor};
-        :first-of-type {
-          border-top-left-radius: ${spacing.base / 4}px;
-          border-bottom-left-radius: ${spacing.base / 4}px;
-        }
-        :last-of-type {
-          border-top-right-radius: ${spacing.base / 4}px;
-          border-bottom-right-radius: ${spacing.base / 4}px;
-        }
-      }
-    `
-
-    return statusCSS
-  }
 
   return (
     <div className="ProgressBar__container" css={containerCSS}>
       {succeeded > 0 && (
         <div
           className="ProgressBar__Succeeded"
-          css={getStatusCSS(succeeded, colors.green1)}
+          css={getStatusStyles({
+            status: succeeded,
+            statusColor: colors.green1,
+          })}
         />
       )}
       {failed > 0 && (
         <div
           className="ProgressBar__Failed"
-          css={getStatusCSS(failed, colors.error)}
+          css={getStatusStyles({ status: failed, statusColor: colors.error })}
         />
       )}
       {running > 0 && (
         <div
           className="ProgressBar__Running"
-          css={getStatusCSS(running, colors.blue1)}
+          css={getStatusStyles({ status: running, statusColor: colors.blue1 })}
         />
       )}
       {pending > 0 && (
         <div
           className="ProgressBar__Pending"
-          css={getStatusCSS(pending, colors.grey6)}
+          css={getStatusStyles({ status: pending, statusColor: colors.grey6 })}
         />
       )}
     </div>
