@@ -1,9 +1,4 @@
 {
   "extends": ["config:base"],
-  "includePaths": ["services/wallet/app/nextjs"],
-  "unpublishSafe": true,
-  "prCreation": "not-pending",
-  "schedule": "before 5am on Monday",
-  "timezone": "America/Los_Angeles",
-  "rebaseStalePrs": false
+  "includePaths": ["services/wallet/app/nextjs"]
 }
