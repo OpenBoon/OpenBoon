@@ -8,6 +8,8 @@ const BACKGROUND_COLORS = {
   Finished: colors.green1,
 }
 
+const BUTTON_HEIGHT = 24
+
 const Button = ({ status }) => {
   return (
     <div
@@ -15,7 +17,7 @@ const Button = ({ status }) => {
         display: 'inline-flex',
         alignItems: 'center',
         padding: spacing.base,
-        height: spacing.comfy,
+        height: BUTTON_HEIGHT,
         width: 'auto',
         borderRadius: constants.borderRadius.small,
         color: status === 'Canceled' ? colors.black : colors.primaryFont,
