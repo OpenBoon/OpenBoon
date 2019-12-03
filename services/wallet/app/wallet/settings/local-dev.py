@@ -10,9 +10,6 @@ from wallet.settings import *
 # for more customization: https://github.com/adamchainz/django-cors-headers
 MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
 
-# Remove the CSRF checks for easier API development
-MIDDLEWARE.remove('django.middleware.csrf.CsrfViewMiddleware')
-
 # Allow requests from the frontend development server
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080',
@@ -28,5 +25,5 @@ REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
 ]
 
 SIMPLE_JWT = {
-'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60)
+'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5)
 }
