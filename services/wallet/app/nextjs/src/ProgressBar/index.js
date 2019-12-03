@@ -1,25 +1,22 @@
 import PropTypes from 'prop-types'
-import { css } from '@emotion/core'
 import { colors, spacing, constants } from '../Styles'
 
 const CONTAINER_WIDTH = 200
 
 const getStatusStyles = ({ status, statusColor }) => {
-  const statusCSS = css`
-     {
-      height: 100%;
-      flex: ${status} 0 auto;
-      background-color: ${statusColor};
-      :first-of-type {
-        border-top-left-radius: ${constants.borderRadius.small}px;
-        border-bottom-left-radius: ${constants.borderRadius.small}px;
-      }
-      :last-of-type {
-        border-top-right-radius: ${constants.borderRadius.small}px;
-        border-bottom-right-radius: ${constants.borderRadius.small}px;
-      }
-    }
-  `
+  const statusCSS = {
+    height: '100%',
+    flex: `${status} 0 auto`,
+    backgroundColor: statusColor,
+    '&:first-of-type': {
+      borderTopLeftRadius: constants.borderRadius.small,
+      borderBottomLeftRadius: constants.borderRadius.small,
+    },
+    '&:last-of-type': {
+      borderTopRightRadius: constants.borderRadius.small,
+      borderBottomRightRadius: constants.borderRadius.small,
+    },
+  }
 
   return statusCSS
 }
@@ -45,24 +42,14 @@ const ProgressBar = ({ status }) => {
     )
   }
 
-  const containerCSS = css`
-     {
-      display: flex;
-      height: ${spacing.normal}px;
-      width: ${CONTAINER_WIDTH}px;
-      :first-of-type {
-        border-top-left-radius: ${constants.borderRadius.small}px;
-        border-bottom-left-radius: ${constants.borderRadius.small}px;
-      }
-      :last-of-type {
-        border-top-right-radius: ${constants.borderRadius.small}px;
-        border-bottom-right-radius: ${constants.borderRadius.small}px;
-      }
-    }
-  `
-
   return (
-    <div className="ProgressBar__container" css={containerCSS}>
+    <div
+      className="ProgressBar__container"
+      css={{
+        display: 'flex',
+        height: spacing.normal,
+        width: CONTAINER_WIDTH,
+      }}>
       {succeeded > 0 && (
         <div
           className="ProgressBar__Succeeded"
