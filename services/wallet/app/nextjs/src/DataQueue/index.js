@@ -79,7 +79,6 @@ const DataQueue = () => {
 
   return (
     <div
-      className="DataQueue"
       css={{
         height: '100%',
         width: '100%',
@@ -89,7 +88,6 @@ const DataQueue = () => {
         padding: `${spacing.moderate * 7}px ${spacing.spacious}px`,
       }}>
       <div
-        className="DataQueue__container"
         css={{
           display: 'flex',
           flexDirection: 'column',
@@ -97,15 +95,12 @@ const DataQueue = () => {
           height: '100%',
         }}>
         <div
-          className="DataQueue__title"
           css={{
             color: colors.grey2,
           }}>
           {'DATA QUEUE'}
         </div>
-        <div className="DataQueue__table">
-          <Table columns={columns} data={data} />
-        </div>
+        <Table columns={columns} data={data} />
       </div>
     </div>
   )
