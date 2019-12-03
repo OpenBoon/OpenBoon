@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 import { useMemo } from 'react'
 import { colors, spacing } from '../Styles'
 import { createJobsData, createColumns } from './helpers'
+import { formatFullDate } from '../Format/Date/helpers'
 import { jobs } from './__mocks__/jobs'
 
 import Button from '../Button'
 import ProgressBar from '../ProgressBar'
-import FormattedDate from '../Format/Date'
 import Table from '../Table'
 import FormattedColumn from '../Format/Column'
 
@@ -34,7 +34,7 @@ const COLUMN_OPTIONS = [
     Header: 'Created (Date/TIme)',
     accessor: 'createdDateTime',
     Cell: ({ cell: { value } }) => {
-      return FormattedDate({ timeCreated: value })
+      return String(formatFullDate({ timestamp: value }))
     },
   },
   {
