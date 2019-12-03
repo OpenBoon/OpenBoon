@@ -1,4 +1,4 @@
 {
   "extends": ["config:base"],
-  "includePaths": ["/services/wallet/app/nextjs"]
+  "includePaths": ["/services/wallet/app/nextjs/package.json"]
 }
