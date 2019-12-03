@@ -2,7 +2,6 @@ package com.zorroa.archivist
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.common.collect.Lists
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.capture
 import com.zorroa.archivist.clients.ApiKey
@@ -12,16 +11,12 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.schema.Proxy
-import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.EsClientCache
-import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.IndexClusterService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.PipelineService
@@ -45,7 +40,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.transaction.annotation.Transactional
@@ -58,15 +53,12 @@ import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource(locations = ["classpath:test.properties"])
+@ActiveProfiles("test", "aws")
 @WebAppConfiguration
 @Transactional
 abstract class AbstractTest {
 
     val logger = LoggerFactory.getLogger(javaClass)
-
-    @Autowired
-    protected lateinit var fileServerProvider: FileServerProvider
 
     @Autowired
     protected lateinit var projectService: ProjectService

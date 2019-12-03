@@ -14,7 +14,6 @@ import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.ServableFile
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorFilter
@@ -58,7 +57,6 @@ interface JobService {
     fun updateJob(job: Job, spec: JobUpdateSpec): Boolean
     fun getTaskErrors(filter: TaskErrorFilter): KPagedList<TaskError>
     fun deleteTaskError(id: UUID): Boolean
-    fun getTaskLog(id: UUID): ServableFile
     fun deleteJob(job: JobId): Boolean
     fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int): List<Job>
     fun checkAndSetJobFinished(job: JobId): Boolean
@@ -80,9 +78,6 @@ class JobServiceImpl @Autowired constructor(
 
     @Autowired
     private lateinit var pipelineService: PipelineService
-
-    @Autowired
-    lateinit var fileStorageService: FileStorageService
 
     override fun create(spec: JobSpec): Job {
         if (spec.script != null) {
@@ -196,13 +191,6 @@ class JobServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getZpsScript(id: UUID): ZpsScript {
         return taskDao.getScript(id)
-    }
-
-    @Transactional(readOnly = true)
-    override fun getTaskLog(id: UUID): ServableFile {
-        val task = getTask(id)
-        val st = fileStorageService.get(task.getLogSpec())
-        return st.getServableFile()
     }
 
     override fun createTask(job: JobId, spec: TaskSpec): Task {

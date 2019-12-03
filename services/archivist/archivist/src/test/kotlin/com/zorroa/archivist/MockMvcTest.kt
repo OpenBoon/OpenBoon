@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
@@ -55,7 +55,7 @@ abstract class MockMvcTest : AbstractTest() {
          * When using the 'job()' method to authenticate in a controller test,
          * this will be your PixmlActor.
          */
-        Mockito.`when`(authServerClient.authenticate(eq("JOBRUNNER"))).then {
+        whenever(authServerClient.authenticate(eq("JOBRUNNER"))).then {
             ZmlpUser(
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 project.id,

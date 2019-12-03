@@ -43,7 +43,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(1, rsp.status.size)
         assertFalse(rsp.status[0].failed)
 
-        val asset = assetService.get(rsp.status[0].assetId)
+        val asset = assetService.getAsset(rsp.status[0].assetId)
         assertEquals(req.assets[0].uri, asset.getAttr("source.path", String::class.java))
         assertNotNull(asset.getAttr("system.jobId"))
         assertNotNull(asset.getAttr("system.dataSourceId"))
@@ -71,7 +71,7 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val createRsp = assetService.batchCreate(batchCreate)
-        val asset = assetService.get(createRsp.status[0].assetId)
+        val asset = assetService.getAsset(createRsp.status[0].assetId)
         asset.setAttr("test.field", 1)
         val batchIndex = BatchUpdateAssetsRequest(
             assets = listOf(asset)
@@ -98,7 +98,7 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val createRsp = assetService.batchCreate(batchCreate)
-        val asset = assetService.get(createRsp.status[0].assetId)
+        val asset = assetService.getAsset(createRsp.status[0].assetId)
 
         val req = BatchUpdateAssetsRequest(
             assets = listOf(

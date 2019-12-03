@@ -36,6 +36,17 @@ services:
     ports:
        - 6379:6379
 
+  minio:
+    image: "minio/minio"
+    ports:
+      - "9000:9000"
+    command: server /data2
+    volumes:
+      - "./data:/data2"
+    environment:
+      MINIO_ACCESS_KEY: qwerty123
+      MINIO_SECRET_KEY: 123qwerty
+
   # Auth server
   auth-server:
     links:
@@ -55,6 +66,9 @@ services:
        - "auth-server"
     environment:
       SENTRY_ENVIRONMENT: localdev
+      ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
+      ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
+      ARCHIVIST_STORAGE_URL: http://minio:9000
     build:
       context: ../services/archivist
     ports:
@@ -65,7 +79,6 @@ services:
       - "../services/archivist/localdev/zorroa-archivist-config:/config"
       - "../test-data:/test-data"
       - "zmlp-config:/zmlp-config"
-
   analyst:
     links:
        - "archivist"
@@ -77,6 +90,7 @@ services:
        - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       PIXML_SERVER: http://archivist:8080
+
 volumes:
   zmlp-config:
     external: true

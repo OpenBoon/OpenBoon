@@ -38,10 +38,11 @@ enum class LogObject {
     INDEX_CLUSTER,
     JOB,
     PIPELINE,
-    STORAGE,
     TASK,
     ANALYST,
     TASK_ERROR,
     PROJECT,
-    DATASOURCE
+    DATASOURCE;
+
+    fun lower() = this.toString().toLowerCase()
 }

@@ -10,7 +10,6 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.service.FileStorageService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
@@ -29,7 +28,6 @@ import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.nio.file.Files
-import java.util.UUID
 import kotlin.test.assertEquals
 
 @WebAppConfiguration
@@ -40,9 +38,6 @@ class TaskControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var taskErrorDao: TaskErrorDao
-
-    @Autowired
-    lateinit var fileStorageService: FileStorageService
 
     lateinit var task: Task
 
@@ -204,27 +199,6 @@ class TaskControllerTests : MockMvcTest() {
 
         val script = deserialize(result, ZpsScript::class.java)
         assertEquals("bar", script.name)
-    }
-
-    @Test
-    fun testGetLogFile() {
-
-        val log = task.getLogSpec()
-        val fs = fileStorageService.get(log)
-        fileStorageService.getSignedUrl(fs.id, HttpMethod.PUT)
-
-        Files.write(fs.getServableFile().getLocalFile(), "boom!".toByteArray())
-
-        val req = mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        val data = req.response.contentAsString
-        assertEquals("boom!", data)
     }
 
     @Test

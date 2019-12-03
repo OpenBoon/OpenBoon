@@ -1,6 +1,9 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.domain.FileCategory
+import com.zorroa.archivist.domain.FileStorageLocator
+import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.LogAction
@@ -15,9 +18,12 @@ import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.storage.FileStorageService
 import org.slf4j.LoggerFactory
+import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.Base64
 import java.util.UUID
 
 interface ProjectService {
@@ -60,7 +66,8 @@ class ProjectServiceImpl constructor(
     val projectDao: ProjectDao,
     val projectFilterDao: ProjectFilterDao,
     val authServerClient: AuthServerClient,
-    val indexRoutingService: IndexRoutingService
+    val indexRoutingService: IndexRoutingService,
+    val fileStorageService: FileStorageService
 ) : ProjectService {
 
     override fun create(spec: ProjectSpec): Project {
@@ -73,7 +80,8 @@ class ProjectServiceImpl constructor(
                 time
             )
         )
-        createStandardKeys(project)
+        createStandardApiKeys(project)
+        createProjectCryptoKey(project)
         createIndexRoute(project)
 
         logger.event(
@@ -96,7 +104,7 @@ class ProjectServiceImpl constructor(
     /**
      * Create the list of standard project keys.
      */
-    private fun createStandardKeys(project: Project) {
+    private fun createStandardApiKeys(project: Project) {
         authServerClient.createApiKey(
             project, KnownKeys.JOB_RUNNER, listOf(
                 Role.JOBRUNNER,
@@ -107,11 +115,20 @@ class ProjectServiceImpl constructor(
         )
     }
 
+    private fun createProjectCryptoKey(project: Project) {
+        val projectKeyLocation =
+            FileStorageLocator(LogObject.PROJECT, "credentials", FileCategory.INTERNAL, "key.txt",
+                projectId = project.id)
+        val key = Base64.getUrlEncoder().encodeToString(
+            KeyGenerators.secureRandom(64).generateKey()).trim('=')
+
+        val spec = FileStorageSpec(projectKeyLocation, mapOf(), key.toByteArray())
+        fileStorageService.store(spec)
+    }
+
     override fun getCredentialsKey() : String {
-        // TODO: implement per project credentials key
-        // This is a temp solution until we have a place (not in the database)
-        // to store keys.
-        return "823d581fecb92a048812c78ff7257b7b23b0fd668e4bcef34916c04a5aa970db"
+        val loc = FileStorageLocator(LogObject.PROJECT, "credentials", FileCategory.INTERNAL, "key.txt")
+        return String(fileStorageService.fetch(loc))
     }
 
     override fun get(id: UUID): Project {
