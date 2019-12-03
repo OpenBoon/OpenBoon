@@ -26,7 +26,7 @@ services_build_artifacts:
     - mvn package
     - cd ../
     - mvn clean install -Dmaven.test.skip=true
-#    - mvn project-info-reports:dependencies # not sure if this is still required
+    # - mvn project-info-reports:dependencies # not sure if this is still required
   artifacts:
     paths:
       - services/elasticsearch/es-kwconf/target/releases/es-kwconf.zip
@@ -113,7 +113,6 @@ services_push_to_local_registry:
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zps/pylib/zplugins
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
 
-
 # Wallet Jobs
 .wallet-base:
   only:
@@ -126,24 +125,23 @@ services_push_to_local_registry:
   extends: .wallet-base
   image: node:12
   before_script:
-    - cd services/wallet/app/frontend
+    - cd services/wallet/app/nextjs
     - npm install
 
 wallet-frontend-test-suite:
   extends: .wallet-frontend-base
   stage: test
   script:
-    - npx eslint ./src --quiet
-    - npx stylelint '**/*.scss'
-    - npx jest --bail --silent --ci
+    - npm run lint
+    - npm run test:cover
 
 wallet-backend-test-suite:
   extends: .wallet-base
   image: mc706/pipenv-3.6
   stage: test
   services:
-     - name: postgres:9.6.9
-       alias: postgres
+    - name: postgres:9.6.9
+      alias: postgres
   variables:
     POSTGRES_PASSWORD: a8fnnbe934j
     POSTGRES_USER: wallet
