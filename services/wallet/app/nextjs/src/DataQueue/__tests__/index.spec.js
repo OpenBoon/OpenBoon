@@ -3,7 +3,7 @@ import DataQueue from '../'
 
 jest.mock('../__mocks__/jobs')
 
-describe('<Jobs />', () => {
+describe('<DataQueue />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(<DataQueue />)
 

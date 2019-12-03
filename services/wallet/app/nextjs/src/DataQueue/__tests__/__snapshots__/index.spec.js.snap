@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Jobs /> should render properly 1`] = `
+exports[`<DataQueue /> should render properly 1`] = `
 .emotion-30 {
   height: 100%;
   width: 100%;
@@ -87,7 +87,7 @@ exports[`<Jobs /> should render properly 1`] = `
 }
 
 .emotion-20 {
-  padding-right: 8px;
+  padding-right: 8 px;
 }
 
 .emotion-26 {
@@ -354,7 +354,7 @@ exports[`<Jobs /> should render properly 1`] = `
           <div
             className="emotion-24"
           >
-            of 0
+            of 0 
           </div>
           <div
             className="emotion-22"
