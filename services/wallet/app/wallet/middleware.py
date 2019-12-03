@@ -14,18 +14,20 @@ class AuthenticationMiddlewareSimpleJWT(object):
         self.get_response = get_response
 
     def __call__(self, request):
-        request.user = SimpleLazyObject(lambda: self.__class__.get_jwt_user(request))
-        return self.get_response(request)
-
-    @staticmethod
-    def get_jwt_user(request):
         user = get_user(request)
+
+        # If Authenticated with Session or BasicAuth, use that
         if user.is_authenticated:
-            return user
+            request.user = SimpleLazyObject(lambda: user)
 
         try:
+            # If Authenticated with SimpleJWT, use that
             user_jwt = JWTAuthentication().authenticate(Request(request))
             if user_jwt is not None:
-                return user_jwt[0]
+                request.user = SimpleLazyObject(lambda: user_jwt[0])
         except:
-            return user
+            # Otherwise, don't touch the request, as it messes with the Admin site
+            pass
+
+        return self.get_response(request)
+

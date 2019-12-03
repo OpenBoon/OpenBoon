@@ -10,7 +10,6 @@ class JobsViewSet(BaseProjectViewSet):
         current_url = request.build_absolute_uri(request.get_full_path())
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size', 25)}}
-        # TODO: Need to handle when the server is unreachable, for all these
         response = client.post('/api/v1/jobs/_search', payload)
         content = response.json()
         for item in content['list']:
@@ -45,12 +44,12 @@ class JobsViewSet(BaseProjectViewSet):
 
     @action(detail=True, methods=['put'])
     def cancel(self, request, project_pk, client, pk):
-        response = client.put(f'/api/v1/jobs/{pk}/_cancel')
+        response = client.put(f'/api/v1/jobs/{pk}/_cancel', {})
         return Response(response.json())
 
     @action(detail=True, methods=['put'])
     def restart(self, request, project_pk, client, pk):
-        response = client.put(f'/api/v1/jobs/{pk}/_restart')
+        response = client.put(f'/api/v1/jobs/{pk}/_restart', {})
         return Response(response.json())
 
     @action(detail=True, methods=['put'])
@@ -58,6 +57,11 @@ class JobsViewSet(BaseProjectViewSet):
         priority = request.data.get('priority', None)
         if priority is None:
             msg = 'Unable to find a valid `priority` value to use.'
+            return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
+        try:
+            priority = int(priority)
+        except ValueError:
+            msg = 'Invalid `priority` value provided. Expected an integer.'
             return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
         new_values = {'priority': priority}
         request_body = self._get_updated_info(client, pk, new_values)
@@ -70,14 +74,19 @@ class JobsViewSet(BaseProjectViewSet):
         if max_running_tasks is None:
             msg = 'Unable to find a valid `max_running_tasks` value to use.'
             return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
-        new_values = {'max_running_tasks': max_running_tasks}
+        try:
+            max_running_tasks = int(max_running_tasks)
+        except ValueError:
+            msg = 'Invalid `max_running_tasks` value provided. Expected an integer.'
+            return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
+        new_values = {'maxRunningTasks': max_running_tasks}
         request_body = self._get_updated_info(client, pk, new_values)
         response = client.put(f'/api/v1/jobs/{pk}', request_body)
         return Response(response.json())
 
     @action(detail=True, methods=['put'])
     def retry_all_failures(self, request, project_pk, client, pk):
-        response = client.put(f'/api/v1/jobs/{pk}/_retryAllFailures')
+        response = client.put(f'/api/v1/jobs/{pk}/_retryAllFailures', {})
         return Response(response.json())
 
     def _get_updated_info(self, client, pk, new_values):
@@ -94,11 +103,12 @@ class JobsViewSet(BaseProjectViewSet):
             (dict): Full job spec with updated values
         """
         response = client.get(f'/api/v1/jobs/{pk}')
+        body = response.json()
         job_spec = {
-            'name': response['name'],
-            'priority': response['priority'],
-            'paused': response['paused'],
-            'timePauseExpired': response['timePauseExpired']
+            'name': body['name'],
+            'priority': body['priority'],
+            'paused': body['paused'],
+            'timePauseExpired': body['timePauseExpired']
         }
         job_spec.update(new_values)
         return job_spec
