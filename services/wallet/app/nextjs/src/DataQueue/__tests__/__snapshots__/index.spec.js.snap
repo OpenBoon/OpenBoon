@@ -87,7 +87,7 @@ exports[`<DataQueue /> should render properly 1`] = `
 }
 
 .emotion-20 {
-  padding-right: 8 px;
+  padding-right: 8px;
 }
 
 .emotion-26 {

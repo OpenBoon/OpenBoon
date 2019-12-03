@@ -11,13 +11,13 @@ describe('getPageDescription', () => {
       const defaultString = 'Jobs: 1-5 of 6'
 
       expect(
-        getPageDescription(
+        getPageDescription({
           pageSize,
           pageIndex,
           numRowsOnPage,
           numRowsTotal,
           canNextPage,
-        ),
+        }),
       ).toBe(defaultString)
     })
   })
@@ -32,13 +32,13 @@ describe('getPageDescription', () => {
         const defaultString = 'Jobs: 6 of 6'
 
         expect(
-          getPageDescription(
+          getPageDescription({
             pageSize,
             pageIndex,
             numRowsOnPage,
             numRowsTotal,
             canNextPage,
-          ),
+          }),
         ).toBe(defaultString)
       })
     })
@@ -52,13 +52,13 @@ describe('getPageDescription', () => {
         const defaultString = 'Jobs: 6-7 of 7'
 
         expect(
-          getPageDescription(
+          getPageDescription({
             pageSize,
             pageIndex,
             numRowsOnPage,
             numRowsTotal,
             canNextPage,
-          ),
+          }),
         ).toBe(defaultString)
       })
     })
