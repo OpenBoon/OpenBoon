@@ -85,7 +85,7 @@ const DataQueue = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: `${spacing.moderate * 7}px ${spacing.spacious}px`,
+        padding: `${spacing.enormous}px ${spacing.spacious}px`,
       }}>
       <div
         css={{
@@ -108,12 +108,9 @@ const DataQueue = () => {
 
 DataQueue.propTypes = {
   cell: PropTypes.shape({
-    value: PropTypes.string,
-  }),
-}
-
-DataQueue.defaultProps = {
-  cell: {},
+    // cell prop comes from 'react-table'
+    value: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default DataQueue

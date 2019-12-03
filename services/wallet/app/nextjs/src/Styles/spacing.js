@@ -7,6 +7,7 @@ const spacing = {
   large: 40,
   giant: 48,
   colossal: 64,
+  enormous: 84,
 }
 
 export default spacing
