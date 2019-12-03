@@ -11,6 +11,34 @@ const ROW_HEIGHT = 32
 const PAGINATION_HEIGHT = 32
 const PAGINATION_WIDTH = 40
 
+const tdCSS = isHovered => {
+  return {
+    height: ROW_HEIGHT,
+    fontWeight: 200,
+    color: colors.grey2,
+    padding: `${spacing.base}px ${spacing.normal}px`,
+    backgroundColor: `${isHovered && colors.grey1}`,
+    border: `1px solid transparent`,
+
+    '&:first-of-type': {
+      borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderLeft: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
+    },
+
+    '&:last-of-type': {
+      borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderRight: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
+    },
+
+    '&:not(:first-of-type), &:not(:last-of-type)': {
+      borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
+    },
+  }
+}
+
 const Table = ({ columns, data }) => {
   const {
     getTableProps,
@@ -41,34 +69,6 @@ const Table = ({ columns, data }) => {
     '&:not(:last-child)': {
       borderRight: `1px solid ${colors.grey5}`,
     },
-  }
-
-  const tdCSS = isHovered => {
-    return {
-      height: ROW_HEIGHT,
-      fontWeight: 200,
-      color: colors.grey2,
-      padding: `${spacing.base}px ${spacing.normal}px`,
-      backgroundColor: `${isHovered && colors.grey1}`,
-      border: `1px solid transparent`,
-
-      '&:first-of-type': {
-        borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
-        borderLeft: `${isHovered && `1px solid ${colors.grey5}`}`,
-        borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
-      },
-
-      '&:last-of-type': {
-        borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
-        borderRight: `${isHovered && `1px solid ${colors.grey5}`}`,
-        borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
-      },
-
-      '&:not(:first-of-type), &:not(:last-of-type)': {
-        borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
-        borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
-      },
-    }
   }
 
   const trCSS = {
@@ -158,16 +158,16 @@ const Table = ({ columns, data }) => {
           alignItems: 'center',
           color: colors.grey5,
         }}>
-        <div css={{ paddingRight: `${spacing.base} px` }}>
-          {getPageDescription(
+        <div css={{ paddingRight: spacing.base }}>
+          {getPageDescription({
             pageSize,
             pageIndex,
-            page.length,
-            data.length,
+            numRowsOnPage: page.length,
+            numRowsTotal: data.length,
             canNextPage,
-          )}
+          })}
         </div>
-        <div css={{ paddingRight: `${spacing.base} px` }}>{'Page:'}</div>
+        <div css={{ paddingRight: spacing.base }}>{'Page:'}</div>
         <div css={{ display: 'flex', alignItems: 'center' }}>
           <div
             onClick={() => previousPage()}
