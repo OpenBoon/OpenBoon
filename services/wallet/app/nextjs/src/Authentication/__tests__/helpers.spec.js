@@ -1,3 +1,5 @@
+import { axiosCreate } from '../../Axios/__mocks__/helpers'
+
 import {
   getTokens,
   isUserAuthenticated,
@@ -5,8 +7,6 @@ import {
   authenticateUser,
   logout,
 } from '../helpers'
-
-jest.mock('../../Axios/helpers')
 
 describe('<Authentication /> helpers', () => {
   describe('getTokens()', () => {
@@ -66,7 +66,7 @@ describe('<Authentication /> helpers', () => {
         },
       })
 
-      authenticateUser({ setUser: mockSetUser })({
+      authenticateUser({ axiosInstance: axiosCreate(), setUser: mockSetUser })({
         username: 'username',
         password: 'password',
       })
