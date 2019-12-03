@@ -1,12 +1,12 @@
 const colors = {
   primary: '#82BE3C',
-  primaryHover: '#a7d374',
+  primaryHover: '#A7D374',
 
   error: '#CE2D3F',
   danger: '#EDB8BE',
 
   primaryBackground: '#1B1B1B',
-  secondaryBackground: '#2d2d2d',
+  secondaryBackground: '#2D2D2D',
 
   primaryFont: '#FFF',
   secondaryFont: '#545454',
