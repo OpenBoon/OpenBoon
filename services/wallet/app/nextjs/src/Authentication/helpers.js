@@ -1,7 +1,5 @@
 import jwtDecode from 'jwt-decode'
 
-import { axiosCreate } from '../Axios/helpers'
-
 import { ACCESS_TOKEN, REFRESH_TOKEN } from './constants'
 
 export const getTokens = () => {
@@ -45,10 +43,11 @@ export const getTokenTimeout = ({ now, refreshToken }) => {
   return (expirationTime - currentTime - 30) * 1000 // set to 30 seconds before expiration
 }
 
-export const authenticateUser = ({ setUser }) => ({ username, password }) => {
-  const instance = axiosCreate({})
-
-  return instance
+export const authenticateUser = ({ axiosInstance, setUser }) => ({
+  username,
+  password,
+}) => {
+  return axiosInstance
     .post('/auth/token/', { username, password })
     .then(({ data }) => {
       const { access: accessToken, refresh: refreshToken } = data
