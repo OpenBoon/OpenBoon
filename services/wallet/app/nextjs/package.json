@@ -29,6 +29,9 @@
     "snapshotSerializers": [
       "jest-emotion"
     ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest",
       "^.+\\.svg$": "<rootDir>/__mocks__/svg.js"
