@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Login from '../'
+import Login from '..'
 
 const noop = () => () => {}
 
