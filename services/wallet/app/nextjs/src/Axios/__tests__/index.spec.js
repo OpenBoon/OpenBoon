@@ -4,9 +4,8 @@ import {
   decorateHeaders,
   errorHandler,
   axiosCreate,
+  fetcher,
 } from '../helpers'
-
-jest.mock('axios-auth-refresh')
 
 describe('<Axios /> helpers', () => {
   describe('refreshAuthTokens()', () => {
@@ -75,6 +74,18 @@ describe('<Axios /> helpers', () => {
   describe('axiosCreate()', () => {
     it('should return a function', () => {
       expect(axiosCreate()).toMatchSnapshot()
+    })
+  })
+
+  describe('fetcher()', () => {
+    it('should return the content of data', () => {
+      expect(
+        fetcher({
+          axiosInstance: () => ({
+            then: successCallback => successCallback({ data: 'results' }),
+          }),
+        })(),
+      ).toEqual('results')
     })
   })
 })
