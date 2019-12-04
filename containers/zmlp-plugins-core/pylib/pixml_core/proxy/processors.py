@@ -242,10 +242,11 @@ def set_tiny_proxy_colors(asset):
         if image_proxies:
             app = pixml.app_from_env()
             smallest_proxy = sorted(image_proxies, key=lambda prx: prx['attrs']['width'])[0]
-            tiny_proxy_path = file_cache.localize_remote_file(smallest_proxy)
+            tiny_proxy_path = file_cache.localize_pixml_file(asset, smallest_proxy)
 
             logger.info('Creating tiny proxy colors for %s.' % tiny_proxy_path)
-            asset.set_attr('analysis.pixelml.tinyProxy', get_tiny_proxy_colors(tiny_proxy_path) or None)
+            asset.set_attr('analysis.pixelml.tinyProxy',
+                           get_tiny_proxy_colors(tiny_proxy_path) or None)
 
             # Mark that the tiny proxy was generated so we don't do this multiple times
             # if the customer has multiple proxy importers.
