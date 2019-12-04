@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
  * @param name a name assoicated with they key, names are unique.
  * @param permissions A list of permissions available to the key.
  */
-class ZmlpUser(
+class ZmlpActor(
     val keyId: UUID,
     val projectId: UUID,
     val name: String,
@@ -48,7 +48,7 @@ class ZmlpUser(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as ZmlpUser
+        other as ZmlpActor
 
         if (keyId != other.keyId) return false
 
@@ -82,7 +82,7 @@ interface AuthServerClient {
      * Authenticate the given JWT token with the auth-server and return
      * a ZMLP user instance.
      */
-    fun authenticate(authToken: String): ZmlpUser
+    fun authenticate(authToken: String): ZmlpActor
 
     /**
      * Create a new API key for the given project.
@@ -106,9 +106,9 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
         .initialCapacity(128)
         .concurrencyLevel(8)
         .expireAfterWrite(10, TimeUnit.SECONDS)
-        .build(object : CacheLoader<String, ZmlpUser>() {
+        .build(object : CacheLoader<String, ZmlpActor>() {
             @Throws(Exception::class)
-            override fun load(token: String): ZmlpUser {
+            override fun load(token: String): ZmlpActor {
                 val req = RequestEntity.get(URI("${baseUri}/auth/v1/auth-token"))
                     .header("Authorization", "Bearer $token")
                     .accept(MediaType.APPLICATION_JSON).build()
@@ -134,7 +134,7 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
      *
      * @param authToken An authentication token, typically JWT
      */
-    override fun authenticate(authToken: String): ZmlpUser {
+    override fun authenticate(authToken: String): ZmlpActor {
         return cache.get(authToken)
     }
 
@@ -181,8 +181,8 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
         // A couple convinience ParameterizedTypeReferences for
         // calling RestTemplate.exchange.
 
-        val TYPE_ZMLPUSER: ParameterizedTypeReference<ZmlpUser> =
-            object : ParameterizedTypeReference<ZmlpUser>() {}
+        val TYPE_ZMLPUSER: ParameterizedTypeReference<ZmlpActor> =
+            object : ParameterizedTypeReference<ZmlpActor>() {}
 
         val TYPE_APIKEY: ParameterizedTypeReference<ApiKey> =
             object : ParameterizedTypeReference<ApiKey>() {}

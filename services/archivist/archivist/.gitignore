@@ -14,16 +14,6 @@ plugins/*.zip
 /unittest
 # Build directory
 /target
-# Default location of embedded SQL DB files.
-/db
-# Default location for elastic index
-/index
-# Default location for filesystem
-storage
-# Default location for exports
-/exports
-# Default location for snapshots
-/snapshots
 
 # Sublime project
 archivist.sublime-project

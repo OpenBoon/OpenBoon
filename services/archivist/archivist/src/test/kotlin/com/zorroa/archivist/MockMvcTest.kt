@@ -6,7 +6,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
-import com.zorroa.archivist.clients.ZmlpUser
+import com.zorroa.archivist.clients.ZmlpActor
 import com.zorroa.archivist.rest.MockSecurityContext
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.Perm
@@ -56,7 +56,7 @@ abstract class MockMvcTest : AbstractTest() {
          * this will be your PixmlActor.
          */
         whenever(authServerClient.authenticate(eq("JOBRUNNER"))).then {
-            ZmlpUser(
+            ZmlpActor(
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 project.id,
                 "JobRunner",
@@ -69,7 +69,7 @@ abstract class MockMvcTest : AbstractTest() {
          * this will be your PixmlActor.
          */
         Mockito.`when`(authServerClient.authenticate(eq("ADMIN"))).then {
-            ZmlpUser(
+            ZmlpActor(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 project.id,
                 "unittest-key",

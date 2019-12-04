@@ -19,6 +19,7 @@ import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.storage.FileStorageService
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.keygen.KeyGenerators
@@ -73,12 +74,15 @@ class ProjectServiceImpl constructor(
 
     override fun create(spec: ProjectSpec): Project {
         val time = System.currentTimeMillis()
+        val actor = getZmlpActor()
         val project = projectDao.saveAndFlush(
             Project(
                 spec.projectId ?: UUIDGen.uuid1.generate(),
                 spec.name,
                 time,
-                time
+                time,
+                actor.name,
+                actor.name
             )
         )
         createStandardApiKeys(project)

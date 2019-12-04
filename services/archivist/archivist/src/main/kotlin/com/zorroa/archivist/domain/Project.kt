@@ -50,7 +50,16 @@ class Project (
 
     @Column(name="time_modified")
     @ApiModelProperty("The last time the Project was modified.")
-    val timeModified: Long
+    val timeModified: Long,
+
+    @Column(name = "actor_created")
+    @ApiModelProperty("The actor which created this Project")
+    val actorCreated: String,
+
+    @Column(name = "actor_modified")
+    @ApiModelProperty("The actor that last made the last modification the project.")
+    val actorModified: String
+
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

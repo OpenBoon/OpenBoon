@@ -6,7 +6,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.capture
 import com.zorroa.archivist.clients.ApiKey
 import com.zorroa.archivist.clients.AuthServerClient
-import com.zorroa.archivist.clients.ZmlpUser
+import com.zorroa.archivist.clients.ZmlpActor
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.AssetSpec
@@ -224,7 +224,7 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val user = ZmlpUser(
+        val user = ZmlpActor(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
             project.id,
             "unittest-key",

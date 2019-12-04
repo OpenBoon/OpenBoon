@@ -110,7 +110,7 @@ class AssetController @Autowired constructor(
     }
 
     @ApiOperation("Store an additional file to an asset.")
-    @GetMapping(value = ["/api/v3/assets/{id}/files/{category}/{name}/_stream"])
+    @GetMapping(value = ["/api/v3/assets/{id}/files/{category}/{name}"])
     @ResponseBody
     fun streamFile(
         @PathVariable id: String,
