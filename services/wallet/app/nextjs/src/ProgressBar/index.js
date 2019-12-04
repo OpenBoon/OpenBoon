@@ -29,15 +29,7 @@ const getStatusStyles = ({ status, statusColor }) => {
 }
 
 const ProgressBar = ({ status }) => {
-  const {
-    isGenerating,
-    isCanceled,
-    canceledBy,
-    succeeded,
-    failed,
-    running,
-    pending,
-  } = status
+  const { isGenerating, isCanceled, canceledBy } = status
 
   if (isGenerating) {
     return <div css={{ color: colors.blue1 }}>{'[ICON] Generating'}</div>
@@ -56,13 +48,13 @@ const ProgressBar = ({ status }) => {
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {[succeeded, failed, running, pending].map(status => {
-        if (status > 0) {
+      {['succeeded', 'failed', 'running', 'pending'].map(statusName => {
+        if (status[statusName] > 0) {
           return (
             <div
               css={getStatusStyles({
-                status,
-                statusColor: STATUS_COLORS[status],
+                status: status[statusName],
+                statusColor: STATUS_COLORS[statusName],
               })}
             />
           )
