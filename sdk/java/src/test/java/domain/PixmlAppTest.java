@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @DisplayName("Pixml Client Test")
 public class PixmlAppTest {
 
@@ -25,6 +27,10 @@ public class PixmlAppTest {
 
         PixmlApp pixmlApp = new PixmlApp(keyDict, null);
 
+        assertNotNull(pixmlApp);
+        assertNotNull(pixmlApp.pixmlClient);
+        assertNotNull(pixmlApp.pixmlClient.apiKey);
+        assertNotNull(pixmlApp.pixmlClient.headers());
 
     }
 }
