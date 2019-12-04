@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.capture
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.clients.ApiKey
 import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.clients.ZmlpActor
@@ -15,6 +16,8 @@ import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.IndexClusterService
@@ -125,6 +128,11 @@ abstract class AbstractTest {
         }
 
         /**
+         * Setup mocks for calls out to the authentication service.
+         */
+        setupAuthServerMocks()
+
+        /**
          * Setup a test project.
          */
         project = projectService.create(
@@ -137,11 +145,6 @@ abstract class AbstractTest {
         // TODO: Remove this once the indexRouteService can manage states.
         // Set the project index route to the current state
         jdbc.update("UPDATE index_route SET int_state=0")
-
-        /**
-         * Setup mocks for calls out to the authentication service.
-         */
-        setupAuthServerMocks()
 
         /**
          * Ensures that all transaction events run within the unit test transaction.
@@ -169,7 +172,7 @@ abstract class AbstractTest {
         val permissions = ArgumentCaptor.forClass(listOf("foo").javaClass)
 
         // Create ApiKey
-        Mockito.`when`(
+        whenever(
             authServerClient.createApiKey(
                 capture<Project>(proj),
                 any(),
@@ -184,7 +187,7 @@ abstract class AbstractTest {
         }
 
         // Get ApiKey
-        Mockito.`when`(
+        whenever(
             authServerClient.getApiKey(
                 any(), any()
             )
@@ -195,6 +198,15 @@ abstract class AbstractTest {
                 randomString(64)
             )
         }
+
+        // Setup a inception key first.
+        val actor = ZmlpActor(
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            "inception-key",
+            listOf(Role.SUPERADMIN, Role.PROJADMIN)
+        )
+        SecurityContextHolder.getContext().authentication = actor.getAuthentication()
     }
 
     fun setupElastic() {
@@ -224,17 +236,13 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val user = ZmlpActor(
+        val actor = ZmlpActor(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
             project.id,
             "unittest-key",
             listOf(Role.PROJADMIN)
         )
-
-        SecurityContextHolder.getContext().authentication =
-            UsernamePasswordAuthenticationToken(
-                user,
-                user.permissions.map { SimpleGrantedAuthority(it) })
+        SecurityContextHolder.getContext().authentication = actor.getAuthentication()
     }
 
     fun logout() {

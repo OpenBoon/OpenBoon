@@ -25,7 +25,7 @@ class AuthServerClientTests : AbstractTest() {
 
     @Before
     fun init() {
-        authServerClient = AuthServerClientImpl("http://localhost:9090")
+        authServerClient = AuthServerClientImpl("http://localhost:9090", null)
         mockServer = MockRestServiceServer.createServer(authServerClient.rest)
     }
 

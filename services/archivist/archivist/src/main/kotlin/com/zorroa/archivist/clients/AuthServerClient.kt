@@ -2,6 +2,7 @@ package com.zorroa.archivist.clients
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
@@ -11,6 +12,8 @@ import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.MediaType
 import org.springframework.http.RequestEntity
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.web.client.RestTemplate
@@ -38,10 +41,18 @@ class ZmlpActor(
 ) {
 
     /**
-     * Convet the permissions list to an array of GrantedAuthority.
+     * Convert the permissions list to an array of GrantedAuthority.
      */
     fun getAuthorities(): List<GrantedAuthority> {
         return permissions.map { SimpleGrantedAuthority(it) }
+    }
+
+    /**
+     * Convert the ZmlpActor into an [Authentication] object.
+     */
+    fun getAuthentication(): Authentication {
+        return UsernamePasswordAuthenticationToken(this,
+            this.permissions.map { SimpleGrantedAuthority(it) })
     }
 
     override fun equals(other: Any?): Boolean {
@@ -98,7 +109,7 @@ interface AuthServerClient {
 /**
  * A simple client to the Authentication service.
  */
-class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
+class AuthServerClientImpl(val baseUri: String, val serviceKeyFile: String?) : AuthServerClient {
 
     override val rest: RestTemplate = RestTemplate(HttpComponentsClientHttpRequestFactory())
 
@@ -116,13 +127,15 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
             }
         })
 
-    private val serviceKey: ApiKey? = detectServiceKey()
+    private val serviceKey: ApiKey? = loadServiceKey()
 
-    private fun detectServiceKey(): ApiKey? {
-        val cfgPath = System.getenv().getOrDefault("ARCHIVIST_CONFIG_PATH", "/config")
-        val keyPath = Paths.get("$cfgPath/inception-key.json")
-        return if (Files.exists(keyPath)) {
-            Json.Mapper.readValue(keyPath.toFile())
+    private fun loadServiceKey(): ApiKey? {
+        if (serviceKeyFile == null) {
+            return null
+        }
+        val path = Paths.get(serviceKeyFile)
+        return if (Files.exists(path)) {
+            Json.Mapper.readValue(path.toFile())
         } else {
             null
         }

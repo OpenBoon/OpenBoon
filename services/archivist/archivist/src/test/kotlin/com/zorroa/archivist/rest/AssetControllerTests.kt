@@ -153,7 +153,8 @@ class AssetControllerTests : MockMvcTest() {
 
         val body = MockMultipartFile(
             "body", "",
-            "application/json", "{\"attrs\": {\"foo\": \"bar\"}}".toByteArray()
+            "application/json", "{\"name\": \"toucan.jpg\", \"attrs\": {\"foo\": \"bar\"}}".toByteArray()
+
         )
 
         val rsp = assetService.batchCreate(BatchCreateAssetsRequest(
