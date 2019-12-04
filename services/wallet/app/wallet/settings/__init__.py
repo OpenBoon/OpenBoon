@@ -69,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'wallet.middleware.AuthenticationMiddlewareSimpleJWT',          # Sets request.user from JWT
 ]
 
 ROOT_URLCONF = 'wallet.urls'

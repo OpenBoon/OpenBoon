@@ -9,11 +9,12 @@ from wallet.settings import *
 # CORS Middleware for handling frontend server requests
 # for more customization: https://github.com/adamchainz/django-cors-headers
 MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+
+# Allow requests from the frontend development server
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8080'
+    'http://localhost:8080',
 ]
 CORS_ALLOW_CREDENTIALS = True
-
 
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
     'rest_framework.authentication.BasicAuthentication',
