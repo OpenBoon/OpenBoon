@@ -104,7 +104,7 @@ class ClusterClient(object):
 
         """
         data = self.make_event(task, etype, payload)
-        logger.info("POST %s/cluster/_event %s" % (self.remote_url, data))
+        logger.debug("POST %s/cluster/_event %s" % (self.remote_url, data))
         # Run forever until server comes back online
         backoff = 1
         while True:
@@ -234,7 +234,7 @@ class Executor(object):
             return None
         task = self.client.get_next_task()
         if task:
-            logger.info("Fetched next task: %s:" % task)
+            logger.debug("Fetched next task: %s:" % task)
             return task
         return None
 
@@ -306,7 +306,7 @@ class Executor(object):
             if not self.first_ping:
                 self.poll_count += 1
                 if self.poll_count % 25 == 0:
-                    logger.info("Polling Archivist for Task, count=%d" % self.poll_count)
+                    logger.debug("Polling Archivist for Task, count=%d" % self.poll_count)
                 try:
                     while True:
                         task = self.queue_next_task()

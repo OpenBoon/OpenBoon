@@ -65,17 +65,17 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
     val user = getZmlpActorOrNull()
     val sb = StringBuilder(256)
 
-    sb.append("ZEVENT zorroa.object='${obj.toString().toLowerCase()}' zorroa.action='${action.toString().toLowerCase()}'")
+    sb.append("PIXEVENT pixelml.object='${obj.toString().toLowerCase()}' pixelml.action='${action.toString().toLowerCase()}'")
     if (user != null) {
-        sb.append(" zorroa.authedProjectId='${user.projectId}' zorroa.authedKey='${user.name}'")
+        sb.append(" pixelml.authedProjectId='${user.projectId}' pixelml.actor='${user.name}'")
     }
     kvp?.forEach { e ->
         e?.forEach {
             if (it.value != null) {
                 if (it.value is Number || it.value is Boolean) {
-                    sb.append(" zorroa.${it.key}=${it.value}")
+                    sb.append(" pixelml.${it.key}=${it.value}")
                 } else {
-                    sb.append(" zorroa.${it.key}='${it.value}'")
+                    sb.append(" pixelml.${it.key}='${it.value}'")
                 }
             }
         }
@@ -92,7 +92,7 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
  */
 fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?>?) {
     // Don't ever pass kvp into MeterRegistryHolder for tags
-    MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "success"))
+    MeterRegistryHolder.increment("pixelml.event.$obj.$action", Tag.of("state", "success"))
     if (this.isInfoEnabled) {
         this.info(formatLogMessage(obj, action, *kvp))
     }
@@ -108,7 +108,7 @@ fun Logger.event(obj: LogObject, action: LogAction, vararg kvp: Map<String, Any?
  */
 fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Map<String, Any?>? = null, ex: Exception? = null) {
     // Don't ever pass kvp into MeterRegistryHolder for tags
-    MeterRegistryHolder.increment("zorroa.event.$obj.$action", Tag.of("state", "warn"))
+    MeterRegistryHolder.increment("pixelml.event.$obj.$action", Tag.of("state", "warn"))
     if (this.isWarnEnabled) {
         this.warn(formatLogMessage(obj, action, kvp, mapOf("message" to message)), ex)
     }
