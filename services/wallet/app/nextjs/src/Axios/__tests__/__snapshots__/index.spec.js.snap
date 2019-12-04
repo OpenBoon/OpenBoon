@@ -16,6 +16,7 @@ Object {
 exports[`<Axios /> helpers decorateHeaders() should return an object without accessToken 1`] = `
 Object {
   "headers": Object {
+    "Authorization": "Bearer ACCESS_TOKEN",
     "content-type": "application/json",
   },
 }
