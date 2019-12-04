@@ -1,6 +1,6 @@
 FROM node:8.16.2 as node_build
 COPY services/wallet/app /app
-WORKDIR /app/frontend
+WORKDIR /app/nextjs
 RUN npm install && npm run build
 
 FROM nginx:1.17.1-alpine
@@ -15,7 +15,7 @@ RUN pip3 install --upgrade pip \
     && pip3 install pipenv \
     && pipenv lock --requirements > requirements.txt \
     && pip3 install --user -r requirements.txt
-COPY --from=node_build /app/frontend/build /services/wallet/app/frontend/build
+COPY --from=node_build /app/nextjs/build /services/wallet/app/frontend/build
 COPY services/wallet/app/start-server.sh /start-server.sh
 
 # Collect static files and configs for nginx.
