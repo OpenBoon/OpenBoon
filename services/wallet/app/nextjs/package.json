@@ -61,6 +61,7 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "10.0.23",
     "@emotion/core": "10.0.22",
+    "@sentry/browser": "^5.10.0",
     "@svgr/webpack": "4.3.3",
     "axios": "0.19.0",
     "axios-auth-refresh": "1.0.7",
