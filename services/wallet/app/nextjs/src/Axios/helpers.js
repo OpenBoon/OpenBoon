@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
@@ -11,6 +10,7 @@ export const refreshAuthTokens = ({ axiosInstance }) => failedRequest => {
     .post('/auth/refresh/', { refresh: refreshToken })
     .then(({ data: { access } }) => {
       localStorage.setItem(ACCESS_TOKEN, access)
+      // eslint-disable-next-line no-param-reassign
       failedRequest.response.config.headers.Authorization = `Bearer ${access}`
       return Promise.resolve()
     })
@@ -58,3 +58,6 @@ export const axiosCreate = (options = {}) => {
 
   return axiosIntercept({ axiosInstance })
 }
+
+export const fetcher = ({ axiosInstance }) => (...args) =>
+  axiosInstance(...args).then(({ data }) => data)
