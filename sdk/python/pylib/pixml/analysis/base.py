@@ -767,12 +767,35 @@ class ProcessorHelper(object):
 
 
 class AnalysisEnv:
+    """
+    Static methods for obtaining environment variables available when running
+    within an analysis container.
+    """
+
+    @staticmethod
+    def get_job_id():
+        """
+        Return the PixelML Job id from the environment.
+
+        Returns:
+            str: The PixelML task Id.
+        """
+        return os.environ.get("PIXML_JOB_ID")
+
+    @staticmethod
+    def get_task_id():
+        """
+        Return the PixelML Task id from the environment.
+
+        Returns:
+            str: The PixelML task Id.
+        """
+        return os.environ.get("PIXML_TASK_ID")
 
     @staticmethod
     def get_project_id():
         """
-        Return the PixelML project id from the environment.  The project
-        should always exist.
+        Return the PixelML project id from the environment.
 
         Returns:
             str: The PixelML project Id.

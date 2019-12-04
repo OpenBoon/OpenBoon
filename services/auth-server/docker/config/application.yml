@@ -11,4 +11,4 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 security:
-  service-key: file:/zmlp-config/zmlp-service-key.json
+  service-key: file:/config/inception-key.json

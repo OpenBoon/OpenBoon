@@ -175,7 +175,9 @@ class MultipleWebSecurityConfig {
 
     @Bean
     fun authServerClient(): AuthServerClient {
-        return AuthServerClientImpl(properties.getString("security.auth-server.url"))
+        return AuthServerClientImpl(
+            properties.getString("security.auth-server.url"),
+            properties.getString("security.service-key"))
     }
 
     @Bean

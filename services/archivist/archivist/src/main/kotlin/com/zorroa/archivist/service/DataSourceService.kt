@@ -13,7 +13,7 @@ import com.zorroa.archivist.repository.DataSourceDao
 import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.security.getZmlpUser
+import com.zorroa.archivist.security.getZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.encrypt.Encryptors
 import org.springframework.security.crypto.keygen.KeyGenerators
@@ -66,7 +66,7 @@ class DataSourceServiceImpl(
     override fun create(spec: DataSourceSpec): DataSource {
 
         val time = System.currentTimeMillis()
-        val actor = getZmlpUser()
+        val actor = getZmlpActor()
         val id = UUIDGen.uuid1.generate()
         val result = dataSourceDao.saveAndFlush(
             DataSource(

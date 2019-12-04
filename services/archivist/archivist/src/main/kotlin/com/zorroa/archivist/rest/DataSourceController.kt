@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.clients.ZmlpUser
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceCredentials
 import com.zorroa.archivist.domain.DataSourceFilter
@@ -9,14 +8,12 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.KPagedList
-import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.service.DataSourceService
 import com.zorroa.archivist.util.RestUtils
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

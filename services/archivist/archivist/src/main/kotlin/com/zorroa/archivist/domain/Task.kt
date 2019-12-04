@@ -87,14 +87,6 @@ open class InternalTask(
     override fun toString(): String {
         return "<Task id='$taskId' name='$name'/>"
     }
-
-    /**
-     * Return FileStorageSpec for where this tasks log file should go.
-     */
-    @JsonIgnore
-    fun getLogSpec(): FileStorageSpec {
-        return FileStorageSpec("job", jobId, "logs/$taskId.log")
-    }
 }
 
 @ApiModel("Task", description = "Describes a Task.")

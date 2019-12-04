@@ -38,7 +38,6 @@ enum class LogObject {
     INDEX_CLUSTER,
     JOB,
     PIPELINE,
-    STORAGE,
     TASK,
     ANALYST,
     TASK_ERROR,

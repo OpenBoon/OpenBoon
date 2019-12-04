@@ -93,35 +93,6 @@ class ArchivistConfiguration {
         return adapter
     }
 
-    // @Bean
-    // fun fileServerProvider(): FileServerProvider {
-    //     return FileServerProviderImpl(properties(), dataCredentials())
-    // }
-
-    /**
-     * Initialize the internal file storage system.  This is either "local" for a shared
-     * NFS mount or "gcs" for Google Cloud Storage.
-     */
-/*    @Bean
-    fun fileStorageService(): FileStorageService {
-        val props = properties()
-        val type = props.getString("archivist.storage.type")
-        return when (type) {
-            "local" -> {
-                val path = properties().getPath("archivist.storage.path")
-                // OFS gets shoved into the OFS dir.
-                LocalFileStorageService(path)
-            }
-            "gcs" -> {
-                val bucket = properties().getString("archivist.storage.bucket")
-                GcsFileStorageService(bucket, dataCredentials())
-            }
-            else -> {
-                throw IllegalStateException("Invalid storage type: $type")
-            }
-        }
-    }*/
-
     @Bean
     fun messagingService(): MessagingService {
         val props = properties()
@@ -153,24 +124,6 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus(): EventBus {
         return EventBus()
-    }
-
-    /**
-     * The service credentials key.
-     */
-    fun serviceCredentials(): Path {
-        return properties()
-            .getPath("archivist.config.path")
-            .resolve("service-credentials.json")
-    }
-
-    /**
-     *  The data credentials key.
-     */
-    fun dataCredentials(): Path {
-        return properties()
-            .getPath("archivist.config.path")
-            .resolve("data-credentials.json")
     }
 
     @Bean

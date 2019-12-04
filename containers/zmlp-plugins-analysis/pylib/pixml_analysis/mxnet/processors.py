@@ -7,7 +7,7 @@ import numpy as np
 from pathlib2 import Path
 
 from pixml.analysis import AssetBuilder, Argument
-from pixml.analysis.storage import get_proxy_file
+from pixml.analysis.storage import get_proxy_level
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,7 +39,9 @@ class ResNetClassifyProcessor(AssetBuilder):
     def process(self, frame):
         asset = frame.asset
 
-        _, p_path = get_proxy_file(asset, 384, fallback=True)
+        p_path = get_proxy_level(asset, 0)
+        if not p_path:
+            self.logger.warning("No proxy available for ResNetClassifyProcessor")
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
         img = np.swapaxes(img, 0, 2)
@@ -103,7 +105,10 @@ class ResNetSimilarityProcessor(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        _, p_path = get_proxy_file(asset, 384, fallback=True)
+        p_path = get_proxy_level(asset, 0)
+        if not p_path:
+            self.logger.warning("No proxy available for ResNetSimilarityProcessor")
+            return
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
         if img.shape == (224, 224):

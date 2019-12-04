@@ -1,3 +1,4 @@
+import json
 import logging
 import sys
 
@@ -5,6 +6,7 @@ import zmq
 
 from containerizer.process import ProcessorExecutor
 from pixml.analysis import Reactor
+from pixml.rest import PixmlJsonEncoder
 
 logger = logging.getLogger(__name__)
 
@@ -59,8 +61,24 @@ class PixmlContainerDaemon(object):
 
 
 class ZmqEventEmitter(object):
+    """
+    An event emitter that emits to a ZMQ socket.
+    """
     def __init__(self, socket):
+        """
+        Initialize a new ZmqEventEmitter.
+
+        Args:
+            socket (zmq.socket): A ZMQ socket.
+        """
         self.socket = socket
 
     def write(self, event):
-        self.socket.send_json(event)
+        """
+        Write the given event payload to ZMQ.
+
+        Args:
+            event (dict): the event dict
+        """
+        sanitized = json.dumps(event, cls=PixmlJsonEncoder)
+        self.socket.send_string(sanitized)

@@ -4,6 +4,7 @@ import socket
 import subprocess
 import threading
 import time
+import json
 
 import docker
 import zmq
@@ -349,6 +350,7 @@ class DockerContainerProcess(object):
 
         while True:
             event = self.receive_event()
+            log_event(event)
             event_type = event["type"]
             if event_type == "finished":
                 break
@@ -381,7 +383,7 @@ class DockerContainerProcess(object):
         self.socket.send_json(request)
         while True:
             event = self.receive_event()
-
+            log_event(event)
             # Once we find the resulting object, return it back ou
             # so it can be passed into the next processor.
             event_type = event["type"]
@@ -404,6 +406,8 @@ class DockerContainerProcess(object):
             dict: the last event from ZPSD.
         """
         event = self.socket.recv_json()
+        log_event(event)
+
         # Update the event counts, mainly for testing.
         key = event["type"] + "_events"
         c = self.event_counts.get(key, 0)
@@ -412,6 +416,18 @@ class DockerContainerProcess(object):
         if event["type"] == "hardfailure":
             raise RuntimeError("Container failure, exiting event='{}'".format(event))
         return event
+
+
+def log_event(event):
+    """
+    Log the given event structure.
+
+    Args:
+        event (dict): An event sent from ZMQ.
+    """
+    logger.info('--Event [{}]------------'.format(event["type"]))
+    logger.info(json.dumps(event["payload"], indent=4))
+    logger.info('------------------------')
 
 
 def in_container():

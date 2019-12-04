@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.TaskState
-import com.zorroa.archivist.security.getZmlpUser
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.MeterRegistryHolder
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
@@ -46,7 +46,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
-        val key = getZmlpUser()
+        val key = getZmlpActor()
 
         val pauseUntil = if (spec.pauseDurationSeconds == null) {
             -1

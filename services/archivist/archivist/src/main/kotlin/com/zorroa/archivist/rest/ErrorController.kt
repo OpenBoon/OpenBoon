@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.ArchivistSecurityException
 import com.zorroa.archivist.domain.DuplicateEntityException
 import com.zorroa.archivist.domain.EntityNotFoundException
 import com.zorroa.archivist.domain.InvalidRequestException
-import com.zorroa.archivist.security.getZmlpUserOrNull
+import com.zorroa.archivist.security.getZmlpActorOrNull
 import io.micrometer.core.annotation.Timed
 import org.elasticsearch.ElasticsearchException
 import org.slf4j.LoggerFactory
@@ -97,10 +97,10 @@ class RestApiExceptionHandler {
 
         if (doExtraLogging.contains(status) || debug) {
             logger.error("endpoint='{}' project='{}', errorId='{}',",
-                    req.servletPath, getZmlpUserOrNull()?.projectId, errorId, e)
+                    req.servletPath, getZmlpActorOrNull()?.projectId, errorId, e)
         } else {
             logger.error("endpoint='{}' project='{}', errorId='{}',",
-                    req.servletPath, getZmlpUserOrNull()?.projectId, errorId)
+                    req.servletPath, getZmlpActorOrNull()?.projectId, errorId)
         }
 
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
