@@ -1,10 +1,14 @@
+FROM maven:3.6.2-jdk-11-slim as mvn_build
+COPY es-kwconf es-kwconf
+COPY es-similarity es-similarity
+COPY pom.xml pom.xml
+RUN mvn clean install -Dmaven.test.skip=true
+
+
 FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.4.3
 
-# After running build steps locally there is no dist directory
-#COPY ./dist /usr/share/elasticsearch/plugins/
-
-COPY ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
-COPY ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
+COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
+COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 
 WORKDIR /usr/share/elasticsearch/plugins
 
