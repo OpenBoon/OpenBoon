@@ -2,6 +2,8 @@ from django.contrib.auth.middleware import get_user
 from django.utils.functional import SimpleLazyObject
 from rest_framework.views import Request
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.exceptions import InvalidToken
+
 
 class AuthenticationMiddlewareSimpleJWT(object):
     """
@@ -25,9 +27,8 @@ class AuthenticationMiddlewareSimpleJWT(object):
             user_jwt = JWTAuthentication().authenticate(Request(request))
             if user_jwt is not None:
                 request.user = SimpleLazyObject(lambda: user_jwt[0])
-        except:
+        except InvalidToken:
             # Otherwise, don't touch the request, as it messes with the Admin site
             pass
 
         return self.get_response(request)
-

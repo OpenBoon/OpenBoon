@@ -112,4 +112,3 @@ class JobsViewSet(BaseProjectViewSet):
         }
         job_spec.update(new_values)
         return job_spec
-
