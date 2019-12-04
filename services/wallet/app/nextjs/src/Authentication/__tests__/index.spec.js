@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Authentication from '../'
+import Authentication from '..'
 
 jest.mock('../../Login', () => 'Login')
 
