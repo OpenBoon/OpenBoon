@@ -198,7 +198,7 @@ class DispatchQueueManager @Autowired constructor(
             task.env["PIXML_TASK_ID"] = task.id.toString()
             task.env["PIXML_JOB_ID"] = task.jobId.toString()
             task.env["PIXML_PROJECT_ID"] = task.projectId.toString()
-            task.env["PIXML_DATASOURCE_ID"] = task.dataSourceId.toString()
+            task.dataSourceId?.let { task.env["PIXML_DATASOURCE_ID"] = it.toString() }
             task.env["PIXML_ARCHIVIST_MAX_RETRIES"] = "0"
 
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
