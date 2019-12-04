@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "next build && next export -o build",
-    "lint": "eslint {pages,src} --ext .js",
+    "lint": "pwd && ls -la && eslint ./{pages,src} --ext .js",
     "start": "node -r esm devServer.js",
     "test": "jest --watch --notify --verbose",
     "test:cover": "jest --coverage --verbose",
