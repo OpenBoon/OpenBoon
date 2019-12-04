@@ -162,5 +162,4 @@ wallet-container-build-validation:
   services:
     - docker:18.09.8-dind
   script:
-    - cd services/wallet
-    - docker build --pull --no-cache .
+    - docker build --pull --no-cache -f services/wallet/Dockerfile .
