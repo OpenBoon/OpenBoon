@@ -64,7 +64,7 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "65 kB"
+      "maxSize": "68 kB"
     },
     {
       "//": "app",
