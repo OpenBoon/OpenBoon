@@ -52,6 +52,7 @@ const ProgressBar = ({ status }) => {
         if (status[statusName] > 0) {
           return (
             <div
+              key={statusName}
               css={getStatusStyles({
                 status: status[statusName],
                 statusColor: STATUS_COLORS[statusName],

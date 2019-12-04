@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types'
 import { useMemo } from 'react'
 import { colors, spacing } from '../Styles'
-import { createJobsData, createColumns } from './helpers'
+import { createJobsData } from './helpers'
 import { formatFullDate } from '../Format/Date/helpers'
 import { jobs } from './__mocks__/jobs'
 
@@ -10,70 +9,75 @@ import ProgressBar from '../ProgressBar'
 import Table from '../Table'
 import FormattedColumn from '../Format/Column'
 
-const COLUMN_OPTIONS = [
-  {
-    Header: 'Status',
-    accessor: 'status',
-    Cell: ({ cell: { value } }) => {
-      return Button({ status: value })
-    },
-  },
-  {
-    Header: 'Job Name',
-    accessor: 'jobName',
-  },
-  {
-    Header: 'Created By',
-    accessor: 'createdBy',
-  },
-  {
-    Header: 'Priority',
-    accessor: 'priority',
-  },
-  {
-    Header: 'Created (Date/TIme)',
-    accessor: 'createdDateTime',
-    Cell: ({ cell: { value } }) => {
-      return String(formatFullDate({ timestamp: value }))
-    },
-  },
-  {
-    Header: 'Failed',
-    accessor: 'failed',
-    Cell: ({ cell: { value } }) => {
-      if (value === 0) {
-        return FormattedColumn({ style: { display: 'none' }, content: value })
-      }
-      return FormattedColumn({ style: { color: 'red' }, content: value })
-    },
-  },
-  {
-    Header: 'Errors',
-    accessor: 'errors',
-    Cell: ({ cell: { value } }) => {
-      if (value === 0) {
-        return FormattedColumn({ style: { display: 'none' }, content: value })
-      }
-      return FormattedColumn({ style: { color: 'red' }, content: value })
-    },
-  },
-  {
-    Header: '# Assets',
-    accessor: 'numAssets',
-  },
-  {
-    Header: 'Progress',
-    accessor: 'progress',
-    Cell: ({ cell: { value } }) => {
-      return ProgressBar({ status: value })
-    },
-  },
-]
-
 const DataQueue = () => {
-  const columns = createColumns({
-    columnOptions: COLUMN_OPTIONS,
-  })
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: ({ cell: { value } }) => {
+          return Button({ status: value })
+        },
+      },
+      {
+        Header: 'Job Name',
+        accessor: 'jobName',
+      },
+      {
+        Header: 'Created By',
+        accessor: 'createdBy',
+      },
+      {
+        Header: 'Priority',
+        accessor: 'priority',
+      },
+      {
+        Header: 'Created (Date/TIme)',
+        accessor: 'createdDateTime',
+        Cell: ({ cell: { value } }) => {
+          return String(formatFullDate({ timestamp: value }))
+        },
+      },
+      {
+        Header: 'Failed',
+        accessor: 'failed',
+        Cell: ({ cell: { value } }) => {
+          if (value === 0) {
+            return FormattedColumn({
+              style: { display: 'none' },
+              content: value,
+            })
+          }
+          return FormattedColumn({ style: { color: 'red' }, content: value })
+        },
+      },
+      {
+        Header: 'Errors',
+        accessor: 'errors',
+        Cell: ({ cell: { value } }) => {
+          if (value === 0) {
+            return FormattedColumn({
+              style: { display: 'none' },
+              content: value,
+            })
+          }
+          return FormattedColumn({ style: { color: 'red' }, content: value })
+        },
+      },
+      {
+        Header: '# Assets',
+        accessor: 'numAssets',
+      },
+      {
+        Header: 'Progress',
+        accessor: 'progress',
+        Cell: ({ cell: { value } }) => {
+          return ProgressBar({ status: value })
+        },
+      },
+    ],
+    [],
+  )
 
   const data = useMemo(() => createJobsData({ jobs: jobs.list }), [])
 
@@ -104,13 +108,6 @@ const DataQueue = () => {
       </div>
     </div>
   )
-}
-
-DataQueue.propTypes = {
-  cell: PropTypes.shape({
-    // cell prop comes from 'react-table'
-    value: PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 export default DataQueue

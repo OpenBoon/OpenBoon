@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 const newJob = ({ job }) => {
   return {
     status: job.paused ? 'Paused' : job.state,
@@ -27,8 +25,4 @@ export const createJobsData = ({ jobs }) => {
     return newJob({ job })
   })
   return dataRows
-}
-
-export const createColumns = ({ columnOptions }) => {
-  return useMemo(() => columnOptions, []) // memoization required by react-table
 }
