@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django_cryptography.fields import encrypt
 
 
 class Project(models.Model):
@@ -21,7 +22,7 @@ class Membership(models.Model):
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    apikey = models.TextField()
+    apikey = encrypt(models.TextField())
 
     class Meta:
         unique_together = (
