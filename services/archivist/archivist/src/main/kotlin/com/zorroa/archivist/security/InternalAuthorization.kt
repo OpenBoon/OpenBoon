@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ZmlpUser
+import com.zorroa.archivist.clients.ZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -14,7 +14,7 @@ class InternalThreadAuthentication constructor(
 ) :
     AbstractAuthenticationToken(perms.map { SimpleGrantedAuthority(it) }) {
 
-    val zmlpUser: ZmlpUser = ZmlpUser(
+    val zmlpActor: ZmlpActor = ZmlpActor(
         KnownKeys.SUKEY,
         projectId,
         KnownKeys.BACKGROUND_THREAD,
@@ -22,19 +22,19 @@ class InternalThreadAuthentication constructor(
     )
 
     init {
-        logger.info("switching Auth to Project ${zmlpUser.projectId}")
+        logger.info("switching Auth to Project ${zmlpActor.projectId}")
     }
 
     override fun getDetails(): Any? {
-        return zmlpUser
+        return zmlpActor
     }
 
     override fun getCredentials(): Any? {
-        return zmlpUser.projectId
+        return zmlpActor.projectId
     }
 
     override fun getPrincipal(): Any {
-        return zmlpUser
+        return zmlpActor
     }
 
     override fun isAuthenticated(): Boolean {

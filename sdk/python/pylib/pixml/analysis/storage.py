@@ -9,14 +9,16 @@ import urllib
 from urllib.parse import urlparse
 from pathlib2 import Path
 
-from pixml import app_from_env
+from pixml import app_from_env, Asset
+from .base import AnalysisEnv
 from .cloud import get_cached_google_storage_client
 
 __all__ = [
     "file_cache",
-    "get_proxy_file",
+    "get_proxy_min_width",
+    "get_proxy_level",
     "add_proxy_file",
-    "add_support_file"
+    "add_pixml_file",
 ]
 
 logger = logging.getLogger(__name__)
@@ -32,8 +34,7 @@ class LocalFileCache(object):
         "gs",
         "http",
         "https"
-        "file",
-        "pixml"
+        "file"
     ]
 
     def __init__(self):
@@ -45,35 +46,44 @@ class LocalFileCache(object):
 
     def __init_root(self):
         """
-        This methods builds the root cache directory if the cache is
+        This methods builds the root cache directory when the cache is
         used, otherwise it may leave lots of empty cache temp dirs
         in containers or other places.
         """
         if not self.root:
-            self.root = tempfile.mkdtemp('pixml', 'lfc')
+            task = AnalysisEnv.get_task_id()
+            if not task:
+                self.root = tempfile.mkdtemp('pixml', 'lfc')
+            else:
+                self.root = os.path.join(tempfile.gettempdir(), task)
+                os.makedirs(self.root, exist_ok=True)
 
     def localize_remote_file(self, rep):
         """
         Localize a remote file representation.
 
         The 'rep' value can be:
-            - URI
+            - A supported URI
             - Asset instance
-            - Pixml file dictionary
+
+        To localize an Asset the file must be in PixelML storage or a remoote
+        file available with the current DataSource credentials (if any).
 
         Args:
-            rep(mixed): The uri, asset, or file pixml file definition to localize.
+            rep(mixed): The uri or Asset to localize.
 
         Returns:
             str: a local file path to a remote file
 
         """
-        if isinstance(rep, dict):
-            return self.localize_pixml_file(rep)
-        elif isinstance(rep, str):
+        if isinstance(rep, str):
             return self.localize_uri(rep)
-        elif hasattr(rep, "uri"):
-            return self.localize_uri(rep.uri)
+        elif isinstance(rep, Asset):
+            source_files = rep.get_files(category="source")
+            if source_files:
+                return self.localize_pixml_file(rep, source_files[0])
+            else:
+                return self.localize_uri(rep.uri)
         else:
             raise ValueError("cannot localize file, unable to determine the remote file source")
 
@@ -95,15 +105,6 @@ class LocalFileCache(object):
         parsed_uri = urlparse(uri)
         if parsed_uri.scheme in ('http', 'https'):
             urllib.request.urlretrieve(uri, filename=str(path))
-        elif parsed_uri.scheme == 'pixml':
-            #
-            # TODO: move to new storage system, for now we'll use stream
-            # endpoint but it's probably not going to work without server
-            # side changes.
-            #
-            asset_id, _, filename = parsed_uri.path[1:].split("/")
-            self.app.client.stream("/api/v1/assets/{}/_stream".format(asset_id), str(path))
-
         elif parsed_uri.scheme == 'file':
             return parsed_uri.path
         elif parsed_uri.scheme == 'gs':
@@ -115,14 +116,15 @@ class LocalFileCache(object):
             raise ValueError('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
         return path
 
-    def localize_pixml_file(self, pixml_file, copy_path=None):
+    def localize_pixml_file(self, asset, pfile, copy_path=None):
         """
         Localize the file described by the storage dict.  If a
         path argument is provided, overwrite the file cache
         location with that file.
 
         Args:
-            pixml_file (dict): a file storage dict
+            asset (Asset): The ID of the asset.
+            pfile (dict): a file storage dict
             copy_path (str): an optional path to a file to copy into the cache location.
 
         Returns:
@@ -130,16 +132,18 @@ class LocalFileCache(object):
 
         """
         self.__init_root()
-        _, suffix = os.path.splitext(copy_path or pixml_file['name'])
-        key = ''.join((pixml_file['assetId'], pixml_file['name'], pixml_file['category']))
+        _, suffix = os.path.splitext(copy_path or pfile['name'])
+        name = pfile['name']
+        category = pfile['category']
+        key = ''.join((asset.id, name, category))
         cache_path = self.get_path(key, suffix)
         if copy_path:
             copy_path = urlparse(str(copy_path)).path
             logger.debug("Copying to cache {} to {}".format(copy_path, cache_path))
             shutil.copy(urlparse(copy_path).path, cache_path)
         elif not os.path.exists(cache_path):
-            self.app.client.stream('/api/v2/assets/{}/_files/{}/_stream'
-                                   .format(pixml_file['assetId'], pixml_file['name']), cache_path)
+            self.app.client.stream('/api/v3/assets/{}/files/{}/{}'
+                                   .format(asset.id, category, name), cache_path)
         return cache_path
 
     def get_path(self, key, suffix=""):
@@ -184,11 +188,39 @@ class LocalFileCache(object):
         shutil.rmtree(self.root)
 
 
-def get_proxy_file(asset, min_width=1024, mimetype="image/", fallback=False):
+def get_proxy_level(asset, level, mimetype="image/"):
+    """
+    Localize and return the given proxy level.  The smallest proxy is
+    level 0, the largest proxy is 0 or greater.  Out of bounds level
+    values will be clamped to the correct range automatically.  For example
+    if there are only 2 proxies and you pass level 3, then you will get the
+    level 2 proxy.
+
+    Args:
+        asset (Asset): The Asset.
+        level (int): The proxy level, the larger the number the bigger the file.
+        mimetype (str): The proxy mimetype, defaults to image/
+
+    Returns:
+        str: A path to the localized proxy file or None on no match.
+
+    """
+    files = asset.get_files(mimetype=mimetype, category="proxy", attr_keys=["width"],
+                            sort_func=lambda f: f['attrs']['width'])
+    if level >= len(files):
+        level = -1
+    try:
+        proxy = files[level]
+        return file_cache.localize_pixml_file(asset, proxy)
+    except IndexError:
+        return None
+
+
+def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
     """
     Return a tuple containing a suitable proxy file or fallback to the source media.
     The first element of the tuple is the name of proxy file such as "proxy_200x200.jpg"
-    or simply "source" if the source was selecte.
+    or simply "source" if the source was selected.
 
     Args:
         asset (Asset): an Asset instance
@@ -197,26 +229,26 @@ def get_proxy_file(asset, min_width=1024, mimetype="image/", fallback=False):
         fallback (bool): Fallback to the source if the proxy is not available.
 
     Returns:
-        tuple: a tuple of name, path
+        str: A path to the localized proxy file or None on no match.
 
     """
-    files = asset.get_files(mimetype=mimetype, category="proxy")
+    files = asset.get_files(mimetype=mimetype, category="proxy", attr_keys=["width"],
+                            sort_func=lambda f: f['attrs']['width'])
+    # Trim out smaller ones
     files = [file for file in files if file["attrs"]["width"] >= min_width]
-    sorted(files, key=lambda f: f['attrs']['width'])
 
     if files:
-        return files[0]["name"], file_cache.localize_remote_file(files[0])
-    elif fallback and asset.get_attr("source.mimetype").startswith(mimetype):
-        logger.warning("No suitable proxy mimetype={} minwidth={}, "
-                       "falling back to source".format(mimetype, min_width))
-        return 'source', file_cache.localize_remote_file(asset)
+        return file_cache.localize_pixml_file(asset, files[0])
+    elif fallback:
+        return file_cache.localize_remote_file(asset)
     else:
         raise ValueError("No suitable proxy file was found.")
 
 
 def add_proxy_file(asset, path, size):
     """
-    Add a proxy file with the proxy category to the given asset.
+    A convenience function that adds a proxy file to the Asset and
+    uploads the file to PixelML storage.
 
     Args:
         asset (Asset): The purpose of the file, ex proxy.
@@ -224,19 +256,19 @@ def add_proxy_file(asset, path, size):
         size (tuple of int): a tuple of width, height
 
     Returns:
-        dict: a pixml file dictionary
+        dict: a PixelML file storage dict.
     """
     _, ext = os.path.splitext(path)
     if not ext:
         raise ValueError("The path to the proxy file has no extension, but one is required.")
     name = "proxy_{}x{}{}".format(size[0], size[1], ext)
-    return add_support_file(asset, path, "proxy", rename=name,
-                            attrs={"width": size[0], "height": size[1]})
+    return add_pixml_file(asset, path, "proxy", rename=name,
+                          attrs={"width": size[0], "height": size[1]})
 
 
-def add_support_file(asset, path, category, rename=None, attrs=None):
+def add_pixml_file(asset, path, category, rename=None, attrs=None):
     """
-    Add a support file to the asset and upload to PixelML storage.
+    Add a file to the asset and upload into PixelML storage.
     Also stores a copy into the local file cache.
 
     Args:
@@ -247,14 +279,12 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
         attrs (dict): Arbitrary attributes to attach to the file.
 
     Returns:
-        dict: a Pixml file dictionary.
+        dict: a PixelML file storage dict.
 
     """
     app = app_from_env()
-    name = rename or Path(path).name
     spec = {
-        "name": name,
-        "category": category,
+        "name": rename or Path(path).name,
         "attrs": {}
     }
     if attrs:
@@ -263,19 +293,20 @@ def add_support_file(asset, path, category, rename=None, attrs=None):
     # handle file:// urls
     path = urlparse(str(path)).path
     result = app.client.upload_file(
-        "/api/v2/assets/{}/_files".format(asset.id), path, spec)
+        "/api/v3/assets/{}/files/{}".format(asset.id, category), path, spec)
 
     # Store the path to the proxy in our local file storage
     # because a processor will need it down the line.
-    file_cache.localize_pixml_file(result, path)
+    file_cache.localize_pixml_file(asset, result, path)
 
     # Ensure the file doesn't already exist in the metadata
-    if not asset.get_files(name=name, category=category):
+    if not asset.get_files(name=spec["name"], category=category):
         files = asset.get_attr("files") or []
         files.append(result)
         asset.set_attr("files", files)
 
     return result
+
 
 """
 A local file cache singleton.

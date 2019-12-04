@@ -5,8 +5,8 @@ from .util import as_collection
 
 __all__ = [
     "Asset",
-    "AssetImport",
-    "AssetUpload",
+    "FileImport",
+    "FileUpload",
     "AssetApp",
     "Clip"
 ]
@@ -157,20 +157,20 @@ class AssetBase(object):
                 doc[parts[-1]] = value
 
 
-class AssetImport(AssetBase):
+class FileImport(AssetBase):
     """
-    An AssetImport is used to import a new Asset into PixelML.
+    An FileImport is used to import a new file and metdata into PixelML.
     """
     def __init__(self, uri, clip=None):
         """
-        Construct an AssetImport instance which can point to a remote URI.
+        Construct an FileImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
             clip (Clip): Defines a subset of the asset to be processed, for example a
                 page of a PDF or time code from a video.
         """
-        super(AssetImport, self).__init__()
+        super(FileImport, self).__init__()
         self.uri = uri
         self.clip = clip
 
@@ -190,19 +190,19 @@ class AssetImport(AssetBase):
         }
 
 
-class AssetUpload(AssetImport):
+class FileUpload(FileImport):
     """
-    AssetUpload instances point to a local file that will be uploaded for analysis.
+    FileUpload instances point to a local file that will be uploaded for analysis.
     """
     def __init__(self, path, clip=None):
         """
-        Create a new AssetUpload instance.
+        Create a new FileUpload instance.
 
         Args:
             path (str): A path to a file, the file must exist.
             clip (Clip): Clip settings if applicable.
         """
-        super(AssetUpload, self).__init__(path, clip)
+        super(FileUpload, self).__init__(path, clip)
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
 
@@ -233,16 +233,8 @@ class Asset(AssetBase):
         """
         return self.get_attr("source.path")
 
-    @property
-    def state(self):
-        """
-
-        Returns:
-
-        """
-        return self.get_attr("system.state")
-
-    def get_files(self, name=None, category=None, mimetype=None, extension=None, attrs=None):
+    def get_files(self, name=None, category=None, mimetype=None, extension=None,
+                  attrs=None, attr_keys=None, sort_func=None):
         """
         Return all stored files associated with this asset.  Optionally
         filter the results.
@@ -253,9 +245,11 @@ class Asset(AssetBase):
             mimetype (str): The mimetype must start with this string.
             extension: (str): The file name must have the given extension.
             attrs (dict): The file must have all of the given attributes.
-
+            attr_keys: (list): A list of attribute keys that must be present.
+            sort_func: (func): A lambda function for sorting the result.
         Returns:
             list of dict: A list of pixml file records.
+
         """
         result = []
         files = self.get_attr("files") or []
@@ -273,12 +267,22 @@ class Asset(AssetBase):
             if extension and not any((item for item in as_collection(extension)
                                       if fs["name"].endswith("." + item))):
                 match = False
+
+            file_attrs = fs.get("attrs", {})
+            if attr_keys:
+                if not any(key in file_attrs for key in as_collection(attr_keys)):
+                    match = False
+
             if attrs:
                 for k, v in attrs.items():
-                    if fs.get("attrs", {}).get(k) != v:
+                    if file_attrs.get(k) != v:
                         match = False
             if match:
                 result.append(fs)
+
+        if sort_func:
+            result = sorted(result, key=sort_func)
+
         return result
 
     def for_json(self):
@@ -353,12 +357,12 @@ class AssetApp(object):
     def __init__(self, app):
         self.app = app
 
-    def batch_import_assets(self, assets):
+    def import_files(self, assets):
         """
-        Provision and process a list of AssetImport instances.
+        Import a list of FileImport instances.
 
         Args:
-            assets (list of AssetImport): The list of assets to process.
+            assets (list of FileImport): The list of files to import as Assets.
 
         Returns:
             dict: A dictionary containing the provisioning status of each asset,
@@ -368,12 +372,12 @@ class AssetApp(object):
         body = {"assets": assets}
         return self.app.client.post("/api/v3/assets/_batchCreate", body)
 
-    def batch_upload_assets(self, assets):
+    def upload_files(self, assets):
         """
-        Batch upload a list of Assets.
+        Batch upload a list of files.
 
         Args:
-            assets (list of AssetUpload):
+            assets (list of FileUpload):
 
         Returns:
 

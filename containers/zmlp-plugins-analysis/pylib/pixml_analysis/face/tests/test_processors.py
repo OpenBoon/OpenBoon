@@ -14,7 +14,6 @@ class FaceUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = {
             "name": "proxy_200x200.jpg",
             "category": "proxy",
-            "assetId": "12345",
             "mimetype": "image/jpeg",
             "attrs": {
                 "width": 1023,

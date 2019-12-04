@@ -18,14 +18,14 @@ import java.net.URI
 import java.util.UUID
 import kotlin.test.assertEquals
 
-@TestPropertySource(locations = ["classpath:test.properties", "classpath:jwt.properties"])
+@TestPropertySource(locations = ["classpath:jwt.properties"])
 class AuthServerClientTests : AbstractTest() {
 
     lateinit var mockServer: MockRestServiceServer
 
     @Before
     fun init() {
-        authServerClient = AuthServerClientImpl("http://localhost:9090")
+        authServerClient = AuthServerClientImpl("http://localhost:9090", null)
         mockServer = MockRestServiceServer.createServer(authServerClient.rest)
     }
 

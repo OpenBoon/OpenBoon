@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.google.cloud.storage.HttpMethod
 import com.google.common.base.Supplier
 import com.google.common.base.Suppliers
 import com.google.common.eventbus.EventBus
@@ -108,7 +107,6 @@ interface DispatcherService {
 class DispatchQueueManager @Autowired constructor(
     val dispatcherService: DispatcherService,
     val analystService: AnalystService,
-    val fileStorageService: FileStorageService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
     val meterRegistry: MeterRegistry
@@ -197,22 +195,14 @@ class DispatchQueueManager @Autowired constructor(
                 METRICS_KEY, "op", "tasks-queued"
             ).increment()
 
-            task.env["ZORROA_TASK_ID"] = task.id.toString()
-            task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-            task.env["ZORROA_PROJECT_ID"] = task.projectId.toString()
-            task.env["PIXML_DATASOURCE_ID"] = task.dataSourceId.toString()
-            task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
+            task.env["PIXML_TASK_ID"] = task.id.toString()
+            task.env["PIXML_JOB_ID"] = task.jobId.toString()
+            task.env["PIXML_PROJECT_ID"] = task.projectId.toString()
+            task.dataSourceId?.let { task.env["PIXML_DATASOURCE_ID"] = it.toString() }
+            task.env["PIXML_ARCHIVIST_MAX_RETRIES"] = "0"
 
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
             task.env["PIXML_APIKEY"] = key.toBase64()
-
-            withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.STORAGE_ADMIN))) {
-                val fs = fileStorageService.get(task.getLogSpec())
-                val logFile = fileStorageService.getSignedUrl(
-                    fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS
-                )
-                task.logFile = logFile
-            }
             return true
         } else {
             meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
@@ -262,9 +252,6 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var jobService: JobService
-
-    @Autowired
-    lateinit var fileStorageService: FileStorageService
 
     @Autowired
     lateinit var analystService: AnalystService

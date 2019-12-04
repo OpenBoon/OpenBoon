@@ -11,6 +11,9 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.FileCategory
+import com.zorroa.archivist.domain.FileGroup
+import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
@@ -21,6 +24,7 @@ import com.zorroa.archivist.elastic.ElasticSearchErrorTranslator
 import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.security.getProjectFilter
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
 import com.zorroa.archivist.util.randomString
@@ -67,7 +71,7 @@ interface AssetService {
     /**
      * Get an Asset by ID.
      */
-    fun get(assetId: String): Asset
+    fun getAsset(assetId: String): Asset
 
     fun getAll(ids: List<String>): List<Asset>
 
@@ -122,7 +126,7 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var fileStorageService: FileStorageService
 
-    override fun get(id: String): Asset {
+    override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
         return Asset(rsp.id, rsp.sourceAsMap)
@@ -160,7 +164,7 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun getProxies(id: String): ProxySchema {
-        val asset = get(id)
+        val asset = getAsset(id)
         val proxies = asset.getAttr("proxies", ProxySchema::class.java)
         return proxies ?: ProxySchema()
     }
@@ -202,16 +206,19 @@ class AssetServiceImpl : AssetService {
 
         for ((idx, mpfile) in req.files.withIndex()) {
             val spec = req.assets[idx]
-            val id = AssetIdBuilder(spec, randomString(16)).build()
-
+            val id = AssetIdBuilder(spec, randomString(24)).build()
             val asset = assetSpecToAsset(id, spec)
-            val storageSpec = FileStorageSpec("asset", asset.id, mpfile.originalFilename)
-            val storage = fileStorageService.get(storageSpec)
-            fileStorageService.write(storage.id, mpfile.inputStream.readAllBytes())
-
-            asset.setAttr("source.originPath", asset.getAttr("source.path"))
-            asset.setAttr("source.path", "pixml:///$id/source/${mpfile.originalFilename}")
             asset.setAttr("source.fileSize", mpfile.size)
+
+            val locator = FileStorageLocator(
+                FileGroup.ASSET,
+                id, FileCategory.SOURCE, mpfile.originalFilename
+            )
+
+            val file = fileStorageService.store(
+                FileStorageSpec(locator, mapOf(), mpfile.bytes)
+            )
+            asset.setAttr("files", listOf(file))
 
             val ireq = rest.newIndexRequest(asset.id)
             ireq.opType(DocWriteRequest.OpType.CREATE)

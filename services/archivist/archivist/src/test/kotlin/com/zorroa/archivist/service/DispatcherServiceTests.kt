@@ -1,12 +1,9 @@
 package com.zorroa.archivist.service
 
-import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
-import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
@@ -20,7 +17,6 @@ import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.mock.zany
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
@@ -30,60 +26,15 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.withAuth
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.TestPropertySource
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-
-@TestPropertySource(locations = ["classpath:gcs-test.properties"])
-class GCPDispatcherServiceTests : AbstractTest() {
-
-    @Autowired
-    lateinit var jobService: JobService
-
-    @Autowired
-    lateinit var dispatchQueueManager: DispatchQueueManager
-
-    @Autowired
-    lateinit var fileStorageService: FileStorageService
-
-    fun launchJob(priority: Int): Job {
-        val spec1 = JobSpec(
-            "test_job_p$priority",
-            emptyZpsScript("priority_$priority"),
-            priority = priority
-        )
-        return jobService.create(spec1)
-    }
-
-    @Test
-    fun testGetNext() {
-        val spec = JobSpec(
-            "test_job",
-            emptyZpsScript("foo"),
-            args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar")
-        )
-        jobService.create(spec)
-
-        val storage = FileStorage(
-            "foo", "gs://foo/bar/bing.jpg", "fs", "image/jpeg", fileServerProvider
-        )
-
-        whenever(fileStorageService.get(zany(FileStorageSpec::class.java))).thenReturn(storage)
-        whenever(fileStorageService.getSignedUrl(zany(), zany(), anyLong(), zany())).thenReturn("https://foo/bar")
-
-        authenticateAsAnalyst()
-        val next = dispatchQueueManager.getNext()
-        assertNotNull(next)
-        assertEquals(next?.logFile, "https://foo/bar")
-    }
-}
 
 class DispatcherServiceTests : AbstractTest() {
 
@@ -230,6 +181,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         assertNotNull(next)
         next?.let {
+            assertFalse("PIXML_DATASOURCE_ID" in next.env)
             assertEquals(job.id, it.jobId)
             val host: String = this.jdbc.queryForObject(
                 "SELECT str_host FROM task WHERE pk_task=?",
