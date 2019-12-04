@@ -58,3 +58,6 @@ export const axiosCreate = (options = {}) => {
 
   return axiosIntercept({ axiosInstance })
 }
+
+export const fetcher = ({ axiosInstance }) => (...args) =>
+  axiosInstance(...args).then(({ data }) => data)
