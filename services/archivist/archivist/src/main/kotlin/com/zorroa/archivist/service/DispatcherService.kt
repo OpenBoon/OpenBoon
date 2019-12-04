@@ -195,11 +195,11 @@ class DispatchQueueManager @Autowired constructor(
                 METRICS_KEY, "op", "tasks-queued"
             ).increment()
 
-            task.env["ZORROA_TASK_ID"] = task.id.toString()
-            task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-            task.env["ZORROA_PROJECT_ID"] = task.projectId.toString()
+            task.env["PIXML_TASK_ID"] = task.id.toString()
+            task.env["PIXML_JOB_ID"] = task.jobId.toString()
+            task.env["PIXML_PROJECT_ID"] = task.projectId.toString()
             task.env["PIXML_DATASOURCE_ID"] = task.dataSourceId.toString()
-            task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
+            task.env["PIXML_ARCHIVIST_MAX_RETRIES"] = "0"
 
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
             task.env["PIXML_APIKEY"] = key.toBase64()
