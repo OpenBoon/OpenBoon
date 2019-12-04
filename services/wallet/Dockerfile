@@ -1,4 +1,4 @@
-FROM node:8.16.2 as node_build
+FROM node:12.13.1 as node_build
 COPY services/wallet/app /app
 WORKDIR /app/nextjs
 RUN npm install && npm run build
