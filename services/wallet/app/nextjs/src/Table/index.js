@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useTable, useRowState, usePagination } from 'react-table'
-import { colors, spacing, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 import { getPageDescription } from './helpers'
 
 const STATIC_COLUMN_WIDTHS = {
@@ -18,23 +18,31 @@ const tdCSS = isHovered => {
     color: colors.grey2,
     padding: `${spacing.base}px ${spacing.normal}px`,
     backgroundColor: `${isHovered && colors.grey1}`,
-    border: `1px solid transparent`,
+    border: `${constants.borderWidth.default}px solid transparent`,
 
     '&:first-of-type': {
-      borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
-      borderLeft: `${isHovered && `1px solid ${colors.grey5}`}`,
-      borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderTop: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
+      borderLeft: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
+      borderBottom: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
     },
 
     '&:last-of-type': {
-      borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
-      borderRight: `${isHovered && `1px solid ${colors.grey5}`}`,
-      borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderTop: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
+      borderRight: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
+      borderBottom: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
     },
 
     '&:not(:first-of-type), &:not(:last-of-type)': {
-      borderTop: `${isHovered && `1px solid ${colors.grey5}`}`,
-      borderBottom: `${isHovered && `1px solid ${colors.grey5}`}`,
+      borderTop: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
+      borderBottom: `${isHovered &&
+        `${constants.borderWidth.default}px solid ${colors.grey5}`}`,
     },
   }
 }
@@ -65,9 +73,9 @@ const Table = ({ columns, data }) => {
     color: colors.grey2,
     backgroundColor: colors.grey1,
     padding: `${spacing.moderate}px ${spacing.normal}px`,
-    borderBottom: `1px solid ${colors.grey5}`,
+    borderBottom: `${constants.borderWidth.default}px solid ${colors.grey5}`,
     '&:not(:last-child)': {
-      borderRight: `1px solid ${colors.grey5}`,
+      borderRight: `${constants.borderWidth.default}px solid ${colors.grey5}`,
     },
   }
 
@@ -94,7 +102,7 @@ const Table = ({ columns, data }) => {
         {...getTableProps()}
         css={{
           borderSpacing: 0,
-          boxShadow: `0 0 ${spacing.base / 2}px ${colors.black} `,
+          boxShadow: constants.boxShadows.dark,
           margin: `${spacing.base}px 0`,
         }}>
         <thead>
@@ -176,7 +184,10 @@ const Table = ({ columns, data }) => {
             {'<'}
           </div>
           <div
-            css={{ ...paginationBoxCSS, border: `1px solid ${colors.grey5} ` }}>
+            css={{
+              ...paginationBoxCSS,
+              border: `${constants.borderWidth.default}px solid ${colors.grey5} `,
+            }}>
             {pageIndex + 1}
           </div>
           <div
