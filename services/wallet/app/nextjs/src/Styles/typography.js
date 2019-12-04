@@ -14,6 +14,7 @@ const typography = {
     kilo: '20px',
   },
   weight: {
+    extraLight: 200,
     light: 300,
     regular: 400,
     medium: 500,

@@ -3,6 +3,12 @@ import { colors, constants } from '../Styles'
 
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 200
+const STATUS_COLORS = {
+  succeeded: colors.green1,
+  failed: colors.error,
+  running: colors.blue1,
+  pending: colors.grey6,
+}
 
 const getStatusStyles = ({ status, statusColor }) => {
   const statusCSS = {
@@ -45,39 +51,23 @@ const ProgressBar = ({ status }) => {
 
   return (
     <div
-      className="ProgressBar__container"
       css={{
         display: 'flex',
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {succeeded > 0 && (
-        <div
-          className="ProgressBar__Succeeded"
-          css={getStatusStyles({
-            status: succeeded,
-            statusColor: colors.green1,
-          })}
-        />
-      )}
-      {failed > 0 && (
-        <div
-          className="ProgressBar__Failed"
-          css={getStatusStyles({ status: failed, statusColor: colors.error })}
-        />
-      )}
-      {running > 0 && (
-        <div
-          className="ProgressBar__Running"
-          css={getStatusStyles({ status: running, statusColor: colors.blue1 })}
-        />
-      )}
-      {pending > 0 && (
-        <div
-          className="ProgressBar__Pending"
-          css={getStatusStyles({ status: pending, statusColor: colors.grey6 })}
-        />
-      )}
+      {[succeeded, failed, running, pending].map(status => {
+        if (status > 0) {
+          return (
+            <div
+              css={getStatusStyles({
+                status,
+                statusColor: STATUS_COLORS[status],
+              })}
+            />
+          )
+        }
+      })}
     </div>
   )
 }

@@ -192,7 +192,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Status
               </div>
@@ -207,7 +207,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Job Name
               </div>
@@ -222,7 +222,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Created By
               </div>
@@ -237,7 +237,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Priority
               </div>
@@ -252,7 +252,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Created (Date/TIme)
               </div>
@@ -267,7 +267,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Failed
               </div>
@@ -282,7 +282,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Errors
               </div>
@@ -297,7 +297,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 # Assets
               </div>
@@ -312,7 +312,7 @@ exports[`<DataQueue /> should render properly 1`] = `
               }
             >
               <div
-                className="Header__title emotion-1"
+                className="emotion-1"
               >
                 Progress
               </div>

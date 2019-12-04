@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useTable, useRowState, usePagination } from 'react-table'
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 import { getPageDescription } from './helpers'
 
 const STATIC_COLUMN_WIDTHS = {
@@ -14,7 +14,7 @@ const PAGINATION_WIDTH = 40
 const tdCSS = isHovered => {
   return {
     height: ROW_HEIGHT,
-    fontWeight: 200,
+    fontWeight: typography.weight.extraLight,
     color: colors.grey2,
     padding: `${spacing.base}px ${spacing.normal}px`,
     backgroundColor: `${isHovered && colors.grey1}`,
@@ -61,7 +61,7 @@ const Table = ({ columns, data }) => {
 
   const thCSS = {
     height: ROW_HEIGHT,
-    fontWeight: 200,
+    fontWeight: typography.weight.extraLight,
     color: colors.grey2,
     backgroundColor: colors.grey1,
     padding: `${spacing.moderate}px ${spacing.normal}px`,
@@ -110,7 +110,7 @@ const Table = ({ columns, data }) => {
                       {...rest}
                       css={thCSS}
                       style={{ width: STATIC_COLUMN_WIDTHS[column.id] }}>
-                      <div className="Header__title" css={{ display: 'flex' }}>
+                      <div css={{ display: 'flex' }}>
                         {column.render('Header')}
                       </div>
                     </th>
