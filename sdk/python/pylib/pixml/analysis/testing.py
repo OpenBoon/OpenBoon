@@ -10,7 +10,7 @@ import uuid
 from urllib.parse import urlparse
 
 from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument
-from pixml.asset import AssetImport, Asset
+from pixml.asset import FileImport, Asset
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +55,7 @@ class TestGenerator(Generator):
 
     def generate(self, consumer):
         for file in self.arg_value('files'):
-            spec = AssetImport(file)
+            spec = FileImport(file)
             consumer.accept(spec)
 
     def teardown(self):
@@ -198,15 +198,15 @@ class TestAsset(Asset):
         "png": "image/png"
     }
 
-    def __init__(self, path=None, attrs=None):
+    def __init__(self, path=None, attrs=None, id=None):
         """
         Construct a test Asset.
 
         Args:
             path (str): A URL to a local file.
-            attrs(dict): Addtional attributes in key/value pair form Eg {"a.b.c": 123})
+            attrs(dict): Additional attributes in key/value pair form Eg {"a.b.c": 123})
         """
-        super(TestAsset, self).__init__({"id": str(uuid.uuid4())})
+        super(TestAsset, self).__init__({"id": id or str(uuid.uuid4())})
         self.set_attr("source.path", path)
 
         if path:

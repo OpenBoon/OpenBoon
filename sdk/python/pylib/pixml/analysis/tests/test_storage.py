@@ -42,23 +42,21 @@ class LocalFileCacheTests(TestCase):
     def test_localize_pixml_file(self, post_patch):
         pfile = {
             "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            "category": "proxy"
         }
         post_patch.return_value = "/tmp/cat.jpg"
-        path = self.lfc.localize_pixml_file(pfile)
+        path = self.lfc.localize_pixml_file(TestAsset(id="123456"), pfile)
         assert path.endswith("c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg")
 
     @patch.object(PixmlClient, 'stream')
     def test_localize_pixml_file_with_copy(self, post_patch):
         pfile = {
             "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            "category": "proxy"
         }
         post_patch.return_value = "/tmp/toucan.jpg"
         bird = zorroa_test_data("images/set01/toucan.jpg", uri=False)
-        path = self.lfc.localize_pixml_file(pfile, bird)
+        path = self.lfc.localize_pixml_file(TestAsset(id="123456"), pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
     def test_localize_file_obj_with_uri(self):
@@ -75,23 +73,23 @@ class LocalFileCacheTests(TestCase):
         post_patch.return_value = "/tmp/toucan.jpg"
         pfile = {
             "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            "category": "proxy"
         }
-        path = self.lfc.localize_pixml_file(pfile)
+        path = self.lfc.localize_pixml_file(TestAsset(id="123456"), pfile)
         assert path.endswith("c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg")
 
     def test_close(self):
         pfile = {
             "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            "category": "proxy"
         }
-        self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))
+        self.lfc.localize_pixml_file(TestAsset(), pfile,
+                                     zorroa_test_data("images/set01/toucan.jpg"))
         self.lfc.close()
 
         with pytest.raises(FileNotFoundError):
-            self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))
+            self.lfc.localize_pixml_file(TestAsset(), pfile,
+                                         zorroa_test_data("images/set01/toucan.jpg"))
 
 
 IMAGE_JPG = zorroa_test_data('images/set01/faces.jpg')
@@ -108,7 +106,6 @@ class StorageFunctionTests(TestCase):
             {
                 "name": "proxy_200x200.jpg",
                 "category": "proxy",
-                "assetId": "12345",
                 "mimetype": "image/jpeg",
                 "attrs": {
                     "width": 200,
@@ -118,7 +115,6 @@ class StorageFunctionTests(TestCase):
             {
                 "name": "proxy_400x400.jpg",
                 "category": "proxy",
-                "assetId": "12345",
                 "mimetype": "image/jpeg",
                 "attrs": {
                     "width": 400,
@@ -128,7 +124,6 @@ class StorageFunctionTests(TestCase):
             {
                 "name": "proxy_400x400.mp4",
                 "category": "proxy",
-                "assetId": "12345",
                 "mimetype": "video/mp4",
                 "attrs": {
                     "width": 400,
@@ -138,7 +133,6 @@ class StorageFunctionTests(TestCase):
             {
                 "name": "proxy_500x500.mp4",
                 "category": "proxy",
-                "assetId": "12345",
                 "mimetype": "video/mp4",
                 "attrs": {
                     "width": 500,
@@ -165,7 +159,6 @@ class StorageFunctionTests(TestCase):
         upload_patch.return_value = {
             "name": "proxy_200x200.jpg",
             "category": "proxy",
-            "assetId": "12345",
             "mimetype": "image/jpeg",
             "attrs": {
                 "width": 200,
@@ -179,7 +172,6 @@ class StorageFunctionTests(TestCase):
         upload_patch.return_value = {
             "name": "proxy_200x200.mp4",
             "category": "proxy",
-            "assetId": "12345",
             "mimetype": "video/mp4",
             "attrs": {
                 "width": 200,

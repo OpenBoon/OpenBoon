@@ -6,13 +6,13 @@ from unittest.mock import patch
 from pixml_core.util import media
 from pixml.analysis.testing import zorroa_test_data
 
-IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr',  false)
-IMAGE_PSD = zorroa_test_data('images/set06/psd_123.psd')
-IMAGE_JPG = zorroa_test_data('images/set02/beer_kettle_01.jpg')
-VIDEO_WEBM = zorroa_test_data('video/dc.webm')
-VIDEO_MP4 = zorroa_test_data('video/FatManOnABike1914.mp4')
-VIDEO_MXF = zorroa_test_data('mxf/freeMXF-mxf1.mxf')
-VIDEO_MOV = zorroa_test_data('video/1324_CAPS_23.0_030.00_15_MISC.mov')
+IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr', False)
+IMAGE_PSD = zorroa_test_data('images/set06/psd_123.psd', False)
+IMAGE_JPG = zorroa_test_data('images/set02/beer_kettle_01.jpg', False)
+VIDEO_WEBM = zorroa_test_data('video/dc.webm', False)
+VIDEO_MP4 = zorroa_test_data('video/FatManOnABike1914.mp4', False)
+VIDEO_MXF = zorroa_test_data('mxf/freeMXF-mxf1.mxf', False)
+VIDEO_MOV = zorroa_test_data('video/1324_CAPS_23.0_030.00_15_MISC.mov', False)
 
 
 def test_get_image_metadata():
@@ -21,7 +21,7 @@ def test_get_image_metadata():
     assert metadata["height"] == "2448"
 
 
-@patch('pixml_core.util.check_output')
+@patch('pixml_core.util.media.check_output')
 def test_get_image_metadata_invalid_chars(check_out_patch):
 
     xml = """
