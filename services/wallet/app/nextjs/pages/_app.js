@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import App from 'next/app'
 
 import Authentication from '../src/Authentication'
