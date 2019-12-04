@@ -1,8 +1,5 @@
-
 version: '3.6'
 services:
-
-  ## Unit testing services.
 
   # Postgres instance used for local development servers.
   postgres:
@@ -20,6 +17,16 @@ services:
     image: redis:alpine
     ports:
        - 6379:6379
+
+  # MinIO object storage service.
+  minio:
+    image: "minio/minio"
+    ports:
+      - "9000:9000"
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: qwerty123
+      MINIO_SECRET_KEY: 123qwerty
 
   # Elastic Search instance used for local development servers.
   es1:
@@ -46,7 +53,8 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - "zmlp-config:/zmlp-config"
+      - "./dev/config/auth-server:/config"
+      - "./dev/config/keys/inception-key.json:/config/inception-key.json"
 
   # Local Archivist server.
   archivist:
@@ -54,24 +62,23 @@ services:
        - "es1"
        - "postgres"
        - "auth-server"
-       - "copy-config-files"
     environment:
       SENTRY_ENVIRONMENT: localdev
+      ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
+      ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
+      ARCHIVIST_STORAGE_URL: http://minio:9000
     build:
       context: services/archivist
     ports:
       - 8080:8080
     volumes:
-      - "./services/archivist/localdev/shared:/shared"
-      - "./services/archivist/localdev/monitoring:/monitoring"
-      - "./services/archivist/localdev/zorroa-archivist-config:/config"
-      - "./test-data:/test-data"
-      - "zmlp-config:/zmlp-config"
+      - "./dev/config/monitoring:/monitoring"
+      - "./dev/config/archivist:/config"
+      - "./dev/config/keys/inception-key.json:/config/inception-key.json"
 
   analyst:
     links:
        - "archivist"
-       - "copy-config-files"
     build:
       context: services/analyst
     ports:
@@ -102,14 +109,6 @@ services:
     depends_on:
       - postgres
 
-  copy-config-files:
-    image: ubuntu:disco
-    volumes:
-      - zmlp-config:/zmlp-config
-      - ./dev/zmlp-config:/new-zmlp-config
-    command: ['/bin/bash', '-v', '-c', 'cp /new-zmlp-config/* /zmlp-config']
-
-
   # These services are only here because their images need to be built.
   zmlp-py3-base:
     image: zmlp-py3-base:latest
@@ -139,8 +138,3 @@ services:
     build:
       context: containers/zmlp-plugins-analysis
     command: echo
-
-
-
-volumes:
-  zmlp-config:
