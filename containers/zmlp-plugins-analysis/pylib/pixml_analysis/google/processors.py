@@ -18,7 +18,7 @@ from .base import GoogleApiDocumentProcessor
 from .base import AutoMLModelProcessor
 
 from pixml.analysis import Argument, PixmlUnrecoverableProcessorException
-from pixml.analysis.storage import get_proxy_file
+from pixml.analysis.storage import get_proxy_level
 
 class CloudVisionProcessor(GoogleApiDocumentProcessor):
     """Use Google Cloud Vision API to analyze images."""
@@ -78,7 +78,9 @@ class CloudVisionProcessor(GoogleApiDocumentProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        _, path = get_proxy_file(asset, 512, fallback=True)
+        path = get_proxy_level(asset, 1)
+        if not path:
+            return
         if Path(path).stat().st_size > 10485760:
             raise PixmlUnrecoverableProcessorException(
                 'The image is too large to submit to Google ML. Image size must '
@@ -569,7 +571,7 @@ class AutoMLVisionModelProcessor(AutoMLModelProcessor):
         return 'automl_vision'
 
     def _create_payload(self, asset):
-        _, file_path = get_proxy_file(asset, 512, fallback=True)
+        file_path = get_proxy_level(asset, 1)
         with open(file_path, 'rb') as fh:
             content = fh.read()
 

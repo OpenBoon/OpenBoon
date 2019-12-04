@@ -52,7 +52,9 @@ class ProjectFilterDaoImpl : ProjectFilterDao, AbstractDao() {
                 rs.getObject("pk_project") as UUID,
                 rs.getString("str_name"),
                 rs.getLong("time_created"),
-                rs.getLong("time_modified")
+                rs.getLong("time_modified"),
+                rs.getString("actor_created"),
+                rs.getString("actor_modified")
             )
         }
     }

@@ -3,13 +3,13 @@ import subprocess
 import sys
 import tempfile
 import logging
+import collections
 
 from PIL import Image
 from pathlib2 import Path
 
-import pixml
 from pixml.analysis import AssetBuilder, Argument
-from pixml.analysis.storage import file_cache, add_proxy_file
+from pixml.analysis.storage import file_cache, add_proxy_file, get_proxy_level
 from pixml_core.util.media import get_output_dimension, media_size
 
 
@@ -203,7 +203,7 @@ class ProxyProcessor(AssetBuilder):
         # has no chance of making a proxy, so we're going to skip
         # generating an error.
         if asset.get_attr("source.type") == "image":
-            return file_cache.localize_remote_file(asset.uri)
+            return file_cache.localize_remote_file(asset)
         return None
 
     def _get_valid_sizes(self, width, height):
@@ -235,17 +235,11 @@ def set_tiny_proxy_colors(asset):
 
     """
     if not asset.get_attr('tmp.proxies.tinyProxyGenerated'):
-
-        files = asset.get_attr("files") or []
-        image_proxies = [fs for fs in files if fs.get("mimetype").startswith("image/")]
-
-        if image_proxies:
-            app = pixml.app_from_env()
-            smallest_proxy = sorted(image_proxies, key=lambda prx: prx['attrs']['width'])[0]
-            tiny_proxy_path = file_cache.localize_remote_file(smallest_proxy)
-
-            logger.info('Creating tiny proxy colors for %s.' % tiny_proxy_path)
-            asset.set_attr('analysis.pixelml.tinyProxy', get_tiny_proxy_colors(tiny_proxy_path) or None)
+        smallest_proxy = get_proxy_level(asset, 0)
+        if smallest_proxy:
+            logger.info('Creating tiny proxy colors for %s.' % smallest_proxy)
+            asset.set_attr('analysis.pixelml.tinyProxy',
+                           get_tiny_proxy_colors(smallest_proxy) or None)
 
             # Mark that the tiny proxy was generated so we don't do this multiple times
             # if the customer has multiple proxy importers.
@@ -274,3 +268,6 @@ def get_tiny_proxy_colors(image_path):
         color = '#%02x%02x%02x' % rgb
         colors.append(color)
     return colors
+
+
+ProxySelection = collections.namedtuple('name', '')

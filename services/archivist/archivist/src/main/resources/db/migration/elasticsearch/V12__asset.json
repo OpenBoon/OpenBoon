@@ -103,6 +103,10 @@
             }
           }
         },
+        "files": {
+          "type": "object",
+          "enabled": false
+        },
         "system": {
           "properties": {
             "timeCreated": {
@@ -114,6 +118,9 @@
               "format": "yyyy/MM/dd||yyyy/MM/dd Z||date_optional_time||yyyy-MM-dd HH:mm:ss Z||epoch_millis"
             },
             "projectId": {
+              "type": "keyword"
+            },
+            "dataSourceId": {
               "type": "keyword"
             }
           }

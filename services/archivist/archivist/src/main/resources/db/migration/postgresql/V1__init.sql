@@ -94,10 +94,12 @@ SET default_with_oids = false;
 ---
 
 CREATE TABLE project (
-    pk_project    uuid PRIMARY KEY,
-    str_name      VARCHAR(64) NOT NULL,
-    time_created  bigint      NOT NULL,
-    time_modified bigint      NOT NULL
+    pk_project uuid PRIMARY KEY,
+    str_name VARCHAR(64) NOT NULL,
+    time_created  bigint NOT NULL,
+    time_modified bigint NOT NULL,
+    actor_created text NOT NULL,
+    actor_modified text NOT NULL
 );
 
 CREATE UNIQUE INDEX project_str_name_idx ON project USING btree (str_name);

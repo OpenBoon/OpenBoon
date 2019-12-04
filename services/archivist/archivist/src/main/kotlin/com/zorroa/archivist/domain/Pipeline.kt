@@ -112,5 +112,7 @@ data class PipelineFilter(
  * get into the Analysis dev phase.
  */
 val STANDARD_PIPELINE = listOf(
-    ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core")
+    ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core"),
+    ProcessorRef("pixml_core.proxy.processors.ProxyProcessor", "zmlp-plugins-core"),
+    ProcessorRef("pixml_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp-plugins-analysis")
 )

@@ -1,10 +1,6 @@
 package com.zorroa.archivist.mock
 
-import com.nhaarman.mockito_kotlin.mock
-import com.zorroa.archivist.service.FileStorageService
 import org.mockito.Mockito
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -34,17 +30,6 @@ fun <T> zany(): T {
 class MockServiceConfiguration {
 
     /**
-     * Return a mock FileStorageService if FileStorage is setup to use GCS.
-     */
-    @Bean
-    @ConditionalOnProperty(prefix = "archivist", name = ["storage.type"], havingValue = "gcs")
-    @Primary
-    @Autowired
-    fun mockFileStorageService(): FileStorageService {
-        return mock()
-    }
-
-    /**
      * Return a mock work queue which runs all tasks in the current thread.
      */
     @Bean
@@ -53,3 +38,4 @@ class MockServiceConfiguration {
         return MockAsyncThreadExecutor()
     }
 }
+
