@@ -49,7 +49,9 @@ enum class FileCategory {
      */
     METADATA,
 
-    @ApiModelProperty("The file is a type of encryption key", hidden = true)
+    /**
+     * "The file is a encryption key.
+     */
     KEYS;
 
     fun lower() = this.toString().toLowerCase()

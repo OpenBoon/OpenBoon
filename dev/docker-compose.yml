@@ -40,9 +40,7 @@ services:
     image: "minio/minio"
     ports:
       - "9000:9000"
-    command: server /data2
-    volumes:
-      - "./data:/data2"
+    command: server /data
     environment:
       MINIO_ACCESS_KEY: qwerty123
       MINIO_SECRET_KEY: 123qwerty
@@ -56,7 +54,8 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - "zmlp-config:/zmlp-config"
+      - "./config/auth-server:/config"
+      - "./config/keys/inception-key.json:/config/inception-key.json"
 
   # Local Archivist server.
   archivist:
@@ -74,11 +73,10 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - "../services/archivist/localdev/shared:/shared"
-      - "../services/archivist/localdev/monitoring:/monitoring"
-      - "../services/archivist/localdev/zorroa-archivist-config:/config"
-      - "../test-data:/test-data"
-      - "zmlp-config:/zmlp-config"
+      - "./config/monitoring:/monitoring"
+      - "./config/archivist:/config"
+      - "./config/keys/inception-key.json:/config/inception-key.json"
+
   analyst:
     links:
        - "archivist"

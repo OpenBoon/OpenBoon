@@ -119,8 +119,8 @@ class AuthServerClientImpl(val baseUri: String) : AuthServerClient {
     private val serviceKey: ApiKey? = detectServiceKey()
 
     private fun detectServiceKey(): ApiKey? {
-        val cfgPath = System.getenv().getOrDefault("ZMLP_CONFIG_PATH", "/zmlp-config")
-        val keyPath = Paths.get("$cfgPath/zmlp-service-key.json")
+        val cfgPath = System.getenv().getOrDefault("ARCHIVIST_CONFIG_PATH", "/config")
+        val keyPath = Paths.get("$cfgPath/inception-key.json")
         return if (Files.exists(keyPath)) {
             Json.Mapper.readValue(keyPath.toFile())
         } else {
