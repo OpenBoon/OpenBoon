@@ -1,0 +1,140 @@
+version: '3.6'
+services:
+
+  # Postgres instance used for local development servers.
+  postgres:
+    image: "postgres:9.6.9"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./dev/postgres_init_scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  redis:
+    image: redis:alpine
+    ports:
+       - 6379:6379
+
+  # MinIO object storage service.
+  minio:
+    image: "minio/minio"
+    ports:
+      - "9000:9000"
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: qwerty123
+      MINIO_SECRET_KEY: 123qwerty
+
+  # Elastic Search instance used for local development servers.
+  es1:
+    build:
+      context: services/elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+
+  # Auth server
+  auth-server:
+    links:
+       - "postgres"
+    build:
+      context: services/auth-server
+    ports:
+      - 9090:9090
+    volumes:
+      - "./dev/config/auth-server:/config"
+      - "./dev/config/keys/inception-key.json:/config/inception-key.json"
+
+  # Local Archivist server.
+  archivist:
+    links:
+       - "es1"
+       - "postgres"
+       - "auth-server"
+    environment:
+      SENTRY_ENVIRONMENT: localdev
+      ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
+      ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
+      ARCHIVIST_STORAGE_URL: http://minio:9000
+    build:
+      context: services/archivist
+    ports:
+      - 8080:8080
+    volumes:
+      - "./dev/config/monitoring:/monitoring"
+      - "./dev/config/archivist:/config"
+      - "./dev/config/keys/inception-key.json:/config/inception-key.json"
+
+  analyst:
+    links:
+       - "archivist"
+    build:
+      context: services/analyst
+    ports:
+      - 5000:5000
+    volumes:
+       - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      PIXML_SERVER: http://archivist:8080
+
+  # Console web application.
+  wallet:
+    image: wallet
+    ports:
+      - 80:80
+    build:
+      context: .
+      dockerfile: services/wallet/Dockerfile
+    environment:
+      DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
+      PG_HOST: postgres
+      ARCHIVIST_URL: http://archivist:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - postgres
+
+  # These services are only here because their images need to be built.
+  zmlp-py3-base:
+    image: zmlp-py3-base:latest
+    build:
+      context: containers/zmlp-py3-base
+
+  zmlp-py3-sdk:
+    image: zmlp-py3-sdk:latest
+    build:
+      context: sdk/python
+    command: echo
+
+  zmlp-plugins-base:
+    image: zmlp-plugins-base:latest
+    build:
+      context: containers/zmlp-plugins-base
+    command: echo
+
+  zmlp-plugins-core:
+    image: zmlp-plugins-core:latest
+    build:
+      context: containers/zmlp-plugins-core
+    command: echo
+
+  zmlp-plugins-analysis:
+    image: zmlp-plugins-analysis:latest
+    build:
+      context: containers/zmlp-plugins-analysis
+    command: echo
