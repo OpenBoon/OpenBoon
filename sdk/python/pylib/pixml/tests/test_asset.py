@@ -15,7 +15,6 @@ class AssetTests(unittest.TestCase):
 
     def setUp(self):
         self.test_files = [{
-            "assetId": "123",
             "category": "proxy",
             "name": "proxy_200x200.jpg",
             "mimetype": "image/jpeg",
@@ -63,6 +62,46 @@ class AssetTests(unittest.TestCase):
 
         assert 1 == len(asset.get_files(attrs={"width": 200}))
         assert 0 == len(asset.get_files(attrs={"width": 200, "height": 100}))
+
+    def test_get_files_by_attr_keys(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("files", self.test_files)
+
+        assert 1 == len(asset.get_files(attr_keys=["width"]))
+        assert 1 == len(asset.get_files(attr_keys="width"))
+        assert 0 == len(asset.get_files(attr_keys=["kirk"]))
+
+    def test_get_files_sort_func(self):
+        asset = Asset({"id": "123"})
+        test_files = [
+            {
+                "category": "proxy",
+                "name": "zzz.jpg",
+                "mimetype": "image/jpeg",
+                "attrs": {
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "category": "proxy",
+                "name": "aaa.jpg",
+                "mimetype": "image/jpeg",
+                "attrs": {
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ]
+        asset.set_attr("files", test_files)
+        top = asset.get_files(attr_keys=["width"], sort_func=lambda x: x["name"])[0]
+        assert top["name"] == "aaa.jpg"
+
+    def test_get_files_sort_func_and_filtered(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("files", self.test_files)
+        top = asset.get_files(attr_keys=["dog"], sort_func=lambda x: x["name"])
+        assert len(top) == 0
 
     def test_get_files_by_all(self):
         asset = Asset({"id": "123"})

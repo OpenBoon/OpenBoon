@@ -9,14 +9,16 @@ import urllib
 from urllib.parse import urlparse
 from pathlib2 import Path
 
-from pixml import app_from_env
+from pixml import app_from_env, Asset
+from .base import AnalysisEnv
 from .cloud import get_cached_google_storage_client
 
 __all__ = [
     "file_cache",
-    "get_proxy_file",
+    "get_proxy_min_width",
+    "get_proxy_level",
     "add_proxy_file",
-    "add_pixml_file"
+    "add_pixml_file",
 ]
 
 logger = logging.getLogger(__name__)
@@ -44,12 +46,17 @@ class LocalFileCache(object):
 
     def __init_root(self):
         """
-        This methods builds the root cache directory if the cache is
+        This methods builds the root cache directory when the cache is
         used, otherwise it may leave lots of empty cache temp dirs
         in containers or other places.
         """
         if not self.root:
-            self.root = tempfile.mkdtemp('pixml', 'lfc')
+            task = AnalysisEnv.get_task_id()
+            if not task:
+                self.root = tempfile.mkdtemp('pixml', 'lfc')
+            else:
+                self.root = os.path.join(tempfile.gettempdir(), task)
+                os.makedirs(self.root, exist_ok=True)
 
     def localize_remote_file(self, rep):
         """
@@ -59,8 +66,8 @@ class LocalFileCache(object):
             - A supported URI
             - Asset instance
 
-        To localize an Asset the file must be in PixelML storage or available with
-        the current DataSource credentials (if any).
+        To localize an Asset the file must be in PixelML storage or a remoote
+        file available with the current DataSource credentials (if any).
 
         Args:
             rep(mixed): The uri or Asset to localize.
@@ -71,8 +78,12 @@ class LocalFileCache(object):
         """
         if isinstance(rep, str):
             return self.localize_uri(rep)
-        elif hasattr(rep, "uri"):
-            return self.localize_uri(rep.uri)
+        elif isinstance(rep, Asset):
+            source_files = rep.get_files(category="source")
+            if source_files:
+                return self.localize_pixml_file(rep, source_files[0])
+            else:
+                return self.localize_uri(rep.uri)
         else:
             raise ValueError("cannot localize file, unable to determine the remote file source")
 
@@ -177,11 +188,39 @@ class LocalFileCache(object):
         shutil.rmtree(self.root)
 
 
-def get_proxy_file(asset, min_width=1024, mimetype="image/", fallback=False):
+def get_proxy_level(asset, level, mimetype="image/"):
+    """
+    Localize and return the given proxy level.  The smallest proxy is
+    level 0, the largest proxy is 0 or greater.  Out of bounds level
+    values will be clamped to the correct range automatically.  For example
+    if there are only 2 proxies and you pass level 3, then you will get the
+    level 2 proxy.
+
+    Args:
+        asset (Asset): The Asset.
+        level (int): The proxy level, the larger the number the bigger the file.
+        mimetype (str): The proxy mimetype, defaults to image/
+
+    Returns:
+        str: A path to the localized proxy file or None on no match.
+
+    """
+    files = asset.get_files(mimetype=mimetype, category="proxy", attr_keys=["width"],
+                            sort_func=lambda f: f['attrs']['width'])
+    if level >= len(files):
+        level = -1
+    try:
+        proxy = files[level]
+        return file_cache.localize_pixml_file(asset, proxy)
+    except IndexError:
+        return None
+
+
+def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
     """
     Return a tuple containing a suitable proxy file or fallback to the source media.
     The first element of the tuple is the name of proxy file such as "proxy_200x200.jpg"
-    or simply "source" if the source was selecte.
+    or simply "source" if the source was selected.
 
     Args:
         asset (Asset): an Asset instance
@@ -190,19 +229,18 @@ def get_proxy_file(asset, min_width=1024, mimetype="image/", fallback=False):
         fallback (bool): Fallback to the source if the proxy is not available.
 
     Returns:
-        tuple: a tuple of name, path
+        str: A path to the localized proxy file or None on no match.
 
     """
-    files = asset.get_files(mimetype=mimetype, category="proxy")
+    files = asset.get_files(mimetype=mimetype, category="proxy", attr_keys=["width"],
+                            sort_func=lambda f: f['attrs']['width'])
+    # Trim out smaller ones
     files = [file for file in files if file["attrs"]["width"] >= min_width]
-    sorted(files, key=lambda f: f['attrs']['width'])
 
     if files:
-        return files[0]["name"], file_cache.localize_pixml_file(asset, files[0])
-    elif fallback and asset.get_attr("source.mimetype").startswith(mimetype):
-        logger.warning("No suitable proxy mimetype={} minwidth={}, "
-                       "falling back to source".format(mimetype, min_width))
-        return 'source', file_cache.localize_remote_file(asset)
+        return file_cache.localize_pixml_file(asset, files[0])
+    elif fallback:
+        return file_cache.localize_remote_file(asset)
     else:
         raise ValueError("No suitable proxy file was found.")
 

@@ -233,7 +233,8 @@ class Asset(AssetBase):
         """
         return self.get_attr("source.path")
 
-    def get_files(self, name=None, category=None, mimetype=None, extension=None, attrs=None):
+    def get_files(self, name=None, category=None, mimetype=None, extension=None,
+                  attrs=None, attr_keys=None, sort_func=None):
         """
         Return all stored files associated with this asset.  Optionally
         filter the results.
@@ -244,9 +245,11 @@ class Asset(AssetBase):
             mimetype (str): The mimetype must start with this string.
             extension: (str): The file name must have the given extension.
             attrs (dict): The file must have all of the given attributes.
-
+            attr_keys: (list): A list of attribute keys that must be present.
+            sort_func: (func): A lambda function for sorting the result.
         Returns:
             list of dict: A list of pixml file records.
+
         """
         result = []
         files = self.get_attr("files") or []
@@ -264,12 +267,22 @@ class Asset(AssetBase):
             if extension and not any((item for item in as_collection(extension)
                                       if fs["name"].endswith("." + item))):
                 match = False
+
+            file_attrs = fs.get("attrs", {})
+            if attr_keys:
+                if not any(key in file_attrs for key in as_collection(attr_keys)):
+                    match = False
+
             if attrs:
                 for k, v in attrs.items():
-                    if fs.get("attrs", {}).get(k) != v:
+                    if file_attrs.get(k) != v:
                         match = False
             if match:
                 result.append(fs)
+
+        if sort_func:
+            result = sorted(result, key=sort_func)
+
         return result
 
     def for_json(self):
