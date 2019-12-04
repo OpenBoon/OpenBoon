@@ -26,6 +26,11 @@ class BaseProjectViewSet(ViewSet):
         except ObjectDoesNotExist:
             return HttpResponseForbidden(f'{request.user.username} is not a member of '
                                          f'the project {kwargs["project_pk"]}')
+        except TypeError:
+            # This catches when the user is not authed and the token validation fails.
+            # This allows the raised error to return properly, although may not be the
+            # best place to handles this
+            pass
         return super().dispatch(request, *args, **kwargs)
 
     def _get_archivist_client(self, request, project):
