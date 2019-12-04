@@ -7,10 +7,10 @@ import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.FileCategory
+import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageAttrs
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.storage.FileStorageService
 import io.swagger.annotations.Api
@@ -61,8 +61,7 @@ class AssetController @Autowired constructor(
         @ApiParam("Unique ID of the Asset.") @PathVariable id: String
     ): ResponseEntity<Resource> {
         val asset = assetService.getAsset(id)
-        val locator = FileStorageLocator(
-            LogObject.ASSET, id, FileCategory.SOURCE,
+        val locator = FileStorageLocator(FileGroup.ASSET, id, FileCategory.SOURCE,
             asset.getAttr("source.filename", String::class.java) as String
         )
         return fileStorageService.stream(locator)
@@ -104,21 +103,21 @@ class AssetController @Autowired constructor(
         @RequestPart(value = "body") req: FileStorageAttrs
     ): Any {
         val asset = assetService.getAsset(id)
-        val locator = FileStorageLocator(LogObject.ASSET, asset.id,
-            FileCategory.valueOf(category.toUpperCase()), file.originalFilename)
+        val locator = FileStorageLocator(FileGroup.ASSET, asset.id,
+            FileCategory.valueOf(category.toUpperCase()), req.name)
         val spec = FileStorageSpec(locator, req.attrs, file.bytes)
         return fileStorageService.store(spec)
     }
 
     @ApiOperation("Store an additional file to an asset.")
-    @GetMapping(value = ["/api/v3/assets/{id}/files/{category}/{name}"])
+    @GetMapping(value = ["/api/v3/assets/{id}/files/{category}/{name}/_stream"])
     @ResponseBody
     fun streamFile(
         @PathVariable id: String,
         @PathVariable category: String,
         @PathVariable name: String
     ): ResponseEntity<Resource> {
-        val locator = FileStorageLocator(LogObject.ASSET, id,
+        val locator = FileStorageLocator(FileGroup.ASSET, id,
             FileCategory.valueOf(category.toUpperCase()), name)
         return fileStorageService.stream(locator)
     }

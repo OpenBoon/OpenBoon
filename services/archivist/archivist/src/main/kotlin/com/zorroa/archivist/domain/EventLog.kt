@@ -42,7 +42,5 @@ enum class LogObject {
     ANALYST,
     TASK_ERROR,
     PROJECT,
-    DATASOURCE;
-
-    fun lower() = this.toString().toLowerCase()
+    DATASOURCE
 }

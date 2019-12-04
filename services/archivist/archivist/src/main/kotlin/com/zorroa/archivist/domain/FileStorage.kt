@@ -7,28 +7,59 @@ import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
+ * Internal enum class which describes the file storage group
+ */
+enum class FileGroup {
+
+    /**
+     * The stored file is associated with an asset.
+     */
+    ASSET,
+
+    /**
+     * The stored file is for internal use.
+     */
+    INTERNAL,
+
+    /**
+     * The stored file is input for an Analysis module.
+     */
+    ANALYSIS;
+
+    fun lower() = this.toString().toLowerCase()
+}
+
+/**
  * Internal class for the category of FileStorage.
  */
-@ApiModel("FileCategory", description = "The category of the stored file")
 enum class FileCategory {
 
-    @ApiModelProperty("The file is considered a source file.  These are typically added by file uploads.")
+    /**
+     * The file is considered a source file.  These are typically added by file uploads."
+     */
     SOURCE,
 
-    @ApiModelProperty("The file is a proxy or alternative low resolution representation.")
+    /**
+     * The file is a proxy or alternative low resolution representation."
+     */
     PROXY,
 
-    @ApiModelProperty("The file is some form of metadata, text, json, etc.")
+    /**
+     * "The file is some form of metadata, text, json, etc."
+     */
     METADATA,
 
-    @ApiModelProperty("The file used internally by PixelML.  Internal files cannot be created by REST calls.")
-    INTERNAL;
+    @ApiModelProperty("The file is a type of encryption key", hidden = true)
+    KEYS;
 
     fun lower() = this.toString().toLowerCase()
 }
 
 @ApiModel("FileStorageAttrs", description = "Additional attributes that can be stored with a file.")
 class FileStorageAttrs(
+
+    @ApiModelProperty("The name of the file, overrides the local file name.")
+    var name: String,
 
     @ApiModelProperty("The file used internally by PixelML.  Internal files cannot be created by REST calls.")
     var attrs: Map<String, Any>
@@ -44,8 +75,7 @@ class FileStorageAttrs(
  * @property projectId An optional projectId for superadmin ops.
  */
 class FileStorageLocator(
-
-    val type: LogObject,
+    val group: FileGroup,
     val id: String,
     val category: FileCategory,
     val name: String,
@@ -63,7 +93,7 @@ class FileStorageLocator(
         }
 
         val proj = projectId ?: getProjectId()
-        return "projects/$proj/${type.lower()}/$id/${category.lower()}/$name"
+        return "projects/$proj/${group.lower()}/$id/${category.lower()}/$name"
     }
 }
 

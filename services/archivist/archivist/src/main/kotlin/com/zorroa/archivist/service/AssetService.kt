@@ -12,12 +12,12 @@ import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.FileCategory
+import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.elastic.ElasticSearchErrorTranslator
@@ -210,8 +210,10 @@ class AssetServiceImpl : AssetService {
             val asset = assetSpecToAsset(id, spec)
             asset.setAttr("source.fileSize", mpfile.size)
 
-            val locator = FileStorageLocator(LogObject.ASSET,
-                id, FileCategory.SOURCE, mpfile.originalFilename)
+            val locator = FileStorageLocator(
+                FileGroup.ASSET,
+                id, FileCategory.SOURCE, mpfile.originalFilename
+            )
 
             val file = fileStorageService.store(
                 FileStorageSpec(locator, mapOf(), mpfile.bytes)

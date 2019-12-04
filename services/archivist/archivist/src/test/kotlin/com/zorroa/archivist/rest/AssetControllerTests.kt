@@ -5,9 +5,9 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.FileCategory
+import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
@@ -128,7 +128,7 @@ class AssetControllerTests : MockMvcTest() {
             assets=listOf(spec)
         ))
         val id = rsp.assets[0].id
-        val loc = FileStorageLocator(LogObject.ASSET, id, FileCategory.PROXY, "bob.jpg")
+        val loc = FileStorageLocator(FileGroup.ASSET, id, FileCategory.PROXY, "bob.jpg")
         val storage = FileStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         fileStorageService.store(storage)
 

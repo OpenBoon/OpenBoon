@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.domain.FileCategory
+import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
@@ -116,18 +117,21 @@ class ProjectServiceImpl constructor(
     }
 
     private fun createProjectCryptoKey(project: Project) {
-        val projectKeyLocation =
-            FileStorageLocator(LogObject.PROJECT, "credentials", FileCategory.INTERNAL, "key.txt",
-                projectId = project.id)
+        val projectKeyLocation = FileStorageLocator(
+            FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key",
+            projectId = project.id
+        )
+
         val key = Base64.getUrlEncoder().encodeToString(
-            KeyGenerators.secureRandom(64).generateKey()).trim('=')
+            KeyGenerators.secureRandom(32).generateKey()
+        ).trim('=')
 
         val spec = FileStorageSpec(projectKeyLocation, mapOf(), key.toByteArray())
         fileStorageService.store(spec)
     }
 
     override fun getCredentialsKey() : String {
-        val loc = FileStorageLocator(LogObject.PROJECT, "credentials", FileCategory.INTERNAL, "key.txt")
+        val loc = FileStorageLocator(FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key")
         return String(fileStorageService.fetch(loc))
     }
 
