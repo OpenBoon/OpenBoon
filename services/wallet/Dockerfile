@@ -13,7 +13,7 @@ WORKDIR /services/wallet
 ENV PYTHONPATH /services/wallet/app:$PATH
 RUN pip3 install --upgrade pip \
     && pip3 install pipenv \
-    && pipenv lock --requirements --keep-outdated > requirements.txt \
+    && pipenv lock --requirements > requirements.txt \
     && pip3 install --user -r requirements.txt
 COPY --from=node_build /app/nextjs/build /services/wallet/app/frontend/build
 COPY services/wallet/app/start-server.sh /start-server.sh
