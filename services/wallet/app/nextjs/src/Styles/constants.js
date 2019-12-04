@@ -2,6 +2,10 @@ const borderRadius = {
   small: 2,
 }
 
+const borderWidth = {
+  default: 1,
+}
+
 const opacity = {
   half: 0.59,
 }
@@ -13,6 +17,7 @@ const boxShadows = {
 
 const constants = {
   borderRadius,
+  borderWidth,
   opacity,
   boxShadows,
 }
