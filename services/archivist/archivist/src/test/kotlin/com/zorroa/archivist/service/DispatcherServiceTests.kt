@@ -31,6 +31,7 @@ import org.springframework.test.context.TestPropertySource
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -180,6 +181,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         assertNotNull(next)
         next?.let {
+            assertFalse("PIXML_DATASOURCE_ID" in next.env)
             assertEquals(job.id, it.jobId)
             val host: String = this.jdbc.queryForObject(
                 "SELECT str_host FROM task WHERE pk_task=?",
