@@ -1,3 +1,25 @@
+export const newJob = ({ job }) => {
+  return {
+    status: job.paused ? 'Paused' : job.state,
+    jobName: job.name,
+    createdBy: job.createdUser.username,
+    priority: job.priority,
+    createdDateTime: job.timeCreated,
+    failed: job.taskCounts.tasksFailure,
+    errors: job.assetCounts.assetErrorCount,
+    numAssets: 'numAsets',
+    progress: {
+      isGenerating: job.jobId === '1585ca03-4db0-14d1-8edd-0a580a000926',
+      isCanceled: job.state === 'Canceled',
+      canceledBy: job.createdUser.username,
+      failed: job.taskCounts.tasksFailure,
+      pending: job.taskCounts.tasksWaiting,
+      running: job.taskCounts.tasksRunning,
+      succeeded: job.taskCounts.tasksSuccess,
+    },
+  }
+}
+
 export const jobs = {
   list: [
     {
@@ -460,14 +482,26 @@ export const jobsColumns = [
   'Progress',
 ]
 
-export const jobsRows = [
-  jobsColumns,
-  jobsColumns,
-  jobsColumns,
-  jobsColumns,
-  jobsColumns,
-  jobsColumns,
-  jobsColumns,
-  jobsColumns,
-  jobsColumns,
-]
+export const jobsRows = jobs.list.map(job => {
+  const status = job.paused ? 'Paused' : job.state
+  const jobName = job.name
+  const createdBy = job.createdUser.username
+  const { priority } = job
+  const createdDateTime = job.timeCreated
+  const failed = job.taskCounts.tasksFailure
+  const errors = job.assetCounts.assetErrorCount
+  const numAssets = 'numAsets'
+  const progress = 'progress'
+
+  return [
+    status,
+    jobName,
+    createdBy,
+    priority,
+    createdDateTime,
+    failed,
+    errors,
+    numAssets,
+    progress,
+  ]
+})
