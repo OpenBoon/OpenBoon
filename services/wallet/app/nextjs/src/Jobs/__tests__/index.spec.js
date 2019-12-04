@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import Jobs from '../'
+import Jobs from '..'
 
 const noop = () => () => {}
 
