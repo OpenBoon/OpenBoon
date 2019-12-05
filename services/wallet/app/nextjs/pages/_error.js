@@ -1,7 +1,7 @@
 // This file was referenced from https://github.com/zeit/next.js/blob/canary/examples/with-sentry-simple/pages/_error.js
 
 import Error from 'next/error'
-import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/browser'
 import PropTypes from 'prop-types'
 
 const MyError = ({ statusCode, hasGetInitialPropsRun, err }) => {
@@ -22,23 +22,7 @@ MyError.getInitialProps = async ({ res, err, asPath }) => {
   // getInitialProps has run
   errorInitialProps.hasGetInitialPropsRun = true
 
-  if (res) {
-    // Running on the server, the response object is available.
-    //
-    // Next.js will pass an err on the server if a page's `getInitialProps`
-    // threw or returned a Promise that rejected
-
-    if (res.statusCode === 404) {
-      // Opinionated: do not record an exception in Sentry for 404
-      return { statusCode: 404 }
-    }
-
-    if (err) {
-      Sentry.captureException(err)
-
-      return errorInitialProps
-    }
-  } else if (err) {
+  if (err) {
     // Running on the client (browser).
     //
     // Next.js will provide an err if:
