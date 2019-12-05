@@ -52,8 +52,6 @@ class JobsViewSet(BaseProjectViewSet):
         """
         Retrieves all the errors that the tasks of the given job may have triggered.
 
-        The endpoint expects a `PUT` request with an empty body.
-
         """
         request_body = {
             'jobIds': [pk],
