@@ -23,7 +23,7 @@ class AutoMLNLPUnitTests(PluginUnitTestCase):
         }
         self.init_processor(self.processor, args)
 
-        frame = zorroa.zsdk.Frame(zorroa.zsdk.Document())
+        frame = zorroa.zsdk.Frame(zorroa.zsdk.Document()) # noqa
         frame.asset.set_attr('analysis.google.documentTextDetection.content',
                              "Dazu erteile ich Ihnen meine Zustimmung zur Gehaltsumwandlung in "
                              "H\xc3\xb6he meines\njeweiligen Finanzierungsanteils "

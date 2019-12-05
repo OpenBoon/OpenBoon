@@ -29,6 +29,7 @@ PIXML_FILE = {
     }
 }
 
+
 # simulate the gcp client that calls the google APIs
 class MockImageAnnotatorClient:
     def __init__(self):
