@@ -310,33 +310,27 @@ class Asset(AssetBase):
 
 class Clip(object):
     """
-    A Clip object is used to define some frame range
-    or sub-section of an asset.
+    A Clip object is used to define a subsection of a file/asset that should be
+    processed, for example a particular page of a PDF or a section of a movie.
+
+    Each clip of an Asset needs to have a unique type, start, stop, and optionally
+    timeline attributes fo it to be considered a unique clip.
     """
     def __init__(self, type, start, stop, timeline=None):
         """Initialize a new clip.
 
         Args:
-            type (str): The clip type (image, video, page)
+            type (str): The clip type, usually video or page.
             start (float): The start of the clip
-            stop (float): The end of the clip
-            timeline (str): Put the clip on 1 unique timeline in case it
-                collides with other clips with similar in/out points.
+            stop (float): The end of the clip,
+            timeline (str): When an asset is clipified multiple ways, use the timeline
+                to differentiate or else elements may collide.
         """
         self.type = type
         self.start = float(start)
         self.stop = float(stop)
-        self.length = max(1.0, self.stop - self.start + 1.0)
         self.timeline = timeline
-
-    def tokens(self):
-        """Return tokens that make the clip unique.
-
-        Returns:
-            :obj:`list` of str: A list of tokens.
-
-        """
-        return ["start=%0.3f" % self.start, "stop=%0.3f" % self.stop]
+        self.length = max(1.0, self.stop - self.start + 1.0)
 
     def for_json(self):
         """Return a JSON serialized copy.
