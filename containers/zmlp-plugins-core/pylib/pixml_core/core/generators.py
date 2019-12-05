@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 
-from pixml.analysis import Generator, Argument, AnalysisEnv
+from pixml.analysis import Generator, Argument
 from pixml.analysis.cloud import get_google_storage_client
 from pixml.asset import FileImport
 

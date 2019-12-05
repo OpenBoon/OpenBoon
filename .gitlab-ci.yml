@@ -66,6 +66,7 @@ wallet-container-build-validation:
 sdk-unit-tests:
   image: python:3.8
   stage: test
+  allow_failure: true
   only:
     - merge_requests
     - development

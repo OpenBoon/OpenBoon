@@ -43,7 +43,8 @@ class ImageImporter(AssetBuilder):
         asset = frame.asset
         path = Path(file_cache.localize_remote_file(asset))
         metadata = get_image_metadata(path)
-        set_resolution_attrs(asset, int(metadata.get('full_width')), int(metadata.get('full_height')))
+        set_resolution_attrs(asset, int(metadata.get('full_width')),
+                             int(metadata.get('full_height')))
         self.set_location(asset, metadata)
         self.set_date(asset, metadata)
         self.set_metadata(asset, metadata)

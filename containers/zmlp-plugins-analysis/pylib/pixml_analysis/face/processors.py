@@ -9,6 +9,7 @@ import numpy as np
 from pixml.analysis import AssetBuilder, Argument
 from pixml.analysis.storage import get_proxy_level
 
+
 class FaceRecognitionProcessor(AssetBuilder):
     """Detect and recognize faces.
     Generate a face similarity hash
