@@ -1,6 +1,8 @@
+const withSourceMaps = require('@zeit/next-source-maps')()
+
 const { ANALYZE } = process.env
 
-module.exports = {
+module.exports = withSourceMaps({
   webpack: (config, { isServer }) => {
     if (ANALYZE && !isServer) {
       const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
@@ -22,4 +24,4 @@ module.exports = {
 
     return config
   },
-}
+})
