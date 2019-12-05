@@ -12,38 +12,38 @@ stages:
   - test
 
 # Kotlin services - Unit tests - Step 1
-services_build_artifacts:
-  image: maven:3.6.2-jdk-11-slim
-  stage: build
-  only:
-    - merge_requests
-    - development
-  script:
-    - cd services/elasticsearch/es-similarity
-    - mvn package
-    - cd ../
-    - cd es-kwconf
-    - mvn package
-    - cd ../
-    - mvn clean install -Dmaven.test.skip=true
-    # - mvn project-info-reports:dependencies # not sure if this is still required
-  artifacts:
-    paths:
-      - services/elasticsearch/es-kwconf/target/releases/es-kwconf.zip
-      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
-
-# Kotlin services - Unit tests - Step 2
-services_push_to_local_registry:
-  stage: pretest
-  only:
-    - merge_requests
-    - development
-  retry: 2
-  script:
-    - cd services/elasticsearch
-    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-    - docker build -t $LOCAL_ES_NAME .
-    - docker push $LOCAL_ES_NAME
+#services_build_artifacts:
+#  image: maven:3.6.2-jdk-11-slim
+#  stage: build
+#  only:
+#    - merge_requests
+#    - development
+#  script:
+#    - cd services/elasticsearch/es-similarity
+#    - mvn package
+#    - cd ../
+#    - cd es-kwconf
+#    - mvn package
+#    - cd ../
+#    - mvn clean install -Dmaven.test.skip=true
+#    # - mvn project-info-reports:dependencies # not sure if this is still required
+#  artifacts:
+#    paths:
+#      - services/elasticsearch/es-kwconf/target/releases/es-kwconf.zip
+#      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
+#
+## Kotlin services - Unit tests - Step 2
+#services_push_to_local_registry:
+#  stage: pretest
+#  only:
+#    - merge_requests
+#    - development
+#  retry: 2
+#  script:
+#    - cd services/elasticsearch
+#    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+#    - docker build -t $LOCAL_ES_NAME .
+#    - docker push $LOCAL_ES_NAME
 
 # Kotlin services - Unit tests - Step 3
 #services_unit_tests:
@@ -157,6 +157,7 @@ wallet-backend-test-suite:
 
 wallet-container-build-validation:
   only:
+    - merge_requests
     - development
   stage: test
   image: docker:18.09.8-dind
