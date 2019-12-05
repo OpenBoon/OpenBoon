@@ -33,8 +33,8 @@ class MxUnitTests(PluginUnitTestCase):
         processor = self.init_processor(ResNetSimilarityProcessor(), {"debug": True})
         processor.process(self.frame)
 
-        self.assertEquals(2053,
-                          len(self.frame.asset.get_attr("analysis")["imageSimilarity"]["shash"]))
+        self.assertEquals(2048,
+                          len(self.frame.asset.get_attr("analysis")["imageSimilarity"]["vector"]))
 
     @patch.object(PixmlClient, 'upload_file')
     def test_MxNetClassify_defaults(self, upload_patch):

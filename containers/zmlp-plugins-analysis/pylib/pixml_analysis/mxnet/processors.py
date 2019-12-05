@@ -130,19 +130,17 @@ class ResNetSimilarityProcessor(AssetBuilder):
         features = np.squeeze(features)
 
         mxh = np.clip((features*16).astype(int), 0, 15) + 65
-
         mxhash = "".join([chr(item) for item in mxh])
-        # Prepend the hash header
-        # char 0: the version of the hash. The plugin only compares hashes of the same version.
-        # char 1-2: (HEX) the position of the hash where the data starts.
-        # char 3-4: (HEX) the resolution of the hash.
 
-        mxhash = '0050F' + mxhash
+        mxhash = mxhash
         struct = {
-            "shash": mxhash
+            "vector": mxhash
         }
+
         if self.arg_value("debug"):
-            struct["type"] = "mxnet"
-            struct["model"] = os.path.basename(self.model_path)
+            struct["debug"] = {
+                "type": "mxnet",
+                "model": os.path.basename(self.model_path)
+            }
 
         asset.add_analysis("imageSimilarity", struct)
