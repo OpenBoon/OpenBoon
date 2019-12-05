@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
-import { colors, constants } from '../Styles'
+import { keyframes } from '@emotion/core'
+import { colors, constants, spacing } from '../Styles'
+import GeneratingSvg from './generating.svg'
 
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 200
@@ -32,7 +34,27 @@ const ProgressBar = ({ status }) => {
   const { isGenerating, isCanceled, canceledBy } = status
 
   if (isGenerating) {
-    return <div css={{ color: colors.blue1 }}>[ICON] Generating</div>
+    const spinAnimation = keyframes`
+      0% { transform: rotate(0deg) }
+      100%{ transform: rotate(360deg) }
+    }`
+    return (
+      <div
+        css={{
+          display: 'flex',
+          alignItems: 'center',
+          color: colors.blue1,
+        }}>
+        <GeneratingSvg
+          width={16}
+          css={{
+            color: colors.blue1,
+            animation: `${spinAnimation} 2s linear infinite`,
+          }}
+        />
+        <div css={{ paddingLeft: spacing.base }}>Generating</div>
+      </div>
+    )
   }
 
   if (isCanceled) {
