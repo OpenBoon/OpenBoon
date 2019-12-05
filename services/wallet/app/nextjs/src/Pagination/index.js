@@ -63,7 +63,7 @@ const Pagination = ({
             alignItems: 'center',
             color: colors.grey5,
           }}>
-          of 24
+          of {totalPages}
         </div>
         <PaginationLink
           currentPage={currentPage}

@@ -169,7 +169,8 @@ exports[`<Pagination /> should render properly on first page 1`] = `
     <div
       className="emotion-5"
     >
-      of 24
+      of 
+      2
     </div>
     <a
       className="emotion-7"
@@ -358,7 +359,8 @@ exports[`<Pagination /> should render properly on last page 1`] = `
     <div
       className="emotion-5"
     >
-      of 24
+      of 
+      2
     </div>
     <button
       className="emotion-7"
