@@ -16,34 +16,59 @@ const Table = ({ columns, rows }) => {
         css={{
           borderSpacing: 0,
           boxShadow: constants.boxShadows.dark,
+          th: {
+            height: ROW_HEIGHT,
+            fontWeight: typography.weight.extraLight,
+            color: colors.grey2,
+            backgroundColor: colors.grey1,
+            padding: `${spacing.moderate}px ${spacing.normal}px`,
+            borderBottom: constants.borders.default,
+            '&:not(:last-child)': {
+              borderRight: constants.borders.default,
+            },
+          },
+          tr: {
+            backgroundColor: colors.grey4,
+            ':hover': {
+              backgroundColor: colors.grey1,
+              td: {
+                border: constants.borders.default,
+                borderLeft: 'none',
+                borderRight: 'none',
+                '&:first-of-type': {
+                  border: constants.borders.default,
+                  borderRight: 'none',
+                },
+                '&:last-of-type': {
+                  border: constants.borders.default,
+                  borderLeft: 'none',
+                },
+              },
+            },
+          },
           td: {
             height: ROW_HEIGHT,
             fontWeight: typography.weight.extraLight,
             color: colors.grey2,
             padding: `${spacing.base}px ${spacing.normal}px`,
             border: constants.borders.transparent,
+            borderLeft: 'none',
+            borderRight: 'none',
+            '&:not(:first-of-type)': {
+              border: constants.borders.transparent,
+              borderRight: 'none',
+            },
+            '&:not(:last-of-type)': {
+              border: constants.borders.transparent,
+              borderLeft: 'none',
+            },
           },
         }}>
         <thead>
-          <tr
-            css={{
-              backgroundColor: colors.grey4,
-            }}>
+          <tr>
             {columns.map(column => {
               return (
-                <th
-                  key={column}
-                  css={{
-                    height: ROW_HEIGHT,
-                    fontWeight: typography.weight.extraLight,
-                    color: colors.grey2,
-                    backgroundColor: colors.grey1,
-                    padding: `${spacing.moderate}px ${spacing.normal}px`,
-                    borderBottom: constants.borders.default,
-                    '&:not(:last-child)': {
-                      borderRight: constants.borders.default,
-                    },
-                  }}>
+                <th key={column}>
                   <div css={{ display: 'flex' }}>{column}</div>
                 </th>
               )
@@ -59,25 +84,6 @@ const Table = ({ columns, rows }) => {
                   backgroundColor: colors.grey4,
                   '&:nth-of-type(2n)': {
                     backgroundColor: colors.grey3,
-                  },
-                  borderSpacing: 0,
-                  ':hover': {
-                    backgroundColor: colors.grey1,
-                    td: {
-                      borderSpacing: 0,
-                      borderTop: constants.borders.default,
-                      borderBottom: constants.borders.default,
-                    },
-                    'td:first-of-type': {
-                      borderTop: constants.borders.default,
-                      borderLeft: constants.borders.default,
-                      borderBottom: constants.borders.default,
-                    },
-                    'td:last-of-type': {
-                      borderTop: constants.borders.default,
-                      borderRight: constants.borders.default,
-                      borderBottom: constants.borders.default,
-                    },
                   },
                 }}>
                 <td>{row.status}</td>
