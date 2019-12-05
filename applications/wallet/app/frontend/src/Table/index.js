@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
+import ProgressBar from '../ProgressBar'
 
 const ROW_HEIGHT = 32
 
@@ -68,7 +69,9 @@ const Table = ({ columns, rows }) => {
                 <td>{row.failed}</td>
                 <td>{row.errors}</td>
                 <td>{row.numAssets}</td>
-                <td>{row.progress}</td>
+                <td>
+                  <ProgressBar status={row.progress} />
+                </td>
               </tr>
             )
           })}
@@ -91,7 +94,15 @@ Table.propTypes = {
       failed: PropTypes.node,
       errors: PropTypes.node,
       numAssets: PropTypes.string,
-      progress: PropTypes.node,
+      progress: PropTypes.shape({
+        isGenerating: PropTypes.bool,
+        isCanceled: PropTypes.bool,
+        canceledBy: PropTypes.string,
+        succeeded: PropTypes.number,
+        failed: PropTypes.number,
+        running: PropTypes.number,
+        pending: PropTypes.number,
+      }),
     }),
   ).isRequired,
 }
