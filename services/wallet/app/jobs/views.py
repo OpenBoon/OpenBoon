@@ -42,9 +42,9 @@ class JobsViewSet(BaseProjectViewSet):
         current_url = request.build_absolute_uri(request.get_full_path())
         actions = self.get_extra_actions()
         action_map = {}
-        for action in actions:
-            if action.detail == self.detail:
-                action_map[action.url_name] = f'{current_url}{action.url_path}/'
+        for _action in actions:
+            if _action.detail == self.detail:
+                action_map[_action.url_name] = f'{current_url}{_action.url_path}/'
         return action_map
 
     @action(detail=True, methods=['get'])

@@ -256,7 +256,8 @@ class TestJobViewSet:
         assert response.json()['msg'] == ('Invalid `max_running_tasks` value provided. '
                                           'Expected an integer.')
 
-    def test_put_max_running_tasks(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
+    def test_put_max_running_tasks(self, pixml_project_user, project, api_client,
+                                   monkeypatch, job_pk):
         updated_info_return = {
             'name': 'Test',
             'priority': 0,
@@ -289,7 +290,8 @@ class TestJobViewSet:
         content = response.json()
         assert content['maxRunningTasks'] == 10
 
-    def test_put_retry_all_failures(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
+    def test_put_retry_all_failures(self, pixml_project_user, project, api_client,
+                                    monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
