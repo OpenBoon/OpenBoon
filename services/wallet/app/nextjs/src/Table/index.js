@@ -4,13 +4,6 @@ import { colors, constants, spacing, typography } from '../Styles'
 const ROW_HEIGHT = 32
 
 const Table = ({ columns, rows }) => {
-  const trCSS = {
-    backgroundColor: colors.grey4,
-    '&:nth-of-type(2n)': {
-      backgroundColor: colors.grey3,
-    },
-  }
-
   return (
     <div
       css={{
@@ -22,7 +15,6 @@ const Table = ({ columns, rows }) => {
         css={{
           borderSpacing: 0,
           boxShadow: constants.boxShadows.dark,
-          margin: `${spacing.base}px 0`,
           td: {
             height: ROW_HEIGHT,
             fontWeight: typography.weight.extraLight,
@@ -32,7 +24,10 @@ const Table = ({ columns, rows }) => {
           },
         }}>
         <thead>
-          <tr css={trCSS}>
+          <tr
+            css={{
+              backgroundColor: colors.grey4,
+            }}>
             {columns.map(column => {
               return (
                 <th
@@ -57,7 +52,14 @@ const Table = ({ columns, rows }) => {
         <tbody>
           {rows.map(row => {
             return (
-              <tr key={row.id} css={trCSS}>
+              <tr
+                key={row.id}
+                css={{
+                  backgroundColor: colors.grey4,
+                  '&:nth-of-type(2n)': {
+                    backgroundColor: colors.grey3,
+                  },
+                }}>
                 <td>{row.status}</td>
                 <td>{row.jobName}</td>
                 <td>{row.createdBy}</td>
