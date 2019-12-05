@@ -5,7 +5,7 @@ import { spacing, constants, colors } from '../Styles'
 
 import ChevronSvg from './chevron.svg'
 
-const DEFAULT_PADDING = `${spacing.cozy}px ${spacing.moderate}px`
+const DEFAULT_PADDING = `${spacing.base}px ${spacing.moderate}px`
 const BORDER_RADIUS = constants.borderRadius.small
 
 const PaginationLink = ({

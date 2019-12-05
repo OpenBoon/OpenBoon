@@ -5,7 +5,7 @@ import { spacing, constants, colors } from '../Styles'
 
 import PaginationLink from './Link'
 
-const DEFAULT_PADDING = `${spacing.cozy}px ${spacing.moderate}px`
+const DEFAULT_PADDING = `${spacing.base}px ${spacing.moderate}px`
 
 const Pagination = ({
   legend,

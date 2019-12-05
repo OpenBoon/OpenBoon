@@ -14,7 +14,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-0 {
   color: #4D4948;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -27,7 +27,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-1 {
   color: #4D4948;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   padding-left: 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -55,7 +55,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   background-color: #4D4948;
   border: 1px solid #4D4948;
   border-top-left-radius: 2px;
@@ -78,7 +78,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-4 {
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   border: 1px solid #4D4948;
   display: -webkit-box;
   display: -webkit-flex;
@@ -92,7 +92,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-5 {
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -113,7 +113,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   background-color: #4D4948;
   border: 1px solid #4D4948;
   border-top-left-radius: 0;
@@ -202,7 +202,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-0 {
   color: #4D4948;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -215,7 +215,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-1 {
   color: #4D4948;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   padding-left: 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -242,7 +242,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-4 {
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   border: 1px solid #4D4948;
   display: -webkit-box;
   display: -webkit-flex;
@@ -256,7 +256,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-5 {
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -284,7 +284,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   background-color: #4D4948;
   border: 1px solid #4D4948;
   border-top-left-radius: 2px;
@@ -308,7 +308,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: undefinedpx 12px;
+  padding: 8px 12px;
   background-color: #4D4948;
   border: 1px solid #4D4948;
   border-top-left-radius: 0;
