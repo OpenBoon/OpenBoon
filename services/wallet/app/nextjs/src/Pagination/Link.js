@@ -43,8 +43,8 @@ const PaginationLink = ({
         border: constants.borders.default,
         borderTopLeftRadius: isPrev ? BORDER_RADIUS : 0,
         borderBottomLeftRadius: isPrev ? BORDER_RADIUS : 0,
-        borderTopRightRadius: direction === 'next' ? BORDER_RADIUS : 0,
-        borderBottomRightRadius: direction === 'next' ? BORDER_RADIUS : 0,
+        borderTopRightRadius: isPrev ? 0 : BORDER_RADIUS,
+        borderBottomRightRadius: isPrev ? 0 : BORDER_RADIUS,
         '&:hover': {
           opacity: isDisabled ? 1 : constants.opacity.half,
           textDecoration: 'none',
