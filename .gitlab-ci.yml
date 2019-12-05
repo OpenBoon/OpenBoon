@@ -7,8 +7,7 @@ variables:
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
 
 stages:
-  - build
-  - pretest
+  - push
   - test
 
 # Wallet Jobs
@@ -62,6 +61,53 @@ wallet-container-build-validation:
     - docker:18.09.8-dind
   script:
     - docker build --pull --no-cache -f services/wallet/Dockerfile .
+
+# SDK Test
+sdk-unit-tests:
+  image: python:3.8
+  stage: test
+  only:
+    - merge_requests
+    - development
+    - qa
+    - master
+  script:
+    - python -m pip install flake8 pipenv pytest
+    - cd containers/zmlp-plugins-analysis
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+    - cd ../../containers/zmlp-plugins-base
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+    - cd ../../containers/zmlp-plugins-core
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+
+docker_hub_push:
+  image: docker:18.09.8-dind
+  stage: push
+  services:
+    - docker:18.09.8-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HUB_IMAGE: zorroaevi/analyst:$CI_COMMIT_REF_SLUG
+  retry: 2
+  only:
+   - merge_requests
+   - development
+  script:
+   - apk add docker-compose
+   - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+   - docker-compose build
+   - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+   - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
+   - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
+   - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+   - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+
 
 ## Kotlin services - Unit tests - Step 1
 #services_build_artifacts:
@@ -166,26 +212,4 @@ wallet-container-build-validation:
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
 
 
-# SDK Test
-sdk-unit-tests:
-  image: python:3.8
-  stage: test
-  only:
-    - merge_requests
-    - development
-    - qa
-    - master
-  script:
-    - python -m pip install flake8 pipenv pytest
-    - cd containers/zmlp-plugins-analysis
-    - flake8
-    - pipenv install -r requirements.txt
-    - pytest
-    - cd ../../containers/zmlp-plugins-base
-    - flake8
-    - pipenv install -r requirements.txt
-    - pytest
-    - cd ../../containers/zmlp-plugins-core
-    - flake8
-    - pipenv install -r requirements.txt
-    - pytest
+

@@ -46,6 +46,7 @@ services:
 
   # API Gateway
   api-gateway:
+    image: zmlp/apigateway
     build:
       context: services/api-gateway
     depends_on:
@@ -60,8 +61,9 @@ services:
 
   # Auth server
   auth-server:
+    image: zmlp/authserver
     depends_on:
-       - postgres
+      - postgres
     build:
       context: services/auth-server
     volumes:
@@ -70,10 +72,11 @@ services:
 
   # Local Archivist server.
   archivist:
+    image: zmlp/archivist
     depends_on:
-       - es1
-       - postgres
-       - auth-server
+      - es1
+      - postgres
+      - auth-server
     environment:
       SENTRY_ENVIRONMENT: localdev
       ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
@@ -87,9 +90,10 @@ services:
       - "./dev/config/keys/inception-key.json:/config/inception-key.json"
 
   analyst:
+    image: zmlp/analyst
     depends_on:
-       - archivist
-       - zmlp-py3-sdk
+      - archivist
+      - zmlp-py3-sdk
     build:
       context: services/analyst
     ports:
@@ -101,7 +105,7 @@ services:
 
   # Console web application.
   wallet:
-    image: wallet
+    image: zmlp/wallet
     ports:
       - 80:80
     build:
