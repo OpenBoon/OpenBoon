@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from projects.views import BaseProjectViewSet
-from .serializers import MaxRunningTasksSerializer
 
 
 class JobsViewSet(BaseProjectViewSet):
