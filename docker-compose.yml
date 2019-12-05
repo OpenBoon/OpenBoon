@@ -44,24 +44,36 @@ services:
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
+  # API Gateway
+  api-gateway:
+    build:
+      context: services/api-gateway
+    depends_on:
+      - auth-server
+      - archivist
+    ports:
+      - 8080:80
+    environment:
+      ARCHIVIST_HOST: archivist:8080
+      AUTH_SERVER_HOST: auth-server:9090
+
+
   # Auth server
   auth-server:
-    links:
-       - "postgres"
+    depends_on:
+       - postgres
     build:
       context: services/auth-server
-    ports:
-      - 9090:9090
     volumes:
       - "./dev/config/auth-server:/config"
       - "./dev/config/keys/inception-key.json:/config/inception-key.json"
 
   # Local Archivist server.
   archivist:
-    links:
-       - "es1"
-       - "postgres"
-       - "auth-server"
+    depends_on:
+       - es1
+       - postgres
+       - auth-server
     environment:
       SENTRY_ENVIRONMENT: localdev
       ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
@@ -69,18 +81,15 @@ services:
       ARCHIVIST_STORAGE_URL: http://minio:9000
     build:
       context: services/archivist
-    ports:
-      - 8080:8080
     volumes:
       - "./dev/config/monitoring:/monitoring"
       - "./dev/config/archivist:/config"
       - "./dev/config/keys/inception-key.json:/config/inception-key.json"
 
   analyst:
-    links:
-       - "archivist"
     depends_on:
-      - zmlp-py3-sdk
+       - archivist
+       - zmlp-py3-sdk
     build:
       context: services/analyst
     ports:
@@ -101,7 +110,7 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
       PG_HOST: postgres
-      ARCHIVIST_URL: http://archivist:8080
+      ARCHIVIST_URL: http://api-gateway:8080
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
