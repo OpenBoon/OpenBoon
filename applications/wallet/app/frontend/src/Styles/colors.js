@@ -21,10 +21,25 @@ const colors = {
   grey6: '#404040',
 
   green1: '#4AC565',
+  green2: '#b8d652',
 
   blue1: '#4A90E2',
 
   yellow1: '#F5A623',
+
+  rocks: {
+    black: '#000000',
+    coal: '#1f1a17',
+    charcoal: '#4d4948',
+    iron: '#808080',
+    pewter: '#9b9b9b',
+    steel: '#b3b3b3',
+    pebble: '#dadada',
+    slate: '#e1e1e1',
+    granite: '#e7e7e7',
+    marble: '#f7f7f7',
+    white: '#ffffff',
+  },
 }
 
 export default colors
