@@ -96,7 +96,6 @@ docker_hub_push:
     DOCKER_HUB_IMAGE: zorroaevi/analyst:$CI_COMMIT_REF_SLUG
   retry: 2
   only:
-   - merge_requests
    - development
   script:
    - apk add docker-compose
@@ -107,6 +106,7 @@ docker_hub_push:
    - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+   - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 
 
 ## Kotlin services - Unit tests - Step 1

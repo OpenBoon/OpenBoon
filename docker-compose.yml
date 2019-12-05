@@ -30,6 +30,7 @@ services:
 
   # Elastic Search instance used for local development servers.
   es1:
+    image: zmlp/elasticsearch
     build:
       context: services/elasticsearch
       args:
