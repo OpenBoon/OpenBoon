@@ -177,7 +177,7 @@ class OfficeImporter(AssetBuilder):
             num_pages = asset.get_attr("media.pages")
             if not asset.attr_exists("media.clip") and num_pages > 1:
                 for page_num in range(1, num_pages + 1):
-                    clip = Clip('page',page_num, page_num)
+                    clip = Clip('page', page_num, page_num)
                     child_asset = FileImport(asset.get_attr('source.path'), clip)
                     child_asset.set_attr(self.tmp_loc_attr, output_dir)
                     expand = ExpandFrame(child_asset)
