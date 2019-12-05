@@ -60,6 +60,25 @@ const Table = ({ columns, rows }) => {
                   '&:nth-of-type(2n)': {
                     backgroundColor: colors.grey3,
                   },
+                  borderSpacing: 0,
+                  ':hover': {
+                    backgroundColor: colors.grey1,
+                    td: {
+                      borderSpacing: 0,
+                      borderTop: constants.borders.default,
+                      borderBottom: constants.borders.default,
+                    },
+                    'td:first-of-type': {
+                      borderTop: constants.borders.default,
+                      borderLeft: constants.borders.default,
+                      borderBottom: constants.borders.default,
+                    },
+                    'td:last-of-type': {
+                      borderTop: constants.borders.default,
+                      borderRight: constants.borders.default,
+                      borderBottom: constants.borders.default,
+                    },
+                  },
                 }}>
                 <td>{row.status}</td>
                 <td>{row.jobName}</td>
