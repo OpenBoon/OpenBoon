@@ -45,15 +45,22 @@ public class PixmlClient {
 
     }
 
-    private JsonNode loadApiKey(Object apiKey) {
+    public PixmlClient(Object apiKey) {
+        this(apiKey, null);
+    }
+
+
+        private JsonNode loadApiKey(Object apiKey) {
 
         if (apiKey instanceof Map) {
             return mapper.valueToTree(apiKey);
-        } else if (apiKey instanceof String) {
-            String apiKeyString = (String) apiKey;
+        } else if (apiKey instanceof byte[] || apiKey instanceof String) {
+            String apiKeyString;
+            if (apiKey instanceof byte[])
+                apiKeyString = new String(Base64.getDecoder().decode((byte[]) apiKey));
+            else
+                apiKeyString = (String)apiKey;
 
-            //Check if is a Base64 String
-            Base64.getDecoder().decode(apiKeyString);
             //Check if is a valid JSON
             try {
                 return mapper.readTree(apiKeyString);
@@ -137,20 +144,20 @@ public class PixmlClient {
 
         //if PIXML_TASK_ID exists
         Optional.ofNullable(System.getenv("PIXML_TASK_ID"))
-                .ifPresent((String taskId)->{
-                    claimBuilder.withClaim("taskId",taskId);
+                .ifPresent((String taskId) -> {
+                    claimBuilder.withClaim("taskId", taskId);
                     claimBuilder.withClaim("PIXML_JOB_ID", System.getenv("PIXML_JOB_ID"));
-        });
+                });
 
         // if projectId exists
-        Optional.ofNullable(this.projectId).ifPresent((String projectId)->{
+        Optional.ofNullable(this.projectId).ifPresent((String projectId) -> {
             claimBuilder.withClaim("projectId", projectId);
         });
 
 
         String jwtEncoded = claimBuilder
-                            .sign(Algorithm
-                            .HMAC512(this.apiKey.get("sharedKey").asText()));
+                .sign(Algorithm
+                        .HMAC512(this.apiKey.get("sharedKey").asText()));
         return jwtEncoded;
     }
 
