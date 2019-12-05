@@ -23,7 +23,7 @@ export const newJob = ({ job }) => {
 export const jobs = {
   list: [
     {
-      id: '82d5308b-67c2-1433-8fef-0a580a000955',
+      id: '82d5308b-67c2-1433-8fef-0a580a000956',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
@@ -483,17 +483,23 @@ export const jobsColumns = [
 ]
 
 export const jobsRows = jobs.list.map(job => {
+  const { id } = job
   const status = job.paused ? 'Paused' : job.state
   const jobName = job.name
   const createdBy = job.createdUser.username
   const { priority } = job
   const createdDateTime = job.timeCreated
-  const failed = job.taskCounts.tasksFailure
-  const errors = job.assetCounts.assetErrorCount
+  const failed = job.taskCounts.tasksFailure > 0 && (
+    <div style={{ color: 'red' }}>{job.taskCounts.tasksFailure}</div>
+  )
+  const errors = job.assetCounts.assetErrorCount > 0 && (
+    <div style={{ color: 'red' }}>{job.assetCounts.assetErrorCount}</div>
+  )
   const numAssets = 'numAsets'
-  const progress = 'progress'
+  const progress = <div style={{ color: 'red' }}>progress</div>
 
-  return [
+  return {
+    id,
     status,
     jobName,
     createdBy,
@@ -503,5 +509,5 @@ export const jobsRows = jobs.list.map(job => {
     errors,
     numAssets,
     progress,
-  ]
+  }
 })
