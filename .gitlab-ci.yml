@@ -55,7 +55,6 @@ wallet-backend-test-suite:
 
 wallet-container-build-validation:
   only:
-    - merge_requests
     - development
   stage: test
   image: docker:18.09.8-dind
@@ -178,7 +177,7 @@ sdk-unit-tests:
     - master
   script:
     - python -m pip install flake8 pipenv pytest
-    - cd containers/plugins-py3-analysis
+    - cd containers/zmlp-plugins-analysis
     - flake8
     - pipenv install -r requirements.txt
     - pytest
