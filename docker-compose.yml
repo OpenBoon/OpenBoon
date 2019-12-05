@@ -1,6 +1,5 @@
-version: '3.6'
+version: "3.6"
 services:
-
   # Postgres instance used for local development servers.
   postgres:
     image: "postgres:9.6.9"
@@ -16,7 +15,7 @@ services:
   redis:
     image: redis:alpine
     ports:
-       - 6379:6379
+      - 6379:6379
 
   # MinIO object storage service.
   minio:
@@ -59,7 +58,6 @@ services:
       ARCHIVIST_HOST: archivist:8080
       AUTH_SERVER_HOST: auth-server:9090
 
-
   # Auth server
   auth-server:
     image: zmlp/authserver
@@ -100,7 +98,7 @@ services:
     ports:
       - 5000:5000
     volumes:
-       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       PIXML_SERVER: http://archivist:8080
 
@@ -111,7 +109,7 @@ services:
       - 80:80
     build:
       context: .
-      dockerfile: services/wallet/Dockerfile
+      dockerfile: applications/wallet/Dockerfile
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
       PG_HOST: postgres
