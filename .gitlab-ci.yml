@@ -22,7 +22,7 @@ stages:
   extends: .wallet-base
   image: node:12
   before_script:
-    - cd services/wallet/app/nextjs
+    - cd applications/wallet/app/frontend
     - npm ci
 
 wallet-frontend-test-suite:
@@ -46,7 +46,7 @@ wallet-backend-test-suite:
     POSTGRES_DB: wallet
     PG_HOST: postgres
   script:
-    - cd services/wallet
+    - cd applications/wallet
     - pipenv sync
     - cd app
     - pipenv run flake8
@@ -60,7 +60,7 @@ wallet-container-build-validation:
   services:
     - docker:18.09.8-dind
   script:
-    - docker build --pull --no-cache -f services/wallet/Dockerfile .
+    - docker build --pull --no-cache -f applications/wallet/Dockerfile .
 
 # SDK Test
 sdk-unit-tests:
@@ -97,19 +97,17 @@ docker_hub_push:
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
   only:
-   - development
+    - development
   script:
-   - apk add docker-compose
-   - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-   - docker-compose build
-   - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
-   - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
-   - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
-   - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
-   - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
-   - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
-
-
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build
+    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
+    - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
+    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 ## Kotlin services - Unit tests - Step 1
 #services_build_artifacts:
 #  image: maven:3.6.2-jdk-11-slim
@@ -211,6 +209,4 @@ docker_hub_push:
 #  script:
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zps/pylib/zplugins
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
-
-
 
