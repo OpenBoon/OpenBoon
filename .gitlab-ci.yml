@@ -7,8 +7,8 @@ variables:
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
 
 stages:
-  - push
   - test
+  - push
 
 # Wallet Jobs
 .wallet-base:
@@ -97,7 +97,6 @@ docker_hub_push:
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
   only:
-   - merge_requests
    - development
   script:
    - apk add docker-compose
