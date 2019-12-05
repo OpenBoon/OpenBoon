@@ -27,7 +27,7 @@ public class PixmlApp {
     }
 
     // Env Variables Constructor
-    public PixmlApp appFromEnv() {
+    public PixmlApp() {
 
         /*
         """
@@ -64,7 +64,11 @@ public class PixmlApp {
             }).get();
         }
 
-        return new PixmlApp(apiKey, System.getenv("PIXML_SERVER"));
+
+        // load Variables
+        this.pixmlClient = new PixmlClient(apiKey, System.getenv("PIXML_SERVER"));
+        this.assetApp = new AssetApp();
+        this.dataSourceApp = new DataSourceApp();
     }
 
 
