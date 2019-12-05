@@ -12,7 +12,7 @@ pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
 sentry-sdk = "*"
-Django = "*"
+Django = ">2.2,<3.0"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
@@ -23,7 +23,7 @@ requests = "*"
 uritools = "*"
 flake8 = "*"
 pixml = {path = "./../../sdk/python"}
-
+markdown = "*"
 
 [requires]
 python_version = "3.6"
