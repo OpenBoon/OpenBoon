@@ -14,7 +14,7 @@ def job_pk():
 
 class TestJobViewSet:
 
-    def test_get_list(self, user, project, pixml_project_membership, api_client, monkeypatch):
+    def test_get_list(self, pixml_project_user, project, api_client, monkeypatch):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
@@ -22,15 +22,29 @@ class TestJobViewSet:
             return response
 
         monkeypatch.setattr(PixmlClient, 'post', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.get(reverse('job-list', kwargs={'project_pk': project.id}))
         assert response.status_code == 200
         content = response.json()
         assert len(content['list']) == 1
 
-    def test_get_detail(self, user, project, pixml_project_membership, api_client,
-                        monkeypatch, job_pk):
+    def test_get_list_actions(self, pixml_project_user, project, api_client, monkeypatch):
+
+        def mock_api_response(*args, **kwargs):
+            response = Response()
+            response._content = b'{"list": [{"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "type": "Import", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": false, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}], "page": {"from": 0, "size": 10, "totalCount": 1}}'  # noqa
+            return response
+
+        monkeypatch.setattr(PixmlClient, 'post', mock_api_response)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
+        response = api_client.get(reverse('job-list', kwargs={'project_pk': project.id}))
+        content = response.json()
+        assert 'actions' in content
+        # Currently no list-based actions, so nothing else to check to not break future additions.
+
+    def test_get_detail(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
@@ -38,8 +52,8 @@ class TestJobViewSet:
             return response
 
         monkeypatch.setattr(PixmlClient, 'get', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.get(reverse('job-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': job_pk}))
@@ -47,8 +61,26 @@ class TestJobViewSet:
         content = response.json()
         assert content['id'] == 'b8ec649d-67bc-1ab4-a0ae-0242ac120007'
 
-    def test_get_errors(self, user, project, pixml_project_membership, api_client,
-                        monkeypatch, job_pk):
+    def test_get_detail_actions(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
+
+        def mock_api_response(*args, **kwargs):
+            response = Response()
+            response._content = b'{"id":"b8ec649d-67bc-1ab4-a0ae-0242ac120007","organizationId":"00000000-9998-8888-7777-666666666666","name":"import-test-data-all.json","type":"Import","state":"Finished","assetCounts":{"assetCreatedCount":246,"assetReplacedCount":54,"assetWarningCount":0,"assetErrorCount":1},"taskCounts":{"tasksTotal":8,"tasksWaiting":0,"tasksRunning":0,"tasksSuccess":8,"tasksFailure":0,"tasksSkipped":0,"tasksQueued":0},"createdUser":{"id":"00000000-7b0b-480e-8c36-f06f04aed2f1","username":"admin","email":"admin@zorroa.com","permissionId":"00000000-fc08-4e4a-aa7a-a183f42c9fa0","homeFolderId":"00000000-2395-4e71-9e4c-dacceef6ad53","organizationId":"00000000-9998-8888-7777-666666666666"},"timeStarted":1574891251035,"timeUpdated":1574891738399,"timeCreated":1574891249308,"priority":100,"paused":false,"timePauseExpired":-1,"maxRunningTasks":1024,"jobId":"b8ec649d-67bc-1ab4-a0ae-0242ac120007"}'  # noqa
+            return response
+
+        monkeypatch.setattr(PixmlClient, 'get', mock_api_response)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
+        response = api_client.get(reverse('job-detail',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': job_pk}))
+        content = response.json()
+        assert 'actions' in content
+        uri = reverse('job-detail', kwargs={'project_pk': project.id, 'pk': job_pk})
+        resume_url = f'{uri}resume/'
+        assert content['actions']['resume'].endswith(resume_url)
+
+    def test_get_errors(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             body = args[-1]
@@ -58,16 +90,15 @@ class TestJobViewSet:
             return response
 
         monkeypatch.setattr(PixmlClient, 'post', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.get(reverse('job-errors',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 200
         content = response.json()
         assert len(content['list']) == 1
 
-    def test_put_pause(self, user, project, pixml_project_membership, api_client,
-                       monkeypatch, job_pk):
+    def test_put_pause(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
         updated_info_return = {
             'name': 'Test',
             'priority': 100,
@@ -89,16 +120,15 @@ class TestJobViewSet:
 
         monkeypatch.setattr(JobsViewSet, '_get_updated_info', get_updated_info_mock)
         monkeypatch.setattr(PixmlClient, 'put', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-pause',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 200
         content = response.json()
         assert content['paused'] is True
 
-    def test_put_resume(self, user, project, pixml_project_membership, api_client,
-                        monkeypatch, job_pk):
+    def test_put_resume(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
         updated_info_return = {
             'name': 'Test',
             'priority': 100,
@@ -120,16 +150,15 @@ class TestJobViewSet:
 
         monkeypatch.setattr(JobsViewSet, '_get_updated_info', get_updated_info_mock)
         monkeypatch.setattr(PixmlClient, 'put', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-resume',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 200
         content = response.json()
         assert content['paused'] is False
 
-    def test_put_cancel(self, user, project, pixml_project_membership, api_client,
-                        monkeypatch, job_pk):
+    def test_put_cancel(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
@@ -137,16 +166,15 @@ class TestJobViewSet:
             return response
 
         monkeypatch.setattr(PixmlClient, 'put', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-cancel',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 200
         content = response.json()
         assert content['op'] == 'cancel'
 
-    def test_put_restart(self, user, project, pixml_project_membership, api_client,
-                         monkeypatch, job_pk):
+    def test_put_restart(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
@@ -154,35 +182,32 @@ class TestJobViewSet:
             return response
 
         monkeypatch.setattr(PixmlClient, 'put', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-restart',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 200
         content = response.json()
         assert content['op'] == 'restart'
 
-    def test_put_priority_no_body(self, user, project, pixml_project_membership,
-                                  api_client, job_pk):
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+    def test_put_priority_no_body(self, pixml_project_user, project, api_client, job_pk):
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-priority',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 400
         assert response.json()['msg'] == 'Unable to find a valid `priority` value to use.'
 
-    def test_put_priority_bad_body(self, user, project, pixml_project_membership,
-                                   api_client, job_pk):
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+    def test_put_priority_bad_body(self, pixml_project_user, project, api_client, job_pk):
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-priority',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}),
                                   {'priority': 'asdf'})
         assert response.status_code == 400
         assert response.json()['msg'] == 'Invalid `priority` value provided. Expected an integer.'
 
-    def test_put_priority(self, user, project, pixml_project_membership, api_client,
-                          monkeypatch, job_pk):
+    def test_put_priority(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
         updated_info_return = {
             'name': 'Test',
             'priority': 12,
@@ -204,8 +229,8 @@ class TestJobViewSet:
 
         monkeypatch.setattr(JobsViewSet, '_get_updated_info', get_updated_info_mock)
         monkeypatch.setattr(PixmlClient, 'put', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-priority',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}),
                                   {'priority': '12'})
@@ -213,19 +238,17 @@ class TestJobViewSet:
         content = response.json()
         assert content['priority'] == 12
 
-    def test_put_max_running_tasks_no_body(self, user, project, pixml_project_membership,
-                                           api_client, job_pk):
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+    def test_put_max_running_tasks_no_body(self, pixml_project_user, project, api_client, job_pk):
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-max-running-tasks',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 400
         assert response.json()['msg'] == 'Unable to find a valid `max_running_tasks` value to use.'
 
-    def test_put_max_running_tasks_bad_body(self, user, project, pixml_project_membership,
-                                            api_client, job_pk):
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+    def test_put_max_running_tasks_bad_body(self, pixml_project_user, project, api_client, job_pk):
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-max-running-tasks',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}),
                                   {'max_running_tasks': 'asdf'})
@@ -233,8 +256,8 @@ class TestJobViewSet:
         assert response.json()['msg'] == ('Invalid `max_running_tasks` value provided. '
                                           'Expected an integer.')
 
-    def test_put_max_running_tasks(self, user, project, pixml_project_membership,
-                                   api_client, monkeypatch, job_pk):
+    def test_put_max_running_tasks(self, pixml_project_user, project, api_client,
+                                   monkeypatch, job_pk):
         updated_info_return = {
             'name': 'Test',
             'priority': 0,
@@ -257,8 +280,8 @@ class TestJobViewSet:
 
         monkeypatch.setattr(JobsViewSet, '_get_updated_info', get_updated_info_mock)
         monkeypatch.setattr(PixmlClient, 'put', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-max-running-tasks',
                                           kwargs={'project_pk': project.id,
                                                   'pk': job_pk}),
@@ -267,8 +290,8 @@ class TestJobViewSet:
         content = response.json()
         assert content['maxRunningTasks'] == 10
 
-    def test_put_retry_all_failures(self, user, project, pixml_project_membership,
-                                    api_client, monkeypatch, job_pk):
+    def test_put_retry_all_failures(self, pixml_project_user, project, api_client,
+                                    monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
@@ -276,8 +299,8 @@ class TestJobViewSet:
             return response
 
         monkeypatch.setattr(PixmlClient, 'put', mock_api_response)
-        api_client.force_authenticate(user)
-        api_client.force_login(user)
+        api_client.force_authenticate(pixml_project_user)
+        api_client.force_login(pixml_project_user)
         response = api_client.put(reverse('job-retry-all-failures',
                                           kwargs={'project_pk': project.id,
                                                   'pk': job_pk}))

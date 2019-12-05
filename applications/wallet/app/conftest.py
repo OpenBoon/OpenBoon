@@ -29,7 +29,7 @@ def project():
                                   name='Test Project')
 
 
-@pytest.fixture()
+@pytest.fixture
 def pixml_project_membership(project, user):
     apikey = b"""{
     "name": "admin-key",
@@ -42,7 +42,12 @@ def pixml_project_membership(project, user):
     return Membership.objects.create(user=user, project=project, apikey=apikey)
 
 
-@pytest.fixture()
+@pytest.fixture
+def pixml_project_user(user, pixml_project_membership):
+    return user
+
+
+@pytest.fixture
 def zvi_project_membership(project, user):
     apikey = b"""{"userId": "00000000-7b0b-480e-8c36-f06f04aed2f1",
     "user": "admin",
