@@ -23,7 +23,7 @@ requests = "*"
 uritools = "*"
 flake8 = "*"
 pixml = {path = "./../../sdk/python"}
-
+markdown = "*"
 
 [requires]
 python_version = "3.6"
