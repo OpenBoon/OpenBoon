@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Jobs /> should render properly with data 1`] = `
+.emotion-32 {
+  padding: 12px;
+}
+
 .emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -54,7 +58,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #1D1D1D;
 }
 
-<div>
+<div
+  className="emotion-32"
+>
   <h2>
     Projects
   </h2>
@@ -734,10 +740,25 @@ exports[`<Jobs /> should render properly with data 1`] = `
   >
     Logout
   </button>
+  <h2>
+    Pagination
+  </h2>
+  <Pagination
+    currentPage={1}
+    legend="Jobs: 1–17 of 415"
+    nextLink="/?page=2"
+    onClick={[Function]}
+    prevLink="/"
+    totalPages={2}
+  />
 </div>
 `;
 
 exports[`<Jobs /> should render properly without data 1`] = `
+.emotion-32 {
+  padding: 12px;
+}
+
 .emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -791,7 +812,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #1D1D1D;
 }
 
-<div>
+<div
+  className="emotion-32"
+>
   <h2>
     Projects
   </h2>
@@ -1467,5 +1490,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
   >
     Logout
   </button>
+  <h2>
+    Pagination
+  </h2>
+  <Pagination
+    currentPage={1}
+    legend="Jobs: 1–17 of 415"
+    nextLink="/?page=2"
+    onClick={[Function]}
+    prevLink="/"
+    totalPages={2}
+  />
 </div>
 `;
