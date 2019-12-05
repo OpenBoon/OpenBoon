@@ -23,7 +23,7 @@ stages:
   image: node:12
   before_script:
     - cd services/wallet/app/nextjs
-    - npm install
+    - npm ci
 
 wallet-frontend-test-suite:
   extends: .wallet-frontend-base
