@@ -30,6 +30,7 @@ services:
 
   # Elastic Search instance used for local development servers.
   es1:
+    image: zmlp/elasticsearch
     build:
       context: services/elasticsearch
       args:
@@ -44,24 +45,39 @@ services:
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
+  # API Gateway
+  api-gateway:
+    image: zmlp/apigateway
+    build:
+      context: services/api-gateway
+    depends_on:
+      - auth-server
+      - archivist
+    ports:
+      - 8080:80
+    environment:
+      ARCHIVIST_HOST: archivist:8080
+      AUTH_SERVER_HOST: auth-server:9090
+
+
   # Auth server
   auth-server:
-    links:
-       - "postgres"
+    image: zmlp/authserver
+    depends_on:
+      - postgres
     build:
       context: services/auth-server
-    ports:
-      - 9090:9090
     volumes:
       - "./dev/config/auth-server:/config"
       - "./dev/config/keys/inception-key.json:/config/inception-key.json"
 
   # Local Archivist server.
   archivist:
-    links:
-       - "es1"
-       - "postgres"
-       - "auth-server"
+    image: zmlp/archivist
+    depends_on:
+      - es1
+      - postgres
+      - auth-server
     environment:
       SENTRY_ENVIRONMENT: localdev
       ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
@@ -69,16 +85,16 @@ services:
       ARCHIVIST_STORAGE_URL: http://minio:9000
     build:
       context: services/archivist
-    ports:
-      - 8080:8080
     volumes:
       - "./dev/config/monitoring:/monitoring"
       - "./dev/config/archivist:/config"
       - "./dev/config/keys/inception-key.json:/config/inception-key.json"
 
   analyst:
-    links:
-       - "archivist"
+    image: zmlp/analyst
+    depends_on:
+      - archivist
+      - zmlp-py3-sdk
     build:
       context: services/analyst
     ports:
@@ -90,7 +106,7 @@ services:
 
   # Console web application.
   wallet:
-    image: wallet
+    image: zmlp/wallet
     ports:
       - 80:80
     build:
@@ -99,7 +115,7 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
       PG_HOST: postgres
-      ARCHIVIST_URL: http://archivist:8080
+      ARCHIVIST_URL: http://api-gateway:8080
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -117,24 +133,32 @@ services:
 
   zmlp-py3-sdk:
     image: zmlp-py3-sdk:latest
+    depends_on:
+      - zmlp-py3-base
     build:
       context: sdk/python
     command: echo
 
   zmlp-plugins-base:
     image: zmlp-plugins-base:latest
+    depends_on:
+      - zmlp-py3-sdk
     build:
       context: containers/zmlp-plugins-base
     command: echo
 
   zmlp-plugins-core:
     image: zmlp-plugins-core:latest
+    depends_on:
+      - zmlp-plugins-base
     build:
       context: containers/zmlp-plugins-core
     command: echo
 
   zmlp-plugins-analysis:
     image: zmlp-plugins-analysis:latest
+    depends_on:
+      - zmlp-plugins-base
     build:
       context: containers/zmlp-plugins-analysis
     command: echo

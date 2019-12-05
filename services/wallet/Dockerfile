@@ -1,4 +1,4 @@
-FROM node:8.16.2 as node_build
+FROM node:12.13.1 as node_build
 COPY services/wallet/app /app
 WORKDIR /app/nextjs
 RUN npm install && npm run build
@@ -13,8 +13,7 @@ WORKDIR /services/wallet
 ENV PYTHONPATH /services/wallet/app:$PATH
 RUN pip3 install --upgrade pip \
     && pip3 install pipenv \
-    && pipenv lock --requirements > requirements.txt \
-    && pip3 install --user -r requirements.txt
+    && pipenv install --system --deploy
 COPY --from=node_build /app/nextjs/build /services/wallet/app/frontend/build
 COPY services/wallet/app/start-server.sh /start-server.sh
 

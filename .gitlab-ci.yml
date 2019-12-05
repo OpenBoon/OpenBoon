@@ -7,44 +7,143 @@ variables:
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
 
 stages:
-  - build
-  - pretest
   - test
+  - push
 
-# Kotlin services - Unit tests - Step 1
-services_build_artifacts:
-  image: maven:3.6.2-jdk-11-slim
-  stage: build
+# Wallet Jobs
+.wallet-base:
   only:
     - merge_requests
     - development
+    - qa
+    - master
+
+.wallet-frontend-base:
+  extends: .wallet-base
+  image: node:12
+  before_script:
+    - cd services/wallet/app/nextjs
+    - npm ci
+
+wallet-frontend-test-suite:
+  extends: .wallet-frontend-base
+  stage: test
   script:
-    - cd services/elasticsearch/es-similarity
-    - mvn package
-    - cd ../
-    - cd es-kwconf
-    - mvn package
-    - cd ../
-    - mvn clean install -Dmaven.test.skip=true
-    # - mvn project-info-reports:dependencies # not sure if this is still required
-  artifacts:
-    paths:
-      - services/elasticsearch/es-kwconf/target/releases/es-kwconf.zip
-      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
+    - npm run lint
+    - npm run test:cover
+    - npm run size
 
-# Kotlin services - Unit tests - Step 2
-services_push_to_local_registry:
-  stage: pretest
+wallet-backend-test-suite:
+  extends: .wallet-base
+  image: mc706/pipenv-3.6
+  stage: test
+  services:
+    - name: postgres:9.6.9
+      alias: postgres
+  variables:
+    POSTGRES_PASSWORD: a8fnnbe934j
+    POSTGRES_USER: wallet
+    POSTGRES_DB: wallet
+    PG_HOST: postgres
+  script:
+    - cd services/wallet
+    - pipenv sync
+    - cd app
+    - pipenv run flake8
+    - pipenv run pytest --cov=.
+
+wallet-container-build-validation:
+  only:
+    - development
+  stage: test
+  image: docker:18.09.8-dind
+  services:
+    - docker:18.09.8-dind
+  script:
+    - docker build --pull --no-cache -f services/wallet/Dockerfile .
+
+# SDK Test
+sdk-unit-tests:
+  image: python:3.8
+  stage: test
   only:
     - merge_requests
     - development
+    - qa
+    - master
+  script:
+    - python -m pip install flake8 pipenv pytest
+    - cd containers/zmlp-plugins-analysis
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+    - cd ../../containers/zmlp-plugins-base
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+    - cd ../../containers/zmlp-plugins-core
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+
+docker_hub_push:
+  image: docker:18.09.8-dind
+  stage: push
+  services:
+    - docker:18.09.8-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HUB_IMAGE: zorroaevi/analyst:$CI_COMMIT_REF_SLUG
+    DOCKER_HOST: tcp://localhost:2375
   retry: 2
+  only:
+   - development
   script:
-    - cd services/elasticsearch
-    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-    - docker build -t $LOCAL_ES_NAME .
-    - docker push $LOCAL_ES_NAME
+   - apk add docker-compose
+   - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+   - docker-compose build
+   - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+   - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
+   - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
+   - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+   - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+   - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 
+
+## Kotlin services - Unit tests - Step 1
+#services_build_artifacts:
+#  image: maven:3.6.2-jdk-11-slim
+#  stage: build
+#  only:
+#    - merge_requests
+#    - development
+#  script:
+#    - cd services/elasticsearch/es-similarity
+#    - mvn package
+#    - cd ../
+#    - cd es-kwconf
+#    - mvn package
+#    - cd ../
+#    - mvn clean install -Dmaven.test.skip=true
+#    # - mvn project-info-reports:dependencies # not sure if this is still required
+#  artifacts:
+#    paths:
+#      - services/elasticsearch/es-kwconf/target/releases/es-kwconf.zip
+#      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
+#
+## Kotlin services - Unit tests - Step 2
+#services_push_to_local_registry:
+#  stage: pretest
+#  only:
+#    - merge_requests
+#    - development
+#  retry: 2
+#  script:
+#    - cd services/elasticsearch
+#    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+#    - docker build -t $LOCAL_ES_NAME .
+#    - docker push $LOCAL_ES_NAME
+#
 # Kotlin services - Unit tests - Step 3
 #services_unit_tests:
 #  stage: test
@@ -77,7 +176,7 @@ services_push_to_local_registry:
 #    - mvn test verify -f services/archivist -q
 #    - mvn test verify -f services/auth-server -q
 #    - mvn test verify -f services/officer -q
-
+#
 # Kotlin Services Jobs
 #kotlin-lint:
 #  image: java:latest
@@ -90,7 +189,7 @@ services_push_to_local_registry:
 #    - ./ktlint services/auth-server/src/**/*.kt
 #    - ./ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
 #    - ./ktlint services/officer/src/**/*.kt
-
+#
 # SDK Jobs
 #python-lint:
 #  image: python:3.8
@@ -102,7 +201,7 @@ services_push_to_local_registry:
 #    - flake8 containers/plugins-py3-analysis
 #    - flake8 containers/plugins-py3-core
 #    - flake8 sdk/python
-
+#
 #sdk-containers-tests:
 #  stage: test
 #  before_script:
@@ -113,54 +212,5 @@ services_push_to_local_registry:
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zps/pylib/zplugins
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
 
-# Wallet Jobs
-.wallet-base:
-  only:
-    - merge_requests
-    - development
-    - qa
-    - master
 
-.wallet-frontend-base:
-  extends: .wallet-base
-  image: node:12
-  before_script:
-    - cd services/wallet/app/nextjs
-    - npm install
 
-wallet-frontend-test-suite:
-  extends: .wallet-frontend-base
-  stage: test
-  script:
-    - npm run lint
-    - npm run test:cover
-
-wallet-backend-test-suite:
-  extends: .wallet-base
-  image: mc706/pipenv-3.6
-  stage: test
-  services:
-    - name: postgres:9.6.9
-      alias: postgres
-  variables:
-    POSTGRES_PASSWORD: a8fnnbe934j
-    POSTGRES_USER: wallet
-    POSTGRES_DB: wallet
-    PG_HOST: postgres
-  script:
-    - cd services/wallet
-    - pipenv sync
-    - cd app
-    - pipenv run flake8
-    - pipenv run pytest --cov=.
-
-wallet-container-build-validation:
-  only:
-    - development
-  stage: test
-  image: docker:18.09.8-dind
-  services:
-    - docker:18.09.8-dind
-  script:
-    - cd services/wallet
-    - docker build --pull --no-cache .
