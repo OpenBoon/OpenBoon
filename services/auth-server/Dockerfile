@@ -19,4 +19,5 @@ COPY ./docker/run_server.sh /service
 
 WORKDIR /service
 USER service
+EXPOSE 9090
 CMD ["./run_server.sh"]
