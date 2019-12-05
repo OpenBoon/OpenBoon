@@ -134,6 +134,7 @@ wallet-frontend-test-suite:
   script:
     - npm run lint
     - npm run test:cover
+    - npm run size
 
 wallet-backend-test-suite:
   extends: .wallet-base
@@ -162,5 +163,4 @@ wallet-container-build-validation:
   services:
     - docker:18.09.8-dind
   script:
-    - cd services/wallet
-    - docker build --pull --no-cache .
+    - docker build --pull --no-cache -f services/wallet/Dockerfile .
