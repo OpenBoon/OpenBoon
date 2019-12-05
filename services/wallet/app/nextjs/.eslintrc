@@ -23,7 +23,7 @@
       }
     },
     {
-      "files": ["**/*.spec.js", "**/__mocks__/**/*.js"],
+      "files": ["**/*.spec.js", "**/__mocks__/**/*.js", "next.config.js"],
       "rules": {
         "global-require": "off",
         "no-underscore-dangle": "off",

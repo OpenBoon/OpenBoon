@@ -64,33 +64,35 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "68 kB"
+      "maxSize": "75 kB"
     },
     {
       "//": "app",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "12 kB"
+      "maxSize": "21 kB"
     },
     {
       "//": "runtime",
       "path": ".next/static/runtime/**.js",
-      "maxSize": "10 kB"
+      "maxSize": "11 kB"
     },
     {
       "//": "error",
       "path": ".next/static/**/pages/_error.js",
-      "maxSize": "3 kB"
+      "maxSize": "4 kB"
     },
     {
       "//": "pages",
       "path": ".next/static/**/!(commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "3 kB"
+      "maxSize": "4 kB"
     }
   ],
   "dependencies": {
     "@emotion/babel-preset-css-prop": "10.0.23",
     "@emotion/core": "10.0.22",
+    "@sentry/browser": "5.10.0",
     "@svgr/webpack": "4.3.3",
+    "@zeit/next-source-maps": "0.0.4-canary.1",
     "axios": "0.19.0",
     "axios-auth-refresh": "1.0.7",
     "jwt-decode": "2.2.0",
