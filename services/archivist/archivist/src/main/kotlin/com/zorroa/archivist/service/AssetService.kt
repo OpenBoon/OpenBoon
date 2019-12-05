@@ -49,6 +49,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import java.io.OutputStream
 
@@ -129,6 +130,9 @@ class AssetServiceImpl : AssetService {
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
+        if (!rsp.isExists) {
+            throw EmptyResultDataAccessException("The asset '$id' does not exist.", 1)
+        }
         return Asset(rsp.id, rsp.sourceAsMap)
     }
 
@@ -169,8 +173,19 @@ class AssetServiceImpl : AssetService {
         return proxies ?: ProxySchema()
     }
 
+
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
-        val asset = Asset(id, spec.document ?: mutableMapOf())
+        val asset = Asset(id)
+        spec.document?.forEach { k, v->
+            val prefix = try {
+                k.substring(0, k.indexOf('.'))
+            } catch (e: StringIndexOutOfBoundsException) {
+                k
+            }
+            if (prefix !in removeFieldsOnCreate) {
+                asset.setAttr(k, v)
+            }
+        }
 
         asset.setAttr("source.path", spec.uri)
         asset.setAttr("source.filename", FileUtils.filename(spec.uri))
@@ -190,7 +205,7 @@ class AssetServiceImpl : AssetService {
             "system.timeCreated",
             java.time.Clock.systemUTC().instant().toString()
         )
-        asset.setAttr("system.state", AssetState.CREATED.toString())
+        asset.setAttr("system.state", AssetState.Pending.toString())
 
         return asset
     }
@@ -320,13 +335,14 @@ class AssetServiceImpl : AssetService {
                 bulkRequestValid = true
 
                 // Remove these which are used for temp attrs
-                asset.removeAttr("tmp")
-                asset.removeAttr("temp")
+                removeFieldsOnUpdate.forEach {
+                    asset.removeAttr(it)
+                }
 
                 // Update various system properties.
                 asset.setAttr("system.projectId", getProjectId().toString())
                 asset.setAttr("system.timeModified", time)
-                asset.setAttr("system.state", AssetState.ANALYZED.toString())
+                asset.setAttr("system.state", AssetState.Analyzed.toString())
 
                 bulkRequest.add(
                     rest.newIndexRequest(asset.id)
@@ -427,8 +443,17 @@ class AssetServiceImpl : AssetService {
 
     companion object {
 
-        val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
+        /**
+         * These namespaces get removed from [AssetSpec] at creationn time.
+         */
+        val removeFieldsOnCreate = setOf("files", "tmp", "temp")
 
+        /**
+         * These namespaces get removed from [Asset] at update time.
+         */
+        val removeFieldsOnUpdate = setOf("tmp", "temp")
+
+        val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
         val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
 
         val logger: Logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)

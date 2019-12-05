@@ -15,6 +15,7 @@ import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
@@ -49,6 +50,53 @@ class AssetServiceTests : AbstractTest() {
         assertNotNull(asset.getAttr("system.dataSourceId"))
     }
 
+    @Test
+    fun testBatchCreateAssets_failInvalidDynamicField() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("dog" to "cat")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        assertTrue(rsp.status[0].failed)
+        assertNotNull(rsp.status[0].failureMessage)
+        assertTrue(rsp.status[0].failureMessage!!.contains("is not allowed"))
+    }
+
+    @Test
+    fun testBatchCreateAssets_WithAuxFields() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("aux.pet" to "dog")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        assertFalse(rsp.status[0].failed)
+        assertEquals("dog", rsp.assets[0].getAttr("aux.pet", String::class.java))
+    }
+
+    @Test
+    fun testBatchCreateAssets_WithIgnoreFields() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("files.hello" to "foo", "temp.hello" to "bar")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        assertFalse(rsp.status[0].failed)
+        assertNull(rsp.assets[0].getAttr("files.hello"))
+        assertNull(rsp.assets[0].getAttr("temp.hello"))
+    }
+
     /**
      * Recreating an asset that already exists should fail.
      */
@@ -72,13 +120,31 @@ class AssetServiceTests : AbstractTest() {
         )
         val createRsp = assetService.batchCreate(batchCreate)
         val asset = assetService.getAsset(createRsp.status[0].assetId)
-        asset.setAttr("test.field", 1)
+        asset.setAttr("aux.field", 1)
+
         val batchIndex = BatchUpdateAssetsRequest(
             assets = listOf(asset)
         )
         val indexRsp = assetService.batchUpdate(batchIndex)
         assertFalse(indexRsp.status[0]!!.failed)
     }
+
+    @Test
+    fun testBatchUpdateAssetsWithTempFields() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        val asset = assetService.getAsset(createRsp.status[0].assetId)
+        asset.setAttr("aux.field", 1)
+
+        val batchIndex = BatchUpdateAssetsRequest(
+            assets = listOf(asset)
+        )
+        val indexRsp = assetService.batchUpdate(batchIndex)
+        assertFalse(indexRsp.status[0]!!.failed)
+    }
+
 
     /**
      * Trying to index assets that don't exist should fail.

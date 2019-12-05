@@ -20,11 +20,11 @@ import java.util.regex.Pattern
     description = "Describes the different states can asset can be in.")
 enum class AssetState {
 
-    @ApiModelProperty("The Asset been created in the database but not analyzed.")
-    CREATED,
+    @ApiModelProperty("The Asset been created in the database but is pending analysis.")
+    Pending,
 
     @ApiModelProperty("The Asset has been analyzed and augmented with fields.")
-    ANALYZED
+    Analyzed
 }
 
 @ApiModel("Batch Asset Op Status",
