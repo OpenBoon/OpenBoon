@@ -1,8 +1,8 @@
 import TestRenderer from 'react-test-renderer'
 
-import Jobs from '..'
+import Jobs, { noop } from '..'
 
-const noop = () => () => {}
+jest.mock('../../Pagination', () => 'Pagination')
 
 describe('<Jobs />', () => {
   it('should render properly without data', () => {
@@ -18,5 +18,9 @@ describe('<Jobs />', () => {
     const component = TestRenderer.create(<Jobs logout={noop} />)
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should do nothing on noop', () => {
+    expect(noop()()).toBeUndefined()
   })
 })
