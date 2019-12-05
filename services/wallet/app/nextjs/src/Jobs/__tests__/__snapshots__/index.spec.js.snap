@@ -1,6 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Jobs /> should render properly with data 1`] = `
+.emotion-31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.emotion-30 {
+  border-spacing: 0;
+}
+
+.emotion-30 td {
+  height: 32px;
+  color: #B3B3B3;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+}
+
+.emotion-18 {
+  background-color: #121212;
+}
+
+.emotion-1 {
+  height: 32px;
+  color: #B3B3B3;
+  background-color: #2E2E2E;
+  padding: 12px 16px;
+  border-bottom: 1px solid #4D4948;
+}
+
+.emotion-1:not(:last-child) {
+  border-right: 1px solid #4D4948;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-19 {
+  background-color: #121212;
+}
+
+.emotion-19:nth-of-type(2n) {
+  background-color: #1D1D1D;
+}
+
 <div>
   <h2>
     Projects
@@ -10,6 +63,668 @@ exports[`<Jobs /> should render properly with data 1`] = `
       project-name
     </li>
   </ul>
+  <div
+    className="emotion-31"
+  >
+    <table
+      className="emotion-30"
+    >
+      <thead>
+        <tr
+          className="emotion-18"
+        >
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Status
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Job Name
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Created By
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Priority
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Created (Date/Time)
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Failed
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Errors
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              # Assets
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Progress
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090716083
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090716083
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Paused
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090589586
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Canceled
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090536003
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Finished
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1570828263275
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1570827807692
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              3
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            flipbook_export_1
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            1
+          </td>
+          <td>
+            1564699939781
+          </td>
+          <td />
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              3
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            export_7_8_2019
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            1
+          </td>
+          <td>
+            1562612024983
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td />
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            export_7_8_2019___
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            1
+          </td>
+          <td>
+            1562611383791
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td />
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1562172555491
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td />
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1562117381276
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              49
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h2>
     Logout
   </h2>
@@ -23,11 +738,726 @@ exports[`<Jobs /> should render properly with data 1`] = `
 `;
 
 exports[`<Jobs /> should render properly without data 1`] = `
+.emotion-31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.emotion-30 {
+  border-spacing: 0;
+}
+
+.emotion-30 td {
+  height: 32px;
+  color: #B3B3B3;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+}
+
+.emotion-18 {
+  background-color: #121212;
+}
+
+.emotion-1 {
+  height: 32px;
+  color: #B3B3B3;
+  background-color: #2E2E2E;
+  padding: 12px 16px;
+  border-bottom: 1px solid #4D4948;
+}
+
+.emotion-1:not(:last-child) {
+  border-right: 1px solid #4D4948;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-19 {
+  background-color: #121212;
+}
+
+.emotion-19:nth-of-type(2n) {
+  background-color: #1D1D1D;
+}
+
 <div>
   <h2>
     Projects
   </h2>
   Loading...
+  <div
+    className="emotion-31"
+  >
+    <table
+      className="emotion-30"
+    >
+      <thead>
+        <tr
+          className="emotion-18"
+        >
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Status
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Job Name
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Created By
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Priority
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Created (Date/Time)
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Failed
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Errors
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              # Assets
+            </div>
+          </th>
+          <th
+            className="emotion-1"
+          >
+            <div
+              className="emotion-0"
+            >
+              Progress
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090716083
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090716083
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Paused
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090589586
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Canceled
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1573090536003
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Finished
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1570828263275
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              4
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1570827807692
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              3
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            flipbook_export_1
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            1
+          </td>
+          <td>
+            1564699939781
+          </td>
+          <td />
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              3
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            export_7_8_2019
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            1
+          </td>
+          <td>
+            1562612024983
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td />
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            export_7_8_2019___
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            1
+          </td>
+          <td>
+            1562611383791
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td />
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1562172555491
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td />
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+        <tr
+          className="emotion-19"
+        >
+          <td>
+            Active
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td>
+            100
+          </td>
+          <td>
+            1562117381276
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              1
+            </div>
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              49
+            </div>
+          </td>
+          <td>
+            numAsets
+          </td>
+          <td>
+            <div
+              style={
+                Object {
+                  "color": "red",
+                }
+              }
+            >
+              progress
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h2>
     Logout
   </h2>
