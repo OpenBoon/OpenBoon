@@ -1,7 +1,7 @@
 import React from 'react'
 import { Global, css } from '@emotion/core'
 
-import { colors, typography, constants, spacing } from '.'
+import { colors, typography, spacing } from '.'
 
 const StylesReset = () => (
   <>
@@ -41,7 +41,6 @@ const StylesReset = () => (
         },
         a: {
           color: colors.primaryFont,
-          opacity: constants.opacity.half,
           textDecoration: 'none',
           '&:hover': {
             textDecoration: 'underline',
