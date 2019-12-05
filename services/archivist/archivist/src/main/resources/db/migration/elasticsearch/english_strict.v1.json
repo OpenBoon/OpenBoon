@@ -1,0 +1,252 @@
+{
+  "migration": {
+    "reindex": true,
+    "reingest": false,
+    "patch": 0
+  },
+  "settings": {
+    "index": {
+      "mapping": {
+        "coerce": false,
+        "ignore_malformed": false
+      }
+    },
+    "analysis": {
+      "analyzer": {
+        "default": {
+          "tokenizer": "standard",
+          "filter": [
+            "trim",
+            "stop",
+            "lowercase",
+            "delimiter_filter",
+            "stemmer_english"
+          ]
+        },
+        "path_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "path_tokenizer"
+        }
+      },
+      "filter": {
+        "stemmer_english": {
+          "type": "stemmer",
+          "language": "english"
+        },
+        "delimiter_filter": {
+          "type": "word_delimiter",
+          "preserve_original": "true"
+        }
+      },
+      "tokenizer": {
+        "path_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "/"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "asset": {
+      "dynamic": "strict",
+      "properties": {
+        "group": {
+          "type": "join",
+          "relations": {
+            "asset": "element"
+          }
+        },
+        "source": {
+          "dynamic": "strict",
+          "properties": {
+            "path": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                },
+                "path": {
+                  "type": "text",
+                  "analyzer": "path_analyzer",
+                  "fielddata": true
+                }
+              }
+            },
+            "filename": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "extension": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "type": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "mimetype": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "type": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "subtype": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "fileSize": {
+              "type": "long"
+            }
+          }
+        },
+        "analysis": {
+          "dynamic": "strict",
+          "properties": {
+            "pixelml": {
+              "properties": {
+                "tinyProxy": {
+                  "type": "object",
+                  "enabled": false
+                },
+                "imageSimilarity": {
+                  "dynamic": false,
+                  "properties": {
+                    "vector": {
+                      "type": "keyword"
+                    },
+                    "debug": {
+                      "type": "object",
+                      "enabled": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "clip": {
+          "dynamic": "strict",
+          "properties": {
+            "start": {
+              "type": "double"
+            },
+            "stop": {
+              "type": "double"
+            },
+            "length": {
+              "type": "double"
+            },
+            "type": {
+              "type": "keyword"
+            },
+            "timeline": {
+              "type": "keyword"
+            }
+          }
+        },
+        "media": {
+          "dynamic": "strict",
+          "properties": {
+            "width": {
+              "type": "float"
+            },
+            "height": {
+              "type": "float"
+            },
+            "aspect": {
+              "type": "keyword"
+            },
+            "orientation": {
+              "type": "keyword"
+            },
+            "title": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "author": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            }
+          }
+        },
+        "aux": {
+          "type": "object",
+          "enabled": false
+        },
+        "files": {
+          "type": "object",
+          "enabled": false
+        },
+        "system": {
+          "dynamic": "strict",
+          "properties": {
+            "timeCreated": {
+              "type": "date"
+            },
+            "timeModified": {
+              "type": "date"
+            },
+            "projectId": {
+              "type": "keyword"
+            },
+            "dataSourceId": {
+              "type": "keyword"
+            },
+            "jobId": {
+              "type": "keyword"
+            },
+            "taskId": {
+              "type": "keyword"
+            },
+            "state": {
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    }
+  }
+}

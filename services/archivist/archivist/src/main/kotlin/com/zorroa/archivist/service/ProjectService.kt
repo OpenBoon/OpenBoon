@@ -1,10 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.LogAction
@@ -69,7 +71,8 @@ class ProjectServiceImpl constructor(
     val projectFilterDao: ProjectFilterDao,
     val authServerClient: AuthServerClient,
     val indexRoutingService: IndexRoutingService,
-    val fileStorageService: FileStorageService
+    val fileStorageService: FileStorageService,
+    val properties: ApplicationProperties
 ) : ProjectService {
 
     override fun create(spec: ProjectSpec): Project {
@@ -100,8 +103,10 @@ class ProjectServiceImpl constructor(
     }
 
     private fun createIndexRoute(project: Project) {
+        val mapping = properties.getString("archivist.es.default-mapping-type")
+        val ver = properties.getInt("archivist.es.default-mapping-version")
         indexRoutingService.createIndexRoute(
-            IndexRouteSpec("asset", 12, projectId = project.id,
+            IndexRouteSpec(mapping, ver, projectId = project.id,
                 state = IndexRouteState.CURRENT)
         )
     }

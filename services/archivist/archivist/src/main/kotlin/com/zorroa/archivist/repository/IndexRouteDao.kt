@@ -84,7 +84,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             ps.setInt(4, spec.state.ordinal)
             ps.setString(5, randomString(16))
             ps.setString(6, spec.mapping)
-            ps.setInt(7, spec.mappingMajorVer)
+            ps.setInt(7, spec.majorVer)
             ps.setInt(8, 0)
             ps.setInt(9, spec.replicas)
             ps.setInt(10, spec.shards)
