@@ -1,5 +1,12 @@
+import colors from './colors'
+
 const borderRadius = {
   small: 2,
+}
+
+const borders = {
+  default: `1px solid ${colors.grey5}`,
+  transparent: `1px solid transparent`,
 }
 
 const opacity = {
@@ -13,6 +20,7 @@ const boxShadows = {
 
 const constants = {
   borderRadius,
+  borders,
   opacity,
   boxShadows,
 }
