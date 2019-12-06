@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetIdBuilder
+import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchAssetOpStatus
@@ -21,8 +22,6 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.elastic.ElasticSearchErrorTranslator
-import com.zorroa.archivist.schema.ProxySchema
-import com.zorroa.archivist.security.getProjectFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -31,6 +30,7 @@ import com.zorroa.archivist.util.randomString
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
@@ -38,7 +38,6 @@ import org.elasticsearch.common.Strings
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.NamedXContentRegistry
-import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilder
@@ -51,7 +50,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
-import java.io.OutputStream
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -67,7 +65,7 @@ interface AssetService {
      * Execute an arbitrary ES search and send the result
      * to the given OutputStream.
      */
-    fun search(query: Map<String, Any>, output: OutputStream)
+    fun search(search: AssetSearch): SearchResponse
 
     /**
      * Get an Asset by ID.
@@ -77,8 +75,6 @@ interface AssetService {
     fun getAll(ids: List<String>): List<Asset>
 
     fun getValidAssetIds(ids: List<String>): Set<String>
-
-    fun getProxies(id: String): ProxySchema
 
     /**
      * Batch create a list of assets.  Creating adds a base asset with
@@ -167,16 +163,9 @@ class AssetServiceImpl : AssetService {
         }
     }
 
-    override fun getProxies(id: String): ProxySchema {
-        val asset = getAsset(id)
-        val proxies = asset.getAttr("proxies", ProxySchema::class.java)
-        return proxies ?: ProxySchema()
-    }
-
-
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
         val asset = Asset(id)
-        spec.document?.forEach { k, v->
+        spec.document?.forEach { k, v ->
             val prefix = try {
                 k.substring(0, k.indexOf('.'))
             } catch (e: StringIndexOutOfBoundsException) {
@@ -381,33 +370,33 @@ class AssetServiceImpl : AssetService {
         return jobService.create(spec)
     }
 
-    fun getDeepQuery(search: Map<String, Any>): QueryBuilder? {
-        return search["deep-query"]?.let {
-
+    fun getDeepQuery(search: AssetSearch): QueryBuilder? {
+        return if (search.deepQuery == null) {
+            null
+        } else {
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
                 xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-                Json.serializeToString(mapOf("query" to it))
+                Json.serializeToString(mapOf("query" to search.deepQuery))
             )
             val ssb = SearchSourceBuilder.fromXContent(parser)
             ssb.query()
         }
-
-        null
     }
 
-    fun prepSearch(search: Map<String, Any>): SearchSourceBuilder {
+    fun prepSearch(search: AssetSearch): SearchSourceBuilder {
 
-        val baseSearch = search.filterKeys { it != "deep-query" }
+        // Filters out search options that are not supported.
+        val searchSource = (search.search ?: mutableMapOf())
+            .filterKeys { it in allowedSearchProperties }
+
         val parser = XContentFactory.xContent(XContentType.JSON).createParser(
             xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-            Json.serializeToString(baseSearch)
+            Json.serializeToString(searchSource)
         )
+
+        // Wraps the query in a boolean query
         val ssb = SearchSourceBuilder.fromXContent(parser)
-
-        // Wrap the query in Org filter
         val query = QueryBuilders.boolQuery()
-        query.filter(getProjectFilter())
-
         if (ssb.query() == null) {
             query.must(QueryBuilders.matchAllQuery())
         } else {
@@ -421,24 +410,21 @@ class AssetServiceImpl : AssetService {
         // Replace the query in the SearchSourceBuilder with wrapped versions
         ssb.query(query)
 
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
+        if (logger.isDebugEnabled) {
             logger.debug("SEARCH : {}", Strings.toString(query, true, true))
         }
 
         return ssb
     }
-    override fun search(query: Map<String, Any>, output: OutputStream) {
-        val client = indexRoutingService.getProjectRestClient()
 
+    override fun search(search: AssetSearch): SearchResponse {
+        val client = indexRoutingService.getProjectRestClient()
         val req = client.newSearchRequest()
+        req.source(prepSearch(search))
         req.searchType(SearchType.DEFAULT)
         req.preference(getProjectId().toString())
-        req.source(prepSearch(query))
 
-        val rsp = client.client.search(req, RequestOptions.DEFAULT)
-        val builder = XContentFactory.jsonBuilder(output)
-        rsp.toXContent(builder, ToXContent.EMPTY_PARAMS)
-        builder.close()
+        return client.client.search(req, RequestOptions.DEFAULT)
     }
 
     companion object {
@@ -453,9 +439,18 @@ class AssetServiceImpl : AssetService {
          */
         val removeFieldsOnUpdate = setOf("tmp", "temp")
 
-        val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
-        val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
+        /**
+         * These SearchRequest Attributes are allowed.
+         */
+        val allowedSearchProperties = setOf(
+            "query", "from", "size", "timeout",
+            "post_filter", "minscore", "suggest",
+            "highlight", "collapse",
+            "slice", "aggs", "aggregations", "sort"
+        )
 
+        private val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
+        val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
         val logger: Logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
     }
 }

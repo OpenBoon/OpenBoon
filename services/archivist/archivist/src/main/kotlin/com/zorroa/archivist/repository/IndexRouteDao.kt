@@ -82,7 +82,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             ps.setObject(2, spec.clusterId)
             ps.setObject(3, projectId)
             ps.setInt(4, spec.state.ordinal)
-            ps.setString(5, randomString(16))
+            ps.setString(5, randomString(16).toLowerCase())
             ps.setString(6, spec.mapping)
             ps.setInt(7, spec.majorVer)
             ps.setInt(8, 0)

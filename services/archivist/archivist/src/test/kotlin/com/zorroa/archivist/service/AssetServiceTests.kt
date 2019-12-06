@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
@@ -198,5 +199,24 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchUpload(batchUpload)
         assertEquals("toucan.jpg", rsp.assets[0].getAttr("source.filename", String::class.java))
         assertFalse(rsp.status[0].failed)
+    }
+
+    @Test
+    fun testSearch() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("https://i.imgur.com/LRoLTlK.jpg"))
+        )
+        assetService.batchCreate(batchCreate)
+
+        // Note that here, scroll is not allowed yet the result should have no scroll id.
+        val search = AssetSearch(
+            mapOf(
+                "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg")),
+                "scroll" to "2s"
+            )
+        )
+        val rsp = assetService.search(search)
+        assertEquals(1, rsp.hits.hits.size)
+        assertNull(rsp.scrollId)
     }
 }

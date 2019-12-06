@@ -142,7 +142,7 @@
                   "enabled": false
                 },
                 "imageSimilarity": {
-                  "dynamic": false,
+                  "dynamic": "strict",
                   "properties": {
                     "vector": {
                       "type": "keyword"
