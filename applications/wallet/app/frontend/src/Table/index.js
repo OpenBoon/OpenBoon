@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
+import { formatFullDate } from '../Date/helpers'
 import ProgressBar from '../ProgressBar'
 
 const Table = ({ columns, rows }) => {
@@ -86,7 +87,7 @@ const Table = ({ columns, rows }) => {
                 <td>{row.jobName}</td>
                 <td>{row.createdBy}</td>
                 <td>{row.priority}</td>
-                <td>{row.createdDateTime}</td>
+                <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
                 <td>{row.failed}</td>
                 <td>{row.errors}</td>
                 <td>{row.numAssets}</td>
