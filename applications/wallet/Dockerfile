@@ -1,7 +1,7 @@
 FROM node:12.13.1 as node_build
 COPY applications/wallet/app /app
 WORKDIR /app/frontend
-RUN npm install && npm run build
+RUN npm ci && npm run build
 
 FROM nginx:1.17.1-alpine
 RUN apk update && apk upgrade && apk add --no-cache ffmpeg postgresql postgresql-dev gcc python3-dev musl-dev python3 py3-gunicorn libffi-dev g++
