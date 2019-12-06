@@ -1,14 +1,14 @@
-import os
 import logging
+import os
 
-from django.contrib.auth import get_user_model, authenticate, login
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from django.views.generic import View
-from django.http import HttpResponse, JsonResponse
 from django.conf import settings
+from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.models import Group
+from django.http import HttpResponse, JsonResponse
+from django.views.generic import View
 from rest_framework import viewsets
+from rest_framework.views import APIView
+
 from wallet.serializers import UserSerializer, GroupSerializer
 
 
@@ -44,18 +44,20 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-@csrf_exempt
-@require_POST
-def login_view(request):
+class LoginView(APIView):
     """Basic login view that authenticates the user and returns the user's info."""
-    print(request.POST['username'], request.POST['password'])
-    user = authenticate(username=request.POST['username'], password=request.POST['password'])
-    if user:
-        login(request, user)
-        return JsonResponse({'id': user.id,
-                             'username': user.username,
-                             'email': user.email,
-                             'first_name': user.first_name,
-                             'last_name': user.last_name})
-    else:
-        return HttpResponse('Unauthorized', status=401)
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        user = authenticate(username=request.data['username'],
+                            password=request.data['password'])
+        if user:
+            login(request, user)
+            return JsonResponse({'id': user.id,
+                                 'username': user.username,
+                                 'email': user.email,
+                                 'first_name': user.first_name,
+                                 'last_name': user.last_name})
+        else:
+            return HttpResponse('Unauthorized', status=401)

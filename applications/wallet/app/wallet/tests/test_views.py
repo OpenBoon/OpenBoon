@@ -20,7 +20,7 @@ def test_get_users(api_client, superuser):
 def test_api_login(api_client, user):
     api_client.logout()
     response = api_client.post(reverse('api-login'),
-                               data={'username': 'user', 'password': 'letmein'})
+                               {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
     assert response.json() == {'email': 'user@fake.com', 'first_name': '',
                                'last_name': '', 'username': 'user', 'id': user.id}
