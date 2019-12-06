@@ -43,4 +43,4 @@ urlpatterns = [
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('health/', include('health_check.urls')),
     re_path('', ensure_csrf_cookie(wallet_views.FrontendAppView.as_view()))
-] + static(settings.static_url, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
