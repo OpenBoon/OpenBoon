@@ -110,7 +110,7 @@ public class AssetTests {
         String param1[] = {"jpg"};
         List files1 = asset.getFilesByExtension(param1);
 
-        String param2[] = {"jpg","png"};
+        String param2[] = {"jpg", "png"};
         List files2 = asset.getFilesByExtension(param2);
 
         String param3[] = {"png"};
@@ -132,49 +132,48 @@ public class AssetTests {
         asset.setAttr("files", this.testFiles);
 
         Map param1 = new HashMap();
-        param1.put("width",200);
+        param1.put("width", 200);
 
         Map param2 = new HashMap();
-        param2.put("width",200);
-        param2.put("height",100);
+        param2.put("width", 200);
+        param2.put("height", 100);
 
 
         List files1 = asset.getFilesByAttrs(param1);
         List files2 = asset.getFilesByAttrs(param2);
+        List files3 = asset.getFilesByAttrs(null);
 
         assertEquals(files1.size(), 1);
         assertEquals(files2.size(), 0);
+        assertEquals(files3.size(), 0);
     }
 
     @Test
     public void getFilesByAll() throws Exception {
-        fail();
+
+        Map params = new HashMap();
+        params.put("id", 123);
+        Asset asset = new Asset(params);
+        asset.setAttr("files", this.testFiles);
+
+        Map param1 = new HashMap();
+        param1.put("width", 200);
+
+        assertEquals(asset.getFiles(null, null, Arrays.asList("image/jpeg"), Arrays.asList("png", "jpg"), param1).size(), 1);
+
     }
 
     @Test
     public void testEquality() throws Exception {
-        fail();
+        Map params = new HashMap();
+        params.put("id", 123);
+        Asset asset = new Asset(params);
+
+        Map params1 = new HashMap();
+        params1.put("id", 123);
+        Asset asset1 = new Asset(params1);
+
+        assertEquals(asset, asset1);
     }
-
-
-    /*
-        def test_get_files_by_attrs(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
-
-        assert 1 == len(asset.get_files(attrs={"width": 200}))
-        assert 0 == len(asset.get_files(attrs={"width": 200, "height": 100}))
-
-    def test_get_files_by_all(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
-
-        assert 1 == len(asset.get_files(mimetype="image/jpeg",
-                                        extension=["png", "jpg"],
-                                        attrs={"width": 200}))
-
-    def test_equal(self):
-        assert Asset({"id": "123"}) == Asset({"id": "123"})
-     */
 
 }

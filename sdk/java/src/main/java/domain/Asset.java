@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class Asset extends AssetBase {
 
-    Integer id;
+    private Integer id;
 
     /*
      """
@@ -83,8 +83,8 @@ public class Asset extends AssetBase {
                 (Boolean) attrs.entrySet().stream()
                         .map((entry) -> {
                                     Map.Entry key = (Map.Entry) entry;
-                                    Map attrsObject = (Map)f.get("attrs");
-                                    if(attrsObject == null)
+                                    Map attrsObject = (Map) f.get("attrs");
+                                    if (attrsObject == null)
                                         return false;
 
                                     Object o = attrsObject.get(((Map.Entry) entry).getKey());
@@ -154,5 +154,21 @@ public class Asset extends AssetBase {
         json.put("id", this.id);
         json.put("document", this.document);
         return json;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Asset))
+            return false;
+
+        return ((Asset) obj).getId() == this.id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
