@@ -56,18 +56,18 @@ exports[`<Jobs /> should render properly with data 1`] = `
 
 .emotion-49 tr:hover td {
   border: 1px solid #4d4948;
-  border-left: none;
-  border-right: none;
+  border-left: 0px;
+  border-right: 0px;
 }
 
 .emotion-49 tr:hover td:first-of-type {
   border: 1px solid #4d4948;
-  border-right: none;
+  border-right: 0px;
 }
 
 .emotion-49 tr:hover td:last-of-type {
   border: 1px solid #4d4948;
-  border-left: none;
+  border-left: 0px;
 }
 
 .emotion-49 td {
@@ -75,18 +75,18 @@ exports[`<Jobs /> should render properly with data 1`] = `
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
-  border-left: none;
-  border-right: none;
+  border-left: 0px;
+  border-right: 0px;
 }
 
-.emotion-49 td:not(:first-of-type) {
+.emotion-49 td:first-of-type {
   border: 1px solid transparent;
-  border-right: none;
+  border-right: 0px;
 }
 
-.emotion-49 td:not(:last-of-type) {
+.emotion-49 td:last-of-type {
   border: 1px solid transparent;
-  border-left: none;
+  border-left: 0px;
 }
 
 .emotion-0 {
@@ -1004,18 +1004,18 @@ exports[`<Jobs /> should render properly without data 1`] = `
 
 .emotion-49 tr:hover td {
   border: 1px solid #4d4948;
-  border-left: none;
-  border-right: none;
+  border-left: 0px;
+  border-right: 0px;
 }
 
 .emotion-49 tr:hover td:first-of-type {
   border: 1px solid #4d4948;
-  border-right: none;
+  border-right: 0px;
 }
 
 .emotion-49 tr:hover td:last-of-type {
   border: 1px solid #4d4948;
-  border-left: none;
+  border-left: 0px;
 }
 
 .emotion-49 td {
@@ -1023,18 +1023,18 @@ exports[`<Jobs /> should render properly without data 1`] = `
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
-  border-left: none;
-  border-right: none;
+  border-left: 0px;
+  border-right: 0px;
 }
 
-.emotion-49 td:not(:first-of-type) {
+.emotion-49 td:first-of-type {
   border: 1px solid transparent;
-  border-right: none;
+  border-right: 0px;
 }
 
-.emotion-49 td:not(:last-of-type) {
+.emotion-49 td:last-of-type {
   border: 1px solid transparent;
-  border-left: none;
+  border-left: 0px;
 }
 
 .emotion-0 {
