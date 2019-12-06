@@ -167,6 +167,7 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
+    val indexClusterService: IndexClusterService,
     val properties: ApplicationProperties
 ) : IndexRoutingService {
 
@@ -188,11 +189,13 @@ constructor(
         }
 
         // If no cluster ID was specified, find a ES cluster to use.
-        if (spec.clusterId == null) {
-            val cluster = indexClusterDao.getNextAutoPoolCluster()
-            spec.clusterId = cluster.id
+        val cluster = if (spec.clusterId != null) {
+            indexClusterDao.get(spec.clusterId as UUID)
+        } else {
+            indexClusterService.getNextAutoPoolCluster()
         }
 
+        spec.clusterId = cluster.id
         val route = indexRouteDao.create(spec)
         syncIndexRouteVersion(route)
         return route

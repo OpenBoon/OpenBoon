@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.LogAction
@@ -72,7 +71,8 @@ class ProjectServiceImpl constructor(
     val authServerClient: AuthServerClient,
     val indexRoutingService: IndexRoutingService,
     val fileStorageService: FileStorageService,
-    val properties: ApplicationProperties
+    val properties: ApplicationProperties,
+    val txEvent: TransactionEventManager
 ) : ProjectService {
 
     override fun create(spec: ProjectSpec): Project {
@@ -88,9 +88,11 @@ class ProjectServiceImpl constructor(
                 actor.name
             )
         )
-        createStandardApiKeys(project)
-        createProjectCryptoKey(project)
         createIndexRoute(project)
+        txEvent.afterCommit(sync = true) {
+            createProjectCryptoKey(project)
+            createStandardApiKeys(project)
+        }
 
         logger.event(
             LogObject.PROJECT, LogAction.CREATE,
@@ -115,6 +117,7 @@ class ProjectServiceImpl constructor(
      * Create the list of standard project keys.
      */
     private fun createStandardApiKeys(project: Project) {
+        logger.info("Creating standard API Keys for project ${project.name}")
         authServerClient.createApiKey(
             project, KnownKeys.JOB_RUNNER, listOf(
                 Role.JOBRUNNER,
