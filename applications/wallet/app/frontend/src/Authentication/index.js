@@ -5,6 +5,7 @@ import { SWRConfig } from 'swr'
 import { axiosCreate, fetcher } from '../Axios/helpers'
 
 import Login from '../Login'
+import Layout from '../Layout'
 
 import {
   getTokens,
@@ -49,7 +50,7 @@ const Authentication = ({ children }) => {
 
   return (
     <SWRConfig value={{ fetcher: fetcher({ axiosInstance }) }}>
-      {children({ user, logout: logout({ setUser }) })}
+      <Layout>{children({ user, logout: logout({ setUser }) })}</Layout>
     </SWRConfig>
   )
 }
