@@ -93,6 +93,7 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
         </button>
       </div>
     </div>
+    Hello World!
   </div>
 </SWRConfig>
 `;

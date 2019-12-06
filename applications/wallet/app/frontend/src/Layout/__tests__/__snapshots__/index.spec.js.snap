@@ -9,5 +9,6 @@ exports[`<Layout /> should render properly 1`] = `
   className="emotion-0"
 >
   <NavBar />
+  <div />
 </div>
 `;
