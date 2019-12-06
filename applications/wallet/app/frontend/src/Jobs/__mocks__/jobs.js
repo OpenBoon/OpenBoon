@@ -475,7 +475,7 @@ export const jobColumns = [
   'Job Name',
   'Created By',
   'Priority',
-  'Created (Date/Time)',
+  'Created',
   'Failed',
   'Errors',
   '# Assets',

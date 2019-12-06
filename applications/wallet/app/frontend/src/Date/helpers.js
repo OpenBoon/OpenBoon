@@ -8,8 +8,18 @@ export const formatFullDate = ({ timestamp }) => {
     minute: '2-digit',
     second: '2-digit',
   }
-  return Intl.DateTimeFormat('en-US', formatOptions)
-    .format(new Date(timestamp))
-    .replace(/\//g, '-')
-    .replace(',', '')
+
+  const partsIndex = Intl.DateTimeFormat('en-US', formatOptions)
+    .formatToParts(timestamp)
+    .reduce((accumulator, part) => {
+      const { type, value } = part
+      if (type !== 'literal') {
+        accumulator[type] = value
+      }
+      return accumulator
+    }, {})
+
+  const { year, month, day, hour, minute, second } = partsIndex
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
