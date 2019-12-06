@@ -33,15 +33,15 @@ const Table = ({ columns, rows }) => {
               backgroundColor: colors.grey1,
               td: {
                 border: constants.borders.default,
-                borderLeft: 'none',
-                borderRight: 'none',
+                borderLeft: '0px',
+                borderRight: '0px',
                 '&:first-of-type': {
                   border: constants.borders.default,
-                  borderRight: 'none',
+                  borderRight: '0px',
                 },
                 '&:last-of-type': {
                   border: constants.borders.default,
-                  borderLeft: 'none',
+                  borderLeft: '0px',
                 },
               },
             },
@@ -52,15 +52,15 @@ const Table = ({ columns, rows }) => {
             color: colors.grey2,
             padding: `${spacing.base}px ${spacing.normal}px`,
             border: constants.borders.transparent,
-            borderLeft: 'none',
-            borderRight: 'none',
-            '&:not(:first-of-type)': {
+            borderLeft: '0px',
+            borderRight: '0px',
+            ':first-of-type': {
               border: constants.borders.transparent,
-              borderRight: 'none',
+              borderRight: '0px',
             },
-            '&:not(:last-of-type)': {
+            ':last-of-type': {
               border: constants.borders.transparent,
-              borderLeft: 'none',
+              borderLeft: '0px',
             },
           },
         }}>
