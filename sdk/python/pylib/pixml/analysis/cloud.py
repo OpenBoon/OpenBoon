@@ -45,6 +45,6 @@ def get_google_storage_client():
     else:
         try:
             return gcs.Client()
-        except DefaultCredentialsError:
+        except (DefaultCredentialsError, OSError):
             return gcs.Client.create_anonymous_client()
 
