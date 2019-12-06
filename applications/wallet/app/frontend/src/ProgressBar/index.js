@@ -36,7 +36,7 @@ const ProgressBar = ({ status }) => {
   if (isGenerating) {
     const spinAnimation = keyframes`
       0% { transform: rotate(0deg) }
-      100%{ transform: rotate(360deg) }
+      100% { transform: rotate(360deg) }
     }`
     return (
       <div
@@ -46,7 +46,6 @@ const ProgressBar = ({ status }) => {
           color: colors.blue1,
         }}>
         <GeneratingSvg
-          width={16}
           css={{
             color: colors.blue1,
             animation: `${spinAnimation} 2s linear infinite`,
