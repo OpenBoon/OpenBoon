@@ -9,8 +9,8 @@ export const formatFullDate = ({ timestamp }) => {
     second: '2-digit',
   }
 
-  const partsIndex = Intl.DateTimeFormat('en-US', formatOptions)
-    .formatToParts(timestamp)
+  const partsIndex = new Intl.DateTimeFormat('en-US', formatOptions)
+    .formatToParts(new Date(timestamp))
     .reduce((accumulator, part) => {
       const { type, value } = part
       if (type !== 'literal') {
