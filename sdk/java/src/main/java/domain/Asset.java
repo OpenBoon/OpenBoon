@@ -31,7 +31,7 @@ public class Asset extends AssetBase {
     }
 
 
-    public List getFiles(List<String> name, List<String> category, List<String> mimetype, List<String> extension, List<String> attrs) {
+    public List getFiles(List<String> name, List<String> category, List<String> mimetype, List<String> extension, Map attrs) {
     /*
             """
         Return all stored files associated with this asset.  Optionally
@@ -53,31 +53,52 @@ public class Asset extends AssetBase {
         List<Map<String, Object>> files = (List) document.getOrDefault("files", new ArrayList());
 
         // Create Name Filter
-        Predicate<Map<String, Object>> namePredicate = f -> name.contains(f.get("name"));
+        Predicate<Map<String, Object>> namePredicate = f -> {
+            String fileNameAttr = (String) f.get("name");
+            return fileNameAttr == null ? false : name.contains(fileNameAttr);
+        };
 
         //Create Category Filter
-        Predicate<Map<String, Object>> categoryPredicate = f -> category.contains(f.get("category"));
+        Predicate<Map<String, Object>> categoryPredicate = f -> {
+            String categoryAttr = (String) f.get("category");
+            return category.contains(categoryAttr);
+        };
 
         //Create mimetype Filter
         Predicate<Map<String, Object>> mimeTypePredicate = f ->
                 (mimetype.parallelStream().filter((String mimeType) -> {
-                    String fileMimeType = (String) f.get("mimeType");
-                    return fileMimeType.startsWith(mimeType);
+                    String mimetypeAttr = (String) f.get("mimetype");
+                    return mimetypeAttr == null ? false : mimetypeAttr.startsWith(mimeType);
                 }).collect(Collectors.toList()).size() > 0);
 
         //Create Extension Filter
         Predicate<Map<String, Object>> extensionPredicate = f ->
                 (extension.parallelStream().filter((String ext) -> {
-                    String str = (String) f.get("name");
-                    return str.endsWith(ext);
+                    String nameAttr = (String) f.get("name");
+                    return nameAttr == null ? false : nameAttr.endsWith(ext);
                 })).collect(Collectors.toList()).size() > 0;
 
-        // Check which of going to be used
+        //Create Attrs Filter
+        Predicate<Map<String, Object>> attrsPredicate = f ->
+                (Boolean) attrs.entrySet().stream()
+                        .map((entry) -> {
+                                    Map.Entry key = (Map.Entry) entry;
+                                    Map attrsObject = (Map)f.get("attrs");
+                                    if(attrsObject == null)
+                                        return false;
+
+                                    Object o = attrsObject.get(((Map.Entry) entry).getKey());
+                                    return o == null ? false : o.equals(key.getValue());
+                                }
+                        ).reduce((o1, o2) -> ((Boolean) o1) && ((Boolean) o2)).orElse(false);
+
+        // Check which of predicates will be used
         List<Predicate> elegiblePredicates = new ArrayList();
         Optional.ofNullable(name).ifPresent((ignore) -> elegiblePredicates.add(namePredicate));
         Optional.ofNullable(category).ifPresent((ignore) -> elegiblePredicates.add(categoryPredicate));
         Optional.ofNullable(mimetype).ifPresent((ignore) -> elegiblePredicates.add(mimeTypePredicate));
         Optional.ofNullable(extension).ifPresent((ignore) -> elegiblePredicates.add(extensionPredicate));
+        Optional.ofNullable(attrs).ifPresent((ignore) -> elegiblePredicates.add(attrsPredicate));
 
         //Join All predicates
         Predicate compositePredicate = elegiblePredicates.stream().reduce(w -> true, Predicate::and);
@@ -87,23 +108,33 @@ public class Asset extends AssetBase {
     }
 
     public List getFilesByName(String... name) {
+        if (name == null)
+            return new ArrayList();
         return this.getFiles(Arrays.asList(name), null, null, null, null);
     }
 
     public List getFilesByCategory(String... category) {
+        if (category == null)
+            return new ArrayList();
         return this.getFiles(null, Arrays.asList(category), null, null, null);
     }
 
     public List getFilesByMimetype(String... mimetype) {
+        if (mimetype == null)
+            return new ArrayList();
         return this.getFiles(null, null, Arrays.asList(mimetype), null, null);
     }
 
     public List getFilesByExtension(String... extension) {
+        if (extension == null)
+            return new ArrayList();
         return this.getFiles(null, null, null, Arrays.asList(extension), null);
     }
 
-    public List getFilesByAttrs(String... attrs) {
-        return this.getFiles(null, null, null, null, Arrays.asList(attrs));
+    public List getFilesByAttrs(Map attrs) {
+        if (attrs == null)
+            return new ArrayList();
+        return this.getFiles(null, null, null, null, attrs);
     }
 
     @Override
