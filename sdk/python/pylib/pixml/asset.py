@@ -1,6 +1,7 @@
 import logging
 import os
 
+from .rest import SearchResult
 from .util import as_collection
 
 __all__ = [
@@ -300,7 +301,13 @@ class Asset(AssetBase):
         }
 
     def __str__(self):
-        return "<Asset id='{} uri='{}'/>".format(self.id, self.uri)
+        return "<Asset id='{}'/>".format(self.id)
+
+    def __repr__(self):
+        return "<Asset id='{}' at {}/>".format(self.id, hex(id(self)))
+
+    def __hash__(self):
+        return hash(self.id)
 
     def __eq__(self, other):
         if not getattr(other, "id"):
@@ -384,19 +391,36 @@ class AssetApp(object):
         return self.app.client.upload_files("/api/v3/assets/_batchUpload",
                                             files, body)
 
-    def asset_search(self, query):
+    def search(self, search=None, deep_query=None, raw=False):
         """
-        Perform an asset search.
+        Perform an asset search using the ElasticSearch query DSL.  Note that for
+        load and security purposes, not all ElasticSearch search options are accepted.
+
+        See Also:
+            For search/query format.
+            https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
 
         Args:
-            query:
-
+            search (dict): The ElasticSearch search to execute
+            deep_query (dict): An ElasticSearch query that will be applied to deep
+                analysis elements.
+            raw (bool): Return the raw ElasticSearch dict result rather than a SearchResult
         Returns:
-
+            mixed: A SearchResult containing assets or in raw mode an
+                ElasticSearch search result dictionary.
         """
-        raise NotImplemented()
+        body = {
+            'search': search,
+            'deepQuery': deep_query
+        }
+        rsp = self.app.client.post("/api/v3/assets/_search", body)
+        if raw:
+            return rsp
+        else:
+            rsp["hits"]["offset"] = search.get("from", 0)
+            return SearchResult(rsp, Asset)
 
-    def get_asset(self, id):
+    def get_by_id(self, id):
         """
         Return the asset with the given unique Id.
 

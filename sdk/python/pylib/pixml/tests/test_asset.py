@@ -4,8 +4,8 @@ from unittest.mock import patch
 
 from pixml import Asset
 from pixml import PixmlClient, app_from_env
-from pixml.asset import FileImport, FileUpload
 from pixml.analysis.testing import zorroa_test_data
+from pixml.asset import FileImport, FileUpload
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -120,6 +120,40 @@ class AssetAppTests(unittest.TestCase):
     def setUp(self):
         self.app = app_from_env()
 
+        # A mock search result used for asset search tests
+        self.mock_search_result = {
+            "took": 4,
+            "timed_out": False,
+            "hits": {
+                "total": 2,
+                "max_score": 0.2876821,
+                "hits": [
+                    {
+                        "_index": "litvqrkus86sna2w",
+                        "_type": "asset",
+                        "_id": "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg",
+                        "_score": 0.2876821,
+                        "_source": {
+                            "source": {
+                                "path": "https://i.imgur.com/SSN26nN.jpg"
+                            }
+                        }
+                    },
+                    {
+                        "_index": "litvqrkus86sna2w",
+                        "_type": "asset",
+                        "_id": "aabbccddec48n1q1fginVMV5yllhRRGx2WKyKLjDphg",
+                        "_score": 0.2876821,
+                        "_source": {
+                            "source": {
+                                "path": "https://i.imgur.com/foo.jpg"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+
     @patch.object(PixmlClient, 'post')
     def test_import_files(self, post_patch):
         post_patch.return_value = {
@@ -143,7 +177,7 @@ class AssetAppTests(unittest.TestCase):
         assert not rsp["status"][0]["failed"]
 
     @patch.object(PixmlClient, 'get')
-    def test_get_asset(self, get_patch):
+    def test_get_by_id(self, get_patch):
         get_patch.return_value = {
             "id": "abc13",
             "document": {
@@ -152,7 +186,7 @@ class AssetAppTests(unittest.TestCase):
                 }
             }
         }
-        asset = self.app.assets.get_asset("abc123")
+        asset = self.app.assets.get_by_id("abc123")
         assert type(asset) == Asset
         assert asset.uri is not None
         assert asset.id is not None
@@ -175,7 +209,35 @@ class AssetAppTests(unittest.TestCase):
                 }
             ]
         }
-        print(zorroa_test_data("images/set01/toucan.jpg", False))
         assets = [FileUpload(zorroa_test_data("images/set01/toucan.jpg", False))]
         rsp = self.app.assets.upload_files(assets)
         assert rsp["status"][0]["assetId"] == "abc123"
+
+    @patch.object(PixmlClient, 'post')
+    def test_search_raw(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        search = {
+            "query": {"match_all": {}}
+        }
+        rsp = self.app.assets.search(search=search, raw=True)
+        path = rsp["hits"]["hits"][0]["_source"]["source"]["path"]
+        assert path == "https://i.imgur.com/SSN26nN.jpg"
+
+    @patch.object(PixmlClient, 'post')
+    def test_search_wrapped(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        search = {
+            "query": {"match_all": {}}
+        }
+        rsp = self.app.assets.search(search=search)
+        path = rsp[0].get_attr("source.path")
+        assert path == "https://i.imgur.com/SSN26nN.jpg"
+        assert 2 == rsp.size
+        assert 0 == rsp.offset
+        assert 2 == rsp.total
+
+        # Iterate the result to test iteration.
+        count = 0
+        for item in rsp:
+            count += 1
+        assert count == 2
