@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Layout /> should render properly 1`] = `
+.emotion-0 {
+  height: 100%;
+}
+
+<div
+  className="emotion-0"
+>
+  <NavBar />
+</div>
+`;
