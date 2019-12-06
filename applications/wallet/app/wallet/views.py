@@ -1,12 +1,14 @@
-import os
 import logging
+import os
 
-from django.contrib.auth import get_user_model
-from django.views.generic import View
-from django.http import HttpResponse
 from django.conf import settings
+from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.models import Group
+from django.http import HttpResponse, JsonResponse
+from django.views.generic import View
 from rest_framework import viewsets
+from rest_framework.views import APIView
+
 from wallet.serializers import UserSerializer, GroupSerializer
 
 
@@ -40,3 +42,22 @@ class GroupViewSet(viewsets.ModelViewSet):
     """API endpoint that allows Groups to be viewed or edited."""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class LoginView(APIView):
+    """Basic login view that authenticates the user and returns the user's info."""
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        user = authenticate(username=request.data['username'],
+                            password=request.data['password'])
+        if user:
+            login(request, user)
+            return JsonResponse({'id': user.id,
+                                 'username': user.username,
+                                 'email': user.email,
+                                 'first_name': user.first_name,
+                                 'last_name': user.last_name})
+        else:
+            return HttpResponse('Unauthorized', status=401)
