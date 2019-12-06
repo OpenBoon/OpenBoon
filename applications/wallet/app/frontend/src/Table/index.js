@@ -2,8 +2,6 @@ import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
 import ProgressBar from '../ProgressBar'
 
-const ROW_HEIGHT = 32
-
 const Table = ({ columns, rows }) => {
   return (
     <div
@@ -17,7 +15,6 @@ const Table = ({ columns, rows }) => {
           borderSpacing: 0,
           boxShadow: constants.boxShadows.dark,
           th: {
-            height: ROW_HEIGHT,
             fontWeight: typography.weight.extraLight,
             color: colors.grey2,
             backgroundColor: colors.grey1,
@@ -47,7 +44,6 @@ const Table = ({ columns, rows }) => {
             },
           },
           td: {
-            height: ROW_HEIGHT,
             fontWeight: typography.weight.extraLight,
             color: colors.grey2,
             padding: `${spacing.base}px ${spacing.normal}px`,

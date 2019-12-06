@@ -12,24 +12,6 @@ const STATUS_COLORS = {
   pending: colors.grey6,
 }
 
-const getStatusStyles = ({ status, statusColor }) => {
-  const statusCSS = {
-    height: '100%',
-    flex: `${status} 0 auto`,
-    backgroundColor: statusColor,
-    '&:first-of-type': {
-      borderTopLeftRadius: constants.borderRadius.small,
-      borderBottomLeftRadius: constants.borderRadius.small,
-    },
-    '&:last-of-type': {
-      borderTopRightRadius: constants.borderRadius.small,
-      borderBottomRightRadius: constants.borderRadius.small,
-    },
-  }
-
-  return statusCSS
-}
-
 const ProgressBar = ({ status }) => {
   const { isGenerating, isCanceled, canceledBy } = status
 
@@ -37,7 +19,7 @@ const ProgressBar = ({ status }) => {
     const spinAnimation = keyframes`
       0% { transform: rotate(0deg) }
       100% { transform: rotate(360deg) }
-    }`
+    `
     return (
       <div
         css={{
@@ -74,10 +56,19 @@ const ProgressBar = ({ status }) => {
           return (
             <div
               key={statusName}
-              css={getStatusStyles({
-                status: status[statusName],
-                statusColor: STATUS_COLORS[statusName],
-              })}
+              css={{
+                height: '100%',
+                flex: `${status[statusName]} 0 auto`,
+                backgroundColor: STATUS_COLORS[statusName],
+                '&:first-of-type': {
+                  borderTopLeftRadius: constants.borderRadius.small,
+                  borderBottomLeftRadius: constants.borderRadius.small,
+                },
+                '&:last-of-type': {
+                  borderTopRightRadius: constants.borderRadius.small,
+                  borderBottomRightRadius: constants.borderRadius.small,
+                },
+              }}
             />
           )
         }

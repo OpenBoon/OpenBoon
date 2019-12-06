@@ -35,7 +35,6 @@ exports[`<Jobs /> should render properly with data 1`] = `
 }
 
 .emotion-49 th {
-  height: 32px;
   color: #b3b3b3;
   background-color: #2e2e2e;
   padding: 12px 16px;
@@ -71,7 +70,6 @@ exports[`<Jobs /> should render properly with data 1`] = `
 }
 
 .emotion-49 td {
-  height: 32px;
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -983,7 +981,6 @@ exports[`<Jobs /> should render properly without data 1`] = `
 }
 
 .emotion-49 th {
-  height: 32px;
   color: #b3b3b3;
   background-color: #2e2e2e;
   padding: 12px 16px;
@@ -1019,7 +1016,6 @@ exports[`<Jobs /> should render properly without data 1`] = `
 }
 
 .emotion-49 td {
-  height: 32px;
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
