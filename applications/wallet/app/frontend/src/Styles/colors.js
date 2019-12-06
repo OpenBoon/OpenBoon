@@ -21,6 +21,7 @@ const colors = {
   grey6: '#404040',
 
   green1: '#4AC565',
+  green2: '#b8d652',
 
   blue1: '#4A90E2',
 
