@@ -44,10 +44,10 @@ class ImageImporter(AssetBuilder):
         path = Path(file_cache.localize_remote_file(asset))
         metadata = get_image_metadata(path)
         set_resolution_attrs(asset, int(metadata.get('full_width')), int(metadata.get('full_height')))
+        self.set_media_type(asset)
         self.set_location(asset, metadata)
         self.set_date(asset, metadata)
         self.set_metadata(asset, metadata)
-        self.fix_media_type(asset)
         if (self.arg_value('extract_pages') and not asset.get_attr('media.clip') and
                 metadata.get('subimages')):
             self.extract_pages(asset, metadata, frame)
@@ -167,24 +167,14 @@ class ImageImporter(AssetBuilder):
             if isinstance(value, dict):
                 self.set_metadata(document, value, namespace=field)
 
-    def fix_media_type(self, asset):
+    def set_media_type(self, asset):
         """
-        If the asset was processed as an image, then it's an image regardless
-        of what the mimetype magic detected, which is often application/octet-stream
-        for various HDR formats.
-
-        Reset the various media type properties so the file is handled properly downstream.
+        Set media.type to image which signals that the Asset was processed as an image.
 
         Args:
             asset (Asset): The asset to fix.
-
         """
-        current_type = asset.get_attr("source.type")
-        if current_type != "image":
-            sub_type = "x-%s" % asset.get_attr("source.extension").lower()
-            asset.set_attr("source.mediaType", "image/%s" % sub_type)
-            asset.set_attr("source.type", "image")
-            asset.set_attr("source.subType", sub_type)
+        asset.set_attr("media.type", "image")
 
     def add_keywords(self, document, item):
         """Adds the item to the asset as keywords. Simple function that allows for
