@@ -6,6 +6,7 @@ import { jobsColumns, jobsRows } from './__mocks__/jobs'
 import { spacing } from '../Styles'
 
 import Pagination from '../Pagination'
+import UserMenu from '../UserMenu'
 
 export const noop = () => () => {}
 
@@ -27,10 +28,10 @@ const Jobs = ({ logout }) => {
 
       <Table columns={jobsColumns} rows={jobsRows} />
 
-      <h2>Logout</h2>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
+      <h2>UserMenu</h2>
+      <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <UserMenu logout={logout} />
+      </div>
 
       <h2>Pagination</h2>
       <Pagination
