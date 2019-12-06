@@ -63,7 +63,7 @@ class ResNetClassifyProcessor(AssetBuilder):
 
         struct = {
             'keywords': list(set(kw)),
-            'score': prob[psort[0]]
+            'score': float(prob[psort[0]])
         }
 
         # Debug info, if enabled.

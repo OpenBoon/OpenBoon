@@ -52,4 +52,4 @@ class MxUnitTests(PluginUnitTestCase):
         processor.process(self.frame)
 
         self.assertTrue('albatross' in self.frame.asset['analysis.pixelml.labels.keywords'])
-        self.assertTrue(self.frame.asset['analysis.pixelml.labels.score'] > 0)
+        self.assertTrue(type(self.frame.asset['analysis.pixelml.labels.score']) == float)
