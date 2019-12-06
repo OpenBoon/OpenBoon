@@ -3,62 +3,6 @@
 exports[`<Authentication /> should render properly when user is logged in 1`] = `null`;
 
 exports[`<Authentication /> should render properly when user is logged in 2`] = `
-.emotion-4 {
-  height: 100%;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 40px;
-  background-color: #2E2E2E;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  padding-left: 16px;
-  height: 100%;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 14px;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  color: #82be3c;
-  background-color: #2E2E2E;
-}
-
-.emotion-1:hover {
-  cursor: pointer;
-}
-
-.emotion-0 {
-  margin-left: 8px;
-}
-
 <SWRConfig
   value={
     Object {
@@ -66,35 +10,9 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
     }
   }
 >
-  <div
-    className="emotion-4"
-  >
-    <div
-      className="emotion-3"
-    >
-      <svg
-        data-file-name="logo.svg"
-        width={110}
-      />
-      <div
-        className="emotion-2"
-      >
-        <button
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          Zorroa IBC
-          <svg
-            className="emotion-0"
-            data-file-name="chevron.svg"
-            width={20}
-          />
-        </button>
-      </div>
-    </div>
+  <Layout>
     Hello World!
-  </div>
+  </Layout>
 </SWRConfig>
 `;
 

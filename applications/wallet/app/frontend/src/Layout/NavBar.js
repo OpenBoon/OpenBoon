@@ -5,7 +5,7 @@ import LogoSvg from './logo.svg'
 const HEIGHT = 40
 const LOGO_WIDTH = 110
 
-const NavBar = () => {
+const LayoutNavBar = () => {
   return (
     <div
       css={{
@@ -21,4 +21,4 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+export default LayoutNavBar
