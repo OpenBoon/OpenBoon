@@ -15,7 +15,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   }
 }
 
-.emotion-62 {
+.emotion-52 {
   padding: 12px;
 }
 
@@ -227,7 +227,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-61 {
+.emotion-51 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -239,11 +239,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
 }
 
 <div
-<<<<<<< HEAD
-  className="emotion-62"
-=======
-  className="emotion-51"
->>>>>>> clean up svg slightly; add updated snapshot
+  className="emotion-52"
 >
   <h2>
     Projects
@@ -922,7 +918,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
     UserMenu
   </h2>
   <div
-    className="emotion-61"
+    className="emotion-51"
   >
     <UserMenu
       logout={[Function]}
@@ -957,11 +953,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   }
 }
 
-<<<<<<< HEAD
-.emotion-62 {
-=======
-.emotion-51 {
->>>>>>> clean up svg slightly; add updated snapshot
+.emotion-52 {
   padding: 12px;
 }
 
@@ -1173,7 +1165,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-61 {
+.emotion-51 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1185,11 +1177,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
 }
 
 <div
-<<<<<<< HEAD
-  className="emotion-62"
-=======
-  className="emotion-51"
->>>>>>> clean up svg slightly; add updated snapshot
+  className="emotion-52"
 >
   <h2>
     Projects
@@ -1864,7 +1852,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
     UserMenu
   </h2>
   <div
-    className="emotion-61"
+    className="emotion-51"
   >
     <UserMenu
       logout={[Function]}
