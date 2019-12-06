@@ -52,16 +52,6 @@ wallet-backend-test-suite:
     - pipenv run flake8
     - pipenv run pytest --cov=.
 
-wallet-container-build-validation:
-  only:
-    - development
-  stage: test
-  image: docker:18.09.8-dind
-  services:
-    - docker:18.09.8-dind
-  script:
-    - docker build --pull --no-cache -f applications/wallet/Dockerfile .
-
 # SDK Test
 sdk-unit-tests:
   image: python:3.8
