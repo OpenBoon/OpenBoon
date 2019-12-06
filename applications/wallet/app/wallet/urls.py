@@ -35,6 +35,7 @@ projects_router.register('jobs', JobsViewSet, basename='job')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/login', wallet_views.login_view, name='api-login'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
