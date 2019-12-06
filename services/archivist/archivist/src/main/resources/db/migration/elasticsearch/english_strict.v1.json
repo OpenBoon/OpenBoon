@@ -91,15 +91,6 @@
                 }
               }
             },
-            "type": {
-              "type": "keyword",
-              "fields": {
-                "fulltext": {
-                  "type": "text",
-                  "analyzer": "default"
-                }
-              }
-            },
             "mimetype": {
               "type": "keyword",
               "fields": {
@@ -109,25 +100,7 @@
                 }
               }
             },
-            "type": {
-              "type": "keyword",
-              "fields": {
-                "fulltext": {
-                  "type": "text",
-                  "analyzer": "default"
-                }
-              }
-            },
-            "subtype": {
-              "type": "keyword",
-              "fields": {
-                "fulltext": {
-                  "type": "text",
-                  "analyzer": "default"
-                }
-              }
-            },
-            "fileSize": {
+            "filesize": {
               "type": "long"
             }
           }
@@ -141,11 +114,32 @@
                   "type": "object",
                   "enabled": false
                 },
-                "imageSimilarity": {
+                "similarity": {
                   "dynamic": "strict",
                   "properties": {
                     "vector": {
                       "type": "keyword"
+                    },
+                    "debug": {
+                      "type": "object",
+                      "enabled": false
+                    }
+                  }
+                },
+                "labels": {
+                  "dynamic": "strict",
+                  "properties": {
+                    "score": {
+                      "type": "float"
+                    },
+                    "keywords": {
+                      "type": "keyword",
+                      "fields": {
+                        "fulltext": {
+                          "type": "text",
+                          "analyzer": "default"
+                        }
+                      }
                     },
                     "debug": {
                       "type": "object",
@@ -190,6 +184,9 @@
               "type": "keyword"
             },
             "orientation": {
+              "type": "keyword"
+            },
+            "type": {
               "type": "keyword"
             },
             "title": {

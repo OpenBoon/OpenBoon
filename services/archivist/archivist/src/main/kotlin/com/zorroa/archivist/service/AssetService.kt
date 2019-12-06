@@ -165,7 +165,7 @@ class AssetServiceImpl : AssetService {
 
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
         val asset = Asset(id)
-        spec.document?.forEach { k, v ->
+        spec.attrs?.forEach { k, v ->
             val prefix = try {
                 k.substring(0, k.indexOf('.'))
             } catch (e: StringIndexOutOfBoundsException) {
@@ -182,13 +182,12 @@ class AssetServiceImpl : AssetService {
 
         val mediaType = FileUtils.getMediaType(spec.uri)
         asset.setAttr("source.mimetype", mediaType)
-        asset.setAttr("source.type", mediaType.split("/")[0])
-        asset.setAttr("source.subtype", mediaType.split("/")[1])
 
         asset.setAttr("system.projectId", getProjectId().toString())
         task?.let {
             asset.setAttr("system.dataSourceId", it.dataSourceId)
             asset.setAttr("system.jobId", it.jobId)
+            asset.setAttr("system.taskId", it.taskId)
         }
         asset.setAttr(
             "system.timeCreated",
@@ -212,7 +211,7 @@ class AssetServiceImpl : AssetService {
             val spec = req.assets[idx]
             val id = AssetIdBuilder(spec, randomString(24)).build()
             val asset = assetSpecToAsset(id, spec)
-            asset.setAttr("source.fileSize", mpfile.size)
+            asset.setAttr("source.filesize", mpfile.size)
 
             val locator = FileStorageLocator(
                 FileGroup.ASSET,

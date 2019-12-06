@@ -15,8 +15,10 @@ __all__ = [
 logger = logging.getLogger(__name__)
 
 
-class AssetBase(object):
-
+class DocumentMixin(object):
+    """
+    A Mixin class which provides easy access to a deeply nested dictionary.
+    """
     def __init__(self):
         self.document = {}
 
@@ -131,17 +133,12 @@ class AssetBase(object):
 
     def __set_attr(self, attr, value):
         """
-        A private set_attr method that handles just the setting of the
-        attribute without any field edit protection.
-
-        This gets called from set_attr to avoid infinite looping.
+        Handles setting an attribute value.
 
         Args:
-            attr (str): The attribute name in dot notation format.
-                ex: 'foo.bar'
-            value (:obj:`object`): value: The value for the particular
-                attribute.  Can be any json serializable type.
-
+            attr (str): The attribute name in dot notation format.  ex: 'foo.bar'
+            value (mixed): The value for the particular attribute.
+                Can be any json serializable type.
         """
         doc = self.document
         parts = attr.split(".")
@@ -157,22 +154,28 @@ class AssetBase(object):
             except AttributeError:
                 doc[parts[-1]] = value
 
+    def __getitem__(self, attr):
+        return self.get_attr(attr)
 
-class FileImport(AssetBase):
+
+class FileImport(object):
     """
     An FileImport is used to import a new file and metdata into PixelML.
     """
-    def __init__(self, uri, clip=None):
+    def __init__(self, uri, attrs=None, clip=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
+            attrs (dict): A shallow key/value pair dictionary of starting point
+                attributes to set on the asset.
             clip (Clip): Defines a subset of the asset to be processed, for example a
                 page of a PDF or time code from a video.
         """
         super(FileImport, self).__init__()
         self.uri = uri
+        self.attrs = attrs
         self.clip = clip
 
     def for_json(self):
@@ -186,7 +189,7 @@ class FileImport(AssetBase):
         """
         return {
             "uri": self.uri,
-            "document": self.document,
+            "attrs": self.attrs,
             "clip": self.clip
         }
 
@@ -195,20 +198,22 @@ class FileUpload(FileImport):
     """
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
-    def __init__(self, path, clip=None):
+    def __init__(self, path, attrs=None, clip=None):
         """
         Create a new FileUpload instance.
 
         Args:
             path (str): A path to a file, the file must exist.
+            attrs (dict): A shallow key/value pair dictionary of starting point
+                attributes to set on the asset.
             clip (Clip): Clip settings if applicable.
         """
-        super(FileUpload, self).__init__(path, clip)
+        super(FileUpload, self).__init__(path, attrs, clip)
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
 
 
-class Asset(AssetBase):
+class Asset(DocumentMixin):
     """
     An Asset represents a single processed file or a clip/segment of a
     file. Assets start out in the 'CREATED' state, which indicates

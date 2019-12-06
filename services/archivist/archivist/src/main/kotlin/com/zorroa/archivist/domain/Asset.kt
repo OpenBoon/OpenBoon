@@ -127,8 +127,8 @@ class AssetSpec(
     @ApiModelProperty("The URI location of the asset.")
     var uri: String,
 
-    @ApiModelProperty("Additional metadata fields to add to the Asset.")
-    var document: Map<String, Any>? = null,
+    @ApiModelProperty("Additional metadata fields to add to the Asset in key/value format.")
+    var attrs: Map<String, Any>? = null,
 
     @ApiModelProperty("An optional unique ID for the asset to override an auto-generated ID.")
     val id: String? = null
@@ -349,6 +349,7 @@ class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
 
     private val projectId = getProjectId()
     private var dataSourceId: UUID? = null
+    private var length = 32
 
     private fun uuidToByteArray(uuid: UUID): ByteBuffer {
         val bb: ByteBuffer = ByteBuffer.wrap(ByteArray(16))
@@ -377,6 +378,10 @@ class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
         randomness?.let {
             digester.update(randomness.toByteArray())
         }
-        return Base64.getUrlEncoder().encodeToString(digester.digest()).trim('=')
+        // Clamp the size to 32, 48 is bit much and you still
+        // get much better resolution than a UUID.  We could
+        // also up it on shared indexes but probably not necessary.
+        return Base64.getUrlEncoder()
+            .encodeToString(digester.digest()).trim('=').substring(0, length)
     }
 }

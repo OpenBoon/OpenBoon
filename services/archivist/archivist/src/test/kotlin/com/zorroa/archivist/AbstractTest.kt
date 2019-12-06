@@ -16,8 +16,6 @@ import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.Role
-import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.IndexClusterService
@@ -34,14 +32,11 @@ import org.elasticsearch.client.RequestOptions
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -273,10 +268,13 @@ abstract class AbstractTest {
                 null
             }
             val asset = AssetSpec(path)
-            asset.document = mapOf("media" to mapOf(
+            asset.attrs = mapOf(
+                "media" to mapOf(
                 "width" to 1024,
                 "height" to 1024,
-                "title" to "Picture of ${path}"))
+                    "title" to "Picture of $path"
+                )
+            )
             asset
         }
     }
