@@ -138,9 +138,10 @@ class ResNetSimilarityProcessor(AssetBuilder):
         }
 
         if self.arg_value("debug"):
+            # Debug goes into a "debug" struct which doesn't create ES fields
             struct["debug"] = {
                 "type": "mxnet",
                 "model": os.path.basename(self.model_path)
             }
 
-        asset.add_analysis("imageSimilarity", struct)
+        asset.add_analysis("pixelml.imageSimilarity", struct)
