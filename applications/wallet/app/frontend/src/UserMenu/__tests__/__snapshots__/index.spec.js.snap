@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserMenu /> should render properly 1`] = `
+.emotion-1 {
+  position: relative;
+}
+
+.emotion-0 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  color: #ffffff;
+  background-color: #4d4948;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  cursor: pointer;
+}
+
+<div
+  className="emotion-1"
+>
+  <button
+    className="emotion-0"
+    onBlur={[Function]}
+    onClick={[Function]}
+    type="button"
+  >
+    DT
+  </button>
+</div>
+`;
+
+exports[`<UserMenu /> should render properly 2`] = `
+.emotion-8 {
+  position: relative;
+}
+
+.emotion-0 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  color: #ffffff;
+  background-color: #4d4948;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  cursor: pointer;
+}
+
+.emotion-7 {
+  position: absolute;
+  z-index: 1;
+  background-color: #808080;
+  top: 36px;
+  right: 0;
+  border-radius: 2px;
+  box-shadow: 0 4px 7px 0 #000000;
+}
+
+.emotion-2 {
+  padding: 16px;
+  border-bottom: 1px solid #9b9b9b;
+}
+
+.emotion-1 {
+  font-weight: 700;
+}
+
+.emotion-6 {
+  padding: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #b8d652;
+}
+
+.emotion-4 {
+  height: 6px;
+}
+
+.emotion-5 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  font-size: inherit;
+  text-align: inherit;
+  color: inherit;
+}
+
+.emotion-5:hover {
+  color: #b8d652;
+  cursor: pointer;
+}
+
+<div
+  className="emotion-8"
+>
+  <button
+    className="emotion-0"
+    onBlur={[Function]}
+    onClick={[Function]}
+    type="button"
+  >
+    DT
+  </button>
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-1"
+      >
+        Danny Tiesling
+      </div>
+      <div>
+        danny@zorroa.com
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <a
+        className="emotion-3"
+        href="/"
+        onBlur={[Function]}
+      >
+        Manage Account
+      </a>
+      <div
+        className="emotion-4"
+      />
+      <button
+        className="emotion-5"
+        onBlur={[Function]}
+        onClick={[Function]}
+        type="button"
+      >
+        Sign Out
+      </button>
+    </div>
+  </div>
+</div>
+`;

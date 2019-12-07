@@ -20,6 +20,7 @@ from .base import AutoMLModelProcessor
 from pixml.analysis import Argument, PixmlUnrecoverableProcessorException
 from pixml.analysis.storage import get_proxy_level
 
+
 class CloudVisionProcessor(GoogleApiDocumentProcessor):
     """Use Google Cloud Vision API to analyze images."""
 
@@ -626,7 +627,7 @@ class AutoMLNLPModelProcessor(AutoMLModelProcessor):
 
         #
         # TODO: a pixml search instead.
-        #archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
+        # archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
         #
         search = []
         for child in search:
