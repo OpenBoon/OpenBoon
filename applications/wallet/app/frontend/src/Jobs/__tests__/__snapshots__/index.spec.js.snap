@@ -55,36 +55,36 @@ exports[`<Jobs /> should render properly with data 1`] = `
 
 .emotion-49 tr:hover td {
   border: 1px solid #4d4948;
-  border-left: 0px;
-  border-right: 0px;
+  border-left: 0;
+  border-right: 0;
 }
 
 .emotion-49 tr:hover td:first-of-type {
   border: 1px solid #4d4948;
-  border-right: 0px;
+  border-right: 0;
 }
 
 .emotion-49 tr:hover td:last-of-type {
   border: 1px solid #4d4948;
-  border-left: 0px;
+  border-left: 0;
 }
 
 .emotion-49 td {
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
-  border-left: 0px;
-  border-right: 0px;
+  border-left: 0;
+  border-right: 0;
 }
 
 .emotion-49 td:first-of-type {
   border: 1px solid transparent;
-  border-right: 0px;
+  border-right: 0;
 }
 
 .emotion-49 td:last-of-type {
   border: 1px solid transparent;
-  border-left: 0px;
+  border-left: 0;
 }
 
 .emotion-0 {
@@ -494,12 +494,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -601,12 +598,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -657,12 +651,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -752,12 +743,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -798,12 +786,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -844,12 +829,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -906,8 +888,6 @@ exports[`<Jobs /> should render properly with data 1`] = `
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -993,36 +973,36 @@ exports[`<Jobs /> should render properly without data 1`] = `
 
 .emotion-49 tr:hover td {
   border: 1px solid #4d4948;
-  border-left: 0px;
-  border-right: 0px;
+  border-left: 0;
+  border-right: 0;
 }
 
 .emotion-49 tr:hover td:first-of-type {
   border: 1px solid #4d4948;
-  border-right: 0px;
+  border-right: 0;
 }
 
 .emotion-49 tr:hover td:last-of-type {
   border: 1px solid #4d4948;
-  border-left: 0px;
+  border-left: 0;
 }
 
 .emotion-49 td {
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
-  border-left: 0px;
-  border-right: 0px;
+  border-left: 0;
+  border-right: 0;
 }
 
 .emotion-49 td:first-of-type {
   border: 1px solid transparent;
-  border-right: 0px;
+  border-right: 0;
 }
 
 .emotion-49 td:last-of-type {
   border: 1px solid transparent;
-  border-left: 0px;
+  border-left: 0;
 }
 
 .emotion-0 {
@@ -1428,12 +1408,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -1535,12 +1512,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -1591,12 +1565,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -1686,12 +1657,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -1732,12 +1700,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -1778,12 +1743,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-13"
             >
-              
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>
@@ -1840,8 +1802,6 @@ exports[`<Jobs /> should render properly without data 1`] = `
               <div
                 className="emotion-10"
               />
-              
-              
             </div>
           </td>
         </tr>

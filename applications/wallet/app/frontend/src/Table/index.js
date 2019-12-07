@@ -31,15 +31,15 @@ const Table = ({ columns, rows }) => {
               backgroundColor: colors.grey1,
               td: {
                 border: constants.borders.default,
-                borderLeft: '0px',
-                borderRight: '0px',
+                borderLeft: '0',
+                borderRight: '0',
                 '&:first-of-type': {
                   border: constants.borders.default,
-                  borderRight: '0px',
+                  borderRight: '0',
                 },
                 '&:last-of-type': {
                   border: constants.borders.default,
-                  borderLeft: '0px',
+                  borderLeft: '0',
                 },
               },
             },
@@ -49,15 +49,15 @@ const Table = ({ columns, rows }) => {
             color: colors.grey2,
             padding: `${spacing.base}px ${spacing.normal}px`,
             border: constants.borders.transparent,
-            borderLeft: '0px',
-            borderRight: '0px',
+            borderLeft: '0',
+            borderRight: '0',
             ':first-of-type': {
               border: constants.borders.transparent,
-              borderRight: '0px',
+              borderRight: '0',
             },
             ':last-of-type': {
               border: constants.borders.transparent,
-              borderLeft: '0px',
+              borderLeft: '0',
             },
           },
         }}>

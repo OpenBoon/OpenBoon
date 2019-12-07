@@ -51,8 +51,11 @@ const ProgressBar = ({ status }) => {
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {['succeeded', 'failed', 'running', 'pending'].map(statusName => {
-        if (status[statusName] > 0) {
+      {['succeeded', 'failed', 'running', 'pending']
+        .filter(statusName => {
+          return status[statusName] > 0
+        })
+        .map(statusName => {
           return (
             <div
               key={statusName}
@@ -71,9 +74,7 @@ const ProgressBar = ({ status }) => {
               }}
             />
           )
-        }
-        return ''
-      })}
+        })}
     </div>
   )
 }
