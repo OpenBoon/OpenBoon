@@ -1,11 +1,10 @@
 from unittest.mock import patch
 
-from ..processors import ResNetSimilarityProcessor, ResNetClassifyProcessor
-
 from pixml import PixmlClient
 from pixml.analysis import Frame
-from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from pixml.analysis.storage import add_proxy_file
+from pixml.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from ..processors import ResNetSimilarityProcessor, ResNetClassifyProcessor
 
 
 class MxUnitTests(PluginUnitTestCase):
