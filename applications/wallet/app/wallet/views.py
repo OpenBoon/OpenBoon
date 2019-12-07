@@ -2,7 +2,7 @@ import logging
 import os
 
 from django.conf import settings
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.models import Group
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import View
@@ -61,3 +61,10 @@ class LoginView(APIView):
                                  'last_name': user.last_name})
         else:
             return HttpResponse('Unauthorized', status=401)
+
+
+class LogoutView(APIView):
+    """Basic logout view. Logs the user out and returns and empty json payload."""
+    def post(self, request):
+        logout(request)
+        return JsonResponse({})
