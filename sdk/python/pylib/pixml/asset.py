@@ -175,7 +175,7 @@ class FileImport(object):
         """
         super(FileImport, self).__init__()
         self.uri = uri
-        self.attrs = attrs
+        self.attrs = attrs or {}
         self.clip = clip
 
     def for_json(self):

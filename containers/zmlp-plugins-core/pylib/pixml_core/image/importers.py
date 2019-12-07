@@ -137,7 +137,7 @@ class ImageImporter(AssetBuilder):
         source_path = document.get_attr('source.path')
         for i in range(1, subimages + 1):
             clip = Clip('image', i, i)
-            expand = ExpandFrame(FileImport(source_path, clip))
+            expand = ExpandFrame(FileImport(source_path, clip=clip))
             self.expand(frame, expand)
 
     def set_metadata(self, document, metadata, namespace=None):

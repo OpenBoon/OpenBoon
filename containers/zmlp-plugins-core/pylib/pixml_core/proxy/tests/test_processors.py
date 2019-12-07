@@ -19,7 +19,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
     def setUp(self):
         self.source_path = TOUCAN
         self.frame = Frame(TestAsset(self.source_path))
-        self.frame.asset.set_attr("source.type", "image")
+        self.frame.asset.set_attr("media.type", "image")
         self.frame.asset.set_attr('media.width', 512)
         self.frame.asset.set_attr('media.height', 341)
         self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN_PATH)
@@ -85,7 +85,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         # This will attempt to localize a file:/// uri and simple
         # return the path portion of the uri.
         frame = Frame(TestAsset(self.source_path))
-        frame.asset.set_attr("source.type", "image")
+        frame.asset.set_attr("media.type", "image")
         path = self.processor._get_source_path(frame.asset)
 
         assert "file://" + path == self.source_path
