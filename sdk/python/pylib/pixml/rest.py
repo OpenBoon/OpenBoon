@@ -382,6 +382,43 @@ class PixmlClient(object):
         return jwt.encode(claims, self.apikey['sharedKey'], algorithm='HS512').decode("utf-8")
 
 
+class SearchResult(object):
+    """
+    A utility class for wrapping various search result formats
+    that come back from the PixelML servers.
+    """
+
+    def __init__(self, data, clazz):
+        """
+        Create a new SearchResult instance.
+
+        Note that its possible to both iterate and index a SearchResult
+        as a list. For example
+
+        Args:
+            data (dict): A search response body from the PixelML servers.
+            clazz (mixed): A class to wrap each item in the response body.
+        """
+        # the "hits" key indicates its an ElasticSearch result.
+        if "hits" in data:
+            self.items = [clazz({"id": hit["_id"], "document": hit["_source"]})
+                          for hit in data["hits"]["hits"]]
+            self.offset = data["hits"].get("offset", 0)
+            self.size = len(data["hits"]["hits"])
+            self.total = data["hits"]["total"]
+        else:
+            self.items = [clazz(item) for item in data["list"]]
+            self.offset = data["page"]["from"]
+            self.size = len(data["list"])
+            self.total = data["page"]["totalCount"]
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def __getitem__(self, idx):
+        return self.items[idx]
+
+
 class PixmlJsonEncoder(json.JSONEncoder):
     """
     JSON encoder for with Pixml specific serialization defaults.

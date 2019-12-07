@@ -3,6 +3,10 @@ package com.zorroa.archivist.storage
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.service.event
+import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
@@ -39,4 +43,22 @@ interface FileStorageService {
      * Fetch the bytes for the given file.
      */
     fun fetch(locator: FileStorageLocator): ByteArray
+
+    /**
+     * Log the storage of a file.
+     */
+    fun logStoreEvent(spec: FileStorageSpec ) {
+        logger.event(
+            LogObject.FILE_STORAGE, LogAction.CREATE,
+            mapOf(
+                "newFilePath" to spec.locator.getPath(),
+                "size" to spec.data.size.toLong(),
+                "mimetype" to spec.mimetype
+            )
+        )
+    }
+
+    companion object {
+        val logger = LoggerFactory.getLogger(FileStorageService::class.java)
+    }
 }

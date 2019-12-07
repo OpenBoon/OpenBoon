@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
@@ -13,11 +14,15 @@ import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.archivist.util.RawByteArrayOutputStream
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
+import org.elasticsearch.common.xcontent.ToXContent
+import org.elasticsearch.common.xcontent.XContentFactory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -45,8 +50,18 @@ class AssetController @Autowired constructor(
 ) {
 
     @RequestMapping("/api/v3/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
-    fun search(@RequestBody(required = false) query: Map<String, Any>?, out: ServletOutputStream) {
-        assetService.search(query ?: mapOf(), out)
+    fun search(@RequestBody(required = false) search: AssetSearch?, output: ServletOutputStream)
+        : ResponseEntity<Resource> {
+
+        val rsp = assetService.search(search ?: AssetSearch())
+        val output = RawByteArrayOutputStream(1024 * 64)
+        XContentFactory.jsonBuilder(output).use {
+            rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
+        }
+
+        return ResponseEntity.ok()
+            .contentLength(output.size().toLong())
+            .body(InputStreamResource(output.toInputStream()))
     }
 
     @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsRead')")

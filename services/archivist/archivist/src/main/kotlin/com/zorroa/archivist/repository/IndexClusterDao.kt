@@ -14,6 +14,7 @@ import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.lang.IllegalStateException
 import java.util.UUID
 
 interface IndexClusterDao {
@@ -114,6 +115,9 @@ class IndexClusterDaoImpl : AbstractDao(), IndexClusterDao {
         val counts = mutableMapOf<String, Int>()
         jdbc.query(GET_POOL_COUNTS) { rs->
             counts[rs.getString("pk_index_cluster")] = rs.getInt("c")
+        }
+        if (counts.isEmpty()) {
+            throw IllegalStateException("No avaiable ES clusters in auto-pool")
         }
         val sorted = counts.toList()
             .sortedBy { (key, value) -> value }

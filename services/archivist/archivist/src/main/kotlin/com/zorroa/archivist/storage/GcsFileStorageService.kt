@@ -10,7 +10,6 @@ import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.Json
-import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -47,7 +46,7 @@ class GcsFileStorageServiceImpl constructor(
 
     @PostConstruct
     fun initialize() {
-        logger.info("Initializing GCS Storage Backend (bucket='${properties.bucket}')")
+        FileStorageService.logger.info("Initializing GCS Storage Backend (bucket='${properties.bucket}')")
     }
 
     override fun store(spec: FileStorageSpec): FileStorage {
@@ -59,6 +58,8 @@ class GcsFileStorageServiceImpl constructor(
         info.setMetadata(mapOf("attrs" to Json.serializeToString(spec.attrs)))
         info.setContentType(spec.mimetype)
         gcs.writer(info.build()).write(ByteBuffer.wrap(spec.data))
+
+        logStoreEvent(spec)
 
         return FileStorage(
             spec.locator.name,
@@ -90,10 +91,6 @@ class GcsFileStorageServiceImpl constructor(
         val blobId = BlobId.of(properties.bucket, path)
         val blob = gcs.get(blobId)
         return blob.getContent()
-    }
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(GcsFileStorageServiceImpl::class.java)
     }
 }
 

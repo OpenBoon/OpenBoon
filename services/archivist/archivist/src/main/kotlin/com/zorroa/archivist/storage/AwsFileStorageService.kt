@@ -17,7 +17,6 @@ import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.Json
-import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -69,7 +68,7 @@ class AwsFileStorageServiceImpl constructor(
 
     @PostConstruct
     fun initialize() {
-        logger.info("Initializing AWS Storage Backend (bucket='${properties.bucket}')")
+        FileStorageService.logger.info("Initializing AWS Storage Backend (bucket='${properties.bucket}')")
         if (properties.createBucket) {
             if (!s3Client.doesBucketExistV2(properties.bucket)) {
                 s3Client.createBucket(properties.bucket)
@@ -87,6 +86,8 @@ class AwsFileStorageServiceImpl constructor(
 
         s3Client.putObject(PutObjectRequest(properties.bucket, path,
            spec.data.inputStream(), metadata))
+
+        logStoreEvent(spec)
 
         return FileStorage(
             spec.locator.name,
@@ -116,9 +117,5 @@ class AwsFileStorageServiceImpl constructor(
         val path = locator.getPath()
         val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
         return s3obj.objectContent.readAllBytes()
-    }
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(AwsFileStorageServiceImpl::class.java)
     }
 }
