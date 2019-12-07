@@ -39,7 +39,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         assertEquals("http://localhost:9200", result.clusterUrl)
         assertEquals("test", result.mapping)
-        assertEquals(1, result.mappingMajorVer)
+        assertEquals(1, result.majorVer)
         assertEquals(0, result.replicas)
         assertEquals(2, result.shards)
     }
@@ -59,7 +59,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         assertEquals("http://localhost:9200", result.clusterUrl)
         assertEquals("test", result.mapping)
-        assertEquals(1, result.mappingMajorVer)
+        assertEquals(1, result.majorVer)
         assertEquals(0, result.replicas)
         assertEquals(2, result.shards)
     }

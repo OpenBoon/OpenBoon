@@ -1,6 +1,7 @@
 import logging
 import os
 
+from .rest import SearchResult
 from .util import as_collection
 
 __all__ = [
@@ -14,8 +15,10 @@ __all__ = [
 logger = logging.getLogger(__name__)
 
 
-class AssetBase(object):
-
+class DocumentMixin(object):
+    """
+    A Mixin class which provides easy access to a deeply nested dictionary.
+    """
     def __init__(self):
         self.document = {}
 
@@ -130,17 +133,12 @@ class AssetBase(object):
 
     def __set_attr(self, attr, value):
         """
-        A private set_attr method that handles just the setting of the
-        attribute without any field edit protection.
-
-        This gets called from set_attr to avoid infinite looping.
+        Handles setting an attribute value.
 
         Args:
-            attr (str): The attribute name in dot notation format.
-                ex: 'foo.bar'
-            value (:obj:`object`): value: The value for the particular
-                attribute.  Can be any json serializable type.
-
+            attr (str): The attribute name in dot notation format.  ex: 'foo.bar'
+            value (mixed): The value for the particular attribute.
+                Can be any json serializable type.
         """
         doc = self.document
         parts = attr.split(".")
@@ -156,22 +154,28 @@ class AssetBase(object):
             except AttributeError:
                 doc[parts[-1]] = value
 
+    def __getitem__(self, attr):
+        return self.get_attr(attr)
 
-class FileImport(AssetBase):
+
+class FileImport(object):
     """
     An FileImport is used to import a new file and metdata into PixelML.
     """
-    def __init__(self, uri, clip=None):
+    def __init__(self, uri, attrs=None, clip=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
+            attrs (dict): A shallow key/value pair dictionary of starting point
+                attributes to set on the asset.
             clip (Clip): Defines a subset of the asset to be processed, for example a
                 page of a PDF or time code from a video.
         """
         super(FileImport, self).__init__()
         self.uri = uri
+        self.attrs = attrs or {}
         self.clip = clip
 
     def for_json(self):
@@ -185,7 +189,7 @@ class FileImport(AssetBase):
         """
         return {
             "uri": self.uri,
-            "document": self.document,
+            "attrs": self.attrs,
             "clip": self.clip
         }
 
@@ -194,20 +198,22 @@ class FileUpload(FileImport):
     """
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
-    def __init__(self, path, clip=None):
+    def __init__(self, path, attrs=None, clip=None):
         """
         Create a new FileUpload instance.
 
         Args:
             path (str): A path to a file, the file must exist.
+            attrs (dict): A shallow key/value pair dictionary of starting point
+                attributes to set on the asset.
             clip (Clip): Clip settings if applicable.
         """
-        super(FileUpload, self).__init__(path, clip)
+        super(FileUpload, self).__init__(path, attrs, clip)
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
 
 
-class Asset(AssetBase):
+class Asset(DocumentMixin):
     """
     An Asset represents a single processed file or a clip/segment of a
     file. Assets start out in the 'CREATED' state, which indicates
@@ -300,7 +306,13 @@ class Asset(AssetBase):
         }
 
     def __str__(self):
-        return "<Asset id='{} uri='{}'/>".format(self.id, self.uri)
+        return "<Asset id='{}'/>".format(self.id)
+
+    def __repr__(self):
+        return "<Asset id='{}' at {}/>".format(self.id, hex(id(self)))
+
+    def __hash__(self):
+        return hash(self.id)
 
     def __eq__(self, other):
         if not getattr(other, "id"):
@@ -310,33 +322,27 @@ class Asset(AssetBase):
 
 class Clip(object):
     """
-    A Clip object is used to define some frame range
-    or sub-section of an asset.
+    A Clip object is used to define a subsection of a file/asset that should be
+    processed, for example a particular page of a PDF or a section of a movie.
+
+    Each clip of an Asset needs to have a unique type, start, stop, and optionally
+    timeline attributes fo it to be considered a unique clip.
     """
     def __init__(self, type, start, stop, timeline=None):
         """Initialize a new clip.
 
         Args:
-            type (str): The clip type (image, video, page)
+            type (str): The clip type, usually video or page.
             start (float): The start of the clip
-            stop (float): The end of the clip
-            timeline (str): Put the clip on 1 unique timeline in case it
-                collides with other clips with similar in/out points.
+            stop (float): The end of the clip,
+            timeline (str): When an asset is clipified multiple ways, use the timeline
+                to differentiate or else elements may collide.
         """
         self.type = type
         self.start = float(start)
         self.stop = float(stop)
-        self.length = max(1.0, self.stop - self.start + 1.0)
         self.timeline = timeline
-
-    def tokens(self):
-        """Return tokens that make the clip unique.
-
-        Returns:
-            :obj:`list` of str: A list of tokens.
-
-        """
-        return ["start=%0.3f" % self.start, "stop=%0.3f" % self.stop]
+        self.length = max(1.0, self.stop - self.start + 1.0)
 
     def for_json(self):
         """Return a JSON serialized copy.
@@ -390,19 +396,36 @@ class AssetApp(object):
         return self.app.client.upload_files("/api/v3/assets/_batchUpload",
                                             files, body)
 
-    def asset_search(self, query):
+    def search(self, search=None, deep_query=None, raw=False):
         """
-        Perform an asset search.
+        Perform an asset search using the ElasticSearch query DSL.  Note that for
+        load and security purposes, not all ElasticSearch search options are accepted.
+
+        See Also:
+            For search/query format.
+            https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
 
         Args:
-            query:
-
+            search (dict): The ElasticSearch search to execute
+            deep_query (dict): An ElasticSearch query that will be applied to deep
+                analysis elements.
+            raw (bool): Return the raw ElasticSearch dict result rather than a SearchResult
         Returns:
-
+            mixed: A SearchResult containing assets or in raw mode an
+                ElasticSearch search result dictionary.
         """
-        raise NotImplemented()
+        body = {
+            'search': search,
+            'deepQuery': deep_query
+        }
+        rsp = self.app.client.post("/api/v3/assets/_search", body)
+        if raw:
+            return rsp
+        else:
+            rsp["hits"]["offset"] = search.get("from", 0)
+            return SearchResult(rsp, Asset)
 
-    def get_asset(self, id):
+    def get_by_id(self, id):
         """
         Return the asset with the given unique Id.
 

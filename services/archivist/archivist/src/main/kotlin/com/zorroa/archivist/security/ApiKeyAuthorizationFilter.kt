@@ -44,11 +44,13 @@ class ApiKeyAuthorizationFilter constructor(
         try {
             val apiToken = authServerClient.authenticate(token)
             SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(apiToken)
-            chain.doFilter(req, res)
         } catch (e: Exception) {
             log.warn("Invalid authentication token: ", e)
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+            return
         }
+
+        chain.doFilter(req, res)
     }
 
     companion object {

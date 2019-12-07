@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.clients.AuthServerClient
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageLocator
@@ -69,7 +70,9 @@ class ProjectServiceImpl constructor(
     val projectFilterDao: ProjectFilterDao,
     val authServerClient: AuthServerClient,
     val indexRoutingService: IndexRoutingService,
-    val fileStorageService: FileStorageService
+    val fileStorageService: FileStorageService,
+    val properties: ApplicationProperties,
+    val txEvent: TransactionEventManager
 ) : ProjectService {
 
     override fun create(spec: ProjectSpec): Project {
@@ -85,9 +88,11 @@ class ProjectServiceImpl constructor(
                 actor.name
             )
         )
-        createStandardApiKeys(project)
-        createProjectCryptoKey(project)
         createIndexRoute(project)
+        txEvent.afterCommit(sync = true) {
+            createProjectCryptoKey(project)
+            createStandardApiKeys(project)
+        }
 
         logger.event(
             LogObject.PROJECT, LogAction.CREATE,
@@ -100,8 +105,10 @@ class ProjectServiceImpl constructor(
     }
 
     private fun createIndexRoute(project: Project) {
+        val mapping = properties.getString("archivist.es.default-mapping-type")
+        val ver = properties.getInt("archivist.es.default-mapping-version")
         indexRoutingService.createIndexRoute(
-            IndexRouteSpec("asset", 12, projectId = project.id,
+            IndexRouteSpec(mapping, ver, projectId = project.id,
                 state = IndexRouteState.CURRENT)
         )
     }
@@ -110,6 +117,7 @@ class ProjectServiceImpl constructor(
      * Create the list of standard project keys.
      */
     private fun createStandardApiKeys(project: Project) {
+        logger.info("Creating standard API Keys for project ${project.name}")
         authServerClient.createApiKey(
             project, KnownKeys.JOB_RUNNER, listOf(
                 Role.JOBRUNNER,

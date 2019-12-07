@@ -42,5 +42,6 @@ enum class LogObject {
     ANALYST,
     TASK_ERROR,
     PROJECT,
-    DATASOURCE
+    DATASOURCE,
+    FILE_STORAGE
 }
