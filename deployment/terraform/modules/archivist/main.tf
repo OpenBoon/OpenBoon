@@ -65,10 +65,7 @@ resource "google_project_service" "sqladmin" {
   depends_on = ["google_project_service.service-usage"]
 }
 
-resource "google_sql_database" "zorroa" {
-  name      = "${var.database-name}"
-  instance  = "${var.sql-instance-name}"
-}
+
 
 resource "google_sql_user" "users" {
   name     = "${var.database-user}"
@@ -302,15 +299,5 @@ resource "kubernetes_secret" "sql-credentials" {
   data {
     username = "zorroa"
     password = "${random_string.sql-password.result}"
-  }
-}
-
-resource "kubernetes_secret" "cloud-sql-sa-key" {
-  metadata {
-    name = "cloud-sql-sa-key"
-    namespace = "${var.namespace}"
-  }
-  data {
-    credentials.json = "${var.sql-service-account-key}"
   }
 }

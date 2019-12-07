@@ -109,3 +109,11 @@ module "archivist" {
   sql-connection-name = "${module.postgres.connection-name}"
 }
 
+## Auth-Server
+module "auth-server" {
+  source = "./modules/auth-server"
+  sql-instance-name = "${module.postgres.instance-name}"
+  sql-connection-name = "${module.postgres.connection-name}"
+  image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
+}
+

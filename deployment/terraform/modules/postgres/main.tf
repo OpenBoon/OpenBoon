@@ -13,6 +13,11 @@ resource "google_sql_database_instance" "zmlp" {
   }
 }
 
+resource "google_sql_database" "zorroa" {
+  name      = "zorroa"
+  instance  = "${google_sql_database_instance.zmlp.name}"
+}
+
 resource "google_project_service" "iam" {
   service = "iam.googleapis.com"
   disable_on_destroy = false
@@ -37,4 +42,14 @@ resource "google_project_iam_member" "cloud-sql-proxy-iam" {
 
 resource "google_service_account_key" "cloud-sql-account-key" {
   service_account_id = "${google_service_account.cloud-sql-proxy.name}"
+}
+
+resource "kubernetes_secret" "cloud-sql-sa-key" {
+  metadata {
+    name = "cloud-sql-sa-key"
+    namespace = "${var.namespace}"
+  }
+  data {
+    "credentials.json" = "${base64decode(google_service_account_key.cloud-sql-account-key.private_key)}"
+  }
 }

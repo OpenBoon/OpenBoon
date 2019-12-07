@@ -20,16 +20,6 @@ resource "google_sql_user" "wallet" {
   password = "${random_string.sql-password.result}"
 }
 
-resource "kubernetes_secret" "cloud-sql-sa-key" {
-  metadata {
-    name = "cloud-sql-sa-key"
-    namespace = "${var.namespace}"
-  }
-  data {
-    "credentials.json" = "${var.sql-service-account-key}"
-  }
-}
-
 resource "kubernetes_deployment" "wallet" {
   provider = "kubernetes"
   depends_on = ["google_sql_user.wallet"]

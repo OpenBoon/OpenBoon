@@ -1,28 +1,12 @@
-resource "random_string" "sql-password" {
-  length = 16
-  special = false
-}
-
-resource "google_sql_database" "auth-server" {
-  depends_on = ["google_sql_user.auth-server"]
-  name      = "${var.database-name}"
-  instance  = "${var.sql-instance-name}"
-}
+//resource "random_string" "sql-password" {
+//  length = 16
+//  special = false
+//}
 
 resource "google_sql_user" "auth-server" {
-  name     = "${var.database-user}"
+  name     = "zorroa"
   instance = "${var.sql-instance-name}"
-  password = "${random_string.sql-password.result}"
-}
-
-resource "kubernetes_secret" "cloud-sql-sa-key" {
-  metadata {
-    name = "cloud-sql-sa-key"
-    namespace = "${var.namespace}"
-  }
-  data {
-    "credentials.json" = "${var.sql-service-account-key}"
-  }
+  password = "zorroa"
 }
 
 resource "kubernetes_deployment" "auth-server" {
@@ -88,26 +72,26 @@ resource "kubernetes_deployment" "auth-server" {
         }
         container {
           name = "auth-server"
-          image = "zmlp/auth-server:${var.container-tag}"
+          image = "zmlp/authserver:${var.container-tag}"
           image_pull_policy = "Always"
-          liveness_probe = {
-            initial_delay_seconds = 30
-            period_seconds = 5
-            http_get {
-              scheme = "HTTP"
-              path = "/health/"
-              port = "80"
-            }
-          }
-          readiness_probe = {
-            initial_delay_seconds = 30
-            period_seconds = 30
-            http_get {
-              scheme = "HTTP"
-              path = "/health/"
-              port = "80"
-            }
-          }
+//          liveness_probe = {
+//            initial_delay_seconds = 30
+//            period_seconds = 5
+//            http_get {
+//              scheme = "HTTP"
+//              path = "/health/"
+//              port = "80"
+//            }
+//          }
+//          readiness_probe = {
+//            initial_delay_seconds = 30
+//            period_seconds = 30
+//            http_get {
+//              scheme = "HTTP"
+//              path = "/health/"
+//              port = "80"
+//            }
+//          }
           port {
             container_port = "80"
           }
@@ -121,16 +105,16 @@ resource "kubernetes_deployment" "auth-server" {
               cpu = 0.2
             }
           }
-          env = [
-            {
-              name = "PG_HOST"
-              value = "localhost"
-            },
-            {
-              name = "PG_PASSWORD"
-              value = "${random_string.sql-password.result}"
-            }
-          ]
+//          env = [
+//            {
+//              name = "PG_HOST"
+//              value = "localhost"
+//            },
+//            {
+//              name = "PG_PASSWORD"
+//              value = "${random_string.sql-password.result}"
+//            }
+//          ]
         }
       }
     }
@@ -146,6 +130,7 @@ resource "kubernetes_service" "auth-server" {
     }
   }
   "spec" {
+    cluster_ip = "${var.ip-address}"
     port {
       name = "http"
       protocol = "TCP"
@@ -154,35 +139,10 @@ resource "kubernetes_service" "auth-server" {
     selector {
       app = "auth-server"
     }
-    type = "NodePort"
+    type = "ClusterIP"
   }
 }
 
-resource "google_compute_managed_ssl_certificate" "default" {
-  provider = "google-beta"
-  name = "auth-server-cert"
-  managed {
-    domains = ["auth-server.zmlp.zorroa.com"]
-  }
-}
-
-resource "kubernetes_ingress" "auth-server" {
-  metadata {
-    name = "auth-server-ingress"
-    namespace = "${var.namespace}"
-    annotations {
-      "kubernetes.io/ingress.allow-http" = "false"
-      "ingress.gcp.kubernetes.io/pre-shared-cert" = "${google_compute_managed_ssl_certificate.default.name}"
-      "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_address.auth-server-external.name}"
-    }
-  }
-  spec {
-    backend {
-      service_name = "auth-server-service"
-      service_port = 80
-    }
-  }
-}
 
 resource "kubernetes_horizontal_pod_autoscaler" "auth-server" {
   provider = "kubernetes"
