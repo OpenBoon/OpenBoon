@@ -303,7 +303,7 @@ class CloudVideoIntelligenceProcessor(GoogleApiDocumentProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        if not asset.is_clip():
+        if not asset.attr_exists("clip"):
             self.logger.info('Skipping this frame, it is not a video clip.')
             return
         clip_contents = self._get_clip_bytes(asset)
@@ -426,7 +426,7 @@ class CloudSpeechToTextProcessor(GoogleApiDocumentProcessor):
     def process(self, frame):
         asset = frame.asset
         analysis_field = 'google.speechRecognition'
-        if not asset.is_clip():
+        if not asset.attr_exists("clip"):
             self.logger.warning('Skipping, this asset is not a clip.')
             return
         if not self.arg_value('overwrite_existing') and asset.get_attr('analysis.%s' %
