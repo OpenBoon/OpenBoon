@@ -2,12 +2,13 @@ package com.zorroa
 
 import com.aspose.slides.Presentation
 import com.aspose.slides.SlideUtil
+import java.io.InputStream
 import javax.imageio.ImageIO
 import kotlin.system.measureTimeMillis
 
-class SlidesDocument(options: Options) : Document(options) {
+class SlidesDocument(options: Options, inputStream: InputStream) : Document(options) {
 
-    private val doc = Presentation(ioHandler.getInputPath())
+    private val doc = Presentation(inputStream)
 
     override fun renderAllImages() {
         for (page in 0 until doc.slides.size()) {
@@ -26,7 +27,10 @@ class SlidesDocument(options: Options) : Document(options) {
         val time = measureTimeMillis {
             val sld = doc.slides.get_Item(page - 1)
             val image = sld.getThumbnail(1f, 1f)
-            ImageIO.write(image, "jpeg", ioHandler.getImagePath(page).toFile())
+
+            val output = ReversibleByteArrayOutputStream(16384)
+            ImageIO.write(image, "jpeg", output)
+            ioHandler.writeImage(page, output)
         }
         logImageTime(page, time)
     }
@@ -60,7 +64,9 @@ class SlidesDocument(options: Options) : Document(options) {
                 metadata["content"] = extractPageContent(page)
             }
 
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
         logMetadataTime(page, time)
     }

@@ -4,11 +4,12 @@ import com.aspose.words.FontSettings
 import com.aspose.words.ImageSaveOptions
 import com.aspose.words.PdfSaveOptions
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
-class WordDocument(options: Options) : Document(options) {
+class WordDocument(options: Options, inputStream: InputStream) : Document(options) {
 
-    private val doc = com.aspose.words.Document(ioHandler.getInputPath())
+    private val doc = com.aspose.words.Document(inputStream)
 
     init {
         if (options.verbose) {
@@ -57,7 +58,10 @@ class WordDocument(options: Options) : Document(options) {
             imageSaveOptions.verticalResolution = 96f
             imageSaveOptions.pageCount = 1
             imageSaveOptions.pageIndex = page - 1
-            doc.save(ioHandler.getImagePath(page).toString(), imageSaveOptions)
+
+            val output = ReversibleByteArrayOutputStream(16384)
+            doc.save(output, imageSaveOptions)
+            ioHandler.writeImage(page, output)
         }
         logImageTime(page, time)
     }
@@ -92,7 +96,9 @@ class WordDocument(options: Options) : Document(options) {
                 metadata["content"] = extractPageContent(page)
             }
 
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
         logMetadataTime(page, time)
     }

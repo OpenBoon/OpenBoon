@@ -8,19 +8,19 @@ import com.aspose.pdf.facades.PdfExtractor
 import com.aspose.pdf.facades.PdfFileInfo
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
+import java.io.InputStream
 import java.nio.charset.Charset
 import kotlin.system.measureTimeMillis
 
 /**
  * Handles rendering a PDF as an image and json metadata file.
  */
-class PdfDocument(options: Options) : com.zorroa.Document(options) {
+class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Document(options) {
 
-    val pdfDocument = Document(ioHandler.getInputPath())
+    val pdfDocument = Document(inputStream)
 
     init {
-        logger.info("opening file: {}", options.inputFile)
+        logger.info("opening file: {}", options.fileName)
     }
 
     override fun renderAllImages() {
@@ -75,7 +75,9 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
                 metadata["content"] = extractPageContent(page)
             }
 
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
 
         logMetadataTime(page, time)
@@ -88,6 +90,7 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
         pdfExtractor.startPage = page
         pdfExtractor.endPage = page
 
+        logger.info("extracging text from page: $page")
         pdfExtractor.extractText(Charset.forName("UTF-8"))
 
         val byteStream = ByteArrayOutputStream()
@@ -98,7 +101,7 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
 
     override fun close() {
         try {
-            logger.info("closing file: {}", options.inputFile)
+            logger.info("closing file: {}", options.fileName)
             pdfDocument.close()
         } catch (e: Exception) {
             // ignore
@@ -133,16 +136,13 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
      */
     class PdfImageRenderStack(private val doc: PdfDocument, val options: Options) {
 
-        private val byteStream = ByteArrayOutputStream(1024 * 25)
+        private val byteStream = ReversibleByteArrayOutputStream(16384)
         private val jpegDevice = JpegDevice(Resolution(options.dpi), 100)
 
         fun renderImage(page: Int) {
             val time = measureTimeMillis {
-                val path = doc.ioHandler.getImagePath(page)
                 jpegDevice.process(doc.pdfDocument.pages.get_Item(page), byteStream)
-                FileOutputStream(path.toFile()).use { outputStream ->
-                    byteStream.writeTo(outputStream)
-                }
+                doc.ioHandler.writeImage(page, byteStream)
                 byteStream.reset()
             }
             doc.logImageTime(page, time)

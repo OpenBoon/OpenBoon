@@ -7,13 +7,14 @@ import com.aspose.cells.MemorySetting
 import com.aspose.cells.SheetRender
 import com.aspose.cells.Workbook
 import com.aspose.cells.Worksheet
+import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
 const val PAGE_LIMIT = 9
 const val CELL_RANGE_MAX_COLUMNS = 10
 const val CELL_RANGE_MAX_ROWS = 25
 
-class CellsDocument(options: Options) : Document(options) {
+class CellsDocument(options: Options, inputStream: InputStream) : Document(options) {
 
     private val loadOptions = LoadOptions()
 
@@ -22,7 +23,7 @@ class CellsDocument(options: Options) : Document(options) {
         loadOptions.memorySetting = MemorySetting.MEMORY_PREFERENCE
     }
 
-    private val workbook = Workbook(ioHandler.getInputPath(), loadOptions)
+    private val workbook = Workbook(inputStream, loadOptions)
 
     override fun renderAllImages() {
         for (page in 0 until workbook.worksheets.count) {
@@ -56,7 +57,9 @@ class CellsDocument(options: Options) : Document(options) {
 
     fun saveSheetProxy(worksheet: Worksheet, page: Int) {
         val sr = SheetRender(worksheet, renderingOptions(true))
-        sr.toImage(0, ioHandler.getImagePath(page).toString())
+        val output = ReversibleByteArrayOutputStream(8096)
+        sr.toImage(0, output)
+        ioHandler.writeImage(page, output)
     }
 
     fun saveSheetProxyWithCellRange(worksheet: Worksheet, page: Int) {
@@ -106,13 +109,21 @@ class CellsDocument(options: Options) : Document(options) {
             if (options.content) {
                 logger.warn("Option ignored, storing worksheet content is not supported.")
             }
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
+
         }
         logMetadataTime(page, time)
     }
 
     override fun close() {
-        workbook.dispose()
+        try {
+            workbook.dispose()
+        } catch (e: Exception) {
+            // ignore
+        }
     }
 
     companion object {

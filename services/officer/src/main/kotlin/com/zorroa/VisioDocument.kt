@@ -9,12 +9,12 @@ import com.aspose.diagram.PaperSizeFormat
 import com.aspose.diagram.PixelOffsetMode
 import com.aspose.diagram.SaveFileFormat
 import com.aspose.diagram.SmoothingMode
-import java.io.FileOutputStream
+import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
-class VisioDocument(options: Options) : Document(options) {
+class VisioDocument(options: Options, inputStream: InputStream) : Document(options) {
 
-    var diagram = Diagram(ioHandler.getInputPath())
+    var diagram = Diagram(inputStream)
 
     override fun renderImage(page: Int) {
         saveImage(page, getImageSaveOptions(page))
@@ -30,7 +30,9 @@ class VisioDocument(options: Options) : Document(options) {
 
     fun saveImage(page: Int, opts: ImageSaveOptions) {
         val time = measureTimeMillis {
-            diagram.save(FileOutputStream(ioHandler.getImagePath(page).toFile()), opts)
+            val output = ReversibleByteArrayOutputStream(16384)
+            diagram.save(output, opts)
+            ioHandler.writeImage(page, output)
         }
         logImageTime(page, time)
     }
@@ -75,7 +77,9 @@ class VisioDocument(options: Options) : Document(options) {
                 metadata["content"] = extractContent(page)
             }
 
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
 
         logMetadataTime(page, time)

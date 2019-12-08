@@ -1,0 +1,12 @@
+
+bucket:
+  endpoint: http://localhost:9000
+  name: ml-storage
+  access-key: qwerty123
+  secret-key: 123qwerty
+  retention-hours: 8
+verbose: false
+port: 7017
+load-multiplier: 2
+
+
