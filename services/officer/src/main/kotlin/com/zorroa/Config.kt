@@ -15,12 +15,11 @@ object Config {
         val name: String,
         val accessKey: String,
         val secretKey: String,
-        val retentionHours: Int
+        val retentionDays: Int
     )
 
     class OfficerConfiguration(
         val bucket : BucketConfiguration,
-        val verbose: Boolean,
         val port: Int,
         val loadMultiplier: Int
     )

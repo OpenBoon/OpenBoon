@@ -35,9 +35,9 @@ object StorageManager {
 
         val lifeCycle = """<LifecycleConfiguration><Rule>
                     <ID>expire-officer-files</ID>
-                    <Prefix>officer/</Prefix>
+                    <Filter><Prefix>officer/</Prefix></Filter>
                     <Status>Enabled</Status>
-                    <Expiration><Minutes>1</Minutes></Expiration>
+                    <Expiration><Days>${Config.bucket.retentionDays}</Days></Expiration>
                     </Rule>
                     </LifecycleConfiguration>"""
 
