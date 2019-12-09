@@ -470,19 +470,19 @@ export const jobs = {
   },
 }
 
-export const jobsColumns = [
+export const jobColumns = [
   'Status',
   'Job Name',
   'Created By',
   'Priority',
-  'Created (Date/Time)',
+  'Created',
   'Failed',
   'Errors',
   '# Assets',
   'Progress',
 ]
 
-export const jobsRows = jobs.list.map(job => {
+export const jobRows = jobs.list.map(job => {
   const { id } = job
   const status = job.paused ? 'Paused' : job.state
   const jobName = job.name
@@ -496,7 +496,15 @@ export const jobsRows = jobs.list.map(job => {
     <div style={{ color: 'red' }}>{job.assetCounts.assetErrorCount}</div>
   )
   const numAssets = 'numAsets'
-  const progress = <div style={{ color: 'red' }}>progress</div>
+  const progress = {
+    isGenerating: job.jobId === '1585ca03-4db0-14d1-8edd-0a580a000926',
+    isCanceled: job.state === 'Canceled',
+    canceledBy: job.createdUser.username,
+    failed: job.taskCounts.tasksFailure,
+    pending: job.taskCounts.tasksWaiting,
+    running: job.taskCounts.tasksRunning,
+    succeeded: job.taskCounts.tasksSuccess,
+  }
 
   return {
     id,
