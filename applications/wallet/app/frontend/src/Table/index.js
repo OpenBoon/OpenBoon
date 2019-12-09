@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
-
-const ROW_HEIGHT = 32
+import { formatFullDate } from '../Date/helpers'
+import ProgressBar from '../ProgressBar'
 
 const Table = ({ columns, rows }) => {
   return (
@@ -15,34 +15,57 @@ const Table = ({ columns, rows }) => {
         css={{
           borderSpacing: 0,
           boxShadow: constants.boxShadows.dark,
+          th: {
+            fontWeight: typography.weight.extraLight,
+            color: colors.grey2,
+            backgroundColor: colors.grey1,
+            padding: `${spacing.moderate}px ${spacing.normal}px`,
+            borderBottom: constants.borders.default,
+            '&:not(:last-child)': {
+              borderRight: constants.borders.default,
+            },
+          },
+          tr: {
+            backgroundColor: colors.grey4,
+            ':hover': {
+              backgroundColor: colors.grey1,
+              td: {
+                border: constants.borders.default,
+                borderLeft: '0',
+                borderRight: '0',
+                '&:first-of-type': {
+                  border: constants.borders.default,
+                  borderRight: '0',
+                },
+                '&:last-of-type': {
+                  border: constants.borders.default,
+                  borderLeft: '0',
+                },
+              },
+            },
+          },
           td: {
-            height: ROW_HEIGHT,
             fontWeight: typography.weight.extraLight,
             color: colors.grey2,
             padding: `${spacing.base}px ${spacing.normal}px`,
             border: constants.borders.transparent,
+            borderLeft: '0',
+            borderRight: '0',
+            ':first-of-type': {
+              border: constants.borders.transparent,
+              borderRight: '0',
+            },
+            ':last-of-type': {
+              border: constants.borders.transparent,
+              borderLeft: '0',
+            },
           },
         }}>
         <thead>
-          <tr
-            css={{
-              backgroundColor: colors.grey4,
-            }}>
+          <tr>
             {columns.map(column => {
               return (
-                <th
-                  key={column}
-                  css={{
-                    height: ROW_HEIGHT,
-                    fontWeight: typography.weight.extraLight,
-                    color: colors.grey2,
-                    backgroundColor: colors.grey1,
-                    padding: `${spacing.moderate}px ${spacing.normal}px`,
-                    borderBottom: constants.borders.default,
-                    '&:not(:last-child)': {
-                      borderRight: constants.borders.default,
-                    },
-                  }}>
+                <th key={column}>
                   <div css={{ display: 'flex' }}>{column}</div>
                 </th>
               )
@@ -64,11 +87,13 @@ const Table = ({ columns, rows }) => {
                 <td>{row.jobName}</td>
                 <td>{row.createdBy}</td>
                 <td>{row.priority}</td>
-                <td>{row.createdDateTime}</td>
+                <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
                 <td>{row.failed}</td>
                 <td>{row.errors}</td>
                 <td>{row.numAssets}</td>
-                <td>{row.progress}</td>
+                <td>
+                  <ProgressBar status={row.progress} />
+                </td>
               </tr>
             )
           })}
@@ -91,7 +116,15 @@ Table.propTypes = {
       failed: PropTypes.node,
       errors: PropTypes.node,
       numAssets: PropTypes.string,
-      progress: PropTypes.node,
+      progress: PropTypes.shape({
+        isGenerating: PropTypes.bool,
+        isCanceled: PropTypes.bool,
+        canceledBy: PropTypes.string,
+        succeeded: PropTypes.number,
+        failed: PropTypes.number,
+        running: PropTypes.number,
+        pending: PropTypes.number,
+      }),
     }),
   ).isRequired,
 }
