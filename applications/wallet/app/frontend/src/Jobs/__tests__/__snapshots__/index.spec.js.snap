@@ -15,11 +15,11 @@ exports[`<Jobs /> should render properly with data 1`] = `
   }
 }
 
-.emotion-52 {
+.emotion-63 {
   padding: 12px;
 }
 
-.emotion-50 {
+.emotion-61 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30,46 +30,46 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 16px;
 }
 
-.emotion-49 {
+.emotion-60 {
   border-spacing: 0;
 }
 
-.emotion-49 th {
+.emotion-60 th {
   color: #b3b3b3;
   background-color: #2e2e2e;
   padding: 12px 16px;
   border-bottom: 1px solid #4d4948;
 }
 
-.emotion-49 th:not(:last-child) {
+.emotion-60 th:not(:last-child) {
   border-right: 1px solid #4d4948;
 }
 
-.emotion-49 tr {
+.emotion-60 tr {
   background-color: #121212;
 }
 
-.emotion-49 tr:hover {
+.emotion-60 tr:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-49 tr:hover td {
+.emotion-60 tr:hover td {
   border: 1px solid #4d4948;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-49 tr:hover td:first-of-type {
+.emotion-60 tr:hover td:first-of-type {
   border: 1px solid #4d4948;
   border-right: 0;
 }
 
-.emotion-49 tr:hover td:last-of-type {
+.emotion-60 tr:hover td:last-of-type {
   border: 1px solid #4d4948;
   border-left: 0;
 }
 
-.emotion-49 td {
+.emotion-60 td {
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -77,12 +77,12 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-right: 0;
 }
 
-.emotion-49 td:first-of-type {
+.emotion-60 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-49 td:last-of-type {
+.emotion-60 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -94,15 +94,31 @@ exports[`<Jobs /> should render properly with data 1`] = `
   display: flex;
 }
 
-.emotion-14 {
+.emotion-15 {
   background-color: #121212;
 }
 
-.emotion-14:nth-of-type(2n) {
+.emotion-15:nth-of-type(2n) {
   background-color: #1d1d1d;
 }
 
-.emotion-13 {
+.emotion-9 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #fff;
+  background-color: #4a90e2;
+}
+
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -111,30 +127,12 @@ exports[`<Jobs /> should render properly with data 1`] = `
   width: 200px;
 }
 
-.emotion-9 {
+.emotion-10 {
   height: 100%;
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
   background-color: #4ac565;
-}
-
-.emotion-9:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-9:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-10 {
-  height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #ce2d3f;
 }
 
 .emotion-10:first-of-type {
@@ -149,10 +147,10 @@ exports[`<Jobs /> should render properly with data 1`] = `
 
 .emotion-11 {
   height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4a90e2;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #ce2d3f;
 }
 
 .emotion-11:first-of-type {
@@ -170,7 +168,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #404040;
+  background-color: #4a90e2;
 }
 
 .emotion-12:first-of-type {
@@ -183,11 +181,77 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-24 {
+.emotion-13 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #404040;
+}
+
+.emotion-13:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-13:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-23 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #fff;
+  background-color: #f5a623;
+}
+
+.emotion-27 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #000000;
+  background-color: #b3b3b3;
+}
+
+.emotion-28 {
   color: #4d4948;
 }
 
-.emotion-34 {
+.emotion-30 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #fff;
+  background-color: #4ac565;
+}
+
+.emotion-41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -199,17 +263,17 @@ exports[`<Jobs /> should render properly with data 1`] = `
   color: #4a90e2;
 }
 
-.emotion-32 {
+.emotion-39 {
   color: #4a90e2;
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
 
-.emotion-33 {
+.emotion-40 {
   padding-left: 8px;
 }
 
-.emotion-45 {
+.emotion-56 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -217,17 +281,17 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-45:first-of-type {
+.emotion-56:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-45:last-of-type {
+.emotion-56:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-51 {
+.emotion-62 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -239,7 +303,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
 }
 
 <div
-  className="emotion-52"
+  className="emotion-63"
 >
   <h2>
     Projects
@@ -250,10 +314,10 @@ exports[`<Jobs /> should render properly with data 1`] = `
     </li>
   </ul>
   <div
-    className="emotion-50"
+    className="emotion-61"
   >
     <table
-      className="emotion-49"
+      className="emotion-60"
     >
       <thead>
         <tr>
@@ -324,10 +388,14 @@ exports[`<Jobs /> should render properly with data 1`] = `
       </thead>
       <tbody>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -368,11 +436,8 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
-              <div
-                className="emotion-9"
-              />
               <div
                 className="emotion-10"
               />
@@ -382,14 +447,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
               <div
                 className="emotion-12"
               />
+              <div
+                className="emotion-13"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -430,11 +502,8 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
-              <div
-                className="emotion-9"
-              />
               <div
                 className="emotion-10"
               />
@@ -444,14 +513,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
               <div
                 className="emotion-12"
               />
+              <div
+                className="emotion-13"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Paused
+            <div
+              className="emotion-23"
+            >
+              Paused
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -492,19 +568,23 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Canceled
+            <div
+              className="emotion-27"
+            >
+              Canceled
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -545,17 +625,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-24"
+              className="emotion-28"
             >
               Canceled by: admin
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Finished
+            <div
+              className="emotion-30"
+            >
+              Finished
+            </div>
           </td>
           <td>
             test_officer
@@ -596,19 +680,23 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             test_officer
@@ -649,19 +737,23 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             flipbook_export_1
@@ -692,14 +784,14 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-34"
+              className="emotion-41"
             >
               <svg
-                className="emotion-32"
+                className="emotion-39"
                 data-file-name="generating.svg"
               />
               <div
-                className="emotion-33"
+                className="emotion-40"
               >
                 Generating
               </div>
@@ -707,10 +799,14 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             export_7_8_2019
@@ -741,19 +837,23 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             export_7_8_2019___
@@ -784,19 +884,23 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             sdlc-testdata-import.json
@@ -827,19 +931,23 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             sdlc-testdata-import.json
@@ -880,13 +988,13 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-45"
+                className="emotion-56"
               />
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
@@ -898,7 +1006,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
     UserMenu
   </h2>
   <div
-    className="emotion-51"
+    className="emotion-62"
   >
     <UserMenu
       logout={[Function]}
@@ -933,11 +1041,11 @@ exports[`<Jobs /> should render properly without data 1`] = `
   }
 }
 
-.emotion-52 {
+.emotion-63 {
   padding: 12px;
 }
 
-.emotion-50 {
+.emotion-61 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -948,46 +1056,46 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 16px;
 }
 
-.emotion-49 {
+.emotion-60 {
   border-spacing: 0;
 }
 
-.emotion-49 th {
+.emotion-60 th {
   color: #b3b3b3;
   background-color: #2e2e2e;
   padding: 12px 16px;
   border-bottom: 1px solid #4d4948;
 }
 
-.emotion-49 th:not(:last-child) {
+.emotion-60 th:not(:last-child) {
   border-right: 1px solid #4d4948;
 }
 
-.emotion-49 tr {
+.emotion-60 tr {
   background-color: #121212;
 }
 
-.emotion-49 tr:hover {
+.emotion-60 tr:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-49 tr:hover td {
+.emotion-60 tr:hover td {
   border: 1px solid #4d4948;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-49 tr:hover td:first-of-type {
+.emotion-60 tr:hover td:first-of-type {
   border: 1px solid #4d4948;
   border-right: 0;
 }
 
-.emotion-49 tr:hover td:last-of-type {
+.emotion-60 tr:hover td:last-of-type {
   border: 1px solid #4d4948;
   border-left: 0;
 }
 
-.emotion-49 td {
+.emotion-60 td {
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -995,12 +1103,12 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-right: 0;
 }
 
-.emotion-49 td:first-of-type {
+.emotion-60 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-49 td:last-of-type {
+.emotion-60 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -1012,15 +1120,31 @@ exports[`<Jobs /> should render properly without data 1`] = `
   display: flex;
 }
 
-.emotion-14 {
+.emotion-15 {
   background-color: #121212;
 }
 
-.emotion-14:nth-of-type(2n) {
+.emotion-15:nth-of-type(2n) {
   background-color: #1d1d1d;
 }
 
-.emotion-13 {
+.emotion-9 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #fff;
+  background-color: #4a90e2;
+}
+
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1029,30 +1153,12 @@ exports[`<Jobs /> should render properly without data 1`] = `
   width: 200px;
 }
 
-.emotion-9 {
+.emotion-10 {
   height: 100%;
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
   background-color: #4ac565;
-}
-
-.emotion-9:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-9:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-10 {
-  height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #ce2d3f;
 }
 
 .emotion-10:first-of-type {
@@ -1067,10 +1173,10 @@ exports[`<Jobs /> should render properly without data 1`] = `
 
 .emotion-11 {
   height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4a90e2;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #ce2d3f;
 }
 
 .emotion-11:first-of-type {
@@ -1088,7 +1194,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #404040;
+  background-color: #4a90e2;
 }
 
 .emotion-12:first-of-type {
@@ -1101,11 +1207,77 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-24 {
+.emotion-13 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #404040;
+}
+
+.emotion-13:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-13:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-23 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #fff;
+  background-color: #f5a623;
+}
+
+.emotion-27 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #000000;
+  background-color: #b3b3b3;
+}
+
+.emotion-28 {
   color: #4d4948;
 }
 
-.emotion-34 {
+.emotion-30 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #fff;
+  background-color: #4ac565;
+}
+
+.emotion-41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1117,17 +1289,17 @@ exports[`<Jobs /> should render properly without data 1`] = `
   color: #4a90e2;
 }
 
-.emotion-32 {
+.emotion-39 {
   color: #4a90e2;
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
 
-.emotion-33 {
+.emotion-40 {
   padding-left: 8px;
 }
 
-.emotion-45 {
+.emotion-56 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -1135,17 +1307,17 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-45:first-of-type {
+.emotion-56:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-45:last-of-type {
+.emotion-56:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-51 {
+.emotion-62 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1157,17 +1329,17 @@ exports[`<Jobs /> should render properly without data 1`] = `
 }
 
 <div
-  className="emotion-52"
+  className="emotion-63"
 >
   <h2>
     Projects
   </h2>
   Loading...
   <div
-    className="emotion-50"
+    className="emotion-61"
   >
     <table
-      className="emotion-49"
+      className="emotion-60"
     >
       <thead>
         <tr>
@@ -1238,10 +1410,14 @@ exports[`<Jobs /> should render properly without data 1`] = `
       </thead>
       <tbody>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -1282,11 +1458,8 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
-              <div
-                className="emotion-9"
-              />
               <div
                 className="emotion-10"
               />
@@ -1296,14 +1469,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
               <div
                 className="emotion-12"
               />
+              <div
+                className="emotion-13"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -1344,11 +1524,8 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
-              <div
-                className="emotion-9"
-              />
               <div
                 className="emotion-10"
               />
@@ -1358,14 +1535,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
               <div
                 className="emotion-12"
               />
+              <div
+                className="emotion-13"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Paused
+            <div
+              className="emotion-23"
+            >
+              Paused
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -1406,19 +1590,23 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Canceled
+            <div
+              className="emotion-27"
+            >
+              Canceled
+            </div>
           </td>
           <td>
             test-whitespace.json
@@ -1459,17 +1647,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-24"
+              className="emotion-28"
             >
               Canceled by: admin
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Finished
+            <div
+              className="emotion-30"
+            >
+              Finished
+            </div>
           </td>
           <td>
             test_officer
@@ -1510,19 +1702,23 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             test_officer
@@ -1563,19 +1759,23 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             flipbook_export_1
@@ -1606,14 +1806,14 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-34"
+              className="emotion-41"
             >
               <svg
-                className="emotion-32"
+                className="emotion-39"
                 data-file-name="generating.svg"
               />
               <div
-                className="emotion-33"
+                className="emotion-40"
               >
                 Generating
               </div>
@@ -1621,10 +1821,14 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             export_7_8_2019
@@ -1655,19 +1859,23 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             export_7_8_2019___
@@ -1698,19 +1906,23 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             sdlc-testdata-import.json
@@ -1741,19 +1953,23 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-14"
+          className="emotion-15"
         >
           <td>
-            Active
+            <div
+              className="emotion-9"
+            >
+              Active
+            </div>
           </td>
           <td>
             sdlc-testdata-import.json
@@ -1794,13 +2010,13 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              className="emotion-13"
+              className="emotion-14"
             >
               <div
-                className="emotion-45"
+                className="emotion-56"
               />
               <div
-                className="emotion-10"
+                className="emotion-11"
               />
             </div>
           </td>
@@ -1812,7 +2028,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
     UserMenu
   </h2>
   <div
-    className="emotion-51"
+    className="emotion-62"
   >
     <UserMenu
       logout={[Function]}

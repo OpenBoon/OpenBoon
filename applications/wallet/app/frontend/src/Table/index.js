@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
 import { formatFullDate } from '../Date/helpers'
+import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
 const Table = ({ columns, rows }) => {
@@ -83,7 +84,9 @@ const Table = ({ columns, rows }) => {
                     backgroundColor: colors.grey3,
                   },
                 }}>
-                <td>{row.status}</td>
+                <td>
+                  <Status jobStatus={row.status} />
+                </td>
                 <td>{row.jobName}</td>
                 <td>{row.createdBy}</td>
                 <td>{row.priority}</td>
