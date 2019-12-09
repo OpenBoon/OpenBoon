@@ -57,7 +57,6 @@ class TestCellsDocument {
     @Test
     fun testRenderAllImages() {
         val opts = Options("src/test/resources/test_sheet.xlsx")
-        opts.page = -1
 
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.renderAllImages()
@@ -72,9 +71,9 @@ class TestCellsDocument {
         opts.content = true
         opts.page = 1
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
-        doc.render()
+        doc.renderMetadata(1)
 
-        val metadata = Json.mapper.readValue(doc.getMetadata(), Map::class.java)
+        val metadata = Json.mapper.readValue(doc.getMetadata(1), Map::class.java)
         assertFalse(metadata.containsKey("content"))
     }
 
@@ -99,10 +98,10 @@ class TestCellsDocument {
     @Test
     fun testRenderLargeSheetWithCellRange_CreatesProxy() {
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
-        doc.saveSheetProxyWithCellRange(largeSheet(), opts.page)
+        doc.saveSheetProxyWithCellRange(largeSheet(), 1)
 
         assertThat(
-            ImageIO.read(doc.getImage()),
+            ImageIO.read(doc.getImage(1)),
             instanceOf(BufferedImage::class.java)
         )
     }

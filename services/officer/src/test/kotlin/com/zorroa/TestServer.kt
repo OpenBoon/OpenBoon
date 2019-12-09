@@ -7,7 +7,6 @@ import org.junit.Test
 import spark.kotlin.stop
 import java.io.File
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class TestServer {
 
@@ -32,22 +31,6 @@ class TestServer {
     fun testStatus() {
         val rsp = HttpRequest.get("http://localhost:9876/status")
         assertEquals(rsp.code(), 200)
-    }
-
-    @Test
-    fun testOcrEndpoint() {
-        val opts = Options("src/test/resources/ocr_test1.tif")
-        opts.page = 1
-        opts.outputDir = "ocr_test"
-
-        val rsp = HttpRequest.post("http://localhost:9876/ocr")
-            .part("file", "ocr_test1.tif", File("src/test/resources/ocr_test1.tif"))
-            .part("body", Json.mapper.writeValueAsString(opts))
-
-        assert(rsp.code() == 201)
-
-        val content = Json.mapper.readValue(rsp.body(), Map::class.java)
-        assertEquals("pixml://ml-storage/officer/ocr_test", content["output"])
     }
 
     @Test

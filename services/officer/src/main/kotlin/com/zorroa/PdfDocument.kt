@@ -6,6 +6,7 @@ import com.aspose.pdf.devices.JpegDevice
 import com.aspose.pdf.devices.Resolution
 import com.aspose.pdf.facades.PdfExtractor
 import com.aspose.pdf.facades.PdfFileInfo
+import java.awt.Color
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -23,19 +24,23 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
         logger.info("opening file: {}", options.fileName)
     }
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         val stack = PdfImageRenderStack(this, options)
         val fileInfo = PdfFileInfo(pdfDocument)
         for (page in 1..fileInfo.numberOfPages) {
             stack.renderImage(page)
         }
+        stack.renderImage(0)
+        return fileInfo.numberOfPages + 1
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
         val fileInfo = PdfFileInfo(pdfDocument)
         for (page in 1..fileInfo.numberOfPages) {
             renderMetadata(page)
         }
+        renderMetadata(0)
+        return fileInfo.numberOfPages + 1
     }
 
     override fun renderImage(page: Int) {
@@ -46,24 +51,27 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
         val time = measureTimeMillis {
             val documentInfo = DocumentInfo(pdfDocument)
             val fileInfo = PdfFileInfo(pdfDocument)
-
             val metadata = mutableMapOf<String, Any?>()
-            val height = fileInfo.getPageHeight(page)
-            val width = fileInfo.getPageWidth(page)
 
-            metadata["title"] = fileInfo.title
-            metadata["author"] = fileInfo.author
-            metadata["keywords"] = fileInfo.keywords
-            metadata["description"] = fileInfo.subject
-            metadata["creator"] = fileInfo.creator
-            metadata["timeCreated"] = convertDate(documentInfo.creationDate)
-            
-            metadata["pages"] = fileInfo.numberOfPages
+            if (page == 0) {
+                metadata["type"] = "document"
+                metadata["title"] = fileInfo.title
+                metadata["author"] = fileInfo.author
+                metadata["keywords"] = fileInfo.keywords
+                metadata["description"] = fileInfo.subject
+                metadata["timeCreated"] = convertDate(documentInfo.creationDate)
+                metadata["length"] = fileInfo.numberOfPages
+            }
+            val virtPage = page.coerceAtLeast(1)
+            val height = fileInfo.getPageHeight(virtPage)
+            val width = fileInfo.getPageWidth(virtPage)
+
             metadata["height"] = height
             metadata["width"] = width
             metadata["orientation"] = if (height > width) "portrait" else "landscape"
 
-            if (options.content) {
+            if (page > 0) {
+                metadata["type"] = "page"
                 metadata["content"] = extractPageContent(page)
             }
 
@@ -128,13 +136,21 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
      */
     class PdfImageRenderStack(private val doc: PdfDocument, val options: Options) {
 
-        private val byteStream = ReversibleByteArrayOutputStream(16384)
+        private val byteStream = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
         private val jpegDevice = JpegDevice(Resolution(options.dpi), 100)
 
         fun renderImage(page: Int) {
             val time = measureTimeMillis {
-                jpegDevice.process(doc.pdfDocument.pages.get_Item(page), byteStream)
-                doc.ioHandler.writeImage(page, byteStream)
+                jpegDevice.process(doc.pdfDocument.pages.get_Item(page.coerceAtLeast(1)), byteStream)
+                if (page == 0) {
+                    val render = StackRender(
+                        "PDF", Color(227, 50, 34),
+                        byteStream.toInputStream()
+                    )
+                    doc.ioHandler.writeImage(page, render.render())
+                } else {
+                    doc.ioHandler.writeImage(page, byteStream)
+                }
                 byteStream.reset()
             }
             doc.logImageTime(page, time)
