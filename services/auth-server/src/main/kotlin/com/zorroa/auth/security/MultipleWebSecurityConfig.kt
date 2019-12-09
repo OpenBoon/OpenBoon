@@ -1,5 +1,6 @@
 package com.zorroa.auth.security
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.auth.JSON_MAPPER
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.KeyGenerator
@@ -12,7 +13,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
-import org.springframework.core.io.Resource
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -20,13 +20,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.Base64
 import java.util.UUID
 
 @Configuration
 @ConfigurationProperties("security")
 class SecurityProperties {
 
-    var serviceKey: Resource? = null
+    var serviceKey: String? = null
 }
 
 @EnableWebSecurity
@@ -96,20 +99,7 @@ class MultipleWebSecurityConfig {
 
     @Bean
     fun serviceKey(): ApiKey {
-        securityProperties.serviceKey?.let {
-            val key = JSON_MAPPER.readValue(it.inputStream, ApiKey::class.java)
-            logger.info("loading external keyId: ${key.keyId}")
-            return key
-        }
-
-        // Otherwise return a random key that is impossible to use.
-        logger.warn("external key file not found, generating random key.")
-        return ApiKey(
-            UUID.randomUUID(),
-            UUID.randomUUID(),
-            KeyGenerator.generate(),
-            "random", listOf()
-        )
+        return loadServiceKey(securityProperties.serviceKey)
     }
 
     @Bean

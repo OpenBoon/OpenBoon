@@ -2,7 +2,6 @@ package com.zorroa.archivist.clients
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
@@ -127,17 +126,22 @@ class AuthServerClientImpl(val baseUri: String, val serviceKeyFile: String?) : A
             }
         })
 
-    private val serviceKey: ApiKey? = loadServiceKey()
+    val serviceKey: ApiKey? = loadServiceKey()
 
     private fun loadServiceKey(): ApiKey? {
         if (serviceKeyFile == null) {
             return null
         }
-        val path = Paths.get(serviceKeyFile)
-        return if (Files.exists(path)) {
-            Json.Mapper.readValue(path.toFile())
+        return if (serviceKeyFile.length > 100) {
+            val decoded = Base64.getUrlDecoder().decode(serviceKeyFile)
+            Json.Mapper.readValue<ApiKey>(decoded)
         } else {
-            null
+            val path = Paths.get(serviceKeyFile)
+            if (Files.exists(path)) {
+                Json.Mapper.readValue<ApiKey>(path.toFile())
+            } else {
+                null
+            }
         }
     }
 
