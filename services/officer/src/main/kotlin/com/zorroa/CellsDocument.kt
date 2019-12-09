@@ -92,17 +92,7 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
             metadata["author"] = props.author
             metadata["keywords"] = props.keywords
             metadata["description"] = props.category
-
-            metadata["timeCreated"] = try {
-                props.createdTime.toDate()
-            } catch (e: Exception) {
-                null
-            }
-            metadata["timeModified"] = try {
-                props.lastSavedTime.toDate()
-            } catch (e: Exception) {
-                null
-            }
+            metadata["timeCreated"] = convertDate(props.createdTime?.toDate())
 
             metadata["pages"] = workbook.worksheets.count
 

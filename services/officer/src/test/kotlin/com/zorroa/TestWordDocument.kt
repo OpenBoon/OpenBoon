@@ -47,8 +47,10 @@ class TestWordDocument {
 
     @Test
     fun testRenderPage() {
+        val opts = Options("src/test/resources/word_test_2.docx")
         opts.content = true
-        opts.page = 1
+        opts.page = 0
+        opts.outputDir = "render_word_page"
         val doc = WordDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 

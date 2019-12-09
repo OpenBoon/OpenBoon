@@ -56,16 +56,8 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
             metadata["keywords"] = fileInfo.keywords
             metadata["description"] = fileInfo.subject
             metadata["creator"] = fileInfo.creator
-            metadata["timeCreated"] = try {
-                documentInfo.creationDate
-            } catch (e: Exception) {
-                null
-            }
-            metadata["timeModified"] = try {
-                documentInfo.modDate
-            } catch (e: Exception) {
-                null
-            }
+            metadata["timeCreated"] = convertDate(documentInfo.creationDate)
+            
             metadata["pages"] = fileInfo.numberOfPages
             metadata["height"] = height
             metadata["width"] = width

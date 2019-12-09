@@ -75,16 +75,8 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
             metadata["author"] = props.author
             metadata["keywords"] = props.keywords
             metadata["description"] = props.category
-            metadata["timeCreated"] = try {
-                props.createdTime
-            } catch (e: Exception) {
-                null
-            }
-            metadata["timeModified"] = try {
-                props.lastSavedTime
-            } catch (e: Exception) {
-                null
-            }
+            metadata["timeCreated"] = convertDate(props.createdTime)
+
             metadata["pages"] = doc.pageCount
 
             val pageInfo = doc.getPageInfo(page - 1)

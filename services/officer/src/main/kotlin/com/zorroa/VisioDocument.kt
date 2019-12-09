@@ -54,17 +54,7 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
             metadata["keywords"] = props.keywords
             metadata["description"] = props.desc
             metadata["pageName"] = dpage.name
-
-            metadata["timeCreated"] = try {
-                props.timeCreated.toDate()
-            } catch (e: Exception) {
-                null
-            }
-            metadata["timeModified"] = try {
-                props.timeEdited.toDate()
-            } catch (e: Exception) {
-                null
-            }
+            metadata["timeCreated"] = convertDate(props.timeCreated?.toDate())
 
             val pageProps = dpage.pageSheet.pageProps
             metadata["pages"] = diagram.pages.count

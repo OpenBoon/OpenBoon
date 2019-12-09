@@ -16,6 +16,7 @@ import spark.kotlin.threadPool
 import java.io.Closeable
 import java.io.InputStream
 import java.lang.management.ManagementFactory
+import java.util.Date
 import java.util.UUID
 import javax.servlet.MultipartConfigElement
 import kotlin.system.exitProcess
@@ -125,6 +126,18 @@ abstract class Document(val options: Options) : Closeable {
     fun getImage(page: Int=1) : InputStream {
         return ioHandler.getImage(page)
     }
+
+    fun convertDate(date: Date?): String? {
+        if (date == null) {
+            return null
+        }
+        return try {
+            date?.toInstant()?.toString()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     companion object {
         val logger: Logger = LoggerFactory.getLogger(Document::class.java)
         val whitespaceRegex = Regex("\\s+")
