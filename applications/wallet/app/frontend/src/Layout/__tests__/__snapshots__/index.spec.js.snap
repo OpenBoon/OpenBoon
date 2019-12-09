@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-8 {
+.emotion-1 {
   height: 100%;
 }
 
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22,89 +22,39 @@ exports[`<Layout /> should render properly 1`] = `
   padding: 4px;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  padding-left: 16px;
-  height: 100%;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 14px;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  color: #82be3c;
-  background-color: #2E2E2E;
-}
-
-.emotion-1:hover {
-  cursor: pointer;
-}
-
-.emotion-0 {
-  margin-left: 8px;
-}
-
 <div
-  className="emotion-8"
+  className="emotion-1"
 >
   <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <svg
       data-file-name="logo.svg"
       width={110}
     />
-    <div
-      className="emotion-2"
-    >
-      <button
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-    </div>
-  </div>
-  <div
-    className="emotion-3"
-  >
-    <svg
-      data-file-name="logo.svg"
-      width={110}
+    <ProjectSwitcher
+      projects={
+        Array [
+          Object {
+            "id": "1",
+            "name": "Zorroa ABC",
+            "selected": true,
+          },
+          Object {
+            "id": "2",
+            "name": "Zorroa EasyAs123",
+            "selected": false,
+          },
+          Object {
+            "id": "3",
+            "name": "Zorroa JustYouAndMe",
+            "selected": false,
+          },
+        ]
+      }
+      setSelectedProject={[Function]}
     />
-    <div
-      className="emotion-2"
-    >
-      <button
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-    </div>
   </div>
+  Hello World
 </div>
 `;

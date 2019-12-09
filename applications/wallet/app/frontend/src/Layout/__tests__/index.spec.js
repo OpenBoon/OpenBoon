@@ -1,14 +1,13 @@
 import TestRenderer from 'react-test-renderer'
 
 import Layout from '..'
-import LayoutNavBar from '../NavBar'
+
+jest.mock('../../ProjectSwitcher', () => 'ProjectSwitcher')
 
 describe('<Layout />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Layout>
-        <LayoutNavBar />
-      </Layout>,
+      <Layout>{() => `Hello World`}</Layout>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
