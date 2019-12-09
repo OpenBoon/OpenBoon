@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import Table from '../Table'
-import { jobsColumns, jobsRows } from './__mocks__/jobs'
+import { jobColumns, jobRows } from './__mocks__/jobs'
 
 import { spacing } from '../Styles'
 
@@ -26,7 +26,7 @@ const Jobs = ({ logout }) => {
         </ul>
       )}
 
-      <Table columns={jobsColumns} rows={jobsRows} />
+      <Table columns={jobColumns} rows={jobRows} />
 
       <h2>UserMenu</h2>
       <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
