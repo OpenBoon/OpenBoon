@@ -34,9 +34,19 @@ export const authenticateUser = ({ setUser }) => async ({
 }
 
 export const logout = ({ setUser }) => async () => {
+  const { csrftoken } = Object.fromEntries(
+    document.cookie.split(/; */).map(c => {
+      const [key, ...v] = c.split('=')
+      return [key, decodeURIComponent(v.join('='))]
+    }),
+  )
+
   await fetch('/api/v1/logout', {
     method: 'POST',
-    headers: { 'content-type': 'application/json;charset=UTF-8' },
+    headers: {
+      'content-type': 'application/json;charset=UTF-8',
+      'X-CSRFToken': csrftoken,
+    },
   })
 
   clearUser()

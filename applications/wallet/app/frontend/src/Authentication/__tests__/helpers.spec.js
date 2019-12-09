@@ -63,6 +63,11 @@ describe('<Authentication /> helpers', () => {
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()
 
+      Object.defineProperty(document, 'cookie', {
+        writable: true,
+        value: 'csrftoken=CSRF_TOKEN',
+      })
+
       Object.defineProperty(window, 'localStorage', {
         writable: true,
         value: {
@@ -75,6 +80,16 @@ describe('<Authentication /> helpers', () => {
       expect(mockSetUser).toHaveBeenCalledWith({})
 
       expect(mockRemoveItem).toHaveBeenCalledWith(USER)
+
+      expect(fetch.mock.calls.length).toEqual(1)
+      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout')
+      expect(fetch.mock.calls[0][1]).toEqual({
+        headers: {
+          'X-CSRFToken': 'CSRF_TOKEN',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      })
     })
   })
 
