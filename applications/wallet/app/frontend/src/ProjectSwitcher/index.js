@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react'
-
-import projects from './__mocks__/projects'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
 
 import DropDown from './DropDown'
 import { colors, typography, spacing } from '../Styles'
@@ -8,19 +7,15 @@ import ChevronSvg from './chevron.svg'
 
 const CHEVRON_WIDTH = 20
 
-const ProjectSwitcher = () => {
+const ProjectSwitcher = ({ projects, setSelectedProject }) => {
   const [isDropDownOpen, setDropDownOpen] = useState(false)
-  const [selectedProject, setSelectedProject] = useState({})
 
-  // const { data: { results = [] } = {} } = useSWR('/api/v1/projects/')
+  const selectedProject = projects.find(project => project.selected)
+
   const onSelect = project => {
     setDropDownOpen(false)
     setSelectedProject(project)
   }
-
-  useEffect(() => {
-    setSelectedProject(projects.list[0])
-  }, [])
 
   return (
     <div
@@ -57,14 +52,22 @@ const ProjectSwitcher = () => {
       </button>
       {isDropDownOpen && (
         <DropDown
-          projects={projects.list.filter(
-            project => project.id !== selectedProject.id,
-          )}
+          projects={projects.filter(project => !project.selected)}
           onSelect={onSelect}
         />
       )}
     </div>
   )
+}
+
+ProjectSwitcher.propTypes = {
+  projects: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  setSelectedProject: PropTypes.func.isRequired,
 }
 
 export default ProjectSwitcher

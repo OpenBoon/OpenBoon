@@ -44,6 +44,7 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
     onClick={[Function]}
     type="button"
   >
+    Zorroa ABC
     <svg
       className="emotion-0"
       data-file-name="chevron.svg"
@@ -201,7 +202,7 @@ exports[`<ProjectSwitcher /> should render properly with data 3`] = `
     onClick={[Function]}
     type="button"
   >
-    Zorroa EasyAs123
+    Zorroa ABC
     <svg
       className="emotion-0"
       data-file-name="chevron.svg"

@@ -1,7 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import ProjectSwitcher from '..'
-import ProjectSwitcherDropDown from '../DropDown'
 
 import projects from '../__mocks__/projects'
 
@@ -10,10 +9,12 @@ const noop = () => () => {}
 describe('<ProjectSwitcher />', () => {
   it('should render properly with data', () => {
     const mockFn = jest.fn()
+    const mockProjects = projects.list.map(({ id, name }) => {
+      return { id, name, selected: id === '1' }
+    })
+
     const component = TestRenderer.create(
-      <ProjectSwitcher onClick={mockFn}>
-        <ProjectSwitcherDropDown projects={projects.list} onSelect={mockFn} />
-      </ProjectSwitcher>,
+      <ProjectSwitcher projects={mockProjects} setSelectedProject={mockFn} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -33,5 +34,6 @@ describe('<ProjectSwitcher />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+    expect(mockFn).toHaveBeenCalledWith({ id: '2', name: 'Zorroa EasyAs123' })
   })
 })

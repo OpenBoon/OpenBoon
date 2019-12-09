@@ -50,7 +50,15 @@ const Authentication = ({ children }) => {
 
   return (
     <SWRConfig value={{ fetcher: fetcher({ axiosInstance }) }}>
-      <Layout>{children({ user, logout: logout({ setUser }) })}</Layout>
+      <Layout>
+        {({ id, name }) =>
+          children({
+            user,
+            logout: logout({ setUser }),
+            selectedProject: { id, name },
+          })
+        }
+      </Layout>
     </SWRConfig>
   )
 }

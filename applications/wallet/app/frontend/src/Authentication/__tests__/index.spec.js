@@ -1,9 +1,9 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import Authentication from '..'
+import Layout from '../../Layout'
 
 jest.mock('../../Login', () => 'Login')
-jest.mock('../../Layout', () => 'Layout')
 
 jest.mock('../helpers')
 
@@ -44,8 +44,14 @@ describe('<Authentication />', () => {
       refreshToken: true,
     })
 
+    require('swr').__setMockUseSWRResponse({
+      data: { results: [{ name: 'project-name' }] },
+    })
+
     const component = TestRenderer.create(
-      <Authentication>{() => `Hello World!`}</Authentication>,
+      <Authentication>
+        {() => <Layout>{() => 'Hello World'}</Layout>}
+      </Authentication>,
     )
 
     // user is loading
