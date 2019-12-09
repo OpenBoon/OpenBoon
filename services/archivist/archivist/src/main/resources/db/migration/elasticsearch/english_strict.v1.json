@@ -181,13 +181,28 @@
               "type": "float"
             },
             "aspect": {
-              "type": "keyword"
+              "type": "float"
             },
             "orientation": {
               "type": "keyword"
             },
             "type": {
               "type": "keyword"
+            },
+            "length": {
+              "type": "float"
+            },
+            "timeCreated": {
+              "type": "date"
+            },
+            "keywords": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
             },
             "title": {
               "type": "keyword",
@@ -199,6 +214,15 @@
               }
             },
             "author": {
+              "type": "keyword",
+              "fields": {
+                "fulltext": {
+                  "type": "text",
+                  "analyzer": "default"
+                }
+              }
+            },
+            "description": {
               "type": "keyword",
               "fields": {
                 "fulltext": {
