@@ -8,4 +8,4 @@ spring:
     url: jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test
 
 security:
-  service-key: classpath:key.json
+  service-key: src/test/resources/key.json
