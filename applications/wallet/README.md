@@ -38,12 +38,12 @@ _Note_
 
 ## Install Frontend Dependencies
 
-1. `npm install`
+1. `npm ci`
 
 ## Start Frontend Development Server
 
 1. `npm start`
-1. Your server will not be running on `http://localhost:3000`
+1. Your server will be running on `http://localhost:3000`
 
 ## Build the Frontend for the Backend Development Server
 
