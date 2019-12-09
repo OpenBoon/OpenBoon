@@ -14,6 +14,7 @@ import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class TestCellsDocument {
 
@@ -67,7 +68,7 @@ class TestCellsDocument {
     }
 
     @Test
-    fun testRenderPageMetadata_ContainsNoContent() {
+    fun testRenderPageMetadata() {
         opts.content = true
         opts.page = 1
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
@@ -75,6 +76,19 @@ class TestCellsDocument {
 
         val metadata = Json.mapper.readValue(doc.getMetadata(1), Map::class.java)
         assertFalse(metadata.containsKey("content"))
+        assertTrue(metadata.containsKey("type"))
+        assertEquals("page", metadata["type"])
+    }
+
+    @Test
+    fun testRenderAssetMetadata() {
+        opts.content = true
+        opts.page = 0
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
+        doc.renderMetadata(0)
+
+        val metadata = Json.mapper.readValue(doc.getMetadata(0), Map::class.java)
+        assertEquals("document", metadata["type"])
     }
 
     @Test

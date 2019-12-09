@@ -104,6 +104,7 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
             val metadata = mutableMapOf<String, Any?>()
 
             if (page == 0) {
+                metadata["type"] = "document"
                 metadata["title"] = props.title
                 metadata["author"] = props.author
                 metadata["keywords"] = props.keywords
@@ -116,6 +117,7 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
             if (page > 0) {
                 // No content, it's a mess of garbage.
                 metadata["description"] = worksheet.name
+                metadata["type"] = "page"
             }
 
             val output = ReversibleByteArrayOutputStream()
