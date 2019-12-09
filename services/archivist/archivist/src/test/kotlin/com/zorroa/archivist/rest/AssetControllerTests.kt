@@ -174,4 +174,53 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.size",CoreMatchers.equalTo(97221)))
             .andReturn()
     }
+
+    @Test
+    fun testSearchNullBody() {
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/assets/_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total", CoreMatchers.equalTo(1)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.hits.hits[0]._source.source.path",
+                    CoreMatchers.equalTo("https://i.imgur.com/SSN26nN.jpg")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testSearchWithQuerySize() {
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                listOf(
+                    AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
+                    AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+                )
+            )
+        )
+
+        val search = """{
+            "search": { "size": 1, "query": { "match_all": {}} }
+        }"""
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(search)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total", CoreMatchers.equalTo(2)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.hits.length()", CoreMatchers.equalTo(1)))
+            .andReturn()
+    }
 }

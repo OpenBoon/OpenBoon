@@ -1,5 +1,6 @@
 import json
 
+from google.auth.exceptions import DefaultCredentialsError
 from google.cloud import storage as gcs
 from google.oauth2 import service_account
 
@@ -44,6 +45,6 @@ def get_google_storage_client():
     else:
         try:
             return gcs.Client()
-        except OSError:
+        except (DefaultCredentialsError, OSError):
             return gcs.Client.create_anonymous_client()
 

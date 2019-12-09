@@ -113,6 +113,9 @@ data class PipelineFilter(
  */
 val STANDARD_PIPELINE = listOf(
     ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core"),
+    ProcessorRef("pixml_core.core.processors.AssertAttributesProcessor", "zmlp-plugins-core",
+        mapOf("attrs" to listOf("media.type"))),
     ProcessorRef("pixml_core.proxy.processors.ProxyProcessor", "zmlp-plugins-core"),
-    ProcessorRef("pixml_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp-plugins-analysis")
+    ProcessorRef("pixml_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp-plugins-analysis"),
+    ProcessorRef("pixml_analysis.mxnet.processors.ResNetClassifyProcessor", "zmlp-plugins-analysis")
 )

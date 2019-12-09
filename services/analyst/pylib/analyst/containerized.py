@@ -245,7 +245,7 @@ class DockerContainerProcess(object):
             Container: A running docker Container
 
         """
-        network = os.environ.get("ZMLP_NETWORK", "dev_default")
+        network = os.environ.get("ZMLP_NETWORK", "zmlp_default")
 
         if in_container():
             host = socket.gethostbyname(socket.gethostname())

@@ -22,6 +22,15 @@ inline fun <reified T : Any> ObjectMapper.readValueOrNull(content: String?): T? 
     }
 }
 
+fun printjson(any: Any) {
+    try {
+        println(Json.Mapper.writerWithDefaultPrettyPrinter().writeValueAsString(any))
+    } catch (e: JsonProcessingException) {
+        throw IllegalArgumentException(
+            "Failed to serialize object, unexpected: $e", e)
+    }
+}
+
 object Json {
 
     val GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {}

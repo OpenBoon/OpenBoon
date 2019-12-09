@@ -1,6 +1,6 @@
 import logging
 
-from pixml.analysis import AssetBuilder, Argument
+from pixml.analysis import AssetBuilder, Argument, PixmlUnrecoverableProcessorException
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +12,32 @@ class GroupProcessor(AssetBuilder):
 
     def process(self, frame):
         pass
+
+
+class AssertAttributesProcessor(AssetBuilder):
+    """AssertAttributesProcessor checks for the existence of a list of attributes.
+
+    Args:
+        attrs (list): List of attributes, keys should be in dot notation.
+
+    """
+    toolTips = {
+        'attrs': 'List of attributes, keys should be in dot notation.'
+    }
+
+    def __init__(self):
+        super(AssertAttributesProcessor, self).__init__()
+        self.add_arg(Argument('attrs', 'list', default=None, toolTip=self.toolTips['attrs']))
+
+    def process(self, frame):
+        asset = frame.asset
+        attrs = self.arg_value("attrs")
+        if not attrs:
+            return
+        for attr in attrs:
+            if not asset.attr_exists(attr):
+                raise PixmlUnrecoverableProcessorException(
+                    "The '{}' attr was missing from the asset '{}'".format(attr, asset.uri))
 
 
 class SetAttributesProcessor(AssetBuilder):

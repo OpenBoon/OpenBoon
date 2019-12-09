@@ -49,8 +49,8 @@ enum class IndexRouteState {
  * @property indexName The name of the ES index.
  * @property mapping The mapping type. This is extracted from the
  * mapping file name, not the ES type.
- * @property mappingMajorVer The major version of the mapping file.
- * @property mappingMinorVer The minor version of the mapping file in a date format.
+ * @property majorVer The major version of the mapping file.
+ * @property minorVer The minor version of the mapping file in a date format.
  * @property closed "True if the index is closed and not in use."
  * @property replicas Number of index replicas.
  * @property shards Number of shards.
@@ -77,9 +77,9 @@ class IndexRoute(
     @ApiModelProperty("The mapping type. This is extracted from the mapping file name, not the ES type.")
     val mapping: String,
     @ApiModelProperty("The major version of the mapping file.")
-    val mappingMajorVer: Int,
+    val majorVer: Int,
     @ApiModelProperty("The minor version of the mapping file in a date format.")
-    val mappingMinorVer: Int,
+    val minorVer: Int,
     @ApiModelProperty("Number of index replicas.")
     val replicas: Int,
     @ApiModelProperty("Number of shards.")
@@ -101,7 +101,7 @@ class IndexRoute(
  * The IndexRouteSpec defines all the values needed to create an index route.
  *
  * @property mapping The type of mapping (not ES object type)
- * @property mappingMajorVer The major version to use. It will be patched up to highest level.
+ * @property majorVer The major version to use. It will be patched up to highest level.
  * @property state The state of the index route.
  * @property replicas The number of replicas there should be for each shard. Defaults to 0.
  * @property shards The number of shards in the index. Defaults to 5.
@@ -113,7 +113,7 @@ class IndexRouteSpec(
     @ApiModelProperty("The type of mapping (not ES object type)")
     var mapping: String,
     @ApiModelProperty("The major version to use. It will be patched up to highest level.")
-    var mappingMajorVer: Int,
+    var majorVer: Int,
     @ApiModelProperty("The state of the index.")
     var state: IndexRouteState = IndexRouteState.BUILDING,
     @ApiModelProperty("The number of replicas there should be for each shard. Defaults to 0.")
