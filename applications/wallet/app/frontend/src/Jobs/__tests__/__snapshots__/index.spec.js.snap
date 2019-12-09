@@ -1,11 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Jobs /> should render properly with data 1`] = `
-.emotion-33 {
+@keyframes animation-0 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-52 {
   padding: 12px;
 }
 
-.emotion-31 {
+.emotion-50 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -16,31 +30,61 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 16px;
 }
 
-.emotion-30 {
+.emotion-49 {
   border-spacing: 0;
 }
 
-.emotion-30 td {
-  height: 32px;
-  color: #B3B3B3;
-  padding: 8px 16px;
-  border: 1px solid transparent;
+.emotion-49 th {
+  color: #b3b3b3;
+  background-color: #2e2e2e;
+  padding: 12px 16px;
+  border-bottom: 1px solid #4d4948;
 }
 
-.emotion-18 {
+.emotion-49 th:not(:last-child) {
+  border-right: 1px solid #4d4948;
+}
+
+.emotion-49 tr {
   background-color: #121212;
 }
 
-.emotion-1 {
-  height: 32px;
-  color: #B3B3B3;
-  background-color: #2E2E2E;
-  padding: 12px 16px;
-  border-bottom: 1px solid #4D4948;
+.emotion-49 tr:hover {
+  background-color: #2e2e2e;
 }
 
-.emotion-1:not(:last-child) {
-  border-right: 1px solid #4D4948;
+.emotion-49 tr:hover td {
+  border: 1px solid #4d4948;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-49 tr:hover td:first-of-type {
+  border: 1px solid #4d4948;
+  border-right: 0;
+}
+
+.emotion-49 tr:hover td:last-of-type {
+  border: 1px solid #4d4948;
+  border-left: 0;
+}
+
+.emotion-49 td {
+  color: #b3b3b3;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-49 td:first-of-type {
+  border: 1px solid transparent;
+  border-right: 0;
+}
+
+.emotion-49 td:last-of-type {
+  border: 1px solid transparent;
+  border-left: 0;
 }
 
 .emotion-0 {
@@ -50,15 +94,140 @@ exports[`<Jobs /> should render properly with data 1`] = `
   display: flex;
 }
 
-.emotion-19 {
+.emotion-14 {
   background-color: #121212;
 }
 
-.emotion-19:nth-of-type(2n) {
-  background-color: #1D1D1D;
+.emotion-14:nth-of-type(2n) {
+  background-color: #1d1d1d;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 200px;
+}
+
+.emotion-9 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4ac565;
+}
+
+.emotion-9:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-9:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-10 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #ce2d3f;
+}
+
+.emotion-10:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-10:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-11 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-11:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-11:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-12 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #404040;
+}
+
+.emotion-12:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-12:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-24 {
+  color: #4d4948;
+}
+
+.emotion-34 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #4a90e2;
 }
 
 .emotion-32 {
+  color: #4a90e2;
+  -webkit-animation: animation-0 2s linear infinite;
+  animation: animation-0 2s linear infinite;
+}
+
+.emotion-33 {
+  padding-left: 8px;
+}
+
+.emotion-45 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #4ac565;
+}
+
+.emotion-45:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-45:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-51 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -70,93 +239,73 @@ exports[`<Jobs /> should render properly with data 1`] = `
 }
 
 <div
-  className="emotion-33"
+  className="emotion-52"
 >
   <div
-    className="emotion-31"
+    className="emotion-50"
   >
     <table
-      className="emotion-30"
+      className="emotion-49"
     >
       <thead>
-        <tr
-          className="emotion-18"
-        >
-          <th
-            className="emotion-1"
-          >
+        <tr>
+          <th>
             <div
               className="emotion-0"
             >
               Status
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Job Name
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Created By
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Priority
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
-              Created (Date/Time)
+              Created
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Failed
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Errors
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               # Assets
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
@@ -167,7 +316,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
       </thead>
       <tbody>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -182,7 +331,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1573090716083
+            2019-11-07 01:38:36
           </td>
           <td>
             <div
@@ -211,18 +360,25 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-9"
+              />
+              <div
+                className="emotion-10"
+              />
+              <div
+                className="emotion-11"
+              />
+              <div
+                className="emotion-12"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -237,7 +393,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1573090716083
+            2019-11-07 01:38:36
           </td>
           <td>
             <div
@@ -266,18 +422,25 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-9"
+              />
+              <div
+                className="emotion-10"
+              />
+              <div
+                className="emotion-11"
+              />
+              <div
+                className="emotion-12"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Paused
@@ -292,7 +455,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1573090589586
+            2019-11-07 01:36:29
           </td>
           <td>
             <div
@@ -321,18 +484,16 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Canceled
@@ -347,7 +508,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1573090536003
+            2019-11-07 01:35:36
           </td>
           <td>
             <div
@@ -376,18 +537,14 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-24"
             >
-              progress
+              Canceled by: admin
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Finished
@@ -402,7 +559,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1570828263275
+            2019-10-11 21:11:03
           </td>
           <td>
             <div
@@ -431,18 +588,16 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -457,7 +612,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1570827807692
+            2019-10-11 21:03:27
           </td>
           <td>
             <div
@@ -486,18 +641,16 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -512,7 +665,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             1
           </td>
           <td>
-            1564699939781
+            2019-08-01 22:52:19
           </td>
           <td />
           <td>
@@ -531,18 +684,22 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-34"
             >
-              progress
+              <svg
+                className="emotion-32"
+                data-file-name="generating.svg"
+              />
+              <div
+                className="emotion-33"
+              >
+                Generating
+              </div>
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -557,7 +714,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             1
           </td>
           <td>
-            1562612024983
+            2019-07-08 18:53:44
           </td>
           <td>
             <div
@@ -576,18 +733,16 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -602,7 +757,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             1
           </td>
           <td>
-            1562611383791
+            2019-07-08 18:43:03
           </td>
           <td>
             <div
@@ -621,18 +776,16 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -647,7 +800,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1562172555491
+            2019-07-03 16:49:15
           </td>
           <td>
             <div
@@ -666,18 +819,16 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -692,7 +843,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
             100
           </td>
           <td>
-            1562117381276
+            2019-07-03 01:29:41
           </td>
           <td>
             <div
@@ -721,13 +872,14 @@ exports[`<Jobs /> should render properly with data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-45"
+              />
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
@@ -738,7 +890,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
     UserMenu
   </h2>
   <div
-    className="emotion-32"
+    className="emotion-51"
   >
     <UserMenu
       logout={[Function]}
@@ -759,11 +911,25 @@ exports[`<Jobs /> should render properly with data 1`] = `
 `;
 
 exports[`<Jobs /> should render properly without data 1`] = `
-.emotion-33 {
+@keyframes animation-0 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-52 {
   padding: 12px;
 }
 
-.emotion-31 {
+.emotion-50 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -774,31 +940,61 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 16px;
 }
 
-.emotion-30 {
+.emotion-49 {
   border-spacing: 0;
 }
 
-.emotion-30 td {
-  height: 32px;
-  color: #B3B3B3;
-  padding: 8px 16px;
-  border: 1px solid transparent;
+.emotion-49 th {
+  color: #b3b3b3;
+  background-color: #2e2e2e;
+  padding: 12px 16px;
+  border-bottom: 1px solid #4d4948;
 }
 
-.emotion-18 {
+.emotion-49 th:not(:last-child) {
+  border-right: 1px solid #4d4948;
+}
+
+.emotion-49 tr {
   background-color: #121212;
 }
 
-.emotion-1 {
-  height: 32px;
-  color: #B3B3B3;
-  background-color: #2E2E2E;
-  padding: 12px 16px;
-  border-bottom: 1px solid #4D4948;
+.emotion-49 tr:hover {
+  background-color: #2e2e2e;
 }
 
-.emotion-1:not(:last-child) {
-  border-right: 1px solid #4D4948;
+.emotion-49 tr:hover td {
+  border: 1px solid #4d4948;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-49 tr:hover td:first-of-type {
+  border: 1px solid #4d4948;
+  border-right: 0;
+}
+
+.emotion-49 tr:hover td:last-of-type {
+  border: 1px solid #4d4948;
+  border-left: 0;
+}
+
+.emotion-49 td {
+  color: #b3b3b3;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-49 td:first-of-type {
+  border: 1px solid transparent;
+  border-right: 0;
+}
+
+.emotion-49 td:last-of-type {
+  border: 1px solid transparent;
+  border-left: 0;
 }
 
 .emotion-0 {
@@ -808,15 +1004,140 @@ exports[`<Jobs /> should render properly without data 1`] = `
   display: flex;
 }
 
-.emotion-19 {
+.emotion-14 {
   background-color: #121212;
 }
 
-.emotion-19:nth-of-type(2n) {
-  background-color: #1D1D1D;
+.emotion-14:nth-of-type(2n) {
+  background-color: #1d1d1d;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 200px;
+}
+
+.emotion-9 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4ac565;
+}
+
+.emotion-9:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-9:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-10 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #ce2d3f;
+}
+
+.emotion-10:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-10:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-11 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-11:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-11:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-12 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #404040;
+}
+
+.emotion-12:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-12:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-24 {
+  color: #4d4948;
+}
+
+.emotion-34 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #4a90e2;
 }
 
 .emotion-32 {
+  color: #4a90e2;
+  -webkit-animation: animation-0 2s linear infinite;
+  animation: animation-0 2s linear infinite;
+}
+
+.emotion-33 {
+  padding-left: 8px;
+}
+
+.emotion-45 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #4ac565;
+}
+
+.emotion-45:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-45:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-51 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -828,93 +1149,73 @@ exports[`<Jobs /> should render properly without data 1`] = `
 }
 
 <div
-  className="emotion-33"
+  className="emotion-52"
 >
   <div
-    className="emotion-31"
+    className="emotion-50"
   >
     <table
-      className="emotion-30"
+      className="emotion-49"
     >
       <thead>
-        <tr
-          className="emotion-18"
-        >
-          <th
-            className="emotion-1"
-          >
+        <tr>
+          <th>
             <div
               className="emotion-0"
             >
               Status
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Job Name
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Created By
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Priority
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
-              Created (Date/Time)
+              Created
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Failed
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               Errors
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
               # Assets
             </div>
           </th>
-          <th
-            className="emotion-1"
-          >
+          <th>
             <div
               className="emotion-0"
             >
@@ -925,7 +1226,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
       </thead>
       <tbody>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -940,7 +1241,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1573090716083
+            2019-11-07 01:38:36
           </td>
           <td>
             <div
@@ -969,18 +1270,25 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-9"
+              />
+              <div
+                className="emotion-10"
+              />
+              <div
+                className="emotion-11"
+              />
+              <div
+                className="emotion-12"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -995,7 +1303,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1573090716083
+            2019-11-07 01:38:36
           </td>
           <td>
             <div
@@ -1024,18 +1332,25 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-9"
+              />
+              <div
+                className="emotion-10"
+              />
+              <div
+                className="emotion-11"
+              />
+              <div
+                className="emotion-12"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Paused
@@ -1050,7 +1365,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1573090589586
+            2019-11-07 01:36:29
           </td>
           <td>
             <div
@@ -1079,18 +1394,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Canceled
@@ -1105,7 +1418,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1573090536003
+            2019-11-07 01:35:36
           </td>
           <td>
             <div
@@ -1134,18 +1447,14 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-24"
             >
-              progress
+              Canceled by: admin
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Finished
@@ -1160,7 +1469,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1570828263275
+            2019-10-11 21:11:03
           </td>
           <td>
             <div
@@ -1189,18 +1498,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -1215,7 +1522,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1570827807692
+            2019-10-11 21:03:27
           </td>
           <td>
             <div
@@ -1244,18 +1551,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -1270,7 +1575,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             1
           </td>
           <td>
-            1564699939781
+            2019-08-01 22:52:19
           </td>
           <td />
           <td>
@@ -1289,18 +1594,22 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-34"
             >
-              progress
+              <svg
+                className="emotion-32"
+                data-file-name="generating.svg"
+              />
+              <div
+                className="emotion-33"
+              >
+                Generating
+              </div>
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -1315,7 +1624,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             1
           </td>
           <td>
-            1562612024983
+            2019-07-08 18:53:44
           </td>
           <td>
             <div
@@ -1334,18 +1643,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -1360,7 +1667,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             1
           </td>
           <td>
-            1562611383791
+            2019-07-08 18:43:03
           </td>
           <td>
             <div
@@ -1379,18 +1686,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -1405,7 +1710,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1562172555491
+            2019-07-03 16:49:15
           </td>
           <td>
             <div
@@ -1424,18 +1729,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
         <tr
-          className="emotion-19"
+          className="emotion-14"
         >
           <td>
             Active
@@ -1450,7 +1753,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
             100
           </td>
           <td>
-            1562117381276
+            2019-07-03 01:29:41
           </td>
           <td>
             <div
@@ -1479,13 +1782,14 @@ exports[`<Jobs /> should render properly without data 1`] = `
           </td>
           <td>
             <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
+              className="emotion-13"
             >
-              progress
+              <div
+                className="emotion-45"
+              />
+              <div
+                className="emotion-10"
+              />
             </div>
           </td>
         </tr>
@@ -1496,7 +1800,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
     UserMenu
   </h2>
   <div
-    className="emotion-32"
+    className="emotion-51"
   >
     <UserMenu
       logout={[Function]}

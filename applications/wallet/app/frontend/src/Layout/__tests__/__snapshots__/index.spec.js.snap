@@ -18,7 +18,7 @@ exports[`<Layout /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: #2E2E2E;
+  background-color: #2e2e2e;
   padding: 4px;
 }
 

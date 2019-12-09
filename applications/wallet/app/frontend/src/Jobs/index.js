@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import Table from '../Table'
-import { jobsColumns, jobsRows } from './__mocks__/jobs'
+import { jobColumns, jobRows } from './__mocks__/jobs'
 
 import { spacing } from '../Styles'
 
@@ -12,7 +12,7 @@ export const noop = () => () => {}
 const Jobs = ({ logout }) => {
   return (
     <div css={{ padding: spacing.moderate }}>
-      <Table columns={jobsColumns} rows={jobsRows} />
+      <Table columns={jobColumns} rows={jobRows} />
 
       <h2>UserMenu</h2>
       <div css={{ display: 'flex', justifyContent: 'flex-end' }}>

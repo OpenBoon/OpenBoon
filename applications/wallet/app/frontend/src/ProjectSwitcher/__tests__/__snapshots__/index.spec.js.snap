@@ -25,7 +25,7 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
   margin: 0;
   padding: 0;
   color: #82be3c;
-  background-color: #2E2E2E;
+  background-color: #2e2e2e;
 }
 
 .emotion-1:hover {
@@ -79,7 +79,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   margin: 0;
   padding: 0;
   color: #82be3c;
-  background-color: #2E2E2E;
+  background-color: #2e2e2e;
 }
 
 .emotion-1:hover {
@@ -183,7 +183,7 @@ exports[`<ProjectSwitcher /> should render properly with data 3`] = `
   margin: 0;
   padding: 0;
   color: #82be3c;
-  background-color: #2E2E2E;
+  background-color: #2e2e2e;
 }
 
 .emotion-1:hover {
