@@ -2,10 +2,9 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, typography, spacing } from '../Styles'
+import LogoSvg from '../Icons/logo.svg'
 
 import Input from '../Input'
-
-import LogoSvg from './logo.svg'
 
 const WIDTH = 440
 const HEIGHT = 580

@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import DropDown from './DropDown'
 import { colors, typography, spacing } from '../Styles'
-import ChevronSvg from './chevron.svg'
+import ChevronSvg from '../Icons/chevron.svg'
 
 const CHEVRON_WIDTH = 20
 

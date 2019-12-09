@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import ProjectSwitcher from '../ProjectSwitcher'
 import { colors, spacing } from '../Styles'
-import LogoSvg from './logo.svg'
+import LogoSvg from '../Icons/logo.svg'
 
 const LOGO_WIDTH = 110
 
