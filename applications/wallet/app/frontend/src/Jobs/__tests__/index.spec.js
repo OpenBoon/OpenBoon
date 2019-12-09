@@ -3,6 +3,7 @@ import TestRenderer from 'react-test-renderer'
 import Jobs, { noop } from '..'
 
 jest.mock('../../Pagination', () => 'Pagination')
+jest.mock('../../UserMenu', () => 'UserMenu')
 
 describe('<Jobs />', () => {
   it('should render properly without data', () => {

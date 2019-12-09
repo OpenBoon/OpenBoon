@@ -18,11 +18,11 @@ class ElasticUtilsTests {
     fun testElasticSearchErrorTranslator() {
         assertEquals("asset already exists",
             ElasticSearchErrorTranslator.translate("blah blah document already exists blah blah"))
-        assertEquals("field 'foo.bar' is the wrong data type or format",
+        assertEquals("field 'foo.bar' is not allowed, the wrong data type, or format",
             ElasticSearchErrorTranslator.translate("reason=failed to parse [foo.bar]"))
-        assertEquals("field 'foo.bar' is the wrong data type or format",
+        assertEquals("field 'foo.bar' is not allowed, the wrong data type, or format",
             ElasticSearchErrorTranslator.translate("\"term in field=\"foo.bar\"\""))
-        assertEquals("field 'foo.bar' is the wrong data type or format",
+        assertEquals("field 'foo.bar' is not allowed, the wrong data type, or format",
             ElasticSearchErrorTranslator.translate("mapper [foo.bar] of different type"))
         assertTrue("Untranslatable asset error" in
             ElasticSearchErrorTranslator.translate("kirk, spock, and bones"))

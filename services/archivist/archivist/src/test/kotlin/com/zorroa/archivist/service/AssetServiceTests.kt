@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
@@ -15,6 +16,7 @@ import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
@@ -49,6 +51,53 @@ class AssetServiceTests : AbstractTest() {
         assertNotNull(asset.getAttr("system.dataSourceId"))
     }
 
+    @Test
+    fun testBatchCreateAssets_failInvalidDynamicField() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("dog" to "cat")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        assertTrue(rsp.status[0].failed)
+        assertNotNull(rsp.status[0].failureMessage)
+        assertTrue(rsp.status[0].failureMessage!!.contains("is not allowed"))
+    }
+
+    @Test
+    fun testBatchCreateAssets_WithAuxFields() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("aux.pet" to "dog")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        assertFalse(rsp.status[0].failed)
+        assertEquals("dog", rsp.assets[0].getAttr("aux.pet", String::class.java))
+    }
+
+    @Test
+    fun testBatchCreateAssets_WithIgnoreFields() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("files.hello" to "foo", "temp.hello" to "bar")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        assertFalse(rsp.status[0].failed)
+        assertNull(rsp.assets[0].getAttr("files.hello"))
+        assertNull(rsp.assets[0].getAttr("temp.hello"))
+    }
+
     /**
      * Recreating an asset that already exists should fail.
      */
@@ -72,13 +121,31 @@ class AssetServiceTests : AbstractTest() {
         )
         val createRsp = assetService.batchCreate(batchCreate)
         val asset = assetService.getAsset(createRsp.status[0].assetId)
-        asset.setAttr("test.field", 1)
+        asset.setAttr("aux.field", 1)
+
         val batchIndex = BatchUpdateAssetsRequest(
             assets = listOf(asset)
         )
         val indexRsp = assetService.batchUpdate(batchIndex)
         assertFalse(indexRsp.status[0]!!.failed)
     }
+
+    @Test
+    fun testBatchUpdateAssetsWithTempFields() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        val asset = assetService.getAsset(createRsp.status[0].assetId)
+        asset.setAttr("aux.field", 1)
+
+        val batchIndex = BatchUpdateAssetsRequest(
+            assets = listOf(asset)
+        )
+        val indexRsp = assetService.batchUpdate(batchIndex)
+        assertFalse(indexRsp.status[0]!!.failed)
+    }
+
 
     /**
      * Trying to index assets that don't exist should fail.
@@ -132,5 +199,24 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchUpload(batchUpload)
         assertEquals("toucan.jpg", rsp.assets[0].getAttr("source.filename", String::class.java))
         assertFalse(rsp.status[0].failed)
+    }
+
+    @Test
+    fun testSearch() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("https://i.imgur.com/LRoLTlK.jpg"))
+        )
+        assetService.batchCreate(batchCreate)
+
+        // Note that here, scroll is not allowed yet the result should have no scroll id.
+        val search = AssetSearch(
+            mapOf(
+                "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg")),
+                "scroll" to "2s"
+            )
+        )
+        val rsp = assetService.search(search)
+        assertEquals(1, rsp.hits.hits.size)
+        assertNull(rsp.scrollId)
     }
 }

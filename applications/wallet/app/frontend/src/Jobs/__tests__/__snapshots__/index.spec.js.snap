@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Jobs /> should render properly with data 1`] = `
-.emotion-32 {
+.emotion-33 {
   padding: 12px;
 }
 
@@ -58,8 +58,19 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #1D1D1D;
 }
 
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
 <div
-  className="emotion-32"
+  className="emotion-33"
 >
   <h2>
     Projects
@@ -732,14 +743,15 @@ exports[`<Jobs /> should render properly with data 1`] = `
     </table>
   </div>
   <h2>
-    Logout
+    UserMenu
   </h2>
-  <button
-    onClick={[Function]}
-    type="button"
+  <div
+    className="emotion-32"
   >
-    Logout
-  </button>
+    <UserMenu
+      logout={[Function]}
+    />
+  </div>
   <h2>
     Pagination
   </h2>
@@ -755,7 +767,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
 `;
 
 exports[`<Jobs /> should render properly without data 1`] = `
-.emotion-32 {
+.emotion-33 {
   padding: 12px;
 }
 
@@ -812,8 +824,19 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #1D1D1D;
 }
 
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
 <div
-  className="emotion-32"
+  className="emotion-33"
 >
   <h2>
     Projects
@@ -1482,14 +1505,15 @@ exports[`<Jobs /> should render properly without data 1`] = `
     </table>
   </div>
   <h2>
-    Logout
+    UserMenu
   </h2>
-  <button
-    onClick={[Function]}
-    type="button"
+  <div
+    className="emotion-32"
   >
-    Logout
-  </button>
+    <UserMenu
+      logout={[Function]}
+    />
+  </div>
   <h2>
     Pagination
   </h2>

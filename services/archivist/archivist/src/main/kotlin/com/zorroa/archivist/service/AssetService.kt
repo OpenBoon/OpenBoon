@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetIdBuilder
+import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchAssetOpStatus
@@ -21,8 +22,6 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.elastic.ElasticSearchErrorTranslator
-import com.zorroa.archivist.schema.ProxySchema
-import com.zorroa.archivist.security.getProjectFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -31,6 +30,7 @@ import com.zorroa.archivist.util.randomString
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
@@ -38,7 +38,6 @@ import org.elasticsearch.common.Strings
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.NamedXContentRegistry
-import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilder
@@ -49,8 +48,8 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
-import java.io.OutputStream
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -66,7 +65,7 @@ interface AssetService {
      * Execute an arbitrary ES search and send the result
      * to the given OutputStream.
      */
-    fun search(query: Map<String, Any>, output: OutputStream)
+    fun search(search: AssetSearch): SearchResponse
 
     /**
      * Get an Asset by ID.
@@ -76,8 +75,6 @@ interface AssetService {
     fun getAll(ids: List<String>): List<Asset>
 
     fun getValidAssetIds(ids: List<String>): Set<String>
-
-    fun getProxies(id: String): ProxySchema
 
     /**
      * Batch create a list of assets.  Creating adds a base asset with
@@ -129,6 +126,9 @@ class AssetServiceImpl : AssetService {
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
+        if (!rsp.isExists) {
+            throw EmptyResultDataAccessException("The asset '$id' does not exist.", 1)
+        }
         return Asset(rsp.id, rsp.sourceAsMap)
     }
 
@@ -163,14 +163,18 @@ class AssetServiceImpl : AssetService {
         }
     }
 
-    override fun getProxies(id: String): ProxySchema {
-        val asset = getAsset(id)
-        val proxies = asset.getAttr("proxies", ProxySchema::class.java)
-        return proxies ?: ProxySchema()
-    }
-
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
-        val asset = Asset(id, spec.document ?: mutableMapOf())
+        val asset = Asset(id)
+        spec.attrs?.forEach { k, v ->
+            val prefix = try {
+                k.substring(0, k.indexOf('.'))
+            } catch (e: StringIndexOutOfBoundsException) {
+                k
+            }
+            if (prefix !in removeFieldsOnCreate) {
+                asset.setAttr(k, v)
+            }
+        }
 
         asset.setAttr("source.path", spec.uri)
         asset.setAttr("source.filename", FileUtils.filename(spec.uri))
@@ -178,19 +182,18 @@ class AssetServiceImpl : AssetService {
 
         val mediaType = FileUtils.getMediaType(spec.uri)
         asset.setAttr("source.mimetype", mediaType)
-        asset.setAttr("source.type", mediaType.split("/")[0])
-        asset.setAttr("source.subtype", mediaType.split("/")[1])
 
         asset.setAttr("system.projectId", getProjectId().toString())
         task?.let {
             asset.setAttr("system.dataSourceId", it.dataSourceId)
             asset.setAttr("system.jobId", it.jobId)
+            asset.setAttr("system.taskId", it.taskId)
         }
         asset.setAttr(
             "system.timeCreated",
             java.time.Clock.systemUTC().instant().toString()
         )
-        asset.setAttr("system.state", AssetState.CREATED.toString())
+        asset.setAttr("system.state", AssetState.Pending.toString())
 
         return asset
     }
@@ -208,7 +211,7 @@ class AssetServiceImpl : AssetService {
             val spec = req.assets[idx]
             val id = AssetIdBuilder(spec, randomString(24)).build()
             val asset = assetSpecToAsset(id, spec)
-            asset.setAttr("source.fileSize", mpfile.size)
+            asset.setAttr("source.filesize", mpfile.size)
 
             val locator = FileStorageLocator(
                 FileGroup.ASSET,
@@ -320,13 +323,14 @@ class AssetServiceImpl : AssetService {
                 bulkRequestValid = true
 
                 // Remove these which are used for temp attrs
-                asset.removeAttr("tmp")
-                asset.removeAttr("temp")
+                removeFieldsOnUpdate.forEach {
+                    asset.removeAttr(it)
+                }
 
                 // Update various system properties.
                 asset.setAttr("system.projectId", getProjectId().toString())
                 asset.setAttr("system.timeModified", time)
-                asset.setAttr("system.state", AssetState.ANALYZED.toString())
+                asset.setAttr("system.state", AssetState.Analyzed.toString())
 
                 bulkRequest.add(
                     rest.newIndexRequest(asset.id)
@@ -365,33 +369,33 @@ class AssetServiceImpl : AssetService {
         return jobService.create(spec)
     }
 
-    fun getDeepQuery(search: Map<String, Any>): QueryBuilder? {
-        return search["deep-query"]?.let {
-
+    fun getDeepQuery(search: AssetSearch): QueryBuilder? {
+        return if (search.deepQuery == null) {
+            null
+        } else {
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
                 xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-                Json.serializeToString(mapOf("query" to it))
+                Json.serializeToString(mapOf("query" to search.deepQuery))
             )
             val ssb = SearchSourceBuilder.fromXContent(parser)
             ssb.query()
         }
-
-        null
     }
 
-    fun prepSearch(search: Map<String, Any>): SearchSourceBuilder {
+    fun prepSearch(search: AssetSearch): SearchSourceBuilder {
 
-        val baseSearch = search.filterKeys { it != "deep-query" }
+        // Filters out search options that are not supported.
+        val searchSource = (search.search ?: mutableMapOf())
+            .filterKeys { it in allowedSearchProperties }
+
         val parser = XContentFactory.xContent(XContentType.JSON).createParser(
             xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-            Json.serializeToString(baseSearch)
+            Json.serializeToString(searchSource)
         )
+
+        // Wraps the query in a boolean query
         val ssb = SearchSourceBuilder.fromXContent(parser)
-
-        // Wrap the query in Org filter
         val query = QueryBuilders.boolQuery()
-        query.filter(getProjectFilter())
-
         if (ssb.query() == null) {
             query.must(QueryBuilders.matchAllQuery())
         } else {
@@ -405,32 +409,47 @@ class AssetServiceImpl : AssetService {
         // Replace the query in the SearchSourceBuilder with wrapped versions
         ssb.query(query)
 
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
+        if (logger.isDebugEnabled) {
             logger.debug("SEARCH : {}", Strings.toString(query, true, true))
         }
 
         return ssb
     }
-    override fun search(query: Map<String, Any>, output: OutputStream) {
-        val client = indexRoutingService.getProjectRestClient()
 
+    override fun search(search: AssetSearch): SearchResponse {
+        val client = indexRoutingService.getProjectRestClient()
         val req = client.newSearchRequest()
+        req.source(prepSearch(search))
         req.searchType(SearchType.DEFAULT)
         req.preference(getProjectId().toString())
-        req.source(prepSearch(query))
 
-        val rsp = client.client.search(req, RequestOptions.DEFAULT)
-        val builder = XContentFactory.jsonBuilder(output)
-        rsp.toXContent(builder, ToXContent.EMPTY_PARAMS)
-        builder.close()
+        return client.client.search(req, RequestOptions.DEFAULT)
     }
 
     companion object {
 
-        val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
+        /**
+         * These namespaces get removed from [AssetSpec] at creationn time.
+         */
+        val removeFieldsOnCreate = setOf("files", "tmp", "temp")
 
+        /**
+         * These namespaces get removed from [Asset] at update time.
+         */
+        val removeFieldsOnUpdate = setOf("tmp", "temp")
+
+        /**
+         * These SearchRequest Attributes are allowed.
+         */
+        val allowedSearchProperties = setOf(
+            "query", "from", "size", "timeout",
+            "post_filter", "minscore", "suggest",
+            "highlight", "collapse",
+            "slice", "aggs", "aggregations", "sort"
+        )
+
+        private val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
         val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
-
         val logger: Logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
     }
 }

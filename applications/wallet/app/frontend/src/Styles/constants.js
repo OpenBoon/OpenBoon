@@ -7,6 +7,7 @@ const borderRadius = {
 const borders = {
   default: `1px solid ${colors.grey5}`,
   transparent: `1px solid transparent`,
+  separator: `1px solid ${colors.rocks.pewter}`,
 }
 
 const opacity = {
@@ -16,6 +17,7 @@ const opacity = {
 const boxShadows = {
   default: `0 2px 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   input: `inset 0 1px 3px 0 transparent`,
+  menu: `0 4px 7px 0 ${colors.rocks.black}`,
 }
 
 const constants = {

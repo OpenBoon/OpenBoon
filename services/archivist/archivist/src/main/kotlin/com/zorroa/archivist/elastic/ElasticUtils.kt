@@ -57,7 +57,7 @@ object ElasticSearchErrorTranslator {
 
                 if (matcher.find()) {
                     val field = matcher.group(1)
-                    return "field '$field' is the wrong data type or format"
+                    return "field '$field' is not allowed, the wrong data type, or format"
                 }
             }
         }
@@ -68,6 +68,7 @@ object ElasticSearchErrorTranslator {
     private val RECOVERABLE_BULK_ERRORS = arrayOf(
         Pattern.compile("reason=failed to parse \\[(.*?)\\]"),
         Pattern.compile("\"term in field=\"(.*?)\"\""),
-        Pattern.compile("mapper \\[(.*?)\\] of different type")
+        Pattern.compile("mapper \\[(.*?)\\] of different type"),
+        Pattern.compile("dynamic introduction of \\[(.*?)\\] within")
     )
 }

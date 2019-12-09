@@ -31,8 +31,8 @@ class IndexRouteDaoTests : AbstractTest() {
     fun testCreate() {
         val spec = getTestSpec()
         val route = indexRouteDao.create(spec)
-        assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
-        assertEquals(0, route.mappingMinorVer)
+        assertEquals(spec.majorVer, route.majorVer)
+        assertEquals(0, route.minorVer)
         assertEquals(spec.shards, route.shards)
         assertEquals(spec.replicas, route.replicas)
     }
@@ -59,7 +59,7 @@ class IndexRouteDaoTests : AbstractTest() {
         indexRouteDao.create(spec)
         val route = indexRouteDao.getProjectRoute()
         assertEquals("http://localhost:9200", route.clusterUrl)
-        assertEquals("asset", route.mapping)
+        assertEquals("english_strict", route.mapping)
         assertEquals(0, route.replicas)
         assertEquals(2, route.shards)
     }

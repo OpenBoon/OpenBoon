@@ -52,13 +52,13 @@ class PixmlDataSourceAppTests(unittest.TestCase):
         assert value['uri'] == ds.uri
 
     @patch.object(PixmlClient, 'post')
-    def test_import_datasource(self, post_patch):
+    def test_import_files(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'Import DataSource'
         }
         post_patch.return_value = value
-        job = self.app.datasource.import_datasource(DataSource({'id': '123'}))
+        job = self.app.datasource.import_files(DataSource({'id': '123'}))
         assert value['id'] == job["id"]
         assert value['name'] == job["name"]
 

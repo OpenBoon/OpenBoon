@@ -1,18 +1,14 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.archivist.repository.KPage
-import com.zorroa.archivist.util.randomString
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.junit.After
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
@@ -27,9 +23,7 @@ class IndexRoutingServiceTests : AbstractTest() {
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
 
-    val testSpec = IndexRouteSpec(
-        "test", 1
-    )
+    val testSpec = IndexRouteSpec("test", 1)
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -50,7 +44,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         indexRoutingService.syncAllIndexRoutes()
 
         val route = indexRouteDao.getProjectRoute()
-        assertEquals(route.mappingMinorVer, 20001231)
+        assertEquals(route.minorVer, 20001231)
         assertTrue(indexRoutingService.getProjectRestClient().indexExists())
     }
 
@@ -73,10 +67,10 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         // The ES index is deleted but our route still shows an updated index
         val route = indexRouteDao.get(newRoute.id)
-        assertTrue(route.mappingMinorVer > 0)
+        assertTrue(route.minorVer > 0)
 
         val lastMapping = indexRoutingService.syncIndexRouteVersion(route)
-        assertEquals(route.mappingMinorVer, lastMapping!!.minorVersion)
+        assertEquals(route.minorVer, lastMapping!!.minorVersion)
         assertTrue(indexRoutingService.getProjectRestClient().indexExists())
     }
 
@@ -91,7 +85,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         indexRoutingService.syncIndexRouteVersion(route)
 
         route = indexRouteDao.getProjectRoute()
-        assertEquals(route.mappingMinorVer, 20001231)
+        assertEquals(route.minorVer, 20001231)
 
         assertTrue(indexRoutingService.getProjectRestClient().indexExists())
     }
@@ -176,15 +170,12 @@ class IndexRoutingServiceTests : AbstractTest() {
     fun testCreate() {
         val route = indexRoutingService.createIndexRoute(testSpec)
         assertEquals(testSpec.mapping, route.mapping)
-        assertEquals(testSpec.mappingMajorVer, route.mappingMajorVer)
+        assertEquals(testSpec.majorVer, route.majorVer)
     }
 
     @Test
     fun testCloseAndDelete() {
-        val spec = IndexRouteSpec(
-            "strict", 1
-        )
-
+        val spec = IndexRouteSpec("english_strict", 1)
         val route = indexRoutingService.createIndexRoute(spec)
         indexRoutingService.closeAndDeleteIndex(route)
     }
@@ -219,9 +210,7 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Test
     fun testDeleteIndex() {
-        val spec = IndexRouteSpec(
-            "strict", 1
-        )
+        val spec = IndexRouteSpec("english_strict", 1)
 
         val route = indexRoutingService.createIndexRoute(spec)
         indexRoutingService.closeIndex(route)

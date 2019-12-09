@@ -186,7 +186,7 @@ class ProxyProcessor(AssetBuilder):
 
         """
         # If the source is an image then oiio has already setup the settings we need.
-        if asset.get_attr("source.type") == "image" \
+        if asset.get_attr("media.type") == "image" \
                 and asset.attr_exists("media.width") \
                 and asset.attr_exists("media.height"):
             return [asset.get_attr("media.width"), asset.get_attr("media.height")]
@@ -202,7 +202,7 @@ class ProxyProcessor(AssetBuilder):
         # If the source file type is not an image, this processor
         # has no chance of making a proxy, so we're going to skip
         # generating an error.
-        if asset.get_attr("source.type") == "image":
+        if asset.get_attr("media.type") == "image":
             return file_cache.localize_remote_file(asset)
         return None
 

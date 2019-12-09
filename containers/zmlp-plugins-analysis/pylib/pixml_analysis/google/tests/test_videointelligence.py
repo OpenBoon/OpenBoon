@@ -73,8 +73,8 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         # the processing, we're setting this test up the same way as a valid video test to show
         # that the annotation label data is never stored within the asset's attributes dictionary.
         # Even the reference to a doc file below doesn't actually do anything because the processor
-        # looks for 'media.clip' within the asset's attributes to determine if it's a clip, which
-        # we aren't explicitely populating here.
+        # looks for 'clip' within the asset's attributes to determine if it's a clip, which
+        # we aren't explicitly populating here.
 
         file_path = "/word/lighthouse.docx"
 
@@ -130,10 +130,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
         self.processor.args['detect_text'].value = True
 
         frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
-        frame.asset.set_attr('media.clip.start', 0.0)
-        frame.asset.set_attr('media.clip.length', 111.0)
+        frame.asset.set_attr('clip.start', 0.0)
+        frame.asset.set_attr('clip.length', 111.0)
 
-        self.processor._process(frame)
+        self.processor.process(frame)
 
         # Since there are no label results returned, data isn't stored within asset attributes under
         # analysis.
@@ -188,8 +188,8 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
         # Establish frame object and pass in your asset.
         frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
-        frame.asset.set_attr('media.clip.start', 0.0)
-        frame.asset.set_attr('media.clip.length', 111.0)
+        frame.asset.set_attr('clip.start', 0.0)
+        frame.asset.set_attr('clip.length', 111.0)
 
         self.processor.process(frame)
 
@@ -247,8 +247,8 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
         # Establish frame object and pass in your asset.
         frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
-        frame.asset.set_attr('media.clip.start', 0.0)
-        frame.asset.set_attr('media.clip.length', 111.0)
+        frame.asset.set_attr('clip.start', 0.0)
+        frame.asset.set_attr('clip.length', 111.0)
 
         self.processor.process(frame)
 
@@ -298,8 +298,8 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
         # Establish frame object and pass in your asset.
         frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
-        frame.asset.set_attr('media.clip.start', 0.0)
-        frame.asset.set_attr('media.clip.length', 111.0)
+        frame.asset.set_attr('clip.start', 0.0)
+        frame.asset.set_attr('clip.length', 111.0)
 
         self.processor.process(frame)
 
@@ -355,8 +355,8 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
         # Establish frame object and pass in your asset.
         frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
-        frame.asset.set_attr('media.clip.start', 0.0)
-        frame.asset.set_attr('media.clip.length', 111.0)
+        frame.asset.set_attr('clip.start', 0.0)
+        frame.asset.set_attr('clip.length', 111.0)
 
         self.processor.process(frame)
 
@@ -372,11 +372,9 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
-        '_get_clip_bytes')
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor._get_clip_bytes')
     @patch(
-        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor.'
-        '_get_video_annotations')
+        'pixml_analysis.google.processors.CloudVideoIntelligenceProcessor._get_video_annotations')
     def test_process_all_annotations(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
 
@@ -465,8 +463,8 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
         # Establish frame object and pass in your asset.
         frame = Frame(TestAsset(os.path.join(self.full_mock_data_dir, file_path)))
-        frame.asset.set_attr('media.clip.start', 0.0)
-        frame.asset.set_attr('media.clip.length', 111.0)
+        frame.asset.set_attr('clip.start', 0.0)
+        frame.asset.set_attr('clip.length', 111.0)
 
         self.processor.process(frame)
 

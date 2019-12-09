@@ -65,11 +65,8 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
         document = frame.asset
         assert document.get_attr('media.timeCreated') == datetime(2016, 9, 22, 14, 2, 54)
 
-    def test_bad_media_type(self):
+    def test_media_type_set(self):
         frame = analysis.Frame(TestAsset(RLA_FILE))
         processor = self.init_processor(ImageImporter(), {})
         processor.process(frame)
-        document = frame.asset
-        assert document.get_attr("source.mediaType") == "image/x-rla"
-        assert document.get_attr("source.type") == "image"
-        assert document.get_attr("source.subType") == "x-rla"
+        assert frame.asset["media.type"] == "image"
