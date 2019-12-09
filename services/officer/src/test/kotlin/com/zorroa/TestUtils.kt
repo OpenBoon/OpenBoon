@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.InputStream
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 // There is more but they could be null and stripped out.
@@ -19,11 +20,11 @@ fun validateAssetMetadata(stream: InputStream): Map<String, Any> {
     return metadata
 }
 
-val requiredPageFields = setOf("type", "width", "height", "orientation", "content")
+val requiredPageFields = setOf("width", "height", "orientation", "content")
 
 fun validatePageMetadata(stream: InputStream) {
     val metadata = Json.mapper.readValue(stream, Map::class.java)
-    assertEquals("page", metadata["type"])
+    assertNull(metadata["type"])
     requiredPageFields.forEach {
         assertTrue(metadata.containsKey(it), "Page metadata did not contain '$it'")
     }

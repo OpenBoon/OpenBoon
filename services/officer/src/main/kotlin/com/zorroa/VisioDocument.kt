@@ -82,7 +82,6 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
                 if (pageProps.pageHeight.value > pageProps.pageHeight.value) "portrait" else "landscape"
 
             if (page > 0) {
-                metadata["type"] = "page"
                 metadata["content"] = extractContent(page)
                 metadata["description"] = dpage.name
             }

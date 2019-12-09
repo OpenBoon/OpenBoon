@@ -14,6 +14,7 @@ import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class TestCellsDocument {
@@ -76,8 +77,7 @@ class TestCellsDocument {
 
         val metadata = Json.mapper.readValue(doc.getMetadata(1), Map::class.java)
         assertFalse(metadata.containsKey("content"))
-        assertTrue(metadata.containsKey("type"))
-        assertEquals("page", metadata["type"])
+        assertFalse(metadata.containsKey("type"))
     }
 
     @Test

@@ -71,7 +71,6 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
             metadata["orientation"] = if (height > width) "portrait" else "landscape"
 
             if (page > 0) {
-                metadata["type"] = "page"
                 metadata["content"] = extractPageContent(page)
             }
 

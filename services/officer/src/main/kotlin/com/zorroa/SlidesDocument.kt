@@ -68,7 +68,6 @@ class SlidesDocument(options: Options, inputStream: InputStream) : Document(opti
             metadata["orientation"] = if (dim.size.height > dim.size.width) "portrait" else "landscape"
 
             if (page > 0) {
-                metadata["type"] = "page"
                 metadata["content"] = extractPageContent(page)
             }
 

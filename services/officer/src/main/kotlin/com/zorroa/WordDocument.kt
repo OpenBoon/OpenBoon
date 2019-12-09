@@ -102,7 +102,6 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
             metadata["orientation"] = if (pageInfo.landscape) "landscape" else "portrait"
 
             if (page > 0) {
-                metadata["type"] = "page"
                 metadata["content"] = extractPageContent(page)
             }
 

@@ -117,7 +117,6 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
             if (page > 0) {
                 // No content, it's a mess of garbage.
                 metadata["description"] = worksheet.name
-                metadata["type"] = "page"
             }
 
             val output = ReversibleByteArrayOutputStream()
