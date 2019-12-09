@@ -3,8 +3,7 @@ package domain;
 /* Exposes the main PixelML API.*/
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Optional;
 
 public class PixmlApp {
@@ -56,7 +55,7 @@ public class PixmlApp {
         } else if (envApiKeyFilePath.isPresent()) {
             apiKey = envApiKeyFilePath.map((String filePath) -> {
                 try {
-                    return new String(Files.readAllBytes(Paths.get(filePath)));
+                    return Utils.readTextFromFile(filePath);
                 } catch (IOException e) {
                     System.out.println("Invalid Key File Path.");
                     return null;
@@ -70,6 +69,5 @@ public class PixmlApp {
         this.assetApp = new AssetApp();
         this.dataSourceApp = new DataSourceApp();
     }
-
 
 }
