@@ -100,12 +100,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.aspose</groupId>
-            <artifactId>aspose-ocr</artifactId>
-            <version>17.6</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-kotlin</artifactId>
             <version>1.0.0-alpha</version>

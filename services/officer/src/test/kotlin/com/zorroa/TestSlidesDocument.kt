@@ -5,8 +5,6 @@ import org.junit.Test
 import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class TestSlidesDocument {
 
@@ -15,21 +13,19 @@ class TestSlidesDocument {
     @Before
     fun setup() {
         opts = Options("src/test/resources/pptx_test.pptx")
-        opts.page = 1
         opts.outputDir = "pptx"
     }
 
     @Test
-    fun testRender() {
+    fun testRenderAsset() {
         val doc = SlidesDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 
-        val image = ImageIO.read(doc.getImage())
+        val image = ImageIO.read(doc.getImage(0))
         assertEquals(1024, image.width)
         assertEquals(768, image.height)
 
-        val metadata = Json.mapper.readValue(doc.getMetadata(), Map::class.java)
-        assertFalse(metadata.containsKey("content"))
+        validateAssetMetadata(doc.getMetadata(0))
     }
 
     @Test
@@ -39,23 +35,17 @@ class TestSlidesDocument {
         val doc = SlidesDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 
-        val image = ImageIO.read(doc.getImage())
+        val image = ImageIO.read(doc.getImage(1))
         assertEquals(1024, image.width)
         assertEquals(768, image.height)
 
-        val metadata = Json.mapper.readValue(doc.getMetadata(), Map::class.java)
-        assertTrue(metadata.containsKey("content"))
-        println(metadata["content"])
+        validatePageMetadata(doc.getMetadata(1))
     }
 
     @Test
-    fun testRenderAllImages() {
+    fun testRenderAll() {
         val opts = Options("src/test/resources/pptx_test.pptx")
         val doc = SlidesDocument(opts, FileInputStream(opts.fileName))
-        doc.renderAllImages()
-
-        for (page in 1..3) {
-            doc.getImage(page)
-        }
+        assertEquals(4, doc.renderAllImages())
     }
 }

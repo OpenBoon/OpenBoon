@@ -7,6 +7,7 @@ import com.aspose.cells.MemorySetting
 import com.aspose.cells.SheetRender
 import com.aspose.cells.Workbook
 import com.aspose.cells.Worksheet
+import java.awt.Color
 import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
@@ -25,20 +26,24 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
 
     private val workbook = Workbook(inputStream, loadOptions)
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         for (page in 0 until workbook.worksheets.count) {
             renderImage(page + 1)
         }
+        renderImage(0)
+        return workbook.worksheets.count + 1
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
         for (page in 0 until workbook.worksheets.count) {
             renderMetadata(page + 1)
         }
+        renderMetadata(0)
+        return workbook.worksheets.count + 1
     }
 
     override fun renderImage(page: Int) {
-        val worksheet = workbook.worksheets.get(page - 1)
+        val worksheet = workbook.worksheets.get((page - 1).coerceAtLeast(0))
         val pageCount = SheetRender(worksheet, renderingOptions(false)).pageCount
         try {
             val time = measureTimeMillis {
@@ -57,9 +62,18 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
 
     fun saveSheetProxy(worksheet: Worksheet, page: Int) {
         val sr = SheetRender(worksheet, renderingOptions(true))
-        val output = ReversibleByteArrayOutputStream(8096)
+        val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
         sr.toImage(0, output)
-        ioHandler.writeImage(page, output)
+
+        if (page == 0) {
+            val render = StackRender(
+                "Excel", Color(55, 121, 68),
+                output.toInputStream()
+            )
+            ioHandler.writeImage(page, render.render())
+        } else {
+            ioHandler.writeImage(page, output)
+        }
     }
 
     fun saveSheetProxyWithCellRange(worksheet: Worksheet, page: Int) {
@@ -80,6 +94,7 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
         imageOrPrintOptions.verticalResolution = 100
         imageOrPrintOptions.imageType = ImageType.JPEG
         imageOrPrintOptions.onePagePerSheet = singlePage
+        imageOrPrintOptions.pageCount = 1
         return imageOrPrintOptions
     }
 
@@ -88,16 +103,19 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
             val props = workbook.builtInDocumentProperties
             val metadata = mutableMapOf<String, Any?>()
 
-            metadata["title"] = props.title
-            metadata["author"] = props.author
-            metadata["keywords"] = props.keywords
-            metadata["description"] = props.category
-            metadata["timeCreated"] = convertDate(props.createdTime?.toDate())
+            if (page == 0) {
+                metadata["title"] = props.title
+                metadata["author"] = props.author
+                metadata["keywords"] = props.keywords
+                metadata["description"] = props.category
+                metadata["timeCreated"] = convertDate(props.createdTime?.toDate())
+                metadata["length"] = workbook.worksheets.count
+            }
 
-            metadata["pages"] = workbook.worksheets.count
-
-            if (options.content) {
-                logger.warn("Option ignored, storing worksheet content is not supported.")
+            val worksheet = workbook.worksheets[page.coerceAtLeast(0)]
+            if (page > 0) {
+                // No content, it's a mess of garbage.
+                metadata["description"] = worksheet.name
             }
 
             val output = ReversibleByteArrayOutputStream()

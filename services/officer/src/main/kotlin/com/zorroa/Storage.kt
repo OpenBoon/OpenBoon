@@ -126,5 +126,7 @@ class IOHandler(val options: Options) {
 
     companion object {
         val logger: Logger = LoggerFactory.getLogger(IOHandler::class.java)
+
+        val IMG_BUFFER_SIZE = 65536
     }
 }

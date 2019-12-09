@@ -3,6 +3,7 @@ package com.zorroa
 import com.aspose.words.FontSettings
 import com.aspose.words.ImageSaveOptions
 import com.aspose.words.PdfSaveOptions
+import java.awt.Color
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import kotlin.system.measureTimeMillis
@@ -37,18 +38,23 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
         }
     }
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
             renderImage(page)
         }
+        renderImage(0)
+        return doc.pageCount + 1
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
+
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
             renderMetadata(page)
         }
+        renderMetadata(0)
+        return doc.pageCount + 1
     }
 
     override fun renderImage(page: Int) {
@@ -57,11 +63,20 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
             imageSaveOptions.horizontalResolution = 96f
             imageSaveOptions.verticalResolution = 96f
             imageSaveOptions.pageCount = 1
-            imageSaveOptions.pageIndex = page - 1
+            imageSaveOptions.pageIndex = (page - 1).coerceAtLeast(0)
 
-            val output = ReversibleByteArrayOutputStream(16384)
+            val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
             doc.save(output, imageSaveOptions)
-            ioHandler.writeImage(page, output)
+            if (page == 0) {
+                val render = StackRender(
+                    "MSWord", Color(52, 84, 148),
+                    output.toInputStream()
+                )
+
+                ioHandler.writeImage(page, render.render())
+            } else {
+                ioHandler.writeImage(page, output)
+            }
         }
         logImageTime(page, time)
     }
@@ -71,20 +86,23 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
             val props = doc.builtInDocumentProperties
             val metadata = mutableMapOf<String, Any?>()
 
-            metadata["title"] = props.title
-            metadata["author"] = props.author
-            metadata["keywords"] = props.keywords
-            metadata["description"] = props.category
-            metadata["timeCreated"] = convertDate(props.createdTime)
+            if (page == 0) {
+                metadata["type"] = "document"
+                metadata["title"] = props.title
+                metadata["author"] = props.author
+                metadata["keywords"] = props.keywords
+                metadata["timeCreated"] = convertDate(props.createdTime)
+                metadata["length"] = doc.pageCount
+            }
 
-            metadata["pages"] = doc.pageCount
+            val pageInfo = doc.getPageInfo((page - 1).coerceAtLeast(0))
 
-            val pageInfo = doc.getPageInfo(page - 1)
             metadata["height"] = pageInfo.heightInPoints
             metadata["width"] = pageInfo.widthInPoints
             metadata["orientation"] = if (pageInfo.landscape) "landscape" else "portrait"
 
-            if (options.content) {
+            if (page > 0) {
+                metadata["type"] = "page"
                 metadata["content"] = extractPageContent(page)
             }
 

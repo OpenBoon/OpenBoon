@@ -3,10 +3,9 @@ package com.zorroa
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -60,10 +59,9 @@ class Options(val fileName: String) {
  * A utility object for json conversions. Filters null values.
  */
 object Json {
-    val mapper = ObjectMapper()
+    val mapper = jacksonObjectMapper()
 
     init {
-        mapper.registerModule(KotlinModule())
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
         mapper.propertyNamingStrategy = PropertyNamingStrategy.SNAKE_CASE
@@ -84,17 +82,18 @@ abstract class Document(val options: Options) : Closeable {
     }
 
     abstract fun renderImage(page: Int)
-    abstract fun renderAllImages()
+    abstract fun renderAllImages(): Int
 
     fun renderMetadata() {
         renderMetadata(options.page)
     }
 
-    abstract fun renderAllMetadata()
+    abstract fun renderAllMetadata(): Int
     abstract fun renderMetadata(page: Int)
 
     fun render() {
         if (isRenderAll()) {
+            logger.info("Rendering all images and metadata")
             renderAllImages()
             renderAllMetadata()
         } else {
@@ -106,24 +105,32 @@ abstract class Document(val options: Options) : Closeable {
     }
 
     fun isRenderAll(): Boolean {
-        return options.page < 1
+        return options.page < 0
     }
 
     fun logImageTime(page: Int, time: Long) {
         val mem = Runtime.getRuntime().freeMemory() / 1024 / 1024
-        logger.info("proxy input='${options.fileName}' page='$page' in time='{}ms', freemem='{}m'", time, mem)
+        logger.info(
+            "proxy input='${options.fileName}' output='${ioHandler.getOutputUri()}' page='$page' in time='{}ms', freemem='{}m'",
+            time,
+            mem
+        )
     }
 
     fun logMetadataTime(page: Int, time: Long) {
         val mem = Runtime.getRuntime().freeMemory() / 1024 / 1024
-        logger.info("metadata input='${options.fileName}' page='$page' in time='{}ms', freemem='{}m'", time, mem)
+        logger.info(
+            "metadata input='${options.fileName}'  output='${ioHandler.getOutputUri()}' page='$page' in time='{}ms', freemem='{}m'",
+            time,
+            mem
+        )
     }
 
-    fun getMetadata(page: Int=1) : InputStream {
+    fun getMetadata(page: Int = 0): InputStream {
         return ioHandler.getMetadata(page)
     }
 
-    fun getImage(page: Int=1) : InputStream {
+    fun getImage(page: Int = 0): InputStream {
         return ioHandler.getImage(page)
     }
 
@@ -207,35 +214,6 @@ fun runServer(port: Int) {
 
     spark.kotlin.port(port)
     threadPool(threads, threads, 600 * 1000)
-
-    post("/ocr") {
-
-        // We have to set this but the location is never used.
-        request.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement("/tmp"))
-
-        val file = this.request.raw().getPart("file")
-        val body = this.request.raw().getPart("body")
-
-        try {
-            val backoff = backoffResponse()
-            if (backoff != null) {
-                this.response.status(429)
-                Json.mapper.writeValueAsString(backoff)
-            } else {
-                val req = Json.mapper.readValue<Options>(body.inputStream)
-                val doc = OcrDocument(req, file.inputStream)
-                doc.use {
-                    it.render()
-                }
-                this.response.status(201)
-                Json.mapper.writeValueAsString(mapOf("output" to doc.ioHandler.getOutputUri()))
-            }
-        } catch (e: Exception) {
-            logger.warn("failed to process $body", e)
-            this.response.status(500)
-            Json.mapper.writeValueAsString(mapOf("status" to e.message))
-        }
-    }
 
     post("/extract") {
 

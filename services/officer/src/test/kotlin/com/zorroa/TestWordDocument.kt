@@ -6,7 +6,6 @@ import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class TestWordDocument {
 
@@ -20,24 +19,23 @@ class TestWordDocument {
     }
 
     @Test
-    fun testRenderAllPages() {
+    fun testRenderPage() {
         val opts = Options("src/test/resources/word_test_2.docx")
-        opts.outputDir = "all_docx"
+        opts.page = 1
 
         val doc = WordDocument(opts, FileInputStream(opts.fileName))
-        doc.renderAllImages()
-
-        for (page in 1..3) {
-            doc.getImage(page)
-        }
+        doc.render()
+        doc.getImage(1)
     }
 
     @Test
-    fun testRender() {
+    fun testRenderAll() {
+        opts.page = -1
+
         val doc = WordDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 
-        val image = ImageIO.read(doc.getImage())
+        val image = ImageIO.read(doc.getImage(1))
         assertEquals(816, image.width)
         assertEquals(1056, image.height)
 
@@ -46,11 +44,12 @@ class TestWordDocument {
     }
 
     @Test
-    fun testRenderPage() {
-        val opts = Options("src/test/resources/word_test_2.docx")
+    fun testRenderAssetPage() {
+        val opts = Options("src/test/resources/lighthouse.docx")
         opts.content = true
         opts.page = 0
-        opts.outputDir = "render_word_page"
+        opts.outputDir = "render_asset_page"
+
         val doc = WordDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 
@@ -58,9 +57,6 @@ class TestWordDocument {
         assertEquals(816, image.width)
         assertEquals(1056, image.height)
 
-        val metadata = Json.mapper.readValue(doc.getMetadata(), Map::class.java)
-
-        assertTrue(metadata.containsKey("content"))
-        println(metadata["content"])
+        validateAssetMetadata(doc.getMetadata(page = 0))
     }
 }

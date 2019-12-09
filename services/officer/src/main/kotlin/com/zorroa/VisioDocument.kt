@@ -9,6 +9,7 @@ import com.aspose.diagram.PaperSizeFormat
 import com.aspose.diagram.PixelOffsetMode
 import com.aspose.diagram.SaveFileFormat
 import com.aspose.diagram.SmoothingMode
+import java.awt.Color
 import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
@@ -20,51 +21,70 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
         saveImage(page, getImageSaveOptions(page))
     }
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         val opts = getImageSaveOptions(null)
         for (index in 0 until diagram.pages.count()) {
             opts.pageIndex = index
             saveImage(index + 1, opts)
         }
+        // Render the parent page
+        opts.pageIndex = 0
+        saveImage(0, opts)
+        return diagram.pages.count() + 1
     }
 
     fun saveImage(page: Int, opts: ImageSaveOptions) {
         val time = measureTimeMillis {
-            val output = ReversibleByteArrayOutputStream(16384)
+            val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
             diagram.save(output, opts)
-            ioHandler.writeImage(page, output)
+
+            if (page == 0) {
+                val render = StackRender(
+                    "MSVisio", Color(30, 62, 140),
+                    output.toInputStream()
+                )
+                ioHandler.writeImage(page, render.render())
+            } else {
+                ioHandler.writeImage(page, output)
+            }
         }
         logImageTime(page, time)
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
         for (index in 0 until diagram.pages.count()) {
             renderMetadata(index + 1)
         }
+        return diagram.pages.count() + 1
     }
 
     override fun renderMetadata(page: Int) {
         val time = measureTimeMillis {
             val props = diagram.documentProps
-            val dpage = diagram.pages[page - 1]
             val metadata = mutableMapOf<String, Any?>()
 
-            metadata["title"] = props.title
-            metadata["author"] = props.creator
-            metadata["keywords"] = props.keywords
-            metadata["description"] = props.desc
-            metadata["pageName"] = dpage.name
-            metadata["timeCreated"] = convertDate(props.timeCreated?.toDate())
+            if (page == 0) {
+                metadata["type"] = "document"
+                metadata["title"] = props.title
+                metadata["author"] = props.creator
+                metadata["keywords"] = props.keywords
+                metadata["timeCreated"] = convertDate(props.timeCreated?.toDate())
+                metadata["length"] = diagram.pages.count
+                metadata["description"] = props.desc
+            }
 
+            val dpage = diagram.pages[(page - 1).coerceAtLeast(0)]
             val pageProps = dpage.pageSheet.pageProps
-            metadata["pages"] = diagram.pages.count
+
             metadata["height"] = (pageProps.pageHeight.value * 10).toInt()
             metadata["width"] = (pageProps.pageHeight.value * 10).toInt()
             metadata["orientation"] =
                 if (pageProps.pageHeight.value > pageProps.pageHeight.value) "portrait" else "landscape"
 
-            if (options.content) {
+            if (page > 0) {
+                metadata["type"] = "page"
                 metadata["content"] = extractContent(page)
+                metadata["description"] = dpage.name
             }
 
             val output = ReversibleByteArrayOutputStream()
@@ -108,6 +128,8 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
 
         val pgSize = PageSize(PaperSizeFormat.A_1)
         opts.pageSize = pgSize
+        opts.scale = .5f
+        opts.pageCount = 1
         opts.saveForegroundPagesOnly = true
         opts.interpolationMode = InterpolationMode.NEAREST_NEIGHBOR
         opts.jpegQuality = 100
@@ -115,7 +137,7 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
         opts.smoothingMode = SmoothingMode.HIGH_QUALITY
 
         page?.let {
-            opts.pageIndex = it - 1
+            opts.pageIndex = (it - 1).coerceAtLeast(0)
         }
 
         return opts
