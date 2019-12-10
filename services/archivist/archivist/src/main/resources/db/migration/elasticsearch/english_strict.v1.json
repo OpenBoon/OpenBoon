@@ -50,10 +50,10 @@
     "asset": {
       "dynamic": "strict",
       "properties": {
-        "group": {
+        "element": {
           "type": "join",
           "relations": {
-            "asset": "element"
+            "asset": "clip"
           }
         },
         "source": {
