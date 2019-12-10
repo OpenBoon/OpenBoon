@@ -73,7 +73,7 @@ sdk-unit-tests:
     - qa
     - master
   script:
-    - python3 -m pip install flake8 pipenv pytest
+    - python -m pip install flake8 pipenv pytest
     - cd containers/zmlp-plugins-analysis
     - flake8
     - pipenv install -r requirements.txt
