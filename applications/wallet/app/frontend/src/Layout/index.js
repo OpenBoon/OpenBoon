@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
         setSelectedProject={setSelectedProject}
         projects={projects}
       />
-      {children(selectedProject)}
+      {children({ selectedProject })}
     </div>
   )
 }
