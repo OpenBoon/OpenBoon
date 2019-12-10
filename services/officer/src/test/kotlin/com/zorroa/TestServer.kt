@@ -14,9 +14,7 @@ class TestServer {
         @BeforeClass
         @JvmStatic
         fun beforeClass() {
-            println("start")
             runServer(9876)
-            println("started")
             Thread.sleep(1000)
         }
 

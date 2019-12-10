@@ -16,11 +16,11 @@ class OfficeImporterUnitTestCase(unittest.TestCase):
 
     def test_service_url(self):
         client = OfficerClient()
-        assert client.url == 'http://officer:7081'
+        assert client.url == 'http://officer:7078'
 
     def test_render_url(self):
         client = OfficerClient()
-        assert client.render_url == 'http://officer:7081/render'
+        assert client.render_url == 'http://officer:7078/render'
 
     @patch('requests.post')
     @patch.object(file_cache, 'localize_remote_file')
@@ -46,8 +46,8 @@ class OfficeImporterUnitTestCase(unittest.TestCase):
         assert body[1][0] == 'body'
         assert body[1][1][0] is None
 
-        assert '"file_name": "/tmp/path/file.pdf"' in body[1][1][1]
-        assert '"output_dir": "abcdefg1234"' in body[1][1][1]
+        assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
+        assert '"outputDir": "abcdefg1234"' in body[1][1][1]
         assert '"page": -1' in body[1][1][1]
 
     @patch('requests.post')
@@ -64,8 +64,8 @@ class OfficeImporterUnitTestCase(unittest.TestCase):
         assert body[1][0] == 'body'
         assert body[1][1][0] is None
 
-        assert '"file_name": "/tmp/path/file.pdf"' in body[1][1][1]
-        assert '"output_dir": "abcdefg1234"' in body[1][1][1]
+        assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
+        assert '"outputDir": "abcdefg1234"' in body[1][1][1]
         assert '"page": 5' in body[1][1][1]
 
     @patch('requests.post')

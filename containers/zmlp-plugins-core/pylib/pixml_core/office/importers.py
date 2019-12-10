@@ -65,27 +65,18 @@ class OfficeImporter(AssetBuilder):
             raise PixmlUnrecoverableProcessorException(
                 "Unable to obtain officer metadata, {} {}, {}".format(uri, page, e))
 
-    def get_image_path(self, uri, page):
+    def get_image_uri(self, uri, page):
         """
-        Download and store the image for the output uri and
-        the page.
+        Return the pixml storage URL for the given page.
 
         Args:
             uri (str):  A previously created output uri.
             page (int): The page number, 0 for parent page.
 
         Returns:
-            str: the path to the cached image.
-
-        Raises:
-            PixmlUnrecoverableProcessorException: If the file cannot be found
+            str: the pixml URL to the image.
         """
-        try:
-            pixml_uri = "{}/proxy.{}.jpg".format(uri, page)
-            return file_cache.localize_uri(pixml_uri)
-        except PixmlStorageException as e:
-            raise PixmlUnrecoverableProcessorException(
-                "Unable to obtain officer proxy, {} {}, {}".format(uri, page, e))
+        return "{}/proxy.{}.jpg".format(uri, max(page, 0))
 
     def process(self, frame):
         """Processes the given frame by sending it to the Officer service for render.
@@ -107,7 +98,8 @@ class OfficeImporter(AssetBuilder):
         """
         asset = frame.asset
         clip_start = asset.get_attr('clip.start')
-        page = int(clip_start) if clip_start else None
+        # Use the page from the clip or page 0 which is the master asset page.
+        page = int(clip_start) if clip_start else 0
         is_parent = asset.get_attr('element.name') == "asset"
 
         # If it's a parent or the previously rendered data is missing, rerender
@@ -120,13 +112,8 @@ class OfficeImporter(AssetBuilder):
             output_uri = asset.get_attr(self.tmp_loc_attr)
             self.logger.info("Utilizing proxy and metadata outputs: {}".format(output_uri))
 
-        # Use the 0 page for the Parent img and metadata
-        # The 0 page may or may not have a special look
-        if is_parent and not page:
-            page = 0
-
         # Set frame.image for ProxyIngestor to pick up
-        asset.set_attr("tmp.proxy_source_image", "{}/proxy.{}.jpg".format(output_uri, page))
+        asset.set_attr("tmp.proxy_source_image", self.get_image_uri(output_uri, page))
 
         media = self.get_metadata(output_uri, page)
         asset.set_attr("media", media)

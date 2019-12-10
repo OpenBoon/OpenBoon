@@ -14,13 +14,14 @@ object StorageManager {
     val logger: Logger = LoggerFactory.getLogger(StorageManager::class.java)
 
     val minioClient = MinioClient(
-        Config.bucket.endpoint,
+        Config.bucket.url,
         Config.bucket.accessKey,
         Config.bucket.secretKey
     )
     val bucket = Config.bucket.name
 
     init {
+        logger.info("Initializing ML Storage: {}",  Config.bucket.url)
         createBucket()
     }
 

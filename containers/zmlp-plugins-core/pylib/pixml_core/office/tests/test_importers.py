@@ -69,6 +69,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') is None
+        assert self.asset.get_attr('tmp.proxy_source_image').endswith("proxy.0.jpg")
 
     @patch.object(OfficeImporter, 'expand')
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
@@ -88,12 +89,11 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         assert md['type'] == 'document'
         assert md['length'] == 6
 
-    @patch.object(file_cache, 'localize_uri')
-    def test_get_image_path(self, cache_patch):
-        cache_patch.return_value = zorroa_test_data('images/set01/toucan.jpg', False)
+    def test_get_image_uri(self):
         processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
-        md = processor.get_image_path(self.asset, 1)
-        assert md.endswith('test-data/images/set01/toucan.jpg')
+        md = processor.get_image_uri("pixml://ml-storage/tmp-files/officer/foo/bar", 1)
+        assert md.startswith("pixml://")
+        assert md.endswith('proxy.1.jpg')
 
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
     @patch.object(OfficerClient, 'render')

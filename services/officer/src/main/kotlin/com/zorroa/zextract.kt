@@ -175,11 +175,11 @@ fun extract(opts: Options, input: InputStream): Document {
 
 fun backoffResponse(): Map<String, Any>? {
     val os = ManagementFactory.getOperatingSystemMXBean()
-    val maxLoad = os.availableProcessors * Config.main.loadMultiplier
+    val maxLoad = os.availableProcessors * Config.officer.loadMultiplier
     return if (os.systemLoadAverage > maxLoad) {
         mapOf(
             "load" to os.systemLoadAverage,
-            "max" to os.availableProcessors * Config.main.loadMultiplier
+            "max" to os.availableProcessors * Config.officer.loadMultiplier
         )
     } else {
         null
@@ -261,7 +261,7 @@ fun main(args: Array<String>) = try {
 
     println("Java heap size: ${heapSize}m")
     println("Java max heap size: ${maxHeapSize}m")
-    runServer(Config.main.port)
+    runServer(Config.officer.port)
 
 } catch (e: Exception) {
     println(e.message)

@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 
 import backoff
 import requests
@@ -7,6 +8,8 @@ import requests
 from pixml.analysis import PixmlUnrecoverableProcessorException
 from pixml.analysis.storage import file_cache, PixmlStorageException
 from pixml.rest import PixmlJsonEncoder
+
+logger = logging.getLogger(__name__)
 
 
 class OfficerClient(object):
@@ -20,9 +23,9 @@ class OfficerClient(object):
 
         Args:
             url (str): An optional URL. Will look for the PIXML_OFFICER_URL envionment
-            variable and finally default to 'http://officer:7081'
+            variable and finally default to 'http://officer:7078'
         """
-        self.url = url or os.environ.get('PIXML_OFFICER_URL', 'http://officer:7081')
+        self.url = url or os.environ.get('PIXML_OFFICER_URL', 'http://officer:7078')
 
     @property
     def render_url(self):
@@ -37,7 +40,7 @@ class OfficerClient(object):
     @backoff.on_exception(backoff.expo, requests.exceptions.HTTPError, max_time=5 * 60)
     def render(self, asset, page):
         """
-        Render thumbnails and metadata for the given aset.
+        Render thumbnails and metadata for the given Asset.
 
         Args:
             asset (Asset): The asset we're going to render
@@ -50,17 +53,14 @@ class OfficerClient(object):
         try:
             post_files = self._get_render_request_body(asset, page)
             rsp = requests.post(self.render_url,
-                                headers={'Content-Type': ''},
                                 files=post_files)
             rsp.raise_for_status()
             return rsp.json()['output']
 
         except requests.RequestException as e:
-            self.logger.warning('RequestException: %s' % e)
-            if e.request is not None:
-                self.logger.warning('Request: %s' % e.request.body)
+            logger.warning('RequestException: %s' % e)
             if e.response is not None:
-                self.logger.warning('Response: %s' % e.response.content)
+                logger.warning('Response: %s' % e.response.content)
             raise PixmlUnrecoverableProcessorException(
                 'An exception was returned while communicating with the Officer service')
         except PixmlStorageException as ex:
@@ -105,16 +105,20 @@ class OfficerClient(object):
         # already localized.
         file_path = file_cache.localize_remote_file(asset)
 
+        if not page:
+            # -1 means render everything.
+            page = -1
+
         # Setup the json body
         body = {
-            "file_name": asset.uri,
-            "output_dir": asset.id,
-            "page": page or -1
+            "fileName": asset.uri,
+            "outputDir": asset.id,
+            "page": page
         }
 
         # combine the file and json body into a multi-part request
         post_files = [
-            ("file", (body["file_name"], open(file_path, 'rb'))),
+            ("file", (body["fileName"], open(file_path, 'rb'))),
             ("body", (None, json.dumps(body, cls=PixmlJsonEncoder), 'application/json'))
         ]
         return post_files
