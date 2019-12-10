@@ -46,7 +46,6 @@ class TestWordDocument {
     @Test
     fun testRenderAssetPage() {
         val opts = Options("src/test/resources/lighthouse.docx")
-        opts.content = true
         opts.page = 0
         opts.outputDir = "render_asset_page"
 

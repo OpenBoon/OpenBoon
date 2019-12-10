@@ -57,16 +57,4 @@ class TestPdfDocument {
         val doc = PdfDocument(opts, FileInputStream(opts.fileName))
         assertEquals(4, doc.renderAllImages())
     }
-
-    @Test
-    fun testRenderHighDPI() {
-        opts.dpi = 150
-
-        val doc = PdfDocument(opts, FileInputStream(opts.fileName))
-        doc.renderImage(1)
-
-        val image = ImageIO.read(doc.getImage(1))
-        assertEquals(1275, image.width)
-        assertEquals(1650, image.height)
-    }
 }

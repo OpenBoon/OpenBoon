@@ -30,7 +30,6 @@ class TestSlidesDocument {
 
     @Test
     fun testRenderPage() {
-        opts.content = true
         opts.page = 1
         val doc = SlidesDocument(opts, FileInputStream(opts.fileName))
         doc.render()

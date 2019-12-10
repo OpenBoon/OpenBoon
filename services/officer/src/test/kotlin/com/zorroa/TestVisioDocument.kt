@@ -66,7 +66,6 @@ class TestVisioDocument {
     @Test
     fun renderAllMetadata() {
         val opts = Options("src/test/resources/HRFLow.vsd")
-        opts.content = true
 
         val doc = VisioDocument(opts, FileInputStream(opts.fileName))
         assertEquals(5, doc.renderAllMetadata())

@@ -70,7 +70,6 @@ class TestCellsDocument {
 
     @Test
     fun testRenderPageMetadata() {
-        opts.content = true
         opts.page = 1
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.renderMetadata(1)
@@ -82,7 +81,6 @@ class TestCellsDocument {
 
     @Test
     fun testRenderAssetMetadata() {
-        opts.content = true
         opts.page = 0
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.renderMetadata(0)

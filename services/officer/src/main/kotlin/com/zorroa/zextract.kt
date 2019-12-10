@@ -3,7 +3,6 @@ package com.zorroa
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -43,7 +42,7 @@ class Options(val fileName: String) {
         names = ["-o", "-output-dir"],
         description = "An output directory for the given request"
     )
-    var outputDir: String = UUID.randomUUID().toString()
+    var outputDir: String = UUID.randomUUID().toString().replace("-", "")
 
     @Parameter(names = ["-v", "-verbose"], description = "Log extra information")
     var verbose: Boolean = false
@@ -58,7 +57,6 @@ object Json {
     init {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
-        mapper.propertyNamingStrategy = PropertyNamingStrategy.SNAKE_CASE
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     }
 }
@@ -94,8 +92,6 @@ abstract class Document(val options: Options) : Closeable {
             renderImage()
             renderMetadata()
         }
-
-        ioHandler.removeTempFiles()
     }
 
     fun isRenderAll(): Boolean {
@@ -209,7 +205,18 @@ fun runServer(port: Int) {
     spark.kotlin.port(port)
     threadPool(threads, threads, 600 * 1000)
 
-    post("/extract") {
+    post("/exists") {
+        val options = Json.mapper.readValue<Options>(this.request.body())
+        val ioHandler = IOHandler(options)
+        if (ioHandler.exists(options.page)) {
+            this.response.status(200)
+        }
+        else {
+            this.response.status(404)
+        }
+    }
+
+    post("/render") {
 
         // We have to set this but the location is never used.
         request.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement("/tmp"))
