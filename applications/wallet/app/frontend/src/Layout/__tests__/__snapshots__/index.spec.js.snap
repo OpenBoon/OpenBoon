@@ -72,9 +72,9 @@ exports[`<Layout /> should render properly 1`] = `
       setSelectedProject={[Function]}
     />
   </div>
-  <ToolDrawer
-    isToolDrawerOpen={false}
-    setToolDrawerOpen={[Function]}
+  <Sidebar
+    isSidebarOpen={false}
+    setSidebarOpen={[Function]}
   />
   <div
     className="emotion-1"
@@ -156,9 +156,9 @@ exports[`<Layout /> should render properly 2`] = `
       setSelectedProject={[Function]}
     />
   </div>
-  <ToolDrawer
-    isToolDrawerOpen={true}
-    setToolDrawerOpen={[Function]}
+  <Sidebar
+    isSidebarOpen={true}
+    setSidebarOpen={[Function]}
   />
   <div
     className="emotion-1"

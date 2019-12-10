@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, zIndex, constants, typography } from '../Styles'
 
-import ToolDrawerOverlay from './Overlay'
+import SidebarOverlay from './Overlay'
 
 import QueueSvg from './icons/queue.svg'
 import KeySvg from './icons/key.svg'
@@ -10,7 +10,7 @@ import KeySvg from './icons/key.svg'
 const WIDTH = 240
 const ICON_WIDTH = 20
 
-const ToolDrawer = ({ isToolDrawerOpen, setToolDrawerOpen }) => {
+const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
   return (
     <div>
       <nav
@@ -24,8 +24,8 @@ const ToolDrawer = ({ isToolDrawerOpen, setToolDrawerOpen }) => {
           paddingBottom: spacing.spacious,
           transition: 'left ease-in-out .3s, visibility ease-in-out .3s',
           overscrollBehavior: 'contain',
-          visibility: isToolDrawerOpen ? 'visible' : 'hidden',
-          left: isToolDrawerOpen ? 0 : -WIDTH,
+          visibility: isSidebarOpen ? 'visible' : 'hidden',
+          left: isSidebarOpen ? 0 : -WIDTH,
           top: constants.navbar.height,
           paddingTop: spacing.moderate,
         }}>
@@ -64,17 +64,17 @@ const ToolDrawer = ({ isToolDrawerOpen, setToolDrawerOpen }) => {
           </li>
         </ul>
       </nav>
-      <ToolDrawerOverlay
-        isToolDrawerOpen={isToolDrawerOpen}
-        setToolDrawerOpen={setToolDrawerOpen}
+      <SidebarOverlay
+        isSidebarOpen={isSidebarOpen}
+        setSidebarOpen={setSidebarOpen}
       />
     </div>
   )
 }
 
-ToolDrawer.propTypes = {
-  isToolDrawerOpen: PropTypes.bool.isRequired,
-  setToolDrawerOpen: PropTypes.func.isRequired,
+Sidebar.propTypes = {
+  isSidebarOpen: PropTypes.bool.isRequired,
+  setSidebarOpen: PropTypes.func.isRequired,
 }
 
-export default ToolDrawer
+export default Sidebar

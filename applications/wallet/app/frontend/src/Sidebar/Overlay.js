@@ -4,7 +4,7 @@ import { css } from '@emotion/core'
 
 import { zIndex, colors } from '../Styles'
 
-const ToolDrawerOverlay = ({ isToolDrawerOpen, setToolDrawerOpen }) => (
+const SidebarOverlay = ({ isSidebarOpen, setSidebarOpen }) => (
   <div
     role="button"
     aria-label="Close Sidebar Menu"
@@ -16,20 +16,20 @@ const ToolDrawerOverlay = ({ isToolDrawerOpen, setToolDrawerOpen }) => (
       bottom: 0,
       zIndex: zIndex.layout.overlay,
       backgroundColor: colors.black,
-      opacity: isToolDrawerOpen ? 0.5 : 0,
-      width: isToolDrawerOpen ? '100%' : 0,
-      transition: isToolDrawerOpen
+      opacity: isSidebarOpen ? 0.5 : 0,
+      width: isSidebarOpen ? '100%' : 0,
+      transition: isSidebarOpen
         ? 'opacity ease-in-out .3s, width ease-in 0s 0s'
         : 'opacity ease-in-out .3s, width ease-in 0s .3s',
     })}
-    onClick={() => setToolDrawerOpen(false)}
-    onKeyDown={() => setToolDrawerOpen(false)}
+    onClick={() => setSidebarOpen(false)}
+    onKeyDown={() => setSidebarOpen(false)}
   />
 )
 
-ToolDrawerOverlay.propTypes = {
-  isToolDrawerOpen: PropTypes.bool.isRequired,
-  setToolDrawerOpen: PropTypes.func.isRequired,
+SidebarOverlay.propTypes = {
+  isSidebarOpen: PropTypes.bool.isRequired,
+  setSidebarOpen: PropTypes.func.isRequired,
 }
 
-export default ToolDrawerOverlay
+export default SidebarOverlay

@@ -3,7 +3,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 import Layout from '..'
 
 jest.mock('../../ProjectSwitcher', () => 'ProjectSwitcher')
-jest.mock('../../ToolDrawer', () => 'ToolDrawer')
+jest.mock('../../Sidebar', () => 'Sidebar')
 
 const noop = () => () => {}
 

@@ -1,13 +1,13 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import ToolDrawer from '..'
+import Sidebar from '..'
 
 const noop = () => () => {}
 
-describe('<ToolDrawer />', () => {
+describe('<Sidebar />', () => {
   it('should render properly closed', () => {
     const component = TestRenderer.create(
-      <ToolDrawer isToolDrawerOpen={false} setToolDrawerOpen={noop} />,
+      <Sidebar isSidebarOpen={false} setSidebarOpen={noop} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -15,7 +15,7 @@ describe('<ToolDrawer />', () => {
 
   it('should render properly opened', () => {
     const component = TestRenderer.create(
-      <ToolDrawer isToolDrawerOpen setToolDrawerOpen={noop} />,
+      <Sidebar isSidebarOpen setSidebarOpen={noop} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -25,7 +25,7 @@ describe('<ToolDrawer />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <ToolDrawer isToolDrawerOpen setToolDrawerOpen={mockFn} />,
+      <Sidebar isSidebarOpen setSidebarOpen={mockFn} />,
     )
 
     act(() => {
@@ -41,7 +41,7 @@ describe('<ToolDrawer />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <ToolDrawer isToolDrawerOpen setToolDrawerOpen={mockFn} />,
+      <Sidebar isSidebarOpen setSidebarOpen={mockFn} />,
     )
 
     act(() => {

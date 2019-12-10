@@ -5,14 +5,14 @@ import mockProjects from '../ProjectSwitcher/__mocks__/projects'
 
 import { constants } from '../Styles'
 
-import ToolDrawer from '../ToolDrawer'
+import Sidebar from '../Sidebar'
 
 import LayoutNavBar from './NavBar'
 
 const Layout = ({ children }) => {
   const results = mockProjects.list
 
-  const [isToolDrawerOpen, setToolDrawerOpen] = useState(false)
+  const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   const [selectedProject, setSelectedProject] = useState({
     id: results[0].id,
@@ -26,15 +26,12 @@ const Layout = ({ children }) => {
   return (
     <div css={{ height: '100%' }}>
       <LayoutNavBar
-        isToolDrawerOpen={isToolDrawerOpen}
+        isSidebarOpen={isSidebarOpen}
         projects={projects}
-        setToolDrawerOpen={setToolDrawerOpen}
+        setSidebarOpen={setSidebarOpen}
         setSelectedProject={setSelectedProject}
       />
-      <ToolDrawer
-        isToolDrawerOpen={isToolDrawerOpen}
-        setToolDrawerOpen={setToolDrawerOpen}
-      />
+      <Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div css={{ paddingTop: constants.navbar.height }}>
         {children({ selectedProject })}
       </div>

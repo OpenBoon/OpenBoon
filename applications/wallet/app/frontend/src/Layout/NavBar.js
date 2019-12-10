@@ -9,9 +9,9 @@ import ProjectSwitcher from '../ProjectSwitcher'
 const LOGO_WIDTH = 110
 
 const LayoutNavBar = ({
-  isToolDrawerOpen,
+  isSidebarOpen,
   projects,
-  setToolDrawerOpen,
+  setSidebarOpen,
   setSelectedProject,
 }) => {
   return (
@@ -30,9 +30,7 @@ const LayoutNavBar = ({
         boxShadow: constants.boxShadows.navBar,
         zIndex: zIndex.layout.navbar,
       }}>
-      <button
-        type="button"
-        onClick={() => setToolDrawerOpen(!isToolDrawerOpen)}>
+      <button type="button" onClick={() => setSidebarOpen(!isSidebarOpen)}>
         Hamburger
       </button>
       <LogoSvg width={LOGO_WIDTH} />
@@ -45,14 +43,14 @@ const LayoutNavBar = ({
 }
 
 LayoutNavBar.propTypes = {
-  isToolDrawerOpen: PropTypes.bool.isRequired,
+  isSidebarOpen: PropTypes.bool.isRequired,
   projects: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  setToolDrawerOpen: PropTypes.func.isRequired,
+  setSidebarOpen: PropTypes.func.isRequired,
   setSelectedProject: PropTypes.func.isRequired,
 }
 
