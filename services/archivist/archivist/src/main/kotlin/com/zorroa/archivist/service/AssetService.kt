@@ -194,6 +194,7 @@ class AssetServiceImpl : AssetService {
             java.time.Clock.systemUTC().instant().toString()
         )
         asset.setAttr("system.state", AssetState.Pending.toString())
+        asset.setAttr("element.name", "asset")
 
         return asset
     }
