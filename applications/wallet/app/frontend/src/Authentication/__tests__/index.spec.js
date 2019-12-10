@@ -39,10 +39,7 @@ describe('<Authentication />', () => {
   })
 
   it('should render properly when user is logged in', () => {
-    require('../helpers').__setMockTokens({
-      accessToken: true,
-      refreshToken: true,
-    })
+    require('../helpers').__setMockUser({ id: 12345 })
 
     require('swr').__setMockUseSWRResponse({
       data: { results: [{ name: 'project-name' }] },
