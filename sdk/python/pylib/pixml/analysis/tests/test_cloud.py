@@ -1,9 +1,9 @@
-import json
+import minio
 import os
 from unittest import TestCase
 from unittest.mock import patch
 
-from pixml.analysis.cloud import get_google_storage_client
+from pixml.analysis.cloud import get_google_storage_client, get_pixml_storage_client
 from pixml.rest import PixmlClient
 
 
@@ -44,3 +44,7 @@ class TetCloudUtilFunction(TestCase):
                    client._credentials._service_account_email
         finally:
             del os.environ['PIXML_DATASOURCE_ID']
+
+    def test_get_pixml_storage_client(self):
+        client = get_pixml_storage_client()
+        assert type(client) == minio.api.Minio
