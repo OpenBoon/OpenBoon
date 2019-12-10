@@ -8,6 +8,7 @@ const Table = ({ columns, rows }) => {
   return (
     <table
       css={{
+        width: '100%',
         borderSpacing: 0,
         boxShadow: constants.boxShadows.dark,
         th: {
@@ -16,6 +17,9 @@ const Table = ({ columns, rows }) => {
           backgroundColor: colors.grey1,
           padding: `${spacing.moderate}px ${spacing.normal}px`,
           borderBottom: constants.borders.default,
+          ':nth-of-type(2)': {
+            width: '100%',
+          },
           '&:not(:last-child)': {
             borderRight: constants.borders.default,
           },
@@ -40,6 +44,7 @@ const Table = ({ columns, rows }) => {
           },
         },
         td: {
+          whiteSpace: 'nowrap',
           fontWeight: typography.weight.extraLight,
           color: colors.grey2,
           padding: `${spacing.base}px ${spacing.normal}px`,
