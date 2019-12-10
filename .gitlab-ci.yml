@@ -64,7 +64,7 @@ wallet-container-build-validation:
 
 # SDK Test
 sdk-unit-tests:
-  image: python:3.7
+  image: ubuntu:disco
   stage: test
   allow_failure: true
   only:
@@ -73,7 +73,7 @@ sdk-unit-tests:
     - qa
     - master
   script:
-    - python -m pip install flake8 pipenv pytest
+    - python3 -m pip install flake8 pipenv pytest
     - cd containers/zmlp-plugins-analysis
     - flake8
     - pipenv install -r requirements.txt
