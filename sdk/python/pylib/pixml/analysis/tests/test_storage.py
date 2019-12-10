@@ -213,7 +213,7 @@ class StorageFunctionTests(TestCase):
                 'height': 200
             }
         }
-        ## Should only be added to list once.
+        # Should only be added to list once.
         storage.add_proxy_file(asset, IMAGE_JPG, (200, 200))
         storage.add_proxy_file(asset, IMAGE_JPG, (200, 200))
 
@@ -228,4 +228,3 @@ class StorageFunctionTests(TestCase):
         }
         storage.add_proxy_file(asset, VIDEO_MP4, (200, 200))
         assert 2 == len(asset.get_files())
-

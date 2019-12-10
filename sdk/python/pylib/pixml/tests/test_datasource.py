@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pixml
 from pixml import PixmlClient
-from pixml.datasource import  DataSource
+from pixml.datasource import DataSource
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
