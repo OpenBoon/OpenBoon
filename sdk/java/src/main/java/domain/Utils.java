@@ -12,7 +12,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Utils {
@@ -73,6 +75,7 @@ public class Utils {
         header.entrySet().forEach((entry) -> conn.setRequestProperty(entry.getKey(), entry.getValue()));
 
         // Request body Setup
+        body = Optional.ofNullable(body).orElse(new HashMap());
         String input = new ObjectMapper().writeValueAsString(body);
 
         OutputStream os = conn.getOutputStream();

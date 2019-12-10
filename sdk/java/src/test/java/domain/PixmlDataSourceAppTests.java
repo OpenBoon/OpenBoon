@@ -5,9 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -19,21 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Utils.class)
-@PowerMockIgnore({"javax.crypto.*" })
+@PowerMockIgnore({"javax.crypto.*"})
 public class PixmlDataSourceAppTests {
 
     Map keyDict;
     PixmlApp app;
-
-    @Mock
-    DataSourceApp mockedDsApp;
-
-    @Mock
-    DataSource mockedDs;
 
     ObjectMapper mapper;
 
@@ -64,7 +55,7 @@ public class PixmlDataSourceAppTests {
 
         //Mocking static method
         PowerMockito.mockStatic(Utils.class);
-        BDDMockito.given(Utils.executeHttpRequest(Mockito.anyString(), Mockito.anyString(), Mockito.anyMap(), Mockito.anyMap()))
+        BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("post"), Mockito.anyString(), Mockito.anyMap(), Mockito.anyMap()))
                 .willReturn(mapper.writeValueAsString(value));
 
         //run real method with static mocked method with http request inside
@@ -79,75 +70,73 @@ public class PixmlDataSourceAppTests {
     }
 
     @Test
-    public void getDataSource() {
-        fail();
+    public void getDataSource() throws IOException, InterruptedException {
+
+        Map value = new HashMap();
+
+        value.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        value.put("name", "test");
+        value.put("uri", "gs://test/test");
+
+        //Mocking static method
+        PowerMockito.mockStatic(Utils.class);
+        BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("post"), Mockito.anyString(), Mockito.anyMap(), Mockito.anyMap()))
+                .willReturn(mapper.writeValueAsString(value));
+
+        //run real method with static mocked method with http request inside
+        DataSource ds = app.dataSource.getDataSource("test");
+
+
+        assertEquals(value.get("id"), ds.getId());
+        assertEquals(value.get("name"), ds.getName());
+        assertEquals(value.get("uri"), ds.getUri());
 
     }
 
     @Test
-    public void importDataSource() {
-        fail();
+    public void importDataSource() throws IOException, InterruptedException {
+
+        Map value = new HashMap();
+        value.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        value.put("name", "Import DataSource");
+
+        //Mocking static method
+        PowerMockito.mockStatic(Utils.class);
+        BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("post"), Mockito.anyString(), Mockito.anyMap(), Mockito.isNull()))
+                .willReturn(mapper.writeValueAsString(value));
+
+        Map dataSourceParam = new HashMap();
+        dataSourceParam.put("id", "123");
+        DataSource ds = new DataSource(dataSourceParam);
+
+        Map response = this.app.dataSource.importDataSource(ds);
+
+        assertEquals(value.get("id"), response.get("id"));
+        assertEquals(value.get("name"), response.get("name"));
 
     }
 
     @Test
-    public void updateCredentials() {
-        fail();
+    public void updateCredentials() throws IOException, InterruptedException {
+
+
+        Map value = new HashMap();
+        value.put("type", "DATASOURCE");
+        value.put("id", "ABC");
+
+        //Mocking static method
+        PowerMockito.mockStatic(Utils.class);
+        BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("put"), Mockito.anyString(), Mockito.anyMap(), Mockito.anyMap()))
+                .willReturn(mapper.writeValueAsString(value));
+
+        Map dataSourceParam = new HashMap();
+        dataSourceParam.put("id", "123");
+
+        DataSource ds = new DataSource(dataSourceParam);
+        Map status = this.app.dataSource.updateCredentials(ds, "ABC123");
+
+        assertEquals(status.get("type"), "DATASOURCE");
+        assertEquals(status.get("id"), "ABC");
 
     }
-
-    /*
-        @patch.object(PixmlClient, 'post')
-    def test_create_datasource(self, post_patch):
-        value = {
-            'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
-            'name': 'test',
-            'uri': 'gs://test/test',
-            'file_types': ['jpg'],
-            'analysis': ['google-ocr']
-        }
-        post_patch.return_value = value
-        ds = self.app.datasource.create_datasource('test', 'gs://test/test')
-        assert value['id'] == ds.id
-        assert value['name'] == ds.name
-        assert value['uri'] == ds.uri
-        assert ds.file_types == ['jpg']
-        assert ds.analysis == ['google-ocr']
-
-    @patch.object(PixmlClient, 'post')
-    def test_get_datasource(self, post_patch):
-        value = {
-            'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
-            'name': 'test',
-            'uri': 'gs://test/test'
-        }
-        post_patch.return_value = value
-        ds = self.app.datasource.get_datasource('test')
-        assert value['id'] == ds.id
-        assert value['name'] == ds.name
-        assert value['uri'] == ds.uri
-
-    @patch.object(PixmlClient, 'post')
-    def test_import_datasource(self, post_patch):
-        value = {
-            'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
-            'name': 'Import DataSource'
-        }
-        post_patch.return_value = value
-        job = self.app.datasource.import_datasource(DataSource({'id': '123'}))
-        assert value['id'] == job["id"]
-        assert value['name'] == job["name"]
-
-    @patch.object(PixmlClient, 'put')
-    def test_update_credentials(self, put_patch):
-        value = {
-            'type': 'DATASOURCE',
-            'id': 'ABC'
-        }
-        put_patch.return_value = value
-        status = self.app.datasource.update_credentials(DataSource({'id': '123'}), 'ABC123')
-        assert status['type'] == 'DATASOURCE'
-        assert status['id'] == 'ABC'
-     */
-
 }

@@ -73,22 +73,6 @@ public class PixmlAppTest {
         assertNotNull(pixmlApp.pixmlClient.headers());
     }
 
-    /*
-    def test_create_app_from_env(self):
-        server = "https://localhost:9999"
-        os.environ['PIXML_APIKEY'] = self.key_str.decode()
-        os.environ['PIXML_SERVER'] = server
-        try:
-            app1 = pixml.app.app_from_env()
-            # Assert we can sign a request
-            assert app1.client.headers()
-            assert app1.client.server == server
-        finally:
-            del os.environ['PIXML_APIKEY']
-            del os.environ['PIXML_SERVER']
-
-     */
-
     @DisplayName("Create app with ENV Variables")
     @Test
     public void testCreateAppFromEnv() throws ReflectiveOperationException {

@@ -50,7 +50,6 @@ public class PixmlClient {
         this(apiKey, null, null);
     }
 
-
     private JsonNode loadApiKey(Object apiKey) {
 
         if (apiKey instanceof Map) {
@@ -166,7 +165,7 @@ public class PixmlClient {
     private Map makeRequest(String httpMethod, String path, Map body) throws InterruptedException, IOException {
 
         String httpResponseString = null;
-        String url = getUrl(this.DEFAULT_SERVER_URL,path);
+        String url = getUrl(this.DEFAULT_SERVER_URL, path);
 
         int tries = 0;
         while (true)
@@ -189,60 +188,33 @@ public class PixmlClient {
     }
 
     private String getUrl(String default_server_url, String path) {
-        return default_server_url+path;
+        return default_server_url + path;
     }
-
 
     private Map handleResponse(String response) throws JsonProcessingException {
         return mapper.readValue(response, Map.class);
     }
 
-    /*
-    def _make_request(self, method, path, body=None, is_json=True):
-        request_function = getattr(requests, method)
-        if body is not None:
-            data = json.dumps(body, cls=PixmlJsonEncoder)
-        else:
-            data = body
 
-        # Making the request is wrapped in its own try/catch so it's easier
-        # to catch any and all socket and http exceptions that can possibly be
-        # thrown.  Once hat happens, handle_rsp is called which may throw
-        # application level exceptions.
-        rsp = None
-        tries = 0
-        url = self.get_url(path, body)
-        while True:
-            try:
-                rsp = request_function(url, data=data, headers=self.headers(),
-                                       verify=False)
-                break
-            except Exception as e:
-                # Some form of connection error, wait until archivist comes
-                # back.
-                tries += 1
-                if 0 < self.max_retries <= tries:
-                    raise e
-                wait = random.randint(1, random.randint(1, 60))
-                # Switched to stderr in case no logger is setup, still want
-                # to see messages.
-                msg = "Communicating to Pixml (%s) timed out %d times, " \
-                      "waiting ... %d seconds, error=%s\n"
-                sys.stderr.write(msg % (url, tries, wait, e))
-                time.sleep(wait)
+    public Map put(String url, Map body) throws IOException, InterruptedException {
 
-        return self.__handle_rsp(rsp, is_json)
+        /*
+        Performs a put request.
 
+        Args:
+            path (str): An archivist URI path.
+            body (object): The request body which will be serialized to json.
+            is_json (bool): Set to true to specify a JSON return value
 
-        def __handle_rsp(self, rsp, is_json):
-        if rsp.status_code != 200:
-            self.__raise_exception(rsp)
-        if is_json and len(rsp.content):
-            rsp_val = rsp.json()
-            if logger.getEffectiveLevel() == logging.DEBUG:
-                logger.debug(
-                    "rsp: status: %d  body: '%s'" % (rsp.status_code, rsp_val))
-            return rsp_val
-        return rsp
-     */
+        Returns:
+            object: The http response object or an object deserialized from the
+                response json if the ``json`` argument is true.
+
+        Raises:
+            Exception: An error occurred making the request or parsing the
+                JSON response
+         */
+
+        return this.makeRequest("put", url, body);
+    }
 }
