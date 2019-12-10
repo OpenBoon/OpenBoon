@@ -1,7 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import Authentication from '..'
-import Layout from '../../Layout'
 
 jest.mock('../../Login', () => 'Login')
 
@@ -42,9 +41,7 @@ describe('<Authentication />', () => {
     require('../helpers').__setMockUser({ id: 12345 })
 
     const component = TestRenderer.create(
-      <Authentication>
-        {() => <Layout>{() => 'Hello World'}</Layout>}
-      </Authentication>,
+      <Authentication>{() => 'Hello World'}</Authentication>,
     )
 
     // user is loading

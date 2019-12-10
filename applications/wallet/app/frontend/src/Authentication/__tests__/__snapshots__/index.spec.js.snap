@@ -3,7 +3,7 @@
 exports[`<Authentication /> should render properly when user is logged in 1`] = `null`;
 
 exports[`<Authentication /> should render properly when user is logged in 2`] = `
-.emotion-8 {
+.emotion-4 {
   height: 100%;
 }
 
@@ -68,7 +68,7 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
   }
 >
   <div
-    className="emotion-8"
+    className="emotion-4"
   >
     <div
       className="emotion-3"
@@ -94,35 +94,7 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
         </button>
       </div>
     </div>
-    <div
-      className="emotion-8"
-    >
-      <div
-        className="emotion-3"
-      >
-        <svg
-          data-file-name="logo.svg"
-          width={110}
-        />
-        <div
-          className="emotion-2"
-        >
-          <button
-            className="emotion-1"
-            onClick={[Function]}
-            type="button"
-          >
-            Zorroa ABC
-            <svg
-              className="emotion-0"
-              data-file-name="chevron.svg"
-              width={20}
-            />
-          </button>
-        </div>
-      </div>
-      Hello World
-    </div>
+    Hello World
   </div>
 </SWRConfig>
 `;

@@ -2,13 +2,15 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants, typography, zIndex } from '../Styles'
 
+const TOP = 24
+
 const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
   return (
     <div
       css={{
         position: 'absolute',
         zIndex: zIndex.reset,
-        top: spacing.comfy,
+        top: TOP,
         left: 0,
         borderRadius: constants.borderRadius.small,
         paddingTop: spacing.base,
