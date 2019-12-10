@@ -1,16 +1,13 @@
 package com.zorroa
 
 import io.minio.MinioClient
-import org.apache.tika.Tika
+import io.minio.errors.ErrorResponseException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.io.InputStream
-import java.nio.file.Files
-import java.nio.file.Path
 
 object StorageManager {
 
@@ -61,19 +58,11 @@ class ReversibleByteArrayOutputStream(size: Int = 2048) : ByteArrayOutputStream(
  */
 class IOHandler(val options: Options) {
 
-    /**
-     * Keep track of any temp files we create so they
-     * can be removed later.
-     */
-    private val tempFiles = mutableSetOf<Path>()
-
-    val tika = Tika()
-
     fun writeImage(page: Int, outputStream: ReversibleByteArrayOutputStream) {
         StorageManager.minioClient.putObject(
             StorageManager.bucket, getImagePath(page),
             outputStream.toInputStream(), outputStream.size().toLong(), null, null,
-            tika.detect(options.fileName)
+            "image/jpeg"
         )
     }
 
@@ -86,15 +75,15 @@ class IOHandler(val options: Options) {
     }
 
     fun getImagePath(page: Int): String {
-        return "officer/${options.outputDir}/proxy.$page.jpg"
+        return "$PREFIX/${options.outputDir}/proxy.$page.jpg"
     }
 
     fun getMetadataPath(page: Int): String {
-        return "officer/${options.outputDir}/metadata.$page.json"
+        return "$PREFIX/${options.outputDir}/metadata.$page.json"
     }
 
     fun getOutputUri(): String {
-        return "pixml://${Config.bucket.name}/officer/${options.outputDir}"
+        return "pixml://${Config.bucket.name}/$PREFIX/${options.outputDir}"
     }
 
     fun getMetadata(page: Int = 1): InputStream {
@@ -105,6 +94,17 @@ class IOHandler(val options: Options) {
         return StorageManager.minioClient.getObject(Config.bucket.name, getImagePath(page))
     }
 
+    fun exists(page: Int = 1): Boolean {
+        val path = getMetadataPath(page)
+        return try {
+            StorageManager.minioClient.statObject(Config.bucket.name, path)
+            true
+        } catch (e: ErrorResponseException) {
+            logger.info("Object does not exist: {}", path)
+            false
+        }
+    }
+
     fun removeImage(page: Int = 1) {
         StorageManager.minioClient.removeObject(Config.bucket.name, getImagePath(page))
     }
@@ -113,20 +113,13 @@ class IOHandler(val options: Options) {
         StorageManager.minioClient.removeObject(Config.bucket.name, getMetadataPath(page))
     }
 
-    fun removeTempFiles() {
-        tempFiles.forEach {
-            try {
-                logger.info("removing temp $it")
-                Files.delete(it)
-            } catch (e: IOException) {
-                logger.warn("Failed to delete temp file: $it", e)
-            }
-        }
-    }
-
     companion object {
         val logger: Logger = LoggerFactory.getLogger(IOHandler::class.java)
 
+        // The size of the pre-allocated by array for images.
         val IMG_BUFFER_SIZE = 65536
+
+        // The object path prefix
+        val PREFIX = "temp"
     }
 }
