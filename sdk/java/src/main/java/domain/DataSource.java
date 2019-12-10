@@ -19,9 +19,9 @@ public class DataSource {
         this.data = data;
     }
 
-    public Integer getId() {
+    public String getId() {
         //"""The id of the DataSource"""
-        return (Integer) this.data.get("id");
+        return (String) this.data.get("id");
     }
 
     public String getName() {
@@ -34,12 +34,12 @@ public class DataSource {
         return (String) this.data.get("uri");
     }
 
-    public List<String> fileTypes() {
+    public List<String> getFileTypes() {
         //"""The file type filter for the DataSource"""
         return (List<String>) Optional.ofNullable(this.data.get("file_types")).orElse(new ArrayList());
     }
 
-    public List analysis() {
+    public List getAnalysis() {
         //"""The type of analysis done to the DataSource"""
         return (List) Optional.ofNullable(this.data.get("analysis")).orElse(new ArrayList());
 

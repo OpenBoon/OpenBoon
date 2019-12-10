@@ -4,15 +4,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class DataSourceApp {
 
 
     final String url = "/api/v1/data-sources";
+    PixmlApp app;
 
+    public DataSourceApp(PixmlApp app) {
+        this.app = app;
+    }
 
-    public DataSource createDataSource(String name, String uri, String credentials, List<String> fileTypes, List analysis) throws IOException {
+    public DataSource createDataSource(String name, String uri, String credentials, List<String> fileTypes, List analysis) throws IOException, InterruptedException {
 
 
         /*
@@ -30,7 +33,7 @@ public class DataSourceApp {
 
          */
 
-/*
+        /*
         if credentials:
             if not os.path.exists(credentials):
                 raise ValueError('The credentials path {} does not exist')
@@ -46,7 +49,7 @@ public class DataSourceApp {
             'analysis': analysis
         }
         return DataSource(self.app.client.post(url, body=body))
- */
+        */
 
 
         if (credentials != null) {
@@ -63,9 +66,9 @@ public class DataSourceApp {
 
         //Implement Rest Request PixmlClient
         //Implement Analysis
-        //return new DataSource();
 
-        return null;
+        return new DataSource(app.pixmlClient.post(this.url, body));
+
 
     }
 

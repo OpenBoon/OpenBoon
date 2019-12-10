@@ -77,7 +77,7 @@ public class Utils {
 
         OutputStream os = conn.getOutputStream();
         os.write(input.getBytes());
-        os.flush();
+        os.flush(); // request
 
         if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
             throw new RuntimeException("Failed : HTTP error code : "
