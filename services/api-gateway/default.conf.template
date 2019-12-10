@@ -6,6 +6,10 @@ upstream authserver {
   server ${AUTH_SERVER_HOST};
 }
 
+
+client_max_body_size 100M;
+
+
 server {
 
   listen 80;
