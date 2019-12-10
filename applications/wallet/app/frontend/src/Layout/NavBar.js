@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import ProjectSwitcher from '../ProjectSwitcher'
-import { colors, spacing } from '../Styles'
+import { colors, spacing, constants } from '../Styles'
 import LogoSvg from '../Icons/logo.svg'
 
 const LOGO_WIDTH = 110
@@ -15,6 +15,7 @@ const LayoutNavBar = ({ projects, setSelectedProject }) => {
         alignItems: 'center',
         backgroundColor: colors.grey1,
         padding: spacing.small,
+        boxShadow: constants.boxShadows.navBar,
       }}>
       <LogoSvg width={LOGO_WIDTH} />
       <ProjectSwitcher

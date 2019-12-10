@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants, zIndex } from '../Styles'
+import { colors, spacing, constants, typography, zIndex } from '../Styles'
 
 const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
   return (
@@ -13,7 +13,8 @@ const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
         borderRadius: constants.borderRadius.small,
         paddingTop: spacing.base,
         paddingBottom: spacing.base,
-        backgroundColor: colors.rocks.charcoal,
+        backgroundColor: colors.grey6,
+        boxShadow: constants.boxShadows.dropdown,
       }}>
       {projects.map(({ id, name }) => (
         <button
@@ -25,8 +26,9 @@ const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
             paddingRight: spacing.giant,
             paddingBottom: spacing.base,
             paddingLeft: spacing.normal,
-            color: colors.rocks.pebble,
-            backgroundColor: colors.rocks.charcoal,
+            color: colors.grey7,
+            backgroundColor: colors.grey6,
+            fontSize: typography.size.hecto,
             border: 0,
             width: '100%',
             textAlign: 'left',
