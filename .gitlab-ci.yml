@@ -64,7 +64,7 @@ wallet-container-build-validation:
 
 # SDK Test
 sdk-unit-tests:
-  image: python:3.8
+  image: python:3.7
   stage: test
   allow_failure: true
   only:
@@ -177,17 +177,17 @@ docker_hub_push:
 #    - mvn test verify -f services/officer -q
 #
 # Kotlin Services Jobs
-#kotlin-lint:
-#  image: java:latest
-#  stage: test
-#  script:
-#    - apk update && apk add ca-certificates wget && update-ca-certificates
-#    - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
-#    - chmod a+x ktlint
-#    - ./ktlint services/archivist/src/**/*.kt
-#    - ./ktlint services/auth-server/src/**/*.kt
-#    - ./ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
-#    - ./ktlint services/officer/src/**/*.kt
+kotlin-lint:
+  image: java:latest
+  stage: test
+  script:
+    - apk update && apk add ca-certificates wget && update-ca-certificates
+    - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
+    - chmod a+x ktlint
+    - ./ktlint services/archivist/src/**/*.kt
+    - ./ktlint services/auth-server/src/**/*.kt
+    - ./ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
+    - ./ktlint services/officer/src/**/*.kt
 #
 # SDK Jobs
 #python-lint:
