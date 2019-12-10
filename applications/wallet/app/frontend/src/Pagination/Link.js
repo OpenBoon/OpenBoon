@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { spacing, constants, colors } from '../Styles'
 
-import ChevronSvg from './chevron.svg'
+import ChevronSvg from '../Icons/chevron.svg'
 
 const DEFAULT_PADDING = `${spacing.base}px ${spacing.moderate}px`
 const BORDER_RADIUS = constants.borderRadius.small

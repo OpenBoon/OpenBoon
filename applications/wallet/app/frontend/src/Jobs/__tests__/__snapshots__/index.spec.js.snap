@@ -305,14 +305,6 @@ exports[`<Jobs /> should render properly with data 1`] = `
 <div
   className="emotion-63"
 >
-  <h2>
-    Projects
-  </h2>
-  <ul>
-    <li>
-      project-name
-    </li>
-  </ul>
   <div
     className="emotion-61"
   >
@@ -1331,10 +1323,6 @@ exports[`<Jobs /> should render properly without data 1`] = `
 <div
   className="emotion-63"
 >
-  <h2>
-    Projects
-  </h2>
-  Loading...
   <div
     className="emotion-61"
   >

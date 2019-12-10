@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { SWRConfig } from 'swr'
 
 import Login from '../Login'
+import Layout from '../Layout'
 
 import { getUser, authenticateUser, logout, fetcher } from './helpers'
 
@@ -27,7 +28,15 @@ const Authentication = ({ children }) => {
 
   return (
     <SWRConfig value={{ fetcher: fetcher({ setUser }) }}>
-      {children({ user, logout: logout({ setUser }) })}
+      <Layout>
+        {({ selectedProject }) =>
+          children({
+            user,
+            logout: logout({ setUser }),
+            selectedProject,
+          })
+        }
+      </Layout>
     </SWRConfig>
   )
 }

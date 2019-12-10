@@ -41,7 +41,7 @@ describe('<Authentication />', () => {
     require('../helpers').__setMockUser({ id: 12345 })
 
     const component = TestRenderer.create(
-      <Authentication>{() => `Hello World!`}</Authentication>,
+      <Authentication>{() => 'Hello World'}</Authentication>,
     )
 
     // user is loading
