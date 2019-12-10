@@ -88,8 +88,6 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
         pdfExtractor.bindPdf(pdfDocument)
         pdfExtractor.startPage = page
         pdfExtractor.endPage = page
-
-        logger.info("extracging text from page: $page")
         pdfExtractor.extractText(Charset.forName("UTF-8"))
 
         val byteStream = ByteArrayOutputStream()

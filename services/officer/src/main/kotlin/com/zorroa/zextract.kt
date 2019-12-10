@@ -85,7 +85,7 @@ abstract class Document(val options: Options) : Closeable {
 
     fun render() {
         if (isRenderAll()) {
-            logger.info("Rendering all images and metadata")
+            logger.info("Rendering all images and metadata to {}", options.outputDir)
             renderAllImages()
             renderAllMetadata()
         } else {
