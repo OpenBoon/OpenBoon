@@ -10,10 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /*
  * PixmlClient is used to communicate to a Pixml API server.
@@ -24,12 +21,12 @@ public class PixmlClient {
     JsonNode apiKey;
     String server;
 
-    String projectId;
+    UUID projectId;
     Integer maxRetries;
 
     private final String DEFAULT_SERVER_URL = "https://api.pixelml.com";
 
-    public PixmlClient(Object apiKey, String server) {
+    public PixmlClient(Object apiKey, String server, Map args) {
         /*
         Create a new PixmlClient instance.
 
@@ -41,13 +38,16 @@ public class PixmlClient {
                 server is down, 0 for unlimited.
         */
 
+        args = Optional.ofNullable(args).orElse(new HashMap());
+
         this.apiKey = loadApiKey(apiKey);
         this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
-
+        this.maxRetries = (Integer) args.getOrDefault("max_retries", 3);
+        this.projectId = (UUID) args.get("project_id");
     }
 
     public PixmlClient(Object apiKey) {
-        this(apiKey, null);
+        this(apiKey, null, null);
     }
 
 
@@ -126,18 +126,17 @@ public class PixmlClient {
                 });
 
         // if projectId exists
-        Optional.ofNullable(this.projectId).ifPresent((String projectId) -> {
-            claimBuilder.withClaim("projectId", projectId);
+        Optional.ofNullable(this.projectId).ifPresent((UUID projectId) -> {
+            claimBuilder.withClaim("projectId", projectId.toString());
         });
 
 
-        String jwtEncoded = claimBuilder
-                .sign(Algorithm
-                        .HMAC512(this.apiKey.get("sharedKey").asText()));
+        Algorithm sharedKey = Algorithm.HMAC512(this.apiKey.get("sharedKey").asText());
+        String jwtEncoded = claimBuilder.sign(sharedKey);
         return jwtEncoded;
     }
 
-    public Object post(String path, Map body, Boolean isJson) {
+    public Map post(String path, Map body) throws IOException, InterruptedException {
 
     /*
         """
@@ -159,31 +158,43 @@ public class PixmlClient {
         return self._make_request('post', path, body, is_json)
      */
 
-        isJson = Optional.ofNullable(isJson).orElse(true);
 
-        return this.makeRequest("post", path, body, isJson);
+        return this.makeRequest("post", path, body);
 
     }
 
-    private Map makeRequest(String httpMethod, String path, Map body, Boolean isJson) {
-        String httpResponseString = "";
+    private Map makeRequest(String httpMethod, String path, Map body) throws InterruptedException, IOException {
 
-        try {
-            httpResponseString = Utils.executeHttpRequest(httpMethod, path, this.headers(), body);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        String httpResponseString = null;
+        String url = getUrl(this.DEFAULT_SERVER_URL,path);
+
+        int tries = 0;
+        while (true)
+            try {
+                httpResponseString = Utils.executeHttpRequest(httpMethod, url, this.headers(), body);
+                break;
+            } catch (IOException e) {
+                tries++;
+
+                if (tries >= maxRetries)
+                    throw e;
+
+                int wait = new Random().nextInt(60);
+                String msg = String.format("Communicating to Pixml (%s) timed out %d times, waiting ... %d seconds, error=%s", path, tries, wait, e.getMessage());
+                System.out.println(msg);
+                Thread.sleep(wait * 1000);
+            }
+
+        return handleResponse(httpResponseString);
+    }
+
+    private String getUrl(String default_server_url, String path) {
+        return default_server_url+path;
+    }
 
 
-        try {
-            Map<String, String> map = mapper.readValue(httpResponseString, Map.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return null;
+    private Map handleResponse(String response) throws JsonProcessingException {
+        return mapper.readValue(response, Map.class);
     }
 
     /*
@@ -221,5 +232,17 @@ public class PixmlClient {
                 time.sleep(wait)
 
         return self.__handle_rsp(rsp, is_json)
+
+
+        def __handle_rsp(self, rsp, is_json):
+        if rsp.status_code != 200:
+            self.__raise_exception(rsp)
+        if is_json and len(rsp.content):
+            rsp_val = rsp.json()
+            if logger.getEffectiveLevel() == logging.DEBUG:
+                logger.debug(
+                    "rsp: status: %d  body: '%s'" % (rsp.status_code, rsp_val))
+            return rsp_val
+        return rsp
      */
 }

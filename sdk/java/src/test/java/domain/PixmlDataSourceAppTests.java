@@ -1,15 +1,41 @@
 package domain;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Utils.class)
+@PowerMockIgnore({"javax.crypto.*" })
 public class PixmlDataSourceAppTests {
 
     Map keyDict;
     PixmlApp app;
+
+    @Mock
+    DataSourceApp mockedDsApp;
+
+    @Mock
+    DataSource mockedDs;
+
+    ObjectMapper mapper;
 
     @Before
     public void setup() {
@@ -20,19 +46,55 @@ public class PixmlDataSourceAppTests {
         keyDict.put("sharedKey", "test123test135");
 
         app = new PixmlApp(keyDict);
+        mapper = new ObjectMapper();
     }
 
     @Test
-    public void createDataSource(){}
+    public void createDataSource() throws IOException, InterruptedException {
+
+        Map value = new HashMap();
+
+        value.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        value.put("name", "test");
+        value.put("uri", "gs://test/test");
+        value.put("file_types", Arrays.asList("jpg"));
+        value.put("analysis", Arrays.asList("google-ocr"));
+        DataSource mockedDs = new DataSource(value);
+
+
+        //Mocking static method
+        PowerMockito.mockStatic(Utils.class);
+        BDDMockito.given(Utils.executeHttpRequest(Mockito.anyString(), Mockito.anyString(), Mockito.anyMap(), Mockito.anyMap()))
+                .willReturn(mapper.writeValueAsString(value));
+
+        //run real method with static mocked method with http request inside
+        DataSource ds = app.dataSource.createDataSource("test", "gs://test/test", null, null, null);
+
+        assertEquals(value.get("id"), ds.getId());
+        assertEquals(value.get("name"), ds.getName());
+        assertEquals(value.get("uri"), ds.getUri());
+        assertEquals(ds.getFileTypes(), Arrays.asList("jpg"));
+        assertEquals(ds.getAnalysis(), Arrays.asList("google-ocr"));
+
+    }
 
     @Test
-    public void getDataSource(){}
+    public void getDataSource() {
+        fail();
+
+    }
 
     @Test
-    public void importDataSource(){}
+    public void importDataSource() {
+        fail();
+
+    }
 
     @Test
-    public void updateCredentials(){}
+    public void updateCredentials() {
+        fail();
+
+    }
 
     /*
         @patch.object(PixmlClient, 'post')

@@ -3,22 +3,21 @@ package domain;
 /* Exposes the main PixelML API.*/
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 
 public class PixmlApp {
 
     PixmlClient pixmlClient;
     AssetApp assetApp;
-    DataSourceApp dataSourceApp;
+    DataSourceApp dataSource;
 
     public PixmlApp(Object apikey, String server) {
 
         String envServer = System.getenv("PIXML_SERVER");
 
-        this.pixmlClient = new PixmlClient(apikey, Optional.ofNullable(server).orElse(envServer));
+        this.pixmlClient = new PixmlClient(apikey, Optional.ofNullable(server).orElse(envServer), null);
         this.assetApp = new AssetApp();
-        this.dataSourceApp = new DataSourceApp();
+        this.dataSource = new DataSourceApp(this);
     }
 
     public PixmlApp(Object apikey) {
@@ -65,9 +64,9 @@ public class PixmlApp {
 
 
         // load Variables
-        this.pixmlClient = new PixmlClient(apiKey, System.getenv("PIXML_SERVER"));
+        this.pixmlClient = new PixmlClient(apiKey, System.getenv("PIXML_SERVER"), null);
         this.assetApp = new AssetApp();
-        this.dataSourceApp = new DataSourceApp();
+        this.dataSource = new DataSourceApp(this);
     }
 
 }
