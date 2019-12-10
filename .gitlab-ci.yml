@@ -74,16 +74,19 @@ sdk-unit-tests:
     - master
   script:
     - python -m pip install flake8 pipenv pytest
-#    - pipenv run pip install tensorflow
-#    - cd containers/zmlp-plugins-analysis
-#    - flake8
-#    - pipenv install -r requirements.txt
-#    - pytest
-    - cd containers/zmlp-plugins-base
+    - cd sdk/python
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+    - cd ../../containers/zmlp-plugins-base
     - flake8
     - pipenv install -r requirements.txt
     - pytest
     - cd ../../containers/zmlp-plugins-core
+    - flake8
+    - pipenv install -r requirements.txt
+    - pytest
+    - cd ../../containers/zmlp-plugins-analysis
     - flake8
     - pipenv install -r requirements.txt
     - pytest
