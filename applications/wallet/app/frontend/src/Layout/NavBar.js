@@ -7,6 +7,8 @@ import LogoSvg from '../Icons/logo.svg'
 import ProjectSwitcher from '../ProjectSwitcher'
 import UserMenu from '../UserMenu'
 
+import HamburgerSvg from './hamburger.svg'
+
 const LOGO_WIDTH = 110
 
 const LayoutNavBar = ({
@@ -34,8 +36,24 @@ const LayoutNavBar = ({
         paddingRight: spacing.normal,
       }}>
       <div css={{ display: 'flex', alignItems: 'center' }}>
-        <button type="button" onClick={() => setSidebarOpen(!isSidebarOpen)}>
-          Hamburger
+        <button
+          aria-label="Open Sidebar Menu"
+          type="button"
+          onClick={() => setSidebarOpen(!isSidebarOpen)}
+          css={{
+            border: 0,
+            backgroundColor: 'inherit',
+            color: colors.rocks.iron,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: spacing.base,
+            margin: 0,
+            marginLeft: -spacing.base,
+            marginRight: spacing.base,
+            cursor: 'pointer',
+          }}>
+          <HamburgerSvg width={20} aria-hidden />
         </button>
         <LogoSvg width={LOGO_WIDTH} />
         <ProjectSwitcher

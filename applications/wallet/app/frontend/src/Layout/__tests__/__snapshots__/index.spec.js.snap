@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-5 {
+.emotion-6 {
   height: 100%;
 }
 
-.emotion-3 {
+.emotion-4 {
   position: fixed;
   top: 0;
   left: 0;
@@ -30,7 +30,7 @@ exports[`<Layout /> should render properly 1`] = `
   padding-right: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41,11 +41,34 @@ exports[`<Layout /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-0 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  margin: 0;
+  margin-left: -8px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-2 {
   border: 0;
   margin: 0;
   padding: 0;
@@ -57,28 +80,34 @@ exports[`<Layout /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-1:hover {
+.emotion-2:hover {
   cursor: pointer;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding-top: 44px;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-6"
 >
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <button
+        aria-label="Open Sidebar Menu"
+        className="emotion-0"
         onClick={[Function]}
         type="button"
       >
-        Hamburger
+        <svg
+          aria-hidden={true}
+          data-file-name="hamburger.svg"
+          width={20}
+        />
       </button>
       <svg
         data-file-name="logo.svg"
@@ -108,10 +137,10 @@ exports[`<Layout /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <button
-        className="emotion-1"
+        className="emotion-2"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
@@ -125,7 +154,7 @@ exports[`<Layout /> should render properly 1`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-4"
+    className="emotion-5"
   >
     Hello World
   </div>
@@ -133,11 +162,11 @@ exports[`<Layout /> should render properly 1`] = `
 `;
 
 exports[`<Layout /> should render properly 2`] = `
-.emotion-5 {
+.emotion-6 {
   height: 100%;
 }
 
-.emotion-3 {
+.emotion-4 {
   position: fixed;
   top: 0;
   left: 0;
@@ -162,7 +191,7 @@ exports[`<Layout /> should render properly 2`] = `
   padding-right: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -173,11 +202,34 @@ exports[`<Layout /> should render properly 2`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-0 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  margin: 0;
+  margin-left: -8px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-2 {
   border: 0;
   margin: 0;
   padding: 0;
@@ -189,28 +241,34 @@ exports[`<Layout /> should render properly 2`] = `
   font-weight: 700;
 }
 
-.emotion-1:hover {
+.emotion-2:hover {
   cursor: pointer;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding-top: 44px;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-6"
 >
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <button
+        aria-label="Open Sidebar Menu"
+        className="emotion-0"
         onClick={[Function]}
         type="button"
       >
-        Hamburger
+        <svg
+          aria-hidden={true}
+          data-file-name="hamburger.svg"
+          width={20}
+        />
       </button>
       <svg
         data-file-name="logo.svg"
@@ -240,10 +298,10 @@ exports[`<Layout /> should render properly 2`] = `
       />
     </div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <button
-        className="emotion-1"
+        className="emotion-2"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
@@ -257,7 +315,7 @@ exports[`<Layout /> should render properly 2`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-4"
+    className="emotion-5"
   >
     Hello World
   </div>

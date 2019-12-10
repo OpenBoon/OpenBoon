@@ -17,7 +17,7 @@ describe('<Layout />', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'Hamburger' })
+        .findByProps({ 'aria-label': 'Open Sidebar Menu' })
         .props.onClick({ preventDefault: noop })
     })
 
