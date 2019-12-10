@@ -7,7 +7,7 @@ import { zIndex, colors } from '../Styles'
 const ToolDrawerOverlay = ({ isToolDrawerOpen, setToolDrawerOpen }) => (
   <div
     role="button"
-    aria-label="Close Tool Drawer"
+    aria-label="Close Sidebar Menu"
     tabIndex="-1"
     css={css({
       position: 'fixed',

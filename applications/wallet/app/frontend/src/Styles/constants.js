@@ -28,7 +28,7 @@ const constants = {
   opacity,
   boxShadows,
   navbar: {
-    height: 40,
+    height: 44,
   },
 }
 

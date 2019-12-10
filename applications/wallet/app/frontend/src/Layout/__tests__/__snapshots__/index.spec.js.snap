@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-1 {
+.emotion-2 {
   height: 100%;
 }
 
 .emotion-0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -21,14 +26,25 @@ exports[`<Layout /> should render properly 1`] = `
   background-color: #2e2e2e;
   padding: 4px;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.59);
+  z-index: 100;
+}
+
+.emotion-1 {
+  padding-top: 44px;
 }
 
 <div
-  className="emotion-1"
+  className="emotion-2"
 >
   <div
     className="emotion-0"
   >
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Hamburger
+    </button>
     <svg
       data-file-name="logo.svg"
       width={110}
@@ -56,6 +72,98 @@ exports[`<Layout /> should render properly 1`] = `
       setSelectedProject={[Function]}
     />
   </div>
-  Hello World
+  <ToolDrawer
+    isToolDrawerOpen={false}
+    setToolDrawerOpen={[Function]}
+  />
+  <div
+    className="emotion-1"
+  >
+    Hello World
+  </div>
+</div>
+`;
+
+exports[`<Layout /> should render properly 2`] = `
+.emotion-2 {
+  height: 100%;
+}
+
+.emotion-0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  padding: 4px;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.59);
+  z-index: 100;
+}
+
+.emotion-1 {
+  padding-top: 44px;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-0"
+  >
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Hamburger
+    </button>
+    <svg
+      data-file-name="logo.svg"
+      width={110}
+    />
+    <ProjectSwitcher
+      projects={
+        Array [
+          Object {
+            "id": "1",
+            "name": "Zorroa ABC",
+            "selected": true,
+          },
+          Object {
+            "id": "2",
+            "name": "Zorroa EasyAs123",
+            "selected": false,
+          },
+          Object {
+            "id": "3",
+            "name": "Zorroa JustYouAndMe",
+            "selected": false,
+          },
+        ]
+      }
+      setSelectedProject={[Function]}
+    />
+  </div>
+  <ToolDrawer
+    isToolDrawerOpen={true}
+    setToolDrawerOpen={[Function]}
+  />
+  <div
+    className="emotion-1"
+  >
+    Hello World
+  </div>
 </div>
 `;

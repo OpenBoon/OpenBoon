@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ToolDrawer /> should render properly closed 1`] = `
+.emotion-1 {
+  width: 240px;
+  position: fixed;
+  height: calc(100% - 44px);
+  overflow-y: auto;
+  z-index: 90;
+  background-color: #4d4948;
+  padding-bottom: 32px;
+  -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
+  transition: left ease-in-out .3s,visibility ease-in-out .3s;
+  overscroll-behavior: contain;
+  visibility: hidden;
+  left: -240px;
+  top: 44px;
+  padding-top: 12px;
+}
+
+.emotion-0 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-0 a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  font-size: 16px;
+  color: #b3b3b3;
+}
+
+.emotion-0 a svg {
+  margin-right: 12px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+  background-color: #2e2e2e;
+}
+
+.emotion-2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 80;
+  background-color: #000;
+  opacity: 0;
+  width: 0;
+  -webkit-transition: opacity ease-in-out .3s,width ease-in 0s .3s;
+  transition: opacity ease-in-out .3s,width ease-in 0s .3s;
+}
+
+<div>
+  <nav
+    className="emotion-1"
+  >
+    <ul
+      className="emotion-0"
+    >
+      <li>
+        <a
+          href="/"
+        >
+          <svg
+            data-file-name="queue.svg"
+            width={20}
+          />
+          Data Queue
+        </a>
+      </li>
+      <li>
+        <a
+          href="/"
+        >
+          <svg
+            data-file-name="key.svg"
+            width={20}
+          />
+          API Key
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div
+    aria-label="Close Sidebar Menu"
+    className="emotion-2"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex="-1"
+  />
+</div>
+`;
+
+exports[`<ToolDrawer /> should render properly opened 1`] = `
+.emotion-0 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-0 a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  font-size: 16px;
+  color: #b3b3b3;
+}
+
+.emotion-0 a svg {
+  margin-right: 12px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  width: 240px;
+  position: fixed;
+  height: calc(100% - 44px);
+  overflow-y: auto;
+  z-index: 90;
+  background-color: #4d4948;
+  padding-bottom: 32px;
+  -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
+  transition: left ease-in-out .3s,visibility ease-in-out .3s;
+  overscroll-behavior: contain;
+  visibility: visible;
+  left: 0;
+  top: 44px;
+  padding-top: 12px;
+}
+
+.emotion-2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 80;
+  background-color: #000;
+  opacity: 0.5;
+  width: 100%;
+  -webkit-transition: opacity ease-in-out .3s,width ease-in 0s 0s;
+  transition: opacity ease-in-out .3s,width ease-in 0s 0s;
+}
+
+<div>
+  <nav
+    className="emotion-1"
+  >
+    <ul
+      className="emotion-0"
+    >
+      <li>
+        <a
+          href="/"
+        >
+          <svg
+            data-file-name="queue.svg"
+            width={20}
+          />
+          Data Queue
+        </a>
+      </li>
+      <li>
+        <a
+          href="/"
+        >
+          <svg
+            data-file-name="key.svg"
+            width={20}
+          />
+          API Key
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div
+    aria-label="Close Sidebar Menu"
+    className="emotion-2"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex="-1"
+  />
+</div>
+`;

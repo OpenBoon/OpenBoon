@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+
+import mockProjects from '../ProjectSwitcher/__mocks__/projects'
+
+import { constants } from '../Styles'
+
+import ToolDrawer from '../ToolDrawer'
 
 import LayoutNavBar from './NavBar'
-import mockProjects from '../ProjectSwitcher/__mocks__/projects'
 
 const Layout = ({ children }) => {
   const results = mockProjects.list
+
+  const [isToolDrawerOpen, setToolDrawerOpen] = useState(false)
 
   const [selectedProject, setSelectedProject] = useState({
     id: results[0].id,
@@ -19,10 +26,18 @@ const Layout = ({ children }) => {
   return (
     <div css={{ height: '100%' }}>
       <LayoutNavBar
+        isToolDrawerOpen={isToolDrawerOpen}
         projects={projects}
+        setToolDrawerOpen={setToolDrawerOpen}
         setSelectedProject={setSelectedProject}
       />
-      {children({ selectedProject })}
+      <ToolDrawer
+        isToolDrawerOpen={isToolDrawerOpen}
+        setToolDrawerOpen={setToolDrawerOpen}
+      />
+      <div css={{ paddingTop: constants.navbar.height }}>
+        {children({ selectedProject })}
+      </div>
     </div>
   )
 }

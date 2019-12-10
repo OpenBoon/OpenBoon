@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import { colors, spacing, zIndex, constants, typography } from '../Styles'
 
@@ -10,9 +10,7 @@ import KeySvg from './icons/key.svg'
 const WIDTH = 240
 const ICON_WIDTH = 20
 
-const ToolDrawer = () => {
-  const [isToolDrawerOpen, setToolDrawerOpen] = useState(true)
-
+const ToolDrawer = ({ isToolDrawerOpen, setToolDrawerOpen }) => {
   return (
     <div>
       <nav
@@ -29,6 +27,7 @@ const ToolDrawer = () => {
           visibility: isToolDrawerOpen ? 'visible' : 'hidden',
           left: isToolDrawerOpen ? 0 : -WIDTH,
           top: constants.navbar.height,
+          paddingTop: spacing.moderate,
         }}>
         <ul
           css={{
@@ -71,6 +70,11 @@ const ToolDrawer = () => {
       />
     </div>
   )
+}
+
+ToolDrawer.propTypes = {
+  isToolDrawerOpen: PropTypes.bool.isRequired,
+  setToolDrawerOpen: PropTypes.func.isRequired,
 }
 
 export default ToolDrawer
