@@ -1,5 +1,6 @@
-import json
 import os
+import json
+from urllib.parse import urlparse
 
 import minio
 from google.auth.exceptions import DefaultCredentialsError
@@ -62,6 +63,8 @@ def get_pixml_storage_client():
         Minio: A Minio client.
 
     """
-    return minio.Minio(os.environ.get("PIXML_STORAGE_HOST", "localhost:9000"),
-                       access_key=os.environ.get("PIXML_STORAGE_ACCESS_KEY"),
-                       secret_key=os.environ.get("PIXML_STORAGE_SECRET_KEY"))
+    url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000"))
+    return minio.Minio(url.netloc,
+                       access_key=os.environ.get("MLSTORAGE_ACCESSKEY"),
+                       secret_key=os.environ.get("MLSTORAGE_SECRETKEY"),
+                       secure=False)
