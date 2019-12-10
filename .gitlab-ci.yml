@@ -64,7 +64,7 @@ wallet-container-build-validation:
 
 # SDK Test
 sdk-unit-tests:
-  image: ubuntu:disco
+  image: python:3.7
   stage: test
   allow_failure: true
   only:
