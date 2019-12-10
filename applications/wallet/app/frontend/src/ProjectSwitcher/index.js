@@ -48,7 +48,7 @@ const ProjectSwitcher = ({ projects, setSelectedProject }) => {
       {isDropDownOpen && (
         <DropDown
           projects={projects.filter(project => !project.selected)}
-          onSelect={({ project }) => {
+          onSelect={project => {
             setDropDownOpen(false)
             setSelectedProject(project)
           }}

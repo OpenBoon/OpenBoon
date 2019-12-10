@@ -19,8 +19,8 @@ const Layout = ({ children }) => {
   return (
     <div css={{ height: '100%' }}>
       <LayoutNavBar
-        setSelectedProject={setSelectedProject}
         projects={projects}
+        setSelectedProject={setSelectedProject}
       />
       {children({ selectedProject })}
     </div>

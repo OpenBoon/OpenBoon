@@ -48,13 +48,13 @@ const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
 }
 
 ProjectSwitcherDropDown.propTypes = {
-  onSelect: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  onSelect: PropTypes.func.isRequired,
 }
 
 export default ProjectSwitcherDropDown
