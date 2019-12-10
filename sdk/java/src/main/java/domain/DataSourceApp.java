@@ -124,7 +124,7 @@ public class DataSourceApp {
         return self.app.client.put(url, body=body)
          */
 
-        String url = String.format("/api/v1/data-sources/{}/_credentials").format(ds.getId());
+        String url = String.format("/api/v1/data-sources/%s/_credentials", ds.getId());
 
         Map body = new HashMap();
         body.put("blob", blob);
