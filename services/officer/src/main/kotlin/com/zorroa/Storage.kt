@@ -25,20 +25,16 @@ object StorageManager {
     }
 
     private fun createBucket() {
-
         if (!minioClient.bucketExists(Config.bucket.name)) {
-            minioClient.makeBucket(Config.bucket.name)
+            try {
+                minioClient.makeBucket(Config.bucket.name)
+            } catch (e: ErrorResponseException) {
+                // Handle race condition where 2 things make the bucket.
+                if (e.errorResponse().code() != "BucketAlreadyOwnedByYou") {
+                    throw e
+                }
+            }
         }
-
-        val lifeCycle = """<LifecycleConfiguration><Rule>
-                    <ID>expire-officer-files</ID>
-                    <Filter><Prefix>officer/</Prefix></Filter>
-                    <Status>Enabled</Status>
-                    <Expiration><Days>${Config.bucket.retentionDays}</Days></Expiration>
-                    </Rule>
-                    </LifecycleConfiguration>"""
-
-        minioClient.setBucketLifeCycle(bucket, lifeCycle)
     }
 }
 
@@ -120,6 +116,6 @@ class IOHandler(val options: Options) {
         val IMG_BUFFER_SIZE = 65536
 
         // The object path prefix
-        val PREFIX = "temp"
+        val PREFIX = "tmp-files/officer"
     }
 }

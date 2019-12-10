@@ -61,13 +61,15 @@ class TestIOHandler {
     @Test
     fun testGetImagePath() {
         val path = handler.getImagePath(5)
-        assertEquals("temp/${options.outputDir}/proxy.5.jpg", path)
+        val prefix = IOHandler.PREFIX
+        assertEquals("$prefix/${options.outputDir}/proxy.5.jpg", path)
     }
 
     @Test
     fun getMetadataPath() {
         val path = handler.getMetadataPath(5)
-        assertEquals("temp/${options.outputDir}/metadata.5.json", path)
+        val prefix = IOHandler.PREFIX
+        assertEquals("$prefix/${options.outputDir}/metadata.5.json", path)
     }
 
     @Test

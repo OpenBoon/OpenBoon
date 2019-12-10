@@ -7,7 +7,6 @@ import org.junit.Test
 import spark.kotlin.stop
 import java.io.File
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class TestServer {
 
@@ -56,7 +55,12 @@ class TestServer {
         assert(rsp.code() == 201)
 
         val content = Json.mapper.readValue(rsp.body(), Map::class.java)
-        assertEquals("pixml://ml-storage/officer/render_test", content["output"])
+        val prefix = IOHandler.PREFIX
+        assertEquals("pixml://ml-storage/$prefix/render_test", content["output"])
+
+        val exists = HttpRequest.post("http://localhost:9876/exists").
+            send(Json.mapper.writeValueAsString(opts))
+        assertEquals(200, exists.code())
     }
 
     @Test
