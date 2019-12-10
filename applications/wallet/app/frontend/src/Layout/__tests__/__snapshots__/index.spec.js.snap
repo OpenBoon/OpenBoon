@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-2 {
+.emotion-5 {
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-3 {
   position: fixed;
   top: 0;
   left: 0;
@@ -15,69 +15,117 @@ exports[`<Layout /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  padding: 4px;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.59);
   z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  position: relative;
 }
 
 .emotion-1 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  color: #ffffff;
+  background-color: #4d4948;
+  font-weight: 700;
+}
+
+.emotion-1:hover {
+  cursor: pointer;
+}
+
+.emotion-4 {
   padding-top: 44px;
 }
 
 <div
-  className="emotion-2"
+  className="emotion-5"
 >
   <div
-    className="emotion-0"
+    className="emotion-3"
   >
-    <button
-      onClick={[Function]}
-      type="button"
+    <div
+      className="emotion-0"
     >
-      Hamburger
-    </button>
-    <svg
-      data-file-name="logo.svg"
-      width={110}
-    />
-    <ProjectSwitcher
-      projects={
-        Array [
-          Object {
-            "id": "1",
-            "name": "Zorroa ABC",
-            "selected": true,
-          },
-          Object {
-            "id": "2",
-            "name": "Zorroa EasyAs123",
-            "selected": false,
-          },
-          Object {
-            "id": "3",
-            "name": "Zorroa JustYouAndMe",
-            "selected": false,
-          },
-        ]
-      }
-      setSelectedProject={[Function]}
-    />
+      <button
+        onClick={[Function]}
+        type="button"
+      >
+        Hamburger
+      </button>
+      <svg
+        data-file-name="logo.svg"
+        width={110}
+      />
+      <ProjectSwitcher
+        projects={
+          Array [
+            Object {
+              "id": "1",
+              "name": "Zorroa ABC",
+              "selected": true,
+            },
+            Object {
+              "id": "2",
+              "name": "Zorroa EasyAs123",
+              "selected": false,
+            },
+            Object {
+              "id": "3",
+              "name": "Zorroa JustYouAndMe",
+              "selected": false,
+            },
+          ]
+        }
+        setSelectedProject={[Function]}
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <button
+        className="emotion-1"
+        onBlur={[Function]}
+        onClick={[Function]}
+        type="button"
+      >
+        DT
+      </button>
+    </div>
   </div>
   <Sidebar
     isSidebarOpen={false}
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-1"
+    className="emotion-4"
   >
     Hello World
   </div>
@@ -85,11 +133,11 @@ exports[`<Layout /> should render properly 1`] = `
 `;
 
 exports[`<Layout /> should render properly 2`] = `
-.emotion-2 {
+.emotion-5 {
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-3 {
   position: fixed;
   top: 0;
   left: 0;
@@ -99,69 +147,117 @@ exports[`<Layout /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  padding: 4px;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.59);
   z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  position: relative;
 }
 
 .emotion-1 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  color: #ffffff;
+  background-color: #4d4948;
+  font-weight: 700;
+}
+
+.emotion-1:hover {
+  cursor: pointer;
+}
+
+.emotion-4 {
   padding-top: 44px;
 }
 
 <div
-  className="emotion-2"
+  className="emotion-5"
 >
   <div
-    className="emotion-0"
+    className="emotion-3"
   >
-    <button
-      onClick={[Function]}
-      type="button"
+    <div
+      className="emotion-0"
     >
-      Hamburger
-    </button>
-    <svg
-      data-file-name="logo.svg"
-      width={110}
-    />
-    <ProjectSwitcher
-      projects={
-        Array [
-          Object {
-            "id": "1",
-            "name": "Zorroa ABC",
-            "selected": true,
-          },
-          Object {
-            "id": "2",
-            "name": "Zorroa EasyAs123",
-            "selected": false,
-          },
-          Object {
-            "id": "3",
-            "name": "Zorroa JustYouAndMe",
-            "selected": false,
-          },
-        ]
-      }
-      setSelectedProject={[Function]}
-    />
+      <button
+        onClick={[Function]}
+        type="button"
+      >
+        Hamburger
+      </button>
+      <svg
+        data-file-name="logo.svg"
+        width={110}
+      />
+      <ProjectSwitcher
+        projects={
+          Array [
+            Object {
+              "id": "1",
+              "name": "Zorroa ABC",
+              "selected": true,
+            },
+            Object {
+              "id": "2",
+              "name": "Zorroa EasyAs123",
+              "selected": false,
+            },
+            Object {
+              "id": "3",
+              "name": "Zorroa JustYouAndMe",
+              "selected": false,
+            },
+          ]
+        }
+        setSelectedProject={[Function]}
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <button
+        className="emotion-1"
+        onBlur={[Function]}
+        onClick={[Function]}
+        type="button"
+      >
+        DT
+      </button>
+    </div>
   </div>
   <Sidebar
     isSidebarOpen={true}
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-1"
+    className="emotion-4"
   >
     Hello World
   </div>

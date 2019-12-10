@@ -10,7 +10,7 @@ const noop = () => () => {}
 describe('<Layout />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Layout>{() => `Hello World`}</Layout>,
+      <Layout logout={noop}>{() => `Hello World`}</Layout>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

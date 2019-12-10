@@ -9,7 +9,7 @@ import Sidebar from '../Sidebar'
 
 import LayoutNavBar from './NavBar'
 
-const Layout = ({ children }) => {
+const Layout = ({ logout, children }) => {
   const results = mockProjects.list
 
   const [isSidebarOpen, setSidebarOpen] = useState(false)
@@ -30,6 +30,7 @@ const Layout = ({ children }) => {
         projects={projects}
         setSidebarOpen={setSidebarOpen}
         setSelectedProject={setSelectedProject}
+        logout={logout}
       />
       <Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div css={{ paddingTop: constants.navbar.height }}>
@@ -40,6 +41,7 @@ const Layout = ({ children }) => {
 }
 
 Layout.propTypes = {
+  logout: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 }
 

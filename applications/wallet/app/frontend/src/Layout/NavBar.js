@@ -5,6 +5,7 @@ import { colors, spacing, constants, zIndex } from '../Styles'
 import LogoSvg from '../Icons/logo.svg'
 
 import ProjectSwitcher from '../ProjectSwitcher'
+import UserMenu from '../UserMenu'
 
 const LOGO_WIDTH = 110
 
@@ -13,6 +14,7 @@ const LayoutNavBar = ({
   projects,
   setSidebarOpen,
   setSelectedProject,
+  logout,
 }) => {
   return (
     <div
@@ -23,21 +25,26 @@ const LayoutNavBar = ({
         right: 0,
         height: constants.navbar.height,
         display: 'flex',
-        justifyContent: 'left',
+        justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: colors.grey1,
-        padding: spacing.small,
         boxShadow: constants.boxShadows.navBar,
         zIndex: zIndex.layout.navbar,
+        paddingLeft: spacing.normal,
+        paddingRight: spacing.normal,
       }}>
-      <button type="button" onClick={() => setSidebarOpen(!isSidebarOpen)}>
-        Hamburger
-      </button>
-      <LogoSvg width={LOGO_WIDTH} />
-      <ProjectSwitcher
-        projects={projects}
-        setSelectedProject={setSelectedProject}
-      />
+      <div css={{ display: 'flex', alignItems: 'center' }}>
+        <button type="button" onClick={() => setSidebarOpen(!isSidebarOpen)}>
+          Hamburger
+        </button>
+        <LogoSvg width={LOGO_WIDTH} />
+        <ProjectSwitcher
+          projects={projects}
+          setSelectedProject={setSelectedProject}
+        />
+      </div>
+
+      <UserMenu logout={logout} />
     </div>
   )
 }
@@ -52,6 +59,7 @@ LayoutNavBar.propTypes = {
   ).isRequired,
   setSidebarOpen: PropTypes.func.isRequired,
   setSelectedProject: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 }
 
 export default LayoutNavBar
