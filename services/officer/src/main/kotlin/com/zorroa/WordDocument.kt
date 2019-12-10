@@ -3,12 +3,14 @@ package com.zorroa
 import com.aspose.words.FontSettings
 import com.aspose.words.ImageSaveOptions
 import com.aspose.words.PdfSaveOptions
+import java.awt.Color
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
-class WordDocument(options: Options) : Document(options) {
+class WordDocument(options: Options, inputStream: InputStream) : Document(options) {
 
-    private val doc = com.aspose.words.Document(ioHandler.getInputPath())
+    private val doc = com.aspose.words.Document(inputStream)
 
     init {
         if (options.verbose) {
@@ -36,18 +38,23 @@ class WordDocument(options: Options) : Document(options) {
         }
     }
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
             renderImage(page)
         }
+        renderImage(0)
+        return doc.pageCount + 1
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
+
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
             renderMetadata(page)
         }
+        renderMetadata(0)
+        return doc.pageCount + 1
     }
 
     override fun renderImage(page: Int) {
@@ -56,8 +63,20 @@ class WordDocument(options: Options) : Document(options) {
             imageSaveOptions.horizontalResolution = 96f
             imageSaveOptions.verticalResolution = 96f
             imageSaveOptions.pageCount = 1
-            imageSaveOptions.pageIndex = page - 1
-            doc.save(ioHandler.getImagePath(page).toString(), imageSaveOptions)
+            imageSaveOptions.pageIndex = (page - 1).coerceAtLeast(0)
+
+            val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
+            doc.save(output, imageSaveOptions)
+            if (page == 0) {
+                val render = StackRender(
+                    "MSWord", Color(52, 84, 148),
+                    output.toInputStream()
+                )
+
+                ioHandler.writeImage(page, render.render())
+            } else {
+                ioHandler.writeImage(page, output)
+            }
         }
         logImageTime(page, time)
     }
@@ -67,32 +86,28 @@ class WordDocument(options: Options) : Document(options) {
             val props = doc.builtInDocumentProperties
             val metadata = mutableMapOf<String, Any?>()
 
-            metadata["title"] = props.title
-            metadata["author"] = props.author
-            metadata["keywords"] = props.keywords
-            metadata["description"] = props.category
-            metadata["timeCreated"] = try {
-                props.createdTime
-            } catch (e: Exception) {
-                null
+            if (page == 0) {
+                metadata["type"] = "document"
+                metadata["title"] = props.title
+                metadata["author"] = props.author
+                metadata["keywords"] = props.keywords
+                metadata["timeCreated"] = convertDate(props.createdTime)
+                metadata["length"] = doc.pageCount
             }
-            metadata["timeModified"] = try {
-                props.lastSavedTime
-            } catch (e: Exception) {
-                null
-            }
-            metadata["pages"] = doc.pageCount
 
-            val pageInfo = doc.getPageInfo(page - 1)
+            val pageInfo = doc.getPageInfo((page - 1).coerceAtLeast(0))
+
             metadata["height"] = pageInfo.heightInPoints
             metadata["width"] = pageInfo.widthInPoints
             metadata["orientation"] = if (pageInfo.landscape) "landscape" else "portrait"
 
-            if (options.content) {
+            if (page > 0) {
                 metadata["content"] = extractPageContent(page)
             }
 
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
         logMetadataTime(page, time)
     }

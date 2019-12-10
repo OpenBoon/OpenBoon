@@ -208,7 +208,8 @@ class FileUpload(FileImport):
                 attributes to set on the asset.
             clip (Clip): Clip settings if applicable.
         """
-        super(FileUpload, self).__init__(path, attrs, clip)
+        super(FileUpload, self).__init__(os.path.normpath(os.path.abspath(path)), attrs, clip)
+
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
 

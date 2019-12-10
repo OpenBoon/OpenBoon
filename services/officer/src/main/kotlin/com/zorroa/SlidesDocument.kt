@@ -2,31 +2,47 @@ package com.zorroa
 
 import com.aspose.slides.Presentation
 import com.aspose.slides.SlideUtil
+import java.awt.Color
+import java.io.InputStream
 import javax.imageio.ImageIO
 import kotlin.system.measureTimeMillis
 
-class SlidesDocument(options: Options) : Document(options) {
+class SlidesDocument(options: Options, inputStream: InputStream) : Document(options) {
 
-    private val doc = Presentation(ioHandler.getInputPath())
+    private val doc = Presentation(inputStream)
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         for (page in 0 until doc.slides.size()) {
             renderImage(page + 1)
         }
+        renderImage(0)
+        return doc.slides.size() + 1
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
         for (page in 0 until doc.slides.size()) {
             renderMetadata(page + 1)
         }
+        renderMetadata(0)
+        return doc.slides.size() + 1
     }
 
     override fun renderImage(page: Int) {
         // slides are zero based
         val time = measureTimeMillis {
-            val sld = doc.slides.get_Item(page - 1)
+            val sld = doc.slides.get_Item((page - 1).coerceAtLeast(0))
             val image = sld.getThumbnail(1f, 1f)
-            ImageIO.write(image, "jpeg", ioHandler.getImagePath(page).toFile())
+            val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
+            ImageIO.write(image, "jpeg", output)
+            if (page == 0) {
+                val render = StackRender(
+                    "PowerP", Color(52, 84, 148),
+                    output.toInputStream()
+                )
+                ioHandler.writeImage(page, render.render())
+            } else {
+                ioHandler.writeImage(page, output)
+            }
         }
         logImageTime(page, time)
     }
@@ -37,30 +53,27 @@ class SlidesDocument(options: Options) : Document(options) {
             val metadata = mutableMapOf<String, Any?>()
             val dim = doc.presentation.slideSize
 
-            metadata["title"] = props.title
-            metadata["author"] = props.author
-            metadata["keywords"] = props.keywords
-            metadata["description"] = props.category
-            metadata["timeCreated"] = try {
-                props.createdTime
-            } catch (e: Exception) {
-                null
+            if (page == 0) {
+                metadata["type"] = "document"
+                metadata["title"] = props.title
+                metadata["author"] = props.author
+                metadata["keywords"] = props.keywords
+                metadata["description"] = props.category
+                metadata["timeCreated"] = convertDate(props.createdTime)
+                metadata["length"] = doc.slides.size()
             }
-            metadata["timeModified"] = try {
-                props.lastSavedTime
-            } catch (e: Exception) {
-                null
-            }
-            metadata["pages"] = doc.slides.size()
+
             metadata["height"] = dim.size.width
             metadata["width"] = dim.size.height
             metadata["orientation"] = if (dim.size.height > dim.size.width) "portrait" else "landscape"
 
-            if (options.content) {
+            if (page > 0) {
                 metadata["content"] = extractPageContent(page)
             }
 
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
         logMetadataTime(page, time)
     }

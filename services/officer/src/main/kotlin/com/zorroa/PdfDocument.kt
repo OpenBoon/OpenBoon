@@ -6,36 +6,41 @@ import com.aspose.pdf.devices.JpegDevice
 import com.aspose.pdf.devices.Resolution
 import com.aspose.pdf.facades.PdfExtractor
 import com.aspose.pdf.facades.PdfFileInfo
+import java.awt.Color
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
+import java.io.InputStream
 import java.nio.charset.Charset
 import kotlin.system.measureTimeMillis
 
 /**
  * Handles rendering a PDF as an image and json metadata file.
  */
-class PdfDocument(options: Options) : com.zorroa.Document(options) {
+class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Document(options) {
 
-    val pdfDocument = Document(ioHandler.getInputPath())
+    val pdfDocument = Document(inputStream)
 
     init {
-        logger.info("opening file: {}", options.inputFile)
+        logger.info("opening file: {}", options.fileName)
     }
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         val stack = PdfImageRenderStack(this, options)
         val fileInfo = PdfFileInfo(pdfDocument)
         for (page in 1..fileInfo.numberOfPages) {
             stack.renderImage(page)
         }
+        stack.renderImage(0)
+        return fileInfo.numberOfPages + 1
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
         val fileInfo = PdfFileInfo(pdfDocument)
         for (page in 1..fileInfo.numberOfPages) {
             renderMetadata(page)
         }
+        renderMetadata(0)
+        return fileInfo.numberOfPages + 1
     }
 
     override fun renderImage(page: Int) {
@@ -46,36 +51,32 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
         val time = measureTimeMillis {
             val documentInfo = DocumentInfo(pdfDocument)
             val fileInfo = PdfFileInfo(pdfDocument)
-
             val metadata = mutableMapOf<String, Any?>()
-            val height = fileInfo.getPageHeight(page)
-            val width = fileInfo.getPageWidth(page)
 
-            metadata["title"] = fileInfo.title
-            metadata["author"] = fileInfo.author
-            metadata["keywords"] = fileInfo.keywords
-            metadata["description"] = fileInfo.subject
-            metadata["creator"] = fileInfo.creator
-            metadata["timeCreated"] = try {
-                documentInfo.creationDate
-            } catch (e: Exception) {
-                null
+            if (page == 0) {
+                metadata["type"] = "document"
+                metadata["title"] = fileInfo.title
+                metadata["author"] = fileInfo.author
+                metadata["keywords"] = fileInfo.keywords
+                metadata["description"] = fileInfo.subject
+                metadata["timeCreated"] = convertDate(documentInfo.creationDate)
+                metadata["length"] = fileInfo.numberOfPages
             }
-            metadata["timeModified"] = try {
-                documentInfo.modDate
-            } catch (e: Exception) {
-                null
-            }
-            metadata["pages"] = fileInfo.numberOfPages
+            val virtPage = page.coerceAtLeast(1)
+            val height = fileInfo.getPageHeight(virtPage)
+            val width = fileInfo.getPageWidth(virtPage)
+
             metadata["height"] = height
             metadata["width"] = width
             metadata["orientation"] = if (height > width) "portrait" else "landscape"
 
-            if (options.content) {
+            if (page > 0) {
                 metadata["content"] = extractPageContent(page)
             }
 
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
 
         logMetadataTime(page, time)
@@ -87,7 +88,6 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
         pdfExtractor.bindPdf(pdfDocument)
         pdfExtractor.startPage = page
         pdfExtractor.endPage = page
-
         pdfExtractor.extractText(Charset.forName("UTF-8"))
 
         val byteStream = ByteArrayOutputStream()
@@ -98,7 +98,7 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
 
     override fun close() {
         try {
-            logger.info("closing file: {}", options.inputFile)
+            logger.info("closing file: {}", options.fileName)
             pdfDocument.close()
         } catch (e: Exception) {
             // ignore
@@ -133,15 +133,20 @@ class PdfDocument(options: Options) : com.zorroa.Document(options) {
      */
     class PdfImageRenderStack(private val doc: PdfDocument, val options: Options) {
 
-        private val byteStream = ByteArrayOutputStream(1024 * 25)
-        private val jpegDevice = JpegDevice(Resolution(options.dpi), 100)
+        private val byteStream = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
+        private val jpegDevice = JpegDevice(Resolution(75), 100)
 
         fun renderImage(page: Int) {
             val time = measureTimeMillis {
-                val path = doc.ioHandler.getImagePath(page)
-                jpegDevice.process(doc.pdfDocument.pages.get_Item(page), byteStream)
-                FileOutputStream(path.toFile()).use { outputStream ->
-                    byteStream.writeTo(outputStream)
+                jpegDevice.process(doc.pdfDocument.pages.get_Item(page.coerceAtLeast(1)), byteStream)
+                if (page == 0) {
+                    val render = StackRender(
+                        "PDF", Color(227, 50, 34),
+                        byteStream.toInputStream()
+                    )
+                    doc.ioHandler.writeImage(page, render.render())
+                } else {
+                    doc.ioHandler.writeImage(page, byteStream)
                 }
                 byteStream.reset()
             }

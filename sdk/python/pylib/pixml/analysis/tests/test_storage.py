@@ -1,8 +1,10 @@
 import os
+import urllib3
 from unittest import TestCase
 from unittest.mock import patch
 
 import pytest
+from minio.api import Minio
 
 from pixml.analysis import storage
 from pixml.analysis.testing import zorroa_test_data, TestAsset
@@ -89,6 +91,17 @@ class LocalFileCacheTests(TestCase):
     def test_localize_file_str(self):
         path = self.lfc.localize_remote_file('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
+
+    @patch.object(Minio, 'get_object')
+    def test_localize_pixml_uri(self, get_object_patch):
+        http = urllib3.PoolManager()
+        r = http.request('GET', 'http://i.imgur.com/WkomVeG.jpg', preload_content=False)
+
+        get_object_patch.return_value = r
+        path = self.lfc.localize_remote_file('pixml://ml-storage/officer/pdf/proxy.1.jpg')
+
+        assert os.path.exists(path)
+        assert os.path.getsize(path) == 267493
 
     @patch.object(PixmlClient, 'stream')
     def test_localize_file_pixml_file_dict(self, post_patch):

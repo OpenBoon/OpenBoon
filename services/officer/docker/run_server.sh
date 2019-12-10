@@ -7,4 +7,4 @@ fi
 
 JAVA_OPTS=`config/jvm_options_parser config/jvm.options`
 echo "Java Opts: ${JAVA_OPTS}"
-java $JAVA_OPTS -jar officer.jar -port 7081
+java $JAVA_OPTS -jar officer.jar
