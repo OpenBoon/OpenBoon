@@ -18,6 +18,8 @@ const boxShadows = {
   default: `0 2px 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   input: `inset 0 1px 3px 0 transparent`,
   menu: `0 4px 7px 0 ${colors.rocks.black}`,
+  navBar: `0 0 4px 0 rgba(0, 0, 0, ${opacity.half})`,
+  dropdown: `0 2px 6px 0 ${colors.rocks.black}`,
 }
 
 const constants = {
