@@ -1,3 +1,4 @@
+import os
 import json
 import pytest
 from pathlib2 import Path
@@ -79,7 +80,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     @patch.object(file_cache, 'localize_uri')
     def test_get_metadata(self, cache_patch):
-        cache_patch.return_value = 'test_metadata.json'
+        path = os.path.dirname(__file__) + '/test_metadata.json'
+        cache_patch.return_value = path
         processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
         md = processor.get_metadata(self.asset, 1)
         assert md['title'] == 'PhD Thesis on \'Die Hard\''
@@ -88,10 +90,10 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     @patch.object(file_cache, 'localize_uri')
     def test_get_image_path(self, cache_patch):
-        cache_patch.return_value = zorroa_test_data("images/set01/toucan.jpg", False)
+        cache_patch.return_value = zorroa_test_data('images/set01/toucan.jpg', False)
         processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
         md = processor.get_image_path(self.asset, 1)
-        assert md.endswith("test-data/images/set01/toucan.jpg")
+        assert md.endswith('test-data/images/set01/toucan.jpg')
 
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
     @patch.object(OfficerClient, 'render')
