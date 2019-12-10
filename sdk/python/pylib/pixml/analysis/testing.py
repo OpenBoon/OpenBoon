@@ -6,6 +6,7 @@ import tempfile
 import time
 import unittest
 import uuid
+import requests
 
 from urllib.parse import urlparse
 
@@ -244,3 +245,28 @@ def zorroa_test_data(rel_path="", uri=True):
         return "file://{}".format(full_path)
     else:
         return full_path
+
+
+class MockRequestsResponse:
+    """
+    A Mock HTTP request response object used for mockkng respsonss from
+    the popular python 'requests' library.
+
+    Examples:
+        post_patch.return_value = MockRequestsResponse(
+            {"output": "pixml://ml-storage/foo/bar"}, 200)
+
+    See Also:
+        https://requests.readthedocs.io/en/master/
+
+    """
+    def __init__(self, json_data, status_code):
+        self.json_data = json_data
+        self.status_code = status_code
+
+    def json(self):
+        return self.json_data
+
+    def raise_for_status(self):
+        if self.status_code > 299:
+            raise requests.RequestException("Failed with status {}".format(self.status_code))

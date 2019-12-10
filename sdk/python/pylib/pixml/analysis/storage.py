@@ -5,13 +5,14 @@ import os
 import shutil
 import tempfile
 import urllib
-
 from urllib.parse import urlparse
+
 from pathlib2 import Path
 
 from pixml import app_from_env, Asset
+from pixml.exception import PixmlException
 from .base import AnalysisEnv
-from .cloud import get_cached_google_storage_client
+from .cloud import get_cached_google_storage_client, get_pixml_storage_client
 
 __all__ = [
     "file_cache",
@@ -19,6 +20,7 @@ __all__ = [
     "get_proxy_level",
     "add_proxy_file",
     "add_pixml_file",
+    "PixmlStorageException"
 ]
 
 logger = logging.getLogger(__name__)
@@ -34,7 +36,8 @@ class LocalFileCache(object):
         "gs",
         "http",
         "https"
-        "file"
+        "file",
+        "pixml"
     ]
 
     def __init__(self):
@@ -103,17 +106,31 @@ class LocalFileCache(object):
         _, ext = os.path.splitext(uri)
         path = self.get_path(str(uri), ext)
         parsed_uri = urlparse(uri)
+
+        # Remote HTTP/HTTPS Files
         if parsed_uri.scheme in ('http', 'https'):
             urllib.request.urlretrieve(uri, filename=str(path))
+
+        # File URIs
         elif parsed_uri.scheme == 'file':
             return parsed_uri.path
+
+        # Pixml storage buckets
+        elif parsed_uri.scheme == 'pixml':
+            pixml_client = get_pixml_storage_client()
+            data = pixml_client.get_object(parsed_uri.netloc, parsed_uri.path[1:])
+            with open(path, 'wb') as fpw:
+                for d in data.stream(32 * 1024):
+                    fpw.write(d)
+
+        # GCS buckets
         elif parsed_uri.scheme == 'gs':
             gcs_client = get_cached_google_storage_client()
             bucket = gcs_client.get_bucket(parsed_uri.netloc)
             blob = bucket.blob(parsed_uri.path[1:])
             blob.download_to_filename(path)
         else:
-            raise ValueError('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
+            raise PixmlStorageException('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
         return path
 
     def localize_pixml_file(self, asset, pfile, copy_path=None):
@@ -306,6 +323,13 @@ def add_pixml_file(asset, path, category, rename=None, attrs=None):
         asset.set_attr("files", files)
 
     return result
+
+
+class PixmlStorageException(PixmlException):
+    """
+    This exception is thrown if there are problems with storing or retrieving a file.
+    """
+    pass
 
 
 """

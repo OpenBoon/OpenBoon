@@ -81,12 +81,28 @@ services:
       ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
       ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
       ARCHIVIST_STORAGE_URL: http://minio:9000
+      MLSTORAGE_ACCESSKEY: qwerty123
+      MLSTORAGE_SECRETKEY: 123qwerty
+      MLSTORAGE_URL: http://minio:9000
     build:
       context: services/archivist
     volumes:
       - "./dev/config/monitoring:/monitoring"
       - "./dev/config/archivist:/config"
       - "./dev/config/keys/inception-key.json:/config/inception-key.json"
+
+  officer:
+    image: zmlp/officer
+    depends_on:
+      - minio
+    build:
+      context: services/officer
+    ports:
+      - 7078:7078
+    environment:
+      MLSTORAGE_URL: http://minio:9000
+      MLSTORAGE_ACCESSKEY: qwerty123
+      MLSTORAGE_SECRETKEY: 123qwerty
 
   analyst:
     image: zmlp/analyst

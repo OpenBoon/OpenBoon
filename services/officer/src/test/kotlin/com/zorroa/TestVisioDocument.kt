@@ -1,64 +1,73 @@
 package com.zorroa
 
 import org.junit.Test
+import java.io.FileInputStream
+import javax.imageio.ImageIO
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class TestVisioDocument {
 
     @Test
-    fun renderImage() {
+    fun renderPageImage() {
         val opts = Options("src/test/resources/visio_test.vsdx")
         opts.page = 1
 
-        val doc = VisioDocument(opts)
+        val doc = VisioDocument(opts, FileInputStream(opts.fileName))
         doc.renderImage(1)
 
-        val files = doc.ioHandler.outputRoot.toFile().listFiles()
-        assertEquals(1, files.size)
+        // validate we can load the page
+        val page = doc.getImage(1)
+        val image = ImageIO.read(page)
+        assertEquals(1508, image.width)
+        assertEquals(2136, image.height)
+    }
+
+    @Test
+    fun renderAssetImage() {
+        val opts = Options("src/test/resources/visio_test.vsdx")
+        opts.page = 0
+
+        val doc = VisioDocument(opts, FileInputStream(opts.fileName))
+        doc.renderImage(opts.page)
+
+        // validate we can load the page
+        val page = doc.getImage(0)
+        val image = ImageIO.read(page)
+        assertEquals(1508, image.width)
+        assertEquals(2136, image.height)
+    }
+
+    @Test
+    fun renderAssetMetadata() {
+        val opts = Options("src/test/resources/HRFLow.vsd")
+
+        val doc = VisioDocument(opts, FileInputStream(opts.fileName))
+        doc.renderMetadata(0)
+        validateAssetMetadata(doc.getMetadata(0))
+    }
+
+    @Test
+    fun renderPageMetadata() {
+        val opts = Options("src/test/resources/HRFLow.vsd")
+
+        val doc = VisioDocument(opts, FileInputStream(opts.fileName))
+        doc.renderMetadata(1)
+        validatePageMetadata(doc.getMetadata(1))
     }
 
     @Test
     fun renderAllImages() {
         val opts = Options("src/test/resources/HRFLow.vsd")
 
-        val doc = VisioDocument(opts)
-        doc.renderAllImages()
-
-        val files = doc.ioHandler.outputRoot.toFile().listFiles().toSet().map { it.name }
-        assertEquals(4, files.size)
-        for (page in 1..4) {
-            assertTrue("proxy.$page.jpg" in files)
-        }
-    }
-
-    @Test
-    fun renderMetadata() {
-        val opts = Options("src/test/resources/HRFLow.vsd")
-        opts.content = true
-
-        val doc = VisioDocument(opts)
-        doc.renderMetadata(1)
-
-        val metadata = Json.mapper.readValue(doc.getMetadataFile(1), Map::class.java)
-        assertEquals("Eric Scott", metadata["author"])
-        assertEquals("New Temp Employee", metadata["pageName"])
-        assertEquals(4, metadata["pages"])
-        assertEquals("landscape", metadata["orientation"])
+        val doc = VisioDocument(opts, FileInputStream(opts.fileName))
+        assertEquals(5, doc.renderAllImages())
     }
 
     @Test
     fun renderAllMetadata() {
         val opts = Options("src/test/resources/HRFLow.vsd")
-        opts.content = true
 
-        val doc = VisioDocument(opts)
-        doc.renderAllMetadata()
-
-        val metadata = Json.mapper.readValue(doc.getMetadataFile(1), Map::class.java)
-        assertEquals("Eric Scott", metadata["author"])
-        assertEquals("New Temp Employee", metadata["pageName"])
-        assertEquals(4, metadata["pages"])
-        assertEquals("landscape", metadata["orientation"])
+        val doc = VisioDocument(opts, FileInputStream(opts.fileName))
+        assertEquals(5, doc.renderAllMetadata())
     }
 }

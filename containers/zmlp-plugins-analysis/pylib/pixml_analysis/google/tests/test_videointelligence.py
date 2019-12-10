@@ -2,7 +2,7 @@
 
 import os
 
-from mock import patch
+from unittest.mock import patch
 from ..processors import CloudVideoIntelligenceProcessor
 
 from pixml.analysis import Frame
