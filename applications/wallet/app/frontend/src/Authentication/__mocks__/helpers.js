@@ -1,15 +1,15 @@
 /**
- * getTokens()
+ * getUser()
  */
 
-let mockTokens = {}
+let mockUser = {}
 
-export const __setMockTokens = data => {
-  mockTokens = data
+export const __setMockUser = data => {
+  mockUser = data
 }
 
-export const getTokens = () => {
-  return mockTokens
+export const getUser = () => {
+  return mockUser
 }
 
 /**
@@ -21,9 +21,9 @@ export const isUserAuthenticated = ({ refreshToken }) => {
 }
 
 /**
- * clearTokens()
+ * clearUser()
  */
-export const clearTokens = () => {}
+export const clearUser = () => {}
 
 /**
  * storeTokens()
@@ -54,3 +54,8 @@ export const authenticateUser = () => (...args) => {
  * logout()
  */
 export const logout = () => {}
+
+/**
+ * fetcher()
+ */
+export const fetcher = () => () => {}
