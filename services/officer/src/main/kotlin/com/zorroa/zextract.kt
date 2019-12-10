@@ -39,17 +39,11 @@ class Options(val fileName: String) {
     @Parameter(names = ["-p", "-page"], description = "The page number to render. -1 for all pages")
     var page: Int = -1
 
-    @Parameter(names = ["-c", "-content"], description = "Extract page content to metadata file.")
-    var content: Boolean = false
-
     @Parameter(
         names = ["-o", "-output-dir"],
         description = "An output directory for the given request"
     )
     var outputDir: String = UUID.randomUUID().toString()
-
-    @Parameter(names = ["-d", "-dpi"], description = "Resolution of output image, defaults to 75 DPI.")
-    var dpi: Int = 75
 
     @Parameter(names = ["-v", "-verbose"], description = "Log extra information")
     var verbose: Boolean = false

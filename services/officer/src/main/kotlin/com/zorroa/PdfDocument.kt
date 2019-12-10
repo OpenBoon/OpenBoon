@@ -136,7 +136,7 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
     class PdfImageRenderStack(private val doc: PdfDocument, val options: Options) {
 
         private val byteStream = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
-        private val jpegDevice = JpegDevice(Resolution(options.dpi), 100)
+        private val jpegDevice = JpegDevice(Resolution(75), 100)
 
         fun renderImage(page: Int) {
             val time = measureTimeMillis {
