@@ -12,11 +12,6 @@ const ProjectSwitcher = ({ projects, setSelectedProject }) => {
 
   const selectedProject = projects.find(project => project.selected)
 
-  const onSelect = project => {
-    setDropDownOpen(false)
-    setSelectedProject(project)
-  }
-
   return (
     <div
       css={{
@@ -53,7 +48,10 @@ const ProjectSwitcher = ({ projects, setSelectedProject }) => {
       {isDropDownOpen && (
         <DropDown
           projects={projects.filter(project => !project.selected)}
-          onSelect={onSelect}
+          onSelect={({ project }) => {
+            setDropDownOpen(false)
+            setSelectedProject(project)
+          }}
         />
       )}
     </div>

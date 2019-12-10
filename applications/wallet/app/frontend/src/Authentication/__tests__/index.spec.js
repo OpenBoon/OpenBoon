@@ -41,10 +41,6 @@ describe('<Authentication />', () => {
   it('should render properly when user is logged in', () => {
     require('../helpers').__setMockUser({ id: 12345 })
 
-    require('swr').__setMockUseSWRResponse({
-      data: { results: [{ name: 'project-name' }] },
-    })
-
     const component = TestRenderer.create(
       <Authentication>
         {() => <Layout>{() => 'Hello World'}</Layout>}

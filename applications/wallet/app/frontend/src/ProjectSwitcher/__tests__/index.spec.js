@@ -34,6 +34,5 @@ describe('<ProjectSwitcher />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-    expect(mockFn).toHaveBeenCalledWith({ id: '2', name: 'Zorroa EasyAs123' })
   })
 })
