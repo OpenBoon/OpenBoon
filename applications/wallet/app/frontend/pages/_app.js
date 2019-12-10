@@ -16,8 +16,13 @@ class MyApp extends App {
 
     return (
       <Authentication>
-        {({ user, logout }) => (
-          <Component user={user} logout={logout} {...pageProps} />
+        {({ user, logout, selectedProject }) => (
+          <Component
+            user={user}
+            logout={logout}
+            selectedProject={selectedProject}
+            {...pageProps}
+          />
         )}
       </Authentication>
     )
