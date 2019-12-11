@@ -4,7 +4,6 @@ services:
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://docker:2375
-  LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
 
 stages:
   - build
@@ -143,12 +142,7 @@ services_build_artifacts:
     - merge_requests
     - development
   script:
-    - cd services/elasticsearch/es-similarity
-    - mvn package
-    - cd ../
-    - cd es-kwconf
-    - mvn package
-    - cd ../
+    - cd services/elasticsearch
     - mvn clean install -Dmaven.test.skip=true
   artifacts:
     paths:
@@ -156,11 +150,14 @@ services_build_artifacts:
 
 # Kotlin services - Unit tests - Step 2
 services_push_to_local_registry:
+  image: docker:18.09.8-dind
   stage: pretest
   only:
     - merge_requests
     - development
   retry: 2
+  services:
+    - docker:18.09.8-dind
   script:
     - cd services/elasticsearch
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
