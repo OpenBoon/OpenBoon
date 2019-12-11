@@ -1,7 +1,5 @@
 package domain;
 
-/* Exposes the main PixelML API.*/
-
 import java.io.IOException;
 import java.util.Optional;
 
@@ -11,6 +9,12 @@ public class PixmlApp {
     AssetApp assetApp;
     DataSourceApp dataSource;
 
+    /**
+     * Exposes the main PixelML API.
+     *
+     * @param apikey
+     * @param server
+     */
     public PixmlApp(Object apikey, String server) {
 
         String envServer = System.getenv("PIXML_SERVER");
@@ -24,25 +28,20 @@ public class PixmlApp {
         this(apikey, null);
     }
 
-    // Env Variables Constructor
+    /**
+     * Env Variables Constructor
+     * Create a PixmlApp configured via environment variables. This method
+     * will not throw if the environment is configured improperly, however
+     * attempting the use the PixmlApp instance to make a request
+     * will fail.
+     *
+     * Environment Variables
+     *  - PIXML_APIKEY : A base64 encoded API key.
+     *  - PIXML_APIKEY_FILE : A path to a JSON formatted API key.
+     *  - PIXML_SERVER : The URL to the Pixml API server.
+     */
+
     public PixmlApp() {
-
-        /*
-        """
-        Create a PixmlApp configured via environment variables. This method
-        will not throw if the environment is configured improperly, however
-        attempting the use the PixmlApp instance to make a request
-        will fail.
-
-        - PIXML_APIKEY : A base64 encoded API key.
-        - PIXML_APIKEY_FILE : A path to a JSON formatted API key.
-        - PIXML_SERVER : The URL to the Pixml API server.
-
-        Returns:
-            PixmlClient : A configured PixmlClient
-
-        """
-         */
 
         Optional<String> envApiKey = Optional.ofNullable(System.getenv("PIXML_APIKEY"));//base64
         Optional<String> envApiKeyFilePath = Optional.ofNullable(System.getenv("PIXML_APIKEY_FILE"));//file path

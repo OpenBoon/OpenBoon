@@ -14,21 +14,20 @@ public class DataSourceApp {
         this.app = app;
     }
 
+    /**
+     * Create a new DataSource.
+     *
+     * @param name        The name of the data source.
+     * @param uri         The URI where the data can be found.
+     * @param credentials A file path to an associated credentials file.
+     * @param fileTypes   A list of file paths or mimetypes to match.
+     * @param analysis    A list of Analysis Modules to apply to the data.
+     * @return The created DataSource
+     * @throws IOException
+     * @throws InterruptedException
+     */
+
     public DataSource createDataSource(String name, String uri, String credentials, List<String> fileTypes, List analysis) throws IOException, InterruptedException {
-        /*
-        Create a new DataSource.
-
-        Args:
-            name (str): The name of the data source.
-            uri (str): The URI where the data can be found.
-            credentials (str): A file path to an associated credentials file.
-            file_types (list of str): a list of file paths or mimetypes to match.
-            analysis (list): A list of Analysis Modules to apply to the data.
-
-        Returns:
-            DataSource: The created DataSource
-
-         */
 
         if (credentials != null) {
             credentials = Utils.readTextFromFile(credentials);
@@ -48,17 +47,16 @@ public class DataSourceApp {
 
     }
 
+    /**
+     * Finds a DataSource by name or unique Id.
+     *
+     * @param name The unique name or unique ID.
+     * @return The DataSource
+     * @throws IOException
+     * @throws InterruptedException
+     */
+
     public DataSource getDataSource(String name) throws IOException, InterruptedException {
-        /*
-        Finds a DataSource by name or unique Id.
-
-        Args:
-            name (str): The unique name or unique ID.
-
-        Returns:
-            DataSource: The DataSource
-
-        */
 
         String url = "/api/v1/data-sources/_findOne";
 
@@ -74,24 +72,19 @@ public class DataSourceApp {
 
     }
 
+    /**
+     * Import or re-import all assets found at the given DataSource.  If the
+     * DataSource has already been imported then calling this will
+     * completely overwrite the existing Assets with fresh copies.
+     * If the DataSource URI contains less Assets, no assets will be
+     * removed from PixelML.
+     *
+     * @param ds A DataSource object or the name of a data source.
+     * @return An import DataSource result dictionary.
+     * @throws IOException          If the DataSource does not exist.
+     * @throws InterruptedException
+     */
     public Map importDataSource(DataSource ds) throws IOException, InterruptedException {
-        /*
-        Import or re-import all assets found at the given DataSource.  If the
-        DataSource has already been imported then calling this will
-        completely overwrite the existing Assets with fresh copies.
-
-        If the DataSource URI contains less Assets, no assets will be
-        removed from PixelML.
-
-        Args:
-            ds (DataSource): A DataSource object or the name of a data source.
-
-        Returns:
-            dict: An import DataSource result dictionary.
-
-        url = '/api/v1/data-sources/{}/_import'.format(ds.id)
-        return self.app.client.post(url)
-         */
 
         String url = String.format("/api/v1/data-sources/%s/_import", ds.getId());
 
@@ -99,30 +92,17 @@ public class DataSourceApp {
 
     }
 
+    /**
+     * Update the DataSource credentials.  Set the blob to None to delete the credentials.
+     *
+     * @param ds   A DataSource object or the name of a data source.
+     * @param blob A credentials blob.
+     * @return A status dict.
+     * @throws IOException          If the DataSource does not exist.
+     * @throws InterruptedException
+     */
+
     public Map updateCredentials(DataSource ds, String blob) throws IOException, InterruptedException {
-
-        /*
-         """
-        Update the DataSource credentials.  Set the blob to None
-        to delete the credentials.
-
-        Args:
-            ds (DataSource):
-            blob (str): A credentials blob.
-
-        Returns:
-            dict: A status dict.
-
-        Raises:
-            PixmlNotFoundException: If the DataSource does not exist.
-
-        """
-        url = '/api/v1/data-sources/{}/_credentials'.format(ds.id)
-        body = {
-            'blob': blob
-        }
-        return self.app.client.put(url, body=body)
-         */
 
         String url = String.format("/api/v1/data-sources/%s/_credentials", ds.getId());
 

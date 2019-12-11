@@ -12,43 +12,39 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-/*
- * PixmlClient is used to communicate to a Pixml API server.
- * */
 public class PixmlClient {
 
     ObjectMapper mapper = new ObjectMapper();
     JsonNode apiKey;
     String server;
 
-    UUID projectId;
+    String projectId;
     Integer maxRetries;
 
     private final String DEFAULT_SERVER_URL = "https://api.pixelml.com";
 
+    /**
+     * PixmlClient is used to communicate to a Pixml API server.
+     * Create a new PixmlClient instance.
+     *
+     * @param apiKey An API key in any supported form. (dict, base64 string, or open file handle)
+     * @param server The url of the server to connect to. Defaults to https://api.Pixml.zorroa.com
+     * @param args   Contains max_entries and/or project_id. Project_id contains An optional project UUID for API keys with access to multiple projects.
+     */
     public PixmlClient(Object apiKey, String server, Map args) {
-        /*
-        Create a new PixmlClient instance.
-
-        Args:
-            apikey: An API key in any supported form. (dict, base64 string, or open file handle)
-            server: The url of the server to connect to. Defaults to https://api.Pixml.zorroa.com
-            project_id: An optional project UUID for API keys with access to multiple projects.
-            max_retries: Maximum number of retries to make if the API
-                server is down, 0 for unlimited.
-        */
 
         args = Optional.ofNullable(args).orElse(new HashMap());
 
         this.apiKey = loadApiKey(apiKey);
         this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
         this.maxRetries = (Integer) args.getOrDefault("max_retries", 3);
-        this.projectId = (UUID) args.get("project_id");
+        this.projectId = (String) args.get("project_id");
     }
 
     public PixmlClient(Object apiKey) {
         this(apiKey, null, null);
     }
+
 
     private JsonNode loadApiKey(Object apiKey) {
 
@@ -72,29 +68,28 @@ public class PixmlClient {
         return null;
     }
 
+    /**
+     * Generate the return some request headers.
+     * The content-type for the request. Defaults to 'application/json'
+     *
+     * @return Map: An http header struct.
+     */
+
     public Map<String, String> headers() {
         return this.headers("application/json");
     }
 
+    /**
+     * Generate the return some request headers.
+     *
+     * @param contentType The content-type for the request.
+     * @return Map: An http header struct.
+     */
+
     public Map<String, String> headers(String contentType) {
-        /*
-        Generate the return some request headers.
-
-        Args:
-            content_type(str):  The content-type for the request. Defaults to
-                'application/json'
-
-        Returns:
-            dict: An http header struct.
-         */
 
         String authorization = null;
-        try {
-            authorization = "Bearer %s".format(signRequest());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
+        authorization = "Bearer %s".format(signRequest());
         Map header = new HashMap<String, String>();
         header.put("Authorization", authorization);
 
@@ -105,7 +100,7 @@ public class PixmlClient {
 
     }
 
-    private String signRequest() throws JsonProcessingException {
+    private String signRequest() {
 
         if (this.apiKey == null) {
             throw new RuntimeException("Unable to make request, no ApiKey has been specified.");
@@ -125,8 +120,8 @@ public class PixmlClient {
                 });
 
         // if projectId exists
-        Optional.ofNullable(this.projectId).ifPresent((UUID projectId) -> {
-            claimBuilder.withClaim("projectId", projectId.toString());
+        Optional.ofNullable(this.projectId).ifPresent((String projectId) -> {
+            claimBuilder.withClaim("projectId", projectId);
         });
 
 
@@ -135,31 +130,18 @@ public class PixmlClient {
         return jwtEncoded;
     }
 
+    /**
+     * Performs a post request.
+     *
+     * @param path An archivist URI path.
+     * @param body The request body which will be serialized to json.
+     * @return The http response object or an object deserialized from the response json if the ``json`` argument is true.
+     * @throws IOException          An error occurred making the request or parsing the JSON response
+     * @throws InterruptedException
+     */
     public Map post(String path, Map body) throws IOException, InterruptedException {
 
-    /*
-        """
-        Performs a post request.
-
-        Args:
-            path (str): An archivist URI path.
-            body (object): The request body which will be serialized to json.
-            is_json (bool): Set to true to specify a JSON return value
-
-        Returns:
-            object: The http response object or an object deserialized from the
-                response json if the ``json`` argument is true.
-
-        Raises:
-            Exception: An error occurred making the request or parsing the
-                JSON response
-        """
-        return self._make_request('post', path, body, is_json)
-     */
-
-
         return this.makeRequest("post", path, body);
-
     }
 
     private Map makeRequest(String httpMethod, String path, Map body) throws InterruptedException, IOException {
@@ -195,25 +177,16 @@ public class PixmlClient {
         return mapper.readValue(response, Map.class);
     }
 
+    /**
+     * Performs a put request.
+     * @param url An archivist URI path.
+     * @param body The request body which will be serialized to json.
+     * @return The http response object or an object deserialized from the response json if the ``json`` argument is true.
+     * @throws IOException An error occurred making the request or parsing the JSON response
+     * @throws InterruptedException
+     */
 
     public Map put(String url, Map body) throws IOException, InterruptedException {
-
-        /*
-        Performs a put request.
-
-        Args:
-            path (str): An archivist URI path.
-            body (object): The request body which will be serialized to json.
-            is_json (bool): Set to true to specify a JSON return value
-
-        Returns:
-            object: The http response object or an object deserialized from the
-                response json if the ``json`` argument is true.
-
-        Raises:
-            Exception: An error occurred making the request or parsing the
-                JSON response
-         */
 
         return this.makeRequest("put", url, body);
     }

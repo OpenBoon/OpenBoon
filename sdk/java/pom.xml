@@ -21,6 +21,16 @@
         <powermock.version>2.0.2</powermock.version>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -65,8 +75,5 @@
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-
-
 </project>

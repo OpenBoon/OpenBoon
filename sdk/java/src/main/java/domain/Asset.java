@@ -10,16 +10,16 @@ public class Asset extends AssetBase {
 
     private Integer id;
 
-    /*
-     """
-    An Asset represents a single processed file or a clip/segment of a
-    file. Assets start out in the 'CREATED' state, which indicates
-    they've been created by not processed.  Once an asset has been processed
-    and augmented with files created by various analysis modules, the Asset
-    will move into the 'ANALYZED' state.
-    """
+    /**
+     * An Asset represents a single processed file or a clip/segment of a
+     * file. Assets start out in the 'CREATED' state, which indicates
+     * they've been created by not processed.  Once an asset has been processed
+     * and augmented with files created by various analysis modules, the Asset
+     * will move into the 'ANALYZED' state.
+     *
+     * @param data Map that should contains data attributes
+     * @throws Exception
      */
-
     public Asset(Map<String, Object> data) throws Exception {
 
         if (data == null)
@@ -30,24 +30,19 @@ public class Asset extends AssetBase {
 
     }
 
+    /**
+     * Return all stored files associated with this asset.  Optionally
+     * filter the results.
+     *
+     * @param name      The associated files name.
+     * @param category  The associated files category, eg proxy, backup, etc.
+     * @param mimetype  The mimetype must start with this string.
+     * @param extension The file name must have the given extension.
+     * @param attrs     The file must have all of the given attributes.
+     * @return List of Dict Pixml file records.
+     */
 
     public List getFiles(List<String> name, List<String> category, List<String> mimetype, List<String> extension, Map attrs) {
-    /*
-            """
-        Return all stored files associated with this asset.  Optionally
-        filter the results.
-
-        Args:
-            name (str): The associated files name.
-            category (str): The associated files category, eg proxy, backup, etc.
-            mimetype (str): The mimetype must start with this string.
-            extension: (str): The file name must have the given extension.
-            attrs (dict): The file must have all of the given attributes.
-
-        Returns:
-            list of dict: A list of pixml file records.
-        """
-     */
 
         // Get Files Object
         List<Map<String, Object>> files = (List) document.getOrDefault("files", new ArrayList());
@@ -107,55 +102,87 @@ public class Asset extends AssetBase {
 
     }
 
+    /**
+     * Return all stored files associated with this asset filtered by name.
+     *
+     * @param name The associated files name.
+     * @return List of Dict Pixml file records.
+     */
     public List getFilesByName(String... name) {
         if (name == null)
             return new ArrayList();
         return this.getFiles(Arrays.asList(name), null, null, null, null);
     }
 
+    /**
+     * Return all stored files associated with this asset filtered by category.
+     *
+     * @param category The associated files category, eg proxy, backup, etc.
+     * @return List of Dict Pixml file records.
+     */
     public List getFilesByCategory(String... category) {
         if (category == null)
             return new ArrayList();
         return this.getFiles(null, Arrays.asList(category), null, null, null);
     }
 
+    /**
+     * Return all stored files associated with this asset filtered by mimetype.
+     *
+     * @param mimetype The mimetype must start with this string.
+     * @return List of Dict Pixml file records.
+     */
     public List getFilesByMimetype(String... mimetype) {
         if (mimetype == null)
             return new ArrayList();
         return this.getFiles(null, null, Arrays.asList(mimetype), null, null);
     }
 
+    /**
+     * Return all stored files associated with this asset filtered by extension.
+     *
+     * @param extension The file name must have the given extension.
+     * @return List of Dict Pixml file records.
+     */
     public List getFilesByExtension(String... extension) {
         if (extension == null)
             return new ArrayList();
         return this.getFiles(null, null, null, Arrays.asList(extension), null);
     }
 
+    /**
+     * Return all stored files associated with this asset filtered by extension.
+     *
+     * @param attrs The file must have all of the given attributes.
+     * @return List of Dict Pixml file records.
+     */
     public List getFilesByAttrs(Map attrs) {
         if (attrs == null)
             return new ArrayList();
         return this.getFiles(null, null, null, null, attrs);
     }
 
+    /**
+     * Returns a dictionary suitable for JSON encoding.
+     * The ZpsJsonEncoder will call this method automatically.
+     *
+     * @return Map version of this Document.
+     */
     @Override
     public Map forJson() {
-        /*
 
-        """Returns a dictionary suitable for JSON encoding.
-
-        The ZpsJsonEncoder will call this method automatically.
-
-        Returns:
-            :obj:`dict`: A JSON serializable version of this Document.
-
-        """
-                 */
         Map json = new HashMap();
         json.put("id", this.id);
         json.put("document", this.document);
         return json;
     }
 
+    /**
+     * Evaluate equality by Asset ID
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Asset))

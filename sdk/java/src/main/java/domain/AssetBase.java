@@ -11,17 +11,14 @@ public abstract class AssetBase {
         this.document = new HashMap<>();
     }
 
+    /**
+     * Set the value of an attribute.
+     *
+     * @param attr The attribute name in dot notation format. ex: 'foo.bar'
+     * @param value The value for the particular attribute. Can be any json serializable type.
+     *
+     */
     public void setAttr(String attr, Object value) {
-        /*
-        """Set the value of an attribute.
-
-        Args:
-            attr (str): The attribute name in dot notation format.
-                ex: 'foo.bar'
-            value (:obj:`object`): value: The value for the particular
-                attribute. Can be any json serializable type.
-        """
-         */
 
         String[] splittedAttr = attr.split("\\.");
         String finalAttr = splittedAttr[splittedAttr.length - 1];

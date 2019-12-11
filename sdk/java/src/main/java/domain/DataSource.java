@@ -7,40 +7,57 @@ import java.util.Optional;
 
 public class DataSource {
 
-    /*
-    A DataSource is a remote source for Assets that can be
-    iterated by the Analysis framework and imported
-    in a single import Job.
-     */
-
     private Map data;
 
+    /**
+     * A DataSource is a remote source for Assets that can be
+     * iterated by the Analysis framework and imported
+     * in a single import Job.
+     *
+     * @param data Contains DataSource Attributes
+     */
     public DataSource(Map data) {
         this.data = data;
     }
 
+    /**
+     *
+     * @return The id of the DataSource
+     */
     public String getId() {
-        //"""The id of the DataSource"""
         return (String) this.data.get("id");
     }
 
+    /**
+     *
+     * @return The name of the DataSource
+     */
     public String getName() {
-        //"""The name of the DataSource"""
         return (String) this.data.get("name");
     }
 
+    /**
+     *
+     * @return The URI of the DataSource
+     */
     public String getUri() {
-        //"""The URI of the DataSource"""
         return (String) this.data.get("uri");
     }
 
+    /**
+     *
+     * @return The file type filter for the DataSource
+     */
     public List<String> getFileTypes() {
-        //"""The file type filter for the DataSource"""
         return (List<String>) Optional.ofNullable(this.data.get("file_types")).orElse(new ArrayList());
     }
 
+    /**
+     *
+     * @return The type of analysis done to the DataSource
+     */
+
     public List getAnalysis() {
-        //"""The type of analysis done to the DataSource"""
         return (List) Optional.ofNullable(this.data.get("analysis")).orElse(new ArrayList());
 
     }
