@@ -1,14 +1,15 @@
 import React from 'react'
+import AriaModal from 'react-aria-modal'
 import WarningSvg from '../Icons/warning.svg'
 import XSvg from '../Icons/x.svg'
-import { colors, constants, spacing, zIndex } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 const BUTTON_HEIGHT = 40
 
 const Modal = () => {
-  const [showDialog, setShowDialog] = React.useState(false)
-  const open = () => setShowDialog(true)
-  const close = () => setShowDialog(false)
+  const [showModal, setShowModal] = React.useState(false)
+  const open = () => setShowModal(true)
+  const close = () => setShowModal(false)
 
   return (
     <div>
@@ -16,27 +17,20 @@ const Modal = () => {
         Open Modal
       </button>
 
-      {showDialog && (
-        <div
-          css={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            bottom: 0,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+      {showModal && (
+        <AriaModal
+          titleId="demo-two-title"
+          onExit={close}
+          underlayClickExits={true}
+          verticallyCenter={true}>
           <div
             css={{
               display: 'flex',
               flexDirection: 'column',
               width: 480,
               height: 204,
-              zIndex: zIndex.layout.drawer,
             }}>
-            <div
+            <header
               css={{
                 backgroundColor: colors.grey4,
                 display: 'flex',
@@ -53,7 +47,7 @@ const Modal = () => {
                 onKeyDown={close}>
                 <XSvg width={20} color={colors.rocks.steel} />
               </div>
-            </div>
+            </header>
 
             <div
               css={{
@@ -64,6 +58,7 @@ const Modal = () => {
               <div
                 css={{
                   display: 'flex',
+                  alignItems: 'center',
                   color: colors.marble,
                 }}>
                 <WarningSvg width={20} color={colors.warning} />
@@ -105,23 +100,7 @@ const Modal = () => {
               </div>
             </div>
           </div>
-          <div
-            role="button"
-            aria-label="Close Modal Overlay"
-            tabIndex="-1"
-            css={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              width: '100%',
-              zIndex: zIndex.layout.overlay,
-              background: 'hsla(0, 100%, 0%, 0.75)',
-            }}
-            onClick={close}
-            onKeyDown={close}
-          />
-        </div>
+        </AriaModal>
       )}
     </div>
   )
