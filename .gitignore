@@ -12,7 +12,6 @@ venv
 /**/*.jar
 /**/*.pyc
 k8.cert
-docker-compose.override.yml
 db.sqlite3
 *.pyc
 .venv
