@@ -181,22 +181,23 @@ services_unit_tests:
       alias: elasticsearch
       command: [ "bin/elasticsearch", "-Ediscovery.type=single-node"]
   variables:
-    POSTGRES_PASSWORD: zorroa
-    POSTGRES_USER: zorroa
-    POSTGRES_DB: zorroa
-    PGDATA: /var/lib/postgresql/data/pgdata
-    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/zorroa?currentSchema=archivist_test
-    LOGGING_LEVEL_COM_ZORROA: WARN
-    USER: gitlab
-    ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
-    ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
-    ARCHIVIST_STORAGE_URL: http://minio:9000
-    MLSTORAGE_ACCESSKEY: qwerty123
-    MLSTORAGE_SECRETKEY: 123qwerty
-    MLSTORAGE_URL: http://minio:9000
+    POSTGRES_PASSWORD: "zorroa"
+    POSTGRES_USER: "zorroa"
+    POSTGRES_DB: "zorroa"
+    PGDATA: "/var/lib/postgresql/data/pgdata"
+    ARCHIVIST_ES_URL: "http://elasticsearch:9200"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=archivist_test"
+    LOGGING_LEVEL_COM_ZORROA: "WARN"
+    USER: "gitlab"
+    ARCHIVIST_STORAGE_ACCESSKEY: "qwerty123"
+    ARCHIVIST_STORAGE_SECRETKEY: "123qwerty"
+    ARCHIVIST_STORAGE_URL: "http://minio:9000"
+    MLSTORAGE_ACCESSKEY: "qwerty123"
+    MLSTORAGE_SECRETKEY: "123qwerty"
+    MLSTORAGE_URL: "http://minio:9000"
   script:
+    - export
     - mvn test verify -f services/archivist -q
-    - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
 
 # Kotlin Services Jobs
