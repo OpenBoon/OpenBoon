@@ -100,13 +100,13 @@ module "elasticsearch" {
 
 ## Archivist
 module "archivist" {
-  source = "./modules/archivist"
+  source = "modules/archivist"
   project = "${var.project}"
   region = "${local.region}"
   image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
   sql-service-account-key = "${module.postgres.sql-service-account-key}"
-  sql-instance-name = "${module.postgres.instance-name}"
   sql-connection-name = "${module.postgres.connection-name}"
+  sql-instance-name = "${module.postgres.instance-name}"
 }
 
 ## Auth-Server

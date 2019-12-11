@@ -13,10 +13,7 @@ resource "google_sql_database_instance" "zmlp" {
   }
 }
 
-resource "google_sql_database" "zorroa" {
-  name      = "zorroa"
-  instance  = "${google_sql_database_instance.zmlp.name}"
-}
+
 
 resource "google_project_service" "iam" {
   service = "iam.googleapis.com"

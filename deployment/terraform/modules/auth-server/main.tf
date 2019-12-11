@@ -3,10 +3,20 @@
 //  special = false
 //}
 
+resource "random_string" "sql-password" {
+  length = 16
+  special = false
+}
+
 resource "google_sql_user" "auth-server" {
-  name     = "zorroa"
+  name     = "zorroa-auth-server"
   instance = "${var.sql-instance-name}"
-  password = "zorroa"
+  password = "${random_string.sql-password.result}"
+}
+
+resource "google_sql_database" "auth" {
+  name      = "zorroa-auth"
+  instance  = "${var.sql-instance-name}"
 }
 
 resource "kubernetes_deployment" "auth-server" {
@@ -105,16 +115,16 @@ resource "kubernetes_deployment" "auth-server" {
               cpu = 0.2
             }
           }
-//          env = [
-//            {
-//              name = "PG_HOST"
-//              value = "localhost"
-//            },
-//            {
-//              name = "PG_PASSWORD"
-//              value = "${random_string.sql-password.result}"
-//            }
-//          ]
+          env = [
+            {
+              name = "SPRING_DATASOURCE_URL"
+              value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&socketFactoryArg=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
+            },
+            {
+              name = "SWAGGER_ISPUBLIC"
+              value = "false"
+            }
+          ]
         }
       }
     }

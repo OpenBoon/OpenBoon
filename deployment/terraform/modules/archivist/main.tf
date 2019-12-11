@@ -4,15 +4,15 @@ resource "google_project_service" "service-usage" {
 }
 
 ## GCS Buckets and Configuration Files
-//resource "google_storage_bucket" "data" {
-//  name     = "${var.project}-${var.data-bucket-name}"
-//  storage_class = "REGIONAL"
-//  location = "${var.region}"
-//  cors {
-//    origin = ["*"]
-//    method = ["GET"]
-//  }
-//}
+resource "google_storage_bucket" "data" {
+  name     = "${var.project}-${var.data-bucket-name}"
+  storage_class = "REGIONAL"
+  location = "${var.region}"
+  cors {
+    origin = ["*"]
+    method = ["GET"]
+  }
+}
 
 resource "google_storage_bucket" "configuration" {
   name     = "${var.project}-${var.config-bucket-name}"
@@ -28,35 +28,27 @@ resource "random_string" "sql-password" {
   special = false
 }
 
-resource "google_storage_bucket_object" "archivist-properties" {
-  bucket = "${google_storage_bucket.configuration.name}"
-  name = "zorroa-archivist-config/application.properties"
-  content = <<EOF
-archivist.debug-mode.enabled = true
-spring.datasource.url = jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&socketFactoryArg=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}
-spring.datasource.username=${var.database-user}
-spring.datasource.password=${random_string.sql-password.result}
-management.endpoints.password=${var.monitor-password}
-archivist.storage.create-bucket = True
-EOF
-}
+//resource "google_storage_bucket_object" "archivist-properties" {
+//  bucket = "${google_storage_bucket.configuration.name}"
+//  name = "zorroa-archivist-config/application.properties"
+//  content = <<EOF
+//archivist.debug-mode.enabled = true
+//spring.datasource.url = jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&socketFactoryArg=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}
+//spring.datasource.username=${var.database-user}
+//spring.datasource.password=${random_string.sql-password.result}
+//management.endpoints.password=${var.monitor-password}
+//archivist.storage.bucket = ${google_storage_bucket.data.name}
+//${var.config-properties}
+//EOF
+//}
 
-resource "google_storage_bucket_object" "inception-key" {
-  name = "inception-key.json"
-  bucket = "${google_storage_bucket.configuration.name}"
-  content = <<EOF
-{
-    "name": "admin-key",
-    "projectId": "00000000-0000-0000-0000-000000000000",
-    "keyId": "4338a83f-a920-40ab-a251-a123b17df1ba",
-    "sharedKey": "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
-    "permissions": [
-        "SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport"
-    ]
-}
-EOF
-}
 
+
+resource "google_storage_bucket_object" "archivist-data-credentials" {
+  bucket = "${google_storage_bucket.configuration.name}"
+  name = "zorroa-archivist-config/data-credentials.json"
+  content = "${var.sql-service-account-key}"
+}
 
 ## SQL Instance
 resource "google_project_service" "sqladmin" {
@@ -65,7 +57,10 @@ resource "google_project_service" "sqladmin" {
   depends_on = ["google_project_service.service-usage"]
 }
 
-
+resource "google_sql_database" "zorroa" {
+  name      = "${var.database-name}"
+  instance  = "${var.sql-instance-name}"
+}
 
 resource "google_sql_user" "users" {
   name     = "${var.database-user}"
@@ -75,51 +70,21 @@ resource "google_sql_user" "users" {
 
 
 ## K8S Deployment
-//resource "google_container_node_pool" "archivist" {
-//  name = "${var.node-pool-name}"
-//  cluster = "${var.container-cluster-name}"
-//  initial_node_count = 1
-//  autoscaling {
-//    max_node_count = "${var.maximum-nodes}"
-//    min_node_count = "${var.minimum-nodes}"
-//  }
-//  management {
-//    auto_repair = true
-//    auto_upgrade = true
-//  }
-//  node_config {
-//    machine_type = "custom-2-4096"
-//    oauth_scopes = [
-//      "compute-rw",
-//      "storage-rw",
-//      "logging-write",
-//      "https://www.googleapis.com/auth/pubsub",
-//      "https://www.googleapis.com/auth/devstorage.full_control",
-//      "https://www.googleapis.com/auth/devstorage.read_only",
-//      "https://www.googleapis.com/auth/monitoring",
-//      "https://www.googleapis.com/auth/sqlservice.admin"
-//    ]
-//    labels {
-//      type = "archivist"
-//      namespace = "${var.namespace}"
-//    }
-//  }
-//}
 
-//resource "kubernetes_config_map" "archivist" {
-//  metadata {
-//    name = "archivist-config"
-//    namespace = "${var.namespace}"
-//    labels {
-//      app = "archivist"
-//    }
-//  }
-//  data {
-//    GCS_CONFIGURATION_BUCKET = "${google_storage_bucket.configuration.name}/zorroa-archivist-config"
-//    ZORROA_USER = "admin"
-//    ZORROA_ARCHIVIST_EXT = "${var.extensions}"
-//  }
-//}
+resource "kubernetes_config_map" "archivist" {
+  metadata {
+    name = "archivist-config"
+    namespace = "${var.namespace}"
+    labels {
+      app = "archivist"
+    }
+  }
+  data {
+    GCS_CONFIGURATION_BUCKET = "${google_storage_bucket.configuration.name}/zorroa-archivist-config"
+    ZORROA_USER = "admin"
+    ZORROA_ARCHIVIST_EXT = "${var.extensions}"
+  }
+}
 
 resource "kubernetes_deployment" "archivist" {
   provider = "kubernetes"
@@ -175,26 +140,26 @@ resource "kubernetes_deployment" "archivist" {
           resources {
             limits {
               memory = "512Mi"
-              cpu = 0.2
+              cpu = 0.5
             }
             requests {
               memory = "256Mi"
-              cpu = 0.1
+              cpu = 0.2
             }
           }
         }
         container {
           name = "zorroa-archivist"
-          image = "zorroaevi/archivist:${var.container-tag}"
+          image = "zmlp/archivist:${var.container-tag}"
           image_pull_policy = "Always"
           resources {
             limits {
-              memory = "1Gi"
-              cpu = 0.5
+              memory = "2Gi"
+              cpu = 0.7
             }
             requests {
               memory = "1Gi"
-              cpu = 0.2
+              cpu = 0.5
             }
           }
           liveness_probe = {
@@ -218,20 +183,16 @@ resource "kubernetes_deployment" "archivist" {
           }
           env = [
             {
-              name = "SENTRY_ENVIRONMENT"
-              value = "production"
+              name = "SPRING_PROFILES_ACTIVE"
+              value = "gcs"
             },
             {
-              name = "ARCHIVIST_STORAGE_ACCESSKEY"
-              value = "qwerty123"
+              name = "SPRING_DATASOURCE_URL"
+              value = "jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&socketFactoryArg=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}"
             },
             {
-              name = "ARCHIVIST_STORAGE_SECRETKEY"
-              value = "123qwerty"
-            },
-            {
-              name = "ARCHIVIST_STORAGE_URL"
-              value = "gs://${var.project}-${var.data-bucket-name}"
+              name = "ARCHIVIST_STORAGE_BUCKET"
+              value = "${google_storage_bucket.data.name}"
             }
           ]
         }
@@ -294,10 +255,10 @@ resource "kubernetes_service" "archivist" {
 resource "kubernetes_secret" "sql-credentials" {
   metadata {
     name = "sql-credentials"
-    namespace = "${var.namespace}"
   }
   data {
-    username = "zorroa"
+    username = "${google_sql_user.users.name}"
     password = "${random_string.sql-password.result}"
   }
 }
+
