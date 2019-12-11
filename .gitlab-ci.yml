@@ -79,8 +79,13 @@ backend-py-linting:
     - flake8 --config .flake8/setup.cfg services/analyst
 
 backend-kotlin-lint:
-  image: java:latest
+  image: openjdk:jre-slim
   stage: test
+  only:
+    - merge_requests
+    - development
+    - qa
+    - master
   script:
     - apk update && apk add ca-certificates wget && update-ca-certificates
     - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
@@ -104,16 +109,8 @@ sdk-unit-tests:
     - python -m pip install pipenv pytest
     - cd sdk/python
     - pipenv install -r requirements.txt
-    - pytest
-    - cd ../../containers/zmlp-plugins-base
-    - pipenv install -r requirements.txt
-    - pytest
-    - cd ../../containers/zmlp-plugins-core
-    - pipenv install -r requirements.txt
-    - pytest
-    - cd ../../containers/zmlp-plugins-analysis
-    - pipenv install -r requirements.txt
-    - pytest
+    - pipenv run pytest
+
 
 docker_hub_push:
   image: docker:18.09.8-dind
