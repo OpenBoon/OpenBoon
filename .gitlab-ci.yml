@@ -177,7 +177,7 @@ services_unit_tests:
   services:
     - name: redis:alpine
       alias: redis
-   - name: minio/minio
+    - name: minio/minio
       alias: minio
     - name: postgres:9.6.9
       alias: postgres
