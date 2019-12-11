@@ -4,6 +4,8 @@ import { jobColumns, jobRows } from './__mocks__/jobs'
 import { spacing } from '../Styles'
 
 import Pagination from '../Pagination'
+import Modal from '../Modal'
+import UserMenu from '../UserMenu'
 
 export const noop = () => () => {}
 
@@ -24,6 +26,8 @@ const Jobs = () => {
         nextLink="/?page=2"
         onClick={noop}
       />
+
+      <Modal />
     </div>
   )
 }

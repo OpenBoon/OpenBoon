@@ -988,6 +988,11 @@ exports[`<Jobs /> should render properly with data 1`] = `
     prevLink="/"
     totalPages={2}
   />
+  <button
+    onClick={[Function]}
+  >
+    Modal
+  </button>
 </div>
 `;
 
@@ -1979,5 +1984,10 @@ exports[`<Jobs /> should render properly without data 1`] = `
     prevLink="/"
     totalPages={2}
   />
+  <button
+    onClick={[Function]}
+  >
+    Modal
+  </button>
 </div>
 `;
