@@ -35,11 +35,11 @@ class ApiKeyServiceImpl constructor(
 
     override fun create(spec: ApiKeySpec): ApiKey {
         val key = ApiKey(
-                UUID.randomUUID(),
-                spec.projectId,
-                KeyGenerator.generate(),
-                spec.name,
-                spec.permissions
+            UUID.randomUUID(),
+            spec.projectId,
+            KeyGenerator.generate(),
+            spec.name,
+            spec.permissions
         )
         return apiKeyRepository.save(key)
     }

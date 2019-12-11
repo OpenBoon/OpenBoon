@@ -13,37 +13,41 @@ class AuthControllerTests : MockMvcTest() {
     @Test
     fun testAuthExtenrnalToken() {
         mvc.perform(
-                MockMvcRequestBuilders.post("/auth/v1/auth-token")
-                        .headers(superAdmin())
+            MockMvcRequestBuilders.post("/auth/v1/auth-token")
+                .headers(superAdmin())
         )
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.permissions",
-                        CoreMatchers.hasItem("SuperAdmin")))
-                .andReturn()
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.permissions",
+                    CoreMatchers.hasItem("SuperAdmin")
+                )
+            )
+            .andReturn()
     }
 
     @Test
     fun testAuthUserToken() {
         val spec = ApiKeySpec(
-                "test",
-                UUID.randomUUID(),
-                listOf("Test")
+            "test",
+            UUID.randomUUID(),
+            listOf("Test")
         )
         val apiKey = apiKeyService.create(spec)
         mvc.perform(
-                MockMvcRequestBuilders.post("/auth/v1/auth-token")
-                        .headers(standardUser(apiKey))
+            MockMvcRequestBuilders.post("/auth/v1/auth-token")
+                .headers(standardUser(apiKey))
         )
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
     }
 
     @Test
     fun testAuthFailure() {
         mvc.perform(
-                MockMvcRequestBuilders.post("/auth/v1/auth-token")
+            MockMvcRequestBuilders.post("/auth/v1/auth-token")
         )
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError)
-                .andReturn()
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andReturn()
     }
 }

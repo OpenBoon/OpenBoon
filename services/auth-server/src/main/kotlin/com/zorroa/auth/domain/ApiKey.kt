@@ -66,7 +66,6 @@ class ZmlpActor(
     val permissions: List<String>
 )
 
-
 @Entity
 @Table(name = "api_key")
 @ApiModel("ApiKey", description = "An API key allows remote users to acccess ZMLP resources.")
