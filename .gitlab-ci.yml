@@ -204,6 +204,8 @@ services_unit_tests:
     MLSTORAGE_ACCESSKEY: "qwerty123"
     MLSTORAGE_SECRETKEY: "123qwerty"
     MLSTORAGE_URL: "http://localhost:9000"
+    MINIO_ACCESS_KEY: "qwerty123"
+   MINIO_SECRET_KEY: "123qwerty"
   script:
     - export
     - mvn test verify -f services/archivist -q
