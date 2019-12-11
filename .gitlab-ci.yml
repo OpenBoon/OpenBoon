@@ -107,6 +107,7 @@ sdk-unit-tests:
     - cd sdk/python
     - pipenv install -r requirements.txt
     - pipenv run pytest
+    - pipenv run setup.py install
     - cd ../../containers/zmlp-plugins-base
     - pipenv install -r requirements.txt
     - pipenv run pytest
@@ -190,7 +191,7 @@ services_unit_tests:
     POSTGRES_USER: "zorroa"
     POSTGRES_DB: "zorroa"
     PGDATA: "/var/lib/postgresql/data/pgdata"
-    ARCHIVIST_ES_URL: "http://elasticsearch:9200"
+    ARCHIVIST_ES_URL: "http://localhost:9200"
     SPRING_FLYWAY_SCHEMAS: "archivist_test"
     SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
@@ -200,7 +201,7 @@ services_unit_tests:
     ARCHIVIST_STORAGE_URL: "http://minio:9000"
     MLSTORAGE_ACCESSKEY: "qwerty123"
     MLSTORAGE_SECRETKEY: "123qwerty"
-    MLSTORAGE_URL: "http://minio:9000"
+    MLSTORAGE_URL: "http://localhost:9000"
   script:
     - export
     - mvn test verify -f services/archivist -q
