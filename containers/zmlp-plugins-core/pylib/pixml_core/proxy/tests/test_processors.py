@@ -20,7 +20,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr("media.type", "image")
         self.frame.asset.set_attr('media.width', 512)
         self.frame.asset.set_attr('media.height', 341)
-        self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN_PATH)
+        self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
         self.processor = self.init_processor(ProxyProcessor(), {})
 
         self.storage_patch = {
@@ -52,7 +52,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         frame = Frame(TestAsset(self.source_path))
         frame.asset.set_attr('media.width', 1024)
         frame.asset.set_attr('media.height', 768)
-        frame.asset.set_attr('tmp.proxy_source_image', TOUCAN_PATH)
+        frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
 
         processor = self.init_processor(ProxyProcessor(), {"sizes": [384]})
         processor.process(frame)

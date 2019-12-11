@@ -173,7 +173,7 @@
         <dependency>
             <groupId>com.google.cloud.sql</groupId>
             <artifactId>postgres-socket-factory</artifactId>
-            <version>1.0.8</version>
+            <version>1.0.15</version>
             <exclusions>
                 <exclusion>
                     <groupId>mysql</groupId>
@@ -186,6 +186,12 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.11.683</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>6.0.11</version>
         </dependency>
 
         <dependency>
@@ -203,7 +209,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.5.2</version>
+            <version>4.5.9</version>
         </dependency>
 
         <dependency>
@@ -311,7 +317,7 @@
                                 <limit>
                                     <counter>INSTRUCTION</counter>
                                     <value>COVEREDRATIO</value>
-                                    <minimum>0.73</minimum>
+                                    <minimum>0.70</minimum>
                                 </limit>
                             </limits>
                             <excludes>

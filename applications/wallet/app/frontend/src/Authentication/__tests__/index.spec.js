@@ -3,6 +3,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 import Authentication from '..'
 
 jest.mock('../../Login', () => 'Login')
+jest.mock('../../Layout')
 
 jest.mock('../helpers')
 
@@ -38,13 +39,10 @@ describe('<Authentication />', () => {
   })
 
   it('should render properly when user is logged in', () => {
-    require('../helpers').__setMockTokens({
-      accessToken: true,
-      refreshToken: true,
-    })
+    require('../helpers').__setMockUser({ id: 12345 })
 
     const component = TestRenderer.create(
-      <Authentication>{() => `Hello World!`}</Authentication>,
+      <Authentication>{() => 'Hello World'}</Authentication>,
     )
 
     // user is loading

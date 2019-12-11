@@ -1,12 +1,15 @@
+import os
 import json
+from urllib.parse import urlparse
 
+import minio
 from google.auth.exceptions import DefaultCredentialsError
 from google.cloud import storage as gcs
 from google.oauth2 import service_account
 
 from .base import AnalysisEnv
-from ..util import memoize
 from ..app import app_from_env
+from ..util import memoize
 
 
 @memoize
@@ -48,3 +51,20 @@ def get_google_storage_client():
         except (DefaultCredentialsError, OSError):
             return gcs.Client.create_anonymous_client()
 
+
+@memoize
+def get_pixml_storage_client():
+    """
+    Return a PixelML storage client.  This client is used for accessing
+    internal pixml:// URIs.  These URIs allow processors to store binary
+    data that is later picked up by other processors or services.
+
+    Returns:
+        Minio: A Minio client.
+
+    """
+    url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000"))
+    return minio.Minio(url.netloc,
+                       access_key=os.environ.get("MLSTORAGE_ACCESSKEY"),
+                       secret_key=os.environ.get("MLSTORAGE_SECRETKEY"),
+                       secure=False)

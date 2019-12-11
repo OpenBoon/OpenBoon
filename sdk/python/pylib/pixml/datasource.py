@@ -134,4 +134,3 @@ class DataSource(object):
     def analysis(self):
         """The type of analysis done to the DataSource"""
         return self._data.get('analysis', [])
-

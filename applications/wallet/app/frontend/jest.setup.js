@@ -1,4 +1,13 @@
 /**
+ * fetch
+ */
+global.fetch = require('jest-fetch-mock')
+
+beforeEach(() => {
+  fetch.resetMocks()
+})
+
+/**
  * console
  */
 const { error } = console

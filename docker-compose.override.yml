@@ -1,0 +1,8 @@
+version: "3.6"
+services:
+
+  # Console web application, with env settings to contact the ZVI Development env
+  wallet:
+    environment:
+      ARCHIVIST_URL: https://dev.zorroa.com
+      PLATFORM: zvi

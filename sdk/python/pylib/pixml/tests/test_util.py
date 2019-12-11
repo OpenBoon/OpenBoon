@@ -11,4 +11,3 @@ class UtilTests(unittest.TestCase):
 
         assert is_valid_uuid(yes)
         assert not is_valid_uuid(no)
-

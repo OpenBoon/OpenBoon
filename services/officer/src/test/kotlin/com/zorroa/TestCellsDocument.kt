@@ -2,7 +2,11 @@ package com.zorroa
 
 import com.aspose.cells.Workbook
 import com.aspose.cells.Worksheet
-import org.apache.commons.io.FileUtils
+import java.awt.image.BufferedImage
+import java.io.FileInputStream
+import javax.imageio.ImageIO
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -10,12 +14,6 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
-import java.awt.image.BufferedImage
-import java.nio.file.Paths
-import javax.imageio.ImageIO
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class TestCellsDocument {
 
@@ -30,16 +28,15 @@ class TestCellsDocument {
         opts = Options("src/test/resources/test_sheet.xlsx")
         opts.page = 1
         opts.outputDir = "xlsx"
-        FileUtils.deleteDirectory(Paths.get(ServerOptions.storagePath).toFile())
     }
 
     @Ignore
     @Test
     fun testRenderMetadata() {
-        val doc = CellsDocument(opts)
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 
-        val metadata = Json.mapper.readValue(doc.getMetadataFile(), Map::class.java)
+        val metadata = Json.mapper.readValue(doc.ioHandler.getMetadata(1), Map::class.java)
 
         assertEquals(3, metadata["pages"])
         assertFalse(metadata.containsKey("content"))
@@ -48,23 +45,11 @@ class TestCellsDocument {
     }
 
     @Test
-    fun testRenderProxyFromGCS() {
-        val opts = Options("gs://zorroa-dev-data/office/Data_Listing-Caswell.xlsx")
-        opts.page = 1
-        val doc = CellsDocument(opts)
-        doc.renderImage()
-
-        val image = ImageIO.read(doc.getImageFile())
-        assertEquals(3464, image.width)
-        assertEquals(1260, image.height)
-    }
-
-    @Test
     fun testRenderProxy() {
-        val doc = CellsDocument(opts)
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 
-        val image = ImageIO.read(doc.getImageFile())
+        val image = ImageIO.read(doc.ioHandler.getImage())
         assertEquals(2674, image.width)
         assertEquals(1050, image.height)
     }
@@ -72,55 +57,61 @@ class TestCellsDocument {
     @Test
     fun testRenderAllImages() {
         val opts = Options("src/test/resources/test_sheet.xlsx")
-        opts.page = -1
 
-        val doc = CellsDocument(opts)
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.renderAllImages()
 
-        val root = doc.getOutputRoot()
-        val files = root.toFile().listFiles().toSet().map { it.name }
-        assertEquals(3, files.size)
         for (page in 1..3) {
-            assertTrue("proxy.1.jpg" in files)
+            doc.ioHandler.getImage(page)
         }
     }
 
     @Test
-    fun testRenderPageMetadata_ContainsNoContent() {
-        opts.content = true
+    fun testRenderPageMetadata() {
         opts.page = 1
-        val doc = CellsDocument(opts)
-        doc.render()
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
+        doc.renderMetadata(1)
 
-        val metadata = Json.mapper.readValue(doc.getMetadataFile(), Map::class.java)
+        val metadata = Json.mapper.readValue(doc.getMetadata(1), Map::class.java)
         assertFalse(metadata.containsKey("content"))
+        assertFalse(metadata.containsKey("type"))
+    }
+
+    @Test
+    fun testRenderAssetMetadata() {
+        opts.page = 0
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
+        doc.renderMetadata(0)
+
+        val metadata = Json.mapper.readValue(doc.getMetadata(0), Map::class.java)
+        assertEquals("document", metadata["type"])
     }
 
     @Test
     fun testRenderPageProxy() {
         opts.page = 2
-        val doc = CellsDocument(opts)
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.render()
 
-        val image = ImageIO.read(doc.getImageFile())
+        val image = ImageIO.read(doc.getImage(2))
         assertEquals(1346, image.width)
         assertEquals(666, image.height)
     }
 
     @Test
     fun testRenderLargeSheet_ThrowsException() {
-        val doc = CellsDocument(opts)
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         expectedException.expect(OutOfMemoryError::class.java)
         doc.saveSheetProxy(largeSheet(), opts.page)
     }
 
     @Test
     fun testRenderLargeSheetWithCellRange_CreatesProxy() {
-        val doc = CellsDocument(opts)
-        doc.saveSheetProxyWithCellRange(largeSheet(), opts.page)
+        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
+        doc.saveSheetProxyWithCellRange(largeSheet(), 1)
 
         assertThat(
-            ImageIO.read(doc.getImageFile()),
+            ImageIO.read(doc.getImage(1)),
             instanceOf(BufferedImage::class.java)
         )
     }

@@ -2,54 +2,41 @@ import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { SWRConfig } from 'swr'
 
-import { axiosCreate, fetcher } from '../Axios/helpers'
-
 import Login from '../Login'
+import Layout from '../Layout'
 
-import {
-  getTokens,
-  isUserAuthenticated,
-  authenticateUser,
-  getTokenTimeout,
-  logout,
-} from './helpers'
+import { getUser, authenticateUser, logout, fetcher } from './helpers'
 
 const Authentication = ({ children }) => {
-  const axiosInstance = axiosCreate({})
-
-  const [user, setUser] = useState({ hasLoaded: false, isAuthenticated: false })
+  const [hasLoaded, setHasLoaded] = useState(false)
+  const [user, setUser] = useState({})
 
   useEffect(() => {
-    let timeoutId
+    if (hasLoaded) return
 
-    const { refreshToken } = getTokens()
+    const storedUser = getUser()
 
-    if (!user.hasLoaded) {
-      setUser({
-        hasLoaded: true,
-        isAuthenticated: isUserAuthenticated({ now: Date.now(), refreshToken }),
-      })
-    }
+    setUser(storedUser)
+    setHasLoaded(true)
+  }, [hasLoaded, user])
 
-    if (user.isAuthenticated) {
-      timeoutId = setTimeout(
-        logout({ setUser }),
-        getTokenTimeout({ now: Date.now(), refreshToken }),
-      )
-    }
+  if (!hasLoaded) return null
 
-    return () => clearTimeout(timeoutId)
-  }, [user])
-
-  if (!user.hasLoaded) return null
-
-  if (!user.isAuthenticated) {
-    return <Login onSubmit={authenticateUser({ axiosInstance, setUser })} />
+  if (!user.id) {
+    return <Login onSubmit={authenticateUser({ setUser })} />
   }
 
   return (
-    <SWRConfig value={{ fetcher: fetcher({ axiosInstance }) }}>
-      {children({ user, logout: logout({ setUser }) })}
+    <SWRConfig value={{ fetcher: fetcher({ setUser }) }}>
+      <Layout logout={logout({ setUser })}>
+        {({ selectedProject }) =>
+          children({
+            user,
+            logout: logout({ setUser }),
+            selectedProject,
+          })
+        }
+      </Layout>
     </SWRConfig>
   )
 }

@@ -9,3 +9,4 @@ uritools
 backoff
 pytest
 elasticsearch==6.4.0
+minio

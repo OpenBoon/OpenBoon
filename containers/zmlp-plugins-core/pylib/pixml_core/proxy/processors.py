@@ -1,4 +1,3 @@
-import os
 import subprocess
 import sys
 import tempfile
@@ -22,8 +21,7 @@ class ProxyProcessor(AssetBuilder):
         'sizes': 'Sizes of the proxies to create.',
         'file_type': 'File type of the proxies to create.',
         'resize_filter': 'Filter to use.',
-        'output_args': 'Extra arguments for oiio.',
-        'source_fields': 'Field in the asset containing a path to the source file.'
+        'output_args': 'Extra arguments for oiio.'
     }
 
     VALID_FILE_TYPES = {'jpg': 'image/jpeg', 'png': 'image/png'}
@@ -40,9 +38,6 @@ class ProxyProcessor(AssetBuilder):
                               toolTip=self.toolTips['resize_filter']))
         self.add_arg(Argument('output_args', 'list[str]', default=[],
                               toolTip=self.toolTips['output_args']))
-        self.add_arg(Argument('source_fields', 'list[str]',
-                              default=['tmp.proxy_source_image'],
-                              toolTip=self.toolTips['source_fields']))
 
     def init(self):
         # Inherits parent docstring.
@@ -69,7 +64,6 @@ class ProxyProcessor(AssetBuilder):
 
         self.logger.info('Creating %s proxies for %s.' % (self.arg_value('file_type'),
                                                           source_path))
-        self.logger.info('Asset File Size: %s' % os.stat(source_path).st_size)
         proxy_paths = self._create_proxy_images(asset)
         for proxy in proxy_paths:
             add_proxy_file(asset, proxy[2], (proxy[0], proxy[1]))
@@ -196,9 +190,12 @@ class ProxyProcessor(AssetBuilder):
             return media_size(self._get_source_path(asset))
 
     def _get_source_path(self, asset):
-        for attr in self.arg_value('source_fields'):
-            if asset.get_attr(attr):
-                return asset.get_attr(attr)
+
+        proxy_source_file = asset.get_attr("tmp.proxy_source_image")
+        if proxy_source_file:
+            return file_cache.localize_uri(proxy_source_file)
+
+        # Handles pulling the actual source.path or a files source.
         # If the source file type is not an image, this processor
         # has no chance of making a proxy, so we're going to skip
         # generating an error.

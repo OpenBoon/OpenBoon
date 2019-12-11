@@ -113,6 +113,7 @@ data class PipelineFilter(
  */
 val STANDARD_PIPELINE = listOf(
     ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core"),
+    ProcessorRef("pixml_core.office.importers.OfficeImporter", "zmlp-plugins-core"),
     ProcessorRef("pixml_core.core.processors.AssertAttributesProcessor", "zmlp-plugins-core",
         mapOf("attrs" to listOf("media.type"))),
     ProcessorRef("pixml_core.proxy.processors.ProxyProcessor", "zmlp-plugins-core"),

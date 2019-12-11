@@ -13,19 +13,20 @@ const colors = {
 
   black: '#000',
 
-  grey1: '#2E2E2E',
-  grey2: '#B3B3B3',
-  grey3: '#1D1D1D',
+  grey1: '#2e2e2e',
+  grey2: '#b3b3b3',
+  grey3: '#1d1d1d',
   grey4: '#121212',
-  grey5: '#4D4948',
+  grey5: '#4d4948',
   grey6: '#404040',
+  grey7: '#b2b2b2',
 
-  green1: '#4AC565',
+  green1: '#4ac565',
   green2: '#b8d652',
 
-  blue1: '#4A90E2',
+  blue1: '#4a90e2',
 
-  yellow1: '#F5A623',
+  yellow1: '#f5a623',
 
   rocks: {
     black: '#000000',
@@ -39,6 +40,10 @@ const colors = {
     granite: '#e7e7e7',
     marble: '#f7f7f7',
     white: '#ffffff',
+  },
+
+  plants: {
+    clover: '#73b61c',
   },
 }
 

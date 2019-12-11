@@ -21,4 +21,4 @@ googleapis-common-protos
 backoff
 cmake
 face_recognition
-mock
+

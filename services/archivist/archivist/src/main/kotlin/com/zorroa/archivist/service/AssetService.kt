@@ -21,7 +21,7 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.elastic.ElasticSearchErrorTranslator
+import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -194,6 +194,7 @@ class AssetServiceImpl : AssetService {
             java.time.Clock.systemUTC().instant().toString()
         )
         asset.setAttr("system.state", AssetState.Pending.toString())
+        asset.setAttr("element.name", "asset")
 
         return asset
     }

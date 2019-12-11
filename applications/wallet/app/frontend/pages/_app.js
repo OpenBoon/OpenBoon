@@ -6,7 +6,7 @@ import Authentication from '../src/Authentication'
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
-    dsn: 'https://d772538aae2649d38a8931583ed7719b@sentry.io/1504338',
+    dsn: 'https://09e9c3fc777c469ab784ff4367ff54bb@sentry.io/1848515',
   })
 }
 
@@ -16,8 +16,13 @@ class MyApp extends App {
 
     return (
       <Authentication>
-        {({ user, logout }) => (
-          <Component user={user} logout={logout} {...pageProps} />
+        {({ user, logout, selectedProject }) => (
+          <Component
+            user={user}
+            logout={logout}
+            selectedProject={selectedProject}
+            {...pageProps}
+          />
         )}
       </Authentication>
     )

@@ -681,7 +681,7 @@ class Processor(object):
         Returns:
             object: Object described by the helper data.
         """
-        raise NotImplemented('instantiate_helper is not implemented')
+        raise NotImplementedError('instantiate_helper is not implemented')
 
 
 class Generator(Processor):
