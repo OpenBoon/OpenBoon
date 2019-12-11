@@ -20,8 +20,8 @@ from analyst.containerized import ContainerizedZpsExecutor
 from analyst.main import setup_routes
 
 logging.basicConfig(level=logging.INFO)
-
 logger = logging.getLogger(__name__)
+
 
 def read_build_version_file():
     with open(os.environ["ZORROA_BUILD_FILE"]) as fp:
@@ -30,7 +30,6 @@ def read_build_version_file():
 
 
 def test_task(event_type=None, attrs=None):
-    this_dir = os.path.dirname(__file__)
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
@@ -251,4 +250,3 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
 
         wrapper = ContainerizedZpsExecutor(test_task("--sleep 1"), MockArchivistClient())
         wrapper.run()
-
