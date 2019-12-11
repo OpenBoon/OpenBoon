@@ -41,7 +41,7 @@ const Modal = () => {
             <div
               css={{
                 backgroundColor: colors.grey4,
-                // height: 40,
+                height: 40,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
