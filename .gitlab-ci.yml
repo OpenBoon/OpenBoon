@@ -107,9 +107,11 @@ sdk-unit-tests:
     - cd sdk/python
     - pipenv install -r requirements.txt
     - pipenv run pytest
-    - pipenv run python setup.py install
     - cd ../../containers/zmlp-plugins-base
     - pipenv install -r requirements.txt
+    - cd ../../sdk/python
+    - pipenv run python setup.py install
+    - cd ../../containers/zmlp-plugins-base
     - pipenv run pytest
     - cd ../../services/analyst
     - pipenv install -r requirements.txt
