@@ -4,7 +4,7 @@ const colors = {
 
   error: '#ce2d3f',
   danger: '#edb8be',
-  warning: '#af2e3c',
+  warning: '#c92300',
 
   primaryBackground: '#1b1b1b',
   secondaryBackground: '#2d2d2d',

@@ -1,6 +1,9 @@
 import React from 'react'
+import WarningSvg from '../Icons/warning.svg'
 import XSvg from '../Icons/x.svg'
-import { colors, constants, spacing, typography } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
+
+const BUTTON_HEIGHT = 40
 
 const Modal = () => {
   const [showDialog, setShowDialog] = React.useState(false)
@@ -41,11 +44,10 @@ const Modal = () => {
             <div
               css={{
                 backgroundColor: colors.grey4,
-                height: 40,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: `${spacing.moderate}px ${spacing.normal}px`,
+                padding: spacing.normal,
               }}>
               <div css={{ color: colors.rocks.steel }}>DELETE</div>
               <div
@@ -62,29 +64,28 @@ const Modal = () => {
               css={{
                 height: '100%',
                 backgroundColor: colors.grey1,
+                padding: spacing.spacious,
               }}>
               <div
                 css={{
-                  padding: spacing.base,
+                  display: 'flex',
                   color: colors.marble,
-                  fontSize: typography.size.hecto,
-                  lineHeight: typography.height.hecto,
                 }}>
-                Deleting this key cannot be undone.
+                <WarningSvg width={20} color={colors.warning} />
+                <div css={{ paddingLeft: spacing.base }}>
+                  Deleting this key cannot be undone.
+                </div>
               </div>
               <div
                 css={{
-                  paddingLeft: 124,
-                  paddingRight: 32,
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'flex-end',
+                  paddingTop: spacing.spacious,
                   button: {
-                    height: 40,
-                    width: 152,
+                    height: BUTTON_HEIGHT,
+                    padding: `0 ${spacing.spacious}px`,
                     border: 'none',
                     borderRadius: constants.borderRadius.small,
-                    fontSize: typography.size.hecto,
-                    lineHeight: typography.height.hecto,
                   },
                 }}>
                 <button
@@ -92,6 +93,7 @@ const Modal = () => {
                   css={{
                     backgroundColor: colors.rocks.iron,
                     color: colors.rocks.granite,
+                    marginRight: spacing.normal,
                   }}
                   onClick={close}>
                   Cancel

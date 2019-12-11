@@ -123,7 +123,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-7:hover {
-  opacity: 0.59;
+  opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
@@ -294,7 +294,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-3:hover {
-  opacity: 0.59;
+  opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
