@@ -65,7 +65,7 @@ wallet-container-build-validation:
 
 backend-py-lint:
   image: python:3.7
-  stage: test
+  stage: pretest
   allow_failure: false
   only:
     - merge_requests
@@ -80,7 +80,7 @@ backend-py-lint:
 
 backend-kotlin-lint:
   image: kkopper/ktlint
-  stage: test
+  stage: pretest
   only:
     - merge_requests
     - development
