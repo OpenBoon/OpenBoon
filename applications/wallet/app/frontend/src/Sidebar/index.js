@@ -26,7 +26,6 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
           paddingBottom: spacing.spacious,
           transition: 'left ease-in-out .3s, visibility ease-in-out .3s',
           overscrollBehavior: 'contain',
-          visibility: isSidebarOpen ? 'visible' : 'hidden',
           left: isSidebarOpen ? 0 : -WIDTH,
           top: constants.navbar.height,
           paddingTop: spacing.moderate,

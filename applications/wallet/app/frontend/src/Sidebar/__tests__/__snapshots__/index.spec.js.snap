@@ -12,7 +12,6 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
   overscroll-behavior: contain;
-  visibility: hidden;
   left: -240px;
   top: 44px;
   padding-top: 12px;
@@ -147,7 +146,6 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
   overscroll-behavior: contain;
-  visibility: visible;
   left: 0;
   top: 44px;
   padding-top: 12px;
