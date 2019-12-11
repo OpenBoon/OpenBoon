@@ -122,7 +122,6 @@ docker_hub_push:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
-    DOCKER_HUB_IMAGE: zorroaevi/analyst:$CI_COMMIT_REF_SLUG
   retry: 2
   only:
     - development
