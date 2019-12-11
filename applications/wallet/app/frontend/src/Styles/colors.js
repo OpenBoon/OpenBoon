@@ -41,6 +41,10 @@ const colors = {
     marble: '#f7f7f7',
     white: '#ffffff',
   },
+
+  plants: {
+    clover: '#73b61c',
+  },
 }
 
 export default colors
