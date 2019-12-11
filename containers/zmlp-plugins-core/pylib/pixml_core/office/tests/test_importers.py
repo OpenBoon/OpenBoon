@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from pixml.analysis.storage import file_cache
 from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
-from pixml.analysis.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
+from pixml.analysis.testing import PluginUnitTestCase, TestAsset
 
 from pixml_core.office.importers import OfficeImporter, _content_sanitizer
 from pixml_core.office.oclient import OfficerClient

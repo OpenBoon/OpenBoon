@@ -7,8 +7,8 @@ import com.zorroa.auth.domain.KeyGenerator
 import com.zorroa.auth.repository.ApiKeyRepository
 import com.zorroa.auth.repository.ApiKeySearchRepository
 import com.zorroa.auth.security.getProjectId
-import org.springframework.stereotype.Service
 import java.util.UUID
+import org.springframework.stereotype.Service
 
 interface ApiKeyService {
 
@@ -35,11 +35,11 @@ class ApiKeyServiceImpl constructor(
 
     override fun create(spec: ApiKeySpec): ApiKey {
         val key = ApiKey(
-                UUID.randomUUID(),
-                spec.projectId,
-                KeyGenerator.generate(),
-                spec.name,
-                spec.permissions
+            UUID.randomUUID(),
+            spec.projectId,
+            KeyGenerator.generate(),
+            spec.name,
+            spec.permissions
         )
         return apiKeyRepository.save(key)
     }

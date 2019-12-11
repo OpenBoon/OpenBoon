@@ -5,12 +5,12 @@ import com.zorroa.auth.JSON_MAPPER
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.KeyGenerator
 import com.zorroa.auth.domain.ZmlpActor
-import org.slf4j.LoggerFactory
-import org.springframework.security.core.context.SecurityContextHolder
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.Base64
 import java.util.UUID
+import org.slf4j.LoggerFactory
+import org.springframework.security.core.context.SecurityContextHolder
 
 private val logger = LoggerFactory.getLogger("com.zorroa.auth.security")
 

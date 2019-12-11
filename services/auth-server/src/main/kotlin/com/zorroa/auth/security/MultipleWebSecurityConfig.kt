@@ -1,9 +1,6 @@
 package com.zorroa.auth.security
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.auth.JSON_MAPPER
 import com.zorroa.auth.domain.ApiKey
-import com.zorroa.auth.domain.KeyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -20,10 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.Base64
-import java.util.UUID
 
 @Configuration
 @ConfigurationProperties("security")
@@ -82,7 +75,7 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/v2/api-docs").permitAll()
                     .antMatchers("/swagger-ui.html").permitAll()
                     .antMatchers("/error").permitAll()
-            }else{
+            } else {
                 http.authorizeRequests()
                     .antMatchers("/v2/api-docs").denyAll()
                     .antMatchers("/swagger-ui.html").denyAll()
@@ -119,6 +112,3 @@ class MultipleWebSecurityConfig {
         private val logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java)
     }
 }
-
-
-

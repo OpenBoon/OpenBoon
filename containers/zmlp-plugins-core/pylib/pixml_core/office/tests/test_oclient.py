@@ -1,12 +1,11 @@
-import pytest
-import requests
 import unittest
 from pathlib2 import Path
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 from pixml.analysis.storage import file_cache
 from pixml.analysis.testing import TestAsset, MockRequestsResponse, zorroa_test_data
 from pixml_core.office.oclient import OfficerClient
+
 
 class OfficeImporterUnitTestCase(unittest.TestCase):
 
@@ -79,4 +78,3 @@ class OfficeImporterUnitTestCase(unittest.TestCase):
         post_patch.return_value = MockRequestsResponse("", 404)
         client = OfficerClient()
         assert client.exists(self.asset, 1) is False
-

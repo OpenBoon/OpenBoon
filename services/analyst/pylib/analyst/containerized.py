@@ -440,7 +440,8 @@ def in_container():
     try:
         out = subprocess.check_output('cat /proc/1/sched', shell=True)
         out = out.decode('utf-8').lower()
-    except:
+    except Exception as e:
+        logger.debug("Not in a container", e)
         return False
 
     checks = [
@@ -452,8 +453,3 @@ def in_container():
         os.getenv('container', None) is not None
     ]
     return any(checks)
-
-
-
-
-

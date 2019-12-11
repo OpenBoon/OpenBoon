@@ -4,20 +4,20 @@ import com.zorroa.auth.AbstractTest
 import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.security.getProjectId
-import org.junit.Test
-import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import org.junit.Test
+import org.springframework.dao.EmptyResultDataAccessException
 
 class ApiKeyServiceTests : AbstractTest() {
 
     @Test
     fun testCreate() {
         val spec = ApiKeySpec(
-                "test",
-                UUID.randomUUID(),
-                listOf("foo")
+            "test",
+            UUID.randomUUID(),
+            listOf("foo")
         )
         val key = apiKeyService.create(spec)
         assertEquals(spec.name, key.name)
@@ -28,9 +28,9 @@ class ApiKeyServiceTests : AbstractTest() {
     @Test
     fun testGet() {
         val spec = ApiKeySpec(
-                "test",
-                getProjectId(),
-                listOf("foo")
+            "test",
+            getProjectId(),
+            listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
         val key2 = apiKeyService.get(key1.keyId)
@@ -57,9 +57,9 @@ class ApiKeyServiceTests : AbstractTest() {
     @Test
     fun testFindAll() {
         val spec = ApiKeySpec(
-                "test",
-                getProjectId(),
-                listOf("foo")
+            "test",
+            getProjectId(),
+            listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
         val all = apiKeyService.findAll()
@@ -69,9 +69,9 @@ class ApiKeyServiceTests : AbstractTest() {
     @Test(expected = EmptyResultDataAccessException::class)
     fun testDelete() {
         val spec = ApiKeySpec(
-                "test",
-                getProjectId(),
-                listOf("foo")
+            "test",
+            getProjectId(),
+            listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
         apiKeyService.delete(key1)
