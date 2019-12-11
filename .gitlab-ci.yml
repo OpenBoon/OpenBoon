@@ -93,6 +93,8 @@ backend-kotlin-lint:
     - ktlint services/officer/src/**/*.kt
 
 # SDK Test
+# Testing other containers requires building containers
+# Testing analyst requires it can pull plugin containers.
 sdk-unit-tests:
   image: python:3.7
   stage: test
@@ -109,9 +111,6 @@ sdk-unit-tests:
     - python setup.py install
     - pytest
     - cd ../../containers/zmlp-plugins-base
-    - pip install -r requirements.txt
-    - pytest
-    - cd ../../services/analyst
     - pip install -r requirements.txt
     - pytest
 
