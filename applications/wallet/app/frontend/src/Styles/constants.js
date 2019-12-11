@@ -27,6 +27,9 @@ const constants = {
   borders,
   opacity,
   boxShadows,
+  navbar: {
+    height: 44,
+  },
 }
 
 export default constants

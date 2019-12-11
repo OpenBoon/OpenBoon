@@ -15,22 +15,12 @@ exports[`<Jobs /> should render properly with data 1`] = `
   }
 }
 
-.emotion-63 {
-  padding: 12px;
-}
-
 .emotion-61 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   padding: 16px;
 }
 
 .emotion-60 {
+  width: 100%;
   border-spacing: 0;
 }
 
@@ -39,6 +29,10 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #2e2e2e;
   padding: 12px 16px;
   border-bottom: 1px solid #4d4948;
+}
+
+.emotion-60 th:nth-of-type(2) {
+  width: 100%;
 }
 
 .emotion-60 th:not(:last-child) {
@@ -70,6 +64,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
 }
 
 .emotion-60 td {
+  white-space: nowrap;
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -291,722 +286,700 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-62 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
 <div
-  className="emotion-63"
+  className="emotion-61"
 >
-  <div
-    className="emotion-61"
-  >
-    <table
-      className="emotion-60"
-    >
-      <thead>
-        <tr>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Status
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Job Name
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Created By
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Priority
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Created
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Failed
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Errors
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              # Assets
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Progress
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:38:36
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-10"
-              />
-              <div
-                className="emotion-11"
-              />
-              <div
-                className="emotion-12"
-              />
-              <div
-                className="emotion-13"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:38:36
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-10"
-              />
-              <div
-                className="emotion-11"
-              />
-              <div
-                className="emotion-12"
-              />
-              <div
-                className="emotion-13"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-23"
-            >
-              Paused
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:36:29
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-27"
-            >
-              Canceled
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:35:36
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-28"
-            >
-              Canceled by: admin
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-30"
-            >
-              Finished
-            </div>
-          </td>
-          <td>
-            test_officer
-          </td>
-          <td>
-            zach@zorroa.com
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-10-11 21:11:03
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            test_officer
-          </td>
-          <td>
-            zach@zorroa.com
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-10-11 21:03:27
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              3
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            flipbook_export_1
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            1
-          </td>
-          <td>
-            2019-08-01 22:52:19
-          </td>
-          <td />
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              3
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-41"
-            >
-              <svg
-                className="emotion-39"
-                data-file-name="generating.svg"
-              />
-              <div
-                className="emotion-40"
-              >
-                Generating
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            export_7_8_2019
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            1
-          </td>
-          <td>
-            2019-07-08 18:53:44
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td />
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            export_7_8_2019___
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            1
-          </td>
-          <td>
-            2019-07-08 18:43:03
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td />
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            sdlc-testdata-import.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-07-03 16:49:15
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td />
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            sdlc-testdata-import.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-07-03 01:29:41
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              49
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-56"
-              />
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
   <h2>
-    UserMenu
+    Data Queue
   </h2>
-  <div
-    className="emotion-62"
+  <table
+    className="emotion-60"
   >
-    <UserMenu
-      logout={[Function]}
-    />
+    <thead>
+      <tr>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Status
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Job Name
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Created By
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Priority
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Created
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Failed
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Errors
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            # Assets
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Progress
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:38:36
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-10"
+            />
+            <div
+              className="emotion-11"
+            />
+            <div
+              className="emotion-12"
+            />
+            <div
+              className="emotion-13"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:38:36
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-10"
+            />
+            <div
+              className="emotion-11"
+            />
+            <div
+              className="emotion-12"
+            />
+            <div
+              className="emotion-13"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-23"
+          >
+            Paused
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:36:29
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-27"
+          >
+            Canceled
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:35:36
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-28"
+          >
+            Canceled by: admin
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-30"
+          >
+            Finished
+          </div>
+        </td>
+        <td>
+          test_officer
+        </td>
+        <td>
+          zach@zorroa.com
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-10-11 21:11:03
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test_officer
+        </td>
+        <td>
+          zach@zorroa.com
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-10-11 21:03:27
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            3
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          flipbook_export_1
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-08-01 22:52:19
+        </td>
+        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            3
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-41"
+          >
+            <svg
+              className="emotion-39"
+              data-file-name="generating.svg"
+            />
+            <div
+              className="emotion-40"
+            >
+              Generating
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          export_7_8_2019
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-07-08 18:53:44
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          export_7_8_2019___
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-07-08 18:43:03
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          sdlc-testdata-import.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-07-03 16:49:15
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          sdlc-testdata-import.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-07-03 01:29:41
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            49
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-56"
+            />
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+     
   </div>
-  <h2>
-    Pagination
-  </h2>
   <Pagination
     currentPage={1}
     legend="Jobs: 1–17 of 415"
@@ -1033,22 +1006,12 @@ exports[`<Jobs /> should render properly without data 1`] = `
   }
 }
 
-.emotion-63 {
-  padding: 12px;
-}
-
 .emotion-61 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   padding: 16px;
 }
 
 .emotion-60 {
+  width: 100%;
   border-spacing: 0;
 }
 
@@ -1057,6 +1020,10 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #2e2e2e;
   padding: 12px 16px;
   border-bottom: 1px solid #4d4948;
+}
+
+.emotion-60 th:nth-of-type(2) {
+  width: 100%;
 }
 
 .emotion-60 th:not(:last-child) {
@@ -1088,6 +1055,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
 }
 
 .emotion-60 td {
+  white-space: nowrap;
   color: #b3b3b3;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -1309,722 +1277,700 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-62 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
 <div
-  className="emotion-63"
+  className="emotion-61"
 >
-  <div
-    className="emotion-61"
-  >
-    <table
-      className="emotion-60"
-    >
-      <thead>
-        <tr>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Status
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Job Name
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Created By
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Priority
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Created
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Failed
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Errors
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              # Assets
-            </div>
-          </th>
-          <th>
-            <div
-              className="emotion-0"
-            >
-              Progress
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:38:36
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-10"
-              />
-              <div
-                className="emotion-11"
-              />
-              <div
-                className="emotion-12"
-              />
-              <div
-                className="emotion-13"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:38:36
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-10"
-              />
-              <div
-                className="emotion-11"
-              />
-              <div
-                className="emotion-12"
-              />
-              <div
-                className="emotion-13"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-23"
-            >
-              Paused
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:36:29
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-27"
-            >
-              Canceled
-            </div>
-          </td>
-          <td>
-            test-whitespace.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-11-07 01:35:36
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-28"
-            >
-              Canceled by: admin
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-30"
-            >
-              Finished
-            </div>
-          </td>
-          <td>
-            test_officer
-          </td>
-          <td>
-            zach@zorroa.com
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-10-11 21:11:03
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              4
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            test_officer
-          </td>
-          <td>
-            zach@zorroa.com
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-10-11 21:03:27
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              3
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            flipbook_export_1
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            1
-          </td>
-          <td>
-            2019-08-01 22:52:19
-          </td>
-          <td />
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              3
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-41"
-            >
-              <svg
-                className="emotion-39"
-                data-file-name="generating.svg"
-              />
-              <div
-                className="emotion-40"
-              >
-                Generating
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            export_7_8_2019
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            1
-          </td>
-          <td>
-            2019-07-08 18:53:44
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td />
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            export_7_8_2019___
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            1
-          </td>
-          <td>
-            2019-07-08 18:43:03
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td />
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            sdlc-testdata-import.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-07-03 16:49:15
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td />
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-15"
-        >
-          <td>
-            <div
-              className="emotion-9"
-            >
-              Active
-            </div>
-          </td>
-          <td>
-            sdlc-testdata-import.json
-          </td>
-          <td>
-            admin
-          </td>
-          <td>
-            100
-          </td>
-          <td>
-            2019-07-03 01:29:41
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              1
-            </div>
-          </td>
-          <td>
-            <div
-              style={
-                Object {
-                  "color": "red",
-                }
-              }
-            >
-              49
-            </div>
-          </td>
-          <td>
-            numAsets
-          </td>
-          <td>
-            <div
-              className="emotion-14"
-            >
-              <div
-                className="emotion-56"
-              />
-              <div
-                className="emotion-11"
-              />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
   <h2>
-    UserMenu
+    Data Queue
   </h2>
-  <div
-    className="emotion-62"
+  <table
+    className="emotion-60"
   >
-    <UserMenu
-      logout={[Function]}
-    />
+    <thead>
+      <tr>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Status
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Job Name
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Created By
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Priority
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Created
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Failed
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Errors
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            # Assets
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-0"
+          >
+            Progress
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:38:36
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-10"
+            />
+            <div
+              className="emotion-11"
+            />
+            <div
+              className="emotion-12"
+            />
+            <div
+              className="emotion-13"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:38:36
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-10"
+            />
+            <div
+              className="emotion-11"
+            />
+            <div
+              className="emotion-12"
+            />
+            <div
+              className="emotion-13"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-23"
+          >
+            Paused
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:36:29
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-27"
+          >
+            Canceled
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:35:36
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-28"
+          >
+            Canceled by: admin
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-30"
+          >
+            Finished
+          </div>
+        </td>
+        <td>
+          test_officer
+        </td>
+        <td>
+          zach@zorroa.com
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-10-11 21:11:03
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test_officer
+        </td>
+        <td>
+          zach@zorroa.com
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-10-11 21:03:27
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            3
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          flipbook_export_1
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-08-01 22:52:19
+        </td>
+        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            3
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-41"
+          >
+            <svg
+              className="emotion-39"
+              data-file-name="generating.svg"
+            />
+            <div
+              className="emotion-40"
+            >
+              Generating
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          export_7_8_2019
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-07-08 18:53:44
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          export_7_8_2019___
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-07-08 18:43:03
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          sdlc-testdata-import.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-07-03 16:49:15
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-15"
+      >
+        <td>
+          <div
+            className="emotion-9"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          sdlc-testdata-import.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-07-03 01:29:41
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            49
+          </div>
+        </td>
+        <td>
+          numAsets
+        </td>
+        <td>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-56"
+            />
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+     
   </div>
-  <h2>
-    Pagination
-  </h2>
   <Pagination
     currentPage={1}
     legend="Jobs: 1–17 of 415"
