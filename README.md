@@ -14,3 +14,9 @@ docker-compose.yml and read up on the Docker Compose documentation.
 1. `docker-compose build`
 1. `docker-compose up`
 
+#### Docker Compose Override
+There is a `docker-compose.override.yml` file in the base of this repo that can be used
+to specifiy values different from the defaults in the `docker-compose.yml` file. Any 
+values in this file will automatically be used over the values found in the base file. For
+example, this was initially used to override the Platform and Archivist server settings
+for the Wallet application in order to have it connect to the Zorroa ZVI Dev env.
