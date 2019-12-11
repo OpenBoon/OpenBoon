@@ -1,8 +1,8 @@
 package com.zorroa.auth.security
 
+import java.util.UUID
 import junit.framework.Assert.assertEquals
 import org.junit.Test
-import java.util.UUID
 
 class SecurityUtilTests {
 

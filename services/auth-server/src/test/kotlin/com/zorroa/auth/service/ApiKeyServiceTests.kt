@@ -4,11 +4,11 @@ import com.zorroa.auth.AbstractTest
 import com.zorroa.auth.domain.ApiKeyFilter
 import com.zorroa.auth.domain.ApiKeySpec
 import com.zorroa.auth.security.getProjectId
-import org.junit.Test
-import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import org.junit.Test
+import org.springframework.dao.EmptyResultDataAccessException
 
 class ApiKeyServiceTests : AbstractTest() {
 

@@ -5,8 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.Base64
 import java.util.Calendar
 import java.util.Date
@@ -19,6 +17,8 @@ import javax.persistence.Converter
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @ApiModel("ApiKey Spec", description = "The attributes required to create a new API key.")
 class ApiKeySpec(

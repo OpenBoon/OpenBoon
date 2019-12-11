@@ -7,8 +7,8 @@ import com.zorroa.auth.domain.KeyGenerator
 import com.zorroa.auth.repository.ApiKeyRepository
 import com.zorroa.auth.repository.ApiKeySearchRepository
 import com.zorroa.auth.security.getProjectId
-import org.springframework.stereotype.Service
 import java.util.UUID
+import org.springframework.stereotype.Service
 
 interface ApiKeyService {
 

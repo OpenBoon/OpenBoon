@@ -112,6 +112,3 @@ class MultipleWebSecurityConfig {
         private val logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java)
     }
 }
-
-
-

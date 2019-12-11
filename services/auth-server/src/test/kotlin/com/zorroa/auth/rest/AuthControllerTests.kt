@@ -2,11 +2,11 @@ package com.zorroa.auth.rest
 
 import com.zorroa.auth.MockMvcTest
 import com.zorroa.auth.domain.ApiKeySpec
+import java.util.UUID
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.UUID
 
 class AuthControllerTests : MockMvcTest() {
 
