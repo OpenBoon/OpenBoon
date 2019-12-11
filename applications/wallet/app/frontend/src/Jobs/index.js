@@ -5,7 +5,6 @@ import { spacing } from '../Styles'
 
 import Pagination from '../Pagination'
 import Modal from '../Modal'
-import UserMenu from '../UserMenu'
 
 export const noop = () => () => {}
 
