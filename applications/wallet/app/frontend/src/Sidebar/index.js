@@ -1,6 +1,7 @@
 import { forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
+import Router from 'next/router'
 
 import { colors, spacing, zIndex, constants, typography } from '../Styles'
 
@@ -8,13 +9,22 @@ import SidebarOverlay from './Overlay'
 
 import QueueSvg from './icons/queue.svg'
 import KeySvg from './icons/key.svg'
-import { closeSidebar } from './helpers'
 
 const WIDTH = 240
 const ICON_WIDTH = 20
 
 const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
-  useEffect(closeSidebar({ setSidebarOpen }), [setSidebarOpen])
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setSidebarOpen(false)
+    }
+
+    Router.events.on('routeChangeStart', handleRouteChange)
+
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [setSidebarOpen])
 
   return (
     <div>
