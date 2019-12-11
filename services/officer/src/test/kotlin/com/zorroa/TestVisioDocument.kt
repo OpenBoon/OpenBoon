@@ -1,10 +1,10 @@
 package com.zorroa
 
 import org.junit.Ignore
+import org.junit.Test
 import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.assertEquals
-import org.junit.Test
 
 class TestVisioDocument {
 
