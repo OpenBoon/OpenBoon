@@ -10,7 +10,7 @@ import uuid
 from threading import Lock
 
 
-from mock import patch, MagicMock
+from unittest.mock import patch, MagicMock
 from requests import Response
 
 from analyst import main

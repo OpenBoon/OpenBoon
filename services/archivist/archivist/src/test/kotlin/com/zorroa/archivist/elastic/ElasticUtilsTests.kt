@@ -1,5 +1,7 @@
 package com.zorroa.archivist.elastic
 
+import com.zorroa.archivist.util.ElasticSearchErrorTranslator
+import com.zorroa.archivist.util.ElasticUtils
 import org.elasticsearch.index.query.TermsQueryBuilder
 import org.junit.Test
 import kotlin.test.assertEquals
