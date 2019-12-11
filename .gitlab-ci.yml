@@ -63,7 +63,7 @@ wallet-container-build-validation:
     - docker build --pull --no-cache -f applications/wallet/Dockerfile .
 
 # LINTING
-backend-linting:
+backend-py-linting:
   image: python:3.7
   stage: test
   allow_failure: false
@@ -74,9 +74,21 @@ backend-linting:
     - master
   script:
     - python -m pip install flake8
-    - flake8 sdk/python containers/zmlp-py3-base
-    - flake8 containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
-    - flake8 services/analyst
+    - flake8 --config .flake8/setup.cfg sdk/python containers/zmlp-py3-base
+    - flake8 --config .flake8/setup.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
+    - flake8 --config .flake8/setup.cfg services/analyst
+
+backend-kotlin-lint:
+  image: java:latest
+  stage: test
+  script:
+    - apk update && apk add ca-certificates wget && update-ca-certificates
+    - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
+    - chmod a+x ktlint
+    - ./ktlint services/archivist/src/**/*.kt
+    - ./ktlint services/auth-server/src/**/*.kt
+    - ./ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
+    - ./ktlint services/officer/src/**/*.kt
 
 # SDK Test
 sdk-unit-tests:
@@ -196,17 +208,7 @@ docker_hub_push:
 #    - mvn test verify -f services/officer -q
 #
 # Kotlin Services Jobs
-kotlin-lint:
-  image: java:latest
-  stage: test
-  script:
-    - apk update && apk add ca-certificates wget && update-ca-certificates
-    - wget https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint
-    - chmod a+x ktlint
-    - ./ktlint services/archivist/src/**/*.kt
-    - ./ktlint services/auth-server/src/**/*.kt
-    - ./ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
-    - ./ktlint services/officer/src/**/*.kt
+
 
 #
 #sdk-containers-tests:
