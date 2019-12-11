@@ -107,7 +107,12 @@ sdk-unit-tests:
     - cd sdk/python
     - pipenv install -r requirements.txt
     - pipenv run pytest
-
+    - cd ../../containers/zmlp-plugins-base
+    - pipenv install -r requirements.txt
+    - pipenv run pytest
+    - cd ../../services/analyst
+    - pipenv install -r requirements.txt
+    - pipenv run pytest
 
 docker_hub_push:
   image: docker:18.09.8-dind
@@ -186,6 +191,7 @@ services_unit_tests:
     POSTGRES_DB: "zorroa"
     PGDATA: "/var/lib/postgresql/data/pgdata"
     ARCHIVIST_ES_URL: "http://elasticsearch:9200"
+    SPRING_FLYWAY_SCHEMAS: "archivist_test"
     SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=archivist_test"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
     USER: "gitlab"
@@ -198,6 +204,7 @@ services_unit_tests:
   script:
     - export
     - mvn test verify -f services/archivist -q
+    - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
 
 # Kotlin Services Jobs
