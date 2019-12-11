@@ -181,6 +181,7 @@ services_unit_tests:
       alias: redis
     - name: minio/minio
       alias: minio
+      command: ["server", "/data"]
     - name: postgres:9.6.9
       alias: postgres
     - name: $LOCAL_ES_NAME
