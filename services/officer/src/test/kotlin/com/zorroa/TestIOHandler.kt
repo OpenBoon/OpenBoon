@@ -2,13 +2,13 @@ package com.zorroa
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.minio.errors.ErrorResponseException
-import org.junit.Test
 import java.io.File
 import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import org.junit.Test
 
 class TestIOHandler {
 
@@ -39,12 +39,12 @@ class TestIOHandler {
         assertEquals(1056, image.height)
     }
 
-    @Test(expected= ErrorResponseException::class)
+    @Test(expected = ErrorResponseException::class)
     fun getMetadataFailure() {
-         handler.getMetadata(100)
+        handler.getMetadata(100)
     }
 
-    @Test(expected= ErrorResponseException::class)
+    @Test(expected = ErrorResponseException::class)
     fun getImageFailure() {
         handler.getImage(100)
     }

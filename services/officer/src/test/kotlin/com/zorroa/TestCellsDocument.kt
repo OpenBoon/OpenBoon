@@ -2,6 +2,11 @@ package com.zorroa
 
 import com.aspose.cells.Workbook
 import com.aspose.cells.Worksheet
+import java.awt.image.BufferedImage
+import java.io.FileInputStream
+import javax.imageio.ImageIO
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -9,13 +14,6 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
-import java.awt.image.BufferedImage
-import java.io.FileInputStream
-import javax.imageio.ImageIO
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 class TestCellsDocument {
 

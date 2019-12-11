@@ -1,10 +1,10 @@
 package com.zorroa
 
-import org.junit.Before
 import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import org.junit.Before
 
 class TestPdfDocument {
 

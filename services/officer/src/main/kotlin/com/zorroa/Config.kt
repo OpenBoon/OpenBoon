@@ -1,15 +1,10 @@
 package com.zorroa
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.jackson.module.kotlin.readValue
-import org.eclipse.jetty.server.Server
+import java.nio.file.Paths
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.nio.file.Files
-import java.nio.file.Paths
 
 object Config {
 
@@ -30,8 +25,8 @@ object Config {
     private val mapper = ObjectMapper(YAMLFactory())
     private val configFilePath = Paths.get(ServerOptions.configFile)
 
-    val officer : OfficerConfiguration
-    val bucket : BucketConfiguration
+    val officer: OfficerConfiguration
+    val bucket: BucketConfiguration
 
     init {
         bucket = BucketConfiguration()

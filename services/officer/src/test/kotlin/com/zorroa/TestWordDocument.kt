@@ -1,11 +1,11 @@
 package com.zorroa
 
-import org.junit.Before
-import org.junit.Test
 import java.io.FileInputStream
 import javax.imageio.ImageIO
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import org.junit.Before
+import org.junit.Test
 
 class TestWordDocument {
 

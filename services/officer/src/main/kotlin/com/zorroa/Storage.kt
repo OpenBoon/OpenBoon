@@ -2,12 +2,12 @@ package com.zorroa
 
 import io.minio.MinioClient
 import io.minio.errors.ErrorResponseException
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object StorageManager {
 
@@ -21,7 +21,7 @@ object StorageManager {
     val bucket = Config.bucket.name
 
     init {
-        logger.info("Initializing ML Storage: {}",  Config.bucket.url)
+        logger.info("Initializing ML Storage: {}", Config.bucket.url)
         createBucket()
     }
 
