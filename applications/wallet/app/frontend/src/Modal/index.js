@@ -1,7 +1,7 @@
 import React from 'react'
 import WarningSvg from '../Icons/warning.svg'
 import XSvg from '../Icons/x.svg'
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
 
 const BUTTON_HEIGHT = 40
 
@@ -18,9 +18,6 @@ const Modal = () => {
 
       {showDialog && (
         <div
-          role="button"
-          aria-label="Close Modal Overlay"
-          tabIndex="-1"
           css={{
             position: 'fixed',
             top: 0,
@@ -30,16 +27,14 @@ const Modal = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: 'hsla(0, 100%, 0%, 0.75)',
-          }}
-          onClick={close}
-          onKeyDown={close}>
+          }}>
           <div
             css={{
               display: 'flex',
               flexDirection: 'column',
               width: 480,
               height: 204,
+              zIndex: zIndex.layout.drawer,
             }}>
             <div
               css={{
@@ -110,6 +105,22 @@ const Modal = () => {
               </div>
             </div>
           </div>
+          <div
+            role="button"
+            aria-label="Close Modal Overlay"
+            tabIndex="-1"
+            css={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              width: '100%',
+              zIndex: zIndex.layout.overlay,
+              background: 'hsla(0, 100%, 0%, 0.75)',
+            }}
+            onClick={close}
+            onKeyDown={close}
+          />
         </div>
       )}
     </div>
