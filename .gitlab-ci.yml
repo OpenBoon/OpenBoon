@@ -198,7 +198,7 @@ services_unit_tests:
     USER: "gitlab"
     ARCHIVIST_STORAGE_ACCESSKEY: "qwerty123"
     ARCHIVIST_STORAGE_SECRETKEY: "123qwerty"
-    ARCHIVIST_STORAGE_URL: "http://minio:9000"
+    ARCHIVIST_STORAGE_URL: "http://localhost:9000"
     MLSTORAGE_ACCESSKEY: "qwerty123"
     MLSTORAGE_SECRETKEY: "123qwerty"
     MLSTORAGE_URL: "http://localhost:9000"
