@@ -74,9 +74,8 @@ backend-py-lint:
     - master
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8/setup.cfg sdk/python containers/zmlp-py3-base
-    - flake8 --config .flake8/setup.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
-    - flake8 --config .flake8/setup.cfg services/analyst
+    - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
+    - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
 
 backend-kotlin-lint:
   image: kkopper/ktlint
