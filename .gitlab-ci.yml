@@ -62,6 +62,22 @@ wallet-container-build-validation:
   script:
     - docker build --pull --no-cache -f applications/wallet/Dockerfile .
 
+# LINTING
+backend-linting:
+  image: python:3.7
+  stage: test
+  allow_failure: false
+  only:
+    - merge_requests
+    - development
+    - qa
+    - master
+  script:
+    - python -m pip install flake8
+    - flake8 sdk/python containers/zmlp-py3-base
+    - flake8 containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
+    - flake8 services/analyst
+
 # SDK Test
 sdk-unit-tests:
   image: python:3.7
@@ -73,21 +89,17 @@ sdk-unit-tests:
     - qa
     - master
   script:
-    - python -m pip install flake8 pipenv pytest
+    - python -m pip install pipenv pytest
     - cd sdk/python
-    - flake8
     - pipenv install -r requirements.txt
     - pytest
     - cd ../../containers/zmlp-plugins-base
-    - flake8
     - pipenv install -r requirements.txt
     - pytest
     - cd ../../containers/zmlp-plugins-core
-    - flake8
     - pipenv install -r requirements.txt
     - pytest
     - cd ../../containers/zmlp-plugins-analysis
-    - flake8
     - pipenv install -r requirements.txt
     - pytest
 
@@ -107,12 +119,15 @@ docker_hub_push:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker-compose build
+    - docker tag zmlp/zmlp-py3-base:latest zmlp/zmlp-py3-base:development; docker push zmlp/zmlp-py3-base:development
+    - docker tag zmlp/zmlp-py3-sdk:latest zmlp/zmlp-py3-sdk:development; docker push zmlp/zmlp-py3-sdk:development
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
     - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
     - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
     - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
     - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
+
 ## Kotlin services - Unit tests - Step 1
 #services_build_artifacts:
 #  image: maven:3.6.2-jdk-11-slim
@@ -192,18 +207,7 @@ kotlin-lint:
     - ./ktlint services/auth-server/src/**/*.kt
     - ./ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
     - ./ktlint services/officer/src/**/*.kt
-#
-# SDK Jobs
-#python-lint:
-#  image: python:3.8
-#  only:
-#    - /^sdk\/.*$/i
-#  stage: test
-#  script:
-#    - python -m pip install flake8
-#    - flake8 containers/plugins-py3-analysis
-#    - flake8 containers/plugins-py3-core
-#    - flake8 sdk/python
+
 #
 #sdk-containers-tests:
 #  stage: test
