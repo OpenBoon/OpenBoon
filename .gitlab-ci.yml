@@ -105,17 +105,15 @@ sdk-unit-tests:
   script:
     - python -m pip install pipenv pytest
     - cd sdk/python
-    - pipenv install -r requirements.txt
-    - pipenv run pytest
+    - pip install -r requirements.txt
+    - python setup.py install
+    - pytest
     - cd ../../containers/zmlp-plugins-base
-    - pipenv install -r requirements.txt
-    - cd ../../sdk/python
-    - pipenv run python setup.py install
-    - cd ../../containers/zmlp-plugins-base
-    - pipenv run pytest
+    - pip install -r requirements.txt
+    - pytest
     - cd ../../services/analyst
-    - pipenv install -r requirements.txt
-    - pipenv run pytest
+    - pip install -r requirements.txt
+    - pytest
 
 docker_hub_push:
   image: docker:18.09.8-dind
