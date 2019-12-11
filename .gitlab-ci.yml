@@ -192,7 +192,6 @@ services_unit_tests:
     POSTGRES_DB: "zorroa"
     PGDATA: "/var/lib/postgresql/data/pgdata"
     ARCHIVIST_ES_URL: "http://localhost:9200"
-    SPRING_FLYWAY_SCHEMAS: "archivist_test"
     SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
     USER: "gitlab"
@@ -211,6 +210,7 @@ services_unit_tests:
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - ARCHIVIST_STORAGE_URL="http://${IP}:9000"
     - mvn test verify -f services/archivist -q
+    - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
 
