@@ -171,7 +171,7 @@ services_push_to_local_registry:
 
 services_unit_tests:
   stage: test
-  image: maven:3.6.3-jdk-11-slim
+  image: maven:3.6-jdk-11
   only:
     - merge_requests
     - development
