@@ -171,7 +171,7 @@ services_push_to_local_registry:
 
 services_unit_tests:
   stage: test
-  image: maven:3.6.1-jdk-11-slim
+  image: maven:3.6.3-jdk-11-slim
   only:
     - merge_requests
     - development
@@ -192,7 +192,7 @@ services_unit_tests:
     PGDATA: "/var/lib/postgresql/data/pgdata"
     ARCHIVIST_ES_URL: "http://elasticsearch:9200"
     SPRING_FLYWAY_SCHEMAS: "archivist_test"
-    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=archivist_test"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
     USER: "gitlab"
     ARCHIVIST_STORAGE_ACCESSKEY: "qwerty123"
