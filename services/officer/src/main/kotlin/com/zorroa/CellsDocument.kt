@@ -122,7 +122,6 @@ class CellsDocument(options: Options, inputStream: InputStream) : Document(optio
             val output = ReversibleByteArrayOutputStream()
             Json.mapper.writeValue(output, metadata)
             ioHandler.writeMetadata(page, output)
-
         }
         logMetadataTime(page, time)
     }

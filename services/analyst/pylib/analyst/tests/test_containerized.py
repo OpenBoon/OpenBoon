@@ -32,7 +32,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
             "name": "process_me",
             "logFile": "file:///%s" % tempfile.mktemp("logfile"),
             "env": {
-                "CAT" : "DOG"
+                "CAT": "DOG"
             },
             "script": {
                 "generate": [

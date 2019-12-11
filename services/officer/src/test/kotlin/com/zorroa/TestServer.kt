@@ -1,12 +1,12 @@
 package com.zorroa
 
 import com.github.kevinsawicki.http.HttpRequest
+import java.io.File
+import kotlin.test.assertEquals
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import spark.kotlin.stop
-import java.io.File
-import kotlin.test.assertEquals
 
 class TestServer {
 
@@ -36,8 +36,8 @@ class TestServer {
         val opts = Options("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
 
-        val rsp = HttpRequest.post("http://localhost:9876/exists").
-            send(Json.mapper.writeValueAsString(opts))
+        val rsp = HttpRequest.post("http://localhost:9876/exists")
+            .send(Json.mapper.writeValueAsString(opts))
         assertEquals(404, rsp.code())
     }
 
@@ -56,8 +56,8 @@ class TestServer {
         val prefix = IOHandler.PREFIX
         assertEquals("pixml://ml-storage/$prefix/render_test", content["output"])
 
-        val exists = HttpRequest.post("http://localhost:9876/exists").
-            send(Json.mapper.writeValueAsString(opts))
+        val exists = HttpRequest.post("http://localhost:9876/exists")
+            .send(Json.mapper.writeValueAsString(opts))
         assertEquals(200, exists.code())
     }
 

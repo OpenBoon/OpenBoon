@@ -22,7 +22,7 @@ setup(
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['pixml','pixml.analysis'],
+    packages=['pixml', 'pixml.analysis'],
     scripts=[],
 
     classifiers=[

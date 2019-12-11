@@ -6,11 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import spark.kotlin.get
-import spark.kotlin.post
-import spark.kotlin.threadPool
 import java.io.Closeable
 import java.io.InputStream
 import java.lang.management.ManagementFactory
@@ -18,6 +13,11 @@ import java.util.Date
 import java.util.UUID
 import javax.servlet.MultipartConfigElement
 import kotlin.system.exitProcess
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import spark.kotlin.get
+import spark.kotlin.post
+import spark.kotlin.threadPool
 
 const val ASPOSE_LICENSE_FILE = "Aspose.Total.Java.lic"
 
@@ -60,7 +60,6 @@ object Json {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     }
 }
-
 
 /**
  * The minimal Document interface.
@@ -141,8 +140,6 @@ abstract class Document(val options: Options) : Closeable {
     }
 }
 
-
-
 /**
  * Extract the image and metadata to their resting place.
  */
@@ -210,8 +207,7 @@ fun runServer(port: Int) {
         val ioHandler = IOHandler(options)
         if (ioHandler.exists(options.page)) {
             this.response.status(200)
-        }
-        else {
+        } else {
             this.response.status(404)
         }
     }
@@ -242,7 +238,6 @@ fun runServer(port: Int) {
         }
     }
 
-
     get("/status") {
         "OK\n"
     }
@@ -262,7 +257,6 @@ fun main(args: Array<String>) = try {
     println("Java heap size: ${heapSize}m")
     println("Java max heap size: ${maxHeapSize}m")
     runServer(Config.officer.port)
-
 } catch (e: Exception) {
     println(e.message)
     exitProcess(1)

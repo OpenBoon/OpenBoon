@@ -1,8 +1,8 @@
 package com.zorroa.auth.security
 
+import java.util.UUID
 import junit.framework.Assert.assertEquals
 import org.junit.Test
-import java.util.UUID
 
 class SecurityUtilTests {
 
@@ -11,14 +11,20 @@ class SecurityUtilTests {
         val filePath = "src/test/resources/key.json"
         val apikey = loadServiceKey(filePath)
 
-        assertEquals(UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"),
-            apikey.projectId)
+        assertEquals(
+            UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"),
+            apikey.projectId
+        )
 
-        assertEquals(UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
-            apikey.keyId)
+        assertEquals(
+            UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
+            apikey.keyId
+        )
 
-        assertEquals("pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
-            apikey.sharedKey)
+        assertEquals(
+            "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
+            apikey.sharedKey
+        )
     }
 
     @Test
@@ -30,13 +36,19 @@ class SecurityUtilTests {
             "iIsCiAgInBlcm1pc3Npb25zIjogWyJTdXBlckFkbWluIl0KfQoK"
         val apikey = loadServiceKey(base64)
 
-        assertEquals(UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"),
-            apikey.projectId)
+        assertEquals(
+            UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"),
+            apikey.projectId
+        )
 
-        assertEquals(UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
-            apikey.keyId)
+        assertEquals(
+            UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
+            apikey.keyId
+        )
 
-        assertEquals("pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
-            apikey.sharedKey)
+        assertEquals(
+            "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
+            apikey.sharedKey
+        )
     }
 }
