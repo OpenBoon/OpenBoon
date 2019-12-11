@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, spacing, zIndex, constants, typography } from '../Styles'
@@ -10,10 +11,11 @@ import KeySvg from './icons/key.svg'
 const WIDTH = 240
 const ICON_WIDTH = 20
 
-const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
+const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
   return (
     <div>
       <nav
+        ref={ref}
         css={{
           width: WIDTH,
           position: 'fixed',
@@ -70,7 +72,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
       />
     </div>
   )
-}
+})
 
 Sidebar.propTypes = {
   isSidebarOpen: PropTypes.bool.isRequired,

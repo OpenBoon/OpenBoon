@@ -10,7 +10,7 @@ const StylesReset = () => (
         'html, body, #__next': {
           margin: 0,
           padding: 0,
-          height: '100%',
+          minHeight: '100%',
         },
         '*, :after, :before': {
           boxSizing: 'border-box',
