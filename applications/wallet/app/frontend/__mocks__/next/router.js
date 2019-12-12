@@ -1,4 +1,20 @@
 /**
+ * useRouter
+ */
+
+let mockUseRouter = {
+  query: {
+    action: '',
+  },
+}
+
+export const __setUseRouter = data => {
+  mockUseRouter = data
+}
+
+export const useRouter = () => mockUseRouter
+
+/**
  * on
  */
 
