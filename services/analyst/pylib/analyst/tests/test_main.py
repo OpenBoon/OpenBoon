@@ -2,7 +2,7 @@ import unittest
 import sys
 import os
 
-from mock import patch
+from unittest.mock import patch
 from analyst import main
 
 

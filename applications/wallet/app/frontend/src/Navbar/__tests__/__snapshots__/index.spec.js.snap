@@ -1,25 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Navbar /> should render properly 1`] = `
-.emotion-3 {
+.emotion-7 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  padding: 4px;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.59);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
-.emotion-2 {
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  margin: 0;
+  margin-left: -8px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -29,7 +70,7 @@ exports[`<Navbar /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -46,35 +87,83 @@ exports[`<Navbar /> should render properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-2:hover {
   cursor: pointer;
 }
 
-.emotion-0 {
+.emotion-1 {
   margin-left: 8px;
 }
 
+.emotion-6 {
+  position: relative;
+}
+
+.emotion-5 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  color: #ffffff;
+  background-color: #4d4948;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  cursor: pointer;
+}
+
 <div
-  className="emotion-3"
+  className="emotion-7"
 >
-  <svg
-    data-file-name="logo.svg"
-    width={110}
-  />
   <div
-    className="emotion-2"
+    className="emotion-4"
   >
     <button
-      className="emotion-1"
+      aria-label="Open Sidebar Menu"
+      className="emotion-0"
       onClick={[Function]}
       type="button"
     >
-      project-name
       <svg
-        className="emotion-0"
-        data-file-name="chevron.svg"
+        aria-hidden={true}
+        data-file-name="hamburger.svg"
         width={20}
       />
+    </button>
+    <svg
+      data-file-name="logo.svg"
+      width={110}
+    />
+    <div
+      className="emotion-3"
+    >
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        project-name
+        <svg
+          className="emotion-1"
+          data-file-name="chevron.svg"
+          width={20}
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <button
+      className="emotion-5"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
+    >
+      DT
     </button>
   </div>
 </div>

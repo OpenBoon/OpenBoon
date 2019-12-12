@@ -1,21 +1,53 @@
+import { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks,
+} from 'body-scroll-lock'
+
+import { constants } from '../Styles'
 
 import Navbar from '../Navbar'
+import Sidebar from '../Sidebar'
 
-const Layout = ({ results, children }) => {
+const Layout = ({ results, logout, children }) => {
+  const sidebarRef = useRef()
+
+  const [isSidebarOpen, setSidebarOpen] = useState(false)
+
   const [selectedProject, setSelectedProject] = useState({
     id: results[0].url,
     name: results[0].name,
   })
+
   const projects = results.map(({ url, name }) => {
     return { id: url, name, selected: selectedProject.id === url }
   })
 
+  useEffect(() => {
+    if (isSidebarOpen) disableBodyScroll(sidebarRef.current)
+    if (!isSidebarOpen) enableBodyScroll(sidebarRef.current)
+    return clearAllBodyScrollLocks
+  }, [isSidebarOpen, sidebarRef])
+
   return (
     <div css={{ height: '100%' }}>
-      <Navbar projects={projects} setSelectedProject={setSelectedProject} />
-      {children(selectedProject)}
+      <Navbar
+        isSidebarOpen={isSidebarOpen}
+        projects={projects}
+        setSidebarOpen={setSidebarOpen}
+        setSelectedProject={setSelectedProject}
+        logout={logout}
+      />
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        ref={sidebarRef}
+      />
+      <div css={{ paddingTop: constants.navbar.height }}>
+        {children({ selectedProject })}
+      </div>
     </div>
   )
 }
@@ -27,6 +59,7 @@ Layout.propTypes = {
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  logout: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 }
 

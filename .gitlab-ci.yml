@@ -3,10 +3,12 @@ services:
   - docker:18.09.8-dind
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375
+  DOCKER_HOST: tcp://localhost:2375
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
 
 stages:
+  - build
+  - pretest
   - test
   - push
 
@@ -64,7 +66,7 @@ wallet-container-build-validation:
 
 backend-py-lint:
   image: python:3.7
-  stage: test
+  stage: pretest
   allow_failure: false
   only:
     - merge_requests
@@ -73,13 +75,12 @@ backend-py-lint:
     - master
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8/setup.cfg sdk/python containers/zmlp-py3-base
-    - flake8 --config .flake8/setup.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
-    - flake8 --config .flake8/setup.cfg services/analyst
+    - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
+    - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
 
 backend-kotlin-lint:
   image: kkopper/ktlint
-  stage: test
+  stage: pretest
   only:
     - merge_requests
     - development
@@ -92,6 +93,8 @@ backend-kotlin-lint:
     - ktlint services/officer/src/**/*.kt
 
 # SDK Test
+# Testing other containers requires building containers
+# Testing analyst requires it can pull plugin containers.
 sdk-unit-tests:
   image: python:3.7
   stage: test
@@ -104,9 +107,12 @@ sdk-unit-tests:
   script:
     - python -m pip install pipenv pytest
     - cd sdk/python
-    - pipenv install -r requirements.txt
-    - pipenv run pytest
-
+    - pip install -r requirements.txt
+    - python setup.py install
+    - pytest
+    - cd ../../containers/zmlp-plugins-base
+    - pip install -r requirements.txt
+    - pytest
 
 docker_hub_push:
   image: docker:18.09.8-dind
@@ -115,7 +121,6 @@ docker_hub_push:
     - docker:18.09.8-dind
   variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_HUB_IMAGE: zorroaevi/analyst:$CI_COMMIT_REF_SLUG
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
   only:
@@ -133,73 +138,81 @@ docker_hub_push:
     - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
     - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 
-## Kotlin services - Unit tests - Step 1
-#services_build_artifacts:
-#  image: maven:3.6.2-jdk-11-slim
-#  stage: build
-#  only:
-#    - merge_requests
-#    - development
-#  script:
-#    - cd services/elasticsearch/es-similarity
-#    - mvn package
-#    - cd ../
-#    - cd es-kwconf
-#    - mvn package
-#    - cd ../
-#    - mvn clean install -Dmaven.test.skip=true
-#    # - mvn project-info-reports:dependencies # not sure if this is still required
-#  artifacts:
-#    paths:
-#      - services/elasticsearch/es-kwconf/target/releases/es-kwconf.zip
-#      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
-#
-## Kotlin services - Unit tests - Step 2
-#services_push_to_local_registry:
-#  stage: pretest
-#  only:
-#    - merge_requests
-#    - development
-#  retry: 2
-#  script:
-#    - cd services/elasticsearch
-#    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-#    - docker build -t $LOCAL_ES_NAME .
-#    - docker push $LOCAL_ES_NAME
-#
-# Kotlin services - Unit tests - Step 3
-#services_unit_tests:
-#  stage: test
-#  image: maven:3.6.1-jdk-11-slim
-#  only:
-#    - merge_requests
-#    - development
-#  services:
-#    - name: redis:alpine
-#      alias: redis
-#    - name: postgres:9.6.9
-#      alias: postgres
-#    - name: $LOCAL_ES_NAME
-#      alias: elasticsearch
-#      command: [ "bin/elasticsearch", "-Ediscovery.type=single-node"]
-#  variables:
-#    POSTGRES_PASSWORD: zorroa
-#    POSTGRES_USER: zorroa
-#    POSTGRES_DB: zorroa
-#    PGDATA: /var/lib/postgresql/data/pgdata
-#
-#    # This environment variable defined here does *NOT* override the value in services test.properties file when run
-#    # in this Gitlab services job. It should work if this step is converted to docker-compose and the variable is
-#    # conditionally defined in test.properties.
-#    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/zorroa?currentSchema=archivist_test"
-#
-#    LOGGING_LEVEL_COM_ZORROA: WARN
-#    USER: gitlab
-#  script:
-#    - mvn test verify -f services/archivist -q
-#    - mvn test verify -f services/auth-server -q
-#    - mvn test verify -f services/officer -q
-#
+# Kotlin services - Unit tests - Step 1
+services_build_artifacts:
+  image: maven:3.6.2-jdk-11-slim
+  stage: build
+  only:
+    - merge_requests
+    - development
+  script:
+    - cd services/elasticsearch
+    - mvn clean install -Dmaven.test.skip=true
+  artifacts:
+    paths:
+      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
+
+# Kotlin services - Unit tests - Step 2
+services_push_to_local_registry:
+  image: docker:18.09.8-dind
+  stage: pretest
+  only:
+    - merge_requests
+    - development
+  retry: 2
+  services:
+    - docker:18.09.8-dind
+  script:
+    - cd services/elasticsearch
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker build -t $LOCAL_ES_NAME .
+    - docker push $LOCAL_ES_NAME
+
+services_unit_tests:
+  stage: test
+  image: maven:3.6-jdk-11
+  only:
+    - merge_requests
+    - development
+  services:
+    - name: redis:alpine
+      alias: redis
+    - name: minio/minio
+      alias: minio
+      command: ["server", "/data"]
+    - name: postgres:9.6.9
+      alias: postgres
+    - name: $LOCAL_ES_NAME
+      alias: elasticsearch
+      command: [ "bin/elasticsearch", "-Ediscovery.type=single-node"]
+  variables:
+    POSTGRES_PASSWORD: "zorroa"
+    POSTGRES_USER: "zorroa"
+    POSTGRES_DB: "zorroa"
+    PGDATA: "/var/lib/postgresql/data/pgdata"
+    ARCHIVIST_ES_URL: "http://localhost:9200"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
+    LOGGING_LEVEL_COM_ZORROA: "WARN"
+    USER: "gitlab"
+    ARCHIVIST_STORAGE_ACCESSKEY: "qwerty123"
+    ARCHIVIST_STORAGE_SECRETKEY: "123qwerty"
+    ARCHIVIST_STORAGE_URL: "http://localhost:9000"
+    MLSTORAGE_ACCESSKEY: "qwerty123"
+    MLSTORAGE_SECRETKEY: "123qwerty"
+    MLSTORAGE_URL: "http://localhost:9000"
+    MINIO_ACCESS_KEY: "qwerty123"
+    MINIO_SECRET_KEY: "123qwerty"
+  script:
+    - export
+    - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
+    - MLSTORAGE_URL="http://${IP}:9000"
+    - ARCHIVIST_ES_URL="http://${IP}:9200"
+    - ARCHIVIST_STORAGE_URL="http://${IP}:9000"
+    - mvn test verify -f services/archivist -q
+    - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
+    - mvn test verify -f services/auth-server -q
+    - mvn test verify -f services/officer -q
+
 # Kotlin Services Jobs
 
 

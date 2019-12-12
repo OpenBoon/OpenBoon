@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Projects /> should render properly with data 1`] = `"Layout"`;
+exports[`<Projects /> should render properly with data 1`] = `
+<Layout
+  logout={[MockFunction]}
+  results={
+    Array [
+      Object {
+        "id": "1",
+        "name": "project-name",
+      },
+    ]
+  }
+>
+  Hello World
+</Layout>
+`;
 
 exports[`<Projects /> should render properly without data 1`] = `"Loading..."`;

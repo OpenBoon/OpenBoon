@@ -1,6 +1,5 @@
-package com.zorroa.archivist.elastic
+package com.zorroa.archivist.util
 
-import com.zorroa.archivist.util.randomString
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.NamedXContentRegistry

@@ -10,7 +10,9 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
     }
   }
 >
-  Loading...
+  <Projects>
+    Hello World
+  </Projects>
 </SWRConfig>
 `;
 
