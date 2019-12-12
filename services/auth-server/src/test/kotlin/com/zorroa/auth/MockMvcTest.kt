@@ -3,7 +3,6 @@ package com.zorroa.auth
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.security.AUTH_HEADER
 import com.zorroa.auth.security.TOKEN_PREFIX
-import java.util.UUID
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -13,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import java.util.UUID
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 abstract class MockMvcTest : AbstractTest() {
