@@ -67,7 +67,7 @@ services:
       context: services/auth-server
     volumes:
       - "./dev/config/auth-server:/config"
-      - "./dev/config/keys/inception-key.json:/config/inception-key.json"
+      - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
 
   # Local Archivist server.
   archivist:
@@ -88,8 +88,8 @@ services:
       context: services/archivist
     volumes:
       - "./dev/config/monitoring:/monitoring"
-      - "./dev/config/archivist:/config"
-      - "./dev/config/keys/inception-key.json:/config/inception-key.json"
+      - "./dev/config/archivist:/service/config"
+      - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
 
   officer:
     image: zmlp/officer
