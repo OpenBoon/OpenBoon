@@ -4,16 +4,17 @@
   "parser": "babel-eslint",
   "env": { "browser": true, "jest": true },
   "rules": {
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error",
-    "react/state-in-constructor": ["error", "never"],
-    "react/react-in-jsx-scope": "off",
-    "emotion/no-vanilla": "error",
     "emotion/import-from-emotion": "error",
+    "emotion/no-vanilla": "error",
     "emotion/styled-import": "error",
     "emotion/syntax-preference": ["error", "object"],
     "import/no-extraneous-dependencies": "error",
-    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }]
+    "jsx-a11y/anchor-is-valid": "off",
+    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+    "react/react-in-jsx-scope": "off",
+    "react/state-in-constructor": ["error", "never"]
   },
   "overrides": [
     {

@@ -64,25 +64,30 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "75 kB"
+      "maxSize": "60 kB"
     },
     {
       "//": "app",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "20 kB"
+      "maxSize": "38 kB"
     },
     {
-      "//": "runtime",
-      "path": ".next/static/runtime/**.js",
-      "maxSize": "11 kB"
+      "//": "main runtime",
+      "path": ".next/static/runtime/main**.js",
+      "maxSize": "16 kB"
     },
     {
       "//": "error",
       "path": ".next/static/**/pages/_error.js",
+      "maxSize": "11 kB"
+    },
+    {
+      "//": "polyfill & webpack runtime",
+      "path": ".next/static/runtime/[polyfill|webpack]**.js",
       "maxSize": "4 kB"
     },
     {
-      "//": "pages",
+      "//": "all pages",
       "path": ".next/static/**/!(commons|_app|_error|main|polyfill|webpack)*.js",
       "maxSize": "5 kB"
     }

@@ -71,8 +71,11 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       <li>
         <a
           href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
         >
           <svg
+            aria-hidden={true}
             data-file-name="queue.svg"
             width={20}
           />
@@ -81,13 +84,16 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       </li>
       <li>
         <a
-          href="/"
+          href="/api-keys"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
         >
           <svg
+            aria-hidden={true}
             data-file-name="key.svg"
             width={20}
           />
-          API Key
+          API Keys
         </a>
       </li>
     </ul>
@@ -174,8 +180,11 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       <li>
         <a
           href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
         >
           <svg
+            aria-hidden={true}
             data-file-name="queue.svg"
             width={20}
           />
@@ -184,13 +193,16 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       </li>
       <li>
         <a
-          href="/"
+          href="/api-keys"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
         >
           <svg
+            aria-hidden={true}
             data-file-name="key.svg"
             width={20}
           />
-          API Key
+          API Keys
         </a>
       </li>
     </ul>
