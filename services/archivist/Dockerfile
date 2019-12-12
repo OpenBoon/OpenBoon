@@ -6,7 +6,8 @@ WORKDIR /build
 RUN mvn clean package -Dmaven.test.skip=true
 
 FROM openjdk:11-jdk-slim
-MAINTAINER Zorroa <support@zorroa.com>
+RUN apt-get update; apt-get install -y --no-install-recommends python3
+
 
 VOLUME /tmp
 
