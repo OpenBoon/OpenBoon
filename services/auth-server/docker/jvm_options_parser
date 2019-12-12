@@ -6,7 +6,7 @@ def main():
     try:
         options_file = sys.argv[1]
     except IndexError:
-        options_file = "/service/config/jvm.options"
+        options_file = "/service/jvm.options"
 
     options = []
     try:
