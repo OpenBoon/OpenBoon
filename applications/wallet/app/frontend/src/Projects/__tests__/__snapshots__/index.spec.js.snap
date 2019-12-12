@@ -6,16 +6,16 @@ exports[`<Projects /> should render properly with data 1`] = `
   results={
     Array [
       Object {
-        "id": "1",
         "name": "Zorroa ABC",
+        "url": "http://localhost:3000/api/v1/projects/1",
       },
       Object {
-        "id": "2",
         "name": "Zorroa EasyAs123",
+        "url": "http://localhost:3000/api/v1/projects/2",
       },
       Object {
-        "id": "3",
         "name": "Zorroa JustYouAndMe",
+        "url": "http://localhost:3000/api/v1/projects/3",
       },
     ]
   }

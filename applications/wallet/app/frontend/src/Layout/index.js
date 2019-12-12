@@ -11,6 +11,8 @@ import { constants } from '../Styles'
 import Navbar from '../Navbar'
 import Sidebar from '../Sidebar'
 
+import { parseId as parseIdHelper } from './helpers'
+
 const Layout = ({ results, logout, children }) => {
   const sidebarRef = useRef()
 
@@ -22,7 +24,11 @@ const Layout = ({ results, logout, children }) => {
   })
 
   const projects = results.map(({ url, name }) => {
-    return { id: url, name, selected: selectedProject.id === url }
+    return {
+      id: parseIdHelper({ url }),
+      name,
+      selected: selectedProject.id === url,
+    }
   })
 
   useEffect(() => {

@@ -9,8 +9,8 @@ const noop = () => () => {}
 describe('<ProjectSwitcher />', () => {
   it('should render properly with data', () => {
     const mockFn = jest.fn()
-    const mockProjects = projects.map(({ id, name }) => {
-      return { id, name, selected: id === '1' }
+    const mockProjects = projects.map(({ name }, index) => {
+      return { id: `${index + 1}`, name, selected: index === 0 }
     })
 
     const component = TestRenderer.create(

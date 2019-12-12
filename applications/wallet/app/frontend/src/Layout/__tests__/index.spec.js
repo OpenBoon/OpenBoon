@@ -2,6 +2,8 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import Layout from '..'
 
+import { projects } from '../../Projects/__mocks__'
+
 jest.mock('../../ProjectSwitcher', () => 'ProjectSwitcher')
 jest.mock('../../Sidebar', () => 'Sidebar')
 
@@ -10,7 +12,7 @@ const noop = () => () => {}
 describe('<Layout />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Layout results={[{ url: '1', name: 'project-name' }]} logout={noop}>
+      <Layout results={projects} logout={noop}>
         {() => `Hello World`}
       </Layout>,
     )
