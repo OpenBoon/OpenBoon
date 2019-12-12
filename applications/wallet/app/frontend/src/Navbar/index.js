@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import userShape from '../User/shape'
+
 import { colors, spacing, constants, zIndex } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
@@ -12,6 +14,7 @@ import HamburgerSvg from './hamburger.svg'
 const LOGO_WIDTH = 110
 
 const Navbar = ({
+  user,
   projects,
   setSelectedProject,
   isSidebarOpen,
@@ -62,12 +65,13 @@ const Navbar = ({
         />
       </div>
 
-      <UserMenu logout={logout} />
+      <UserMenu user={user} logout={logout} />
     </div>
   )
 }
 
 Navbar.propTypes = {
+  user: PropTypes.shape(userShape).isRequired,
   projects: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

@@ -28,7 +28,7 @@ const Authentication = ({ children }) => {
 
   return (
     <SWRConfig value={{ fetcher: fetcher({ setUser }) }}>
-      <Projects logout={logout({ setUser })}>
+      <Projects user={user} logout={logout({ setUser })}>
         {({ selectedProject }) =>
           children({
             user,

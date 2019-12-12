@@ -154,7 +154,7 @@ exports[`<Navbar /> should render properly 1`] = `
       onClick={[Function]}
       type="button"
     >
-      DT
+      JD
     </button>
   </div>
 </div>
