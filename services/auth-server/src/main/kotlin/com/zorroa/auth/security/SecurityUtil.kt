@@ -64,6 +64,6 @@ fun loadServiceKey(serviceKey: String?): ApiKey {
 /**
  * Extension function for printing UUID chars
  */
-fun UUID.prefix(size: Int= 8): String {
+fun UUID.prefix(size: Int = 8): String {
     return this.toString().substring(0, size)
 }
