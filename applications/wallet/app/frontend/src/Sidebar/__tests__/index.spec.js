@@ -52,4 +52,30 @@ describe('<Sidebar />', () => {
 
     expect(mockFn).toHaveBeenCalledWith(false)
   })
+
+  it('should close the sidebar on route change', () => {
+    const mockOnFunction = jest.fn((_, callback) => {
+      // invoke callbacks immediately instead of queuing them
+      callback()
+    })
+    const mockSetSidebarOpen = jest.fn()
+    const mockOffFunction = jest.fn()
+
+    require('next/router').__setMockOnFunction(mockOnFunction)
+    require('next/router').__setMockOffFunction(mockOffFunction)
+
+    const component = TestRenderer.create(
+      <Sidebar isSidebarOpen setSidebarOpen={mockSetSidebarOpen} />,
+    )
+
+    // useEffect
+    act(() => {})
+
+    expect(mockOnFunction).toHaveBeenCalled()
+    expect(mockSetSidebarOpen).toHaveBeenCalled()
+
+    component.unmount()
+
+    expect(mockOffFunction).toHaveBeenCalled()
+  })
 })
