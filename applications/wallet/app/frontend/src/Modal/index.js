@@ -23,8 +23,8 @@ const Modal = () => {
         <AriaModal
           titleId="demo-two-title"
           onExit={close}
-          underlayClickExits={true}
-          verticallyCenter={true}>
+          underlayClickExits
+          verticallyCenter>
           <div
             css={{
               display: 'flex',
