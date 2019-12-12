@@ -6,6 +6,6 @@ then
     source config/service.env
 fi
 
-JAVA_OPTS=`./jvm_options_parser config/jvm.options`
+JAVA_OPTS=`./jvm_options_parser jvm.options`
 java ${JAVA_OPTS} -jar service.jar
 

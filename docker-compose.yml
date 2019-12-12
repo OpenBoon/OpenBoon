@@ -87,7 +87,7 @@ services:
       context: services/archivist
     volumes:
       - "./dev/config/monitoring:/monitoring"
-      - "./dev/config/archivist:/service/config"
+      - "./dev/config/archivist/application.properties:/service/config/application.properties"
       - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
 
   officer:
