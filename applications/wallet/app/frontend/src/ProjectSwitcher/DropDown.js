@@ -5,7 +5,6 @@ import { colors, spacing, constants, typography, zIndex } from '../Styles'
 const TOP = 24
 
 const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
-  console.log(projects)
   return (
     <div
       css={{
