@@ -10,3 +10,14 @@ exports[`<Modal /> Should render properly when user clicks launch button 1`] = `
   </button>
 </div>
 `;
+
+exports[`<Modal /> Should render properly when user clicks launch button 2`] = `
+<div>
+  <button
+    onClick={[Function]}
+    type="button"
+  >
+    Open Modal
+  </button>
+</div>
+`;

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 import AriaModal from 'react-aria-modal'
 import WarningSvg from '../Icons/warning.svg'
 import XSvg from '../Icons/x.svg'
@@ -9,7 +9,7 @@ const MODAL_HEIGHT = 200
 const MODAL_WIDTH = 480
 
 const Modal = () => {
-  const [showModal, setShowModal] = React.useState(false)
+  const [showModal, setShowModal] = useState(false)
   const open = () => setShowModal(true)
   const close = () => setShowModal(false)
 
