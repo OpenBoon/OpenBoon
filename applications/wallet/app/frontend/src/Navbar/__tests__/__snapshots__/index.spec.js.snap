@@ -1,10 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Layout /> should render properly 1`] = `
-.emotion-4 {
-  height: 100%;
-}
-
+exports[`<Navbar /> should render properly 1`] = `
 .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -59,32 +55,27 @@ exports[`<Layout /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-4"
+  className="emotion-3"
 >
+  <svg
+    data-file-name="logo.svg"
+    width={110}
+  />
   <div
-    className="emotion-3"
+    className="emotion-2"
   >
-    <svg
-      data-file-name="logo.svg"
-      width={110}
-    />
-    <div
-      className="emotion-2"
+    <button
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        project-name
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-    </div>
+      project-name
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </button>
   </div>
-  Hello world
 </div>
 `;
