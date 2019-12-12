@@ -2,14 +2,14 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import ProjectSwitcher from '..'
 
-import { projects } from '../../Projects/__mocks__'
+import projects from '../../Projects/__mocks__/projects'
 
 const noop = () => () => {}
 
 describe('<ProjectSwitcher />', () => {
   it('should render properly with data', () => {
     const mockFn = jest.fn()
-    const mockProjects = projects.map(({ name }, index) => {
+    const mockProjects = projects.results.map(({ name }, index) => {
       return { id: `${index + 1}`, name, selected: index === 0 }
     })
 
@@ -29,11 +29,11 @@ describe('<ProjectSwitcher />', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'Zorroa EasyAs123' })
+        .findByProps({ children: 'asdf' })
         .props.onClick({ preventDefault: noop })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-    expect(mockFn).toHaveBeenCalledWith({ id: '2', name: 'Zorroa EasyAs123' })
+    expect(mockFn).toHaveBeenCalledWith({ id: '2', name: 'asdf' })
   })
 })

@@ -11,7 +11,7 @@ import { constants } from '../Styles'
 import Navbar from '../Navbar'
 import Sidebar from '../Sidebar'
 
-import { parseId as parseIdHelper } from './helpers'
+import { getJobId } from './helpers'
 
 const Layout = ({ results, logout, children }) => {
   const sidebarRef = useRef()
@@ -19,12 +19,12 @@ const Layout = ({ results, logout, children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   const [selectedProject, setSelectedProject] = useState({
-    id: parseIdHelper({ url: results[0].url }),
+    id: getJobId({ url: results[0].url }),
     name: results[0].name,
   })
 
   const projects = results.map(({ url, name }) => {
-    const id = parseIdHelper({ url })
+    const id = getJobId({ url })
 
     return {
       id,

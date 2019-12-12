@@ -44,7 +44,7 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
     onClick={[Function]}
     type="button"
   >
-    Zorroa ABC
+    qwerty
     <svg
       className="emotion-0"
       data-file-name="chevron.svg"
@@ -55,7 +55,7 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
 `;
 
 exports[`<ProjectSwitcher /> should render properly with data 2`] = `
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -93,7 +93,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-4 {
+.emotion-3 {
   position: absolute;
   z-index: 1;
   top: 24px;
@@ -126,14 +126,14 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <button
     className="emotion-1"
     onClick={[Function]}
     type="button"
   >
-    Zorroa ABC
+    qwerty
     <svg
       className="emotion-0"
       data-file-name="chevron.svg"
@@ -141,21 +141,14 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
     />
   </button>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <button
       className="emotion-2"
       onClick={[Function]}
       type="button"
     >
-      Zorroa EasyAs123
-    </button>
-    <button
-      className="emotion-2"
-      onClick={[Function]}
-      type="button"
-    >
-      Zorroa JustYouAndMe
+      asdf
     </button>
   </div>
 </div>
@@ -205,7 +198,7 @@ exports[`<ProjectSwitcher /> should render properly with data 3`] = `
     onClick={[Function]}
     type="button"
   >
-    Zorroa ABC
+    qwerty
     <svg
       className="emotion-0"
       data-file-name="chevron.svg"

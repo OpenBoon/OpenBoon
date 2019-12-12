@@ -1,10 +1,10 @@
-import { parseId } from '../helpers'
+import { getJobId } from '../helpers'
 
 describe('<Layout /> helpers', () => {
-  describe('parseId()', () => {
-    it('should parseId when receiving url', () => {
+  describe('getJobId()', () => {
+    it('should getJobId when receiving url', () => {
       const url = 'http://localhost:3000/api/v1/projects/1'
-      const id = parseId({ url })
+      const id = getJobId({ url })
 
       expect(id).toEqual('1')
     })
