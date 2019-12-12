@@ -5,6 +5,8 @@ import XSvg from '../Icons/x.svg'
 import { colors, constants, spacing } from '../Styles'
 
 const BUTTON_HEIGHT = 40
+const MODAL_HEIGHT = 200
+const MODAL_WIDTH = 480
 
 const Modal = () => {
   const [showModal, setShowModal] = React.useState(false)
@@ -27,8 +29,8 @@ const Modal = () => {
             css={{
               display: 'flex',
               flexDirection: 'column',
-              width: 480,
-              height: 204,
+              width: MODAL_WIDTH,
+              height: MODAL_HEIGHT,
             }}>
             <header
               css={{
