@@ -13,7 +13,7 @@ spring:
     allow-bean-definition-overriding: true
 
 security:
-  service-key: /config/inception-key.json
+  service-key: /service/config/inception-key.json
 
 
 #Swagger info
