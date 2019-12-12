@@ -1,33 +1,32 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
-import LayoutNavBar from './NavBar'
-import mockProjects from '../ProjectSwitcher/__mocks__/projects'
+import Navbar from '../Navbar'
 
-const Layout = ({ children }) => {
-  const results = mockProjects.list
-
+const Layout = ({ results, children }) => {
   const [selectedProject, setSelectedProject] = useState({
-    id: results[0].id,
+    id: results[0].url,
     name: results[0].name,
   })
-
-  const projects = results.map(({ id, name }) => {
-    return { id, name, selected: selectedProject.id === id }
+  const projects = results.map(({ url, name }) => {
+    return { id: url, name, selected: selectedProject.id === url }
   })
 
   return (
     <div css={{ height: '100%' }}>
-      <LayoutNavBar
-        projects={projects}
-        setSelectedProject={setSelectedProject}
-      />
-      {children({ selectedProject })}
+      <Navbar projects={projects} setSelectedProject={setSelectedProject} />
+      {children(selectedProject)}
     </div>
   )
 }
 
 Layout.propTypes = {
+  results: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   children: PropTypes.func.isRequired,
 }
 
