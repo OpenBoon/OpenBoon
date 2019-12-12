@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import spark.kotlin.get
+import spark.kotlin.post
+import spark.kotlin.threadPool
 import java.io.Closeable
 import java.io.InputStream
 import java.lang.management.ManagementFactory
@@ -13,11 +18,6 @@ import java.util.Date
 import java.util.UUID
 import javax.servlet.MultipartConfigElement
 import kotlin.system.exitProcess
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import spark.kotlin.get
-import spark.kotlin.post
-import spark.kotlin.threadPool
 
 const val ASPOSE_LICENSE_FILE = "Aspose.Total.Java.lic"
 
@@ -242,8 +242,7 @@ fun runServer(port: Int) {
         response.type("application/json")
         if (StorageManager.minioClient.bucketExists(Config.bucket.name)) {
             """{"status": "UP"}"""
-        }
-        else {
+        } else {
             response.status(400)
             """{"status": "DOWN"}"""
         }
