@@ -29,20 +29,25 @@ fun getProjectId(): UUID {
  */
 fun loadServiceKey(serviceKey: String?): ApiKey {
     serviceKey?.let {
-        val key = if (it.length > 100) {
-            val decoded = Base64.getUrlDecoder().decode(it)
-            JSON_MAPPER.readValue(decoded)
+        val path = Paths.get(it)
+        val apikey = if (Files.exists(path)) {
+            val key = JSON_MAPPER.readValue<ApiKey>(path.toFile())
+            logger.info("Loaded Inception key: ${key.keyId.prefix(8)} from: '$path'")
+            key
         } else {
-            val path = Paths.get(it)
-            if (Files.exists(path)) {
-                JSON_MAPPER.readValue<ApiKey>(path.toFile())
-            } else {
+            try {
+                val decoded = Base64.getUrlDecoder().decode(it)
+                val key = JSON_MAPPER.readValue<ApiKey>(decoded)
+                logger.info("Loaded Inception key: ${key.keyId.prefix(8)}")
+                key
+            } catch (e: Exception) {
+                logger.warn("Failed to load inception key, decode failed, unexpected", e)
                 null
             }
         }
-        if (key != null) {
-            logger.info("Loading external keyId: ${key.keyId}")
-            return key
+
+        if (apikey != null) {
+            return apikey
         }
     }
 
@@ -53,4 +58,11 @@ fun loadServiceKey(serviceKey: String?): ApiKey {
         KeyGenerator.generate() + KeyGenerator.generate(),
         "random", listOf("SuperAdmin")
     )
+}
+
+/**
+ * Extension function for printing UUID chars
+ */
+fun UUID.prefix(size: Int = 8): String {
+    return this.toString().substring(0, size)
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 
 def main():
@@ -6,7 +6,7 @@ def main():
     try:
         options_file = sys.argv[1]
     except IndexError:
-        options_file = "/config/jvm.options"
+        options_file = "/service/jvm.options"
 
     options = []
     try:
@@ -16,13 +16,13 @@ def main():
                 if line.startswith("#") or not line:
                     continue
                 options.append(line)
-    except Exception, e:
+    except Exception as e:
         options = [
             "-Xms512m",
             "-Xmx1g"
         ]
 
-    print " ".join(options)
+    print(" ".join(options))
 
 if __name__ == "__main__":
     main()

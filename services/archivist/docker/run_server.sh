@@ -1,5 +1,4 @@
-#!/bin/sh
-umask 0002
+#!/bin/bash
 
 if [[ -f "config/service.env" ]]
 then
@@ -8,4 +7,5 @@ fi
 
 export JAVA_OPTS="`./jvm_options_parser jvm.options`"
 echo "Java Opts: ${JAVA_OPTS}"
-java $JAVA_OPTS -jar service.jar
+java ${JAVA_OPTS} -jar service.jar "$@"
+
