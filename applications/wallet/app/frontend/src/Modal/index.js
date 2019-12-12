@@ -37,8 +37,9 @@ const Modal = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: spacing.normal,
+                textTransform: 'uppercase',
               }}>
-              <div css={{ color: colors.rocks.steel }}>DELETE</div>
+              <div css={{ color: colors.rocks.steel }}>Delete</div>
               <div
                 role="button"
                 aria-label="Close Modal"
