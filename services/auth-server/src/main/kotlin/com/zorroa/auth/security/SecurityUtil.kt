@@ -47,7 +47,6 @@ fun loadServiceKey(serviceKey: String?): ApiKey {
         }
 
         if (apikey != null) {
-            logger.info("Loading external keyId: ${apikey.keyId.prefix(8)}")
             return apikey
         }
     }
