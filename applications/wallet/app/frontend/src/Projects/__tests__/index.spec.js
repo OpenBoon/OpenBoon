@@ -17,9 +17,21 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly with data', () => {
+  it('should render properly with no projects', () => {
     require('swr').__setMockUseSWRResponse({
-      data: { results: projects },
+      data: { results: [] },
+    })
+
+    const component = TestRenderer.create(
+      <Projects logout={noop}>{() => `Hello World`}</Projects>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with projects', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { results: projects.results },
     })
 
     const component = TestRenderer.create(

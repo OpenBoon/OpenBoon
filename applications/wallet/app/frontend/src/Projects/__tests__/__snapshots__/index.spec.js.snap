@@ -1,32 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Projects /> should render properly with data 1`] = `
+exports[`<Projects /> should render properly with no projects 1`] = `"You have 0 projects"`;
+
+exports[`<Projects /> should render properly with projects 1`] = `
 <Layout
   logout={[Function]}
   results={
-    Object {
-      "count": 1,
-      "next": null,
-      "previous": null,
-      "results": Array [
-        Object {
-          "jobs": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/",
-          "name": "qwerty",
-          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/",
-          "users": Array [
-            "http://localhost/api/v1/users/1/",
-          ],
-        },
-        Object {
-          "jobs": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/jobs/",
-          "name": "asdf",
-          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/",
-          "users": Array [
-            "http://localhost/api/v1/users/1/",
-          ],
-        },
-      ],
-    }
+    Array [
+      Object {
+        "jobs": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/",
+        "name": "qwerty",
+        "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/",
+        "users": Array [
+          "http://localhost/api/v1/users/1/",
+        ],
+      },
+      Object {
+        "jobs": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/jobs/",
+        "name": "asdf",
+        "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/",
+        "users": Array [
+          "http://localhost/api/v1/users/1/",
+        ],
+      },
+    ]
   }
 >
   Hello World
