@@ -37,15 +37,17 @@ const ProjectSwitcher = ({ projects, setSelectedProject }) => {
           },
         }}>
         {selectedProject.name}
-        <ChevronSvg
-          width={CHEVRON_WIDTH}
-          css={{
-            marginLeft: spacing.base,
-            transform: `${isDropDownOpen ? 'rotate(-180deg)' : ''}`,
-          }}
-        />
+        {projects.length > 1 && (
+          <ChevronSvg
+            width={CHEVRON_WIDTH}
+            css={{
+              marginLeft: spacing.base,
+              transform: `${isDropDownOpen ? 'rotate(-180deg)' : ''}`,
+            }}
+          />
+        )}
       </button>
-      {isDropDownOpen && (
+      {isDropDownOpen && projects.length > 1 && (
         <DropDown
           projects={projects.filter(project => !project.selected)}
           onSelect={project => {

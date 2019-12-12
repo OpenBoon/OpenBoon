@@ -98,6 +98,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   z-index: 1;
   top: 24px;
   left: 0;
+  min-width: 100%;
   border-radius: 2px;
   padding-top: 8px;
   padding-bottom: 8px;

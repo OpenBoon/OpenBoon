@@ -12,10 +12,10 @@ import HamburgerSvg from './hamburger.svg'
 const LOGO_WIDTH = 110
 
 const Navbar = ({
-  isSidebarOpen,
   projects,
-  setSidebarOpen,
   setSelectedProject,
+  isSidebarOpen,
+  setSidebarOpen,
   logout,
 }) => {
   return (

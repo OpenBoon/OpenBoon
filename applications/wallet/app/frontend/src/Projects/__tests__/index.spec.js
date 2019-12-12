@@ -2,6 +2,8 @@ import TestRenderer from 'react-test-renderer'
 
 import Projects from '..'
 
+import { projects } from '../__mocks__'
+
 jest.mock('../../Layout')
 
 describe('<Projects />', () => {
@@ -18,7 +20,7 @@ describe('<Projects />', () => {
   it('should render properly with data', () => {
     const mockFn = jest.fn()
     require('swr').__setMockUseSWRResponse({
-      data: { results: [{ id: '1', name: 'project-name' }] },
+      data: { results: projects },
     })
 
     const component = TestRenderer.create(

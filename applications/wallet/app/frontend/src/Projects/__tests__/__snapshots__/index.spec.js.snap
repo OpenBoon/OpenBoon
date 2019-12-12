@@ -7,7 +7,15 @@ exports[`<Projects /> should render properly with data 1`] = `
     Array [
       Object {
         "id": "1",
-        "name": "project-name",
+        "name": "Zorroa ABC",
+      },
+      Object {
+        "id": "2",
+        "name": "Zorroa EasyAs123",
+      },
+      Object {
+        "id": "3",
+        "name": "Zorroa JustYouAndMe",
       },
     ]
   }

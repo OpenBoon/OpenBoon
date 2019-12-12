@@ -2,14 +2,14 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import ProjectSwitcher from '..'
 
-import projects from '../__mocks__/projects'
+import { projects } from '../../Projects/__mocks__'
 
 const noop = () => () => {}
 
 describe('<ProjectSwitcher />', () => {
   it('should render properly with data', () => {
     const mockFn = jest.fn()
-    const mockProjects = projects.list.map(({ id, name }) => {
+    const mockProjects = projects.map(({ id, name }) => {
       return { id, name, selected: id === '1' }
     })
 
