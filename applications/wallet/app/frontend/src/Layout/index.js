@@ -19,15 +19,17 @@ const Layout = ({ results, logout, children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   const [selectedProject, setSelectedProject] = useState({
-    id: results[0].url,
+    id: parseIdHelper({ url: results[0].url }),
     name: results[0].name,
   })
 
   const projects = results.map(({ url, name }) => {
+    const id = parseIdHelper({ url })
+
     return {
-      id: parseIdHelper({ url }),
+      id,
       name,
-      selected: selectedProject.id === url,
+      selected: selectedProject.id === id,
     }
   })
 

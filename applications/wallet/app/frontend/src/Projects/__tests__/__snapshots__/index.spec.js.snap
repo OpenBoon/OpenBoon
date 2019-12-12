@@ -7,15 +7,15 @@ exports[`<Projects /> should render properly with data 1`] = `
     Array [
       Object {
         "name": "Zorroa ABC",
-        "url": "http://localhost:3000/api/v1/projects/1",
+        "url": "http://localhost:3000/api/v1/projects/1/",
       },
       Object {
         "name": "Zorroa EasyAs123",
-        "url": "http://localhost:3000/api/v1/projects/2",
+        "url": "http://localhost:3000/api/v1/projects/2/",
       },
       Object {
         "name": "Zorroa JustYouAndMe",
-        "url": "http://localhost:3000/api/v1/projects/3",
+        "url": "http://localhost:3000/api/v1/projects/3/",
       },
     ]
   }

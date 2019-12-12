@@ -5,15 +5,15 @@ const Projects = ({ children, ...rest }) =>
 
 export const projects = [
   {
-    url: 'http://localhost:3000/api/v1/projects/1',
+    url: 'http://localhost:3000/api/v1/projects/1/',
     name: 'Zorroa ABC',
   },
   {
-    url: 'http://localhost:3000/api/v1/projects/2',
+    url: 'http://localhost:3000/api/v1/projects/2/',
     name: 'Zorroa EasyAs123',
   },
   {
-    url: 'http://localhost:3000/api/v1/projects/3',
+    url: 'http://localhost:3000/api/v1/projects/3/',
     name: 'Zorroa JustYouAndMe',
   },
 ]

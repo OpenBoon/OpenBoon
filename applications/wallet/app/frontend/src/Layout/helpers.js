@@ -1,4 +1,4 @@
 export const parseId = ({ url }) => {
-  const lastSlash = url.lastIndexOf('/')
-  return url.substr(lastSlash + 1)
+  const projects = url.indexOf('projects')
+  return url.substr(projects + 9).split('/')[0]
 }
