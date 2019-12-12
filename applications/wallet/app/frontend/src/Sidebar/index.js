@@ -1,5 +1,7 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import Link from 'next/link'
+import Router from 'next/router'
 
 import { colors, spacing, zIndex, constants, typography } from '../Styles'
 
@@ -12,6 +14,18 @@ const WIDTH = 240
 const ICON_WIDTH = 20
 
 const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setSidebarOpen(false)
+    }
+
+    Router.events.on('routeChangeStart', handleRouteChange)
+
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [setSidebarOpen])
+
   return (
     <div>
       <nav
@@ -52,16 +66,20 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             },
           }}>
           <li>
-            <a href="/">
-              <QueueSvg width={ICON_WIDTH} />
-              Data Queue
-            </a>
+            <Link href="/">
+              <a>
+                <QueueSvg width={ICON_WIDTH} aria-hidden />
+                Data Queue
+              </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
-              <KeySvg width={ICON_WIDTH} />
-              API Key
-            </a>
+            <Link href="/api-keys">
+              <a>
+                <KeySvg width={ICON_WIDTH} aria-hidden />
+                API Keys
+              </a>
+            </Link>
           </li>
         </ul>
       </nav>
