@@ -21,3 +21,8 @@ variable "database-user" {default = "zorroa"}
 variable "namespace" {default = "default"}
 variable "node-pool-name" {default = "archivist"}
 variable "redis-host" {default = "10.3.240.104"}
+variable "elasticsearch-host" {default = ""}
+variable "inception-key-b64" {}
+variable "minio-url" {default = "http://10.3.240.102:9000"}
+variable "minio-access-key" {}
+variable "minio-secret-key" {}

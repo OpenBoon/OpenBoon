@@ -28,27 +28,12 @@ resource "random_string" "sql-password" {
   special = false
 }
 
-//resource "google_storage_bucket_object" "archivist-properties" {
+
+//resource "google_storage_bucket_object" "archivist-data-credentials" {
 //  bucket = "${google_storage_bucket.configuration.name}"
-//  name = "zorroa-archivist-config/application.properties"
-//  content = <<EOF
-//archivist.debug-mode.enabled = true
-//spring.datasource.url = jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&socketFactoryArg=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}
-//spring.datasource.username=${var.database-user}
-//spring.datasource.password=${random_string.sql-password.result}
-//management.endpoints.password=${var.monitor-password}
-//archivist.storage.bucket = ${google_storage_bucket.data.name}
-//${var.config-properties}
-//EOF
+//  name = "zorroa-archivist-config/data-credentials.json"
+//  content = "${var.sql-service-account-key}"
 //}
-
-
-
-resource "google_storage_bucket_object" "archivist-data-credentials" {
-  bucket = "${google_storage_bucket.configuration.name}"
-  name = "zorroa-archivist-config/data-credentials.json"
-  content = "${var.sql-service-account-key}"
-}
 
 ## SQL Instance
 resource "google_project_service" "sqladmin" {
@@ -57,12 +42,12 @@ resource "google_project_service" "sqladmin" {
   depends_on = ["google_project_service.service-usage"]
 }
 
-resource "google_sql_database" "zorroa" {
+resource "google_sql_database" "archivist" {
   name      = "${var.database-name}"
   instance  = "${var.sql-instance-name}"
 }
 
-resource "google_sql_user" "users" {
+resource "google_sql_user" "zorroa" {
   name     = "${var.database-user}"
   instance = "${var.sql-instance-name}"
   password = "${random_string.sql-password.result}"
@@ -149,7 +134,7 @@ resource "kubernetes_deployment" "archivist" {
           }
         }
         container {
-          name = "zorroa-archivist"
+          name = "archivist"
           image = "zmlp/archivist:${var.container-tag}"
           image_pull_policy = "Always"
           resources {
@@ -162,25 +147,25 @@ resource "kubernetes_deployment" "archivist" {
               cpu = 0.5
             }
           }
-          liveness_probe = {
-            initial_delay_seconds = 120
-            period_seconds = 5
-            http_get {
-              scheme = "HTTP"
-              path = "/actuator/health"
-              port = "8080"
-            }
-          }
-          readiness_probe = {
-            failure_threshold = 6
-            initial_delay_seconds = 30
-            period_seconds = 30
-            http_get {
-              scheme = "HTTP"
-              path = "/actuator/health"
-              port = "8080"
-            }
-          }
+//          liveness_probe = {
+//            initial_delay_seconds = 120
+//            period_seconds = 5
+//            http_get {
+//              scheme = "HTTP"
+//              path = "/actuator/health"
+//              port = "8080"
+//            }
+//          }
+//          readiness_probe = {
+//            failure_threshold = 6
+//            initial_delay_seconds = 30
+//            period_seconds = 30
+//            http_get {
+//              scheme = "HTTP"
+//              path = "/actuator/health"
+//              port = "8080"
+//            }
+//          }
           env = [
             {
               name = "SPRING_PROFILES_ACTIVE"
@@ -188,11 +173,31 @@ resource "kubernetes_deployment" "archivist" {
             },
             {
               name = "SPRING_DATASOURCE_URL"
-              value = "jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&socketFactoryArg=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}"
+              value = "jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}"
             },
             {
               name = "ARCHIVIST_STORAGE_BUCKET"
               value = "${google_storage_bucket.data.name}"
+            },
+            {
+              name = "ARCHIVIST_ES_URL"
+              value = "http://elasticsearch-0.elasticsearch.${var.namespace}.svc.cluster.local:9200"
+            },
+            {
+              name = "SECURITY_SERVICEKEY"
+              value = "${var.inception-key-b64}"
+            },
+            {
+              name = "MLSTORAGE_URL"
+              value = "${var.minio-url}"
+            },
+            {
+              name = "MLSTORAGE_SECRETKEY"
+              value = "${var.minio-secret-key}"
+            },
+            {
+              name = "MLSTORAGE_ACCESSKEY"
+              value = "${var.minio-access-key}"
             }
           ]
         }
@@ -257,7 +262,7 @@ resource "kubernetes_secret" "sql-credentials" {
     name = "sql-credentials"
   }
   data {
-    username = "${google_sql_user.users.name}"
+    username = "${google_sql_user.zorroa.name}"
     password = "${random_string.sql-password.result}"
   }
 }
