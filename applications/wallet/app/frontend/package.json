@@ -64,17 +64,17 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "60 kB"
+      "maxSize": "72 kB"
     },
     {
       "//": "app",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "38 kB"
+      "maxSize": "26 kB"
     },
     {
       "//": "main runtime",
       "path": ".next/static/runtime/main**.js",
-      "maxSize": "16 kB"
+      "maxSize": "5 kB"
     },
     {
       "//": "error",
