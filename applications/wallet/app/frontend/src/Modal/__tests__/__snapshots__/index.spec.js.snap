@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Modal /> Should render properly when user clicks launch button 1`] = `
+<div>
+  <button
+    onClick={[Function]}
+    type="button"
+  >
+    Open Modal
+  </button>
+</div>
+`;
