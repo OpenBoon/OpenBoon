@@ -7,6 +7,14 @@ import projects from '../../Projects/__mocks__/projects'
 const noop = () => () => {}
 
 describe('<ProjectSwitcher />', () => {
+  it('should render properly without data', () => {
+    const component = TestRenderer.create(
+      <ProjectSwitcher projects={[]} setSelectedProject={noop} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly with data', () => {
     const mockFn = jest.fn()
     const mockProjects = projects.results.map(({ name }, index) => {

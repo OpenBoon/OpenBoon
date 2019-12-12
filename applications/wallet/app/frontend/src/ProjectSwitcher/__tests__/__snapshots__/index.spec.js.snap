@@ -207,3 +207,5 @@ exports[`<ProjectSwitcher /> should render properly with data 3`] = `
   </button>
 </div>
 `;
+
+exports[`<ProjectSwitcher /> should render properly without data 1`] = `null`;

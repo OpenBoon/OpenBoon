@@ -9,8 +9,9 @@ const CHEVRON_WIDTH = 20
 
 const ProjectSwitcher = ({ projects, setSelectedProject }) => {
   const [isDropDownOpen, setDropDownOpen] = useState(false)
+  const selectedProject = projects.find(project => project.selected) || {}
 
-  const selectedProject = projects.find(project => project.selected)
+  if (projects.length === 0) return null
 
   return (
     <div
