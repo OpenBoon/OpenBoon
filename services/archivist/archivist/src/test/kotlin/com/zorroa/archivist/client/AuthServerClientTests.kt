@@ -43,6 +43,14 @@ class AuthServerClientTests : AbstractTest() {
     }
 
     @Test
+    fun testLoadKeyFile() {
+        val client = AuthServerClientImpl("http://localhost:9090", "src/test/resources/inception-key.json")
+        val serviceKey = client.serviceKey
+        assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000000"), serviceKey?.projectId)
+        assertEquals(UUID.fromString("4338a83f-a920-40ab-a251-a123b17df1ba"), serviceKey?.keyId)
+    }
+
+    @Test
     fun testCreateApiKey() {
         val payload = """
         {
