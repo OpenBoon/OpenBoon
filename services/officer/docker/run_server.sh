@@ -1,10 +1,11 @@
 #!/bin/sh
 umask 0002
 
-if [ "x${ZORROA_STORAGE_PATH}" != "x" ]; then
-    JAVA_OPTS="${JAVA_OPTS} -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${ZORROA_STORAGE_PATH}"
+if [[ -f "config/service.env" ]]
+then
+    source config/service.env
 fi
 
-JAVA_OPTS=`config/jvm_options_parser config/jvm.options`
+JAVA_OPTS=`jvm_options_parser config/jvm.options`
 echo "Java Opts: ${JAVA_OPTS}"
-java $JAVA_OPTS -jar officer.jar
+java $JAVA_OPTS -jar service.jar
