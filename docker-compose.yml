@@ -67,7 +67,9 @@ services:
       context: services/auth-server
     volumes:
       - "./dev/config/auth-server:/config"
-      - "./dev/config/keys/inception-key.json:/config/inception-key.json"
+      - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
+    environment:
+      SECURITY_SERVICEKEY: /service/config/inception-key.json
 
   # Local Archivist server.
   archivist:
