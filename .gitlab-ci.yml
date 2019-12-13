@@ -133,31 +133,37 @@ sdk-unit-tests:
 #      - development
 
 docker_hub_push_archivist:
+  extends: .docker_hub_push_base
   script:
     - docker-compose build archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
 
 docker_hub_push_wallet:
+  extends: .docker_hub_push_base
   script:
     - docker-compose build wallet
     - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
 
 docker_hub_push_es:
+  extends: .docker_hub_push_base
   script:
     - docker-compose build es1
     - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 
 docker_hub_push_auth_server:
+  extends: .docker_hub_push_base
   script:
     - docker-compose build auth-server
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
 
 docker_hub_push_api_gateway:
+  extends: .docker_hub_push_base
   script:
     - docker-compose build api-gateway
     - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
 
 docker_hub_push_sdk:
+  extends: .docker_hub_push_base
   script:
     - docker-compose build zmlp-py3-base zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis analyst
     - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
