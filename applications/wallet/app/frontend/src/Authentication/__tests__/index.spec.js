@@ -3,7 +3,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 import Authentication from '..'
 
 jest.mock('../../Login', () => 'Login')
-jest.mock('../../Layout')
+jest.mock('../../Projects')
 
 jest.mock('../helpers')
 

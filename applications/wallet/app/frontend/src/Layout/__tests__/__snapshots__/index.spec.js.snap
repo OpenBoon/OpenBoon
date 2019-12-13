@@ -117,18 +117,13 @@ exports[`<Layout /> should render properly 1`] = `
         projects={
           Array [
             Object {
-              "id": "1",
-              "name": "Zorroa ABC",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9b",
+              "name": "qwerty",
               "selected": true,
             },
             Object {
-              "id": "2",
-              "name": "Zorroa EasyAs123",
-              "selected": false,
-            },
-            Object {
-              "id": "3",
-              "name": "Zorroa JustYouAndMe",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9c",
+              "name": "asdf",
               "selected": false,
             },
           ]
@@ -278,18 +273,13 @@ exports[`<Layout /> should render properly 2`] = `
         projects={
           Array [
             Object {
-              "id": "1",
-              "name": "Zorroa ABC",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9b",
+              "name": "qwerty",
               "selected": true,
             },
             Object {
-              "id": "2",
-              "name": "Zorroa EasyAs123",
-              "selected": false,
-            },
-            Object {
-              "id": "3",
-              "name": "Zorroa JustYouAndMe",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9c",
+              "name": "asdf",
               "selected": false,
             },
           ]
