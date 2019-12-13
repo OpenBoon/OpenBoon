@@ -159,11 +159,11 @@ docker_hub_push_sdk:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker-compose build zmlp-py3-base zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis analyst
-    - docker tag zmlp/zmlp-py3-base:latest zmlp/zmlp-py3-base:development; docker push zmlp/zmlp-py3-base:development
-    - docker tag zmlp/zmlp-py3-sdk:latest zmlp/zmlp-py3-sdk:development; docker push zmlp/zmlp-py3-sdk:development
-    - docker tag zmlp/zmlp-plugins-base:latest zmlp/zmlp-plugins-base:development; docker push zmlp/zmlp-plugins-base:development
-    - docker tag zmlp/zmlp-plugins-core:latest zmlp/zmlp-plugins-core:development; docker push zmlp/zmlp-plugins-core:development
-    - docker tag zmlp/zmlp-plugins-analysis:latest zmlp/zmlp-plugins-analysis:development; docker push zmlp/zmlp-plugins-analysis:development
+    - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
+    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
+    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
+    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
+    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:development; docker push zmlp/plugins-analysis:development
     - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
 
 
