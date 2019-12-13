@@ -114,6 +114,9 @@ sdk-unit-tests:
     - pip install -r requirements.txt
     - pytest
 
+
+# These jobs build the container images and push them up to docker hub with the
+# "development" tag whenever code is merged to development.
 .docker_hub_push_base:
   image: docker:18.09.8-dind
   stage: push
@@ -123,36 +126,36 @@ sdk-unit-tests:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
-#  only:
-#      - development
+  only:
+      - development
 
-#docker_hub_push_archivist:
-#  script:
-#    - apk add docker-compose
-#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-#    - docker-compose build archivist
-#    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
-#
-#docker_hub_push_wallet:
-#  script:
-#    - apk add docker-compose
-#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-#    - docker-compose build wallet
-#    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
-#
-#docker_hub_push_es:
-#  script:
-#    - apk add docker-compose
-#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-#    - docker-compose build es1
-#    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
-#
-#docker_hub_push_auth_server:
-#  script:
-#    - apk add docker-compose
-#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-#    - docker-compose build
-#    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+docker_hub_push_archivist:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build archivist
+    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+
+docker_hub_push_wallet:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build wallet
+    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+
+docker_hub_push_es:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build es1
+    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
+
+docker_hub_push_auth_server:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build
+    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
 
 docker_hub_push_sdk:
   script:
