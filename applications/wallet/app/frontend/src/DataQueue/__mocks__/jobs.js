@@ -1,37 +1,4 @@
-export const newJob = ({ job }) => {
-  const {
-    paused,
-    state,
-    name,
-    createdUser,
-    taskCounts,
-    assetCounts,
-    priority,
-    timeCreated,
-  } = job
-
-  return {
-    status: paused ? 'Paused' : state,
-    name,
-    createdBy: createdUser.username,
-    priority,
-    createdDateTime: timeCreated,
-    failed: taskCounts.tasksFailure,
-    errors: assetCounts.assetErrorCount,
-    numAssets: 'numAsets',
-    progress: {
-      isGenerating: false,
-      isCanceled: state === 'Canceled',
-      canceledBy: createdUser.username,
-      failed: taskCounts.tasksFailure,
-      pending: taskCounts.tasksWaiting,
-      running: taskCounts.tasksRunning,
-      succeeded: taskCounts.tasksSuccess,
-    },
-  }
-}
-
-export const jobs = {
+const jobs = {
   list: [
     {
       id: '82d5308b-67c2-1433-8fef-0a580a000956',
@@ -480,3 +447,5 @@ export const jobs = {
     totalCount: 10,
   },
 }
+
+export default jobs

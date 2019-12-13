@@ -87,7 +87,7 @@ const Table = ({ columns, rows }) => {
                 <Status jobStatus={row.status} />
               </td>
               <td>{row.name}</td>
-              <td>{row.createdBy}</td>
+              <td>{row.username}</td>
               <td>{row.priority}</td>
               <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
               <td>
@@ -120,15 +120,14 @@ Table.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       status: PropTypes.string,
-      jobName: PropTypes.string,
-      createdBy: PropTypes.string,
+      name: PropTypes.string,
+      username: PropTypes.string,
       priority: PropTypes.number,
       createdDateTime: PropTypes.number,
       failed: PropTypes.node,
       errors: PropTypes.node,
       numAssets: PropTypes.string,
       progress: PropTypes.shape({
-        isGenerating: PropTypes.bool,
         isCanceled: PropTypes.bool,
         canceledBy: PropTypes.string,
         succeeded: PropTypes.number,

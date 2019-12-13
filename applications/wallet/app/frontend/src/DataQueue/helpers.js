@@ -26,17 +26,10 @@ export const getRows = ({ jobs }) =>
     const status = paused ? 'Paused' : state
     const createdBy = createdUser.username
     const createdDateTime = timeCreated
-
     const failedTasks = taskCounts.tasksFailure
-
-    const assetErrorCount = assetCounts.assetErrorCount > 0 && (
-      <div style={{ color: 'red' }}>{assetCounts.assetErrorCount}</div>
-    )
-
+    const { assetErrorCount } = assetCounts
     const numAssets = 'numAsets'
-
     const progress = {
-      isGenerating: false,
       isCanceled: state === 'Canceled',
       canceledBy: createdUser.username,
       failed: taskCounts.tasksFailure,

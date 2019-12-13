@@ -342,9 +342,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -362,7 +360,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             1
           </div>
         </td>
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
         <td>
           numAsets
         </td>
@@ -398,9 +406,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -418,7 +424,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             1
           </div>
         </td>
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
         <td>
           numAsets
         </td>
@@ -454,9 +470,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -474,7 +488,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             1
           </div>
         </td>
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
         <td>
           numAsets
         </td>
@@ -501,9 +525,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -521,7 +543,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             1
           </div>
         </td>
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
         <td>
           numAsets
         </td>
@@ -546,9 +578,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test_officer
         </td>
-        <td>
-          zach@zorroa.com
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -566,7 +596,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             1
           </div>
         </td>
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            4
+          </div>
+        </td>
         <td>
           numAsets
         </td>
@@ -593,9 +633,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test_officer
         </td>
-        <td>
-          zach@zorroa.com
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -613,7 +651,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             1
           </div>
         </td>
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            3
+          </div>
+        </td>
         <td>
           numAsets
         </td>
@@ -640,9 +688,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           flipbook_export_1
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           1
         </td>
@@ -650,7 +696,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           2019-08-01 22:52:19
         </td>
         <td />
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            3
+          </div>
+        </td>
         <td>
           numAsets
         </td>
@@ -677,9 +733,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           export_7_8_2019
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           1
         </td>
@@ -724,9 +778,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           export_7_8_2019___
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           1
         </td>
@@ -771,9 +823,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           sdlc-testdata-import.json
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -818,9 +868,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           sdlc-testdata-import.json
         </td>
-        <td>
-          admin
-        </td>
+        <td />
         <td>
           100
         </td>
@@ -838,7 +886,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             1
           </div>
         </td>
-        <td />
+        <td>
+          <div
+            style={
+              Object {
+                "color": "#ce2d3f",
+              }
+            }
+          >
+            49
+          </div>
+        </td>
         <td>
           numAsets
         </td>

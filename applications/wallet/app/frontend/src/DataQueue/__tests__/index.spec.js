@@ -2,7 +2,7 @@ import TestRenderer from 'react-test-renderer'
 
 import DataQueue, { noop } from '..'
 
-import { jobs } from '../__mocks__/jobs'
+import jobs from '../__mocks__/jobs'
 
 jest.mock('../../Pagination', () => 'Pagination')
 jest.mock('../../UserMenu', () => 'UserMenu')
