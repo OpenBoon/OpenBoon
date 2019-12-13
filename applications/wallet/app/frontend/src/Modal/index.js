@@ -10,19 +10,23 @@ const MODAL_WIDTH = 480
 
 const Modal = () => {
   const [showModal, setShowModal] = useState(false)
-  const open = () => setShowModal(true)
-  const close = () => setShowModal(false)
 
   return (
     <div>
-      <button type="button" onClick={open}>
+      <button
+        type="button"
+        onClick={() => {
+          setShowModal(true)
+        }}>
         Open Modal
       </button>
 
       {showModal && (
         <AriaModal
-          titleId="demo-two-title"
-          onExit={close}
+          titleId="Modal"
+          onExit={() => {
+            setShowModal(false)
+          }}
           underlayClickExits
           verticallyCenter>
           <div
@@ -46,8 +50,12 @@ const Modal = () => {
                 role="button"
                 aria-label="Close Modal"
                 tabIndex="-1"
-                onClick={close}
-                onKeyDown={close}>
+                onClick={() => {
+                  setShowModal(false)
+                }}
+                onKeyDown={() => {
+                  setShowModal(false)
+                }}>
                 <XSvg width={20} color={colors.rocks.steel} />
               </div>
             </header>
@@ -88,7 +96,9 @@ const Modal = () => {
                     color: colors.rocks.granite,
                     marginRight: spacing.normal,
                   }}
-                  onClick={close}>
+                  onClick={() => {
+                    setShowModal(false)
+                  }}>
                   Cancel
                 </button>
                 <button
@@ -97,7 +107,9 @@ const Modal = () => {
                     backgroundColor: colors.warning,
                     color: colors.primaryFont,
                   }}
-                  onClick={close}>
+                  onClick={() => {
+                    setShowModal(false)
+                  }}>
                   Delete Permanently
                 </button>
               </div>
