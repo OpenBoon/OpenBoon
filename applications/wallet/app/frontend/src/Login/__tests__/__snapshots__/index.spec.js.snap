@@ -1,23 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 100%;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25,26 +25,32 @@ exports[`<Login /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: space-evenly;
-  -webkit-justify-content: space-evenly;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-evenly;
-  padding: 32px 64px;
+  padding: 16px 64px;
   width: 440px;
-  height: 580px;
   background-color: #2d2d2d;
   border-radius: 2px;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-0 {
-  margin: 0 auto;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  padding-top: 24px;
 }
 
 .emotion-1 {
   text-align: center;
-  font-weight: 500;
-  padding-bottom: 32px;
+  font-size: 18px;
+  line-height: 21px;
+  margin: 0;
+  padding-top: 32px;
+  padding-bottom: 64px;
+}
+
+.emotion-4 {
+  padding-top: 16px;
+  padding-bottom: 12px;
 }
 
 .emotion-2 {
@@ -59,12 +65,12 @@ exports[`<Login /> should render properly 1`] = `
   width: 100%;
 }
 
-.emotion-7 {
-  padding: 32px;
+.emotion-9 {
+  padding: 24px;
   text-align: center;
 }
 
-.emotion-6 {
+.emotion-8 {
   background-color: #82be3c;
   color: #fff;
   font-size: 14px;
@@ -76,19 +82,15 @@ exports[`<Login /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-6:hover {
+.emotion-8:hover {
   background-color: #a7d374;
 }
 
-.emotion-8 {
-  text-align: center;
-}
-
 <div
-  className="emotion-10"
+  className="emotion-11"
 >
   <form
-    className="emotion-9"
+    className="emotion-10"
   >
     <svg
       className="emotion-0"
@@ -100,12 +102,14 @@ exports[`<Login /> should render properly 1`] = `
     >
       Welcome. Please login.
     </h3>
-    <div>
+    <div
+      className="emotion-4"
+    >
       <label
         className="emotion-2"
         htmlFor="username"
       >
-        Username
+        Email
       </label>
       <input
         className="emotion-3"
@@ -116,7 +120,9 @@ exports[`<Login /> should render properly 1`] = `
         value=""
       />
     </div>
-    <div>
+    <div
+      className="emotion-4"
+    >
       <label
         className="emotion-2"
         htmlFor="password"
@@ -133,22 +139,16 @@ exports[`<Login /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-7"
+      className="emotion-9"
     >
       <button
-        className="emotion-6"
+        className="emotion-8"
         onClick={[Function]}
         type="submit"
       >
         Login
       </button>
     </div>
-    <a
-      className="emotion-8"
-      href="/"
-    >
-      Forgot Password? Need login help?
-    </a>
   </form>
 </div>
 `;

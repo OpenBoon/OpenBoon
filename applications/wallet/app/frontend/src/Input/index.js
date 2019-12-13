@@ -5,7 +5,7 @@ import { constants, spacing } from '../Styles'
 const HEIGHT = 39
 
 const Input = ({ id, type, label, value, onChange }) => (
-  <div>
+  <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.moderate }}>
     <label
       htmlFor={id}
       css={{ display: 'block', paddingBottom: spacing.moderate }}>

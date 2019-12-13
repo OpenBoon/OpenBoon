@@ -7,7 +7,6 @@ import LogoSvg from '../Icons/logo.svg'
 import Input from '../Input'
 
 const WIDTH = 440
-const HEIGHT = 580
 const LOGO_WIDTH = 143
 
 const Login = ({ onSubmit }) => {
@@ -18,34 +17,38 @@ const Login = ({ onSubmit }) => {
     <div
       css={{
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
-        height: '100%',
+        alignItems: 'center',
+        height: '100vh',
       }}>
       <form
         css={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-evenly',
-          padding: `${spacing.spacious}px ${spacing.colossal}px`,
+          padding: `${spacing.normal}px ${spacing.colossal}px`,
           width: WIDTH,
-          height: HEIGHT,
           backgroundColor: colors.secondaryBackground,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
         }}>
-        <LogoSvg width={LOGO_WIDTH} css={{ margin: '0 auto' }} />
+        <LogoSvg
+          width={LOGO_WIDTH}
+          css={{ alignSelf: 'center', paddingTop: spacing.comfy }}
+        />
         <h3
           css={{
             textAlign: 'center',
-            fontWeight: typography.weight.medium,
-            paddingBottom: spacing.spacious,
+            fontSize: typography.size.mega,
+            lineHeight: typography.height.mega,
+            margin: 0,
+            paddingTop: spacing.spacious,
+            paddingBottom: spacing.colossal,
           }}>
           Welcome. Please login.
         </h3>
         <Input
           id="username"
-          label="Username"
+          label="Email"
           type="text"
           value={username}
           onChange={({ target: { value } }) => setUsername(value)}
@@ -57,7 +60,7 @@ const Login = ({ onSubmit }) => {
           value={password}
           onChange={({ target: { value } }) => setPassword(value)}
         />
-        <div css={{ padding: spacing.spacious, textAlign: 'center' }}>
+        <div css={{ padding: spacing.comfy, textAlign: 'center' }}>
           <button
             type="submit"
             onClick={event => {
@@ -81,9 +84,6 @@ const Login = ({ onSubmit }) => {
             Login
           </button>
         </div>
-        <a href="/" css={{ textAlign: 'center' }}>
-          Forgot Password? Need login help?
-        </a>
       </form>
     </div>
   )
