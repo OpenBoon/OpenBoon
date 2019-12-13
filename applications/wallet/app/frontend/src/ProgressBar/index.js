@@ -11,12 +11,10 @@ const STATUS_COLORS = {
 }
 
 const ProgressBar = ({ status }) => {
-  const { isCanceled, canceledBy } = status
+  const { state, username } = status
 
-  if (isCanceled) {
-    return (
-      <div css={{ color: colors.grey5 }}>{`Canceled by: ${canceledBy}`}</div>
-    )
+  if (state === 'Canceled') {
+    return <div css={{ color: colors.grey5 }}>{`Canceled by: ${username}`}</div>
   }
 
   return (
@@ -56,8 +54,8 @@ const ProgressBar = ({ status }) => {
 
 ProgressBar.propTypes = {
   status: PropTypes.shape({
-    isCanceled: PropTypes.bool,
-    canceledBy: PropTypes.string,
+    state: PropTypes.string,
+    username: PropTypes.string,
     succeeded: PropTypes.number,
     failed: PropTypes.number,
     running: PropTypes.number,

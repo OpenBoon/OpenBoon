@@ -6,9 +6,19 @@ import { spacing } from '../Styles'
 import Table from '../Table'
 import Pagination from '../Pagination'
 
-import { getColumns, getRows } from './helpers'
-
 export const noop = () => () => {}
+
+const COLUMNS = [
+  'Status',
+  'Job Name',
+  'Created By',
+  'Priority',
+  'Created',
+  'Failed',
+  'Errors',
+  '# Assets',
+  'Progress',
+]
 
 const DataQueue = ({ selectedProject }) => {
   const { data: { list } = {} } = useSWR(
@@ -23,7 +33,7 @@ const DataQueue = ({ selectedProject }) => {
     <div css={{ padding: spacing.normal }}>
       <h2>Data Queue</h2>
 
-      <Table columns={getColumns} rows={getRows({ jobs: list })} />
+      <Table columns={COLUMNS} rows={list} />
 
       <div>&nbsp;</div>
 

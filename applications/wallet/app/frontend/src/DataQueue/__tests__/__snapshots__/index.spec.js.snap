@@ -342,7 +342,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           100
         </td>
@@ -406,7 +408,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           100
         </td>
@@ -470,7 +474,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           100
         </td>
@@ -525,7 +531,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           100
         </td>
@@ -578,7 +586,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test_officer
         </td>
-        <td />
+        <td>
+          zach@zorroa.com
+        </td>
         <td>
           100
         </td>
@@ -633,7 +643,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test_officer
         </td>
-        <td />
+        <td>
+          zach@zorroa.com
+        </td>
         <td>
           100
         </td>
@@ -688,7 +700,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           flipbook_export_1
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           1
         </td>
@@ -733,7 +747,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           export_7_8_2019
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           1
         </td>
@@ -778,7 +794,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           export_7_8_2019___
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           1
         </td>
@@ -823,7 +841,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           sdlc-testdata-import.json
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           100
         </td>
@@ -868,7 +888,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           sdlc-testdata-import.json
         </td>
-        <td />
+        <td>
+          admin
+        </td>
         <td>
           100
         </td>
