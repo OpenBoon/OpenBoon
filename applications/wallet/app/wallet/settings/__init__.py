@@ -69,7 +69,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'wallet.middleware.AuthenticationMiddlewareSimpleJWT',          # Sets request.user from JWT
+
+    # Disabled since we are using session authentication. Leaving this here in case we
+    # want to use it later.
+    # 'wallet.middleware.AuthenticationMiddlewareSimpleJWT',
 ]
 
 ROOT_URLCONF = 'wallet.urls'
@@ -95,13 +98,6 @@ WSGI_APPLICATION = 'wallet.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 DATABASES = {
     'default': {
@@ -165,7 +161,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
