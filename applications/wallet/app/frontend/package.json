@@ -89,7 +89,7 @@
     {
       "//": "all pages",
       "path": ".next/static/**/!(commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "6 kB"
+      "maxSize": "10 kB"
     }
   ],
   "dependencies": {
@@ -103,6 +103,7 @@
     "next": "9.1.4",
     "prop-types": "15.7.2",
     "react": "16.12.0",
+    "react-aria-modal": "4.0.0",
     "react-dom": "16.12.0",
     "swr": "0.1.12"
   },
