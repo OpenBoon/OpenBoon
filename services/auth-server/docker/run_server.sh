@@ -1,7 +1,7 @@
 #!/bin/sh
 umask 0002
 
-if [[ -f "config/service.env" ]]
+if [ -f "config/service.env" ]
 then
     source config/service.env
 fi

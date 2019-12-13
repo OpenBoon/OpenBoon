@@ -149,20 +149,20 @@ resource "kubernetes_deployment" "archivist" {
           }
 //          liveness_probe = {
 //            initial_delay_seconds = 120
-//            period_seconds = 5
+//            period_seconds = 30
 //            http_get {
 //              scheme = "HTTP"
-//              path = "/actuator/health"
+//              path = "/monitor/health"
 //              port = "8080"
 //            }
 //          }
 //          readiness_probe = {
 //            failure_threshold = 6
-//            initial_delay_seconds = 30
+//            initial_delay_seconds = 90
 //            period_seconds = 30
 //            http_get {
 //              scheme = "HTTP"
-//              path = "/actuator/health"
+//              path = "/monitor/health"
 //              port = "8080"
 //            }
 //          }

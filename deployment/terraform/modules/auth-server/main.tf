@@ -89,7 +89,7 @@ resource "kubernetes_deployment" "auth-server" {
 //            period_seconds = 5
 //            http_get {
 //              scheme = "HTTP"
-//              path = "/health/"
+//              path = "/monitor/health"
 //              port = "80"
 //            }
 //          }
@@ -98,7 +98,7 @@ resource "kubernetes_deployment" "auth-server" {
 //            period_seconds = 30
 //            http_get {
 //              scheme = "HTTP"
-//              path = "/health/"
+//              path = "/monitor/health"
 //              port = "80"
 //            }
 //          }
@@ -118,7 +118,11 @@ resource "kubernetes_deployment" "auth-server" {
           env = [
             {
               name = "SPRING_DATASOURCE_URL"
-              value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&socketFactoryArg=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
+              value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
+            },
+            {
+              name = "SECURITY_SERVICEKEY"
+              value = "${var.inception-key-b64}"
             },
             {
               name = "SWAGGER_ISPUBLIC"
@@ -145,6 +149,7 @@ resource "kubernetes_service" "auth-server" {
       name = "http"
       protocol = "TCP"
       port = 80
+      target_port = 9090
     }
     selector {
       app = "auth-server"

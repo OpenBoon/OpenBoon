@@ -6,3 +6,4 @@ variable "database-name" {default = "zorroa"}
 variable "database-user" {default = "zorroa"}
 variable "sql-instance-name" {}
 variable "sql-connection-name" {}
+variable "inception-key-b64" {}

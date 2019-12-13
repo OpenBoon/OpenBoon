@@ -125,6 +125,15 @@ module "auth-server" {
   sql-instance-name = "${module.postgres.instance-name}"
   sql-connection-name = "${module.postgres.connection-name}"
   image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
+  inception-key-b64 = "${base64encode(local.inception-key)}"
+}
+
+## API Gateway
+module "api-gateway" {
+  source = "./modules/api-gateway"
+  image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
+  archivist_host = "${module.archivist.ip-address}"
+  auth_server_host = "${module.auth-server.ip-address}"
 }
 
 ## Wallet
@@ -132,7 +141,6 @@ module "wallet" {
   source = "./modules/wallet"
   project = "${var.project}"
   container-cluster-name = "${module.gke-cluster.name}"
-  container-tag = "${var.container-tag}"
   image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
   pg_host = "${module.postgres.ip-address}"
   sql-instance-name = "${module.postgres.instance-name}"
