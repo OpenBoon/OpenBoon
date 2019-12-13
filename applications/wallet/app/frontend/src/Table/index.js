@@ -27,6 +27,7 @@ const Table = ({ columns, rows }) => {
         tr: {
           ':hover': {
             backgroundColor: colors.structureShades.iron,
+            boxShadow: constants.boxShadows.tableRow,
             td: {
               border: constants.borders.tableRow,
               borderLeft: '0',

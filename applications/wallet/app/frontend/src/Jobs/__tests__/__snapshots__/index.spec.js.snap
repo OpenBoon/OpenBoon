@@ -42,6 +42,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
 
 .emotion-78 tr:hover {
   background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-78 tr:hover td {
@@ -1018,6 +1019,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
 
 .emotion-78 tr:hover {
   background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-78 tr:hover td {
