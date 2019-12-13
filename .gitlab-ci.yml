@@ -126,41 +126,39 @@ sdk-unit-tests:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
-  only:
-      - development
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+#  only:
+#      - development
 
 docker_hub_push_archivist:
   script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker-compose build archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
 
 docker_hub_push_wallet:
   script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker-compose build wallet
     - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
 
 docker_hub_push_es:
   script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker-compose build es1
     - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 
 docker_hub_push_auth_server:
   script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-    - docker-compose build
+    - docker-compose build auth-server
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+
+docker_hub_push_api_gateway:
+  script:
+    - docker-compose build api-gateway
+    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
 
 docker_hub_push_sdk:
   script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker-compose build zmlp-py3-base zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis analyst
     - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
     - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
