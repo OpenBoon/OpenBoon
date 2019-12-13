@@ -3,13 +3,9 @@ package domain;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -21,6 +17,7 @@ public class Utils {
 
     /**
      * Return true if a String value is a valid JSON
+     *
      * @param json JSON in string Format
      * @return True if is a Valid JSON
      */
@@ -74,14 +71,14 @@ public class Utils {
      * Execute an HTTP request based on the args
      *
      * @param httpMethod Any HttpMethod name in string format
-     * @param urlParam Endpoint URL
-     * @param header Requests Header
-     * @param body Requests Body
+     * @param urlParam   Endpoint URL
+     * @param header     Requests Header
+     * @param body       Requests Body
      * @return String response for the request
      * @throws IOException HTTP Fail
      */
 
-    public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map body) throws IOException {
+/*    public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map body) throws IOException {
         StringBuilder response = new StringBuilder();
 
         URL url = new URL(urlParam);
@@ -116,5 +113,44 @@ public class Utils {
 
 
         return response.toString();
+    }*/
+
+
+    private static final OkHttpClient HTTP_CLIENT_INSTANCE = new OkHttpClient();
+
+    public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
+
+        // json formatted data
+        // Request body Setup
+        bodyParams = Optional.ofNullable(bodyParams).orElse(new HashMap());
+        String json = new ObjectMapper().writeValueAsString(bodyParams);
+
+        // json request body
+        RequestBody body = RequestBody.create(
+                json,
+                MediaType.parse("application/json")
+        );
+
+        Request.Builder builder = new Request.Builder();
+
+        header.entrySet().forEach((entry) -> {
+            builder.addHeader(entry.getKey(), entry.getValue());
+        });
+
+        Request request = builder
+                .url(urlParam)
+                .method(httpMethod, body)
+                .build();
+
+        try (Response response = Utils.HTTP_CLIENT_INSTANCE.newCall(request).execute()) {
+
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            // Get response body
+            return response.body().string();
+
+        }
+
     }
+
 }
