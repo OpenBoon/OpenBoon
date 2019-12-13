@@ -10,7 +10,7 @@ const Table = ({ columns, rows }) => {
       css={{
         width: '100%',
         borderSpacing: 0,
-        boxShadow: constants.boxShadows.dark,
+        boxShadow: constants.boxShadows.table,
         th: {
           fontWeight: typography.weight.medium,
           color: colors.structureShades.pebble,
