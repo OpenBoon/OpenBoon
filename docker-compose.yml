@@ -126,7 +126,7 @@ services:
       context: .
       dockerfile: applications/wallet/Dockerfile
     environment:
-      DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
+      DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
       ARCHIVIST_URL: http://api-gateway:8080
     healthcheck:

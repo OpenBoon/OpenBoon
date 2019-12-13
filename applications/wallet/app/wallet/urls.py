@@ -12,6 +12,7 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
 """
 from django.conf import settings
 from django.conf.urls.static import static
@@ -20,7 +21,6 @@ from django.urls import path, include, re_path
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
-from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
 
 from jobs.views import JobsViewSet
 from projects.views import ProjectViewSet
@@ -36,12 +36,10 @@ projects_router.register('jobs', JobsViewSet, basename='job')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/login', wallet_views.LoginView.as_view(), name='api-login'),
-    path('api/v1/logout', wallet_views.LogoutView.as_view(), name='api-logout'),
+    path('api/v1/login/', wallet_views.LoginView.as_view(), name='api-login'),
+    path('api/v1/logout/', wallet_views.LogoutView.as_view(), name='api-logout'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
-    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('health/', include('health_check.urls')),
     re_path('', ensure_csrf_cookie(wallet_views.FrontendAppView.as_view()))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
