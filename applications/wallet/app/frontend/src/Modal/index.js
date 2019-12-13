@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import AriaModal from 'react-aria-modal'
 import WarningSvg from '../Icons/warning.svg'
-import XSvg from '../Icons/x.svg'
+import CrossSvg from '../Icons/cross.svg'
 import { colors, constants, spacing } from '../Styles'
 
 const BUTTON_HEIGHT = 40
@@ -56,7 +56,7 @@ const Modal = () => {
                 onKeyDown={() => {
                   setShowModal(false)
                 }}>
-                <XSvg width={20} color={colors.rocks.steel} />
+                <CrossSvg width={20} color={colors.rocks.steel} />
               </div>
             </header>
 
