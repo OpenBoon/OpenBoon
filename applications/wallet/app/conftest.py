@@ -1,7 +1,8 @@
 from base64 import b64encode
 
 import pytest
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APIRequestFactory
+
 
 from projects.models import Project, Membership
 
@@ -9,6 +10,11 @@ from projects.models import Project, Membership
 @pytest.fixture(scope='session')
 def api_client():
     return APIClient()
+
+
+@pytest.fixture(scope='session')
+def api_factory():
+    return APIRequestFactory()
 
 
 @pytest.fixture
@@ -27,6 +33,12 @@ def superuser(django_user_model, api_client):
 def project():
     return Project.objects.create(id='6abc33f0-4acf-4196-95ff-4cbb7f640a06',
                                   name='Test Project')
+
+
+@pytest.fixture
+def project2():
+    return Project.objects.create(id='e93cbadb-e5ae-4598-8395-4cf5b30c0e94',
+                                  name='Test Project 2')
 
 
 @pytest.fixture
@@ -55,3 +67,8 @@ def zvi_project_membership(project, user):
     "server": "https://dev.zorroa.com/"}"""
     apikey = b64encode(apikey).decode('utf-8')
     return Membership.objects.create(user=user, project=project, apikey=apikey)
+
+
+@pytest.fixture
+def zvi_project_user(user, zvi_project_membership):
+    return user
