@@ -28,7 +28,6 @@ from django.urls import path, include, re_path
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
-from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
 
 from jobs.views import JobsViewSet
 from projects.views import ProjectViewSet
