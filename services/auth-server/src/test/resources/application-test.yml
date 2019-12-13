@@ -9,3 +9,7 @@ spring:
 
 security:
   service-key: src/test/resources/key.json
+
+management:
+  endpoints:
+    password: monitor

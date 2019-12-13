@@ -129,6 +129,13 @@
             <artifactId>minio</artifactId>
             <version>6.0.11</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.nhaarman</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>1.6.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
