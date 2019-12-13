@@ -13,7 +13,7 @@ describe('<DataQueue />', () => {
     name: 'qwerty',
   }
 
-  it('should render properly without data', () => {
+  it('should render properly while loading', () => {
     const component = TestRenderer.create(
       <DataQueue logout={noop} selectedProject={selectedProject} />,
     )

@@ -1,69 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<DataQueue /> should render properly while loading 1`] = `"Loading..."`;
+
 exports[`<DataQueue /> should render properly with jobs 1`] = `
-@keyframes animation-0 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-.emotion-61 {
+.emotion-60 {
   padding: 16px;
 }
 
-.emotion-60 {
+.emotion-59 {
   width: 100%;
   border-spacing: 0;
 }
 
-.emotion-60 th {
+.emotion-59 th {
   color: #b3b3b3;
   background-color: #2e2e2e;
   padding: 12px 16px;
   border-bottom: 1px solid #4d4948;
 }
 
-.emotion-60 th:nth-of-type(2) {
+.emotion-59 th:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-60 th:not(:last-child) {
+.emotion-59 th:not(:last-child) {
   border-right: 1px solid #4d4948;
 }
 
-.emotion-60 tr {
+.emotion-59 tr {
   background-color: #121212;
 }
 
-.emotion-60 tr:hover {
+.emotion-59 tr:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-60 tr:hover td {
+.emotion-59 tr:hover td {
   border: 1px solid #4d4948;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-60 tr:hover td:first-of-type {
+.emotion-59 tr:hover td:first-of-type {
   border: 1px solid #4d4948;
   border-right: 0;
 }
 
-.emotion-60 tr:hover td:last-of-type {
+.emotion-59 tr:hover td:last-of-type {
   border: 1px solid #4d4948;
   border-left: 0;
 }
 
-.emotion-60 td {
+.emotion-59 td {
   white-space: nowrap;
   color: #b3b3b3;
   padding: 8px 16px;
@@ -72,12 +60,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-right: 0;
 }
 
-.emotion-60 td:first-of-type {
+.emotion-59 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-60 td:last-of-type {
+.emotion-59 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -246,29 +234,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-41 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #4a90e2;
-}
-
 .emotion-39 {
-  color: #4a90e2;
-  -webkit-animation: animation-0 2s linear infinite;
-  animation: animation-0 2s linear infinite;
-}
-
-.emotion-40 {
-  padding-left: 8px;
-}
-
-.emotion-56 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -276,24 +242,24 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-56:first-of-type {
+.emotion-39:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-56:last-of-type {
+.emotion-39:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
 <div
-  className="emotion-61"
+  className="emotion-60"
 >
   <h2>
     Data Queue
   </h2>
   <table
-    className="emotion-60"
+    className="emotion-59"
   >
     <thead>
       <tr>
@@ -760,17 +726,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-41"
+            className="emotion-14"
           >
-            <svg
-              className="emotion-39"
-              data-file-name="generating.svg"
-            />
             <div
-              className="emotion-40"
-            >
-              Generating
-            </div>
+              className="emotion-39"
+            />
           </div>
         </td>
       </tr>
@@ -967,7 +927,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
             className="emotion-14"
           >
             <div
-              className="emotion-56"
+              className="emotion-39"
             />
             <div
               className="emotion-11"
@@ -991,32 +951,4 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 </div>
 `;
 
-exports[`<DataQueue /> should render properly with no jobs 1`] = `
-.emotion-0 {
-  padding: 16px;
-}
-
-<div
-  className="emotion-0"
->
-  <h2>
-    Data Queue
-  </h2>
-  You have 0 jobs
-</div>
-`;
-
-exports[`<DataQueue /> should render properly without data 1`] = `
-.emotion-0 {
-  padding: 16px;
-}
-
-<div
-  className="emotion-0"
->
-  <h2>
-    Data Queue
-  </h2>
-  Loading...
-</div>
-`;
+exports[`<DataQueue /> should render properly with no jobs 1`] = `"You have 0 jobs"`;

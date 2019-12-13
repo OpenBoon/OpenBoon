@@ -86,7 +86,7 @@ const Table = ({ columns, rows }) => {
               <td>
                 <Status jobStatus={row.status} />
               </td>
-              <td>{row.jobName}</td>
+              <td>{row.name}</td>
               <td>{row.createdBy}</td>
               <td>{row.priority}</td>
               <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>

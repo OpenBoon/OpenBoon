@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Projects /> should render properly while loading 1`] = `"Loading..."`;
+
 exports[`<Projects /> should render properly with no projects 1`] = `"You have 0 projects"`;
 
 exports[`<Projects /> should render properly with projects 1`] = `
@@ -40,5 +42,3 @@ exports[`<Projects /> should render properly with projects 1`] = `
   Hello World
 </Layout>
 `;
-
-exports[`<Projects /> should render properly without data 1`] = `"Loading..."`;
