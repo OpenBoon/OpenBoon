@@ -45,6 +45,34 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert self.emitter.event_count("finished") == 1
         assert self.emitter.event_total() == 2
 
+    def test_execute_processor_and_raise_fatal(self):
+        req = {
+            "ref": {
+                "className": "pixml.analysis.testing.TestProcessor",
+                "args": {"raise_fatal": True},
+                "image": "plugins-py3-base"
+            },
+            "asset": {
+                "id": "1234",
+                "document": {
+                    "source": {
+                        "path": "/foo/bing.jpg"
+                    }
+                }
+            }
+        }
+        self.pe.execute_processor(req)
+        assert self.emitter.event_count("asset") == 1
+        assert self.emitter.event_count("error") == 1
+        assert self.emitter.event_count("finished") == 1
+        assert self.emitter.event_total() == 3
+
+        error = self.emitter.get_events("error")[0]
+        assert error["payload"]["processor"] == "pixml.analysis.testing.TestProcessor"
+        assert error["payload"]["fatal"] is True
+        assert error["payload"]["phase"] is "execute"
+        assert error["payload"]["path"] is "/foo/bing.jpg"
+
     def test_teardown_processor(self):
         req = {
             "ref": {

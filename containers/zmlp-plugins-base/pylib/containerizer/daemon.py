@@ -39,7 +39,7 @@ class PixmlContainerDaemon(object):
             try:
                 self.handle_event(event)
             except Exception as e:
-                logger.warning("Failed to handle event '{}', {}".format(event, e))
+                logger.exception("Failed to handle event '{}'".format(event))
                 self.socket.send_json({"type": "hardfailure", "payload": {"message": str(e)}})
                 break
 

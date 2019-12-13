@@ -230,7 +230,7 @@ class ProcessorWrapper(object):
             # It will not be included in result
             frame.skip = True
             self.increment_stat("unrecoverable_error_count")
-            self.reactor.error(frame, self["ref"]["className"],
+            self.reactor.error(frame, self.ref.get("className", "Unknown Class"),
                                upe, True, "execute", sys.exc_info()[2])
         except Exception as e:
             self.increment_stat("error_count")
@@ -258,6 +258,7 @@ class ProcessorWrapper(object):
             return
         try:
             self.instance.teardown()
+            self.reactor.check_expand(True)
             self.reactor.emitter.write({"type": "stats", "payload": [self.stats]})
         except Exception as e:
             self.reactor.error(None, self.instance, e, False, "teardown", sys.exc_info()[2])
@@ -295,7 +296,7 @@ class AssetConsumer(object):
 
         Args:
             reactor (Reactor):  a reactor for talking back to the Archivist
-            file_types(iterable):  A set/list of file types to accept.
+            settings(dict):  A dict of ZPS script settings.
 
         """
         self.reactor = reactor
