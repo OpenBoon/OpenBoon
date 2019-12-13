@@ -1,31 +1,24 @@
-import Table from '../Table'
-import { jobColumns, jobRows } from './__mocks__/jobs'
+import PropTypes from 'prop-types'
+import useSWR from 'swr'
 
-import { spacing } from '../Styles'
-
-import Pagination from '../Pagination'
-
-export const noop = () => () => {}
-
-const Jobs = () => {
-  return (
-    <div css={{ padding: spacing.normal }}>
-      <h2>Data Queue</h2>
-
-      <Table columns={jobColumns} rows={jobRows} />
-
-      <div>&nbsp;</div>
-
-      <Pagination
-        legend="Jobs: 1–17 of 415"
-        currentPage={1}
-        totalPages={2}
-        prevLink="/"
-        nextLink="/?page=2"
-        onClick={noop}
-      />
-    </div>
+const Jobs = ({ selectedProject, children }) => {
+  const { data: { list } = {} } = useSWR(
+    `api/v1/projects/${selectedProject.id}/jobs/`,
   )
+
+  if (!Array.isArray(list)) return 'Loading...'
+
+  if (list.length === 0) return 'You have 0 jobs'
+
+  return children({ jobs: list })
+}
+
+Jobs.propTypes = {
+  selectedProject: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  children: PropTypes.func.isRequired,
 }
 
 export default Jobs
