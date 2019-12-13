@@ -12,7 +12,7 @@ stages:
   - test
   - push
 
-# Wallet Jobs
+## Wallet Jobs
 .wallet-base:
   only:
     - merge_requests
@@ -114,7 +114,10 @@ sdk-unit-tests:
     - pip install -r requirements.txt
     - pytest
 
-docker_hub_push:
+
+# These jobs build the container images and push them up to docker hub with the
+# "development" tag whenever code is merged to development.
+.docker_hub_push_base:
   image: docker:18.09.8-dind
   stage: push
   services:
@@ -124,19 +127,48 @@ docker_hub_push:
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
   only:
-    - development
+      - development
+
+docker_hub_push_archivist:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build archivist
+    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+
+docker_hub_push_wallet:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build wallet
+    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+
+docker_hub_push_es:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build es1
+    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
+
+docker_hub_push_auth_server:
   script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - docker-compose build
-    - docker tag zmlp/zmlp-py3-base:latest zmlp/zmlp-py3-base:development; docker push zmlp/zmlp-py3-base:development
-    - docker tag zmlp/zmlp-py3-sdk:latest zmlp/zmlp-py3-sdk:development; docker push zmlp/zmlp-py3-sdk:development
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
-    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
+
+docker_hub_push_sdk:
+  script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+    - docker-compose build zmlp-py3-base zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis analyst
+    - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
+    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
+    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
+    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
+    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:development; docker push zmlp/plugins-analysis:development
     - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
-    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
-    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
-    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
+
 
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:
@@ -213,10 +245,8 @@ services_unit_tests:
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
 
+
 # Kotlin Services Jobs
-
-
-#
 #sdk-containers-tests:
 #  stage: test
 #  before_script:
