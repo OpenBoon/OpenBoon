@@ -34,7 +34,7 @@ exports[`<Login /> should render properly 1`] = `
   height: 580px;
   background-color: #2d2d2d;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.59);
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-0 {
