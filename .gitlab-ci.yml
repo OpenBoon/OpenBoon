@@ -13,106 +13,106 @@ stages:
   - push
 
 ## Wallet Jobs
-#.wallet-base:
-#  only:
-#    - merge_requests
-#    - development
-#    - qa
-#    - master
-#
-#.wallet-frontend-base:
-#  extends: .wallet-base
-#  image: node:12
-#  before_script:
-#    - cd applications/wallet/app/frontend
-#    - npm ci
-#
-#wallet-frontend-test-suite:
-#  extends: .wallet-frontend-base
-#  stage: test
-#  script:
-#    - npm run lint
-#    - npm run test:cover
-#    - npm run size
-#
-#wallet-backend-test-suite:
-#  extends: .wallet-base
-#  image: mc706/pipenv-3.6
-#  stage: test
-#  services:
-#    - name: postgres:9.6.9
-#      alias: postgres
-#  variables:
-#    POSTGRES_PASSWORD: a8fnnbe934j
-#    POSTGRES_USER: wallet
-#    POSTGRES_DB: wallet
-#    PG_HOST: postgres
-#  script:
-#    - cd applications/wallet
-#    - pipenv sync
-#    - cd app
-#    - pipenv run flake8
-#    - pipenv run pytest --cov=.
-#
-#wallet-container-build-validation:
-#  only:
-#    - development
-#  stage: test
-#  image: docker:18.09.8-dind
-#  services:
-#    - docker:18.09.8-dind
-#  script:
-#    - docker build --pull --no-cache -f applications/wallet/Dockerfile .
-#
-#backend-py-lint:
-#  image: python:3.7
-#  stage: pretest
-#  allow_failure: false
-#  only:
-#    - merge_requests
-#    - development
-#    - qa
-#    - master
-#  script:
-#    - python -m pip install flake8
-#    - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
-#    - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
-#
-#backend-kotlin-lint:
-#  image: kkopper/ktlint
-#  stage: pretest
-#  only:
-#    - merge_requests
-#    - development
-#    - qa
-#    - master
-#  script:
-#    - ktlint services/archivist/src/**/*.kt
-#    - ktlint services/auth-server/src/**/*.kt
-#    - ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
-#    - ktlint services/officer/src/**/*.kt
-#
-## SDK Test
-## Testing other containers requires building containers
-## Testing analyst requires it can pull plugin containers.
-#sdk-unit-tests:
-#  image: python:3.7
-#  stage: test
-#  allow_failure: true
-#  only:
-#    - merge_requests
-#    - development
-#    - qa
-#    - master
-#  script:
-#    - python -m pip install pipenv pytest
-#    - cd sdk/python
-#    - pip install -r requirements.txt
-#    - python setup.py install
-#    - pytest
-#    - cd ../../containers/zmlp-plugins-base
-#    - pip install -r requirements.txt
-#    - pytest
+.wallet-base:
+  only:
+    - merge_requests
+    - development
+    - qa
+    - master
+
+.wallet-frontend-base:
+  extends: .wallet-base
+  image: node:12
+  before_script:
+    - cd applications/wallet/app/frontend
+    - npm ci
+
+wallet-frontend-test-suite:
+  extends: .wallet-frontend-base
+  stage: test
+  script:
+    - npm run lint
+    - npm run test:cover
+    - npm run size
+
+wallet-backend-test-suite:
+  extends: .wallet-base
+  image: mc706/pipenv-3.6
+  stage: test
+  services:
+    - name: postgres:9.6.9
+      alias: postgres
+  variables:
+    POSTGRES_PASSWORD: a8fnnbe934j
+    POSTGRES_USER: wallet
+    POSTGRES_DB: wallet
+    PG_HOST: postgres
+  script:
+    - cd applications/wallet
+    - pipenv sync
+    - cd app
+    - pipenv run flake8
+    - pipenv run pytest --cov=.
+
+wallet-container-build-validation:
+  only:
+    - development
+  stage: test
+  image: docker:18.09.8-dind
+  services:
+    - docker:18.09.8-dind
+  script:
+    - docker build --pull --no-cache -f applications/wallet/Dockerfile .
+
+backend-py-lint:
+  image: python:3.7
+  stage: pretest
+  allow_failure: false
+  only:
+    - merge_requests
+    - development
+    - qa
+    - master
+  script:
+    - python -m pip install flake8
+    - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
+    - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
+
+backend-kotlin-lint:
+  image: kkopper/ktlint
+  stage: pretest
+  only:
+    - merge_requests
+    - development
+    - qa
+    - master
+  script:
+    - ktlint services/archivist/src/**/*.kt
+    - ktlint services/auth-server/src/**/*.kt
+    - ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
+    - ktlint services/officer/src/**/*.kt
+
+# SDK Test
+# Testing other containers requires building containers
+# Testing analyst requires it can pull plugin containers.
+sdk-unit-tests:
+  image: python:3.7
+  stage: test
+  allow_failure: true
+  only:
+    - merge_requests
+    - development
+    - qa
+    - master
+  script:
+    - python -m pip install pipenv pytest
+    - cd sdk/python
+    - pip install -r requirements.txt
+    - python setup.py install
+    - pytest
+    - cd ../../containers/zmlp-plugins-base
+    - pip install -r requirements.txt
+    - pytest
 
 .docker_hub_push_base:
   image: docker:18.09.8-dind
@@ -124,35 +124,35 @@ stages:
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
 #  only:
-  #    - development
+#      - development
 
-docker_hub_push_archivist:
-  script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-    - docker-compose build archivist
-    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
-
-docker_hub_push_wallet:
-  script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-    - docker-compose build wallet
-    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
-
-docker_hub_push_es:
-  script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-    - docker-compose build es1
-    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
-
-docker_hub_push_auth_server:
-  script:
-    - apk add docker-compose
-    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-    - docker-compose build
-    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+#docker_hub_push_archivist:
+#  script:
+#    - apk add docker-compose
+#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+#    - docker-compose build archivist
+#    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+#
+#docker_hub_push_wallet:
+#  script:
+#    - apk add docker-compose
+#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+#    - docker-compose build wallet
+#    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+#
+#docker_hub_push_es:
+#  script:
+#    - apk add docker-compose
+#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+#    - docker-compose build es1
+#    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
+#
+#docker_hub_push_auth_server:
+#  script:
+#    - apk add docker-compose
+#    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+#    - docker-compose build
+#    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
 
 docker_hub_push_sdk:
   script:
@@ -242,10 +242,8 @@ services_unit_tests:
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
 
+
 # Kotlin Services Jobs
-
-
-#
 #sdk-containers-tests:
 #  stage: test
 #  before_script:
