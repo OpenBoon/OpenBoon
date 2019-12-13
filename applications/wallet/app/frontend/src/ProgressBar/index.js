@@ -10,7 +10,11 @@ const STATUS_COLORS = {
   tasksWaiting: colors.grey6,
 }
 
-const ProgressBar = ({ taskCounts }) => {
+const ProgressBar = ({ state, taskCounts }) => {
+  if (state === 'Canceled') {
+    return <div css={{ color: colors.grey5 }}>Canceled</div>
+  }
+
   return (
     <div
       css={{
@@ -18,7 +22,7 @@ const ProgressBar = ({ taskCounts }) => {
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {Object.keys(taskCounts)
+      {Object.keys(STATUS_COLORS)
         .filter(taskStatus => {
           return taskCounts[taskStatus] > 0
         })
@@ -47,6 +51,7 @@ const ProgressBar = ({ taskCounts }) => {
 }
 
 ProgressBar.propTypes = {
+  state: PropTypes.string.isRequired,
   taskCounts: PropTypes.shape({
     tasksSuccess: PropTypes.number,
     tasksFailure: PropTypes.number,
