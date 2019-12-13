@@ -6,6 +6,8 @@ import {
   clearAllBodyScrollLocks,
 } from 'body-scroll-lock'
 
+import userShape from '../User/shape'
+
 import { constants } from '../Styles'
 
 import Navbar from '../Navbar'
@@ -13,7 +15,7 @@ import Sidebar from '../Sidebar'
 
 import { getJobId } from './helpers'
 
-const Layout = ({ results, logout, children }) => {
+const Layout = ({ user, results, logout, children }) => {
   const sidebarRef = useRef()
 
   const [isSidebarOpen, setSidebarOpen] = useState(false)
@@ -42,6 +44,7 @@ const Layout = ({ results, logout, children }) => {
   return (
     <div css={{ height: '100%' }}>
       <Navbar
+        user={user}
         isSidebarOpen={isSidebarOpen}
         projects={projects}
         setSidebarOpen={setSidebarOpen}
@@ -67,6 +70,7 @@ Layout.propTypes = {
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  user: PropTypes.shape(userShape).isRequired,
   logout: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 }

@@ -10,7 +10,17 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
     }
   }
 >
-  <Projects>
+  <Projects
+    user={
+      Object {
+        "email": "jane.doe@zorroa.com",
+        "first_name": "Jane",
+        "id": 1,
+        "last_name": "Doe",
+        "username": "jane.doe",
+      }
+    }
+  >
     Hello World
   </Projects>
 </SWRConfig>
