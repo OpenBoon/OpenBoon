@@ -1,65 +1,51 @@
-package com.zorroa.archivist.rest
+package com.zorroa.auth.rest
 
-import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.util.Json
+import com.zorroa.auth.MockMvcTest
 import org.junit.Test
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.http.MediaType
-import org.springframework.test.context.web.WebAppConfiguration
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
-@WebAppConfiguration
+@AutoConfigureMockMvc
 class ActuatorTests : MockMvcTest() {
-
-    override fun requiresElasticSearch(): Boolean {
-        return true
-    }
 
     @Test
     fun testInfoEndpoint() {
-        val rsp = mvc.perform(
+        mvc.perform(
             MockMvcRequestBuilders.get("/monitor/info")
-                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
-
-        val result = Json.deserialize(rsp.response.contentAsString, Json.GENERIC_MAP)
-        assertEquals("Zorroa Archivist Server", result["description"])
-        assertTrue("build.version" in result.keys)
     }
 
     @Test
     fun testHealthEndpoint() {
         mvc.perform(
             MockMvcRequestBuilders.get("/monitor/health")
-                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(jsonPath("$.status").value("UP"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("UP"))
             .andReturn()
     }
 
     @Test
     fun testMetrics() {
-        // Need to auth with monitor username/pass
         mvc.perform(
             MockMvcRequestBuilders.get("/monitor/metrics")
-                .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .with(httpBasic("monitor", "monitor"))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(jsonPath("$.names").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.names").exists())
             .andReturn()
     }
 
     @Test
-    fun testMetricsFail() {
+    fun testMetrics_rsp_400() {
         mvc.perform(
             MockMvcRequestBuilders.get("/monitor/metrics")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

@@ -4,6 +4,7 @@ import com.zorroa.auth.domain.ApiKey
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
@@ -16,6 +17,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
@@ -56,8 +59,29 @@ class MultipleWebSecurityConfig {
     }
 
     @Configuration
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    @EnableGlobalMethodSecurity(securedEnabled = true)
+    class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Throws(Exception::class)
+        override fun configure(http: HttpSecurity) {
+            http
+                .antMatcher("/monitor/**")
+                .httpBasic()
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
+                .hasAuthority("MONITOR")
+                .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
+        }
+    }
+
+    @Configuration
+    @EnableGlobalMethodSecurity(securedEnabled = true)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
     class SwaggerConfigSecurity : WebSecurityConfigurerAdapter() {
 
         @Value("\${swagger.isPublic}")
@@ -84,10 +108,22 @@ class MultipleWebSecurityConfig {
         }
     }
 
+    @Value("\${management.endpoints.password}")
+    lateinit var monitorPassword: String
+
     @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.authenticationProvider(jwtAuthenticationProvider)
+            .inMemoryAuthentication()
+            .withUser("monitor")
+            .password(passwordEncoder().encode(monitorPassword))
+            .authorities("MONITOR")
+    }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 
     @Bean
