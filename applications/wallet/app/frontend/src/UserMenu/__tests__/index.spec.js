@@ -1,18 +1,22 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import mockUser from '../../User/__mocks__/user'
+
 import UserMenu from '..'
 
 const noop = () => () => {}
 
 describe('<UserMenu />', () => {
   it('should render properly', () => {
-    const component = TestRenderer.create(<UserMenu logout={noop} />)
+    const component = TestRenderer.create(
+      <UserMenu user={mockUser} logout={noop} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
       component.root
-        .findByProps({ children: 'DT' })
+        .findByProps({ children: 'JD' })
         .props.onClick({ preventDefault: noop })
     })
 
