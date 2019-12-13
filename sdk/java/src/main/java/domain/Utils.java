@@ -77,19 +77,22 @@ public class Utils {
      * @param httpMethod Any HttpMethod name in string format
      * @param urlParam   Endpoint URL
      * @param header     Requests Header
-     * @param bodyParams       Requests Body
+     * @param bodyParams Requests Body
      * @return String response for the request
      * @throws IOException HTTP Fail
      */
-
     public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
+
         // json formatted data
         // Request body Setup
         bodyParams = Optional.ofNullable(bodyParams).orElse(new HashMap());
         String json = new ObjectMapper().writeValueAsString(bodyParams);
 
         // json request body
-        RequestBody body = RequestBody.create(JSON, json);
+        RequestBody body = RequestBody.create(
+                json,
+                MediaType.parse("application/json")
+        );
 
         Request.Builder builder = new Request.Builder();
 
@@ -99,7 +102,7 @@ public class Utils {
 
         Request request = builder
                 .url(urlParam)
-                .method(httpMethod.toUpperCase(), body)
+                .method(httpMethod, body)
                 .build();
 
         try (Response response = Utils.HTTP_CLIENT_INSTANCE.newCall(request).execute()) {
@@ -108,9 +111,9 @@ public class Utils {
 
             // Get response body
             return response.body().string();
-
         }
     }
+
     public static void updateEnvVariables(String name, String val) throws ReflectiveOperationException {
         Map<String, String> env = System.getenv();
         Field field = env.getClass().getDeclaredField("m");
