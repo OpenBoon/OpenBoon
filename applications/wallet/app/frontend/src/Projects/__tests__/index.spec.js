@@ -1,8 +1,9 @@
 import TestRenderer from 'react-test-renderer'
 
-import Projects from '..'
-
+import mockUser from '../../User/__mocks__/user'
 import projects from '../__mocks__/projects'
+
+import Projects from '..'
 
 jest.mock('../../Layout')
 
@@ -11,7 +12,9 @@ const noop = () => () => {}
 describe('<Projects />', () => {
   it('should render properly without data', () => {
     const component = TestRenderer.create(
-      <Projects logout={noop}>{() => `Hello World`}</Projects>,
+      <Projects user={mockUser} logout={noop}>
+        {() => `Hello World`}
+      </Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -23,7 +26,9 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects logout={noop}>{() => `Hello World`}</Projects>,
+      <Projects user={mockUser} logout={noop}>
+        {() => `Hello World`}
+      </Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -35,7 +40,9 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects logout={noop}>{() => `Hello World`}</Projects>,
+      <Projects user={mockUser} logout={noop}>
+        {() => `Hello World`}
+      </Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

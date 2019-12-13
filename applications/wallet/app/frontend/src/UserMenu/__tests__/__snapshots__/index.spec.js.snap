@@ -30,13 +30,13 @@ exports[`<UserMenu /> should render properly 1`] = `
     onClick={[Function]}
     type="button"
   >
-    DT
+    JD
   </button>
 </div>
 `;
 
 exports[`<UserMenu /> should render properly 2`] = `
-.emotion-8 {
+.emotion-6 {
   position: relative;
 }
 
@@ -56,7 +56,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-7 {
+.emotion-5 {
   position: absolute;
   z-index: 1;
   background-color: #808080;
@@ -75,7 +75,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   font-weight: 700;
 }
 
-.emotion-6 {
+.emotion-4 {
   padding: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -86,17 +86,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #b8d652;
-}
-
-.emotion-4 {
-  height: 6px;
-}
-
-.emotion-5 {
+.emotion-3 {
   border: 0;
   margin: 0;
   padding: 0;
@@ -106,13 +96,13 @@ exports[`<UserMenu /> should render properly 2`] = `
   color: inherit;
 }
 
-.emotion-5:hover {
+.emotion-3:hover {
   color: #b8d652;
   cursor: pointer;
 }
 
 <div
-  className="emotion-8"
+  className="emotion-6"
 >
   <button
     className="emotion-0"
@@ -120,10 +110,10 @@ exports[`<UserMenu /> should render properly 2`] = `
     onClick={[Function]}
     type="button"
   >
-    DT
+    JD
   </button>
   <div
-    className="emotion-7"
+    className="emotion-5"
   >
     <div
       className="emotion-2"
@@ -131,27 +121,17 @@ exports[`<UserMenu /> should render properly 2`] = `
       <div
         className="emotion-1"
       >
-        Danny Tiesling
+        Jane Doe
       </div>
       <div>
-        danny@zorroa.com
+        jane.doe@zorroa.com
       </div>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-4"
     >
-      <a
-        className="emotion-3"
-        href="/"
-        onBlur={[Function]}
-      >
-        Manage Account
-      </a>
-      <div
-        className="emotion-4"
-      />
       <button
-        className="emotion-5"
+        className="emotion-3"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"

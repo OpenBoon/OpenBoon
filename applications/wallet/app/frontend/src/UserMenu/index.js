@@ -1,13 +1,18 @@
 import { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
+import userShape from '../User/shape'
+
 import { colors, typography, spacing, constants, zIndex } from '../Styles'
 
 import { onBlur as onBlurHelper } from './helpers'
 
 const SIZE = 28
 
-const UserMenu = ({ logout }) => {
+const UserMenu = ({
+  user: { first_name: firstName, last_name: lastName, email },
+  logout,
+}) => {
   const container = useRef(null)
 
   const [isMenuOpen, setMenuOpen] = useState(false)
@@ -34,7 +39,7 @@ const UserMenu = ({ logout }) => {
             cursor: 'pointer',
           },
         }}>
-        DT
+        {`${firstName[0]}${lastName[0]}`}
       </button>
       {isMenuOpen && (
         <div
@@ -53,9 +58,9 @@ const UserMenu = ({ logout }) => {
               borderBottom: constants.borders.separator,
             }}>
             <div css={{ fontWeight: typography.weight.bold }}>
-              Danny Tiesling
+              {`${firstName} ${lastName}`}
             </div>
-            <div>danny@zorroa.com</div>
+            <div>{email}</div>
           </div>
           <div
             css={{
@@ -63,15 +68,6 @@ const UserMenu = ({ logout }) => {
               display: 'flex',
               flexDirection: 'column',
             }}>
-            <a
-              href="/"
-              onBlur={onBlur}
-              css={{
-                ':hover': { textDecoration: 'none', color: colors.green2 },
-              }}>
-              Manage Account
-            </a>
-            <div css={{ height: spacing.moderate / 2 }} />
             <button
               type="button"
               onBlur={onBlur}
@@ -99,6 +95,7 @@ const UserMenu = ({ logout }) => {
 }
 
 UserMenu.propTypes = {
+  user: PropTypes.shape(userShape).isRequired,
   logout: PropTypes.func.isRequired,
 }
 
