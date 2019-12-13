@@ -12,6 +12,14 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
+NOTE:
+    We are currently using session authentication. If we ever decide to we need to use
+    JWT auth again add the following paths.
+
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 """
 from django.conf import settings
 from django.conf.urls.static import static
@@ -40,8 +48,6 @@ urlpatterns = [
     path('api/v1/logout/', wallet_views.LogoutView.as_view(), name='api-logout'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
-    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('health/', include('health_check.urls')),
     re_path('', ensure_csrf_cookie(wallet_views.FrontendAppView.as_view()))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
