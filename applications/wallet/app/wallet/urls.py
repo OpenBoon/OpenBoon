@@ -13,13 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 
-NOTE:
-    We are currently using session authentication. If we ever decide to we need to use
-    JWT auth again add the following paths.
-
-    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
 """
 from django.conf import settings
 from django.conf.urls.static import static

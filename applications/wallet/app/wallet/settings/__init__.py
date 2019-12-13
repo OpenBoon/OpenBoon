@@ -69,10 +69,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # Disabled since we are using session authentication. Leaving this here in case we
-    # want to use it later.
-    # 'wallet.middleware.AuthenticationMiddlewareSimpleJWT',
 ]
 
 ROOT_URLCONF = 'wallet.urls'
