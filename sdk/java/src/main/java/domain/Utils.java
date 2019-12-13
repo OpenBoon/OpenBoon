@@ -83,7 +83,6 @@ public class Utils {
      */
 
     public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
-
         // json formatted data
         // Request body Setup
         bodyParams = Optional.ofNullable(bodyParams).orElse(new HashMap());
@@ -119,6 +118,7 @@ public class Utils {
         Field field = env.getClass().getDeclaredField("m");
         field.setAccessible(true);
         ((Map<String, String>) field.get(env)).put(name, val);
+
     }
 
 }
