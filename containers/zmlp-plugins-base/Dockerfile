@@ -1,4 +1,4 @@
-FROM zmlp-py3-sdk:latest
+FROM zmlp/py3-sdk:latest
 USER root
 
 RUN mkdir /build

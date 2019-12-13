@@ -140,12 +140,12 @@ services:
 
   # These services are only here because their images need to be built.
   zmlp-py3-base:
-    image: zmlp/zmlp-py3-base:latest
+    image: zmlp/py3-base:latest
     build:
       context: containers/zmlp-py3-base
 
   zmlp-py3-sdk:
-    image: zmlp/zmlp-py3-sdk:latest
+    image: zmlp/py3-sdk:latest
     depends_on:
       - zmlp-py3-base
     build:
@@ -153,7 +153,7 @@ services:
     command: echo
 
   zmlp-plugins-base:
-    image: zmlp/zmlp-plugins-base:latest
+    image: zmlp/plugins-base:latest
     depends_on:
       - zmlp-py3-sdk
     build:
@@ -161,7 +161,7 @@ services:
     command: echo
 
   zmlp-plugins-core:
-    image: zmlp/zmlp-plugins-core:latest
+    image: zmlp/plugins-core:latest
     depends_on:
       - zmlp-plugins-base
     build:
@@ -169,7 +169,7 @@ services:
     command: echo
 
   zmlp-plugins-analysis:
-    image: zmlp/zmlp-plugins-analysis:latest
+    image: zmlp/plugins-analysis:latest
     depends_on:
       - zmlp-plugins-base
     build:
