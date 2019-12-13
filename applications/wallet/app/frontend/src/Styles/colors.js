@@ -29,6 +29,11 @@ const colors = {
 
   yellow1: '#f5a623',
 
+  structureShades: {
+    coal: '#191919',
+    lead: '#252525',
+  },
+
   rocks: {
     black: '#000000',
     coal: '#1f1a17',
@@ -45,6 +50,7 @@ const colors = {
 
   plants: {
     clover: '#73b61c',
+    grass: '#4ac565',
   },
 }
 

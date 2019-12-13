@@ -109,8 +109,8 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4a90e2;
+  color: #f5a623;
+  background-color: #191919;
 }
 
 .emotion-14 {
@@ -206,7 +206,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
+  color: #000000;
   background-color: #f5a623;
 }
 
@@ -222,8 +222,8 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #000000;
-  background-color: #b3b3b3;
+  color: #808080;
+  background-color: #191919;
 }
 
 .emotion-28 {
@@ -242,8 +242,8 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4ac565;
+  color: #4ac565;
+  background-color: #191919;
 }
 
 .emotion-41 {
@@ -1108,8 +1108,8 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4a90e2;
+  color: #f5a623;
+  background-color: #191919;
 }
 
 .emotion-14 {
@@ -1205,7 +1205,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
+  color: #000000;
   background-color: #f5a623;
 }
 
@@ -1221,8 +1221,8 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #000000;
-  background-color: #b3b3b3;
+  color: #808080;
+  background-color: #191919;
 }
 
 .emotion-28 {
@@ -1241,8 +1241,8 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4ac565;
+  color: #4ac565;
+  background-color: #191919;
 }
 
 .emotion-41 {
