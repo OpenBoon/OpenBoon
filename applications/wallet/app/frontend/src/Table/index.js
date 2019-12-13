@@ -80,12 +80,7 @@ const Table = ({ columns, rows }) => {
             state,
             name,
             createdUser: { username },
-            taskCounts: {
-              tasksFailure,
-              tasksWaiting,
-              tasksRunning,
-              tasksSuccess,
-            },
+            taskCounts,
             assetCounts: { assetErrorCount },
             priority,
             timeCreated,
@@ -107,8 +102,10 @@ const Table = ({ columns, rows }) => {
                 <td>{priority}</td>
                 <td>{formatFullDate({ timestamp: timeCreated })}</td>
                 <td>
-                  {tasksFailure > 0 && (
-                    <div style={{ color: colors.error }}>{tasksFailure}</div>
+                  {taskCounts.tasksFailure > 0 && (
+                    <div style={{ color: colors.error }}>
+                      {taskCounts.tasksFailure}
+                    </div>
                   )}
                 </td>
                 <td>
@@ -118,16 +115,7 @@ const Table = ({ columns, rows }) => {
                 </td>
                 <td>numAsets</td>
                 <td>
-                  <ProgressBar
-                    status={{
-                      state,
-                      username,
-                      failed: tasksFailure,
-                      pending: tasksWaiting,
-                      running: tasksRunning,
-                      succeeded: tasksSuccess,
-                    }}
-                  />
+                  <ProgressBar state={state} taskCounts={taskCounts} />
                 </td>
               </tr>
             )

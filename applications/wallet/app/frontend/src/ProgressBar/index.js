@@ -4,19 +4,13 @@ import { colors, constants } from '../Styles'
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 200
 const STATUS_COLORS = {
-  succeeded: colors.green1,
-  failed: colors.error,
-  running: colors.blue1,
-  pending: colors.grey6,
+  tasksSuccess: colors.green1,
+  tasksFailure: colors.error,
+  tasksRunning: colors.blue1,
+  tasksWaiting: colors.grey6,
 }
 
-const ProgressBar = ({ status }) => {
-  const { state, username } = status
-
-  if (state === 'Canceled') {
-    return <div css={{ color: colors.grey5 }}>{`Canceled by: ${username}`}</div>
-  }
-
+const ProgressBar = ({ taskCounts }) => {
   return (
     <div
       css={{
@@ -24,18 +18,18 @@ const ProgressBar = ({ status }) => {
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {['succeeded', 'failed', 'running', 'pending']
-        .filter(statusName => {
-          return status[statusName] > 0
+      {Object.keys(taskCounts)
+        .filter(taskStatus => {
+          return taskCounts[taskStatus] > 0
         })
-        .map(statusName => {
+        .map(taskStatus => {
           return (
             <div
-              key={statusName}
+              key={taskStatus}
               css={{
                 height: '100%',
-                flex: `${status[statusName]} 0 auto`,
-                backgroundColor: STATUS_COLORS[statusName],
+                flex: `${taskCounts[taskStatus]} 0 auto`,
+                backgroundColor: STATUS_COLORS[taskStatus],
                 '&:first-of-type': {
                   borderTopLeftRadius: constants.borderRadius.small,
                   borderBottomLeftRadius: constants.borderRadius.small,
@@ -53,13 +47,11 @@ const ProgressBar = ({ status }) => {
 }
 
 ProgressBar.propTypes = {
-  status: PropTypes.shape({
-    state: PropTypes.string,
-    username: PropTypes.string,
-    succeeded: PropTypes.number,
-    failed: PropTypes.number,
-    running: PropTypes.number,
-    pending: PropTypes.number,
+  taskCounts: PropTypes.shape({
+    tasksSuccess: PropTypes.number,
+    tasksFailure: PropTypes.number,
+    tasksRunning: PropTypes.number,
+    tasksWaiting: PropTypes.number,
   }).isRequired,
 }
 
