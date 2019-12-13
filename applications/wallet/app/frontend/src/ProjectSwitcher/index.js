@@ -9,8 +9,9 @@ const CHEVRON_WIDTH = 20
 
 const ProjectSwitcher = ({ projects, setSelectedProject }) => {
   const [isDropDownOpen, setDropDownOpen] = useState(false)
+  const selectedProject = projects.find(project => project.selected) || {}
 
-  const selectedProject = projects.find(project => project.selected)
+  if (projects.length === 0) return null
 
   return (
     <div
@@ -37,15 +38,17 @@ const ProjectSwitcher = ({ projects, setSelectedProject }) => {
           },
         }}>
         {selectedProject.name}
-        <ChevronSvg
-          width={CHEVRON_WIDTH}
-          css={{
-            marginLeft: spacing.base,
-            transform: `${isDropDownOpen ? 'rotate(-180deg)' : ''}`,
-          }}
-        />
+        {projects.length > 1 && (
+          <ChevronSvg
+            width={CHEVRON_WIDTH}
+            css={{
+              marginLeft: spacing.base,
+              transform: `${isDropDownOpen ? 'rotate(-180deg)' : ''}`,
+            }}
+          />
+        )}
       </button>
-      {isDropDownOpen && (
+      {isDropDownOpen && projects.length > 1 && (
         <DropDown
           projects={projects.filter(project => !project.selected)}
           onSelect={project => {
