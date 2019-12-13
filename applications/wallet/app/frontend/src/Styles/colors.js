@@ -5,6 +5,7 @@ const colors = {
   error: '#ce2d3f',
   danger: '#edb8be',
   warning: '#c92300',
+  failed: '#fa2a00',
 
   primaryBackground: '#1b1b1b',
   secondaryBackground: '#2d2d2d',
@@ -30,8 +31,16 @@ const colors = {
   yellow1: '#f5a623',
 
   structureShades: {
+    black: '#000000',
     coal: '#191919',
     lead: '#252525',
+    mattGrey: '#2e2e2e',
+    smoke: '#3b3b3b',
+    iron: '#4a4a4a',
+    steel: '#808080',
+    zinc: '#b3b3b3',
+    pebble: '#e0e0e0',
+    white: '#ffffff',
   },
 
   rocks: {

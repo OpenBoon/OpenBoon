@@ -12,9 +12,9 @@ const Table = ({ columns, rows }) => {
         borderSpacing: 0,
         boxShadow: constants.boxShadows.dark,
         th: {
-          fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
-          backgroundColor: colors.grey1,
+          fontWeight: typography.weight.medium,
+          color: colors.structureShades.pebble,
+          backgroundColor: colors.structureShades.iron,
           padding: `${spacing.moderate}px ${spacing.normal}px`,
           borderBottom: constants.borders.default,
           ':nth-of-type(2)': {
@@ -25,19 +25,18 @@ const Table = ({ columns, rows }) => {
           },
         },
         tr: {
-          backgroundColor: colors.grey4,
           ':hover': {
-            backgroundColor: colors.grey1,
+            backgroundColor: colors.structureShades.iron,
             td: {
-              border: constants.borders.default,
+              border: constants.borders.tableRow,
               borderLeft: '0',
               borderRight: '0',
               '&:first-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderRight: '0',
               },
               '&:last-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderLeft: '0',
               },
             },
@@ -46,7 +45,7 @@ const Table = ({ columns, rows }) => {
         td: {
           whiteSpace: 'nowrap',
           fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
+          color: colors.structureShades.pebble,
           padding: `${spacing.base}px ${spacing.normal}px`,
           border: constants.borders.transparent,
           borderLeft: '0',
@@ -78,9 +77,9 @@ const Table = ({ columns, rows }) => {
             <tr
               key={row.id}
               css={{
-                backgroundColor: colors.grey4,
+                backgroundColor: colors.structureShades.lead,
                 '&:nth-of-type(2n)': {
-                  backgroundColor: colors.grey3,
+                  backgroundColor: colors.structureShades.mattGrey,
                 },
               }}>
               <td>
@@ -90,8 +89,42 @@ const Table = ({ columns, rows }) => {
               <td>{row.createdBy}</td>
               <td>{row.priority}</td>
               <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
-              <td>{row.failed}</td>
-              <td>{row.errors}</td>
+              <td>
+                {row.failed > 0 && (
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      color: colors.failed,
+                      fontWeight: typography.weight.bold,
+                      fontSize: typography.size.kilo,
+                      lineHeight: `${typography.size.mega}px`,
+                      padding: spacing.base,
+                      borderRadius: 32,
+                      backgroundColor: colors.structureShades.coal,
+                    }}>
+                    {row.failed}
+                  </div>
+                )}
+              </td>
+              <td>
+                {row.errors > 0 && (
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      color: colors.failed,
+                      fontWeight: typography.weight.bold,
+                      fontSize: typography.kilo,
+                      lineHeight: typography.mega,
+                      padding: spacing.base,
+                      borderRadius: 32,
+                      backgroundColor: colors.structureShades.coal,
+                    }}>
+                    {row.errors}
+                  </div>
+                )}
+              </td>
               <td>{row.numAssets}</td>
               <td>
                 <ProgressBar status={row.progress} />

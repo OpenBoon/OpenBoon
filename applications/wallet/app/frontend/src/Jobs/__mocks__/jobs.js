@@ -39,7 +39,7 @@ export const jobs = {
         tasksWaiting: 5,
         tasksRunning: 5,
         tasksSuccess: 5,
-        tasksFailure: 1,
+        tasksFailure: 100,
         tasksSkipped: 0,
         tasksQueued: 0,
       },
@@ -489,12 +489,8 @@ export const jobRows = jobs.list.map(job => {
   const createdBy = job.createdUser.username
   const { priority } = job
   const createdDateTime = job.timeCreated
-  const failed = job.taskCounts.tasksFailure > 0 && (
-    <div style={{ color: 'red' }}>{job.taskCounts.tasksFailure}</div>
-  )
-  const errors = job.assetCounts.assetErrorCount > 0 && (
-    <div style={{ color: 'red' }}>{job.assetCounts.assetErrorCount}</div>
-  )
+  const failed = job.taskCounts.tasksFailure
+  const errors = job.assetCounts.assetErrorCount
   const numAssets = 'numAsets'
   const progress = {
     isGenerating: job.jobId === '1585ca03-4db0-14d1-8edd-0a580a000926',

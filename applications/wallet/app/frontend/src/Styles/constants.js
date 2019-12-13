@@ -5,9 +5,10 @@ const borderRadius = {
 }
 
 const borders = {
-  default: `1px solid ${colors.grey5}`,
+  default: `1px solid ${colors.structureShades.mattGrey}`,
   transparent: `1px solid transparent`,
   separator: `1px solid ${colors.rocks.pewter}`,
+  tableRow: `1px solid ${colors.structureShades.steel}`,
 }
 
 const opacity = {
