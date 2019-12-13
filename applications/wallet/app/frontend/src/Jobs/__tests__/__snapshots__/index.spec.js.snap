@@ -16,7 +16,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
 }
 
 .emotion-79 {
-  padding: 16px;
+  padding: 32px;
 }
 
 .emotion-78 {
@@ -993,7 +993,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
 }
 
 .emotion-79 {
-  padding: 16px;
+  padding: 32px;
 }
 
 .emotion-78 {

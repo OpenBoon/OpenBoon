@@ -10,7 +10,7 @@ export const noop = () => () => {}
 
 const Jobs = () => {
   return (
-    <div css={{ padding: spacing.normal }}>
+    <div css={{ padding: spacing.spacious }}>
       <h2>Data Queue</h2>
 
       <Table columns={jobColumns} rows={jobRows} />
