@@ -102,7 +102,7 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                .antMatcher("/actuator/**")
+                .antMatcher("/monitor/**")
                 .httpBasic()
                 .and()
                 .csrf().disable()

@@ -43,7 +43,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testCreateFailure403() {
+    fun testCreate_rsp_403() {
         val spec = ApiKeySpec(
             "test",
             UUID.randomUUID(),
@@ -100,7 +100,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testFindOne_401() {
+    fun testFindOne_rsp_401() {
         val filter = ApiKeyFilter(names = listOf("mrcatlady"))
 
         mvc.perform(
