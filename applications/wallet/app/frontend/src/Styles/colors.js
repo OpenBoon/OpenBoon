@@ -13,8 +13,6 @@ const colors = {
   primaryFont: '#fff',
   secondaryFont: '#545454',
 
-  black: '#000',
-
   grey1: '#2e2e2e',
   grey2: '#b3b3b3',
   grey3: '#1d1d1d',
@@ -44,12 +42,9 @@ const colors = {
   },
 
   rocks: {
-    black: '#000000',
     coal: '#1f1a17',
     charcoal: '#4d4948',
-    iron: '#808080',
     pewter: '#9b9b9b',
-    steel: '#b3b3b3',
     pebble: '#dadada',
     slate: '#e1e1e1',
     granite: '#e7e7e7',

@@ -3,8 +3,8 @@ import { colors, spacing, constants } from '../Styles'
 
 const LABEL_COLORS = {
   Active: colors.yellow1,
-  Paused: colors.rocks.black,
-  Canceled: colors.rocks.iron,
+  Paused: colors.structureShades.black,
+  Canceled: colors.structureShades.steel,
   Finished: colors.plants.grass,
 }
 
