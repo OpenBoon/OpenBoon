@@ -90,8 +90,18 @@ const Table = ({ columns, rows }) => {
               <td>{row.createdBy}</td>
               <td>{row.priority}</td>
               <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
-              <td>{row.failed}</td>
-              <td>{row.errors}</td>
+              <td>
+                {row.failedTasks > 0 && (
+                  <div style={{ color: colors.error }}>{row.failedTasks}</div>
+                )}
+              </td>
+              <td>
+                {row.assetErrorCount > 0 && (
+                  <div style={{ color: colors.error }}>
+                    {row.assetErrorCount}
+                  </div>
+                )}
+              </td>
               <td>{row.numAssets}</td>
               <td>
                 <ProgressBar status={row.progress} />

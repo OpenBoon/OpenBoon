@@ -27,11 +27,9 @@ export const getRows = ({ jobs }) =>
     const createdBy = createdUser.username
     const createdDateTime = timeCreated
 
-    const failed = taskCounts.tasksFailure > 0 && (
-      <div style={{ color: 'red' }}>{taskCounts.tasksFailure}</div>
-    )
+    const failedTasks = taskCounts.tasksFailure
 
-    const errors = assetCounts.assetErrorCount > 0 && (
+    const assetErrorCount = assetCounts.assetErrorCount > 0 && (
       <div style={{ color: 'red' }}>{assetCounts.assetErrorCount}</div>
     )
 
@@ -54,8 +52,8 @@ export const getRows = ({ jobs }) =>
       createdBy,
       priority,
       createdDateTime,
-      failed,
-      errors,
+      failedTasks,
+      assetErrorCount,
       numAssets,
       progress,
     }

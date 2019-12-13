@@ -355,24 +355,14 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
             1
           </div>
         </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            4
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
@@ -421,24 +411,14 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
             1
           </div>
         </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            4
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
@@ -487,24 +467,14 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
             1
           </div>
         </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            4
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
@@ -544,24 +514,14 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
             1
           </div>
         </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            4
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
@@ -599,24 +559,14 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
             1
           </div>
         </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            4
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
@@ -656,24 +606,14 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
             1
           </div>
         </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            3
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
@@ -710,17 +650,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           2019-08-01 22:52:19
         </td>
         <td />
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            3
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
@@ -760,7 +690,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
@@ -807,7 +737,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
@@ -854,7 +784,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
@@ -901,24 +831,14 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             style={
               Object {
-                "color": "red",
+                "color": "#ce2d3f",
               }
             }
           >
             1
           </div>
         </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
-          >
-            49
-          </div>
-        </td>
+        <td />
         <td>
           numAsets
         </td>
