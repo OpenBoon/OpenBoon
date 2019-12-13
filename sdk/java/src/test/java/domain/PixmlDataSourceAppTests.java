@@ -1,6 +1,7 @@
 package domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,14 +20,15 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Utils.class)
-@PowerMockIgnore({"javax.crypto.*"})
+@PrepareForTest({Utils.class})
+@PowerMockIgnore({"javax.crypto.*","javax.net.ssl.*"})
 public class PixmlDataSourceAppTests {
 
     Map keyDict;
     PixmlApp app;
 
     ObjectMapper mapper;
+    OkHttpClient okHttpClient;
 
     @Before
     public void setup() {
@@ -38,6 +40,7 @@ public class PixmlDataSourceAppTests {
 
         app = new PixmlApp(keyDict);
         mapper = new ObjectMapper();
+        okHttpClient = new OkHttpClient();
     }
 
     @Test
@@ -50,8 +53,6 @@ public class PixmlDataSourceAppTests {
         value.put("uri", "gs://test/test");
         value.put("file_types", Arrays.asList("jpg"));
         value.put("analysis", Arrays.asList("google-ocr"));
-        DataSource mockedDs = new DataSource(value);
-
 
         //Mocking static method
         PowerMockito.mockStatic(Utils.class);
@@ -80,6 +81,7 @@ public class PixmlDataSourceAppTests {
 
         //Mocking static method
         PowerMockito.mockStatic(Utils.class);
+
         BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("post"), Mockito.anyString(), Mockito.anyMap(), Mockito.anyMap()))
                 .willReturn(mapper.writeValueAsString(value));
 
@@ -102,6 +104,7 @@ public class PixmlDataSourceAppTests {
 
         //Mocking static method
         PowerMockito.mockStatic(Utils.class);
+
         BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("post"), Mockito.anyString(), Mockito.anyMap(), Mockito.isNull()))
                 .willReturn(mapper.writeValueAsString(value));
 
@@ -126,6 +129,7 @@ public class PixmlDataSourceAppTests {
 
         //Mocking static method
         PowerMockito.mockStatic(Utils.class);
+
         BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("put"), Mockito.anyString(), Mockito.anyMap(), Mockito.anyMap()))
                 .willReturn(mapper.writeValueAsString(value));
 
