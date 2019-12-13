@@ -11,11 +11,11 @@ import HamburgerSvg from './hamburger.svg'
 
 const LOGO_WIDTH = 110
 
-const LayoutNavBar = ({
-  isSidebarOpen,
+const Navbar = ({
   projects,
-  setSidebarOpen,
   setSelectedProject,
+  isSidebarOpen,
+  setSidebarOpen,
   logout,
 }) => {
   return (
@@ -67,17 +67,17 @@ const LayoutNavBar = ({
   )
 }
 
-LayoutNavBar.propTypes = {
-  isSidebarOpen: PropTypes.bool.isRequired,
+Navbar.propTypes = {
   projects: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  setSidebarOpen: PropTypes.func.isRequired,
   setSelectedProject: PropTypes.func.isRequired,
+  isSidebarOpen: PropTypes.bool.isRequired,
+  setSidebarOpen: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
 }
 
-export default LayoutNavBar
+export default Navbar

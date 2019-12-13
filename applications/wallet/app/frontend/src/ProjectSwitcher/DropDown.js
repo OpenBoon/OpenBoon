@@ -12,6 +12,7 @@ const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
         zIndex: zIndex.reset,
         top: TOP,
         left: 0,
+        minWidth: '100%',
         borderRadius: constants.borderRadius.small,
         paddingTop: spacing.base,
         paddingBottom: spacing.base,

@@ -2,6 +2,8 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import Layout from '..'
 
+import projects from '../../Projects/__mocks__/projects'
+
 jest.mock('../../ProjectSwitcher', () => 'ProjectSwitcher')
 jest.mock('../../Sidebar', () => 'Sidebar')
 
@@ -10,7 +12,9 @@ const noop = () => () => {}
 describe('<Layout />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Layout logout={noop}>{() => `Hello World`}</Layout>,
+      <Layout results={projects.results} logout={noop}>
+        {() => `Hello World`}
+      </Layout>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
