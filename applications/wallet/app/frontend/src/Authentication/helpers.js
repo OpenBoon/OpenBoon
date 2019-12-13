@@ -20,7 +20,7 @@ export const authenticateUser = ({ setUser }) => async ({
   username,
   password,
 }) => {
-  const response = await fetch('/api/v1/login', {
+  const response = await fetch('/api/v1/login/', {
     method: 'POST',
     headers: { 'content-type': 'application/json;charset=UTF-8' },
     body: JSON.stringify({ username, password }),
@@ -41,7 +41,7 @@ export const logout = ({ setUser }) => async () => {
     }),
   )
 
-  await fetch('/api/v1/logout', {
+  await fetch('/api/v1/logout/', {
     method: 'POST',
     headers: {
       'content-type': 'application/json;charset=UTF-8',
