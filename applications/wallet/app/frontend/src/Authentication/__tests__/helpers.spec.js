@@ -62,6 +62,24 @@ describe('<Authentication /> helpers', () => {
         JSON.stringify({ id: 12345 }),
       )
     })
+
+    it('should display an alert for incorrect email/password', async () => {
+      const mockSetErrorMessage = jest.fn()
+
+      fetch.mockResponseOnce('Access Denied', { status: 401 })
+
+      await authenticateUser({
+        setErrorMessage: mockSetErrorMessage,
+        setUser: noop,
+      })({
+        username: 'username',
+        password: 'password',
+      })
+
+      expect(mockSetErrorMessage).toHaveBeenCalledWith(
+        'Invalid email or password.',
+      )
+    })
   })
 
   describe('logout()', () => {
