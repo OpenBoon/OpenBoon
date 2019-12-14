@@ -7,6 +7,7 @@ import LogoSvg from '../Icons/logo.svg'
 
 import FormAlert from '../FormAlert'
 import Input from '../Input'
+import Button, { VARIANTS } from '../Button'
 
 const WIDTH = 440
 const LOGO_WIDTH = 143
@@ -24,6 +25,8 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
         height: '100vh',
       }}>
       <form
+        method="post"
+        onSubmit={event => event.preventDefault()}
         css={{
           display: 'flex',
           flexDirection: 'column',
@@ -73,29 +76,19 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           onChange={({ target: { value } }) => setPassword(value)}
           hasError={!!errorMessage}
         />
-        <div css={{ padding: spacing.comfy, textAlign: 'center' }}>
-          <button
+        <div
+          css={{
+            padding: spacing.comfy,
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+          <Button
             type="submit"
-            onClick={event => {
-              event.preventDefault()
-              onSubmit({ username, password })
-            }}
-            css={{
-              backgroundColor: colors.primary,
-              color: colors.primaryFont,
-              fontSize: typography.size.hecto,
-              lineHeight: typography.height.hecto,
-              fontWeight: typography.weight.medium,
-              borderRadius: constants.borderRadius.small,
-              padding: `${spacing.moderate}px ${spacing.spacious}px`,
-              border: 0,
-              cursor: 'pointer',
-              ':hover': {
-                backgroundColor: colors.primaryHover,
-              },
-            }}>
+            variant={VARIANTS.PRIMARY}
+            onClick={() => onSubmit({ username, password })}
+            isDisabled={!username || !password}>
             Login
-          </button>
+          </Button>
         </div>
       </form>
     </div>

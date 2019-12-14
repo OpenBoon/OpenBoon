@@ -77,23 +77,61 @@ exports[`<Login /> should render properly 1`] = `
 
 .emotion-12 {
   padding: 24px;
-  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .emotion-11 {
-  background-color: #82be3c;
-  color: #fff;
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
   font-size: 14px;
   line-height: 16px;
   font-weight: 500;
-  border-radius: 2px;
-  padding: 12px 32px;
-  border: 0;
-  cursor: pointer;
+  border: none;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited {
+  color: #fff;
+  background-color: #82be3c;
 }
 
 .emotion-11:hover {
   background-color: #a7d374;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -101,6 +139,8 @@ exports[`<Login /> should render properly 1`] = `
 >
   <form
     className="emotion-13"
+    method="post"
+    onSubmit={[Function]}
   >
     <svg
       className="emotion-0"
@@ -164,6 +204,7 @@ exports[`<Login /> should render properly 1`] = `
       className="emotion-12"
     >
       <button
+        aria-disabled={true}
         className="emotion-11"
         onClick={[Function]}
         type="submit"
