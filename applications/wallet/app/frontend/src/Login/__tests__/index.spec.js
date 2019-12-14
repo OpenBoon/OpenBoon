@@ -36,4 +36,20 @@ describe('<Login />', () => {
       password: 'password',
     })
   })
+
+  it('should not POST the form', () => {
+    const mockFn = jest.fn()
+    const mockOnSubmit = jest.fn()
+
+    const component = TestRenderer.create(
+      <Login errorMessage="" setErrorMessage={noop} onSubmit={mockOnSubmit} />,
+    )
+
+    component.root
+      .findByProps({ method: 'post' })
+      .props.onSubmit({ preventDefault: mockFn })
+
+    expect(mockOnSubmit).not.toHaveBeenCalled()
+    expect(mockFn).toHaveBeenCalled()
+  })
 })
