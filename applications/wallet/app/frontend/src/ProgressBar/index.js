@@ -4,12 +4,13 @@ import { colors, constants, spacing } from '../Styles'
 import GeneratingSvg from './generating.svg'
 
 const CONTAINER_HEIGHT = 16
-const CONTAINER_WIDTH = 200
+const CONTAINER_WIDTH = 212
 const STATUS_COLORS = {
-  succeeded: colors.green1,
-  failed: colors.error,
-  running: colors.blue1,
-  pending: colors.grey6,
+  failed: colors.signalColors.warning,
+  skipped: colors.structureShades.zinc,
+  succeeded: colors.signalColors.grass,
+  running: colors.signalColors.canary,
+  pending: colors.signalColors.sky,
 }
 
 const ProgressBar = ({ status }) => {
@@ -51,7 +52,7 @@ const ProgressBar = ({ status }) => {
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {['succeeded', 'failed', 'running', 'pending']
+      {['failed', 'skipped', 'succeeded', 'running', 'pending']
         .filter(statusName => {
           return status[statusName] > 0
         })
@@ -84,8 +85,9 @@ ProgressBar.propTypes = {
     isGenerating: PropTypes.bool,
     isCanceled: PropTypes.bool,
     canceledBy: PropTypes.string,
-    succeeded: PropTypes.number,
     failed: PropTypes.number,
+    skipped: PropTypes.number,
+    succeeded: PropTypes.number,
     running: PropTypes.number,
     pending: PropTypes.number,
   }).isRequired,
