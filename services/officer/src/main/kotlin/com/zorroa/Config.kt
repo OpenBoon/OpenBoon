@@ -1,6 +1,5 @@
 package com.zorroa
 
-import com.aspose.words.FontSettings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -34,9 +33,5 @@ object Config {
 
         logger.info("Java heap size: ${heapSize}m")
         logger.info("Java max heap size: ${maxHeapSize}m")
-        logger.info("Fonts available from default font source:")
-        for (fontInfo in FontSettings.getDefaultInstance().fontsSources[0].availableFonts) {
-            logger.info("*** Font: " + fontInfo.fullFontName)
-        }
     }
 }
