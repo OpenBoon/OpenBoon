@@ -132,6 +132,7 @@ exports[`<Login /> should render properly 1`] = `
         Email
       </label>
       <input
+        autoFocus={true}
         className="emotion-6"
         id="username"
         name="username"

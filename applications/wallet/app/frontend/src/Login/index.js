@@ -57,6 +57,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           setErrorMessage={setErrorMessage}
         />
         <Input
+          autoFocus
           id="username"
           label="Email"
           type="text"

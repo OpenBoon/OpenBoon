@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-const Input = ({ id, type, label, value, onChange }) => (
+const Input = ({ id, type, label, value, onChange, ...props }) => (
   <div css={{ paddingTop: spacing.moderate, paddingBottom: spacing.moderate }}>
     <label
       htmlFor={id}
@@ -21,6 +21,8 @@ const Input = ({ id, type, label, value, onChange }) => (
         boxShadow: constants.boxShadows.input,
         width: '100%',
       }}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
     />
   </div>
 )
