@@ -28,12 +28,15 @@ object Config {
         officer = OfficerConfiguration()
     }
 
-    fun logAvailableFonts() {
+    fun logSystemConfiguration() {
+        val heapSize = Runtime.getRuntime().totalMemory() / 1024 / 1024
+        val maxHeapSize = Runtime.getRuntime().maxMemory() / 1024 / 1024
+
+        logger.info("Java heap size: ${heapSize}m")
+        logger.info("Java max heap size: ${maxHeapSize}m")
         logger.info("Fonts available from default font source:")
         for (fontInfo in FontSettings.getDefaultInstance().fontsSources[0].availableFonts) {
             logger.info("*** Font: " + fontInfo.fullFontName)
-
         }
     }
-
 }

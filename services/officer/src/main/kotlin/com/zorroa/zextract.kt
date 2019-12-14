@@ -1,35 +1,18 @@
 package com.zorroa
 
-import com.beust.jcommander.JCommander
-import com.beust.jcommander.Parameter
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import java.io.Closeable
-import java.io.InputStream
-import java.lang.management.ManagementFactory
-import java.util.Date
-import java.util.UUID
-import javax.servlet.MultipartConfigElement
-import kotlin.system.exitProcess
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import spark.kotlin.get
 import spark.kotlin.post
 import spark.kotlin.threadPool
+import java.io.InputStream
+import java.lang.management.ManagementFactory
+import java.util.UUID
+import javax.servlet.MultipartConfigElement
+import kotlin.system.exitProcess
 
 const val ASPOSE_LICENSE_FILE = "Aspose.Total.Java.lic"
-
-object ServerOptions {
-
-    @Parameter(
-        names = ["-c", "-config"],
-        description = "Path to config file"
-    )
-    var configFile: String = System.getenv("SERVICE_CONFIG_FILE") ?: "./config/application.yml"
-}
 
 /**
  * A render request
@@ -48,104 +31,6 @@ class ExistsRequest(
     val outputDir: String
 )
 
-/**
- * A utility object for json conversions. Filters null values.
- */
-object Json {
-    val mapper = jacksonObjectMapper()
-
-    init {
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    }
-}
-
-/**
- * The minimal Document interface.
- */
-abstract class Document(val options: RenderRequest) : Closeable {
-
-    val ioHandler = IOHandler(options)
-
-    fun renderImage() {
-        renderImage(options.page)
-    }
-
-    abstract fun renderImage(page: Int)
-    abstract fun renderAllImages(): Int
-
-    fun renderMetadata() {
-        renderMetadata(options.page)
-    }
-
-    abstract fun renderAllMetadata(): Int
-    abstract fun renderMetadata(page: Int)
-
-    fun render() {
-        if (isRenderAll()) {
-            logger.info("Rendering all images and metadata to {}", options.outputDir)
-            renderAllImages()
-            renderAllMetadata()
-        } else {
-            renderImage()
-            renderMetadata()
-        }
-    }
-
-    fun isRenderAll(): Boolean {
-        return options.page < 0
-    }
-
-    fun logImageTime(page: Int, time: Long) {
-        val mem = Runtime.getRuntime().freeMemory() / 1024 / 1024
-        logger.info(
-            "proxy input='${options.fileName}' output='${ioHandler.getOutputUri()}' page='$page' in time='{}ms', freemem='{}m'",
-            time,
-            mem
-        )
-    }
-
-    fun logMetadataTime(page: Int, time: Long) {
-        val mem = Runtime.getRuntime().freeMemory() / 1024 / 1024
-        logger.info(
-            "metadata input='${options.fileName}'  output='${ioHandler.getOutputUri()}' page='$page' in time='{}ms', freemem='{}m'",
-            time,
-            mem
-        )
-    }
-
-    fun getMetadata(page: Int): InputStream {
-        if (page < 1) {
-            throw IllegalArgumentException("Page number cannot be less than 1")
-        }
-        return ioHandler.getMetadata(page)
-    }
-
-    fun getImage(page: Int): InputStream {
-        if (page < 1) {
-            throw IllegalArgumentException("Page number cannot be less than 1")
-        }
-        return ioHandler.getImage(page)
-    }
-
-    fun convertDate(date: Date?): String? {
-        if (date == null) {
-            return null
-        }
-        return try {
-            date?.toInstant()?.toString()
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    companion object {
-        val logger: Logger = LoggerFactory.getLogger(Document::class.java)
-        val whitespaceRegex = Regex("\\s+")
-    }
-}
 
 /**
  * Extract the image and metadata to their resting place.
@@ -251,19 +136,7 @@ fun runServer(port: Int) {
 }
 
 fun main(args: Array<String>) = try {
-
-    val opts = ServerOptions
-    val cmd = JCommander.newBuilder()
-        .addObject(opts)
-        .build()
-    cmd.parse(*args)
-
-    val heapSize = Runtime.getRuntime().totalMemory() / 1024 / 1024
-    val maxHeapSize = Runtime.getRuntime().maxMemory() / 1024 / 1024
-
-    println("Java heap size: ${heapSize}m")
-    println("Java max heap size: ${maxHeapSize}m")
-    Config.logAvailableFonts()
+    Config.logSystemConfiguration()
     runServer(Config.officer.port)
 } catch (e: Exception) {
     println(e.message)
