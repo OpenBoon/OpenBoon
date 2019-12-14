@@ -29,24 +29,14 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
         }
         // Render the parent page
         opts.pageIndex = 0
-        saveImage(0, opts)
-        return diagram.pages.count() + 1
+        return diagram.pages.count()
     }
 
     fun saveImage(page: Int, opts: ImageSaveOptions) {
         val time = measureTimeMillis {
             val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
             diagram.save(output, opts)
-
-            if (page == 0) {
-                val render = StackRender(
-                    "MSVisio", Color(30, 62, 140),
-                    output.toInputStream()
-                )
-                ioHandler.writeImage(page, render.render())
-            } else {
-                ioHandler.writeImage(page, output)
-            }
+            ioHandler.writeImage(page, output)
         }
         logImageTime(page, time)
     }
@@ -55,7 +45,7 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
         for (index in 0 until diagram.pages.count()) {
             renderMetadata(index + 1)
         }
-        return diagram.pages.count() + 1
+        return diagram.pages.count()
     }
 
     override fun renderMetadata(page: Int) {
@@ -63,15 +53,12 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
             val props = diagram.documentProps
             val metadata = mutableMapOf<String, Any?>()
 
-            if (page == 0) {
-                metadata["type"] = "document"
-                metadata["title"] = props.title
-                metadata["author"] = props.creator
-                metadata["keywords"] = props.keywords
-                metadata["timeCreated"] = convertDate(props.timeCreated?.toDate())
-                metadata["length"] = diagram.pages.count
-                metadata["description"] = props.desc
-            }
+            metadata["type"] = "document"
+            metadata["title"] = props.title
+            metadata["author"] = props.creator
+            metadata["keywords"] = props.keywords
+            metadata["timeCreated"] = convertDate(props.timeCreated?.toDate())
+            metadata["length"] = diagram.pages.count
 
             val dpage = diagram.pages[(page - 1).coerceAtLeast(0)]
             val pageProps = dpage.pageSheet.pageProps
@@ -80,11 +67,8 @@ class VisioDocument(options: Options, inputStream: InputStream) : Document(optio
             metadata["width"] = (pageProps.pageHeight.value * 10).toInt()
             metadata["orientation"] =
                 if (pageProps.pageHeight.value > pageProps.pageHeight.value) "portrait" else "landscape"
-
-            if (page > 0) {
-                metadata["content"] = extractContent(page)
-                metadata["description"] = dpage.name
-            }
+            metadata["content"] = extractContent(page)
+            metadata["description"] = dpage.name
 
             val output = ReversibleByteArrayOutputStream()
             Json.mapper.writeValue(output, metadata)

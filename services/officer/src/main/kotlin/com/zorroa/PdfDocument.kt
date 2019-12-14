@@ -30,8 +30,7 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
         for (page in 1..fileInfo.numberOfPages) {
             stack.renderImage(page)
         }
-        stack.renderImage(0)
-        return fileInfo.numberOfPages + 1
+        return fileInfo.numberOfPages
     }
 
     override fun renderAllMetadata(): Int {
@@ -39,8 +38,7 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
         for (page in 1..fileInfo.numberOfPages) {
             renderMetadata(page)
         }
-        renderMetadata(0)
-        return fileInfo.numberOfPages + 1
+        return fileInfo.numberOfPages
     }
 
     override fun renderImage(page: Int) {
@@ -53,15 +51,14 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
             val fileInfo = PdfFileInfo(pdfDocument)
             val metadata = mutableMapOf<String, Any?>()
 
-            if (page == 0) {
-                metadata["type"] = "document"
-                metadata["title"] = fileInfo.title
-                metadata["author"] = fileInfo.author
-                metadata["keywords"] = fileInfo.keywords
-                metadata["description"] = fileInfo.subject
-                metadata["timeCreated"] = convertDate(documentInfo.creationDate)
-                metadata["length"] = fileInfo.numberOfPages
-            }
+            metadata["type"] = "document"
+            metadata["title"] = fileInfo.title
+            metadata["author"] = fileInfo.author
+            metadata["keywords"] = fileInfo.keywords
+            metadata["description"] = fileInfo.subject
+            metadata["timeCreated"] = convertDate(documentInfo.creationDate)
+            metadata["length"] = fileInfo.numberOfPages
+
             val virtPage = page.coerceAtLeast(1)
             val height = fileInfo.getPageHeight(virtPage)
             val width = fileInfo.getPageWidth(virtPage)
@@ -69,10 +66,7 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
             metadata["height"] = height
             metadata["width"] = width
             metadata["orientation"] = if (height > width) "portrait" else "landscape"
-
-            if (page > 0) {
-                metadata["content"] = extractPageContent(page)
-            }
+            metadata["content"] = extractPageContent(page)
 
             val output = ReversibleByteArrayOutputStream()
             Json.mapper.writeValue(output, metadata)
@@ -139,15 +133,7 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
         fun renderImage(page: Int) {
             val time = measureTimeMillis {
                 jpegDevice.process(doc.pdfDocument.pages.get_Item(page.coerceAtLeast(1)), byteStream)
-                if (page == 0) {
-                    val render = StackRender(
-                        "PDF", Color(227, 50, 34),
-                        byteStream.toInputStream()
-                    )
-                    doc.ioHandler.writeImage(page, render.render())
-                } else {
-                    doc.ioHandler.writeImage(page, byteStream)
-                }
+                doc.ioHandler.writeImage(page, byteStream)
                 byteStream.reset()
             }
             doc.logImageTime(page, time)

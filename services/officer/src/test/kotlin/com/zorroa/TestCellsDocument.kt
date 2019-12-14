@@ -71,20 +71,7 @@ class TestCellsDocument {
         opts.page = 1
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.renderMetadata(1)
-
-        val metadata = Json.mapper.readValue(doc.getMetadata(1), Map::class.java)
-        assertFalse(metadata.containsKey("content"))
-        assertFalse(metadata.containsKey("type"))
-    }
-
-    @Test
-    fun testRenderAssetMetadata() {
-        opts.page = 0
-        val doc = CellsDocument(opts, FileInputStream(opts.fileName))
-        doc.renderMetadata(0)
-
-        val metadata = Json.mapper.readValue(doc.getMetadata(0), Map::class.java)
-        assertEquals("document", metadata["type"])
+        validateMetadata(doc.getMetadata(1), "width", "height", "orientation","content")
     }
 
     @Test

@@ -115,11 +115,17 @@ abstract class Document(val options: Options) : Closeable {
         )
     }
 
-    fun getMetadata(page: Int = 0): InputStream {
+    fun getMetadata(page: Int): InputStream {
+        if (page < 1) {
+            throw IllegalArgumentException("Page number cannot be less than 1")
+        }
         return ioHandler.getMetadata(page)
     }
 
-    fun getImage(page: Int = 0): InputStream {
+    fun getImage(page: Int): InputStream {
+        if (page < 1) {
+            throw IllegalArgumentException("Page number cannot be less than 1")
+        }
         return ioHandler.getImage(page)
     }
 
