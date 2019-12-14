@@ -9,11 +9,10 @@ import com.aspose.diagram.PaperSizeFormat
 import com.aspose.diagram.PixelOffsetMode
 import com.aspose.diagram.SaveFileFormat
 import com.aspose.diagram.SmoothingMode
-import java.awt.Color
 import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
-class VisioDocument(options: Options, inputStream: InputStream) : Document(options) {
+class VisioDocument(options: RenderRequest, inputStream: InputStream) : Document(options) {
 
     var diagram = Diagram(inputStream)
 

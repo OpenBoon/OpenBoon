@@ -14,7 +14,7 @@ const val PAGE_LIMIT = 9
 const val CELL_RANGE_MAX_COLUMNS = 10
 const val CELL_RANGE_MAX_ROWS = 25
 
-class CellsDocument(options: Options, inputStream: InputStream) : Document(options) {
+class CellsDocument(options: RenderRequest, inputStream: InputStream) : Document(options) {
 
     private val loadOptions = LoadOptions()
 

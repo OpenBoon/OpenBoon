@@ -3,6 +3,7 @@ package com.zorroa
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -31,22 +32,21 @@ object ServerOptions {
 }
 
 /**
- * All the options supported by Officer .
+ * A render request
  */
-class Options(val fileName: String) {
-
-    @Parameter(names = ["-p", "-page"], description = "The page number to render. -1 for all pages")
-    var page: Int = -1
-
-    @Parameter(
-        names = ["-o", "-output-dir"],
-        description = "An output directory for the given request"
-    )
+class RenderRequest(
+    val fileName: String,
+    var page: Int = -1,
     var outputDir: String = UUID.randomUUID().toString().replace("-", "")
+)
 
-    @Parameter(names = ["-v", "-verbose"], description = "Log extra information")
-    var verbose: Boolean = false
-}
+/**
+ * Exists request.
+ */
+class ExistsRequest(
+    val page: Int,
+    val outputDir: String
+)
 
 /**
  * A utility object for json conversions. Filters null values.
@@ -58,13 +58,14 @@ object Json {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
 }
 
 /**
  * The minimal Document interface.
  */
-abstract class Document(val options: Options) : Closeable {
+abstract class Document(val options: RenderRequest) : Closeable {
 
     val ioHandler = IOHandler(options)
 
@@ -149,7 +150,7 @@ abstract class Document(val options: Options) : Closeable {
 /**
  * Extract the image and metadata to their resting place.
  */
-fun extract(opts: Options, input: InputStream): Document {
+fun extract(opts: RenderRequest, input: InputStream): Document {
     requireNotNull(opts.outputDir) { "An output directory must be provided" }
 
     val fileExt = opts.fileName.substringAfterLast('.', "").toLowerCase()
@@ -208,9 +209,9 @@ fun runServer(port: Int) {
     spark.kotlin.port(port)
     threadPool(threads, threads, 600 * 1000)
 
-    post("/exists") {
-        val options = Json.mapper.readValue<Options>(this.request.body())
-        val ioHandler = IOHandler(options)
+    post("/exists", "application/json") {
+        val options = Json.mapper.readValue<ExistsRequest>(this.request.body())
+        val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputDir))
         if (ioHandler.exists(options.page)) {
             this.response.status(200)
         } else {
@@ -232,7 +233,7 @@ fun runServer(port: Int) {
                 this.response.status(429)
                 Json.mapper.writeValueAsString(backoff)
             } else {
-                val req = Json.mapper.readValue<Options>(body.inputStream)
+                val req = Json.mapper.readValue<RenderRequest>(body.inputStream)
                 val doc = extract(req, file.inputStream)
                 this.response.status(201)
                 Json.mapper.writeValueAsString(mapOf("output" to doc.ioHandler.getOutputUri()))
@@ -262,6 +263,7 @@ fun main(args: Array<String>) = try {
 
     println("Java heap size: ${heapSize}m")
     println("Java max heap size: ${maxHeapSize}m")
+    Config.logAvailableFonts()
     runServer(Config.officer.port)
 } catch (e: Exception) {
     println(e.message)

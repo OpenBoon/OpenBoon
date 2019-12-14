@@ -8,11 +8,11 @@ import org.junit.Test
 
 class TestSlidesDocument {
 
-    private lateinit var opts: Options
+    private lateinit var opts: RenderRequest
 
     @Before
     fun setup() {
-        opts = Options("src/test/resources/pptx_test.pptx")
+        opts = RenderRequest("src/test/resources/pptx_test.pptx")
     }
 
     @Test
@@ -29,7 +29,7 @@ class TestSlidesDocument {
 
     @Test
     fun testRenderAll() {
-        val opts = Options("src/test/resources/pptx_test.pptx")
+        val opts = RenderRequest("src/test/resources/pptx_test.pptx")
         val doc = SlidesDocument(opts, FileInputStream(opts.fileName))
         assertEquals(3, doc.renderAllImages())
     }

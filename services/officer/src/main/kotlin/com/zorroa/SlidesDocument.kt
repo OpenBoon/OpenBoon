@@ -2,12 +2,11 @@ package com.zorroa
 
 import com.aspose.slides.Presentation
 import com.aspose.slides.SlideUtil
-import java.awt.Color
 import java.io.InputStream
 import javax.imageio.ImageIO
 import kotlin.system.measureTimeMillis
 
-class SlidesDocument(options: Options, inputStream: InputStream) : Document(options) {
+class SlidesDocument(options: RenderRequest, inputStream: InputStream) : Document(options) {
 
     private val doc = Presentation(inputStream)
 

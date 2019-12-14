@@ -11,7 +11,7 @@ class TestVisioDocument {
     @Test
     @Ignore
     fun renderPageImage() {
-        val opts = Options("src/test/resources/visio_test.vsdx")
+        val opts = RenderRequest("src/test/resources/visio_test.vsdx")
         opts.page = 1
 
         val doc = VisioDocument(opts, FileInputStream(opts.fileName))
@@ -26,7 +26,7 @@ class TestVisioDocument {
 
     @Test
     fun renderPageMetadata() {
-        val opts = Options("src/test/resources/HRFLow.vsd")
+        val opts = RenderRequest("src/test/resources/HRFLow.vsd")
 
         val doc = VisioDocument(opts, FileInputStream(opts.fileName))
         doc.renderMetadata(1)
@@ -35,14 +35,14 @@ class TestVisioDocument {
 
     @Test
     fun renderAllImages() {
-        val opts = Options("src/test/resources/HRFLow.vsd")
+        val opts = RenderRequest("src/test/resources/HRFLow.vsd")
         val doc = VisioDocument(opts, FileInputStream(opts.fileName))
         assertEquals(4, doc.renderAllImages())
     }
 
     @Test
     fun renderAllMetadata() {
-        val opts = Options("src/test/resources/HRFLow.vsd")
+        val opts = RenderRequest("src/test/resources/HRFLow.vsd")
         val doc = VisioDocument(opts, FileInputStream(opts.fileName))
         assertEquals(4, doc.renderAllMetadata())
     }

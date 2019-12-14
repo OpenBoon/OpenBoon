@@ -17,7 +17,7 @@ import org.junit.rules.ExpectedException
 
 class TestCellsDocument {
 
-    private lateinit var opts: Options
+    private lateinit var opts: RenderRequest
 
     @Rule
     @JvmField
@@ -25,7 +25,7 @@ class TestCellsDocument {
 
     @Before
     fun setup() {
-        opts = Options("src/test/resources/test_sheet.xlsx")
+        opts = RenderRequest("src/test/resources/test_sheet.xlsx")
         opts.page = 1
         opts.outputDir = "xlsx"
     }
@@ -56,7 +56,7 @@ class TestCellsDocument {
 
     @Test
     fun testRenderAllImages() {
-        val opts = Options("src/test/resources/test_sheet.xlsx")
+        val opts = RenderRequest("src/test/resources/test_sheet.xlsx")
 
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.renderAllImages()

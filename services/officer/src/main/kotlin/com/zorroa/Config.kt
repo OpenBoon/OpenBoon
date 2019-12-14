@@ -1,8 +1,6 @@
 package com.zorroa
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import java.nio.file.Paths
+import com.aspose.words.FontSettings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -20,10 +18,7 @@ object Config {
         val loadMultiplier: Int = (System.getenv("OFFICER_LOADMULTIPLIER") ?: "2").toInt()
     )
 
-    val logger: Logger = LoggerFactory.getLogger(StorageManager::class.java)
-
-    private val mapper = ObjectMapper(YAMLFactory())
-    private val configFilePath = Paths.get(ServerOptions.configFile)
+    val logger: Logger = LoggerFactory.getLogger(Config::class.java)
 
     val officer: OfficerConfiguration
     val bucket: BucketConfiguration
@@ -32,4 +27,13 @@ object Config {
         bucket = BucketConfiguration()
         officer = OfficerConfiguration()
     }
+
+    fun logAvailableFonts() {
+        logger.info("Fonts available from default font source:")
+        for (fontInfo in FontSettings.getDefaultInstance().fontsSources[0].availableFonts) {
+            logger.info("*** Font: " + fontInfo.fullFontName)
+
+        }
+    }
+
 }

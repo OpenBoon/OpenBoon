@@ -1,22 +1,14 @@
 package com.zorroa
 
-import com.aspose.words.FontSettings
 import com.aspose.words.ImageSaveOptions
 import com.aspose.words.PdfSaveOptions
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
-class WordDocument(options: Options, inputStream: InputStream) : Document(options) {
+class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(options) {
 
     private val doc = com.aspose.words.Document(inputStream)
-
-    init {
-        if (options.verbose) {
-            logFontsUsed()
-            logAvailableFonts()
-        }
-    }
 
     private fun logFontsUsed() {
         logger.info("Fonts used in document:")
@@ -27,15 +19,6 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
         }
     }
 
-    private fun logAvailableFonts() {
-        logger.info("Fonts available from default font source:")
-        for (fontInfo in FontSettings.getDefaultInstance().fontsSources[0].availableFonts) {
-            logger.info("*** FontFamilyName : " + fontInfo.fontFamilyName)
-            logger.info("*** FullFontName  : " + fontInfo.fullFontName)
-            logger.info("*** Version  : " + fontInfo.version)
-            logger.info("*** FilePath : " + fontInfo.filePath)
-        }
-    }
 
     override fun renderAllImages(): Int {
         val pageCount = doc.pageCount

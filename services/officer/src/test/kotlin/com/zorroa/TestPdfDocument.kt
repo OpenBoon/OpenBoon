@@ -8,11 +8,11 @@ import org.junit.Before
 
 class TestPdfDocument {
 
-    private lateinit var opts: Options
+    private lateinit var opts: RenderRequest
 
     @Before
     fun setup() {
-        opts = Options("src/test/resources/CPB7_WEB.pdf")
+        opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.outputDir = "pdf"
     }
 
@@ -35,7 +35,7 @@ class TestPdfDocument {
 
     @Test
     fun testRenderAllImages() {
-        val opts = Options("src/test/resources/pdf_test.pdf")
+        val opts = RenderRequest("src/test/resources/pdf_test.pdf")
         val doc = PdfDocument(opts, FileInputStream(opts.fileName))
         assertEquals(3, doc.renderAllImages())
     }

@@ -6,7 +6,6 @@ import com.aspose.pdf.devices.JpegDevice
 import com.aspose.pdf.devices.Resolution
 import com.aspose.pdf.facades.PdfExtractor
 import com.aspose.pdf.facades.PdfFileInfo
-import java.awt.Color
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -16,7 +15,7 @@ import kotlin.system.measureTimeMillis
 /**
  * Handles rendering a PDF as an image and json metadata file.
  */
-class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Document(options) {
+class PdfDocument(options: RenderRequest, inputStream: InputStream) : com.zorroa.Document(options) {
 
     val pdfDocument = Document(inputStream)
 
@@ -125,7 +124,7 @@ class PdfDocument(options: Options, inputStream: InputStream) : com.zorroa.Docum
      * A helper class which makes it easy to resuse a bytestream and
      * jpegDevice when rendering all pages.
      */
-    class PdfImageRenderStack(private val doc: PdfDocument, val options: Options) {
+    class PdfImageRenderStack(private val doc: PdfDocument, val options: RenderRequest) {
 
         private val byteStream = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
         private val jpegDevice = JpegDevice(Resolution(75), 100)

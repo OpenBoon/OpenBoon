@@ -8,11 +8,11 @@ import kotlin.test.assertEquals
 
 class TestWordDocument {
 
-    private lateinit var opts: Options
+    private lateinit var opts: RenderRequest
 
     @Before
     fun setup() {
-        opts = Options("src/test/resources/word_test.docx")
+        opts = RenderRequest("src/test/resources/word_test.docx")
         opts.page = 1
         opts.outputDir = "docx"
     }
@@ -33,7 +33,7 @@ class TestWordDocument {
 
     @Test
     fun testRender() {
-        val opts = Options("src/test/resources/lighthouse.docx")
+        val opts = RenderRequest("src/test/resources/lighthouse.docx")
         opts.page = 1
 
         val doc = WordDocument(opts, FileInputStream(opts.fileName))
