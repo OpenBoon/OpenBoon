@@ -135,9 +135,8 @@ class LocalFileCache(object):
 
     def localize_pixml_file(self, asset, pfile, copy_path=None):
         """
-        Localize the file described by the storage dict.  If a
-        path argument is provided, overwrite the file cache
-        location with that file.
+        Localize the file described by the storage dict.  If a path argument is
+        provided, overwrite the file cache location with that file.
 
         Args:
             asset (Asset): The ID of the asset.
@@ -150,9 +149,14 @@ class LocalFileCache(object):
         """
         self.__init_root()
         _, suffix = os.path.splitext(copy_path or pfile['name'])
+
+        # Obtain the necessary properties to formulate a cache key.
         name = pfile['name']
         category = pfile['category']
-        key = ''.join((asset.id, name, category))
+        # handle the pfile referencing another asset.
+        asset_id = pfile.get("assetId", asset.id)
+        key = ''.join((asset_id, name, category))
+
         cache_path = self.get_path(key, suffix)
         if copy_path:
             copy_path = urlparse(str(copy_path)).path
@@ -160,7 +164,7 @@ class LocalFileCache(object):
             shutil.copy(urlparse(copy_path).path, cache_path)
         elif not os.path.exists(cache_path):
             self.app.client.stream('/api/v3/assets/{}/files/{}/{}'
-                                   .format(asset.id, category, name), cache_path)
+                                   .format(asset_id, category, name), cache_path)
         return cache_path
 
     def get_path(self, key, suffix=""):

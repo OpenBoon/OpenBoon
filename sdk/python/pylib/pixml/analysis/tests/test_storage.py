@@ -61,6 +61,17 @@ class LocalFileCacheTests(TestCase):
         assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
 
     @patch.object(PixmlClient, 'stream')
+    def test_localize_pixml_with_asset_override(self, post_patch):
+        pfile = {
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'assetId': 'bingo'
+        }
+        post_patch.return_value = '/tmp/cat.jpg'
+        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile)
+        assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
+
+    @patch.object(PixmlClient, 'stream')
     def test_localize_pixml_source_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
