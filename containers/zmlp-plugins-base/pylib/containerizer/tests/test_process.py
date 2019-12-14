@@ -70,8 +70,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         error = self.emitter.get_events("error")[0]
         assert error["payload"]["processor"] == "pixml.analysis.testing.TestProcessor"
         assert error["payload"]["fatal"] is True
-        assert error["payload"]["phase"] is "execute"
-        assert error["payload"]["path"] is "/foo/bing.jpg"
+        assert error["payload"]["phase"] == "execute"
+        assert error["payload"]["path"] == "/foo/bing.jpg"
 
     def test_teardown_processor(self):
         req = {
