@@ -142,7 +142,7 @@ class ContainerizedZpsExecutor(object):
 
                 # Tear down the processor, optionally keeping the container
                 # if its needed again.
-                self.teardown_processor(proc, keep_container)
+                self.teardown_processor(proc, len(assets) and keep_container)
 
                 if not assets:
                     logger.warning("All assets have been skipped")
