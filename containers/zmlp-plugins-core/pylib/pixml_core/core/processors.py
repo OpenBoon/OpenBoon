@@ -1,17 +1,37 @@
 import logging
+import os
 
 from pixml.analysis import AssetBuilder, Argument, PixmlUnrecoverableProcessorException
+from pixml.analysis.storage import file_cache
 
 logger = logging.getLogger(__name__)
 
 
 class GroupProcessor(AssetBuilder):
     """A GroupProcessor is for holding sub processors. By itself, GroupProcessor is a no-op."""
+
     def __init__(self):
         super(GroupProcessor, self).__init__()
 
     def process(self, frame):
         pass
+
+
+class PreCacheSourceFileProcessor(AssetBuilder):
+    """PreCacheSourceFileProcessor pre-caches the source path and adds some additional
+    data to the source namespace
+    """
+
+    def process(self, frame):
+        asset = frame.asset
+        try:
+            logger.info("precaching Asset: {}".format(asset))
+            path = file_cache.localize_remote_file(asset)
+            if not asset.attr_exists("source.filesize"):
+                asset.set_attr("source.filesize", os.path.getsize(path))
+        except Exception as e:
+            logger.exception("Failed to pre-cache source file")
+            raise PixmlUnrecoverableProcessorException("Failed to pre-cache source file", e)
 
 
 class AssertAttributesProcessor(AssetBuilder):
