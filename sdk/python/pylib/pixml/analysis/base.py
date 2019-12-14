@@ -4,11 +4,11 @@ import logging
 import os
 import stat
 import traceback
+import copy
 from shutil import copyfile
 
 from ..app import app_from_env
 from ..exception import PixmlException
-from ..util import as_collection
 
 logger = logging.getLogger(__name__)
 
@@ -209,15 +209,18 @@ class Reactor(object):
             int: The number of batches created.
 
         """
-        if not len(self.expand_frames):
+        queue_size = len(self.expand_frames)
+        if not queue_size:
             return 0
 
         batch_size = batch_size or self.batch_size
 
         # If force is not set, check if the expand buffer has met the batch
         # size
-        if not force and len(self.expand_frames) < batch_size:
+        if not force and queue_size < batch_size:
             return 0
+
+        logger.info("Expanding, task queue at {}, batch_size={}".format(queue_size, batch_size))
 
         def grouper(n, iterable):
             it = iter(iterable)
@@ -231,33 +234,20 @@ class Reactor(object):
         for group in grouper(batch_size, self.expand_frames):
             batch_count += 1
             over = []
-            for parent_frame, group_frame in group:
 
-                # Copy metadata from the parent frame if necessary.  This is
-                # set in frame.copy_attrs
-                if group_frame.copy_attrs:
-                    for attr in group_frame.copy_attrs:
-                        logger.info("copy field='%s' to derived assetId='%s'" %
-                                    (attr, parent_frame.asset.id))
-                        group_frame.asset.set_attr(attr,
-                                                   parent_frame.asset.get_attr(
-                                                       attr))
+            # Copy data between the asset frame and expand_frame
+            # Note that, at the time of the parent asset won't
+            for parent_frame, expand_frame in group:
+                # For the child assets to process they will need source file
+                # information.
+                parent_source = copy.deepcopy(parent_frame.asset["source"])
+                expand_frame.asset["source"] = parent_source
 
-                # Check for a list of attrs in the tmp namespace and copy them
-                # down into each child.
-                copy_attrs = parent_frame.asset.get_attr(
-                    "tmp.copy_attrs_to_clip")
-                if copy_attrs:
-                    # handle the case where tmp.copy_attrs_to_clip may be a
-                    # string
-                    for attr in as_collection(copy_attrs):
-                        logger.info("copy field='%s' to derived assetId='%s'" %
-                                    (attr, parent_frame.asset.id))
-                        group_frame.asset.set_attr(attr,
-                                                   parent_frame.asset.get_attr(
-                                                       attr))
-
-                over.append(group_frame.asset.for_json())
+                source_files = copy.deepcopy(parent_frame.asset.get_files(category="source") or [])
+                for source_file in source_files:
+                    source_file["assetId"] = parent_frame.asset.id
+                expand_frame.asset.attrs["files"] = source_files
+            over.append(expand_frame.asset.for_json())
             self.expand(over)
 
         self.clear_expand_frames()
