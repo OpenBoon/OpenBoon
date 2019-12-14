@@ -154,8 +154,11 @@ class DocumentMixin(object):
             except AttributeError:
                 doc[parts[-1]] = value
 
-    def __getitem__(self, attr):
-        return self.get_attr(attr)
+    def __setitem__(self, field, value):
+        self.set_attr(field, value)
+
+    def __getitem__(self, field):
+        return self.get_attr(field)
 
 
 class FileImport(object):
@@ -192,6 +195,12 @@ class FileImport(object):
             "attrs": self.attrs,
             "clip": self.clip
         }
+
+    def __setitem__(self, field, value):
+        self.attrs[field] = value
+
+    def __getitem__(self, field):
+        return self.attrs[field]
 
 
 class FileUpload(FileImport):
@@ -328,22 +337,54 @@ class Clip(object):
 
     Each clip of an Asset needs to have a unique type, start, stop, and optionally
     timeline attributes fo it to be considered a unique clip.
+
     """
+
+    @staticmethod
+    def page(page_num):
+        """
+        Return a standard 'page' clip for the given page.
+
+        Args:
+            page_num (int): The page number
+
+        Returns:
+            Clip: The page clip.
+
+        """
+        return Clip('page', page_num, page_num)
+
+    @staticmethod
+    def scene(time_in, time_out, timeline):
+        """
+        Return a video scene Clip with the given in/out points and a timeline name.
+
+        Args:
+            time_in: (float): The start time of the cut.
+            time_out: (float): The end time of the cut.
+            timeline: (str): An timeline label.  Videos can be clipified multiple ways
+                by multiple types of services and labeling them with a timeline is
+                useful for differentiating them.
+        Returns:
+            Clip: A shot Clip.
+
+        """
+        return Clip('scene', time_in, time_out, timeline)
+
     def __init__(self, type, start, stop, timeline=None):
         """Initialize a new clip.
 
         Args:
-            type (str): The clip type, usually video or page.
+            type (str): The clip type, usually 'scene' or 'page' but it can be arbitrary.
             start (float): The start of the clip
             stop (float): The end of the clip,
-            timeline (str): When an asset is clipified multiple ways, use the timeline
-                to differentiate or else elements may collide.
+            timeline (str): Used when multiple type of clipification on a video occur.
         """
+
         self.type = type
         self.start = float(start)
         self.stop = float(stop)
         self.timeline = timeline
-        self.length = max(1.0, self.stop - self.start + 1.0)
 
     def for_json(self):
         """Return a JSON serialized copy.
@@ -352,7 +393,7 @@ class Clip(object):
             :obj:`dict`: A json serializable dict.
         """
         serializable_dict = {}
-        attrs = ['type', 'start', 'stop', 'length', 'timeline']
+        attrs = ['type', 'start', 'stop', 'timeline']
         for attr in attrs:
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
