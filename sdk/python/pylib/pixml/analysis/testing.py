@@ -10,7 +10,8 @@ import requests
 
 from urllib.parse import urlparse
 
-from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument
+from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument, \
+    PixmlUnrecoverableProcessorException
 from pixml.asset import FileImport, Asset
 
 logger = logging.getLogger(__name__)
@@ -26,23 +27,28 @@ class TestProcessor(AssetBuilder):
         super(TestProcessor, self).__init__()
         self.add_arg(Argument('attrs', 'struct', default=None))
         self.add_arg(Argument('send_event', 'str', default=None))
+        self.add_arg(Argument('raise_fatal', 'bool', default=False,
+                              toolTip='Raise a PixmlUnrecoverableProcessorException'))
 
     def process(self, frame):
-        self.logger.info("Running TestProcessor process()")
-        attrs = self.arg_value("attrs")
+        self.logger.info('Running TestProcessor process()')
+        if self.arg_value('raise_fatal'):
+            raise PixmlUnrecoverableProcessorException('Fatal exception raised')
+
+        attrs = self.arg_value('attrs')
         if attrs:
-            self.logger.info("setting attrs: {}".format(attrs))
+            self.logger.info('setting attrs: {}'.format(attrs))
             for k, v in attrs.items():
                 frame.asset.set_attr(k, v)
 
-        event_type = self.arg_value("send_event")
+        event_type = self.arg_value('send_event')
         if event_type:
-            self.logger.info("emitting event: {}".format(event_type))
-            self.reactor.emitter.write({"type": event_type, "payload": {"ding": "dong"}})
+            self.logger.info('emitting event: {}'.format(event_type))
+            self.reactor.emitter.write({'type': event_type, 'payload': {'ding': 'dong'}})
         time.sleep(1)
 
     def teardown(self):
-        self.logger.info("Running TestProcessor teardown()")
+        self.logger.info('Running TestProcessor teardown()')
 
 
 class TestGenerator(Generator):
