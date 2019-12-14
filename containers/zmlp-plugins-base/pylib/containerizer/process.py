@@ -225,6 +225,10 @@ class ProcessorWrapper(object):
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
             self.increment_stat("total_time", total_time)
+
+            # Check the expand queue.  A force check is done at teardown.
+            self.check_expand()
+
         except PixmlUnrecoverableProcessorException as upe:
             # Set the asset to be skipped for further processing
             # It will not be included in result
@@ -258,6 +262,7 @@ class ProcessorWrapper(object):
             return
         try:
             self.instance.teardown()
+            # When the processor tears down then force an expand check.
             self.reactor.check_expand(True)
             self.reactor.emitter.write({"type": "stats", "payload": [self.stats]})
         except Exception as e:

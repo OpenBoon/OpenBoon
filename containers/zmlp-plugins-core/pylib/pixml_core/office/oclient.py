@@ -17,12 +17,14 @@ class OfficerClient(object):
     A Python client for the Officer service.
     """
 
+    tmp_loc_attr = 'tmp.office_output_dir'
+
     def __init__(self, url=None):
         """
         Create a new OfficerClient instance.
 
         Args:
-            url (str): An optional URL. Will look for the PIXML_OFFICER_URL envionment
+            url (str): An optional URL. Will look for the PIXML_OFFICER_URL environment
             variable and finally default to 'http://officer:7078'
         """
         self.url = url or os.environ.get('PIXML_OFFICER_URL', 'http://officer:7078')
@@ -30,12 +32,12 @@ class OfficerClient(object):
     @property
     def render_url(self):
         """The full render URL"""
-        return "{}/render".format(self.url)
+        return '{}/render'.format(self.url)
 
     @property
     def exists_url(self):
         """The full exists URL"""
-        return "{}/exists".format(self.url)
+        return '{}/exists'.format(self.url)
 
     @backoff.on_exception(backoff.expo, requests.exceptions.HTTPError, max_time=5 * 60)
     def render(self, asset, page):
@@ -70,6 +72,7 @@ class OfficerClient(object):
 
     def exists(self, asset, page):
         """
+        Return true if the cached pdata data exists for the given asset and page.
 
         Args:
             asset (Asset): The asset to check
@@ -78,15 +81,24 @@ class OfficerClient(object):
         Returns:
             bool: True if the both the metadata and proxy file exist for the page.
         """
+        # Look at the tmp_loc_attr first.
+        tmp_loc = asset.get_attr(self.tmp_loc_attr)
+        asset_id = asset.id
+        if tmp_loc:
+            asset_id = os.path.basename(tmp_loc)
+
         body = {
-            "output_dir": asset.id,
-            "page": page
+            'outputDir': asset_id,
+            'page': page
         }
-        rsp = requests.post(self.exists_url, body=body)
+        rsp = requests.post(self.exists_url, json=body,
+                            headers={'Content-Type': 'application/json'})
         if rsp.status_code == 200:
             return True
-        else:
+        elif rsp.status_code == 404:
             return False
+        else:
+            rsp.raise_for_status()
 
     def _get_render_request_body(self, asset, page):
         """
@@ -111,14 +123,14 @@ class OfficerClient(object):
 
         # Setup the json body
         body = {
-            "fileName": asset.uri,
-            "outputDir": asset.id,
-            "page": page
+            'fileName': asset.uri,
+            'outputDir': asset.id,
+            'page': page
         }
 
         # combine the file and json body into a multi-part request
         post_files = [
-            ("file", (body["fileName"], open(file_path, 'rb'))),
-            ("body", (None, json.dumps(body, cls=PixmlJsonEncoder), 'application/json'))
+            ('file', (body['fileName'], open(file_path, 'rb'))),
+            ('body', (None, json.dumps(body, cls=PixmlJsonEncoder), 'application/json'))
         ]
         return post_files

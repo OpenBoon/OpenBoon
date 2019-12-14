@@ -52,11 +52,31 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         processor = self.init_processor(OfficeImporter(), {})
         assert processor._needs_rerender(self.asset, 1) is False
 
+    @patch.object(OfficerClient, 'render', return_value='/fake')
+    def test_render_pages_no_clip_page_1(self, _):
+        processor = self.init_processor(OfficeImporter(), {})
+        processor.render_pages(self.asset, False, 1)
+        assert self.asset.get_attr('tmp.proxy_source_image') == '/fake/proxy.1.jpg'
+
+    @patch.object(OfficerClient, 'exists', return_value=False)
+    @patch.object(OfficerClient, 'render', return_value='/fake')
+    def test_render_pages_clip_page_2_not_exist(self, _, __):
+        processor = self.init_processor(OfficeImporter(), {})
+        processor.render_pages(self.asset, True, 2)
+        assert self.asset.get_attr('tmp.proxy_source_image') == '/fake/proxy.2.jpg'
+
+    @patch.object(OfficerClient, 'exists', return_value=True)
+    def test_render_pages_clip_cached(self, _):
+        processor = self.init_processor(OfficeImporter(), {})
+        self.asset.set_attr('tmp.office_output_dir', '/cached')
+        processor.render_pages(self.asset, True, 3)
+        assert self.asset.get_attr('tmp.proxy_source_image') == '/cached/proxy.3.jpg'
+
     @patch.object(OfficeImporter, 'get_metadata',
                   return_value={'author': 'Zach', 'content': 'temp'})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     def test_process_loads_metadata_to_asset(self, _, __):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': False})
+        processor = self.init_processor(OfficeImporter())
         processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') == 'temp'
@@ -65,32 +85,32 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
                   return_value={'author': 'Zach'})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     def test_process_loads_metadata(self, _, __):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': False})
+        processor = self.init_processor(OfficeImporter())
         processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') is None
-        assert self.asset.get_attr('tmp.proxy_source_image').endswith("proxy.0.jpg")
+        assert self.asset.get_attr('tmp.proxy_source_image').endswith("proxy.1.jpg")
 
     @patch.object(OfficeImporter, 'expand')
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     def test_process_expands_children(self, _, __, expand_patch):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
+        processor = self.init_processor(OfficeImporter())
         processor.process(Frame(self.asset))
-        assert expand_patch.call_count == 3
+        assert expand_patch.call_count == 2
 
     @patch.object(file_cache, 'localize_uri')
     def test_get_metadata(self, cache_patch):
         path = os.path.dirname(__file__) + '/test_metadata.json'
         cache_patch.return_value = path
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
+        processor = self.init_processor(OfficeImporter())
         md = processor.get_metadata(self.asset, 1)
         assert md['title'] == 'PhD Thesis on \'Die Hard\''
         assert md['type'] == 'document'
         assert md['length'] == 6
 
     def test_get_image_uri(self):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
+        processor = self.init_processor(OfficeImporter())
         md = processor.get_image_uri("pixml://ml-storage/tmp-files/officer/foo/bar", 1)
         assert md.startswith("pixml://")
         assert md.endswith('proxy.1.jpg')
