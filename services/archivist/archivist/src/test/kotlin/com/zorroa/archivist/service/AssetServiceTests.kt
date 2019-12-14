@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.TaskState
 import org.junit.Test
@@ -86,7 +87,7 @@ class AssetServiceTests : AbstractTest() {
     fun testBatchCreateAssets_WithIgnoreFields() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
-            mapOf("files.hello" to "foo", "temp.hello" to "bar")
+            mapOf("system.hello" to "foo")
         )
 
         val req = BatchCreateAssetsRequest(
@@ -94,8 +95,25 @@ class AssetServiceTests : AbstractTest() {
         )
         val rsp = assetService.batchCreate(req)
         assertFalse(rsp.status[0].failed)
-        assertNull(rsp.assets[0].getAttr("files.hello"))
-        assertNull(rsp.assets[0].getAttr("temp.hello"))
+        assertNull(rsp.assets[0].getAttr("system.hello"))
+    }
+
+    @Test
+    fun testBatchCreateAssets_WithClip() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("system.hello" to "foo"),
+            clip = Clip("page", 3f, 3f, "pages")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        assertEquals(3f, rsp.assets[0].getAttr<Float?>("clip.start"))
+        assertEquals(3f, rsp.assets[0].getAttr<Float?>("clip.stop"))
+        assertEquals("page", rsp.assets[0].getAttr<String?>("clip.type"))
+        assertEquals("pages", rsp.assets[0].getAttr<String?>("clip.timeline"))
     }
 
     /**
@@ -136,19 +154,24 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val createRsp = assetService.batchCreate(batchCreate)
-        val asset = assetService.getAsset(createRsp.status[0].assetId)
+        var asset = assetService.getAsset(createRsp.status[0].assetId)
         asset.setAttr("aux.field", 1)
+        asset.setAttr("tmp.field", 1)
 
         val batchIndex = BatchUpdateAssetsRequest(
             assets = listOf(asset)
         )
-        val indexRsp = assetService.batchUpdate(batchIndex)
-        assertFalse(indexRsp.status[0]!!.failed)
+        val updateRsp = assetService.batchUpdate(batchIndex)
+        assertFalse(updateRsp.status[0]!!.failed)
+
+        asset = assetService.getAsset(createRsp.status[0].assetId)
+        assertFalse(asset.attrExists("tmp.field"))
+        assertFalse(asset.attrExists("tmp"))
     }
 
 
     /**
-     * Trying to index assets that don't exist should fail.
+     * Trying to update assets that don't exist should fail.
      */
     @Test
     fun testBatchUpdateAssets_failNotCreatedSingle() {

@@ -165,6 +165,7 @@ class AssetServiceImpl : AssetService {
 
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
         val asset = Asset(id)
+
         spec.attrs?.forEach { k, v ->
             val prefix = try {
                 k.substring(0, k.indexOf('.'))
@@ -176,6 +177,7 @@ class AssetServiceImpl : AssetService {
             }
         }
 
+        asset.setAttr("clip", spec.clip)
         asset.setAttr("source.path", spec.uri)
         asset.setAttr("source.filename", FileUtils.filename(spec.uri))
         asset.setAttr("source.extension", FileUtils.extension(spec.uri))
@@ -194,7 +196,6 @@ class AssetServiceImpl : AssetService {
             java.time.Clock.systemUTC().instant().toString()
         )
         asset.setAttr("system.state", AssetState.Pending.toString())
-        asset.setAttr("element.name", "asset")
 
         return asset
     }
@@ -430,9 +431,11 @@ class AssetServiceImpl : AssetService {
     companion object {
 
         /**
-         * These namespaces get removed from [AssetSpec] at creationn time.
+         * These namespaces get removed from [AssetSpec] at creation time.
+         * tmp is allowed on create only, but the data is not indexed,
+         * just stored on the document.
          */
-        val removeFieldsOnCreate = setOf("files", "tmp", "temp")
+        val removeFieldsOnCreate = setOf("system")
 
         /**
          * These namespaces get removed from [Asset] at update time.

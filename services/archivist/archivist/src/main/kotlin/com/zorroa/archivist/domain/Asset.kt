@@ -130,7 +130,10 @@ class AssetSpec(
     @ApiModelProperty("Additional metadata fields to add to the Asset in key/value format.")
     var attrs: Map<String, Any>? = null,
 
-    @ApiModelProperty("An optional unique ID for the asset to override an auto-generated ID.")
+    @ApiModelProperty("Optional clip metdata specifies the portion of the asset to process.")
+    var clip: Clip? = null,
+
+    @ApiModelProperty("An optional unique ID for the asset to override the auto-generated ID.")
     val id: String? = null
 )
 
@@ -152,6 +155,31 @@ class AssetCounters(
     @ApiModelProperty("Total number of assets replaced")
     val replaced: Int = 0
 )
+
+@ApiModel("Clip", description = "Defines a subsection of an Asset to process, " +
+    "for example a page of a document.")
+class Clip(
+
+    @ApiModelProperty("The type of clip, this is typically 'page' or 'scene' but can be anything")
+    val type: String,
+
+    @ApiModelProperty("The starting point of the clip")
+    val start: Float,
+
+    @ApiModelProperty("The ending point of a clip.")
+    val stop: Float,
+
+    @ApiModelProperty("The type of clip, this is typically 'page' or 'scene' but can be anything")
+    val timeline: String? = null
+)
+{
+
+    /**
+     * Calculate the clip length.  If the length is 0 then make it 1
+     */
+    val length = if (stop - start == 0f) { 1f } else { stop - start}
+}
+
 
 @ApiModel("Asset",
     description = "The file information and all the metadata generated during Analysis.")
@@ -368,15 +396,32 @@ class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
             return spec.id
         }
 
+        /**
+         * Nothing about the order of these statements
+         * can ever change or duplicate assets will be
+         * created.
+         */
         val digester = MessageDigest.getInstance("SHA-256")
         digester.update(spec.uri.toByteArray())
         digester.update(uuidToByteArray(projectId))
+
+        spec.clip?.let {
+            digester.update(it.type.toByteArray())
+            it.timeline?.let { timeline ->
+                digester.update(timeline.toByteArray())
+            }
+            val buf = ByteBuffer.allocate(8)
+            buf.putFloat(it.start)
+            buf.putFloat(it.stop)
+            digester.update(buf.array())
+        }
+
         dataSourceId?.let {
             digester.update(uuidToByteArray(it))
         }
-        // TODO: clip tokens.
+
         randomness?.let {
-            digester.update(randomness.toByteArray())
+            digester.update(it.toByteArray())
         }
         // Clamp the size to 32, 48 is bit much and you still
         // get much better resolution than a UUID.  We could

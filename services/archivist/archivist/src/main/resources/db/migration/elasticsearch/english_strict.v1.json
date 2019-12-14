@@ -50,12 +50,6 @@
     "asset": {
       "dynamic": "strict",
       "properties": {
-        "element": {
-          "type": "join",
-          "relations": {
-            "asset": "clip"
-          }
-        },
         "source": {
           "dynamic": "strict",
           "properties": {
@@ -109,6 +103,7 @@
           "dynamic": "strict",
           "properties": {
             "pixelml": {
+              "dynamic": "strict",
               "properties": {
                 "tinyProxy": {
                   "type": "object",
@@ -230,10 +225,18 @@
                   "analyzer": "default"
                 }
               }
+            },
+            "content": {
+              "type": "text",
+              "analyzer": "default"
             }
           }
         },
         "aux": {
+          "type": "object",
+          "enabled": false
+        },
+        "tmp": {
           "type": "object",
           "enabled": false
         },
