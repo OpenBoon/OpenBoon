@@ -2,10 +2,8 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-const HEIGHT = 39
-
 const Input = ({ id, type, label, value, onChange }) => (
-  <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.moderate }}>
+  <div css={{ paddingTop: spacing.moderate, paddingBottom: spacing.moderate }}>
     <label
       htmlFor={id}
       css={{ display: 'block', paddingBottom: spacing.moderate }}>
@@ -18,7 +16,7 @@ const Input = ({ id, type, label, value, onChange }) => (
       value={value}
       onChange={onChange}
       css={{
-        height: HEIGHT,
+        padding: spacing.moderate,
         borderRadius: constants.borderRadius.small,
         boxShadow: constants.boxShadows.input,
         width: '100%',

@@ -2,8 +2,10 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, typography, spacing } from '../Styles'
+
 import LogoSvg from '../Icons/logo.svg'
 
+import FormAlert from '../FormAlert'
 import Input from '../Input'
 
 const WIDTH = 440
@@ -33,7 +35,11 @@ const Login = ({ onSubmit }) => {
         }}>
         <LogoSvg
           width={LOGO_WIDTH}
-          css={{ alignSelf: 'center', paddingTop: spacing.comfy }}
+          css={{
+            alignSelf: 'center',
+            paddingTop: spacing.comfy,
+            paddingBottom: spacing.comfy,
+          }}
         />
         <h3
           css={{
@@ -41,11 +47,12 @@ const Login = ({ onSubmit }) => {
             fontSize: typography.size.mega,
             lineHeight: typography.height.mega,
             margin: 0,
-            paddingTop: spacing.spacious,
-            paddingBottom: spacing.colossal,
+            paddingTop: spacing.moderate,
+            paddingBottom: spacing.moderate,
           }}>
           Welcome. Please login.
         </h3>
+        <FormAlert errorMessage="Invalid email or password." />
         <Input
           id="username"
           label="Email"
