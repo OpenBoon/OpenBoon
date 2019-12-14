@@ -8,7 +8,9 @@ describe('<Login />', () => {
   it('should render properly', () => {
     const mockFn = jest.fn()
 
-    const component = TestRenderer.create(<Login onSubmit={mockFn} />)
+    const component = TestRenderer.create(
+      <Login errorMessage="" setErrorMessage={noop} onSubmit={mockFn} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 

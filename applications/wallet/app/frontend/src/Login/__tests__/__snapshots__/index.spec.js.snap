@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-15 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +17,7 @@ exports[`<Login /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-14 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -49,67 +49,37 @@ exports[`<Login /> should render properly 1`] = `
   padding-bottom: 12px;
 }
 
-.emotion-5 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #ffb6b2;
-  border-radius: 2px;
+.emotion-3 {
   padding: 12px;
 }
 
 .emotion-2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #000000;
-  font-weight: 500;
+  height: 20px;
 }
 
-.emotion-3 {
-  border: 0;
-  padding: 0;
-  background: none;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-8 {
+.emotion-7 {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-6 {
+.emotion-5 {
   display: block;
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-6 {
   padding: 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
 }
 
-.emotion-13 {
+.emotion-12 {
   padding: 24px;
   text-align: center;
 }
 
-.emotion-12 {
+.emotion-11 {
   background-color: #82be3c;
   color: #fff;
   font-size: 14px;
@@ -121,15 +91,15 @@ exports[`<Login /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-12:hover {
+.emotion-11:hover {
   background-color: #a7d374;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-14"
 >
   <form
-    className="emotion-14"
+    className="emotion-13"
   >
     <svg
       className="emotion-0"
@@ -142,47 +112,27 @@ exports[`<Login /> should render properly 1`] = `
       Welcome. Please login.
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-3"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
-        <svg
-          color="#c92300"
-          data-file-name="warning.svg"
-          height={20}
-        />
         <div
           className="emotion-2"
-          role="alert"
-        >
-          Invalid email or password.
-        </div>
-        <button
-          aria-label="Close alert"
-          className="emotion-3"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            color="#000000"
-            data-file-name="cross.svg"
-            height={20}
-          />
-        </button>
+        />
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-7"
     >
       <label
-        className="emotion-6"
+        className="emotion-5"
         htmlFor="username"
       >
         Email
       </label>
       <input
-        className="emotion-7"
+        className="emotion-6"
         id="username"
         name="username"
         onChange={[Function]}
@@ -191,16 +141,16 @@ exports[`<Login /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-7"
     >
       <label
-        className="emotion-6"
+        className="emotion-5"
         htmlFor="password"
       >
         Password
       </label>
       <input
-        className="emotion-7"
+        className="emotion-6"
         id="password"
         name="password"
         onChange={[Function]}
@@ -209,10 +159,10 @@ exports[`<Login /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-13"
+      className="emotion-12"
     >
       <button
-        className="emotion-12"
+        className="emotion-11"
         onClick={[Function]}
         type="submit"
       >

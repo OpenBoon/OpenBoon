@@ -11,7 +11,7 @@ import Input from '../Input'
 const WIDTH = 440
 const LOGO_WIDTH = 143
 
-const Login = ({ onSubmit }) => {
+const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -52,7 +52,10 @@ const Login = ({ onSubmit }) => {
           }}>
           Welcome. Please login.
         </h3>
-        <FormAlert errorMessage="Invalid email or password." />
+        <FormAlert
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
         <Input
           id="username"
           label="Email"
@@ -97,6 +100,8 @@ const Login = ({ onSubmit }) => {
 }
 
 Login.propTypes = {
+  errorMessage: PropTypes.string.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
 

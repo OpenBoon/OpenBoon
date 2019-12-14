@@ -34,6 +34,7 @@ describe('<Authentication /> helpers', () => {
     it('should authenticate the user', async () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
+      const mockSetErrorMessage = jest.fn()
       const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
 
@@ -44,10 +45,15 @@ describe('<Authentication /> helpers', () => {
         },
       })
 
-      await authenticateUser({ setUser: mockSetUser })({
+      await authenticateUser({
+        setErrorMessage: mockSetErrorMessage,
+        setUser: mockSetUser,
+      })({
         username: 'username',
         password: 'password',
       })
+
+      expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
       expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
 
