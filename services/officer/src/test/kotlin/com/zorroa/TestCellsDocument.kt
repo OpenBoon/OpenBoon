@@ -71,7 +71,7 @@ class TestCellsDocument {
         opts.page = 1
         val doc = CellsDocument(opts, FileInputStream(opts.fileName))
         doc.renderMetadata(1)
-        validateMetadata(doc.getMetadata(1), "width", "height", "orientation","content")
+        validateMetadata(doc.getMetadata(1), "width", "height", "orientation", "content")
     }
 
     @Test

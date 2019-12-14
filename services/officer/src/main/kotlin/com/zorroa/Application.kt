@@ -31,7 +31,6 @@ class ExistsRequest(
     val outputDir: String
 )
 
-
 /**
  * Extract the image and metadata to their resting place.
  */

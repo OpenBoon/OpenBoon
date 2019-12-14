@@ -55,7 +55,6 @@ class SlidesDocument(options: RenderRequest, inputStream: InputStream) : Documen
             metadata["orientation"] = if (dim.size.height > dim.size.width) "portrait" else "landscape"
             metadata["content"] = extractPageContent(page)
 
-
             val output = ReversibleByteArrayOutputStream()
             Json.mapper.writeValue(output, metadata)
             ioHandler.writeMetadata(page, output)

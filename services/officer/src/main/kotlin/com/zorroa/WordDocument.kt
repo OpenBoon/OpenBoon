@@ -19,7 +19,6 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
         }
     }
 
-
     override fun renderAllImages(): Int {
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
