@@ -63,6 +63,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           type="text"
           value={username}
           onChange={({ target: { value } }) => setUsername(value)}
+          hasError={!!errorMessage}
         />
         <Input
           id="password"
@@ -70,6 +71,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           type="password"
           value={password}
           onChange={({ target: { value } }) => setPassword(value)}
+          hasError={!!errorMessage}
         />
         <div css={{ padding: spacing.comfy, textAlign: 'center' }}>
           <button

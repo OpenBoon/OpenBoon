@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-const Input = ({ id, type, label, value, onChange, ...props }) => (
+const Input = ({ id, type, label, value, onChange, hasError, ...props }) => (
   <div css={{ paddingTop: spacing.moderate, paddingBottom: spacing.moderate }}>
     <label
       htmlFor={id}
@@ -20,6 +20,9 @@ const Input = ({ id, type, label, value, onChange, ...props }) => (
         borderRadius: constants.borderRadius.small,
         boxShadow: constants.boxShadows.input,
         width: '100%',
+        border: hasError
+          ? constants.borders.error
+          : constants.borders.transparent,
       }}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
@@ -33,6 +36,7 @@ Input.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  hasError: PropTypes.bool.isRequired,
 }
 
 export default Input
