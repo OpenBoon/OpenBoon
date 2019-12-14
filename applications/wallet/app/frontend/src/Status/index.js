@@ -5,7 +5,7 @@ const LABEL_COLORS = {
   Active: colors.yellow1,
   Paused: colors.structureShades.black,
   Canceled: colors.structureShades.steel,
-  Finished: colors.plants.grass,
+  Finished: colors.signalColors.grass,
 }
 
 const LABEL_HEIGHT = 24

@@ -41,6 +41,14 @@ const colors = {
     white: '#ffffff',
   },
 
+  signalColors: {
+    warning: '#c92300',
+    canary: '#ebb52e',
+    sky: '#4a90e2',
+    grass: '#4ac565',
+    warningBackground: '#ffb6b2',
+  },
+
   rocks: {
     coal: '#1f1a17',
     charcoal: '#4d4948',
@@ -54,7 +62,6 @@ const colors = {
 
   plants: {
     clover: '#73b61c',
-    grass: '#4ac565',
   },
 }
 
