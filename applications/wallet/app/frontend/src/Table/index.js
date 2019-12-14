@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
-import { formatFullDate } from '../Date/helpers'
+import { formatFullDate, convertDuration } from '../Date/helpers'
 import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
@@ -17,6 +17,7 @@ const Table = ({ columns, rows }) => {
           backgroundColor: colors.structureShades.iron,
           padding: `${spacing.moderate}px ${spacing.normal}px`,
           borderBottom: constants.borders.default,
+          whiteSpace: 'nowrap',
           ':nth-of-type(2)': {
             width: '100%',
           },
@@ -89,7 +90,7 @@ const Table = ({ columns, rows }) => {
               <td>{row.jobName}</td>
               <td>{row.createdBy}</td>
               <td>{row.priority}</td>
-              <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
+              <td>{formatFullDate({ timestamp: row.timeCreated })}</td>
               <td>
                 {row.failed > 0 && (
                   <div
@@ -128,7 +129,10 @@ const Table = ({ columns, rows }) => {
               </td>
               <td>{row.numAssets}</td>
               <td>
-                <ProgressBar status={row.progress} />
+                <ProgressBar
+                  status={row.progress}
+                  duration={convertDuration({ timestamp: row.timeStarted })}
+                />
               </td>
             </tr>
           )
@@ -147,10 +151,11 @@ Table.propTypes = {
       jobName: PropTypes.string,
       createdBy: PropTypes.string,
       priority: PropTypes.number,
-      createdDateTime: PropTypes.number,
+      timeCreated: PropTypes.number,
       failed: PropTypes.node,
       errors: PropTypes.node,
-      numAssets: PropTypes.string,
+      numAssets: PropTypes.number,
+      timeStarted: PropTypes.number,
       progress: PropTypes.shape({
         isGenerating: PropTypes.bool,
         isCanceled: PropTypes.bool,

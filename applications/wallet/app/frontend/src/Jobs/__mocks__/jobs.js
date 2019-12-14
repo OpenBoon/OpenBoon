@@ -4,12 +4,15 @@ export const newJob = ({ job }) => {
     jobName: job.name,
     createdBy: job.createdUser.username,
     priority: job.priority,
-    createdDateTime: job.timeCreated,
+    timeCreated: job.timeCreated,
     failed: job.taskCounts.tasksFailure,
     errors: job.assetCounts.assetErrorCount,
-    numAssets: 'numAsets',
+    numAssets: Object.values(job.assetCounts).reduce(
+      (sum, current) => sum + current,
+    ),
+    timeStarted: job.timeStarted,
     progress: {
-      isGenerating: job.jobId === '1585ca03-4db0-14d1-8edd-0a580a000926',
+      isGenerating: undefined,
       isCanceled: job.state === 'Canceled',
       canceledBy: job.createdUser.username,
       failed: job.taskCounts.tasksFailure,
@@ -30,7 +33,7 @@ export const jobs = {
       state: 'Active',
       assetCounts: {
         assetCreatedCount: 0,
-        assetReplacedCount: 0,
+        assetReplacedCount: 90,
         assetWarningCount: 0,
         assetErrorCount: 4,
       },
@@ -482,18 +485,21 @@ export const jobColumns = [
   'Progress',
 ]
 
-export const jobRows = jobs.list.map(job => {
+export const __mockJobRows = jobs.list.map(job => {
   const { id } = job
   const status = job.paused ? 'Paused' : job.state
   const jobName = job.name
   const createdBy = job.createdUser.username
   const { priority } = job
-  const createdDateTime = job.timeCreated
+  const { timeCreated } = job
   const failed = job.taskCounts.tasksFailure
   const errors = job.assetCounts.assetErrorCount
-  const numAssets = 'numAsets'
+  const numAssets = Object.values(job.assetCounts).reduce(
+    (sum, current) => sum + current,
+  )
+  const { timeStarted } = job
   const progress = {
-    isGenerating: job.jobId === '1585ca03-4db0-14d1-8edd-0a580a000926',
+    isGenerating: undefined,
     isCanceled: job.state === 'Canceled',
     canceledBy: job.createdUser.username,
     failed: job.taskCounts.tasksFailure,
@@ -508,10 +514,11 @@ export const jobRows = jobs.list.map(job => {
     jobName,
     createdBy,
     priority,
-    createdDateTime,
+    timeCreated,
     failed,
     errors,
     numAssets,
+    timeStarted,
     progress,
   }
 })

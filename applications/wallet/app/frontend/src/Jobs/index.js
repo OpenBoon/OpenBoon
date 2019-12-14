@@ -1,5 +1,5 @@
 import Table from '../Table'
-import { jobColumns, jobRows } from './__mocks__/jobs'
+import { jobColumns, __mockJobRows } from './__mocks__/jobs'
 
 import { spacing } from '../Styles'
 
@@ -13,7 +13,7 @@ const Jobs = () => {
     <div css={{ padding: spacing.spacious }}>
       <h2>Data Queue</h2>
 
-      <Table columns={jobColumns} rows={jobRows} />
+      <Table columns={jobColumns} rows={__mockJobRows} />
 
       <div>&nbsp;</div>
 
