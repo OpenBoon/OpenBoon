@@ -1,20 +1,16 @@
 import PropTypes from 'prop-types'
 import { keyframes } from '@emotion/core'
-import { colors, constants, spacing } from '../Styles'
+
+import { STATUS_COLORS } from './helpers'
+import InfoKey from './InfoKey'
+import { colors, constants, spacing, zIndex } from '../Styles'
 import GeneratingSvg from './generating.svg'
 
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 212
-const STATUS_COLORS = {
-  failed: colors.signalColors.warning,
-  skipped: colors.structureShades.zinc,
-  succeeded: colors.signalColors.grass,
-  running: colors.signalColors.canary,
-  pending: colors.signalColors.sky,
-}
 
-const ProgressBar = ({ status }) => {
-  const { isGenerating, isCanceled, canceledBy } = status
+const ProgressBar = ({ status, duration, showKeyInfo }) => {
+  const { isGenerating } = status
 
   if (isGenerating) {
     const spinAnimation = keyframes`
@@ -39,15 +35,10 @@ const ProgressBar = ({ status }) => {
     )
   }
 
-  if (isCanceled) {
-    return (
-      <div css={{ color: colors.grey5 }}>{`Canceled by: ${canceledBy}`}</div>
-    )
-  }
-
   return (
     <div
       css={{
+        position: 'relative',
         display: 'flex',
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
@@ -76,6 +67,16 @@ const ProgressBar = ({ status }) => {
             />
           )
         })}
+      <div
+        css={{
+          position: 'absolute',
+          top: CONTAINER_HEIGHT + spacing.base,
+          right: 0,
+          boxShadow: constants.boxShadows.tableRow,
+          zIndex: zIndex.layout.dropdown,
+        }}>
+        {showKeyInfo && <InfoKey status={status} duration={duration} />}
+      </div>
     </div>
   )
 }
@@ -91,6 +92,13 @@ ProgressBar.propTypes = {
     running: PropTypes.number,
     pending: PropTypes.number,
   }).isRequired,
+  duration: PropTypes.shape({
+    days: PropTypes.number,
+    hours: PropTypes.number,
+    minutes: PropTypes.number,
+    seconds: PropTypes.number,
+  }).isRequired,
+  showKeyInfo: PropTypes.bool.isRequired,
 }
 
 export default ProgressBar

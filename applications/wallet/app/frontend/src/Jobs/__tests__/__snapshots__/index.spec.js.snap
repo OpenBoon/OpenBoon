@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Jobs /> should render properly with data 1`] = `
-.emotion-81 {
+.emotion-93 {
   padding: 32px;
 }
 
-.emotion-80 {
+.emotion-92 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
 }
 
-.emotion-80 th {
+.emotion-92 th {
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -20,36 +20,36 @@ exports[`<Jobs /> should render properly with data 1`] = `
   white-space: nowrap;
 }
 
-.emotion-80 th:nth-of-type(2) {
+.emotion-92 th:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-80 th:not(:last-child) {
+.emotion-92 th:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-80 tr:hover {
+.emotion-92 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-80 tr:hover td {
+.emotion-92 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-80 tr:hover td:first-of-type {
+.emotion-92 tr:hover td:first-of-type {
   border: 1px solid #808080;
   border-right: 0;
 }
 
-.emotion-80 tr:hover td:last-of-type {
+.emotion-92 tr:hover td:last-of-type {
   border: 1px solid #808080;
   border-left: 0;
 }
 
-.emotion-80 td {
+.emotion-92 td {
   white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
@@ -58,12 +58,12 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-right: 0;
 }
 
-.emotion-80 td:first-of-type {
+.emotion-92 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-80 td:last-of-type {
+.emotion-92 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -75,11 +75,11 @@ exports[`<Jobs /> should render properly with data 1`] = `
   display: flex;
 }
 
-.emotion-17 {
+.emotion-18 {
   background-color: #252525;
 }
 
-.emotion-17:nth-of-type(2n) {
+.emotion-18:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
@@ -133,7 +133,8 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #191919;
 }
 
-.emotion-16 {
+.emotion-17 {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -214,7 +215,15 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-21 {
+.emotion-16 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 70;
+}
+
+.emotion-22 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -222,17 +231,17 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #c92300;
 }
 
-.emotion-21:first-of-type {
+.emotion-22:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-21:last-of-type {
+.emotion-22:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-27 {
+.emotion-29 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -248,7 +257,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #f5a623;
 }
 
-.emotion-33 {
+.emotion-36 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -264,11 +273,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #191919;
 }
 
-.emotion-36 {
-  color: #4d4948;
-}
-
-.emotion-38 {
+.emotion-43 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -284,7 +289,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #191919;
 }
 
-.emotion-52 {
+.emotion-59 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -292,17 +297,17 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-52:first-of-type {
+.emotion-59:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-52:last-of-type {
+.emotion-59:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-74 {
+.emotion-85 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -310,17 +315,17 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #b3b3b3;
 }
 
-.emotion-74:first-of-type {
+.emotion-85:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-74:last-of-type {
+.emotion-85:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-76 {
+.emotion-87 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -328,17 +333,17 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #ebb52e;
 }
 
-.emotion-76:first-of-type {
+.emotion-87:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-76:last-of-type {
+.emotion-87:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-77 {
+.emotion-88 {
   height: 100%;
   -webkit-flex: 2 0 auto;
   -ms-flex: 2 0 auto;
@@ -346,24 +351,24 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-77:first-of-type {
+.emotion-88:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-77:last-of-type {
+.emotion-88:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
 <div
-  className="emotion-81"
+  className="emotion-93"
 >
   <h2>
     Data Queue
   </h2>
   <table
-    className="emotion-80"
+    className="emotion-92"
   >
     <thead>
       <tr>
@@ -434,7 +439,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -474,7 +481,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
               className="emotion-12"
@@ -488,11 +495,16 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-15"
             />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -532,10 +544,10 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
             />
             <div
               className="emotion-13"
@@ -546,15 +558,20 @@ exports[`<Jobs /> should render properly with data 1`] = `
             <div
               className="emotion-15"
             />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-27"
+            className="emotion-29"
           >
             Paused
           </div>
@@ -590,20 +607,25 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-33"
+            className="emotion-36"
           >
             Canceled
           </div>
@@ -639,18 +661,25 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-36"
+            className="emotion-17"
           >
-            Canceled by: admin
+            <div
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-38"
+            className="emotion-43"
           >
             Finished
           </div>
@@ -686,16 +715,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -735,16 +769,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -778,16 +817,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-52"
+              className="emotion-59"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -821,16 +865,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -864,16 +913,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -907,16 +961,21 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -956,22 +1015,25 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
             />
             <div
-              className="emotion-74"
+              className="emotion-85"
             />
             <div
-              className="emotion-52"
+              className="emotion-59"
             />
             <div
-              className="emotion-76"
+              className="emotion-87"
             />
             <div
-              className="emotion-77"
+              className="emotion-88"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
@@ -1001,17 +1063,17 @@ exports[`<Jobs /> should render properly with data 1`] = `
 `;
 
 exports[`<Jobs /> should render properly without data 1`] = `
-.emotion-81 {
+.emotion-93 {
   padding: 32px;
 }
 
-.emotion-80 {
+.emotion-92 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
 }
 
-.emotion-80 th {
+.emotion-92 th {
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -1020,36 +1082,36 @@ exports[`<Jobs /> should render properly without data 1`] = `
   white-space: nowrap;
 }
 
-.emotion-80 th:nth-of-type(2) {
+.emotion-92 th:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-80 th:not(:last-child) {
+.emotion-92 th:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-80 tr:hover {
+.emotion-92 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-80 tr:hover td {
+.emotion-92 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-80 tr:hover td:first-of-type {
+.emotion-92 tr:hover td:first-of-type {
   border: 1px solid #808080;
   border-right: 0;
 }
 
-.emotion-80 tr:hover td:last-of-type {
+.emotion-92 tr:hover td:last-of-type {
   border: 1px solid #808080;
   border-left: 0;
 }
 
-.emotion-80 td {
+.emotion-92 td {
   white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
@@ -1058,12 +1120,12 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-right: 0;
 }
 
-.emotion-80 td:first-of-type {
+.emotion-92 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-80 td:last-of-type {
+.emotion-92 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -1075,11 +1137,11 @@ exports[`<Jobs /> should render properly without data 1`] = `
   display: flex;
 }
 
-.emotion-17 {
+.emotion-18 {
   background-color: #252525;
 }
 
-.emotion-17:nth-of-type(2n) {
+.emotion-18:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
@@ -1133,7 +1195,8 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #191919;
 }
 
-.emotion-16 {
+.emotion-17 {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1214,7 +1277,15 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-21 {
+.emotion-16 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 70;
+}
+
+.emotion-22 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -1222,17 +1293,17 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #c92300;
 }
 
-.emotion-21:first-of-type {
+.emotion-22:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-21:last-of-type {
+.emotion-22:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-27 {
+.emotion-29 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -1248,7 +1319,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #f5a623;
 }
 
-.emotion-33 {
+.emotion-36 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -1264,11 +1335,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #191919;
 }
 
-.emotion-36 {
-  color: #4d4948;
-}
-
-.emotion-38 {
+.emotion-43 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -1284,7 +1351,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #191919;
 }
 
-.emotion-52 {
+.emotion-59 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -1292,17 +1359,17 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-52:first-of-type {
+.emotion-59:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-52:last-of-type {
+.emotion-59:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-74 {
+.emotion-85 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -1310,17 +1377,17 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #b3b3b3;
 }
 
-.emotion-74:first-of-type {
+.emotion-85:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-74:last-of-type {
+.emotion-85:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-76 {
+.emotion-87 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -1328,17 +1395,17 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #ebb52e;
 }
 
-.emotion-76:first-of-type {
+.emotion-87:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-76:last-of-type {
+.emotion-87:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-77 {
+.emotion-88 {
   height: 100%;
   -webkit-flex: 2 0 auto;
   -ms-flex: 2 0 auto;
@@ -1346,24 +1413,24 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-77:first-of-type {
+.emotion-88:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-77:last-of-type {
+.emotion-88:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
 <div
-  className="emotion-81"
+  className="emotion-93"
 >
   <h2>
     Data Queue
   </h2>
   <table
-    className="emotion-80"
+    className="emotion-92"
   >
     <thead>
       <tr>
@@ -1434,7 +1501,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1474,7 +1543,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
               className="emotion-12"
@@ -1488,11 +1557,16 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-15"
             />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1532,10 +1606,10 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
             />
             <div
               className="emotion-13"
@@ -1546,15 +1620,20 @@ exports[`<Jobs /> should render properly without data 1`] = `
             <div
               className="emotion-15"
             />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-27"
+            className="emotion-29"
           >
             Paused
           </div>
@@ -1590,20 +1669,25 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-33"
+            className="emotion-36"
           >
             Canceled
           </div>
@@ -1639,18 +1723,25 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-36"
+            className="emotion-17"
           >
-            Canceled by: admin
+            <div
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-38"
+            className="emotion-43"
           >
             Finished
           </div>
@@ -1686,16 +1777,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1735,16 +1831,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1778,16 +1879,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-52"
+              className="emotion-59"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1821,16 +1927,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1864,16 +1975,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1907,16 +2023,21 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-17"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1956,22 +2077,25 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-17"
           >
             <div
-              className="emotion-21"
+              className="emotion-22"
             />
             <div
-              className="emotion-74"
+              className="emotion-85"
             />
             <div
-              className="emotion-52"
+              className="emotion-59"
             />
             <div
-              className="emotion-76"
+              className="emotion-87"
             />
             <div
-              className="emotion-77"
+              className="emotion-88"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>

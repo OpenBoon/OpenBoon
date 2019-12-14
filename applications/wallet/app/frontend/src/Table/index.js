@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
 import { formatFullDate, convertDuration } from '../Date/helpers'
@@ -5,6 +6,7 @@ import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
 const Table = ({ columns, rows }) => {
+  const [showKeyInfoId, setShowKeyInfoId] = useState('')
   return (
     <table
       css={{
@@ -83,6 +85,12 @@ const Table = ({ columns, rows }) => {
                 '&:nth-of-type(2n)': {
                   backgroundColor: colors.structureShades.mattGrey,
                 },
+              }}
+              onMouseEnter={() => {
+                setShowKeyInfoId(row.id)
+              }}
+              onMouseLeave={() => {
+                setShowKeyInfoId('')
               }}>
               <td>
                 <Status jobStatus={row.status} />
@@ -132,6 +140,7 @@ const Table = ({ columns, rows }) => {
                 <ProgressBar
                   status={row.progress}
                   duration={convertDuration({ timestamp: row.timeStarted })}
+                  showKeyInfo={showKeyInfoId === row.id}
                 />
               </td>
             </tr>
